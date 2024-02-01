@@ -2,7 +2,7 @@
   border: 1px solid #ded7d7;
   border-radius: 5px;
   background: #fff;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s !important;
   cursor: pointer;
   padding: 0px 14px;
@@ -134,4 +134,11 @@
 .row.glad-new-row {
   margin-right: -14px;
   margin-left: -14px;
+}
+/* Sudha Sri(23-1-2024) */
+.dashboard_carasol_bg{
+  background-color: #488fd6;
+}
+.card_padding{
+  background: #4a94d3;padding: 0px 18px;border-radius: 0px 0px 5px 5px;
 }

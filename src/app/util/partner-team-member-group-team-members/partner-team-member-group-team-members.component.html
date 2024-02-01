@@ -17,8 +17,8 @@
             <div class="modal-footer" *ngIf="!teamMembersLoader.isLoading">
                 <button type="submit" [disabled]="currentPartner?.selectedTeamMemberIds?.length==0"
                     class="btn btn-danger" (click)="removeAllSelectedTeamMembers()" translate>Clear All</button>
-                <button type="submit" class="button" (click)="closeTeamMembersPreviewPopup()" translate><span
-                        class="btn Btn-Green transition">Proceed</span></button>
+                <button type="submit" class="button bgcolor-unset btn-top3" (click)="closeTeamMembersPreviewPopup()" translate><span
+                        class="btn Btn-Green transition txt_pd-top3">Proceed</span></button>
             </div>
         </div>
     </div>

@@ -43,7 +43,7 @@
   font-size: 15px !important;
 }
 .btn {
-  padding: 5px 14px !important;
+  padding: 7px 14px !important;
 }
 /* 02-8-2023 */
 .btn-select-templates {
@@ -54,3 +54,8 @@
 .btn-mb {
   margin-bottom: 8px;
 }
+/* bnts align */
+.px-0{
+  padding: 0px!important;
+  margin-top: 6px!important;
+} 

@@ -27,7 +27,7 @@
       <div class="btn-group active-btns mb_right0" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-primary activate-btn" *ngIf="!(integrationDetails?.activeCRM)"
           (click)="activateCRM()">Activate</button>
-        <button type="button" class="btn btn-primary activated-btn ActivatedBtn"
+        <button type="button" class="btn btn-primary inetgrations_activate_bgcolor activated-btn ActivatedBtn"
           *ngIf="integrationDetails?.activeCRM"><i class="fa fa-star"
             style="font-size: 15px !important;"></i>Activated</button>
         <button type="button" class="btn btn-secondary unlink-btn disable-btn-text-color" (click)="unlinkCRM()"
@@ -42,12 +42,12 @@
     <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
     <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
       <div class="row m0">
-        <div class="col-md-12">
+        <div class="col-md-12 p0">
           <div style="margin-bottom:20px">
-            <h3>{{ integrationType }} custom fields
+            <h3 class="fs-16">{{ integrationType }} custom fields
               <span class="reload-btn">
                 <a (click)="reloadCustomFields()" data-toggle="tooltip" data-placement="top"
-                  title="Refresh Custom Fields"><i class="fa fa-refresh" style="font-size: 15px !important;"></i>
+                  title="Refresh Custom Fields"><i class="fa fa-refresh" style="font-size: 14px !important;"></i>
                   Reload</a>
               </span>
             </h3>
@@ -83,7 +83,7 @@
                   </span>
                   <ul *ngIf="integrationType === 'HUBSPOT'" class="textDecoration">
                     <li>{{sfCustomField.displayName}}</li>
-                    <li *ngIf="sfCustomField.formDefaultFieldType != null">
+                    <li *ngIf="(sfCustomField.formDefaultFieldType != null)  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)">
                       Mapped As:
                       <ng-container [ngSwitch]="sfCustomField.formDefaultFieldType">
                         <i *ngSwitchCase="'AMOUNT'" class="fa fa-usd" aria-hidden="true"></i>
@@ -163,19 +163,18 @@
                                 [ngModelOptions]="{standalone: true}">
                             </td>
                             <td
-                              *ngIf="sfCustomField.type === 'number' || sfCustomField.type === 'text' || sfCustomField.type === 'date'"
+                              *ngIf="(sfCustomField.type === 'number' || sfCustomField.type === 'text' || sfCustomField.type === 'date')  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)"
                               class="text-center p10" style="width:25%;">
                               <label *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'" for="html"
                                 style="float: left;">Map As</label>
-                              <select class="form-control formSelectCustomization"
+                              <select class="form-control formSelectCustomization fa"
                                 *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'"
                                 [(ngModel)]="sfCustomField.formDefaultFieldType" [ngModelOptions]="{standalone: true}"
                                 (change)="onFieldSelectionChange(sfCustomField)">
                                 <option [ngValue]="null">None</option>
-                                <option *ngIf="sfCustomField.type === 'number'" [ngValue]="'AMOUNT'">Amount</option>
-                                <option *ngIf="sfCustomField.type === 'date'" [ngValue]="'CLOSE_DATE'">Close Date
-                                </option>
-                                <option *ngIf="sfCustomField.type === 'text'" [ngValue]="'DEAL_NAME'">Deal Name</option>
+                                <option *ngIf="sfCustomField.type === 'number'" [ngValue]="'AMOUNT'">&#xf155; Amount</option>
+                                <option *ngIf="sfCustomField.type === 'date'" [ngValue]="'CLOSE_DATE'">&#xf073; Close Date</option>
+                                <option *ngIf="sfCustomField.type === 'text'" [ngValue]="'DEAL_NAME'">&#xf02c; Deal Name</option>
                               </select>
                               <div class="error-message" *ngIf="sfCustomField.typeMismatch">{{
                                 sfCustomField.typeMismatchMessage }}</div>
@@ -191,7 +190,7 @@
           </tbody>
         </table>
       </form>
-      <ul *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="pagination pl10">
+      <ul *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="pagination">
         <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a (click)="setSfCfPage(1)">First</a></li>
         <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a
             (click)="setSfCfPage(sfcfPager.currentPage - 1)">Previous</a></li>
@@ -221,8 +220,8 @@
         <span *ngIf="integrationType !='SALESFORCE'">There are no custom fields in your {{ integrationType | titlecase
           }} account.</span>
       </div>
-      <div class="modal-footer border-none">
-        <button type="button" class="button_blue bgcolor-unset" *ngIf="sfcfPager.pages && sfcfPager.pages.length"
+      <div class="modal-footer border-none pr0 pt0">
+        <button type="button" class="button_blue bgcolor-unset pr0 px-9" *ngIf="sfcfPager.pages && sfcfPager.pages.length"
           (click)="saveCustomFieldsSelection()"><span
             class="btn btn-primary transition txt_pd-top3">Submit</span></button>
       </div>

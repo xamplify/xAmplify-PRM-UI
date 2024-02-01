@@ -113,7 +113,8 @@
         <ng-container *ngFor='let deal of dealsPagination.pagedItems; let i=index'>
           <tr>
             <td style="width: 40%;">
-              <div>{{deal.title | slice:0:30}}
+              <div> 
+                <span><b>Deal Name:</b>{{deal.title | slice:0:30}}</span> 
                 <span *ngIf="deal.title?.length>30">...</span>
               </div>
               <div>

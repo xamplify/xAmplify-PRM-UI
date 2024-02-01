@@ -208,6 +208,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			if(customFiledDto.selected){
 				let selectedCustomFieldsDto = new CustomFieldsDto();
 				selectedCustomFieldsDto.name = customFiledDto.name;
+				selectedCustomFieldsDto.label = customFiledDto.label;
 				selectedCustomFieldsDto.required = customFiledDto.required;
 				selectedCustomFieldsDto.placeHolder = customFiledDto.placeHolder;
 				selectedCustomFieldsDto.displayName = customFiledDto.displayName;
@@ -233,12 +234,13 @@ export class IntegrationSettingsComponent implements OnInit {
 		 } else {
 			const amountField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'AMOUNT');
 			const closeDateField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'CLOSE_DATE');
-			const dealNameField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'DEAL_NAME');		
-			 if (((this.integrationType === 'HUBSPOT') && (!amountField || !closeDateField || !dealNameField))) {
+			const dealNameField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'DEAL_NAME');
+			const displayName = this.selectedCustomFieldsDtos.find(field => $.trim(field.displayName).length <= 0);	
+			 if (((this.integrationType === 'HUBSPOT') && (!amountField || !closeDateField || !dealNameField)) && (!this.authenticationService.module.isTeamMember || this.authenticationService.module.isAdmin)) {
 				 this.ngxloading = false;
 				 const missingFields: string[] = [];
 				 if (!amountField) {
-					 missingFields.push('Amount');
+					missingFields.push('Amount');
 				 }
 				 if (!closeDateField) {
 					 missingFields.push('Close Date');
@@ -248,7 +250,20 @@ export class IntegrationSettingsComponent implements OnInit {
 				 }
 				 const missingFieldsMessage = missingFields.join(', ');
 				 this.referenceService.goToTop();
-				 return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);
+				 return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);	
+			}
+			if((this.integrationType === 'HUBSPOT') && displayName)
+			{
+				this.ngxloading = false;
+				const missingFields: string[] = [];
+				this.selectedCustomFieldsDtos.forEach(field => {
+							if ($.trim(field.displayName).length <= 0) {
+								missingFields.push(field.label);
+							}
+						});
+						const missingFieldsMessage = missingFields.join(', ');
+						this.referenceService.goToTop();
+						return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);	
 			}
 		 	this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, this.integrationType.toLowerCase())
 				.subscribe(
@@ -287,6 +302,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			this.selectedCfIds.splice($.inArray(cfName, this.selectedCfIds), 1);
 			this.paginatedSelectedIds.splice($.inArray(cfName, this.paginatedSelectedIds), 1);
 			sfCustomField.selected = false;
+			sfCustomField.required = false;
 		}
 		this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
 		
@@ -604,5 +620,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			});
 		}
 	}
+
+	
 
 }

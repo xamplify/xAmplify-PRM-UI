@@ -37,7 +37,7 @@
 		bottom: -183px;
 	}
 </style>
-<div class="portlet light" style="border-radius: 5px;">
+<div class="portlet light" style="border-radius: 5px;" [hidden]="isReplaceVideoButtonClicked">
 	<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="portlet-body">
 		<div *ngIf="clientError" style="color:red" translate>Something went wrong, Please refresh the page</div>
@@ -165,11 +165,17 @@
 						<div class="row">
 							<div class="col-md-offset-12 col-md-12 col-lg-12 videoInfoTopBtns">
 								<div style="float: right">
-									<button type="button" class="btn button p0"
+
+									<!--XNFR-434-->
+									<button type="button" class="btn button bgcolor-unset p0"
+										(click)="goToReplaceVideoSection()">
+										<span class="btn Btn-Green transition">Replace</span></button>
+									<!--XNFR-434-->
+									<button type="button" class="btn button bgcolor-unset p0"
 										[disabled]="!videoForm.valid || upperTextValid==false
-									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail"
-										(click)="saveVideoObject()"><span
-											class="btn Btn-Green transition">{{saveButtonTitle}}</span></button>
+									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail" (click)="saveVideoObject()">
+										<span class="btn Btn-Green transition">{{saveButtonTitle}}</span></button>
+
 									<button type="button" class="btn Btn-Gray" style="margin-left:2px"
 										(click)="cancelVideo()" [disabled]="isDisable" translate>Cancel</button>
 								</div>
@@ -305,7 +311,8 @@
 										<div class="col-xs-9 col-sm-9 col-md-9"
 											style="top: 7px; position: relative;float:right">
 											<div *ngIf="openOwnThumbnail">
-												<span class="btn btn-css btn-file" *ngIf="ownThumbnail" translate>Choose Image
+												<span class="btn btn-css btn-file" *ngIf="ownThumbnail" translate>Choose
+													Image
 													<input id="ownFileuplad" type="file" ng2FileSelect
 														[uploader]="uploader" accept=".jpg,.jpeg,.png"
 														*ngIf="uploader.queue.length==0" class="btn btn-primary"
@@ -405,7 +412,8 @@
 									</div>
 									<div>
 										<app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
-										<app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany"
+										<app-partner-company-and-groups
+											*ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany"
 											[moduleName]="'dam'" [inputId]="saveVideoFile.damId"
 											[isPublishedToPartnerGroups]="saveVideoFile?.publishedToPartnerGroups"
 											[selectedTeamMemberIds]="saveVideoFile?.partnerIds"
@@ -1287,5 +1295,28 @@
 				</div>
 			</div>
 		</div>
+	</div>
+</div>
+
+<!--XNFR-434---->
+<div class="portlet light" *ngIf="isReplaceVideoButtonClicked">
+	<div class="portlet-title">
+		<div class="caption">Replace Video</div>
+	</div>
+	<div class="row">
+		<div class="form-horizontal form-bordered form-label-stripped">
+			<div class="portlet box">
+				<div class="col-md-12 col-lg-12">
+					<div class="form-group">
+						<div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 bottom-padding">
+							<app-browse-content
+								(browseContentEventEmitter)="browseContentEventReceiver()"></app-browse-content>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
 	</div>
 </div>

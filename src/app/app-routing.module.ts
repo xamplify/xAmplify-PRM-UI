@@ -97,6 +97,7 @@ export const routes: Routes = [
 			{ path: 'dam', loadChildren: 'app/dam/dam.module#DamModule', data: { preload: true } },
 			{ path: 'leads', loadChildren: 'app/leads/leads.module#LeadsModule',  data: { preload: true } },
 			{ path: 'deal', loadChildren: 'app/deals/deals.module#DealsModule', data: { preload: true } },
+			{ path: 'company', loadChildren: 'app/company/company.module#CompanyModule', data: { preload: true } },
 			{ path: 'tracks', loadChildren: 'app/lms/lms.module#LmsModule',  data: { preload: true } },
 			{ path: 'playbook', loadChildren: 'app/play-book/play-book.module#PlayBookModule',  data: { preload: true } },
 			{ path: 'select-modules', component: SelectContentModulesComponent, data: { preload: true }},

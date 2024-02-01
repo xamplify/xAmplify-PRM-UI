@@ -105,40 +105,32 @@
 								<div class="portlet-body">
 									<div class="row">
 										<div class="col-xs-12 col-sm-4 col-md-4 SideParddings1">
-											<div class="card_effect_bg_color">
-												<button class="btn-primary btn-block SidePaddings card_effect"
-													id="addContacts" (click)="addContactModalOpen()"
-													[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
-													<i class="fa fa-user-plus IconTopMargin"></i>
-													<span translate>One at a Time</span>
-												</button>
-											</div>
+											<button class="color-flow-button btn-primary btn-block white-co"
+												id="addContacts" (click)="addContactModalOpen()"
+												[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
+												<span class="buttonSPan" translate>
+													<i class="fa fa-user-plus IconTopMargin" aria-hidden="true"></i>One
+													at a Time</span>
+											</button>
 										</div>
 										<div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings2">
-											<div class="card_effect_bg_color">
-												<button class="Btn-Green btn-block SidePaddings card_effect"
-													id="copyFromClipBoard" (click)="copyFromClipboard()"
-													[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
-													<i class="fa fa-users IconTopMargin"></i> <span translate>Copy list
-														from clipboard</span>
-												</button>
-											</div>
+											<button class="color-flow-button Btn-Green btn-block white-co" id="copyFromClipBoard" (click)="copyFromClipboard()"
+												[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
+												<span class="buttonSPan" translate>
+													<i class="fa fa-users IconTopMargin" aria-hidden="true"></i>Copy list from clipboard</span>
+											</button>
 										</div>
 										<div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings3">
-											<div class="card_effect_bg_color">
-												<button
-													class="btn-primary fileinput-button btn-block SidePaddings card_effect"
-													id="uploadCSV"
-													[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
-													<i style="display: block; text-align: center; font-size: 24px;"
-														class="fa fa-file-excel-o IconTopMargin"></i> <span
-														style="display: block; text-align: center" translate>Upload a
-														CSV</span> <input type="file" title=" "
-														(click)="input.value = null;resetResponse();"
-														(change)="fileChange(input)" accept=".csv" #input
-														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
-												</button>
-											</div>
+											<button class="color-flow-button btn-primary fileinput-button btn-block white-co" id="uploadCSV"
+												[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
+												<span class="buttonSPan" style="z-index: 0;" translate>
+													<i class="fa fa-file-excel-o cct IconTopMargin" aria-hidden="true"></i>Upload a
+													CSV
+												</span>
+												<input type="file" title=" " (click)="input.value = null;resetResponse();" (change)="fileChange(input)"
+													accept=".csv" #input
+													[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
+											</button>
 											<div style="margin-top: 5px;">
 												<a (click)="downloadEmptyCsv()"> <i class="fa fa-download"
 														aria-hidden="true"
@@ -164,7 +156,7 @@
 											style="display: contents !important; font-size: 15px !important"></i></a>
 								</div>
 								<div class="portlet-body">
-									<div class="row">
+									<div class="row cloud_platforms_paddings">
 										<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
 											style="margin-top: 10px;">
 											<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"

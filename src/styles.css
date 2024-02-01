@@ -1240,82 +1240,81 @@ strong {
   color: #008fd5 !important;
   border-color: #008fd5 !important;
 }
-
+.lt-green-c,
 .lt-green-c:hover {
   color: #10ad39 !important;
   border-color: #008fd5 !important;
 }
-
+.tk-blue-c,
 .tk-blue-c:hover {
   color: #3564b9 !important;
   border-color: #008fd5 !important;
 }
-
+.vlt-blue-c,
 .vlt-blue-c:hover {
   color: #2bc2b5 !important;
   border-color: #008fd5 !important;
 }
-
+.pure-blue-c,
 .pure-blue-c:hover {
   color: #2f2470 !important;
   border-color: #008fd5 !important;
 }
-
+.black-blue-c,
 .black-blue-c:hover {
   color: #7f2ca3 !important;
   border-color: #008fd5;
 }
-
+.pure-g-c,
 .pure-g-c:hover {
   color: #10ad39 !important;
   border-color: #008fd5 !important;
 }
-
+.g-b-c,
 .g-b-c:hover {
   color: #009970 !important;
   border-color: #008fd5 !important;
 }
-
+.g-y-c,
 .g-y-c:hover {
   color: #3a5e00 !important;
   border-color: #008fd5 !important;
 }
-
+.y-b-c,
 .y-b-c:hover {
   color: #827500 !important;
   border-color: #008fd5 !important;
 }
-
+.y-b-c,
 .y-b-c:hover {
   color: #827500 !important;
   border-color: #008fd5 !important;
 }
-
-.b-b-c :hover{
+.b-b-c{
   color: #2b005c !important;
   border-color: #008fd5 !important;
 }
-
+.r-b-c,
 .r-b-c:hover {
   color: #c72828 !important;
   border-color: #008fd5 !important;
 }
-
+.h-r-c,
 .h-r-c:hover {
   color: #660000 !important;
   border-color: #008fd5 !important;
 }
-
+.r-r-c,
 .r-r-c:hover {
   color: red !important;
   border-color: #008fd5 !important;
 }
-
+.vlt-b-c,
 .vlt-b-c:hover {
   color: #8877a9 !important;
   border-color: #008fd5 !important;
 }
-
+.lt-g-b-c,
 .lt-g-b-c:hover {
   color: #57c195 !important;
   border-color: #008fd5 !important;
@@ -2918,4 +2917,53 @@ span.btn.Btn-Green.transition.secondary_btn_width{
 /* Sudha Sri(4-1-2024) */
 .table-padding {
   padding: 0px 10px;
+}
+/* Sudha Sri(5-1-2024) */
+.pipeline-label-width{
+  width: 100px !important;
+}
+/*  */
+.pl-5{
+  padding-left: 5px!important;
+}
+/* Sudha Sri(9-1-2024) Partner stat card alignments */
+.partner_stat_card_hgt{
+  min-height: 545px;margin-bottom: 20px;
+}
+/* Sudha Sri(10-1-2024) */
+.team_green_btn_text{
+  text-align: center;
+   font-size:14px;
+   color: #fff;
+}
+.team_blue_btn_text{
+  font-size:14px;
+  color: #fff;
+}
+.cards_height{
+  padding-top: 6px;
+}
+.vendor_card_height{
+  margin: 14px;margin-top: 15px;
+}
+.campaigns_card_height{
+  margin: 14px;margin-top: 12px;margin-bottom: 20px;
+}
+.campaign_stat_card_height{
+  margin-bottom: 20px;
+  margin-top: 2px;
+}
+.partner_stat_card_height,
+.mdf_card_height{
+  padding: 0
+}
+.high_level_height{
+  padding-top: 2px;
+}
+.social_card_height{
+  padding-top: 6px;
+}
+/* pages grid view icon align */
+.icons-center{
+  display: block;
 }

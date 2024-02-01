@@ -89,6 +89,7 @@ select.form-control.select-width.FilerFormWidth {
   height: 32px;
 }
 
+
 /***XNFR-426***/
 .form-group.textareaStyles textarea{
   color: #444;
@@ -112,4 +113,8 @@ select.form-control.select-width.FilerFormWidth {
 
 .form-group.textareaStyles select,h4{
   margin-left: 20px;
+}
+.mrgt-2{
+margin-top:-1px;
+
 }

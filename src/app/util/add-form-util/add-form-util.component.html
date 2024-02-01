@@ -722,9 +722,13 @@
                 <!-- XNFR-108 ENDS -->
             </div>
             <div class="modal-footer">
-                <button type="submit" [disabled]="!form.isValid"
-                    class="button col-lg-1 col-md-1 BtnWidthForPopup bgcolor-unset" (click)="unBlurDiv()"
-                    id="full-screen"><span class="btn Btn-Green transition form_continue_text">Continue</span></button>
+                <button *ngIf="isCopyForm" type="button"
+                    class="btn Btn-Gray btn-hvr-tex margin-rgt-5 margin-top-5" (click)="navigateBack()"
+                    aria-hidden="true">Close</button>
+                <button type="submit" [disabled]="!form.isValid" class="button BtnWidthForPopup bgcolor-unset margin-top-5 pt0"
+                    (click)="unBlurDiv()" id="full-screen"><span class="transition"><span *ngIf="isCopyForm"
+                            class="btn btn-primary transition">Save Changes</span><span *ngIf="!isCopyForm"
+                            class="btn  Btn-Green transition">Continue</span></span></button>
             </div>
         </div>
     </div>

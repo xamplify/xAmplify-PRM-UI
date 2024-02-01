@@ -23,6 +23,7 @@ import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
+import { DamPostDto } from '../models/dam-post-dto';
 
 
 
@@ -138,7 +139,11 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     isAssetPublishedEmailNotification = false;
     assetPublishEmailNotificationLoader = true;
     isAssetPublished = false;
-
+    uploadOrReplaceAssetText = "Upload Asset";
+    isBeeTemplatePdf = false;
+    showEditPdfButton = false;
+    beeContainerInput = {};
+    isBeeTemplateComponentCalled = false;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch){
@@ -185,6 +190,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			this.id = this.route.snapshot.params['id'];
 			this.getAssetDetailsById(this.id);
 			this.submitButtonText = "Update";
+            this.uploadOrReplaceAssetText = "Replace Asset";
 		}
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.listTags(new Pagination());
@@ -244,7 +250,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
            this.damService.ispreviousAssetIsProcessing = true;
         }
         this.damService.uploadAssetInProgress = false;
-		
+        this.referenceService.closeSweetAlert();
 	}
 
 	getAssetDetailsById(selectedAssetId: number) {
@@ -258,7 +264,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 						if(this.damUploadPostDto.tagIds == undefined){
 							this.damUploadPostDto.tagIds = new Array<number>();
 						}
-                        this.isAssetPublished = result.data.published;
+                        let data = result.data;
+                        this.isAssetPublished = data.published;
+                        this.isBeeTemplatePdf = data.beeTemplate;
 						this.validateForm('assetName');
 						this.validateForm('description');
 						this.formLoader = false;
@@ -273,7 +281,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			);
 
 	}
-    sudaImg:any;
+    uploadedImage:any;
 	chooseAsset(event: any) {
 		this.invalidAssetName = false;
 		let files: Array<File>;
@@ -292,33 +300,45 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				this.showAssetErrorMessage('Max file size is 800 MB');
 			}else if(file['name'].lastIndexOf(".")==-1) {
                 this.showValidExtensionErrorMessage();
-            }			
+            }else if(!this.isAdd){
+                let fileName = file['name'];
+                let extension = this.referenceService.getFileExtension(fileName);
+                if (extension.toLocaleLowerCase() == this.damUploadPostDto.assetType.toLocaleLowerCase()) {
+                    this.setUploadedFileProperties(file);
+                } else {
+                    this.showAssetErrorMessage('Invalid file type. Only ' + this.damUploadPostDto.assetType + " file is allowed.");
+                }
+            }	
 			else{
-                this.sudaImg = file;
-				this.formData.delete("uploadedFile");
-	            this.uploadedAssetName  = "";
-	            this.uploadedCloudAssetName = "";
-	            this.damUploadPostDto.source = "";
-	            this.customResponse = new CustomResponse();
-				this.formData.append("uploadedFile", file, file['name']);
-				this.uploadedAssetName = file['name'];
-				this.damUploadPostDto.cloudContent = false;
-				this.damUploadPostDto.fileName = this.uploadedAssetName;
-	            this.damUploadPostDto.downloadLink = null;
-	            this.damUploadPostDto.oauthToken = null;
-	            this.isVideoAsset = this.isVideo(this.uploadedAssetName);
-	            if(this.isVideoAsset){
-	            	this.videoPreviewPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file)));
-	            	this.showVideoPreview = true;
-	            	this.fileSize = file.size;
-	            	this.isDisable = true;
-	            }
+                this.setUploadedFileProperties(file);
 			}
 		}else{
 			this.clearPreviousSelectedAsset();
 		}
 		this.validateAllFields();
 	}
+
+    private setUploadedFileProperties(file: File) {
+        this.uploadedImage = file;
+        this.formData.delete("uploadedFile");
+        this.uploadedAssetName = "";
+        this.uploadedCloudAssetName = "";
+        this.damUploadPostDto.source = "";
+        this.customResponse = new CustomResponse();
+        this.formData.append("uploadedFile", file, file['name']);
+        this.uploadedAssetName = file['name'];
+        this.damUploadPostDto.cloudContent = false;
+        this.damUploadPostDto.fileName = this.uploadedAssetName;
+        this.damUploadPostDto.downloadLink = null;
+        this.damUploadPostDto.oauthToken = null;
+        this.isVideoAsset = this.isVideo(this.uploadedAssetName);
+        if (this.isVideoAsset) {
+            this.videoPreviewPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file)));
+            this.showVideoPreview = true;
+            this.fileSize = file.size;
+            this.isDisable = true;
+        }
+    }
 
 	clearPreviousSelectedAsset(){
 		this.formData.delete("uploadedFile");
@@ -858,6 +878,25 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
       if(uploadedCloudAssetName.lastIndexOf(".")==-1) {
         this.showValidExtensionErrorMessage();
       }else{
+        if(!this.isAdd){
+            let extension = this.referenceService.getFileExtension(uploadedCloudAssetName);
+            if (extension == this.damUploadPostDto.assetType) {
+                this.setFormDataAndCloudContentFileProperties(uploadedCloudAssetName, downloadLink);
+            } else {
+                this.uploadedCloudAssetName = "";
+                this.tempr = null;
+                this.clearPreviousSelectedAsset();
+                this.showAssetErrorMessage('Invalid file type. Only ' + this.damUploadPostDto.assetType + " file is allowed.");
+            }
+        }else{
+            this.setFormDataAndCloudContentFileProperties(uploadedCloudAssetName, downloadLink);
+        }
+        
+        }
+      }
+    
+    
+    private setFormDataAndCloudContentFileProperties(uploadedCloudAssetName: string, downloadLink: string) {
         this.uploadedAssetName = "";
         this.uploadedCloudAssetName = "";
         this.formData.delete("uploadedFile");
@@ -867,12 +906,13 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.damUploadPostDto.oauthToken = this.tempr;
         this.damUploadPostDto.cloudContent = true;
         this.damUploadPostDto.fileName = this.uploadedCloudAssetName;
+        if (!this.isAdd) {
+            this.damUploadPostDto.id = this.id;
+        }
         this.isVideoAsset = this.isVideo(this.uploadedCloudAssetName);
         this.validateAllFields();
-        }
-      }
-    
-    
+    }
+
     // upload content from Webcam
     isIE() {
         const isInternetExplorar = navigator.userAgent;
@@ -956,15 +996,10 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         else {
         if (true) {
             this.camera = true;
-            //this.isDisable = true;
             this.isFileDrop = true;
-            //this.isChecked = true;
             this.fileDropDisabled();
             this.recordVideo();
             this.playerInit = true;
-           
-        
-
             const self = this;
             self.player = videojs('myVideo',
                 {
@@ -1049,39 +1084,53 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         if(this.player.record().getDuration() < 10) {
           this.recordCustomResponse = new CustomResponse( 'ERROR', 'Record Video length must be greater than 10 seconds', true );
          } else {
-         try{
-           this.RecordSave = true;
-           this.saveVideo = false;
-           this.discardVideo = false;
-           this.testSpeeddisabled = true;
-           this.closeModalId = false;
-           this.textAreaDisable = false; // not using ,need to check
-           this.hideSaveDiscard = false; // hide the save and discard buttons when the video processing
-           this.formData.delete("uploadedFile");
-           this.uploadedAssetName  = "";
-           this.uploadedCloudAssetName = "";
-           this.customResponse = new CustomResponse();
-           
-           this.uploadedCloudAssetName = 'recorded_video.mp4';
-           this.formData.append("uploadedFile", this.recordedVideo, this.recordedVideo.name);
-           this.damUploadPostDto.cloudContent = false;
-           this.damUploadPostDto.fileName = this.recordedVideo.name;
-           this.damUploadPostDto.downloadLink = null;
-           this.damUploadPostDto.oauthToken = null;
-           this.damUploadPostDto.source= 'webcam';
-           this.isVideoAsset = true;
-           this.validateAllFields();
-           
-           (<HTMLInputElement>document.getElementById('script-text')).disabled = true;
-           (<HTMLInputElement>document.getElementById('rangeDisabled')).disabled = true;
-           $('.video-js .vjs-control-bar').hide();
-           
-           this.recordModalPopupAfterUpload();
-           
-           
-          }catch(error) { this.xtremandLogger.error('Error in upload video, uploadRecordedVideo method'+error);}
+            if(!this.isAdd){
+                if(this.damUploadPostDto.assetType=="mp4"){
+                    this.setRecordedVideoFileProperties();
+                }else{
+                    this.removeRecordVideo();
+                    this.recordModalPopupAfterUpload();
+                    this.showAssetErrorMessage('Invalid file type. Only ' + this.damUploadPostDto.assetType + " file is allowed.");
+                }
+            }else{
+                this.setRecordedVideoFileProperties();
+            }
+            
           }
        }
+
+    private setRecordedVideoFileProperties() {
+        try{
+            this.RecordSave = true;
+            this.saveVideo = false;
+            this.discardVideo = false;
+            this.testSpeeddisabled = true;
+            this.closeModalId = false;
+            this.textAreaDisable = false; // not using ,need to check
+            this.hideSaveDiscard = false; // hide the save and discard buttons when the video processing
+            this.formData.delete("uploadedFile");
+            this.uploadedAssetName = "";
+            this.uploadedCloudAssetName = "";
+            this.customResponse = new CustomResponse();
+            this.uploadedCloudAssetName = 'recorded_video.mp4';
+            this.formData.append("uploadedFile", this.recordedVideo, this.recordedVideo.name);
+            this.damUploadPostDto.cloudContent = false;
+            this.damUploadPostDto.fileName = this.recordedVideo.name;
+            this.damUploadPostDto.downloadLink = null;
+            this.damUploadPostDto.oauthToken = null;
+            this.damUploadPostDto.source = 'webcam';
+            this.isVideoAsset = true;
+            this.validateAllFields();
+            (<HTMLInputElement>document.getElementById('script-text')).disabled = true;
+            (<HTMLInputElement>document.getElementById('rangeDisabled')).disabled = true;
+            $('.video-js .vjs-control-bar').hide();
+            this.recordModalPopupAfterUpload();
+        }catch(error){
+            this.xtremandLogger.error('Error in upload video, uploadRecordedVideo method'+error);
+        }
+        
+    }
+
        removeRecordVideo() {
           try{
            this.player.record().stopDevice();
@@ -1307,5 +1356,52 @@ zoomOut() {
                               this.errorUploadCropper = true;
                               this.showCropper = false;
                             }
-                          }                    
+                          }  
+                          
+                          
+    /*********XNFR-427********/
+    editPdf(){
+        this.loading = true;
+        this.beeContainerInput["module"] = "dam";
+        this.damService.getById(this.id, false).subscribe(
+            result=>{
+                if (result.statusCode === 200) {
+                    let dam = result.data;
+                    this.beeContainerInput["jsonBody"] = dam.jsonBody;
+                    this.isBeeTemplateComponentCalled = true;
+                    this.loading = false;
+                }else{
+                    this.referenceService.showSweetAlertErrorMessage("Page Not Found.Please Contact Admin");
+                }
+            },error=>{
+                this.xtremandLogger.log(error);
+                this.loading = false;
+                this.referenceService.showSweetAlertServerErrorMessage();
+            });
+    }  
+    
+    readBeeTemplateData(event: any) {
+        this.loading = true;
+        this.isBeeTemplateComponentCalled = false;
+        let damPostDto = new DamPostDto();
+        damPostDto.jsonBody = event.jsonContent;
+        damPostDto.htmlBody = event.htmlContent;
+        damPostDto.id = this.id;
+        damPostDto.loggedInUserId = this.authenticationService.getUserId();
+        this.damService.updatePDFData(damPostDto).subscribe(
+             response=>{
+                this.loading = false;
+                this.referenceService.showSweetAlertSuccessMessage("PDF updated successfully");
+             },error=>{
+                this.xtremandLogger.log(error);
+				let errorMessage = this.referenceService.getBadRequestErrorMessage(error);
+                this.referenceService.showSweetAlertErrorMessage(errorMessage);
+                this.loading = false;
+             });
+      }
+   
+    hideBeeContainer(){
+        this.beeContainerInput = {};
+        this.isBeeTemplateComponentCalled = false;
+    }
 }

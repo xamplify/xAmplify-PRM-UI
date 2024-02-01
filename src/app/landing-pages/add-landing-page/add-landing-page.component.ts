@@ -15,6 +15,7 @@ import { PreviewPopupComponent } from '../../forms/preview-popup/preview-popup.c
 /*************Landing Page***************/
 import { LandingPageService } from '../services/landing-page.service';
 import { LandingPage } from '../models/landing-page';
+import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 declare var BeePlugin, swal, $: any;
 @Component({
     selector: 'app-add-landing-page',
@@ -47,10 +48,18 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     updateAndRedirectClicked = false;
     openLinksInNewTabCheckBoxId = "openLinksInNewTab-page-links";
     isSaveAndRedirectButtonClicked = false;
+    viewType = "";
+    folderViewType = "";
+    modulesDisplayType = new ModulesDisplayType();
     constructor(private landingPageService: LandingPageService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public referenceService: ReferenceService, private location: Location,
         public pagerService: PagerService, public sortOption: SortOption, public utilService: UtilService, private route: ActivatedRoute) {
         this.ngxloading = true;
+        let url = this.referenceService.getCurrentRouteUrl();
+        this.isAdd = url.indexOf("create")>-1;
+        this.categoryId = this.route.snapshot.params['categoryId'];
+        this.viewType = this.route.snapshot.params['viewType'];
+        this.folderViewType = this.route.snapshot.params['folderViewType'];
         this.findPageDataAndLoadBeeContainer(landingPageService, authenticationService);
     }
 
@@ -60,10 +69,6 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
         this.id = this.landingPageService.id;
         this.loggedInAsSuperAdmin = this.referenceService.getCurrentRouteUrl().indexOf("saveAsDefault") > -1;
         this.mergeTagsInput['page'] = true;
-        let categoryId = this.route.snapshot.params['categoryId'];
-        if (categoryId > 0) {
-            this.routerLink += "/" + categoryId;
-        }
         if (this.id != undefined && this.id > 0) {
             var names: any = [];
             let self = this;
@@ -423,7 +428,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     goToManageAfterSave(data:any, isSaveAndRedirectButtonClicked:boolean) {
         if (data.access) {
             if (isSaveAndRedirectButtonClicked) {
-                this.referenceService.isCreated = true;
+                this.referenceService.addCreateOrUpdateSuccessMessage("Page created successfully");
                 this.navigateToManageSection();
             } else {
                 this.ngxloading = true;
@@ -438,13 +443,12 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
         }
     }
 
-    navigateToManageSection() {
-        let categoryId = this.route.snapshot.params['categoryId'];
-        if (categoryId > 0) {
-            this.router.navigate(["/home/pages/manage/" + categoryId]);
-        } else {
-            this.router.navigate(["/home/pages/manage"]);
+   navigateToManageSection() {
+        this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
+        if(this.viewType==undefined){
+            this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
         }
+        this.referenceService.navigateToManageLandingPagesByViewType(this.folderViewType,this.viewType,this.categoryId);
     }
 
 
@@ -463,7 +467,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
                 if (data.access) {
                     if (updateAndRedirectClicked) {
-                        this.referenceService.isUpdated = true;
+                        this.referenceService.addCreateOrUpdateSuccessMessage("Page updated successfully");
                         this.navigateToManageSection();
                     } else {
                         this.customResponse = new CustomResponse('SUCCESS', "Page updated successfully", true);
@@ -542,6 +546,16 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
         this.ngxloading = false;
         let isInvalidEditPage = this.landingPageService.id==undefined || this.landingPageService.id==0;
         return this.skipConfirmAlert ||  this.isSaveAndRedirectButtonClicked || this.updateAndRedirectClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked;
+    }
+
+    navigateBack(){
+        let url = this.referenceService.getCurrentRouteUrl();
+        let isCreateUrl = url.indexOf("add")>-1;
+        if(isCreateUrl){
+            this.router.navigate(["/home/pages/select"]);
+        }else{
+            this.navigateToManageSection();
+        }
     }
 
 }

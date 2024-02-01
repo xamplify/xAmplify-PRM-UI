@@ -54,7 +54,6 @@ import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/ad
 import { CreateBeeTemplateComponent } from 'app/util/create-bee-template/create-bee-template.component';
 import { FormsListViewUtilComponent } from 'app/util/forms-list-view-util/forms-list-view-util.component';
 import { CampaignsListViewUtilComponent } from 'app/util/campaigns-list-view-util/campaigns-list-view-util.component';
-import { LandingPagesListViewUtilComponent } from 'app/util/landing-pages-list-view-util/landing-pages-list-view-util.component';
 import { PreviewCampaignComponent } from "app/campaigns/preview-campaign/preview-campaign.component";
 import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
 import { AddMoreReceiversComponent } from 'app/campaigns/add-more-receivers/add-more-receivers.component';
@@ -149,15 +148,21 @@ import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { SearchableDropdownComponent } from 'app/util/searchable-dropdown/searchable-dropdown.component';
 import { ConnectwiseAuthenticationPopupComponent } from 'app/contacts/connectwise-authentication-popup/connectwise-authentication-popup.component';
 import { ScrollToModule } from 'ng2-scroll-to-el';
-
 import { ConfirmUnpublishTracksOrPlaybooksModelPopupComponent } from 'app/util/confirm-unpublish-tracks-or-playbooks-model-popup/confirm-unpublish-tracks-or-playbooks-model-popup.component';
 import { CustomUiFilterComponent } from 'app/util/custom-ui-filter/custom-ui-filter.component';
-
 import { TrimPipe } from 'app/core/custom-pipes/trim.pipe';
+
 //XNFR-426
 import { DealChatPopupComponent } from 'app/deals/deal-chat-popup/deal-chat-popup.component';
 import { ChatComponent } from 'app/util/chat/chat.component';
 import { OpportunitiesChatModalPopupComponent } from 'app/util/opportunities-chat-modal-popup/opportunities-chat-modal-popup.component';
+
+import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
+import { AddCompanyComponent } from 'app/company/add-company/add-company.component';
+import { LandingPagesListAndGridViewComponent } from 'app/util/landing-pages-list-and-grid-view/landing-pages-list-and-grid-view.component';
+import { BrowseContentComponent } from 'app/util/browse-content/browse-content.component';
+import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component';
+
 
 
 @NgModule({
@@ -171,7 +176,7 @@ import { OpportunitiesChatModalPopupComponent } from 'app/util/opportunities-cha
 		ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent, PreviewPopupComponent, PreviewLandingPageComponent, FormPreviewComponent,
 		LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent, FormAnalyticsUtilComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent,
 		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent,
-		CampaignsListViewUtilComponent, LandingPagesListViewUtilComponent, PreviewCampaignComponent, SocialStatusComponent,
+		CampaignsListViewUtilComponent, PreviewCampaignComponent, SocialStatusComponent,
 		AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent, RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, 
 		EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent,
@@ -188,8 +193,11 @@ import { OpportunitiesChatModalPopupComponent } from 'app/util/opportunities-cha
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
 		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,SelectEmailTemplateComponent,CustomUiSwitchComponent,
 		EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
-		 ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,DealChatPopupComponent,ChatComponent,
-	 	OpportunitiesChatModalPopupComponent],
+		ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
+		ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
+		LandingPagesListAndGridViewComponent,BrowseContentComponent,AddCompanyComponent, SelectLeadComponent,DealChatPopupComponent,ChatComponent,OpportunitiesChatModalPopupComponent],
+
+
 
 
 
@@ -201,7 +209,7 @@ import { OpportunitiesChatModalPopupComponent } from 'app/util/opportunities-cha
 		PreviewPopupComponent, PreviewLandingPageComponent, FormPreviewComponent, LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent,
 		FormAnalyticsUtilComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent,
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent, CampaignsListViewUtilComponent,
-		LandingPagesListViewUtilComponent, PreviewCampaignComponent, SocialStatusComponent, AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent,
+		PreviewCampaignComponent, SocialStatusComponent, AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent,
 		RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTagsUtilComponent, 
 		AddTracksPlayBookComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent, 
@@ -219,7 +227,10 @@ import { OpportunitiesChatModalPopupComponent } from 'app/util/opportunities-cha
 		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent,
 		ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
-		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,DealChatPopupComponent,ChatComponent,OpportunitiesChatModalPopupComponent]
+		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,AddCompanyComponent,
+		LandingPagesListAndGridViewComponent,BrowseContentComponent, SelectLeadComponent,DealChatPopupComponent,ChatComponent,OpportunitiesChatModalPopupComponent]
+
+
 
 })
 export class CommonComponentModule { }

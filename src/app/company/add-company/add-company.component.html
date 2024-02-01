@@ -1,0 +1,165 @@
+<div id="addCompanyModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
+  <div class="modal-dialog  accounts-modal" style="position: relative !important;">
+    <!-- Modal content-->
+    <div class="modal-content full_popup">
+      <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <app-response-message class="pg8" [customResponse]="customResponse"
+            *ngIf="customResponse.isVisible"></app-response-message>
+        </div>
+      </div>
+      <div class="modal-header popup_header">
+        <button type="button" class="close-circle" (click)="addCompanyModalClose()">
+          <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i></button>
+        <h4 class="modal-title size-font" translate>{{title}}</h4>
+      </div>
+      <div class="modal-body border-bottom-1px popup_body">
+        <app-modal-popup-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+        </app-modal-popup-loader>
+        <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px',fullScreenBackdrop:true }"></ngx-loading>
+        <div class="hide-scrollbar" *ngIf="!httpRequestLoader.isLoading && !ngxloading">
+          <form class="form-horizontal" autocomplete="off">
+            <div class="form-group mrg0">
+              <div>
+                <label class="control-label col-xs-2 col-sm-2" for="name" style="color: #53affe;">
+                  <span class="star"> *</span>
+                </label>
+                <div class="form-group col-xs-10 col-sm-10 px0 mrg0">
+                  <input type="name" style="border: none !important" class="form-control placeholder-bg-color" id="name"
+                    [(ngModel)]="addCompany.name" [ngModelOptions]="{standalone: true}" placeholder="Name"
+                    maxlength="250" [disabled]="preview"  (input)="validteCompanyName(addCompany.name)">
+                  <div class="textCss"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mrg0">
+              <label class="control-label col-xs-2 col-sm-2" for="email" style="color: green">
+              </label>
+              <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
+                <input type="url" style="border: none !important" class="form-control placeholder-bg-color" id="email"
+                  [(ngModel)]="addCompany.email" [ngModelOptions]="{standalone: true}" placeholder="Email"
+                  maxlength="100" [disabled]="preview">
+                <div class="textCss"></div>
+              </div>
+              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                <input type="number" style="border: none !important" class="form-control placeholder-bg-color"
+                  id="phone" [(ngModel)]="addCompany.phone" [ngModelOptions]="{standalone: true}"
+                  placeholder="Enter your Mobile no" maxlength="20" [disabled]="preview">
+                <div class="textCss"></div>
+              </div>
+            </div>
+
+            <div class="form-group mrg0">
+              <div>
+                <label class="control-label col-xs-2 col-sm-2" for="address" style="color: #53affe;">
+                </label>
+                <div class="form-group col-xs-10 col-sm-10 px0 mrg0">
+                  <input type="address" style="border: none !important" class="form-control placeholder-bg-color"
+                    id="address" [(ngModel)]="addCompany.address" [ngModelOptions]="{standalone: true}"
+                    placeholder="Address" maxlength="250" [disabled]="preview">
+                  <div class="textCss"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mrg0">
+              <div>
+                <label class="control-label col-xs-2 col-sm-2" for="address" style="color: #53affe;">
+                </label>
+                <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
+                  <input type="city" style="border: none !important" class="form-control placeholder-bg-color" id="city"
+                    [(ngModel)]="addCompany.city" [ngModelOptions]="{standalone: true}" placeholder="City/Town"
+                    maxlength="44" [disabled]="preview">
+                  <div class="textCss"></div>
+                </div>
+                <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                  <input type="state" style="border: none !important" class="form-control placeholder-bg-color"
+                    id="state" [(ngModel)]="addCompany.state" [ngModelOptions]="{standalone: true}" placeholder="State"
+                    maxlength="44" [disabled]="preview">
+                  <div class="textCss"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mrg0">
+              <label class="control-label col-xs-2 col-sm-2" for=""></label>
+              <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
+                <input type="zip" style="border: none !important" class="form-control placeholder-bg-color" id="zip"
+                  [(ngModel)]="addCompany.zip" [ngModelOptions]="{standalone: true}" placeholder="Zip Code"
+                  maxlength="10" [disabled]="preview">
+                <div class="textCss"></div>
+              </div>
+
+              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                <select class="form-control same-bgcolor-for-select" style="border: none !important;"
+                  [(ngModel)]="addCompany.country" [ngModelOptions]="{standalone: true}" placeholder="Country" [disabled]="preview">
+                  <option *ngFor="let country of countryNames.countries" [value]="country">{{country}}</option>
+                </select>
+                <div class="textCss"></div>
+              </div>
+            </div>
+
+            <div class="form-group mrg0">
+              <div>
+                <label class="control-label col-xs-2 col-sm-2" for="zip" style="color: #53affe;">
+                </label>
+                <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
+                  <input type="url" style="border: none !important" class="form-control placeholder-bg-color" id="fax"
+                    [(ngModel)]="addCompany.fax" [ngModelOptions]="{standalone: true}" placeholder="Fax"
+                    maxlength="100" [disabled]="preview">
+                  <div class="textCss"></div>
+                </div>
+                <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                  <input type="url" style="border: none !important" class="form-control placeholder-bg-color"
+                    id="website" [(ngModel)]="addCompany.website" [ngModelOptions]="{standalone: true}"
+                    placeholder="Website" maxlength="100" [disabled]="preview">
+                  <div class="textCss"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mrg0">
+              <div>
+                <label class="control-label col-xs-2 col-sm-2" for="url" style="color: #53affe;">
+                </label>
+                <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
+                  <input type="url" style="border: none !important" class="form-control placeholder-bg-color"
+                    id="linkedInURL" [(ngModel)]="addCompany.linkedinURL" [ngModelOptions]="{standalone: true}"
+                    placeholder="LinkedIn URL" maxlength="100" [disabled]="preview">
+                  <div class="textCss"></div>
+                </div>
+                <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                  <input type="url" style="border: none !important" class="form-control placeholder-bg-color"
+                    id="facebookURL" [(ngModel)]="addCompany.facebookURL" [ngModelOptions]="{standalone: true}"
+                    placeholder="Facebook URL" maxlength="100" [disabled]="preview">
+                  <div class="textCss"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mrg0">
+              <label class="control-label col-xs-2 col-sm-2" for="phone" style="color: green">
+              </label>
+              <div class="form-group col-xs-10 col-sm-10 px0 mrg0">
+                <input type="url" style="border: none !important" class="form-control placeholder-bg-color"
+                  id="twitterURL" [(ngModel)]="addCompany.twitterURL" [ngModelOptions]="{standalone: true}"
+                  placeholder="Twitter URL" maxlength="100" [disabled]="preview">
+                <div class="textCss"></div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer popup_footer" style="border:none">
+        <button class="btn Btn-Gray neg_mrg_top4 pos_mar_rgt3" (click)="addCompanyModalClose()"
+          translate>Cancel</button>
+        <button *ngIf="!edit && !preview" type="submit" class="button bgcolor-unset button_height" [disabled]="!isCompanyNameValid" translate><span
+            class="btn Btn-Green transition txt_pd-top3" (click)="saveCompany()">Add</span></button>
+            <button *ngIf="edit" type="submit" class="button bgcolor-unset button_height" translate><span
+              class="btn Btn-Green transition txt_pd-top3"  (click)="editCompany()">Update</span></button>
+      </div>
+    </div>
+  </div>
+</div>

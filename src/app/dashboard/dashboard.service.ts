@@ -1278,4 +1278,15 @@ getDefaultThemes(){
             .map( this.extractData )
             .catch( this.handleError );
     }
+    getDefaultDashboardPageForPartner(vanityLoginDto: VanityLoginDto) {
+        return this.http.post(this.url + `getDefaultDashboardPageForPartner?access_token=${this.authenticationService.access_token}`, vanityLoginDto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    testAuthCredentialsForConnectWise(request: any) {
+        return this.http.post(this.authenticationService.REST_URL + `connectwise/testAuth?access_token=${this.authenticationService.access_token}`, request)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

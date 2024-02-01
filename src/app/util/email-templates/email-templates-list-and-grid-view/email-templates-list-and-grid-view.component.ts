@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Renderer,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Renderer,Input,Output,EventEmitter,ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { PagerService } from 'app/core/services/pager.service';
@@ -20,20 +20,16 @@ import { ActionsDescription } from 'app/common/models/actions-description';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { Roles } from 'app/core/models/roles';
+import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
+import { CopyDto } from 'app/util/models/copy-dto';
+
 declare var $:any, swal: any;
 
 @Component({
   selector: "app-email-templates-list-and-grid-view",
   templateUrl: "./email-templates-list-and-grid-view.component.html",
   styleUrls: ["./email-templates-list-and-grid-view.component.css"],
-  providers: [
-    Pagination,
-    HttpRequestLoader,
-    ActionsDescription,
-    CampaignAccess,
-    SortOption,
-    Properties,
-  ],
+  providers: [Pagination,HttpRequestLoader, ActionsDescription,CampaignAccess,SortOption, Properties],
 })
 export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy {
   loading = false;
@@ -72,7 +68,10 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
 	whiteLabeledBanner = "";
   ngxloading: boolean;
   roles:Roles = new Roles();
-
+ /*  XNFR-431 */
+  @ViewChild("copyModalPopupComponent") copyModalPopupComponent:CopyModalPopupComponent;
+  refreshFolderListView = false;
+  updatedItemsCount = 0;
   constructor(
     private emailTemplateService: EmailTemplateService,
     private router: Router,
@@ -99,13 +98,6 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
     this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
     this.whiteLabeledBanner = this.properties.whiteLabeledBanner;
     this.emailTemplateService.isTemplateSaved = false;
-    if (this.referenceService.isCreated) {
-      this.message = "Template created successfully";
-      this.showMessageOnTop(this.message);
-    } else if (this.referenceService.isUpdated) {
-      this.message = "Template updated successfully";
-      this.showMessageOnTop(this.message);
-    }
     this.hasAllAccess = this.referenceService.hasAllAccess();
     this.hasEmailTemplateRole = this.referenceService.hasSelectedRole(
       this.referenceService.roles.emailTemplateRole
@@ -141,11 +133,16 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
 				}
 			}
 		}
+    this.showMessageOnTop();
   }
 
-  showMessageOnTop(message: string) {
-    $(window).scrollTop(0);
-    this.customResponse = new CustomResponse("SUCCESS", message, true);
+  showMessageOnTop() {
+    let message = this.referenceService.createdOrUpdatedSuccessMessage;
+    if (message.length > 0 && !this.folderListViewExpanded) {
+      $(window).scrollTop(0);
+      this.customResponse = new CustomResponse("SUCCESS", message, true);
+    }
+   
   }
 
   ngOnInit() {
@@ -189,23 +186,23 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
         (data: any) => {
           pagination.totalRecords = data.totalRecords;
           this.sortOption.totalRecords = data.totalRecords;
-          pagination = this.pagerService.getPagedItems(
-            pagination,
-            data.emailTemplates
-          );
+          pagination = this.pagerService.getPagedItems(pagination,data.emailTemplates);
           this.referenceService.loading(this.httpRequestLoader, false);
         },
         (error: string) => {
           this.logger.errorPage(error);
+        },()=>{
+          this.callFolderListViewEmitter();
         }
       );
   }
 /*************************Sort********************** */
   sortEmailTemplates(text: any) {
-	this.sortOption.formsSortOption = text;
+    this.sortOption.formsSortOption = text;
     this.getAllFilteredResults(this.pagination);
   }
   getAllFilteredResults(pagination: Pagination) {
+  this.customResponse = new CustomResponse();
 	this.pagination.pageIndex = 1;
 	this.pagination.searchKey = this.sortOption.searchKey;
 	this.pagination = this.utilService.sortOptionValues(this.sortOption.formsSortOption, this.pagination);
@@ -241,6 +238,7 @@ setViewType(viewType: string) {
 }
 
 refreshList(){
+  this.customResponse = new CustomResponse();
 	this.findEmailTemplates(this.pagination);
 }
 
@@ -283,6 +281,7 @@ filterTemplates(type: string, isVideoTemplate: boolean, index: number) {
 	} else if (!isVideoTemplate) {
 		this.pagination.filterBy = "RegularEmail";
 	}
+  this.customResponse = new CustomResponse();
 	this.findEmailTemplates(this.pagination);
 }
 
@@ -343,6 +342,8 @@ confirmDeleteEmailTemplate(id: number, name: string) {
 }
 
 deleteEmailTemplate(id: number, name: string) {
+  this.refreshFolderListView = false;
+  this.customResponse = new CustomResponse();
   this.referenceService.loading(this.httpRequestLoader, true);
   this.referenceService.goToTop();
   this.isEmailTemplateDeleted = false;
@@ -353,14 +354,11 @@ deleteEmailTemplate(id: number, name: string) {
         if (data.access) {
           let message = data.message;
           if (message == "Success") {
-            this.referenceService.showInfo("Email Template Deleted Successfully", "");
             this.selectedEmailTemplateName = name + ' deleted successfully';
             this.customResponse = new CustomResponse('SUCCESS', this.selectedEmailTemplateName, true);
             this.isEmailTemplateDeleted = true;
             this.isCampaignEmailTemplate = false;
-            this.pagination.pageIndex = 1;
-            this.findEmailTemplates(this.pagination);
-            this.callFolderListViewEmitter();
+            this.findEmailTemplatesWithPageIndexOne();
           } else {
             this.isEmailTemplateDeleted = false;
             this.isCampaignEmailTemplate = true;
@@ -386,8 +384,7 @@ deleteEmailTemplate(id: number, name: string) {
 }
 
 ngOnDestroy() {
-  this.referenceService.isCreated = false;
-  this.referenceService.isUpdated = false;
+  this.referenceService.createdOrUpdatedSuccessMessage = "";
   this.message = "";
   $('#show_email_template_preivew').modal('hide');
   $('#email_spam_check').modal('hide');
@@ -497,7 +494,55 @@ callFolderListViewEmitter(){
   }
 }
 
+/*  XNFR-431 */
+copy(emailTemplate:any){
+  this.findExistingTemplateNames(emailTemplate);
+}
+findExistingTemplateNames(emailTemplate:any){
+  this.ngxloading = true;
+  this.emailTemplateService.getAvailableNames(this.loggedInUserId).subscribe(
+    (data: any) => {
+        let templateNames = data;
+        this.copyModalPopupComponent.openModalPopup(emailTemplate.id,emailTemplate.name,"Template",templateNames);
+        this.ngxloading = false;
+    },
+    error => {
+      this.ngxloading = false;
+      this.logger.errorPage(error);
+    });
+}
 
+/*  XNFR-431 */
+copyModalPopupOutputReceiver(copyDto:CopyDto){
+  let emailTemplate = new EmailTemplate();
+  emailTemplate.id = copyDto.id;
+  emailTemplate.name = copyDto.copiedName;
+  this.emailTemplateService.copy(emailTemplate).subscribe(
+    data=>{
+      if (data.access) {
+        if (data.statusCode == 702) {   
+            this.copyModalPopupComponent.showSweetAlertSuccessMessage("Template Copied Successfully");
+            this.findEmailTemplatesWithPageIndexOne();
+        }else if(data.statusCode==500){
+            this.copyModalPopupComponent.showErrorMessage(data.message);
+        }
+      }else{
+        this.referenceService.closeModalPopup("copy-modal-popup");
+        this.authenticationService.forceToLogout();
+      }
+    },error=>{
+      this.copyModalPopupComponent.showErrorMessage(this.properties.serverErrorMessage);
+    }
+  );
+  
+
+}
+
+
+  private findEmailTemplatesWithPageIndexOne() {
+    this.pagination.pageIndex = 1;
+    this.findEmailTemplates(this.pagination);
+  }
 }
 
 

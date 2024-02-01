@@ -7,6 +7,7 @@ import { UserService } from '../../core/services/user.service';
 
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { DashboardService } from '../dashboard.service';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 @Component({
     selector: 'app-default-page',
     templateUrl: './default-page.component.html',
@@ -18,12 +19,15 @@ export class DefaultPageComponent implements OnInit {
     defaultPage: string;
     modulesDashboardTypeError=false;
 	getAssignedDashboardTypeForPartner:any;
-	public assignedDashboardType:any;
+    vanityLoginDto: VanityLoginDto = new VanityLoginDto();
     vendorCompanyIdForPartnerVanity:any;
     loggedThroughVendorVanityUrl:any = true;
+    loggedInUserId: number;
 
     constructor(private router: Router, private userService: UserService, private authenticationService: AuthenticationService,
-        private referenceService: ReferenceService, private vanityurlService : VanityURLService,private dashBoardService: DashboardService) { }
+        private referenceService: ReferenceService, private vanityurlService : VanityURLService,private dashBoardService: DashboardService) {
+            this.loggedInUserId = this.authenticationService.getUserId();
+         }
 
     getDefaultPage(userId: number) {
       if(this.referenceService.userDefaultPage==='WELCOME'|| this.referenceService.userDefaultPage==='DASHBOARD'){
@@ -89,51 +93,48 @@ export class DefaultPageComponent implements OnInit {
             () => { }
             );
     }
-    ngOnInit() {
+    ngOnInit() {      
+        
+        if (!this.referenceService.isMobileScreenSize()) {
+            this.isGridView(this.loggedInUserId);
+        }
+        else { 
+            this.referenceService.isGridView = true; 
+        }
         this.loadDashboard();
 
     }
     /* -- XNFR-415 -- */
-    loadDashboard(){
-        if(this.vanityurlService.isVanityURLEnabled){
-            if( this.loggedThroughVendorVanityUrl   && (this.authenticationService.isPartner() || this.authenticationService.isOnlyPartner()  || this.authenticationService.isTeamMember())){
-                this.loggedThroughVendorVanityUrl=this.authenticationService.module.loggedInThroughVendorVanityUrl;
-                this.vanityurlService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {        
-                    this.vendorCompanyIdForPartnerVanity = result.companyId;     
-                    this.getDefaultDashboardForPartner();
-                }, error => {
-                    console.log(error);
-                });
-            }
+    loadDashboard(){   
+        if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '' ) {
+            this.getDefaultDashboardForPartner();
+        } else {
+            this.getDefaultPage(this.loggedInUserId);
         }
-        const userId = this.authenticationService.user.id;
-        this.getDefaultPage(userId);
-        if(!this.referenceService.isMobileScreenSize()){
-        this.isGridView(userId); }
-        else { this.referenceService.isGridView = true; }
     }
 
     /* -- XNFR-415 -- */
-    getDefaultDashboardForPartner() {  
-        if(this.authenticationService.module.loggedInThroughVendorVanityUrl || (this.authenticationService.isPartner() || this.authenticationService.isOnlyPartner())){
-            this.modulesDashboardTypeError = false;
-            this.dashBoardService.getDefaultDashboardForPartner(this.vendorCompanyIdForPartnerVanity)
-                .subscribe(
+    getDefaultDashboardForPartner() {
+        this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+        this.vanityLoginDto.userId = this.loggedInUserId;
+        this.vanityLoginDto.vanityUrlFilter = true;
+        this.modulesDashboardTypeError = false;
+        this.dashBoardService.getDefaultDashboardPageForPartner(this.vanityLoginDto)
+            .subscribe(
                 data => {
-                    if (data.statusCode == 200) {
-                    this.getAssignedDashboardTypeForPartner = data.data;
-                    this.assignedDashboardType=this.getAssignedDashboardTypeForPartner;
-                        if(this.getAssignedDashboardTypeForPartner === 'WELCOME'){
+                    if (data.statusCode == 200 && data.data !== undefined) {
+                        this.getAssignedDashboardTypeForPartner = data.data;
+                        if (this.getAssignedDashboardTypeForPartner === 'WELCOME') {
                             this.goToWelcomePage();
                         }
-                        else if(this.getAssignedDashboardTypeForPartner === 'ASSIGNED_DASHBOARD'){
+                        else if (this.getAssignedDashboardTypeForPartner === 'ASSIGNED_DASHBOARD') {
                             this.goToDashBoard();
                         }
-                        else{
-                            this.goToWelcomePage();
+                        else {
+                            this.getDefaultPage(this.loggedInUserId);
                         }
                     } else {
-                    this.modulesDashboardTypeError = true;
+                        this.goToWelcomePage();
                     }
                 },
                 error => {
@@ -141,6 +142,5 @@ export class DefaultPageComponent implements OnInit {
                 },
                 () => { }
             );
-        }
     }
 }

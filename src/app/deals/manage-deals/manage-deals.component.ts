@@ -597,13 +597,15 @@ export class ManageDealsComponent implements OnInit {
   addDeal() {   
     this.showDealForm = true;
     this.actionType = "add";
-    this.dealId = 0;    
+    this.dealId = 0;
+    this.dealsResponse.isVisible = false;    
   }
 
   viewDeal(deal: Deal) {
     this.showDealForm = true;   
     this.actionType = "view";
     this.dealId = deal.id;
+    this.dealsResponse.isVisible = false;
   }
 
   editDeal(deal: Deal) {
@@ -612,6 +614,8 @@ export class ManageDealsComponent implements OnInit {
     this.dealId = deal.id;
     this.selectedDeal=deal;/****xnfr-426******/
     this.textAreaDisable=true;
+    this.dealsResponse.isVisible = false;
+
   }
 
   confirmDeleteDeal (deal: Deal) {
@@ -1140,10 +1144,10 @@ export class ManageDealsComponent implements OnInit {
           }
         },
         error => {
-
+          this.referenceService.loading(this.httpRequestLoader, false);
         },
         () => {
-          this.referenceService.loading(this.httpRequestLoader, false);
+          // this.referenceService.loading(this.httpRequestLoader, false);
         }
       );
   }
@@ -1169,10 +1173,10 @@ export class ManageDealsComponent implements OnInit {
           }
         },
         error => {
-
+          this.referenceService.loading(this.httpRequestLoader, false);
         },
         () => {
-          this.referenceService.loading(this.httpRequestLoader, false);
+          // this.referenceService.loading(this.httpRequestLoader, false);
         }
       );
   }
@@ -1230,7 +1234,7 @@ export class ManageDealsComponent implements OnInit {
 
         },
         () => {
-          this.referenceService.loading(this.httpRequestLoader, false);
+          // this.referenceService.loading(this.httpRequestLoader, false);
         }
       );
   }

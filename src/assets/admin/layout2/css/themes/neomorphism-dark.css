@@ -840,7 +840,8 @@ span.ui-column-resize {
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:focus,
 .nav-tabs > li.active > a:hover {
-  background-color: #2c2f33 !important;
+  background-color: #1e2124 !important;
+  /* background-color: #2c2f33 !important; */
   border: 1px solid #191b1e !important;
   color: white !important;
 }
@@ -1372,7 +1373,7 @@ ul.alt-row-style1 li:nth-child(even) {
   font-size: 13px;
 }
 .img-class {
-  border: 1px solid #2f4857 !important;
+  border: 1px solid #191b1e !important;
 }
 .border-card,
 .videoViews,
@@ -1793,9 +1794,19 @@ input#copy-link {
   box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
 #download-template:hover {
-  border: 0px solid #fff !important;
-  background: #22313a !important;
+  border: 1px solid #3f68c5!important;
+  background-color: #3f68c5;
   color: #fff !important;
+}
+ul.dropdown-menu.pull-right.custome-dropdown-changs li a:hover{
+  border: 1px solid #3f68c5!important;
+  background-color: #3f68c5!important;
+  color: #fff !important;
+}
+ul.dropdown-menu.pull-right.custome-dropdown-changs li a {
+  border: 1px solid #2b2f33 !important;
+  color: #ffffff !important;
+  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
 
 /* button.btn.TableDataBtn {
@@ -1842,9 +1853,9 @@ i.singleIconCustomization {
   color: #fff !important;
 }
 #download-template-grid:hover {
-  border: 1px solid #fff !important;
-  background: #fff !important;
-  color: #22313a !important;
+  border: 1px solid #3f68c5!important;
+  background-color: #3f68c5;
+  color: #fff !important;
 }
 
 /* .gridIconCustomization a.delete {
@@ -1940,7 +1951,11 @@ i.singleIconCustomization {
   box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #1d1f23 !important;
   border: 0px solid #ddd;
 }
-i.IconCustomization,
+i.IconCustomization{
+  border: none !important;
+  color: #fff !important;
+}
+/* i.IconCustomization, */
 .setting-icon-cu,
 .gridIconCustomization a {
   border: none !important;
@@ -1949,7 +1964,12 @@ i.IconCustomization,
 }
 i.IconCustomization :hover,
 .setting-icon-cu:hover {
-  box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  /* box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important; */
+  border:0px solid #22313a!important; 
+}
+i.fa.fa-trash.trashIconCustomization, .gridIconCustomization a.delete {
+  border: none;
+  color: #cb5a5e !important;
 }
 i.fa.fa-plus.fa-fa-consistency.IconCustomization :hover,
 i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization :hover,
@@ -1966,7 +1986,8 @@ i.fa.fa-trash-o.trashIconCustomization,
 }
 i.fa.fa-trash-o.trashIconCustomization:hover {
   border: none;
-  box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  box-shadow: unset !important;
+  /* box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important; */
 }
 .gridIconCustomization a.Iconhover:hover {
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
@@ -2067,6 +2088,11 @@ tbody {
   box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #1d1f23 !important;
   border-radius: 0px 0px 10px 10px !important;
 }
+/* table header border top remove */
+.table>thead:first-child>tr:first-child>th {
+  border-top: none!important;
+}
+/* End */
 .setting-icon-cu .gearDropdownMenu {
   color: #fff !important;
 }
@@ -2169,6 +2195,7 @@ a.title.padding_bottom.text-color.content-bg,
 }
 i.IconCustomization:hover {
   background-color: #22313a !important;
+  border:0px solid #22313a!important;
 }
 i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
 i.fa.fa-plus.fa-fa-consistency.IconCustomization,
@@ -2867,6 +2894,7 @@ a.UserguideBtnCustomization {
 .custom-icon:hover .del-icon{
   top: 0%;
 }
+i.fa.fa-trash:hover,
 i.fa.fa-trash-o:hover,
 i.fa.fa-pencil-square-o:hover,
 i.fa.fa-files-o:hover,
@@ -2880,6 +2908,7 @@ i.fa.fa-paint-brush:hover,
 i.fa.fa-reply:hover,
 i.fa.fa-inbox:hover,
 i.fa.fa-envelope-o:hover,
+i.fa.fa-hand-pointer-o:hover,
 i.fa.fa-rocket:hover{
   background-color: unset !important;
   z-index: 999;
@@ -3252,7 +3281,7 @@ legend.scheduler-border{
 .page-bar.remove_cardBgcolor,
 .portlet.light.remove_cardBgcolor,
 .remove_shadow_bgcolor,
-.tabbable-custom > .tab-content.remove_cardBgcolor {
+.tabbable-custom > .tab-content.remove_cardBgcolor{
   box-shadow: none !important;
   background: none !important;
 }
@@ -3654,3 +3683,98 @@ button.btn.custom:hover{
   color:#ffffff!important;
 }
 /* Qa issues end */
+/* Sudha Sri(5-1-2024) */
+input.form-control.remove_checkbox_shadow{
+  box-shadow : none !important;
+}
+.b-b-c :hover{
+  color: #fff !important;
+}
+button.btn.btn-primary.inetgrations_activate_bgcolor{
+  box-shadow: none !important;
+  background-color: #29dd50 !important;
+}
+a.Iconhover.custom-grid-icon.icon_margin{
+  margin: 2px 2px !important;
+}
+.trash_bgcolor{
+  background: #2e3033 !important;
+  border: 1px solid #191b1e !important;
+}
+.button.button.bgcolor-unset.btn_border{
+  border :none !important;
+}
+/*  */
+.px-9{
+  padding: 5px 10px!important;
+}
+.neo-border-radius10{
+  border-radius: 10px!important;
+}  
+.pl-5{
+  padding-left: 10px!important;
+}
+.pd_lft4{
+  padding-left: 4px !important;
+}
+/* Sudha Sri(9-1-2024) Partner stat card alignments */
+.partner_stat_card_hgt{
+  min-height: 510px !important;
+}
+.pd_lft20{
+  padding-left: 20px;
+}
+.pd_rgt20{
+  margin-right: 20px;
+}
+.portlet.light.block.box_shadow.checked {
+  box-shadow: inset 2px 2px 5px #000,inset -3px -3px 7px #3b4451!important;
+}
+.portlet.light.block.box_shadow.checked:hover{
+  animation: shaking .4s ease-in-out;
+}
+/* 12-01-2024 */
+.imghover-unset{
+  transform: unset!important;
+  }
+i.download_file:hover {
+ background-color: #3f68c5 !important;
+}
+.IconCustomizationcondition i.fa.fa-trash.trashIconCustomization {
+  color: #cb5a5e !important;
+}
+.IconCustomizationcondition i.fa.fa-trash.trashIconCustomization:hover {
+  color: #ffff !important;
+}
+.actions-block i.fa.fa-trash.trashIconCustomization{
+  color: #cb5a5e !important;
+}
+.actions-block i.fa.fa-trash.trashIconCustomization:hover{
+  color: #ffff !important;
+}
+.icons-center{
+  display: block;
+}
+button#save\&delete_button {
+  border: none !important;
+  background: linear-gradient(87deg, #00ED95 0%, #00ACEC 100%) !important;
+  /* box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important; */
+}
+/* deals btn */
+.mrgt1-2{
+  margin-top:2px!important;
+  }
+  .btn-top3{
+   top:3px;
+  }
+  .mrg-left25{
+  margin-left: 0px!important; 
+  }
+/* manage-publish card */
+.border-b-unset:hover{
+border-bottom: unset!important;
+}
+/*** color picker(Manikanta 31-1-2024) ***/
+.color-picker input {
+  color: #000;
+}

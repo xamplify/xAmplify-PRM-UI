@@ -1,4 +1,4 @@
-<div class="" [ngClass]="customResponse.responseType == 'SUCCESS' ? 'success-margin' : ''"
+<div [@fadeInOut] class="" [ngClass]="customResponse.responseType == 'SUCCESS' ? 'success-margin' : ''"
 *ngIf="customResponse.responseType != null">
 <div style="padding: 4px 10px;" class="alert alert-dismissible m0" role="alert"
    [ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',

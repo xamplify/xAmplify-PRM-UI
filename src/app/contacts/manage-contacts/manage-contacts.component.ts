@@ -226,6 +226,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	showExpandButton = false;
 	showShareListPopup : boolean = false;
 	isFormList = false;
+	isCompanyList = false;
+	selectedAssociatedCompany:string;
 	selectedFilterIndex: number = 0;
   showFilter = true;
   resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
@@ -389,6 +391,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						pagination.filterBy = "FORM-LEADS";
 					}else if(this.selectedFilterIndex==2){
 						pagination.filterBy = "ALL";
+					}else if(this.selectedFilterIndex==3){
+						pagination.filterBy = "COMPANY-CONTACTS";
 					}
 				}
                 if(this.sharedLeads){
@@ -864,7 +868,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, 
-		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean) {
+		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean, isCompanyList:boolean, selectedAssociatedCompany: string) {
 		this.uploadedUserId = uploadUserId;
 		this.selectedContactListId = contactSelectedListId;
 		this.selectedContactListName = contactListName;
@@ -874,6 +878,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.showAll = false;
 		this.showEdit = true;
 		this.isFormList = isFormList;
+		this.isCompanyList = isCompanyList;
+		this.selectedAssociatedCompany = selectedAssociatedCompany;
 		$("#pagination").hide();
 	}
 
@@ -2016,7 +2022,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     saveAsInputChecking() {
             try {
-                const name = this.saveAsListName;
+                const name = this.saveAsListName.trim();
                 const self = this;
                 this.isValidLegalOptions = true;
 				const inputName = $.trim(name.toLowerCase().replace(/\s/g, ''));
@@ -2179,9 +2185,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactService.mailSend(this.pagination)
 				.subscribe(
 					data => {
-						this.emailNotificationCustomResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
-						this.contactService.successMessage = true;
-						//this.listContactsByType(this.contactsByType.selectedCategory);
+						if(data.statusCode==200){
+							this.emailNotificationCustomResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+							this.contactService.successMessage = true;
+						}
+						else{
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
+
+						}
+					
 					},
 					(error: any) => {
 						this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
@@ -2782,7 +2794,7 @@ resubscribeUserResult(event : any){
 			showCancelButton: true,
 			confirmButtonColor: '#54a7e9',
 			cancelButtonColor: '#999',
-			confirmButtonText: 'Yes, Mark as Opt-in!'
+			confirmButtonText: 'Yes, Mark as valid!'
 
 		}).then(function(myData: any) {
 			self.validateExcludedDetails(contactId,emailId );

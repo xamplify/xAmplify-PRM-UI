@@ -43,6 +43,11 @@ img.CompanyLogoCu {
     }
 }
 
+.custom-alert{
+    padding: 10px 8px;
+    margin-bottom: 12px;
+}
+
 .m2 {
     margin: 2px;
 }

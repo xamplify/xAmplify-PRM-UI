@@ -321,9 +321,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	defaultLoading=false;
 	updateDashboardError=false;
 	modulesDashboardForPartner: CustomResponse = new CustomResponse();
-	 defaultSelectedDashboardTypeSetting = this.getSelectedDashboardForPartner();
-	 checkSelectedDashboardType=[];	
-	 removeMarketingNonInteractiveBox:boolean = false;
+	defaultSelectedDashboardTypeSetting = this.getSelectedDashboardForPartner();
+	checkSelectedDashboardType=[];
+	companyIdFromCompanyProfileNameForVanity:number;	
+	removeMarketingNonInteractiveBox:boolean = false;
 
 	/** XNFR-426 **/
 	leadApprovalRejectionStatus: boolean = false;
@@ -2635,7 +2636,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	getSelectedDashboardForPartner() {
 		this.modulesDashboardForPartner = new CustomResponse();  
 		this.updateDashboardError = false;
-		this.dashBoardService.getDefaultDashboardForPartner(this.authenticationService.vendorCompanyId)
+		this.vanityUrlService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {        
+			this.companyIdFromCompanyProfileNameForVanity = result.companyId});
+		this.dashBoardService.getDefaultDashboardForPartner(this.companyIdFromCompanyProfileNameForVanity)
 			.subscribe(
 				data => {
 					if (data.statusCode == 200) {
@@ -3211,7 +3214,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 		let removeIndices = new Array();
 		this.pipeline.stages.forEach(function (stage, index) {
-			if (stage.stageName !== undefined && $.trim(stage.stageName).length > 0) {
+			if (stage.stageName !== undefined) {
 				if (stage.markAs === "won") {
 					stage.won = true;
 					stage.lost = false;
@@ -3286,6 +3289,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	listAllPipelines(pagination: Pagination) {
 		this.ngxloading = true;
+		this.referenceService.loading(this.httpRequestLoader, true);
 		let type: string;
 		if (this.activeTabName == "leadPipelines") {
 			type = "LEAD";
@@ -3298,6 +3302,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			.subscribe(
 				response => {
 					this.ngxloading = false;
+					this.referenceService.loading(this.httpRequestLoader, false);
 					// this.pipelines = response.data; 
 					pagination.totalRecords = response.totalRecords;
 					this.pipelineSortOption.totalRecords = response.totalRecords;
@@ -3305,6 +3310,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				},
 				error => {
 					this.ngxloading = false;
+					this.referenceService.loading(this.httpRequestLoader, false);
 				},
 				() => { }
 			);
@@ -3852,7 +3858,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	readExcludedUsersCSVFileContent(allTextLines: any, csvUserPagination: Pagination) {
 		this.customResponse = new CustomResponse();
-		this.csvExcludeUsersFilePreview = true;
 		for (var i = 1; i < allTextLines.length; i++) {
 			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
 				let user = new User();
@@ -3868,13 +3873,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.isListLoader = false;
 		if (this.excludedUsers.length === 0) {
 			this.customResponse = new CustomResponse('ERROR', "No users found.", true);
+			this.csvExcludeUsersFilePreview = false;
+		}else{
+		this.csvExcludeUsersFilePreview = true;
 		}
-
 	}
 
 	readExcludedDomainsCSVFileContent(allTextLines: any, csvDomainPagination: Pagination) {
 		this.excludeDomainCustomResponse = new CustomResponse
-		this.csvExcludeDomainsFilePreview = true;
 		for (var i = 1; i < allTextLines.length; i++) {
 			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
 				let domain = allTextLines[i][0].trim();
@@ -3889,6 +3895,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.isListLoader = false;
 		if (this.excludedDomains.length === 0) {
 			this.excludeDomainCustomResponse = new CustomResponse('ERROR', "No domains found.", true);
+			this.csvExcludeDomainsFilePreview = false;
+		}else{
+			this.csvExcludeDomainsFilePreview = true;
+
 		}
 
 	}
@@ -4407,8 +4417,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	shouldDisableCheckbox(index: number): boolean {
 		const selectedCount = this.pipeline.stages.filter(item => item.private).length;
-		const remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
-
+		let remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
+		if(this.pipeline.integrationType === "PIPEDRIVE" || this.pipeline.integrationType === "CONNECTWISE")
+		{
+			remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 2;
+		}
 		if (remainingUnselectedCount === 0 && !this.pipeline.stages[index].private) {
 			this.pipeline.stages[index].canDelete = false;
 		} else {

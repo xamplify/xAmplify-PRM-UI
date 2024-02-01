@@ -84,7 +84,7 @@
             <!--Opportunity Stats-->
             <div *ngIf="!authenticationService?.module?.deletedPartner 
              &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.module?.hasOpportunityRole)"
-                class="clearfix" style="padding-top: 6px;">
+                class="clearfix cards_height">
                 <div class="portlet light">
                     <div class="portlet-title">
                         <div class="caption">
@@ -112,7 +112,7 @@
 
             <div class="row" *ngIf="authenticationService.module.showCampaignsAnalyticsDivInDashboard">
                 <ngx-loading [show]="topFourLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                <div class="portlet light" style="margin: 14px;margin-top: 12px;margin-bottom: 20px;">
+                <div class="portlet light campaigns_card_height">
                     <div class="portlet-title" *ngIf="authenticationService?.module?.createCampaign">
                         <h4 class="pull-left m10 f-w-600 text-primary" translate>Campaigns</h4>
                         <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
@@ -316,7 +316,7 @@
                 </div>
             </div>
             <!-- High Level Analytics -->
-            <div class="clearfix" style="padding-top: 2px;"
+            <div class="clearfix high_level_height"
                 *ngIf=" authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
                 <div class="portlet light" id="hla-adv-dashboard">
                     <div class="portlet-title" style="min-height: 0px;">

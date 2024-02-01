@@ -57,6 +57,13 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     modulesDisplayType = new ModulesDisplayType();
     skipConfirmAlert = false;
     ngxLoading = false;
+    errorMessage = "";
+    names = [];
+    isDefaultTemplate = false;
+    buttonClicked = false;
+    saveLoader = false;
+    isSaveAsButtonDisabled = true;
+    invalidTemplateName = false;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
@@ -77,132 +84,26 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 this.customResponse = new CustomResponse('SUCCESS','Template created successfully',true);
             }
             this.mergeTagsInput['isEvent'] = emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
-            var names: any = [];
             let self = this;
             self.loggedInUserId = this.authenticationService.getUserId();
             this.showForms = this.emailTemplateService.emailTemplate.surveyTemplate || this.emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
-            emailTemplateService.getAvailableNames(self.loggedInUserId).subscribe(
-                (data: any) => {
-                    names = data;
-                },
-                error => { 
-                    this.skipConfirmAlert = true;
-                    this.logger.error("error in getAvailableNames(" + self.loggedInUserId + ")", error); },
-                () => this.logger.info("Finished getAvailableNames()"));
+           
+            /***Template Names API****/
+            self.findNames(emailTemplateService, self);
 
-            emailTemplateService.getAllCompanyProfileImages(self.loggedInUserId).subscribe(
-                (data: any) => {
-                    self.companyProfileImages = data;
-                },
-                error => {
-                    this.skipConfirmAlert = true;
-                     this.logger.error("error in getAllCompanyProfileImages(" + self.loggedInUserId + ")", error); },
-                () => this.logger.info("Finished getAllCompanyProfileImages()"));
+            /***Company Profile Images API****/
+            self.findCompanyProfileImages(emailTemplateService, self);
 
+            /***Category Names****/
+            self.findCategoryNames(authenticationService, self);
 
-            authenticationService.getCategoryNamesByUserId(self.loggedInUserId).subscribe(
-                (data: any) => {
-                    self.categoryNames = data.data;
-                },
-                error => { 
-                    this.skipConfirmAlert = true;
-                    this.logger.error("error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error); },
-                () => this.logger.info("Finished getCategoryNamesByUserId()"));
+            /***Send Request To Bee Container */
+            var request = self.sendRequestToBee(self);
 
-
-            var request = function (method, url, data, type, callback) {
-                var req = new XMLHttpRequest();
-                req.onreadystatechange = function () {
-                    if (req.readyState === 4 && req.status === 200) {
-                        var response = JSON.parse(req.responseText);
-                        callback(response);
-                    } else if (req.readyState === 4 && req.status !== 200) {
-                        self.refService.showSweetAlertErrorMessage("Unable to load Bee container.Please try reloading the page/check your internet connection.");
-                    }
-                };
-                req.open(method, url, true);
-                if (data && type) {
-                    if (type === 'multipart/form-data') {
-                        var formData = new FormData();
-                        for (var key in data) { formData.append(key, data[key]); }
-                        data = formData;
-                    }
-                    else { req.setRequestHeader('Content-type', type); }
-                }
-                req.send(data);
-            };
-
-            var title = "Add Template Name";
-            var templateName = "";
-            if (emailTemplateService.emailTemplate != undefined) {
-                var isDefaultTemplate = emailTemplateService.emailTemplate.defaultTemplate;
-                if (!isDefaultTemplate) {
-                    templateName = emailTemplateService.emailTemplate.name;
-                    title = "Update Template Name";
-                }
-            } else {
+            if (emailTemplateService.emailTemplate == undefined) {
                 this.router.navigate(["/home/emailtemplates/select"]);
-            }
-
-           var save = function (jsonContent: string, htmlContent: string) {
-            self.customResponse = new CustomResponse();
-            self.emailTemplateService.isTemplateSaved = false;
-            self.emailTemplate = new EmailTemplate();
-            self.emailTemplate.body = htmlContent;
-            self.emailTemplate.jsonBody = jsonContent;
-            if (emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate) {
-                if (jsonContent.indexOf(self.videoGif) < 0) {
-                    swal("", "Whoops! We're unable to save this template because you deleted the default gif. You'll need to select a new email template and start over.", "error");
-                    return false;
-                }
-            }
-            if (emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate || emailTemplateService.emailTemplate.surveyCoBrandingTemplate) {
-                if (jsonContent.indexOf(self.coBraningImage) < 0) {
-                    swal("", "Whoops! We're unable to save this template because you deleted the co-branding logo. You'll need to select a new email template and start over.", "error");
-                    return false;
-                }
-            }
-            if (!isDefaultTemplate) {
-                var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                    .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color: red !important;"></span></div><br>');
-                var dropDown = '<div class="form-group">';
-
-                dropDown = self.openUpdateTemplateModalPopUp(dropDown, self, buttons, emailTemplateService, title);
-            } else {
-                var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                    .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
-                var dropDown = '<div class="form-group">';
-                dropDown = self.openSaveTemplateModalPopUp(dropDown, self, buttons, title);
-            }
-            $('#templateNameId').on('input', function (event: any) {
-                let value = $.trim(event.target.value);
-                $('#templateNameSpanError').empty();
-                if (value.length > 0) {
-                    if (!emailTemplateService.emailTemplate.defaultTemplate) {
-                        if (names.indexOf(value.toLocaleLowerCase()) > -1 && emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase()) {
-                            $('#save,#save-and-redirect,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
-                            $('#templateNameSpanError').text('Duplicate Name');
-                        } else if (value.toLocaleLowerCase() == emailTemplateService.emailTemplate.name.toLocaleLowerCase()) {
-                            $('#save,#save-as').attr('disabled', 'disabled');
-                        }
-                        else {
-                            $('#templateNameSpanError').empty();
-                            $('#save,#save-and-redirect,#update,#save-as,#update-and-close').removeAttr('disabled');
-                        }
-                    } else {
-                        if (names.indexOf(value.toLocaleLowerCase()) > -1) {
-                            $('#save,#save-and-redirect,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
-                            $('#templateNameSpanError').text('Duplicate Name');
-                        } else {
-                            $('#templateNameSpanError').empty();
-                            $('#save,#save-and-redirect,#update,#save-as,#update-and-close').removeAttr('disabled');
-                        }
-                    }
-                } else {
-                    $('#save,#save-and-redirect,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
-                }
-            });
-            };//End Of Save Method
+            } 
+           var save = self.openSaveModalPopUp(self, emailTemplateService);
 
             let mergeTags = [];
             let event = this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
@@ -235,42 +136,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                     onError: function (errorMessage: string) {
                         self.refService.showSweetAlertErrorMessage("Unable to load bee template:" + errorMessage);
                     }
-                };
-
-                var bee = null;
-                request(
-                    'POST',
-                    'https://auth.getbee.io/apiauth',
-                    'grant_type=password&client_id=' + authenticationService.clientId + '&client_secret=' + authenticationService.clientSecret + '',
-                    'application/x-www-form-urlencoded',
-                    function (token: any) {
-                        BeePlugin.create(token, beeConfig, function (beePluginInstance: any) {
-                            bee = beePluginInstance;
-                            request(
-                                authenticationService.beeRequestType,
-                                authenticationService.beeHostApi,
-                                null,
-                                null,
-                                function (template: any) {
-                                    if (emailTemplateService.emailTemplate != undefined) {
-                                        var body = emailTemplateService.emailTemplate.jsonBody;
-                                        $.each(self.companyProfileImages, function (_index: number, value: any) {
-                                            body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
-                                        });
-                                        body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
-                                        self.emailTemplate.jsonBody = body;
-                                        var jsonBody = JSON.parse(body);
-                                        bee.load(jsonBody);
-                                        bee.start(jsonBody);
-                                        self.refService.updateBeeIframeContainerHeight();
-                                    } else {
-                                        bee.start(template);
-                                    }
-                                    self.loadTemplate = true;
-                                    self.ngxLoading = false;
-                                });
-                        });
-                    });
+                };//End Of beeConfig
+                self.loadBeeContainerWithClientIdAndClientSecret(request, authenticationService, beeConfig, emailTemplateService, self);
             } else {
                 swal("Please Contact Admin!", "No CompanyId Found", "error");
                 self.ngxLoading = false;
@@ -281,77 +148,164 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         }
     }
 
-    private openUpdateTemplateModalPopUp(dropDown: string, self: this, buttons: any, emailTemplateService: EmailTemplateService, title: string) {
-        dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
-        dropDown += '<select class="form-control" id="category-dropdown">';
-        $.each(self.categoryNames, function (_index: number, category: any) {
-            let categoryId = category.id;
-            if (self.emailTemplateService.emailTemplate.categoryId == categoryId) {
-                dropDown += '<option value=' + category.id + ' selected>' + category.name + '</option>';
-            } else {
-                dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
-            }
-        });
-        dropDown += '</select>';
-        dropDown += '</div><br>';
-        buttons.append(dropDown);
-
-        buttons.append(self.createButton('Save As', function () {
-            self.clickedButtonName = "SAVE_AS";
-            self.saveTemplate(true);
-        })).append(self.createButton('Update', function () {
-            self.clickedButtonName = "UPDATE";
-            self.emailTemplate.draft = false;
-            self.updateEmailTemplate(self.emailTemplate, emailTemplateService, false);
-        })).append(self.createButton('Update & Redirect', function () {
-            self.clickedButtonName = "UPDATE_AND_REDIRECT";
-            self.emailTemplate.draft = false;
-            self.updateEmailTemplate(self.emailTemplate, emailTemplateService, true);
-        }))
-            .append(self.createButton('Cancel', function () {
-                self.clickedButtonName = "CANCEL";
-                swal.close();
-            }));
-        swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false,allowEscapeKey: false });
-        return dropDown;
+    private loadBeeContainerWithClientIdAndClientSecret(request: (method: any, url: any, data: any, type: any, callback: any) => void, authenticationService: AuthenticationService, beeConfig: {
+        uid: string; container: string; autosave: number;
+        //language: 'en-US',
+        language: string; mergeTags: any[]; roleHash: string; onSave: (jsonFile: any, htmlFile: any) => void; onSaveAsTemplate: (jsonFile: any) => void; onAutoSave: (jsonFile: any) => void; onSend: (htmlFile: any) => void; onError: (errorMessage: string) => void;
+        }, emailTemplateService: EmailTemplateService, self: this) {
+        var bee = null;
+        request(
+            'POST',
+            'https://auth.getbee.io/apiauth',
+            'grant_type=password&client_id=' + authenticationService.clientId + '&client_secret=' + authenticationService.clientSecret + '',
+            'application/x-www-form-urlencoded',
+            function (token: any) {
+                BeePlugin.create(token, beeConfig, function (beePluginInstance: any) {
+                    bee = beePluginInstance;
+                    request(
+                        authenticationService.beeRequestType,
+                        authenticationService.beeHostApi,
+                        null,
+                        null,
+                        function (template: any) {
+                            if (emailTemplateService.emailTemplate != undefined) {
+                                var body = emailTemplateService.emailTemplate.jsonBody;
+                                $.each(self.companyProfileImages, function (_index: number, value: any) {
+                                    body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                                });
+                                body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                                self.emailTemplate.jsonBody = body;
+                                var jsonBody = JSON.parse(body);
+                                bee.load(jsonBody);
+                                bee.start(jsonBody);
+                                self.refService.updateBeeIframeContainerHeight();
+                            } else {
+                                bee.start(template);
+                            }
+                            self.loadTemplate = true;
+                            self.ngxLoading = false;
+                        });
+                });
+            });
     }
 
-    private openSaveTemplateModalPopUp(dropDown: string, self: this, buttons: any, title: string) {
-        dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
-        dropDown += '<select class="form-control" id="category-dropdown">';
-        $.each(self.categoryNames, function (_index: number, category: any) {
-            dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
-        });
-        dropDown += '</select>';
-        dropDown += '</div><br>';
-        buttons.append(dropDown);
+    private findNames(emailTemplateService: EmailTemplateService, self: this) {
+        emailTemplateService.getAvailableNames(self.loggedInUserId).subscribe(
+            (data: any) => {
+                this.names = data;
+            },
+            error => {
+                this.skipConfirmAlert = true;
+                this.logger.error("error in getAvailableNames(" + self.loggedInUserId + ")", error);
+            },
+            () => this.logger.info("Finished getAvailableNames()"));
+    }
 
-        buttons.append(self.createButton('Save', function () {
-            self.clickedButtonName = "SAVE";
-            self.saveTemplate(false);
-        }));
+    private findCompanyProfileImages(emailTemplateService: EmailTemplateService, self: this) {
+        emailTemplateService.getAllCompanyProfileImages(self.loggedInUserId).subscribe(
+            (data: any) => {
+                self.companyProfileImages = data;
+            },
+            error => {
+                this.skipConfirmAlert = true;
+                this.logger.error("error in getAllCompanyProfileImages(" + self.loggedInUserId + ")", error);
+            },
+            () => this.logger.info("Finished getAllCompanyProfileImages()"));
+    }
 
-        buttons.append(self.createButton('Save & Redirect', function () {
-            self.clickedButtonName = "SAVE_AND_REDIRECT";
-            self.saveTemplate(true);
-        }));
+    private findCategoryNames(authenticationService: AuthenticationService, self: this) {
+        authenticationService.getCategoryNamesByUserId(self.loggedInUserId).subscribe(
+            (data: any) => {
+                self.categoryNames = data.data;
+            },
+            error => {
+                this.skipConfirmAlert = true;
+                this.logger.error("error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error);
+            },
+            () => this.logger.info("Finished getCategoryNamesByUserId()"));
+    }
 
-        buttons.append(self.createButton('Cancel', function () {
-            self.clickedButtonName = "CANCEL";
-            swal.close();
-        }));
-        swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false,allowEscapeKey: false });
-        return dropDown;
+    private sendRequestToBee(self: this) {
+        return function (method, url, data, type, callback) {
+            var req = new XMLHttpRequest();
+            req.onreadystatechange = function () {
+                if (req.readyState === 4 && req.status === 200) {
+                    var response = JSON.parse(req.responseText);
+                    callback(response);
+                } else if (req.readyState === 4 && req.status !== 200) {
+                    self.refService.showSweetAlertErrorMessage("Unable to load Bee container.Please try reloading the page/check your internet connection.");
+                }
+            };
+            req.open(method, url, true);
+            if (data && type) {
+                if (type === 'multipart/form-data') {
+                    var formData = new FormData();
+                    for (var key in data) { formData.append(key, data[key]); }
+                    data = formData;
+                }
+                else { req.setRequestHeader('Content-type', type); }
+            }
+            req.send(data);
+        };
+    }
+
+    private openSaveModalPopUp(self: this, emailTemplateService: EmailTemplateService) {
+        return function (jsonContent: string, htmlContent: string) {
+            self.customResponse = new CustomResponse();
+            self.errorMessage = "";
+            self.emailTemplateService.isTemplateSaved = false;
+            self.buttonClicked = false;
+            self.emailTemplate = new EmailTemplate();
+            self.addTemplateName(emailTemplateService, self);
+            self.addCategoryId(self);
+            self.emailTemplate.body = htmlContent;
+            self.emailTemplate.jsonBody = jsonContent;
+            if (emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate) {
+                if (jsonContent.indexOf(self.videoGif) < 0) {
+                    swal("", "Whoops! We're unable to save this template because you deleted the default gif. You'll need to select a new email template and start over.", "error");
+                    return false;
+                }
+            }
+            if (emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate || emailTemplateService.emailTemplate.surveyCoBrandingTemplate) {
+                if (jsonContent.indexOf(self.coBraningImage) < 0) {
+                    swal("", "Whoops! We're unable to save this template because you deleted the co-branding logo. You'll need to select a new email template and start over.", "error");
+                    return false;
+                }
+            }
+            let emailTemplateName = self.refService.getTrimmedData(self.emailTemplate.name);
+            self.invalidTemplateName = emailTemplateName.length==0;
+            self.refService.showModalPopup("save-template-popup");
+        };
+    }
+
+    private addTemplateName(emailTemplateService: EmailTemplateService, self: this) {
+        if (emailTemplateService.emailTemplate != undefined) {
+            self.isDefaultTemplate = emailTemplateService.emailTemplate.defaultTemplate;
+            if (!self.isDefaultTemplate) {
+                self.emailTemplate.name = emailTemplateService.emailTemplate.name;
+            }
+        }
+    }
+
+    private addCategoryId(self: this) {
+        if (self.isAdd) {
+            let categoryIds = self.categoryNames.map(function (a: any) { return a.id; });
+            if (self.isAdd || self.emailTemplate.categoryId == undefined || self.emailTemplate.categoryId == 0) {
+                self.emailTemplate.categoryId = categoryIds[0];
+            }
+        } else {
+            self.emailTemplate.categoryId = self.emailTemplateService.emailTemplate.categoryId;
+        }
     }
 
     saveEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, loggedInUserId: number, saveAsOrSaveAndRedirectClicked: boolean) {
+        this.saveLoader = true;
         this.saveAsOrSaveAndRedirectClicked = saveAsOrSaveAndRedirectClicked;
         this.refService.goToTop();
-        $("#bee-save-buton-loader").addClass("button-loader"); 
         emailTemplate.user = new User();
         emailTemplate.user.userId = loggedInUserId;
         emailTemplate.userDefined = true;
-        emailTemplate.name = $.trim($('#templateNameId').val());
+        emailTemplate.name = $.trim(this.emailTemplate.name);
         emailTemplate.beeRegularTemplate = emailTemplateService.emailTemplate.beeRegularTemplate;
         emailTemplate.beeVideoTemplate = emailTemplateService.emailTemplate.beeVideoTemplate;
         emailTemplate.desc = emailTemplateService.emailTemplate.name;//Type Of Email Template
@@ -362,8 +316,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         emailTemplate.beeEventCoBrandingTemplate = emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
         emailTemplate.surveyTemplate = emailTemplateService.emailTemplate.surveyTemplate;
         emailTemplate.surveyCoBrandingTemplate = emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
-
-        emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
         let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate
             || emailTemplate.beeEventCoBrandingTemplate || emailTemplate.surveyCoBrandingTemplate;
         if (emailTemplateService.emailTemplate.subject.indexOf('basic') > -1 && !isCoBrandingTemplate) {
@@ -384,14 +336,14 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         this.updateCompanyLogo(emailTemplate);
         emailTemplateService.save(emailTemplate).subscribe(
             data => {
-                swal.close();
-                $("#bee-save-buton-loader").removeClass("button-loader"); 
                 if (data.access) {
                     if (data.statusCode == 702) {   
                         if(saveAsOrSaveAndRedirectClicked){
-                            this.refService.isCreated = true;
+                            this.refService.addCreateOrUpdateSuccessMessage("Template created successfully");
+                            this.closeModalPopup();
                             this.navigateToManageSection();
                         }else{
+                            this.closeModalPopup();
                             let createdEmailTemplateId = data.data;
                             this.emailTemplateService.getById(createdEmailTemplateId).subscribe(
                                 (data: EmailTemplate)=>{
@@ -402,6 +354,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                                     this.router.navigate(["/home/emailtemplates/edit"]);
                                 },error=>{
                                     this.skipConfirmAlert = true;
+                                    this.ngxLoading = false;
+                                    this.closeModalPopup();
                                     this.logger.errorPage(error);
                             });
                         }                                     
@@ -410,48 +364,52 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                         this.customResponse = new CustomResponse('ERROR', data.message, true);
                     }                    
                 } else {
+                    this.saveLoader = false;
+                    this.buttonClicked = false;
+                    this.closeModalPopup();
                     this.authenticationService.forceToLogout();
                 }
             },
             error => {
-                $("#bee-save-buton-loader").removeClass("button-loader"); 
-                swal.close();
-                this.ngxLoading = false;
-                this.logger.errorPage(error);
+                this.closeModalPopupAndStopLoaders(error);
             }
         );
     }
 
-    updateEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, isUpdateAndRedirect: boolean) {
+    private closeModalPopupAndStopLoaders(error: any) {
+        this.saveLoader = false;
+        this.skipConfirmAlert = true;
+        this.closeModalPopup();
+        this.ngxLoading = false;
+        this.logger.errorPage(error);
+    }
+
+    updateEmailTemplate(isUpdateAndRedirect: boolean) {
+        this.saveLoader = true;
+        let emailTemplate = this.emailTemplate;
+        let emailTemplateService = this.emailTemplateService;
+        emailTemplate.draft = false;
         this.updateAndRedirectClicked = isUpdateAndRedirect;
         this.customResponse = new CustomResponse();
         this.refService.goToTop();
-        $("#bee-save-buton-loader").addClass("button-loader"); 
-        let enteredEmailTemplateName = $.trim($('#templateNameId').val());
-        if (enteredEmailTemplateName.length == 0) {
-            emailTemplate.name = emailTemplateService.emailTemplate.name;
-        } else {
-            emailTemplate.name = $.trim($('#templateNameId').val());
-        }
         emailTemplate.id = emailTemplateService.emailTemplate.id;
         emailTemplate.user = new User();
         emailTemplate.user.userId = this.loggedInUserId;
         this.updateCompanyLogo(emailTemplate);
-        emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
         emailTemplate.surveyTemplate = emailTemplateService.emailTemplate.surveyTemplate;
         emailTemplate.surveyCoBrandingTemplate = emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
         emailTemplateService.update(emailTemplate).subscribe(
             data => {
-                swal.close();
-                $("#bee-save-buton-loader").removeClass("button-loader"); 
                 if (data.access) {
                     if (data.statusCode == 702 || data.statusCode == 703) {
                         if(isUpdateAndRedirect){
-                            this.refService.isUpdated = true;
+                            this.refService.addCreateOrUpdateSuccessMessage("Template updated successfully");
+                            this.closeModalPopup();
                             this.navigateToManageSection();
                         }else{
                             this.customResponse = new CustomResponse('SUCCESS', "Template updated successfully", true);
                             this.ngxLoading = true;
+                            this.closeModalPopup();
                             this.emailTemplateService.emailTemplate.name = emailTemplate.name;
                             this.emailTemplateService.emailTemplate.categoryId = emailTemplate.categoryId;
                             this.emailTemplateService.emailTemplate.jsonBody = emailTemplate.jsonBody;
@@ -459,26 +417,24 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                             this.loadBeeContainer(this.emailTemplateService,this.authenticationService,false);
                         }
                     } else if (data.statusCode == 500) {
+                        this.saveLoader = false;
+                        this.buttonClicked = false;
                         this.customResponse = new CustomResponse('ERROR', data.message, true);
                     }    
                 } else {
+                    this.saveLoader = false;
+                    this.buttonClicked = false;
+                    this.closeModalPopup();
                     this.authenticationService.forceToLogout();
                 }
             },
             error => {
-                this.skipConfirmAlert = true;
-                $("#bee-save-buton-loader").removeClass("button-loader"); 
-                swal.close();
-                this.logger.errorPage(error)
+                this.closeModalPopupAndStopLoaders(error);
             }
         );
     }
 
     navigateToManageSection() {
-        this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);
-        if(this.viewType==undefined){
-            this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
-        }
         this.refService.navigateToManageEmailTemplatesByViewType(this.folderViewType,this.viewType,this.categoryId);
     }
 
@@ -492,7 +448,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     ngOnInit() {  }
     ngOnDestroy() {
         this.emailTemplateService.isNewTemplate = false;
-        swal.close();
     }
 
     saveTemplate(isSaveAndRedirectButtonClicked:boolean) {
@@ -500,24 +455,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         this.saveEmailTemplate(this.emailTemplate, this.emailTemplateService, this.loggedInUserId, isSaveAndRedirectButtonClicked);
     }
 
-    createButton(text, cb) {
-        let buttonClass = this.isAdd ? "btn btn-primary transition btnPropertiesNone":"btn btn-sm btn-primary";
-        let cancelButtonClass = this.isAdd ? "btn Btn-Gray":"btn btn-sm Btn-Gray";
-        let cancelButtonSettings = this.isAdd ? 'class="'+cancelButtonClass+'"' : 'class="'+cancelButtonClass+'" style="margin-right: -35px !important;"';
-        if (text == "Save") {
-            return $('<button class="button_blue bgcolor-unset"> <input type="submit" class="'+buttonClass+'"  value="' + text + '" id="save" disabled="disabled"> </button>').on('click', cb);
-        }else if(text == "Save & Redirect"){
-            return $('<button class="button_blue bgcolor-unset"><input type="submit" class="'+buttonClass+'"  value="' + text + '" id="save-and-redirect" disabled="disabled"> </button>').on('click', cb);
-        }else if (text == "Save As") {
-            return $('<button class="button_blue bgcolor-unset"><input type="submit" class="'+buttonClass+'" style="margin-left: -33px !important" value="' + text + '" id="save-as" disabled="disabled"> </button>').on('click', cb);
-        } else if (text == "Update") {
-            return $('<button class="button_blue bgcolor-unset"><input type="submit" class="'+buttonClass+'" value="' + text + '" id="update"> </button>').on('click', cb);
-        }else if (text == "Update & Redirect") {
-            return $('<button class="button_blue bgcolor-unset"><input type="submit" class="'+buttonClass+'" value="' + text + '" id="update-and-close"> </button>').on('click', cb);
-        }else {
-            return $('<input type="submit" '+cancelButtonSettings+' value="' + text + '">').on('click', cb);
-        }
-    }
+  
 
     navigateBack(){
         let url = this.refService.getCurrentRouteUrl();
@@ -535,5 +473,30 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         this.ngxLoading = false;
         let isInvalidEditPage = this.emailTemplateService.emailTemplate==undefined;
         return this.skipConfirmAlert ||  this.saveAsOrSaveAndRedirectClicked || this.updateAndRedirectClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked || this.isReloaded;
+    }
+
+    validateNames(){
+        let name = this.refService.getTrimmedData(this.emailTemplate.name);
+        let isNotEmptyName = name.length>0;
+        this.errorMessage = "";
+        if(isNotEmptyName){
+            this.invalidTemplateName = false;
+            let isDuplicateName = false;
+            if(!this.emailTemplateService.emailTemplate.defaultTemplate){
+                isDuplicateName = this.names.indexOf(name.toLocaleLowerCase()) > -1 && this.emailTemplateService.emailTemplate.name.toLocaleLowerCase() != name.toLowerCase();
+            }else{
+                isDuplicateName = this.names.indexOf(name.toLocaleLowerCase()) > -1;
+            }
+            let isNameNotUpdated = name.toLocaleLowerCase() == this.emailTemplateService.emailTemplate.name.toLocaleLowerCase();
+            this.isSaveAsButtonDisabled = isNameNotUpdated;
+            this.errorMessage = isDuplicateName ? 'Duplicate Name':'';
+        }else{
+            this.errorMessage = "Please Enter Name";
+        }
+    }
+
+    closeModalPopup(){
+        this.saveLoader = false;
+        this.refService.closeModalPopup("save-template-popup");
     }
 }

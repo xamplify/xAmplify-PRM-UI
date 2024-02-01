@@ -119,9 +119,25 @@
                       <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                         <div class="card-bgcolors h-260 pl0 pr0">
                           <fieldset class="border-none">
-                            <app-user-info *ngIf="showContactInfo" [userInfo]="contact"
-                              [isLeadInfo]="true"></app-user-info>
-                            <div *ngIf="!showContactInfo">Not Available</div>
+                            <div>
+                              <app-user-info *ngIf="showContactInfo" [userInfo]="contact"
+                                [isLeadInfo]="true"></app-user-info>
+                              <span *ngIf="!showContactInfo">Not Available</span>
+                              <span *ngIf="showAttachLeadButton" class="pull-right">
+                                <!-- <a (click)="addLead()" style="padding-left: 4px;">
+                                <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                                  <span class="btn btn-primary transition d-inline"><i class="fa fa-plus  mb-btns" aria-hidden="true"></i> Add a
+                                    Lead</span>
+                                </button>
+                              </a> -->
+                                <a (click)="openSelectLeadModel()" style="padding-left: 4px;">
+                                  <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                                    <span class="btn btn-primary transition d-inline"><i class="fa fa-user-circle-o mb-btns"
+                                        aria-hidden="true"></i> {{attachLeadText}}</span>
+                                  </button>
+                                </a>
+                              </span>
+                            </div>
                           </fieldset>
                         </div>
                       </div>
@@ -339,4 +355,15 @@
     </div>
   </div>
 </div>
+
+<!-- Add Lead Model-->
+<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="dealToLead.leadActionType" [dealToLead]="dealToLead"
+  (notifySubmitSuccess)="leadCreated($event)" (notifyClose)="closeLeadForm()" [isVendorVersion]="isVendorVersion"
+  [isOrgAdmin]="isOrgAdmin"></app-add-lead>
+
+<!-- Select Lead Model-->
+<app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead"
+  (notifyLeadSelected)="leadSelected($event)"></app-select-lead>
+
+
 <!-- END CONTENT -->

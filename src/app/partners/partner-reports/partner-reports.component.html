@@ -773,6 +773,13 @@
     </div>
   </div>
 
+  <!--******************Team Member Details*******************-->
+  <div class="row rowPaddingCustomization2">
+    <app-partner-journey-team-member-high-level-analytics-table *ngIf="!loadAllCharts && selectedTabIndex == 0"
+      [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
+      (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)">
+    </app-partner-journey-team-member-high-level-analytics-table>
+  </div>
   <!--******************Share Lead Details*******************-->
   <div class="row rowPaddingCustomization2">
     <app-share-lead-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
@@ -830,7 +837,8 @@
       [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService?.enableLeads"></app-partner-journey-deal-details>
-  </div>
+  </div>  
+
   <div class="row responsivepaddding1">
     <app-kpi [applyTeamMemberFilter]="applyFilter" *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-kpi>
 

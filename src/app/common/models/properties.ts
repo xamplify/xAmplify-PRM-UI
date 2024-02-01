@@ -220,6 +220,7 @@ export class Properties {
 	microsoftImage: string = 'assets/admin/pages/media/works/microsoft-contact.png';
 	pipedriveImage: string = 'assets/admin/pages/media/works/pipedrive-contacts.png';
 	connectwiseImage: string = 'assets/admin/pages/media/works/connectwise-contacts.png';
+	companyListImage: string = 'assets/admin/pages/media/works/company.png';
 
 	teamMemberGroups = 'Team Member Groups';
 

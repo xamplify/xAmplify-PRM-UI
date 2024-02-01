@@ -48,7 +48,7 @@
             <i class="fa fa-download" aria-hidden="true"></i>
          </a>
       </div>
-      <div class="portlet light clearfix" *ngIf="!isShowPartnerLeads && !showLeads && !showDeals">
+      <div class="portlet light clearfix remove_cardBgcolor" *ngIf="!isShowPartnerLeads && !showLeads && !showDeals">
          <div class="portlet-body">
             <div *ngIf="
            campaign?.campaignEmailNotificationStatusInString == 'IN_PROGRESS'
@@ -72,7 +72,7 @@
                   <div class="alert alert-danger alert-dismissible" *ngIf="contactListDeleteError">
                      <a (click)="contactListDeleteError = false" class="close" data-dismiss="alert"
                         aria-label="close">&times;</a>
-                        No contacts found.
+                     No contacts found.
                   </div>
                   <div class="alert alert-danger alert-dismissible cancel-alert-class" *ngIf="isCancelledEvent">
                      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -269,8 +269,7 @@
   }" *ngIf="
   campaignType === 'LANDINGPAGE' && campaign.landingPageId > 0
   ">
-                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft"
-                        [class.disabled]="
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" [class.disabled]="
      !isPartnerEnabledAnalyticsAccess ? true : null
      ">
                         <div class="visual">
@@ -289,12 +288,13 @@
                            </div>
                         </div>
                         <div class="actions-block override-actions d-inlineblock" id="landing-page-icons">
-                           <a  data-toggle="tooltip" data-placement="top" title="Preview"
+                           <a data-toggle="tooltip" data-placement="top" title="Preview"
                               (click)="showLandingPagePreview(campaign)">
                               <i class="fa fa-eye" aria-hidden="true"></i>
                            </a>
-                           <a class="mr-2" *ngIf="campaign.formsCount > 0" routerLink="/home/forms/clpf/{{ campaign.campaignId }}"
-                              data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
+                           <a class="mr-2" *ngIf="campaign.formsCount > 0"
+                              routerLink="/home/forms/clpf/{{ campaign.campaignId }}" data-rel="fancybox-button"
+                              data-toggle="tooltip" data-placement="top" title="Form Count">
                               <i class="fa fa-wpforms" aria-hidden="true"></i>
                               <span class="badge" id="notification-color">{{
                                  campaign.formsCount
@@ -707,7 +707,7 @@
                         </ng-container>
                         <!----This is For DataShare Vendor Analytics------->
                         <ng-container *ngIf="isNavigatedThroughAnalytics">
-                           <button class="portlet light color1-invert crcb black-blue-c"
+                           <button class="portlet light color1-invert crcb black-blue-c detail_card"
                               (click)="showClickedUrlsForVendor(campaign.campaignId)" [disabled]="
   campaignReport.dataShareClickedUrlsCountForVendor < 1
   ">
@@ -801,7 +801,8 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
-                        <button class="portlet light color1-invert crcb vlt-b-c detail_card" (click)="showCampaignLeads()"
+                        <button class="portlet light color1-invert crcb vlt-b-c detail_card"
+                           (click)="showCampaignLeads()"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.leadCount < 1 || !isPartnerEnabledAnalyticsAccess">
                            <div class="portlet-body text-center">
@@ -815,7 +816,8 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
-                        <button class="portlet light color1-invert crcb lt-g-b-c detail_card" (click)="showCampaignDeals()"
+                        <button class="portlet light color1-invert crcb lt-g-b-c detail_card"
+                           (click)="showCampaignDeals()"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.dealCount < 1 || !isPartnerEnabledAnalyticsAccess">
                            <div class="portlet-body text-center">
@@ -1017,7 +1019,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="portlet light" [hidden]="
+                        <div class="portlet light remove_cardBgcolor" [hidden]="
                            mainLoader ||
                            hasClientError ||
                            !campaignViews ||
@@ -1621,8 +1623,7 @@
                                                       <td class="text-center" (click)="$event.stopPropagation()">
                                                          <div class="actions-block override-actions"
                                                             id="landing-page-icons">
-                                                            <a *ngIf="item.pageAnalyticsCount > 0"
-                                                               routerLink="/home/pages/{{
+                                                            <a *ngIf="item.pageAnalyticsCount > 0" routerLink="/home/pages/{{
      campaign.campaignId
      }}/{{
      item.userId

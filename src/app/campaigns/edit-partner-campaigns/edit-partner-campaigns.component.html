@@ -248,12 +248,12 @@
                               </a>
                               <br>
                               <div class="d-flex">
-                                 <a class="pull-right btn-sm button_blue"
+                                 <a class="pull-right btn-sm button_blue btn-primary"
                                     (click)="previewEmailTemplate(campaign.emailTemplate)"> <span
                                        class="btn btn-primary transition txt_pd-top3"><i class="fa fa-eye"></i>
                                        Preview</span> </a>
                                  <a *ngIf="campaign?.emailTemplate?.editPartnerTemplate"
-                                    class="pull-right btn btn-sm button_blue" style="margin-right: 6px"
+                                    class="pull-right btn btn-sm button_blue btn-primary" style="margin-right: 6px"
                                     (click)="editPartnerTemplate()"> <span
                                        class="btn btn-primary transition txt_pd-top3"><i class="fa fa-edit"></i> Edit
                                     </span></a>
@@ -303,13 +303,13 @@
                                  <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">
                                     {{selectedUserlistIds.length}} lists are selected
                                  </h4>
-                                 <button class="pull-right btn-sm button_blue bgcolor-unset" style="margin-top: 6px"
-                                    (click)="showContacts()"><span
-                                       class="btn btn-primary transition txt_pd-top3">{{previewText}}</span></button>
-
+                                 <button type="button" class="pull-right btn-sm button_blue bgcolor-unset" style="margin-top: 6px" (click)="showContacts()">
+                                    <span class="btn btn-primary transition txt_pd-top3">{{previewText}}</span>
+                                 </button>
                                  <br>
                               </div>
-                              <span *ngIf="selectedUserlistIds.length>0" class="valid-users-count-span">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
+                              <span *ngIf="selectedUserlistIds.length>0" class="valid-users-count-span">This email will
+                                 be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
                            </div>
                            <div id="campaign-contact-list" style="display: none;">
                               <div>
@@ -523,7 +523,7 @@
                                                       (click)="remove(reply.divId,'replies')">
                                                       <span class="glyphicon glyphicon-trash"></span>
                                                    </button>
-                                                   <button type="button" class="btn btn-primary button-blue"
+                                                   <button type="button" class="btn btn-primary button-blue add_icon_bg"
                                                       (click)="addReplyRows()">
                                                       <span class="glyphicon glyphicon-plus"></span>
                                                    </button>
@@ -725,7 +725,7 @@
                                                    (click)="remove(url.divId,'url')">
                                                    <span class="glyphicon glyphicon-trash"></span>
                                                 </button>
-                                                <button type="button" class="btn btn-primary button-blue"
+                                                <button type="button" class="btn btn-primary button-blue add_icon_bg"
                                                    (click)="addClickRows()">
                                                    <span class="glyphicon glyphicon-plus"></span>
                                                 </button>
@@ -989,7 +989,7 @@
                                  <button type="submit" class="button mar-lft-40 bgcolor-unset mrgn_lft0"
                                     [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid"
                                     style="width:10em"><span
-                                       class="btn Btn-Green transition txt_pd-top3">{{buttonName}}</span></button>
+                                       class="btn Btn-Green transition txt_pd-top3 mrg-left25">{{buttonName}}</span></button>
                               </div>
                            </div>
                         </div>

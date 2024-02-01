@@ -56,6 +56,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() isSynchronizationList: boolean;
 	@Input('value') value: number;
 	@Input() isFormList: boolean;
+	@Input() companyName: any;
+	@Input() manageCompanies: boolean = false;
 	/*****XNFR-98******/
 	@Input() isTeamMemberPartnerList:boolean;
 	editContacts: User;
@@ -242,6 +244,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
 	showSweetAlert = false;
 	selectedPartner: any;
+	companyRouter = "/home/company/manage";
 
 	 /****XNFR-278****/
 	 mergeOptionClicked = false;
@@ -729,7 +732,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						//this.allUsers = this.contactsByType.allContactsCount;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList,this.manageCompanies, this.companyName);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -957,7 +960,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList,this.manageCompanies, this.companyName);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -1638,7 +1641,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList,this.manageCompanies, this.companyName);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 
@@ -3733,7 +3736,7 @@ copyGroupUsersModalPopupEventReceiver(){
 				showCancelButton: true,
 				confirmButtonColor: '#54a7e9',
 				cancelButtonColor: '#999',
-				confirmButtonText: 'Yes, Mark as Opt-in!'
+				confirmButtonText: 'Yes, Mark as valid!'
 
 			}).then(function (myData: any) {
 				self.validateExcludedDetails(contactId, emailId);

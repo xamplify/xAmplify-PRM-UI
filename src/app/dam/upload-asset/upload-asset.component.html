@@ -1,5 +1,5 @@
 <ngx-loading [show]="formLoader || loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="page-content">
+<div *ngIf="!isBeeTemplateComponentCalled" class="page-content">
    <ng-container *ngIf="initLoader">
       <app-modal-popup-loader></app-modal-popup-loader>
    </ng-container>
@@ -29,16 +29,15 @@
                <div class="col-sm-6 col-md-4 col-lg-6 text-right" style="padding-right: 5px;">
                   <div class="cf-padding-dam">
                      <div style="margin-top: -1px;">
-                        <a class="close-circle" (click)="closeCircle()" data-toggle="tooltip" data-placement="bottom"
-                           title="Close">
+                        <a class="close-circle" (click)="closeCircle()" data-toggle="tooltip" data-placement="bottom" title="Close">
                            <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
                      </div>
                      <div>
                         <button class="button_blue bgcolor-unset" style="margin-right: 4px;padding-top:1px;"
-                           (click)="openCreateFolderPopup()" translate><span
-                              class="btn btn-primary transition asset_cf_padding">Create a
-                              Folder</span></button>
+                           (click)="openCreateFolderPopup()" translate>
+                           <span class="btn btn-primary transition asset_cf_padding">Create a Folder</span>
+                        </button>
                      </div>
                   </div>
                </div>
@@ -58,12 +57,19 @@
                         <i class="fa fa-times" aria-hidden="true"></i>
                      </a>
                   </div>
+                  <div *ngIf="isBeeTemplatePdf">
+                     <button [title]="isAssetPublished ? 'This PDF is not editable as it has already been published.':''" [disabled]="isAssetPublished" id="right" style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pos_mar_rgt4"
+                           type="button" (click)="!isAssetPublished && editPdf()">
+                           <span class="btn btn-primary transition">Edit PDF</span>
+                     </button>
+                  </div>
+                  
+                  
                </div>
                <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
                </app-response-message>
                <app-modal-popup-loader [hidden]="!formLoader"></app-modal-popup-loader>
                <ng-container *ngIf="!previewItems">
-                  <!-- style="margin-top: 20px;" -->
                   <div [hidden]="formLoader" class="row">
                      <div class="form-horizontal form-bordered form-label-stripped">
                         <div class="portlet box">
@@ -138,11 +144,11 @@
                                           </div>
                                        </div>
                                        <!-- end here -->
-                                       <!---Asset-->
-                                       <!-- class="mb-padding" -->
-                                       <div *ngIf="isAdd">
-                                          <span [style.color]="invalidAssetName ? 'red':''"><strong>Upload Asset<span
-                                                   class="required">*</span></strong></span>
+                                       <!---Upload Asset-->
+                                       <div *ngIf="!isBeeTemplatePdf">
+                                          <span [style.color]="invalidAssetName ? 'red':''"><strong>
+                                             {{uploadOrReplaceAssetText}}<span *ngIf="isAdd" class="required">*</span></strong>
+                                          </span>
                                           <div class="row">
                                              <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
                                                 <div class="upload-asset-div" (click)="browse()"
@@ -152,14 +158,9 @@
                                                    <div class="text-center card-template">
                                                       <img class="img-templates"
                                                          src="../../../assets/images/uploadimage.png" alt="">
-                                                      <h2 class="upload-video" style="margin:-5px;padding-top: 5px;"
-                                                         translate>Upload
-                                                         Asset
-                                                      </h2>
-                                                      <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE |
-                                                         translate}}</h6>
-                                                      <button class="button_blue bgcolor-unset" style="color:#fff"
-                                                         translate><span
+                                                      <h2 class="upload-video" style="margin:-5px;padding-top: 5px;">{{uploadOrReplaceAssetText}}</h2>
+                                                      <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE}}</h6>
+                                                      <button class="button_blue bgcolor-unset" style="color:#fff"><span
                                                             class="btn btn-primary transition txt_pd-top3">Browse</span></button>
                                                       <br><br>
                                                       <span *ngIf="uploadedAssetName?.length>0">
@@ -535,6 +536,36 @@
       </div>
    </ng-container>
 </div>
+
+
+<!--XNFR-427-->
+<div class="page-content" *ngIf="isBeeTemplateComponentCalled">
+   <div class="row">
+      <div class="col-xs-12">
+         <div class="tile remove_shadow_bgcolor" style="border-radius: 5px;">
+            <div class="page-bar bar-border-bottom">
+               <ul class="page-breadcrumb">
+                  <li>
+                     <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter"
+                        translate>Home</a>
+                     <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  </li>
+                  <li>
+                     <span>Update PDF</span>
+                  </li>
+               </ul>
+               <a class="close-circle xamp-margin-left-icon" (click)="hideBeeContainer()" aria-hidden="true">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+               </a>
+            </div>
+            <app-bee-template-util [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+         </div>
+      </div>
+   </div>
+</div>
+<!--XNFR-427-->
+
+
 <!---Thumbnail Modal Pop Up-->
 <div class="modal right fade" id="thumbnailImageModal" tabindex="-1" role="dialog" aria-labelledby="thumbnailImageModal"
    data-keyboard="false" data-backdrop="static">
@@ -596,7 +627,8 @@
             <br>
             <div class="d-flex justify-content-between">
                <div class="button-group" style="position: relative;text-align:left">
-                  <button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
+                  <button class="btn-info aspect_ratio" (click)="toggleContainWithinAspectRatio()"
+                     [disabled]="!showCropper">
                      <!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
                      {{
                      containWithinAspectRatio
@@ -604,16 +636,18 @@
                      : 'Contain Within Aspect Ratio'
                      }}
                   </button>
-                  <button class="btn-info" (click)="zoomOut()" [disabled]="!showCropper"><i class="fa fa-search-minus"
-                        title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
-                  <button class="btn-info" (click)="zoomIn()" [disabled]="!showCropper"><i class="fa fa-search-plus"
-                        title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
-                  <button class="btn-info" (click)="resetImage()" [disabled]="!showCropper"> <i class="fa fa-refresh"
-                        title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>
+                  <button class="btn-info aspect_ratio" (click)="zoomOut()" [disabled]="!showCropper"><i
+                        class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn-info aspect_ratio" (click)="zoomIn()" [disabled]="!showCropper"><i
+                        class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
+                  <button class="btn-info aspect_ratio" (click)="resetImage()" [disabled]="!showCropper"> <i
+                        class="fa fa-refresh" title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>
                </div>
                <div>
-                  <button class="btn btn-primary" [disabled]="!showCropper" (click)="saveThumbnail()">Save
-                     Changes</button>
+                  <button class="button_blue bgcolor-unset" [disabled]="!showCropper" (click)="saveThumbnail()"><span
+                        class="btn btn-primary transition background txt_pd-top3">Save
+                        Changes</span></button>
                </div>
             </div>
          </div>
