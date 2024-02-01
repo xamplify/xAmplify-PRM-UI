@@ -107,8 +107,9 @@
                             </li>
                         </ul>
                         <div class="text-center mt10">
-                            <button class="btn btn-sm btn-primary" data-target="#manageAccountsModal"
-                                data-toggle="modal">Manage Accounts</button>
+                            <button class="button_blue bgcolor-unset btn-sm" data-target="#manageAccountsModal"
+                                data-toggle="modal"><span class="btn btn-primary transition neg_mrg_top4">Manage
+                                    Accounts</span></button>
                         </div>
                     </ng-container>
                 </ng-container>
@@ -671,8 +672,9 @@
                             </button>
                         </div>
                         <ng-container *ngIf="selectedAccounts > 1 && !isCustomizeButtonClicked">
-                            <button class="btn btn-primary pull-right" (click)="customizeEachNetwork()">Customize for
-                                each network</button>
+                            <button class="button_blue bgcolor-unset pull-right" (click)="customizeEachNetwork()"><span
+                                    class="btn btn-primary transition txt_pd-top3">Customize for
+                                    each network</span></button>
                         </ng-container>
                         <span *ngIf="socialStatusList[0]?.id != null" [hidden]="socialStatusList[0]?.userId != userId">
                             <button type="button" class="btn btn-primary rounded-0 pull-right mr10"

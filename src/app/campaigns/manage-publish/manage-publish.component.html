@@ -695,30 +695,36 @@
                                           style="display: flex;" *ngIf="!campaign?.campaignProcessing">
                                           <ng-container *ngIf="campaign.launched">
                                              <ng-container *ngIf="campaign.campaignType!='LANDINGPAGE'">
-                                                <a class="custom-icon" *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+                                                <a class="custom-icon"
+                                                   *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
                                              (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount>0"
                                                    (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip"
                                                    data-placement="top" title="Show Redistributed Campaigns">
                                                    <i [class.disablednew]="!campaign.hasAccess"
-                                                      class="circled-number IconCustomization fontStyleNormal"><strong>{{campaign.redistributedCount}}</strong></i><div class="clickicons"></div>
+                                                      class="circled-number IconCustomization fontStyleNormal"><strong>{{campaign.redistributedCount}}</strong></i>
+                                                   <div class="clickicons"></div>
                                                 </a>
-                                                <a class="custom-icon" *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+                                                <a class="custom-icon"
+                                                   *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
                                                 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0"
                                                    data-toggle="tooltip" data-placement="top"
                                                    title="No Redistributed Campaigns">
                                                    <i
-                                                      class="circled-number disabled IconCustomization fontStyleNormal"><strong>{{campaign.redistributedCount}}</strong></i><div class="clickicons"></div>
+                                                      class="circled-number disabled IconCustomization fontStyleNormal"><strong>{{campaign.redistributedCount}}</strong></i>
+                                                   <div class="clickicons"></div>
                                                 </a>
                                                 <ng-container
                                                    *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
                                                 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier)
                                                 && campaign.channelCampaign && campaign.campaignType.indexOf('SOCIAL')<0 && campaign.campaignType.indexOf('LANDINGPAGE') <0 && campaign.campaignType.indexOf('EVENT')<0">
-                                                   <a class="custom-icon"  (click)="goToTemplateDownloadPartners(campaign)"
+                                                   <a class="custom-icon"
+                                                      (click)="goToTemplateDownloadPartners(campaign)"
                                                       data-toggle="tooltip" data-placement="top"
                                                       title="Show Download History">
                                                       <span><i [class.disablednew]="!campaign.hasAccess"
                                                             class="fa fa-history IconCustomization"
-                                                            aria-hidden="true"></i></span><div class="clickicons"></div>
+                                                            aria-hidden="true"></i></span>
+                                                      <div class="clickicons"></div>
                                                    </a>
                                                    <a class="custom-icon" *ngIf="templateEmailOpenedAnalyticsAccess"
                                                       (click)="goToTemplateEmailOpenedAnalytics(campaign)"
@@ -727,12 +733,14 @@
                                                       <span>
                                                          <i [class.disablednew]="!campaign.hasAccess"
                                                             class="fa fa-envelope-open-o IconCustomization"
-                                                            aria-hidden="true"></i></span><div class="clickicons"></div>
+                                                            aria-hidden="true"></i></span>
+                                                      <div class="clickicons"></div>
                                                    </a>
                                                 </ng-container>
                                                 <ng-container
-                                                    *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && !campaign?.nurtureCampaign && !campaign.toPartner" >
-                                                   <a class="custom-icon" (click)="goToTemplateDownloadPartners(campaign)"
+                                                   *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && !campaign?.nurtureCampaign && !campaign.toPartner">
+                                                   <a class="custom-icon"
+                                                      (click)="goToTemplateDownloadPartners(campaign)"
                                                       data-toggle="tooltip" data-placement="top"
                                                       title="Show Download History" data-rel="fancybox-button">
                                                       <i class="fa fa-history IconCustomization" aria-hidden="true"></i>
@@ -746,11 +754,12 @@
                                                          <i [class.disablednew]="!campaign.hasAccess"
                                                             class="fa fa-envelope-open-o IconCustomization"
                                                             aria-hidden="true"></i></span>
-                                                            <div class="clickicons"></div>
+                                                      <div class="clickicons"></div>
                                                    </a>
                                                 </ng-container>
                                              </ng-container>
-                                             <a class="custom-icon" [class.disablednew]="!campaign.hasAccess && !authenticationService?.module?.deletedPartner"
+                                             <a class="custom-icon"
+                                                [class.disablednew]="!campaign.hasAccess && !authenticationService?.module?.deletedPartner"
                                                 *ngIf="authenticationService?.module?.deletedPartner || hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor ||  authenticationService.module.isPrm || authenticationService.module.isVendorTier || isOnlyPartner"
                                                 data-rel="fancybox-button" (click)="campaginRouter(campaign)"
                                                 data-toggle="tooltip" data-placement="top"
@@ -758,7 +767,7 @@
                                                 <span>
                                                    <i [class.disablednew]="!campaign.hasAccess && !authenticationService?.module?.deletedPartner"
                                                       class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
-                                                      <div class="clickicons"></div>
+                                                   <div class="clickicons"></div>
                                                 </span>
                                              </a>
                                           </ng-container>
@@ -1113,7 +1122,7 @@
                      </div>
                      <div class="tab-pane active" *ngIf="modulesDisplayType.isGridView">
                         <!----Grid View------>
-                        <div class="margin-top-10">
+                        <div class="margin-top-10 neg_mrg_top4">
                            <div class="row mix-grid p15">
                               <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
                               <ng-container
@@ -1284,55 +1293,66 @@
                                        <div class="bar auto-height gridIconCustomization"
                                           *ngIf="!campaign?.campaignProcessing">
                                           <!--Buttons Start Here-->
-                                          <a class="Iconhover custom-grid-icon" [class.disablednew]="!campaign.hasAccess"
+                                          <a class="Iconhover custom-grid-icon"
+                                             [class.disablednew]="!campaign.hasAccess"
                                              *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
                                           || isOnlyPartner|| authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner ||  authenticationService.module.isPrmAndPartnerTeamMember)"
                                              (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="top"
                                              title="Edit Campaign">
-                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i><div class="clickicons"></div>
+                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                             <div class="clickicons"></div>
                                           </a>
                                           <ng-container *ngIf="campaign.launched && !campaign.vendorCampaignDeleted">
                                              <ng-container
                                                 *ngIf="campaign.formsCount>0 && !campaign.defaultForm && campaign.campaignType.indexOf('EVENT') <0">
-                                                <a class="Iconhover custom-grid-icon" (click)="goToFormAnalytics(campaign.campaignId)"
+                                                <a class="Iconhover custom-grid-icon"
+                                                   (click)="goToFormAnalytics(campaign.campaignId)"
                                                    data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                                                    title="Form Analytics">
-                                                   <i class="fa fa-wpforms" aria-hidden="true"></i><div class="clickicons"></div>
+                                                   <i class="fa fa-wpforms" aria-hidden="true"></i>
+                                                   <div class="clickicons"></div>
                                                 </a>
                                                 <span class="badge"
                                                    id="notification-list">{{campaign.formsCount}}</span>
                                              </ng-container>
-                                             <a class="Iconhover custom-grid-icon" [class.disablednew]="!campaign.hasAccess"
+                                             <a class="Iconhover custom-grid-icon"
+                                                [class.disablednew]="!campaign.hasAccess"
                                                 *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted"
                                                 data-rel="fancybox-button" (click)="openEventUrlModal(campaign)"
                                                 title="Copy Public Event Url">
-                                                <i class="fa fa-link" aria-hidden="true"></i><div class="clickicons"></div>
+                                                <i class="fa fa-link" aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
-                                             <a class="Iconhover custom-grid-icon" [class.disablednew]="!campaign.hasAccess"
+                                             <a class="Iconhover custom-grid-icon"
+                                                [class.disablednew]="!campaign.hasAccess"
                                                 *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)"
                                                 data-rel="fancybox-button" (click)="inviteMore(campaign)"
                                                 title="Invite More">
-                                                <i class="fa fa-users" aria-hidden="true"></i><div class="clickicons"></div>
+                                                <i class="fa fa-users" aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                              <a class="Iconhover custom-grid-icon"
                                                 *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
                                              (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrm) && campaign.redistributedCount>0"
                                                 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip"
                                                 data-placement="top" title="Show Redistributed Campaigns">
-                                                <strong>{{campaign.redistributedCount}}</strong><div class="clickicons"></div>
+                                                <strong>{{campaign.redistributedCount}}</strong>
+                                                <div class="clickicons"></div>
                                              </a>
                                              <a class="Iconhover custom-grid-icon"
                                                 [class.disablednew]="!campaign.hasAccess && !authenticationService?.module?.deletedPartner"
                                                 *ngIf=" authenticationService?.module?.deletedPartner || hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier || isOnlyPartner"
                                                 (click)="campaginRouter(campaign)" data-toggle="tooltip"
                                                 data-placement="top" title="{{actionsDescription.campaign_report}}">
-                                                <i class="fa fa-line-chart" aria-hidden="true"></i><div class="clickicons"></div>
+                                                <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                              <a class="Iconhover custom-grid-icon"
                                                 *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0"
                                                 data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                                                 title="Copy campaign" (click)="openSaveAsModal(campaign)">
-                                                <i class="fa fa-files-o" aria-hidden="true"></i><div class="clickicons"></div>
+                                                <i class="fa fa-files-o" aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                              <a class="Iconhover custom-grid-icon"
                                                 *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch"
@@ -1340,63 +1360,76 @@
                                                 data-placement="top"
                                                 title="{{actionsDescription.campaign_preview_partner}}"
                                                 data-rel="fancybox-button">
-                                                <i class="fa fa-handshake-o" aria-hidden="true"></i><div class="clickicons"></div>
+                                                <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                              <ng-container
                                                 *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier)
                                                 && campaign.channelCampaign && campaign.campaignType.indexOf('SOCIAL')<0 && campaign.campaignType.indexOf('LANDINGPAGE') <0 &&  campaign.campaignType.indexOf('EVENT') <0  ">
-                                                <a class="Iconhover custom-grid-icon" (click)="goToTemplateDownloadPartners(campaign)"
+                                                <a class="Iconhover custom-grid-icon"
+                                                   (click)="goToTemplateDownloadPartners(campaign)"
                                                    data-toggle="tooltip" data-placement="top"
                                                    title="Show Download History" data-rel="fancybox-button">
-                                                   <i class="fa fa-history" aria-hidden="true"></i><div class="clickicons"></div>
+                                                   <i class="fa fa-history" aria-hidden="true"></i>
+                                                   <div class="clickicons"></div>
                                                 </a>
-                                                <a class="Iconhover custom-grid-icon" *ngIf="templateEmailOpenedAnalyticsAccess"
+                                                <a class="Iconhover custom-grid-icon"
+                                                   *ngIf="templateEmailOpenedAnalyticsAccess"
                                                    (click)="goToTemplateEmailOpenedAnalytics(campaign)"
                                                    data-toggle="tooltip" data-placement="top"
                                                    title="Email Open History By Template">
                                                    <span>
                                                       <i [class.disablednew]="!campaign.hasAccess"
-                                                         class="fa fa-envelope-open-o" aria-hidden="true"></i></span><div class="clickicons"></div>
+                                                         class="fa fa-envelope-open-o" aria-hidden="true"></i></span>
+                                                   <div class="clickicons"></div>
                                                 </a>
                                              </ng-container>
                                              <ng-container
                                                 *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign && !campaign?.nurtureCampaign ">
-                                                <a class="Iconhover custom-grid-icon " (click)="goToTemplateDownloadPartners(campaign)"
+                                                <a class="Iconhover custom-grid-icon "
+                                                   (click)="goToTemplateDownloadPartners(campaign)"
                                                    data-toggle="tooltip" data-placement="top"
                                                    title="Show Download History" data-rel="fancybox-button">
-                                                   <i class="fa fa-history" aria-hidden="true"></i><div class="clickicons"></div>
+                                                   <i class="fa fa-history" aria-hidden="true"></i>
+                                                   <div class="clickicons"></div>
                                                 </a>
-                                                <a class="Iconhover custom-grid-icon" *ngIf="templateEmailOpenedAnalyticsAccess"
+                                                <a class="Iconhover custom-grid-icon"
+                                                   *ngIf="templateEmailOpenedAnalyticsAccess"
                                                    (click)="goToTemplateEmailOpenedAnalytics(campaign)"
                                                    data-toggle="tooltip" data-placement="top"
                                                    title="Email Open History By Template">
                                                    <span>
                                                       <i [class.disablednew]="!campaign.hasAccess"
-                                                         class="fa fa-envelope-open-o" aria-hidden="true"></i></span><div class="clickicons"></div>
+                                                         class="fa fa-envelope-open-o" aria-hidden="true"></i></span>
+                                                   <div class="clickicons"></div>
                                                 </a>
                                              </ng-container>
                                              <a class="Iconhover custom-grid-icon"
                                                 *ngIf="!archived && campaign.canArchive && !authenticationService?.module?.deletedPartner"
                                                 (click)="archiveCampaign(campaign)" data-toggle="tooltip"
                                                 data-placement="top" title="Archive">
-                                                <i class="fa fa-archive" aria-hidden="true"></i><div class="clickicons"></div>
+                                                <i class="fa fa-archive" aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                              <a class="Iconhover custom-grid-icon"
                                                 *ngIf="archived && campaign.canArchive && !authenticationService?.module?.deletedPartner"
                                                 (click)="unarchiveCampaign(campaign)" data-toggle="tooltip"
                                                 data-placement="top" title="Unarchive">
-                                                <i class="fa fa-archive" aria-hidden="true"></i><div class="clickicons"></div>
+                                                <i class="fa fa-archive" aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                              <a class="Iconhover custom-grid-icon" *ngIf="campaign.canEditEndDate"
                                                 (click)="showEndDateModal(campaign)" data-toggle="tooltip"
                                                 data-placement="top" title="Update End Date">
-                                                <i class="fa fa-calendar-times-o" aria-hidden="true"></i><div class="clickicons"></div>
+                                                <i class="fa fa-calendar-times-o" aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                              <a class="Iconhover custom-grid-icon"
                                                 *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted"
                                                 data-toggle="tooltip" data-placement="top"
                                                 (click)="sendEventEmail(campaign)" title="Send Preview Email" translate>
-                                                <i class="fa fa-envelope" aria-hidden="true"></i><div class="clickicons"></div>
+                                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                           </ng-container>
                                           <span [class.disablednew]="!campaign.hasAccess">
@@ -1404,13 +1437,15 @@
                                                 *ngIf="!campaign.vendorCampaignDeleted && !authenticationService?.module?.deletedPartner"
                                                 (click)="showCampaignPreview(campaign)" data-toggle="tooltip"
                                                 data-placement="top" title="Preview">
-                                                <i class="fa fa-eye" aria-hidden="true"></i><div class="clickicons"></div>
+                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                              <a class="delete custom-icon"
                                                 *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted"
                                                 (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)"
                                                 data-toggle="tooltip" data-placement="top" title="Delete Campaign">
-                                                <i class="fa fa-trash-o" aria-hidden="true"></i><div class="del-icon"></div>
+                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                <div class="del-icon"></div>
                                              </a>
                                           </span>
                                           <span [class.disablednew]="!campaign.hasAccess"
@@ -1420,7 +1455,8 @@
                                                 data-toggle="tooltip" data-placement="top" title="Cancel Event"
                                                 data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId, campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner
                                           )">
-                                                <i class="fa fa-ban" aria-hidden="true"></i><div class="clickicons"></div>
+                                                <i class="fa fa-ban" aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a></span>
                                           <span
                                              *ngIf="campaign.launched && campaign.campaignType === 'EVENT' && campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
@@ -1429,7 +1465,8 @@
                                           || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isVendorSuperVisor || authenticationService.isOrgAdminSuperVisor || authenticationService?.module?.isMarketingCompany) && !campaign.nurtureCampaign"
                                                 data-toggle="tooltip" data-placement="top" title="Update event"
                                                 data-rel="fancybox-button" (click)="updateEvent(campaign)">
-                                                <i class="fa fa-pencil" aria-hidden="true"></i><div class="clickicons"></div>
+                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a></span>
                                        </div>
                                     </div>
@@ -1451,7 +1488,8 @@
                      [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError"
                      style="padding: 0px 25px 10px 0px;">
                      <div *ngIf="pagination.pagedItems.length !== 0" class="row"
-                        style="padding-left: 10px;margin-top: 5px;">
+                        style="padding-left: 10px;margin-top: 5px;"
+                        [ngStyle]="{'margin-top': modulesDisplayType.isGridView ? '-15px':'-8px'}">
                         <app-pagination class="col-xs-10" [pagination]="pagination" [type]="'campaign'"
                            [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
                         <select class="col-xs-2 form-control" style="float: right; width: auto;" [(ngModel)]="itemsSize"

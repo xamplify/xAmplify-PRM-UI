@@ -102,7 +102,7 @@
                     *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
                 <section *ngIf="modulesDisplayType.isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
-                        <div class="table-responsive">
+                        <div class="table-responsive pos_pd-top4">
                             <table class='table tgrid table-hover table-sm' id="manage-lms-list-table"
                                 *ngIf="pagination.pagedItems?.length>0" aria-describedby="lms-list">
                                 <thead>
@@ -150,8 +150,8 @@
                                                 alt="{{learningTrack?.title}}">
                                         </td>
                                         <td>
-                                            <h4 class="mt5 mb5 moreipsis" data-toggle="tooltip"
-                                                data-placement="top" title="{{learningTrack.title}}">
+                                            <h4 class="mt5 mb5 moreipsis" data-toggle="tooltip" data-placement="top"
+                                                title="{{learningTrack.title}}">
                                                 <span><b>{{titleHeader}} Title:</b> {{learningTrack.title}}</span>
                                             </h4>
                                             <h6 class="moreipsis">
@@ -275,7 +275,7 @@
                     </ng-container>
                 </section>
                 <!--Grid View--->
-                <div class="row p17"
+                <div class="row p17 neg_mrg_top8"
                     *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_grid GridviewSidePaddings"
                         *ngFor="let learningTrack of pagination.pagedItems ;let i =index"
@@ -398,7 +398,7 @@
                     </div>
                 </div>
                 <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-                    <div *ngIf="pagination.pagedItems.length !== 0" class="mt5">
+                    <div *ngIf="pagination.pagedItems.length !== 0" class="neg_mrg_top3">
                         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
                             (notifyParentDropDown)="listLearningTracks($event)"
                             [hidden]="httpRequestLoader.isLoading"></app-pagination>
