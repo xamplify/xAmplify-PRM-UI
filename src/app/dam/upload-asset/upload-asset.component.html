@@ -57,9 +57,13 @@
                         <i class="fa fa-times" aria-hidden="true"></i>
                      </a>
                   </div>
-                  <div *ngIf="showEditPdfButton"  class="btn-group" id="right">
-                     <button class="btn btn-primary transition" type="button" (click)="editPdf()">Edit PDF</button>
+                  <div *ngIf="isBeeTemplatePdf">
+                     <button [title]="isAssetPublished ? 'This PDF is not editable as it has already been published.':''" [disabled]="isAssetPublished" id="right" style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pos_mar_rgt4"
+                           type="button" (click)="!isAssetPublished && editPdf()">
+                           <span class="btn btn-primary transition">Edit PDF</span>
+                     </button>
                   </div>
+                  
                   
                </div>
                <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">

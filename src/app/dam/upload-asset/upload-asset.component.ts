@@ -267,7 +267,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                         let data = result.data;
                         this.isAssetPublished = data.published;
                         this.isBeeTemplatePdf = data.beeTemplate;
-                        this.showEditPdfButton = !this.isAssetPublished && this.isBeeTemplatePdf;
 						this.validateForm('assetName');
 						this.validateForm('description');
 						this.formLoader = false;
