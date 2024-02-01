@@ -105,8 +105,8 @@
                   <span *ngIf="sfCustomField.selected">Required
                     <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right"
                       title="Your partner must fill in this custom field if you toggle on this option."></span>
-                    <label class="toggleOnOff" [ngClass]="!sfCustomField?.canUnselect ? 'disabled-opacity':''">
-                      <input class="checkBox_shadow" type="checkbox" [disabled]="!sfCustomField.canUnselect"
+                    <label class="toggleOnOff" [ngClass]="!sfCustomField?.canEditRequired ? 'disabled-opacity':''">
+                      <input class="checkBox_shadow" type="checkbox" [disabled]="!sfCustomField.canEditRequired"
                         [(ngModel)]="sfCustomField.required" [ngModelOptions]="{standalone: true}">
                       <span class="sliderOnOff"></span>
                       <span class="labels" data-on="ON" data-off="OFF"></span>
