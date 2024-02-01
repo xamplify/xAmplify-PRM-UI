@@ -303,7 +303,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
             }else if(!this.isAdd){
                 let fileName = file['name'];
                 let extension = this.referenceService.getFileExtension(fileName);
-                if (extension == this.damUploadPostDto.assetType) {
+                if (extension.toLocaleLowerCase() == this.damUploadPostDto.assetType.toLocaleLowerCase()) {
                     this.setUploadedFileProperties(file);
                 } else {
                     this.showAssetErrorMessage('Invalid file type. Only ' + this.damUploadPostDto.assetType + " file is allowed.");
