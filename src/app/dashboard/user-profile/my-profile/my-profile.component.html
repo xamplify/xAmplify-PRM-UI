@@ -184,6 +184,14 @@
                                                 (click)="activateTab('dealPipelines');clearCustomResponse()">
                                                 {{properties.dealPipelines | translate}}</a>
                                         </li>
+
+                                        <!-- XNFR-426 -->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}"  *ngIf="!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing" >
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadDealApprove'}"
+                                                (click)="activateTab('leadDealApprove');getLeadApprovalstatus();">
+                                                {{properties.leadDealApprove | translate}}</a>
+                                        </li>
+
                                     </ng-container>
                                     <!--------------Developers----------------------->
                                     <div class="my-profile-header-text">Developers</div>
@@ -837,6 +845,46 @@
                                                     class="button bgcolor-unset" (click)="saveDealTypes()"><span
                                                         class="btn Btn-Green transition txt_pd-top3">{{dealButtonText}}</span></button>
                                             </form>
+                                        </div>
+
+                                        <!-- XNFR-426 -->
+                                        <div class="tab-content" *ngIf="activeTabName == 'leadDealApprove'"
+                                            [ngClass]="{'active': activeTabName == 'leadDealApprove'}">
+                                            <app-response-message [customResponse]="leadApprovalCustomResponse"
+                                                *ngIf="leadApprovalCustomResponse.isVisible"></app-response-message>
+                                            <table class="table table-light" style="border:0px!important;background-color:transparent!important">
+                                                <tbody>
+                                                    <fieldset class="fild-custome-borders-none">
+                                                        <legend class="leg-custome-borders-bot">Turn Lead Approval/Rejection option ON or OFF</legend>
+                                                    </fieldset>
+                                                    <tr class="col-md-12 col-lg-12">
+                                                        <div class="flex row">
+                                                            <div class="col-md-9 col-lg-9">
+                                                                <h4 class="f-w-600" id="text-color-my-profile" translate>You have the ability to Approve or
+                                                                    Reject the leads registered by the partners.
+                                                                </h4>
+                                                            </div>
+                                                            <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+                                                                <section>
+                                                                    <switch [(status)]="leadApprovalStatus" [onText]="callActionSwitch.onTextValue"
+                                                                        [offText]="callActionSwitch.offTextValue"
+                                                                        [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                                        [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+                                                                        (statusChange)="setLeadApprovalOrRejectionStatus($event)">
+                                                                    </switch>
+                                                                </section>
+                                                            </div>
+                                                        </div>
+                                                    </tr>
+                                                    <br>
+                                                </tbody>
+                                            </table>
+                                        
+                                            <br>
+                                            <button type="submit" class="button bgcolor-unset" (click)="updateLeadApprovalOrRejectionStatus()" translate><span
+                                                    class="btn Btn-Green transition txt_pd-top3">Save Changes
+                                                </span>
+                                            </button>
                                         </div>
                                         <!---Integrations-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">

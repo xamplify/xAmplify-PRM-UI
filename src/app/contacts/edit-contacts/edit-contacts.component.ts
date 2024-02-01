@@ -58,6 +58,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() isFormList: boolean;
 	@Input() companyName: any;
 	@Input() manageCompanies: boolean = false;
+	@Input() isCompanyBreadCrumb: boolean = false;
 	/*****XNFR-98******/
 	@Input() isTeamMemberPartnerList:boolean;
 	editContacts: User;

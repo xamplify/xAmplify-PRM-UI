@@ -338,3 +338,16 @@ background: green;
     max-width: 1150px;
 }
 
+.approvedbtn{
+    top: 14px;
+    position: relative;
+    z-index: 20;
+    padding: 5px 10px;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 22px;
+    border-radius: 3px;  
+    background: #ddd;
+}

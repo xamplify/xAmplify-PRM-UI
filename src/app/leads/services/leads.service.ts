@@ -250,5 +250,12 @@ export class LeadsService {
     .map(this.extractData)
     .catch(this.handleError);
   }
-  
+
+  /*******XNFR-426*******/
+  updateLeadApprovalStatus(lead: Lead){
+    return this.http.post(this.URL + `/update/leadApprovalStatus?access_token=${this.authenticationService.access_token}`,lead)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
 }

@@ -28,6 +28,7 @@ import { ConnectwiseProductsRequestDto } from '../models/connectwise-products-re
 import { ConnectwiseCatalogItemDto } from '../models/connectwise-catalog-item-dto';
 import { ConnectwiseOpportunityDto } from '../models/connectwise-opportunity-dto';
 import { ConnectwiseStatusDto } from '../models/connectwise-status-dto';
+import { DealComments } from 'app/deal-registration/models/deal-comments';
 declare var flatpickr: any, $: any, swal: any;
 
 
@@ -108,7 +109,7 @@ export class AddDealComponent implements OnInit {
   showLeadForm: boolean = false;
   dealToLead: any;
   showSelectLeadModel: boolean;
-  showAttachLeadButton: boolean = true;
+  showAttachLeadButton: boolean = false;
   attachLeadText: string = "Attach a Lead";
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -609,10 +610,7 @@ export class AddDealComponent implements OnInit {
       );
   }
 
-
-
   validateQuestion(property: DealDynamicProperties) {
-
     if (property.key.length > 0 && property.value.length > 0 && property.key.trim() && property.value.trim()) {
       property.validationStausKey = this.successClass;
       property.error = false;
@@ -979,6 +977,12 @@ export class AddDealComponent implements OnInit {
               && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
                 || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type)) {
               this.showCustomForm = true;
+            }
+            if ( !this.activeCRMDetails.activeCRM || "CONNECTWISE" === this.activeCRMDetails.type) {
+              if (this.actionType !== 'view' && (this.actionType !== 'edit' || this.deal.associatedContact === undefined)) {
+                this.showAttachLeadButton = true;
+              }
+              
             }
           }
         },
