@@ -40,9 +40,6 @@ export class AddLeadComponent implements OnInit {
   @Output() notifyAnalyticsComponentToHidePopup= new EventEmitter();
   /****XNFR-426****/
   @Output() notifyUnReadChatCount = new EventEmitter();
-
-
-  @Output() notifyAnalyticsComponentToHidePopup = new EventEmitter();
   @Output() notifyClose = new EventEmitter();
 
   lead: Lead = new Lead();
