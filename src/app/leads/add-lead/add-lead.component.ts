@@ -106,12 +106,10 @@ export class AddLeadComponent implements OnInit {
           this.getContactInfo();
         }
       }
-
-      if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
-        this.disableCreatedFor = true;
-      }
     }
-
+    if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
+      this.disableCreatedFor = true;
+    }
     this.getVendorList();
   }
 
