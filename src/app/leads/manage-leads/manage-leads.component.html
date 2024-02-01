@@ -337,7 +337,7 @@
                                   </span>
                                 </h5>
                               </div>
-                              <div *ngIf="isVendorVersion && lead?.parentCampaignId <= 0 && lead?.campaignId > 0"
+                              <div *ngIf="isVendorVersion && lead?.parentCampaignId == 0 && lead?.campaignId > 0"
                                 style="margin-left: 60px;">
                                 <h5 class="m0"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
@@ -407,7 +407,7 @@
                                   </div>
                                 </div>
                                 <div class="buttons"
-                                  *ngIf="!lead?.associatedDealId > 0 && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection">
+                                  *ngIf="!(lead?.associatedDealId > 0) && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection">
                                   <button type="button" class="button_blue bgcolor-unset" translate (click)="addApprovalStatusModelPopup(lead,'APPROVED')"><span
                                     class="btn btn-primary transition txt_pd-top3">Approve</span></button>
                                 <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="addApprovalStatusModelPopup(lead,'REJECTED')" translate>Reject</button>

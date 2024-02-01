@@ -166,11 +166,7 @@
                 Deal
               </div>
 
-              <!-- <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner"
-                class="register_deal">
-                <a style="color: #008fd5;" (click)="registerDeal(lead)" translate>
-                  Register Deal</a>
-              </div> -->
+
 
               <div *ngIf="lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner">
                 <button class="button_blue bgcolor-unset"
@@ -182,12 +178,12 @@
               <!--toggle on --><!--------XNFR-426--------->
               <div *ngIf="lead?.leadApprovalOrRejection">
                 <div *ngIf="!authenticationService?.module?.deletedPartner">
-                  <div style="color: #06c306;" *ngIf="lead?.leadApprovalStatusType == 'APPROVED' && lead?.associatedDealId == undefined" translate>
+                  <div style="color: #06c306;" *ngIf="lead?.leadApprovalStatusType == 'APPROVED' && lead?.associatedDealId == undefined">
                     <i class="fa fa-check-circle mr5" aria-hidden="true"
                       style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                     Approved
                   </div>
-                  <div style="color: #f71111;" *ngIf="lead?.leadApprovalStatusType == 'REJECTED' && lead?.associatedDealId == undefined" translate>
+                  <div style="color: #f71111;" *ngIf="lead?.leadApprovalStatusType == 'REJECTED' && lead?.associatedDealId == undefined">
                     <i class="fa fa-times-circle mr5" aria-hidden="true"
                       style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                     Rejected
@@ -201,7 +197,7 @@
                   </div>
                 </div>
                 <div class="buttons"
-                  *ngIf="!lead?.associatedDealId > 0 && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection">
+                  *ngIf="!(lead?.associatedDealId > 0) && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection">
                   <button type="button" class="button_blue bgcolor-unset" translate (click)="addApprovalStatusModelPopup(lead,'APPROVED')"><span
                     class="btn btn-primary transition txt_pd-top3">Approve</span></button>
                 <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="addApprovalStatusModelPopup(lead,'REJECTED')" translate>Reject</button>
