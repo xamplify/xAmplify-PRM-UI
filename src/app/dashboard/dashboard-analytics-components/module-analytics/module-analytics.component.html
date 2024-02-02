@@ -4,19 +4,19 @@
 <app-box-loader [countLoader]=4 *ngIf="loader"></app-box-loader>
 <ng-container *ngIf="!loader">
 <div *ngFor="let dto of dashboardModuleAnalyticsViewDtos" data-toggle="tooltip" 
- [title]="dto.hasAccess? 'Click to see details':'You do not have permission to see details'" 
- [className]="dto.hasAccess? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 tiles_hover_effect' : 'col-sm-4 col-xs-6 col-lg-3 col-md-3 dashboard-access-denied'" (click)="goToManage(dto)">
-<a  class="{{dto.color}}">
+ [title]="dto.hasAccess && dto.count? 'Click to see details':'You do not have permission to see details'" 
+ [className]="(dto.hasAccess && dto.count) ? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 tiles_hover_effect' : 'col-sm-4 col-xs-6 col-lg-3 col-md-3 dashboard-access-denied'" (click)="dto.count !== 0 ? goToManage(dto) : null">
+<a  class="{{dto.color}}" [ngStyle]="{'pointer-events': dto.count === 0 ? 'none' : 'auto'}">
   <div class="visual">
     <i *ngIf="dto.moduleId!=3" class="{{dto.faIcon}} dbiconscss" aria-hidden="true"></i>
     <img *ngIf="dto.moduleId==3"  class="img-dash" src="assets/images/white15.png" alt="No Image Found">
   </div>
-  <div class="details">
+  <div class="details" [ngClass]="{'disabled': dto.count === 0}">
     <div class="number NumberFontDecrease">{{dto.count}}</div>
     <div [className]="dto?.moduleName?.length>=31 ? 'desc custom-name-font TextFontDecrease':'desc default-name-font TextFontDecrease'">{{dto.moduleName | translate}}</div>
   </div>
   <span class="morePadding">
-    <a [className]="dto.hasAccess? 'more':'more dashboard-access-denied'" translate> Detailed view 
+    <a [className]="(dto.hasAccess&& dto.count)? 'more':'more dashboard-access-denied'" translate> Detailed view 
       <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
   </span>
 </a>
