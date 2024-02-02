@@ -165,8 +165,9 @@
                                     <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" *ngIf="(hasAllAccess || 
                                     hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
                                      || authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
-                                     !authenticationService.isOnlyPartner() && authenticationService.enableLeads && 
-                                      authenticationService.superiorRole != 'Partner'">
+                                     !authenticationService.isOnlyPartner() || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
+                                     || authenticationService.module.isPrmAndPartner  || authenticationService.module.isPrmAndPartnerTeamMember && authenticationService.enableLeads && 
+                                      authenticationService.superiorRole != 'Partner'" >
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"
                                             (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration
                                             | translate}}</a>
