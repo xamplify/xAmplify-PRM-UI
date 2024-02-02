@@ -183,7 +183,8 @@
                                        </button>
                                     </div>
                                     <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space"
-                                       data-toggle="tooltip" title="Click here to export excel" (click)="downloadCampaignsData(pagination)">
+                                       data-toggle="tooltip" title="Click here to export excel" (click)="downloadCampaignsData(pagination)"
+                                       *ngIf="downloadCampaigns">
                                        <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                                     </span>
                                     <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space"

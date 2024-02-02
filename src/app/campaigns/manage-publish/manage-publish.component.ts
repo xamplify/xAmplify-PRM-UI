@@ -124,6 +124,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     editButtonClicked = false;
     selectedCampaignId = 0;
     showUpArrowButton = false;
+    downloadCampaigns = true;
     /******** user guide *************/
     mergeTagForGuide:any;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
@@ -1105,6 +1106,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     showArchivedCampaigns() {
+        this.downloadCampaigns = false;
         this.archived = true;
         this.campaignService.archived = true;
         this.resetPagination();        
@@ -1112,6 +1114,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     showActiveCampaigns() {
+        this.downloadCampaigns = true;
         this.archived = false;
         this.campaignService.archived = false;  
         this.resetPagination();      
