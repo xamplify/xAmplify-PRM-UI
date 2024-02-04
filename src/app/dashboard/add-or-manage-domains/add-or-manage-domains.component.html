@@ -12,13 +12,13 @@
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
         <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align mt10">
           <!--One at a Time-->
-          <button id="add_domain" class="button bgcolor-unset mrgn_lft0 p0 px-9" [disabled]="csvExcludeDomainsFilePreview" (click)="addDomainModalOpen()">
+          <button id="add_domain" class="button bgcolor-unset mrgn_lft0 p0 px-9" [disabled]="uploadedCsvFilePreview" (click)="addDomainModalOpen()">
             <span class="btn Btn-Green transition txt_pd-top3 pd_lft8">One at a Time
             <i class="fa fa-plus" style="font-size: 12px; margin-left: 2px;"></i>
             </span>
           </button>
           <!--Upload CSV-->
-          <button id="uploadCSV" class="button bgcolor-unset p0 px-9">
+          <button id="uploadCSV" class="button bgcolor-unset p0 px-9" style="display: none;">
               <span class="btn Btn-Green transition txt_pd-top3">
                 <span style="text-align: center">Upload CSV</span>
                 <input class="upload-file" type="file" title=" " (click)="input.value = null"  (change)="fileChange(input, 'exclude-domains')" accept=".csv" #input />
@@ -26,8 +26,59 @@
             </span>
         </button>
         </div>
+        <!--Search Option-->
+        <div class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6 TotalSearchBoxWidth mt10 float-right"  *ngIf="!uploadedCsvFilePreview"
+            [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+        <div class="input-icon right">
+          <input type="text" [(ngModel)]="pagination.searchKey" (keypress)="searchDomainsOnKeyPress($event.keyCode)" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a domain">
+          <button *ngIf="pagination?.searchKey" class="glyphicon glyphicon-remove search-box-item-clear" (click)="pagination.searchKey='';searchDomains()"></button>
+          <button type="submit" class="search-box-item-click" (click)="searchDomains()"><i class="fa fa-search"></i></button>
+        </div>
+        </div>   
       </div>
+
+      
+       <!--List----->
+       <div class="clearfix" *ngIf="pagination.pagedItems?.length>0">
+        <div class="col-xs-12 p0 mt10">
+            <div class="table-responsive">
+            <table class='table tgrid' *ngIf="pagination.pagedItems?.length>0">
+                <thead>
+                <tr>
+                    <th style="width: 50%" translate>Name</th>
+                    <th style="width: 40%" translate>Created On</th>
+                    <th style="width:10%" translate>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ng-container *ngFor="let domain of pagination.pagedItems ;let i =index">
+                    <tr class='row_{{i}}' style="background-color: #FFFFFF;">
+                    <td>
+                        <h6>{{domain?.domainName}}</h6>
+                    </td>
+                    <td>
+                        <h6><app-timestamp [dateAndTime]="domain.time"></app-timestamp></h6>
+                    </td>
+                    <td>
+                        <div class="actions-block override-actions mb_whitespace" style="float:none;">
+                        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Delete" (click)="showConfirmAlert(domain)">
+                            <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                            <div class="del-icon"></div>
+                        </a>
+                        </div>
+                    </td>
+                </ng-container>
+                </tbody>
+            </table>
+            </div>
+        </div>
+       <!--Pagination-->       
+           
+       </div>
     </fieldset>
+    <div *ngIf="pagination?.pagedItems?.length == 0" class="alert alert-info mt10">
+        <strong>No Records Found.</strong>
+      </div>
   </tbody>
 </table>
 
@@ -46,7 +97,7 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-info">
-                    <p class="exclusion-text-color">
+                    <p>
                         {{descriptionText}} <br><br>
                         <strong>Example:</strong> example.com
                     </p>

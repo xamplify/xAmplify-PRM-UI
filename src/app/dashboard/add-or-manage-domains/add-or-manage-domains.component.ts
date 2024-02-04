@@ -4,15 +4,17 @@ import { Properties } from 'app/common/models/properties';
 import { FileUtil } from 'app/core/models/file-util';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
+import { SortOption } from 'app/core/models/sort-option';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { UtilService } from 'app/core/services/util.service';
 
 declare var $:any,Papa: any;;
 @Component({
   selector: 'app-add-or-manage-domains',
   templateUrl: './add-or-manage-domains.component.html',
   styleUrls: ['./add-or-manage-domains.component.css','../user-profile/my-profile/my-profile.component.css'],
-  providers:[HttpRequestLoader,Properties],
+  providers:[HttpRequestLoader,Properties,SortOption],
 })
 export class AddOrManageDomainsComponent implements OnInit {
 
@@ -22,18 +24,19 @@ export class AddOrManageDomainsComponent implements OnInit {
   downloadCsvText = "";
   isAddDomainsModule = false;
   isExcludeDomainModule = false;
-  csvExcludeDomainsFilePreview = false;
+  uploadedCsvFilePreview = false;
   domain = "";
   descriptionText = "";
   isDomainExist: boolean = false;
-	validDomainFormat: boolean = true;
-	validDomainPattern: boolean = false;
+  validDomainFormat: boolean = true;
+  validDomainPattern: boolean = false;
   isListLoader = false;
   excludedUsers: any[];
-  csvDomainPagination: Pagination = new Pagination();
+  pagination: Pagination = new Pagination();
   addedDomains: string[] = [];
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
-    public httpRequestLoader:HttpRequestLoader,public properties:Properties,public fileUtil:FileUtil) { }
+    public httpRequestLoader:HttpRequestLoader,public properties:Properties,public fileUtil:FileUtil,public sortOption:SortOption,
+	public utilService:UtilService) { }
 
   ngOnInit() {
     this.isAddDomainsModule = this.moduleName=="addDomains";
@@ -64,13 +67,13 @@ export class AddOrManageDomainsComponent implements OnInit {
 
   addDomainModalClose(){
     $('#addDomainModal').modal('toggle');
-		$("#addDomainModal .close").click();
-		$('#addDomainModal').modal('hide');
-		$('.modal').removeClass('show');
-		this.domain = "";
-		this.isDomainExist = false;
-		this.validDomainFormat = true;
-		this.validDomainPattern = false;
+	$("#addDomainModal .close").click();
+	$('#addDomainModal').modal('hide');
+	$('.modal').removeClass('show');
+	this.domain = "";
+	this.isDomainExist = false;
+	this.validDomainFormat = true;
+	this.validDomainPattern = false;
   }
 
   fileChange(input: any, excludetype: string) {
@@ -95,9 +98,9 @@ export class AddOrManageDomainsComponent implements OnInit {
 					if (self.validateHeaders(headers, excludetype)) {
 						var csvResult = Papa.parse(contents);
 						  var allTextLines = csvResult.data;
-						  self.csvDomainPagination = new Pagination();
+						  self.pagination = new Pagination();
 							self.addedDomains = [];
-							self.readExcludedDomainsCSVFileContent(allTextLines, self.csvDomainPagination);
+							self.readExcludedDomainsCSVFileContent(allTextLines, self.pagination);
 					} else {
 						self.showErrorMessage(excludetype);
 						self.isListLoader = false;
@@ -117,7 +120,7 @@ export class AddOrManageDomainsComponent implements OnInit {
   }
 
 
-  readExcludedDomainsCSVFileContent(allTextLines: any, csvDomainPagination: Pagination) {
+  readExcludedDomainsCSVFileContent(allTextLines: any, pagination: Pagination) {
 		this.customResponse = new CustomResponse
 		for (var i = 1; i < allTextLines.length; i++) {
 			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
@@ -125,16 +128,16 @@ export class AddOrManageDomainsComponent implements OnInit {
 				this.addedDomains.push(domain);
 			}
 		}
-		this.csvDomainPagination.page = 1;
-		this.csvDomainPagination.maxResults = 12;
-		this.csvDomainPagination.type = "csvDomains";
+		this.pagination.page = 1;
+		this.pagination.maxResults = 12;
+		this.pagination.type = "csvDomains";
 		//this.setPage(this.csvDomainPagination);
 		this.isListLoader = false;
 		if (this.addedDomains.length === 0) {
 			this.customResponse = new CustomResponse('ERROR', "No domains found.", true);
-			this.csvExcludeDomainsFilePreview = false;
+			this.uploadedCsvFilePreview = false;
 		}else{
-			this.csvExcludeDomainsFilePreview = true;
+			this.uploadedCsvFilePreview = true;
 
 		}
 
@@ -160,6 +163,33 @@ export class AddOrManageDomainsComponent implements OnInit {
 		}
 	}
 
+
+	/********Pagination & Search Code***********/
+	navigateBetweenPageNumbers(event: any) {
+		this.pagination.pageIndex = event.page;
+		this.findDomains(this.pagination);
+	  }
+	
+	  searchDomains() {
+		this.getAllFilteredResults(this.pagination);
+	  }
+	
+	  searchDomainsOnKeyPress(keyCode: any) { if (keyCode === 13) { this.searchDomains(); } }
+	
+	  sortBy(text: any) {
+		this.getAllFilteredResults(this.pagination);
+	  }
+	
+	  getAllFilteredResults(pagination: Pagination) {
+		pagination.searchKey = this.sortOption.searchKey;
+		pagination = this.utilService.sortOptionValues(this.sortOption.selectedDomainDropDownOption, pagination);
+		this.findDomains(pagination);
+	  }
+
+
+	findDomains(pagination: Pagination) {
+		throw new Error('Method not implemented.');
+	}
 
 
 
