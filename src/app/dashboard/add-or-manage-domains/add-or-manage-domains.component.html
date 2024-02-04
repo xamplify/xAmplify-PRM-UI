@@ -10,10 +10,70 @@
         </button>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-        <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style="margin-top:10px;">
-
+        <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align mt10">
+          <!--One at a Time-->
+          <button id="add_domain" class="button bgcolor-unset mrgn_lft0 p0 px-9" [disabled]="csvExcludeDomainsFilePreview" (click)="addDomainModalOpen()">
+            <span class="btn Btn-Green transition txt_pd-top3 pd_lft8">One at a Time
+            <i class="fa fa-plus" style="font-size: 12px; margin-left: 2px;"></i>
+            </span>
+          </button>
+          <!--Upload CSV-->
+          <button id="uploadCSV" class="button bgcolor-unset p0 px-9">
+              <span class="btn Btn-Green transition txt_pd-top3">
+                <span style="text-align: center">Upload CSV</span>
+                <input class="upload-file" type="file" title=" " (click)="input.value = null"  (change)="fileChange(input, 'exclude-domains')" accept=".csv" #input />
+                <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
+            </span>
+        </button>
         </div>
       </div>
     </fieldset>
   </tbody>
 </table>
+
+
+<!--Domain Modal Popup-->
+<div id="addDomainModal" class="modal fade right" role="dialog" aria-labelledby="myModalLabel"
+    data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
+    <div class="modal-dialog  accounts-modal" style="position: relative !important;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" data-dismiss="modal" (click)="addDomainModalClose()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title size-font" translate>Add Domain</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    <p class="exclusion-text-color">
+                        {{descriptionText}} <br><br>
+                        <strong>Example:</strong> example.com
+                    </p>
+                </div>
+                <br>
+                <form class="form-horizontal" autocomplete="off">
+                    <div class="form-group">
+                        <label class="control-label col-xs-1 col-sm-1 required-mark-padding" for="domain">
+                            <span class="mb-star star">*</span>
+                        </label>
+                        <div class="form-group col-xs-10 col-sm-10 domain-or-email-padding">
+                            <input type="text" style="border: none" class="form-control padding-mobile" id="domain"
+                                (input)="validateDomain(domain)" [(ngModel)]="domain"
+                                [ngModelOptions]="{standalone: true}" placeholder="Domain Name *" autocomplete="off"
+                                maxlength="250">
+                            <div class="textCss"></div>
+                            <span class="danger" *ngIf="isDomainExist">This domain name has already been added</span>
+                            <span class="danger" *ngIf="!validDomainFormat">This domain name is not formatted properly</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border:none">
+                <button class="btn Btn-Gray" (click)="addDomainModalClose()" translate>Cancel</button>
+                      <button type="button" class="button bgcolor-unset btn-top3" (click)="confirmAndsaveExcludedDomain(domain)"
+                    [disabled]="!validDomainPattern" translate><span class="btn Btn-Green transition txt_pd-top3">Add</span></button>
+            </div>
+        </div>
+    </div>
+</div>

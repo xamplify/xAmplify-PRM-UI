@@ -322,7 +322,7 @@ export class Properties {
 	/****XNFR-342****/
 
 	/***XNFR-454*****/
-	domainConfiguration = "Domain Configuration"
+	addDomainsText = "Add Domains";
 
 
 

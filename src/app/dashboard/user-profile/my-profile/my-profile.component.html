@@ -285,12 +285,12 @@
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.emailNotificationSettings}"
                                             (click)="activateTab(properties?.emailNotificationSettings);clearCustomResponse()">{{properties?.emailNotificationSettings}}</a>
                                     </li>
-                                    <!--Adding Domains-->
+                                    <!--Adding Domains XNFR-454-->
                                     <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
-                                        [ngClass]="{'active-tab': activeTabName == properties?.domainConfiguration}"
+                                        [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}"
                                         style="border-bottom: none !important;">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.domainConfiguration}"
-                                            (click)="activateTab(properties?.domainConfiguration);clearCustomResponse()">{{properties?.domainConfiguration}}</a>
+                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.addDomainsText}"
+                                            (click)="activateTab(properties?.addDomainsText);clearCustomResponse()">{{properties?.addDomainsText}}</a>
                                     </li>
                                 </ng-container>
                             </ul>
@@ -2205,8 +2205,8 @@
                                         </app-email-notification-settings>
 
                                         <!--XNFR-454 Domain Configuration-->
-                                        <app-add-or-manage-domains *ngIf="isDomainConfigurationOptionClicked" [moduleName]="'addDomains'" class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == properties?.domainConfiguration}">
+                                        <app-add-or-manage-domains *ngIf="isAddDomainsOptionClicked" [moduleName]="'addDomains'" class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == properties?.addDomainsText}">
                                         </app-add-or-manage-domains>
 
 

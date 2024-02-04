@@ -331,7 +331,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	leadApprovalStatus:boolean = false;
 	leadApprovalCustomResponse: CustomResponse = new CustomResponse();
 	/**XNFR-454****/
-	isDomainConfigurationOptionClicked: boolean;
+	isAddDomainsOptionClicked: boolean;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -1982,15 +1982,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.customLoginScreen;
 		}
 		/****XNFR-454****/
-		else if(this.activeTabName==this.properties.domainConfiguration){
+		else if(this.activeTabName==this.properties.addDomainsText){
 			this.ngxloading = true;
-			this.isDomainConfigurationOptionClicked = false;
+			this.isAddDomainsOptionClicked = false;
 			let self = this;
 			setTimeout(() => {
-				self.isDomainConfigurationOptionClicked = true;
+				self.isAddDomainsOptionClicked = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = this.properties.domainConfiguration;
+			this.activeTabHeader = this.properties.addDomainsText;
 
 		}
 		this.referenceService.goToTop();
