@@ -286,6 +286,13 @@
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.emailNotificationSettings}"
                                             (click)="activateTab(properties?.emailNotificationSettings);clearCustomResponse()">{{properties?.emailNotificationSettings}}</a>
                                     </li>
+                                    <!--Adding Domains XNFR-454-->
+                                    <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
+                                        [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}"
+                                        style="border-bottom: none !important;">
+                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.addDomainsText}"
+                                            (click)="activateTab(properties?.addDomainsText);clearCustomResponse()">{{properties?.addDomainsText}}</a>
+                                    </li>
                                 </ng-container>
                             </ul>
                         </div>
@@ -2197,6 +2204,13 @@
                                             class="tab-pane"
                                             [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
                                         </app-email-notification-settings>
+
+                                        <!--XNFR-454 Domain Configuration-->
+                                        <app-add-or-manage-domains *ngIf="isAddDomainsOptionClicked" [moduleName]="'addDomains'" class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == properties?.addDomainsText}">
+                                        </app-add-or-manage-domains>
+
+
                                         <!--video default player settings-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
                                             <div>
@@ -2734,11 +2748,9 @@
                                                 *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                                 <tbody class="neo-border-radius10">
                                                     <fieldset class="fild-custome-borders-none">
-                                                        <div
-                                                            class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border pl-5">
+                                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border pl-5">
                                                             <h4 class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
-                                                                style="font-weight:600;font-size:21px;padding:0">Exclude
-                                                                A Domain</h4>
+                                                                style="font-weight:600;font-size:21px;padding:0">Exclude A Domain</h4>
                                                             <button (click)="downloadEmptyCSV('exclude-domains')"
                                                                 type="button"
                                                                 class="button bgcolor-unset col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10 neg_mrg_rgt33 neg_mrg_rgt7"
@@ -2754,8 +2766,6 @@
                                                             </button>
 
                                                         </div>
-                                                        <!-- new -->
-
                                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                             <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align"
                                                                 style="margin-top:10px;"

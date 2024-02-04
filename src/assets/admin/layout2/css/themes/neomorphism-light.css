@@ -17,8 +17,7 @@ body,
 .page-bar,
 .tabbable-custom > .tab-content {
   background: #f0f5fa !important;
-  box-shadow: inset 5px 5px 10px #d6dadf,
-  inset -5px -5px 10px #ffffff;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
   border: 0px solid #ececec !important;
   border-radius: 10px !important;
 }
@@ -554,6 +553,7 @@ tr {
   background: linear-gradient(225deg, #d8dde1, #ffffff);
   box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff;
   border: 1px solid #d0d5db !important;
+  border-radius: 0px 0px 10px 10px !important;
 }
 
 .dropdown-menu .active > a,
@@ -837,7 +837,7 @@ span.ui-column-resize {
 .label-box,
 .amount-border,
 .image-preview {
-  border: 1px solid #2f4857 !important;
+  border: 1px solid #d0d5db !important;
 }
 .imageClass {
   border: 1px solid #c6c7c9 !important;
@@ -859,16 +859,16 @@ span.ui-column-resize {
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
 }
 .tab-bg {
-  background-color: #2c2f33 !important;
-  border-bottom: 1px solid #191b1e !important;
-  border-right: 1px solid #191b1e !important;
-  border-left: 1px solid #191b1e !important;
+  background-color: #f0f5fa !important;
+  border-bottom: 1px solid #d0d5db !important;
+  border-right: 1px solid #d0d5db !important;
+  border-left: 1px solid #d0d5db !important;
 }
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:focus,
 .nav-tabs > li.active > a:hover {
-  background-color: #2c2f33 !important;
-  border: 1px solid #191b1e !important;
+  background-color: #f0f5fa!important;
+  border: 1px solid #d0d5db!important;
   color: #000 !important;
 }
 .nav-tabs,
@@ -998,7 +998,7 @@ input.cmn-toggle-round-flat + label:before{
 }
 #myInput,
 .ogImage {
-  border: 1px solid #191b1e !important;
+  border: 1px solid #d0d5db !important;
 }
 textarea:active,
 textarea:focus {
@@ -1586,7 +1586,7 @@ ul.drag-menu-cu li:hover {
   border: none !important;
 }
 .dragdrop-gif-cu {
-  border: 1px solid #191b1e !important;
+  border: 1px solid #d0d5db !important;
 }
 .drap-arrow-cu {
   color: #000 !important;
@@ -1622,7 +1622,8 @@ div#removeborder {
   transform: scale(1.05);
   transition: all 0.1s ease;
 }
-.help-iconbgadd i:hover {
+.help-iconbgadd i:hover,
+button.group-name-cclass.btn-primary.default-btn-cursor.white-co {
   color: #fff !important;
 } /* end */
 .help-iconbgadd {
@@ -1779,9 +1780,10 @@ i.singleIconCustomization {
   color: #000 !important;
 }
 #download-template-grid:hover {
-  border: 1px solid #000 !important;
-  background: #000 !important;
+  border: 0px solid #000 !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
   color: #22313a !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
 }
 .portlet.light.borderNone {
   border: none !important;
@@ -1796,7 +1798,8 @@ i.singleIconCustomization {
   border-top: 1px solid #191b1e !important;
 }
 .lbg {
-  background-color: #2e3033 !important;
+  background: #f0f5fa !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff;
 }
 .lbg.show a h6 {
   color: #000 !important;
@@ -2122,7 +2125,7 @@ span.select-check-box {
   width: unset !important;
 }
 .border-padding {
-  border-top: solid 1px #191b1e !important;
+  border-top: solid 1px #d0d5db !important;
 }
 .portlet.light.shared-feeds-border.borderNone {
   box-shadow: none !important;
@@ -2761,8 +2764,10 @@ justify-content: center!important;
     transform: scaleX(1) !important;
   }
   /* dont use this classes for button tranistion */
-  .Btn-Green,        
-  .btn-primary {
+  .Btn-Green,     
+  .Btn-Green:hover   
+  .btn-primary,
+  .btn-primary:hover {
     position: relative !important;
     background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
     color: #fff !important;
@@ -2859,7 +2864,8 @@ justify-content: center!important;
 /* manikanta changes */
 .downloadicon{
   position: relative;
-  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  background: #f0f5fa;
+  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
 }
 #download-template-grid{
   border: none!important;
@@ -2894,13 +2900,14 @@ button.unlink-button {
 }
 .tiles-card{
   color: #000 !important;
-  border: 1px solid #191b1e !important;
- box-shadow: inset 1px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  border: 1px solid #d0d5db !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff;
+  background: #f0f5fa !important;
 }
 .tiles-card:hover{
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;
   color: #000 !important;
-  background:#2b2f33!important;
+  background: #f0f5fa !important;
   transform: scale(1.04);
   transition: all 0.3s ease;
 }
@@ -2909,30 +2916,30 @@ p.pa-text{
 }
 .tiles-card:hover p{
   color:#000 !important;
-  background-color:#2b2f33!important;
+  background-color: #f0f5fa !important;
 }
 .pjCardTitlebg {
-  background-color: #2c2f33 !important;
-  box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #111214fa !important;
+  background-color: #f0f5fa !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff;
   border-radius: 10px 10px 0px 0px !important;
 }
 .panel-bgMain > .panel-bg{
-  background-color: #2c2f33 !important;
-  box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #111214fa !important;
+  background-color: #f0f5fa !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;
   border-radius: 10px 10px 0px 0px !important;
 }
 .br-10{
   border-radius: 10px!important;
 }
 .panel-card{
-  box-shadow: 6.223021507263184px 6.223021507263184px 15.669065px 0 #000, 10.776978px 10.776978px 20.669065px 0 #181b20!important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;
   border-radius: 10px;
 }
 .pjCardTitlebg >.panel-bg{
-  background-color: #2c2f33 !important;
-  box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #111214fa !important;
+  background-color: #f0f5fa !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;
   border-radius: 10px 10px 0px 0px !important;
-  border-bottom: 1px solid #191b1e !important;
+  border-bottom: 1px solid #d0d5db !important;
 }
 .panel-bg{
   background-color: #2c2f33 !important;
@@ -2940,8 +2947,9 @@ p.pa-text{
   border-radius: 10px 10px 0px 0px !important;
 }
 .highchartsColorCu{
-  background-color: #2c2f33 !important;
+  background-color: #f0f5fa !important;
   border:0px!important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff !important;
 }
 .br-none{
 border:0px!important;
@@ -3028,7 +3036,11 @@ legend.scheduler-border{
 li.filter.filter_box_sizes{
   padding: 6px 8px;
 }
-.padding_0,.portlet.light.remove_cardBgcolor.padding_0{
+.padding_0,
+.portlet.light.remove_cardBgcolor.padding_0,
+button.btn.btn-xs.hidden-xs.l-g-view.padding_0,
+button.btn.btn-xs.hidden-xs.l-g-view.zero-margin-xamp-campaign,
+button.btn.btn-xs.hidden-xs.l-g-view{
   padding: 0px !important;
 }
 .neg_margin-10{
@@ -3502,7 +3514,9 @@ button.glyphicon.glyphicon-remove.search-box-item-clear {
 }
 button#add_contact,
 button#copyFrom_clipboard,
-button.button.bgcolor-unset{
+button.button.bgcolor-unset,
+a.btn.btn-primary.btn-block
+{
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
 button.button_blue.bgcolor-unset,
@@ -3676,7 +3690,8 @@ div#reply-3:hover {
   transform: none !important;
 }
 button.btn.btn-primary.dropdown-toggle.rounded-0,
-button.group-name-cclass.btn-primary.default-btn-cursor{
+button.group-name-cclass.btn-primary.default-btn-cursor,
+button.btn.btn-primary.breadcrumb-right-btn{
   background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
 }
 /* Sudha Sri(23-1-2024) */
@@ -3804,4 +3819,31 @@ ul.alt-row-style1 li:nth-child(2n) {
 }
 .mrg-neo{
   margin: 5px 0px;
+}
+/*** Sudha Sri(31-1-2024) ***/
+.with-nav-tabs.panel-default .nav-tabs > li > a:hover{
+ border: 1px solid #d0d5db !important;
+ background: none !important;
+}
+/*** Sudha Sri(1-2-2024) ***/
+.neg_mrg_top3{
+  margin-top: -3px !important;
+}
+.neg_mrg_top8{
+  margin-top: -8px !important;
+}
+.only_top3{
+  top: -3px !important;
+}
+.neg_mrg_top15{
+  margin-top: -15px !important;
+}
+.margin-top-10.mrg_right6{
+  margin-top: -14px !important;
+}
+.mrg_top2{
+  margin-top: 2px !important;
+}
+.only_top1{
+  top: 1px !important;
 }

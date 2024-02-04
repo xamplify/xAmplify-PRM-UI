@@ -375,7 +375,7 @@
                            <div class="clearfix"></div>
                         </div>
                         <!-- END FILTER -->
-                        <section class="col-xs-12 p0" *ngIf="showListOfContactList">
+                        <section class="col-xs-12 p0 pos_pd_top5" *ngIf="showListOfContactList">
                            <div class="clearfix">
                               <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
                               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
@@ -994,7 +994,7 @@
                                  </div>
                               </div>
                            </div>
-                           <div id="pagination" [ngStyle]="{'margin-top':isListView ? '-5px': ''}">
+                           <div id="pagination" [ngStyle]="{'margin-top':isListView ? '-1px': '8px'}">
                               <!--pager here  -->
                               <app-pagination [hidden]="httpRequestLoader.isLoading" [pagination]="pagination"
                                  [type]="'contacts'" (notifyParent)="setPage($event)"
@@ -1332,7 +1332,8 @@
                                                 *ngIf="(contactsByType.selectedCategory =='invalid') && !sharedLeads && !authenticationService?.module?.deletedPartner">
                                                 <button type="submit" class=" bgcolor-unset button_height"
                                                    (click)="validateUndeliverableContacts(contact.id)" translate><span
-                                                      class="btn markas transition txt_pd-top8">Mark as valid</span></button>
+                                                      class="btn markas transition txt_pd-top8">Mark as
+                                                      valid</span></button>
                                              </td>
                                              <td class="Mark-as-ValidBtn"
                                                 *ngIf="( contactsByType.selectedCategory =='excluded')  && !authenticationService?.module?.deletedPartner">
@@ -1340,7 +1341,8 @@
                                                    type="submit" class=" bgcolor-unset button_height"
                                                    [disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
                                                    (click)="showMakeAsOptinAlert(contact.id, contact.emailId)"
-                                                   translate><span class="btn markas transition txt_pd-top8">Mark as valid</span></button>
+                                                   translate><span class="btn markas transition txt_pd-top8">Mark as
+                                                      valid</span></button>
                                              </td>
                                              <td *ngIf="isPartner">
                                                 <button class="border-btn-small lightgray-btn"

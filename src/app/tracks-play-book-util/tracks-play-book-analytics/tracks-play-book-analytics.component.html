@@ -39,7 +39,7 @@
         <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"
           (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
         <ng-container *ngIf="!httpRequestLoader.isLoading">
-          <div class="table-responsive">
+          <div class="table-responsive pos_pd_top6">
             <table class='table tgrid table-hover table-sm' id="lms-analytics-list-table"
               *ngIf="pagination.pagedItems?.length>0" aria-describedby="lms-list">
               <thead>

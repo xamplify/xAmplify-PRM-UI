@@ -208,7 +208,8 @@
                            </div>
                         </div>
                      </div>
-                     <div *ngIf="pagination.pagedItems.length !== 0 && !partnerListLoader.isLoading">
+                     <div class="pos_pd_top2"
+                        *ngIf="pagination.pagedItems.length !== 0 && !partnerListLoader.isLoading">
                         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
                            (notifyParentDropDown)="listPartners($event)">
                         </app-pagination>

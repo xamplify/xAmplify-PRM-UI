@@ -321,6 +321,9 @@ export class Properties {
 	playBooksHeaderText = "Play Books";
 	/****XNFR-342****/
 
+	/***XNFR-454*****/
+	addDomainsText = "Add Domains";
+
 
 
 
