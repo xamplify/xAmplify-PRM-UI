@@ -69,10 +69,16 @@
                                         <i class="fa fa-refresh" aria-hidden="true"></i>
                                     </a>
                                     <div class="pb3 float-left">
-                                        <select class="form-control mDamSort SeclectBoxPaddingsAbj"
+                                        <select *ngIf="!isPartnerView" class="form-control mDamSort SeclectBoxPaddingsAbj"
                                             [(ngModel)]="sortOption.damSortOption" (ngModelChange)="sortTracks($event)"
                                             style="position: relative; right: -3px;">
                                             <option *ngFor="let option of sortOption.damSortDropDownOptions"
+                                                [ngValue]="option">{{option.name}}</option>
+                                        </select>
+                                        <select *ngIf="isPartnerView" class="form-control mDamSort SeclectBoxPaddingsAbj"
+                                            [(ngModel)]="sortOption.damSortOptionForPartner" (ngModelChange)="sortTracks($event)"
+                                            style="position: relative; right: -3px;">
+                                            <option *ngFor="let option of sortOption.damSortDropDownOptionsForPartner"
                                                 [ngValue]="option">{{option.name}}</option>
                                         </select>
                                     </div>

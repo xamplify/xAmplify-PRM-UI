@@ -392,6 +392,13 @@ export class SortOption {
 		{ 'name': '48', 'value': '48' }
 	];
 
+	damSortDropDownOptionsForPartner = [
+		{ 'name': 'Name(A-Z)', 'value': 'assetName-ASC' },
+		{ 'name': 'Name(Z-A)', 'value': 'assetName-DESC' },
+		{ 'name': 'Published On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Published On(DESC)', 'value': 'createdTime-DESC' }
+	];
+
 
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -439,7 +446,11 @@ export class SortOption {
 
 	public selectedPartnerJourneyWorkflowDropDownOption = this.partnerJourneyWorkflowsDropDownOptions[this.partnerJourneyWorkflowsDropDownOptions.length-1];
 
+
+	public damSortOptionForPartner: any = this.damSortDropDownOptionsForPartner[this.damSortDropDownOptionsForPartner.length-1]; 
+
 	/*****XNFR-454*****/
 	selectedDomainDropDownOption = this.domainsDropDownOptions[this.domainsDropDownOptions.length-1];
+
 
 }

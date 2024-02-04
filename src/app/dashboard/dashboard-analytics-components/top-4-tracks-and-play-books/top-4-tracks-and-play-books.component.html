@@ -29,7 +29,7 @@
                             <span><b>{{titleHeader}} Title: </b>{{learningTrack.title}}</span>
                          </h4>
                          <div class="mt5"> 
-                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')" style="margin: 4px 15px 0px 15px;">
+                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')&& hasAccessToSharedPlaybooks" style="margin: 4px 15px 0px 15px;">
                                 <div class="progress">
                                     <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{learningTrack.progress}}%" [ngStyle]="{'width': learningTrack.progress + '%'}" style="border-radius:1px;" role="progressbar"></div>
                                 </div>
