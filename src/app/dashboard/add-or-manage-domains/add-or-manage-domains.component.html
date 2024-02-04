@@ -1,3 +1,19 @@
-<p>
-  add-or-manage-domains works!
-</p>
+<app-response-message [customResponse]="customResponse"></app-response-message>
+<table class="table table-light" style="border: 0px !important; background-color: transparent !important" *ngIf="!httpRequestLoader?.isLoading && !httpRequestLoader?.isServerError">
+  <tbody class="neo-border-radius10">
+    <fieldset class="fild-custome-borders-none">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border pl-5">
+        <h4 class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0">{{headerText}}</h4>
+        <button (click)="downloadEmptyCSV()" type="button"  class="button bgcolor-unset col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10 neg_mrg_rgt33 neg_mrg_rgt7 float-right"  
+            [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+            <span class="btn Btn-Green transition txt_pd-top3">{{downloadCsvText}}<i class="fa fa-download ml5" aria-hidden="true"></i></span>
+        </button>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+        <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style="margin-top:10px;">
+
+        </div>
+      </div>
+    </fieldset>
+  </tbody>
+</table>

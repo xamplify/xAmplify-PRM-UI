@@ -330,6 +330,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	leadApprovalRejectionStatus: boolean = false;
 	leadApprovalStatus:boolean = false;
 	leadApprovalCustomResponse: CustomResponse = new CustomResponse();
+	/**XNFR-454****/
+	isDomainConfigurationOptionClicked: boolean;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -1978,6 +1980,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.customLoginScreen;
+		}
+		/****XNFR-454****/
+		else if(this.activeTabName==this.properties.domainConfiguration){
+			this.ngxloading = true;
+			this.isDomainConfigurationOptionClicked = false;
+			let self = this;
+			setTimeout(() => {
+				self.isDomainConfigurationOptionClicked = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.domainConfiguration;
+
 		}
 		this.referenceService.goToTop();
 	}

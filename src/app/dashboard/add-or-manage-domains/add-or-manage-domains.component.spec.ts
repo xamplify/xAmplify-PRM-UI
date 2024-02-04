@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddOrManageDomainsComponent } from './add-or-manage-domains.component';
+import { AddOrManageDomainsComponent } from './AddOrManageDomainsComponent';
 
 describe('AddOrManageDomainsComponent', () => {
   let component: AddOrManageDomainsComponent;
