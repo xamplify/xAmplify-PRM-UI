@@ -1025,8 +1025,8 @@ input#copy-link {
 .comment.user-comment p,
 .comment.author-comment p,
 .author-comment p:after {
-  background-color: #2e3033 !important;
-  border: 2px solid #191b1e !important;
+  background-color: #f0f5fa !important;
+  border: 2px solid #d0d5db !important;
 }
 .salesforce-btn {
   background-color: #22313a !important;
@@ -3846,4 +3846,12 @@ ul.alt-row-style1 li:nth-child(2n) {
 }
 .only_top1{
   top: 1px !important;
+}
+/*** Sudha Sri(5-2-2024) ***/
+span.comment-color {
+  box-shadow: none !important;
+}
+.write-new button{
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  border-radius: 7px !important;
 }
