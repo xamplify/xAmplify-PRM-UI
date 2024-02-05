@@ -154,7 +154,7 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
         EmailNotificationSettingsComponent,
         ActiveThreadsInfoComponent,
         CustomLoginScreenSettingsComponent,
-        ConnectwiseAuthenticationComponent
+        ConnectwiseAuthenticationComponent,
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
