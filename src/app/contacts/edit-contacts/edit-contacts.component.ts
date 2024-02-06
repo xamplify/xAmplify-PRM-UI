@@ -57,7 +57,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input('value') value: number;
 	@Input() isFormList: boolean;
 	@Input() companyName: any;
-	@Input() manageCompanies: boolean;
+	@Input() manageCompanies: boolean = false;
 	@Input() isCompanyBreadCrumb: boolean = false;
 	@Input() selectedCompanyId: number;
 	/*****XNFR-98******/

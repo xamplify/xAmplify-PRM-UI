@@ -177,19 +177,19 @@
                                     <div class="clickicons"></div>
                                   </a>
                                   <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                                    <a class="custom-icon" data-rel="fancybox-button"
+                                    <a *ngIf="company.canUpdate" class="custom-icon" data-rel="fancybox-button"
                                      data-toggle="tooltip" data-placement="bottom"
                                       title="Edit Company" id="company" (click)="editCompany(company)">
                                       <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
                                       <div class="clickicons"></div>
                                     </a>
-                                    <a class="custom-icon" data-rel="fancybox-button" 
+                                    <a *ngIf="company.canDelete" class="custom-icon" data-rel="fancybox-button" 
                                       data-toggle="tooltip" data-placement="bottom"
                                       title="Delete Company" id="company" (click)="showAlert(company.id)">
                                       <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                                       <div class="del-icon"></div>
                                     </a>
-                                    <a class="custom-icon" data-rel="fancybox-button" 
+                                    <a *ngIf="company.canViewContacts" class="custom-icon" data-rel="fancybox-button" 
                                       data-toggle="tooltip" data-placement="bottom"
                                       title="Add Contact" id="company" (click)="navigateToAddContactsPage(company.companyUserListId)">
                                       <i class="fa fa-address-card-o IconCustomization" aria-hidden="true"></i>

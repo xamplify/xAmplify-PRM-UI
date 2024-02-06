@@ -228,6 +228,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	isFormList = false;
 	isCompanyList = false;
 	selectedAssociatedCompany:string;
+	selectedCompanyId:number;
 	selectedFilterIndex: number = 0;
   showFilter = true;
   resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
@@ -868,7 +869,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, 
-		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean, isCompanyList:boolean, selectedAssociatedCompany: string) {
+		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean, isCompanyList:boolean, selectedAssociatedCompany: string, selectedAssociatedCompanyId: number) {
 		this.uploadedUserId = uploadUserId;
 		this.selectedContactListId = contactSelectedListId;
 		this.selectedContactListName = contactListName;
@@ -880,6 +881,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.isFormList = isFormList;
 		this.isCompanyList = isCompanyList;
 		this.selectedAssociatedCompany = selectedAssociatedCompany;
+		this.selectedCompanyId = selectedAssociatedCompanyId;
 		$("#pagination").hide();
 	}
 
