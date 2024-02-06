@@ -57,8 +57,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input('value') value: number;
 	@Input() isFormList: boolean;
 	@Input() companyName: any;
-	@Input() manageCompanies: boolean = false;
+	@Input() manageCompanies: boolean;
 	@Input() isCompanyBreadCrumb: boolean = false;
+	@Input() selectedCompanyId: number;
 	/*****XNFR-98******/
 	@Input() isTeamMemberPartnerList:boolean;
 	editContacts: User;
@@ -72,7 +73,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isSegmentationErrorMessage: boolean;
 	filterConditionErrorMessage = "";
 	assignLeads :boolean = false;
-
 	totalListUsers = [];
 	updatedUserDetails = [];
 	existedEmailIds = [];
@@ -90,6 +90,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	AddContactsOption: typeof AddContactsOption = AddContactsOption;
 	selectedAddContactsOption: number = 8;
+	selectedCompanyContactId: number;
 	invalidDeleteSuccessMessage: boolean = false;
 	editListContacts: boolean = true;
 
@@ -105,7 +106,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	selectedContactForSave = [];
 	addPartnerSave: boolean = false;
-
+	isCompanyContact:boolean = false;
 	dublicateEmailId: boolean = false;
 	noOfContactsDropdown: boolean = true;
 	validCsvContacts: boolean;
@@ -733,7 +734,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						//this.allUsers = this.contactsByType.allContactsCount;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList,this.manageCompanies, this.companyName);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList,this.manageCompanies, this.companyName, this.selectedCompanyId);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -961,7 +962,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList,this.manageCompanies, this.companyName);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList,this.manageCompanies, this.companyName, this.selectedCompanyId);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -1642,7 +1643,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList,this.manageCompanies, this.companyName);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList,this.manageCompanies, this.companyName, this.selectedCompanyId);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 
@@ -2893,7 +2894,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.isUpdateUser = true;
 		this.contactAllDetails = contactDetails;
 		this.contactService.isContactModalPopup = true;
-
+		this.isCompanyContact = this.manageCompanies;
+		this.selectedCompanyContactId = this.selectedCompanyId;
 	}
 
 	updateContactModalClose() {

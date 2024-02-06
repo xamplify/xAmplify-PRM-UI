@@ -1525,13 +1525,13 @@
 	<div *ngIf="contactService.isContactModalPopup && !updateContactUser">
 		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
 			[gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser]="false"
-			[partnerListId]="contactListId" (notifyParent)="addRow($event)"></app-add-contact-modal>
+			[partnerListId]="contactListId" [selectedCompanyId]="selectedCompanyId" (notifyParent)="addRow($event)"></app-add-contact-modal>
 	</div>
 
 	<div *ngIf="contactService.isContactModalPopup && updateContactUser">
 		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
 			[gdprInput]="parentInput" [totalUsers]="contacts" [contactDetails]="contactAllDetails"
-			[isUpdateUser]="isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
+			[isUpdateUser]="isUpdateUser" [selectedCompanyId]="selectedCompanyContactId" [isCompanyContact]="isCompanyContact" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 	</div>
 	<app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList"
 		[downloadListName]="logListName"> </app-export-csv>
