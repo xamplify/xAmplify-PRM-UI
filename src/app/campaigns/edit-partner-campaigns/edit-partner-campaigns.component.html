@@ -253,8 +253,8 @@
                                        class="btn btn-primary transition txt_pd-top3"><i class="fa fa-eye"></i>
                                        Preview</span> </a>
                                  <a *ngIf="campaign?.emailTemplate?.editPartnerTemplate"
-                                    class="pull-right btn btn-sm button_blue btn-primary" style="margin-right: 6px"
-                                    (click)="editPartnerTemplate()"> <span
+                                    class="pull-right btn btn-sm button_blue btn-primary mrg_lft6"
+                                    style="margin-right: 6px" (click)="editPartnerTemplate()"> <span
                                        class="btn btn-primary transition txt_pd-top3"><i class="fa fa-edit"></i> Edit
                                     </span></a>
                               </div>
@@ -303,7 +303,8 @@
                                  <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">
                                     {{selectedUserlistIds.length}} lists are selected
                                  </h4>
-                                 <button type="button" class="pull-right btn-sm button_blue bgcolor-unset" style="margin-top: 6px" (click)="showContacts()">
+                                 <button type="button" class="pull-right btn-sm button_blue bgcolor-unset"
+                                    style="margin-top: 6px" (click)="showContacts()">
                                     <span class="btn btn-primary transition txt_pd-top3">{{previewText}}</span>
                                  </button>
                                  <br>

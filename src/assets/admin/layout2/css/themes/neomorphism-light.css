@@ -98,7 +98,7 @@ a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor.tiles_b
 }
 .portlet > .portlet-title,
 .header-text-css,
-.black-blue-c:hover,
+/* .black-blue-c:hover, */
 .lineplayercontrol,
 .row-space,
 .popup-border-bottom {
@@ -273,8 +273,7 @@ th {
 .campaign-type-selected,
 ul.alt-row-style1 li:hover,
 .filter.form-selected,
-.filter.landing-page-selected,
-.mix-filter li.contact-filter-selected {
+.filter.landing-page-selected{
   border: 0px solid #ececec !important;
   border-radius: 5px !important;
   background-image: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
@@ -919,8 +918,8 @@ span.ui-column-resize {
   color: #93a3b5 !important;
 }
 .reload-btn {
-  background-color: #22313a !important;
-  border: 1px solid #2f4857 !important;
+  background-color: #f0f5fa !important;
+  border: 1px solid #d0d5db !important;
 }
 
 .gear-icon,
@@ -1644,7 +1643,8 @@ td.td-netbg {
   background: transparent !important;
 }
 tag {
-  background: #22313a !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
   color: #000 !important;
 }
 .placeholder-bg-color {
@@ -2955,8 +2955,8 @@ p.pa-text{
 border:0px!important;
 }
 .BgForCard{
-  border: 1px solid #16191c!important;
-  background: #2b2f33!important;
+  border: 1px solid #d0d5db !important;
+  background:  #f0f5fa !important;
 }
 /* manikanta */
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning,.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
@@ -3049,7 +3049,7 @@ button.btn.btn-xs.hidden-xs.l-g-view{
 .margin_bottom-20{margin-bottom: 20px !important;}
 .mg_btm_23{margin-bottom: 23px !important;}
 .mg-top7{
-  margin-top: -7px;
+  margin-top: -7px !important;
 }
 div.button span {
   font-weight: 600;
@@ -3189,7 +3189,8 @@ button.button_blue:disabled span{
 span.btn.btn-primary.transition.merge_tag_text{
   padding-top: 1px !important;
 }
-.txt_pd-top3{
+.txt_pd-top3,
+span.btn.Btn-Green.transition.txt_pd-top3{
   padding-top: 3px !important;
 }
 /* sweet alert in Select Template Create Template */
@@ -3511,6 +3512,9 @@ page-sidebar .page-sidebar-menu > li.active > a > i{
 }
 button.glyphicon.glyphicon-remove.search-box-item-clear {
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  margin-top: -1px !important;
+  padding-left: 8px !important;
+  padding-bottom: 4px !important;
 }
 button#add_contact,
 button#copyFrom_clipboard,
@@ -3520,7 +3524,7 @@ a.btn.btn-primary.btn-block
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
 button.button_blue.bgcolor-unset,
-.btn-success{
+.btn-success,.btn-primary{
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
 button#save\&delete_button {
@@ -3528,7 +3532,7 @@ button#save\&delete_button {
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
 .btn-default:hover{
-  border: 1px solid #d0d5db !important;
+  /* border: 1px solid #d0d5db !important; */
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
 }
 a.title.padding_bottom.text-color.content-bg.m0,
@@ -3848,10 +3852,46 @@ ul.alt-row-style1 li:nth-child(2n) {
   top: 1px !important;
 }
 /*** Sudha Sri(5-2-2024) ***/
-span.comment-color {
+span.comment-color,
+.remove_table_bg {
   box-shadow: none !important;
 }
 .write-new button{
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
   border-radius: 7px !important;
+}
+/*** Sudha Sri(6-2-2024) ***/
+.comment-color:hover{
+  background: none !important;
+}
+.actions-block .fa-trash-o{
+  border: none !important;
+}
+.neg_mrg_top18{
+  margin-top: -18px !important;
+}
+.theme_activation_bg{
+  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+}
+.row.mtop.mrg_top15{
+  margin-top: 15px !important;
+}
+.mrg_lft6{
+  margin-left: 6px !important;
+}
+.mix-filter li.contact-filter-selected {
+  border: 0px solid #ececec !important;
+  border-radius: 5px !important;
+  background-image: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  box-shadow: none !important;
+  color:#fff !important;
+}
+.mrg_rgt8{
+  margin-right: 8px !important;
+}
+.neg_mrg_rgt10{
+  margin-right: -10px !important;
+}
+h5.mt0.pos_mrg_top12{
+  margin-top: 12px !important;
 }

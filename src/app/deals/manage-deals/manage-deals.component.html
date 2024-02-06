@@ -355,7 +355,7 @@
                                 (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
                                 data-toggle="tooltip" data-placement="bottom" title="Edit Deal Stage">
                                 <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
-                                <div class="clickicons"></div>
+                                <!-- <div class="clickicons"></div> -->
                               </a>
 
                             </td>
@@ -556,10 +556,11 @@
                                                     [isPartnerInfo]="true"></app-user-info>
                                                 </td>
                                                 <td>
-                                                  <a (click)="showCampaignDealsByPartner(item)" data-toggle="tooltip"
-                                                    data-placement="top" title="Number Of Deals">
+                                                  <a class="custom-icon" (click)="showCampaignDealsByPartner(item)"
+                                                    data-toggle="tooltip" data-placement="top" title="Number Of Deals">
                                                     <i
                                                       class="circled-number IconCustomization fontStyleNormal"><b>{{item.dealsCount}}</b></i>
+                                                    <div class="clickicons"></div>
                                                   </a>
                                                 </td>
                                               </tr>
@@ -670,7 +671,7 @@
           style="font-size:18px"></span>
         <span *ngIf="selectedDeal.unReadChatCount > 0" class="badge badge-default"
           style="margin-top: -72px; margin-right: -15px;background-color: #ed1c24 !important;">{{selectedDeal.unReadChatCount}}</span>
-        <div class="clickicons"></div>
+        <!-- <div class="clickicons"></div> -->
       </a>
 
     </div>
