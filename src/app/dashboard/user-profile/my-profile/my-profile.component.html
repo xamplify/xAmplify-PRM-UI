@@ -2922,7 +2922,7 @@
                                                     </div>
                                                     <div class="tile mScroll" id="CardBgforSection" style="border-radius: 5px;">
                                                         <app-xamplify-default-templates *ngIf="editVendorPage" [vendorJourney] = 'true'
-                                                        [landingPage]="vendorDefaultTemplate"></app-xamplify-default-templates>
+                                                        [landingPage]="vendorDefaultTemplate" (redirect)="resetVendorJourney()"></app-xamplify-default-templates>
             
                                                     </div>
                                                 </div>

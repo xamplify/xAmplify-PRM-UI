@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,Output } from '@angular/core';
+import { Component, OnInit,Input,Output, EventEmitter, HostListener } from '@angular/core';
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { User } from 'app/core/models/user';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -12,6 +12,7 @@ import { Properties } from 'app/common/models/properties';
 import { LandingPage } from 'app/landing-pages/models/landing-page';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { ModulesDisplayType } from '../models/modules-display-type';
+import { Observable } from 'rxjs';
 
 declare var BeePlugin,swal,$:any;
 
@@ -29,7 +30,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   senderMergeTag:SenderMergeTag = new SenderMergeTag();
   @Input() vendorJourney:boolean = false;
   @Input() landingPage:LandingPage;
-
+  @Output() redirect = new EventEmitter();
 
   clickedButtonName = "";
   isAdd: boolean;
@@ -712,14 +713,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
           });
   } else {
       this.skipConfirmAlert =true;
-      let url = this.referenceService.getCurrentRouteUrl();
-      let isSaveAsUrl = url.indexOf("saveAsDefault")>-1;
-      if(isSaveAsUrl){
-          //this.router.navigate(["/home/pages/select"]);
-      }else{
-          //this.router.navigate(["/home/pages/manage"]);
-      }
-      
+      this.navigateToManageSection();
   }
 }
 
@@ -745,7 +739,7 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
              this.referenceService.showSweetAlertProceesor(this.landingPage.name + " Created Successfully");
              let self = this;
               setTimeout(function(){
-                  self.referenceService.goToRouter("/home/pages/select");
+                this.navigateToManageSection();
               }, 1500);
           } else {
               this.goToManageAfterSave(data, isSaveAndRedirectButtonClicked);
@@ -784,11 +778,7 @@ goToManageAfterSave(data:any, isSaveAndRedirectButtonClicked:boolean) {
 }
 
 navigateToManageSection() {
-  this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
-  if(this.viewType==undefined){
-      this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
-  }
-  this.referenceService.navigateToManageLandingPagesByViewType(this.folderViewType,this.viewType,this.categoryId);
+  this.redirect.emit();
 }
 
 
@@ -861,6 +851,13 @@ createButton(text:string, cb:any) {
       return $('<input type="submit" '+cancelButtonSettings+' value="' + text + '">').on('click', cb);
   }
 }
+
+@HostListener('window:beforeunload')
+    canDeactivate(): Observable<boolean> | boolean {
+        this.authenticationService.stopLoaders();
+        let isInvalidEditPage = this.landingPageService.id==undefined || this.landingPageService.id==0;
+        return this.skipConfirmAlert ||  this.isSaveAndRedirectButtonClicked || this.updateAndRedirectClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked;
+    }
 
 
 }

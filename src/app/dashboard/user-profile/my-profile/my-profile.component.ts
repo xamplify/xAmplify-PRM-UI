@@ -67,6 +67,7 @@ import { CompanyProfileService } from 'app/dashboard/company-profile/services/co
 import { DefaultDashBoardForPartners } from 'app/dashboard/models/default-dashboard-for-partners';
 import { PreviewPopupComponent } from 'app/forms/preview-popup/preview-popup.component';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
+import { LandingPage } from 'app/landing-pages/models/landing-page';
 declare var swal, $, videojs: any, Papa: any;
 
 @Component({
@@ -328,7 +329,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	companyIdFromCompanyProfileNameForVanity:number;	
 	removeMarketingNonInteractiveBox:boolean = false;
 	editVendorPage:boolean =false;
-	vendorDefaultTemplate: VanityEmailTempalte;
+	vendorDefaultTemplate:LandingPage = new LandingPage();
+	openLinksInNewTabCheckBoxId = "openLinksInNewTab-page-links";
+
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     mergeTagsInput: any = {};
 
@@ -1978,11 +1981,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 		else if (this.activeTabName == "vendorJourney") {
 			this.activeTabHeader = this.properties.vendorJourney;
-			this.editVendorPage = false;
-			this.vendorDefaultTemplate = new VanityEmailTempalte() ;
-			this.landingPageService.vendorJourney = false;
-			this.landingPageService.id = 0;
-			this.mergeTagsInput['page'] = false;
+			this.resetVendorJourney();
 		}
 		this.referenceService.goToTop();
 	}
@@ -4480,5 +4479,24 @@ editVendorLandingPage(event){
 	this.mergeTagsInput['page'] = true;
 	this.editVendorPage = true;
 	
+}
+resetVendorJourney(){
+	this.editVendorPage = false;
+	this.vendorDefaultTemplate = new LandingPage() ;
+	this.landingPageService.vendorJourney = false;
+	this.landingPageService.id = 0;
+	this.mergeTagsInput['page'] = false;
+}
+
+checkOrUncheckOpenLinksInNewTabOption(){
+	let isChecked = $('#'+this.openLinksInNewTabCheckBoxId).is(':checked');
+	if(isChecked){
+		$('#' + this.openLinksInNewTabCheckBoxId).prop("checked", false);
+		this.vendorDefaultTemplate.openLinksInNewTab = false;
+	}else{
+		$('#' + this.openLinksInNewTabCheckBoxId).prop("checked", true);
+		this.vendorDefaultTemplate.openLinksInNewTab = true;
+	}
+
 }
 }
