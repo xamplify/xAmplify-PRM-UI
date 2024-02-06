@@ -66,6 +66,7 @@ import { CompanyProfileService } from 'app/dashboard/company-profile/services/co
 
 import { DefaultDashBoardForPartners } from 'app/dashboard/models/default-dashboard-for-partners';
 import { PreviewPopupComponent } from 'app/forms/preview-popup/preview-popup.component';
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 declare var swal, $, videojs: any, Papa: any;
 
 @Component({
@@ -336,7 +337,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService) {
+			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService,
+			public landingPageService: LandingPageService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isLocalHost = this.authenticationService.isLocalHost();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
@@ -1976,6 +1978,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 		else if (this.activeTabName == "vendorJourney") {
 			this.activeTabHeader = this.properties.vendorJourney;
+			this.editVendorPage = false;
+			this.vendorDefaultTemplate = new VanityEmailTempalte() ;
+			this.landingPageService.vendorJourney = false;
+			this.landingPageService.id = 0;
+			this.mergeTagsInput['page'] = false;
 		}
 		this.referenceService.goToTop();
 	}
@@ -4468,7 +4475,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 editVendorLandingPage(event){
 	this.vendorDefaultTemplate = event;
-	this.editVendorPage = true;
+	this.landingPageService.vendorJourney = true;
+	this.landingPageService.id = this.vendorDefaultTemplate.id;
 	this.mergeTagsInput['page'] = true;
+	this.editVendorPage = true;
+	
 }
 }

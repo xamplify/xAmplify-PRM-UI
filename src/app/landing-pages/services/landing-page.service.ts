@@ -22,6 +22,7 @@ export class LandingPageService {
     id: number = 0;
     URL = this.authenticationService.REST_URL + "landing-page/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/"
+    vendorJourney:boolean = false;
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
          private router: Router,private utilService:UtilService) { }
 
