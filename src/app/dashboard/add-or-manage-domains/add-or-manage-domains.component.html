@@ -97,9 +97,7 @@
                         </label>
                         <div class="form-group col-xs-10 col-sm-10 domain-or-email-padding">
                             <input type="text" style="border: none" class="form-control padding-mobile" id="domain"
-                                (input)="validateDomain(domain)" [(ngModel)]="domain"
-                                [ngModelOptions]="{standalone: true}" placeholder="Domain Name *" autocomplete="off"
-                                maxlength="250">
+                                (input)="validateDomain(domain)" [(ngModel)]="domain" [ngModelOptions]="{standalone: true}" placeholder="Enter Domain Name *" autocomplete="off">
                             <div class="textCss"></div>
                             <span class="danger" *ngIf="isDomainExist">This domain name has already been added</span>
                             <span class="danger" *ngIf="!validDomainFormat">This domain name is not formatted properly</span>

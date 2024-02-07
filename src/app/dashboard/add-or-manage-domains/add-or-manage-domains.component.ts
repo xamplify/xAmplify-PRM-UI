@@ -107,6 +107,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 
 
 	findDomains(pagination: Pagination) {
+		this.referenceService.scrollSmoothToTop();
 		this.referenceService.loading(this.httpRequestLoader, true);
 		this.dashboardService.findDomains(pagination).subscribe(
 		response=>{
@@ -120,12 +121,14 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 
 	validateDomain(domain: string) {
 		const lowerCaseDomain = this.referenceService.getTrimmedData(domain.toLowerCase());
-		if (this.validateDomainName(lowerCaseDomain)) {
+		if(lowerCaseDomain.length>0){
+			let isValidDomainName = this.validateDomainName(lowerCaseDomain);
+			this.validDomainFormat = isValidDomainName;
+			this.validDomainPattern = isValidDomainName;
+		}else{
 			this.validDomainFormat = true;
-			this.validDomainPattern = true;
-		} else {
-			this.validDomainPattern = false;
 		}
+		
 	}
 
 	validateDomainName(domain: string) {
@@ -138,7 +141,8 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	}
 
 	confirmAndsaveExcludedDomain(domain: string) {
-		let text = "Adding this domain ensures that users can signup as team members using the link";
+		this.saveDomains();
+		/* let text = "Adding this domain ensures that users can signup as team members using the link";
 		let self = this;
 		swal({
 			title: 'Are you sure want to continue?',
@@ -153,7 +157,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 			self.saveDomains();
 		}, function (dismiss: any) {
 			console.log('you clicked on option' + dismiss);
-		});
+		}); */
 	}
 
 	getCompanyName() {
@@ -169,6 +173,9 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 
 	saveDomains(){
 		this.ngxloading = true;
+		this.isDomainExist = false;
+		this.validDomainFormat = true;
+		this.customResponse = new CustomResponse();
 		this.domainRequestDto = new DomainRequestDto();
 		this.domainRequestDto.domainNames.push(this.domain);
 		this.dashboardService.saveDomains(this.domainRequestDto).subscribe(
@@ -179,9 +186,14 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 				this.findDomains(this.pagination);
 				this.ngxloading = false;
 			},(error:any)=>{
-				this.ngxloading = false;
 				let errorMessage = this.referenceService.showHttpErrorMessage(error);
-				this.referenceService.showSweetAlertErrorMessage(errorMessage);
+				if("Already Exists"==this.referenceService.getTrimmedData(errorMessage)){
+					this.isDomainExist = true;
+				}else{
+					this.isDomainExist = false;
+					this.referenceService.showSweetAlertErrorMessage(errorMessage);
+				}
+				this.ngxloading = false;
 			}
 		);
 	}
