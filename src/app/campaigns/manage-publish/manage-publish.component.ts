@@ -125,6 +125,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     selectedCampaignId = 0;
     showUpArrowButton = false;
     downloadCampaigns = true;
+    isLoadingDownloadList : boolean;
     /******** user guide *************/
     mergeTagForGuide:any;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
@@ -1291,27 +1292,29 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     this.editButtonClicked = false;
     }
    
-    /*****XNFR-445********/
+    /***** XNFR-445 *****/
     downloadCampaignsData(pagination: Pagination){
-        this.customResponse = new CustomResponse('SUCCESS', "We are processing your campaign(s) reports. We will send it over an email when the report is ready" , true);
+        this.isLoadingDownloadList = true;
         try{
             this.campaignService.downloadCampaignsData(pagination, this.loggedInUserId)
         .subscribe(
             data => {    
                 if(data.statusCode==200){
-                    this.customResponse = new CustomResponse();
+                    this.isLoadingDownloadList = false;
                 }
                 if(data.statusCode==401){
-                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+                    $('.m5').text(data.message);
                 }
             },
             (error: any) => {
                 this.logger.errorPage(error);
+                this.isLoadingDownloadList = false;
             },
             ()=> this.logger.info("download completed")
             );
         }catch(error){
-            this.logger.error(error, "ManagePublishComponent", "downloadCampaignsData()")
+            this.logger.error(error, "ManagePublishComponent", "downloadCampaignsData()");
+            this.isLoadingDownloadList = false;
         }
     }
 
