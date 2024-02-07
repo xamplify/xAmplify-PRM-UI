@@ -2866,6 +2866,9 @@ a.whiteSpace {
 button.button:disabled span,
 button.button_blue:disabled span{
   cursor: not-allowed !important;
+}
+button.button_blue:disabled,
+button.button:disabled{
   opacity: 0.5;
 }
 .view-banner-forms{
