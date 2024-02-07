@@ -101,7 +101,8 @@ a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor.tiles_b
 /* .black-blue-c:hover, */
 .lineplayercontrol,
 .row-space,
-.popup-border-bottom {
+.popup-border-bottom,
+.textCss.popup-border-bottom {
   border-bottom: 1px solid #d0d5db !important;
 }
 .portlet > .portlet-title,
@@ -566,8 +567,9 @@ tr {
 }
 /** alert **/
 .swal2-modal {
-  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  background: #f0f5fa!important;
   border: 1px solid #d0d5db !important;
+  box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff;
 }
 .loader-container {
   background-color: #2b3c46 !important;
@@ -2333,7 +2335,7 @@ button.btn.btn-xs.hidden-xs.l-g-view.disabled {
   background-color: unset !important;
 }
 .field-width {
-  width: 41.66666667% !important;
+  width: 41.55555556% !important;    
   margin-right: 0px !important;
   margin-left: 0px !important;
 }
@@ -2815,6 +2817,7 @@ justify-content: center!important;
     background : none !important;
     box-shadow: none !important;
     border: none !important;
+    position: relative;
   }
 .marg-lft{
   margin-left: -1px !important;
@@ -3157,7 +3160,7 @@ top:-3px;
 button.button_blue:disabled,
 button.button:disabled {
   background: linear-gradient(225deg, #d8dde1, #ffffff);
-  opacity: 0.5;
+  /* opacity: 0.5; */
 }
 .tags-table tr:nth-child(odd){
   background-color: #2c2f33;
@@ -3895,6 +3898,25 @@ span.comment-color,
 .neg_mrg_rgt10{
   margin-right: -10px !important;
 }
+/*** Sudha Sri(7-2-2024) ***/
 h5.mt0.pos_mrg_top12{
   margin-top: 13px !important;
+}
+button.swal2-confirm.styled {
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;;
+}
+button.swal2-confirm.styled:hover {
+  background:  linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
+}
+button.swal2-cancel.styled{
+  background: linear-gradient(65deg, #2b343a 0, #8c9594 100%) !important;
+}
+button.swal2-cancel.styled:hover{
+  background: linear-gradient(65deg, #8c9594 0,#2b343a 100%) !important;
+}
+.textCss{
+  background: none !important;
+}
+.mrg-left25{
+  margin-left: 0px!important; 
 }
