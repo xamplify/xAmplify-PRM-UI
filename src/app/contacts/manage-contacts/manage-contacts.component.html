@@ -375,7 +375,7 @@
                            <div class="clearfix"></div>
                         </div>
                         <!-- END FILTER -->
-                        <section class="col-xs-12 p0 pos_pd_top5" *ngIf="showListOfContactList">
+                        <section class="col-xs-12 p0 pt_12" *ngIf="showListOfContactList">
                            <div class="clearfix">
                               <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
                               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
@@ -994,7 +994,7 @@
                                  </div>
                               </div>
                            </div>
-                           <div id="pagination" [ngStyle]="{'margin-top':isListView ? '-1px': '8px'}">
+                           <div id="pagination" [ngStyle]="{'margin-top':isListView ? '5px': '13px'}">
                               <!--pager here  -->
                               <app-pagination [hidden]="httpRequestLoader.isLoading" [pagination]="pagination"
                                  [type]="'contacts'" (notifyParent)="setPage($event)"

@@ -284,7 +284,7 @@
                 <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0'
                   [hidden]="!listView || dealsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
 
-                  <div class="table-responsive pos_pd_top2" [hidden]="httpRequestLoader.isLoading">
+                  <div class="table-responsive pt_12" [hidden]="httpRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="dealTable">
                       <thead>
                         <tr>
@@ -403,7 +403,7 @@
                   </div>
 
                   <!-- --------------------Pagination0-------------------- -->
-                  <div *ngIf="!httpRequestLoader.isLoading" class="pg8 mrg_top2">
+                  <div *ngIf="!httpRequestLoader.isLoading" class="pg8 pos_mrg_top8">
                     <app-pagination [pagination]="dealsPagination" (notifyParent)="setDealsPage($event)"
                       (notifyParentDropDown)="listDeals($event)"></app-pagination>
                   </div>
@@ -424,7 +424,7 @@
                 <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0'
                   [hidden]="listView || campaignSortOption.totalRecords == 0 || campaignRequestLoader.isLoading || campaignRequestLoader.isServerError">
 
-                  <div class="table-responsive pos_pd_top2" [hidden]="campaignRequestLoader.isLoading">
+                  <div class="table-responsive pt_12" [hidden]="campaignRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                       <thead>
                         <tr>
@@ -596,7 +596,7 @@
                     </table>
                   </div>
 
-                  <div *ngIf="!campaignRequestLoader.isLoading" class="pg8 mrg_top2">
+                  <div *ngIf="!campaignRequestLoader.isLoading" class="pg8 pos_mrg_top8">
                     <app-pagination [pagination]="campaignPagination" (notifyParent)="setCampaignsPage($event)"
                       (notifyParentDropDown)="listCampaigns($event)"></app-pagination>
                   </div>

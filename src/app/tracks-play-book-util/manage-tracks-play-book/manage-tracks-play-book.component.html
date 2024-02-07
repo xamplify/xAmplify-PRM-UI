@@ -69,14 +69,17 @@
                                         <i class="fa fa-refresh" aria-hidden="true"></i>
                                     </a>
                                     <div class="pb3 float-left">
-                                        <select *ngIf="!isPartnerView" class="form-control mDamSort SeclectBoxPaddingsAbj"
+                                        <select *ngIf="!isPartnerView"
+                                            class="form-control mDamSort SeclectBoxPaddingsAbj"
                                             [(ngModel)]="sortOption.damSortOption" (ngModelChange)="sortTracks($event)"
                                             style="position: relative; right: -3px;">
                                             <option *ngFor="let option of sortOption.damSortDropDownOptions"
                                                 [ngValue]="option">{{option.name}}</option>
                                         </select>
-                                        <select *ngIf="isPartnerView" class="form-control mDamSort SeclectBoxPaddingsAbj"
-                                            [(ngModel)]="sortOption.damSortOptionForPartner" (ngModelChange)="sortTracks($event)"
+                                        <select *ngIf="isPartnerView"
+                                            class="form-control mDamSort SeclectBoxPaddingsAbj"
+                                            [(ngModel)]="sortOption.damSortOptionForPartner"
+                                            (ngModelChange)="sortTracks($event)"
                                             style="position: relative; right: -3px;">
                                             <option *ngFor="let option of sortOption.damSortDropDownOptionsForPartner"
                                                 [ngValue]="option">{{option.name}}</option>
@@ -108,7 +111,7 @@
                     *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
                 <section *ngIf="modulesDisplayType.isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
-                        <div class="table-responsive pos_pd-top4">
+                        <div class="table-responsive pd_top10">
                             <table class='table tgrid table-hover table-sm' id="manage-lms-list-table"
                                 *ngIf="pagination.pagedItems?.length>0" aria-describedby="lms-list">
                                 <thead>
@@ -404,7 +407,7 @@
                     </div>
                 </div>
                 <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-                    <div *ngIf="pagination.pagedItems.length !== 0" class="neg_mrg_top3">
+                    <div *ngIf="pagination.pagedItems.length !== 0" class="mrg_top1">
                         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
                             (notifyParentDropDown)="listLearningTracks($event)"
                             [hidden]="httpRequestLoader.isLoading"></app-pagination>
