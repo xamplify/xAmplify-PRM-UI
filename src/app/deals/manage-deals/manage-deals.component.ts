@@ -783,10 +783,12 @@ export class ManageDealsComponent implements OnInit {
     
   }
 
-  editCampaignDealForm(dealId: any) {
+  editCampaignDealForm(deal:Deal) {
     this.showDealForm = true;   
     this.actionType = "edit";
-    this.dealId = dealId;
+    this.selectedDeal = deal;
+    this.textAreaDisable = true;
+    this.dealId = deal.id;
   }
 
   refreshCounts() {
