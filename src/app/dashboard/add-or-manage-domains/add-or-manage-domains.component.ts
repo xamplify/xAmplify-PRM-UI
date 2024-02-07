@@ -9,6 +9,8 @@ import { SortOption } from 'app/core/models/sort-option';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
+import { DomainRequestDto } from '../models/domain-request-dto';
+import { DashboardService } from '../dashboard.service';
 
 
 declare var $:any,Papa: any, swal:any;
@@ -37,9 +39,11 @@ export class AddOrManageDomainsComponent implements OnInit {
   pagination: Pagination = new Pagination();
   addedDomains: string[] = [];
   currentUser: any;
+  domainRequestDto:DomainRequestDto = new DomainRequestDto();
+  ngxloading = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public httpRequestLoader:HttpRequestLoader,public properties:Properties,public fileUtil:FileUtil,public sortOption:SortOption,
-	public utilService:UtilService,public regularExpressions:RegularExpressions) { }
+	public utilService:UtilService,public regularExpressions:RegularExpressions,public dashboardService:DashboardService) { }
 
   ngOnInit() {
 	this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -69,7 +73,7 @@ export class AddOrManageDomainsComponent implements OnInit {
     $('#addDomainModal').modal('show');
   }
 
-  addDomainModalClose(){
+  closeAddDomainModal(){
     $('#addDomainModal').modal('toggle');
 	$("#addDomainModal .close").click();
 	$('#addDomainModal').modal('hide');
@@ -78,6 +82,7 @@ export class AddOrManageDomainsComponent implements OnInit {
 	this.isDomainExist = false;
 	this.validDomainFormat = true;
 	this.validDomainPattern = false;
+	this.domainRequestDto = new DomainRequestDto();
   }
 
   fileChange(input: any, excludetype: string) {
@@ -218,7 +223,7 @@ export class AddOrManageDomainsComponent implements OnInit {
 	confirmAndsaveExcludedDomain(domain: string) {
 		let updatedDomain = '<strong>' + domain + '</strong>';
 		let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
-		let text = "Adding this domain ensures that users can become team members using the link";
+		let text = "Adding this domain ensures that users can signup as team members using the link";
 		let self = this;
 		swal({
 			title: 'Are you sure want to continue?',
@@ -230,7 +235,7 @@ export class AddOrManageDomainsComponent implements OnInit {
 			allowOutsideClick: false,
 			confirmButtonText: 'Yes'
 		}).then(function () {
-			alert("Saving domain");
+			self.saveDomains();
 		}, function (dismiss: any) {
 			console.log('you clicked on option' + dismiss);
 		});
@@ -247,5 +252,19 @@ export class AddOrManageDomainsComponent implements OnInit {
 	}
 
 
+	saveDomains(){
+		this.ngxloading = true;
+		this.domainRequestDto = new DomainRequestDto();
+		this.domainRequestDto.domainNames.push(this.domain);
+		this.dashboardService.saveDomains(this.domainRequestDto).subscribe(
+			response=>{
+				this.customResponse = new CustomResponse('SUCCESS',response.message,true);
+				this.closeAddDomainModal();
+				this.ngxloading = false;
+			},error=>{
+				this.ngxloading = false;
+			}
+		);
+	}
 
 }
