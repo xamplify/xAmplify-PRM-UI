@@ -4,7 +4,7 @@
     <fieldset class="fild-custome-borders-none">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border pl-5">
         <h4 class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0">{{headerText}}</h4>
-        <button (click)="downloadEmptyCSV()" type="button"  class="button bgcolor-unset col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10 neg_mrg_rgt33 neg_mrg_rgt7 float-right"  
+        <button style="display: none;" (click)="downloadEmptyCSV()" type="button"  class="button bgcolor-unset col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10 neg_mrg_rgt33 neg_mrg_rgt7 float-right"  
             [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
             <span class="btn Btn-Green transition txt_pd-top3">{{downloadCsvText}}<i class="fa fa-download ml5" aria-hidden="true"></i></span>
         </button>
@@ -76,7 +76,7 @@
            
        </div>
     </fieldset>
-    <div *ngIf="pagination?.pagedItems?.length == 0" class="alert alert-info mt10">
+    <div *ngIf="pagination?.pagedItems?.length == 0" class="alert alert-info mt10 text-center">
         <strong>No Records Found.</strong>
       </div>
   </tbody>

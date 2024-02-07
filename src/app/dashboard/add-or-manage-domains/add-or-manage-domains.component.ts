@@ -1,6 +1,7 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
+import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { FileUtil } from 'app/core/models/file-util';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
@@ -9,7 +10,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
 
-declare var $:any,Papa: any;;
+
+declare var $:any,Papa: any, swal:any;
 @Component({
   selector: 'app-add-or-manage-domains',
   templateUrl: './add-or-manage-domains.component.html',
@@ -34,11 +36,13 @@ export class AddOrManageDomainsComponent implements OnInit {
   excludedUsers: any[];
   pagination: Pagination = new Pagination();
   addedDomains: string[] = [];
+  currentUser: any;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public httpRequestLoader:HttpRequestLoader,public properties:Properties,public fileUtil:FileUtil,public sortOption:SortOption,
-	public utilService:UtilService) { }
+	public utilService:UtilService,public regularExpressions:RegularExpressions) { }
 
   ngOnInit() {
+	this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.isAddDomainsModule = this.moduleName=="addDomains";
     this.isExcludeDomainModule = this.moduleName=="excludeDomains";
     if(this.isAddDomainsModule){
@@ -191,6 +195,56 @@ export class AddOrManageDomainsComponent implements OnInit {
 		throw new Error('Method not implemented.');
 	}
 
+
+	validateDomain(domain: string) {
+		const lowerCaseDomain = this.referenceService.getTrimmedData(domain.toLowerCase());
+		if (this.validateDomainName(lowerCaseDomain)) {
+			this.validDomainFormat = true;
+			this.validDomainPattern = true;
+		} else {
+			this.validDomainPattern = false;
+		}
+	}
+
+	validateDomainName(domain: string) {
+		var DOMAIN_NAME_PATTERN = new RegExp(this.regularExpressions.DOMAIN_PATTERN);
+		var matchedPattrenString:string[] = domain.match(DOMAIN_NAME_PATTERN)
+		if(matchedPattrenString.length ==0)
+			return false;
+		else
+			return matchedPattrenString[0] == domain;
+	}
+
+	confirmAndsaveExcludedDomain(domain: string) {
+		let updatedDomain = '<strong>' + domain + '</strong>';
+		let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
+		let text = "Adding this domain ensures that users can become team members using the link";
+		let self = this;
+		swal({
+			title: 'Are you sure want to continue?',
+			text: text,
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			allowOutsideClick: false,
+			confirmButtonText: 'Yes'
+		}).then(function () {
+			alert("Saving domain");
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
+	}
+
+	getCompanyName() {
+		let companyName = " your company";
+		if (this.currentUser != undefined) {
+			if (this.currentUser['logedInCustomerCompanyNeme'] != undefined) {
+				companyName = this.currentUser['logedInCustomerCompanyNeme'];
+			}
+		}
+		return companyName;
+	}
 
 
 
