@@ -1029,7 +1029,7 @@
 																		<a class="custom-icon" data-toggle="tooltip"
 																			data-placement="bottom"
 																			title="{{actionsDescription.contact_delete}}"
-																			(click)="deleteUserShowAlert(contact.id)"
+																			(click)="!isDefaultContactList ? deleteUserShowAlert(contact.id) : confirmdelete(contact.id)"
 																			*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 										&& ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))
 										&& !isTeamMemberPartnerList && !sharedLeads && !isSynchronizationList">

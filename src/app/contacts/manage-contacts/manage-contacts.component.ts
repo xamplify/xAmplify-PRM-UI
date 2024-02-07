@@ -71,6 +71,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	selectedContactListId: number;
 	selectedContactListName: string;
 	isDefaultPartnerList: boolean;
+	isDefaultContactList: boolean;
 	isSynchronizationList: boolean;
 	uploadedUserId: number;
 	showAll: boolean;
@@ -869,7 +870,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, 
-		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean, isCompanyList:boolean, selectedAssociatedCompany: string, selectedAssociatedCompanyId: number) {
+		isDefaultPartnerList: boolean,isDefaultContactList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean, isCompanyList:boolean, selectedAssociatedCompany: string, selectedAssociatedCompanyId: number) {
 		this.uploadedUserId = uploadUserId;
 		this.selectedContactListId = contactSelectedListId;
 		this.selectedContactListName = contactListName;
@@ -882,6 +883,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.isCompanyList = isCompanyList;
 		this.selectedAssociatedCompany = selectedAssociatedCompany;
 		this.selectedCompanyId = selectedAssociatedCompanyId;
+		this.isDefaultContactList = isDefaultContactList;
 		$("#pagination").hide();
 	}
 
