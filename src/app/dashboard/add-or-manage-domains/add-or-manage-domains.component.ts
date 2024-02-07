@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, OnDestroy } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
@@ -20,7 +20,7 @@ declare var $:any,Papa: any, swal:any;
   styleUrls: ['./add-or-manage-domains.component.css','../user-profile/my-profile/my-profile.component.css'],
   providers:[HttpRequestLoader,Properties,SortOption],
 })
-export class AddOrManageDomainsComponent implements OnInit {
+export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 
   customResponse:CustomResponse = new CustomResponse();
   @Input() moduleName:string;
@@ -44,7 +44,7 @@ export class AddOrManageDomainsComponent implements OnInit {
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public httpRequestLoader:HttpRequestLoader,public properties:Properties,public fileUtil:FileUtil,public sortOption:SortOption,
 	public utilService:UtilService,public regularExpressions:RegularExpressions,public dashboardService:DashboardService) { }
-
+	
   ngOnInit() {
 	this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.isAddDomainsModule = this.moduleName=="addDomains";
@@ -58,6 +58,11 @@ export class AddOrManageDomainsComponent implements OnInit {
       this.headerText = "Exclude A Domain";
     }
   }
+
+  ngOnDestroy(): void {
+	this.referenceService.closeSweetAlert();
+}
+
 
   downloadEmptyCSV(){
     if(this.isAddDomainsModule){
@@ -213,8 +218,8 @@ export class AddOrManageDomainsComponent implements OnInit {
 
 	validateDomainName(domain: string) {
 		var DOMAIN_NAME_PATTERN = new RegExp(this.regularExpressions.DOMAIN_PATTERN);
-		var matchedPattrenString:string[] = domain.match(DOMAIN_NAME_PATTERN)
-		if(matchedPattrenString.length ==0)
+		var matchedPattrenString:string[] = domain.match(DOMAIN_NAME_PATTERN);
+		if(matchedPattrenString==null ||(matchedPattrenString!=null && matchedPattrenString.length ==0))
 			return false;
 		else
 			return matchedPattrenString[0] == domain;
@@ -261,8 +266,10 @@ export class AddOrManageDomainsComponent implements OnInit {
 				this.customResponse = new CustomResponse('SUCCESS',response.message,true);
 				this.closeAddDomainModal();
 				this.ngxloading = false;
-			},error=>{
+			},(error:any)=>{
 				this.ngxloading = false;
+				let errorMessage = this.referenceService.showHttpErrorMessage(error);
+				this.referenceService.showSweetAlertErrorMessage(errorMessage);
 			}
 		);
 	}

@@ -1299,12 +1299,12 @@ getDefaultThemes(){
         let userId = this.authenticationService.getUserId();
         let pageableUrl = this.referenceService.getPagebleUrl(pagination);
         let findAllUrl = this.domainUrl+'/'+userId+this.QUERY_PARAMETERS+pageableUrl;
-        alert(findAllUrl);
         return this.authenticationService.callGetMethod(findAllUrl);
       }
 
     saveDomains(domainRequestDto:DomainRequestDto){
         const url = this.domainUrl + this.QUERY_PARAMETERS;
+        domainRequestDto.createdUserId = this.authenticationService.getUserId();
         return this.authenticationService.callPostMethod(url,domainRequestDto);
     }
 
