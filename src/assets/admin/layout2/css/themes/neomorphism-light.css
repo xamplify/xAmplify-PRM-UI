@@ -2017,7 +2017,10 @@ tbody {
 .col-sm-6.mPad.tile_hover_effect:hover,
 .col-sm-6.tiles_hover_effect:hover,
 .col-sm-6.custom-padding.tiles_hover_effect:hover,
-.col-xs-6.col-sm-2.col-lg-2.mt5.pr.pr15.tiles_hover_effect.col-sm-5ths:hover {
+.col-xs-6.col-sm-2.col-lg-2.mt5.pr.pr15.tiles_hover_effect.col-sm-5ths:hover,
+.col-lg-4.col-md-4.col-sm-4.col-xs-12.tiles_hover_effect:hover,
+.col-lg-4.col-md-4.col-sm-4.col-xs-12.tiles_hover_effect:hover,
+.col-lg-4.col-md-4.col-sm-4.col-xs-12.tiles_hover_effect:hover {
   transform: scale(1.05);
   transition: all 0.3s ease;
 }
@@ -3893,5 +3896,5 @@ span.comment-color,
   margin-right: -10px !important;
 }
 h5.mt0.pos_mrg_top12{
-  margin-top: 12px !important;
+  margin-top: 13px !important;
 }
