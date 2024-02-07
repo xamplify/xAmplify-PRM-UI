@@ -226,8 +226,6 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	}
 
 	confirmAndsaveExcludedDomain(domain: string) {
-		let updatedDomain = '<strong>' + domain + '</strong>';
-		let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
 		let text = "Adding this domain ensures that users can signup as team members using the link";
 		let self = this;
 		swal({
