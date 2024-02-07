@@ -11,6 +11,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
 import { DomainRequestDto } from '../models/domain-request-dto';
 import { DashboardService } from '../dashboard.service';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 
 
 declare var $:any,Papa: any, swal:any;
@@ -21,7 +22,6 @@ declare var $:any,Papa: any, swal:any;
   providers:[HttpRequestLoader,Properties,SortOption],
 })
 export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
-
   customResponse:CustomResponse = new CustomResponse();
   @Input() moduleName:string;
   headerText = "";
@@ -41,9 +41,11 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
   currentUser: any;
   domainRequestDto:DomainRequestDto = new DomainRequestDto();
   ngxloading = false;
+  httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
-    public httpRequestLoader:HttpRequestLoader,public properties:Properties,public fileUtil:FileUtil,public sortOption:SortOption,
-	public utilService:UtilService,public regularExpressions:RegularExpressions,public dashboardService:DashboardService) { }
+    public properties:Properties,public fileUtil:FileUtil,public sortOption:SortOption,
+	public utilService:UtilService,public regularExpressions:RegularExpressions,public dashboardService:DashboardService,
+	public xtremandLogger:XtremandLogger) { }
 	
   ngOnInit() {
 	this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -54,23 +56,17 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
       this.downloadCsvText = "Download CSV Template";
       this.descriptionText = "Adding a domain ensures that the specified domain based yours will be added as team members using your company link.";
       this.descriptionText = "Add a domain to invite team members who share your company's domain and join using your unique link, streamlining team management and identification.";
-    }else if(this.isExcludeDomainModule){
+	  this.descriptionText = "Added domain users will be allowed to sign up as team members";		
+	}else if(this.isExcludeDomainModule){
       this.headerText = "Exclude A Domain";
     }
+	this.findDomains(this.pagination);
   }
 
   ngOnDestroy(): void {
 	this.referenceService.closeSweetAlert();
 }
 
-
-  downloadEmptyCSV(){
-    if(this.isAddDomainsModule){
-      window.location.href = this.authenticationService.REST_URL + "domain/downloadDefaultCsv/Add-Domains.csv?access_token=" + this.authenticationService.access_token;
-    }else if(this.isExcludeDomainModule){
-        window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_EXCLUDE_DOMAIN_EMPTY.csv";
-    }
-  }
 
 
   addDomainModalOpen(){
@@ -87,96 +83,9 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	this.domainRequestDto = new DomainRequestDto();
   }
 
-  fileChange(input: any, excludetype: string) {
-    this.customResponse = new CustomResponse();
-		this.readFiles(input.files, excludetype);
-	}
-
-  readFiles(files: any, excludetype: string) {
-		if (this.fileUtil.isCSVFile(files[0])) {
-			this.isListLoader = true;
-			let reader = new FileReader();
-			reader.readAsText(files[0]);
-			var lines = new Array();
-			var self = this;
-			reader.onload = function (e: any) {
-				var contents = e.target.result;
-				let csvData = reader.result;
-				let csvRecordsArray = csvData.split(/\r|\n/);
-				let headersRow = self.fileUtil.getHeaderArray(csvRecordsArray);
-				let headers = headersRow[0].split(',');
-				if ((headers.length == 1)) {
-					if (self.validateHeaders(headers, excludetype)) {
-						var csvResult = Papa.parse(contents);
-						  var allTextLines = csvResult.data;
-						  self.pagination = new Pagination();
-							self.addedDomains = [];
-							self.readExcludedDomainsCSVFileContent(allTextLines, self.pagination);
-					} else {
-						self.showErrorMessage(excludetype);
-						self.isListLoader = false;
-					}
-				} else {
-					self.showErrorMessage(excludetype);
-					self.isListLoader = false;
-				}
-			}
-		} else {
-			self.customResponse = new CustomResponse('ERROR', self.properties.FILE_TYPE_ERROR, true);
-
-		}
-	}
-  showErrorMessage(excludetype: string) {
-    this.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
-  }
-
-
-  readExcludedDomainsCSVFileContent(allTextLines: any, pagination: Pagination) {
-		this.customResponse = new CustomResponse
-		for (var i = 1; i < allTextLines.length; i++) {
-			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
-				let domain = allTextLines[i][0].trim();
-				this.addedDomains.push(domain);
-			}
-		}
-		this.pagination.page = 1;
-		this.pagination.maxResults = 12;
-		this.pagination.type = "csvDomains";
-		//this.setPage(this.csvDomainPagination);
-		this.isListLoader = false;
-		if (this.addedDomains.length === 0) {
-			this.customResponse = new CustomResponse('ERROR', "No domains found.", true);
-			this.uploadedCsvFilePreview = false;
-		}else{
-			this.uploadedCsvFilePreview = true;
-
-		}
-
-	}
-
-  isCSVFile(file) {
-		return file.name.endsWith(".csv");
-	}
-
-	validateHeaders(headers, excludetype: string) {
-		if (excludetype === 'exclude-users') {
-			return (this.removeDoubleQuotes(headers[0]) == "EMAILID" || headers[0] == "EMAIL ID");
-		} else if (excludetype === 'exclude-domains') {
-			return (this.removeDoubleQuotes(headers[0]) == "DOMAIN NAME" || headers[0] == "DOMAINNAME" || headers[0] == "DOMAIN");
-		}
-	}
-
-	removeDoubleQuotes(input: string) {
-		if (input != undefined) {
-			return input.trim().replace('"', '').replace('"', '');
-		} else {
-			return "";
-		}
-	}
-
 
 	/********Pagination & Search Code***********/
-	navigateBetweenPageNumbers(event: any) {
+	paginateDomains(event: any) {
 		this.pagination.pageIndex = event.page;
 		this.findDomains(this.pagination);
 	  }
@@ -192,14 +101,20 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	  }
 	
 	  getAllFilteredResults(pagination: Pagination) {
-		pagination.searchKey = this.sortOption.searchKey;
 		pagination = this.utilService.sortOptionValues(this.sortOption.selectedDomainDropDownOption, pagination);
 		this.findDomains(pagination);
 	  }
 
 
 	findDomains(pagination: Pagination) {
-		throw new Error('Method not implemented.');
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.dashboardService.findDomains(pagination).subscribe(
+		response=>{
+			pagination = this.utilService.setPaginatedRows(response,pagination);
+			this.referenceService.loading(this.httpRequestLoader, false);
+		},error=>{
+			this.xtremandLogger.errorPage(error);
+		});
 	}
 
 
@@ -260,6 +175,8 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 			response=>{
 				this.customResponse = new CustomResponse('SUCCESS',response.message,true);
 				this.closeAddDomainModal();
+				this.pagination.pageIndex = 1;
+				this.findDomains(this.pagination);
 				this.ngxloading = false;
 			},(error:any)=>{
 				this.ngxloading = false;

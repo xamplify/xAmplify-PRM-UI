@@ -1295,7 +1295,7 @@ getDefaultThemes(){
     }
 
     /***XNFR-454*****/
-    findDomainNames(pagination:Pagination){
+    findDomains(pagination:Pagination){
         let userId = this.authenticationService.getUserId();
         let pageableUrl = this.referenceService.getPagebleUrl(pagination);
         let findAllUrl = this.domainUrl+'/'+userId+this.QUERY_PARAMETERS+pageableUrl;

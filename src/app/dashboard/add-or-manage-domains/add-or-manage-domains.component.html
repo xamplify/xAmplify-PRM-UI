@@ -1,33 +1,19 @@
 <app-response-message [customResponse]="customResponse"></app-response-message>
+<app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
 <table class="table table-light" style="border: 0px !important; background-color: transparent !important" *ngIf="!httpRequestLoader?.isLoading && !httpRequestLoader?.isServerError">
   <tbody class="neo-border-radius10">
     <fieldset class="fild-custome-borders-none">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border pl-5">
-        <h4 class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0">{{headerText}}</h4>
-        <button style="display: none;" (click)="downloadEmptyCSV()" type="button"  class="button bgcolor-unset col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10 neg_mrg_rgt33 neg_mrg_rgt7 float-right"  
-            [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-            <span class="btn Btn-Green transition txt_pd-top3">{{downloadCsvText}}<i class="fa fa-download ml5" aria-hidden="true"></i></span>
-        </button>
-      </div>
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
         <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align mt10">
-          <!--One at a Time-->
-          <button id="add_domain" class="button bgcolor-unset mrgn_lft0 p0 px-9" [disabled]="uploadedCsvFilePreview" (click)="addDomainModalOpen()">
-            <span class="btn Btn-Green transition txt_pd-top3 pd_lft8">One at a Time
+          <!--Add a Domain-->
+          <button id="add_domain" class="button bgcolor-unset mrgn_lft0 p0 px-9" (click)="addDomainModalOpen()">
+            <span class="btn Btn-Green transition txt_pd-top3 pd_lft8">Add Domain
             <i class="fa fa-plus" style="font-size: 12px; margin-left: 2px;"></i>
             </span>
           </button>
-          <!--Upload CSV-->
-          <button id="uploadCSV" class="button bgcolor-unset p0 px-9" style="display: none;">
-              <span class="btn Btn-Green transition txt_pd-top3">
-                <span style="text-align: center">Upload CSV</span>
-                <input class="upload-file" type="file" title=" " (click)="input.value = null"  (change)="fileChange(input, 'exclude-domains')" accept=".csv" #input />
-                <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
-            </span>
-        </button>
         </div>
         <!--Search Option-->
-        <div class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6 TotalSearchBoxWidth mt10 float-right"  *ngIf="!uploadedCsvFilePreview"
+        <div class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6 TotalSearchBoxWidth mt10 float-right"  
             [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
         <div class="input-icon right">
           <input type="text" [(ngModel)]="pagination.searchKey" (keypress)="searchDomainsOnKeyPress($event.keyCode)" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a domain">
@@ -36,13 +22,10 @@
         </div>
         </div>   
       </div>
-
-      
-       <!--List----->
-       <div class="clearfix" *ngIf="pagination.pagedItems?.length>0">
+       <div class="clearfix">
         <div class="col-xs-12 p0 mt10">
             <div class="table-responsive">
-            <table class='table tgrid' *ngIf="pagination.pagedItems?.length>0">
+            <table class='table tgrid'>
                 <thead>
                 <tr>
                     <th style="width: 50%">Name</th>
@@ -57,7 +40,9 @@
                         <h6>{{domain?.domainName}}</h6>
                     </td>
                     <td>
-                        <h6><app-timestamp [dateAndTime]="domain.time"></app-timestamp></h6>
+                        <h6>
+                            <app-display-date-and-time [dateAndTimeUTCString]="domain?.createdTime"></app-display-date-and-time>
+                        </h6>
                     </td>
                     <td>
                         <div class="actions-block override-actions mb_whitespace" style="float:none;">
@@ -73,15 +58,16 @@
             </div>
         </div>
        <!--Pagination-->       
-           
+       <div class="pdl-mgt" *ngIf="pagination?.totalRecords>0">
+        <app-pagination [pagination]="pagination" (notifyParentDropDown)="findDomains($event)" (notifyParent)="paginateDomains($event)"></app-pagination>
+        </div>
        </div>
     </fieldset>
     <div *ngIf="pagination?.pagedItems?.length == 0" class="alert alert-info mt10 text-center">
-        <strong>No Records Found.</strong>
+        <strong>No Records Found</strong>
       </div>
   </tbody>
 </table>
-
 
 <!--Domain Modal Popup-->
 <div id="teamMemberDomainModal" class="modal fade right" role="dialog" aria-labelledby="myModalLabel"
@@ -122,7 +108,7 @@
                 </form>
             </div>
             <div class="modal-footer" style="border:none">
-                <button class="btn Btn-Gray" (click)="closeAddDomainModal()" translate>Cancel</button>
+                <button class="btn Btn-Gray" (click)="closeAddDomainModal()">Cancel</button>
                       <button type="button" class="button bgcolor-unset btn-top3" (click)="confirmAndsaveExcludedDomain(domain)"
                     [disabled]="!validDomainPattern" translate><span class="btn Btn-Green transition txt_pd-top3">Add</span></button>
             </div>
