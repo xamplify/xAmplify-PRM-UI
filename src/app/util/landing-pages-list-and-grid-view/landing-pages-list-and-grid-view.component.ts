@@ -67,6 +67,8 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @ViewChild("copyModalPopupComponent") copyModalPopupComponent:CopyModalPopupComponent;
   @Output() updatedItemsCountEmitter = new EventEmitter();
   @Output() vendorLandingPage = new EventEmitter();
+  showShareListPopup:boolean = false;
+  @Input() loggedInUserCompanyId = 0;
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -444,4 +446,11 @@ copy(landingPage:any){
     );
   }
     
+    openShareListPopup() {
+        this.showShareListPopup = true;
+    }
+    closeShareListPopup() {
+        this.showShareListPopup = false;
+    }
+
 }

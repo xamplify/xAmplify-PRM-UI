@@ -88,6 +88,8 @@
                                         <td id="actions-td-width-xamp">
                                             <div class="actions-block override-actions flex mPadAction IconCustomizationcondition">
                                                 <div class="mActionDiv whitespace_nowrap display-inlineflex">
+                                                    <!--Share Icon-->
+                                                     <ng-template *ngIf="vendorJourney" [ngTemplateOutlet]="shareIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                     <!--Copy Icon-->
                                                     <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                     <!--Edit Icon-->
@@ -162,6 +164,8 @@
                                     </div>
                                     <!---Icons-->
                                     <div class="bar gridIconCustomization flex" id="notificationBarCu">
+                                        <!--Share Icon-->
+                                        <ng-template *ngIf="vendorJourney" [ngTemplateOutlet]="shareIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                         <!--Copy Icon-->
                                         <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                         <!--Edit Icon-->
@@ -420,6 +424,17 @@
         <div class="del-icon"></div>
     </a>
     </ng-template>
+    <!---Share-->
+    <ng-template #shareIcon let-landingPage="landingPage">
+        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && (vendorJourney && loggedInUserId==landingPage.userId)"
+        data-toggle="tooltip" data-placement="top" title="Share" (click)="openShareListPopup()">
+            <i class="fa fa-share" aria-hidden="true"></i>
+        <div class="del-icon"></div>
+    </a>
+    </ng-template>
     <!--XNFR-432-->
     <app-copy-modal-popup #copyModalPopupComponent (copyModalPopupOutputEmitter)="copyModalPopupOutputReceiver($event)"></app-copy-modal-popup>
+    <app-partner-company-modal-popup [companyId]="loggedInUserCompanyId" [vendorJourney] = "vendorJourney"
+   *ngIf="showShareListPopup" (notifyOtherComponent)="closeShareListPopup()">
+</app-partner-company-modal-popup>
     <app-scroll-top></app-scroll-top>

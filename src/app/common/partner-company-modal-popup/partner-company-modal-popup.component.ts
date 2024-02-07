@@ -47,13 +47,14 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
     selectedFilterIndex: number = 0;
     showFilter = true;
     isTableLoaded: boolean = true;
+    @Input() vendorJourney: boolean = false;
   constructor(public partnerService: ParterService,public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
 	        public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService, public contactService: ContactService) { 
 	  this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
-      if (this.companyId != undefined && this.companyId > 0 && this.inputId != undefined && this.inputId > 0 ) {
+      if (this.companyId != undefined && this.companyId > 0 &&(this.vendorJourney  ||(this.inputId != undefined && this.inputId > 0) )) {
               this.pagination.vendorCompanyId = this.companyId;
               this.pagination.partnerTeamMemberGroupFilter = true;
               this.openPopup();

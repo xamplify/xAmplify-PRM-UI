@@ -331,9 +331,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	editVendorPage:boolean =false;
 	vendorDefaultTemplate:LandingPage = new LandingPage();
 	openLinksInNewTabCheckBoxId = "openLinksInNewTab-page-links";
-
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     mergeTagsInput: any = {};
+	loggedInUserCompanyId = 0;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -647,6 +647,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
 			this.authenticationService.logout();
 		}
+		this.getCompanyId();
 	}
 
 	getModuleAccessByUser() {
@@ -4499,4 +4500,20 @@ checkOrUncheckOpenLinksInNewTabOption(){
 	}
 
 }
+
+getCompanyId() {
+	if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+			(result: any) => {
+				if (result !== "") {
+					this.loggedInUserCompanyId = result;
+					this.referenceService.loading(this.httpRequestLoader, false);
+				}
+			}, (error: any) => {
+				this.referenceService.loading(this.httpRequestLoader, false);
+			}
+		);
+	}
+  }
 }
