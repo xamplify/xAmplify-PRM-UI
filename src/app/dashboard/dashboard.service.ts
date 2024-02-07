@@ -1308,6 +1308,11 @@ getDefaultThemes(){
         return this.authenticationService.callPostMethod(url,domainRequestDto);
     }
 
-       /***XNFR-454*****/
+    /***XNFR-454*****/
+    deleteDomain(id:number){
+        let userId = this.authenticationService.getUserId();
+        let deleteDomainUrl = this.domainUrl+'/id/'+id+'/loggedInUserId/'+userId+this.QUERY_PARAMETERS;
+        return this.authenticationService.callDeleteMethod(deleteDomainUrl);
+    }
     
 }

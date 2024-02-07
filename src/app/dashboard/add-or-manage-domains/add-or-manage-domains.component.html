@@ -46,7 +46,7 @@
                     </td>
                     <td>
                         <div class="actions-block override-actions mb_whitespace" style="float:none;">
-                        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Delete" (click)="showConfirmAlert(domain)">
+                        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDeleteDomain(domain.id)">
                             <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                             <div class="del-icon"></div>
                         </a>
@@ -113,3 +113,4 @@
         </div>
     </div>
 </div>
+<app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" (notifyComponent)="deleteDomain($event)"></app-confirm-sweet-alert-util>

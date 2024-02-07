@@ -42,6 +42,8 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
   domainRequestDto:DomainRequestDto = new DomainRequestDto();
   ngxloading = false;
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  isDeleteOptionClicked: boolean;
+  selectedDomainId = 0;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,public fileUtil:FileUtil,public sortOption:SortOption,
 	public utilService:UtilService,public regularExpressions:RegularExpressions,public dashboardService:DashboardService,
@@ -197,5 +199,46 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 			}
 		);
 	}
+
+	confirmDeleteDomain(id:number){
+		this.isDeleteOptionClicked = true;
+		this.selectedDomainId = id;
+	  }
+	
+	  deleteDomain(event:any){
+		this.customResponse = new CustomResponse();
+		if(event){
+		  this.referenceService.loading(this.httpRequestLoader, true);
+		  this.dashboardService.deleteDomain(this.selectedDomainId).subscribe(
+			response=>{
+			  this.resetDeleteOptions();
+			  this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+			  this.referenceService.loading(this.httpRequestLoader, false);
+			  this.refreshList();
+			},error=>{
+			  this.referenceService.loading(this.httpRequestLoader, false);
+			  let message = this.referenceService.showHttpErrorMessage(error);
+			  this.customResponse = new CustomResponse('ERROR', message, true);
+			  this.resetDeleteOptions();
+			}
+		  );
+		}else{
+		  this.resetDeleteOptions();
+		}
+	   
+	  }
+	
+	  resetDeleteOptions(){
+		this.isDeleteOptionClicked = false;
+		this.selectedDomainId = 0;
+	  }
+
+	  refreshList() {
+		this.referenceService.scrollSmoothToTop();
+		this.pagination.pageIndex = 1;
+		this.pagination.searchKey = "";
+		this.findDomains(this.pagination);
+	  }
+	
 
 }
