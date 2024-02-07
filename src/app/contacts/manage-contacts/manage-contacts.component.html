@@ -633,7 +633,7 @@
                                                       <div class="clickicons"></div>
                                                    </a>
                                                    <a class="custom-icon"
-                                                      [class.disabled]="contactList.noOfContacts == 0 "
+                                                      [class.disabled]="contactList.noOfContacts == 0 && contactList.formList"
                                                       *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
                                     (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
                                                       (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany, contactList.associatedCompanyId);setListType(contactList.publicList)"
@@ -655,7 +655,7 @@
                                                       </a>
                                                    </ng-container>
                                                    <a class="custom-icon"
-                                                      [class.disabled]="contactList.noOfContacts == 0 "
+                                                      [class.disabled]="contactList.noOfContacts == 0 && contactList.formList"
                                                       data-toggle="tooltip" data-placement="top"
                                                       *ngIf="(assignLeads || !sharedLeads) && !authenticationService?.module?.deletedPartner"
                                                       title="{{actionsDescription.contact_list_saveAs}}"
@@ -664,7 +664,7 @@
                                                       <div class="clickicons"></div>
                                                    </a>
                                                    <a class="custom-icon"
-                                                      [class.disabled]="contactList.noOfContacts == 0 "
+                                                      [class.disabled]="contactList.noOfContacts == 0 && contactList.formList"
                                                       *ngIf="assignLeads || showDownloadOptionForSharedLeads"
                                                       (click)="hasDownLoadAccess(contactList.id, contactList.name)"
                                                       data-toggle="tooltip" data-placement="top"

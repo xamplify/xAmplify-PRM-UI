@@ -443,7 +443,7 @@
 													</div>
 													<ng-container *ngIf="!refService.isMobileScreenSize()">
 														<div class="btn-group p-top2"
-															*ngIf="!isSynchronizationList && !isFormList &&  !manageCompanies">
+															*ngIf="!isSynchronizationList && !isFormList ">
 															<button id="copyFrom_clipboard" class="button bgcolor-unset"
 																[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
 																(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);"
@@ -456,7 +456,7 @@
 															</button>
 														</div>
 														<div class="btn-group mt"
-															*ngIf="!isSynchronizationList && !isFormList  && !manageCompanies">
+															*ngIf="!isSynchronizationList && !isFormList ">
 															<div class="fileUpload marg-lft" id="upload_csv"
 																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
 																translate>

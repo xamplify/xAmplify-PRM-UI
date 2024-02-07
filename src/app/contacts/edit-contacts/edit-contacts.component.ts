@@ -1009,6 +1009,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							}
                             this.contactService.addUserSuccessMessage = true;
                             this.goBackToManageList();
+							if(this.isCompanyBreadCrumb){
+								this.goBackToCompaniesList();
+							}
 						} else if (data.statusCode == 418) {
 							this.showUnFormattedEmailAddresses(data);
 						}
@@ -1056,6 +1059,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								
 								this.contactService.deleteUserSucessMessage = true;
 								this.goBackToManageList();
+								if(this.isCompanyBreadCrumb){
+									this.goBackToCompaniesList();
+								}
 							} else if (data.statusCode == 201) {
 								//this.allUsers = this.contactsByType.allContactsCount;
 								console.log("update Contacts ListUsers:" + data);
@@ -1699,6 +1705,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							}
                             this.contactService.addUserSuccessMessage = true;
                             this.goBackToManageList();
+							if(this.isCompanyBreadCrumb){
+								this.goBackToCompaniesList();
+							}
 						} else if (data.statusCode == 418) {
 							this.showUnFormattedEmailAddresses(data);
 						}
@@ -2252,6 +2261,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								//this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
 								this.contactService.deleteUserSucessMessage = true;
 								this.goBackToManageList();
+								if(this.isCompanyBreadCrumb){
+									this.goBackToCompaniesList();
+								}
 							}
 							this.contactIds = [];
 						} else {
