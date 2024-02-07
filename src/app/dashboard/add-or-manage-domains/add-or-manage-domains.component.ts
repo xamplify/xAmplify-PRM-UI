@@ -75,14 +75,11 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 
   addDomainModalOpen(){
     this.domain = "";
-    $('#addDomainModal').modal('show');
+	this.referenceService.openModalPopup("teamMemberDomainModal");
   }
 
   closeAddDomainModal(){
-    $('#addDomainModal').modal('toggle');
-	$("#addDomainModal .close").click();
-	$('#addDomainModal').modal('hide');
-	$('.modal').removeClass('show');
+	this.referenceService.closeModalPopup("teamMemberDomainModal");
 	this.domain = "";
 	this.isDomainExist = false;
 	this.validDomainFormat = true;
