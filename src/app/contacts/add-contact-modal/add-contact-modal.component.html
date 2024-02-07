@@ -93,8 +93,8 @@
                   [(ngModel)]="addContactuser.contactCompany"
                   (input)="contactCompanyChecking(addContactuser.contactCompany)" [ngModelOptions]="{standalone: true}"
                   placeholder="Company" maxlength="250">
+                  <div class="textCss"></div>
                 </ng-container>
-                <div class="textCss"></div>
               </div>
             </div>
             <ng-container *ngIf="isPartner && isUpdateUser && !isAssignLeads">

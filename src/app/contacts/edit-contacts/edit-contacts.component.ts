@@ -767,6 +767,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							//this.getContactsAssocialteCampaigns();
                             this.contactService.addUserSuccessMessage = true;
                             this.goBackToManageList();
+							if(this.isCompanyBreadCrumb){
+								this.goBackToCompaniesList();
+							}
 						} else if (data.statusCode == 418) {
 							this.showUnFormattedEmailAddresses(data);
 						}
@@ -1104,6 +1107,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			self.refresh();
 		}, 500);
 	}
+
+	goBackToCompaniesList(){
+		this.loading = true;
+		let self = this;
+		setTimeout(function() {
+			self.navigateToCompanyLists();
+		}, 500);
+	}
+
+	navigateToCompanyLists(){
+		this.router.navigate(['/home/company/manage'])
+	  }
 
 	showAlert(contactListId: number) {
 		this.xtremandLogger.info("userIdForChecked" + this.selectedContactListIds);

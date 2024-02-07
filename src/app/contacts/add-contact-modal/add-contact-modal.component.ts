@@ -433,8 +433,14 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
     searchableDropdownEventReceiver(event: any) {
         if(this.checkingContactTypeName == 'Contact'){
-            this.addContactuser.contactCompanyId = event['id'];
-            this.addContactuser.contactCompany = event['name'];
+            if(event != null){
+                this.addContactuser.contactCompanyId = event['id'];
+                this.addContactuser.contactCompany = event['name'];
+            }  
+            else {
+                this.addContactuser.contactCompanyId = 0;
+                this.addContactuser.contactCompany = '';
+            }        
         }else{
             this.addContactuser.contactCompany = event;
         }
