@@ -829,13 +829,13 @@
 											aria-hidden="true"></i>
 									</ng-container>
 								</div>
-								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+								<div class="col-xs-5 col-sm-7 col-md-7 col-lg-7">
 									<ng-container *ngIf="parternUserListIds?.length==0">
 										<h4 class="text-center"> No row is selected </h4>
 									</ng-container>
 								</div>
-								<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-									<div class="portlet-input input-inline mEventSearch" style="top: -6px;">
+								<div class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
+									<div class="portlet-input input-inline mEventSearch w-100 pl-23" style="top: -6px;">
 										<div class="input-icon right">
 											<input type="text" [(ngModel)]="contactSearchInput"
 												[ngModelOptions]="{standalone: true}" class="form-control"
@@ -854,7 +854,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-12" style="margin-top: 10px;">
+							<div class="col-xs-12 mb-p0" style="margin-top: 10px;">
 								<div class="row pb10" id="user_list_table_view">
 									<div>
 										<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer"
@@ -893,9 +893,8 @@
 														</th>
 													</tr>
 												</table>
-												<div class="col-xs-12">
+												<div class="col-xs-12 p0">
 													<div class="table-responsive">
-
 														<table class="table tgrid" id="user_list_tb"
 															aria-describedby="user_list_tb_info"
 															*ngIf="contactListsPagination.pagedItems?.length > 0 ">

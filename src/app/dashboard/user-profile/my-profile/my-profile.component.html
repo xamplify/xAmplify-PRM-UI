@@ -863,14 +863,14 @@
                                                 *ngIf="leadApprovalCustomResponse.isVisible"></app-response-message>
                                             <table class="table table-light"
                                                 style="border:0px!important;background-color:transparent!important">
-                                                <tbody class="remove_table_bg">
+                                                <tbody class="remove_table_bg display-grid">
                                                     <fieldset class="fild-custome-borders-none">
-                                                        <legend class="leg-custome-borders-bot">Turn Lead
+                                                        <legend class="leg-custome-borders-bot fs-17">Turn Lead
                                                             Approval/Rejection option ON or OFF</legend>
                                                     </fieldset>
                                                     <tr class="col-md-12 col-lg-12">
                                                         <div class="flex row">
-                                                            <div class="col-md-9 col-lg-9">
+                                                            <div class="col-md-9 col-lg-9 p0">
                                                                 <h4 class="f-w-600" id="text-color-my-profile"
                                                                     translate>You have the ability to Approve or
                                                                     Reject the leads registered by the partners.
@@ -895,8 +895,8 @@
                                                 </tbody>
                                             </table>
 
-                                            <br>
-                                            <button type="submit" class="button bgcolor-unset"
+                                            <!-- <br> -->
+                                            <button type="submit" class="button bgcolor-unset p0"
                                                 (click)="updateLeadApprovalOrRejectionStatus()" translate><span
                                                     class="btn Btn-Green transition txt_pd-top3">Save Changes
                                                 </span>
@@ -1512,7 +1512,7 @@
                                                                             </th>
                                                                             <th class="PipelinesTablet-thWidth1">Created
                                                                                 By</th>
-                                                                            <th class="PipelinesTablet-thWidth2">Stages
+                                                                            <th class="PipelinesTablet-thWidth2 text-center">Stages
                                                                             </th>
                                                                             <th class="PipelinesTablet-thWidth3">Actions
                                                                             </th>
@@ -1560,7 +1560,7 @@
                                                                                     </app-timestamp>
                                                                                 </h5>
                                                                             </td>
-                                                                            <td class="mAlign">
+                                                                            <td class="mAlign text-center">
                                                                                 {{pipeline.stages.length}}</td>
                                                                             <td class="mAlign tableIconsAliggnLine">
                                                                                 <div
@@ -1774,7 +1774,7 @@
                                                 *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                                 <table class="table table-light"
                                                     style="border:0px!important;background-color:transparent!important">
-                                                    <tbody class="remove_table_bg">
+                                                    <tbody class="remove_table_bg display-grid">
                                                         <fieldset class="fild-custome-borders-none">
                                                             <legend class="leg-custome-borders-bot">GDPR</legend>
                                                             <tr class="col-md-12 col-lg-12">

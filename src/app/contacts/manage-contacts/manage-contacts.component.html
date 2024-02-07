@@ -402,7 +402,7 @@
                                           </th>
                                           <th scope="col" class="hidden-xs" [hidden]="!assignLeads" translate
                                              id="border-bottom"><span [hidden]="!assignLeads">status</span></th>
-                                          <th scope="col" class="hidden-xs" [hidden]="isPartner || assignLeads"
+                                          <th scope="col" class="hidden-xs text-center" [hidden]="isPartner || assignLeads"
                                              translate id="border-bottom"><span
                                                 [hidden]="isPartner || assignLeads">Type</span></th>
                                           <th scope="col" class="hidden-xs" [hidden]="assignLeads" translate
@@ -505,7 +505,7 @@
                                                       *ngIf="!contactList.companyList">
                                                       <b>Company Name:</b> {{contactList.companyName}}
                                                    </span>
-                                                   <h5 class="mb0 hidden-sm hidden-md hidden-lg">
+                                                   <h5 class="mb0 hidden-xs hidden-sm hidden-md hidden-lg">
                                                       <span class="mb0"
                                                          *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)"
                                                          translate>

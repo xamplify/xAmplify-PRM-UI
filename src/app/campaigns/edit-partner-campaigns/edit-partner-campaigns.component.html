@@ -58,7 +58,7 @@
                      <fieldset class="scheduler-border">
                         <legend class="scheduler-border">Campaign details</legend>
                         <form>
-                           <div class="col-xs-6">
+                           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                               <div class="form-group" [attr.class]="campaignNameDivClass">
                                  <label for="exampleInputEmail1">Campaign name (save as)</label>
                                  <span class="required"><strong> * </strong></span>
@@ -114,7 +114,7 @@
                                  </select>
                               </div>
                            </div>
-                           <div class="col-xs-6">
+                           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                               <div class="form-group" [attr.class]="fromEmaiDivClass">
                                  <label class="control-label">Folder
                                     <span class="required"><strong> * </strong></span>
@@ -226,7 +226,7 @@
                               <img src="{{campaign.emailTemplate.subject}}" class="Selected-email-template-imgcu"
                                  alt="">
                            </div>
-                           <div class="col-xs-8">
+                           <div class="col-xs-9">
                               <a>
                                  <h4 class="ellipsis mt5 mb5 mb_wrap"
                                     style="color: #777676;font-weight: 500 !important;"
@@ -248,12 +248,12 @@
                               </a>
                               <br>
                               <div class="d-flex">
-                                 <a class="pull-right btn-sm button_blue btn-primary"
+                                 <a class="pull-right btn-sm button_blue"
                                     (click)="previewEmailTemplate(campaign.emailTemplate)"> <span
                                        class="btn btn-primary transition txt_pd-top3"><i class="fa fa-eye"></i>
                                        Preview</span> </a>
                                  <a *ngIf="campaign?.emailTemplate?.editPartnerTemplate"
-                                    class="pull-right btn btn-sm button_blue btn-primary mrg_lft6"
+                                    class="pull-right btn btn-sm button_blue ml-5"
                                     style="margin-right: 6px" (click)="editPartnerTemplate()"> <span
                                        class="btn btn-primary transition txt_pd-top3"><i class="fa fa-edit"></i> Edit
                                     </span></a>

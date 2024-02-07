@@ -3936,3 +3936,12 @@ tr.col-md-12.col-lg-12:hover{
 .btns_border_radius{
   border-radius: 7px !important;
 }
+/* edit partner modal popup */
+.textCss{
+  width: 100%!important;
+}
+/* leads Approval in myprofile */
+.display-grid{
+  display: grid;
+  padding: 5px;
+}
