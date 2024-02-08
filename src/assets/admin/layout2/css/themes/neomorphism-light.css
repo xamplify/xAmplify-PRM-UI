@@ -98,6 +98,7 @@ a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor.tiles_b
 }
 .portlet > .portlet-title,
 .header-text-css,
+h4.header-text-css,
 /* .black-blue-c:hover, */
 .lineplayercontrol,
 .row-space,
@@ -428,7 +429,7 @@ tr {
   color: #000 !important;
 }
 .modal-content {
-  background-color: linear-gradient(225deg, #d8dde1, #ffffff);
+  background: linear-gradient(225deg, #d8dde1, #ffffff);
   color: #000 !important;
 }
 .upload-asset-div,
@@ -1135,8 +1136,8 @@ input#copy-link {
   color: #000 !important;
 }
 .c-btn {
-  border: 1px solid #2f4857 !important;
-  background-color: #22313a !important;
+  border: 1px solid #d0d5db !important;
+  background: linear-gradient(225deg,#d8dde1,#fff)!important;
   color: #000 !important;
 }
 .list-area {
@@ -1145,7 +1146,7 @@ input#copy-link {
   box-shadow: 0px 1px 5px #22313a !important;
 }
 .selected-list .c-btn {
-  box-shadow: 0px 1px 5px #22313a !important;
+  box-shadow: inset 5px 5px 10px #d6dadf,inset -5px -5px 10px #fff!important;
 }
 .arrow-up,
 .arrow-down {
@@ -1843,7 +1844,9 @@ i.singleIconCustomization {
 }
 /* sudha sri (10-10-2023) */
 .bg_color {
-  background-color: #2c2f33 !important;
+  background-color: #f0f5fa !important;
+  box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff;
+  border-bottom: 1px solid #d0d5db;
 }
 .borderColorsCU {
   border: 1px solid #2f4857 !important;
@@ -2761,7 +2764,7 @@ justify-content: center!important;
     overflow: hidden !important;
     height: 3.5rem !important;
     border-radius: 7px !important;
-    background: linear-gradient(225deg, #d8dde1, #ffffff);
+    background: linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
     color: #000 !important;
   }
   .button:hover::before,
@@ -2835,11 +2838,12 @@ justify-content: center!important;
 /**** XNFR-233 ****/
 .custom-login {
   background: none !important;
-  border: 1px solid #191b1e !important;
+  border: 1px solid #d0d5db !important;
 }
 .preview_img {
-  background-color: #2c2f33 !important;
-  border: 1px solid #191b1e !important;
+  background-color: #f0f5fa !important;
+  border: 1px solid #d0d5db !important;
+  box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff;
 }
 /* EditDeal page */
 .panel.panel-default.deal-bgcolor{
@@ -2898,7 +2902,7 @@ padding-left: 0px!important;
   height: 32px!important;
 }
 button.unlink-button {
-  color: #f3f2f2;
+  color: #000;
 }
 .col-xs-6.col-sm-2.col-lg-2.pr0.col-sm-5ths:hover {
   transform: scale(1.02);
@@ -3067,15 +3071,15 @@ div.button span {
 /** XNFR-416 ***/
 .loginActive {
   color: #000 !important;
-  background-color : #222528 !important;
+  background-color : #f0f5fa !important;
   border-bottom: 3px solid #008fd5 !important;
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
 }
 .inActive {
   color: #000 !important;
-  background-color : #222528 !important;
+  background-color : #f0f5fa !important;
   border-bottom: 3px solid #f1f5f9 !important;
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
 }
 /* manikanta */
 .detail_card{
@@ -3462,6 +3466,7 @@ button.search-box-item-click {
   font-size: 15px !important;
   background-image: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
   border: 0px solid #9ad6f6fa!important;
+  color: #fff !important;
 }
 page-sidebar .page-sidebar-menu > li.active > a > i{
   color: #14a5fa;
@@ -3555,8 +3560,7 @@ a.title.padding_bottom.text-color.content-bg.row-space{
 }
 }
 /* Sudha Sri(17-1-2024) */
-.btn-group > .group-name-cclass,
-a.btn.btn-block.btn-primary.text-uppercase{
+.btn-group > .group-name-cclass{
   background: none !important;
   color: #000 !important;
 }
@@ -3748,7 +3752,8 @@ button.btn.btn-primary.dropdown-toggle {
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
   border-radius: 7px;
 }
-li.active-tab a.active-tab-anchor-text{
+li.active-tab a.active-tab-anchor-text,
+li.active a.active-tab-anchor-text{
   background: #f0f5fa !important;
   box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
 }
@@ -3800,7 +3805,8 @@ h6.view-banner.banner-top,
 h5.view-banner.orange-lable-cu1,
 h6.view-banner.Cancelled-tag-cu,
 h6.view-banner.banner-top.bgc-green,
-h6.view-banner.banner-top.white-labeled-cu1 {
+h6.view-banner.banner-top.white-labeled-cu1,
+.mrg_lft6 {
   margin-left: 5px !important;
 }
 /*** Sudha Sri(30-1-2024) ***/
@@ -3876,7 +3882,8 @@ span.comment-color,
 .neg_mrg_top18{
   margin-top: -18px !important;
 }
-.theme_activation_bg{
+.theme_activation_bg,
+li.active a.text-white.active-tab-anchor-text{
   background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
 }
 .row.mtop.mrg_top15{
@@ -3944,4 +3951,20 @@ tr.col-md-12.col-lg-12:hover{
 .display-grid{
   display: grid;
   padding: 5px;
+}
+/*** Sudha Sri(8-2-2024) ***/
+button.btn.Btn-Green.float-left.mobileBottomPa.responsiveBtnCU:hover {
+  background: linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
+}
+.mrg_lft0{
+  margin-left: 0px !important;
+}
+li.filter.filter-box-selected{
+  background: linear-gradient(0deg, #06beb8 0, #0c86cc 100%) !important;
+  box-shadow: none !important;
+  color: #fff !important;
+}
+.list_view_deal{
+  margin-right: 6px !important;
+  margin-top: -4px !important;
 }
