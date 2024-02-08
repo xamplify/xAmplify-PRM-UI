@@ -22,7 +22,7 @@
         <div class="col-xs-12">
           <app-list-loader *ngIf="countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
           </app-list-loader>
-          <div class="row"  *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
+          <div class="row" *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
             <!--  Start Tiles-->
             <div class="col-xs-12 col-md-12 col-sm-12">
               <div class="page-bar" style="padding: 15px 15px 15px 0px">
@@ -101,7 +101,7 @@
                             aria-hidden="true"></i></span>
                       </ng-container> -->
                       <a style="padding-left: 11px;">
-                        <button class="bgcolor-unset p0 btn-transitions" translate>
+                        <button class="button bgcolor-unset p0 btn-transitions" translate>
                           <span class="btn Btn-Green transition d-inline" (click)="addCompanyModalOpen()"> Add a Company
                             <i class="fa fa-plus" aria-hidden="true"></i></span>
                         </button>
@@ -109,8 +109,11 @@
                       <div class="inputs" align="right" style="float: right; display: inline-flex;">
                         <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
                           <div class="input-icon right" style="position: relative;right: -11px;">
-                            <input type="text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
-                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';search()"></button>
+                            <input type="text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                              [ngModelOptions]="{standalone: true}" placeholder="Search"
+                              (keypress)="searchKeyPress($event.keyCode)">
+                            <button class="glyphicon glyphicon-remove search-box-item-clear"
+                              *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';search()"></button>
                             <button type="submit" class="search-box-item-click" (click)="search()">
                               <i class="fa fa-search" aria-hidden="true"></i></button>
                           </div>
@@ -119,19 +122,23 @@
                     </div>
                   </div>
                   <div *ngIf="companyService.isCompanyModalPopUp">
-                    <app-add-company (closeEvent)="closeCompanyModal($event)" [actionType]="actionType" [companyId]="companyId" (notifySubmitSuccess)="showSubmitCompanySuccess()"></app-add-company>
+                    <app-add-company (closeEvent)="closeCompanyModal($event)" [actionType]="actionType"
+                      [companyId]="companyId" (notifySubmitSuccess)="showSubmitCompanySuccess()"></app-add-company>
                   </div>
                   <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'>
-                    <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"></app-list-loader>
+                    <app-list-loader
+                      *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"></app-list-loader>
                     <div class="table-responsive" *ngIf="!httpRequestLoader.isLoading">
                       <table class='table tgrid table-hover table-sm' aria-describedby="companyTable">
                         <thead>
                           <tr>
-                            <th style= "width:7%;"></th> 
-                            <th class="center-aligned leadTablewidth0" translate style= "width:50%;"> <span class="companyDetailsAbjustment"> Company Details</span></th>
-                            <th class="center leadTablewidth1" translate style= "width:13%;">Created on</th>
-                            <th class="center leadTablewidth2" translate style= "width:15%;">Total Contacts</th>
-                            <th class="leadTablewidth3" style="text-align:center" translate style= "width:1 5%;">Actions</th>
+                            <th style="width:7%;"></th>
+                            <th class="center-aligned leadTablewidth0" translate style="width:50%;"> <span
+                                class="companyDetailsAbjustment"> Company Details</span></th>
+                            <th class="center leadTablewidth1" translate style="width:13%;">Created on</th>
+                            <th class="center leadTablewidth2" translate style="width:15%;">Total Contacts</th>
+                            <th class="leadTablewidth3" style="text-align:center" translate style="width:1 5%;">Actions
+                            </th>
                           </tr>
                         </thead>
 
@@ -139,26 +146,27 @@
                           <ng-container *ngFor='let company of pagination.pagedItems; let i=index'>
                             <tr>
                               <td><img src="{{properties?.companyListImage}}" alt="company" style="height: 54px;"></td>
-                              <td>                              
+                              <td>
                                 <h4 class="m0 moreipsis ListFontCu">
-                                  <span data-toggle="tooltip" data-placement="top"
-                                     title="{{company.companyListName}}" class="ListFontCu">
-                                     <b> {{company?.name}} </b>
+                                  <span data-toggle="tooltip" data-placement="top" title="{{company.companyListName}}"
+                                    class="ListFontCu">
+                                    <b> {{company?.name}} </b>
                                   </span>
-                               </h4>
+                                </h4>
 
-                               <h5 *ngIf=" company?.email?.length>0 " class='moreipsis' style="margin-top: 4px;margin-bottom: 4px !important;">
+
+                               <h5 *ngIf="company?.email?.length>0 " class='moreipsis' style="margin-top: 4px;margin-bottom: 4px !important;">
                                   <span  data-toggle="tooltip" data-placement="top"
                                      title="{{company?.email}}">
                                      <b>Email :</b> {{company?.email}}
                                   </span>
-                               </h5>
-                               <h4 class="m0 moreipsis ListFontCu">
-                                <span data-toggle="tooltip" data-placement="top"
-                                   title="{{company.name}}" class="ListFontCu">
-                                   <b>List Name :</b> {{company?.companyListName}}
-                                </span>
-                             </h4>
+                                </h5>
+                                <h4 class="m0 moreipsis ListFontCu">
+                                  <span data-toggle="tooltip" data-placement="top" title="{{company.name}}"
+                                    class="ListFontCu">
+                                    <b>List Name :</b> {{company?.companyListName}}
+                                  </span>
+                                </h4>
                               </td>
                               <td>
                                 <h5 class="stamBrNone">
@@ -170,28 +178,30 @@
                                 {{company.contactCount}}
                               </td>
                               <td>
-                                <div class="actions-block override-actions tb_view_actions" style="float: left !important;">
-                                  <a class="custom-icon" data-rel="fancybox-button"
-                                    data-toggle="tooltip" data-placement="bottom" title="View Company" id="company" (click)="viewCompany(company)">
+                                <div class="actions-block override-actions tb_view_actions"
+                                  style="float: left !important;">
+                                  <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip"
+                                    data-placement="bottom" title="View Company" id="company"
+                                    (click)="viewCompany(company)">
                                     <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
                                     <div class="clickicons"></div>
                                   </a>
                                   <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                     <a *ngIf="company.canUpdate" class="custom-icon" data-rel="fancybox-button"
-                                     data-toggle="tooltip" data-placement="bottom"
-                                      title="Edit Company" id="company" (click)="editCompany(company)">
+                                      data-toggle="tooltip" data-placement="bottom" title="Edit Company" id="company"
+                                      (click)="editCompany(company)">
                                       <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
                                       <div class="clickicons"></div>
                                     </a>
-                                    <a *ngIf="company.canDelete" class="custom-icon" data-rel="fancybox-button" 
-                                      data-toggle="tooltip" data-placement="bottom"
-                                      title="Delete Company" id="company" (click)="showAlert(company.id)">
+                                    <a *ngIf="company.canDelete" class="custom-icon" data-rel="fancybox-button"
+                                      data-toggle="tooltip" data-placement="bottom" title="Delete Company" id="company"
+                                      (click)="showAlert(company.id)">
                                       <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                                       <div class="del-icon"></div>
                                     </a>
-                                    <a *ngIf="company.canViewContacts" class="custom-icon" data-rel="fancybox-button" 
-                                      data-toggle="tooltip" data-placement="bottom"
-                                      title="Add Contact" id="company" (click)="navigateToAddContactsPage(company.companyUserListId)">
+                                    <a *ngIf="company.canViewContacts" class="custom-icon" data-rel="fancybox-button"
+                                      data-toggle="tooltip" data-placement="bottom" title="Add Contact" id="company"
+                                      (click)="navigateToAddContactsPage(company.companyUserListId)">
                                       <i class="fa fa-address-card-o IconCustomization" aria-hidden="true"></i>
                                       <div class="clickicons"></div>
                                     </a>
@@ -205,13 +215,13 @@
                     </div>
 
                     <!-- --------------------Pagination0-------------------- -->
-                    <div class="pg2" *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                    <div class="pg2"
+                      *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                       <app-pagination [pagination]="pagination" (notifyParent)="setCompanyPage($event)"
                         (notifyParentDropDown)="listCompanies($event)"></app-pagination>
                     </div>
                     <!-- End of 24 -->
-                    <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading"
-                      class="alert alert-info">
+                    <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
                       <strong translate>No Companies Found.</strong>
                     </div>
                   </section>

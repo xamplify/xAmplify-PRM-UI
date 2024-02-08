@@ -56,11 +56,12 @@
     </div>
     <div class="form-row">
       <div class="form-group col-md-12">
-        <button *ngIf="buttonActionType" type="submit" class="btn btn-primary"
-          [disabled]="!dashboardButton.buttonTitle || !dashboardButton.buttonLink || saving"
-          (click)="save()">Save</button>
-        <button *ngIf="!buttonActionType" type="submit" class="btn btn-primary"
-          [disabled]="!dashboardButton.buttonTitle || !dashboardButton.buttonLink" (click)="update()">Update</button>
+        <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
+          [disabled]="!dashboardButton.buttonTitle || !dashboardButton.buttonLink || saving" (click)="save()"><span
+            class="btn btn-primary transition txt_pd-top3">Save</span></button>
+        <button *ngIf="!buttonActionType" type="submit" class="button_blue bgcolor-unset"
+          [disabled]="!dashboardButton.buttonTitle || !dashboardButton.buttonLink" (click)="update()"><span
+            class="btn btn-primary transition txt_pd-top3">Update</span></button>
         <button *ngIf="!buttonActionType" type="submit" class="btn btn-danger" (click)="cancel()">Cancel</button>
       </div>
     </div>

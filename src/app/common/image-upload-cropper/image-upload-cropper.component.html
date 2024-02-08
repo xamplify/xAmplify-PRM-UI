@@ -10,7 +10,7 @@
 			<div class="modal-body" style="overflow-y: unset !important;">
 				<button style="position: relative;top: -5px;" class="button fileinput-button-css bgcolor-unset pd-left0"
 					*ngIf="!bgImageChangedEvent; else uploadButton"><span
-						class="btn Btn-Green transition translate">Upload
+						class="btn Btn-Green transition translate txt_pd-top3">Upload
 						image</span>
 					<input style="height: 36px;" title=" " id="custom-input" type="file"
 						(change)="uploadfileBgImageChangeEvent($event)">
@@ -18,7 +18,7 @@
 				<ng-template #uploadButton>
 					<button style="position: relative;top: -5px;"
 						class="button fileinput-button-css bgcolor-unset pd-left0"><span
-							class="btn Btn-Green transition translate">Upload
+							class="btn Btn-Green transition translate txt_pd-top3">Upload
 							image</span>
 						<input style="height: 36px;" title=" " id="custom-input" type="file"
 							(change)="uploadfileBgImageChangeEvent($event)">
@@ -50,7 +50,7 @@
 
 				<div class="d-flex justify-content-between">
 					<div class="button-group" style="position: relative;text-align:left">
-						<button class="btn-info" (click)="toggleContainWithinAspectRatioBgImage()"
+						<button class="btn-info aspect_ratio" (click)="toggleContainWithinAspectRatioBgImage()"
 							[disabled]="!showCropper">
 
 							{{
@@ -59,19 +59,19 @@
 							: 'Contain Within Aspect Ratio'
 							}}
 						</button>
-						<button class="btn-info" (click)="zoomOutBgImage()" [disabled]="!showCropper"><i
+						<button class="btn-info aspect_ratio" (click)="zoomOutBgImage()" [disabled]="!showCropper"><i
 								class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i>
 						</button>
-						<button class="btn-info" (click)="zoomInBgImage()" [disabled]="!showCropper"><i
+						<button class="btn-info aspect_ratio" (click)="zoomInBgImage()" [disabled]="!showCropper"><i
 								class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i>
 						</button>
-						<button class="btn-info" (click)="resetImageBgImage()" [disabled]="!showCropper"> <i
-								class="fa fa-refresh" title="reset" data-toggle="tooltip"
+						<button class="btn-info aspect_ratio" (click)="resetImageBgImage()" [disabled]="!showCropper">
+							<i class="fa fa-refresh" title="reset" data-toggle="tooltip"
 								aria-hidden="true"></i></button>
 					</div>
 					<div>
 						<button class="btn button_blue bgcolor-unset" [disabled]="!showCropper"
-							(click)="uploadBgImage()"><span class="btn btn-primary transition">Save
+							(click)="uploadBgImage()"><span class="btn btn-primary transition txt_pd-top3">Save
 								Changes</span></button>
 					</div>
 				</div>

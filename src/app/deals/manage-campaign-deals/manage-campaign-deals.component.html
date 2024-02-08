@@ -207,8 +207,8 @@
                 <a class="custom-icon" *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)"
                   data-toggle="tooltip" data-placement="bottom" title="Comments">
                   <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px"></i>
-                  <span class="badge badge-default"
-                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">0</span>
+                  <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
+                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
                   <div class="clickicons"></div>
                 </a>
               </div>

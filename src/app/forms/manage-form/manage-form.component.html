@@ -160,7 +160,7 @@
                     *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isFolderGridView"></app-grid-loader>
                 <section *ngIf="modulesDisplayType.isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
-                        <div class="table-responsive pos_pd_top6">
+                        <div class="table-responsive pd_top10">
                             <table class='table tgrid table-hover table-sm' id="manage-form-list-table"
                                 *ngIf="pagination.pagedItems?.length>0" aria-describedby="">
                                 <thead>
@@ -438,7 +438,7 @@
                     </div>
                 </div>
                 <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-                    <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 only_top3">
+                    <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 only_top1">
                         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
                             (notifyParentDropDown)="listForms($event)"
                             [hidden]="httpRequestLoader.isLoading"></app-pagination>
