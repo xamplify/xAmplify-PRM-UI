@@ -1528,13 +1528,16 @@
 	<div *ngIf="contactService.isContactModalPopup && !updateContactUser">
 		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
 			[gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser]="false"
-			[partnerListId]="contactListId" [selectedCompanyId]="selectedCompanyId" (notifyParent)="addRow($event)"></app-add-contact-modal>
+			[partnerListId]="contactListId" [selectedCompanyId]="selectedCompanyId"
+			(notifyParent)="addRow($event)"></app-add-contact-modal>
 	</div>
 
 	<div *ngIf="contactService.isContactModalPopup && updateContactUser">
 		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
 			[gdprInput]="parentInput" [totalUsers]="contacts" [contactDetails]="contactAllDetails"
-			[isUpdateUser]="isUpdateUser" [selectedCompanyId]="selectedCompanyContactId" [isCompanyContact]="isCompanyContact" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
+			[isUpdateUser]="isUpdateUser" [selectedCompanyId]="selectedCompanyContactId"
+			[isCompanyContact]="isCompanyContact"
+			(notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 	</div>
 	<app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList"
 		[downloadListName]="logListName"> </app-export-csv>
@@ -1653,7 +1656,7 @@
 					translate>Decline</button>
 				<button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset"
 					(click)="saveContactsWithPermission()" translate><span
-						class="btn btn-primary transition">Accept</span></button>
+						class="btn btn-primary transition txt_pd-top3">Accept</span></button>
 			</div>
 		</div>
 	</div>

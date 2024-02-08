@@ -595,7 +595,8 @@
               </tr>
             </tbody>
           </table>
-          <button id="right" type="submit" class="btn btn-primary" (click)="addTeamMembers()">Save</button>
+          <button id="right" type="submit" class="button_blue bgcolor-unset" (click)="addTeamMembers()"><span
+              class="btn btn-primary transition txt_pd-top3">Save</span></button>
         </div>
       </div>
       <!----End Of Uploaded Team Members-->
@@ -631,9 +632,11 @@
             </form>
           </div>
           <div class="modal-footer" *ngIf="!deletePopupLoader">
-            <button type="button" class="btn Btn-Gray" (click)="hidePopup()">Cancel</button>
-            <button type="button" class="btn btn-primary" (click)="delete()" *ngIf="selectedId>0">Go</button>
-            <button type="button" class="btn btn-primary" *ngIf="selectedId==0" disabled="disabled">Go</button>
+            <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="hidePopup()">Cancel</button>
+            <button type="button" class="button_blue bgcolor-unset" (click)="delete()" *ngIf="selectedId>0"><span
+                class="btn btn-primary transition txt_pd-top3">Go</span></button>
+            <button type="button" class="button_blue bgcolor-unset" *ngIf="selectedId==0" disabled="disabled"><span
+                class="btn btn-primary transition txt_pd-top3">Go</span></button>
           </div>
         </div>
       </div>

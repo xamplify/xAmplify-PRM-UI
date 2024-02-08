@@ -248,15 +248,15 @@
                               </a>
                               <br>
                               <div class="d-flex">
-                                 <a class="pull-right btn-sm button_blue"
+                                 <button class="pull-right btn-sm button_blue"
                                     (click)="previewEmailTemplate(campaign.emailTemplate)"> <span
                                        class="btn btn-primary transition txt_pd-top3"><i class="fa fa-eye"></i>
-                                       Preview</span> </a>
-                                 <a *ngIf="campaign?.emailTemplate?.editPartnerTemplate"
-                                    class="pull-right btn btn-sm button_blue ml-5"
-                                    style="margin-right: 6px" (click)="editPartnerTemplate()"> <span
+                                       Preview</span> </button>
+                                 <button *ngIf="campaign?.emailTemplate?.editPartnerTemplate"
+                                    class="pull-right btn-sm button_blue ml-5 mrg_lft6" style="margin-right: 6px"
+                                    (click)="editPartnerTemplate()"> <span
                                        class="btn btn-primary transition txt_pd-top3"><i class="fa fa-edit"></i> Edit
-                                    </span></a>
+                                    </span></button>
                               </div>
                            </div>
                         </div>

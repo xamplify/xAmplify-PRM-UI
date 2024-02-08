@@ -1,5 +1,5 @@
-<div id="addContactModal" class="modal right" role="dialog" aria-labelledby="myModalLabel"
-  data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
+<div id="addContactModal" class="modal right" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
+  data-backdrop="static" style="padding-right: 0 !important;">
   <div class="modal-dialog  accounts-modal" style="position: relative !important;">
     <!-- Modal content-->
     <div class="modal-content full_popup">
@@ -90,12 +90,12 @@
                 </ng-container>
 
 
-                <ng-container  *ngIf = "checkingContactTypeName != 'Contact'">
-                  <input type="company" style="border: none !important" 
-                  class="form-control padding-mobile placeholder-bg-color" id="company"
-                  [(ngModel)]="addContactuser.contactCompany"
-                  (input)="contactCompanyChecking(addContactuser.contactCompany)" [ngModelOptions]="{standalone: true}"
-                  placeholder="Company" maxlength="250">
+                <ng-container *ngIf="checkingContactTypeName != 'Contact'">
+                  <input type="company" style="border: none !important"
+                    class="form-control padding-mobile placeholder-bg-color" id="company"
+                    [(ngModel)]="addContactuser.contactCompany"
+                    (input)="contactCompanyChecking(addContactuser.contactCompany)"
+                    [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
                   <div class="textCss"></div>
 
                 </ng-container>
@@ -300,7 +300,7 @@
         <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset button_height"
           [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
           (click)="addEditContactRow()" translate><span
-            class="btn Btn-Green transition txt_pd-top8">Save</span></button>
+            class="btn Btn-Green transition txt_pd-top3">Save</span></button>
         <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset"
           [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
           (click)="updateUser()" data-dismiss="modal" translate><span
