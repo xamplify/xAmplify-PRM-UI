@@ -1192,6 +1192,11 @@
                                                                         src="{{properties?.pipedriveImage}}"
                                                                         alt="Pipedrive"
                                                                         class="img-class-list image_effect">
+                                                                     <img *ngIf="contacts?.socialNetwork=='CONNECTWISE' && contacts.synchronisedList"
+                                                                        src="{{properties?.connectwiseImage}}"
+                                                                        alt="ConnectWise"
+                                                                        class="img-class-list image_effect">
+                                                                        
 
                                                                 </td>
                                                                 <td style="text-align: left;">
@@ -1237,6 +1242,17 @@
                                                                                     translate>Form Contact List
                                                                                 </span>
                                                                             </h6>
+                                                                            <h6 *ngIf="contacts?.companyList"
+                                                                            class="view-banner view-banner-green"
+                                                                            translate>
+                                                                            <span data-toggle="tooltip"
+                                                                                data-placement="top"
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="bottom"
+                                                                                title="This list is associated with a company."
+                                                                                translate>Company Contact List
+                                                                            </span>
+                                                                        </h6>
                                                                         </div>
                                                                     </ng-container>
                                                                 </td>

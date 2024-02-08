@@ -1,4 +1,4 @@
-<div id="addContactModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div id="addContactModal" class="modal right" role="dialog" aria-labelledby="myModalLabel"
   data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
   <div class="modal-dialog  accounts-modal" style="position: relative !important;">
     <!-- Modal content-->
@@ -89,14 +89,16 @@
                     (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>
                 </ng-container>
 
-                <ng-container *ngIf="checkingContactTypeName != 'Contact'">
-                  <input type="company" style="border: none !important"
-                    class="form-control padding-mobile placeholder-bg-color" id="company"
-                    [(ngModel)]="addContactuser.contactCompany"
-                    (input)="contactCompanyChecking(addContactuser.contactCompany)"
-                    [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
+
+                <ng-container  *ngIf = "checkingContactTypeName != 'Contact'">
+                  <input type="company" style="border: none !important" 
+                  class="form-control padding-mobile placeholder-bg-color" id="company"
+                  [(ngModel)]="addContactuser.contactCompany"
+                  (input)="contactCompanyChecking(addContactuser.contactCompany)" [ngModelOptions]="{standalone: true}"
+                  placeholder="Company" maxlength="250">
+                  <div class="textCss"></div>
+
                 </ng-container>
-                <div class="textCss"></div>
               </div>
             </div>
             <ng-container *ngIf="isPartner && isUpdateUser && !isAssignLeads">

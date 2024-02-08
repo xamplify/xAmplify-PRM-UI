@@ -443,7 +443,7 @@
 													</div>
 													<ng-container *ngIf="!refService.isMobileScreenSize()">
 														<div class="btn-group p-top2"
-															*ngIf="!isSynchronizationList && !isFormList &&  !manageCompanies">
+															*ngIf="!isSynchronizationList && !isFormList ">
 															<button id="copyFrom_clipboard" class="button bgcolor-unset"
 																[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
 																(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);"
@@ -456,7 +456,7 @@
 															</button>
 														</div>
 														<div class="btn-group mt"
-															*ngIf="!isSynchronizationList && !isFormList  && !manageCompanies">
+															*ngIf="!isSynchronizationList && !isFormList ">
 															<div class="fileUpload marg-lft" id="upload_csv"
 																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
 																translate>
@@ -1029,7 +1029,7 @@
 																		<a class="custom-icon" data-toggle="tooltip"
 																			data-placement="bottom"
 																			title="{{actionsDescription.contact_delete}}"
-																			(click)="deleteUserShowAlert(contact.id)"
+																			(click)="!isDefaultContactList ? deleteUserShowAlert(contact.id) : confirmdelete(contact.id)"
 																			*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 										&& ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))
 										&& !isTeamMemberPartnerList && !sharedLeads && !isSynchronizationList">
@@ -1528,13 +1528,13 @@
 	<div *ngIf="contactService.isContactModalPopup && !updateContactUser">
 		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
 			[gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser]="false"
-			[partnerListId]="contactListId" (notifyParent)="addRow($event)"></app-add-contact-modal>
+			[partnerListId]="contactListId" [selectedCompanyId]="selectedCompanyId" (notifyParent)="addRow($event)"></app-add-contact-modal>
 	</div>
 
 	<div *ngIf="contactService.isContactModalPopup && updateContactUser">
 		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
 			[gdprInput]="parentInput" [totalUsers]="contacts" [contactDetails]="contactAllDetails"
-			[isUpdateUser]="isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
+			[isUpdateUser]="isUpdateUser" [selectedCompanyId]="selectedCompanyContactId" [isCompanyContact]="isCompanyContact" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 	</div>
 	<app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList"
 		[downloadListName]="logListName"> </app-export-csv>

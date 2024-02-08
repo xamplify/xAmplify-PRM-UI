@@ -1002,6 +1002,10 @@
 																				src="{{properties?.pipedriveImage}}"
 																				alt="pipedrive"
 																				class="img-class-list image_effect">
+																			<img *ngIf="contactList?.socialNetwork=='CONNECTWISE'"
+																				src="{{properties?.connectwiseImage}}"
+																				alt="ConnectWise"
+																				class="img-class-list image_effect">
 																		</td>
 																		<td style="text-align: left;"
 																			*ngIf="!reDistributeEvent && !reDistributeEventManage">
