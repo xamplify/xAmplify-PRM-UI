@@ -9,12 +9,13 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 
 import { UserService } from '../../core/services/user.service';
-import { matchingPasswords } from '../../form-validator';
+import { matchingPasswords, noWhiteSpaceValidator } from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CountryNames } from '../../common/models/country-names';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+
 declare var $: any;
 @Component({
   selector: 'app-access-account',
@@ -24,6 +25,7 @@ declare var $: any;
   providers: [User, CountryNames, RegularExpressions, Properties]
 })
 export class AccessAccountComponent implements OnInit {
+    isActivateAccountPage = false;
     userId:number = 0;
     signUpForm: FormGroup;
     loading = false;
@@ -48,6 +50,7 @@ export class AccessAccountComponent implements OnInit {
     validationMessages = {
         'firstName': {
             'required': 'First name is required.',
+            'whitespace': 'Empty spaces not allowed.'
         },
         'emailId': {
             'required': 'Email is required.',
@@ -100,35 +103,39 @@ export class AccessAccountComponent implements OnInit {
     }
     update() {
         if ( this.signUpForm.valid ) {
-            try {
-                this.signUpUser = this.signUpForm.value;
-                this.loading = true;
-                let data = {};
-                data['id'] = this.userId;
-                data['firstName'] = this.signUpUser.firstName;
-                data['lastName'] = this.signUpUser.lastName;
-                data['password'] = this.signUpUser.password
-                this.userService.accessAccount(data)
-                .subscribe(
-                (result:any) => {
-                   if(result.statusCode==200){
-                       this.referenceService.userProviderMessage = this.properties.ACCOUNT_ACTIVATED_WITH_PASSWORD;
-                       this.router.navigate(['./login']);
-                   }else{
-                       this.loading = false;
-                       this.customResponse = new CustomResponse( 'ERROR',result.message, true );
-                   }
-                },
-                (error:string) => {
-                    this.loading = false;
-                    this.customResponse = new CustomResponse( 'ERROR', 'Oops!Somethig went wrong.Please try after sometime', true );
-                });
-                
-
-            } catch ( error ) { this.xtremandLogger.error( 'error' + error ); }
+            this.signUpUser = this.signUpForm.value;
+            this.loading = true;
+            let data = {};
+            data['id'] = this.userId;
+            data['firstName'] = this.signUpUser.firstName;
+            data['lastName'] = this.signUpUser.lastName;
+            data['password'] = this.signUpUser.password;
+            if(this.isActivateAccountPage){
+                this.accessAccount(data);
+            }else{
+                data['emailId'] = this.signUpUser.emailId;
+            }
         } else {
             this.checkValidationMessages()
         }
+    }
+
+    private accessAccount(data: {}) {
+        this.userService.accessAccount(data)
+            .subscribe(
+                (result: any) => {
+                    if (result.statusCode == 200) {
+                        this.referenceService.userProviderMessage = this.properties.ACCOUNT_ACTIVATED_WITH_PASSWORD;
+                        this.router.navigate(['./login']);
+                    } else {
+                        this.loading = false;
+                        this.customResponse = new CustomResponse('ERROR', result.message, true);
+                    }
+                },
+                (error: string) => {
+                    this.loading = false;
+                    this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try after sometime', true);
+                });
     }
 
     checkPassword() {
@@ -148,11 +155,11 @@ export class AccessAccountComponent implements OnInit {
     }
     buildForm() {
         this.signUpForm = this.formBuilder.group( {
-            'emailId': [{ value: this.signUpUser.emailId, disabled: true }, [Validators.required, Validators.pattern( this.regularExpressions.EMAIL_ID_PATTERN )]],
+            'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern( this.regularExpressions.EMAIL_ID_PATTERN )]],
             'password': [this.signUpUser.password, [Validators.required, Validators.minLength( 6 ), Validators.maxLength( 20 ), Validators.pattern( this.regularExpressions.PASSWORD_PATTERN )]],
             'confirmPassword': [null, [Validators.required, Validators.pattern( this.regularExpressions.PASSWORD_PATTERN )]],
             'agree': [false, Validators.required],
-            'firstName': [this.signUpUser.firstName, Validators.required],
+            'firstName': [this.signUpUser.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
             'lastName': [this.signUpUser.lastName]
         }, {
                 validator: matchingPasswords( 'password', 'confirmPassword' )
@@ -220,9 +227,30 @@ export class AccessAccountComponent implements OnInit {
                 this.vanityURLService.checkVanityURLDetails();
             }
             this.mainLoader = true;
-            this.authenticationService.navigateToDashboardIfUserExists();
-            let alias = this.route.snapshot.params['alias'];            
-            this.getUserDatails( alias );
+            this.isActivateAccountPage = this.referenceService.getCurrentRouteUrl().indexOf("axAa")>-1;
+            /***XNFR-454*******/
+            if(this.isActivateAccountPage){
+                this.authenticationService.navigateToDashboardIfUserExists();
+                let alias = this.route.snapshot.params['alias']; 
+                this.getUserDatails( alias );
+            }else if(this.referenceService.getCurrentRouteUrl().indexOf("tSignUp")>-1){
+                let companyProfileName = this.route.snapshot.params['companyProfileName']; 
+                this.authenticationService.findCompanyDetails(companyProfileName).subscribe(
+                    response=>{
+                        if(response.statusCode==200){
+                            this.mainLoader = false;
+                            this.buildForm();
+                        }else{
+                            this.referenceService.goToPageNotFound();
+                        }
+                    },error=>{
+                        this.xtremandLogger.errorPage(error);
+                    }
+                )
+
+            }
+            /***XNFR-454*******/
+           
         } catch ( error ) { this.mainLoader = false; this.xtremandLogger.error( 'error' + error ); }
     }
     ngAfterViewInit() {

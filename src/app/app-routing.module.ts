@@ -145,6 +145,7 @@ export const routes: Routes = [
 	{ path: 'clpl/:alias', component: ShowLandingPageComponent },
 	{ path: 'requestdemo', component: RequestDemoComponent },
 	{ path: 'axAa/:alias', component: AccessAccountComponent },
+	{ path: 'tSignUp/:companyProfileName', component: AccessAccountComponent },
 	{ path: 'download/:type', component: DownloadTemplateComponent },
 	{ path: 'samlsecurity/:alias', component: SamlsecurityauthComponent },
 	{ path: 'au/:alias/:moduleToRedirect', component: SamlsecurityauthComponent },

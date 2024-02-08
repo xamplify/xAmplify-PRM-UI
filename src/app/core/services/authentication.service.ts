@@ -1255,4 +1255,10 @@ getLeadApprovalStatus( companyId: number ) {
       .catch( this.handleError );
 }
 
+/***XNFR-454****/
+findCompanyDetails(companyProfileName:string) {
+  let url = this.REST_URL + "findCompanyDetails/" + companyProfileName;
+  return this.callGetMethod(url);
+}
+
 }
