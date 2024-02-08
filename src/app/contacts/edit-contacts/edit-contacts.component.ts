@@ -2631,8 +2631,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 	editListName() {
-		this.saveAsListName = this.contactListName;
-	}
+		this.saveAsListName = this.selectedContactListName;
+   }
 	closeSaveAsModal() {
 		this.saveAsListName = undefined;
 		this.refService.namesArray = undefined;

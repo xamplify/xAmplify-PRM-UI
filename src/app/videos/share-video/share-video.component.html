@@ -45,7 +45,7 @@
         </div>
 			</div>
 			<div id="overLayDialog"></div>
-			<div id="overlay-modal" class="video-js is360video" style="padding:5em;" [ngClass]="{'embed-overlay':shareUrl.includes('embed'), 'share-overlay': shareUrl.includes('share')}">
+			<div id="overlay-modal" class="video-js is360video" style="padding:5em;" [ngClass]="{'embed-overlay':shareUrl.includes('embed'), 'share-overlay': shareUrl.includes('share')}" tabindex="0">
 				<form #f="ngForm" novalidate>
 					<div class="col-xs-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">
 					<div class="alert alert-danger alert-dismissible" *ngIf="isCallToActionError">
