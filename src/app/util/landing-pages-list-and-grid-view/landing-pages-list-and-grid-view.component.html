@@ -15,7 +15,7 @@
                     *ngIf="httpRequestLoader?.isLoading && modulesDisplayType?.isGridView"></app-landing-page-loader>
                 <!---List View----->
                 <section *ngIf="modulesDisplayType.isListView && !httpRequestLoader?.isLoading ">
-                    <div class="table-responsive">
+                    <div class="table-responsive pos_mrg_top8">
                         <table class='table tgrid table-hover table-sm' id="manage-page-list"
                             *ngIf="pagination.pagedItems?.length>0" aria-describedby="landing-page-desc">
                             <thead>
@@ -150,7 +150,7 @@
                 </section>
                 <!---Grid View----->
                 <section *ngIf="modulesDisplayType?.isGridView &&  !httpRequestLoader?.isLoading">
-                    <div class="row p10" style="padding: 0px 3px 0px 3px;">
+                    <div class="row p10 neg_margin-10" style="padding: 0px 3px 0px 3px;">
                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20 GridviewSidePaddings"
                             *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                             <div class="grid-box grid-box-height" id="landingPageListDiv_{{landingPage.id}}">

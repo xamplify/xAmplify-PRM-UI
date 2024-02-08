@@ -157,7 +157,7 @@
     min-width: 140px !important;
   }
   .mActionAlign {
-    white-space: pre-line !important;
+    white-space: inherit !important;
     float: left !important;
   }
   .mActionAlign2 {

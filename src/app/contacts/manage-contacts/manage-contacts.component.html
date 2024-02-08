@@ -375,7 +375,7 @@
                            <div class="clearfix"></div>
                         </div>
                         <!-- END FILTER -->
-                        <section class="col-xs-12 p0" *ngIf="showListOfContactList">
+                        <section class="col-xs-12 p0 pt_12" *ngIf="showListOfContactList">
                            <div class="clearfix">
                               <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
                               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
@@ -402,7 +402,7 @@
                                           </th>
                                           <th scope="col" class="hidden-xs" [hidden]="!assignLeads" translate
                                              id="border-bottom"><span [hidden]="!assignLeads">status</span></th>
-                                          <th scope="col" class="hidden-xs" [hidden]="isPartner || assignLeads"
+                                          <th scope="col" class="hidden-xs text-center" [hidden]="isPartner || assignLeads"
                                              translate id="border-bottom"><span
                                                 [hidden]="isPartner || assignLeads">Type</span></th>
                                           <th scope="col" class="hidden-xs" [hidden]="assignLeads" translate
@@ -505,7 +505,7 @@
                                                       *ngIf="!contactList.companyList">
                                                       <b>Company Name:</b> {{contactList.companyName}}
                                                    </span>
-                                                   <h5 class="mb0 hidden-sm hidden-md hidden-lg">
+                                                   <h5 class="mb0 hidden-xs hidden-sm hidden-md hidden-lg">
                                                       <span class="mb0"
                                                          *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)"
                                                          translate>
@@ -994,7 +994,7 @@
                                  </div>
                               </div>
                            </div>
-                           <div id="pagination" [ngStyle]="{'margin-top':isListView ? '-5px': ''}">
+                           <div id="pagination" [ngStyle]="{'margin-top':isListView ? '5px': '13px'}">
                               <!--pager here  -->
                               <app-pagination [hidden]="httpRequestLoader.isLoading" [pagination]="pagination"
                                  [type]="'contacts'" (notifyParent)="setPage($event)"

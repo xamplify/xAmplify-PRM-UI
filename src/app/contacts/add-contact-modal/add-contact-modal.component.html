@@ -22,19 +22,20 @@
                 <span class="star"> *</span>
               </label>
               <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width">
-                <ng-container *ngIf = "checkingContactTypeName == 'Contact'">
-                <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto" [id]="addContactuser.contactCompanyId" [disableDropDown]="false"
-                (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>
+                <ng-container *ngIf="checkingContactTypeName == 'Contact'">
+                  <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto"
+                    [id]="addContactuser.contactCompanyId" [disableDropDown]="false"
+                    (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>
                 </ng-container>
 
-                <ng-container *ngIf = "checkingContactTypeName != 'Contact'">
-                <input type="company" style="border: none !important"
-                  class="form-control padding-mobile placeholder-bg-color" id="company"
-                  [(ngModel)]="addContactuser.contactCompany"
-                  (input)="contactCompanyChecking(addContactuser.contactCompany)" [ngModelOptions]="{standalone: true}"
-                  placeholder="Company" maxlength="250">
+                <ng-container *ngIf="checkingContactTypeName != 'Contact'">
+                  <input type="company" style="border: none !important"
+                    class="form-control padding-mobile placeholder-bg-color" id="company"
+                    [(ngModel)]="addContactuser.contactCompany"
+                    (input)="contactCompanyChecking(addContactuser.contactCompany)"
+                    [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
                 </ng-container>
-                
+
                 <div class="textCss"></div>
               </div>
             </div>
@@ -45,7 +46,7 @@
               </label>
               <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width" *ngIf="isUpdateUser">
                 <span class="email-css">{{addContactuser.emailId}}</span>
-                <div class="textCss"></div>
+                <div class="textCss popup-border-bottom"></div>
               </div>
               <div class="form-group col-xs-10 col-sm-10 mrg0" *ngIf="!isUpdateUser" id="major-field-width">
                 <input type="email" style="border: none !important"
@@ -82,10 +83,12 @@
                 style="color: #00bcd4; right: 11px !important">
               </label>
               <div class="form-group col-xs-10 col-sm-10 mrg0">
-                <ng-container *ngIf = "checkingContactTypeName == 'Contact'">
-                <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto" [id]="addContactuser.contactCompanyId" [disableDropDown]="false"
-                (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>
+                <ng-container *ngIf="checkingContactTypeName == 'Contact'">
+                  <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto"
+                    [id]="addContactuser.contactCompanyId" [disableDropDown]="false"
+                    (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>
                 </ng-container>
+
 
                 <ng-container  *ngIf = "checkingContactTypeName != 'Contact'">
                   <input type="company" style="border: none !important" 
@@ -94,6 +97,7 @@
                   (input)="contactCompanyChecking(addContactuser.contactCompany)" [ngModelOptions]="{standalone: true}"
                   placeholder="Company" maxlength="250">
                   <div class="textCss"></div>
+
                 </ng-container>
               </div>
             </div>

@@ -50,9 +50,9 @@ export class ManageCampaignDealsComponent implements OnInit {
 
   /** XNFR-426 **/
   //deal = new Deal();
-  updateCurrentStage:boolean=false;
+  updateCurrentStage:boolean = false;
   currentDealToUpdateStage:Deal;
-  textAreaDisable:boolean=false;
+  textAreaDisable:boolean = false;
 
   constructor(public authenticationService: AuthenticationService,
     private dealsService: DealsService, public referenceService: ReferenceService, public pagerService: PagerService) {
@@ -132,7 +132,7 @@ export class ManageCampaignDealsComponent implements OnInit {
 
   editDeal(deal: Deal) { 
     this.editCampaignDealForm.emit(deal);
-    this.textAreaDisable=true;
+    this.textAreaDisable = true;
   }
 
   confirmDeleteDeal (deal: Deal) {
@@ -483,7 +483,7 @@ updatePipelineStage(deal:Deal,deletedPartner:boolean){
   if(!deletedPartner){
     this.currentDealToUpdateStage = deal;
     this.updateCurrentStage = true;
-    this.textAreaDisable=true;
+    this.textAreaDisable = true;
   }else{
     this.referenceService.showSweetAlert("This Option Is Not Available","","info");
   }
@@ -491,7 +491,7 @@ updatePipelineStage(deal:Deal,deletedPartner:boolean){
 
 resetModalPopup(){
   this.updateCurrentStage = false;
-  this.textAreaDisable=false;
+  this.textAreaDisable = false;
   this.listCampaignDeals(this.dealsPagination);
 
 }

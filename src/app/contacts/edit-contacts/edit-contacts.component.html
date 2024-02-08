@@ -5,14 +5,14 @@
 			<a [routerLink]="refService?.homeRouter" translate>Home</a>
 			<i class="fa fa-angle-right" aria-hidden="true"></i>
 		</li>
-		<li *ngIf ="!isCompanyBreadCrumb">
+		<li *ngIf="!isCompanyBreadCrumb">
 			<a (click)="refresh()" translate> Manage
 				<span
 					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 			</a>
 		</li>
-		<li *ngIf = "isCompanyBreadCrumb">
+		<li *ngIf="isCompanyBreadCrumb">
 			<a translate [routerLink]="companyRouter"> Manage Companies
 			</a>
 		</li>
@@ -73,7 +73,7 @@
 						<div class="portlet light m0" style="padding-bottom: 5px !important;">
 							<div>
 								<div class="page-breadcrumb">
-									<span class = "col-xs-6 col-md-6">
+									<span class="col-xs-6 col-md-6">
 										<span *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList
 							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList"
 											data-toggle="tooltip" data-placement="top" title="Edit list Name"
@@ -91,10 +91,10 @@
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</div>
 									</span>
-									<span *ngIf=" manageCompanies" class = "col-xs-6 col-md-6">
-										<span class ="pull-right"
-										style="font-size: 16px;">Associated Company:{{companyName}}
-									</span>
+									<span *ngIf=" manageCompanies" class="col-xs-6 col-md-6">
+										<span class="pull-right" style="font-size: 16px;">Associated
+											Company:{{companyName}}
+										</span>
 									</span>
 								</div>
 							</div>
@@ -1253,7 +1253,8 @@
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="page-bar" *ngIf="!showEditContactData" style="border:none !important;">
+								<div class="page-bar remove_table_bg" *ngIf="!showEditContactData"
+									style="border:none !important;">
 									<div class="col-xs-12 col-md-12 col-sm-12 p0">
 									</div>
 								</div>
@@ -1408,7 +1409,8 @@
 														<button type="submit" class="bgcolor-unset button_height"
 															(click)="validateUndeliverableContacts(allcontacts.id)"
 															translate>
-															<span class="btn markas markAsValidLable  txt_pd-top8">Mark as valid</span></button>
+															<span class="btn markas markAsValidLable  txt_pd-top8">Mark
+																as valid</span></button>
 													</td>
 
 													<td *ngIf="contactsByType.selectedCategory =='excluded'">
@@ -1417,7 +1419,8 @@
 															[disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
 															(click)="showMakeAsOptinAlert(allcontacts.id, allcontacts.emailId)"
 															translate>
-															<span class="btn markas markAsValidLable  txt_pd-top8">Mark as valid</span></button>
+															<span class="btn markas markAsValidLable  txt_pd-top8">Mark
+																as valid</span></button>
 													</td>
 
 													<td>

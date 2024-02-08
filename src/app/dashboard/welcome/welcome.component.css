@@ -183,5 +183,5 @@ a.UserguideBtnCustomization:hover {
 }
 .shadow-radius {
   border-radius: 10px !important;
-  box-shadow: none;
+  /* box-shadow: none; */
 }

@@ -56,7 +56,7 @@
 					<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
 					</app-response-message>
 				</div>
-				<div class="table-responsive">
+				<div class="table-responsive neg_mrg_top15">
 					<table class="table tgrid" aria-describedby="form-analytics-table">
 						<thead>
 							<tr>
@@ -137,7 +137,7 @@
 				</div>
 			</div>
 
-			<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+			<div *ngIf="pagination.pagedItems.length !== 0" class="pg8 pos_pd_top2">
 				<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
 					(notifyParentDropDown)="listSubmittedData($event)" [hidden]="httpRequestLoader.isLoading">
 				</app-pagination>

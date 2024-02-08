@@ -330,6 +330,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	leadApprovalRejectionStatus: boolean = false;
 	leadApprovalStatus:boolean = false;
 	leadApprovalCustomResponse: CustomResponse = new CustomResponse();
+	/**XNFR-454****/
+	isAddDomainsOptionClicked: boolean;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -1979,6 +1981,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 500);
 			this.activeTabHeader = this.properties.customLoginScreen;
 		}
+		/****XNFR-454****/
+		else if(this.activeTabName==this.properties.addDomainsText){
+			this.ngxloading = true;
+			this.isAddDomainsOptionClicked = false;
+			let self = this;
+			setTimeout(() => {
+				self.isAddDomainsOptionClicked = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.addDomainsText;
+
+		}
 		this.referenceService.goToTop();
 	}
 
@@ -2259,11 +2273,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.listCategories(this.categoryPagination);
 		if (event.type === 'excludeUsers') {
 			this.excludeUserPagination.pageIndex = event.page;
-			this.excludeUserPagination.maxResults = 12;
+			//this.excludeUserPagination.maxResults = 12;
 			this.listExcludedUsers(this.excludeUserPagination);
 		} else if (event.type === 'excludedDomains') {
 			this.excludeDomainPagination.pageIndex = event.page;
-			this.excludeDomainPagination.maxResults = 12;
+			//this.excludeDomainPagination.maxResults = 12;
 			this.listExcludedDomains(this.excludeDomainPagination);
 		} else if (event.type === 'csvUsers') {
 			this.csvUserPagination.pageIndex = event.page;

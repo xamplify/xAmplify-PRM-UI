@@ -94,6 +94,12 @@ fieldset {
     width: 100% !important;
     right: 0 !important;
   }
+  .mrgn_lft0{
+    margin-left: 3px !important;
+  }
+  .mrg-left25{
+    margin-left:0px!important;
+  }
 }
 
 #download-drop {

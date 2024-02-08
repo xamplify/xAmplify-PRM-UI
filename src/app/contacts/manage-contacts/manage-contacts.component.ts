@@ -1889,6 +1889,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						object["Email Opend"] = this.contactsByType.listOfAllContacts[i].emailOpenedCount,
 						object["Clicked Urls"] = this.contactsByType.listOfAllContacts[i].clickedUrlsCount
 					}
+					if(this.contactsByType.selectedCategory = 'excluded'){
+						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
+					}
 					if (this.contactsByType.selectedCategory === 'unsubscribe') {
 					  object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
 					}
@@ -1906,6 +1909,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						"Country": this.contactsByType.listOfAllContacts[i].country,
 						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
 						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber
+					}
+					if(this.contactsByType.selectedCategory = 'excluded'){
+						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 					}
 					if (this.contactsByType.selectedCategory === 'unsubscribe') {
 					  object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;

@@ -165,7 +165,8 @@
                                     <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" *ngIf="(hasAllAccess || 
                                     hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
                                      || authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
-                                     !authenticationService.isOnlyPartner() && authenticationService.enableLeads && 
+                                     !authenticationService.isOnlyPartner() || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
+                                     || authenticationService.module.isPrmAndPartner  || authenticationService.module.isPrmAndPartnerTeamMember && authenticationService.enableLeads && 
                                       authenticationService.superiorRole != 'Partner'">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"
                                             (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration
@@ -186,7 +187,8 @@
                                         </li>
 
                                         <!-- XNFR-426 -->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}"  *ngIf="!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing" >
+                                        <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}"
+                                            *ngIf="!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadDealApprove'}"
                                                 (click)="activateTab('leadDealApprove');getLeadApprovalstatus();">
                                                 {{properties.leadDealApprove | translate}}</a>
@@ -284,6 +286,13 @@
                                         style="border-bottom: none !important;">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.emailNotificationSettings}"
                                             (click)="activateTab(properties?.emailNotificationSettings);clearCustomResponse()">{{properties?.emailNotificationSettings}}</a>
+                                    </li>
+                                    <!--Adding Domains XNFR-454-->
+                                    <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
+                                        [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}"
+                                        style="border-bottom: none !important;">
+                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.addDomainsText}"
+                                            (click)="activateTab(properties?.addDomainsText);clearCustomResponse()">{{properties?.addDomainsText}}</a>
                                     </li>
                                 </ng-container>
                             </ul>
@@ -852,24 +861,30 @@
                                             [ngClass]="{'active': activeTabName == 'leadDealApprove'}">
                                             <app-response-message [customResponse]="leadApprovalCustomResponse"
                                                 *ngIf="leadApprovalCustomResponse.isVisible"></app-response-message>
-                                            <table class="table table-light" style="border:0px!important;background-color:transparent!important">
-                                                <tbody>
+                                            <table class="table table-light"
+                                                style="border:0px!important;background-color:transparent!important">
+                                                <tbody class="remove_table_bg display-grid">
                                                     <fieldset class="fild-custome-borders-none">
-                                                        <legend class="leg-custome-borders-bot">Turn Lead Approval/Rejection option ON or OFF</legend>
+                                                        <legend class="leg-custome-borders-bot fs-17">Turn Lead
+                                                            Approval/Rejection option ON or OFF</legend>
                                                     </fieldset>
                                                     <tr class="col-md-12 col-lg-12">
                                                         <div class="flex row">
-                                                            <div class="col-md-9 col-lg-9">
-                                                                <h4 class="f-w-600" id="text-color-my-profile" translate>You have the ability to Approve or
+                                                            <div class="col-md-9 col-lg-9 p0">
+                                                                <h4 class="f-w-600" id="text-color-my-profile"
+                                                                    translate>You have the ability to Approve or
                                                                     Reject the leads registered by the partners.
                                                                 </h4>
                                                             </div>
-                                                            <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+                                                            <div class="col-md-3 col-lg-3 text-right"
+                                                                style="padding-top:10px">
                                                                 <section>
-                                                                    <switch [(status)]="leadApprovalStatus" [onText]="callActionSwitch.onTextValue"
+                                                                    <switch [(status)]="leadApprovalStatus"
+                                                                        [onText]="callActionSwitch.onTextValue"
                                                                         [offText]="callActionSwitch.offTextValue"
                                                                         [onColor]="callActionSwitch.onGreenColorSwitch"
-                                                                        [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+                                                                        [offColor]="callActionSwitch.offDefaultColor"
+                                                                        [size]="callActionSwitch.size"
                                                                         (statusChange)="setLeadApprovalOrRejectionStatus($event)">
                                                                     </switch>
                                                                 </section>
@@ -879,9 +894,10 @@
                                                     <br>
                                                 </tbody>
                                             </table>
-                                        
-                                            <br>
-                                            <button type="submit" class="button bgcolor-unset" (click)="updateLeadApprovalOrRejectionStatus()" translate><span
+
+                                            <!-- <br> -->
+                                            <button type="submit" class="button bgcolor-unset p0"
+                                                (click)="updateLeadApprovalOrRejectionStatus()" translate><span
                                                     class="btn Btn-Green transition txt_pd-top3">Save Changes
                                                 </span>
                                             </button>
@@ -1496,7 +1512,7 @@
                                                                             </th>
                                                                             <th class="PipelinesTablet-thWidth1">Created
                                                                                 By</th>
-                                                                            <th class="PipelinesTablet-thWidth2">Stages
+                                                                            <th class="PipelinesTablet-thWidth2 text-center">Stages
                                                                             </th>
                                                                             <th class="PipelinesTablet-thWidth3">Actions
                                                                             </th>
@@ -1544,7 +1560,7 @@
                                                                                     </app-timestamp>
                                                                                 </h5>
                                                                             </td>
-                                                                            <td class="mAlign">
+                                                                            <td class="mAlign text-center">
                                                                                 {{pipeline.stages.length}}</td>
                                                                             <td class="mAlign tableIconsAliggnLine">
                                                                                 <div
@@ -1599,7 +1615,8 @@
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
-                                                                <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+                                                                <app-list-loader
+                                                                    *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                                                                 <div *ngIf="pipelinePagination.pagedItems.length !== 0"
                                                                     class="pg8">
                                                                     <app-pagination [pagination]="pipelinePagination"
@@ -1696,7 +1713,8 @@
                                                             class="button bgcolor-unset pd_lft2" translate>
                                                             <span class="btn Btn-Green transition txt_pd-top3">Change
                                                                 Password</span></button>
-                                                        <input type="reset" class="btn Btn-Gray" value="Cancel">
+                                                        <input type="reset" class="btn Btn-Gray neg_mrg_top5"
+                                                            value="Cancel">
                                                     </div>
                                                 </div>
                                             </form>
@@ -1756,7 +1774,7 @@
                                                 *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                                 <table class="table table-light"
                                                     style="border:0px!important;background-color:transparent!important">
-                                                    <tbody>
+                                                    <tbody class="remove_table_bg display-grid">
                                                         <fieldset class="fild-custome-borders-none">
                                                             <legend class="leg-custome-borders-bot">GDPR</legend>
                                                             <tr class="col-md-12 col-lg-12">
@@ -2089,7 +2107,8 @@
                                                                         src="{{item.moduleIcon}}" alt="Image Not Found">
                                                                 </td>
                                                                 <td>
-                                                                    <div class="override-actions justify-content-start mleft-10">
+                                                                    <div
+                                                                        class="override-actions justify-content-start mleft-10">
                                                                         <a class="custom-icon"
                                                                             [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'"
                                                                             data-toggle="tooltip"
@@ -2196,6 +2215,14 @@
                                             class="tab-pane"
                                             [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
                                         </app-email-notification-settings>
+
+                                        <!--XNFR-454 Domain Configuration-->
+                                        <app-add-or-manage-domains *ngIf="isAddDomainsOptionClicked"
+                                            [moduleName]="'addDomains'" class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == properties?.addDomainsText}">
+                                        </app-add-or-manage-domains>
+
+
                                         <!--video default player settings-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
                                             <div>
@@ -2753,8 +2780,6 @@
                                                             </button>
 
                                                         </div>
-                                                        <!-- new -->
-
                                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                             <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align"
                                                                 style="margin-top:10px;"
@@ -3443,8 +3468,10 @@
             </div>
             <div class="modal-footer" style="border:none">
                 <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
-                <button type="button" class="button bgcolor-unset btn-top3" (click)="confirmAndsaveExcludedUser(addContactuser)"
-                    [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate><span class="btn Btn-Green transition txt_pd-top3">Add</span></button>
+                <button type="button" class="button bgcolor-unset btn-top3"
+                    (click)="confirmAndsaveExcludedUser(addContactuser)"
+                    [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate><span
+                        class="btn Btn-Green transition txt_pd-top3">Add</span></button>
             </div>
         </div>
     </div>
@@ -3492,8 +3519,9 @@
             </div>
             <div class="modal-footer" style="border:none">
                 <button class="btn Btn-Gray" (click)="addDomainModalClose()" translate>Cancel</button>
-                      <button type="button" class="button bgcolor-unset btn-top3" (click)="confirmAndsaveExcludedDomain(domain)"
-                    [disabled]="!validDomainPattern" translate><span class="btn Btn-Green transition txt_pd-top3">Add</span></button>
+                <button type="button" class="button bgcolor-unset btn-top3"
+                    (click)="confirmAndsaveExcludedDomain(domain)" [disabled]="!validDomainPattern" translate><span
+                        class="btn Btn-Green transition txt_pd-top3">Add</span></button>
             </div>
         </div>
     </div>
