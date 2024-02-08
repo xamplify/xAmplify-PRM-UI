@@ -31,6 +31,7 @@ export class AddCompanyContactsComponent implements OnInit {
   selectedCompanyName: any;
   isManageCompanies: boolean = false;
   isBreadCrumb: boolean =  false;
+  selectedCompanyId: number;
   
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public route:ActivatedRoute, private contactService: ContactService, private companyService: CompanyService) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -53,6 +54,7 @@ export class AddCompanyContactsComponent implements OnInit {
           this.showEdit = true;
           this.isBreadCrumb = true;
           this.isManageCompanies = true;
+          this.selectedCompanyId = response.data.associatedCompanyId;
           this.getCompany(response.data.associatedCompanyId)
         }
       },

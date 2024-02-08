@@ -59,7 +59,7 @@
                             <fieldset class="scheduler-border">
                                 <legend class="scheduler-border campaign_boxes">Campaign details</legend>
                                 <div>
-                                    <div class="col-xs-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <div class="form-body">
                                             <!---Campaign Name-->
                                             <div class="form-group" [attr.class]="campaignNameDivClass">
@@ -314,7 +314,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-xs-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <div class="form-body">
                                             <!---From Name-->
                                             <div class="form-group" [attr.class]="fromNameDivClass">
@@ -1192,6 +1192,11 @@
                                                                         src="{{properties?.pipedriveImage}}"
                                                                         alt="Pipedrive"
                                                                         class="img-class-list image_effect">
+                                                                     <img *ngIf="contacts?.socialNetwork=='CONNECTWISE' && contacts.synchronisedList"
+                                                                        src="{{properties?.connectwiseImage}}"
+                                                                        alt="ConnectWise"
+                                                                        class="img-class-list image_effect">
+                                                                        
 
                                                                 </td>
                                                                 <td style="text-align: left;">
@@ -1237,6 +1242,17 @@
                                                                                     translate>Form Contact List
                                                                                 </span>
                                                                             </h6>
+                                                                            <h6 *ngIf="contacts?.companyList"
+                                                                            class="view-banner view-banner-green"
+                                                                            translate>
+                                                                            <span data-toggle="tooltip"
+                                                                                data-placement="top"
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="bottom"
+                                                                                title="This list is associated with a company."
+                                                                                translate>Company Contact List
+                                                                            </span>
+                                                                        </h6>
                                                                         </div>
                                                                     </ng-container>
                                                                 </td>

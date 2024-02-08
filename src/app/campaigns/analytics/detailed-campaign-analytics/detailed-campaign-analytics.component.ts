@@ -204,6 +204,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
   selectedDeal: Deal;
   isCommentSection: boolean = false;
   loggedInUserCompanyId : number;
+  selectedDealForComments : Deal; // XNFR-426
   /****XNFR-125****/
   @Input() campaignId = 0;
   @Input() hidePageContent = false;
@@ -3076,13 +3077,15 @@ viewCampaignLeadForm(leadId: any) {
   editCampaignDealForm(deal:Deal) {
     this.showDealForm = true;   
     this.dealActionType = "edit";
-    this.selectedDeal = deal;
+    this.selectedDealForComments = deal;
     this.editTextArea = true;
     this.dealId = deal.id;
   }
 
   closeDealForm() {
-    this.showDealForm = false;    
+    this.showDealForm = false;
+    this.selectedDealForComments = null;
+    this.editTextArea = false;
   }
     
   showSubmitDealSuccess() {

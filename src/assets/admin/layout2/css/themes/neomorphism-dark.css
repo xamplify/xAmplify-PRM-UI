@@ -3778,3 +3778,16 @@ border-bottom: unset!important;
 .color-picker input {
   color: #000;
 }
+/* gear-icon */
+.mb-gear{
+color:#fff!important;
+}
+/*edit-partner-campaigns */
+.ml-5{
+margin-left: 5px;
+}
+/* leads Approval in myprofile */
+.display-grid{
+  display: grid;
+  padding: 5px;
+}

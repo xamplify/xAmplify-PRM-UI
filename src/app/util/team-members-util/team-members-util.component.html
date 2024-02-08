@@ -48,7 +48,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row neg_mrg_top18">
     <!---Team Members---->
     <ng-container *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember">
       <!--List Of Team members---->
@@ -56,7 +56,7 @@
         <div class="portlet-title">
           <div class="row" style="display:flex;align-items: center;">
             <div class="col-xs-3 col-sm-3 col-md-4 col-lg-3">
-              <div class="caption">Team Members
+              <div class="caption mg-top7">Team Members
               </div>
             </div>
             <div class="col-lg-4 col-md-3 col-sm-5 col-xs-4  moveButtonsCu button_placement"
@@ -121,7 +121,7 @@
           </div>
           <!-- close row-->
         </div>
-        <div class="portlet-body clearfix" style="padding-top: 0px;">
+        <div class="portlet-body clearfix neg_mrg_top14" style="padding-top: 0px;">
           <a *ngIf="!httpRequestLoader.isLoading && !authenticationService?.module?.deletedPartner"
             (click)="findPrimaryAdminAndExtraAdmins()">
             <span><strong>Admins : <span title="Availed Admins">{{analyticsCountDto?.availed}}</span> / <span
@@ -453,18 +453,20 @@
                     <label class="control-label col-sm-3">Enable As An Admin</label>
                     <div class="col-sm-8">
                       <div>
-                        <switch *ngIf="!team.enableOption" style="height:100%;display: inline-block;"  data-toggle="tooltip" data-placement="bottom"  
-                        [title]="!team?.enableOption? 'This option is not available for the selected group':''"
+                        <switch *ngIf="!team.enableOption" style="height:100%;display: inline-block;"
+                          data-toggle="tooltip" data-placement="bottom"
+                          [title]="!team?.enableOption? 'This option is not available for the selected group':''"
                           [status]="team.secondAdmin" [onText]="callActionSwitch.onTextValue"
                           [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
                           (statusChange)="changeOrgAdminStatus(team,$event)" [disabled]="!team.enableOption">
                         </switch>
-                        <switch *ngIf="team.enableOption"  [status]="team.secondAdmin" [onText]="callActionSwitch.onTextValue"
-                        [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-                        [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                        (statusChange)="changeOrgAdminStatus(team,$event)" [disabled]="!team.enableOption">
-                      </switch>
+                        <switch *ngIf="team.enableOption" [status]="team.secondAdmin"
+                          [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                          [onColor]="callActionSwitch.onGreenColorSwitch"
+                          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
+                          (statusChange)="changeOrgAdminStatus(team,$event)" [disabled]="!team.enableOption">
+                        </switch>
                       </div>
                     </div>
                   </div>
@@ -548,18 +550,21 @@
                 <!---Assigned Group-->
                 <!-- Enable As An Admin  -->
                 <td *ngIf="showSecondAdmin">
-             <switch *ngIf="!teamMember.enableOption" style="height:100%;display: inline-block;" data-toggle="tooltip" data-placement="bottom" [title]="!team?.enableOption? 'This option is not available for the selected group':''" 
-             [status]="teamMember.secondAdmin" [onText]="callActionSwitch.onTextValue"
-                  [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-                  [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-                  (statusChange)="changeOrgAdminStatus(teamMember,$event)" [disabled]="!teamMember.enableOption">
-                </switch>
-                <switch *ngIf="teamMember.enableOption"  [status]="teamMember.secondAdmin" [onText]="callActionSwitch.onTextValue"
-                [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-                [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-                (statusChange)="changeOrgAdminStatus(teamMember,$event)" [disabled]="!teamMember.enableOption">
-              </switch>
-            </td>
+                  <switch *ngIf="!teamMember.enableOption" style="height:100%;display: inline-block;"
+                    data-toggle="tooltip" data-placement="bottom"
+                    [title]="!team?.enableOption? 'This option is not available for the selected group':''"
+                    [status]="teamMember.secondAdmin" [onText]="callActionSwitch.onTextValue"
+                    [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+                    [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+                    (statusChange)="changeOrgAdminStatus(teamMember,$event)" [disabled]="!teamMember.enableOption">
+                  </switch>
+                  <switch *ngIf="teamMember.enableOption" [status]="teamMember.secondAdmin"
+                    [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                    [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                    [size]="callActionSwitch.bsize" (statusChange)="changeOrgAdminStatus(teamMember,$event)"
+                    [disabled]="!teamMember.enableOption">
+                  </switch>
+                </td>
                 <td>
                   <div class="input-group spxni-width">
                     <select class="form-control" [(ngModel)]="teamMember.teamMemberGroupId"

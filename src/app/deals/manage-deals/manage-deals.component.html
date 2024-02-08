@@ -284,7 +284,7 @@
                 <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0'
                   [hidden]="!listView || dealsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
 
-                  <div class="table-responsive pos_pd_top2" [hidden]="httpRequestLoader.isLoading">
+                  <div class="table-responsive pt_12" [hidden]="httpRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="dealTable">
                       <thead>
                         <tr>
@@ -355,7 +355,6 @@
                                 (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
                                 data-toggle="tooltip" data-placement="bottom" title="Edit Deal Stage">
                                 <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
-                                <div class="clickicons"></div>
                               </a>
 
                             </td>
@@ -404,7 +403,7 @@
                   </div>
 
                   <!-- --------------------Pagination0-------------------- -->
-                  <div *ngIf="!httpRequestLoader.isLoading" class="pg8 mrg_top2">
+                  <div *ngIf="!httpRequestLoader.isLoading" class="pg8 pos_mrg_top8">
                     <app-pagination [pagination]="dealsPagination" (notifyParent)="setDealsPage($event)"
                       (notifyParentDropDown)="listDeals($event)"></app-pagination>
                   </div>
@@ -425,7 +424,7 @@
                 <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0'
                   [hidden]="listView || campaignSortOption.totalRecords == 0 || campaignRequestLoader.isLoading || campaignRequestLoader.isServerError">
 
-                  <div class="table-responsive pos_pd_top2" [hidden]="campaignRequestLoader.isLoading">
+                  <div class="table-responsive pt_12" [hidden]="campaignRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                       <thead>
                         <tr>
@@ -556,10 +555,11 @@
                                                     [isPartnerInfo]="true"></app-user-info>
                                                 </td>
                                                 <td>
-                                                  <a (click)="showCampaignDealsByPartner(item)" data-toggle="tooltip"
-                                                    data-placement="top" title="Number Of Deals">
+                                                  <a class="custom-icon" (click)="showCampaignDealsByPartner(item)"
+                                                    data-toggle="tooltip" data-placement="top" title="Number Of Deals">
                                                     <i
                                                       class="circled-number IconCustomization fontStyleNormal"><b>{{item.dealsCount}}</b></i>
+                                                    <div class="clickicons"></div>
                                                   </a>
                                                 </td>
                                               </tr>
@@ -596,7 +596,7 @@
                     </table>
                   </div>
 
-                  <div *ngIf="!campaignRequestLoader.isLoading" class="pg8 mrg_top2">
+                  <div *ngIf="!campaignRequestLoader.isLoading" class="pg8 pos_mrg_top8">
                     <app-pagination [pagination]="campaignPagination" (notifyParent)="setCampaignsPage($event)"
                       (notifyParentDropDown)="listCampaigns($event)"></app-pagination>
                   </div>
@@ -670,7 +670,6 @@
           style="font-size:18px"></span>
         <span *ngIf="selectedDeal.unReadChatCount > 0" class="badge badge-default"
           style="margin-top: -72px; margin-right: -15px;background-color: #ed1c24 !important;">{{selectedDeal.unReadChatCount}}</span>
-        <div class="clickicons"></div>
       </a>
 
     </div>

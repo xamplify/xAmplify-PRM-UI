@@ -11,20 +11,19 @@
   padding: 10px 5px 10px 5px !important;
   /* border-radius:5px; */
 }
-.submit_customise {
+/* .submit_customise {
   background-color: #26a69a;
   color:#fff ;
 } 
 .cancel_customise {
   background-color: #ccc;
   color: #000;
- 
-
-}
+} */
 .buttom_customise {
   padding: 3px 9px;
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: 5px;
+  height: 2.7rem !important;
 }
 .form-group {
   margin-right: 20px; /* Adjust the margin as needed */

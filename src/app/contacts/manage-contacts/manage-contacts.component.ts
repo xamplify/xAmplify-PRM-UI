@@ -71,6 +71,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	selectedContactListId: number;
 	selectedContactListName: string;
 	isDefaultPartnerList: boolean;
+	isDefaultContactList: boolean;
 	isSynchronizationList: boolean;
 	uploadedUserId: number;
 	showAll: boolean;
@@ -228,6 +229,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	isFormList = false;
 	isCompanyList = false;
 	selectedAssociatedCompany:string;
+	selectedCompanyId:number;
 	selectedFilterIndex: number = 0;
   showFilter = true;
   resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
@@ -868,7 +870,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, 
-		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean, isCompanyList:boolean, selectedAssociatedCompany: string) {
+		isDefaultPartnerList: boolean,isDefaultContactList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean, isCompanyList:boolean, selectedAssociatedCompany: string, selectedAssociatedCompanyId: number) {
 		this.uploadedUserId = uploadUserId;
 		this.selectedContactListId = contactSelectedListId;
 		this.selectedContactListName = contactListName;
@@ -880,6 +882,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.isFormList = isFormList;
 		this.isCompanyList = isCompanyList;
 		this.selectedAssociatedCompany = selectedAssociatedCompany;
+		this.selectedCompanyId = selectedAssociatedCompanyId;
+		this.isDefaultContactList = isDefaultContactList;
 		$("#pagination").hide();
 	}
 
@@ -1885,6 +1889,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						object["Email Opend"] = this.contactsByType.listOfAllContacts[i].emailOpenedCount,
 						object["Clicked Urls"] = this.contactsByType.listOfAllContacts[i].clickedUrlsCount
 					}
+					if(this.contactsByType.selectedCategory = 'excluded'){
+						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
+					}
 					if (this.contactsByType.selectedCategory === 'unsubscribe') {
 					  object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
 					}
@@ -1902,6 +1909,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						"Country": this.contactsByType.listOfAllContacts[i].country,
 						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
 						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber
+					}
+					if(this.contactsByType.selectedCategory = 'excluded'){
+						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 					}
 					if (this.contactsByType.selectedCategory === 'unsubscribe') {
 					  object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;

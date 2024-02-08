@@ -2273,11 +2273,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.listCategories(this.categoryPagination);
 		if (event.type === 'excludeUsers') {
 			this.excludeUserPagination.pageIndex = event.page;
-			this.excludeUserPagination.maxResults = 12;
+			//this.excludeUserPagination.maxResults = 12;
 			this.listExcludedUsers(this.excludeUserPagination);
 		} else if (event.type === 'excludedDomains') {
 			this.excludeDomainPagination.pageIndex = event.page;
-			this.excludeDomainPagination.maxResults = 12;
+			//this.excludeDomainPagination.maxResults = 12;
 			this.listExcludedDomains(this.excludeDomainPagination);
 		} else if (event.type === 'csvUsers') {
 			this.csvUserPagination.pageIndex = event.page;

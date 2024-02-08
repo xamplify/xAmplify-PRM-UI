@@ -13,17 +13,11 @@
   display: block;
 }
 
-@media only screen and (max-width: 600px) {
+/* @media only screen and (max-width: 600px) {
   .padding-mobile {
     padding: 0;
   }
-}
-@media only screen and (min-width: 601px) {
-  .padding-mobile {
-    padding: non;
-  }
-}
-
+} */
 @media screen and (max-width: 600px) {
   .accounts-modal {
     width: 100% !important;
@@ -45,6 +39,9 @@
     font-size: 15px;
     cursor: not-allowed;
     position: relative;
+  }
+  .right-twelevepx{
+    margin-left: -5px!important;
   }
 }
 @media screen and (min-width: 601px) {

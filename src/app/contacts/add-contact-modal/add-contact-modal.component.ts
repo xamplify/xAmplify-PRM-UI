@@ -28,6 +28,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     isAssignLeads = false;
     @Input() isUpdateUser: boolean;
     @Input() totalUsers: any;
+    @Input() selectedCompanyId:number;
+    @Input() isCompanyContact: boolean;
     @Output() notifyParent: EventEmitter<any>;
     addContactuser: User = new User();
     validEmailPatternSuccess = true;
@@ -254,6 +256,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     ngOnInit() {
        try{
         this.addContactuser.country = this.countryNames.countries[0];
+        this.addContactuser.contactCompanyId = this.selectedCompanyId;
         if ( this.isUpdateUser ) {
             this.checkingForEmail = true;
             this.addContactuser.userId = this.contactDetails.id;
@@ -430,8 +433,14 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
     searchableDropdownEventReceiver(event: any) {
         if(this.checkingContactTypeName == 'Contact'){
-            this.addContactuser.contactCompanyId = event['id'];
-            this.addContactuser.contactCompany = event['name'];
+            if(event != null){
+                this.addContactuser.contactCompanyId = event['id'];
+                this.addContactuser.contactCompany = event['name'];
+            }  
+            else {
+                this.addContactuser.contactCompanyId = 0;
+                this.addContactuser.contactCompany = '';
+            }        
         }else{
             this.addContactuser.contactCompany = event;
         }
