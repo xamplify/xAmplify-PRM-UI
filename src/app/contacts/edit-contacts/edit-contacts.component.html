@@ -1196,7 +1196,7 @@
 										</span>
 										<ul class="dropdown-menu pull-right">
 											<li [ngClass]="{'disabled': (selectedInvalidContactIds?.length == 0 && selectedContactListIds?.length == 0)}"
-												*ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">
+											*ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads &&(authenticationService?.module?.adminOrSuperVisor || loggedInUserId == uploadedUserId)">
 												<a id="delete_button" (click)="invalidContactsShowAlert()" translate>
 													Delete</a>
 											</li>
@@ -1414,7 +1414,7 @@
 													</td>
 
 													<td *ngIf="contactsByType.selectedCategory =='excluded'">
-														<button *ngIf="allcontacts.excludedCatagory == 'Excluded User'"
+														<button *ngIf="contact.excludedCatagory == 'Excluded User' && !(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
 															type="submit" class="bgcolor-unset button_height"
 															[disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
 															(click)="showMakeAsOptinAlert(allcontacts.id, allcontacts.emailId)"
