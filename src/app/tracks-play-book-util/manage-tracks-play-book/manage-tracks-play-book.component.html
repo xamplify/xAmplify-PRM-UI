@@ -407,7 +407,7 @@
                     </div>
                 </div>
                 <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-                    <div *ngIf="pagination.pagedItems.length !== 0" class="mrg_top1">
+                    <div *ngIf="pagination.pagedItems.length !== 0" class="mrg_top2">
                         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
                             (notifyParentDropDown)="listLearningTracks($event)"
                             [hidden]="httpRequestLoader.isLoading"></app-pagination>

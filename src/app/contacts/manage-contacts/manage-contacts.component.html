@@ -375,7 +375,7 @@
                            <div class="clearfix"></div>
                         </div>
                         <!-- END FILTER -->
-                        <section class="col-xs-12 p0 pt_12" *ngIf="showListOfContactList">
+                        <section class="col-xs-12 p0 pos_pd_top6" *ngIf="showListOfContactList">
                            <div class="clearfix">
                               <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
                               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
@@ -402,8 +402,8 @@
                                           </th>
                                           <th scope="col" class="hidden-xs" [hidden]="!assignLeads" translate
                                              id="border-bottom"><span [hidden]="!assignLeads">status</span></th>
-                                          <th scope="col" class="hidden-xs text-center" [hidden]="isPartner || assignLeads"
-                                             translate id="border-bottom"><span
+                                          <th scope="col" class="hidden-xs text-center"
+                                             [hidden]="isPartner || assignLeads" translate id="border-bottom"><span
                                                 [hidden]="isPartner || assignLeads">Type</span></th>
                                           <th scope="col" class="hidden-xs" [hidden]="assignLeads" translate
                                              id="border-bottom"><span [hidden]="assignLeads">Created
@@ -1011,9 +1011,10 @@
       <app-edit-contacts *ngIf="showEdit" [showEdit]="showEdit" [contacts]="users" (notifyParent)="update($event)"
          [selectedContactListId]="selectedContactListId" [uploadedUserId]="uploadedUserId"
          [contactListId]="selectedContactListId" [contactListName]="selectedContactListName"
-         [isDefaultPartnerList]="isDefaultPartnerList" [isDefaultContactList]="isDefaultContactList" [isSynchronizationList]="isSynchronizationList"
-         [isFormList]="isFormList" [isTeamMemberPartnerList]="isTeamMemberPartnerList"
-         [companyName]="selectedAssociatedCompany" [manageCompanies]="isCompanyList"></app-edit-contacts>
+         [isDefaultPartnerList]="isDefaultPartnerList" [isDefaultContactList]="isDefaultContactList"
+         [isSynchronizationList]="isSynchronizationList" [isFormList]="isFormList"
+         [isTeamMemberPartnerList]="isTeamMemberPartnerList" [companyName]="selectedAssociatedCompany"
+         [manageCompanies]="isCompanyList"></app-edit-contacts>
    </div>
 
 

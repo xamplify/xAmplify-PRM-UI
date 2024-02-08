@@ -266,7 +266,7 @@
             <div *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
                             && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
                             (authenticationService?.mdf || authenticationService?.leadsAndDeals) ">
-                <div class="row">
+                <div class="row pd_top10">
                     <div class="page-bar portlet light  mmtp" *ngIf="authenticationService?.mdf">
                         <app-mdf-statistics [applyFilter]="applyFilter"
                             *ngIf="authenticationService?.mdf && !ngxLoading"></app-mdf-statistics>

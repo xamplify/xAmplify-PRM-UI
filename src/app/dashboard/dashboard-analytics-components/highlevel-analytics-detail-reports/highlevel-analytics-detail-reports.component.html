@@ -1,30 +1,32 @@
-   <div class="portlet-body clearfix">
-    <div class="row">
-      <app-box-loader [countLoader]=8 *ngIf="loader"></app-box-loader>
-      <ng-container *ngIf="!loader">
-        <div *ngFor="let dto of detailReportsForTotalUsers" style="padding:  1em 1em 0 1em;padding-right: 17px;"
-        [title]="dto.hasAccess? 'Click to see details':'You do not have permission to see details'" 
+<div class="portlet-body clearfix">
+  <div class="row">
+    <app-box-loader [countLoader]=8 *ngIf="loader"></app-box-loader>
+    <ng-container *ngIf="!loader">
+      <div *ngFor="let dto of detailReportsForTotalUsers" style="padding:  1em 1em 0 1em;padding-right: 17px;"
+        [title]="dto.hasAccess? 'Click to see details':'You do not have permission to see details'"
         [className]="dto.hasAccess?(authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrm
-      || authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationService?.module?.isPrmTeamMember)? 'col-sm-6 col-xs-6 col-lg-4 col-md-4': 'col-sm-6 col-xs-12 col-lg-6 col-md-6 tiles_hover_effect' : 
+      || authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationService?.module?.isPrmTeamMember)? 'col-sm-6 col-xs-6 col-lg-4 col-md-4 tiles_hover_effect': 'col-sm-6 col-xs-12 col-lg-6 col-md-6 tiles_hover_effect' : 
       (authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrm
       || authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationService?.module?.isPrmTeamMember)?
       'col-sm-6 col-xs-6 col-lg-4 col-md-4 dashboard-access-denied' :'col-sm-6 col-xs-12 col-lg-6 col-md-6 dashboard-access-denied'" (click)="goToManage(dto)">
-       <a  class="{{dto.color}}">
-         <div [className]="dto.count>0 ? 'visual' : 'visual dashboard-access-denied' ">
-           <i class="{{dto.faIcon}} dbiconscss" aria-hidden="true"></i>
-         </div>
-         <div class="details">
-           <div class="number" style="padding-right: 15px;">{{dto.count}}</div>
-           <div title="{{dto?.moduleName}}" [className]="dto?.moduleName?.length>=25 ? 'desc custom-name-font':'desc default-name-font'">{{dto.moduleName | translate}}</div>
-         </div>
-         <span class="morePadding" (click)="goToManage(dto)" title="{{dto.description}}">
-           <a [className]="dto.hasAccess? 'more more-hl-stat':'more more-hl-stat dashboard-access-denied'" translate>
-             {{dto.description | slice:0:28}}
-             <span *ngIf="dto?.description?.length>28">...</span>
+        <a class="{{dto.color}}">
+          <div [className]="dto.count>0 ? 'visual' : 'visual dashboard-access-denied' ">
+            <i class="{{dto.faIcon}} dbiconscss" aria-hidden="true"></i>
+          </div>
+          <div class="details">
+            <div class="number" style="padding-right: 15px;">{{dto.count}}</div>
+            <div title="{{dto?.moduleName}}"
+              [className]="dto?.moduleName?.length>=25 ? 'desc custom-name-font':'desc default-name-font'">
+              {{dto.moduleName | translate}}</div>
+          </div>
+          <span class="morePadding" (click)="goToManage(dto)" title="{{dto.description}}">
+            <a [className]="dto.hasAccess? 'more more-hl-stat':'more more-hl-stat dashboard-access-denied'" translate>
+              {{dto.description | slice:0:28}}
+              <span *ngIf="dto?.description?.length>28">...</span>
             </a>
-         </span>
-       </a>
-       </div>
+          </span>
+        </a>
+      </div>
     </ng-container>
-    </div>
+  </div>
 </div>
