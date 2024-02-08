@@ -127,7 +127,7 @@ export class AccessAccountComponent implements OnInit {
         $("#teamMember-signup-emailId").removeClass('ng-valid');
         $("#teamMember-signup-emailId").removeClass('ng-invalid');
         this.authenticationService.signUpAsTeamMember(data).subscribe(response=>{
-            alert("Succes");
+            this.loading = false;
         },error=>{
             let message = this.referenceService.showHttpErrorMessage(error);
             if(this.properties.serverErrorMessage!=message){
