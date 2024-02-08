@@ -9,7 +9,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 
 import { UserService } from '../../core/services/user.service';
-import { matchingPasswords, noWhiteSpaceValidator } from '../../form-validator';
+import { matchingPasswords, noWhiteSpaceValidatorWithOutLimit } from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CountryNames } from '../../common/models/country-names';
@@ -50,7 +50,7 @@ export class AccessAccountComponent implements OnInit {
     validationMessages = {
         'firstName': {
             'required': 'First name is required.',
-            'whitespace': 'Empty spaces not allowed.'
+            'whitespace': 'Empty spaces are not allowed',
         },
         'emailId': {
             'required': 'Email is required.',
@@ -159,7 +159,7 @@ export class AccessAccountComponent implements OnInit {
             'password': [this.signUpUser.password, [Validators.required, Validators.minLength( 6 ), Validators.maxLength( 20 ), Validators.pattern( this.regularExpressions.PASSWORD_PATTERN )]],
             'confirmPassword': [null, [Validators.required, Validators.pattern( this.regularExpressions.PASSWORD_PATTERN )]],
             'agree': [false, Validators.required],
-            'firstName': [this.signUpUser.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
+            'firstName': [this.signUpUser.firstName, Validators.compose([Validators.required, noWhiteSpaceValidatorWithOutLimit])],//Validators.pattern(nameRegEx)
             'lastName': [this.signUpUser.lastName]
         }, {
                 validator: matchingPasswords( 'password', 'confirmPassword' )
