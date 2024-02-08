@@ -147,8 +147,8 @@
                                   </span>
                                </h4>
 
-                               <h5 class='moreipsis' style="margin-top: 4px;margin-bottom: 4px !important;">
-                                  <span data-toggle="tooltip" data-placement="top"
+                               <h5 *ngIf=" company?.email?.length>0 " class='moreipsis' style="margin-top: 4px;margin-bottom: 4px !important;">
+                                  <span  data-toggle="tooltip" data-placement="top"
                                      title="{{company?.email}}">
                                      <b>Email :</b> {{company?.email}}
                                   </span>
