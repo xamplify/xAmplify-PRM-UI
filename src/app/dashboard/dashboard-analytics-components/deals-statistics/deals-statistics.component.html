@@ -1,86 +1,90 @@
-<div class="col-xs-12 col-sm-6" style="padding: 0">
-  <div class="col-sm-12">
-    <div class="portlet light">
-      <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
-        <div class="caption">
-          <span class="caption-subject" translate>Deal Statistics</span>
+<div class="col-xs-12 col-sm-6 pd_top10" style="padding: 0">
+    <div class="col-sm-12">
+        <div class="portlet light">
+            <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
+                <div class="caption">
+                    <span class="caption-subject" translate>Deal Statistics</span>
+                </div>
+            </div>
+            <div class="portlet-body clearfix" style="min-height: 450px;">
+                <ng-container>
+                    <app-dashboard-loader *ngIf="dealsLoader"></app-dashboard-loader>
+                </ng-container>
+                <ng-container *ngIf="!dealsLoader && dealsStatusCode!=200">
+                    <div class="alert alert-danger">
+                        <strong>{{properties?.serverErrorMessage}}</strong>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!dealsLoader && dealsStatusCode==200">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-lg-4 col-xs-12 pl0">
+                                <div class="portlet light card-height">
+                                    <div class="col-md-12 col-lg-12" style="padding: 0px;">
+                                        <div class="row">
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="">
+                                                    <i class="fa fa-tag icon1" aria-hidden="true"></i>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="col-xs-9 col-sm-9 col-md-9 col-lg-9 card-align LeftsidepaddingCu">
+                                                <div class="fontSizeControll">
+                                                    <h3 class="number">{{dealsData?.totalDeals}}</h3>
+                                                    <p class="partners-text">Total</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-lg-4 col-xs-12 pl0">
+                                <div class="portlet light card-height">
+                                    <div class="col-md-12 col-lg-12" style="padding: 0px;">
+                                        <div class="row">
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="">
+                                                    <i class="fa fa-tag icon2" aria-hidden="true"></i>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="col-xs-9 col-sm-9 col-md-9 col-lg-9 card-align LeftsidepaddingCu">
+                                                <div class="fontSizeControll">
+                                                    <h3 class="number">{{dealsData?.wonDeals}}</h3>
+                                                    <p class="partners-text">Won</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-lg-4 col-xs-12 pl0">
+                                <div class="portlet light card-height">
+                                    <div class="col-md-12 col-lg-12" style="padding: 0px;">
+                                        <div class="row">
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="">
+                                                    <i class="fa fa-tag icon3" aria-hidden="true"></i>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="col-xs-9 col-sm-9 col-md-9 col-lg-9 card-align LeftsidepaddingCu">
+                                                <div class="fontSizeControll">
+                                                    <h3 class="number">{{dealsData?.lostDeals}}</h3>
+                                                    <p class="partners-text">Lost</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <br>
+                <app-leads-and-deals-bubble-chart *ngIf="loadChart" [moduleType]="'Deals'"
+                    [applyFilter]="applyFilter"></app-leads-and-deals-bubble-chart>
+            </div>
         </div>
-      </div>
-      <div class="portlet-body clearfix" style="min-height: 450px;">
-        <ng-container>
-          <app-dashboard-loader *ngIf="dealsLoader"></app-dashboard-loader>
-        </ng-container>
-        <ng-container *ngIf="!dealsLoader && dealsStatusCode!=200">
-          <div class="alert alert-danger">
-            <strong>{{properties?.serverErrorMessage}}</strong>
-          </div>
-        </ng-container>
-        <ng-container *ngIf="!dealsLoader && dealsStatusCode==200">
-        <div class="col-md-12 col-lg-12">
-          <div class="row">
-              <div class="col-md-6 col-sm-6 col-lg-4 col-xs-12 pl0">
-                  <div class="portlet light card-height">
-                      <div class="col-md-12 col-lg-12" style="padding: 0px;">
-                          <div class="row">
-                              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                  <div class="">
-                                      <i class="fa fa-tag icon1" aria-hidden="true"></i>
-                                  </div>
-                              </div>
-                              <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 card-align LeftsidepaddingCu">
-                                  <div class="fontSizeControll">
-                                      <h3 class="number">{{dealsData?.totalDeals}}</h3>
-                                      <p class="partners-text">Total</p>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-md-6 col-sm-6 col-lg-4 col-xs-12 pl0">
-                  <div class="portlet light card-height">
-                      <div class="col-md-12 col-lg-12" style="padding: 0px;">
-                          <div class="row">
-                              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                  <div class="">
-                                      <i class="fa fa-tag icon2" aria-hidden="true"></i>
-                                  </div>
-                              </div>
-                              <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 card-align LeftsidepaddingCu">
-                                  <div class="fontSizeControll">
-                                      <h3 class="number">{{dealsData?.wonDeals}}</h3>
-                                      <p class="partners-text">Won</p>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-md-6 col-sm-6 col-lg-4 col-xs-12 pl0">
-                  <div class="portlet light card-height">
-                      <div class="col-md-12 col-lg-12" style="padding: 0px;">
-                          <div class="row">
-                              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                  <div class="">
-                                      <i class="fa fa-tag icon3" aria-hidden="true"></i>
-                                  </div>
-                              </div>
-                              <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 card-align LeftsidepaddingCu">
-                                  <div class="fontSizeControll">
-                                      <h3 class="number">{{dealsData?.lostDeals}}</h3>
-                                      <p class="partners-text">Lost</p>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-      </ng-container>
-      	<br>
-        <app-leads-and-deals-bubble-chart *ngIf="loadChart" [moduleType]="'Deals'" [applyFilter]="applyFilter"></app-leads-and-deals-bubble-chart>
-      </div>
     </div>
-  </div>
 </div>

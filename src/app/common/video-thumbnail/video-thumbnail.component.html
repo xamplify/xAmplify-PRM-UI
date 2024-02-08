@@ -4,6 +4,26 @@
       <img alt="" *ngIf="!videoFile?.processed" src="../../../assets/images/Spinner.gif" class="loader-css" style="width: 180px; height: 100px;border-radius:5px;">
       <img alt="" *ngIf="videoFile?.processed" id="imagePath{{videoFile.id}}" src="{{videoFile.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)"  style="width: 180px; height: 100px;border-radius:5px;">
       <span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
+   </div> 
+   <!-- XBI-2178 -->
+   <div *ngIf="videoFile.companyName">
+      <h4 (click)="titleClickVideo(videoFile)" data-toggle="tooltip" data-placement="bottom" [title]="videoFile?.title"
+         class='VideoTitlesDec ListFontCu'> <span> {{videoFile.title | slice: 0: 20}}</span>
+         <span *ngIf="videoFile?.title?.length>20">...</span>
+      </h4>
+      <span data-toggle="tooltip" data-placement="bottom" [title]="videoFile.companyName | slice:0:25"
+         *ngIf="videoFile.companyName">By {{videoFile.companyName | slice:0:25}}
+         <span *ngIf="videoFile.companyName?.length>25">...</span>
+      </span>
+      <h6 class='f-w-600 views-draft topand-bottom-padding' (click)="showPlayVideo(videoFile)"
+         [ngClass]="{'mt7':videoFile?.viewBy!=='DRAFT'}">
+         <span *ngIf="videoFile?.viewBy!=='DRAFT'">
+            <span *ngIf="videoFile.views">{{videoFile.views}} views</span>
+            <span *ngIf="!videoFile.views">0 views</span>
+         </span>
+      </h6>
+      <span *ngIf="videoFile?.viewBy==='PRIVATE'">Private</span>
+      <span *ngIf="videoFile?.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</span>
    </div>
    <div class="title-div" *ngIf="!hideDetails">
       <a (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)">

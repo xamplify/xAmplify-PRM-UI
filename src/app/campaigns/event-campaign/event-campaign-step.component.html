@@ -941,7 +941,7 @@
 																	*ngFor="let contactList of contactListsPagination.pagedItems;let i = index">
 																	<tr role="row"
 																		id="campaignContactListTable_{{contactList.id}}"
-																		(click)="highlightPartnerContactRow(contactList,$event,contactList.noOfContacts,contactList.emailValidationInd)"
+																		(click)="checkAllForPartners($event)"
 																		[ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}"
 																		(mouseover)='showContactsAlert(contactList.count)'
 																		[attr.title]="emptyContactsMessage">
@@ -1001,10 +1001,6 @@
 																			<img *ngIf="contactList?.socialNetwork=='PIPEDRIVE'"
 																				src="{{properties?.pipedriveImage}}"
 																				alt="pipedrive"
-																				class="img-class-list image_effect">
-																			<img *ngIf="contactList?.socialNetwork=='CONNECTWISE'"
-																				src="{{properties?.connectwiseImage}}"
-																				alt="ConnectWise"
 																				class="img-class-list image_effect">
 																		</td>
 																		<td style="text-align: left;"

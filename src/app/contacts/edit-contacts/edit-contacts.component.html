@@ -1196,7 +1196,7 @@
 										</span>
 										<ul class="dropdown-menu pull-right">
 											<li [ngClass]="{'disabled': (selectedInvalidContactIds?.length == 0 && selectedContactListIds?.length == 0)}"
-												*ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">
+											*ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads &&(authenticationService?.module?.adminOrSuperVisor || loggedInUserId == uploadedUserId)">
 												<a id="delete_button" (click)="invalidContactsShowAlert()" translate>
 													Delete</a>
 											</li>
@@ -1414,7 +1414,7 @@
 													</td>
 
 													<td *ngIf="contactsByType.selectedCategory =='excluded'">
-														<button *ngIf="allcontacts.excludedCatagory == 'Excluded User'"
+														<button *ngIf="contact.excludedCatagory == 'Excluded User' && !(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
 															type="submit" class="bgcolor-unset button_height"
 															[disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
 															(click)="showMakeAsOptinAlert(allcontacts.id, allcontacts.emailId)"
@@ -1528,13 +1528,16 @@
 	<div *ngIf="contactService.isContactModalPopup && !updateContactUser">
 		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
 			[gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser]="false"
-			[partnerListId]="contactListId" [selectedCompanyId]="selectedCompanyId" (notifyParent)="addRow($event)"></app-add-contact-modal>
+			[partnerListId]="contactListId" [selectedCompanyId]="selectedCompanyId"
+			(notifyParent)="addRow($event)"></app-add-contact-modal>
 	</div>
 
 	<div *ngIf="contactService.isContactModalPopup && updateContactUser">
 		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
 			[gdprInput]="parentInput" [totalUsers]="contacts" [contactDetails]="contactAllDetails"
-			[isUpdateUser]="isUpdateUser" [selectedCompanyId]="selectedCompanyContactId" [isCompanyContact]="isCompanyContact" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
+			[isUpdateUser]="isUpdateUser" [selectedCompanyId]="selectedCompanyContactId"
+			[isCompanyContact]="isCompanyContact"
+			(notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 	</div>
 	<app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList"
 		[downloadListName]="logListName"> </app-export-csv>
@@ -1653,7 +1656,7 @@
 					translate>Decline</button>
 				<button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset"
 					(click)="saveContactsWithPermission()" translate><span
-						class="btn btn-primary transition">Accept</span></button>
+						class="btn btn-primary transition txt_pd-top3">Accept</span></button>
 			</div>
 		</div>
 	</div>

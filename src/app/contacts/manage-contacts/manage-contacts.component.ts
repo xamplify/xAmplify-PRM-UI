@@ -1349,6 +1349,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						} else {
 							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
 						}
+						this.selectedInvalidContactIds=[];
+                        this.selectedContactListIds=[];
 					},
 					(error: any) => {
 						if (error._body.includes('Please launch or delete those campaigns first')) {

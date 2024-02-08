@@ -1839,6 +1839,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showSeletThemeSettings = false;
 	activateTab(activeTabName: any) {
 		this.activeTabName = activeTabName;
+		if (!(this.activeTabName == "playerSettings")) {
+			this.activeTabHeader = this.properties.defaultPlayerSettings;
+			this.videoJSplayer.pause();
+		}
 		if (this.activeTabName == "personalInfo") {
 			this.activeTabHeader = this.properties.personalInfo;
 		} else if (this.activeTabName == "customTheme") {
@@ -4490,6 +4494,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		.subscribe(
 		data => {
 				this.leadApprovalStatus = data.data;
+				this.leadApprovalRejectionStatus = data.data;
 		});
 	}
 
@@ -4513,16 +4518,20 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			allowOutsideClick: false,
 			confirmButtonText: 'Yes'
 		}).then(function () {
-			self.saveLeadApprovalOrRejectionStatus();
+			if (self.leadApprovalStatus == self.leadApprovalRejectionStatus){
+				self.saveLeadApprovalOrRejectionStatus(self.leadApprovalStatus);
+			} else{
+				self.saveLeadApprovalOrRejectionStatus(self.leadApprovalRejectionStatus);
+			}
 		}, function (dismiss: any) {
 			console.log('you clicked on option' + dismiss);
 			self.getLeadApprovalstatus();
 		});
 	}
 
-	saveLeadApprovalOrRejectionStatus() {
+	saveLeadApprovalOrRejectionStatus(leadApprovalRejectionStatus:boolean) {
 		this.leadApprovalCustomResponse = new CustomResponse();
-		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId, this.leadApprovalRejectionStatus)
+		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId, leadApprovalRejectionStatus)
 		.subscribe(
 			data => {
 				this.leadApprovalCustomResponse = new CustomResponse('SUCCESS', "Settings Updated Successfully", true);

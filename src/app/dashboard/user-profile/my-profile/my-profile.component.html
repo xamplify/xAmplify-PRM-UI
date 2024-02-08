@@ -188,7 +188,7 @@
 
                                         <!-- XNFR-426 -->
                                         <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}"
-                                            *ngIf="!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing">
+                                            *ngIf="!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember)">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadDealApprove'}"
                                                 (click)="activateTab('leadDealApprove');getLeadApprovalstatus();">
                                                 {{properties.leadDealApprove | translate}}</a>
@@ -1512,7 +1512,9 @@
                                                                             </th>
                                                                             <th class="PipelinesTablet-thWidth1">Created
                                                                                 By</th>
-                                                                            <th class="PipelinesTablet-thWidth2 text-center">Stages
+                                                                            <th
+                                                                                class="PipelinesTablet-thWidth2 text-center">
+                                                                                Stages
                                                                             </th>
                                                                             <th class="PipelinesTablet-thWidth3">Actions
                                                                             </th>
@@ -2232,7 +2234,7 @@
                                                         <div class="col-xs-12" style="padding:0">
                                                             <fieldset class="fild-custome-borders-none">
                                                                 <legend class="leg-custome-borders-bot" translate>Video
-                                                                    Player Apperance</legend>
+                                                                    Player Appearance</legend>
                                                                 <div
                                                                     class="col-xs-12 col-sm-6 col-md-6 align-itms-center">
                                                                     <div class="col-xs-12 col-sm-12 col-md-12 form-group"
@@ -3467,7 +3469,7 @@
                 </form>
             </div>
             <div class="modal-footer" style="border:none">
-                <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
+                <button class="btn Btn-Gray neg_mrg_top4" (click)="addContactModalClose()" translate>Cancel</button>
                 <button type="button" class="button bgcolor-unset btn-top3"
                     (click)="confirmAndsaveExcludedUser(addContactuser)"
                     [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate><span
@@ -3518,7 +3520,7 @@
                 </form>
             </div>
             <div class="modal-footer" style="border:none">
-                <button class="btn Btn-Gray" (click)="addDomainModalClose()" translate>Cancel</button>
+                <button class="btn Btn-Gray neg_mrg_top4" (click)="addDomainModalClose()" translate>Cancel</button>
                 <button type="button" class="button bgcolor-unset btn-top3"
                     (click)="confirmAndsaveExcludedDomain(domain)" [disabled]="!validDomainPattern" translate><span
                         class="btn Btn-Green transition txt_pd-top3">Add</span></button>

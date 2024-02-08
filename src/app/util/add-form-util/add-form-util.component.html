@@ -689,7 +689,8 @@
                     </div>
                     <div class="form-group  col-md-6 col-lg-6">
                         <label>Select a folder <span class="invalid-form-name">*</span></label>
-                        <select class="form-control" [(ngModel)]="form.categoryId" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectCategory($event)">
+                        <select class="form-control" [(ngModel)]="form.categoryId" [ngModelOptions]="{standalone: true}"
+                            (ngModelChange)="selectCategory($event)">
                             <option *ngFor="let category of categoryNames" [value]="category.id">
                                 {{category.name}}
                             </option>
@@ -722,11 +723,11 @@
                 <!-- XNFR-108 ENDS -->
             </div>
             <div class="modal-footer">
-                <button *ngIf="isCopyForm" type="button"
-                    class="btn Btn-Gray btn-hvr-tex margin-rgt-5 margin-top-5" (click)="navigateBack()"
-                    aria-hidden="true">Close</button>
-                <button type="submit" [disabled]="!form.isValid" class="button BtnWidthForPopup bgcolor-unset margin-top-5 pt0"
-                    (click)="unBlurDiv()" id="full-screen"><span class="transition"><span *ngIf="isCopyForm"
+                <button *ngIf="isCopyForm" type="button" class="btn Btn-Gray btn-hvr-tex margin-rgt-5 margin-top-5"
+                    (click)="navigateBack()" aria-hidden="true">Close</button>
+                <button type="submit" [disabled]="!form.isValid"
+                    class="button BtnWidthForPopup bgcolor-unset margin-top-5 pt0" (click)="unBlurDiv()"
+                    id="full-screen"><span class="transition"><span *ngIf="isCopyForm"
                             class="btn btn-primary transition">Save Changes</span><span *ngIf="!isCopyForm"
                             class="btn  Btn-Green transition">Continue</span></span></button>
             </div>
@@ -1269,7 +1270,7 @@
             </div>
             <div class="modal-body" style="overflow-y: unset !important;">
                 <button style="position: relative; top: -5px; width: 118px;margin-left: -10px;"
-                    class="button fileinput-button-css bgcolor-unset" *ngIf="!imageChangedEvent">
+                    class="button fileinput-button-css bgcolor-unset mrg_lft0" *ngIf="!imageChangedEvent">
                     <span class="btn Btn-Green transition txt_pd-top3 pos_pd_lft10">Select image</span> <input
                         style="height: 36px;" title=" " id="custom-input" type="file"
                         (change)="filenewChangeEvent($event)">

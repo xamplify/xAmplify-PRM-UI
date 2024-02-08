@@ -350,4 +350,6 @@ background: green;
     left: 22px;
     border-radius: 3px;  
     background: #ddd;
+    cursor: pointer;
+    pointer-events: none;
 }
