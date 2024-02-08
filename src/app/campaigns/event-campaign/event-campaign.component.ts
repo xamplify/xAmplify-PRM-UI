@@ -1286,6 +1286,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 }
                 if (this.parternUserListIds.length === 0) { this.eventError.eventContactError = true; }
             }
+            this.getValidUsersCount();
             ev.stopPropagation();
             this.resetTabClass();
         } catch (error) {
@@ -1322,6 +1323,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         } else {
             this.isHeaderCheckBoxChecked = false;
         }
+        this.getValidUsersCount();
+        event.stopPropagation();
     }
 
     highlightPartnerContactRow(contactList: any, event: any, count: number, isValid: boolean) {
@@ -1359,7 +1362,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 // this.emptyContactsMessage = "Contacts are in progress";
             }
             this.resetTabClass();
-
+            this.getValidUsersCount();
+            event.stopPropagation();
         }
 
     }

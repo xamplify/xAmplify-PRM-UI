@@ -318,10 +318,11 @@ export class SaveAsComponent implements OnInit {
       }
   }
 
-  changeStatus(event){
-      this.model.isPublic = event;
+    changeStatus(event) {
+        this.contactService.publicList = event;
+        this.model.isPublic = this.contactService.publicList;
 
-  }
+    }
 
 
 }

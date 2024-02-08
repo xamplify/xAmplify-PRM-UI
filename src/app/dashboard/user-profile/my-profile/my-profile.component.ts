@@ -1839,6 +1839,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showSeletThemeSettings = false;
 	activateTab(activeTabName: any) {
 		this.activeTabName = activeTabName;
+		if (!(this.activeTabName == "playerSettings")) {
+			this.activeTabHeader = this.properties.defaultPlayerSettings;
+			this.videoJSplayer.pause();
+		}
 		if (this.activeTabName == "personalInfo") {
 			this.activeTabHeader = this.properties.personalInfo;
 		} else if (this.activeTabName == "customTheme") {
