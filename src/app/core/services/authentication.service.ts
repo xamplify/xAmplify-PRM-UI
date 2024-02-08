@@ -1261,4 +1261,10 @@ findCompanyDetails(companyProfileName:string) {
   return this.callGetMethod(url);
 }
 
+signUpAsTeamMember(data: any) {
+  let url = this.REST_URL + "signUpAsTeamMember";
+  return this.callPostMethod(url,data)
+  
+}
+
 }

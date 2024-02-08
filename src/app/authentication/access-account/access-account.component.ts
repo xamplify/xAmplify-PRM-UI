@@ -88,6 +88,7 @@ export class AccessAccountComponent implements OnInit {
             'required': 'You Must Agree to the Terms of Service & Privacy Policy.'
         }
     };
+    companyProfileName="";
 
     constructor( private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
         private formBuilder: FormBuilder, private signUpUser: User, public route: ActivatedRoute,
@@ -102,22 +103,43 @@ export class AccessAccountComponent implements OnInit {
         } );
     }
     update() {
+        this.customResponse = new CustomResponse();
         if ( this.signUpForm.valid ) {
             this.signUpUser = this.signUpForm.value;
             this.loading = true;
             let data = {};
-            data['id'] = this.userId;
             data['firstName'] = this.signUpUser.firstName;
             data['lastName'] = this.signUpUser.lastName;
             data['password'] = this.signUpUser.password;
             if(this.isActivateAccountPage){
+                data['id'] = this.userId;
                 this.accessAccount(data);
             }else{
                 data['emailId'] = this.signUpUser.emailId;
+                data['companyProfileName'] = this.companyProfileName;
+                this.signUpAsTeamMember(data);
             }
         } else {
             this.checkValidationMessages()
         }
+    }
+    signUpAsTeamMember(data: {}) {
+        $("#teamMember-signup-emailId").removeClass('ng-valid');
+        $("#teamMember-signup-emailId").removeClass('ng-invalid');
+        this.authenticationService.signUpAsTeamMember(data).subscribe(response=>{
+            alert("Succes");
+        },error=>{
+            let message = this.referenceService.showHttpErrorMessage(error);
+            if(this.properties.serverErrorMessage!=message){
+                this.formErrors.emailId = message;
+                $("#teamMember-signup-emailId").removeClass('ng-valid');
+                $("#teamMember-signup-emailId").addClass('ng-invalid');
+            }else{
+                this.customResponse = new CustomResponse('ERROR',message,true);
+            }
+           
+            this.loading = false;
+        });
     }
 
     private accessAccount(data: {}) {
@@ -234,8 +256,8 @@ export class AccessAccountComponent implements OnInit {
                 let alias = this.route.snapshot.params['alias']; 
                 this.getUserDatails( alias );
             }else if(this.referenceService.getCurrentRouteUrl().indexOf("tSignUp")>-1){
-                let companyProfileName = this.route.snapshot.params['companyProfileName']; 
-                this.authenticationService.findCompanyDetails(companyProfileName).subscribe(
+                this.companyProfileName = this.route.snapshot.params['companyProfileName']; 
+                this.authenticationService.findCompanyDetails(this.companyProfileName).subscribe(
                     response=>{
                         if(response.statusCode==200){
                             this.mainLoader = false;
