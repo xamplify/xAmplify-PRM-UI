@@ -1,48 +1,57 @@
-<app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+<app-response-message class="pg8" [customResponse]="customResponse"
+  *ngIf="customResponse.isVisible"></app-response-message>
 <div class="row" style="margin-top: 6px;margin-left: -10px;margin-right: -10px;">
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<app-box-loader [countLoader]=4 *ngIf="loader"></app-box-loader>
-<ng-container *ngIf="!loader">
-<div *ngFor="let dto of dashboardModuleAnalyticsViewDtos" data-toggle="tooltip" 
- [title]="dto.hasAccess? 'Click to see details':'You do not have permission to see details'" 
- [className]="dto.hasAccess? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 tiles_hover_effect' : 'col-sm-4 col-xs-6 col-lg-3 col-md-3 dashboard-access-denied'" (click)="goToManage(dto)">
-<a  class="{{dto.color}}">
-  <div class="visual">
-    <i *ngIf="dto.moduleId!=3" class="{{dto.faIcon}} dbiconscss" aria-hidden="true"></i>
-    <img *ngIf="dto.moduleId==3"  class="img-dash" src="assets/images/white15.png" alt="No Image Found">
-  </div>
-  <div class="details">
-    <div class="number NumberFontDecrease">{{dto.count}}</div>
-    <div [className]="dto?.moduleName?.length>=31 ? 'desc custom-name-font TextFontDecrease':'desc default-name-font TextFontDecrease'">{{dto.moduleName | translate}}</div>
-  </div>
-  <span class="morePadding">
-    <a [className]="dto.hasAccess? 'more':'more dashboard-access-denied'" translate> Detailed view 
-      <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-  </span>
-</a>
-</div>
-<!-- show add leads and Add Deals buttons to Only PRM Partner  -->
-<div class="col-sm-4 col-xs-6 col-lg-3 col-md-3" *ngIf="authenticationService?.module?.showAddLeadsAndDealsOptionInTheDashboard">
-  <div class="addLeadsDiv">
-    <a (click)="addLead()" style="padding-left: 11px;">
-      <button class="btn btn-primary" style="width:200px; border-radius: 3px !important;" translate>
-        <i class="fa fa-user-circle" aria-hidden="true"></i> Add Leads
-      </button>
-    </a>
-  </div>
-  <div>
-    <a (click)="addDeal()" style="padding-left: 11px;">
-      <button class="btn btn-primary" style="width:200px; border-radius: 3px !important;" translate>
-        <i class="fa fa-tags" aria-hidden="true"></i> Add Deals
-      </button>
-    </a>
-  </div> 
-</div>
-</ng-container>
+  <app-box-loader [countLoader]=4 *ngIf="loader"></app-box-loader>
+  <ng-container *ngIf="!loader">
+    <div *ngFor="let dto of dashboardModuleAnalyticsViewDtos" data-toggle="tooltip"
+      [title]="dto.hasAccess && dto.count? 'Click to see details':'You do not have permission to see details'"
+      [className]="(dto.hasAccess && dto.count) ? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 tiles_hover_effect' : 'col-sm-4 col-xs-6 col-lg-3 col-md-3 dashboard-access-denied'"
+      (click)="dto.count !== 0 ? goToManage(dto) : null">
+      <a class="{{dto.color}}" [ngStyle]="{'pointer-events': dto.count === 0 ? 'none' : 'auto'}">
+        <div class="visual">
+          <i *ngIf="dto.moduleId!=3" class="{{dto.faIcon}} dbiconscss" aria-hidden="true"></i>
+          <img *ngIf="dto.moduleId==3" class="img-dash" src="assets/images/white15.png" alt="No Image Found">
+        </div>
+        <div class="details" [ngClass]="{'disabled': dto.count === 0}">
+          <div class="number NumberFontDecrease">{{dto.count}}</div>
+          <div
+            [className]="dto?.moduleName?.length>=31 ? 'desc custom-name-font TextFontDecrease':'desc default-name-font TextFontDecrease'">
+            {{dto.moduleName | translate}}</div>
+        </div>
+        <span class="morePadding">
+          <a [className]="(dto.hasAccess&& dto.count)? 'more':'more dashboard-access-denied'" translate> Detailed view
+            <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+        </span>
+      </a>
+    </div>
+    <!-- show add leads and Add Deals buttons to Only PRM Partner  -->
+    <div class="col-sm-4 col-xs-6 col-lg-3 col-md-3"
+      *ngIf="authenticationService?.module?.showAddLeadsAndDealsOptionInTheDashboard">
+      <div class="addLeadsDiv">
+        <a (click)="addLead()" style="padding-left: 11px;">
+          <button class="button btn btn-primary transition" style="width:200px; border-radius: 3px !important;"
+            translate>
+            <span class="buttonSPan"><i class="fa fa-user-circle" aria-hidden="true"></i>
+              Add
+              Leads</span>
+          </button>
+        </a>
+      </div>
+      <div>
+        <a (click)="addDeal()" style="padding-left: 11px;">
+          <button class="button btn btn-primary transition" style="width:200px; border-radius: 3px !important;"
+            translate>
+            <span class="buttonSPan"><i class="fa fa-tags" aria-hidden="true"></i> Add
+              Deals</span>
+          </button>
+        </a>
+      </div>
+    </div>
+  </ng-container>
 </div>
 
 <!-- Add Lead Model-->
-<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitLeadSuccess()"
-  (notifyManageLeadsComponentToHidePopup) = "resetValues()"
+<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="actionType"
+  (notifySubmitSuccess)="showSubmitLeadSuccess()" (notifyManageLeadsComponentToHidePopup)="resetValues()"
   [isVendorVersion]="false" [isOrgAdmin]="false"></app-add-lead>
-

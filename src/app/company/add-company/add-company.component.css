@@ -12,18 +12,6 @@
     padding-right: 0 !important;
     display: block;
   }
-  
-  @media only screen and (max-width: 600px) {
-    .padding-mobile {
-      padding: 0;
-    }
-  }
-  @media only screen and (min-width: 601px) {
-    .padding-mobile {
-      padding: non;
-    }
-  }
-  
   @media screen and (max-width: 600px) {
     .accounts-modal {
       width: 100% !important;

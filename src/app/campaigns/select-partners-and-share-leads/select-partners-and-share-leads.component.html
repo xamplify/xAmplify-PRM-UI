@@ -184,6 +184,10 @@
                                                       src="{{properties?.pipedriveImage}}" alt="manual"
                                                       class="list-icons-sm">
                                                    <img
+                                                      *ngIf="shareLead.socialNetwork=='CONNECTWISE' && shareLead.synchronisedList"
+                                                      src="{{properties?.connectwiseImage}}" alt="manual"
+                                                      class="list-icons-sm">
+                                                   <img
                                                       *ngIf="shareLead.socialNetwork=='MARKETO' && shareLead.synchronisedList"
                                                       src="{{properties?.marketoImage}}" alt="manual"
                                                       class="list-icons-sm">

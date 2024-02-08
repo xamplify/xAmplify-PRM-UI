@@ -307,7 +307,7 @@
       border: 1px solid;
     }
     .mActionDiv {
-      white-space: pre-line !important;
+      white-space: inherit !important;
       line-height: 1.8px !important;
     }
     .mPadAction {

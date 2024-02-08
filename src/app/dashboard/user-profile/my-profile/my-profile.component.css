@@ -1636,7 +1636,7 @@ i.fa.fa-cog {
   img.img-custome {width: 100%;margin-bottom: 6px;margin-top: 15px; padding-top: 20px;padding-right: 20px;padding-bottom: 0px; padding-left: 20px;}
   .div.table-color { overflow: scroll;}
   .topcard-padding { margin-top: 10px;}
-  .iconmobile-align a i { margin: 5px 0px !important;}
+  /* .iconmobile-align a i { margin: 5px 0px !important;} */
   .custome-video {height: 171px !important;margin-bottom: 20px !important;}
   .themePaddings {padding-top: 0px;padding-bottom: 5px;padding-left: 0px;}
   .card-bg{width: 100%;}
@@ -2131,4 +2131,8 @@ button.spaceTopBottom{
 }
 .mleft-10{
 margin-left: 10px;
+}
+/* Lead Approval/Rejection */
+.fs-17{
+  font-size: 18px;
 }
