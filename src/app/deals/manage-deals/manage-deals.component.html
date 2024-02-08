@@ -137,23 +137,22 @@
                   <div class="page-toolbar col-xs-12 col-sm-5 col-lg-6 pull-right" style="padding: 0px 4px 8px 0px;">
                     <div class="btn-group pull-right width">
                       <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
-                        <span data-placement="bottom" (click)="setListView()"
-                          class="btn btn-xs hidden-xs l-g-view list_view_deal" data-toggle="tooltip"
-                          [class.disabled]="listView" title="List View">
+                        <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
+                          data-toggle="tooltip" [class.disabled]="listView" title="List View">
                           <i aria-hidden="true" class="fa fa-th-list p10"></i>
                         </span>
                         <span *ngIf="authenticationService?.module?.isCampaign"
                           [ngClass]="authenticationService?.module?.isCampaign ? 'margin-right' : 'mr0'"
                           data-placement="bottom" style="margin-left: 4px !important;"
-                          class="btn btn-xs hidden-xs l-g-view neg_mrg_top4" data-toggle="tooltip" title="Campaign View"
+                          class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Campaign View"
                           [class.disabled]="!listView" (click)="setCampaignView()">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                         </span>
 
                       </ng-container>
-                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view neg_mrg_top4"
-                        style="margin-right: 4px;" data-toggle="tooltip" title="Download"
-                        [class.disabled]="dealsSortOption.totalRecords == 0" *ngIf="listView" (click)="downloadDeals()">
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" style="margin-right: 4px;"
+                        data-toggle="tooltip" title="Download" [class.disabled]="dealsSortOption.totalRecords == 0"
+                        *ngIf="listView" (click)="downloadDeals()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
@@ -670,7 +669,7 @@
         <span class="fa fa-comments IconCustomization" style="z-index: 1;font-size: 13px;" aria-hidden="true"
           style="font-size:18px"></span>
         <span *ngIf="selectedDeal.unReadChatCount > 0" class="badge badge-default"
-          style="margin-top: -72px; margin-right: -15px;background-color: #ed1c24 !important;">{{selectedDeal.unReadChatCount}}</span>
+          style="margin-top: -30px; margin-right: -15px;background-color: #ed1c24 !important;">{{selectedDeal.unReadChatCount}}</span>
       </a>
 
     </div>
