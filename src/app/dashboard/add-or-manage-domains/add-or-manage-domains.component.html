@@ -4,6 +4,21 @@
   <tbody class="neo-border-radius10">
     <fieldset class="fild-custome-borders-none">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+        <!--Copy SignUp Link-->
+        <div style="display:flex; height:45px;display: none;">
+            <input type="text" [ngModel]="signUpUrl" class="form-control" readonly="readonly"  #signUpUrl><br>
+            <div>
+                <a class="button_blue" id="right" (click)="copySignUpUrl(signUpUrl)">
+                    <span class="btn btn-primary transition copy_link">Copy Url</span>
+                </a>
+            </div>
+        </div>
+        <div>
+            <span class="success" id="copied-signup-url"style="display: none;">
+                <strong>Url copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+            </span>
+        </div>
+
         <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align mt10">
           <!--Add a Domain-->
           <button id="add_domain" class="button bgcolor-unset mrgn_lft0 p0 px-9" (click)="addDomainModalOpen()">

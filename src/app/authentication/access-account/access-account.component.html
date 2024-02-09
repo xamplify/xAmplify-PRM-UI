@@ -8,7 +8,7 @@
 	   <div class="my-container">
 		  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	   </div>
-	   <div *ngIf="!userNotFound" style="padding-bottom: 10px;">
+	   <div *ngIf="!userNotFound && !teamMemberAccountCreated && !anotherUserLoggedIn" style="padding-bottom: 10px;">
 		  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		  <form class="register" [formGroup]="signUpForm" autocomplete="off" >
 			 <h4 *ngIf="isActivateAccountPage" style="font-size:15px;font-weight:bold;">
@@ -16,54 +16,55 @@
 			 <div *ngIf="isError" class="alert alert-danger" (click)="toggleChild()">
 			 <span>{{properties?.severErrorMessage}}</span>
 			 <span>Please fill the details.</span>
-	   </div>
-	   <div class="form-group col-xs-6 p0" style="border-right: 1px solid #fff0;">
-	   <label class="control-label visible-ie8 visible-ie9">First Name</label>
-	   <input class="form-control placeholder-no- firstNameTF" type="text" placeholder="First Name" required formControlName="firstName" autocomplete="off" />
-	   <div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div>
-	   </div>
-	   <div class="form-group col-xs-6 p0">
-	   <label class="control-label visible-ie8 visible-ie9">Last Name</label>
-	   <input class="form-control placeholder-no-fix lastNameTF" type="text" placeholder="Last Name" formControlName="lastName" autocomplete="off" />
-	   </div>
-	   <div class="form-group">
-	  	 <label class="control-label visible-ie8 visible-ie9">Email</label>
-	  	 <input [disabled]="isActivateAccountPage" autocomplete="off" class="form-control placeholder-no-fix emailTF ng-invalid" type="email" placeholder="Email" id="teamMember-signup-emailId" required formControlName="emailId"/>
-		   <div *ngIf="formErrors.emailId" class="alert alert-danger">{{ formErrors.emailId }}</div>
-	   </div>
-	   <div class="form-group has-feedback" style="position: relative">
-	   <label class="control-label visible-ie8 visible-ie9">Password</label>
-	   <input formControlName="password" autocomplete="off" id="password" class="form-control placeholder-no-fix passwordTF"  (input)="checkPassword()" type="password" autocomplete="off" placeholder="Password"
-		  required />
-	   <span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="!referenceService.showInputPassword && signUpForm.get('password').value" style="left:-30px !important"></span>
-	   <span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="referenceService.showInputPassword && signUpForm.get('password').value" style="left:-30px !important"></span>
-	   <i class="fa fa-question-circle"  data-toggle="tooltip" data-placement="left" title="Minimum 6, maximum 20 charactores required & spaces are not allowed and password should be mix of letters, numbers and symbols"></i>
-	   <div *ngIf="formErrors.password" class="alert alert-danger">{{ formErrors.password }}</div>
-	   </div>
-	   <div class="form-group has-feedback">
-	   <label class="control-label visible-ie8 visible-ie9">Re-type Your Password</label>
-	   <input formControlName="confirmPassword" autocomplete="off" id="comfirmPassword"  class="form-control placeholder-no-fix confirmPasswordTF" type="password"  placeholder="Re-type Your Password"
-		  required />
-	   <span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')" *ngIf="!referenceService.showInputConfirmPassword && signUpForm.get('confirmPassword').value "></span>
-	   <span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')"  *ngIf="referenceService.showInputConfirmPassword && signUpForm.get('confirmPassword').value "></span>
-	   <div *ngIf="formErrors.confirmPassword" class="alert alert-danger">{{ formErrors.confirmPassword }}</div>
-	   <div *ngIf="signUpForm.hasError('mismatchedPasswords') && !formErrors.confirmPassword && !formErrors.password" class="alert alert-danger">Passwords do not match.</div>
-	   </div>
-	   <div class="form-group">
-	   <label class="check">
-	   <input formControlName="agree" class="checkBox_shadow" type="checkbox" required /> I agree to the <a href="{{properties?.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&<a href="{{properties?.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
-	   </label>
-	   <div *ngIf="formErrors.agree" class="alert alert-danger">{{ formErrors.agree }}</div>
-	   <div id="register_tnc_error"></div>
-	   </div>
-	   <div class="actions">
-	   <button type="submit" style="color:white"  id="register-submit-btn" [disabled]="!signUpForm.valid" class="btn btn-success uppercase signinTF" (click)="update()">Submit</button>
-	   </div>
-	   </form>
-	</div>
-	<div *ngIf="userNotFound">
-	   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-	</div>
+	   		</div>
+			<div class="form-group col-xs-6 p0" style="border-right: 1px solid #fff0;">
+			<label class="control-label visible-ie8 visible-ie9">First Name</label>
+			<input class="form-control placeholder-no- firstNameTF" type="text" placeholder="First Name" required formControlName="firstName" autocomplete="off" />
+			<div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div>
+			</div>
+			<div class="form-group col-xs-6 p0">
+			<label class="control-label visible-ie8 visible-ie9">Last Name</label>
+			<input class="form-control placeholder-no-fix lastNameTF" type="text" placeholder="Last Name" formControlName="lastName" autocomplete="off" />
+			</div>
+			<div class="form-group">
+				<label class="control-label visible-ie8 visible-ie9">Email</label>
+				<input [disabled]="isActivateAccountPage" autocomplete="off" class="form-control placeholder-no-fix emailTF ng-invalid" type="email" placeholder="Email" id="teamMember-signup-emailId" required formControlName="emailId"/>
+				<div *ngIf="formErrors.emailId" class="alert alert-danger">{{ formErrors.emailId }}</div>
+			</div>
+			<div class="form-group has-feedback" style="position: relative">
+			<label class="control-label visible-ie8 visible-ie9">Password</label>
+			<input formControlName="password" autocomplete="off" id="password" class="form-control placeholder-no-fix passwordTF"  (input)="checkPassword()" type="password" autocomplete="off" placeholder="Password"
+				required />
+			<span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="!referenceService.showInputPassword && signUpForm.get('password').value" style="left:-30px !important"></span>
+			<span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="referenceService.showInputPassword && signUpForm.get('password').value" style="left:-30px !important"></span>
+			<i class="fa fa-question-circle"  data-toggle="tooltip" data-placement="left" title="Minimum 6, maximum 20 charactores required & spaces are not allowed and password should be mix of letters, numbers and symbols"></i>
+			<div *ngIf="formErrors.password" class="alert alert-danger">{{ formErrors.password }}</div>
+			</div>
+			<div class="form-group has-feedback">
+			<label class="control-label visible-ie8 visible-ie9">Re-type Your Password</label>
+			<input formControlName="confirmPassword" autocomplete="off" id="comfirmPassword"  class="form-control placeholder-no-fix confirmPasswordTF" type="password"  placeholder="Re-type Your Password"
+				required />
+			<span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')" *ngIf="!referenceService.showInputConfirmPassword && signUpForm.get('confirmPassword').value "></span>
+			<span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')"  *ngIf="referenceService.showInputConfirmPassword && signUpForm.get('confirmPassword').value "></span>
+			<div *ngIf="formErrors.confirmPassword" class="alert alert-danger">{{ formErrors.confirmPassword }}</div>
+			<div *ngIf="signUpForm.hasError('mismatchedPasswords') && !formErrors.confirmPassword && !formErrors.password" class="alert alert-danger">Passwords do not match.</div>
+			</div>
+			<div class="form-group">
+			<label class="check">
+			<input formControlName="agree" class="checkBox_shadow" type="checkbox" required /> I agree to the <a href="{{properties?.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&<a href="{{properties?.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
+			</label>
+			<div *ngIf="formErrors.agree" class="alert alert-danger">{{ formErrors.agree }}</div>
+			<div id="register_tnc_error"></div>
+			</div>
+			<div class="actions">
+			<button type="submit" style="color:white"  id="register-submit-btn" [disabled]="!signUpForm.valid" class="btn btn-success uppercase signinTF" (click)="update()">Submit</button>
+			</div>
+		  </form>
+		</div>
+
+		<div *ngIf="userNotFound || teamMemberAccountCreated || anotherUserLoggedIn">
+			<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" [showCloseIcon]="false"></app-response-message>
+		</div>
  </div>
  <app-copyright></app-copyright>
  </div>

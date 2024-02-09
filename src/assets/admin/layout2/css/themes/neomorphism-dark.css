@@ -99,7 +99,7 @@ a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor.tiles_b
   color: white !important;
 }
 .portlet > .portlet-title,
-.header-text-css,
+h4.header-text-css,
 .black-blue-c:hover,
 .lineplayercontrol,
 .row-space,
@@ -3777,17 +3777,4 @@ border-bottom: unset!important;
 /*** color picker(Manikanta 31-1-2024) ***/
 .color-picker input {
   color: #000;
-}
-/* gear-icon */
-.mb-gear{
-color:#fff!important;
-}
-/*edit-partner-campaigns */
-.ml-5{
-margin-left: 5px;
-}
-/* leads Approval in myprofile */
-.display-grid{
-  display: grid;
-  padding: 5px;
 }

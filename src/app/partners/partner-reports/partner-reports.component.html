@@ -42,8 +42,8 @@
             <app-box-loader [countLoader]=5 *ngIf="activePartnersLoader"></app-box-loader>
             <!---Active Partners Count-->
             <div *ngIf="!activePartnersLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths pd-l"
-              (click)="goToActivePartnersDiv()">
-              <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
+              (click)="activePartnersCount>0 ? goToActivePartnersDiv() : ''">
+              <a [className]="activePartnersCount > 0 ? 'dashboard-stat dashboard-stat-lighter yellow-gold' : 'dashboard-stat dashboard-stat-lighter yellow-gold disable-tile-pj'" [class.greay]="0!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 0===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 0"
@@ -58,7 +58,7 @@
                   </div>
                 </div>
                 <span id="permhref" class="morePadding">
-                  <a class="more" (click)="goToActivePartnersDiv()"> Detailed view
+                  <a [className]="activePartnersCount>0 ? 'more' : 'more disable-tile-pj'" (click)="activePartnersCount>0 ? goToActivePartnersDiv() : ''"> Detailed view
                     <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                 </span>
               </a>
@@ -70,8 +70,8 @@
             <div
               *ngIf="!redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
               class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
-                (click)="goToReDistributedPartnersDiv()">
+              <a [className]="redistributedCampaignsCount > 0 ? 'dashboard-stat dashboard-stat-lighter purple-soft' : 'dashboard-stat dashboard-stat-lighter purple-soft disable-tile-pj'"
+                [class.greay]="2!=selectedTabIndex" (click)="redistributedCampaignsCount>0 ? goToReDistributedPartnersDiv() : ''">
                 <div class="visual">
                   <i *ngIf="selectedTabIndex == 2" class="fa fa-check-circle"
                     style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
@@ -79,14 +79,14 @@
                   </i>
                 </div>
                 <div class="details">
-                  <div class="number"><span
-                      *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
+                  <div class="number"><span *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
                       *ngIf="!redistributedCampaignsCount">0</span></div>
-                  <div class="desc mlabelWidth" data-toggle="tooltip" data-placement="top"
-                    title="Redistributed Campaigns" style="font-size: 13px">Redistributed Campaigns</div>
+                  <div class="desc mlabelWidth" data-toggle="tooltip" data-placement="top" title="Redistributed Campaigns"
+                    style="font-size: 13px">Redistributed Campaigns</div>
                 </div>
                 <span id="permhref" class="morePadding">
-                  <a class="more" (click)="goToReDistributedPartnersDiv()"> Detailed view <i
+                  <a [className]="redistributedCampaignsCount > 0 ? 'more' : 'more disable-tile-pj'"
+                    (click)="redistributedCampaignsCount>0 ? goToReDistributedPartnersDiv() : ''"> Detailed view <i
                       class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                 </span>
               </a>
@@ -98,8 +98,8 @@
             <div
               *ngIf="!throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
               class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
-              <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex"
-                (click)="goToThroughPartnersDiv()">
+              <a [className]="throughPartnerCampaignsCount > 0 ? 'dashboard-stat dashboard-stat-lighter green-soft' : 'dashboard-stat dashboard-stat-lighter green-soft disable-tile-pj'"
+                [class.greay]="3!=selectedTabIndex" (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 3"
@@ -114,7 +114,8 @@
                   </div>
                 </div>
                 <span id="permhref" class="morePadding">
-                  <a class="more" (click)="goToThroughPartnersDiv()"> Detailed view
+                  <a [className]="throughPartnerCampaignsCount > 0 ? 'more' : 'more disable-tile-pj' "
+                    (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''"> Detailed view
                     <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                 </span>
               </a>
@@ -122,9 +123,10 @@
 
             <!--InActive Partner Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
-            <div *ngIf="!inActivePartnersCountLoader"
-              class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths CardCustomeWidth" (click)="goToInActivePartnersDiv()">
-              <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
+            <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths CardCustomeWidth"
+              (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''">
+              <a [className]="inActivePartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter blue-soft' : 'dashboard-stat dashboard-stat-lighter blue-soft disable-tile-pj'"
+                [class.greay]="1!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 1"
@@ -140,7 +142,8 @@
                   </div>
                 </div>
                 <span id="permhref" class="morePadding">
-                  <a class="more" (click)="goToInActivePartnersDiv()"> Detailed view
+                  <a [className]="inActivePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
+                    (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''"> Detailed view
                     <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                 </span>
               </a>
@@ -149,8 +152,9 @@
             <!--Active Partner Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="approvePartnersCountLoader"></app-box-loader>
             <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths CardCustomeWidth"
-              (click)="goToApprovePartnersDiv()">
-              <a class="dashboard-stat dashboard-stat-lighter red-soft" [class.greay]="5!=selectedTabIndex">
+              (click)="approvePartnersCount>0 ? goToApprovePartnersDiv() : ''">
+              <a [className]="approvePartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter red-soft' : 'dashboard-stat dashboard-stat-lighter red-soft disable-tile-pj'"
+                [class.greay]="5!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 5===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 5"
@@ -165,7 +169,8 @@
                   </div>
                 </div>
                 <span id="permhref" class="morePadding">
-                  <a class="more" (click)="goToApprovePartnersDiv()"> Detailed view
+                  <a [className]="approvePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
+                    (click)="approvePartnersCount>0 ? goToApprovePartnersDiv() : ''"> Detailed view
                     <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                 </span>
               </a>
