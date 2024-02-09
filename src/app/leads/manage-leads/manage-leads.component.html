@@ -370,7 +370,6 @@
                             <td>
 
                               <!---xnfr-426---->
-                              <!-- toggle off -->
                               {{lead.currentStageName | slice:0:30}}
                               <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
                                 <i class="fa fa-check-circle mr5" aria-hidden="true"
@@ -386,7 +385,7 @@
                                 </button>
                               </div>
 
-                              <!--toggle on --><!--------XNFR-426--------->
+                              <!----XNFR-426----->
                               <div *ngIf="lead?.leadApprovalOrRejection">
                                 <div *ngIf="!authenticationService?.module?.deletedPartner">
                                   <div style="color: #06c306;"
@@ -404,8 +403,8 @@
                                     Rejected
                                   </div>
                                   <div *ngIf="lead?.canRegisterDeal">
-                                    <button class="button_blue bgcolor-unset"
-                                      [disabled]="(  ((lead?.leadApprovalStatusType == 'REJECTED') || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection)))"
+                                    <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom" title="{{lead?.approvalStatusComment ? (lead?.leadApprovalStatusType !== 'APPROVED' ? 'You can not register a deal for a rejected lead' : '') : 'You can not register a deal for an unapproved lead'}}"
+                                      [disabled]="(((lead?.leadApprovalStatusType == 'REJECTED') || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection)))"
                                       (click)="showDealRegistrationForm(lead)" translate>
                                       <span class="btn btn-primary transition d-inline"> Register Deal</span>
                                     </button>
