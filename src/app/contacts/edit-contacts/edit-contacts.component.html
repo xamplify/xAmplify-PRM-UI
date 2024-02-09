@@ -74,7 +74,7 @@
 							<div>
 								<div class="page-breadcrumb">
 									<span class="col-xs-6 col-md-6">
-										<span *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList
+										<span *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList
 							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList"
 											data-toggle="tooltip" data-placement="top" title="Edit list Name"
 											style="cursor:pointer;font-size: 16px;" (click)="editListName()">
@@ -83,10 +83,10 @@
 											</span>
 										</span>
 										<span
-											*ngIf="isDefaultPartnerList || selectedContactListName==properties?.activeMasterPartnerList || selectedContactListName==properties?.inActiveMasterPartnerList || isTeamMemberPartnerList"
+											*ngIf="isDefaultPartnerList  || isDefaultContactList || selectedContactListName==properties?.activeMasterPartnerList || selectedContactListName==properties?.inActiveMasterPartnerList || isTeamMemberPartnerList"
 											style="font-size: 16px;">{{selectedContactListName}}
 										</span>
-										<div *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList"
+										<div *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList"
 											class="pencil-color">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</div>

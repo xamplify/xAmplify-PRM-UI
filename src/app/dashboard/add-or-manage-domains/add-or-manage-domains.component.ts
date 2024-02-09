@@ -44,6 +44,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   isDeleteOptionClicked: boolean;
   selectedDomainId = 0;
+  signUpUrl = "";
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,public fileUtil:FileUtil,public sortOption:SortOption,
 	public utilService:UtilService,public regularExpressions:RegularExpressions,public dashboardService:DashboardService,
@@ -62,6 +63,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	}else if(this.isExcludeDomainModule){
       this.headerText = "Exclude A Domain";
     }
+	this.signUpUrl="https://tga.xamplify.co/tSignUp/tga";
 	this.findDomains(this.pagination);
   }
 
@@ -240,5 +242,14 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 		this.findDomains(this.pagination);
 	  }
 	
+	  /*********Copy The Link/Iframe Link */
+  copySignUpUrl(inputElement: any) {
+	$(".success").hide();
+	$('#copied-signup-url').hide();
+	inputElement.select();
+	document.execCommand('copy');
+	inputElement.setSelectionRange(0, 0);
+	$('#copied-signup-url').show(500);
+}
 
 }

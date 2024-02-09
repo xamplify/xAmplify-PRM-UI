@@ -356,3 +356,11 @@ button.swal2-cancel.styled:hover {
   .swal2-modal {
     background-color: #2c2f33 !important;
   }
+
+  button.unlink-button {
+    background-color:#2c2f33 !important ;
+  }
+
+  button.btn.Btn-Green.float-left.mobileBottomPa.responsiveBtnCU:hover {
+    background: linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
+  }

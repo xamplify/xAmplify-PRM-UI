@@ -58,7 +58,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.APP_URL = this.envService.CLIENT_URL;
       this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
       this.loginStyleId = 53;
-      //this.logInStyle = this.envService.loginStyleType;
     if (this.referenceService.userProviderMessage !== "") {
       this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
     }
@@ -269,9 +268,7 @@ bgIMage2:any;
         location.reload();
       }else{
         if (this.vanityURLService.isVanityURLEnabled()) {
-          //  this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
           this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
-
           this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {         
             this.vanityURLEnabled = result.enableVanityURL;  
             this.authenticationService.vendorCompanyId = result.companyId;     
@@ -330,7 +327,6 @@ bgIMage2:any;
               this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
             }
             this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
-            //this.authenticationService.loginScreenDirection = result.loginScreenDirection;
             this.vanityURLService.setVanityURLTitleAndFavIcon();
             if (result.showMicrosoftSSO) {
               this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });
@@ -473,19 +469,7 @@ bgIMage2:any;
     this.resendActiveMail = false;
   }
 
-  /****** XNFR-233 ************/
-  // isLoginTypeOne(companyprofileName:any) {
-  //   this.vanityURLService.getActiveLoginTemplate(companyprofileName)
-  //   .subscribe(
-  //     data => {
-  //       alert(data.data)
-  //       if(data.data === "STYLE_ONE"){
-  //         this.isStyleOne = true;
-  //       } else {
-  //         this.isStyleOne = false;
-  //       }
-  //     })  
-  // }
+
   
   createdUserId:any;
   getActiveLoginTemplate(companyProfileName:any){
@@ -497,7 +481,6 @@ bgIMage2:any;
          this.createdUserId = data.data.createdBy;
          this.previewTemplate(this.loginStyleId,this.createdUserId)
         })  
-        //this.previewTemplate(this.loginStyleId,this.createdUserId)
   }
   htmlContent:any;
   previewTemplate(id: number,createdBy:number) {
