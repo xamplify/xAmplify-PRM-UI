@@ -269,9 +269,7 @@ bgIMage2:any;
         location.reload();
       }else{
         if (this.vanityURLService.isVanityURLEnabled()) {
-          //  this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
           this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
-
           this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {         
             this.vanityURLEnabled = result.enableVanityURL;  
             this.authenticationService.vendorCompanyId = result.companyId;     
@@ -330,7 +328,6 @@ bgIMage2:any;
               this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
             }
             this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
-            //this.authenticationService.loginScreenDirection = result.loginScreenDirection;
             this.vanityURLService.setVanityURLTitleAndFavIcon();
             if (result.showMicrosoftSSO) {
               this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });

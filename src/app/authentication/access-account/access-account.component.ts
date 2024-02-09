@@ -89,7 +89,7 @@ export class AccessAccountComponent implements OnInit {
         }
     };
     companyProfileName="";
-
+    teamMemberAccountCreated = false;
     constructor( private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
         private formBuilder: FormBuilder, private signUpUser: User, public route: ActivatedRoute,
         private userService: UserService, public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService, private vanityURLService:VanityURLService ) {
@@ -123,11 +123,15 @@ export class AccessAccountComponent implements OnInit {
             this.checkValidationMessages()
         }
     }
+    /**XNFR-454****/
     signUpAsTeamMember(data: {}) {
+        this.customResponse = new CustomResponse();
         $("#teamMember-signup-emailId").removeClass('ng-valid');
         $("#teamMember-signup-emailId").removeClass('ng-invalid');
         this.authenticationService.signUpAsTeamMember(data).subscribe(response=>{
-            this.loading = false;
+           this.teamMemberAccountCreated = true;
+           this.loading = false;
+           this.customResponse = new CustomResponse('SUCCESS',this.properties.TEAM_MEMBER_SIGN_UP_SUCCESS,true);
         },error=>{
             let message = this.referenceService.showHttpErrorMessage(error);
             if(this.properties.serverErrorMessage!=message){
