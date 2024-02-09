@@ -234,5 +234,8 @@ img.brand-logo-custom {
   line-height: 1px !important;
 }
 
+.disable-tile-pj{
+  cursor: not-allowed;
+}
  
 

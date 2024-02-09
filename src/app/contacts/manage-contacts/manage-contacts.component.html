@@ -588,6 +588,10 @@
                                                       title="This list is associated with a Company." translate>Company
                                                       Contact List</span>
                                                 </h5>
+                                                <h5 class="view-banner view-banner-green"
+                                                   *ngIf="contactList?.isDefaultContactList">
+                                                   <span translate>Master Contact List</span>
+                                                </h5>
                                              </td>
                                              <td class="hidden-xs" *ngIf="!assignLeads">
                                                 <app-timestamp [isOnlyDate]="true"

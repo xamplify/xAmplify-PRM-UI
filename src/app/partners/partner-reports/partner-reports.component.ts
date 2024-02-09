@@ -826,6 +826,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         self.applyFilter = event['selectedOptionIndex'] == 1;
         self.findActivePartnersCount();
         self.findRedistributedCampaignsCount();
+        self.findThroughCampaignsCount();
         self.findInActivePartnersCount();
         self.findApprovePartnersCount();
         if(self.selectedTabIndex==0){

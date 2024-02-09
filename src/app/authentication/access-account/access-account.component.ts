@@ -89,7 +89,8 @@ export class AccessAccountComponent implements OnInit {
         }
     };
     companyProfileName="";
-
+    teamMemberAccountCreated = false;
+    anotherUserLoggedIn = false;
     constructor( private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
         private formBuilder: FormBuilder, private signUpUser: User, public route: ActivatedRoute,
         private userService: UserService, public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService, private vanityURLService:VanityURLService ) {
@@ -123,11 +124,14 @@ export class AccessAccountComponent implements OnInit {
             this.checkValidationMessages()
         }
     }
+    /**XNFR-454****/
     signUpAsTeamMember(data: {}) {
+        this.customResponse = new CustomResponse();
         $("#teamMember-signup-emailId").removeClass('ng-valid');
         $("#teamMember-signup-emailId").removeClass('ng-invalid');
         this.authenticationService.signUpAsTeamMember(data).subscribe(response=>{
-            this.loading = false;
+           this.referenceService.userProviderMessage = this.properties.TEAM_MEMBER_SIGN_UP_SUCCESS;
+           this.router.navigate(['./login']);
         },error=>{
             let message = this.referenceService.showHttpErrorMessage(error);
             if(this.properties.serverErrorMessage!=message){
@@ -245,34 +249,40 @@ export class AccessAccountComponent implements OnInit {
     }
     ngOnInit() {
         try {
-            if(this.vanityURLService.isVanityURLEnabled()){
-                this.vanityURLService.checkVanityURLDetails();
-            }
-            this.mainLoader = true;
-            this.isActivateAccountPage = this.referenceService.getCurrentRouteUrl().indexOf("axAa")>-1;
-            /***XNFR-454*******/
-            if(this.isActivateAccountPage){
-                this.authenticationService.navigateToDashboardIfUserExists();
-                let alias = this.route.snapshot.params['alias']; 
-                this.getUserDatails( alias );
-            }else if(this.referenceService.getCurrentRouteUrl().indexOf("tSignUp")>-1){
-                this.companyProfileName = this.route.snapshot.params['companyProfileName']; 
-                this.authenticationService.findCompanyDetails(this.companyProfileName).subscribe(
-                    response=>{
-                        if(response.statusCode==200){
-                            this.mainLoader = false;
-                            this.buildForm();
-                        }else{
-                            this.referenceService.goToPageNotFound();
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser != undefined) {
+                this.anotherUserLoggedIn = true;
+                this.customResponse = new CustomResponse( 'ERROR', "Another user is already logged in on this browser.Please logout to access this page.", true );
+            }else{
+                this.anotherUserLoggedIn = false;
+                if(this.vanityURLService.isVanityURLEnabled()){
+                    this.vanityURLService.checkVanityURLDetails();
+                }
+                this.mainLoader = true;
+                this.isActivateAccountPage = this.referenceService.getCurrentRouteUrl().indexOf("axAa")>-1;
+                /***XNFR-454*******/
+                if(this.isActivateAccountPage){
+                    this.authenticationService.navigateToDashboardIfUserExists();
+                    let alias = this.route.snapshot.params['alias']; 
+                    this.getUserDatails( alias );
+                }else if(this.referenceService.getCurrentRouteUrl().indexOf("tSignUp")>-1){
+                    this.companyProfileName = this.route.snapshot.params['companyProfileName']; 
+                    this.authenticationService.findCompanyDetails(this.companyProfileName).subscribe(
+                        response=>{
+                            if(response.statusCode==200){
+                                this.mainLoader = false;
+                                this.buildForm();
+                            }else{
+                                this.referenceService.goToPageNotFound();
+                            }
+                        },error=>{
+                            this.xtremandLogger.errorPage(error);
                         }
-                    },error=>{
-                        this.xtremandLogger.errorPage(error);
-                    }
-                )
-
+                    )
+    
+                }
+                /***XNFR-454*******/
             }
-            /***XNFR-454*******/
-           
         } catch ( error ) { this.mainLoader = false; this.xtremandLogger.error( 'error' + error ); }
     }
     ngAfterViewInit() {
@@ -280,6 +290,9 @@ export class AccessAccountComponent implements OnInit {
     }
     ngOnDestroy() {
         this.mainLoader = false;
+        this.anotherUserLoggedIn = false;
+        this.teamMemberAccountCreated = false;
+        this.userNotFound = false;
     }
 
 }
