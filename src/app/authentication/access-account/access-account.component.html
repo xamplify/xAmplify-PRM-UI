@@ -8,7 +8,7 @@
 	   <div class="my-container">
 		  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	   </div>
-	   <div *ngIf="!userNotFound && !teamMemberAccountCreated" style="padding-bottom: 10px;">
+	   <div *ngIf="!userNotFound && !teamMemberAccountCreated && !anotherUserLoggedIn" style="padding-bottom: 10px;">
 		  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		  <form class="register" [formGroup]="signUpForm" autocomplete="off" >
 			 <h4 *ngIf="isActivateAccountPage" style="font-size:15px;font-weight:bold;">
@@ -62,8 +62,8 @@
 		  </form>
 		</div>
 
-		<div *ngIf="userNotFound || teamMemberAccountCreated">
-			<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+		<div *ngIf="userNotFound || teamMemberAccountCreated || anotherUserLoggedIn">
+			<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" [showCloseIcon]="false"></app-response-message>
 		</div>
  </div>
  <app-copyright></app-copyright>

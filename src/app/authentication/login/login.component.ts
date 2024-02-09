@@ -58,7 +58,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.APP_URL = this.envService.CLIENT_URL;
       this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
       this.loginStyleId = 53;
-      //this.logInStyle = this.envService.loginStyleType;
     if (this.referenceService.userProviderMessage !== "") {
       this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
     }
@@ -470,19 +469,7 @@ bgIMage2:any;
     this.resendActiveMail = false;
   }
 
-  /****** XNFR-233 ************/
-  // isLoginTypeOne(companyprofileName:any) {
-  //   this.vanityURLService.getActiveLoginTemplate(companyprofileName)
-  //   .subscribe(
-  //     data => {
-  //       alert(data.data)
-  //       if(data.data === "STYLE_ONE"){
-  //         this.isStyleOne = true;
-  //       } else {
-  //         this.isStyleOne = false;
-  //       }
-  //     })  
-  // }
+
   
   createdUserId:any;
   getActiveLoginTemplate(companyProfileName:any){
@@ -494,7 +481,6 @@ bgIMage2:any;
          this.createdUserId = data.data.createdBy;
          this.previewTemplate(this.loginStyleId,this.createdUserId)
         })  
-        //this.previewTemplate(this.loginStyleId,this.createdUserId)
   }
   htmlContent:any;
   previewTemplate(id: number,createdBy:number) {
