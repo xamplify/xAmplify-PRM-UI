@@ -72,7 +72,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 		response=>{
 			this.signUpUrl = response.data;
 		},error=>{
-
+			this.xtremandLogger.error(error);
 		});
   }
 

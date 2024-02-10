@@ -5,10 +5,10 @@
     <fieldset class="fild-custome-borders-none">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
         <!--Copy SignUp Link-->
-        <div style="display:flex; height:45px;display: none;">
-            <input type="text" [ngModel]="signUpUrl" class="form-control" readonly="readonly"  #signUpUrl><br>
+        <div style="display:flex; height:45px;">
+            <input type="text" [ngModel]="signUpUrl" class="form-control" readonly="readonly"  #signUpUrlInput><br>
             <div>
-                <a class="button_blue" id="right" (click)="copySignUpUrl(signUpUrl)">
+                <a class="button_blue" id="right" (click)="copySignUpUrl(signUpUrlInput)">
                     <span class="btn btn-primary transition copy_link">Copy Url</span>
                 </a>
             </div>

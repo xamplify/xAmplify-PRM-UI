@@ -1322,7 +1322,17 @@ getDefaultThemes(){
         let vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
         let domainName = this.authenticationService.companyProfileName;
         let userId = this.authenticationService.getUserId();
-        let signUpUrl = this.domainUrl+'/signUpUrl'+this.QUERY_PARAMETERS+"&loggedInUserId="+userId+"&isVanityLogin="+vanityUrlFilter+"&domainName="+domainName;
+        let domainNameQueryParameter = "";
+        let vanityUrlFilterQueryParameter = "";
+        if(domainName!=undefined && domainName.length>0 && domainName!=""){
+            domainNameQueryParameter = "&domainName="+domainName;
+        }
+        if(vanityUrlFilter!=undefined){
+            vanityUrlFilterQueryParameter = "&isVanityLogin="+vanityUrlFilter;
+        }else{
+            vanityUrlFilterQueryParameter = "&isVanityLogin=false";
+        }
+        let signUpUrl = this.domainUrl+'/signUpUrl'+this.QUERY_PARAMETERS+"&loggedInUserId="+userId+vanityUrlFilterQueryParameter+domainNameQueryParameter;
         return this.authenticationService.callGetMethod(signUpUrl);
     }
     
