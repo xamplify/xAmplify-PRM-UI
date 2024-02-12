@@ -145,7 +145,7 @@ export class BeeTemplateUtilComponent implements OnInit {
 				} else if(self.module == "configuration") {
 					self.customLoginTemplate = self.beeContainerInput["customLognTemplate"];
                     self.saveOrUpdateCustomLoginTemplate(jsonContent, htmlContent)
-					this.loading = false;
+					self.loading = false;
 				}
 			};
 
