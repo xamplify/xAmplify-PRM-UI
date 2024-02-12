@@ -1414,7 +1414,7 @@
 													</td>
 
 													<td *ngIf="contactsByType.selectedCategory =='excluded'">
-														<button *ngIf="contact.excludedCatagory == 'Excluded User' && !(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
+														<button *ngIf="allcontacts.excludedCatagory == 'Excluded User'"
 															type="submit" class="bgcolor-unset button_height"
 															[disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
 															(click)="showMakeAsOptinAlert(allcontacts.id, allcontacts.emailId)"
