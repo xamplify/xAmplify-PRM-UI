@@ -109,8 +109,8 @@
 				</div>
 				<div class="row">
 					<!-- BEGIN LOGIN FORM -->
-					<div class="row" *ngIf="model"
-						style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
+					<div class="row" *ngIf="model" style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
+						<app-response-message [showCloseIcon]="false" [customResponse]="teamMemberSignedUpResponse" *ngIf="teamMemberSignedUpResponse.isVisible"></app-response-message>
 						<!-- XNFR-334--->
 						<app-response-message [customResponse]="customResponse"
 							*ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
