@@ -640,7 +640,7 @@
                                                       [class.disabled]="contactList.noOfContacts == 0 && contactList.formList"
                                                       *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
                                     (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
-                                                      (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany);setListType(contactList.publicList)"
+                                                      (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany,contactList.associatedCompanyId);setListType(contactList.publicList)"
                                                       data-toggle="tooltip" data-placement="top"
                                                       title="{{actionsDescription.contact_list_edit}}">
                                                       <i class="fa fa-pencil-square-o IconCustomization"
@@ -651,7 +651,7 @@
                                                       <a class="custom-icon"
                                                          *ngIf="!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember  || authenticationService.module.isVendorTier ||
                                        contactList.synchronisedList || ((sharedLeads)  || (assignLeads && contactList.assignedToPartner))"
-                                                         (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
+                                                         (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany,contactList.associatedCompanyId);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
                                                          data-toggle="tooltip" data-placement="top"
                                                          title="{{actionsDescription.contact_list_info}}"> <i
                                                             class="fa fa-info IconCustomization" aria-hidden="true"></i>
@@ -891,7 +891,7 @@
                                           [class.disabled]="!contactList.emailValidationInd || (contactList.noOfContacts == 0 && contactList.formList)"
                                           *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
                      (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
-                                          (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany);setListType(contactList.publicList)"
+                                          (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany, contactList.associatedCompanyId);setListType(contactList.publicList)"
                                           data-toggle="tooltip" data-placement="top"
                                           title="{{actionsDescription.contact_list_edit}}" data-rel="fancybox-button">
                                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -901,7 +901,7 @@
                                           <a class="Iconhover custom-grid-icon"
                                              [class.disabled]="!contactList.emailValidationInd" style="" *ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) || contactList.synchronisedList
                         || ((sharedLeads)  || (assignLeads && contactList.assignedToPartner))"
-                                             (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
+                                             (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany, contactList.associatedCompanyId);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
                                              data-toggle="tooltip" data-placement="top"
                                              title="{{actionsDescription.contact_list_info}}"
                                              data-rel="fancybox-button">
@@ -1017,7 +1017,7 @@
          [contactListId]="selectedContactListId" [contactListName]="selectedContactListName"
          [isDefaultPartnerList]="isDefaultPartnerList" [isDefaultContactList]="isDefaultContactList"
          [isSynchronizationList]="isSynchronizationList" [isFormList]="isFormList"
-         [isTeamMemberPartnerList]="isTeamMemberPartnerList" [companyName]="selectedAssociatedCompany"
+         [isTeamMemberPartnerList]="isTeamMemberPartnerList" [selectedCompanyId]="selectedCompanyId" [companyName]="selectedAssociatedCompany"
          [manageCompanies]="isCompanyList"></app-edit-contacts>
    </div>
 

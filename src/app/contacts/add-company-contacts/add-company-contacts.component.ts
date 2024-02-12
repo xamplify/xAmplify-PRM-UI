@@ -55,6 +55,7 @@ export class AddCompanyContactsComponent implements OnInit {
           this.isBreadCrumb = true;
           this.isManageCompanies = true;
           this.selectedCompanyId = response.data.associatedCompanyId;
+          this.contactService.publicList = response.data.publicList;
           this.getCompany(response.data.associatedCompanyId)
         }
       },
