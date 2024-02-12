@@ -71,7 +71,6 @@ import { NotifyPartnersComponent } from './notify-partners/notify-partners.compo
 import { ShowPrmContentComponent } from './dashboard-analytics-components/show-prm-content/show-prm-content.component';
 import { EditModuleNameComponent } from './edit-module-name/edit-module-name.component';
 import { FunnelChartAnalyticsComponent } from './dashboard-analytics-components/funnel-chart-analytics/funnel-chart-analytics.component';
-import { MicrosoftAuthenticationComponent } from './microsoft-authentication/microsoft-authentication.component';
 import { PieChartAnalyticsComponent } from './dashboard-analytics-components/pie-chart-analytics/pie-chart-analytics.component';
 import { PieChartStatisticsBarGraphComponent } from './dashboard-analytics-components/pie-chart-statistics-bar-graph/pie-chart-statistics-bar-graph.component';
 import { MarketingRoleRequestsComponent } from './marketing-role-requests/marketing-role-requests.component';
@@ -90,7 +89,6 @@ import { ActiveThreadsInfoComponent } from './active-threads-info/active-threads
 import { CustomLoginScreenSettingsComponent } from './custom-login-screen-settings/custom-login-screen-settings.component';
 import { ConnectwiseAuthenticationComponent } from './connectwise-authentication/connectwise-authentication.component';
 import { AddOrManageDomainsComponent } from './add-or-manage-domains/add-or-manage-domains.component';
-import { ExcludeDomainComponent } from './exclude-domain/exclude-domain.component';
 
 
 @NgModule({
@@ -156,8 +154,7 @@ import { ExcludeDomainComponent } from './exclude-domain/exclude-domain.componen
         ActiveThreadsInfoComponent,
         CustomLoginScreenSettingsComponent,
         ConnectwiseAuthenticationComponent,
-        AddOrManageDomainsComponent,
-        ExcludeDomainComponent
+        AddOrManageDomainsComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

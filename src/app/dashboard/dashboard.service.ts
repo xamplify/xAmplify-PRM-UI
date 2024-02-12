@@ -23,6 +23,7 @@ import { EmailNotificationSettingsDto } from './user-profile/models/email-notifi
 import { GodaddyDetailsDto } from './user-profile/models/godaddy-details-dto';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { DomainRequestDto } from './models/domain-request-dto';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 
 @Injectable()
@@ -47,7 +48,8 @@ export class DashboardService {
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
     { 'name': '21 Days', 'value': 21 }, { 'name': 'Month', 'value': 30 }];
 
-    constructor(private http: Http, private authenticationService: AuthenticationService,private utilService:UtilService,private referenceService:ReferenceService) { }
+    constructor(private http: Http, private authenticationService: AuthenticationService,private utilService:UtilService,
+        private referenceService:ReferenceService,private vanityUrlService:VanityURLService) { }
 
     getGenderDemographics(socialConnection: SocialConnection): Observable<Object> {
         return this.http.get(this.authenticationService.REST_URL + "twitter/gender-demographics" + this.QUERY_PARAMETERS
@@ -1302,6 +1304,7 @@ getDefaultThemes(){
         return this.authenticationService.callGetMethod(findAllUrl);
       }
 
+    /***XNFR-454*****/
     saveDomains(domainRequestDto:DomainRequestDto){
         const url = this.domainUrl + this.QUERY_PARAMETERS;
         domainRequestDto.createdUserId = this.authenticationService.getUserId();
@@ -1313,6 +1316,24 @@ getDefaultThemes(){
         let userId = this.authenticationService.getUserId();
         let deleteDomainUrl = this.domainUrl+'/id/'+id+'/loggedInUserId/'+userId+this.QUERY_PARAMETERS;
         return this.authenticationService.callDeleteMethod(deleteDomainUrl);
+    }
+    /***XNFR-454*****/
+    findCompanySignUpUrl(){
+        let vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
+        let domainName = this.authenticationService.companyProfileName;
+        let userId = this.authenticationService.getUserId();
+        let domainNameQueryParameter = "";
+        let vanityUrlFilterQueryParameter = "";
+        if(domainName!=undefined && domainName.length>0 && domainName!=""){
+            domainNameQueryParameter = "&domainName="+domainName;
+        }
+        if(vanityUrlFilter!=undefined){
+            vanityUrlFilterQueryParameter = "&isVanityLogin="+vanityUrlFilter;
+        }else{
+            vanityUrlFilterQueryParameter = "&isVanityLogin=false";
+        }
+        let signUpUrl = this.domainUrl+'/signUpUrl'+this.QUERY_PARAMETERS+"&loggedInUserId="+userId+vanityUrlFilterQueryParameter+domainNameQueryParameter;
+        return this.authenticationService.callGetMethod(signUpUrl);
     }
     
 }
