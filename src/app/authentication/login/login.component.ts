@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -52,12 +51,16 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginStyleId:number;
   /*** XNFR-416 ***/
   isBgColor:boolean;
+  teamMemberSignedUpResponse:CustomResponse = new CustomResponse();
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer) {
       this.SERVER_URL = this.envService.SERVER_URL;
       this.APP_URL = this.envService.CLIENT_URL;
       this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
       this.loginStyleId = 53;
+    if(this.referenceService.teamMemberSignedUpSuccessfullyMessage!=""){
+      this.teamMemberSignedUpResponse = new CustomResponse('SUCCESS',this.referenceService.teamMemberSignedUpSuccessfullyMessage,true);
+    }  
     if (this.referenceService.userProviderMessage !== "") {
       this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
     }
@@ -73,6 +76,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public login() {
+    this.teamMemberSignedUpResponse = new CustomResponse();
     this.authenticationService.reloadLoginPage = false;
     try {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -188,7 +192,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.login(); } }
   setCustomeResponse(responseType: string, responseMessage: string) {
     this.customResponse = new CustomResponse(responseType, responseMessage, true);
-    this.xtremandLogger.error(responseMessage);
   }
   resendActivation() {
     this.customResponse = new CustomResponse();
@@ -284,7 +287,6 @@ bgIMage2:any;
               if(result.styleOneBgColor) {
               document.documentElement.style.setProperty('--login-bg-color-style1', result.backgroundColorStyle1);
               } else {
-                //document.documentElement.style.setProperty('--login-bg-color-style1', 'none');
                 if(result.companyBgImagePath != null && result.companyBgImagePath != "") {
                 document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+this.authenticationService.MEDIA_URL+ result.companyBgImagePath+')');
                 } else {
@@ -297,7 +299,6 @@ bgIMage2:any;
               if(result.styleTwoBgColor) {
               document.documentElement.style.setProperty('--login-bg-color', result.backgroundColorStyle2);
               } else {
-                //document.documentElement.style.setProperty('--login-bg-color', 'none');
                 if(result.backgroundLogoStyle2 != null && result.backgroundLogoStyle2 != "") {
                   document.documentElement.style.setProperty('--login-bg-image', 'url('+this.authenticationService.MEDIA_URL+ result.backgroundLogoStyle2+')');
                 } else {
@@ -351,6 +352,7 @@ bgIMage2:any;
   }
   ngOnDestroy() {
     this.referenceService.userProviderMessage = '';
+    this.referenceService.teamMemberSignedUpSuccessfullyMessage = "";
     this.resendActiveMail = false;
     $('#org-admin-deactivated').hide();
   }

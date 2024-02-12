@@ -63,8 +63,17 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	}else if(this.isExcludeDomainModule){
       this.headerText = "Exclude A Domain";
     }
-	this.signUpUrl="https://tga.xamplify.co/tSignUp/tga";
+	this.findCompanySignUpUrl();
 	this.findDomains(this.pagination);
+  }
+
+  findCompanySignUpUrl(){
+	this.dashboardService.findCompanySignUpUrl().subscribe(
+		response=>{
+			this.signUpUrl = response.data;
+		},error=>{
+			this.xtremandLogger.error(error);
+		});
   }
 
   ngOnDestroy(): void {
