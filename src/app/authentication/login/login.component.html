@@ -13,6 +13,7 @@
 	   <!-- BEGIN LOGIN FORM -->
 	   <div class="row" *ngIf="model" style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
 		<!-- XNFR-334---> 
+		<app-response-message [showCloseIcon]="false" [customResponse]="teamMemberSignedUpResponse" *ngIf="teamMemberSignedUpResponse.isVisible"></app-response-message>
 		<app-response-message [customResponse]="customResponse" *ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
 		  <!-- XNFR-334--->
 		  <div *ngIf="resendActiveMail" class="alert alert-dismissible m0 alert-danger" role="alert">
@@ -97,8 +98,6 @@
 	 <app-copyright [styleOne]="flase" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
 	 <app-copyright [styleOne]="flase" *ngIf="vanityURLEnabled"></app-copyright>
  </div>
- <!-- <app-copyright [styleOne]="flase" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
- <app-copyright [styleOne]="flase" *ngIf="vanityURLEnabled"></app-copyright> -->
 </div>
 <div *ngIf="isStyleOne">
 	<div class="row" style="display: content;margin-right: 0px !;margin: 0px !important;" *ngIf="vanityURLEnabled">

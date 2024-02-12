@@ -52,12 +52,16 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginStyleId:number;
   /*** XNFR-416 ***/
   isBgColor:boolean;
+  teamMemberSignedUpResponse:CustomResponse = new CustomResponse();
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer) {
       this.SERVER_URL = this.envService.SERVER_URL;
       this.APP_URL = this.envService.CLIENT_URL;
       this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
       this.loginStyleId = 53;
+    if(this.referenceService.teamMemberSignedUpSuccessfullyMessage!=""){
+      this.teamMemberSignedUpResponse = new CustomResponse('SUCCESS',this.referenceService.teamMemberSignedUpSuccessfullyMessage,true);
+    }  
     if (this.referenceService.userProviderMessage !== "") {
       this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
     }
@@ -73,6 +77,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public login() {
+    this.teamMemberSignedUpResponse = new CustomResponse();
     this.authenticationService.reloadLoginPage = false;
     try {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -188,7 +193,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.login(); } }
   setCustomeResponse(responseType: string, responseMessage: string) {
     this.customResponse = new CustomResponse(responseType, responseMessage, true);
-    this.xtremandLogger.error(responseMessage);
   }
   resendActivation() {
     this.customResponse = new CustomResponse();

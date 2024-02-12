@@ -130,7 +130,7 @@ export class AccessAccountComponent implements OnInit {
         $("#teamMember-signup-emailId").removeClass('ng-valid');
         $("#teamMember-signup-emailId").removeClass('ng-invalid');
         this.authenticationService.signUpAsTeamMember(data).subscribe(response=>{
-           this.referenceService.userProviderMessage = this.properties.TEAM_MEMBER_SIGN_UP_SUCCESS;
+           this.referenceService.teamMemberSignedUpSuccessfullyMessage = this.properties.TEAM_MEMBER_SIGN_UP_SUCCESS;
            this.router.navigate(['./login']);
         },error=>{
             let message = this.referenceService.showHttpErrorMessage(error);
@@ -252,7 +252,7 @@ export class AccessAccountComponent implements OnInit {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             if (currentUser != undefined) {
                 this.anotherUserLoggedIn = true;
-                this.customResponse = new CustomResponse( 'ERROR', "Another user is already logged in on this browser.Please logout to access this page.", true );
+                this.customResponse = new CustomResponse( 'ERROR', "The user is already logged in on this browser.Please logout to access this page.", true );
             }else{
                 this.anotherUserLoggedIn = false;
                 if(this.vanityURLService.isVanityURLEnabled()){
