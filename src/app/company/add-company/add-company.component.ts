@@ -17,8 +17,8 @@ declare var $: any;
 })
 export class AddCompanyComponent implements OnInit {
   @Output() closeEvent = new EventEmitter<any>();
-  @Input() public actionType : any;
-  @Input() public companyId : any;
+  @Input() public actionType: any;
+  @Input() public companyId: any;
   @Output() notifySubmitSuccess = new EventEmitter();
   customResponse: CustomResponse = new CustomResponse();
   companies: Company[] = [];
@@ -37,9 +37,10 @@ export class AddCompanyComponent implements OnInit {
   title: string;
   preview: boolean = false;
   edit: boolean = false;
-  ngxloading: boolean =false;
+  ngxloading: boolean = false;
   isCompanyNameValid: boolean = false;
-  constructor(private companyService: CompanyService, public regularExpressions: RegularExpressions, public countryNames: CountryNames, public authenticationService: AuthenticationService,  public referenceService: ReferenceService,) {
+  isCompanyEmailValid : boolean = true;
+  constructor(private companyService: CompanyService, public regularExpressions: RegularExpressions, public countryNames: CountryNames, public authenticationService: AuthenticationService, public referenceService: ReferenceService,) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
@@ -68,13 +69,27 @@ export class AddCompanyComponent implements OnInit {
     $('#addCompanyModal').modal('hide');
     this.closeEvent.emit("0");
   }
-  
+
   validteCompanyName(companyName: string) {
     if (companyName.trim().length > 0) {
       this.isCompanyNameValid = true;
     } else {
       this.isCompanyNameValid = false;
     }
+  }
+
+  validateEmail(companyEmail: string) {
+    if (( this.validateEmailAddress(companyEmail) ||companyEmail.length==0)) {
+        this.isCompanyEmailValid = true;
+    }
+    else {
+      this.isCompanyEmailValid = false;
+    }
+  }
+
+  validateEmailAddress(emaiId:string){
+  var EMAIL_ID_PATTERN = this.regularExpressions.EMAIL_ID_PATTERN;
+    return EMAIL_ID_PATTERN.test(emaiId);
   }
 
   saveCompany() {
@@ -87,7 +102,7 @@ export class AddCompanyComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
           this.customResponse = new CustomResponse('SUCCESS', response.message, true);
-          this.notifySubmitSuccess.emit(); 
+          this.notifySubmitSuccess.emit();
           this.addCompanyModalClose();
         } else if (response.statusCode == 500) {
           this.customResponse = new CustomResponse('ERROR', response.message, true);
@@ -97,35 +112,35 @@ export class AddCompanyComponent implements OnInit {
       },
       error => {
         this.ngxloading = false;
-            this.referenceService.loading(this.httpRequestLoader, false);
+        this.referenceService.loading(this.httpRequestLoader, false);
         this.customResponse = new CustomResponse('ERROR', "failed to save", true);
       },
       () => { }
     );
   }
   getCompany(companyId: number) {
-    this.ngxloading=true;
+    this.ngxloading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.companyService.getCompanyById(companyId, this.loggedInUserId)
       .subscribe(
         (data: any) => {
-          this.ngxloading=false;
+          this.ngxloading = false;
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             this.addCompany = data.data;
-            if(data.data.country == null || data.data.country == undefined || data.data.country == ''){
+            if (data.data.country == null || data.data.country == undefined || data.data.country == '') {
               this.addCompany.country = this.countryNames.countries[0];
             }
           }
         },
         error => {
-          this.ngxloading=false;
+          this.ngxloading = false;
           this.referenceService.loading(this.httpRequestLoader, false);
         },
         () => { }
       );
   }
-  editCompany(){
+  editCompany() {
     this.ngxloading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.addCompany.userId = this.loggedInUserId;
@@ -135,9 +150,9 @@ export class AddCompanyComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
           this.customResponse = new CustomResponse('SUCCESS', response.message, true);
-          this.notifySubmitSuccess.emit(); 
+          this.notifySubmitSuccess.emit();
           this.addCompanyModalClose();
-          if(response.data.country == null || response.data.country == undefined || response.data.country == ''){
+          if (response.data.country == null || response.data.country == undefined || response.data.country == '') {
             this.addCompany.country = this.countryNames.countries[0];
           }
         } else if (response.statusCode == 500) {
