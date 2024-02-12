@@ -7,7 +7,7 @@
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
         <button type="button" class="close-circle pull-right mrg1" *ngIf="actionType == 'edit'" data-toggle="tooltip" data-placement="bottom"
-        title="Comments" (click)="showComments(lead)">
+        title="Comments/History" (click)="showComments(lead)">
           <i class="fa fa-comments" aria-hidden="true"></i>
           <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
             style="margin-bottom: 25px; margin-left: 6px;margin-top: -35px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
