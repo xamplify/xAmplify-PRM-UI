@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -288,7 +287,6 @@ bgIMage2:any;
               if(result.styleOneBgColor) {
               document.documentElement.style.setProperty('--login-bg-color-style1', result.backgroundColorStyle1);
               } else {
-                //document.documentElement.style.setProperty('--login-bg-color-style1', 'none');
                 if(result.companyBgImagePath != null && result.companyBgImagePath != "") {
                 document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+this.authenticationService.MEDIA_URL+ result.companyBgImagePath+')');
                 } else {
@@ -301,7 +299,6 @@ bgIMage2:any;
               if(result.styleTwoBgColor) {
               document.documentElement.style.setProperty('--login-bg-color', result.backgroundColorStyle2);
               } else {
-                //document.documentElement.style.setProperty('--login-bg-color', 'none');
                 if(result.backgroundLogoStyle2 != null && result.backgroundLogoStyle2 != "") {
                   document.documentElement.style.setProperty('--login-bg-image', 'url('+this.authenticationService.MEDIA_URL+ result.backgroundLogoStyle2+')');
                 } else {
@@ -355,6 +352,7 @@ bgIMage2:any;
   }
   ngOnDestroy() {
     this.referenceService.userProviderMessage = '';
+    this.referenceService.teamMemberSignedUpSuccessfullyMessage = "";
     this.resendActiveMail = false;
     $('#org-admin-deactivated').hide();
   }
