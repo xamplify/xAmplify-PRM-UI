@@ -38,10 +38,12 @@
               <label class="control-label col-xs-2 col-sm-2" for="email" style="color: green">
               </label>
               <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
-                <input type="url" style="border: none !important" class="form-control placeholder-bg-color" id="email"
+                <input type="email" style="border: none !important" class="form-control placeholder-bg-color" id="email"
                   [(ngModel)]="addCompany.email" [ngModelOptions]="{standalone: true}" placeholder="Email"
-                  maxlength="100" [disabled]="preview">
+                  maxlength="100" [disabled]="preview" (input)="validateEmail(addCompany.email)">
                 <div class="textCss"></div>
+                <span class="danger" *ngIf="!isCompanyEmailValid" translate>Please enter a valid email
+                  address</span>
               </div>
               <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
                 <input type="number" style="border: none !important" class="form-control placeholder-bg-color"
@@ -155,7 +157,7 @@
       <div class="modal-footer popup_footer" style="border:none">
         <button class="btn Btn-Gray neg_mrg_top4 pos_mar_rgt3" (click)="addCompanyModalClose()"
           translate>Cancel</button>
-        <button *ngIf="!edit && !preview" type="submit" class="button bgcolor-unset button_height" (click)="saveCompany()" [disabled]="!isCompanyNameValid " translate><span
+        <button *ngIf="!edit && !preview" type="submit" class="button bgcolor-unset button_height" (click)="saveCompany()" [disabled]="!isCompanyNameValid || !isCompanyEmailValid " translate><span
             class="btn Btn-Green transition txt_pd-top3" >Add</span></button>
             <button *ngIf="edit" type="submit" class="button bgcolor-unset button_height" translate><span
               class="btn Btn-Green transition txt_pd-top3"  (click)="editCompany()">Update</span></button>

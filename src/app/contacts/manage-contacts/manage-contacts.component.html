@@ -781,6 +781,9 @@
                                        <img alt="" class="imageClassCss image_effect"
                                           *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList"
                                           src="{{properties?.pipedriveImage}}">
+                                          <img alt="" class="imageClassCss image_effect"
+                                          *ngIf="contactList.socialNetwork=='CONNECTWISE' && contactList.synchronisedList"
+                                          src="{{properties?.connectwiseImage}}">
                                        <img class="imageClassCss image_effect"
                                           *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"
                                           src="{{properties?.marketoImage}}" alt="manual" style="height: 60px;">
@@ -946,7 +949,7 @@
                                           <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList"
                                              *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
                                                 || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
-                                                   && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
+                                                   && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList && !contactList.companyList)"
                                              (click)="showAlert(contactList.id)" data-toggle="tooltip"
                                              data-placement="top" class="delete custom-icon"
                                              title="{{actionsDescription.contact_list_delete}}"
@@ -1469,7 +1472,7 @@
                                                    </div>
                                                 </td>
                                              </ng-container>
-                                             <td *ngIf="(checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all' && !contactList.companyList) && (hasAllAccess || authenticationService.isVendorPartner() || authenticationService.module.isOnlyPartner || authenticationService.module.isPartnerSuperVisor
+                                             <td *ngIf="(checkingContactTypeName=='Contact' && contactsByType.selectedCategory=='all') && (hasAllAccess || authenticationService.isVendorPartner() || authenticationService.module.isOnlyPartner || authenticationService.module.isPartnerSuperVisor
                                        || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmSuperVisor || authenticationService.module.isMarketing || authenticationService.module.isMarektingAndPartner ||authenticationService.module.isMarketingSuperVisor
                                        || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminSuperVisor)"
                                                 class="text-center">
