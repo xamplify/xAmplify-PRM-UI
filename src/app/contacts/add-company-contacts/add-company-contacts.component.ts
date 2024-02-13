@@ -56,6 +56,7 @@ export class AddCompanyContactsComponent implements OnInit {
           this.isManageCompanies = true;
           this.selectedCompanyId = response.data.associatedCompanyId;
           this.contactService.publicList = response.data.publicList;
+          this.uploadedUserId = response.data.uploadedUserId;
           this.getCompany(response.data.associatedCompanyId)
         }
       },

@@ -435,6 +435,11 @@ export class AddDealComponent implements OnInit {
     if (this.deal.createdForCompanyId > 0) {
       this.getActiveCRMDetails();
     } else {
+      this.deal.pipelineId = 0;
+      this.pipelines = [];
+      this.activeCRMDetails.hasDealPipeline = false;
+      this.stages = [];
+      this.showAttachLeadButton = false;
       this.showDefaultForm = false;
       this.propertiesQuestions = [];
     }
@@ -982,7 +987,8 @@ export class AddDealComponent implements OnInit {
               if (this.actionType !== 'view' && (this.actionType !== 'edit' || this.deal.associatedContact === undefined)) {
                 this.showAttachLeadButton = true;
               }
-              
+            }else{
+              this.showAttachLeadButton = false;
             }
           }
         },
