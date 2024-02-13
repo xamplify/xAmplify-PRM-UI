@@ -5,11 +5,11 @@
       <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px',fullScreenBackdrop:true }">
       </ngx-loading>
       <div class="modal-header">
-        <a title="Close" class="pull-right close-circle" (click)="closePopup()">
+        <a class="pull-right close-circle" (click)="closePopup()">
           <i class="fa fa-times" aria-hidden="true"></i>
         </a>
         <button *ngIf="deal != undefined" type="button" class="close-circle pull-right mrg1" data-toggle="tooltip" data-placement="bottom"
-          title="Comments" (click)="showComments(deal)">
+          title="Comments/History" (click)="showComments(deal)">
           <i class="fa fa-comments" aria-hidden="true"></i>
           <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
             style="margin-top: -58px; margin-right: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
