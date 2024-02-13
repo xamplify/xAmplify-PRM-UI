@@ -332,6 +332,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	leadApprovalCustomResponse: CustomResponse = new CustomResponse();
 	/**XNFR-454****/
 	isAddDomainsOptionClicked: boolean;
+	isDashboardButtonsOptionClicked: boolean;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -1874,6 +1875,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.categoryPagination = new Pagination();
 			this.listCategories(this.categoryPagination);
 		} else if (this.activeTabName == "dbButtonSettings") {
+			this.ngxloading = true;
+			this.isDashboardButtonsOptionClicked = false;
+			let self = this;
+			setTimeout(() => {
+				self.isDashboardButtonsOptionClicked = true;
+				self.ngxloading = false;
+			}, 500);
 			this.activeTabHeader = 'Dashboard Buttons';
 		} else if (this.activeTabName == "customizeleftmenu") {
 			this.activeTabHeader = this.properties.customizeleftmenu;
