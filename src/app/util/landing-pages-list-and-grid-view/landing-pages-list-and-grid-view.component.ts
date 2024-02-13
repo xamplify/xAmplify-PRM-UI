@@ -58,6 +58,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @Input() folderListViewCategoryId:any;
   @Input() folderListViewExpanded = false;
   @Input() vendorJourney = false;
+  
   folderListView = false;
   viewType: string;
   showUpArrowButton = false;
@@ -69,6 +70,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @Output() vendorLandingPage = new EventEmitter();
   showShareListPopup:boolean = false;
   @Input() loggedInUserCompanyId = 0;
+  selectedLandingPageId:any;
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -446,7 +448,8 @@ copy(landingPage:any){
     );
   }
     
-    openShareListPopup() {
+    openShareListPopup(landingPageId:any) {
+        this.selectedLandingPageId = landingPageId;
         this.showShareListPopup = true;
     }
     closeShareListPopup() {

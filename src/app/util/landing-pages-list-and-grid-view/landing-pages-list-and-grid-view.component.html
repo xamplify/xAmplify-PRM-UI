@@ -427,14 +427,14 @@
     <!---Share-->
     <ng-template #shareIcon let-landingPage="landingPage">
         <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && (vendorJourney && loggedInUserId==landingPage.userId)"
-        data-toggle="tooltip" data-placement="top" title="Share" (click)="openShareListPopup()">
+        data-toggle="tooltip" data-placement="top" title="Share" (click)="openShareListPopup(landingPage.id)">
             <i class="fa fa-share" aria-hidden="true"></i>
         <div class="del-icon"></div>
     </a>
     </ng-template>
     <!--XNFR-432-->
     <app-copy-modal-popup #copyModalPopupComponent (copyModalPopupOutputEmitter)="copyModalPopupOutputReceiver($event)"></app-copy-modal-popup>
-    <app-partner-company-modal-popup [companyId]="loggedInUserCompanyId" [vendorJourney] = "vendorJourney"
+    <app-partner-company-modal-popup [companyId]="loggedInUserCompanyId" [vendorJourney] = "vendorJourney" [vendorJourneyLandingPageId] = "selectedLandingPageId"
    *ngIf="showShareListPopup" (notifyOtherComponent)="closeShareListPopup()">
 </app-partner-company-modal-popup>
     <app-scroll-top></app-scroll-top>

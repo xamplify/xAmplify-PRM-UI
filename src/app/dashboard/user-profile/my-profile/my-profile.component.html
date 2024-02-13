@@ -2905,7 +2905,7 @@
 
                                         </div>
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'vendorJourney'}">
-                                            <app-landing-pages-list-and-grid-view *ngIf="!editVendorPage" [vendorJourney] ='true' 
+                                            <app-landing-pages-list-and-grid-view *ngIf="!editVendorPage" [vendorJourney] ='true'
                                             [loggedInUserCompanyId]="loggedInUserCompanyId" (vendorLandingPage) ='editVendorLandingPage($event)'></app-landing-pages-list-and-grid-view>
                                             <div class="row" *ngIf="editVendorPage">
                                                 <div class="col-xs-12">

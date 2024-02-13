@@ -214,4 +214,9 @@ export class LandingPageService {
         return Observable.throw( error );
     }
 
+    shareVendorJourneyLandingPageToPartners(shareLeadsDTO: any) {
+        return this.http.post(this.URL + "shareVendorJourneyLandingPageToPartners?access_token=" + this.authenticationService.access_token, shareLeadsDTO)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }
