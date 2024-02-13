@@ -40,21 +40,21 @@ export class VanityURLService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
-  saveDashboardButton(dashboardButton: DashboardButton) {
+  saveCustomLinkDetails(dashboardButton: DashboardButton) {
     const url = this.authenticationService.REST_URL + "v_url/save/dashboardButton?access_token=" + this.authenticationService.access_token;
     return this.http.post(url, dashboardButton)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  updateDashboardButton(dashboardButton: DashboardButton) {
+  updateCustomLinkDetails(dashboardButton: DashboardButton) {
     const url = this.authenticationService.REST_URL + "v_url/update/dashboardButton" + "?access_token=" + this.authenticationService.access_token;
     return this.http.post(url, dashboardButton)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  getDashboardButtons(pagination: Pagination) {
+  findCustomLinks(pagination: Pagination) {
     const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons" + "?access_token=" + this.authenticationService.access_token;
     return this.http.post(url, pagination)
       .map(this.extractData)
@@ -66,12 +66,12 @@ export class VanityURLService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
-  deleteDashboardButton(id: number) {
+  deleteCustomLink(id: number) {
     const url = this.authenticationService.REST_URL + "v_url/delete/dashboardButton/" + id + "?access_token=" + this.authenticationService.access_token;
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
-  getDashboardButtonIcons(iconsFilePath: string): Observable<any> {
+  getCustomLinkIcons(iconsFilePath: string): Observable<any> {
     return this.http.get(iconsFilePath).map(this.extractData).catch(this.handleError);
   }
 

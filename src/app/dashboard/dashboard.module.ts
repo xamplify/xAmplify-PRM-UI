@@ -89,6 +89,7 @@ import { ActiveThreadsInfoComponent } from './active-threads-info/active-threads
 import { CustomLoginScreenSettingsComponent } from './custom-login-screen-settings/custom-login-screen-settings.component';
 import { ConnectwiseAuthenticationComponent } from './connectwise-authentication/connectwise-authentication.component';
 import { AddOrManageDomainsComponent } from './add-or-manage-domains/add-or-manage-domains.component';
+import { CustomLinksUtilComponent } from './custom-links-util/custom-links-util.component';
 
 
 @NgModule({
@@ -154,7 +155,8 @@ import { AddOrManageDomainsComponent } from './add-or-manage-domains/add-or-mana
         ActiveThreadsInfoComponent,
         CustomLoginScreenSettingsComponent,
         ConnectwiseAuthenticationComponent,
-        AddOrManageDomainsComponent
+        AddOrManageDomainsComponent,
+        CustomLinksUtilComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

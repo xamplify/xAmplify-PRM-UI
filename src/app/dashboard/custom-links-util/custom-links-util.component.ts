@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DashboardButton } from 'app/vanity-url/models/dashboard.button';
@@ -9,25 +9,27 @@ import { Properties } from 'app/common/models/properties';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { PagerService } from 'app/core/services/pager.service';
+import { CustomLinkDto } from 'app/vanity-url/models/custom-link-dto';
 
 declare var swal: any;
 
 @Component({
-  selector: 'app-dashboard-buttons',
-  templateUrl: './dashboard-buttons.component.html',
-  styleUrls: ['./dashboard-buttons.component.css'],
+  selector: 'app-custom-links-util',
+  templateUrl: './custom-links-util.component.html',
+  styleUrls: ['./custom-links-util.component.css'],
   providers: [Properties, HttpRequestLoader]
 })
-export class DashboardButtonsComponent implements OnInit {
+export class CustomLinksUtilComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
-  dashboardButton: DashboardButton = new DashboardButton();
+  customLinkDto: CustomLinkDto = new CustomLinkDto();
   pagination: Pagination = new Pagination();
-  dashboardButtonList: Array<DashboardButton> = new Array<DashboardButton>();
+  customLinkDtos: Array<CustomLinkDto> = new Array<CustomLinkDto>();
   buttonActionType: boolean;
   iconNamesFilePath: string;
   iconsList: any = [];
   selectedProtocol: string;
   saving = false;
+  @Input() moduleType:string="";
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, private xtremandLogger: XtremandLogger, private properties: Properties, private httpRequestLoader: HttpRequestLoader, private referenceService: ReferenceService, private pagerService: PagerService) {
     this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
     this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
@@ -40,10 +42,10 @@ export class DashboardButtonsComponent implements OnInit {
   ngOnInit() {
     this.buttonActionType = true;
     this.selectedProtocol = 'http';
-    this.getDashboardButtons(this.pagination);
+    this.findLinks(this.pagination);
   }
 
-  getDashboardButtons(pagination: Pagination) {
+  findLinks(pagination: Pagination) {
     if (this.authenticationService.vanityURLEnabled) {
       this.referenceService.loading(this.httpRequestLoader, true);
       pagination.userId = this.authenticationService.getUserId();
@@ -52,10 +54,10 @@ export class DashboardButtonsComponent implements OnInit {
         const data = result.data;
         if (result.statusCode === 200) {
           pagination.totalRecords = data.totalRecords;
-          this.dashboardButtonList = data.dbButtons;
-          pagination = this.pagerService.getPagedItems(pagination, this.dashboardButtonList);
+          this.customLinkDtos = data.dbButtons;
+          pagination = this.pagerService.getPagedItems(pagination, this.customLinkDtos);
         }
-        this.dashboardButton = new DashboardButton();
+        this.customLinkDto = new DashboardButton();
         this.buttonActionType = true;
         this.referenceService.loading(this.httpRequestLoader, false);
       });
@@ -64,13 +66,13 @@ export class DashboardButtonsComponent implements OnInit {
 
   save() {
     this.saving = true;
-    this.dashboardButton.vendorId = this.authenticationService.getUserId();
-    this.dashboardButton.companyProfileName = this.authenticationService.companyProfileName;
-    this.vanityURLService.saveCustomLinkDetails(this.dashboardButton).subscribe(result => {
+    this.customLinkDto.vendorId = this.authenticationService.getUserId();
+    this.customLinkDto.companyProfileName = this.authenticationService.companyProfileName;
+    this.vanityURLService.saveCustomLinkDetails(this.customLinkDto).subscribe(result => {
       this.saving = false;
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT, true);
-        this.getDashboardButtons(this.pagination);
+        this.findLinks(this.pagination);
       } else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
       }
@@ -85,16 +87,15 @@ export class DashboardButtonsComponent implements OnInit {
   edit(id: number) {
     this.buttonActionType = false;
     this.referenceService.goToTop();
-    const dbButtonObj = this.dashboardButtonList.filter(dbButton => dbButton.id === id)[0];
-    this.dashboardButton = JSON.parse(JSON.stringify(dbButtonObj));
+    const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
+    this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
   }
 
   update(id: number) {
-    this.vanityURLService.updateCustomLinkDetails(this.dashboardButton).subscribe(result => {
+    this.vanityURLService.updateCustomLinkDetails(this.customLinkDto).subscribe(result => {
       if (result.statusCode === 200) {
-        console.log("Updated");
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT, true);
-        this.getDashboardButtons(this.pagination);
+        this.findLinks(this.pagination);
       }
       else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
@@ -113,7 +114,7 @@ export class DashboardButtonsComponent implements OnInit {
         if (this.pagination.pageIndex === this.pagination.pager.totalPages && this.pagination.pagedItems.length === 1) {
           this.pagination.pageIndex = 1;
         }
-        this.getDashboardButtons(this.pagination);
+        this.findLinks(this.pagination);
         this.referenceService.goToTop();
       }
     }, error => {
@@ -123,7 +124,7 @@ export class DashboardButtonsComponent implements OnInit {
   }
 
   cancel() {
-    this.dashboardButton = new DashboardButton();
+    this.customLinkDto = new DashboardButton();
     this.buttonActionType = true;
   }
 
@@ -152,7 +153,7 @@ export class DashboardButtonsComponent implements OnInit {
   /************Page************** */
   setPage(event: any) {
     this.pagination.pageIndex = event.page;
-    this.getDashboardButtons(this.pagination);
+    this.findLinks(this.pagination);
   }
 
   selectedIconName() {

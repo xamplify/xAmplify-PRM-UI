@@ -1,0 +1,109 @@
+<form>
+  <fieldset>
+    <legend>Add Button</legend>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>Title</label>
+        <input type="text" class="form-control" name="buttonTitle" placeholder="Title"
+          [(ngModel)]="customLinkDto.buttonTitle" maxlength="20" autocomplete="off" required>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Subtitle</label>
+        <input type="text" class="form-control" name="buttonSubTitle" placeholder="Subtitle"
+          [(ngModel)]="customLinkDto.buttonSubTitle" maxlength="40" autocomplete="off">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>Link</label>
+        <input type="text" class="form-control" name="buttonLink" placeholder="Link"
+          [(ngModel)]="customLinkDto.buttonLink" autocomplete="off" maxlength="2083" required>
+      </div>
+      <div class="form-group col-md-5">
+        <label>Icon</label>
+        <select name="buttonIcon" class="form-control IconSelectFont" [(ngModel)]="customLinkDto.buttonIcon"
+          (change)="selectedIconName()">
+          <option [ngValue]="undefined" disabled selected> Please select icon </option>
+          <option [ngValue]="icon.id" *ngFor="let icon of iconsList">{{icon.name}}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-1">
+        <span><i class="fa {{customLinkDto.buttonIcon}}" style="padding-top: 35px;"></i></span>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input checkBox_shadow" name="newTab"
+            [(ngModel)]="customLinkDto.openInNewTab">
+          <label class="form-check-label" for="gridCheck" style="padding-top: 5px;">
+            Open in new tab?
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label>Description</label>
+        <textarea name="buttonDescription" maxlength="120" class="form-control" placeholder="Description"
+          maxlength="120" [(ngModel)]="customLinkDto.buttonDescription"></textarea>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
+          [disabled]="!customLinkDto.buttonTitle || !customLinkDto.buttonLink || saving" (click)="save()"><span
+            class="btn btn-primary transition txt_pd-top3">Save</span></button>
+        <button *ngIf="!buttonActionType" type="submit" class="button_blue bgcolor-unset"
+          [disabled]="!customLinkDto.buttonTitle || !customLinkDto.buttonLink" (click)="update()"><span
+            class="btn btn-primary transition txt_pd-top3">Update</span></button>
+        <button *ngIf="!buttonActionType" type="submit" class="btn btn-danger" (click)="cancel()">Cancel</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<fieldset *ngIf="pagination.totalRecords!==0" style="margin: 20px 2px;">
+  <legend>Your Dashboard Button's List</legend>
+  <div *ngIf="pagination.totalRecords!==0" class="table-responsive" style="overflow-x: inherit; padding:15px;">
+    <table class='table tgrid table-hover'>
+      <thead>
+        <tr>
+          <th class="dashboardButtonTablewidth">Title</th>
+          <th class="dashboardButtonTablewidth1">Link</th>
+          <!-- <th>Icon</th> -->
+          <th class="text-center dashboardButtonTablewidth2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of pagination.pagedItems">
+          <td Class="brnTitleTextCu"><span><i class="fa {{item.buttonIcon}}"></i></span>
+            {{item.buttonTitle}}</td>
+          <td>{{item.buttonLink}}</td>
+          <td>
+            <div class="actions-block override-actions">
+              <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit"> <i
+                  class="fa fa-pencil-square-o"></i>
+                <div class="clickicons"></div>
+              </a>
+              <a class="custom-icon" (click)="showAlert(item.id)" data-toggle="tooltip" data-placement="top"
+                title="Delete">
+                <i class="fa fa-trash-o"></i>
+                <div class="del-icon"></div>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="form-group col-md-12" *ngIf="pagination.pagedItems.length !== 0">
+    <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+      (notifyParentDropDown)="findLinks($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+  </div>
+</fieldset>
