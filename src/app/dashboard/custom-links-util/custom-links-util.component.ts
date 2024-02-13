@@ -10,7 +10,7 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { CustomLinkDto } from 'app/vanity-url/models/custom-link-dto';
-import { FormBuilder, FormGroup,Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup,Validators } from '@angular/forms';
 import { noWhiteSpaceValidator,noWhiteSpaceValidatorWithMaxLimit40 } from 'app/form-validator';
 
 
@@ -61,10 +61,19 @@ export class CustomLinksUtilComponent implements OnInit {
         'maxlength': 'description cannot be more than 120 characters long',
       }
   };
+  customLinkForm: FormGroup;
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, private properties: Properties, private httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder) {
-    this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
+      this.customLinkForm = new FormGroup( {
+        title: new FormControl(),
+        subTitle: new FormControl(),
+        link: new FormControl(),
+        icon: new FormControl(),
+        description: new FormControl(),
+        openLinksInNewTab: new FormControl()
+    } );
+      this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
     this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
       this.iconsList = result.icon_names;
     }, error => {
@@ -75,7 +84,7 @@ export class CustomLinksUtilComponent implements OnInit {
 
 
 
-  customLinkForm: FormGroup;
+  
 	buildCustomLinkForm() {
 		var urlPatternRegEx = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
 		this.customLinkForm = this.formBuilder.group({
@@ -145,8 +154,8 @@ export class CustomLinksUtilComponent implements OnInit {
 
   save() {
     this.saving = true;
-    this.customLinkDto.vendorId = this.authenticationService.getUserId();
-    this.customLinkDto.companyProfileName = this.authenticationService.companyProfileName;
+    this.customLinkDto = new CustomLinkDto();
+    this.setCustomLinkDtoProperties();
     this.vanityURLService.saveCustomLinkDetails(this.customLinkDto).subscribe(result => {
       this.saving = false;
       if (result.statusCode === 200) {
@@ -161,6 +170,18 @@ export class CustomLinksUtilComponent implements OnInit {
       this.referenceService.goToTop();
       this.saving = false;
     });
+  }
+
+  private setCustomLinkDtoProperties() {
+    let customFormDetails = this.customLinkForm.value;
+    this.customLinkDto.buttonTitle = this.referenceService.getTrimmedData(customFormDetails.title);
+    this.customLinkDto.buttonSubTitle = this.referenceService.getTrimmedData(customFormDetails.subTitle);
+    this.customLinkDto.buttonLink = this.referenceService.getTrimmedData(customFormDetails.link);
+    this.customLinkDto.buttonIcon = this.referenceService.getTrimmedData(customFormDetails.icon);
+    this.customLinkDto.buttonDescription = this.referenceService.getTrimmedData(customFormDetails.description);
+    this.customLinkDto.openInNewTab = customFormDetails.openLinksInNewTab;
+    this.customLinkDto.vendorId = this.authenticationService.getUserId();
+    this.customLinkDto.companyProfileName = this.authenticationService.companyProfileName;
   }
 
   edit(id: number) {
