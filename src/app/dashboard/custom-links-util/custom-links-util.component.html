@@ -10,19 +10,19 @@
       <div class="form-group col-md-6">
         <label>Title</label>
         <input type="text" class="form-control" name="buttonTitle" placeholder="Title"
-          [(ngModel)]="customLinkDto.buttonTitle" maxlength="20" autocomplete="off" required>
+          [(ngModel)]="customLinkDto.buttonTitle" pattern="^((?:\s*[A-Za-z]\s*){1,})$"  maxlength="20" autocomplete="off" required>
       </div>
       <div class="form-group col-md-6">
         <label>Subtitle</label>
         <input type="text" class="form-control" name="buttonSubTitle" placeholder="Subtitle"
-          [(ngModel)]="customLinkDto.buttonSubTitle" maxlength="40" autocomplete="off">
+          [(ngModel)]="customLinkDto.buttonSubTitle"  maxlength="40" autocomplete="off">
       </div>
     </div>
     <div class="form-row">
       <div class="form-group col-md-6">
         <label>Link</label>
         <input type="text" class="form-control" name="buttonLink" placeholder="Link"
-          [(ngModel)]="customLinkDto.buttonLink" autocomplete="off" maxlength="2083" required>
+          [(ngModel)]="customLinkDto.buttonLink" pattern="^((?:\s*[A-Za-z]\s*){1,})$" autocomplete="off" maxlength="2083" required>
       </div>
       <div class="form-group col-md-5">
         <label>Icon</label>

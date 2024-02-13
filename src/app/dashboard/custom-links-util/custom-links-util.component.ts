@@ -163,4 +163,8 @@ export class CustomLinksUtilComponent implements OnInit {
   selectedProtocolOption(selectedProtocolOption: string) {
     this.selectedProtocol = selectedProtocolOption;
   }
+
+  validateValue(value){
+    console.log(value);
+  }
 }
