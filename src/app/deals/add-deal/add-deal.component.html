@@ -362,7 +362,7 @@
   [isOrgAdmin]="isOrgAdmin"></app-add-lead>
 
 <!-- Select Lead Model-->
-<app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead"
+<app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()"  [dealToLead]="dealToLead" [createdForCompanyId]="deal.createdForCompanyId"
   (notifyLeadSelected)="leadSelected($event)"></app-select-lead>
 
 
