@@ -530,7 +530,7 @@
 											<u>{{duplicateEmailIds}}</u>
 										</h4>
 									</div>
-									<div *ngIf="noContactsFound==true" class="alert alert-info">
+									<div *ngIf="noContactsFound==true && isShowUsers" class="alert alert-info">
 										<strong>No results found</strong>
 									</div>
 									<div *ngIf="showInvalidMaills==true" class="col-md-6"
