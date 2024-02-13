@@ -99,6 +99,20 @@ export function noWhiteSpaceValidatorWithMin3(control: FormControl): {[key: stri
     
   }
 
+  export function noWhiteSpaceValidatorWithMaxLimit40(control: FormControl): {[key: string]: any} {
+    if(control.value!=null){
+      let trimmedValue = control.value.trim();
+        if(trimmedValue.length>0 && trimmedValue.length<40){
+            if (trimmedValue=="") {
+                return {
+                    whitespace: true
+                };
+              }
+        }
+    }
+    
+  }
+
 export function validateCountryName(control: FormControl): {[key: string]: any} {
     if(control.value!=null){
         if (control.value.trim()=="---Please Select Country---") {

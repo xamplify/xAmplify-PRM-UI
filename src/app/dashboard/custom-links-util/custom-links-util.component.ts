@@ -10,6 +10,9 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { CustomLinkDto } from 'app/vanity-url/models/custom-link-dto';
+import { FormBuilder, FormGroup,Validators } from '@angular/forms';
+import { noWhiteSpaceValidator,noWhiteSpaceValidatorWithMaxLimit40 } from 'app/form-validator';
+
 
 declare var swal: any;
 
@@ -30,7 +33,37 @@ export class CustomLinksUtilComponent implements OnInit {
   selectedProtocol: string;
   saving = false;
   @Input() moduleType:string="";
-  constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, private xtremandLogger: XtremandLogger, private properties: Properties, private httpRequestLoader: HttpRequestLoader, private referenceService: ReferenceService, private pagerService: PagerService) {
+  headerText = "";
+  listHeaderText = "";
+  formErrors = {
+    'title': '',
+    'link': '',
+    'subtitle':'',
+    'description':'',
+    'icon':''
+  };
+
+  validationMessages = {
+      'title': {
+          'required': 'Title is required',
+          'whitespace': 'Empty spaces are not allowed',
+          'maxlength': 'Title cannot be more than 20 characters long',
+      },
+      'link': {
+          'required': 'Link is required',
+          'maxlength': 'Link cannot be more than 2083 characters long',
+          'pattern': 'Invalid Link Pattern'
+      },
+      'subtitle': {
+          'maxlength': 'Subtitle cannot be more than 40 characters long',
+      },
+      'description': {
+        'maxlength': 'description cannot be more than 120 characters long',
+      }
+  };
+  constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
+    private xtremandLogger: XtremandLogger, private properties: Properties, private httpRequestLoader: HttpRequestLoader, 
+    private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder) {
     this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
     this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
       this.iconsList = result.icon_names;
@@ -39,9 +72,55 @@ export class CustomLinksUtilComponent implements OnInit {
     });
   }
 
+
+
+
+  customLinkForm: FormGroup;
+	buildCustomLinkForm() {
+		var urlPatternRegEx = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
+		this.customLinkForm = this.formBuilder.group({
+			'title': [this.customLinkDto.buttonTitle, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(40)])],
+			'subTitle': [this.customLinkDto.buttonSubTitle,Validators.compose([noWhiteSpaceValidator, Validators.maxLength(40)])],
+      'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(urlPatternRegEx), Validators.maxLength(2083)])],
+			'icon': [this.customLinkDto.buttonIcon],
+			'description': [this.customLinkDto.buttonDescription, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(120)])],
+			'openLinksInNewTab': [this.customLinkDto.openInNewTab],
+		});
+
+		this.customLinkForm.valueChanges
+			.subscribe(data => this.getSubmittedFormValues(data));
+
+		this.getSubmittedFormValues(); 
+	}
+
+	getSubmittedFormValues(data?: any) {
+		if (!this.customLinkForm) { return; }
+		const form = this.customLinkForm;
+
+		for (const field in this.formErrors) {
+			this.formErrors[field] = '';
+			const control = form.get(field);
+
+			if (control && control.dirty && !control.valid) {
+				const messages = this.validationMessages[field];
+				for (const key in control.errors) {
+					this.formErrors[field] += messages[key] + ' ';
+				}
+			}
+		}
+	}
+
+
   ngOnInit() {
+    if(this.moduleType=="dashboardButtons"){
+      this.headerText = "Add Button";
+      this.listHeaderText = "Your Dashboard Button's List";
+    }else{
+      
+    }
     this.buttonActionType = true;
     this.selectedProtocol = 'http';
+    this.buildCustomLinkForm();
     this.findLinks(this.pagination);
   }
 

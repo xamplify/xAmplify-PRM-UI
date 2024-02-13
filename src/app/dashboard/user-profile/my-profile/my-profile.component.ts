@@ -984,9 +984,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	updateUserProfileForm: FormGroup;
 	validateUpdateUserProfileForm() {
 		var urlPatternRegEx = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
-		var mobileNumberPatternRegEx = /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/;
-		// var nameRegEx = /[a-zA-Z0-9]+[a-zA-Z0-9 ]+/;
-		var charWithCommaRegEx = /^(?!.*?([A-D]).*?\1)[A-D](?:,[A-D])*$/;
 		this.updateUserProfileForm = this.fb.group({
 			'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
 			'lastName': [this.userData.lastName],
