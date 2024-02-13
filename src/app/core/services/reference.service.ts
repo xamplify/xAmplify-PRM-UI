@@ -148,6 +148,7 @@ export class ReferenceService {
   loginTemplateId = 53;
   assetResponseMessage = "";
   createdOrUpdatedSuccessMessage = "";
+  teamMemberSignedUpSuccessfullyMessage = "";
 
   /*** XNFR-433 ***/
   isCopyForm: boolean = false;
