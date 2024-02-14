@@ -3180,7 +3180,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		} else if (this.contactsByType.selectedCategory === 'unsubscribe') {
 			this.logListName = this.selectedContactListName + '_list_Unsubscribe_' + this.checkingContactTypeName + 's.csv';
 		} else if (this.contactsByType.selectedCategory === 'valid') {
-			this.logListName = this.selectedContactListName + '_list_Opt_In_' + this.checkingContactTypeName + 's.csv';
+			this.logListName = this.selectedContactListName + '_list_Valid_' + this.checkingContactTypeName + 's.csv';
 		} else if (this.contactsByType.selectedCategory === 'excluded') {
 			this.logListName = this.selectedContactListName + '_list_Excluded_' + this.checkingContactTypeName + 's.csv';
 		}
@@ -3199,6 +3199,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
 				//"Notes": this.contactsByType.listOfAllContacts[i].description
 			}
+			if(this.contactsByType.selectedCategory === 'excluded'){
+				object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
+			}
 			if (this.contactsByType.selectedCategory === 'unsubscribe') {
 				object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
 			}
@@ -3215,6 +3218,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				"City": null,
 				"Country": null,
 				"Mobile Number": null
+			}
+			if(this.contactsByType.selectedCategory === 'excluded'){
+				object["Excluded Catagory"] = null;
 			}
 			if (this.contactsByType.selectedCategory === 'unsubscribe') {
 				object["Unsubscribed Reason"] = null;
