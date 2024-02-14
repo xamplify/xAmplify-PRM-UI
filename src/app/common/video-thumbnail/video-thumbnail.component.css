@@ -17,6 +17,11 @@
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+
+.thumbnail-wrapper.image_effect {
+  margin-right: 10px;
+}
+
 .thumbnail-wrapper > img {
   max-width: 100%;
   max-height: 100%;
