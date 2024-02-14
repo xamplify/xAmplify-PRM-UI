@@ -68,14 +68,7 @@ export class CustomLinksUtilComponent implements OnInit {
     private xtremandLogger: XtremandLogger, private properties: Properties, private httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
     private regularExpressions:RegularExpressions) {
-      this.customLinkForm = new FormGroup( {
-        title: new FormControl(),
-        subTitle: new FormControl(),
-        link: new FormControl(),
-        icon: new FormControl(),
-        description: new FormControl(),
-        openLinksInNewTab: new FormControl()
-    } );
+      this.setDefaultValuesForForm();
       this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
     this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
       this.iconsList = result.icon_names;
@@ -83,11 +76,18 @@ export class CustomLinksUtilComponent implements OnInit {
       console.log(error);
     });
   }
-
-
-
-
   
+  private setDefaultValuesForForm() {
+    this.customLinkForm = new FormGroup({
+      title: new FormControl(),
+      subTitle: new FormControl(),
+      link: new FormControl(),
+      icon: new FormControl(),
+      description: new FormControl(),
+      openLinksInNewTab: new FormControl()
+    });
+  }
+
 	buildCustomLinkForm() {
 		this.customLinkForm = this.formBuilder.group({
 			'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceOrMax20CharactersLimitValidator])],
@@ -135,6 +135,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.buttonActionType = true;
     this.selectedProtocol = 'http';
     this.customLinkDto = new CustomLinkDto();
+    this.setDefaultValuesForForm();
     this.buildCustomLinkForm();
     this.findLinks(this.pagination);
   }
@@ -168,6 +169,7 @@ export class CustomLinksUtilComponent implements OnInit {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT, true);
         this.customLinkDto = new CustomLinkDto(); 
         this.saving = false;
+        this.setDefaultValuesForForm();
         this.findLinks(this.pagination);
       } else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
