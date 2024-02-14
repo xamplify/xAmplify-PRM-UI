@@ -1865,7 +1865,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			} else if (this.contactsByType.selectedCategory === 'unsubscribe') {
 				this.logListName = 'All_Unsubscribed_' + csvNameSuffix + 's_list.csv';
 			}else if (this.contactsByType.selectedCategory === 'valid') {
-                this.logListName = 'All_Opt_In_' + csvNameSuffix + 's_list.csv';
+                this.logListName = 'All_Valid_' + csvNameSuffix + 's_list.csv';
             }else if (this.contactsByType.selectedCategory === 'excluded') {
                 this.logListName = 'All_Excluded_' + csvNameSuffix + 's_list.csv';
             }
@@ -1891,7 +1891,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						object["Email Opend"] = this.contactsByType.listOfAllContacts[i].emailOpenedCount,
 						object["Clicked Urls"] = this.contactsByType.listOfAllContacts[i].clickedUrlsCount
 					}
-					if(this.contactsByType.selectedCategory = 'excluded'){
+					if(this.contactsByType.selectedCategory === 'excluded'){
 						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 					}
 					if (this.contactsByType.selectedCategory === 'unsubscribe') {
@@ -1912,7 +1912,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
 						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber
 					}
-					if(this.contactsByType.selectedCategory = 'excluded'){
+					if(this.contactsByType.selectedCategory === 'excluded'){
 						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 					}
 					if (this.contactsByType.selectedCategory === 'unsubscribe') {
