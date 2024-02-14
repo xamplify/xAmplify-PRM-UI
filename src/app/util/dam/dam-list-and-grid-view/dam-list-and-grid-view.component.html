@@ -2,7 +2,10 @@
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="row">
+<div *ngIf="isEditVideo || isPreviewVideo">
+	<app-modal-popup-loader></app-modal-popup-loader>
+</div>
+<div class="row" *ngIf="!isEditVideo && !isPreviewVideo">
 	<div class="col-md-12">
 		<div class="portlet light remove_cardBgcolor padding_0 clearfix mDamResponse mt0">
 			<!--List View / Grid View-->
@@ -19,7 +22,7 @@
 						<!-- XNFR-409 -->
 						<ng-template [ngTemplateOutlet]="filterOptionDiv"></ng-template>
 						<!-- XNFR-409 -->
-						<div class="table-responsive">
+						<div class="table-responsive pd_top10">
 							<table class='table tgrid table-hover table-sm' id="manage-assets-table"
 								*ngIf="pagination.pagedItems?.length>0" aria-describedby="manageAssetTables">
 								<thead>
@@ -537,12 +540,12 @@
 						<!-- XNFR-409 -->
 						<ng-template [ngTemplateOutlet]="filterOptionDiv"></ng-template>
 						<!-- XNFR-409 -->
-						<div class="row p17"
+						<div class="row p17 neg_margin-10"
 							*ngIf="modulesDisplayType.isGridView && !listLoader.isLoading && !listLoader.isServerError">
 							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tb_view_10 GridviewSidePaddings"
 								*ngFor="let asset of pagination.pagedItems ;let i =index" id="assetList_{{asset.id}}">
 								<div class="grid-box min-h default-cursor mHeight">
-									<div class="gridViewImgpositioning image_effect">
+									<div class="gridViewImgpositioning">
 										<img *ngIf="!asset?.videoId" class="img-class mxv"
 											src="{{asset?.thumbnailPath}}"
 											onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found">
@@ -617,7 +620,7 @@
 						class="alert alert-info text-center">
 						<strong>No Data Found.</strong>
 					</div>
-					<div *ngIf="pagination.pagedItems.length !== 0" [hidden]="listLoader.isLoading" class="mt5">
+					<div *ngIf="pagination.pagedItems.length !== 0" [hidden]="listLoader.isLoading">
 						<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
 							(notifyParentDropDown)="listItems($event)"></app-pagination>
 					</div>
@@ -667,7 +670,8 @@
 				<div class="btn-group pull-right">
 					<div class="d-flex">
 						<!-- Start XNFR-409 -->
-						<div class="" (click)="toggleFilterOption()" style="cursor: pointer; margin-right: 5px" *ngIf="!isclearFilter">
+						<div class="" (click)="toggleFilterOption()" style="cursor: pointer; margin-right: 5px"
+							*ngIf="!isclearFilter">
 							<span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space"
 								data-toggle="tooltip" title="Filter">
 								<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
@@ -776,7 +780,10 @@
 <!---XNFR-381-->
 <!-- XNFR-409 -->
 <ng-template #filterOptionDiv>
-	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView"  [criterias]="criterias" [showFilterOption]="showFilterOption"  [type]="assets" [filterOptions]="filterOptions" [filterConditions]="filterConditions" [fileTypes]="fileTypes" (filterConditionsEmitter)="assetsFilter($event)" (closeFilterEmitter)="closeFilterOption($event)"></app-custom-ui-filter>
+	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [criterias]="criterias"
+		[showFilterOption]="showFilterOption" [type]="assets" [filterOptions]="filterOptions"
+		[filterConditions]="filterConditions" [fileTypes]="fileTypes" (filterConditionsEmitter)="assetsFilter($event)"
+		(closeFilterEmitter)="closeFilterOption($event)"></app-custom-ui-filter>
 </ng-template>
 <!-- XNFR-409 -->
 <app-confirm-sweet-alert-util *ngIf="isChangeAsParentPdfIconClicked"

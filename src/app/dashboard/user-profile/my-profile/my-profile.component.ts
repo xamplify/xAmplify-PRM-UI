@@ -326,6 +326,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	companyIdFromCompanyProfileNameForVanity:number;	
 	removeMarketingNonInteractiveBox:boolean = false;
 
+	/** XNFR-426 **/
+	leadApprovalRejectionStatus: boolean = false;
+	leadApprovalStatus:boolean = false;
+	leadApprovalCustomResponse: CustomResponse = new CustomResponse();
+	/**XNFR-454****/
+	isAddDomainsOptionClicked: boolean;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -1832,6 +1839,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showSeletThemeSettings = false;
 	activateTab(activeTabName: any) {
 		this.activeTabName = activeTabName;
+		if (this.activeTabName != 'playerSettings') {
+		  if(this.videoJSplayer){
+		     this.videoJSplayer.pause();
+		   }
+		}
 		if (this.activeTabName == "personalInfo") {
 			this.activeTabHeader = this.properties.personalInfo;
 		} else if (this.activeTabName == "customTheme") {
@@ -1884,7 +1896,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.pipelinePagination = new Pagination();
 			this.pipelineResponse = new CustomResponse();
 			this.listAllPipelines(this.pipelinePagination);
-		} else if (this.activeTabName == "tags") {
+		}
+		/*****XNFR-426 ******/
+		else if(this.activeTabName == "leadDealApprove") {
+			this.activeTabHeader = this.properties.leadDealApprove;
+		}
+		else if (this.activeTabName == "tags") {
 			this.activeTabHeader = this.properties.tags;
 		} else if (this.activeTabName == "customskin") {
 			this.activeTabHeader = this.properties.customskin;
@@ -1968,6 +1985,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.customLoginScreen;
+		}
+		/****XNFR-454****/
+		else if(this.activeTabName==this.properties.addDomainsText){
+			this.ngxloading = true;
+			this.isAddDomainsOptionClicked = false;
+			let self = this;
+			setTimeout(() => {
+				self.isAddDomainsOptionClicked = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.addDomainsText;
+
 		}
 		this.referenceService.goToTop();
 	}
@@ -2095,6 +2124,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.gdprSetting.allowMarketingEmails = event;
 		}
 	}
+
+	
+	
 
 	setAllGdprStatus() {
 		if (!this.gdprSetting.unsubscribeStatus && !this.gdprSetting.formStatus && !this.gdprSetting.termsAndConditionStatus
@@ -2246,11 +2278,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.listCategories(this.categoryPagination);
 		if (event.type === 'excludeUsers') {
 			this.excludeUserPagination.pageIndex = event.page;
-			this.excludeUserPagination.maxResults = 12;
+			//this.excludeUserPagination.maxResults = 12;
 			this.listExcludedUsers(this.excludeUserPagination);
 		} else if (event.type === 'excludedDomains') {
 			this.excludeDomainPagination.pageIndex = event.page;
-			this.excludeDomainPagination.maxResults = 12;
+			//this.excludeDomainPagination.maxResults = 12;
 			this.listExcludedDomains(this.excludeDomainPagination);
 		} else if (event.type === 'csvUsers') {
 			this.csvUserPagination.pageIndex = event.page;
@@ -3201,7 +3233,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 		let removeIndices = new Array();
 		this.pipeline.stages.forEach(function (stage, index) {
-			if (stage.stageName !== undefined && $.trim(stage.stageName).length > 0) {
+			if (stage.stageName !== undefined) {
 				if (stage.markAs === "won") {
 					stage.won = true;
 					stage.lost = false;
@@ -4456,7 +4488,56 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	configureConnectWise() {
 		this.integrationTabIndex = 7;
 	}
-	// XNFR-403
 
+	/*******xnfr-426********/
+	getLeadApprovalstatus(){
+		this.authenticationService.getLeadApprovalStatus(this.referenceService.companyId)
+		.subscribe(
+		data => {
+				this.leadApprovalStatus = data.data;
+				this.leadApprovalRejectionStatus = data.data;
+		});
+	}
+
+	setLeadApprovalOrRejectionStatus(event:any){
+		if (event) {
+			this.leadApprovalRejectionStatus = true;
+		}
+		else {
+			this.leadApprovalRejectionStatus = false;
+		}
+	}
+
+	updateLeadApprovalOrRejectionStatus(){
+		let self = this;
+		swal({
+			title: 'Are you sure want to continue?',
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			allowOutsideClick: false,
+			confirmButtonText: 'Yes'
+		}).then(function () {
+			if (self.leadApprovalStatus == self.leadApprovalRejectionStatus){
+				self.saveLeadApprovalOrRejectionStatus(self.leadApprovalStatus);
+			} else{
+				self.saveLeadApprovalOrRejectionStatus(self.leadApprovalRejectionStatus);
+			}
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+			self.getLeadApprovalstatus();
+		});
+	}
+
+	saveLeadApprovalOrRejectionStatus(leadApprovalRejectionStatus:boolean) {
+		this.leadApprovalCustomResponse = new CustomResponse();
+		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId, leadApprovalRejectionStatus)
+		.subscribe(
+			data => {
+				this.leadApprovalCustomResponse = new CustomResponse('SUCCESS', "Settings Updated Successfully", true);
+			}
+		);
+	}
 
 }

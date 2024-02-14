@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -52,13 +51,16 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginStyleId:number;
   /*** XNFR-416 ***/
   isBgColor:boolean;
+  teamMemberSignedUpResponse:CustomResponse = new CustomResponse();
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer) {
       this.SERVER_URL = this.envService.SERVER_URL;
       this.APP_URL = this.envService.CLIENT_URL;
       this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
       this.loginStyleId = 53;
-      //this.logInStyle = this.envService.loginStyleType;
+    if(this.referenceService.teamMemberSignedUpSuccessfullyMessage!=""){
+      this.teamMemberSignedUpResponse = new CustomResponse('SUCCESS',this.referenceService.teamMemberSignedUpSuccessfullyMessage,true);
+    }  
     if (this.referenceService.userProviderMessage !== "") {
       this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
     }
@@ -74,6 +76,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public login() {
+    this.teamMemberSignedUpResponse = new CustomResponse();
     this.authenticationService.reloadLoginPage = false;
     try {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -189,7 +192,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.login(); } }
   setCustomeResponse(responseType: string, responseMessage: string) {
     this.customResponse = new CustomResponse(responseType, responseMessage, true);
-    this.xtremandLogger.error(responseMessage);
   }
   resendActivation() {
     this.customResponse = new CustomResponse();
@@ -269,9 +271,7 @@ bgIMage2:any;
         location.reload();
       }else{
         if (this.vanityURLService.isVanityURLEnabled()) {
-          //  this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
           this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
-
           this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {         
             this.vanityURLEnabled = result.enableVanityURL;  
             this.authenticationService.vendorCompanyId = result.companyId;     
@@ -287,7 +287,6 @@ bgIMage2:any;
               if(result.styleOneBgColor) {
               document.documentElement.style.setProperty('--login-bg-color-style1', result.backgroundColorStyle1);
               } else {
-                //document.documentElement.style.setProperty('--login-bg-color-style1', 'none');
                 if(result.companyBgImagePath != null && result.companyBgImagePath != "") {
                 document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+this.authenticationService.MEDIA_URL+ result.companyBgImagePath+')');
                 } else {
@@ -300,7 +299,6 @@ bgIMage2:any;
               if(result.styleTwoBgColor) {
               document.documentElement.style.setProperty('--login-bg-color', result.backgroundColorStyle2);
               } else {
-                //document.documentElement.style.setProperty('--login-bg-color', 'none');
                 if(result.backgroundLogoStyle2 != null && result.backgroundLogoStyle2 != "") {
                   document.documentElement.style.setProperty('--login-bg-image', 'url('+this.authenticationService.MEDIA_URL+ result.backgroundLogoStyle2+')');
                 } else {
@@ -330,7 +328,6 @@ bgIMage2:any;
               this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
             }
             this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
-            //this.authenticationService.loginScreenDirection = result.loginScreenDirection;
             this.vanityURLService.setVanityURLTitleAndFavIcon();
             if (result.showMicrosoftSSO) {
               this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });
@@ -355,6 +352,7 @@ bgIMage2:any;
   }
   ngOnDestroy() {
     this.referenceService.userProviderMessage = '';
+    this.referenceService.teamMemberSignedUpSuccessfullyMessage = "";
     this.resendActiveMail = false;
     $('#org-admin-deactivated').hide();
   }
@@ -473,19 +471,7 @@ bgIMage2:any;
     this.resendActiveMail = false;
   }
 
-  /****** XNFR-233 ************/
-  // isLoginTypeOne(companyprofileName:any) {
-  //   this.vanityURLService.getActiveLoginTemplate(companyprofileName)
-  //   .subscribe(
-  //     data => {
-  //       alert(data.data)
-  //       if(data.data === "STYLE_ONE"){
-  //         this.isStyleOne = true;
-  //       } else {
-  //         this.isStyleOne = false;
-  //       }
-  //     })  
-  // }
+
   
   createdUserId:any;
   getActiveLoginTemplate(companyProfileName:any){
@@ -497,7 +483,6 @@ bgIMage2:any;
          this.createdUserId = data.data.createdBy;
          this.previewTemplate(this.loginStyleId,this.createdUserId)
         })  
-        //this.previewTemplate(this.loginStyleId,this.createdUserId)
   }
   htmlContent:any;
   previewTemplate(id: number,createdBy:number) {

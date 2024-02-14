@@ -68,7 +68,6 @@ export class ManageDamComponent implements OnInit {
         this.videoFileService.getVideoById(videoId, 'DRAFT')
             .subscribe((editVideoFile: SaveVideoFile) => {
                 if(editVideoFile.access){
-                this.xtremandLogger.log('enter the show edit vidoe method');
                 if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
                     editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
                 }

@@ -1,6 +1,6 @@
 <div class="modal fade right" id="edit-campaign-details-popup" tabindex="-1" role="dialog"
     aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document" style="width: 45% !important;">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <a class="close-circle" (click)="closePopup()">
@@ -53,8 +53,7 @@
                                     <label class="control-label col-sm-3">From Name<span
                                             class="required">*</span></label>
                                     <div class="col-sm-9">
-                                        <input class="form-control" autocomplete="false" placeholder="From Name"
-                                            [(ngModel)]="campaignDetailsDto.fromName"
+                                        <input class="form-control" autocomplete="false" (input)="validateFromName()" placeholder="From Name"[(ngModel)]="campaignDetailsDto.fromName"
                                             [ngModelOptions]="{standalone: true}">
                                     </div>
                                 </div>
@@ -248,8 +247,8 @@
                 <div class="modal-footer" *ngIf="!loader">
                     <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="closePopup()"
                         translate>Close</button>
-                    <button *ngIf="!dataUpdated" [disabled]="buttonClicked" type="button"
-                        class="button_blue bgcolor-unset" (click)="update();buttonClicked=true" translate><span
+                    <button *ngIf="!dataUpdated" [disabled]="buttonClicked || !isValidFromName" type="button"
+                        class="button_blue bgcolor-unset" (click)="update();buttonClicked=true"><span
                             class="btn btn-primary transition txt_pd-top3">Update</span></button>
                 </div>
             </div>

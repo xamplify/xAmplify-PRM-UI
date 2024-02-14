@@ -28,10 +28,12 @@
                     </li>
                 </ul>
                 <div>
-                    <a class="close-circle mr5" style="margin-top: 6px;" [ngClass]="showForms ?'mt10':''" (click)="navigateBack()">
+                    <a class="close-circle mr5" style="margin-top: 6px;" [ngClass]="showForms ?'mt10':''"
+                        (click)="navigateBack()">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
-                    <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate && showForms" [filter]="'survey'" [buttonText]="'Show Surveys'"></app-preview-popup>
+                    <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate && showForms" [filter]="'survey'"
+                        [buttonText]="'Show Surveys'"></app-preview-popup>
                     <app-merge-tags *ngIf="loadTemplate" [input]="mergeTagsInput"></app-merge-tags>
                 </div>
             </div>
@@ -41,3 +43,61 @@
         </div>
     </div>
     <app-scroll-top></app-scroll-top>
+
+    <div class="modal fade in" id="save-template-popup" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-copy" role="document">
+            <div class="modal-content mSweetalertWid popup-cu-widthalign">
+                <app-modal-popup-loader *ngIf="saveLoader"></app-modal-popup-loader>
+                <div *ngIf="!saveLoader">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Name<span class="required">*</span></label>
+                            <input type="text" autocomplete="off" placeholder="Please Enter Name" class="form-control"
+                                name="templateName" [(ngModel)]="emailTemplate.name" (input)="validateNames()"
+                                [ngModelOptions]="{standalone: true}" />
+                            <span class="required">{{errorMessage}}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Folder<span class="required">*</span></label>
+                            <select class="form-control" [(ngModel)]="emailTemplate.categoryId">
+                                <option *ngFor="let category of categoryNames" [ngValue]="category.id">
+                                    {{category.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button *ngIf="isAdd" type="button" class="button bgcolor-unset"
+                            [disabled]="errorMessage?.length>0 || buttonClicked || invalidTemplateName" id="save"
+                            (click)="saveTemplate(false);buttonClicked = true">
+                            <span class="btn btn-primary transition txt_pd-top3">Save</span>
+                        </button>
+                        <button *ngIf="isAdd" type="button" class="button bgcolor-unset"
+                            [disabled]="errorMessage?.length>0 || buttonClicked || invalidTemplateName"
+                            id="save-and-redirect" (click)="saveTemplate(true);buttonClicked = true">
+                            <span class="btn btn-primary transition txt_pd-top3">Save & Redirect</span>
+                        </button>
+                        <ng-container *ngIf="!isAdd">
+                            <button type="button" class="button bgcolor-unset"
+                                [disabled]="errorMessage?.length>0 || buttonClicked || isSaveAsButtonDisabled"
+                                id="save-as" (click)="saveTemplate(true);buttonClicked = true">
+                                <span class="btn btn-primary transition txt_pd-top3">Save As</span>
+                            </button>
+                            <button type="button" class="button bgcolor-unset"
+                                [disabled]="errorMessage?.length>0 || buttonClicked" id="update"
+                                (click)="updateEmailTemplate(false);buttonClicked = true">
+                                <span class="btn btn-primary transition txt_pd-top3">Update</span>
+                            </button>
+                            <button type="button" class="button bgcolor-unset"
+                                [disabled]="errorMessage?.length>0 || buttonClicked" id="update-and-redirect"
+                                (click)="updateEmailTemplate(true);buttonClicked = true">
+                                <span class="btn btn-primary transition txt_pd-top3">Update & Redirect</span>
+                            </button>
+                        </ng-container>
+                        <button class="btn Btn-Gray  neg_mrg_top4" (click)="closeModalPopup()"
+                            data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

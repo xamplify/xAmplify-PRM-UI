@@ -138,6 +138,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
 
   sortcolumn: string = null;
   sortingOrder: string = null;
+  editTextArea=false;
 
   sortByDropDown = [
     { 'name': 'Sort By', 'value': '' },
@@ -203,6 +204,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
   selectedDeal: Deal;
   isCommentSection: boolean = false;
   loggedInUserCompanyId : number;
+  selectedDealForComments : Deal; // XNFR-426
   /****XNFR-125****/
   @Input() campaignId = 0;
   @Input() hidePageContent = false;
@@ -1781,7 +1783,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
 	      if(!this.isNavigatedThroughAnalytics){
 	    	  detailedAnalyticsShared = true;
 	      }
-	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType, this.campaign.publicEventCampaign,
+	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType, this.isChannelCampaign, this.campaign.publicEventCampaign,
 	    		  detailedAnalyticsShared)
 	        .subscribe(
 	          data => {
@@ -3072,14 +3074,18 @@ viewCampaignLeadForm(leadId: any) {
     
   }
 
-  editCampaignDealForm(dealId: any) {
+  editCampaignDealForm(deal:Deal) {
     this.showDealForm = true;   
     this.dealActionType = "edit";
-    this.dealId = dealId;
+    this.selectedDealForComments = deal;
+    this.editTextArea = true;
+    this.dealId = deal.id;
   }
 
   closeDealForm() {
-    this.showDealForm = false;    
+    this.showDealForm = false;
+    this.selectedDealForComments = null;
+    this.editTextArea = false;
   }
     
   showSubmitDealSuccess() {

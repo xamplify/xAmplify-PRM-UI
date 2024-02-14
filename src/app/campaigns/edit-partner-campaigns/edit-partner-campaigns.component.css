@@ -94,6 +94,12 @@ fieldset {
     width: 100% !important;
     right: 0 !important;
   }
+  .mrgn_lft0{
+    margin-left: 3px !important;
+  }
+  .mrg-left25{
+    margin-left:0px!important;
+  }
 }
 
 #download-drop {
@@ -212,4 +218,8 @@ img.Selected-email-template-imgcu {
     margin-bottom: 10px;
   }
 
+}
+/* launch option btns */
+.mrg-left25{
+margin-left:25px;
 }

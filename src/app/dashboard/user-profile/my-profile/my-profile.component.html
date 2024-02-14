@@ -165,7 +165,8 @@
                                     <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" *ngIf="(hasAllAccess || 
                                     hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
                                      || authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
-                                     !authenticationService.isOnlyPartner() && authenticationService.enableLeads && 
+                                     !authenticationService.isOnlyPartner() || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
+                                     || authenticationService.module.isPrmAndPartner  || authenticationService.module.isPrmAndPartnerTeamMember && authenticationService.enableLeads && 
                                       authenticationService.superiorRole != 'Partner'">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"
                                             (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration
@@ -184,6 +185,15 @@
                                                 (click)="activateTab('dealPipelines');clearCustomResponse()">
                                                 {{properties.dealPipelines | translate}}</a>
                                         </li>
+
+                                        <!-- XNFR-426 -->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}"
+                                            *ngIf="!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember)">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadDealApprove'}"
+                                                (click)="activateTab('leadDealApprove');getLeadApprovalstatus();">
+                                                {{properties.leadDealApprove | translate}}</a>
+                                        </li>
+
                                     </ng-container>
                                     <!--------------Developers----------------------->
                                     <div class="my-profile-header-text">Developers</div>
@@ -277,6 +287,13 @@
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.emailNotificationSettings}"
                                             (click)="activateTab(properties?.emailNotificationSettings);clearCustomResponse()">{{properties?.emailNotificationSettings}}</a>
                                     </li>
+                                    <!--Adding Domains XNFR-454-->
+                                    <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
+                                        [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}"
+                                        style="border-bottom: none !important;">
+                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.addDomainsText}"
+                                            (click)="activateTab(properties?.addDomainsText);clearCustomResponse()">{{properties?.addDomainsText}}</a>
+                                    </li>
                                 </ng-container>
                             </ul>
                         </div>
@@ -364,7 +381,7 @@
                                                     style="border-radius: 3px;"
                                                     *ngIf="activeTabName == 'lightTheme' && themeDto?.id != activeThemeDetails?.themeId"
                                                     (click)="activateThemeForCompanyWithAlert(themeDto.id)"><span
-                                                        class="btn btn-primary transition txt_pd-top3">Activate
+                                                        class="btn btn-primary transition text_pd-top1">Activate
                                                         Theme</span></button>
 
                                             </div>
@@ -385,10 +402,10 @@
                                     <br><br>
                                     <div class="div thembgc">
                                         <div class="row">
-                                            <div class="themePaddings"
-                                                [ngClass]="dto?.id == 3 ? '':'col-lg-6 col-md-6 col-sm-6'"
+                                            <div class="themePaddings col-lg-6 col-md-6 col-sm-6"
                                                 *ngFor="let dto of defaultThemes">
-                                                <div *ngIf="dto?.id == 1 || dto?.id == 2 || dto?.id == 4">
+                                                <div
+                                                    *ngIf="dto?.id == 1 || dto?.id == 2 || dto?.id == 4 || dto?.id == 3">
                                                     <!-- <div class="img_padding">
 
                                                         <img *ngIf="dto?.id == 1 " alt="" class="img-custome"
@@ -407,10 +424,15 @@
                                                             <img *ngIf="dto?.id == 2 " alt="" class="img-custome"
                                                                 src="assets/images/theme/Final/dark-theme.webp">
                                                         </div>
-                                                        <div class=">neumorphismDarkTheme">
+                                                        <div class="neumorphismDarkTheme">
                                                             <img *ngIf="dto?.id == 4 " alt=""
                                                                 class="img-custome img-height"
-                                                                src="assets/images/theme/Final/beta-neumorphism.webp">
+                                                                src="assets/images/theme/Final/beta-neumorphism-dark.webp">
+                                                        </div>
+                                                        <div class="neumorphismLightTheme">
+                                                            <img *ngIf="dto?.id == 3" alt=""
+                                                                class="img-custome img-height"
+                                                                src="assets/images/theme/Final/beta-neumorphism-light.webp">
                                                         </div>
                                                     </div>
                                                     <div class="card-bg topcard-padding">
@@ -423,8 +445,14 @@
                                                                 *ngIf="dto.name === 'Neumorphism Dark(Beta)'">
                                                                 Neumorphism Dark</h5>
                                                             <h5 class="card-title themefont"
-                                                                *ngIf="dto.name != 'Neumorphism Dark(Beta)'">
+                                                                *ngIf="dto.name === 'Neumorphism Light'">
+                                                                Neumorphism Light</h5>
+                                                            <h5 class="card-title themefont"
+                                                                *ngIf="dto.name != 'Neumorphism Dark(Beta)' && dto.name != 'Neumorphism Light'">
                                                                 {{dto?.name}} Theme</h5>
+                                                            <!-- <h5 class="card-title themefont"
+                                                                *ngIf="dto.name != 'Neumorphism Light'">
+                                                                {{dto?.name}} Theme</h5> -->
                                                             <!-- responsive-alignment -->
                                                             <td
                                                                 class="mAlignView responsive-alignment centerAlignPropertyIcon">
@@ -452,7 +480,8 @@
                                                                             class="mMobileDisable custom-icon"
                                                                             title="Copy"
                                                                             (click)="goToCustomThemes();showDto(dto);saveTheme();"
-                                                                            *ngIf="dto?.id != 4"><i aria-hidden="true"
+                                                                            *ngIf="dto?.id != 4 && dto?.id != 3"><i
+                                                                                aria-hidden="true"
                                                                                 class="fa fa-files-o mDisableColor IconCustomization"></i>
                                                                             <div class="clickicons"></div>
                                                                         </a>
@@ -825,6 +854,53 @@
                                                     class="button bgcolor-unset" (click)="saveDealTypes()"><span
                                                         class="btn Btn-Green transition txt_pd-top3">{{dealButtonText}}</span></button>
                                             </form>
+                                        </div>
+
+                                        <!-- XNFR-426 -->
+                                        <div class="tab-content" *ngIf="activeTabName == 'leadDealApprove'"
+                                            [ngClass]="{'active': activeTabName == 'leadDealApprove'}">
+                                            <app-response-message [customResponse]="leadApprovalCustomResponse"
+                                                *ngIf="leadApprovalCustomResponse.isVisible"></app-response-message>
+                                            <table class="table table-light"
+                                                style="border:0px!important;background-color:transparent!important">
+                                                <tbody class="remove_table_bg display-grid">
+                                                    <fieldset class="fild-custome-borders-none">
+                                                        <legend class="leg-custome-borders-bot fs-17">Turn Lead
+                                                            Approval/Rejection option ON or OFF</legend>
+                                                    </fieldset>
+                                                    <tr class="col-md-12 col-lg-12">
+                                                        <div class="flex row">
+                                                            <div class="col-md-9 col-lg-9 p0">
+                                                                <h4 class="f-w-600" id="text-color-my-profile"
+                                                                    translate>You have the ability to Approve or
+                                                                    Reject the leads registered by the partners.
+                                                                </h4>
+                                                            </div>
+                                                            <div class="col-md-3 col-lg-3 text-right"
+                                                                style="padding-top:10px">
+                                                                <section>
+                                                                    <switch [(status)]="leadApprovalStatus"
+                                                                        [onText]="callActionSwitch.onTextValue"
+                                                                        [offText]="callActionSwitch.offTextValue"
+                                                                        [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                                        [offColor]="callActionSwitch.offDefaultColor"
+                                                                        [size]="callActionSwitch.size"
+                                                                        (statusChange)="setLeadApprovalOrRejectionStatus($event)">
+                                                                    </switch>
+                                                                </section>
+                                                            </div>
+                                                        </div>
+                                                    </tr>
+                                                    <br>
+                                                </tbody>
+                                            </table>
+
+                                            <!-- <br> -->
+                                            <button type="submit" class="button bgcolor-unset p0"
+                                                (click)="updateLeadApprovalOrRejectionStatus()" translate><span
+                                                    class="btn Btn-Green transition txt_pd-top3">Save Changes
+                                                </span>
+                                            </button>
                                         </div>
                                         <!---Integrations-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
@@ -1436,7 +1512,9 @@
                                                                             </th>
                                                                             <th class="PipelinesTablet-thWidth1">Created
                                                                                 By</th>
-                                                                            <th class="PipelinesTablet-thWidth2">Stages
+                                                                            <th
+                                                                                class="PipelinesTablet-thWidth2 text-center">
+                                                                                Stages
                                                                             </th>
                                                                             <th class="PipelinesTablet-thWidth3">Actions
                                                                             </th>
@@ -1484,7 +1562,7 @@
                                                                                     </app-timestamp>
                                                                                 </h5>
                                                                             </td>
-                                                                            <td class="mAlign">
+                                                                            <td class="mAlign text-center">
                                                                                 {{pipeline.stages.length}}</td>
                                                                             <td class="mAlign tableIconsAliggnLine">
                                                                                 <div
@@ -1539,7 +1617,8 @@
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
-                                                                <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+                                                                <app-list-loader
+                                                                    *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                                                                 <div *ngIf="pipelinePagination.pagedItems.length !== 0"
                                                                     class="pg8">
                                                                     <app-pagination [pagination]="pipelinePagination"
@@ -1636,7 +1715,8 @@
                                                             class="button bgcolor-unset pd_lft2" translate>
                                                             <span class="btn Btn-Green transition txt_pd-top3">Change
                                                                 Password</span></button>
-                                                        <input type="reset" class="btn Btn-Gray" value="Cancel">
+                                                        <input type="reset" class="btn Btn-Gray neg_mrg_top5"
+                                                            value="Cancel">
                                                     </div>
                                                 </div>
                                             </form>
@@ -1696,7 +1776,7 @@
                                                 *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                                 <table class="table table-light"
                                                     style="border:0px!important;background-color:transparent!important">
-                                                    <tbody>
+                                                    <tbody class="remove_table_bg display-grid">
                                                         <fieldset class="fild-custome-borders-none">
                                                             <legend class="leg-custome-borders-bot">GDPR</legend>
                                                             <tr class="col-md-12 col-lg-12">
@@ -2029,7 +2109,8 @@
                                                                         src="{{item.moduleIcon}}" alt="Image Not Found">
                                                                 </td>
                                                                 <td>
-                                                                    <div class="override-actions">
+                                                                    <div
+                                                                        class="override-actions justify-content-start mleft-10">
                                                                         <a class="custom-icon"
                                                                             [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'"
                                                                             data-toggle="tooltip"
@@ -2065,7 +2146,10 @@
                                                                 src="assets/images/theme/1/Webp/dd.webp"
                                                                 class="desktopimg-custome">
                                                             <img *ngIf="themeDto.id==4"
-                                                                src="assets/images/theme/1/Webp/ND.webp"
+                                                                src="assets/images/theme/Final/neumorphism-dark-preview-laptop.webp"
+                                                                class="desktopimg-custome">
+                                                            <img *ngIf="themeDto.id==3"
+                                                                src="assets/images/theme/Final/neumorphism-light-preview-laptop.webp"
                                                                 class="desktopimg-custome">
                                                         </div>
                                                     </div>
@@ -2078,7 +2162,10 @@
                                                                 src="assets/images/theme/1/Webp/dm.webp"
                                                                 class="mobileimg-custome">
                                                             <img *ngIf="themeDto.id==4"
-                                                                src="assets/images/theme/1/Webp/NDM.webp"
+                                                                src="assets/images/theme/Final/neumorphism-dark-preview-mobile.webp"
+                                                                class="mobileimg-custome">
+                                                            <img *ngIf="themeDto.id==3"
+                                                                src="assets/images/theme/Final/neumorphism-light-preview-mobile.webp"
                                                                 class="mobileimg-custome">
                                                         </div>
                                                     </div>
@@ -2130,6 +2217,14 @@
                                             class="tab-pane"
                                             [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
                                         </app-email-notification-settings>
+
+                                        <!--XNFR-454 Domain Configuration-->
+                                        <app-add-or-manage-domains *ngIf="isAddDomainsOptionClicked"
+                                            [moduleName]="'addDomains'" class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == properties?.addDomainsText}">
+                                        </app-add-or-manage-domains>
+
+
                                         <!--video default player settings-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
                                             <div>
@@ -2139,7 +2234,7 @@
                                                         <div class="col-xs-12" style="padding:0">
                                                             <fieldset class="fild-custome-borders-none">
                                                                 <legend class="leg-custome-borders-bot" translate>Video
-                                                                    Player Apperance</legend>
+                                                                    Player Appearance</legend>
                                                                 <div
                                                                     class="col-xs-12 col-sm-6 col-md-6 align-itms-center">
                                                                     <div class="col-xs-12 col-sm-12 col-md-12 form-group"
@@ -2457,8 +2552,7 @@
                                                                 style="margin-top:10px;"
                                                                 *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                                <button
-                                                                    class="button bgcolor-unset mrgn_lft0 p0 px-9"
+                                                                <button class="button bgcolor-unset mrgn_lft0 p0 px-9"
                                                                     [disabled]="csvExcludeUsersFilePreview"
                                                                     (click)="addContactModalOpen()" translate>
                                                                     <span
@@ -2688,8 +2782,6 @@
                                                             </button>
 
                                                         </div>
-                                                        <!-- new -->
-
                                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                             <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align"
                                                                 style="margin-top:10px;"
@@ -2707,8 +2799,7 @@
                                                                 </button>
 
                                                                 <button id="uploadCSV"
-                                                                    class="button bgcolor-unset p0 px-9"
-                                                                    translate>
+                                                                    class="button bgcolor-unset p0 px-9" translate>
                                                                     <span class="btn Btn-Green transition txt_pd-top3">
                                                                         <span style="text-align: center"
                                                                             translate>Upload
@@ -3066,7 +3157,8 @@
             <div class="modal-body">
                 <button style="position: relative;top: -5px;"
                     class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"
-                    *ngIf="!imageChangedEvent; else uploadButton"><span class="btn Btn-Green transition">Upload
+                    *ngIf="!imageChangedEvent; else uploadButton"><span
+                        class="btn Btn-Green transition txt_pd-top3">Upload
                         image</span>
                     <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file"
                         (change)="fileChangeListener($event, cropper)">
@@ -3074,7 +3166,7 @@
                 <ng-template #uploadButton>
                     <button style="position: relative;top: -5px;"
                         class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"><span
-                            class="btn Btn-Green transition">Upload
+                            class="btn Btn-Green transition txt_pd-top3">Upload
                             image</span>
                         <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file"
                             (change)="fileChangeListener($event, cropper)">
@@ -3104,7 +3196,8 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="button-group" style="position: relative;text-align:left">
-                        <button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
+                        <button class="btn-info aspect_ratio" (click)="toggleContainWithinAspectRatio()"
+                            [disabled]="!showCropper">
 
                             {{
                             containWithinAspectRatio
@@ -3112,19 +3205,19 @@
                             : 'Contain Within Aspect Ratio'
                             }}
                         </button>
-                        <button class="btn-info" (click)="zoomOut()" [disabled]="!showCropper"><i
+                        <button class="btn-info aspect_ratio" (click)="zoomOut()" [disabled]="!showCropper"><i
                                 class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i>
                         </button>
-                        <button class="btn-info" (click)="zoomIn()" [disabled]="!showCropper"><i
+                        <button class="btn-info aspect_ratio" (click)="zoomIn()" [disabled]="!showCropper"><i
                                 class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i>
                         </button>
-                        <button class="btn-info" (click)="resetImage()" [disabled]="!showCropper"> <i
+                        <button class="btn-info aspect_ratio" (click)="resetImage()" [disabled]="!showCropper"> <i
                                 class="fa fa-refresh" title="reset" data-toggle="tooltip"
                                 aria-hidden="true"></i></button>
                     </div>
                     <div>
                         <button class="button_blue bgcolor-unset" [disabled]="!showCropper"
-                            (click)="uploadProfileImage()"><span class="btn btn-primary transition">Save
+                            (click)="uploadProfileImage()"><span class="btn btn-primary transition txt_pd-top3">Save
                                 Changes</span></button>
                     </div>
                 </div>
@@ -3376,9 +3469,11 @@
                 </form>
             </div>
             <div class="modal-footer" style="border:none">
-                <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
-                <button type="button" class="btn Btn-Green" (click)="confirmAndsaveExcludedUser(addContactuser)"
-                    [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate>Add</button>
+                <button class="btn Btn-Gray neg_mrg_top4" (click)="addContactModalClose()" translate>Cancel</button>
+                <button type="button" class="button bgcolor-unset btn-top3"
+                    (click)="confirmAndsaveExcludedUser(addContactuser)"
+                    [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate><span
+                        class="btn Btn-Green transition txt_pd-top3">Add</span></button>
             </div>
         </div>
     </div>
@@ -3425,9 +3520,10 @@
                 </form>
             </div>
             <div class="modal-footer" style="border:none">
-                <button class="btn Btn-Gray" (click)="addDomainModalClose()" translate>Cancel</button>
-                <button type="button" class="btn Btn-Green" (click)="confirmAndsaveExcludedDomain(domain)"
-                    [disabled]="!validDomainPattern" translate>Add</button>
+                <button class="btn Btn-Gray neg_mrg_top4" (click)="addDomainModalClose()" translate>Cancel</button>
+                <button type="button" class="button bgcolor-unset btn-top3"
+                    (click)="confirmAndsaveExcludedDomain(domain)" [disabled]="!validDomainPattern" translate><span
+                        class="btn Btn-Green transition txt_pd-top3">Add</span></button>
             </div>
         </div>
     </div>

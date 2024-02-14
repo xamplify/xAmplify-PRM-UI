@@ -4,7 +4,10 @@
 <div class="page-bar PaddingTwentyCU">
   <div class="row">
     <div class="col-md-12 col-md-12 col-xs-12 col-sm-12">
-      <h4>Company Name: {{companyInfo?.companyName}}</h4>
+     <div [ngClass]=" !isInfonull ? 'col-md-12 col-md-12 col-xs-12 col-sm-12' : 'col-md-2 col-md-2 col-xs-2 col-sm-2'"><h4>Company Name: {{companyInfo?.companyName}}</h4></div> 
+     <div class="col-md-10 col-md-10 col-xs-10 col-sm-10 alert alert-danger text-center custom-alert" id="company-profile-error-div" *ngIf="isInfonull">
+      <strong>{{errorMessage}}</strong>
+    </div>
     </div>
   </div>
   <div class="row BgForCard">
@@ -20,7 +23,7 @@
           <!-- <p title="{{deal.createdByEmail}}">{{deal.createdByEmail | slice:0:30}}</p>
           <span *ngIf="deal.createdByEmail?.length>30">...</span> -->
           <!-- <p><i class="fa fa-building" aria-hidden="true"></i> {{companyInfo?.companyName}}</p> -->
-          <p><i class="fa fa-calendar" aria-hidden="true"></i> <b> Onboarded On :</b>
+          <p ><i class="fa fa-calendar" aria-hidden="true"></i> <b> Onboarded On :</b>
             <app-timestamp [isOnlyDate]="false" [dateAndTime]="companyInfo?.partnerAddedDateStr">
             </app-timestamp>
           </p>

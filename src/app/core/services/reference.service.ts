@@ -3,7 +3,7 @@ import { Http, Response } from "@angular/http";
 import { SaveVideoFile } from "../../videos/models/save-video-file";
 import { AuthenticationService } from "./authentication.service";
 import { Observable } from "rxjs/Observable";
-import { Router } from "@angular/router";
+import { Router,ActivatedRoute } from "@angular/router";
 import { Category } from "../../videos/models/category";
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { DefaultVideoPlayer } from "../../videos/models/default-video-player";
@@ -148,13 +148,18 @@ export class ReferenceService {
   loginTemplateId = 53;
   assetResponseMessage = "";
   createdOrUpdatedSuccessMessage = "";
+  teamMemberSignedUpSuccessfullyMessage = "";
+
+  /*** XNFR-433 ***/
+  isCopyForm: boolean = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
     private logger: XtremandLogger,
     private router: Router,
     public deviceService: Ng2DeviceService,
-    private envService:EnvService
+    private envService:EnvService,
+    private route:ActivatedRoute
   ) {
     this.videoTag =
       '<img src="' + authenticationService.imagesHost + 'xtremand-video.gif">';
@@ -3353,6 +3358,11 @@ export class ReferenceService {
     return $.trim(input);
   }
 
+
+  getRouterParameter(parameter:string){
+    return this.route.snapshot.params[parameter];
+  }
+
   convertToLowerCaseAndGetTrimmedData(input:any){
     return $.trim(input.toLowerCase());
   }
@@ -3407,4 +3417,41 @@ export class ReferenceService {
   addCreateOrUpdateSuccessMessage(message:string){
     this.createdOrUpdatedSuccessMessage = message;
   }
+
+  isVideo(filename: any) {
+    const parts = filename.split('.');
+    const ext = parts[parts.length - 1];
+    switch (ext.toLowerCase()) {
+        case 'm4v':
+        case 'mkv':
+        case 'avi':
+        case 'mpg':
+        case 'mp4':
+        case 'flv':
+        case 'mov':
+        case 'wmv':
+        case 'divx':
+        case 'f4v':
+        case 'mpeg':
+        case 'vob':
+        case 'xvid':
+            // etc
+            return true;
+    }
+    return false;
+}
+
+isIE() {
+  const isInternetExplorar = navigator.userAgent;
+  /* MSIE used to detect old browsers and Trident used to newer ones*/
+  const is_ie = isInternetExplorar.indexOf("MSIE ") > -1 || isInternetExplorar.indexOf("Trident/") > -1;
+  return is_ie;
+}
+
+closeDamModalPopup(){
+  $('#myModal').modal('hide');
+  $('body').removeClass('modal-open');
+  $('.modal-backdrop fade in').remove();
+}
+
 }

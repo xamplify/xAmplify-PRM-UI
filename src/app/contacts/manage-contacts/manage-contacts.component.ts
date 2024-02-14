@@ -71,6 +71,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	selectedContactListId: number;
 	selectedContactListName: string;
 	isDefaultPartnerList: boolean;
+	isDefaultContactList: boolean;
 	isSynchronizationList: boolean;
 	uploadedUserId: number;
 	showAll: boolean;
@@ -226,6 +227,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	showExpandButton = false;
 	showShareListPopup : boolean = false;
 	isFormList = false;
+	isCompanyList = false;
+	selectedAssociatedCompany:string;
+	selectedCompanyId:number;
 	selectedFilterIndex: number = 0;
   showFilter = true;
   resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
@@ -389,6 +393,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						pagination.filterBy = "FORM-LEADS";
 					}else if(this.selectedFilterIndex==2){
 						pagination.filterBy = "ALL";
+					}else if(this.selectedFilterIndex==3){
+						pagination.filterBy = "COMPANY-CONTACTS";
 					}
 				}
                 if(this.sharedLeads){
@@ -864,7 +870,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, 
-		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean) {
+		isDefaultPartnerList: boolean,isDefaultContactList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean, isCompanyList:boolean, selectedAssociatedCompany: string, selectedAssociatedCompanyId: number) {
 		this.uploadedUserId = uploadUserId;
 		this.selectedContactListId = contactSelectedListId;
 		this.selectedContactListName = contactListName;
@@ -874,6 +880,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.showAll = false;
 		this.showEdit = true;
 		this.isFormList = isFormList;
+		this.isCompanyList = isCompanyList;
+		this.selectedAssociatedCompany = selectedAssociatedCompany;
+		this.selectedCompanyId = selectedAssociatedCompanyId;
+		this.isDefaultContactList = isDefaultContactList;
 		$("#pagination").hide();
 	}
 
@@ -1339,6 +1349,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						} else {
 							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
 						}
+						this.selectedInvalidContactIds=[];
+                        this.selectedContactListIds=[];
 					},
 					(error: any) => {
 						if (error._body.includes('Please launch or delete those campaigns first')) {
@@ -1853,7 +1865,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			} else if (this.contactsByType.selectedCategory === 'unsubscribe') {
 				this.logListName = 'All_Unsubscribed_' + csvNameSuffix + 's_list.csv';
 			}else if (this.contactsByType.selectedCategory === 'valid') {
-                this.logListName = 'All_Opt_In_' + csvNameSuffix + 's_list.csv';
+                this.logListName = 'All_Valid_' + csvNameSuffix + 's_list.csv';
             }else if (this.contactsByType.selectedCategory === 'excluded') {
                 this.logListName = 'All_Excluded_' + csvNameSuffix + 's_list.csv';
             }
@@ -1879,6 +1891,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						object["Email Opend"] = this.contactsByType.listOfAllContacts[i].emailOpenedCount,
 						object["Clicked Urls"] = this.contactsByType.listOfAllContacts[i].clickedUrlsCount
 					}
+					if(this.contactsByType.selectedCategory === 'excluded'){
+						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
+					}
 					if (this.contactsByType.selectedCategory === 'unsubscribe') {
 					  object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
 					}
@@ -1896,6 +1911,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						"Country": this.contactsByType.listOfAllContacts[i].country,
 						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
 						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber
+					}
+					if(this.contactsByType.selectedCategory === 'excluded'){
+						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 					}
 					if (this.contactsByType.selectedCategory === 'unsubscribe') {
 					  object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
@@ -2788,7 +2806,7 @@ resubscribeUserResult(event : any){
 			showCancelButton: true,
 			confirmButtonColor: '#54a7e9',
 			cancelButtonColor: '#999',
-			confirmButtonText: 'Yes, Mark as Opt-in!'
+			confirmButtonText: 'Yes, Mark as valid!'
 
 		}).then(function(myData: any) {
 			self.validateExcludedDetails(contactId,emailId );

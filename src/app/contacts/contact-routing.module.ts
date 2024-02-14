@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddContactsComponent } from './add-contacts/add-contacts.component';
 import { SocialContactsCallbackComponent } from './social-contacts-callback/social-contacts-callback.component';
 import { ManageContactsComponent } from './manage-contacts/manage-contacts.component';
-import { WorkflowFormComponent } from './workflow-form/workflow-form.component';
+import { AddCompanyContactsComponent } from './add-company-contacts/add-company-contacts.component';
 
 
 
@@ -19,7 +19,7 @@ const routes: Routes = [
     { path: 'leads-zoho-callback', component: SocialContactsCallbackComponent },
     { path: 'leads-salesforce-callback', component: SocialContactsCallbackComponent },
     { path: 'manage/:id', component: ManageContactsComponent },
-    // {path: 'partner-workflow', component: WorkflowFormComponent}
+    { path: 'company/:id', component: AddCompanyContactsComponent },
 
 ];
 

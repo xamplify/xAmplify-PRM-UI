@@ -8,7 +8,7 @@ export class Pagination {
 	maxResults = 12;    
 	sortcolumn: string = null;
 	sortingOrder: string = null;
-	searchKey: string = null;
+	searchKey: string = "";
 	filterBy: any = null;
 	pager: any = {};
 	pagedItems: any[] = [];
@@ -118,4 +118,7 @@ export class Pagination {
 	dateFilterOpionEnable:boolean = false;
 	customFilterOption:boolean = false;
 	/*** XNFR-409 *****/
+
+	/*** XNFR-427 *****/
+	ignoreSelfLeadsOrDeals:boolean = true;
 }

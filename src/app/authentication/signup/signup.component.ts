@@ -118,7 +118,6 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
             .subscribe(
                 data => {
                     this.loading = false;
-                    console.log(data);
                     if (data !== undefined) {
                         if (data.statusCode==200) {
                             this.loading = false;
