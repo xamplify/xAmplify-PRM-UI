@@ -1032,7 +1032,8 @@
 																			(click)="!isDefaultContactList ? deleteUserShowAlert(contact.id) : confirmdelete(contact.id)"
 																			*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 										&& ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))
-										&& !isTeamMemberPartnerList && !sharedLeads && !isSynchronizationList">
+										&& !isTeamMemberPartnerList && !sharedLeads && !isSynchronizationList && ((authenticationService?.module?.adminOrSuperVisor)
+                                        || (loggedInUserId==uploadedUserId))">
 																			<i class="fa fa-trash-o trashIconCustomization"
 																				aria-hidden="true"></i>
 																			<div class="del-icon"></div>
