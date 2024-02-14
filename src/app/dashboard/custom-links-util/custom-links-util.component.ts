@@ -11,7 +11,8 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { CustomLinkDto } from 'app/vanity-url/models/custom-link-dto';
 import { FormBuilder, FormControl, FormGroup,Validators } from '@angular/forms';
-import { noWhiteSpaceValidator,noWhiteSpaceValidatorWithMaxLimit40 } from 'app/form-validator';
+import { max120CharactersLimitValidator,noWhiteSpaceOrMax20CharactersLimitValidator,max40CharactersLimitValidator } from 'app/form-validator';
+import { RegularExpressions } from 'app/common/models/regular-expressions';
 
 
 declare var swal: any;
@@ -20,7 +21,7 @@ declare var swal: any;
   selector: 'app-custom-links-util',
   templateUrl: './custom-links-util.component.html',
   styleUrls: ['./custom-links-util.component.css'],
-  providers: [Properties, HttpRequestLoader]
+  providers: [Properties, HttpRequestLoader,RegularExpressions]
 })
 export class CustomLinksUtilComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
@@ -47,24 +48,26 @@ export class CustomLinksUtilComponent implements OnInit {
       'title': {
           'required': 'Title is required',
           'whitespace': 'Empty spaces are not allowed',
-          'maxlength': 'Title cannot be more than 20 characters long',
+          'maxLimitReached': 'Title cannot be more than 20 characters long',
       },
       'link': {
           'required': 'Link is required',
           'maxlength': 'Link cannot be more than 2083 characters long',
           'pattern': 'Invalid Link Pattern'
       },
-      'subtitle': {
-          'maxlength': 'Subtitle cannot be more than 40 characters long',
+      'subTitle': {
+          'maxLimitReached': 'Subtitle cannot be more than 40 characters long',
       },
       'description': {
-        'maxlength': 'description cannot be more than 120 characters long',
+        'maxLimitReached': 'description cannot be more than 120 characters long',
+      
       }
   };
   customLinkForm: FormGroup;
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, private properties: Properties, private httpRequestLoader: HttpRequestLoader, 
-    private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder) {
+    private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
+    private regularExpressions:RegularExpressions) {
       this.customLinkForm = new FormGroup( {
         title: new FormControl(),
         subTitle: new FormControl(),
@@ -86,13 +89,12 @@ export class CustomLinksUtilComponent implements OnInit {
 
   
 	buildCustomLinkForm() {
-		var urlPatternRegEx = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
 		this.customLinkForm = this.formBuilder.group({
-			'title': [this.customLinkDto.buttonTitle, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(40)])],
-			'subTitle': [this.customLinkDto.buttonSubTitle,Validators.compose([noWhiteSpaceValidator, Validators.maxLength(40)])],
-      'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(urlPatternRegEx), Validators.maxLength(2083)])],
+			'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceOrMax20CharactersLimitValidator])],
+			'subTitle': [this.customLinkDto.buttonSubTitle,Validators.compose([max40CharactersLimitValidator])],
+      'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.URL_PATTERN)])],
 			'icon': [this.customLinkDto.buttonIcon],
-			'description': [this.customLinkDto.buttonDescription, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(120)])],
+			'description': [this.customLinkDto.buttonDescription, Validators.compose([max120CharactersLimitValidator])],
 			'openLinksInNewTab': [this.customLinkDto.openInNewTab],
 		});
 
@@ -105,7 +107,6 @@ export class CustomLinksUtilComponent implements OnInit {
 	getSubmittedFormValues(data?: any) {
 		if (!this.customLinkForm) { return; }
 		const form = this.customLinkForm;
-
 		for (const field in this.formErrors) {
 			this.formErrors[field] = '';
 			const control = form.get(field);
@@ -121,6 +122,10 @@ export class CustomLinksUtilComponent implements OnInit {
 
 
   ngOnInit() {
+      this.callInitMethods();
+  }
+
+  callInitMethods(){
     if(this.moduleType=="dashboardButtons"){
       this.headerText = "Add Button";
       this.listHeaderText = "Your Dashboard Button's List";
@@ -129,6 +134,7 @@ export class CustomLinksUtilComponent implements OnInit {
     }
     this.buttonActionType = true;
     this.selectedProtocol = 'http';
+    this.customLinkDto = new CustomLinkDto();
     this.buildCustomLinkForm();
     this.findLinks(this.pagination);
   }
@@ -160,6 +166,8 @@ export class CustomLinksUtilComponent implements OnInit {
       this.saving = false;
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT, true);
+        this.customLinkDto = new CustomLinkDto(); 
+        this.saving = false;
         this.findLinks(this.pagination);
       } else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
@@ -189,13 +197,14 @@ export class CustomLinksUtilComponent implements OnInit {
     this.referenceService.goToTop();
     const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
     this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
+    this.buildCustomLinkForm();
   }
 
   update(id: number) {
     this.vanityURLService.updateCustomLinkDetails(this.customLinkDto).subscribe(result => {
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT, true);
-        this.findLinks(this.pagination);
+        this.callInitMethods();
       }
       else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
@@ -211,11 +220,9 @@ export class CustomLinksUtilComponent implements OnInit {
     this.vanityURLService.deleteCustomLink(id).subscribe(result => {
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_DELETE_TEXT, true);
-        if (this.pagination.pageIndex === this.pagination.pager.totalPages && this.pagination.pagedItems.length === 1) {
-          this.pagination.pageIndex = 1;
-        }
-        this.findLinks(this.pagination);
         this.referenceService.goToTop();
+        this.pagination.pageIndex = 1;
+        this.callInitMethods();
       }
     }, error => {
       this.customResponse = new CustomResponse('ERROR', "Error while deleting dashboard button", true)

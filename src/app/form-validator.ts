@@ -45,9 +45,7 @@ export function validateCampaignName(name: string, names:string[],isAdd:boolean,
   }
 
 export function validateOwnThumbnail(imageFile:any,fileItem:FileItem,ownThumb:any):ValidatorFn {
-   console.log(fileItem);
 	  return (group: FormGroup): {[key: string]: any} => {
-	      
 		  let ownThumbnail = group.controls[ownThumb];
 	      if(fileItem!= null  && (fileItem != undefined && ownThumb.value != false)){
 	        console.log("in validate own thumbnail method");
@@ -99,18 +97,42 @@ export function noWhiteSpaceValidatorWithMin3(control: FormControl): {[key: stri
     
   }
 
-  export function noWhiteSpaceValidatorWithMaxLimit40(control: FormControl): {[key: string]: any} {
-    if(control.value!=null){
+  export function max40CharactersLimitValidator(control: FormControl): {[key: string]: any} {
+    if (control.value != null) {
       let trimmedValue = control.value.trim();
-        if(trimmedValue.length>0 && trimmedValue.length<40){
-            if (trimmedValue=="") {
-                return {
-                    whitespace: true
-                };
-              }
-        }
+      if (trimmedValue.length > 40) {
+        return {
+          maxLimitReached: true,
+        };
+      }
     }
     
+  }
+
+  export function noWhiteSpaceOrMax20CharactersLimitValidator(control: FormControl): {[key: string]: any} {
+    if (control.value != null) {
+      let trimmedValue = control.value.trim();
+      if (trimmedValue.length == 0) {
+        return {
+          whitespace: true,
+        };
+      } else if (trimmedValue.length > 20) {
+        return {
+          maxLimitReached: true,
+        };
+      }
+    }
+  }
+
+  export function max120CharactersLimitValidator(control: FormControl): {[key: string]: any} {
+    if (control.value != null) {
+      let trimmedValue = control.value.trim();
+      if (trimmedValue.length > 120) {
+        return {
+          maxLimitReached: true,
+        };
+      }
+    }
   }
 
 export function validateCountryName(control: FormControl): {[key: string]: any} {
