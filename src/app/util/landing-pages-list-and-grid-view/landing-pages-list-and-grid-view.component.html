@@ -426,7 +426,7 @@
     </ng-template>
     <!---Share-->
     <ng-template #shareIcon let-landingPage="landingPage">
-        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && (vendorJourney && loggedInUserId==landingPage.userId)"
+        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && (vendorJourney )"
         data-toggle="tooltip" data-placement="top" title="Share" (click)="openShareListPopup(landingPage.id)">
             <i class="fa fa-share" aria-hidden="true"></i>
         <div class="del-icon"></div>
