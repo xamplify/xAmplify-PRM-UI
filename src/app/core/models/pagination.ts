@@ -120,4 +120,5 @@ export class Pagination {
 	/*** XNFR-409 *****/
 
 	source:string;
+	defaultLandingPage:boolean;
 }
