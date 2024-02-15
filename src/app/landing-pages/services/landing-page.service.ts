@@ -34,10 +34,7 @@ export class LandingPageService {
 
     list(pagination: Pagination,isPartnerLandingPage:boolean): Observable<any> {
         let listOrPartnerPagesUrl = "list";
-        if(pagination.source == 'VENDOR_JOURNEY'){
-            listOrPartnerPagesUrl = "partnerLandingPage"
-        }
-        else if(isPartnerLandingPage){
+        if(isPartnerLandingPage){
             listOrPartnerPagesUrl = "partner";
         /******XNFR-252*****/
         let subDomain = this.authenticationService.getSubDomain();

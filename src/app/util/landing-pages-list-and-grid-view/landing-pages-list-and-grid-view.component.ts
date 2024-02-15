@@ -155,7 +155,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
           this.pagination.vanityUrlFilter = true;
       }
       if(this.vendorJourney){
-        this.pagination.source = "VENDOR_JOURNEY"
+        this.pagination.source = "VENDOR_JOURNEY";
       }
       this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
           (response: any) => {
