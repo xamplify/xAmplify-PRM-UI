@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
+
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { LandingPage } from '../models/landing-page';
@@ -14,6 +15,7 @@ import {LandingPageAnalyticsPostDto} from '../models/landing-page-analytics-post
 import { Router } from '@angular/router';
 import { GeoLocationAnalytics } from "../../util/geo-location-analytics";
 import { UtilService } from 'app/core/services/util.service';
+import { ReferenceService } from 'app/core/services/reference.service';
 declare var  $: any;
 @Injectable()
 export class LandingPageService {
@@ -23,7 +25,7 @@ export class LandingPageService {
     URL = this.authenticationService.REST_URL + "landing-page/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/"
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
-         private router: Router,private utilService:UtilService) { }
+         private router: Router,private utilService:UtilService,public referenceService:ReferenceService) { }
 
     listDefault( pagination: Pagination ): Observable<any> {
         return this.http.post( this.URL + "default?access_token=" + this.authenticationService.access_token, pagination )
@@ -44,7 +46,8 @@ export class LandingPageService {
             }
         }
         }
-        return this.http.post( this.URL +listOrPartnerPagesUrl+"?searchKey="+pagination.searchKey+"&access_token=" + this.authenticationService.access_token, pagination )
+        let encodedUrl = this.referenceService.getEncodedUri(pagination.searchKey);
+        return this.http.post( this.URL +listOrPartnerPagesUrl+"?searchKey="+encodedUrl+"&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }

@@ -3454,4 +3454,12 @@ closeDamModalPopup(){
   $('.modal-backdrop fade in').remove();
 }
 
+getEncodedUri(input:string){
+  if(input!=undefined && $.trim(input).length>0){
+    return encodeURIComponent(input);
+  }else{
+    return input;
+  }
+}
+
 }
