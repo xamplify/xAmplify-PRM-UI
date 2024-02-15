@@ -3597,6 +3597,8 @@ button.btn.custom:hover{
 .image_effect:hover {
   transition: all 0.3s ease;
   transform: scale(1.05);
+  position: relative;
+  z-index: 9;
 }
 .cloud_legal_basis{
   margin-bottom: 12px;
@@ -3646,7 +3648,7 @@ button.btn.custom:hover{
   margin-top: -5px !important;
 }
 .pos_mrg_top8{
-  padding-top: 8px;
+  padding-top: 8px!important;
 }
 .email-template-preview{
   border-radius: 6px !important;
@@ -3693,6 +3695,7 @@ input.form-control.remove_checkbox_shadow{
 button.btn.btn-primary.inetgrations_activate_bgcolor{
   box-shadow: none !important;
   background-color: #29dd50 !important;
+  border-radius: 20px 0px 0px 20px !important;
 }
 a.Iconhover.custom-grid-icon.icon_margin{
   margin: 2px 2px !important;
@@ -3777,4 +3780,58 @@ border-bottom: unset!important;
 /*** color picker(Manikanta 31-1-2024) ***/
 .color-picker input {
   color: #000;
+}
+/* gear-icon */
+.mb-gear{
+  color:#fff!important;
+}
+/*edit-partner-campaigns */
+.ml-5{
+ margin-left: 5px;
+}
+/* leads Approval in myprofile */
+.display-grid{
+    display: grid;
+    padding: 5px;
+}
+.pt-7{
+padding-top:7px!important;
+}
+/* edit contact dropdown */
+.e-input-group, .e-input-group.e-control-wrapper, .e-float-input, .e-float-input.e-input-group, .e-float-input.e-control-wrapper, .e-float-input.e-input-group.e-control-wrapper {
+  color: #ffff!important;
+}
+.e-input-group:not(.e-disabled) .e-input-group-icon:hover, .e-input-group.e-control-wrapper:not(.e-disabled) .e-input-group-icon:hover {
+  color:#ffff!important;
+}
+.e-float-input .e-clear-icon, .e-float-input.e-control-wrapper .e-clear-icon, .e-input-group .e-clear-icon, .e-input-group.e-control-wrapper .e-clear-icon {
+  color:#ffff!important;
+}
+.e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
+  color: #ffff!important;
+}
+/*** Sudha Sri(14-2-2024) ***/
+.remove_table_bg, span.comment-color {
+  box-shadow: none!important;
+}
+tr.col-md-12.col-lg-12:hover {
+  box-shadow: none!important;
+  background: none!important;
+}
+.actions-block .fa-trash-o{
+  border: none !important;
+}
+.neg_mrg_top8{
+  margin-top: -8px !important;
+}
+button.btn.btn-primary.button-blue.add_icon_bg:hover{
+  background: #888a8c !important;
+  border: none !important;
+}
+/* dollar input border for add-form-until-comp */
+.input-group-prefix{
+  border-radius: 3px 0px 0px 3px;
+  background-color: #2c2f33 !important;
+  border: 1px solid #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
