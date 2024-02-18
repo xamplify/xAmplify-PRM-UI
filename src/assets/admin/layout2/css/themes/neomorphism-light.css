@@ -3992,3 +3992,8 @@ button.right-border.widthauto i.fa.fa-edit:hover{
   border: 1px solid #d0d5db !important;
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
 }
+/*** 18-02-2024(THARAK) *****/
+.preview-shown {
+  background-color: initial  !important;
+  box-shadow: initial;
+}
