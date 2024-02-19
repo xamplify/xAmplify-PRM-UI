@@ -485,12 +485,14 @@ bgIMage2:any;
         })  
   }
   htmlContent:any;
+  htmlString:any;
   previewTemplate(id: number,createdBy:number) {
     $(this.htmlContent).empty();
     this.vanityURLService.getLogInTemplateById(id, createdBy).subscribe(
       response => {
         if (response.statusCode == 200) {
-          this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(response.data.htmlBody);
+          this.htmlString = this.vanityURLService.sanitizeHtmlWithImportant(response.data.htmlBody)
+          this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(this.htmlString);
         } else {
           this.customResponse = new CustomResponse('ERROR', response.message, true)
         }

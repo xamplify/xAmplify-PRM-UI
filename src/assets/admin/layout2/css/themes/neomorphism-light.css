@@ -338,10 +338,15 @@ ul.alt-row-style1 li:hover,
 .col-block.col-block-active {
   background-color: #00a8e7 !important;
 }
-.col-block,
 .alert-info {
-  background-color: #22313a !important;
+  background-color: #f1f3fa!important;
   border: 1px solid #d0d5db !important;
+}
+/* sudha sri 14-02-2024*/
+.col-block{
+  background-color: #f1f3fa !important;
+  border: 1px solid #d0d5db !important;
+  border-radius: 10px;
 }
 .form-body label,
 .form-group label {
@@ -684,13 +689,15 @@ select {
 
 .input-group .input-group-addon {
   color: #000 !important;
-  background-color: #2b3c46 !important;
-  border: 1px solid #191b1e !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  border: 1px solid #d0d5db !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
 }
 .input-group-addon {
   color: #000 !important;
-  background-color: #2e3033;
-  border: 1px solid #191b1e !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  border: 1px solid #d0d5db !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
 }
 .input-group-addon {
   border: 1px solid #191b1e !important;
@@ -1474,7 +1481,7 @@ a.dropdown-toggle.circlebg-none-v {
 .nav .open > a,
 .nav .open > a:focus,
 .nav .open > a:hover {
-  background-color: #5a738e !important;
+  background-color: #e7ebed !important;
 }
 .page-header.navbar
   .top-menu
@@ -2513,10 +2520,13 @@ button.btn.custom {
 }
 @media (max-width: 767px) {
   .page-header.navbar {
-    background: #2b2f34 !important;
+    background: #f0f5fa !important;
+    box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff;
+    border-bottom: 1px solid #d0d5db;
+    /* background: #2b2f34 !important;
     box-shadow: 6.223021507263184px 6.223021507263184px 15.669065px 0 #000,
       10.776978px 10.776978px 20.669065px 0 #181b20 !important;
-    border: 0px solid #2f4857 !important;
+    border: 0px solid #2f4857 !important; */
   }
 }
 .bell_icon {
@@ -2775,7 +2785,7 @@ justify-content: center!important;
   .Btn-Green,     
   .Btn-Green:hover   
   .btn-primary,
-  .btn-primary:hover {
+  .btn-primary:hover,.btn.Btn-Green:hover{
     position: relative !important;
     background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
     color: #fff !important;
@@ -3354,6 +3364,8 @@ h3#notifications {
 .image_effect:hover {
   transition: all 0.3s ease;
   transform: scale(1.05);
+  position: relative;
+  z-index: 9;
 }
 .cloud_legal_basis{
   margin-bottom: 12px;
@@ -3909,7 +3921,7 @@ li.active a.text-white.active-tab-anchor-text{
 h5.mt0.pos_mrg_top12{
   margin-top: 13px !important;
 }
-button.swal2-confirm.styled {
+button.swal2-confirm.styled,.link button{
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;;
 }
 button.swal2-confirm.styled:hover {
@@ -3967,4 +3979,21 @@ li.filter.filter-box-selected{
 .list_view_deal{
   margin-right: 6px !important;
   margin-top: -4px !important;
+}
+/*** Sudha Sri(13-2-2024) ***/
+button.right-border.widthauto i.fa.fa-edit:hover{
+  color: #fff !important;
+}
+/* dollar input border for add-form-until-comp */
+.input-group-prefix{
+  border-radius: 3px 0px 0px 3px;
+  color: #000 !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  border: 1px solid #d0d5db !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+}
+/*** 18-02-2024(THARAK) *****/
+.preview-shown {
+  background-color: initial  !important;
+  box-shadow: initial;
 }
