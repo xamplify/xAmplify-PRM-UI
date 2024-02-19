@@ -139,7 +139,7 @@
                                     <th scope="row" class="text-center">
                                       <input class="pointer checkBox_shadow" type="checkbox"
                                         [(ngModel)]="isHeaderCheckBoxChecked"
-                                        (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId)">
+                                        (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId,partner.partnerCompanyId)">
                                     </th>
                                     <th scope="row">Entity Info</th>
                                   </tr>
@@ -149,13 +149,13 @@
                                     *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;"
                                     id="publishToPartners-{{adminAndTeamMember.userId}}"
                                     [class.row-selected]="selectedTeamMemberIds?.indexOf(adminAndTeamMember.userId)>-1"
-                                    (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
+                                    (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,partner.partnerCompanyId,$event)">
                                     <td class="text-center">
                                       <input class="pointer checkBox_shadow" type="checkbox"
                                         id="{{adminAndTeamMember.userId}}"
                                         [checked]="selectedTeamMemberIds?.indexOf(adminAndTeamMember.userId)>-1"
                                         name="adminOrTeamMemberCheckBox[]" value="{{adminAndTeamMember.userId}}"
-                                        (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
+                                        (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,partner.partnerCompanyId,$event)">
                                     </td>
                                     <td>
                                       <app-user-info [isPartnerEntityInfo]="false" [userInfo]="adminAndTeamMember">
@@ -325,3 +325,9 @@
   </button>
   <span *ngIf="!isAssetPublishedEmailNotification" class="required float-right">No emails will be sent.</span>
 </ng-template>
+<ng-container *ngIf="vendorJourney">
+<button type="submit" class="button bgcolor-unset"
+ (click)="publish()"><span
+   class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
+<button type="submit" class="btn Btn-Gray neg_mrg_top4" (click)="closePopupEmit()">Close</button>
+</ng-container>

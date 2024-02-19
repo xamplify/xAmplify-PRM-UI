@@ -452,9 +452,11 @@ copy(landingPage:any){
     openShareListPopup(landingPageId:any) {
         this.selectedLandingPageId = landingPageId;
         this.showShareListPopup = true;
+        $('#partnerCompaniesPopup').modal('show');
     }
     closeShareListPopup() {
         this.showShareListPopup = false;
+        $('#partnerCompaniesPopup').modal('hide');
     }
 
 }
