@@ -126,7 +126,7 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   callInitMethods(){
-    if(this.moduleType=="dashboardButtons"){
+    if(this.moduleType==this.properties.dashboardButtons){
       this.headerText = "Add Button";
       this.listHeaderText = "Your Dashboard Button's List";
     }else{
@@ -145,11 +145,16 @@ export class CustomLinksUtilComponent implements OnInit {
       this.referenceService.loading(this.httpRequestLoader, true);
       pagination.userId = this.authenticationService.getUserId();
       pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      pagination.filterKey = this.moduleType;
       this.vanityURLService.findCustomLinks(pagination).subscribe(result => {
         const data = result.data;
         if (result.statusCode === 200) {
           pagination.totalRecords = data.totalRecords;
-          this.customLinkDtos = data.dbButtons;
+          if(this.moduleType==this.properties.dashboardButtons){
+            this.customLinkDtos = data.dbButtons;
+          }else{
+            this.customLinkDtos = data.list;
+          }
           pagination = this.pagerService.getPagedItems(pagination, this.customLinkDtos);
         }
         this.customLinkDto = new DashboardButton();

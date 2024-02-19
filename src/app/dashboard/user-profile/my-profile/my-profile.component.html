@@ -236,11 +236,25 @@
                                     <!--------------Admin----------------------->
                                     <div class="my-profile-header-text">Admin</div>
                                     <!--Dashboard Buttons-->
-                                    <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}"
+                                    <li [ngClass]="{'active': activeTabName == properties?.dashboardButtons}"
                                         *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dbButtonSettings'}"
-                                            (click)="activateTab('dbButtonSettings');clearCustomResponse()">{{properties.dashboardButtons}}</a>
+                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName ==  properties?.dashboardButtons}"
+                                            (click)="activateTab(properties?.dashboardButtons);clearCustomResponse()">{{properties.dashboardButtons}}</a>
                                     </li>
+                                    <!--XNFR-459-->
+                                    <!--News & Announcements -->
+                                    <li [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}"
+                                        *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor">
+                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.newsAndAnnouncements}"
+                                            (click)="activateTab(properties?.newsAndAnnouncements);clearCustomResponse()">{{properties?.newsAndAnnouncements}}</a>
+                                    </li>
+                                    <!--Dashboard Banners-->
+                                    <li [ngClass]="{'active': activeTabName == properties?.dashboardBanners}"
+                                        *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor">
+                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.dashboardBanners}"
+                                            (click)="activateTab(properties?.dashboardBanners);clearCustomResponse()">{{properties?.dashboardBanners}}</a>
+                                    </li>
+                                    <!--XNFR-459-->
                                     <!--Your Templates-->
                                     <li *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor"
                                         [ngClass]="{'active': activeTabName == 'templates'}">
@@ -248,7 +262,6 @@
                                             (click)="activateTab('templates');clearCustomResponse()" translate>
                                             Your Templates </a>
                                     </li>
-
                                     <!--Unsubscribe Reasons-->
                                     <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
                                         [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}">
@@ -1858,8 +1871,8 @@
 
                                         <!-- Dashboard SETTINGS TAB -->
                                         <div class="tab-pane hidden-xs" *ngIf="isDashboardButtonsOptionClicked"
-                                            [ngClass]="{'active': activeTabName == 'dbButtonSettings'}">
-                                            <app-custom-links-util [moduleType]="'dashboardButtons'"></app-custom-links-util>
+                                            [ngClass]="{'active': activeTabName == properties?.dashboardButtons}">
+                                            <app-custom-links-util [moduleType]="properties?.dashboardButtons"></app-custom-links-util>
                                         </div>
 
                                         <!-- Customize Left Menu -->
@@ -2212,6 +2225,15 @@
                                             [ngClass]="{'active': activeTabName == properties?.addDomainsText}">
                                         </app-add-or-manage-domains>
 
+                                        <!--XNFR-459 News & Announcements-->
+                                        <div class="tab-pane hidden-xs" *ngIf="isNewsAndAnnouncementsOptionClicked" [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
+                                            <app-custom-links-util [moduleType]="properties?.newsAndAnnouncements"></app-custom-links-util>
+                                        </div>
+
+                                        <!--XNFR-459 Dashboard Banners-->
+                                        <div class="tab-pane hidden-xs" *ngIf="isDashboardBannersOptionClicked" [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
+                                            <app-custom-links-util [moduleType]="properties?.dashboardBanners"></app-custom-links-util>
+                                        </div>
 
                                         <!--video default player settings-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">

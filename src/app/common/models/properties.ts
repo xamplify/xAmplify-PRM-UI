@@ -324,6 +324,8 @@ export class Properties {
 
 	/***XNFR-454*****/
 	addDomainsText = "Domains";
+	newsAndAnnouncements = "News & Announcements";
+	dashboardBanners = "Dashboard Banners";
 
 
 

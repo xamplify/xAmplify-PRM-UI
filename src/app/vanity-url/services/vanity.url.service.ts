@@ -6,19 +6,23 @@ import { VanityURL } from "../models/vanity.url";
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
 import { DashboardButton } from "../models/dashboard.button";
 import { Pagination } from "app/core/models/pagination";
-import { Properties } from "app/common/models/properties";
 import { VanityEmailTempalte } from "app/email-template/models/vanity-email-template";
 import { Title, DOCUMENT } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { EnvService } from "app/env.service";
-import { SweetAlertParameterDto } from "app/common/models/sweet-alert-parameter-dto";
 import { CustomLoginTemplate } from "app/email-template/models/custom-login-template";
+import { ReferenceService } from "app/core/services/reference.service";
+
 @Injectable()
 export class VanityURLService {
-
+  URL = this.authenticationService.REST_URL;
+  ACCESS_TOKEN_SUFFIX_URL = "?access_token=";
+  CUSTOM_LINK_PREFIX_URL = this.authenticationService.REST_URL + "customLinks";
+  CUSTOM_LINK_URL = this.CUSTOM_LINK_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
 
   constructor(private http: Http, private authenticationService: AuthenticationService, private titleService: Title,
-     @Inject(DOCUMENT) private _document: HTMLDocument, private router: Router,public envService: EnvService) { }
+     @Inject(DOCUMENT) private _document: HTMLDocument, private router: Router,public envService: EnvService,
+     public referenceService:ReferenceService) { }
 
   getVanityURLDetails(companyProfileName: string): Observable<VanityURL> {
     const url = this.authenticationService.REST_URL + "v_url/companyDetails/" + companyProfileName;
@@ -55,11 +59,21 @@ export class VanityURLService {
   }
 
   findCustomLinks(pagination: Pagination) {
-    const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons" + "?access_token=" + this.authenticationService.access_token;
-    return this.http.post(url, pagination)
-      .map(this.extractData)
-      .catch(this.handleError);
+    if(pagination.filterKey=="Dashboard Buttons"){
+      const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons" + "?access_token=" + this.authenticationService.access_token;
+      return this.http.post(url, pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }else{
+      let userId = this.authenticationService.getUserId();
+      let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+      let findAllUrl = this.CUSTOM_LINK_PREFIX_URL+'/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+      return this.authenticationService.callGetMethod(findAllUrl);
+    }
+    
   }
+
+
 
   getDashboardButtonsForCarousel(companyProfileName: string) {
     const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons/" + companyProfileName + "?access_token=" + this.authenticationService.access_token;

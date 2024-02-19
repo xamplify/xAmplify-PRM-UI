@@ -333,6 +333,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/**XNFR-454****/
 	isAddDomainsOptionClicked: boolean;
 	isDashboardButtonsOptionClicked: boolean;
+	/**XNFR-459****/
+	isNewsAndAnnouncementsOptionClicked:boolean;
+	isDashboardBannersOptionClicked:boolean;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -1871,7 +1874,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.folders;
 			this.categoryPagination = new Pagination();
 			this.listCategories(this.categoryPagination);
-		} else if (this.activeTabName == "dbButtonSettings") {
+		} else if (this.activeTabName == this.properties.dashboardButtons) {
 			this.ngxloading = true;
 			this.isDashboardButtonsOptionClicked = false;
 			let self = this;
@@ -1879,7 +1882,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.isDashboardButtonsOptionClicked = true;
 				self.ngxloading = false;
 			}, 500);
-			this.activeTabHeader = 'Dashboard Buttons';
+			this.activeTabHeader = this.properties.dashboardButtons;
 		} else if (this.activeTabName == "customizeleftmenu") {
 			this.activeTabHeader = this.properties.customizeleftmenu;
 		} else if (this.activeTabName == "templates") {
@@ -2001,6 +2004,29 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.addDomainsText;
+
+		}
+		/****XNFR-459****/
+		else if(this.activeTabName==this.properties.newsAndAnnouncements){
+			this.ngxloading = true;
+			this.isNewsAndAnnouncementsOptionClicked = false;
+			let self = this;
+			setTimeout(() => {
+				self.isNewsAndAnnouncementsOptionClicked = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.newsAndAnnouncements;
+
+		}/****XNFR-459****/
+		else if(this.activeTabName==this.properties.dashboardBanners){
+			this.ngxloading = true;
+			this.isDashboardBannersOptionClicked = false;
+			let self = this;
+			setTimeout(() => {
+				self.isDashboardBannersOptionClicked = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.dashboardBanners;
 
 		}
 		this.referenceService.goToTop();
