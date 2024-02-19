@@ -2864,7 +2864,6 @@ checkMasterContactListSyncStatus(){
 		response => {
 			if (response.statusCode == 200) {
 				this.masterContactListSync= response.data;
-				this.masterContactListSync= false;
 			}
 		},
 		error => {
@@ -2877,7 +2876,7 @@ checkMasterContactListSyncStatus(){
 	this.contactService.syncContactsInMasterContactList(this.loggedInUserId).subscribe(
 		response => {
 			if (response.statusCode == 200) {
-				this.masterContactListSync = response.data;
+				this.masterContactListSync = true;
 				this.customResponse = new CustomResponse('SUCCESS', "We are Synchronizing your Master Contact List", true);
 			}
 		},

@@ -3875,9 +3875,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	
 syncContactsInMasterContactList(){
-
-	this.manageContact.syncContactsInMasterContactList();
 	this.masterContactListSync= true;
+	this.manageContact.syncContactsInMasterContactList();
 	
 }
 
