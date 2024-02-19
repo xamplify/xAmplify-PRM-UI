@@ -182,5 +182,23 @@ customResponse: CustomResponse = new CustomResponse();
     this.showCompanies();
   }
 
+  syncCompanyContactLists(){
+    this.customResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
+    this.companyService.syncCompanyContactLists(this.loggedInUserId)
+    .subscribe(
+      (data: any) => {
+        if (data.statusCode == 200) {
+          this.customResponse = new CustomResponse('SUCCESS', "Synchronization completed successfully", true);
+        }
+      },
+      error => {
+        this.referenceService.loading(this.httpRequestLoader, false);
+      },
+      () => { }
+    );
+  
+  }
+
+
   }
 

@@ -100,7 +100,13 @@
                           data-toggle="tooltip" data-placement="bottom" title="Grid View"><i class="fa fa-th-large p10"
                             aria-hidden="true"></i></span>
                       </ng-container> -->
-                      <a style="padding-left: 11px;">
+                      <a>
+                        <button class="button bgcolor-unset p0 btn-transitions" translate>
+                          <span class="btn btn-info" (click)="syncCompanyContactLists()"> Sync Companies
+                            <i aria-hidden="true"></i></span>
+                        </button>
+                      </a>
+                      <a>
                         <button class="button bgcolor-unset p0 btn-transitions" translate>
                           <span class="btn Btn-Green transition d-inline" (click)="addCompanyModalOpen()"> Add a Company
                             <i class="fa fa-plus" aria-hidden="true"></i></span>
