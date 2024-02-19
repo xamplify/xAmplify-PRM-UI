@@ -125,7 +125,7 @@
                     <app-add-company (closeEvent)="closeCompanyModal($event)" [actionType]="actionType"
                       [companyId]="companyId" (notifySubmitSuccess)="showSubmitCompanySuccess()"></app-add-company>
                   </div>
-                  <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'>
+                  <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0 pos_mrg_top8'>
                     <app-list-loader
                       *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"></app-list-loader>
                     <div class="table-responsive" *ngIf="!httpRequestLoader.isLoading">
@@ -155,10 +155,10 @@
                                 </h4>
 
 
-                               <h5 *ngIf="company?.email?.length>0 " class='moreipsis' style="margin-top: 4px;margin-bottom: 4px !important;">
-                                  <span  data-toggle="tooltip" data-placement="top"
-                                     title="{{company?.email}}">
-                                     <b>Email :</b> {{company?.email}}
+                                <h5 *ngIf="company?.email?.length>0 " class='moreipsis'
+                                  style="margin-top: 4px;margin-bottom: 4px !important;">
+                                  <span data-toggle="tooltip" data-placement="top" title="{{company?.email}}">
+                                    <b>Email :</b> {{company?.email}}
                                   </span>
                                 </h5>
                                 <h4 class="m0 moreipsis ListFontCu">
