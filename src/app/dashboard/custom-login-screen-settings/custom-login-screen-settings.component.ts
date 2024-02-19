@@ -233,6 +233,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   }
 
   previewTemplate(emailTemplate: CustomLoginTemplate) {
+    emailTemplate.htmlBody = this.vanityURLService.sanitizeHtmlWithImportant(emailTemplate.htmlBody)
     this.emailTemplatePreviewUtilComponent.previewEmailTemplate(emailTemplate);
   }
 
