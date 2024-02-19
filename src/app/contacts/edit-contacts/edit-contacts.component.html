@@ -96,6 +96,15 @@
 											Company:{{companyName}}
 										</span>
 									</span>
+									<button *ngIf="isDefaultContactList"
+										class="btn button pull-right  pd_0 bgcolor-unset" data-toggle="tooltip"
+										data-placement="top" title="Synchronize" translate (click)="confirmsync()"
+										[disabled]="masterContactListSync">
+										<span class="btn btn-primary transition new_list_text ">
+											<i class="fa fa-refresh" aria-hidden="true"></i>
+											Synchronize All Contacts
+										</span>
+									</button>
 								</div>
 							</div>
 							<!-- END DASHBOARD STATS -->
@@ -289,6 +298,11 @@
 						<app-response-message [customResponse]="emailNotificationCustomResponse"
 							*ngIf="emailNotificationCustomResponse.isVisible"></app-response-message>
 					</div>
+					<div *ngIf="masterContactListSync && !this.isPartnerUserList"
+						class="alert alert-dismissible alert-success mt10 mb-10">
+						<span><img alt="" src="assets/images/loadbar.gif" class="loader-image-customize"></span>
+						<span class="text-css">We are Synchronizing your Master Contact List</span>
+					</div>
 					<app-team-member-filter-option *ngIf="isPartner && showFilter"
 						[resetTMSelectedFilterIndex]="resetTMSelectedFilterIndex.asObservable()"
 						(teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
@@ -433,7 +447,7 @@
 														<button id="add_contact"
 															class="button mar-rgt_mar-lft bgcolor-unset"
 															(click)="addContactModalOpen()"
-															[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
+															[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9 || (masterContactListSync && !this.isPartnerUserList)"
 															translate>
 															<span class="btn Btn-Green transition txt_pd-top3">One at a
 																Time<i class="fa fa-plus"
@@ -445,7 +459,7 @@
 														<div class="btn-group p-top2"
 															*ngIf="!isSynchronizationList && !isFormList ">
 															<button id="copyFrom_clipboard" class="button bgcolor-unset"
-																[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
+																[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9 || (masterContactListSync && !this.isPartnerUserList)"
 																(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);"
 																translate>
 																<span class="btn Btn-Green transition txt_pd-top3">Copy
@@ -458,7 +472,7 @@
 														<div class="btn-group mt"
 															*ngIf="!isSynchronizationList && !isFormList ">
 															<div class="fileUpload marg-lft" id="upload_csv"
-																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
+																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9 || (masterContactListSync && !this.isPartnerUserList)"
 																translate>
 																<button class="button bgcolor-unset">
 																	<span
@@ -1021,6 +1035,7 @@
 																			data-placement="bottom"
 																			title="{{actionsDescription.contact_edit}}"
 																			(click)="editUserDetails(contact)"
+																			[class.disabled]="masterContactListSync && isDefaultContactList"
 																			*ngIf="((!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)) && !isSynchronizationList">
 																			<i class="fa fa-pencil-square-o IconCustomization"
 																				aria-hidden="true"></i>
@@ -1029,6 +1044,7 @@
 																		<a class="custom-icon" data-toggle="tooltip"
 																			data-placement="bottom"
 																			title="{{actionsDescription.contact_delete}}"
+																			[class.disabled]="masterContactListSync && isDefaultContactList"
 																			(click)="!isDefaultContactList ? deleteUserShowAlert(contact.id) : confirmdelete(contact.id)"
 																			*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 										&& ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))
@@ -1197,7 +1213,7 @@
 										</span>
 										<ul class="dropdown-menu pull-right">
 											<li [ngClass]="{'disabled': (selectedInvalidContactIds?.length == 0 && selectedContactListIds?.length == 0)}"
-											*ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads &&(authenticationService?.module?.adminOrSuperVisor || loggedInUserId == uploadedUserId)">
+												*ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads &&(authenticationService?.module?.adminOrSuperVisor || loggedInUserId == uploadedUserId)">
 												<a id="delete_button" (click)="invalidContactsShowAlert()" translate>
 													Delete</a>
 											</li>

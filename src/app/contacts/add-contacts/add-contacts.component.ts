@@ -111,6 +111,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     pageNumber: any;
     paginationType = "";
     loading = false;
+    pageLoader = false;
     isListLoader = false;
     isDuplicateEmailId = false;
 
@@ -150,7 +151,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     marketoImageBlur: boolean = false;
     marketoImageNormal: boolean = false;
-
+    masterContactListSync: boolean = false;
     hubspotImageBlur: boolean = false;
     hubspotImageNormal: boolean = false;
     hubSpotSelectContactListOption:any;
@@ -2894,7 +2895,6 @@ salesForceVanityAuthentication() {
     }
 
     partnerEmails(){
-
         try {
             this.contactService.getPartnerEmails()
                 .subscribe(
@@ -2915,10 +2915,12 @@ salesForceVanityAuthentication() {
     }
 
     loadContactListsNames() {
+        this.loading = true;
         try {
             this.contactService.loadContactListsNames()
                 .subscribe(
                 ( data: any ) => {
+                    this.loading = false;
                     this.xtremandLogger.info( data );
                     this.contactLists = data.listOfUserLists;
                     for ( let i = 0; i < data.names.length; i++ ) {
@@ -2926,6 +2928,7 @@ salesForceVanityAuthentication() {
                     }
                 },
                 ( error: any ) => {
+                    this.loading = false;
                     this.xtremandLogger.error( error );
                     this.xtremandLogger.errorPage( error );
                 },
@@ -3066,9 +3069,10 @@ salesForceVanityAuthentication() {
             this.loggedInUserId = this.authenticationService.getUserId();
             this.partnerEmails();
             this.socialContactImage();
+            this.checkMasterContactListSyncStatus();
             //this.hideModal();
             if (!this.assignLeads) {
-                this.loadContactListsNames();
+               this.loadContactListsNames();
             }
 
          	/*if (localStorage.getItem('vanityUrlFilter')) {
@@ -5092,4 +5096,21 @@ this.xtremandLogger.log("ConnectWise Configuration Checking done")
     }
 
     //XNFR-403
+
+    checkMasterContactListSyncStatus() {
+        this.pageLoader = true;
+        this.contactService.checkMasterContactListSyncStatus(this.loggedInUserId).subscribe(
+            response => {
+                
+                if (response.statusCode == 200) {
+                    this.masterContactListSync = response.data;
+                }
+                this.pageLoader = false;
+            },
+            error => {
+               this.pageLoader = false;
+                this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+            }
+        );
+    }
 }

@@ -55,6 +55,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() isDefaultPartnerList: boolean;
 	@Input() isDefaultContactList: boolean;
 	@Input() isSynchronizationList: boolean;
+	@Input() isPartnerUserList: boolean;
+	@Input() masterContactListSync: boolean;
 	@Input('value') value: number;
 	@Input() isFormList: boolean;
 	@Input() companyName: any;
@@ -735,7 +737,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						//this.allUsers = this.contactsByType.allContactsCount;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList,this.isPartnerUserList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
 						$("tr.new_row").each(function () {
 							$(this).remove();
 						});
@@ -966,7 +968,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList,this.isPartnerUserList, this.isDefaultContactList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
 						$("tr.new_row").each(function () {
 							$(this).remove();
 						});
@@ -1665,7 +1667,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList, this.isSynchronizationList,this.isPartnerUserList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
 						$("tr.new_row").each(function () {
 							$(this).remove();
 
@@ -3870,5 +3872,33 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
+
+	
+syncContactsInMasterContactList(){
+
+	this.manageContact.syncContactsInMasterContactList();
+	this.masterContactListSync= true;
+	
+}
+
+
+confirmsync(){
+	let self = this;
+	swal({
+		title: 'Are you sure?',
+		text: 'Clicking "Sync" will update this list by adding all the existing contacts',
+		type: 'success',
+		showCancelButton: true,
+		swalConfirmButtonColor: '#54a7e9',
+		swalCancelButtonColor: '#999',
+		confirmButtonText: 'Sync'
+
+	}).then(function () {
+		self.syncContactsInMasterContactList();
+	}, function (dismiss: any) {
+		console.log('you clicked on option' + dismiss);
+	});
+
+}
 
 }
