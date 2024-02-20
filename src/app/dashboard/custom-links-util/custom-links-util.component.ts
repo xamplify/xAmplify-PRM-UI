@@ -1,7 +1,6 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { DashboardButton } from 'app/vanity-url/models/dashboard.button';
 import { Pagination } from 'app/core/models/pagination';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { CustomResponse } from 'app/common/models/custom-response';
@@ -13,7 +12,7 @@ import { CustomLinkDto } from 'app/vanity-url/models/custom-link-dto';
 import { FormBuilder, FormControl, FormGroup,Validators } from '@angular/forms';
 import { max120CharactersLimitValidator,noWhiteSpaceOrMax20CharactersLimitValidator,max40CharactersLimitValidator } from 'app/form-validator';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
-
+import { CustomLinkType } from '../models/custom-link-type.enum';
 
 declare var swal: any;
 
@@ -31,9 +30,11 @@ export class CustomLinksUtilComponent implements OnInit {
   buttonActionType: boolean;
   iconNamesFilePath: string;
   iconsList: any = [];
+  customLinkTypes :Array<any> = new Array<any>();
   selectedProtocol: string;
   saving = false;
   @Input() moduleType:string="";
+  defaultType: string = CustomLinkType[CustomLinkType.NEWS];  
   headerText = "";
   listHeaderText = "";
   formErrors = {
@@ -68,13 +69,16 @@ export class CustomLinksUtilComponent implements OnInit {
     private xtremandLogger: XtremandLogger, private properties: Properties, private httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
     private regularExpressions:RegularExpressions) {
-      this.setDefaultValuesForForm();
       this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
-    this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
+     this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
       this.iconsList = result.icon_names;
     }, error => {
       console.log(error);
     });
+    let news = {'id':CustomLinkType[CustomLinkType.NEWS],'value':"News"};
+    let announcements = {'id':CustomLinkType[CustomLinkType.ANNOUNCEMENTS],'value':"Announcements"};
+    this.customLinkTypes.push(news);
+    this.customLinkTypes.push(announcements);
   }
   
   private setDefaultValuesForForm() {
@@ -84,7 +88,8 @@ export class CustomLinksUtilComponent implements OnInit {
       link: new FormControl(),
       icon: new FormControl(),
       description: new FormControl(),
-      openLinksInNewTab: new FormControl()
+      openLinksInNewTab: new FormControl(),
+      customLinkType:new FormControl()
     });
   }
 
@@ -96,6 +101,7 @@ export class CustomLinksUtilComponent implements OnInit {
 			'icon': [this.customLinkDto.buttonIcon],
 			'description': [this.customLinkDto.buttonDescription, Validators.compose([max120CharactersLimitValidator])],
 			'openLinksInNewTab': [this.customLinkDto.openInNewTab],
+      'customLinkType':['',Validators.required]
 		});
 
 		this.customLinkForm.valueChanges
@@ -130,13 +136,15 @@ export class CustomLinksUtilComponent implements OnInit {
       this.headerText = "Add Button";
       this.listHeaderText = "Your Dashboard Button's List";
     }else{
-      
+      this.headerText = "Add News & Announcements";
+      this.listHeaderText = "Your News & Announcements List";
     }
     this.buttonActionType = true;
     this.selectedProtocol = 'http';
     this.customLinkDto = new CustomLinkDto();
     this.setDefaultValuesForForm();
     this.buildCustomLinkForm();
+    this.customLinkForm.get('customLinkType').setValue(this.defaultType);
     this.findLinks(this.pagination);
   }
 
@@ -157,7 +165,7 @@ export class CustomLinksUtilComponent implements OnInit {
           }
           pagination = this.pagerService.getPagedItems(pagination, this.customLinkDtos);
         }
-        this.customLinkDto = new DashboardButton();
+        this.customLinkDto = new CustomLinkDto();
         this.buttonActionType = true;
         this.referenceService.loading(this.httpRequestLoader, false);
       });
@@ -168,7 +176,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.saving = true;
     this.customLinkDto = new CustomLinkDto();
     this.setCustomLinkDtoProperties();
-    this.vanityURLService.saveCustomLinkDetails(this.customLinkDto).subscribe(result => {
+    this.vanityURLService.saveCustomLinkDetails(this.customLinkDto,this.moduleType).subscribe(result => {
       this.saving = false;
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT, true);
@@ -181,7 +189,9 @@ export class CustomLinksUtilComponent implements OnInit {
       }
       this.referenceService.goToTop();
     }, error => {
-      this.customResponse = new CustomResponse('ERROR', "Error while saving dashboard button", true)
+      if(this.moduleType==this.properties.dashboardButtons){
+        this.customResponse = new CustomResponse('ERROR', "Error while saving dashboard button", true);
+      }
       this.referenceService.goToTop();
       this.saving = false;
     });
@@ -197,6 +207,14 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customLinkDto.openInNewTab = customFormDetails.openLinksInNewTab;
     this.customLinkDto.vendorId = this.authenticationService.getUserId();
     this.customLinkDto.companyProfileName = this.authenticationService.companyProfileName;
+    if(this.moduleType==this.properties.newsAndAnnouncements){
+      this.customLinkDto.type = customFormDetails.customLinkType;
+    }
+    this.customLinkDto.title = this.customLinkDto.buttonTitle;
+    this.customLinkDto.link = this.customLinkDto.buttonLink;
+    this.customLinkDto.description = this.customLinkDto.buttonDescription;
+    this.customLinkDto.icon = this.customLinkDto.buttonIcon;
+    this.customLinkDto.loggedInUserId = this.authenticationService.getUserId();
   }
 
   edit(id: number) {
@@ -238,7 +256,7 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   cancel() {
-    this.customLinkDto = new DashboardButton();
+    this.customLinkDto = new CustomLinkDto();
     this.buttonActionType = true;
   }
 

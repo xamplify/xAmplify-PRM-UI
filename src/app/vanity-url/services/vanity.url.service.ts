@@ -12,9 +12,11 @@ import { Router } from "@angular/router";
 import { EnvService } from "app/env.service";
 import { CustomLoginTemplate } from "app/email-template/models/custom-login-template";
 import { ReferenceService } from "app/core/services/reference.service";
+import { Properties } from "app/common/models/properties";
 
 @Injectable()
 export class VanityURLService {
+  properties:Properties = new Properties();
   URL = this.authenticationService.REST_URL;
   ACCESS_TOKEN_SUFFIX_URL = "?access_token=";
   CUSTOM_LINK_PREFIX_URL = this.authenticationService.REST_URL + "customLinks";
@@ -44,22 +46,27 @@ export class VanityURLService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
-  saveCustomLinkDetails(dashboardButton: DashboardButton) {
-    const url = this.authenticationService.REST_URL + "v_url/save/dashboardButton?access_token=" + this.authenticationService.access_token;
-    return this.http.post(url, dashboardButton)
+  saveCustomLinkDetails(customLink: any,moduleType:string) {
+    let url = "";
+    if(moduleType==this.properties.dashboardButtons){
+      url = this.authenticationService.REST_URL + "v_url/save/dashboardButton?access_token=" + this.authenticationService.access_token;
+    }else if(moduleType==this.properties.newsAndAnnouncements){
+      url = this.CUSTOM_LINK_URL+this.authenticationService.access_token;
+    }
+    return this.http.post(url, customLink)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  updateCustomLinkDetails(dashboardButton: DashboardButton) {
+  updateCustomLinkDetails(customLink: any) {
     const url = this.authenticationService.REST_URL + "v_url/update/dashboardButton" + "?access_token=" + this.authenticationService.access_token;
-    return this.http.post(url, dashboardButton)
+    return this.http.post(url, customLink)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   findCustomLinks(pagination: Pagination) {
-    if(pagination.filterKey=="Dashboard Buttons"){
+    if(pagination.filterKey==this.properties.dashboardButtons){
       const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons" + "?access_token=" + this.authenticationService.access_token;
       return this.http.post(url, pagination)
         .map(this.extractData)
@@ -67,7 +74,7 @@ export class VanityURLService {
     }else{
       let userId = this.authenticationService.getUserId();
       let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-      let findAllUrl = this.CUSTOM_LINK_PREFIX_URL+'/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+      let findAllUrl = this.CUSTOM_LINK_PREFIX_URL+'news/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
       return this.authenticationService.callGetMethod(findAllUrl);
     }
     

@@ -9,4 +9,6 @@ export class DashboardButton {
     buttonIcon: string;
     openInNewTab: boolean;
     openInNewTabTarget: string;    
+    type = "";
+
 }

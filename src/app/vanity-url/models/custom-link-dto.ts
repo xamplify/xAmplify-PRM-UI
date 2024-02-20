@@ -9,4 +9,12 @@ export class CustomLinkDto {
     buttonIcon: string;
     openInNewTab: boolean;
     openInNewTabTarget: string; 
+    type = "";
+
+    title = "";
+    link = "";
+    icon = "";
+    description = "";
+    loggedInUserId = 0;
+
 }

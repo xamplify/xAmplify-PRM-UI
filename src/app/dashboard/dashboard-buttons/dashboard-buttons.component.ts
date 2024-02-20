@@ -66,7 +66,7 @@ export class DashboardButtonsComponent implements OnInit {
     this.saving = true;
     this.dashboardButton.vendorId = this.authenticationService.getUserId();
     this.dashboardButton.companyProfileName = this.authenticationService.companyProfileName;
-    this.vanityURLService.saveCustomLinkDetails(this.dashboardButton).subscribe(result => {
+    this.vanityURLService.saveCustomLinkDetails(this.dashboardButton,this.properties.dashboardButtons).subscribe(result => {
       this.saving = false;
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT, true);

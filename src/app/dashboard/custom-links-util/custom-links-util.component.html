@@ -30,10 +30,17 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <!--Subtitle-->
-        <div class="form-group">
+        <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
           <label>Subtitle</label>
           <input class="form-control" type="text" placeholder="Subtitle" formControlName="subTitle" autocomplete="off" />
           <span *ngIf="formErrors.subTitle" class="required">{{ formErrors.subTitle }}</span>
+        </div>
+        <!--News & Announcements-->
+        <div class="form-group" *ngIf="moduleType==properties?.newsAndAnnouncements">
+          <label>Please select type</label>
+          <select formControlName="customLinkType" class="form-control">
+            <option [ngValue]="type.id" *ngFor="let type of customLinkTypes">{{type.value}}</option>
+          </select>
         </div>
         <!--Icon-->
           <div class="form-group">
