@@ -13,8 +13,9 @@ import { FormBuilder, FormControl, FormGroup,Validators } from '@angular/forms';
 import { max120CharactersLimitValidator,noWhiteSpaceOrMax20CharactersLimitValidator,max40CharactersLimitValidator } from 'app/form-validator';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CustomLinkType } from '../models/custom-link-type.enum';
+import { ErrorResponse } from 'app/util/models/error-response';
 
-declare var swal: any;
+declare var swal: any, $:any;
 
 @Component({
   selector: 'app-custom-links-util',
@@ -37,6 +38,7 @@ export class CustomLinksUtilComponent implements OnInit {
   defaultType: string = CustomLinkType[CustomLinkType.NEWS];  
   headerText = "";
   listHeaderText = "";
+  isDuplicateTitle = false;
   formErrors = {
     'title': '',
     'link': '',
@@ -174,6 +176,7 @@ export class CustomLinksUtilComponent implements OnInit {
 
   save() {
     this.saving = true;
+    this.isDuplicateTitle = false;
     this.customResponse = new CustomResponse();
     this.customLinkDto = new CustomLinkDto();
     this.setCustomLinkDtoProperties();
@@ -193,6 +196,19 @@ export class CustomLinksUtilComponent implements OnInit {
         this.findLinks(this.pagination);
       } else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
+      }else if(result.statusCode==400){
+        let data = result.data;
+        let errorResponses = data.errorMessages;
+        let self = this;
+        self.isDuplicateTitle = false;
+        self.customLinkForm.controls['title'].setErrors(null);
+        $.each(errorResponses, function (_index: number, errorResponse: ErrorResponse) {
+          let field = errorResponse.field;
+          if ("title" == field) {
+            self.customLinkForm.controls['title'].setErrors({'title': 'duplicate'});
+            self.isDuplicateTitle = true;
+          }
+        });
       }
       this.referenceService.goToTop();
     }, error => {

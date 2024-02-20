@@ -11,6 +11,7 @@
           <label>Title</label>
           <input class="form-control" type="text" placeholder="Title" required formControlName="title" autocomplete="off" required />
           <span *ngIf="formErrors.title" class="required">{{ formErrors.title }}</span>
+          <span *ngIf="isDuplicateTitle" class="required">Already Exists</span>
         </div>
         <!--Link-->
         <div class="form-group">
@@ -81,9 +82,10 @@
     <table class='table tgrid table-hover'>
       <thead>
         <tr>
-          <th class="dashboardButtonTablewidth">Title</th>
-          <th class="dashboardButtonTablewidth1">Link</th>
-          <th class="text-center dashboardButtonTablewidth2">Actions</th>
+          <th>Title</th>
+          <th>Link</th>
+          <th *ngIf="moduleType==properties?.newsAndAnnouncements || properties?.dashboardBanners">Type</th>
+          <th class="float-right">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -96,6 +98,7 @@
             <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.icon}}" aria-hidden="true"></i></span>{{item.title}}</td>
             <td>{{item.link}}</td>
           </ng-container>
+          <td *ngIf="moduleType==properties?.newsAndAnnouncements || properties?.dashboardBanners">{{item.type}}</td>
           <td>
             <div class="actions-block override-actions">
               <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit">
