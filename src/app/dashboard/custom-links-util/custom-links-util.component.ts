@@ -10,7 +10,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { CustomLinkDto } from 'app/vanity-url/models/custom-link-dto';
 import { FormBuilder, FormControl, FormGroup,Validators } from '@angular/forms';
-import { max120CharactersLimitValidator,noWhiteSpaceOrMax20CharactersLimitValidator,max40CharactersLimitValidator } from 'app/form-validator';
+import { max120CharactersLimitValidator,noWhiteSpaceOrMax20CharactersLimitValidator,max40CharactersLimitValidator, noWhiteSpaceValidatorWithOutLimit } from 'app/form-validator';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CustomLinkType } from '../models/custom-link-type.enum';
 import { ErrorResponse } from 'app/util/models/error-response';
@@ -50,20 +50,20 @@ export class CustomLinksUtilComponent implements OnInit {
 
   validationMessages = {
       'title': {
-          'required': 'Title is required',
-          'whitespace': 'Empty spaces are not allowed',
-          'maxLimitReached': 'Title cannot be more than 20 characters long',
+          'required': 'Title is required.',
+          'whitespace': 'Empty spaces are not allowed.',
+          'maxLimitReached': 'Title cannot be more than 20 characters long.',
       },
       'link': {
-          'required': 'Link is required',
-          'maxlength': 'Link cannot be more than 2083 characters long',
-          'pattern': 'Invalid Link Pattern'
+          'required': 'Link is required.',
+          'maxlength': 'Link cannot be more than 2083 characters long.',
+          'pattern': 'Invalid Link Pattern.'
       },
       'subTitle': {
-          'maxLimitReached': 'Subtitle cannot be more than 40 characters long',
+          'maxLimitReached': 'Subtitle cannot be more than 40 characters long.',
       },
       'description': {
-        'maxLimitReached': 'description cannot be more than 120 characters long',
+        'maxLimitReached': 'description cannot be more than 120 characters long.',
       
       }
   };
@@ -97,15 +97,26 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
 	buildCustomLinkForm() {
-		this.customLinkForm = this.formBuilder.group({
-			'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceOrMax20CharactersLimitValidator])],
-			'subTitle': [this.customLinkDto.buttonSubTitle,Validators.compose([max40CharactersLimitValidator])],
-      'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.URL_PATTERN)])],
-			'icon': [this.customLinkDto.buttonIcon],
-			'description': [this.customLinkDto.buttonDescription, Validators.compose([max120CharactersLimitValidator])],
-			'openLinksInNewTab': [this.customLinkDto.openInNewTab],
-      'customLinkType':['',Validators.required]
-		});
+    if(this.moduleType==this.properties.dashboardButtons){
+      this.customLinkForm = this.formBuilder.group({
+        'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceOrMax20CharactersLimitValidator])],
+        'subTitle': [this.customLinkDto.buttonSubTitle,Validators.compose([max40CharactersLimitValidator])],
+        'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.URL_PATTERN)])],
+        'icon': [this.customLinkDto.buttonIcon],
+        'description': [this.customLinkDto.buttonDescription, Validators.compose([max120CharactersLimitValidator])],
+        'openLinksInNewTab': [this.customLinkDto.openInNewTab],
+        'customLinkType':['']
+      });
+    }else{
+      this.customLinkForm = this.formBuilder.group({
+        'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceValidatorWithOutLimit])],
+        'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.URL_PATTERN)])],
+        'icon': [this.customLinkDto.buttonIcon],
+        'description': [this.customLinkDto.buttonDescription, Validators.compose([noWhiteSpaceValidatorWithOutLimit])],
+        'openLinksInNewTab': [this.customLinkDto.openInNewTab],
+        'customLinkType':['',Validators.required]
+      });
+    }
 
 		this.customLinkForm.valueChanges
 			.subscribe(data => this.getSubmittedFormValues(data));
@@ -113,7 +124,16 @@ export class CustomLinksUtilComponent implements OnInit {
 		this.getSubmittedFormValues(); 
 	}
 
+  validateTitle(){
+    if(this.moduleType==this.properties.newsAndAnnouncements || this.moduleType==this.properties.dashboardBanners){
+      this.removeDuplicateTitleErrorClass();
+      this.saving = false;
+    }
+    
+  }
+
 	getSubmittedFormValues(data?: any) {
+    this.isDuplicateTitle = false;
 		if (!this.customLinkForm) { return; }
 		const form = this.customLinkForm;
 		for (const field in this.formErrors) {
@@ -178,8 +198,7 @@ export class CustomLinksUtilComponent implements OnInit {
   save() {
     this.ngxLoading = true;
     this.saving = true;
-    this.isDuplicateTitle = false;
-    this.customLinkForm.controls['title'].setErrors(null);
+    this.removeDuplicateTitleErrorClass();
     this.customResponse = new CustomResponse();
     this.customLinkDto = new CustomLinkDto();
     this.setCustomLinkDtoProperties();
@@ -221,6 +240,11 @@ export class CustomLinksUtilComponent implements OnInit {
       this.saving = false;
       this.ngxLoading = false;
     });
+  }
+
+  private removeDuplicateTitleErrorClass() {
+    this.isDuplicateTitle = false;
+    this.customLinkForm.controls['title'].setErrors(null);
   }
 
   private setCustomLinkDtoProperties() {

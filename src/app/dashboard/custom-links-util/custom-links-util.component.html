@@ -10,7 +10,7 @@
         <!--Title-->
         <div class="form-group">
           <label>Title</label>
-          <input class="form-control" type="text" placeholder="Title" required formControlName="title" autocomplete="off" required />
+          <input class="form-control" type="text" placeholder="Title" required formControlName="title" autocomplete="off" required (input)="validateTitle()" />
           <span *ngIf="formErrors.title" class="required">{{ formErrors.title }}</span>
           <span *ngIf="isDuplicateTitle" class="required">Already Exists</span>
         </div>
@@ -45,7 +45,7 @@
           </select>
         </div>
         <!--Icon-->
-          <div class="form-group">
+          <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
             <label>Icon</label>
             <div class="flex">
               <select formControlName="icon" class="form-control">
