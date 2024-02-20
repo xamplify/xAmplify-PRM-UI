@@ -88,17 +88,21 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of pagination.pagedItems">
-          <td Class="brnTitleTextCu"><span><i class="fa {{item.buttonIcon}}"></i></span>
-            {{item.buttonTitle}}</td>
-          <td>{{item.buttonLink}}</td>
+          <ng-container *ngIf="moduleType==properties?.dashboardButtons">
+            <td class="brnTitleTextCu"><span><i class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
+            <td>{{item.buttonLink}}</td>
+          </ng-container>
+          <ng-container *ngIf="moduleType==properties?.newsAndAnnouncements || properties?.dashboardBanners">
+            <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.icon}}" aria-hidden="true"></i></span>{{item.title}}</td>
+            <td>{{item.link}}</td>
+          </ng-container>
           <td>
             <div class="actions-block override-actions">
-              <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit"> <i
-                  class="fa fa-pencil-square-o"></i>
+              <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit">
+                <i class="fa fa-pencil-square-o"></i>
                 <div class="clickicons"></div>
               </a>
-              <a class="custom-icon" (click)="showAlert(item.id)" data-toggle="tooltip" data-placement="top"
-                title="Delete">
+              <a class="custom-icon" (click)="showAlert(item.id)" data-toggle="tooltip" data-placement="top" title="Delete">
                 <i class="fa fa-trash-o"></i>
                 <div class="del-icon"></div>
               </a>

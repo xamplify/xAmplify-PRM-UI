@@ -157,7 +157,7 @@ export class CustomLinksUtilComponent implements OnInit {
       this.vanityURLService.findCustomLinks(pagination).subscribe(result => {
         const data = result.data;
         if (result.statusCode === 200) {
-          pagination.totalRecords = data.totalRecords;
+            pagination.totalRecords = data.totalRecords;
           if(this.moduleType==this.properties.dashboardButtons){
             this.customLinkDtos = data.dbButtons;
           }else{
@@ -174,12 +174,19 @@ export class CustomLinksUtilComponent implements OnInit {
 
   save() {
     this.saving = true;
+    this.customResponse = new CustomResponse();
     this.customLinkDto = new CustomLinkDto();
     this.setCustomLinkDtoProperties();
     this.vanityURLService.saveCustomLinkDetails(this.customLinkDto,this.moduleType).subscribe(result => {
       this.saving = false;
       if (result.statusCode === 200) {
-        this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT, true);
+        let message = "";
+        if(this.moduleType==this.properties.dashboardButtons){
+          message = this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT;
+        }else{
+          message = result.message;
+        }
+        this.customResponse = new CustomResponse('SUCCESS',message, true);
         this.customLinkDto = new CustomLinkDto(); 
         this.saving = false;
         this.setDefaultValuesForForm();
