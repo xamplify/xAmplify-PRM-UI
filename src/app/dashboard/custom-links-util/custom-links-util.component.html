@@ -1,4 +1,5 @@
 <form [formGroup]="customLinkForm" autocomplete="off">
+  <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <fieldset>
     <legend>{{headerText}}</legend>
       <div class="form-group col-md-12">

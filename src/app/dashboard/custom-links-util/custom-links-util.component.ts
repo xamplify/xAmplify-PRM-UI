@@ -39,6 +39,7 @@ export class CustomLinksUtilComponent implements OnInit {
   headerText = "";
   listHeaderText = "";
   isDuplicateTitle = false;
+  ngxLoading = false;
   formErrors = {
     'title': '',
     'link': '',
@@ -175,13 +176,14 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   save() {
+    this.ngxLoading = true;
     this.saving = true;
     this.isDuplicateTitle = false;
+    this.customLinkForm.controls['title'].setErrors(null);
     this.customResponse = new CustomResponse();
     this.customLinkDto = new CustomLinkDto();
     this.setCustomLinkDtoProperties();
     this.vanityURLService.saveCustomLinkDetails(this.customLinkDto,this.moduleType).subscribe(result => {
-      this.saving = false;
       if (result.statusCode === 200) {
         let message = "";
         if(this.moduleType==this.properties.dashboardButtons){
@@ -193,6 +195,7 @@ export class CustomLinksUtilComponent implements OnInit {
         this.customLinkDto = new CustomLinkDto(); 
         this.saving = false;
         this.setDefaultValuesForForm();
+        this.customLinkForm.get('customLinkType').setValue(this.defaultType);
         this.findLinks(this.pagination);
       } else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
@@ -200,8 +203,6 @@ export class CustomLinksUtilComponent implements OnInit {
         let data = result.data;
         let errorResponses = data.errorMessages;
         let self = this;
-        self.isDuplicateTitle = false;
-        self.customLinkForm.controls['title'].setErrors(null);
         $.each(errorResponses, function (_index: number, errorResponse: ErrorResponse) {
           let field = errorResponse.field;
           if ("title" == field) {
@@ -211,12 +212,14 @@ export class CustomLinksUtilComponent implements OnInit {
         });
       }
       this.referenceService.goToTop();
+      this.ngxLoading = false;
     }, error => {
       if(this.moduleType==this.properties.dashboardButtons){
         this.customResponse = new CustomResponse('ERROR', "Error while saving dashboard button", true);
       }
       this.referenceService.goToTop();
       this.saving = false;
+      this.ngxLoading = false;
     });
   }
 
