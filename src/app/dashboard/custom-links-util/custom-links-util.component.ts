@@ -258,6 +258,7 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   edit(id: number) {
+    this.customResponse = new CustomResponse();
     this.buttonActionType = false;
     this.saving = false;
     this.referenceService.goToTop();
@@ -272,6 +273,7 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   update() {
+    this.setCustomLinkDtoProperties();
     if(this.moduleType==this.properties.dashboardButtons){
       this.updateDashboardButton();
     }else{
@@ -354,7 +356,5 @@ export class CustomLinksUtilComponent implements OnInit {
     this.selectedProtocol = selectedProtocolOption;
   }
 
-  validateValue(value){
-    console.log(value);
-  }
+
 }

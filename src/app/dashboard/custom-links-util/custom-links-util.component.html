@@ -92,7 +92,7 @@
       <tbody>
         <tr *ngFor="let item of pagination.pagedItems">
           <ng-container *ngIf="moduleType==properties?.dashboardButtons">
-            <td class="brnTitleTextCu"><span><i class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
+            <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
             <td>{{item.buttonLink}}</td>
           </ng-container>
           <ng-container *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">

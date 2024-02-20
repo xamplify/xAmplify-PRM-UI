@@ -45,7 +45,6 @@ import { RegionalStatisticsAnalyticsComponent } from './dashboard-analytics-comp
 import { VideoStatisticsAnalyticsComponent } from './dashboard-analytics-components/video-statistics-analytics/video-statistics-analytics.component';
 import { EmailStatsAnalyticsComponent } from './dashboard-analytics-components/email-stats-analytics/email-stats-analytics.component';
 import { SocialAccountsAnalyticsComponent } from './dashboard-analytics-components/social-accounts-analytics/social-accounts-analytics.component';
-import { DashboardButtonsComponent } from './dashboard-buttons/dashboard-buttons.component';
 import { DashboardButtonsCarouselComponent } from './dashboard-buttons-carousel/dashboard-buttons-carousel.component';
 import { VanityEmailTemplatesComponent } from 'app/email-template/vanity-email-templates/vanity-email-templates.component';
 import { ModuleAccessComponent } from './module-access/module-access.component';
@@ -112,7 +111,6 @@ import { CustomLinksUtilComponent } from './custom-links-util/custom-links-util.
         VideoStatisticsAnalyticsComponent,
         EmailStatsAnalyticsComponent,
         SocialAccountsAnalyticsComponent,
-        DashboardButtonsComponent,        
         DashboardButtonsCarouselComponent, 
         VanityEmailTemplatesComponent,
         ModuleAccessComponent,
