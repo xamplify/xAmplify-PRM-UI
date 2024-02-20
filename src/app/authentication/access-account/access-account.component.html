@@ -24,8 +24,13 @@
 				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" [showCloseIcon]="false"></app-response-message>
 			</div>
 		</div>
-		<app-copyright [styleOne]="flase" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
-		<app-copyright [styleOne]="flase" *ngIf="vanityURLEnabled"></app-copyright>
+		<ng-container *ngIf="!isActivateAccountPage">
+			<app-copyright [styleOne]="flase" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
+			<app-copyright [styleOne]="flase" *ngIf="vanityURLEnabled"></app-copyright>
+		</ng-container>
+		<ng-container *ngIf="isActivateAccountPage">
+			<app-copyright></app-copyright>
+		</ng-container>
 	</div>
 
 	<!--Style One-->
