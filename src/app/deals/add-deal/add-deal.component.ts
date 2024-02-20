@@ -983,7 +983,7 @@ export class AddDealComponent implements OnInit {
                 || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type)) {
               this.showCustomForm = true;
             }
-            if ( !this.activeCRMDetails.activeCRM || "CONNECTWISE" === this.activeCRMDetails.type) {
+            if (!this.activeCRMDetails.activeCRM || this.activeCRMDetails.type) {
               if (this.actionType !== 'view' && (this.actionType !== 'edit' || this.deal.associatedContact === undefined)) {
                 this.showAttachLeadButton = true;
               }
