@@ -72,16 +72,14 @@ export function noWhiteSpaceValidator(control: FormControl): {[key: string]: any
   }
 
   export function noWhiteSpaceValidatorWithOutLimit(control: FormControl): {[key: string]: any} {
-    if(control.value!=null){
-        if(control.value.length>0){
-            if ((control.value).trim()=="") {
-                return {
-                    whitespace: true
-                };
-              }
-        }
+    if (control.value != null) {
+      let trimmedValue = control.value.trim();
+      if (trimmedValue.length==0) {
+        return {
+          whitespace: true,
+        };
+      }
     }
-    
   }
 
 export function noWhiteSpaceValidatorWithMin3(control: FormControl): {[key: string]: any} {

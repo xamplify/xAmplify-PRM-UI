@@ -112,7 +112,7 @@ export class CustomLinksUtilComponent implements OnInit {
         'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceValidatorWithOutLimit])],
         'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.URL_PATTERN)])],
         'icon': [this.customLinkDto.buttonIcon],
-        'description': [this.customLinkDto.buttonDescription, Validators.compose([noWhiteSpaceValidatorWithOutLimit])],
+        'description': [this.customLinkDto.buttonDescription],
         'openLinksInNewTab': [this.customLinkDto.openInNewTab],
         'customLinkType':['',Validators.required]
       });
@@ -124,22 +124,13 @@ export class CustomLinksUtilComponent implements OnInit {
 		this.getSubmittedFormValues(); 
 	}
 
-  validateTitle(){
-    if(this.moduleType==this.properties.newsAndAnnouncements || this.moduleType==this.properties.dashboardBanners){
-      this.removeDuplicateTitleErrorClass();
-      this.saving = false;
-    }
-    
-  }
 
 	getSubmittedFormValues(data?: any) {
-    this.isDuplicateTitle = false;
 		if (!this.customLinkForm) { return; }
 		const form = this.customLinkForm;
 		for (const field in this.formErrors) {
 			this.formErrors[field] = '';
 			const control = form.get(field);
-
 			if (control && control.dirty && !control.valid) {
 				const messages = this.validationMessages[field];
 				for (const key in control.errors) {
@@ -198,7 +189,6 @@ export class CustomLinksUtilComponent implements OnInit {
   save() {
     this.ngxLoading = true;
     this.saving = true;
-    this.removeDuplicateTitleErrorClass();
     this.customResponse = new CustomResponse();
     this.customLinkDto = new CustomLinkDto();
     this.setCustomLinkDtoProperties();
@@ -212,25 +202,29 @@ export class CustomLinksUtilComponent implements OnInit {
         }
         this.customResponse = new CustomResponse('SUCCESS',message, true);
         this.customLinkDto = new CustomLinkDto(); 
-        this.saving = false;
         this.setDefaultValuesForForm();
+        this.buildCustomLinkForm();
         this.customLinkForm.get('customLinkType').setValue(this.defaultType);
         this.findLinks(this.pagination);
       } else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
       }else if(result.statusCode==400){
+        $("#customLinkTitle").removeClass('ng-valid');
+        $("#customLinkTitle").removeClass('ng-invalid');
         let data = result.data;
         let errorResponses = data.errorMessages;
         let self = this;
         $.each(errorResponses, function (_index: number, errorResponse: ErrorResponse) {
           let field = errorResponse.field;
           if ("title" == field) {
-            self.customLinkForm.controls['title'].setErrors({'title': 'duplicate'});
-            self.isDuplicateTitle = true;
+             self.customResponse = new CustomResponse('ERROR', "Title Already Exists", true);
+             $("#customLinkTitle").removeClass('ng-valid');
+             $("#customLinkTitle").addClass('ng-invalid');
           }
         });
       }
       this.referenceService.goToTop();
+      this.saving = false;
       this.ngxLoading = false;
     }, error => {
       if(this.moduleType==this.properties.dashboardButtons){
@@ -242,10 +236,6 @@ export class CustomLinksUtilComponent implements OnInit {
     });
   }
 
-  private removeDuplicateTitleErrorClass() {
-    this.isDuplicateTitle = false;
-    this.customLinkForm.controls['title'].setErrors(null);
-  }
 
   private setCustomLinkDtoProperties() {
     let customFormDetails = this.customLinkForm.value;

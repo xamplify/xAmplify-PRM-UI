@@ -1,4 +1,4 @@
-<form [formGroup]="customLinkForm" autocomplete="off">
+<form [formGroup]="customLinkForm" autocomplete="off" (keydown.enter)="$event.preventDefault()">
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <fieldset>
     <legend>{{headerText}}</legend>
@@ -10,9 +10,8 @@
         <!--Title-->
         <div class="form-group">
           <label>Title</label>
-          <input class="form-control" type="text" placeholder="Title" required formControlName="title" autocomplete="off" required (input)="validateTitle()" />
+          <input class="form-control" type="text" placeholder="Title" required formControlName="title" autocomplete="off" required id="customLinkTitle" />
           <span *ngIf="formErrors.title" class="required">{{ formErrors.title }}</span>
-          <span *ngIf="isDuplicateTitle" class="required">Already Exists</span>
         </div>
         <!--Link-->
         <div class="form-group">
