@@ -65,11 +65,12 @@
     <div class="form-row">
       <div class="form-group col-md-12">
         <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
-          [disabled]="!customLinkForm.valid || saving" (click)="saving=true;save();"><span
-            class="btn btn-primary transition txt_pd-top3">Save</span></button>
-        <button *ngIf="!buttonActionType" type="submit" class="button_blue bgcolor-unset"
-          [disabled]="!customLinkDto.buttonTitle || !customLinkDto.buttonLink" (click)="update()"><span
-            class="btn btn-primary transition txt_pd-top3">Update</span></button>
+          [disabled]="!customLinkForm.valid || saving" (click)="saving=true;save();">
+          <span class="btn btn-primary transition txt_pd-top3">Save</span>
+        </button>
+        <button *ngIf="!buttonActionType" type="submit" class="button_blue bgcolor-unset"  [disabled]="!customLinkForm.valid || saving" (click)="saving=true;update()">
+            <span class="btn btn-primary transition txt_pd-top3">Update</span>
+        </button>
         <button *ngIf="!buttonActionType" type="submit" class="btn btn-danger" (click)="cancel()">Cancel</button>
       </div>
     </div>
@@ -84,7 +85,7 @@
         <tr>
           <th>Title</th>
           <th>Link</th>
-          <th *ngIf="moduleType==properties?.newsAndAnnouncements || properties?.dashboardBanners">Type</th>
+          <th *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">Type {{moduleType}}</th>
           <th class="float-right">Actions</th>
         </tr>
       </thead>
@@ -94,11 +95,11 @@
             <td class="brnTitleTextCu"><span><i class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
             <td>{{item.buttonLink}}</td>
           </ng-container>
-          <ng-container *ngIf="moduleType==properties?.newsAndAnnouncements || properties?.dashboardBanners">
+          <ng-container *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">
             <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.icon}}" aria-hidden="true"></i></span>{{item.title}}</td>
             <td>{{item.link}}</td>
           </ng-container>
-          <td *ngIf="moduleType==properties?.newsAndAnnouncements || properties?.dashboardBanners">{{item.type}}</td>
+          <td *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">{{item.type}}</td>
           <td>
             <div class="actions-block override-actions">
               <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit">

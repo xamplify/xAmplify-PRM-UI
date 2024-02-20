@@ -259,13 +259,28 @@ export class CustomLinksUtilComponent implements OnInit {
 
   edit(id: number) {
     this.buttonActionType = false;
+    this.saving = false;
     this.referenceService.goToTop();
-    const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
-    this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
+    if(this.moduleType==this.properties.dashboardButtons){
+      const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
+      this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
+    }else{
+      alert("Work In Progress");
+    }
+   
     this.buildCustomLinkForm();
   }
 
-  update(id: number) {
+  update() {
+    if(this.moduleType==this.properties.dashboardButtons){
+      this.updateDashboardButton();
+    }else{
+      alert("Work In Prgoress");
+    }
+    
+  }
+
+  private updateDashboardButton() {
     this.vanityURLService.updateCustomLinkDetails(this.customLinkDto).subscribe(result => {
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT, true);
@@ -276,7 +291,7 @@ export class CustomLinksUtilComponent implements OnInit {
       }
       this.referenceService.goToTop();
     }, error => {
-      this.customResponse = new CustomResponse('ERROR', "Error while updating dashboard button", true)
+      this.customResponse = new CustomResponse('ERROR', "Error while updating dashboard button", true);
       this.referenceService.goToTop();
     });
   }
@@ -298,6 +313,9 @@ export class CustomLinksUtilComponent implements OnInit {
   cancel() {
     this.customLinkDto = new CustomLinkDto();
     this.buttonActionType = true;
+    this.setDefaultValuesForForm();
+    this.buildCustomLinkForm();
+    this.customLinkForm.get('customLinkType').setValue(this.defaultType);
   }
 
   showAlert(dashboardButtonId: number) {
