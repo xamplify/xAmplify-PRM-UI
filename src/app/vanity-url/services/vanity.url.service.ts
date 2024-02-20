@@ -87,9 +87,16 @@ export class VanityURLService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
-  deleteCustomLink(id: number) {
-    const url = this.authenticationService.REST_URL + "v_url/delete/dashboardButton/" + id + "?access_token=" + this.authenticationService.access_token;
-    return this.http.get(url).map(this.extractData).catch(this.handleError);
+  deleteCustomLink(id: number,moduleType:string) {
+    let url = "";
+    if(moduleType==this.properties.dashboardButtons){
+      url = this.authenticationService.REST_URL + "v_url/delete/dashboardButton/" + id + "?access_token=" + this.authenticationService.access_token;
+      return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }else if(moduleType==this.properties.newsAndAnnouncements || moduleType==this.properties.dashboardBanners){
+      url = this.CUSTOM_LINK_PREFIX_URL+'/id/'+id+'/loggedInUserId/'+this.authenticationService.getUserId()+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+      return this.authenticationService.callDeleteMethod(url);
+    }
+    
   }
 
   getCustomLinkIcons(iconsFilePath: string): Observable<any> {

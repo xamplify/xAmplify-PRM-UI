@@ -298,16 +298,23 @@ export class CustomLinksUtilComponent implements OnInit {
     });
   }
 
-  delete(id: number) {
-    this.vanityURLService.deleteCustomLink(id).subscribe(result => {
+  delete(item: any) {
+    this.vanityURLService.deleteCustomLink(item.id,this.moduleType).subscribe(result => {
       if (result.statusCode === 200) {
-        this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_DELETE_TEXT, true);
+        let message = "";
+        if(this.moduleType==this.properties.dashboardButtons){
+          message = this.properties.VANITY_URL_DB_BUTTON_DELETE_TEXT;
+        }else{
+          message = item.title+" deleted successfully";
+        }
+        this.customResponse = new CustomResponse('SUCCESS', message, true);
         this.referenceService.goToTop();
         this.pagination.pageIndex = 1;
         this.callInitMethods();
       }
     }, error => {
-      this.customResponse = new CustomResponse('ERROR', "Error while deleting dashboard button", true)
+      let message = this.moduleType==this.properties.dashboardButtons ? 'Error while deleting dashboard button':this.properties.serverErrorMessage;
+      this.customResponse = new CustomResponse('ERROR', message, true);
       this.referenceService.goToTop();
     });
   }
@@ -320,7 +327,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customLinkForm.get('customLinkType').setValue(this.defaultType);
   }
 
-  showAlert(dashboardButtonId: number) {
+  showAlert(item: any) {
     try {
       let self = this;
       swal({
@@ -333,7 +340,7 @@ export class CustomLinksUtilComponent implements OnInit {
         confirmButtonText: 'Yes, delete it!'
 
       }).then(function (myData: any) {
-        self.delete(dashboardButtonId);
+        self.delete(item);
       }, function (dismiss: any) {
         console.log('you clicked on option' + dismiss);
       });
