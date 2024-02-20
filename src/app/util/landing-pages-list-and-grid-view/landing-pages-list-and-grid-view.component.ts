@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild,Renderer,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,Renderer,Input,Output,EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -75,7 +75,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
       private utilService: UtilService, private route: ActivatedRoute,public renderer:Renderer,
-      private vanityUrlService:VanityURLService,public properties:Properties) {
+      private vanityUrlService:VanityURLService,public properties:Properties, private changeDetectorRef: ChangeDetectorRef,) {
         this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
         this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.renderer = this.renderer;
@@ -97,6 +97,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
     this.listLandingPages(this.pagination);
     this.showMessageOnTop();
 }
+
 
   private sefDefaultViewType() {
     if(this.vendorJourney){
@@ -452,7 +453,7 @@ copy(landingPage:any){
     openShareListPopup(landingPageId:any) {
         this.selectedLandingPageId = landingPageId;
         this.showShareListPopup = true;
-        $('#partnerCompaniesPopup').modal('show');
+        setTimeout(() => $('#partnerCompaniesPopup').modal('show'), 0);
     }
     closeShareListPopup() {
         this.showShareListPopup = false;

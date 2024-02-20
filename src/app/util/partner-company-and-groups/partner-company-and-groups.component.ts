@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { DamService } from 'app/dam/services/dam.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -24,7 +24,7 @@ declare var $: any, swal: any;
   providers: [HttpRequestLoader, SortOption, Properties, DamService,CallActionSwitch]
 
 })
-export class PartnerCompanyAndGroupsComponent implements OnInit {
+export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
  
 	ngxLoading = false;
 	loggedInUserId: number = 0;
@@ -99,7 +99,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 					this.selectedTab = 1;
 					this.findPartnerCompanies(this.pagination);
 					this.disableOrEnablePartnerListsTab();
-
 				}
 			}else{
 				$('#partners-li').addClass('active');
@@ -111,6 +110,25 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
 			this.resetFields();
 		}
+	}
+
+	ngAfterViewInit(){
+		if (this.moduleName != undefined && $.trim(this.moduleName).length > 0) {
+			if(this.inputId!=undefined && this.inputId>0){
+				if (this.isPublishedToPartnerGroups) {
+					$('#partnerGroups-li').addClass('active');
+					$('#partnerGroups').addClass('tab-pane fade in active');
+					this.disableOrEnablePartnerCompaniesTab();
+				}else {
+					$('#partners-li').addClass('active');
+					$('#partners').addClass('tab-pane fade in active');
+					this.disableOrEnablePartnerListsTab();
+				}
+			}else{
+				$('#partners-li').addClass('active');
+				$('#partners').addClass('tab-pane fade in active');
+			}
+		} 
 	}
 
 	findPartnerCompanies(pagination: Pagination) { 
@@ -357,7 +375,9 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedTeamMemberIds, currentPageSelectedIds);
 			this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
 			this.selectedPartnershipIds.splice($.inArray(partnershipId, this.selectedPartnershipIds), 1);
-				
+			if(this.companyAndPartnerMap.has(companyId)){
+				this.companyAndPartnerMap.delete(companyId);
+			}
 		}
 		this.disableOrEnablePartnerListsTab();
 		ev.stopPropagation();
@@ -385,12 +405,13 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	}
 
 	clearTabs(){
-		let selectedTabName = this.vendorJourney? (this.selectedTab == 1? "partnerts": "partnerGroups"): this.selectedTabName();
+		let selectedTabName = this.vendorJourney? (this.selectedTab == 1? "partners": "partnerGroups"): this.selectedTabName();
 
 		if ("partners" == selectedTabName) {
 			this.selectedTeamMemberIds = [];
 			this.selectedPartnershipIds = [];
 			this.isHeaderCheckBoxChecked = false;
+			this.companyAndPartnerMap.clear();
 			this.disableOrEnablePartnerListsTab();
 		} else {
 			this.selectedPartnerGroupIds = [];
@@ -524,7 +545,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	
 	publish() {
 		this.customResponse = new CustomResponse();
-		if (this.selectedPartnershipIds.length > 0 || this.isEdit) {
+		if (this.selectedTeamMemberIds.length > 0 || this.selectedPartnerGroupIds ) {
 			this.setValuesAndPublish();
 		} else {
 			this.referenceService.goToTop();
@@ -541,21 +562,8 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			  "vendorJourneyLandingPageId": this.inputId,
 			  "companyPartnerIds": null
 		  }
-		  if(this.companyAndPartnerMap != null && this.companyAndPartnerMap!= undefined ){
-			let allcompanies =  JSON.parse(JSON.stringify(Array.from(this.companyAndPartnerMap.keys())));
-			for (let companyId  of allcompanies) {
-				let compnayTeamIds = this.companyAndPartnerMap.get(parseInt(companyId));
-				for(let teamId of compnayTeamIds){
-					if(!this.selectedTeamMemberIds.some(id=>id == teamId)){
-						this.companyAndPartnerMap.get(parseInt(companyId)).splice($.inArray(teamId, this.companyAndPartnerMap.get(parseInt(companyId))), 1)
-					}
-					if(this.companyAndPartnerMap.get(parseInt(companyId)).length == 0){
-						this.companyAndPartnerMap.delete(parseInt(companyId));
-					}
-				}
-			}
+		  if(this.companyAndPartnerMap != undefined && this.companyAndPartnerMap!= null && this.companyAndPartnerMap.size > 0 ){
 			shareLandingPageDTO['companyPartnerIds'] = this.companyAndPartnerMap;
-			console.log(shareLandingPageDTO)
 		  }
 	  	this.shareLandingPageToPartners(shareLandingPageDTO);
 		}

@@ -434,19 +434,19 @@
     </ng-template>
     <!--XNFR-432-->
     <app-copy-modal-popup #copyModalPopupComponent (copyModalPopupOutputEmitter)="copyModalPopupOutputReceiver($event)"></app-copy-modal-popup>
-    <div *ngIf="showShareListPopup" class="modal fade right" id="partnerCompaniesPopup" tabindex="-1" role="dialog"
-        aria-labelledby="partnerCompaniesPopup" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                    <app-partner-company-and-groups [moduleName]="'dam'"
-                        [isPublishedToPartnerGroups] = "true"
-                        [vendorJourney]="true"
-                        [inputId]="selectedLandingPageId"
-                        (closePopup) = closeShareListPopup() >
+    <ng-container *ngIf="showShareListPopup">
+        <div [style.display]="showShareListPopup ? 'block' : 'none'" class="modal fade right" id="partnerCompaniesPopup"
+            role="dialog" aria-labelledby="partnerCompaniesPopup" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <app-partner-company-and-groups *ngIf="showShareListPopup" [moduleName]="'My Profile'"
+                        [isPublishedToPartnerGroups]="false" [vendorJourney]="true" [inputId]="selectedLandingPageId"
+                        (closePopup)=closeShareListPopup()>
                     </app-partner-company-and-groups>
                 </div>
+            </div>
         </div>
-    </div>
+    </ng-container>
     <!--<app-partner-company-modal-popup [companyId]="loggedInUserCompanyId" [vendorJourney] = "vendorJourney" [vendorJourneyLandingPageId] = "selectedLandingPageId"
    *ngIf="showShareListPopup" (notifyOtherComponent)="closeShareListPopup()">
 </app-partner-company-modal-popup>-->
