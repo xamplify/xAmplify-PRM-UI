@@ -6,9 +6,12 @@
 	<!--Style Two-->
 	<div *ngIf="!isStyleOne">
 		<div class="content" [ngClass] = "{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
-			<div style="background-color: rgba(0,0,0,.0);">
+			<div style="background-color: rgba(0,0,0,.0);" *ngIf="!isActivateAccountPage">
 				<app-video [newLogin]="false" *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
 				<app-video [newLogin]="false" *ngIf="vanityURLEnabled"></app-video>
+			 </div>
+			 <div style="background-color: rgba(0,0,0,.0);" *ngIf="isActivateAccountPage">
+				<app-video></app-video>
 			 </div>
 			<div class="my-container">
 			<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
