@@ -332,6 +332,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	leadApprovalCustomResponse: CustomResponse = new CustomResponse();
 	/**XNFR-454****/
 	isAddDomainsOptionClicked: boolean;
+	isDashboardButtonsOptionClicked: boolean;
+	/**XNFR-459****/
+	isNewsAndAnnouncementsOptionClicked:boolean;
+	isDashboardBannersOptionClicked:boolean;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -983,9 +987,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	updateUserProfileForm: FormGroup;
 	validateUpdateUserProfileForm() {
 		var urlPatternRegEx = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
-		var mobileNumberPatternRegEx = /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/;
-		// var nameRegEx = /[a-zA-Z0-9]+[a-zA-Z0-9 ]+/;
-		var charWithCommaRegEx = /^(?!.*?([A-D]).*?\1)[A-D](?:,[A-D])*$/;
 		this.updateUserProfileForm = this.fb.group({
 			'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
 			'lastName': [this.userData.lastName],
@@ -1873,8 +1874,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.folders;
 			this.categoryPagination = new Pagination();
 			this.listCategories(this.categoryPagination);
-		} else if (this.activeTabName == "dbButtonSettings") {
-			this.activeTabHeader = 'Dashboard Buttons';
+		} else if (this.activeTabName == this.properties.dashboardButtons) {
+			this.ngxloading = true;
+			this.isDashboardButtonsOptionClicked = false;
+			let self = this;
+			setTimeout(() => {
+				self.isDashboardButtonsOptionClicked = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.dashboardButtons;
 		} else if (this.activeTabName == "customizeleftmenu") {
 			this.activeTabHeader = this.properties.customizeleftmenu;
 		} else if (this.activeTabName == "templates") {
@@ -1996,6 +2004,29 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.addDomainsText;
+
+		}
+		/****XNFR-459****/
+		else if(this.activeTabName==this.properties.newsAndAnnouncements){
+			this.ngxloading = true;
+			this.isNewsAndAnnouncementsOptionClicked = false;
+			let self = this;
+			setTimeout(() => {
+				self.isNewsAndAnnouncementsOptionClicked = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.newsAndAnnouncements;
+
+		}/****XNFR-459****/
+		else if(this.activeTabName==this.properties.dashboardBanners){
+			this.ngxloading = true;
+			this.isDashboardBannersOptionClicked = false;
+			let self = this;
+			setTimeout(() => {
+				self.isDashboardBannersOptionClicked = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.dashboardBanners;
 
 		}
 		this.referenceService.goToTop();

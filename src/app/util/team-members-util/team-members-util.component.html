@@ -270,7 +270,7 @@
                         <a *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner"
                           data-toggle="tooltip" data-placement="bottom" title="Edit"
                           (click)="edit(teamMember.teamMemberId)"
-                          [className]="isLoggedInAsTeamMember? 'pointer-events-none':'custom-icon'">
+                          [className]="isLoggedInAsTeamMember? 'pointer-events-none custom-icon':'custom-icon'">
                           <i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
                           <div class="clickicons"></div>
                         </a>
