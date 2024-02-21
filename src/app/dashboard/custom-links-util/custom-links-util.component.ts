@@ -275,6 +275,7 @@ export class CustomLinksUtilComponent implements OnInit {
     if(this.moduleType==this.properties.dashboardButtons){
       const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
       this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
+      this.buildCustomLinkForm();
     }else{
       this.ngxLoading = true;
       this.vanityURLService.getCustomLinkDetailsById(id).subscribe(
