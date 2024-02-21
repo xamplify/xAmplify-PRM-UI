@@ -58,11 +58,22 @@ export class VanityURLService {
       .catch(this.handleError);
   }
 
-  updateCustomLinkDetails(customLink: any) {
-    const url = this.authenticationService.REST_URL + "v_url/update/dashboardButton" + "?access_token=" + this.authenticationService.access_token;
-    return this.http.post(url, customLink)
-      .map(this.extractData)
-      .catch(this.handleError);
+  getCustomLinkDetailsById(id: number) {
+    let url = this.CUSTOM_LINK_PREFIX_URL+'/id/'+id+'/loggedInUserId/'+this.authenticationService.getUserId()+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+  updateCustomLinkDetails(customLink: any,moduleType:string) {
+    if(moduleType==this.properties.dashboardButtons){
+      const url = this.authenticationService.REST_URL + "v_url/update/dashboardButton" + "?access_token=" + this.authenticationService.access_token;
+      return this.http.post(url, customLink)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }else{
+      let url = this.CUSTOM_LINK_PREFIX_URL+'/'+customLink.id+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+      return this.authenticationService.callPutMethod(url,customLink);
+    }
+    
   }
 
   findCustomLinks(pagination: Pagination) {

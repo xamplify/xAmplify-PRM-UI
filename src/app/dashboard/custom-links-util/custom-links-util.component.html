@@ -68,7 +68,8 @@
           [disabled]="!customLinkForm.valid || saving" (click)="saving=true;save();">
           <span class="btn btn-primary transition txt_pd-top3">Save</span>
         </button>
-        <button *ngIf="!buttonActionType" type="submit" class="button_blue bgcolor-unset"  [disabled]="!customLinkForm.valid || saving" (click)="saving=true;update()">
+        <button *ngIf="!buttonActionType" type="submit" class="button_blue bgcolor-unset" 
+           [disabled]="!customLinkForm.valid || saving" (click)="saving=true;update()">
             <span class="btn btn-primary transition txt_pd-top3">Update</span>
         </button>
         <button *ngIf="!buttonActionType" type="submit" class="btn btn-danger" (click)="cancel()">Cancel</button>
@@ -77,6 +78,7 @@
   </fieldset>
 </form>
 
+<!--List-->
 <fieldset *ngIf="pagination.totalRecords!==0" style="margin: 20px 2px;">
   <legend>{{listHeaderText}}</legend>
   <div *ngIf="pagination.totalRecords!==0" class="table-responsive" style="overflow-x: inherit; padding:15px;">

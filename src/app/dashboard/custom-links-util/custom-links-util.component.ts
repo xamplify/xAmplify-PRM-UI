@@ -114,7 +114,7 @@ export class CustomLinksUtilComponent implements OnInit {
         'icon': [this.customLinkDto.buttonIcon],
         'description': [this.customLinkDto.buttonDescription],
         'openLinksInNewTab': [this.customLinkDto.openInNewTab],
-        'customLinkType':['',Validators.required]
+        'customLinkType':[this.customLinkDto.type,Validators.required]
       });
     }
 
@@ -163,6 +163,7 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   findLinks(pagination: Pagination) {
+    this.referenceService.scrollSmoothToTop();
     if (this.authenticationService.vanityURLEnabled) {
       this.referenceService.loading(this.httpRequestLoader, true);
       pagination.userId = this.authenticationService.getUserId();
@@ -179,8 +180,12 @@ export class CustomLinksUtilComponent implements OnInit {
           }
           pagination = this.pagerService.getPagedItems(pagination, this.customLinkDtos);
         }
-        this.customLinkDto = new CustomLinkDto();
-        this.buttonActionType = true;
+        if(this.customLinkDto.id>0){
+          this.buttonActionType = false;
+        }else{
+          this.customLinkDto = new CustomLinkDto();
+          this.buttonActionType = true;
+        }
         this.referenceService.loading(this.httpRequestLoader, false);
       });
     }
@@ -227,9 +232,13 @@ export class CustomLinksUtilComponent implements OnInit {
       this.saving = false;
       this.ngxLoading = false;
     }, error => {
+      let message = "";
       if(this.moduleType==this.properties.dashboardButtons){
-        this.customResponse = new CustomResponse('ERROR', "Error while saving dashboard button", true);
+        message = "Error while saving dashboard button";
+      }else{
+        message = this.properties.serverErrorMessage;
       }
+      this.customResponse = new CustomResponse('ERROR', message, true);
       this.referenceService.goToTop();
       this.saving = false;
       this.ngxLoading = false;
@@ -247,7 +256,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customLinkDto.openInNewTab = customFormDetails.openLinksInNewTab;
     this.customLinkDto.vendorId = this.authenticationService.getUserId();
     this.customLinkDto.companyProfileName = this.authenticationService.companyProfileName;
-    if(this.moduleType==this.properties.newsAndAnnouncements){
+    if(this.moduleType==(this.properties.newsAndAnnouncements || this.properties.dashboardBanners)){
       this.customLinkDto.type = customFormDetails.customLinkType;
     }
     this.customLinkDto.title = this.customLinkDto.buttonTitle;
@@ -255,6 +264,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customLinkDto.description = this.customLinkDto.buttonDescription;
     this.customLinkDto.icon = this.customLinkDto.buttonIcon;
     this.customLinkDto.loggedInUserId = this.authenticationService.getUserId();
+    this.customLinkDto.openLinkInNewTab = this.customLinkDto.openInNewTab;
   }
 
   edit(id: number) {
@@ -266,10 +276,27 @@ export class CustomLinksUtilComponent implements OnInit {
       const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
       this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
     }else{
-      alert("Work In Progress");
+      this.ngxLoading = true;
+      this.vanityURLService.getCustomLinkDetailsById(id).subscribe(
+        response=>{
+            this.customLinkDto = response.data;
+            this.customLinkDto.buttonTitle = this.customLinkDto.title;
+            this.customLinkDto.buttonIcon = this.customLinkDto.icon;
+            this.customLinkDto.buttonLink = this.customLinkDto.link;
+            this.customLinkDto.buttonDescription = this.customLinkDto.description;
+            this.customLinkDto.openInNewTab = this.customLinkDto.openLinkInNewTab;
+            this.buildCustomLinkForm();
+        },error=>{
+          this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+          this.buttonActionType = true;
+          this.customLinkDto = new CustomLinkDto();
+          this.setDefaultValuesForForm();
+          this.buildCustomLinkForm();
+          this.customLinkForm.get('customLinkType').setValue(this.defaultType);
+          this.ngxLoading = false;
+        });
     }
-   
-    this.buildCustomLinkForm();
+    this.ngxLoading = false;
   }
 
   update() {
@@ -277,13 +304,50 @@ export class CustomLinksUtilComponent implements OnInit {
     if(this.moduleType==this.properties.dashboardButtons){
       this.updateDashboardButton();
     }else{
-      alert("Work In Prgoress");
+      this.customResponse = new CustomResponse();
+      this.ngxLoading = true;
+      this.setCustomLinkDtoProperties();
+      this.vanityURLService.updateCustomLinkDetails(this.customLinkDto,this.moduleType).subscribe(
+        response=>{
+          this.referenceService.scrollSmoothToTop();
+          let statusCode = response.statusCode;
+          if(statusCode==200){
+            this.customResponse = new CustomResponse('SUCCESS',response.message,true);
+            this.findLinks(this.pagination);
+            this.ngxLoading = false;
+            this.saving = false;
+            this.buttonActionType = false;
+          }else{
+            $("#customLinkTitle").removeClass('ng-valid');
+            $("#customLinkTitle").removeClass('ng-invalid');
+            let data = response.data;
+            let errorResponses = data.errorMessages;
+            let self = this;
+            $.each(errorResponses, function (_index: number, errorResponse: ErrorResponse) {
+              let field = errorResponse.field;
+              if ("title" == field) {
+                self.customResponse = new CustomResponse('ERROR', "Title Already Exists", true);
+                $("#customLinkTitle").removeClass('ng-valid');
+                $("#customLinkTitle").addClass('ng-invalid');
+              }
+            });
+            this.saving = false;
+            this.buttonActionType = false;
+          }
+        },error=>{
+          this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+          this.referenceService.goToTop();
+          this.saving = false;
+          this.ngxLoading = false;
+          this.buttonActionType = false;
+        }
+      )
     }
     
   }
 
   private updateDashboardButton() {
-    this.vanityURLService.updateCustomLinkDetails(this.customLinkDto).subscribe(result => {
+    this.vanityURLService.updateCustomLinkDetails(this.customLinkDto,this.moduleType).subscribe(result => {
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT, true);
         this.callInitMethods();
@@ -321,6 +385,7 @@ export class CustomLinksUtilComponent implements OnInit {
 
   cancel() {
     this.customLinkDto = new CustomLinkDto();
+    this.customResponse = new CustomResponse();
     this.buttonActionType = true;
     this.setDefaultValuesForForm();
     this.buildCustomLinkForm();
