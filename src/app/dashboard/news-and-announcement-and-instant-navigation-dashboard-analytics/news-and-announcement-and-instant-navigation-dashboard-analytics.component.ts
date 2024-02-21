@@ -25,6 +25,8 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
   customLinkDtos:Array<CustomLinkDto> = new Array<CustomLinkDto>();
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   instantNavigationLinks:Array<any> = new Array<any>();
+  companyId = 0;
+  isPartnerLoggedInThroughVanityUrl = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public vanityUrlService:VanityURLService,private dashboardService:DashboardService) { }
 
   ngOnInit() {
@@ -52,6 +54,9 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
       response => {
         this.instantNavigationLinks = response.data;
         this.isInstantNavigationLinksApiLoading = false;
+        let map = response.map;
+        this.companyId = map['companyId'];
+        this.isPartnerLoggedInThroughVanityUrl = map['isPartnerLoggedInThroughVanityUrl']
       }, error => {
         this.isInstantNavigationLinksApiLoading = false;
         this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
@@ -70,5 +75,29 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
         this.isNewsAndAnnouncementApiLoading = false;
         this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
       });
+  }
+
+  navigate(instantNavigation:any){
+    let router = "";
+    if(instantNavigation.type=="Asset"){
+      if(this.isPartnerLoggedInThroughVanityUrl){
+        router = "/home/dam/sharedp/view/"+instantNavigation.damPartnerId+"/l";
+      }else{
+        router = "/home/dam/partnerAnalytics/"+instantNavigation.id+"/l";
+      }
+    }else if(instantNavigation.type=="Track"){
+      if(this.isPartnerLoggedInThroughVanityUrl){
+        router = "home/tracks/tb/"+this.companyId+"/"+instantNavigation.slug+"/l";
+      }else{
+        router = "/home/tracks/analytics/"+instantNavigation.id+"/l";
+      }
+    }else if(instantNavigation.type=="Play Book"){
+      if(this.isPartnerLoggedInThroughVanityUrl){
+        router = "home/playbook/pb/"+this.companyId+"/"+instantNavigation.slug+"/l";
+      }else{
+        router = "/home/playbook/analytics/"+instantNavigation.id+"/l";
+      }
+    }
+    this.referenceService.goToRouter(router);
   }
 }

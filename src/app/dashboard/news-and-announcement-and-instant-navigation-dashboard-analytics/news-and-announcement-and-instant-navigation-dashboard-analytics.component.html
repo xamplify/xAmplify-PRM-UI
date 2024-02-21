@@ -35,7 +35,7 @@
                         <span *ngIf="instantNavigationLink?.type=='Asset'" class="view-banner banner-top mr5">{{instantNavigationLink?.type}}</span>
                         <span *ngIf="instantNavigationLink?.type=='Track'" class="view-banner orange-lable-cu1 mr5">{{instantNavigationLink?.type}}</span>
                         <span *ngIf="instantNavigationLink?.type=='Play Book'" class="view-banner published mr5">{{instantNavigationLink?.type}}</span>
-                        <span class="nav-text">{{instantNavigationLink?.title}}</span>
+                        <span>{{instantNavigationLink?.title}}</span>
                         <a (click)="navigate(instantNavigationLink)"><i class="fa fa-link ml5 float-right"></i></a>
                       </li>
                   </ul>
