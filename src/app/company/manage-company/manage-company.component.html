@@ -1,3 +1,5 @@
+<ngx-loading [show]="countsRequestLoader.isLoading || pageLoader " [config]="{ backdropBorderRadius: '14px' }"
+  style="padding-bottom:20px"></ngx-loading>
 <div class="page-content">
   <div id="deals-page-content-div">
     <div>
@@ -20,9 +22,9 @@
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <app-list-loader *ngIf="countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
-          </app-list-loader>
-          <div class="row" *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
+          <!-- <app-list-loader *ngIf="countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
+          </app-list-loader> -->
+          <div class="row">
             <!--  Start Tiles-->
             <div class="col-xs-12 col-md-12 col-sm-12">
               <div class="page-bar" style="padding: 15px 15px 15px 0px">
@@ -79,8 +81,14 @@
             *ngIf="customResponse.isVisible"></app-response-message>
         </div>
       </div>
-
-
+      <div *ngIf="contactsCompanyListSync" class="alert alert-dismissible alert-success mt-10 mb10">
+        <span><img alt="" src="assets/images/loadbar.gif" class="loader-image-customize"></span>
+        <span class="text-css">We are synchronizing your existing company contact lists</span>
+      </div>
+      <div *ngIf="masterContactListSync" class="alert alert-dismissible alert-success mt-10 mb10">
+        <span><img alt="" src="assets/images/loadbar.gif" class="loader-image-customize"></span>
+        <span class="text-css">Please Wait,while we are synchronizing your master contact list</span>
+      </div>
       <div class="row">
         <div class="col-md-12">
           <div class="page-bar remove_cardBgcolor padding_0 p10" id="header">
@@ -89,7 +97,7 @@
                 <!-- XNFR-148 -->
                 <div class="">
                   <h4 class="text-primary pull-left">List of Companies</h4>
-                  <div class="page-toolbar col-xs-12 col-sm-5 col-lg-6 pull-right" style="padding: 0px 4px 10px 0px;">
+                  <div class="page-toolbar col-xs-12 col-sm-5 col-lg-8 pull-right" style="padding: 0px 4px 10px 0px;">
                     <div class="btn-group pull-right width">
                       <!-- <ng-container class='m10'>
                         <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
@@ -100,12 +108,17 @@
                           data-toggle="tooltip" data-placement="bottom" title="Grid View"><i class="fa fa-th-large p10"
                             aria-hidden="true"></i></span>
                       </ng-container> -->
-                      <a style="padding-left: 11px;">
-                        <button class="button bgcolor-unset p0 btn-transitions" translate>
-                          <span class="btn Btn-Green transition d-inline" (click)="addCompanyModalOpen()"> Add a Company
-                            <i class="fa fa-plus" aria-hidden="true"></i></span>
-                        </button>
-                      </a>
+                      <button class="button bgcolor-unset p0 btn-transitions" translate (click)="confirmsync()"
+                        [disabled]=" masterContactListSync || contactsCompanyListSync">
+                        <span class="btn Btn-Green transition d-inline"> Synchronize Companies
+                          <i class="fa fa-refresh" aria-hidden="true"></i>
+                        </span>
+                      </button>
+                      <button class="button bgcolor-unset p0 btn-transitions" (click)="addCompanyModalOpen()"
+                        [disabled]=" masterContactListSync || contactsCompanyListSync" translate>
+                        <span class="btn Btn-Green transition d-inline"> Add a Company
+                          <i class="fa fa-plus" aria-hidden="true"></i></span>
+                      </button>
                       <div class="inputs" align="right" style="float: right; display: inline-flex;">
                         <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
                           <div class="input-icon right" style="position: relative;right: -11px;">

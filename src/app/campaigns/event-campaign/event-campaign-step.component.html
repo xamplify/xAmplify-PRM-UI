@@ -815,7 +815,7 @@
 						<fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
 							<legend class="scheduler-border">Selected {{campaign?.oneClickLaunch ?
 								'Lead(s)':'Contact(s)'}} list</legend>
-
+								
 							<div class="row d-flex align-items-center">
 								<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
 									<ng-container *ngIf="parternUserListIds?.length<1">
@@ -855,8 +855,22 @@
 								</div>
 							</div>
 							<div class="col-xs-12 mb-p0" style="margin-top: 10px;">
+								<div class="col-sm-6 col-md-6 col-lg-6 pl0 pr0" *ngIf="isOrgAdminOrOrgAdminTeamMember && !eventCampaign?.channelCampaign">
+									<ul class="mix-filter m0">
+										<li class="filter" [class.active]="'ALL' == contactListsPagination.filterBy" (click)="filterContacts('ALL')">All</li>
+										<li class="filter" [class.active]="'MY-CONTACTS' == contactListsPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
+										</li>
+										<li class="filter" *ngIf="!authenticationService?.module?.isMarketingCompany" [class.active]="'MY-PARTNERS' == contactListsPagination.filterBy" (click)="filterContacts('MY-PARTNERS')" translate>My Partners
+										</li>
+										<li class="filter" [class.active]="'FORM-CONTACTS' == contactListsPagination.filterBy" (click)="filterContacts('FORM-CONTACTS')" translate>Form
+											Contacts</li>
+										<li class="filter" [class.active]="'COMPANY-CONTACTS' == contactListsPagination.filterBy" (click)="filterContacts('COMPANY-CONTACTS')" translate>Company
+											Contacts</li>
+									</ul>
+								</div>
 								<div class="row pb10" id="user_list_table_view">
-									<div>
+									<app-list-loader *ngIf="campaignRecipientsLoader"></app-list-loader>
+									<div *ngIf="!campaignRecipientsLoader">
 										<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer"
 											style="padding:10px">
 											<div class="note-vid pull-left">{{contactListSelectMessage}}</div>
@@ -871,7 +885,6 @@
 															[ngValue]="option">{{option.name}}</option>
 													</select>
 												</div>
-
 											</div>
 											<div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
 												<div class="alert alert-success" *ngIf="parternUserListIds?.length>0">
@@ -1046,6 +1059,15 @@
 																							translate>Form Contact List
 																						</span>
 																					</h6>
+																					<h6 *ngIf="contactList?.companyList"
+																						class="view-banner view-banner-green"
+																						translate>
+																						<span data-toggle="tooltip"
+																							data-placement="top"
+																							title="This list is associated with a company."
+																							translate>Company Contact List
+																						</span>
+																					</h6>					
 																				</div>
 																			</ng-container>
 																		</td>
@@ -1133,7 +1155,7 @@
 											</div>
 										</div>
 									</div>
-									<div style="text-align:left;padding-left: 10px;padding-right: 9px;">
+									<div style="text-align:left;padding-left: 10px;padding-right: 9px;" *ngIf="!campaignRecipientsLoader">
 										<app-pagination [class.disabled]="isPreviewEvent"
 											[pagination]="contactListsPagination" [type]="'contactlists'"
 											(notifyParent)="setPage($event)"
