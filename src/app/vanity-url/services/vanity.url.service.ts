@@ -91,8 +91,6 @@ export class VanityURLService {
     
   }
 
-
-
   getDashboardButtonsForCarousel(companyProfileName: string) {
     const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons/" + companyProfileName + "?access_token=" + this.authenticationService.access_token;
     return this.http.get(url).map(this.extractData).catch(this.handleError);
