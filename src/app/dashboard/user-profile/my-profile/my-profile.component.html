@@ -249,7 +249,7 @@
                                             (click)="activateTab(properties?.newsAndAnnouncements);clearCustomResponse()">{{properties?.newsAndAnnouncements}}</a>
                                     </li>
                                     <!--Dashboard Banners-->
-                                    <li [ngClass]="{'active': activeTabName == properties?.dashboardBanners}"
+                                    <li style="display: none;" [ngClass]="{'active': activeTabName == properties?.dashboardBanners}"
                                         *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.dashboardBanners}"
                                             (click)="activateTab(properties?.dashboardBanners);clearCustomResponse()">{{properties?.dashboardBanners}}</a>
@@ -3186,8 +3186,6 @@
                     only images</div>
                 <div>
                     <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-
-
                     <div [hidden]="!imageChangedEvent">
                         <app-img-croppr-v2 [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
                             [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="1 / 1"
