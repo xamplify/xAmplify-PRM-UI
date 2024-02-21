@@ -1054,6 +1054,19 @@
                                                 (click)="searchCampaignRecipients()">
                                                 <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                                         </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0 pr0" *ngIf="showMarketingAutomationOption && !campaign?.channelCampaign">
+                                            <ul class="mix-filter m0">
+                                                <li class="filter" [class.active]="'ALL' == campaignRecipientsPagination.filterBy" (click)="filterContacts('ALL')">All</li>
+                                                <li class="filter" [class.active]="'MY-CONTACTS' == campaignRecipientsPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
+                                                </li>
+                                                <li class="filter" *ngIf="!authenticationService?.module?.isMarketingCompany" [class.active]="'MY-PARTNERS' == campaignRecipientsPagination.filterBy" (click)="filterContacts('MY-PARTNERS')" translate>My Partners
+                                                </li>
+                                                <li class="filter" [class.active]="'FORM-CONTACTS' == campaignRecipientsPagination.filterBy" (click)="filterContacts('FORM-CONTACTS')" translate>Form
+                                                    Contacts</li>
+                                                <li class="filter" [class.active]="'COMPANY-CONTACTS' == campaignRecipientsPagination.filterBy" (click)="filterContacts('COMPANY-CONTACTS')" translate>Company
+                                                    Contacts</li>
+                                            </ul>
+                                        </div>
                                         <!--Sort DropDown-->
                                         <div class="input-icon right pull-right pr-epx">
                                             <select class="form-control cc mTopSort"
