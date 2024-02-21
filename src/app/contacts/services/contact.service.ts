@@ -875,8 +875,8 @@ export class ContactService {
             .catch(this.handleError);
     }
 
-    checkMasterContactListSyncStatus(userId: number){
-        return this._http.get(this.contactsUrl + "syncMasterContactListStatus/" + userId + "/"+ "?access_token=" + this.authenticationService.access_token)
+    checkSyncStatus(userId: number){
+        return this._http.get(this.contactsUrl + "checkSyncStatus/" + userId + "/"+ "?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }

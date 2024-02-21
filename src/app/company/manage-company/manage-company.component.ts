@@ -14,6 +14,7 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { UtilService } from 'app/core/services/util.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { ContactService } from 'app/contacts/services/contact.service';
 
 declare var  $:any, swal: any;
 @Component({
@@ -36,7 +37,10 @@ customResponse: CustomResponse = new CustomResponse();
   companyId = 0;
   contactCount: number;
   companyCount: number;
-  constructor(public referenceService: ReferenceService, private router: Router, public companyService: CompanyService, public authenticationService: AuthenticationService,  public pagerService: PagerService, public properties: Properties,public listLoaderValue: ListLoaderValue,public xtremandLogger: XtremandLogger, public utilService: UtilService, public sortOption: SortOption
+  contactsCompanyListSync: boolean = false;
+  masterContactListSync: boolean = false;
+  pageLoader : boolean = false;
+  constructor(public referenceService: ReferenceService, private router: Router, public companyService: CompanyService, public authenticationService: AuthenticationService, public contactService: ContactService, public pagerService: PagerService, public properties: Properties,public listLoaderValue: ListLoaderValue,public xtremandLogger: XtremandLogger, public utilService: UtilService, public sortOption: SortOption
     ) { this.loggedInUserId = this.authenticationService.getUserId();}
 
   ngOnInit() {
@@ -44,6 +48,7 @@ customResponse: CustomResponse = new CustomResponse();
   } 
 
   showCompanies (){
+    this.checkSyncStatus();
     this.getCompanyList(this.pagination);
     this.getCounts();
   }
@@ -95,6 +100,10 @@ customResponse: CustomResponse = new CustomResponse();
       },
       () => { }
     );
+    if(this.contactsCompanyListSync === true){
+      this.checkSyncStatus();
+      this.getCounts();
+    }
   }
   setCompanyPage(event: any) {
     this.pagination.pageIndex = event.page;
@@ -183,22 +192,57 @@ customResponse: CustomResponse = new CustomResponse();
   }
 
   syncCompanyContactLists(){
-    this.customResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
+    this.contactsCompanyListSync = true;
     this.companyService.syncCompanyContactLists(this.loggedInUserId)
     .subscribe(
       (data: any) => {
         if (data.statusCode == 200) {
-          this.customResponse = new CustomResponse('SUCCESS', "Synchronization completed successfully", true);
+          this.showCompanies();
         }
       },
       error => {
-        this.referenceService.loading(this.httpRequestLoader, false);
+        this.contactsCompanyListSync = false;
+        this.customResponse = new CustomResponse('FAILED', "Synchronization Failed", true);
       },
       () => { }
     );
   
   }
 
+  confirmsync(){
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: 'Clicking "Sync" will add all existing Company contact List',
+      type: 'success',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Sync'
+  
+    }).then(function () {
+      self.syncCompanyContactLists();
+    }, function (dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+    });
+  }
+
+  checkSyncStatus(){
+    this.pageLoader = true;
+    this.contactService.checkSyncStatus(this.loggedInUserId).subscribe(
+      response => {
+        if (response.statusCode == 200) {
+          this.masterContactListSync= response.data.masterContactListSync;
+          this.contactsCompanyListSync = response.data.contactsCompanyListSync;
+          this.pageLoader = false; 
+        }
+      },
+      error => {
+        this.pageLoader = false;
+        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+      }
+    );
+    }
 
   }
 

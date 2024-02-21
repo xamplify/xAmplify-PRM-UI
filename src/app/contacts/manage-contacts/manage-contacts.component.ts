@@ -128,7 +128,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	socialNetworkForSyncLocal: any;	
 	disableSave : boolean =false;
 	loggedInUserCompanyId: any;
-	masterContactListSync: boolean;
+	masterContactListSync: boolean = false;
+	contactsCompanyListSync: boolean = false; 
 	isPartnerUserList :boolean;
 
 	public currentContactType: string = "valid";
@@ -439,7 +440,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 this.xtremandLogger.error(error, "ManageContactsComponent", "loadAllContactList()");
             }
         }
-		this.checkMasterContactListSyncStatus();
+		this.checkSyncStatus();
 	}
 
     loadAssignedLeadsLists(pagination: Pagination) {
@@ -2859,11 +2860,12 @@ resubscribeUserResult(event : any){
 	}
 }
  
-checkMasterContactListSyncStatus(){
-	this.contactService.checkMasterContactListSyncStatus(this.loggedInUserId).subscribe(
+checkSyncStatus(){
+	this.contactService.checkSyncStatus(this.loggedInUserId).subscribe(
 		response => {
 			if (response.statusCode == 200) {
-				this.masterContactListSync= response.data;
+				this.masterContactListSync= response.data.masterContactListSync;
+               this.contactsCompanyListSync = response.data.contactsCompanyListSync;
 			}
 		},
 		error => {

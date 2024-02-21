@@ -153,6 +153,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	showInvalidMaills = false;
 	downloadDataList = [];
 	isEmailExist: boolean = false;
+	contactsCompanyListSync : boolean = false;
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
 		{ 'name': 'Email (A-Z)', 'value': 'emailId-ASC' },
@@ -3386,6 +3387,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
 				this.pagination.partnerTeamMemberGroupFilter = true;
 			}
+			this.checkSyncStatus();
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();
 			this.selectedContactListName = this.contactListName;
@@ -3899,5 +3901,19 @@ confirmsync(){
 	});
 
 }
+
+checkSyncStatus(){
+	this.contactService.checkSyncStatus(this.loggedInUserId).subscribe(
+		response => {
+			if (response.statusCode == 200) {
+				this.masterContactListSync= response.data.masterContactListSync;
+               this.contactsCompanyListSync = response.data.contactsCompanyListSync;
+			}
+		},
+		error => {
+			this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+		}
+	);
+  }
 
 }
