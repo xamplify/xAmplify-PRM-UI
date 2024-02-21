@@ -15,6 +15,7 @@ declare var $, swal, CKEDITOR: any;
 })
 export class UploadImageUtilComponent implements OnInit {
 
+  loading = false;
   cropRounded = false;
   fileSizeError = false;
   imageChangedEvent: any = '';
