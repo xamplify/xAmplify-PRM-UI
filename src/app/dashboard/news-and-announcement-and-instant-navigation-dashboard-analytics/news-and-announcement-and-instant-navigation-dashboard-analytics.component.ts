@@ -20,8 +20,6 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
   customResponse:CustomResponse = new CustomResponse();
   properties:Properties = new Properties();
   customLinkDtos:Array<CustomLinkDto> = new Array<CustomLinkDto>();
-  newsAndAnnouncementsSize = 0;
-  instantNavigationLinksSize = 0;
   constructor(public authenticationService:AuthenticationService,private referenceService:ReferenceService,public vanityUrlService:VanityURLService) { }
 
   ngOnInit() {
@@ -34,7 +32,6 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
       this.vanityUrlService.findCustomLinks(this.pagination).subscribe(
         response=>{
           this.customLinkDtos = response.data.list;
-          this.newsAndAnnouncementsSize = response.data.totalRecords;
           this.isLoading = false;
         },error=>{
           this.isLoading = false;
