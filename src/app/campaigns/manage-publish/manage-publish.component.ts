@@ -125,7 +125,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     selectedCampaignId = 0;
     showUpArrowButton = false;
     downloadCampaigns = true;
-    isLoadingDownloadList : boolean;
     /******** user guide *************/
     mergeTagForGuide:any;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
@@ -1294,27 +1293,27 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
    
     /***** XNFR-445 *****/
     downloadCampaignsData(pagination: Pagination){
-        this.isLoadingDownloadList = true;
+        this.isloading = true;
         try{
             this.campaignService.downloadCampaignsData(pagination, this.loggedInUserId)
         .subscribe(
             data => {    
                 if(data.statusCode==200){
-                    this.isLoadingDownloadList = false;
+                    this.isloading = false;
+                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);   
                 }
                 if(data.statusCode==401){
-                    $('.m5').text(data.message);
+                    this.isloading = false;
+                    this.customResponse = new CustomResponse('SUCCESS',data.message,true);
                 }
             },
             (error: any) => {
                 this.logger.errorPage(error);
-                this.isLoadingDownloadList = false;
             },
             ()=> this.logger.info("download completed")
             );
         }catch(error){
             this.logger.error(error, "ManagePublishComponent", "downloadCampaignsData()");
-            this.isLoadingDownloadList = false;
         }
     }
 

@@ -1326,7 +1326,7 @@ export class CampaignService {
     
     /***** XNFR-445 *****/
     downloadCampaignsData(pagination: Pagination, userId: number){
-        let url = this.URL + "campaign/downloadCampaignData/"+userId+"?access_token=" + this.authenticationService.access_token
+        let url = this.URL + "campaign/downloadcampaigndata/"+userId+"?access_token=" + this.authenticationService.access_token
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
