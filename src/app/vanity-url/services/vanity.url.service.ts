@@ -6,19 +6,25 @@ import { VanityURL } from "../models/vanity.url";
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
 import { DashboardButton } from "../models/dashboard.button";
 import { Pagination } from "app/core/models/pagination";
-import { Properties } from "app/common/models/properties";
 import { VanityEmailTempalte } from "app/email-template/models/vanity-email-template";
 import { Title, DOCUMENT } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { EnvService } from "app/env.service";
-import { SweetAlertParameterDto } from "app/common/models/sweet-alert-parameter-dto";
 import { CustomLoginTemplate } from "app/email-template/models/custom-login-template";
+import { ReferenceService } from "app/core/services/reference.service";
+import { Properties } from "app/common/models/properties";
+
 @Injectable()
 export class VanityURLService {
-
+  properties:Properties = new Properties();
+  URL = this.authenticationService.REST_URL;
+  ACCESS_TOKEN_SUFFIX_URL = "?access_token=";
+  CUSTOM_LINK_PREFIX_URL = this.authenticationService.REST_URL + "customLinks";
+  CUSTOM_LINK_URL = this.CUSTOM_LINK_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
 
   constructor(private http: Http, private authenticationService: AuthenticationService, private titleService: Title,
-     @Inject(DOCUMENT) private _document: HTMLDocument, private router: Router,public envService: EnvService) { }
+     @Inject(DOCUMENT) private _document: HTMLDocument, private router: Router,public envService: EnvService,
+     public referenceService:ReferenceService) { }
 
   getVanityURLDetails(companyProfileName: string): Observable<VanityURL> {
     const url = this.authenticationService.REST_URL + "v_url/companyDetails/" + companyProfileName;
@@ -40,25 +46,49 @@ export class VanityURLService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
-  saveDashboardButton(dashboardButton: DashboardButton) {
-    const url = this.authenticationService.REST_URL + "v_url/save/dashboardButton?access_token=" + this.authenticationService.access_token;
-    return this.http.post(url, dashboardButton)
+  saveCustomLinkDetails(customLink: any,moduleType:string) {
+    let url = "";
+    if(moduleType==this.properties.dashboardButtons){
+      url = this.authenticationService.REST_URL + "v_url/save/dashboardButton?access_token=" + this.authenticationService.access_token;
+    }else if(moduleType==this.properties.newsAndAnnouncements){
+      url = this.CUSTOM_LINK_URL+this.authenticationService.access_token;
+    }
+    return this.http.post(url, customLink)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  updateDashboardButton(dashboardButton: DashboardButton) {
-    const url = this.authenticationService.REST_URL + "v_url/update/dashboardButton" + "?access_token=" + this.authenticationService.access_token;
-    return this.http.post(url, dashboardButton)
-      .map(this.extractData)
-      .catch(this.handleError);
+  getCustomLinkDetailsById(id: number) {
+    let url = this.CUSTOM_LINK_PREFIX_URL+'/id/'+id+'/loggedInUserId/'+this.authenticationService.getUserId()+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
   }
 
-  getDashboardButtons(pagination: Pagination) {
-    const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons" + "?access_token=" + this.authenticationService.access_token;
-    return this.http.post(url, pagination)
-      .map(this.extractData)
-      .catch(this.handleError);
+  updateCustomLinkDetails(customLink: any,moduleType:string) {
+    if(moduleType==this.properties.dashboardButtons){
+      const url = this.authenticationService.REST_URL + "v_url/update/dashboardButton" + "?access_token=" + this.authenticationService.access_token;
+      return this.http.post(url, customLink)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }else{
+      let url = this.CUSTOM_LINK_PREFIX_URL+'/'+customLink.id+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+      return this.authenticationService.callPutMethod(url,customLink);
+    }
+    
+  }
+
+  findCustomLinks(pagination: Pagination) {
+    if(pagination.filterKey==this.properties.dashboardButtons){
+      const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons" + "?access_token=" + this.authenticationService.access_token;
+      return this.http.post(url, pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }else{
+      let userId = this.authenticationService.getUserId();
+      let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+      let findAllUrl = this.CUSTOM_LINK_PREFIX_URL+'/newsAndAnnouncements/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+      return this.authenticationService.callGetMethod(findAllUrl);
+    }
+    
   }
 
   getDashboardButtonsForCarousel(companyProfileName: string) {
@@ -66,12 +96,19 @@ export class VanityURLService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
-  deleteDashboardButton(id: number) {
-    const url = this.authenticationService.REST_URL + "v_url/delete/dashboardButton/" + id + "?access_token=" + this.authenticationService.access_token;
-    return this.http.get(url).map(this.extractData).catch(this.handleError);
+  deleteCustomLink(id: number,moduleType:string) {
+    let url = "";
+    if(moduleType==this.properties.dashboardButtons){
+      url = this.authenticationService.REST_URL + "v_url/delete/dashboardButton/" + id + "?access_token=" + this.authenticationService.access_token;
+      return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }else if(moduleType==this.properties.newsAndAnnouncements || moduleType==this.properties.dashboardBanners){
+      url = this.CUSTOM_LINK_PREFIX_URL+'/id/'+id+'/loggedInUserId/'+this.authenticationService.getUserId()+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+      return this.authenticationService.callDeleteMethod(url);
+    }
+    
   }
 
-  getDashboardButtonIcons(iconsFilePath: string): Observable<any> {
+  getCustomLinkIcons(iconsFilePath: string): Observable<any> {
     return this.http.get(iconsFilePath).map(this.extractData).catch(this.handleError);
   }
 

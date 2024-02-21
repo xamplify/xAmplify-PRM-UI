@@ -868,4 +868,17 @@ export class ContactService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    syncContactsInMasterContactList(userId: number){
+        return this._http.get(this.contactsUrl + "syncMasterContactList/" + userId + "/"+ "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    checkSyncStatus(userId: number){
+        return this._http.get(this.contactsUrl + "checkSyncStatus/" + userId + "/"+ "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 }

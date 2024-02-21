@@ -2,8 +2,8 @@
   <div class="page-bar">
     <ul class="page-breadcrumb">
       <li><i class="fa fa-home" aria-hidden="true"></i>
-         <a routerLink="/home/dashboard/default">Home</a>
-         <i class="fa fa-angle-right" aria-hidden="true"></i>
+        <a routerLink="/home/dashboard/default">Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li><i class="fa fa-rss" aria-hidden="true"></i>RSS</li>
     </ul>
@@ -16,87 +16,89 @@
         <div class="col-xs-12 col-sm-8 col-md-8 col-lg-9">
           <div class="row" *ngIf="!hasError">
             <div class="page-bar page-bar-shadow pb-m">
-              <div class="portlet light" style="border:none !important;">
+              <div class="portlet light" style="border:none !important;box-shadow: none !important;">
                 <div class="portlet-body pt0">
                   <ng-container *ngIf="!emptyFeeds">
-                    <div class="col-sm-12 col-xs-12 head-h p0" >
-                    <div class="col-sm-6 col-xs-6">
-                      <h4 class="f-w-600">{{feedsResponse?.data.customTitle}}</h4>
+                    <div class="col-sm-12 col-xs-12 head-h p0">
+                      <div class="col-sm-6 col-xs-6">
+                        <h4 class="f-w-600">{{feedsResponse?.data.customTitle}}</h4>
+                      </div>
+                      <div class="col-sm-6 col-xs-6">
+                        <h4 class="text-right m0">
+                          <a data-toggle="tooltip" data-placement="bottom" title="View"><i
+                              class="fa fa-list circled-grey" aria-hidden="true"></i></a>
+                          <a (click)="getFeedsBySourceAlias()" data-toggle="tooltip" data-placement="bottom"
+                            title="Refresh"><i class="fa fa-refresh circled-grey" aria-hidden="true"></i></a>
+                          <div class="btn-group">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                              aria-haspopup="true" aria-expanded="false">
+                              <i class="fa fa-ellipsis-h  circled-grey" aria-hidden="true"></i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                              <li><a (click)="renameSourceDialog()">Rename</a></li>
+                              <li><a (click)="deleteSourceDialog()">Delete</a></li>
+                            </ul>
+                          </div>
+                        </h4>
+                      </div>
                     </div>
-                    <div class="col-sm-6 col-xs-6">
-                      <h4 class="text-right m0">
-                        <a data-toggle="tooltip" data-placement="bottom" title="View"><i class="fa fa-list circled-grey"
-                            aria-hidden="true"></i></a>
-                        <a (click)="getFeedsBySourceAlias()" data-toggle="tooltip" data-placement="bottom"
-                          title="Refresh"><i class="fa fa-refresh circled-grey" aria-hidden="true"></i></a>
-                        <div class="btn-group">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                            aria-expanded="false">
-                            <i class="fa fa-ellipsis-h  circled-grey" aria-hidden="true"></i>
-                          </a>
-                          <ul class="dropdown-menu pull-right">
-                            <li><a (click)="renameSourceDialog()">Rename</a></li>
-                            <li><a (click)="deleteSourceDialog()">Delete</a></li>
-                          </ul>
-                        </div>
-                      </h4>
+                    <h5 class="clearfix col-xs-12">{{feedsResponse?.data.description}}</h5>
+                    <app-rss-loader *ngIf="loading"></app-rss-loader>
+                    <div *ngFor="let feed of feedsResponse?.data.feeds">
+                      <app-feed [feed]="feed"></app-feed>
                     </div>
-                  </div>
-                  <h5 class="clearfix col-xs-12">{{feedsResponse?.data.description}}</h5>
-                  <app-rss-loader *ngIf="loading"></app-rss-loader>
-                  <div *ngFor="let feed of feedsResponse?.data.feeds">
-                    <app-feed [feed]="feed"></app-feed>
-                  </div>
-              </ng-container>
+                  </ng-container>
 
 
-              <ng-container *ngIf="emptyFeeds">
-                <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-              </ng-container>
+                  <ng-container *ngIf="emptyFeeds">
+                    <app-response-message [customResponse]="customResponse"
+                      *ngIf="customResponse.isVisible"></app-response-message>
+                  </ng-container>
+                </div>
               </div>
             </div>
           </div>
+          <div *ngIf="hasError">
+            <app-response-message [customResponse]="customResponse"
+              *ngIf="customResponse.isVisible"></app-response-message>
+          </div>
         </div>
-        <div *ngIf="hasError">
-          <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-      </div>
       </div>
     </div>
   </div>
-</div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="renameModal" tabindex="-1" role="dialog" aria-labelledby="renameModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="renameModalLabel">Rename Source</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-dismissible m0" role="alert" *ngIf="renameSourceTitleResponse" [ngClass]="{'alert-success': renameSourceTitleResponse.statusCode === 8114,
+  <!-- Modal -->
+  <div class="modal fade" id="renameModal" tabindex="-1" role="dialog" aria-labelledby="renameModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="renameModalLabel">Rename Source</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-dismissible m0" role="alert" *ngIf="renameSourceTitleResponse" [ngClass]="{'alert-success': renameSourceTitleResponse.statusCode === 8114,
 	                'alert-danger': renameSourceTitleResponse.statusCode !== 8114}">
-          <div class="pull-right">
-            <i class="fa fa-times-circle" aria-hidden="true" (click)="renameSourceTitleResponse = null"></i>
-          </div>
-          <h4>
-            <i class="fa" [ngClass]="{
+            <div class="pull-right">
+              <i class="fa fa-times-circle" aria-hidden="true" (click)="renameSourceTitleResponse = null"></i>
+            </div>
+            <h4>
+              <i class="fa" [ngClass]="{
 									'fa-check-circle-o': renameSourceTitleResponse.statusCode === 8114,
 	                'fa-exclamation-circle': renameSourceTitleResponse.statusCode !== 8114}" aria-hidden="true"></i>
-            <span class="ml10 f-w-600">{{renameSourceTitleResponse.message}}</span>
-          </h4>
+              <span class="ml10 f-w-600">{{renameSourceTitleResponse.message}}</span>
+            </h4>
+          </div>
+          <input type="text" class="form-control" id="title" name="title" placeholder="Enter title"
+            value={{sourceTitle}} [(ngModel)]="sourceTitle">
         </div>
-        <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" value={{sourceTitle}}
-          [(ngModel)]="sourceTitle">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="renameSource()">Save changes</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="renameSource()">Save changes</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
