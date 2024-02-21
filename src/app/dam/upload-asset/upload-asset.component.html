@@ -455,13 +455,11 @@
                                           </div>
                                        </div>
                                     </div>
-                                    <div style="text-align: center;">
-                                       <span class="required"
-                                          *ngIf="!damUploadPostDto.validDescription && descriptionErrorMessage?.length > 0"
-                                          style="position: absolute;">{{descriptionErrorMessage}}</span>
-                                    </div>
                                     <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 mb-padding"
                                        [class.customDisableCss]='isDisableForm==true'>
+                                       <div *ngIf="!damUploadPostDto.validDescription && descriptionErrorMessage?.length > 0" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                                          <span class="required">{{descriptionErrorMessage}}</span>
+                                       </div>
                                        <table class="table" id="description" style="margin-top: 5px;">
                                           <tbody>
                                              <tr>

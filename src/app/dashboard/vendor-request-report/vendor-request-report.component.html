@@ -89,9 +89,11 @@
           <div class="table-responsive">
             <table class="table tgrid" *ngIf="pagination.pagedItems.length != 0">
               <thead>
+              <tr>
                 <th class="table-header-alignment">Name</th>
                 <th style="text-align: center;">status</th>
                 <th style="text-align: center;">date and time</th>
+              </tr>
               </thead>
               <tbody> 
                 <tr *ngFor="let item of vendorRequestReport" style="cursor: pointer;">
