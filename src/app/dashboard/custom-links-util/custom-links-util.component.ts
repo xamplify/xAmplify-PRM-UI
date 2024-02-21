@@ -69,7 +69,7 @@ export class CustomLinksUtilComponent implements OnInit {
   };
   customLinkForm: FormGroup;
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
-    private xtremandLogger: XtremandLogger, private properties: Properties, private httpRequestLoader: HttpRequestLoader, 
+    private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
     private regularExpressions:RegularExpressions) {
       this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
