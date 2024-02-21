@@ -214,8 +214,7 @@ export class CustomLinksUtilComponent implements OnInit {
       } else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
       }else if(result.statusCode==400){
-        $("#customLinkTitle").removeClass('ng-valid');
-        $("#customLinkTitle").removeClass('ng-invalid');
+        this.removeTitleErrorClass();
         let data = result.data;
         let errorResponses = data.errorMessages;
         let self = this;
@@ -269,6 +268,7 @@ export class CustomLinksUtilComponent implements OnInit {
 
   edit(id: number) {
     this.customResponse = new CustomResponse();
+    this.removeTitleErrorClass();
     this.buttonActionType = false;
     this.saving = false;
     this.referenceService.goToTop();
@@ -318,8 +318,7 @@ export class CustomLinksUtilComponent implements OnInit {
             this.saving = false;
             this.buttonActionType = false;
           }else{
-            $("#customLinkTitle").removeClass('ng-valid');
-            $("#customLinkTitle").removeClass('ng-invalid');
+            this.removeTitleErrorClass();
             let data = response.data;
             let errorResponses = data.errorMessages;
             let self = this;
@@ -333,6 +332,7 @@ export class CustomLinksUtilComponent implements OnInit {
             });
             this.saving = false;
             this.buttonActionType = false;
+            this.ngxLoading = false;
           }
         },error=>{
           this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
@@ -344,6 +344,11 @@ export class CustomLinksUtilComponent implements OnInit {
       )
     }
     
+  }
+
+  private removeTitleErrorClass() {
+    $("#customLinkTitle").removeClass('ng-valid');
+    $("#customLinkTitle").removeClass('ng-invalid');
   }
 
   private updateDashboardButton() {

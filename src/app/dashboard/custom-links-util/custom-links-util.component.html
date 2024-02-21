@@ -39,9 +39,18 @@
         <!--News & Announcements-->
         <div class="form-group" *ngIf="moduleType==properties?.newsAndAnnouncements">
           <label>Please select type</label>
-          <select formControlName="customLinkType" class="form-control">
-            <option [ngValue]="type.id" *ngFor="let type of customLinkTypes">{{type.value}}</option>
-          </select>
+          <ng-container *ngIf="buttonActionType">
+            <select formControlName="customLinkType" class="form-control">
+              <option [ngValue]="type.id" *ngFor="let type of customLinkTypes">{{type.value}}</option>
+            </select>
+          </ng-container>
+          <ng-container *ngIf="!buttonActionType">
+            <select class="form-control" disabled>
+              <option>{{customLinkDto.type}}</option>
+            </select>
+          </ng-container>
+          
+          
         </div>
         <!--Icon-->
           <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
