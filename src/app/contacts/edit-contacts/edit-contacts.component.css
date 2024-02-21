@@ -243,3 +243,9 @@ a.disabled {
   white-space: nowrap;
   display: flex;
 }
+
+.loader-image-customize{
+  height: 35px;
+  margin: -7px;
+}
+

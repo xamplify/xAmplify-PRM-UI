@@ -274,4 +274,27 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
       error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
     return Observable.throw(error);
   }
+
+  /**** 18-02-2024 Add !important end of the style attributes ********/
+  sanitizeHtmlWithImportant(htmlString: string): string {
+    // Regular expression to find inline style declarations
+    const styleRegex = /style="([^"]*)"/g;
+    const modifiedHtml = htmlString.replace(styleRegex, (match, styleAttributes) => {
+      const attributes = styleAttributes.split(';');
+      let modifiedAttributes = '';
+      attributes.forEach(attribute => {
+        // If the attribute is for color, add !important
+        const trimmedAttribute = attribute.trim();
+        if (trimmedAttribute.startsWith('color:') && !trimmedAttribute.endsWith('!important')) {
+          modifiedAttributes += `${trimmedAttribute} !important;`;
+        } else {
+          modifiedAttributes += `${trimmedAttribute};`;
+        }
+      });
+      return `style="${modifiedAttributes}"`;
+    });
+    return modifiedHtml;
+  }
+    /**** 18-02-2024  Add !important end of the style attributes ********/
+
 }

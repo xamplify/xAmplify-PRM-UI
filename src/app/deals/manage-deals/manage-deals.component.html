@@ -172,7 +172,7 @@
                         <button class="btn salesforce-btn button bgcolor-unset p0 btn-transitions mrgt-2 mrgt1-2"
                           data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
 
-                          <span class="btn Btn-Green transition text_pd-top1">
+                          <span class="btn Btn-Green transition text_pd-top1 pt-7">
                             <i class="fa fa-refresh" aria-hidden="true"></i>
                             <span *ngIf="activeCRMDetails?.type==='HUBSPOT'">HubSpot</span>
                             <span *ngIf="activeCRMDetails?.type!='HUBSPOT'">{{ activeCRMDetails?.type | titlecase
@@ -469,7 +469,7 @@
                               <span align="right">
                                 <strong translate>Launched On</strong>
                               </span>
-                              <span align="right" title="Upload Date">
+                              <span align="right" data-toggle="tooltip" data-placement="bottom" title="Launch Date">
                                 <strong>
                                   <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchTimeInString">
                                   </app-timestamp>

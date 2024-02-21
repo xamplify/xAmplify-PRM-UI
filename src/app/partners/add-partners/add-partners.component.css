@@ -228,4 +228,9 @@ i.fa.fa-file-excel-o.cct.IconTopMargin {
 .borderColorsCU {
   border: 1px solid #e5e5e5;
 }
-
+/*** Sudha Sri(20-2-2024) ***/
+.my-icon,
+.my-icon:hover {
+  overflow: hidden; 
+  width: 1em; 
+}

@@ -4,6 +4,8 @@
   <tbody class="neo-border-radius10">
     <fieldset class="fild-custome-borders-none">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+        <div class="alert alert-info">{{properties?.domainWhitelistingDescription}}</div>
+        <div class="alert alert-info mt5">{{properties?.domainWhitelistingUrlDescription}}</div>
         <!--Copy SignUp Link-->
         <div style="display:flex; height:45px;">
             <input type="text" [ngModel]="signUpUrl" class="form-control" readonly="readonly"  #signUpUrlInput><br>
