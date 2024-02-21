@@ -1127,6 +1127,10 @@
                                           aria-hidden="true"></i><i class="fa fa-angle-down"
                                           style="font-size: 14px; float: right" aria-hidden="true"></i>
                                     </span>
+                                    <span data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip" 
+                                       title="Download" (click)="downloadUserListCsv(pagination)" style="margin-right: 10px;">
+                                       <i aria-hidden="true" class="fas fa-download p10"></i>
+                                    </span>
                                     <ul class="dropdown-menu pull-right">
                                        <li *ngIf="contactsByType.selectedCategory == 'all' && !sharedLeads "><a
                                              (click)="saveAs()" translate> Create New List </a></li>
