@@ -417,13 +417,13 @@
 						</div>
 					</div>
 					<div class="portlet light mt10 pos_mrg_btm19"
-						*ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)">
+						*ngIf="(gdprStatus && filePreview) ||(clipBoard) || (gdprStatus && selectedAddContactsOption==2)">
 						<div class="row" style="margin-bottom: 15px;"
-							*ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)">
+							*ngIf="(gdprStatus && filePreview) || (clipBoard) || (gdprStatus && selectedAddContactsOption==2)">
 							<br>
 							<br>
 							<div class="col-xs-12 col-md-12">
-								<div class="form-group">
+								<div *ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)" class="form-group">
 									<label for="name" class="col-xs-12 col-lg-2 col-md-3 col-sm-2 control-label pr0"
 										translate>Legal Basis Options
 										<span class="danger">*</span>
