@@ -439,8 +439,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             } catch (error) {
                 this.xtremandLogger.error(error, "ManageContactsComponent", "loadAllContactList()");
             }
+			if(this.router.url.includes('home/contacts')){
+				this.checkSyncStatus();
+			}
         }
-		this.checkSyncStatus();
 	}
 
     loadAssignedLeadsLists(pagination: Pagination) {
