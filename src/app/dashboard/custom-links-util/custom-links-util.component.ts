@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, ViewChild } from '@angular/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Pagination } from 'app/core/models/pagination';
@@ -14,6 +14,7 @@ import { max120CharactersLimitValidator,noWhiteSpaceOrMax20CharactersLimitValida
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CustomLinkType } from '../models/custom-link-type.enum';
 import { ErrorResponse } from 'app/util/models/error-response';
+import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-image-util.component';
 
 declare var swal: any, $:any;
 
@@ -68,6 +69,9 @@ export class CustomLinksUtilComponent implements OnInit {
       }
   };
   customLinkForm: FormGroup;
+  @ViewChild('uploadImageUtilComponent') uploadImageUtilComponent: UploadImageUtilComponent;
+  croppedImage:any;
+  previouslySelectedImagePath = "";
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
@@ -429,12 +433,19 @@ export class CustomLinksUtilComponent implements OnInit {
     this.findLinks(this.pagination);
   }
 
-  selectedIconName() {
-    
+  /***Dashboard Banners***/
+
+  openModalPopUp(){
+    this.uploadImageUtilComponent.openModalPopup(this.properties.dashboardBanners);
   }
 
-  selectedProtocolOption(selectedProtocolOption: string) {
-    this.selectedProtocol = selectedProtocolOption;
+  clearImage(){
+    this.croppedImage = "";
+    this.previouslySelectedImagePath = "";
+  }
+
+  croppedImageEventReceiver(event){
+    this.croppedImage = event;
   }
 
 

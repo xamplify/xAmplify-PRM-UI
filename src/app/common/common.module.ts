@@ -162,6 +162,7 @@ import { AddCompanyComponent } from 'app/company/add-company/add-company.compone
 import { LandingPagesListAndGridViewComponent } from 'app/util/landing-pages-list-and-grid-view/landing-pages-list-and-grid-view.component';
 import { BrowseContentComponent } from 'app/util/browse-content/browse-content.component';
 import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component';
+import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-image-util.component';
 
 
 
@@ -195,11 +196,8 @@ import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component
 		EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
-		LandingPagesListAndGridViewComponent,BrowseContentComponent,AddCompanyComponent, SelectLeadComponent,DealChatPopupComponent,ChatComponent,OpportunitiesChatModalPopupComponent],
-
-
-
-
+		LandingPagesListAndGridViewComponent,BrowseContentComponent,AddCompanyComponent, SelectLeadComponent,DealChatPopupComponent,
+		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent],
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
@@ -228,7 +226,8 @@ import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component
 		ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,AddCompanyComponent,
-		LandingPagesListAndGridViewComponent,BrowseContentComponent, SelectLeadComponent,DealChatPopupComponent,ChatComponent,OpportunitiesChatModalPopupComponent]
+		LandingPagesListAndGridViewComponent,BrowseContentComponent, SelectLeadComponent,DealChatPopupComponent,ChatComponent,
+		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent]
 
 
 

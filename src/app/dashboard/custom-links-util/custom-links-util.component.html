@@ -20,16 +20,16 @@
               </div>
             </div>
             <div class="feature-img-bg" style="cursor: pointer;text-align:center;color:#fff;"
-              (click)="imageClick()">
+              (click)="openModalPopUp()">
               <div *ngIf="!croppedImage">
-                <img *ngIf="!imageChangedEvent && !featuredImagePath"
+                <img *ngIf="!previouslySelectedImagePath"
                   src="assets/images/contentPlaceholderImages.png" class="profile-image img-grid" alt="">
               </div>
               <div *ngIf="croppedImage; else showImage">
                 <img class="img-grids" [src]="croppedImage" alt="">
               </div>
               <ng-template #showImage>
-                <img class="img-grids" [src]="featuredImagePath" alt="">
+                <img class="img-grids" [src]="previouslySelectedImagePath" alt="">
               </ng-template>
               <a class="btn btn-primary1 profile-pic" data-toggle="tooltip" data-placement="bottom"
                 title="upload 2:1 ratio logo">
@@ -173,7 +173,7 @@
         (notifyParentDropDown)="findLinks($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
     </div>
   </ng-container>
-  
-
 
 </fieldset>
+
+<app-upload-image-util #uploadImageUtilComponent (croppedImageEventEmitter)="croppedImageEventReceiver($event)"></app-upload-image-util>

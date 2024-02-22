@@ -22,7 +22,6 @@
 .feature-img-bg {
     display: block;
     width: 100% !important;
-    height: 172px;
     background: #fff;
     padding: 1px;
     margin: 0 auto;
@@ -61,7 +60,7 @@
   }
   .img-grids {
     max-width: 100% !important;
-    height: 165px !important;
+    height: 96px !important;
     border-radius: 5px;
   }
 
