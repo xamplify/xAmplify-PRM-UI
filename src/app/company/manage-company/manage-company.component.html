@@ -30,7 +30,7 @@
               <div class="page-bar" style="padding: 15px 15px 15px 0px">
                 <!-- -------Total companies------- -->
                 <div class="col-xs-12 col-sm-4 col-md-4 pr0 pb15 tiles_hover_effect">
-                  <a class="dashboard-stat dashboard-stat-lighter blue">
+                  <a class="dashboard-stat dashboard-stat-lighter blue" style="pointer-events: none">
                     <div class="visual">
                       <!-- <i class="fa fa-check-circle"
                         style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
@@ -50,7 +50,7 @@
                 </div>
 
                 <div class="col-xs-12 col-sm-4 col-md-4 pr0 pb15 tiles_hover_effect">
-                  <a class="dashboard-stat dashboard-stat-lighter green">
+                  <a class="dashboard-stat dashboard-stat-lighter green" style="pointer-events: none">
                     <div class="visual">
                       <!-- <i class="fa fa-check-circle"
                         style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
@@ -110,7 +110,7 @@
                       </ng-container> -->
                       <button class="button bgcolor-unset p0 btn-transitions" translate (click)="confirmsync()"
                         [disabled]=" masterContactListSync || contactsCompanyListSync">
-                        <span class="btn Btn-Green transition d-inline"> Synchronize Companies
+                        <span class="btn btn-primary transition d-inline"> Synchronize Companies
                           <i class="fa fa-refresh" aria-hidden="true"></i>
                         </span>
                       </button>
@@ -160,22 +160,19 @@
                             <tr>
                               <td><img src="{{properties?.companyListImage}}" alt="company" style="height: 54px;"></td>
                               <td>
-                                <h4 class="m0 moreipsis ListFontCu">
-                                  <span data-toggle="tooltip" data-placement="top" title="{{company.companyListName}}"
+                                <h4>
+                                  <span data-toggle="tooltip" data-placement="right" title="{{company.name}}"
                                     class="ListFontCu">
                                     <b> {{company?.name}} </b>
                                   </span>
                                 </h4>
-
-
-                                <h5 *ngIf="company?.email?.length>0 " class='moreipsis'
-                                  style="margin-top: 4px;margin-bottom: 4px !important;">
-                                  <span data-toggle="tooltip" data-placement="top" title="{{company?.email}}">
+                                <h4 *ngIf="company?.email?.length>0">
+                                  <span data-toggle="tooltip" data-placement="right" title="{{company?.email}}" class="ListFontCu">
                                     <b>Email :</b> {{company?.email}}
                                   </span>
-                                </h5>
-                                <h4 class="m0 moreipsis ListFontCu">
-                                  <span data-toggle="tooltip" data-placement="top" title="{{company.name}}"
+                                </h4>
+                                <h4>
+                                  <span data-toggle="tooltip" data-placement="right" title="{{company.companyListName}}"
                                     class="ListFontCu">
                                     <b>List Name :</b> {{company?.companyListName}}
                                   </span>
