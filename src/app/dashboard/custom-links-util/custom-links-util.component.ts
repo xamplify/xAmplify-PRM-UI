@@ -149,9 +149,12 @@ export class CustomLinksUtilComponent implements OnInit {
     if(this.moduleType==this.properties.dashboardButtons){
       this.headerText = "Add Button";
       this.listHeaderText = "Your Dashboard Button's List";
-    }else{
+    }else if(this.moduleType==this.properties.newsAndAnnouncements){
       this.headerText = "Add News & Announcements";
       this.listHeaderText = "Your News & Announcements List";
+    }else if(this.moduleType==this.properties.dashboardBanners){
+      this.headerText = "Add Dashboard Banner";
+      this.listHeaderText = "Your Dashboard Banners List";
     }
     this.buttonActionType = true;
     this.selectedProtocol = 'http';
