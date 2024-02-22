@@ -315,9 +315,10 @@
 													Image
 													<input id="ownFileuplad" type="file" ng2FileSelect
 														[uploader]="uploader" accept=".jpg,.jpeg,.png"
-														*ngIf="uploader.queue.length==0" class="btn btn-primary"
-														style="background: #00a6e8;width: 100%;cursor: pointer;"
-														title=" " (change)="isFileCheck($event)">
+														*ngIf="uploader.queue.length==0"
+														class="btn btn-primary dam_upload_img"
+														style="background: #00a6e8;cursor: pointer;" title=" "
+														(change)="isFileCheck($event)">
 												</span>
 												<p *ngIf="ownThumbnail" class="help-block" translate>If you want to
 													upload your own thumbnail, please choose a file from your system.

@@ -363,10 +363,10 @@
                                 <a class="custom-icon" data-rel="fancybox-button" (click)="viewDeal(deal)"
                                   data-toggle="tooltip" data-placement="bottom" title="View Deal" id="deal">
                                   <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
-                                  <span *ngIf="deal.unReadPropertyChatCount > 0" class="badge badge-default"
-                                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
                                   <div class="clickicons"></div>
                                 </a>
+                                <span *ngIf="deal.unReadPropertyChatCount > 0" class="badge badge-default notify-badge"
+                                  style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
                                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                   <a class="custom-icon" data-rel="fancybox-button"
                                     *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
@@ -389,10 +389,10 @@
                                   title="Comments/History">
                                   <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
                                   </i>
-                                  <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
-                                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
                                   <div class="clickicons"></div>
                                 </a>
+                                <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default notify-badge"
+                                  style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
                               </div>
                             </td>
                           </tr>

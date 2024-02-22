@@ -160,7 +160,8 @@
                       </ng-container>
                       <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
                         style="margin-left: 3px !important;" title="Download"
-                        [class.disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView" (click)="downloadLeads(leadsPagination)">
+                        [class.disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView"
+                        (click)="downloadLeads(leadsPagination)">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>
 
@@ -403,7 +404,9 @@
                                     Rejected
                                   </div>
                                   <div *ngIf="lead?.canRegisterDeal">
-                                    <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom" title="{{lead?.approvalStatusComment ? (lead?.leadApprovalStatusType !== 'APPROVED' ? 'You can not register a deal for a rejected lead' : '') : 'You can not register a deal for an unapproved lead'}}"
+                                    <button class="button_blue bgcolor-unset" data-toggle="tooltip"
+                                      data-placement="bottom"
+                                      title="{{lead?.approvalStatusComment ? (lead?.leadApprovalStatusType !== 'APPROVED' ? 'You can not register a deal for a rejected lead' : '') : 'You can not register a deal for an unapproved lead'}}"
                                       [disabled]="(((lead?.leadApprovalStatusType == 'REJECTED') || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection)))"
                                       (click)="showDealRegistrationForm(lead)" translate>
                                       <span class="btn btn-primary transition d-inline"> Register Deal</span>
@@ -448,10 +451,10 @@
                                   title="Comments/History">
                                   <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
                                   </i>
-                                  <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
-                                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
                                   <div class="clickicons"></div>
                                 </a>
+                                <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default notify-badge"
+                                  style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
                               </div>
                             </td>
                           </tr>
