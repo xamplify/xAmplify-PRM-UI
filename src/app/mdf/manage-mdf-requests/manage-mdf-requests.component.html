@@ -30,10 +30,12 @@
                *ngIf="isPartnerView && (vanityLogin || loginAsPartner)">
                <div class="btn-group refer-vendor-button"
                   style="padding-top: 7px;padding-bottom: 4px;padding-right: 3px;">
-                  <button (click)="goToAddRequest(vendorCompanyId)" class="btn btn-primary"
+                  <button (click)="goToAddRequest(vendorCompanyId)" class="button_blue bgcolor-unset"
                      style="border-radius: 3px !important;">
-                     <span class="hidden-xs margin-right-design" translate>Request MDF</span>
-                     <i class="fa fa-user-plus" data-toggle="tooltip" aria-hidden="true"></i>
+                     <span class="hidden-xs margin-right-design btn btn-primary transition text_pd-top1"
+                        translate>Request MDF<i class="fa fa-user-plus" data-toggle="tooltip"
+                           aria-hidden="true"></i></span>
+
                   </button>
                </div>
             </div>

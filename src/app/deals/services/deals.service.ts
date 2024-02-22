@@ -214,6 +214,11 @@ getStageNamesForCampaign(campaignId:number, userId:number){
     .catch(this.handleError);
   }
   
-
+  downloadDeals(pagination: Pagination, userId: number){
+    let url = this.URL + "download/" + userId + "?access_token=" + this.authenticationService.access_token
+    return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+  }
 
 }

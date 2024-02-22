@@ -29,7 +29,7 @@
     <div>
       <table class="table table-bordered" aria-describedby="csv-error-messages-table">
         <ng-container *ngFor="let error of csvErrors">
-          <tr>
+          <tr class="upload_csv_validate">
             <th class="align-bold" id="csverror-th">{{error}}</th>
           </tr>
         </ng-container>

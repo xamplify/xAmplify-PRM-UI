@@ -4063,3 +4063,31 @@ div#htmlContent .row{
 .mrg_lft66{
   margin-left: 66px !important;
 }
+/***** Sudha Sri(22-2-2024) *****/
+.dam_upload_img:hover{
+  width: 0px;
+  margin-bottom: -157px;
+}
+.btn-file input[type="file"]{
+  position: absolute !important;
+}
+table.table.table-bordered > tbody {
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+table.table.table-bordered {
+  border: none !important;
+}
+.table tbody tr.upload_csv_validate:hover{
+  background: none !important;
+  box-shadow: none !important;
+}
+.table > tbody > tr > th#csverror-th {
+  background: none !important;
+  border-top: none !important;
+  box-shadow: none !important;
+}
+.pd_btm5{
+  padding-bottom: 5px !important;
+}
