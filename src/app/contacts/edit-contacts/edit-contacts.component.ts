@@ -3388,7 +3388,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
 				this.pagination.partnerTeamMemberGroupFilter = true;
 			}
-			this.checkSyncStatus();
+			if(this.router.url.includes('home/contacts')){
+				this.checkSyncStatus();
+			}	
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();
 			this.selectedContactListName = this.contactListName;

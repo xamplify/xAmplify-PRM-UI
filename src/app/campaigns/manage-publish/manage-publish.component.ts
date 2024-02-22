@@ -21,6 +21,7 @@ import { UserService } from '../../core/services/user.service';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { utc } from 'moment';
 import { Properties } from 'app/common/models/properties';
+import { access } from 'fs';
 
 declare var swal, $: any, flatpickr;
 
@@ -123,6 +124,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     editButtonClicked = false;
     selectedCampaignId = 0;
     showUpArrowButton = false;
+    downloadCampaigns = true;
     /******** user guide *************/
     mergeTagForGuide:any;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
@@ -1104,6 +1106,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     showArchivedCampaigns() {
+        this.downloadCampaigns = false;
         this.archived = true;
         this.campaignService.archived = true;
         this.resetPagination();        
@@ -1111,6 +1114,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     showActiveCampaigns() {
+        this.downloadCampaigns = true;
         this.archived = false;
         this.campaignService.archived = false;  
         this.resetPagination();      
@@ -1287,5 +1291,30 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     this.editButtonClicked = false;
     }
    
+    /***** XNFR-445 *****/
+    downloadCampaignsData(pagination: Pagination){
+        this.isloading = true;
+        try{
+            this.campaignService.downloadCampaignsData(pagination, this.loggedInUserId)
+        .subscribe(
+            data => {    
+                if(data.statusCode==200){
+                    this.isloading = false;
+                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);   
+                }
+                if(data.statusCode==401){
+                    this.isloading = false;
+                    this.customResponse = new CustomResponse('SUCCESS',data.message,true);
+                }
+            },
+            (error: any) => {
+                this.logger.errorPage(error);
+            },
+            ()=> this.logger.info("download completed")
+            );
+        }catch(error){
+            this.logger.error(error, "ManagePublishComponent", "downloadCampaignsData()");
+        }
+    }
 
 }

@@ -2,74 +2,76 @@
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <fieldset>
     <legend>{{headerText}}</legend>
-      <div class="form-group col-md-12">
-        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-      </div>
+    <div class="form-group col-md-12">
+      <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+    </div>
 
-      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <!--Title-->
-        <div class="form-group">
-          <label>Title</label>
-          <input class="form-control" type="text" placeholder="Title" required formControlName="title" autocomplete="off" required id="customLinkTitle" />
-          <span *ngIf="formErrors.title" class="required">{{ formErrors.title }}</span>
-        </div>
-        <!--Link-->
-        <div class="form-group">
-          <label>Link</label>
-          <input class="form-control" type="text" placeholder="Link" required formControlName="link" autocomplete="off" />
-          <span *ngIf="formErrors.link" class="required">{{ formErrors.link }}</span>
-        </div>
-        <!--Open in new tab-->
-        <div class="form-group">
-          <div class="form-check">
-            <input formControlName="openLinksInNewTab" class="form-check-input checkBox_shadow pointer" type="checkbox" />
-            <label class="form-check-label" for="gridCheck" style="padding-top: 5px;">
-              Open in new tab?
-            </label>
-          </div>
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+      <!--Title-->
+      <div class="form-group">
+        <label>Title</label>
+        <input class="form-control" type="text" placeholder="Title" required formControlName="title" autocomplete="off"
+          required id="customLinkTitle" />
+        <span *ngIf="formErrors.title" class="required">{{ formErrors.title }}</span>
+      </div>
+      <!--Link-->
+      <div class="form-group">
+        <label>Link</label>
+        <input class="form-control" type="text" placeholder="Link" required formControlName="link" autocomplete="off" />
+        <span *ngIf="formErrors.link" class="required">{{ formErrors.link }}</span>
+      </div>
+      <!--Open in new tab-->
+      <div class="form-group">
+        <div class="form-check">
+          <input formControlName="openLinksInNewTab" class="form-check-input checkBox_shadow pointer" type="checkbox" />
+          <label class="form-check-label" for="gridCheck" style="padding-top: 5px;">
+            Open in new tab?
+          </label>
         </div>
       </div>
-      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <!--Subtitle-->
-        <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
-          <label>Subtitle</label>
-          <input class="form-control" type="text" placeholder="Subtitle" formControlName="subTitle" autocomplete="off" />
-          <span *ngIf="formErrors.subTitle" class="required">{{ formErrors.subTitle }}</span>
-        </div>
-        <!--News & Announcements-->
-        <div class="form-group" *ngIf="moduleType==properties?.newsAndAnnouncements">
-          <label>Please select type</label>
-          <ng-container *ngIf="buttonActionType">
-            <select formControlName="customLinkType" class="form-control">
-              <option [ngValue]="type.id" *ngFor="let type of customLinkTypes">{{type.value}}</option>
-            </select>
-          </ng-container>
-          <ng-container *ngIf="!buttonActionType">
-            <select class="form-control" disabled>
-              <option>{{customLinkDto.type}}</option>
-            </select>
-          </ng-container>
-          
-          
-        </div>
-        <!--Icon-->
-          <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
-            <label>Icon</label>
-            <div class="flex">
-              <select formControlName="icon" class="form-control">
-                <option disabled value="null"> Please select icon </option>
-                <option [ngValue]="icon.id" *ngFor="let icon of iconsList">{{icon.name}}</option>
-              </select>
-              <span><i class="fa {{customLinkForm.get('icon').value}} ml10"></i></span>
-          </div>
-          </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+      <!--Subtitle-->
+      <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
+        <label>Subtitle</label>
+        <input class="form-control" type="text" placeholder="Subtitle" formControlName="subTitle" autocomplete="off" />
+        <span *ngIf="formErrors.subTitle" class="required">{{ formErrors.subTitle }}</span>
       </div>
-       <!--Description-->
-       <div class="form-group col-md-12">
-        <label>Description</label>
-        <textarea class="form-control" rows="3" placeholder="Description" formControlName="description" style="resize: none;"></textarea>
-          <span *ngIf="formErrors.description" class="required">{{ formErrors.description }}</span>
+      <!--News & Announcements-->
+      <div class="form-group" *ngIf="moduleType==properties?.newsAndAnnouncements">
+        <label>Please select type</label>
+        <ng-container *ngIf="buttonActionType">
+          <select formControlName="customLinkType" class="form-control">
+            <option [ngValue]="type.id" *ngFor="let type of customLinkTypes">{{type.value}}</option>
+          </select>
+        </ng-container>
+        <ng-container *ngIf="!buttonActionType">
+          <select class="form-control" disabled>
+            <option>{{customLinkDto.type}}</option>
+          </select>
+        </ng-container>
+
+
+      </div>
+      <!--Icon-->
+      <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
+        <label>Icon</label>
+        <div class="flex">
+          <select formControlName="icon" class="form-control">
+            <option disabled value="null"> Please select icon </option>
+            <option [ngValue]="icon.id" *ngFor="let icon of iconsList">{{icon.name}}</option>
+          </select>
+          <span><i class="fa {{customLinkForm.get('icon').value}} ml10"></i></span>
         </div>
+      </div>
+    </div>
+    <!--Description-->
+    <div class="form-group col-md-12">
+      <label>Description</label>
+      <textarea class="form-control" rows="3" placeholder="Description" formControlName="description"
+        style="resize: none;"></textarea>
+      <span *ngIf="formErrors.description" class="required">{{ formErrors.description }}</span>
+    </div>
 
     <div class="form-row">
       <div class="form-group col-md-12">
@@ -77,11 +79,12 @@
           [disabled]="!customLinkForm.valid || saving" (click)="saving=true;save();">
           <span class="btn btn-primary transition txt_pd-top3">Save</span>
         </button>
-        <button *ngIf="!buttonActionType" type="submit" class="button_blue bgcolor-unset" 
-           [disabled]="!customLinkForm.valid || saving" (click)="saving=true;update()">
-            <span class="btn btn-primary transition txt_pd-top3">Update</span>
+        <button *ngIf="!buttonActionType" type="submit" class="button_blue bgcolor-unset"
+          [disabled]="!customLinkForm.valid || saving" (click)="saving=true;update()">
+          <span class="btn btn-primary transition txt_pd-top3">Update</span>
         </button>
-        <button *ngIf="!buttonActionType" type="submit" class="btn btn-danger" (click)="cancel()">Cancel</button>
+        <button *ngIf="!buttonActionType" type="submit" class="btn Btn-Gray neg_mrg_top4 pos_mar_rgt3"
+          (click)="cancel()">Cancel</button>
       </div>
     </div>
   </fieldset>
@@ -103,11 +106,13 @@
       <tbody>
         <tr *ngFor="let item of pagination.pagedItems">
           <ng-container *ngIf="moduleType==properties?.dashboardButtons">
-            <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
+            <td class="brnTitleTextCu"><span class="mr5"><i
+                  class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
             <td>{{item.buttonLink}}</td>
           </ng-container>
           <ng-container *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">
-            <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.icon}}" aria-hidden="true"></i></span>{{item.title}}</td>
+            <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.icon}}"
+                  aria-hidden="true"></i></span>{{item.title}}</td>
             <td>{{item.link}}</td>
           </ng-container>
           <td *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">{{item.type}}</td>
@@ -117,7 +122,8 @@
                 <i class="fa fa-pencil-square-o"></i>
                 <div class="clickicons"></div>
               </a>
-              <a class="custom-icon" (click)="showAlert(item)" data-toggle="tooltip" data-placement="top" title="Delete">
+              <a class="custom-icon" (click)="showAlert(item)" data-toggle="tooltip" data-placement="top"
+                title="Delete">
                 <i class="fa fa-trash-o"></i>
                 <div class="del-icon"></div>
               </a>
