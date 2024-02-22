@@ -560,10 +560,15 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			  "partnerIds": this.selectedTeamMemberIds,
 			  "userListIds": this.selectedPartnerGroupIds,
 			  "vendorJourneyLandingPageId": this.inputId,
-			  "companyPartnerIds": null
+			  "companyPartnerIds": null,
+			  "partnerGroupSelected": this.selectedPartnerGroupIds != null && this.selectedPartnerGroupIds.length>0
 		  }
 		  if(this.companyAndPartnerMap != undefined && this.companyAndPartnerMap!= null && this.companyAndPartnerMap.size > 0 ){
-			shareLandingPageDTO['companyPartnerIds'] = this.companyAndPartnerMap;
+			let obj = Array.from(this.companyAndPartnerMap).reduce((obj, [key, value]) => {
+				obj[key] = value;
+				return obj;
+			  }, {});
+			shareLandingPageDTO['companyPartnerIds'] = obj;
 		  }
 	  	this.shareLandingPageToPartners(shareLandingPageDTO);
 		}
