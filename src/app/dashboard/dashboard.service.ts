@@ -37,6 +37,7 @@ export class DashboardService {
     moduleUrl = this.authenticationService.REST_URL + "module/";
     upgradeRoleUrl = this.authenticationService.REST_URL + "upgradeRole/";
     domainUrl = this.authenticationService.REST_URL + "domain";
+    dashboardAnalyticsUrl = this.authenticationService.REST_URL + "/dashboard/views/";
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     
     /****XNFR-326****/
@@ -1335,5 +1336,12 @@ getDefaultThemes(){
         let signUpUrl = this.domainUrl+'/signUpUrl'+this.QUERY_PARAMETERS+"&loggedInUserId="+userId+vanityUrlFilterQueryParameter+domainNameQueryParameter;
         return this.authenticationService.callGetMethod(signUpUrl);
     }
+
+    findInstantNavigationLinks(vanityLoginDto: VanityLoginDto) {
+        return this.http.post(this.dashboardAnalytics + `getInstantNavigationLinks?access_token=${this.authenticationService.access_token}`, vanityLoginDto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     
 }
