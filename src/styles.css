@@ -2971,3 +2971,11 @@ span.btn.Btn-Green.transition.secondary_btn_width{
 .icons-center{
   display: block;
 }
+/***** Manikanta(22-2-2024) *****/
+/* notify-badge for manage-leads */
+.notify-badge{
+  position: relative;
+  top: -5px;
+  z-index: 99;
+  height: 17px!important;
+}
