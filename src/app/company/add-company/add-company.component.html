@@ -157,10 +157,10 @@
       <div class="modal-footer popup_footer" style="border:none">
         <button class="btn Btn-Gray neg_mrg_top4 pos_mar_rgt3" (click)="addCompanyModalClose()"
           translate>Cancel</button>
-        <button *ngIf="!edit && !preview" type="submit" class="button bgcolor-unset button_height" (click)="saveCompany()" [disabled]="!isCompanyNameValid || !isCompanyEmailValid " translate><span
+        <button *ngIf="!edit && !preview" type="submit" class="button bgcolor-unset button_height" (click)="saveCompany()" [disabled]="!isCompanyNameValid || !isCompanyEmailValid" translate><span
             class="btn Btn-Green transition txt_pd-top3" >Add</span></button>
-            <button *ngIf="edit" type="submit" class="button bgcolor-unset button_height" translate><span
-              class="btn Btn-Green transition txt_pd-top3"  (click)="editCompany()">Update</span></button>
+            <button *ngIf="edit" type="submit" class="button bgcolor-unset button_height" (click)="editCompany()"  [disabled]="!isCompanyEmailValid" translate><span
+              class="btn Btn-Green transition txt_pd-top3">Update</span></button>
       </div>
     </div>
   </div>

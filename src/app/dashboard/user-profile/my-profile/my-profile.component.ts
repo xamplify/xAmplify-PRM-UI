@@ -3549,7 +3549,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	confirmAndsaveExcludedUser(excludedUser: User) {
 		let emailId = '<strong>' + excludedUser.emailId + '</strong>';
 		let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
-		let text = "Adding this email to your exclusion list ensures that " + emailId + " no longer receives any campaigns from " + companyName;
+		let mailType = (this.authenticationService.module.isPrm || this.authenticationService.module.isPrmTeamMember
+			|| this.authenticationService.module.isPrmAndPartner || this.authenticationService.module.isPrmAndPartnerTeamMember) ? "mails" : "campaigns";
+
+		let text = "Adding this email to your exclusion list ensures that " + emailId + " no longer receives any " + mailType + " from " + companyName;
 		let self = this;
 		swal({
 			title: 'Are you sure want to continue?',
@@ -3694,7 +3697,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	confirmAndsaveExcludedDomain(domain: string) {
 		let updatedDomain = '<strong>' + domain + '</strong>';
 		let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
-		let text = "Adding this domain to your exclusion list ensures that " + updatedDomain + " users no longer receive any campaigns from " + companyName;
+		let mailType = (this.authenticationService.module.isPrm || this.authenticationService.module.isPrmTeamMember
+			|| this.authenticationService.module.isPrmAndPartner || this.authenticationService.module.isPrmAndPartnerTeamMember) ? "mails" : "campaigns";
+		let text = "Adding this domain to your exclusion list ensures that " + updatedDomain + " users no longer receive any " + mailType + " from " + companyName;
 		let self = this;
 		swal({
 			title: 'Are you sure want to continue?',
@@ -3955,7 +3960,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	confirmAndsaveExcludedUsers(excludedUsers: User[]) {
 		let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
-		let text = "Adding emails to your exclusion list ensures that these emails are no longer receives any campaigns from " + companyName;
+		let mailType = (this.authenticationService.module.isPrm || this.authenticationService.module.isPrmTeamMember
+			|| this.authenticationService.module.isPrmAndPartner || this.authenticationService.module.isPrmAndPartnerTeamMember) ? "mails" : "campaigns";
+		let text = "Adding emails to your exclusion list ensures that these emails are no longer receives any " + mailType + " from " + companyName;
 		let self = this;
 		swal({
 			title: 'Are you sure want to continue?',
@@ -4037,7 +4044,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	confirmAndsaveExcludedDomains(excludedDomains: string[]) {
 		let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
-		let text = "Adding domains to your exclusion list ensures that these domains related users are no longer receives any campaigns from " + companyName;
+		let mailType = (this.authenticationService.module.isPrm || this.authenticationService.module.isPrmTeamMember
+			|| this.authenticationService.module.isPrmAndPartner || this.authenticationService.module.isPrmAndPartnerTeamMember) ? "mails" : "campaigns";
+		let text = "Adding domains to your exclusion list ensures that these domains related users are no longer receives any " + mailType + " from " + companyName;
 		let self = this;
 		swal({
 			title: 'Are you sure want to continue?',
