@@ -19,9 +19,10 @@
     width: 300%;
 }
 
-.feature-img-bg {
+.dashboard-banner-image {
     display: block;
     width: 100% !important;
+    height: 96px;
     background: #fff;
     padding: 1px;
     margin: 0 auto;
