@@ -235,25 +235,24 @@
                                     </li>
                                     <!--------------Admin----------------------->
                                     <div class="my-profile-header-text">Admin</div>
-                                    <!--Dashboard Buttons-->
-                                    <li [ngClass]="{'active': activeTabName == properties?.dashboardButtons}"
-                                        *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName ==  properties?.dashboardButtons}"
-                                            (click)="activateTab(properties?.dashboardButtons);clearCustomResponse()">{{properties.dashboardButtons}}</a>
-                                    </li>
-                                    <!--XNFR-459-->
-                                    <!--News & Announcements -->
-                                    <li [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}"
-                                        *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.newsAndAnnouncements}"
-                                            (click)="activateTab(properties?.newsAndAnnouncements);clearCustomResponse()">{{properties?.newsAndAnnouncements}}</a>
-                                    </li>
-                                    <!--Dashboard Banners-->
-                                    <li  [ngClass]="{'active': activeTabName == properties?.dashboardBanners}"
-                                        *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.dashboardBanners}"
-                                            (click)="activateTab(properties?.dashboardBanners);clearCustomResponse()">{{properties?.dashboardBanners}}</a>
-                                    </li>
+                                    <ng-container  *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService.module.loggedInThroughOwnVanityUrl">
+                                        <!--Dashboard Buttons-->
+                                        <li [ngClass]="{'active': activeTabName == properties?.dashboardButtons}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName ==  properties?.dashboardButtons}"
+                                                (click)="activateTab(properties?.dashboardButtons);clearCustomResponse()">{{properties.dashboardButtons}}</a>
+                                        </li>
+                                        <!--XNFR-459-->
+                                        <!--News & Announcements -->
+                                        <li [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.newsAndAnnouncements}"
+                                                (click)="activateTab(properties?.newsAndAnnouncements);clearCustomResponse()">{{properties?.newsAndAnnouncements}}</a>
+                                        </li>
+                                        <!--Dashboard Banners-->
+                                        <li  [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.dashboardBanners}"
+                                                (click)="activateTab(properties?.dashboardBanners);clearCustomResponse()">{{properties?.dashboardBanners}}</a>
+                                        </li>
+                                    </ng-container>
                                     <!--XNFR-459-->
                                     <!--Your Templates-->
                                     <li *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor"

@@ -15,6 +15,7 @@ import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CustomLinkType } from '../models/custom-link-type.enum';
 import { ErrorResponse } from 'app/util/models/error-response';
 import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-image-util.component';
+import { setTimeout } from 'timers';
 
 declare var swal: any, $:any;
 
@@ -69,9 +70,9 @@ export class CustomLinksUtilComponent implements OnInit {
       }
   };
   customLinkForm: FormGroup;
-  @ViewChild('uploadImageUtilComponent') uploadImageUtilComponent: UploadImageUtilComponent;
   croppedImage:any;
   previouslySelectedImagePath = "";
+  uploadImageOptionClicked = false;
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
@@ -436,7 +437,11 @@ export class CustomLinksUtilComponent implements OnInit {
   /***Dashboard Banners***/
 
   openModalPopUp(){
-    this.uploadImageUtilComponent.openModalPopup(this.properties.dashboardBanners);
+    this.uploadImageOptionClicked = false;
+    setTimeout(() => {
+      this.uploadImageOptionClicked = true;
+    }, 100);
+    
   }
 
   clearImage(){
@@ -444,7 +449,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.previouslySelectedImagePath = "";
   }
 
-  croppedImageEventReceiver(event){
+  croppedImageEventReceiver(event:any){
     this.croppedImage = event;
   }
 
