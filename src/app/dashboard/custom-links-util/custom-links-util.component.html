@@ -2,139 +2,178 @@
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <fieldset>
     <legend>{{headerText}}</legend>
-    <div class="form-group col-md-12">
-      <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-    </div>
-
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-      <!--Title-->
-      <div class="form-group">
-        <label>Title</label>
-        <input class="form-control" type="text" placeholder="Title" required formControlName="title" autocomplete="off"
-          required id="customLinkTitle" />
-        <span *ngIf="formErrors.title" class="required">{{ formErrors.title }}</span>
-      </div>
-      <!--Link-->
-      <div class="form-group">
-        <label>Link</label>
-        <input class="form-control" type="text" placeholder="Link" required formControlName="link" autocomplete="off" />
-        <span *ngIf="formErrors.link" class="required">{{ formErrors.link }}</span>
-      </div>
-      <!--Open in new tab-->
-      <div class="form-group">
-        <div class="form-check">
-          <input formControlName="openLinksInNewTab" class="form-check-input checkBox_shadow pointer" type="checkbox" />
-          <label class="form-check-label" for="gridCheck" style="padding-top: 5px;">
-            Open in new tab?
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-      <!--Subtitle-->
-      <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
-        <label>Subtitle</label>
-        <input class="form-control" type="text" placeholder="Subtitle" formControlName="subTitle" autocomplete="off" />
-        <span *ngIf="formErrors.subTitle" class="required">{{ formErrors.subTitle }}</span>
-      </div>
-      <!--News & Announcements-->
-      <div class="form-group" *ngIf="moduleType==properties?.newsAndAnnouncements">
-        <label>Please select type</label>
-        <ng-container *ngIf="buttonActionType">
-          <select formControlName="customLinkType" class="form-control">
-            <option [ngValue]="type.id" *ngFor="let type of customLinkTypes">{{type.value}}</option>
-          </select>
-        </ng-container>
-        <ng-container *ngIf="!buttonActionType">
-          <select class="form-control" disabled>
-            <option>{{customLinkDto.type}}</option>
-          </select>
-        </ng-container>
-
-
-      </div>
-      <!--Icon-->
-      <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
-        <label>Icon</label>
-        <div class="flex">
-          <select formControlName="icon" class="form-control">
-            <option disabled value="null"> Please select icon </option>
-            <option [ngValue]="icon.id" *ngFor="let icon of iconsList">{{icon.name}}</option>
-          </select>
-          <span><i class="fa {{customLinkForm.get('icon').value}} ml10"></i></span>
-        </div>
-      </div>
-    </div>
-    <!--Description-->
-    <div class="form-group col-md-12">
-      <label>Description</label>
-      <textarea class="form-control" rows="3" placeholder="Description" formControlName="description"
-        style="resize: none;"></textarea>
-      <span *ngIf="formErrors.description" class="required">{{ formErrors.description }}</span>
-    </div>
-
-    <div class="form-row">
       <div class="form-group col-md-12">
-        <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
-          [disabled]="!customLinkForm.valid || saving" (click)="saving=true;save();">
-          <span class="btn btn-primary transition txt_pd-top3">Save</span>
-        </button>
-        <button *ngIf="!buttonActionType" type="submit" class="button_blue bgcolor-unset"
-          [disabled]="!customLinkForm.valid || saving" (click)="saving=true;update()">
-          <span class="btn btn-primary transition txt_pd-top3">Update</span>
-        </button>
-        <button *ngIf="!buttonActionType" type="submit" class="btn Btn-Gray neg_mrg_top4 pos_mar_rgt3"
-          (click)="cancel()">Cancel</button>
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
       </div>
-    </div>
+       <!--Dashboard Banner-->
+      <div *ngIf="moduleType==properties?.dashboardBanners">
+        <div class="col-md-12" style="padding-top: 10px;">
+          <div class="portlet light feature-img">
+            <div class="portlet-title tabbable-line ">
+              <div class="caption caption-md ">
+                <i class="icon-globe theme-font hide " aria-hidden="true "></i>
+                <span class="caption-subject font-blue-madison bold uppercase ">Dashboard Banner</span>
+              </div>
+              <div class="inline" style="float: right; padding-bottom: 5px;">
+                <button type="button" class="button_blue bgcolor-unset" (click)="clearImage()"><span
+                    class="btn btn-primary transition txt_pd-top3">Clear</span></button>
+              </div>
+            </div>
+            <div class="dashboard-banner-image" style="cursor: pointer;text-align:center;color:#fff;"
+              (click)="openModalPopUp()">
+              <div *ngIf="!croppedImage">
+                <img *ngIf="!previouslySelectedImagePath"
+                  src="assets/images/contentPlaceholderImages.png" class="profile-image img-grid" alt="">
+              </div>
+              <div *ngIf="croppedImage; else showImage">
+                <img class="img-grids" [src]="croppedImage" alt="">
+              </div>
+              <ng-template #showImage>
+                <img class="img-grids" [src]="previouslySelectedImagePath" alt="">
+              </ng-template>
+              <a class="btn btn-primary1 profile-pic" data-toggle="tooltip" data-placement="bottom"
+                title="upload 2:1 ratio logo">
+                &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
+                  style="font-size:25px;padding-top:4px;margin-right: -5px;"></i></a>
+            </div>
+          </div>
+          <div class="message-content">
+            <ul class="t-b-spacings">
+              <li translate>Maximum file size is 10 MB.</li>
+              <li translate>Please Upload <strong>.jpg, .jpeg, .png </strong>files only.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <!--Title-->
+        <div class="form-group">
+          <label>Title</label>
+          <input class="form-control" type="text" placeholder="Title" required formControlName="title" autocomplete="off" required id="customLinkTitle" />
+          <span *ngIf="formErrors.title" class="required">{{ formErrors.title }}</span>
+        </div>
+        <!--Link-->
+        <div class="form-group">
+          <label>Link</label>
+          <input class="form-control" type="text" placeholder="Link" required formControlName="link" autocomplete="off" />
+          <span *ngIf="formErrors.link" class="required">{{ formErrors.link }}</span>
+        </div>
+        <!--Open in new tab-->
+        <div class="form-group">
+          <div class="form-check">
+            <input formControlName="openLinksInNewTab" class="form-check-input checkBox_shadow pointer" type="checkbox" />
+            <label class="form-check-label" for="gridCheck" style="padding-top: 5px;">
+              Open in new tab?
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <!--Subtitle-->
+        <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
+          <label>Subtitle</label>
+          <input class="form-control" type="text" placeholder="Subtitle" formControlName="subTitle" autocomplete="off" />
+          <span *ngIf="formErrors.subTitle" class="required">{{ formErrors.subTitle }}</span>
+        </div>
+        <!--News & Announcements-->
+        <div class="form-group" *ngIf="moduleType==properties?.newsAndAnnouncements">
+          <label>Please select type</label>
+          <ng-container *ngIf="buttonActionType">
+            <select formControlName="customLinkType" class="form-control">
+              <option [ngValue]="type.id" *ngFor="let type of customLinkTypes">{{type.value}}</option>
+            </select>
+          </ng-container>
+          <ng-container *ngIf="!buttonActionType">
+            <select class="form-control" disabled>
+              <option>{{customLinkDto.type}}</option>
+            </select>
+          </ng-container>
+          
+          
+        </div>
+        <!--Icon-->
+        <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
+            <label>Icon</label>
+            <div class="flex">
+              <select formControlName="icon" class="form-control">
+                <option disabled value="null"> Please select icon </option>
+                <option [ngValue]="icon.id" *ngFor="let icon of iconsList">{{icon.name}}</option>
+              </select>
+              <span><i class="fa {{customLinkForm.get('icon').value}} ml10"></i></span>
+          </div>
+        </div>
+      
+      </div>
+      <!--Description-->
+      <div class="form-group col-md-12">
+      <label>Description</label>
+      <textarea class="form-control" rows="3" placeholder="Description" formControlName="description" style="resize: none;"></textarea>
+        <span *ngIf="formErrors.description" class="required">{{ formErrors.description }}</span>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
+            [disabled]="!customLinkForm.valid || saving" (click)="saving=true;save();">
+            <span class="btn btn-primary transition txt_pd-top3">Save</span>
+          </button>
+          <button *ngIf="!buttonActionType" type="submit" class="button_blue bgcolor-unset" 
+            [disabled]="!customLinkForm.valid || saving" (click)="saving=true;update()">
+              <span class="btn btn-primary transition txt_pd-top3">Update</span>
+          </button>
+          <button *ngIf="!buttonActionType" type="submit" class="btn Btn-Gray neg_mrg_top4 pos_mar_rgt3" (click)="cancel()">Cancel</button>
+        </div>
+      </div>
   </fieldset>
 </form>
 
 <!--List-->
-<fieldset *ngIf="pagination.totalRecords!==0" style="margin: 20px 2px;">
+<fieldset style="margin: 20px 2px;">
   <legend>{{listHeaderText}}</legend>
-  <div *ngIf="pagination.totalRecords!==0" class="table-responsive" style="overflow-x: inherit; padding:15px;">
-    <table class='table tgrid table-hover'>
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Link</th>
-          <th *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">Type</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of pagination.pagedItems">
-          <ng-container *ngIf="moduleType==properties?.dashboardButtons">
-            <td class="brnTitleTextCu"><span class="mr5"><i
-                  class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
-            <td>{{item.buttonLink}}</td>
-          </ng-container>
-          <ng-container *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">
-            <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.icon}}"
-                  aria-hidden="true"></i></span>{{item.title}}</td>
-            <td>{{item.link}}</td>
-          </ng-container>
-          <td *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">{{item.type}}</td>
-          <td>
-            <div class="actions-block override-actions">
-              <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit">
-                <i class="fa fa-pencil-square-o"></i>
-                <div class="clickicons"></div>
-              </a>
-              <a class="custom-icon" (click)="showAlert(item)" data-toggle="tooltip" data-placement="top"
-                title="Delete">
-                <i class="fa fa-trash-o"></i>
-                <div class="del-icon"></div>
-              </a>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="form-group col-md-12" *ngIf="pagination.pagedItems.length !== 0">
-    <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-      (notifyParentDropDown)="findLinks($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
-  </div>
+  <div class="alert alert-info text-center" *ngIf="pagination.totalRecords==0">No Data Found</div>
+  <ng-container *ngIf="pagination.totalRecords>0">
+    <div  class="table-responsive" style="overflow-x: inherit; padding:15px;">
+      <table class='table tgrid table-hover'>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Link</th>
+            <th *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">Type</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of pagination.pagedItems">
+            <ng-container *ngIf="moduleType==properties?.dashboardButtons">
+              <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
+              <td>{{item.buttonLink}}</td>
+            </ng-container>
+            <ng-container *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">
+              <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.icon}}" aria-hidden="true"></i></span>{{item.title}}</td>
+              <td>{{item.link}}</td>
+            </ng-container>
+            <td *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">{{item.type}}</td>
+            <td>
+              <div class="actions-block override-actions">
+                <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit">
+                  <i class="fa fa-pencil-square-o"></i>
+                  <div class="clickicons"></div>
+                </a>
+                <a class="custom-icon" (click)="showAlert(item)" data-toggle="tooltip" data-placement="top" title="Delete">
+                  <i class="fa fa-trash-o"></i>
+                  <div class="del-icon"></div>
+                </a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="form-group col-md-12">
+      <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+        (notifyParentDropDown)="findLinks($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+    </div>
+  </ng-container>
+
 </fieldset>
+
+<app-upload-image-util #uploadImageUtilComponent (croppedImageEventEmitter)="croppedImageEventReceiver($event)"></app-upload-image-util>
