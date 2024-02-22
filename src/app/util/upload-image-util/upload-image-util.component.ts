@@ -1,17 +1,17 @@
 import { Component, OnInit, EventEmitter, ViewChild, Output } from '@angular/core';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
-import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
+import { ImageCropperComponent } from 'ng2-img-cropper';
 import { UtilService } from '../../core/services/util.service';
-
-// ImageCroppedEvent
 import { ImageCroppedEvent } from 'app/common/image-cropper/interfaces/image-cropped-event.interface';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
+import { Properties } from 'app/common/models/properties';
 
-declare var $, swal, CKEDITOR: any;
+declare var $:any;
 @Component({
   selector: 'app-upload-image-util',
   templateUrl: './upload-image-util.component.html',
-  styleUrls: ['./upload-image-util.component.css']
+  styleUrls: ['./upload-image-util.component.css'],
+  providers:[Properties]
 })
 export class UploadImageUtilComponent implements OnInit {
 
@@ -31,8 +31,8 @@ export class UploadImageUtilComponent implements OnInit {
   @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
   loadingcrop = false;
   @Output() croppedImageEventEmitter = new EventEmitter<any>();
-
-  constructor(public utilService: UtilService) { }
+  aspectRatio = "16/9";
+  constructor(public utilService: UtilService,public properties:Properties) { }
 
   ngOnInit() {
   }
@@ -40,13 +40,14 @@ export class UploadImageUtilComponent implements OnInit {
     $('#cropImage').modal('hide');
   }
   /*****************Featured Image*******************/
-  imageClick() {
-    this.fileChangeEvent();
-  }
-  fileChangeEvent() {
+  
+  openModalPopup(moduleName:string) {
     this.cropRounded = false;
     this.fileSizeError = false;
     this.imageChangedEvent = null;
+    if(this.properties.dashboardBanners==moduleName){
+      this.aspectRatio = "6/1";
+    }
     $('#cropImage').modal('show');
   }
   closeImageUploadModal() {
@@ -115,7 +116,6 @@ export class UploadImageUtilComponent implements OnInit {
 
   imageCroppedMethod(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
-
     console.log(event, base64ToFile(event.base64));
   }
   imageLoaded() {

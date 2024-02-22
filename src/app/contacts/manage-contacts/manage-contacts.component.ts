@@ -439,8 +439,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             } catch (error) {
                 this.xtremandLogger.error(error, "ManageContactsComponent", "loadAllContactList()");
             }
+			if(this.router.url.includes('home/contacts')){
+				this.checkSyncStatus();
+			}
         }
-		this.checkSyncStatus();
 	}
 
     loadAssignedLeadsLists(pagination: Pagination) {
@@ -2860,6 +2862,38 @@ resubscribeUserResult(event : any){
 	}
 }
  
+
+downloadUserListCsv(){
+	try{
+		this.contactsByType.contactPagination.filterKey = 'isPartnerUserList';
+		this.contactsByType.contactPagination.filterValue = this.isPartner;
+		this.contactsByType.contactPagination.criterias = this.criterias;
+		this.contactsByType.contactPagination.maxResults = this.contactsByType.pagination.totalRecords;
+				
+		this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
+		this.userListPaginationWrapper.pagination.searchKey = this.searchKey;
+        this.userListPaginationWrapper.userList.contactType = this.contactsByType.selectedCategory;
+        this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
+        this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
+		this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
+		.subscribe(
+			data => {
+				if(data.statusCode == 200){
+					this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+				}
+				if(data.statusCode == 401){
+					this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+				}
+			},
+			(error: any) => {
+				this.xtremandLogger.error(error);
+				this.xtremandLogger.errorPage(error);
+			});
+	} catch (error) {
+		this.xtremandLogger.error(error, "ManageContactsComponent", "downloadUserListCsv()");
+	}
+}
+
 checkSyncStatus(){
 	this.contactService.checkSyncStatus(this.loggedInUserId).subscribe(
 		response => {
@@ -2887,6 +2921,7 @@ checkSyncStatus(){
 		}
 	);
 }
+
 
 
 confirmsync(){

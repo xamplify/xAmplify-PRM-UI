@@ -85,7 +85,8 @@ export class VanityURLService {
     }else{
       let userId = this.authenticationService.getUserId();
       let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-      let findAllUrl = this.CUSTOM_LINK_PREFIX_URL+'/newsAndAnnouncements/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+      let urlPrefix = pagination.filterKey==this.properties.newsAndAnnouncements ? 'newsAndAnnouncements':'dashboardBanners';
+      let findAllUrl = this.CUSTOM_LINK_PREFIX_URL+'/'+urlPrefix+'/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
       return this.authenticationService.callGetMethod(findAllUrl);
     }
     
