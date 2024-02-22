@@ -53,6 +53,8 @@ export class EmailTemplatePreviewUtilComponent implements OnInit,OnDestroy {
     
   showModal(body:string){
     $(this.htmlContent).append(body);
+    /*** 18-02-2024(THARAK) ADD NEW CLASS TO <tbody> TAG*****/
+    $('tbody').addClass('preview-shown')
     $('.modal .modal-body').css('overflow-y', 'auto');
     $(this.modalId).modal('show');
     this.loadingEmailTemplate = false;

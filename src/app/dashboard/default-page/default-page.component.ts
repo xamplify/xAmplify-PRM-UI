@@ -20,7 +20,6 @@ export class DefaultPageComponent implements OnInit {
     modulesDashboardTypeError=false;
 	getAssignedDashboardTypeForPartner:any;
     vanityLoginDto: VanityLoginDto = new VanityLoginDto();
-	public assignedDashboardType:any;
     vendorCompanyIdForPartnerVanity:any;
     loggedThroughVendorVanityUrl:any = true;
     loggedInUserId: number;
@@ -107,13 +106,8 @@ export class DefaultPageComponent implements OnInit {
     }
     /* -- XNFR-415 -- */
     loadDashboard(){   
-        if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '' && (this.authenticationService.isPartner() || this.authenticationService.isOnlyPartner() || this.authenticationService.isTeamMember())) {
-            this.vanityurlService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
-                this.vendorCompanyIdForPartnerVanity = result.companyId;
-                this.getDefaultDashboardForPartner();
-            }, error => {
-                console.log(error);
-            });
+        if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '' ) {
+            this.getDefaultDashboardForPartner();
         } else {
             this.getDefaultPage(this.loggedInUserId);
         }
@@ -130,7 +124,6 @@ export class DefaultPageComponent implements OnInit {
                 data => {
                     if (data.statusCode == 200 && data.data !== undefined) {
                         this.getAssignedDashboardTypeForPartner = data.data;
-                        this.assignedDashboardType = this.getAssignedDashboardTypeForPartner;
                         if (this.getAssignedDashboardTypeForPartner === 'WELCOME') {
                             this.goToWelcomePage();
                         }

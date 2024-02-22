@@ -378,11 +378,25 @@ export class SortOption {
 		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
 	];
 
+	domainsDropDownOptions = [
+		{ 'name': 'Domain(A-Z)', 'value': 'domain-ASC' },
+		{ 'name': 'Domain(Z-A)', 'value': 'domain-DESC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+	];
+
 
 	numberOfItemsPerPage = [
 		{ 'name': '12', 'value': '12' },
 		{ 'name': '24', 'value': '24' },
 		{ 'name': '48', 'value': '48' }
+	];
+
+	damSortDropDownOptionsForPartner = [
+		{ 'name': 'Name(A-Z)', 'value': 'assetName-ASC' },
+		{ 'name': 'Name(Z-A)', 'value': 'assetName-DESC' },
+		{ 'name': 'Published On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Published On(DESC)', 'value': 'createdTime-DESC' }
 	];
 
 
@@ -431,5 +445,12 @@ export class SortOption {
 	public selectedVideoDropDownOption = this.videosDropDownOptions[this.videosDropDownOptions.length-1];
 
 	public selectedPartnerJourneyWorkflowDropDownOption = this.partnerJourneyWorkflowsDropDownOptions[this.partnerJourneyWorkflowsDropDownOptions.length-1];
+
+
+	public damSortOptionForPartner: any = this.damSortDropDownOptionsForPartner[this.damSortDropDownOptionsForPartner.length-1]; 
+
+	/*****XNFR-454*****/
+	selectedDomainDropDownOption = this.domainsDropDownOptions[this.domainsDropDownOptions.length-1];
+
 
 }

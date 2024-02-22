@@ -1,21 +1,28 @@
 <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading">
 </app-landing-page-loader>
 <div class="row fullRowCuPaddings" *ngIf="!httpRequestLoader.isLoading">
-  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 sidePaddingsAbjustment" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
-      <div class="grid-box">
-          <img class="email-template-preview" *ngIf="emailTemplate.imagePath" src="{{emailTemplate.imagePath}}" alt="Image Not Found">
-          <h4 class="ellipsis mt5 mb5 f-w-600 fontDecinModes" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.name}}">
-              {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
-          </h4>
-          <div class="bar gridIconCustomization">
-            <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Edit" (click)="designTemplate(emailTemplate)">
-                <i class="fa fa-edit" aria-hidden="true"></i>
-            </a>
-            <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewTemplate(emailTemplate)">
-              <i class="fa fa-eye" aria-hidden="true"></i>
-          </a>
-        </div>
+  <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 sidePaddingsAbjustment"
+    *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
+    <div class="grid-box">
+      <img class="email-template-preview" *ngIf="emailTemplate.imagePath" src="{{emailTemplate.imagePath}}"
+        alt="Image Not Found">
+      <h4 class="ellipsis mt5 mb5 f-w-600 fontDecinModes" data-toggle="tooltip" data-placement="top"
+        title="{{emailTemplate.name}}">
+        {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
+      </h4>
+      <div class="bar gridIconCustomization">
+        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
+          (click)="designTemplate(emailTemplate)">
+          <i class="fa fa-edit" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
+        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Preview"
+          (click)="previewTemplate(emailTemplate)">
+          <i class="fa fa-eye" aria-hidden="true"></i>
+          <div class="clickicons"></div>
+        </a>
       </div>
+    </div>
   </div>
 </div>
 <app-email-template-preview-util #emailTemplatePreviewPopupComponent></app-email-template-preview-util>

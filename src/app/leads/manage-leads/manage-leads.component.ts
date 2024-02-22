@@ -19,6 +19,7 @@ import { Lead } from '../models/lead';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { DealComments } from 'app/deal-registration/models/deal-comments';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -88,6 +89,10 @@ export class ManageLeadsComponent implements OnInit {
   vendorRole:boolean;
   vendorList:any ;
   vendorCompanyIdFilter:any;
+  /*******XNFR-426*******/
+  leadApprovalStatusType:any;
+  updateCurrentStage:boolean = false;
+
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
@@ -1223,6 +1228,7 @@ export class ManageLeadsComponent implements OnInit {
       ()=> { }
     );
   }
+
   
   /***** XNFR-456 *****/
   downloadLeads(pagination: Pagination){
@@ -1255,6 +1261,27 @@ export class ManageLeadsComponent implements OnInit {
             },
             () => { console.log("DownloadLeads() Completed...!") }
           );
+  }
+
+
+
+  /*********XNFR-426******/
+  addApprovalStatusModelPopup(lead:Lead , leadApprovalStatusType:string){
+    this.leadApprovalStatusType = leadApprovalStatusType;
+    this.selectedLead = lead;
+    this.updateCurrentStage = true;
+  }
+
+  closeApprovalStatusModelPopup(){
+    this.leadApprovalStatusType = null;
+    this.updateCurrentStage = false;
+    this.showLeads();
+  }
+
+  resetUnReadChatCount() {
+    this.showLeadForm = false;
+    this.showFilterOption = false;
+    this.showLeads();
   }
 
 }

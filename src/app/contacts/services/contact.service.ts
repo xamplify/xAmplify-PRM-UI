@@ -46,6 +46,7 @@ export class ContactService {
 
 
     url = this.authenticationService.REST_URL + "admin/";
+    companyUrl = this.authenticationService.REST_URL + "companies/"
     contactsUrl = this.authenticationService.REST_URL + "userlists/";
     googleContactsUrl = this.authenticationService.REST_URL + 'googleOauth/';
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
@@ -854,6 +855,7 @@ export class ContactService {
         .catch(this.handleError);
     }
 
+
     downloadPartnerListCsv(contactListId: number, userId: number, pagination: Pagination){
         return this._http.post(this.contactsUrl + "download/"+ contactListId +"/"+ userId +"?access_token=" + this.authenticationService.access_token, pagination)
         .map(this.extractData)
@@ -864,6 +866,32 @@ export class ContactService {
         return this._http.post(this.contactsUrl + "download/" + userId +"?access_token=" + this.authenticationService.access_token, userListPaginationWrapper)
         .map(this.extractData)
         .catch(this.handleError);
+    }
+    getCompaniesForDropdown() {
+        var url = this.companyUrl + "list"+ "/" +this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+        return this._http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getUserListByUserListId(userListId: number) {
+        var url = this.contactsUrl + "list/" + "userListId/" + userListId + "?access_token=" + this.authenticationService.access_token;
+        return this._http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    syncContactsInMasterContactList(userId: number){
+        return this._http.get(this.contactsUrl + "syncMasterContactList/" + userId + "/"+ "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    checkSyncStatus(userId: number){
+        return this._http.get(this.contactsUrl + "checkSyncStatus/" + userId + "/"+ "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+
     }
 
 }

@@ -51,7 +51,7 @@
   padding-right: 4px;
   padding-bottom: 4px !important;
   padding-left: 4px;
-  margin-top: 1px;
+  /* margin-top: 1px; */
 }
 .mobile-left {
   float: none;
@@ -92,14 +92,14 @@
 }
 #download-template {
   /* border: 1px solid #5ab2f5; */
-  width: 28px;
-  height: 29px;
+  width: 27px;
+  height: 27px;
   border-radius: 30px;
 }
 #download-template-grid {
   /* border: 1px solid #fff; */
   width: 28px;
-  height: 29px;
+  height: 28px;
   border-radius: 30px;
 }
 #download-drop {

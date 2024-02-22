@@ -180,3 +180,19 @@ i.fa.fa-file-excel-o.IconTopMargin {
     padding-top: 5px;
   }
 }
+/* save btn */
+.ml-3{
+ margin-left: 3px;
+}
+
+.disable-class{
+  opacity: 0.5;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  cursor:not-allowed;
+}
+
+.loader-image-customize{
+  height: 35px;
+  margin: -7px;
+}

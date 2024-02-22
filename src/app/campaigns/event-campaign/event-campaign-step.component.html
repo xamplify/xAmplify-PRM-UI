@@ -815,7 +815,7 @@
 						<fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
 							<legend class="scheduler-border">Selected {{campaign?.oneClickLaunch ?
 								'Lead(s)':'Contact(s)'}} list</legend>
-
+								
 							<div class="row d-flex align-items-center">
 								<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
 									<ng-container *ngIf="parternUserListIds?.length<1">
@@ -829,13 +829,13 @@
 											aria-hidden="true"></i>
 									</ng-container>
 								</div>
-								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+								<div class="col-xs-5 col-sm-7 col-md-7 col-lg-7">
 									<ng-container *ngIf="parternUserListIds?.length==0">
 										<h4 class="text-center"> No row is selected </h4>
 									</ng-container>
 								</div>
-								<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-									<div class="portlet-input input-inline mEventSearch" style="top: -6px;">
+								<div class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
+									<div class="portlet-input input-inline mEventSearch w-100 pl-23" style="top: -6px;">
 										<div class="input-icon right">
 											<input type="text" [(ngModel)]="contactSearchInput"
 												[ngModelOptions]="{standalone: true}" class="form-control"
@@ -854,9 +854,23 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-12" style="margin-top: 10px;">
+							<div class="col-xs-12 mb-p0" style="margin-top: 10px;">
+								<div class="col-sm-6 col-md-6 col-lg-6 pl0 pr0" *ngIf="isOrgAdminOrOrgAdminTeamMember && !eventCampaign?.channelCampaign">
+									<ul class="mix-filter m0">
+										<li class="filter" [class.active]="'ALL' == contactListsPagination.filterBy" (click)="filterContacts('ALL')">All</li>
+										<li class="filter" [class.active]="'MY-CONTACTS' == contactListsPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
+										</li>
+										<li class="filter" *ngIf="!authenticationService?.module?.isMarketingCompany" [class.active]="'MY-PARTNERS' == contactListsPagination.filterBy" (click)="filterContacts('MY-PARTNERS')" translate>My Partners
+										</li>
+										<li class="filter" [class.active]="'FORM-CONTACTS' == contactListsPagination.filterBy" (click)="filterContacts('FORM-CONTACTS')" translate>Form
+											Contacts</li>
+										<li class="filter" [class.active]="'COMPANY-CONTACTS' == contactListsPagination.filterBy" (click)="filterContacts('COMPANY-CONTACTS')" translate>Company
+											Contacts</li>
+									</ul>
+								</div>
 								<div class="row pb10" id="user_list_table_view">
-									<div>
+									<app-list-loader *ngIf="campaignRecipientsLoader"></app-list-loader>
+									<div *ngIf="!campaignRecipientsLoader">
 										<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer"
 											style="padding:10px">
 											<div class="note-vid pull-left">{{contactListSelectMessage}}</div>
@@ -871,7 +885,6 @@
 															[ngValue]="option">{{option.name}}</option>
 													</select>
 												</div>
-
 											</div>
 											<div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
 												<div class="alert alert-success" *ngIf="parternUserListIds?.length>0">
@@ -893,9 +906,8 @@
 														</th>
 													</tr>
 												</table>
-												<div class="col-xs-12">
+												<div class="col-xs-12 p0">
 													<div class="table-responsive">
-
 														<table class="table tgrid" id="user_list_tb"
 															aria-describedby="user_list_tb_info"
 															*ngIf="contactListsPagination.pagedItems?.length > 0 ">
@@ -942,7 +954,7 @@
 																	*ngFor="let contactList of contactListsPagination.pagedItems;let i = index">
 																	<tr role="row"
 																		id="campaignContactListTable_{{contactList.id}}"
-																		(click)="highlightPartnerContactRow(contactList,$event,contactList.noOfContacts,contactList.emailValidationInd)"
+																		(click)="checkAllForPartners($event)"
 																		[ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}"
 																		(mouseover)='showContactsAlert(contactList.count)'
 																		[attr.title]="emptyContactsMessage">
@@ -1003,6 +1015,10 @@
 																				src="{{properties?.pipedriveImage}}"
 																				alt="pipedrive"
 																				class="img-class-list image_effect">
+																			<img *ngIf="contactList?.socialNetwork=='CONNECTWISE'"
+																				src="{{properties?.connectwiseImage}}"
+																				alt="pipedrive"
+																				class="img-class-list image_effect">
 																		</td>
 																		<td style="text-align: left;"
 																			*ngIf="!reDistributeEvent && !reDistributeEventManage">
@@ -1043,6 +1059,15 @@
 																							translate>Form Contact List
 																						</span>
 																					</h6>
+																					<h6 *ngIf="contactList?.companyList"
+																						class="view-banner view-banner-green"
+																						translate>
+																						<span data-toggle="tooltip"
+																							data-placement="top"
+																							title="This list is associated with a company."
+																							translate>Company Contact List
+																						</span>
+																					</h6>					
 																				</div>
 																			</ng-container>
 																		</td>
@@ -1130,7 +1155,7 @@
 											</div>
 										</div>
 									</div>
-									<div style="text-align:left;padding-left: 10px;padding-right: 9px;">
+									<div style="text-align:left;padding-left: 10px;padding-right: 9px;" *ngIf="!campaignRecipientsLoader">
 										<app-pagination [class.disabled]="isPreviewEvent"
 											[pagination]="contactListsPagination" [type]="'contactlists'"
 											(notifyParent)="setPage($event)"
@@ -1527,7 +1552,7 @@
 														(click)="resetTabs('templates')"><span
 															class="btn btn-primary transition txt_pd-top3">Change</span></button>
 													<a *ngIf="reDistributeEvent || reDistributeEventManage"
-														class="btn btn-primary btn-sm"
+														class="btn btn-primary btn-sm redistibute_edit_icon"
 														(click)="editPartnerTemplate()"><i
 															class="fa fa-edit"></i>Edit</a>
 												</td>
@@ -1598,7 +1623,8 @@
 													<span class="glyphicon glyphicon-trash"></span>
 												</button>
 												<button type="button" [disabled]="isPreviewEvent"
-													class="btn btn-primary button-blue" (click)="addReplyRows()">
+													class="btn btn-primary button-blue add_icon_bg"
+													(click)="addReplyRows()">
 													<span class="glyphicon glyphicon-plus"></span>
 												</button>
 											</div>
@@ -2047,7 +2073,7 @@
 										[(ngModel)]="checkLaunchOption" style="margin-right:10px " /><span
 										class="text-algn">Schedule</span>
 								</label>
-								<label class="btn green mBtnAlign button-border">
+								<label class="btn Btn-Green mBtnAlign button-border">
 									<input type="radio" class="text-center mLabelAlign radioButton_shadow"
 										name="scheduleCampaign" [value]="launchOptions[2]"
 										(click)="setLaunchOptions(launchOptions[2])" ngDefaultControl

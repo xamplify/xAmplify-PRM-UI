@@ -183,9 +183,9 @@
             </div>
             <div class="col-lg-4 col-md-5 col-sm-4 col-xs-12 order-sm-1 mb_10">
               <button type="submit"
-                class="button_blue btn-md float-right mobileFloatRight MlSpace responsiveBtnCU bgcolor-unset"
+                class="button_blue btn-md float-right mobileFloatRight MlSpace responsiveBtnCU bgcolor-unset pt0"
                 (click)="authenticationOfGodaddy()" [disabled]="!isAuthorized()"><span
-                  class="btn btn-primary transition txt_pd-top3">Authenticate</span></button>
+                  class="btn btn-primary transition">Authenticate</span></button>
               <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight responsiveBtnCU"
                 (click)="goToStepFour()">Back</button>
             </div>
@@ -220,13 +220,13 @@
                 placeholder="Enter Value here" disabled>
             </div>
             <div class="col-md-12">
-              <button type="submit" class="button_blue tn btn-md float-right mobileFloatRight MlSpace bgcolor-unset"
+              <button type="submit" class="button_blue tn btn-md float-right mobileFloatRight MlSpace bgcolor-unset pt0"
                 *ngIf="godaddyDtos?.length >=1" [disabled]="godaddyDtos?.length >0"
                 (click)="addDNsRecord(true);foundDuplicateDnsRecord(true)" data-placement="bottom" data-toggle="tooltip"
-                title="{{createTooltip}}"><span class="btn btn-primary transition txt_pd-top3">Create</span></button>
-              <button type="submit" class="button_blue tn btn-md float-right mobileFloatRight MlSpace bgcolor-unset"
+                title="{{createTooltip}}"><span class="btn btn-primary transition">Create</span></button>
+              <button type="submit" class="button_blue tn btn-md float-right mobileFloatRight MlSpace bgcolor-unset pt0"
                 *ngIf="godaddyDtos?.length === 0" (click)="addDNsRecord(true);foundDuplicateDnsRecord(true)"><span
-                  class="btn btn-primary transition txt_pd-top3">Create</span></button>
+                  class="btn btn-primary transition">Create</span></button>
 
               <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight"
                 (click)="goToStepFive()">Back</button>

@@ -1,0 +1,264 @@
+import { Component, OnInit,Input, OnDestroy } from '@angular/core';
+import { CustomResponse } from 'app/common/models/custom-response';
+import { Properties } from 'app/common/models/properties';
+import { RegularExpressions } from 'app/common/models/regular-expressions';
+import { FileUtil } from 'app/core/models/file-util';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { Pagination } from 'app/core/models/pagination';
+import { SortOption } from 'app/core/models/sort-option';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ReferenceService } from 'app/core/services/reference.service';
+import { UtilService } from 'app/core/services/util.service';
+import { DomainRequestDto } from '../models/domain-request-dto';
+import { DashboardService } from '../dashboard.service';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+
+
+declare var $:any,Papa: any, swal:any;
+@Component({
+  selector: 'app-add-or-manage-domains',
+  templateUrl: './add-or-manage-domains.component.html',
+  styleUrls: ['./add-or-manage-domains.component.css','../user-profile/my-profile/my-profile.component.css'],
+  providers:[HttpRequestLoader,Properties,SortOption],
+})
+export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
+  customResponse:CustomResponse = new CustomResponse();
+  @Input() moduleName:string;
+  headerText = "";
+  downloadCsvText = "";
+  isAddDomainsModule = false;
+  isExcludeDomainModule = false;
+  uploadedCsvFilePreview = false;
+  domain = "";
+  descriptionText = "";
+  isDomainExist: boolean = false;
+  validDomainFormat: boolean = true;
+  validDomainPattern: boolean = false;
+  isListLoader = false;
+  excludedUsers: any[];
+  pagination: Pagination = new Pagination();
+  addedDomains: string[] = [];
+  currentUser: any;
+  domainRequestDto:DomainRequestDto = new DomainRequestDto();
+  ngxloading = false;
+  httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  isDeleteOptionClicked: boolean;
+  selectedDomainId = 0;
+  signUpUrl = "";
+  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
+    public properties:Properties,public fileUtil:FileUtil,public sortOption:SortOption,
+	public utilService:UtilService,public regularExpressions:RegularExpressions,public dashboardService:DashboardService,
+	public xtremandLogger:XtremandLogger) { }
+	
+  ngOnInit() {
+	this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.isAddDomainsModule = this.moduleName=="addDomains";
+    this.isExcludeDomainModule = this.moduleName=="excludeDomains";
+    if(this.isAddDomainsModule){
+      this.headerText = "Add Domains";
+      this.downloadCsvText = "Download CSV Template";
+      this.descriptionText = "Adding a domain ensures that the specified domain based yours will be added as team members using your company link.";
+      this.descriptionText = "Add a domain to invite team members who share your company's domain and join using your unique link, streamlining team management and identification.";
+	  this.descriptionText = "Added domain users will be allowed to sign up as team members";		
+	}else if(this.isExcludeDomainModule){
+      this.headerText = "Exclude A Domain";
+    }
+	this.findCompanySignUpUrl();
+	this.findDomains(this.pagination);
+  }
+
+  findCompanySignUpUrl(){
+	this.dashboardService.findCompanySignUpUrl().subscribe(
+		response=>{
+			this.signUpUrl = response.data;
+		},error=>{
+			this.xtremandLogger.error(error);
+		});
+  }
+
+  ngOnDestroy(): void {
+	this.referenceService.closeSweetAlert();
+}
+
+
+
+  addDomainModalOpen(){
+    this.domain = "";
+	this.referenceService.openModalPopup("teamMemberDomainModal");
+  }
+
+  closeAddDomainModal(){
+	this.referenceService.closeModalPopup("teamMemberDomainModal");
+	this.domain = "";
+	this.isDomainExist = false;
+	this.validDomainFormat = true;
+	this.validDomainPattern = false;
+	this.domainRequestDto = new DomainRequestDto();
+  }
+
+
+	/********Pagination & Search Code***********/
+	paginateDomains(event: any) {
+		this.pagination.pageIndex = event.page;
+		this.findDomains(this.pagination);
+	  }
+	
+	  searchDomains() {
+		this.getAllFilteredResults(this.pagination);
+	  }
+	
+	  searchDomainsOnKeyPress(keyCode: any) { if (keyCode === 13) { this.searchDomains(); } }
+	
+	  sortBy(text: any) {
+		this.getAllFilteredResults(this.pagination);
+	  }
+	
+	  getAllFilteredResults(pagination: Pagination) {
+		pagination = this.utilService.sortOptionValues(this.sortOption.selectedDomainDropDownOption, pagination);
+		this.findDomains(pagination);
+	  }
+
+
+	findDomains(pagination: Pagination) {
+		this.referenceService.scrollSmoothToTop();
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.dashboardService.findDomains(pagination).subscribe(
+		response=>{
+			pagination = this.utilService.setPaginatedRows(response,pagination);
+			this.referenceService.loading(this.httpRequestLoader, false);
+		},error=>{
+			this.xtremandLogger.errorPage(error);
+		});
+	}
+
+
+	validateDomain(domain: string) {
+		const lowerCaseDomain = this.referenceService.getTrimmedData(domain.toLowerCase());
+		if(lowerCaseDomain.length>0){
+			let isValidDomainName = this.validateDomainName(lowerCaseDomain);
+			this.validDomainFormat = isValidDomainName;
+			this.validDomainPattern = isValidDomainName;
+		}else{
+			this.validDomainFormat = true;
+		}
+		
+	}
+
+	validateDomainName(domain: string) {
+		var DOMAIN_NAME_PATTERN = new RegExp(this.regularExpressions.DOMAIN_PATTERN);
+		var matchedPattrenString:string[] = domain.match(DOMAIN_NAME_PATTERN);
+		if(matchedPattrenString==null ||(matchedPattrenString!=null && matchedPattrenString.length ==0))
+			return false;
+		else
+			return matchedPattrenString[0] == domain;
+	}
+
+	confirmAndsaveExcludedDomain(domain: string) {
+		this.saveDomains();
+		/* let text = "Adding this domain ensures that users can signup as team members using the link";
+		let self = this;
+		swal({
+			title: 'Are you sure want to continue?',
+			text: text,
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			allowOutsideClick: false,
+			confirmButtonText: 'Yes'
+		}).then(function () {
+			self.saveDomains();
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		}); */
+	}
+
+	getCompanyName() {
+		let companyName = " your company";
+		if (this.currentUser != undefined) {
+			if (this.currentUser['logedInCustomerCompanyNeme'] != undefined) {
+				companyName = this.currentUser['logedInCustomerCompanyNeme'];
+			}
+		}
+		return companyName;
+	}
+
+
+	saveDomains(){
+		this.ngxloading = true;
+		this.isDomainExist = false;
+		this.validDomainFormat = true;
+		this.customResponse = new CustomResponse();
+		this.domainRequestDto = new DomainRequestDto();
+		this.domainRequestDto.domainNames.push(this.domain);
+		this.dashboardService.saveDomains(this.domainRequestDto).subscribe(
+			response=>{
+				this.customResponse = new CustomResponse('SUCCESS',response.message,true);
+				this.closeAddDomainModal();
+				this.pagination.pageIndex = 1;
+				this.findDomains(this.pagination);
+				this.ngxloading = false;
+			},(error:any)=>{
+				let errorMessage = this.referenceService.showHttpErrorMessage(error);
+				if("Already Exists"==this.referenceService.getTrimmedData(errorMessage)){
+					this.isDomainExist = true;
+				}else{
+					this.isDomainExist = false;
+					this.referenceService.showSweetAlertErrorMessage(errorMessage);
+				}
+				this.ngxloading = false;
+			}
+		);
+	}
+
+	confirmDeleteDomain(id:number){
+		this.isDeleteOptionClicked = true;
+		this.selectedDomainId = id;
+	  }
+	
+	  deleteDomain(event:any){
+		this.customResponse = new CustomResponse();
+		if(event){
+		  this.referenceService.loading(this.httpRequestLoader, true);
+		  this.dashboardService.deleteDomain(this.selectedDomainId).subscribe(
+			response=>{
+			  this.resetDeleteOptions();
+			  this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+			  this.referenceService.loading(this.httpRequestLoader, false);
+			  this.refreshList();
+			},error=>{
+			  this.referenceService.loading(this.httpRequestLoader, false);
+			  let message = this.referenceService.showHttpErrorMessage(error);
+			  this.customResponse = new CustomResponse('ERROR', message, true);
+			  this.resetDeleteOptions();
+			}
+		  );
+		}else{
+		  this.resetDeleteOptions();
+		}
+	   
+	  }
+	
+	  resetDeleteOptions(){
+		this.isDeleteOptionClicked = false;
+		this.selectedDomainId = 0;
+	  }
+
+	  refreshList() {
+		this.referenceService.scrollSmoothToTop();
+		this.pagination.pageIndex = 1;
+		this.pagination.searchKey = "";
+		this.findDomains(this.pagination);
+	  }
+	
+	  /*********Copy The Link/Iframe Link */
+  copySignUpUrl(inputElement: any) {
+	$(".success").hide();
+	$('#copied-signup-url').hide();
+	inputElement.select();
+	document.execCommand('copy');
+	inputElement.setSelectionRange(0, 0);
+	$('#copied-signup-url').show(500);
+}
+
+}

@@ -160,7 +160,7 @@
                     *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isFolderGridView"></app-grid-loader>
                 <section *ngIf="modulesDisplayType.isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
-                        <div class="table-responsive">
+                        <div class="table-responsive pd_top10">
                             <table class='table tgrid table-hover table-sm' id="manage-form-list-table"
                                 *ngIf="pagination.pagedItems?.length>0" aria-describedby="">
                                 <thead>
@@ -239,8 +239,10 @@
                                                 <div class="mMobileAlignAction2 ActionAlign mActionTop mrg_top0">
                                                     <a class="custom-icon"
                                                         *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm"
-                                                        data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyForm(form.id)">
-                                                        <i class="fa fa-files-o IconCustomization" aria-hidden="true"></i>
+                                                        data-toggle="tooltip" data-placement="top" title="Copy"
+                                                        (click)="copyForm(form.id)">
+                                                        <i class="fa fa-files-o IconCustomization"
+                                                            aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
                                                     </a>
                                                     <a class="mMobileDisable custom-icon"
@@ -253,7 +255,8 @@
                                                     </a>
                                                 </div>
                                                 <div class="mMobileAlignAction2 ActionAlign mActionTop mrg_top0">
-                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
+                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top"
+                                                        title="Preview" (click)="preview(form.id)">
                                                         <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
                                                     </a>
@@ -265,7 +268,7 @@
                                                         <div class="clickicons"></div>
                                                     </a>
                                                 </div>
-                                                <div class="mMobileAlignAction2">
+                                                <div class="mMobileAlignAction2 ActionAlign mActionTop mrg_top0">
                                                     <ng-container *ngIf="form.campaignForm&&!form.dataShare">
                                                         <a class="cursor custom-icon mrgt-unset">
                                                             <i class="fa fa-line-chart IconCustomization"
@@ -329,7 +332,7 @@
                     </ng-container>
                 </section>
                 <!--Grid View-->
-                <div class="row tab_mt_grid p15"
+                <div class="row tab_mt_grid p15 txt_pd-top3"
                     *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_grid GridviewSidePaddings"
                         *ngFor="let form of pagination.pagedItems ;let i =index" id="formListDiv_{{form.id}}">
@@ -435,7 +438,7 @@
                     </div>
                 </div>
                 <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-                    <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+                    <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 only_top1">
                         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
                             (notifyParentDropDown)="listForms($event)"
                             [hidden]="httpRequestLoader.isLoading"></app-pagination>

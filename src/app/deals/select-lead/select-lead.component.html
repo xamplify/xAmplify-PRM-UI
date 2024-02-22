@@ -1,0 +1,190 @@
+<div class="modal fade right" id="selectLeadModel" tabindex="-1" role="dialog" aria-labelledby="selectLeadModel"
+  data-backdrop="static" data-keyboard="false" style="display: block">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" [disabled]="httpRequestLoader.isLoading" (click)="closeModal()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title text-center">Attach a Lead</h4>
+      </div>
+      <div class="modal-body border-bottom-1px">
+        <div class="portlet light" id="del-profile-div" style="border: 0px !important">
+          <!-- <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px',fullScreenBackdrop:true }">
+          </ngx-loading> -->
+          <app-modal-popup-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+          </app-modal-popup-loader>
+          <app-response-message class="pg8" [customResponse]="selectLeadModalResponse"
+            *ngIf="selectLeadModalResponse.isVisible">
+          </app-response-message>
+          <div class="portlet-body clearfix" *ngIf="!httpRequestLoader.isLoading">
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="tab-content">
+                  <div>
+
+                    <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
+                      <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right m_mb8">
+                        <div class="btn-group pull-right" style="width: max-content;display:flex">
+                          <a *ngIf="!leadApprovalStatus" (click)="addLead()" style="padding-right: 4px;">
+                            <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                              <span class="btn btn-primary transition d-inline"><i class="fa fa-plus  mb-btns"
+                                  aria-hidden="true"></i> Add a
+                                Lead</span>
+                            </button>
+                          </a>
+                          <div class="inputs display" align="right">
+                            <div class="portlet-input input-inline" style="display: table-cell;">
+                              <div [ngClass]="top" class="input-icon right r5" style="position: relative;right: -3px;">
+                                <input type="text" class="form-control pr-pl ml" [(ngModel)]="sortOption.searchKey"
+                                  [ngModelOptions]="{standalone: true}" placeholder="Search"
+                                  (keypress)="searchKeyPress($event.keyCode)">
+                                <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';search()"></button>
+                                <button type="submit" [ngClass]="top" class="search-box-item-click top mb_v_search"
+                                  (click)="search()">
+                                  <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- -------------------- List Leads-------------------- -->
+                    <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
+                      [hidden]="httpRequestLoader.isLoading || httpRequestLoader.isServerError">
+
+                      <div class="table-responsive" [hidden]="httpRequestLoader.isLoading">
+                        <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
+                          <thead>
+                            <tr>
+                              <th class="center-aligned leadTablewidth0" translate>Lead Details</th>
+                              <th class="center leadTablewidth1" translate>Added By</th>
+                              <th class="leadTablewidth3" style="text-align:center" translate>Actions</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            <ng-container *ngFor='let lead of pagination.pagedItems; let i=index'>
+                              <tr (click)="selectLead(lead.id)" [ngClass]="lead.id === leadId ? 'highlightRow' : ''">
+                                <td>
+                                  <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
+                                  <div class="mrg_lft66" style="margin-left: 60px;">
+                                    <h5 class="m0"><strong>Added For:</strong>
+                                      <span style="color: #5b9bd1;">{{lead.createdForCompanyName | slice:0:30}}
+                                        <span *ngIf="lead.createdForCompanyName?.length>20">...</span>
+                                      </span>
+                                    </h5>
+                                  </div>
+                                  <div *ngIf="!dealToLead.isVendorVersion && lead?.campaignId > 0"
+                                    style="margin-left: 60px;">
+                                    <h5 class="m0"><strong>Campaign:</strong>
+                                      <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
+                                        <span *ngIf="lead.campaignName?.length>30">...</span>
+                                      </span>
+                                    </h5>
+                                  </div>
+                                  <div *ngIf="dealToLead.isVendorVersion && lead?.parentCampaignId > 0"
+                                    style="margin-left: 60px;">
+                                    <h5 class="m0"><strong>Campaign:</strong>
+                                      <span style="color: #5b9bd1;">{{lead.parentCampaignName | slice:0:30}}
+                                        <span *ngIf="lead.parentCampaignName?.length>30">...</span>
+                                      </span>
+                                    </h5>
+                                  </div>
+                                  <div
+                                    *ngIf="dealToLead.isVendorVersion && lead?.parentCampaignId <= 0 && lead?.campaignId > 0"
+                                    style="margin-left: 60px;">
+                                    <h5 class="m0"><strong>Campaign:</strong>
+                                      <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
+                                        <span *ngIf="lead.campaignName?.length>30">...</span>
+                                      </span>
+                                    </h5>
+                                  </div>
+                                  <div class="mrg_lft66" style="margin-left: 60px;">
+                                    <h5 class="m0"><strong>Status:</strong>
+                                      <span style="color: #5b9bd1;">{{lead.currentStageName | slice:0:30}}
+                                        <span *ngIf="lead.campaignName?.length>30">...</span>
+                                      </span>
+                                    </h5>
+                                  </div>
+                                </td>
+                                <td>
+                                  <h5 class='m_t_view' data-toggle="tooltip" data-placement="bottom"
+                                    title="{{lead.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
+                                    {{lead.createdByName | slice:0:20}}
+                                    <span *ngIf="lead.createdByName?.length>20">...</span>
+                                  </h5>
+                                  <h6 class='m0' style="font-weight: 400;">
+                                    <a data-toggle="tooltip" data-placement="bottom"
+                                      title="{{lead.createdByEmail}}">{{lead.createdByEmail | slice:0:30}}</a>
+                                    <span *ngIf="lead.createdByEmail?.length>30">...</span>
+                                  </h6>
+                                  <h5 style="font-weight: 600; color: #676767;">
+                                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="lead.createdTime">
+                                    </app-timestamp>
+                                  </h5>
+                                </td>
+                                <td>
+                                  <div class="actions-block override-actions tb_view_actions">
+                                    <a class="custom-icon" data-rel="fancybox-button" (click)="viewLead(lead)"
+                                      data-toggle="tooltip" data-placement="bottom" title="View Lead" id="lead">
+                                      <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
+                                      <div class="clickicons"></div>
+                                    </a>
+
+                                  </div>
+                                </td>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                        <strong>No Data Found.</strong>
+                      </div>
+                      <!--Pagination-->
+                      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin"
+                        [hidden]="httpRequestLoader.isLoading">
+                        <app-pagination [pagination]="pagination" [isDropdown]="'false'"
+                          (notifyParent)="setPage($event)" (notifyParentDropDown)="getLeadDetails($event)">
+                        </app-pagination>
+                      </div>
+                    </section>
+
+                    <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                    </app-list-loader>
+                    <div class="col-xs-12" id="box" *ngIf="httpRequestLoader.isServerError" translate>
+                      Please contact admin for 'Leads'
+                    </div>
+
+
+                  </div>
+                </div>
+              </div><!-- End Of Tab Content -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="pull-right" style="margin: 15px">
+        <button [disabled]=" leadId==undefined || leadId==0" type="submit" id="saveLead" (click)="leadSelected()"
+          class="button_blue button_disabled bgcolor-unset"><span class="btn btn-primary transition txt_pd-top3">Attach
+            Selected</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Lead Model-->
+<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="dealToLead.leadActionType" [dealToLead]="dealToLead"
+  (notifySubmitSuccess)="leadCreated($event)" (notifyClose)="closeLeadForm()"
+  [isVendorVersion]="dealToLead.isVendorVersion" [isOrgAdmin]="dealToLead.isOrgAdmin"></app-add-lead>
+
+<!-- END CONTENT -->

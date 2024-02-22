@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardButtonsComponent } from './dashboard-buttons.component';
+import { UploadImageUtilComponent } from './upload-image-util.component';
 
-describe('DashboardButtonsComponent', () => {
-  let component: DashboardButtonsComponent;
-  let fixture: ComponentFixture<DashboardButtonsComponent>;
+describe('UploadImageUtilComponent', () => {
+  let component: UploadImageUtilComponent;
+  let fixture: ComponentFixture<UploadImageUtilComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DashboardButtonsComponent ]
+      declarations: [ UploadImageUtilComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DashboardButtonsComponent);
+    fixture = TestBed.createComponent(UploadImageUtilComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

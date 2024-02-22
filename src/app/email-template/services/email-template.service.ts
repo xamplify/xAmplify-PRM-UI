@@ -42,7 +42,8 @@ export class EmailTemplateService {
     listTemplates(pagination:Pagination,userId:number){
         try{
             userId = this.authenticationService.checkLoggedInUserId(userId);
-            var url =this.URL+"admin/listEmailTemplates/"+userId+"?searchKey="+pagination.searchKey+"&access_token="+this.authenticationService.access_token;
+            let encodedUrl = this.refService.getEncodedUri(pagination.searchKey);
+            var url =this.URL+"admin/listEmailTemplates/"+userId+"?searchKey="+encodedUrl+"&access_token="+this.authenticationService.access_token;
             return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);

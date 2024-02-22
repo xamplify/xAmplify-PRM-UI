@@ -1529,5 +1529,35 @@ fieldset.scheduler-border {
 /* 22-12-2023(sudha sri) */
 .social_share_border{
   border: 1px solid #ccc;
-
+}
+/* select contact list */
+.align-items-center{
+ align-items: center;
+}
+.pl-23{
+padding-left: 23px;
+}
+/* mobile view */
+@media screen and (max-width: 580px) {
+  #usefa {
+    padding: 18px;
+    font-size: 0.8em;
+    margin-left: 0em;
+  }
+  .w-100 {
+    width: 100% !important;
+    top: 0px !important;
+  }
+  .pl-23 {
+    padding-left: 0px;
+  }
+  .mb-p0 {
+    padding: 0px;
+  }
+}
+/* tab view */
+  @media (min-width: 768px) and (max-width: 1024px){
+    .mb-p0 {
+      padding: 0px;
+    }
 }
