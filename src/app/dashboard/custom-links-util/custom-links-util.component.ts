@@ -285,6 +285,7 @@ export class CustomLinksUtilComponent implements OnInit {
 
   edit(id: number) {
     this.customResponse = new CustomResponse();
+    this.previouslySelectedImagePath = "";
     this.removeTitleErrorClass();
     this.buttonActionType = false;
     this.saving = false;
@@ -304,6 +305,8 @@ export class CustomLinksUtilComponent implements OnInit {
             this.customLinkDto.buttonDescription = this.customLinkDto.description;
             this.customLinkDto.openInNewTab = this.customLinkDto.openLinkInNewTab;
             this.buildCustomLinkForm();
+            this.previouslySelectedImagePath = this.customLinkDto.bannerImagePath;
+            this.ngxLoading = false;
         },error=>{
           this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
           this.buttonActionType = true;
@@ -314,7 +317,7 @@ export class CustomLinksUtilComponent implements OnInit {
           this.ngxLoading = false;
         });
     }
-    this.ngxLoading = false;
+    
   }
 
   update() {
@@ -413,6 +416,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.setDefaultValuesForForm();
     this.buildCustomLinkForm();
     this.customLinkForm.get('customLinkType').setValue(this.defaultType);
+    this.clearImage();
   }
 
   showAlert(item: any) {
