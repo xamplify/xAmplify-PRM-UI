@@ -106,7 +106,7 @@
       <div class="form-row">
         <div class="form-group col-md-12">
           <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
-            [disabled]="!customLinkForm.valid || saving" (click)="saving=true;save();">
+            [disabled]="!customLinkForm.valid || saving || !isDashboardBannerImageUploaded" (click)="saving=true;save();">
             <span class="btn btn-primary transition txt_pd-top3">Save</span>
           </button>
           <button *ngIf="!buttonActionType" type="submit" class="button_blue bgcolor-unset" 

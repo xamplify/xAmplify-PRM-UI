@@ -14,8 +14,9 @@ import { max120CharactersLimitValidator,noWhiteSpaceOrMax20CharactersLimitValida
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CustomLinkType } from '../models/custom-link-type.enum';
 import { ErrorResponse } from 'app/util/models/error-response';
-import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-image-util.component';
-import { setTimeout } from 'timers';
+import { ImageCroppedEvent } from 'app/common/image-cropper/interfaces/image-cropped-event.interface';
+import { UtilService } from 'app/core/services/util.service';
+
 
 declare var swal: any, $:any;
 
@@ -73,10 +74,12 @@ export class CustomLinksUtilComponent implements OnInit {
   croppedImage:any;
   previouslySelectedImagePath = "";
   uploadImageOptionClicked = false;
+  isDashboardBannerImageUploaded = true;
+  formData: any = new FormData();
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
-    private regularExpressions:RegularExpressions) {
+    private regularExpressions:RegularExpressions,public utilService:UtilService) {
       this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
      this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
       this.iconsList = result.icon_names;
@@ -154,12 +157,15 @@ export class CustomLinksUtilComponent implements OnInit {
     if(this.moduleType==this.properties.dashboardButtons){
       this.headerText = "Add Button";
       this.listHeaderText = "Your Dashboard Button's List";
+      this.isDashboardBannerImageUploaded = true;
     }else if(this.moduleType==this.properties.newsAndAnnouncements){
       this.headerText = "Add News & Announcements";
       this.listHeaderText = "Your News & Announcements List";
+      this.isDashboardBannerImageUploaded = true;
     }else if(this.moduleType==this.properties.dashboardBanners){
       this.headerText = "Add Dashboard Banner";
       this.listHeaderText = "Your Dashboard Banners List";
+      this.isDashboardBannerImageUploaded = false;
     }
     this.buttonActionType = true;
     this.selectedProtocol = 'http';
@@ -205,7 +211,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.customLinkDto = new CustomLinkDto();
     this.setCustomLinkDtoProperties();
-    this.vanityURLService.saveCustomLinkDetails(this.customLinkDto,this.moduleType).subscribe(result => {
+    this.vanityURLService.saveCustomLinkDetails(this.customLinkDto,this.moduleType,this.formData).subscribe(result => {
       if (result.statusCode === 200) {
         let message = "";
         if(this.moduleType==this.properties.dashboardButtons){
@@ -447,10 +453,19 @@ export class CustomLinksUtilComponent implements OnInit {
   clearImage(){
     this.croppedImage = "";
     this.previouslySelectedImagePath = "";
+    this.formData.delete("dashboardBannerImage");
+    this.isDashboardBannerImageUploaded = false;
   }
 
   croppedImageEventReceiver(event:any){
-    this.croppedImage = event;
+    this.croppedImage = event['croppedImage'];
+    let uploadedImageName = event['fileName'];
+    let fileObj: any;
+		fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
+		fileObj = this.utilService.blobToFile(fileObj);
+    this.formData.append("dashboardBannerImage", fileObj, uploadedImageName);
+    this.isDashboardBannerImageUploaded = true;
+    
   }
 
 

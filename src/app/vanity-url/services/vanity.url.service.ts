@@ -46,14 +46,19 @@ export class VanityURLService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
-  saveCustomLinkDetails(customLink: any,moduleType:string) {
+  saveCustomLinkDetails(customLink: any,moduleType:string,formData:FormData) {
     let url = "";
+    let postBody:any;
+    postBody = customLink;
     if(moduleType==this.properties.dashboardButtons){
       url = this.authenticationService.REST_URL + "v_url/save/dashboardButton?access_token=" + this.authenticationService.access_token;
     }else if(moduleType==this.properties.newsAndAnnouncements){
       url = this.CUSTOM_LINK_URL+this.authenticationService.access_token;
+    }else if(moduleType==this.properties.dashboardBanners){
+      url = this.CUSTOM_LINK_URL+"/dashboardBanners/"+this.authenticationService.access_token;
+      formData.append("customLinkDto",new Blob([JSON.stringify(customLink)], {type: "application/json"}));
     }
-    return this.http.post(url, customLink)
+    return this.http.post(url, postBody)
       .map(this.extractData)
       .catch(this.handleError);
   }

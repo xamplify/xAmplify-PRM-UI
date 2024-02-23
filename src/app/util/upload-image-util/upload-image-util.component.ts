@@ -35,6 +35,7 @@ export class UploadImageUtilComponent implements OnInit {
   @Input() moduleName:string="";
   errorMessage = "";
   maximumFileSizeMessage = "Maximum file size is 10 MB";
+  uploadedFileName = "";
   constructor(public utilService: UtilService,public properties:Properties) { }
 
   ngOnInit() {
@@ -66,6 +67,7 @@ export class UploadImageUtilComponent implements OnInit {
     const file: File = event.target.files[0];
     const isSupportfile = file.type;
     this.errorMessage = "";
+    this.uploadedFileName = file['name'];
     if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
       this.errorUploadCropper = false;
       this.imageChangedEvent = event;
@@ -136,7 +138,10 @@ export class UploadImageUtilComponent implements OnInit {
     }
   }
   saveImage() {
-    this.croppedImageEventEmitter.emit(this.croppedImage);
+    let emitter = {};
+    emitter['croppedImage'] = this.croppedImage;
+    emitter['fileName'] = this.uploadedFileName;
+    this.croppedImageEventEmitter.emit(emitter);
     this.closeImageUploadModal();
   }
 
