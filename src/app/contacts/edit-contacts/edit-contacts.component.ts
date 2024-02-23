@@ -1994,7 +1994,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					});
 					this.xtremandLogger.log("paginationUserIDs" + contactIds);
 					this.xtremandLogger.log("Selected UserIDs" + this.selectedContactListIds);
-					if (items.length == pagination.totalRecords || items.length == this.pagination.pagedItems.length) {
+					if ((items.length == pagination.totalRecords || items.length == this.pagination.pagedItems.length) && items.length > 0) {
 						this.isHeaderCheckBoxChecked = true;
 					} else {
 						this.isHeaderCheckBoxChecked = false;
