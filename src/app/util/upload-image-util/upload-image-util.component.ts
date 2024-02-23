@@ -29,10 +29,11 @@ export class UploadImageUtilComponent implements OnInit {
   canvasRotation = 0;
   containWithinAspectRatio = false;
   @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
-  loadingcrop = false;
+  isImageUploadIsInProgress = false;
   @Output() croppedImageEventEmitter = new EventEmitter<any>();
   aspectRatio = "16/9";
   @Input() moduleName:string="";
+  errorMessage = "";
   constructor(public utilService: UtilService,public properties:Properties) { }
 
   ngOnInit() {
@@ -59,19 +60,40 @@ export class UploadImageUtilComponent implements OnInit {
     this.fileObj = null;
     $('#cropImageModal').modal('hide');
   }
-  filenewChangeEvent(event) {
+
+  uploadImage(event:any) {
     const file: File = event.target.files[0];
     const isSupportfile = file.type;
+    this.errorMessage = "";
     if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
       this.errorUploadCropper = false;
       this.imageChangedEvent = event;
+      this.isImageUploadIsInProgress = true;
     } else {
-      this.errorUploadCropper = true;
-      this.showCropper = false;
+      this.showErrorMessage("Please upload only image");
     }
-    alert(this.imageChangedEvent);
-    this.loadingcrop = true;
+
+    if(!this.errorUploadCropper){
+      let sizeInKb = file.size / 1024;
+			let maxFileSizeInKb = 1024 * 10;
+      if (sizeInKb >= maxFileSizeInKb) {
+        this.showErrorMessage("Max file size 10 MB");
+      }else{
+        this.errorUploadCropper = false;
+        this.imageChangedEvent = event;
+        this.isImageUploadIsInProgress = true;
+      }
+    }
+
   }
+  private showErrorMessage(message: string) {
+    this.errorUploadCropper = true;
+    this.showCropper = false;
+    this.imageChangedEvent = null;
+    this.isImageUploadIsInProgress = false;
+    this.errorMessage = message;
+  }
+
   zoomOut() {
     if (this.croppedImage != "") {
       this.scale -= .1;
@@ -112,7 +134,7 @@ export class UploadImageUtilComponent implements OnInit {
       this.showCropper = false;
     }
   }
-  uploadImage() {
+  saveImage() {
     this.croppedImageEventEmitter.emit(this.croppedImage);
     this.closeImageUploadModal();
   }
@@ -123,7 +145,7 @@ export class UploadImageUtilComponent implements OnInit {
   imageLoaded() {
     this.showCropper = true;
     setTimeout(() => {
-      this.loadingcrop= false;
+      this.isImageUploadIsInProgress= false;
     }, 500);
     
   }
