@@ -60,7 +60,6 @@ export class UploadImageUtilComponent implements OnInit {
     $('#cropImageModal').modal('hide');
   }
   filenewChangeEvent(event) {
-    const image: any = new Image();
     const file: File = event.target.files[0];
     const isSupportfile = file.type;
     if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
@@ -70,6 +69,8 @@ export class UploadImageUtilComponent implements OnInit {
       this.errorUploadCropper = true;
       this.showCropper = false;
     }
+    alert(this.imageChangedEvent);
+    this.loadingcrop = true;
   }
   zoomOut() {
     if (this.croppedImage != "") {
@@ -118,16 +119,17 @@ export class UploadImageUtilComponent implements OnInit {
 
   imageCroppedMethod(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
-    console.log(event, base64ToFile(event.base64));
   }
   imageLoaded() {
     this.showCropper = true;
-    console.log('Image loaded')
+    setTimeout(() => {
+      this.loadingcrop= false;
+    }, 500);
+    
   }
   cropperReady(sourceImageDimensions: Dimensions) {
     console.log('Cropper ready', sourceImageDimensions);
   }
   loadImageFailed() {
-    console.log('Load failed');
   }
 }

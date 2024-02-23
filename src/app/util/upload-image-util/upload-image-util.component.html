@@ -24,12 +24,9 @@
               title=" " id="custom-input" type="file" (change)="filenewChangeEvent($event)">
           </button>
         </ng-template>
-        <div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only
-          images
-        </div>
+        <div class="image-error" *ngIf="errorUploadCropper">Please Upload only images</div>
         <div>
-          <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }">
-          </ngx-loading>
+          <app-modal-popup-loader *ngIf="loadingcrop"></app-modal-popup-loader> 
           <div [hidden]="!imageChangedEvent">
             <app-img-croppr-v2 [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
               [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="6/1" [resizeToWidth]="1920"
