@@ -443,7 +443,7 @@
             </h4>
         </div>
         <!-----Legal Basis Options -->
-        <div *ngIf=" ( (gdprStatus && filePreview) || (clipBoard) || (gdprStatus && selectedAddPartnerOption==2) )"
+        <div *ngIf=" ((gdprStatus && filePreview) || (clipBoard) || (gdprStatus && selectedAddPartnerOption==2) )"
             class="col-sm-12 form-group portlet light cloud_legal_basis">
             <a class="close-circle" *ngIf="clipBoard" data-dismiss="modal" (click)="cancelPartners()"><i
                     class="fa fa-times"></i></a>

@@ -2550,7 +2550,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.copyFromClipboard();
 			this.isShowUsers = false;
 		}
-		this.selectedAddContactsOption = 1;
+		 this.selectedAddContactsOption = 1;
 	}
 
 	resetResponse() {
