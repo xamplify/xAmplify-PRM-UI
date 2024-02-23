@@ -223,6 +223,7 @@ export class CustomLinksUtilComponent implements OnInit {
         this.customLinkDto = new CustomLinkDto(); 
         this.setDefaultValuesForForm();
         this.buildCustomLinkForm();
+        this.clearImage();
         this.customLinkForm.get('customLinkType').setValue(this.defaultType);
         this.findLinks(this.pagination);
       } else if (result.statusCode === 100) {
@@ -269,8 +270,10 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customLinkDto.openInNewTab = customFormDetails.openLinksInNewTab;
     this.customLinkDto.vendorId = this.authenticationService.getUserId();
     this.customLinkDto.companyProfileName = this.authenticationService.companyProfileName;
-    if(this.moduleType==(this.properties.newsAndAnnouncements || this.properties.dashboardBanners)){
+    if(this.moduleType==this.properties.newsAndAnnouncements){
       this.customLinkDto.type = customFormDetails.customLinkType;
+    }else if(this.moduleType==this.properties.dashboardBanners){
+      this.customLinkDto.type = CustomLinkType[CustomLinkType.DASHBOARD_BANNERS];
     }
     this.customLinkDto.title = this.customLinkDto.buttonTitle;
     this.customLinkDto.link = this.customLinkDto.buttonLink;

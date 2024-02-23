@@ -55,8 +55,9 @@ export class VanityURLService {
     }else if(moduleType==this.properties.newsAndAnnouncements){
       url = this.CUSTOM_LINK_URL+this.authenticationService.access_token;
     }else if(moduleType==this.properties.dashboardBanners){
-      url = this.CUSTOM_LINK_URL+"/dashboardBanners/"+this.authenticationService.access_token;
+      url = this.CUSTOM_LINK_PREFIX_URL+"/dashboardBanners"+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
       formData.append("customLinkDto",new Blob([JSON.stringify(customLink)], {type: "application/json"}));
+      postBody = formData;
     }
     return this.http.post(url, postBody)
       .map(this.extractData)
