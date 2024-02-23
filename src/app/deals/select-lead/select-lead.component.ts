@@ -32,7 +32,6 @@ export class SelectLeadComponent implements OnInit {
   showLeadForm: boolean = false;  
   leadId = 0;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
-  leadApprovalStatus:boolean = false;
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     private leadsService: LeadsService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService) {
@@ -88,7 +87,6 @@ export class SelectLeadComponent implements OnInit {
     pagination.userId = this.loggedInUserId;    
     pagination.ignoreSelfLeadsOrDeals = false;
     pagination.filterKey = "not-converted";
-    pagination.companyId= this.createdForCompanyId;
     if (this.vanityLoginDto.vanityUrlFilter) {
       pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName      
@@ -102,7 +100,6 @@ export class SelectLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);          
           this.sortOption.totalRecords = response.totalRecords;
           this.pagination.totalRecords = response.totalRecords;
-          this.leadApprovalStatus = response.leadApprovalStatus;
           this.pagination = this.pagerService.getPagedItems(this.pagination, response.data);
         },
         error => {
