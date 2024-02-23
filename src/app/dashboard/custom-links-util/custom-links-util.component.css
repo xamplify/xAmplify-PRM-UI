@@ -22,11 +22,11 @@
 .dashboard-banner-image {
     display: block;
     width: 100% !important;
-    height: 96px;
+    height: 120px;
     background: #fff;
     padding: 1px;
     margin: 0 auto;
-    border: 2px dotted #ddd;
+    border: 1px dotted #ddd;
     position: relative;
     border-radius: 5px;
     background: linear-gradient(45deg, #cdcdcd, transparent);
@@ -61,7 +61,6 @@
   }
   .img-grids {
     max-width: 100% !important;
-    height: 96px !important;
     border-radius: 5px;
   }
 

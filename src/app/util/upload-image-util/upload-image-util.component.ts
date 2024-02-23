@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, ViewChild, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, ViewChild, Output, Input } from '@angular/core';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { ImageCropperComponent } from 'ng2-img-cropper';
 import { UtilService } from '../../core/services/util.service';
@@ -32,30 +32,32 @@ export class UploadImageUtilComponent implements OnInit {
   loadingcrop = false;
   @Output() croppedImageEventEmitter = new EventEmitter<any>();
   aspectRatio = "16/9";
+  @Input() moduleName:string="";
   constructor(public utilService: UtilService,public properties:Properties) { }
 
   ngOnInit() {
+    this.openModalPopup()
   }
   ngOnDestroy() {
-    $('#cropImage').modal('hide');
+    $('#cropImageModal').modal('hide');
   }
   /*****************Featured Image*******************/
   
-  openModalPopup(moduleName:string) {
+  openModalPopup() {
     this.cropRounded = false;
     this.fileSizeError = false;
     this.imageChangedEvent = null;
-    if(this.properties.dashboardBanners==moduleName){
+    if(this.properties.dashboardBanners==this.moduleName){
       this.aspectRatio = "6/1";
     }
-    $('#cropImage').modal('show');
+    $('#cropImageModal').modal('show');
   }
   closeImageUploadModal() {
     this.cropRounded = !this.cropRounded;
     this.imageChangedEvent = null;
     this.croppedImage = '';
     this.fileObj = null;
-    $('#cropImage').modal('hide');
+    $('#cropImageModal').modal('hide');
   }
   filenewChangeEvent(event) {
     const image: any = new Image();
