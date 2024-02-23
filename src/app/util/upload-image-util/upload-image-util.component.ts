@@ -34,6 +34,7 @@ export class UploadImageUtilComponent implements OnInit {
   aspectRatio = "16/9";
   @Input() moduleName:string="";
   errorMessage = "";
+  maximumFileSizeMessage = "Maximum file size is 10 MB";
   constructor(public utilService: UtilService,public properties:Properties) { }
 
   ngOnInit() {
@@ -77,7 +78,7 @@ export class UploadImageUtilComponent implements OnInit {
       let sizeInKb = file.size / 1024;
 			let maxFileSizeInKb = 1024 * 10;
       if (sizeInKb >= maxFileSizeInKb) {
-        this.showErrorMessage("Max file size 10 MB");
+        this.showErrorMessage(this.maximumFileSizeMessage);
       }else{
         this.errorUploadCropper = false;
         this.imageChangedEvent = event;
