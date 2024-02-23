@@ -3870,3 +3870,34 @@ select.form-control.form-placeholder,
 input.form-control.flatpickr{
   box-shadow: none !important;
 }
+/***** Sudha Sri(22-2-2024) ******/
+button.btn.btn-primary {
+  background: linear-gradient(89deg,#0c86cc,#06beb8)!important;
+}
+.btn-file input[type="file"]{
+  position: absolute !important;
+}
+table.table.table-bordered > tbody {
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+table.table.table-bordered {
+  border: none !important;
+}
+.table tbody tr.upload_csv_validate:hover{
+  background: none !important;
+}
+.table > tbody > tr > th#csverror-th {
+  background: none !important;
+  border-top: none !important;
+}
+.inline-flex.border-end:nth-child(even) {
+  background-color: #202124 !important;
+}
+.border-end {
+  border-bottom: 1px solid #191b1e !important;
+}
+.pd_btm5{
+  padding-bottom: 5px !important;
+}

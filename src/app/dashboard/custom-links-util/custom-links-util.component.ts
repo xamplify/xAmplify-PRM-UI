@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, ViewChild } from '@angular/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Pagination } from 'app/core/models/pagination';
@@ -14,6 +14,8 @@ import { max120CharactersLimitValidator,noWhiteSpaceOrMax20CharactersLimitValida
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CustomLinkType } from '../models/custom-link-type.enum';
 import { ErrorResponse } from 'app/util/models/error-response';
+import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-image-util.component';
+import { setTimeout } from 'timers';
 
 declare var swal: any, $:any;
 
@@ -68,6 +70,9 @@ export class CustomLinksUtilComponent implements OnInit {
       }
   };
   customLinkForm: FormGroup;
+  croppedImage:any;
+  previouslySelectedImagePath = "";
+  uploadImageOptionClicked = false;
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
@@ -149,9 +154,12 @@ export class CustomLinksUtilComponent implements OnInit {
     if(this.moduleType==this.properties.dashboardButtons){
       this.headerText = "Add Button";
       this.listHeaderText = "Your Dashboard Button's List";
-    }else{
+    }else if(this.moduleType==this.properties.newsAndAnnouncements){
       this.headerText = "Add News & Announcements";
       this.listHeaderText = "Your News & Announcements List";
+    }else if(this.moduleType==this.properties.dashboardBanners){
+      this.headerText = "Add Dashboard Banner";
+      this.listHeaderText = "Your Dashboard Banners List";
     }
     this.buttonActionType = true;
     this.selectedProtocol = 'http';
@@ -426,12 +434,23 @@ export class CustomLinksUtilComponent implements OnInit {
     this.findLinks(this.pagination);
   }
 
-  selectedIconName() {
+  /***Dashboard Banners***/
+
+  openModalPopUp(){
+    this.uploadImageOptionClicked = false;
+    setTimeout(() => {
+      this.uploadImageOptionClicked = true;
+    }, 100);
     
   }
 
-  selectedProtocolOption(selectedProtocolOption: string) {
-    this.selectedProtocol = selectedProtocolOption;
+  clearImage(){
+    this.croppedImage = "";
+    this.previouslySelectedImagePath = "";
+  }
+
+  croppedImageEventReceiver(event:any){
+    this.croppedImage = event;
   }
 
 

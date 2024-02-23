@@ -1,4 +1,4 @@
-<div class="modal right fade" id="cropImage" tabindex="-1" role="dialog" aria-labelledby="cropLogoImage"
+<div class="modal right fade" id="cropImageModal" tabindex="-1" role="dialog" aria-labelledby="cropLogoImage"
   data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog imgCrop-modal" role="document">
     <div class="modal-content rounded-0">
@@ -32,7 +32,7 @@
           </ngx-loading>
           <div [hidden]="!imageChangedEvent">
             <app-img-croppr-v2 [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-              [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="16 / 9" [resizeToWidth]="1920"
+              [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="6/1" [resizeToWidth]="1920"
               [cropperMinWidth]="1080" [onlyScaleDown]="true" [roundCropper]="false" [alignImage]="'left'"
               [style.display]="showCropper ? null : 'none'" format="png" [transform]="transform"
               (imageCropped)="imageCroppedMethod($event)" (imageLoaded)="imageLoaded()"

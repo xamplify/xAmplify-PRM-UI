@@ -1,17 +1,17 @@
-import { Component, OnInit, EventEmitter, ViewChild, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, ViewChild, Output, Input } from '@angular/core';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
-import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
+import { ImageCropperComponent } from 'ng2-img-cropper';
 import { UtilService } from '../../core/services/util.service';
-
-// ImageCroppedEvent
 import { ImageCroppedEvent } from 'app/common/image-cropper/interfaces/image-cropped-event.interface';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
+import { Properties } from 'app/common/models/properties';
 
-declare var $, swal, CKEDITOR: any;
+declare var $:any;
 @Component({
   selector: 'app-upload-image-util',
   templateUrl: './upload-image-util.component.html',
-  styleUrls: ['./upload-image-util.component.css']
+  styleUrls: ['./upload-image-util.component.css'],
+  providers:[Properties]
 })
 export class UploadImageUtilComponent implements OnInit {
 
@@ -31,30 +31,33 @@ export class UploadImageUtilComponent implements OnInit {
   @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
   loadingcrop = false;
   @Output() croppedImageEventEmitter = new EventEmitter<any>();
-
-  constructor(public utilService: UtilService) { }
+  aspectRatio = "16/9";
+  @Input() moduleName:string="";
+  constructor(public utilService: UtilService,public properties:Properties) { }
 
   ngOnInit() {
+    this.openModalPopup()
   }
   ngOnDestroy() {
-    $('#cropImage').modal('hide');
+    $('#cropImageModal').modal('hide');
   }
   /*****************Featured Image*******************/
-  imageClick() {
-    this.fileChangeEvent();
-  }
-  fileChangeEvent() {
+  
+  openModalPopup() {
     this.cropRounded = false;
     this.fileSizeError = false;
     this.imageChangedEvent = null;
-    $('#cropImage').modal('show');
+    if(this.properties.dashboardBanners==this.moduleName){
+      this.aspectRatio = "6/1";
+    }
+    $('#cropImageModal').modal('show');
   }
   closeImageUploadModal() {
     this.cropRounded = !this.cropRounded;
     this.imageChangedEvent = null;
     this.croppedImage = '';
     this.fileObj = null;
-    $('#cropImage').modal('hide');
+    $('#cropImageModal').modal('hide');
   }
   filenewChangeEvent(event) {
     const image: any = new Image();
@@ -115,7 +118,6 @@ export class UploadImageUtilComponent implements OnInit {
 
   imageCroppedMethod(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
-
     console.log(event, base64ToFile(event.base64));
   }
   imageLoaded() {

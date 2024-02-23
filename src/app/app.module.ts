@@ -79,7 +79,6 @@ import { LinkedinService } from './social/services/linkedin.service';
 import { DatePipe } from '@angular/common';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { UploadImageUtilComponent } from './util/upload-image-util/upload-image-util.component';
 
 
 
@@ -88,7 +87,7 @@ import { UploadImageUtilComponent } from './util/upload-image-util/upload-image-
         CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
         , LogRegularCampaignComponentSMS, CampaignSMSVideoComponent, RsvpComponent, LogEventCampaignComponentSMS,
         LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent, VanitySocialLoginComponent, DomainErrorComponent,
-        VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent, UploadImageUtilComponent
+        VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent
     ],
 
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
