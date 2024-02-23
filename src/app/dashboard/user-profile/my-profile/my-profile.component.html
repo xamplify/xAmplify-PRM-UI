@@ -248,7 +248,7 @@
                                                 (click)="activateTab(properties?.newsAndAnnouncements);clearCustomResponse()">{{properties?.newsAndAnnouncements}}</a>
                                         </li>
                                         <!--Dashboard Banners-->
-                                        <li  [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
+                                        <li style="display:none" [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.dashboardBanners}"
                                                 (click)="activateTab(properties?.dashboardBanners);clearCustomResponse()">{{properties?.dashboardBanners}}</a>
                                         </li>
