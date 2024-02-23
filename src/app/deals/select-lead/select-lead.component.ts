@@ -16,7 +16,8 @@ declare var swal, $, videojs: any;
 @Component({
   selector: 'app-select-lead',
   templateUrl: './select-lead.component.html',
-  styleUrls: ['./select-lead.component.css']
+  styleUrls: ['./select-lead.component.css'],
+  providers:[SortOption]
 })
 export class SelectLeadComponent implements OnInit {  
   @Input() public dealToLead: any;
