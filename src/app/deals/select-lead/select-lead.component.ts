@@ -21,7 +21,7 @@ declare var swal, $, videojs: any;
 })
 export class SelectLeadComponent implements OnInit {  
   @Input() public dealToLead: any;
-  @Input() public createdForCompanyId:any;
+ // @Input() public createdForCompanyId:any;
   @Output() notifyClose = new EventEmitter();
   @Output() notifyLeadSelected = new EventEmitter();
 
@@ -91,9 +91,9 @@ export class SelectLeadComponent implements OnInit {
       pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName      
     }
-    if (this.dealToLead.dealActionType === 'edit') {
-      pagination.vendorCompanyId = this.dealToLead.createdForCompanyId;
-    }
+    // if (this.dealToLead.dealActionType === 'edit') {
+    //   pagination.vendorCompanyId = this.dealToLead.createdForCompanyId;
+    // }
     this.leadsService.listLeadsForPartner(pagination)
       .subscribe(
         response => {
