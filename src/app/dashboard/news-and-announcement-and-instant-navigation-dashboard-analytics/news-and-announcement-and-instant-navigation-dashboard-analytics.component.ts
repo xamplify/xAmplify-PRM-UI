@@ -35,7 +35,6 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
     if (this.isVanityUrlEnabled) {
       this.findNewsAndAnnouncements();
       this.findInstantNavigationLinks();
-
     }
   }
 
@@ -66,7 +65,8 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
   private findNewsAndAnnouncements() {
     this.isNewsAndAnnouncementApiLoading = true;
     this.pagination.pageIndex = 1;
-    this.pagination.maxResults = 4;
+    this.pagination.maxResults = 5;
+    this.pagination.filterKey = this.properties.newsAndAnnouncements;
     this.vanityUrlService.findCustomLinks(this.pagination).subscribe(
       response => {
         this.customLinkDtos = response.data.list;

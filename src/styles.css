@@ -2979,3 +2979,10 @@ span.btn.Btn-Green.transition.secondary_btn_width{
   z-index: 99;
   height: 17px!important;
 }
+
+.td-overflow-text{
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
