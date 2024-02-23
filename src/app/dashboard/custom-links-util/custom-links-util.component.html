@@ -10,7 +10,7 @@
         <div class="col-md-12" style="padding-top: 10px;">
           <div class="portlet light feature-img">
             <div class="portlet-title tabbable-line ">
-              <div class="caption caption-md ">
+              <div class="caption caption-md">
                 <i class="icon-globe theme-font hide " aria-hidden="true "></i>
                 <span class="caption-subject font-blue-madison bold uppercase ">Dashboard Banner</span>
               </div>
@@ -137,22 +137,22 @@
             <th>Title</th>
             <th>Link</th>
             <th *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">Type</th>
-            <th>Actions</th>
+            <th class="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of pagination.pagedItems">
             <ng-container *ngIf="moduleType==properties?.dashboardButtons">
-              <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
+              <td class="td-overflow-text"><span class="mr5"><i class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
               <td>{{item.buttonLink}}</td>
             </ng-container>
             <ng-container *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">
-              <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.icon}}" aria-hidden="true"></i></span>{{item.title}}</td>
-              <td>{{item.link}}</td>
+              <td class="td-overflow-text" title="{{item.title}}"><span class="mr5"><i class="fa {{item.icon}}" aria-hidden="true"></i></span>{{item.title}}</td>
+              <td class="td-overflow-text" title="{{item.link}}">{{item.link}}</td>
             </ng-container>
             <td *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">{{item.type}}</td>
             <td>
-              <div class="actions-block override-actions">
+              <div class="actions-block override-actions float-none">
                 <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit">
                   <i class="fa fa-pencil-square-o"></i>
                   <div class="clickicons"></div>
