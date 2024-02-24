@@ -10,38 +10,36 @@
         <div class="col-md-12" style="padding-top: 10px;">
           <div class="portlet light feature-img">
             <div class="portlet-title tabbable-line ">
-              <div class="caption caption-md ">
+              <div class="caption caption-md">
                 <i class="icon-globe theme-font hide " aria-hidden="true "></i>
                 <span class="caption-subject font-blue-madison bold uppercase ">Dashboard Banner</span>
               </div>
-              <div class="inline" style="float: right; padding-bottom: 5px;">
+              <div class="inline" style="float: right; padding-bottom: 5px;" *ngIf="croppedImage">
                 <button type="button" class="button_blue bgcolor-unset" (click)="clearImage()"><span
                     class="btn btn-primary transition txt_pd-top3">Clear</span></button>
               </div>
             </div>
-            <div class="dashboard-banner-image" style="cursor: pointer;text-align:center;color:#fff;"
-              (click)="openModalPopUp()">
+            <div class="dashboard-banner-image" style="cursor: pointer;text-align:center;color:#fff;" (click)="openModalPopUp()">
               <div *ngIf="!croppedImage">
-                <img *ngIf="!previouslySelectedImagePath"
-                  src="assets/images/contentPlaceholderImages.png" class="profile-image img-grid" alt="">
+                <img *ngIf="!previouslySelectedImagePath" src="assets/images/contentPlaceholderImages.png" class="profile-image img-grid" alt="">
               </div>
               <div *ngIf="croppedImage; else showImage">
                 <img class="img-grids" [src]="croppedImage" alt="">
               </div>
               <ng-template #showImage>
-                <img class="img-grids" [src]="previouslySelectedImagePath" alt="">
+                <img *ngIf="isAdd"  class="img-grids" [src]="previouslySelectedImagePath" alt="">
+                <ng-container *ngIf="!isAdd && !ngxLoading">
+                  <div  *ngIf="isImageLoading">
+                    <img src="assets/images/image-loader.gif" style="height: 120px;" onerror="this.src='assets/images/no-preview.jpg';" alt="No image" class="center-image"/>
+                  </div>
+                  <img [hidden]="isImageLoading" class="img-grids" [src]="previouslySelectedImagePath" onerror="this.src='assets/images/no-preview.jpg';"
+                  alt="No image" (load)="isImageLoading=false" (error)="isImageLoading=false">
+                </ng-container>
               </ng-template>
               <a class="btn btn-primary1 profile-pic" data-toggle="tooltip" data-placement="bottom"
-                title="upload 2:1 ratio logo">
-                &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
+                title="Upload 6:1 ratio logo"><i class="fa fa-camera icon" aria-hidden="true"
                   style="font-size:25px;padding-top:4px;margin-right: -5px;"></i></a>
             </div>
-          </div>
-          <div class="message-content">
-            <ul class="t-b-spacings">
-              <li translate>Maximum file size is 10 MB.</li>
-              <li translate>Please Upload <strong>.jpg, .jpeg, .png </strong>files only.</li>
-            </ul>
           </div>
         </div>
       </div>
@@ -113,7 +111,7 @@
       <div class="form-row">
         <div class="form-group col-md-12">
           <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
-            [disabled]="!customLinkForm.valid || saving" (click)="saving=true;save();">
+            [disabled]="!customLinkForm.valid || saving || !isDashboardBannerImageUploaded" (click)="saving=true;save();">
             <span class="btn btn-primary transition txt_pd-top3">Save</span>
           </button>
           <button *ngIf="!buttonActionType" type="submit" class="button_blue bgcolor-unset" 
@@ -137,23 +135,25 @@
           <tr>
             <th>Title</th>
             <th>Link</th>
-            <th *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">Type</th>
-            <th>Actions</th>
+            <th *ngIf="moduleType==properties?.newsAndAnnouncements">Type</th>
+            <th class="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of pagination.pagedItems">
             <ng-container *ngIf="moduleType==properties?.dashboardButtons">
-              <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
+              <td class="td-overflow-text"><span class="mr5"><i class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
               <td>{{item.buttonLink}}</td>
             </ng-container>
-            <ng-container *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">
-              <td class="brnTitleTextCu"><span class="mr5"><i class="fa {{item.icon}}" aria-hidden="true"></i></span>{{item.title}}</td>
-              <td>{{item.link}}</td>
+            <ng-container *ngIf="moduleType!=properties?.dashboardButtons">
+              <td class="td-overflow-text" title="{{item.title}}"><span class="mr5"><i class="fa {{item.icon}}" aria-hidden="true"></i></span>{{item.title}}</td>
+              <td class="td-overflow-text" title="{{item.link}}">{{item.link}}</td>
             </ng-container>
-            <td *ngIf="moduleType==(properties?.newsAndAnnouncements || properties?.dashboardBanners)">{{item.type}}</td>
+            <ng-container *ngIf="moduleType==properties?.newsAndAnnouncements">
+              <td>{{item.type}}</td>
+            </ng-container>
             <td>
-              <div class="actions-block override-actions">
+              <div class="actions-block override-actions float-none">
                 <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit">
                   <i class="fa fa-pencil-square-o"></i>
                   <div class="clickicons"></div>
@@ -176,4 +176,4 @@
 
 </fieldset>
 
-<app-upload-image-util #uploadImageUtilComponent (croppedImageEventEmitter)="croppedImageEventReceiver($event)"></app-upload-image-util>
+<app-upload-image-util *ngIf="uploadImageOptionClicked"  [moduleName]="properties?.dashboardBanners" (croppedImageEventEmitter)="croppedImageEventReceiver($event)"></app-upload-image-util>
