@@ -337,7 +337,6 @@ bgIMage2:any;
           });
           let self = this;
           window.addEventListener('message', function (e) {
-            console.log('received message:  ' + e.data, e);
             self.loginAfterSSOCallbackInVanity(e.data);
           }, false);
         } else {
@@ -421,14 +420,17 @@ bgIMage2:any;
       }
     }
 
-    if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined) {
-      this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName, this.referenceService.userName).subscribe(result => {
+    if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined && this.referenceService.userName!=undefined) {
+      this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName, this.referenceService.userName).
+      subscribe(result => {
         if (result.message === "success") {
           this.loginSSOUser(this.referenceService.userName, client_id, client_secret);
         } else {
           this.loading = false;
           this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
         }
+      },error=>{
+        this.loading = false;
       });
     }
     else {
@@ -462,7 +464,7 @@ bgIMage2:any;
    }else{
     this.loading = false;
    }
-        return false;
+    return false;
   }
 
   clearErrorMessage(){
