@@ -224,7 +224,7 @@ export class CustomLinksUtilComponent implements OnInit {
           message = result.message;
         }
         this.customResponse = new CustomResponse('SUCCESS',message, true);
-        this.customLinkDto = new CustomLinkDto(); 
+        this.resetFormDataAndDtoProperties();
         this.setDefaultValuesForForm();
         this.buildCustomLinkForm();
         this.clearImage();
@@ -263,6 +263,12 @@ export class CustomLinksUtilComponent implements OnInit {
     });
   }
 
+
+  private resetFormDataAndDtoProperties() {
+    this.customLinkDto = new CustomLinkDto();
+    this.formData.delete('dashboardBannerImage');
+    this.formData.delete('customLinkDto');
+  }
 
   private setCustomLinkDtoProperties() {
     let customFormDetails = this.customLinkForm.value;
@@ -342,6 +348,7 @@ export class CustomLinksUtilComponent implements OnInit {
           let statusCode = response.statusCode;
           if(statusCode==200){
             this.customResponse = new CustomResponse('SUCCESS',response.message,true);
+            this.resetFormDataAndDtoProperties();
             this.findLinks(this.pagination);
             this.ngxLoading = false;
             this.saving = false;
