@@ -1509,14 +1509,16 @@
 														<table cellpadding="5" cellspacing="0" class="border"
 															style="border:none !important;">
 															<tbody>
-																<tr class="bg-unset">
-																	<td class='pt10 pb10 bold' translate>Legal Basis :
-																	</td>
-																	&nbsp;
-																	<td align="center" class="pt10 pb10">
-																		{{allcontacts.legalBasisString}}
-																	</td>
-																</tr>
+																<ng-container  *ngIf="gdprStatus">
+																	<tr class="bg-unset">
+																		<td class='pt10 pb10 bold' translate>Legal Basis :
+																		</td>
+																		&nbsp;
+																		<td align="center" class="pt10 pb10">
+																			{{allcontacts.legalBasisString}}
+																		</td>
+																	</tr>
+																</ng-container>
 																<ng-container
 																	*ngIf="isPartner && authenticationService.contactsCount">
 																	<tr class="bg-unset">

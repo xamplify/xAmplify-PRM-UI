@@ -16,6 +16,7 @@ export class CustomLinkDto {
     description = "";
     loggedInUserId = 0;
     openLinkInNewTab = false;
+    bannerImagePath = "";
 
 
 }
