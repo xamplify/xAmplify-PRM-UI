@@ -111,7 +111,7 @@ export class CustomLinksUtilComponent implements OnInit {
       this.customLinkForm = this.formBuilder.group({
         'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceOrMax20CharactersLimitValidator])],
         'subTitle': [this.customLinkDto.buttonSubTitle,Validators.compose([max40CharactersLimitValidator])],
-        'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.URL_PATTERN)])],
+        'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.LINK_PATTERN)])],
         'icon': [this.customLinkDto.buttonIcon],
         'description': [this.customLinkDto.buttonDescription, Validators.compose([max120CharactersLimitValidator])],
         'openLinksInNewTab': [this.customLinkDto.openInNewTab],
@@ -120,7 +120,7 @@ export class CustomLinksUtilComponent implements OnInit {
     }else{
       this.customLinkForm = this.formBuilder.group({
         'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceValidatorWithOutLimit])],
-        'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.URL_PATTERN)])],
+        'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.LINK_PATTERN)])],
         'icon': [this.customLinkDto.buttonIcon],
         'description': [this.customLinkDto.buttonDescription],
         'openLinksInNewTab': [this.customLinkDto.openInNewTab],
