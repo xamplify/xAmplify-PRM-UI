@@ -130,7 +130,7 @@
           <tr>
             <th>Title</th>
             <th>Link</th>
-            <th *ngIf="moduleType==properties?.newsAndAnnouncements || properties?.dashboardBanners">Type</th>
+            <th *ngIf="moduleType==properties?.newsAndAnnouncements">Type</th>
             <th class="text-center">Actions</th>
           </tr>
         </thead>
@@ -140,11 +140,13 @@
               <td class="td-overflow-text"><span class="mr5"><i class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
               <td>{{item.buttonLink}}</td>
             </ng-container>
-            <ng-container *ngIf="moduleType==properties?.newsAndAnnouncements || properties?.dashboardBanners">
+            <ng-container *ngIf="moduleType!=properties?.dashboardButtons">
               <td class="td-overflow-text" title="{{item.title}}"><span class="mr5"><i class="fa {{item.icon}}" aria-hidden="true"></i></span>{{item.title}}</td>
               <td class="td-overflow-text" title="{{item.link}}">{{item.link}}</td>
             </ng-container>
-            <td *ngIf="moduleType==properties?.newsAndAnnouncements || properties?.dashboardBanners">{{item.type}}</td>
+            <ng-container *ngIf="moduleType==properties?.newsAndAnnouncements">
+              <td>{{item.type}}</td>
+            </ng-container>
             <td>
               <div class="actions-block override-actions float-none">
                 <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit">

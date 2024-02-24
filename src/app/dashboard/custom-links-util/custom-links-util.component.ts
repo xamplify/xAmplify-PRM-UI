@@ -286,6 +286,7 @@ export class CustomLinksUtilComponent implements OnInit {
   edit(id: number) {
     this.customResponse = new CustomResponse();
     this.previouslySelectedImagePath = "";
+    this.clearImage();
     this.removeTitleErrorClass();
     this.buttonActionType = false;
     this.saving = false;
@@ -328,7 +329,7 @@ export class CustomLinksUtilComponent implements OnInit {
       this.customResponse = new CustomResponse();
       this.ngxLoading = true;
       this.setCustomLinkDtoProperties();
-      this.vanityURLService.updateCustomLinkDetails(this.customLinkDto,this.moduleType).subscribe(
+      this.vanityURLService.updateCustomLinkDetails(this.customLinkDto,this.moduleType,this.formData).subscribe(
         response=>{
           this.referenceService.scrollSmoothToTop();
           let statusCode = response.statusCode;
@@ -361,6 +362,7 @@ export class CustomLinksUtilComponent implements OnInit {
           this.saving = false;
           this.ngxLoading = false;
           this.buttonActionType = false;
+          this.formData.delete("customLinkDto");
         }
       )
     }
@@ -373,7 +375,7 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   private updateDashboardButton() {
-    this.vanityURLService.updateCustomLinkDetails(this.customLinkDto,this.moduleType).subscribe(result => {
+    this.vanityURLService.updateCustomLinkDetails(this.customLinkDto,this.moduleType,this.formData).subscribe(result => {
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT, true);
         this.callInitMethods();
@@ -416,6 +418,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.setDefaultValuesForForm();
     this.buildCustomLinkForm();
     this.customLinkForm.get('customLinkType').setValue(this.defaultType);
+    this.previouslySelectedImagePath = "";
     this.clearImage();
   }
 

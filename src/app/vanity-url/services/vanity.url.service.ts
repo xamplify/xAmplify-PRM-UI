@@ -69,16 +69,29 @@ export class VanityURLService {
     return this.authenticationService.callGetMethod(url);
   }
 
-  updateCustomLinkDetails(customLink: any,moduleType:string) {
+  updateCustomLinkDetails(customLink: any,moduleType:string,formData:FormData) {
+    let url = "";
+    let postBody:any;
+    postBody = customLink;
     if(moduleType==this.properties.dashboardButtons){
-      const url = this.authenticationService.REST_URL + "v_url/update/dashboardButton" + "?access_token=" + this.authenticationService.access_token;
-      return this.http.post(url, customLink)
-        .map(this.extractData)
-        .catch(this.handleError);
-    }else{
-      let url = this.CUSTOM_LINK_PREFIX_URL+'/'+customLink.id+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
-      return this.authenticationService.callPutMethod(url,customLink);
+      url = this.authenticationService.REST_URL + "v_url/update/dashboardButton" + "?access_token=" + this.authenticationService.access_token;
+      return this.http.put(url, postBody)
+      .map(this.extractData)
+      .catch(this.handleError);
+    }else if(moduleType==this.properties.newsAndAnnouncements){
+      url = this.CUSTOM_LINK_PREFIX_URL+'/'+customLink.id+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+      return this.http.put(url, postBody)
+      .map(this.extractData)
+      .catch(this.handleError);
+    }else if(moduleType==this.properties.dashboardBanners){
+      url = this.CUSTOM_LINK_PREFIX_URL+"/dashboardBanners"+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+      formData.append("customLinkDto",new Blob([JSON.stringify(customLink)], {type: "application/json"}));
+      postBody = formData;
+      return this.http.post(url, postBody)
+      .map(this.extractData)
+      .catch(this.handleError);
     }
+    
     
   }
 
