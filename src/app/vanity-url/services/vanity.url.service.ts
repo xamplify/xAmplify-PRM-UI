@@ -84,7 +84,7 @@ export class VanityURLService {
       .map(this.extractData)
       .catch(this.handleError);
     }else if(moduleType==this.properties.dashboardBanners){
-      url = this.CUSTOM_LINK_PREFIX_URL+"/dashboardBanners"+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+      url = this.CUSTOM_LINK_PREFIX_URL+"/dashboardBanners/"+customLink.id+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
       formData.append("customLinkDto",new Blob([JSON.stringify(customLink)], {type: "application/json"}));
       postBody = formData;
       return this.http.post(url, postBody)
