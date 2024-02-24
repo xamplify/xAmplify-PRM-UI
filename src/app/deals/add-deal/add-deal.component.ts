@@ -231,6 +231,8 @@ export class AddDealComponent implements OnInit {
                 self.deal.campaignName = self.lead.campaignName;
                 // this.getCampaignDealPipeline();
               } else {
+                self.deal.campaignId = 0;
+                self.deal.campaignName = '';
                 //self.getPipelines();
               }
               //this.isSalesForceEnabled();         
