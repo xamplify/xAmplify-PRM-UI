@@ -76,6 +76,8 @@ export class CustomLinksUtilComponent implements OnInit {
   uploadImageOptionClicked = false;
   isDashboardBannerImageUploaded = true;
   formData: any = new FormData();
+  isImageLoading = false;
+  isAdd = true;
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
@@ -173,6 +175,8 @@ export class CustomLinksUtilComponent implements OnInit {
     this.setDefaultValuesForForm();
     this.buildCustomLinkForm();
     this.customLinkForm.get('customLinkType').setValue(this.defaultType);
+    this.clearImage();
+    this.previouslySelectedImagePath = "";
     this.findLinks(this.pagination);
   }
 
@@ -284,6 +288,8 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   edit(id: number) {
+    this.isImageLoading = true;
+    this.isAdd = false;
     this.customResponse = new CustomResponse();
     this.previouslySelectedImagePath = "";
     this.clearImage();
@@ -403,6 +409,7 @@ export class CustomLinksUtilComponent implements OnInit {
         this.customResponse = new CustomResponse('SUCCESS', message, true);
         this.referenceService.goToTop();
         this.pagination.pageIndex = 1;
+        this.isAdd = true;
         this.callInitMethods();
       }
     }, error => {
