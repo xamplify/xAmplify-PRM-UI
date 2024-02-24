@@ -152,7 +152,7 @@ export class UploadImageUtilComponent implements OnInit {
     this.showCropper = true;
     setTimeout(() => {
       this.isImageUploadIsInProgress= false;
-    }, 500);
+    }, 100);
     
   }
   cropperReady(sourceImageDimensions: Dimensions) {

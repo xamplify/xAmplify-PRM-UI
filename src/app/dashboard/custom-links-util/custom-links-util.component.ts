@@ -459,7 +459,6 @@ export class CustomLinksUtilComponent implements OnInit {
 
   clearImage(){
     this.croppedImage = "";
-    this.previouslySelectedImagePath = "";
     this.formData.delete("dashboardBannerImage");
     this.isDashboardBannerImageUploaded = false;
   }

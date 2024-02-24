@@ -14,7 +14,7 @@
                 <i class="icon-globe theme-font hide " aria-hidden="true "></i>
                 <span class="caption-subject font-blue-madison bold uppercase ">Dashboard Banner</span>
               </div>
-              <div class="inline" style="float: right; padding-bottom: 5px;">
+              <div class="inline" style="float: right; padding-bottom: 5px;" *ngIf="croppedImage">
                 <button type="button" class="button_blue bgcolor-unset" (click)="clearImage()"><span
                     class="btn btn-primary transition txt_pd-top3">Clear</span></button>
               </div>
