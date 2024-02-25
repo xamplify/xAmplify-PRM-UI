@@ -23,6 +23,7 @@ export class DashboardBannerImagesComponent implements OnInit {
   pagination:Pagination = new Pagination();
   dashboardBanners:Array<CustomLinkDto> = new Array<CustomLinkDto>();
   isDataError = false;
+  isVanityUrlEnabled = false;
   constructor(public properties:Properties,public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public vanityUrlService:VanityURLService) { }
 
@@ -31,7 +32,8 @@ export class DashboardBannerImagesComponent implements OnInit {
   }
 
   findDashboardBanners(){
-    if(this.authenticationService.vanityURLEnabled){
+    this.isVanityUrlEnabled = this.authenticationService.vanityURLEnabled;
+    if(this.isVanityUrlEnabled){
       this.isDataError = false;
       this.customResponse = new CustomResponse();
       this.vanityLoginDto.userId = this.authenticationService.getUserId();

@@ -129,7 +129,7 @@
 <fieldset style="margin: 20px 2px;">
   <legend>{{listHeaderText}}</legend>
   <div class="alert alert-info text-center" *ngIf="pagination.totalRecords==0">No Data Found</div>
-  <ng-container *ngIf="pagination.totalRecords>0">
+  <ng-container *ngIf="pagination?.totalRecords>0">
     <div  class="table-responsive" style="overflow-x: inherit; padding:15px;">
       <table class='table tgrid table-hover'>
         <thead>
