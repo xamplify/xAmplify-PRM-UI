@@ -90,6 +90,7 @@ import { ConnectwiseAuthenticationComponent } from './connectwise-authentication
 import { AddOrManageDomainsComponent } from './add-or-manage-domains/add-or-manage-domains.component';
 import { CustomLinksUtilComponent } from './custom-links-util/custom-links-util.component';
 import { NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent } from './news-and-announcement-and-instant-navigation-dashboard-analytics/news-and-announcement-and-instant-navigation-dashboard-analytics.component';
+import { DashboardBannerImagesComponent } from './dashboard-banner-images/dashboard-banner-images.component';
 
 
 @NgModule({
@@ -156,7 +157,8 @@ import { NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent } fr
         ConnectwiseAuthenticationComponent,
         AddOrManageDomainsComponent,
         CustomLinksUtilComponent,
-        NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent
+        NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent,
+        DashboardBannerImagesComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
