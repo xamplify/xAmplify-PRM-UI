@@ -2964,7 +2964,7 @@ export class ReferenceService {
   getApiErrorMessage(error: any) {
     let statusCode = JSON.parse(error["status"]);
     let message = "";
-    if (statusCode == 409 || statusCode == 400 || statusCode == 500) {
+    if (statusCode == 409 || statusCode == 400 || statusCode == 500 || statusCode==403) {
       let errorResponse = JSON.parse(error["_body"]);
       message = errorResponse["message"];
     } else {
