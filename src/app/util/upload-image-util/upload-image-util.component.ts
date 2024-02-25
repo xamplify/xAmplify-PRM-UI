@@ -29,10 +29,13 @@ export class UploadImageUtilComponent implements OnInit {
   canvasRotation = 0;
   containWithinAspectRatio = false;
   @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
-  loadingcrop = false;
+  isImageUploadIsInProgress = false;
   @Output() croppedImageEventEmitter = new EventEmitter<any>();
   aspectRatio = "16/9";
   @Input() moduleName:string="";
+  errorMessage = "";
+  maximumFileSizeMessage = "Maximum file size is 10 MB";
+  uploadedFileName = "";
   constructor(public utilService: UtilService,public properties:Properties) { }
 
   ngOnInit() {
@@ -59,18 +62,41 @@ export class UploadImageUtilComponent implements OnInit {
     this.fileObj = null;
     $('#cropImageModal').modal('hide');
   }
-  filenewChangeEvent(event) {
-    const image: any = new Image();
+
+  uploadImage(event:any) {
     const file: File = event.target.files[0];
     const isSupportfile = file.type;
+    this.errorMessage = "";
+    this.uploadedFileName = file['name'];
     if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
       this.errorUploadCropper = false;
       this.imageChangedEvent = event;
+      this.isImageUploadIsInProgress = true;
     } else {
-      this.errorUploadCropper = true;
-      this.showCropper = false;
+      this.showErrorMessage("Please upload only image");
     }
+
+    if(!this.errorUploadCropper){
+      let sizeInKb = file.size / 1024;
+			let maxFileSizeInKb = 1024 * 10;
+      if (sizeInKb >= maxFileSizeInKb) {
+        this.showErrorMessage(this.maximumFileSizeMessage);
+      }else{
+        this.errorUploadCropper = false;
+        this.imageChangedEvent = event;
+        this.isImageUploadIsInProgress = true;
+      }
+    }
+
   }
+  private showErrorMessage(message: string) {
+    this.errorUploadCropper = true;
+    this.showCropper = false;
+    this.imageChangedEvent = null;
+    this.isImageUploadIsInProgress = false;
+    this.errorMessage = message;
+  }
+
   zoomOut() {
     if (this.croppedImage != "") {
       this.scale -= .1;
@@ -111,23 +137,27 @@ export class UploadImageUtilComponent implements OnInit {
       this.showCropper = false;
     }
   }
-  uploadImage() {
-    this.croppedImageEventEmitter.emit(this.croppedImage);
+  saveImage() {
+    let emitter = {};
+    emitter['croppedImage'] = this.croppedImage;
+    emitter['fileName'] = this.uploadedFileName;
+    this.croppedImageEventEmitter.emit(emitter);
     this.closeImageUploadModal();
   }
 
   imageCroppedMethod(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
-    console.log(event, base64ToFile(event.base64));
   }
   imageLoaded() {
     this.showCropper = true;
-    console.log('Image loaded')
+    setTimeout(() => {
+      this.isImageUploadIsInProgress= false;
+    }, 100);
+    
   }
   cropperReady(sourceImageDimensions: Dimensions) {
     console.log('Cropper ready', sourceImageDimensions);
   }
   loadImageFailed() {
-    console.log('Load failed');
   }
 }

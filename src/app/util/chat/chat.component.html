@@ -1,9 +1,9 @@
 <div class="comment-area comment-div" id="comment-area">
     <ul class="comment-section" *ngFor="let c of commentList" style="margin: 0px;"> <!--xnfr-426-->
         <li [attr.class]="c.userId != loggedInUserId ? 'comment author-comment':'comment user-comment'"
-            [ngStyle]="{'margin-top':((c?.activityType == 'LEAD_APPROVED') || (c?.activityType == 'LEAD_REJECTED') || (c?.activityType == 'STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') || (c?.activityType == 'LEAD_CREATED') || (c?.activityType == 'COMMENT_UPDATED'))? '-23px' : '0px'}">
+            [ngStyle]="{'margin-top':((c?.activityType == 'LEAD_APPROVED') || (c?.activityType == 'LEAD_REJECTED') || (c?.activityType == 'STAGE_UPDATED') ||  (c?.activityType == 'LEAD_STAGE_UPDATED') || (c?.activityType == 'DEAL_STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') || (c?.activityType == 'LEAD_CREATED') || (c?.activityType == 'COMMENT_UPDATED'))? '-23px' : '0px'}">
             <div class="info"
-                [ngStyle]="{'padding-top':((c?.activityType == 'LEAD_APPROVED') || (c?.activityType == 'LEAD_REJECTED') || (c?.activityType == 'STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') || (c?.activityType == 'LEAD_CREATED') || (c?.activityType == 'COMMENT_UPDATED')  )? '30px' : '0px'}"
+                [ngStyle]="{'padding-top':((c?.activityType == 'LEAD_APPROVED') || (c?.activityType == 'LEAD_REJECTED') || (c?.activityType == 'STAGE_UPDATED') || (c?.activityType == 'LEAD_STAGE_UPDATED') || (c?.activityType == 'DEAL_STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') || (c?.activityType == 'LEAD_CREATED') || (c?.activityType == 'COMMENT_UPDATED')  )? '30px' : '0px'}"
                 style="padding-right: 15px; padding-left: 15px;">
                 <a title="{{c?.commentedByFullName}}">{{c?.commentedByFullName| slice:0:30}}<span
                         *ngIf="c?.commentedByFullName?.length>30">...</span></a>
@@ -12,7 +12,7 @@
                 </span>
             </div>
             <a class="avatar none"
-                [ngStyle]="{'padding-top':((c?.activityType == 'LEAD_APPROVED') || (c?.activityType == 'LEAD_REJECTED') || (c?.activityType == 'STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') || (c?.activityType == 'LEAD_CREATED') || (c?.activityType == 'COMMENT_UPDATED'))? '32px' : '0px'}">
+                [ngStyle]="{'padding-top':((c?.activityType == 'LEAD_APPROVED') || (c?.activityType == 'LEAD_REJECTED') || (c?.activityType == 'STAGE_UPDATED') || (c?.activityType == 'LEAD_STAGE_UPDATED') || (c?.activityType == 'DEAL_STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') || (c?.activityType == 'LEAD_CREATED') || (c?.activityType == 'COMMENT_UPDATED'))? '32px' : '0px'}">
                 <img src="{{c?.commentedByImage}}" width="35" alt="Profile Avatar" title="{{c.commentedByFullName}}" />
             </a>
 
@@ -29,14 +29,16 @@
             <!-- [ngStyle]="{'color': (c?.activityType == 'STAGE_UPDATED')? '#06c306' : '#f71111'}" -->
             <div [ngStyle]="{'color': (c?.activityType == 'LEAD_CREATED' || c?.activityType == 'DEAL_CREATED')? '#06c306' : '#5b9bd1'}"
                 class="col-lg-6 col-md-6 col-sm-6 col-xs-6"
-                *ngIf="(c?.activityType == 'STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') || (c?.activityType == 'LEAD_CREATED') || (c?.activityType == 'COMMENT_UPDATED')"
+                *ngIf="(c?.activityType == 'STAGE_UPDATED') || (c?.activityType == 'LEAD_STAGE_UPDATED') || (c?.activityType == 'DEAL_STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') || (c?.activityType == 'LEAD_CREATED') || (c?.activityType == 'COMMENT_UPDATED')"
                 translate>
                 <button class="approvedbtn">
-                    <i *ngIf="c?.activityType == 'STAGE_UPDATED' || c?.activityType == 'COMMENT_UPDATED'"
+                    <i *ngIf="c?.activityType == 'STAGE_UPDATED' || c?.activityType == 'LEAD_STAGE_UPDATED' || c?.activityType == 'DEAL_STAGE_UPDATED' || c?.activityType == 'COMMENT_UPDATED'"
                         class="fa fa-edit mr5" aria-hidden="true"></i>
                     <i *ngIf="c?.activityType == 'LEAD_CREATED' || c?.activityType == 'DEAL_CREATED'"
                         class="fa fa-plus-circle mr5" aria-hidden="true"></i>
                     {{c?.activityType == 'STAGE_UPDATED' ? 'Stage Updated' : ''}}
+                    {{c?.activityType == 'DEAL_STAGE_UPDATED' ? 'Deal Stage Updated' : ''}}
+                    {{c?.activityType == 'LEAD_STAGE_UPDATED' ? 'Lead Stage Updated' : ''}}
                     {{c?.activityType == 'DEAL_CREATED' ? 'Deal Created' : ''}}
                     {{c?.activityType == 'LEAD_CREATED' ? 'Lead Created' : ''}}
                     {{c?.activityType == 'COMMENT_UPDATED' ? 'Comment Updated' : ''}}
