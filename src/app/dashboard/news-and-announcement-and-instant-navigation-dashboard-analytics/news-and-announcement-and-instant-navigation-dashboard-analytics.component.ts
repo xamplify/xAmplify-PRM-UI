@@ -27,7 +27,8 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
   instantNavigationLinks:Array<any> = new Array<any>();
   companyId = 0;
   isPartnerLoggedInThroughVanityUrl = false;
-  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public vanityUrlService:VanityURLService,private dashboardService:DashboardService) { }
+  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
+    public vanityUrlService:VanityURLService,private dashboardService:DashboardService) { }
 
   ngOnInit() {
     this.customResponse = new CustomResponse();
