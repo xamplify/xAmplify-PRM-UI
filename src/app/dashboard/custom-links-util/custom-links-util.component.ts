@@ -254,7 +254,7 @@ export class CustomLinksUtilComponent implements OnInit {
       if(this.moduleType==this.properties.dashboardButtons){
         message = "Error while saving dashboard button";
       }else{
-        message = this.properties.serverErrorMessage;
+        message = this.referenceService.getApiErrorMessage(error);
       }
       this.customResponse = new CustomResponse('ERROR', message, true);
       this.referenceService.goToTop();

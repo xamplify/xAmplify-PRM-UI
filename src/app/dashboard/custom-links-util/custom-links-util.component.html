@@ -3,7 +3,7 @@
   <fieldset>
     <legend>{{headerText}}</legend>
       <div class="form-group col-md-12">
-        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+        <app-response-message [customResponse]="customResponse" [showCloseIcon]="false" *ngIf="customResponse.isVisible"></app-response-message>
       </div>
        <!--Dashboard Banner-->
       <div *ngIf="moduleType==properties?.dashboardBanners">

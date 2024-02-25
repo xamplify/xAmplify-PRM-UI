@@ -4,7 +4,6 @@ import { Properties } from 'app/common/models/properties';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-import { DashboardService } from '../dashboard.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { Pagination } from 'app/core/models/pagination';
 import { CustomLinkDto } from 'app/vanity-url/models/custom-link-dto';
@@ -25,7 +24,7 @@ export class DashboardBannerImagesComponent implements OnInit {
   dashboardBanners:Array<CustomLinkDto> = new Array<CustomLinkDto>();
   isDataError = false;
   constructor(public properties:Properties,public authenticationService:AuthenticationService,public referenceService:ReferenceService,
-    public vanityUrlService:VanityURLService,public dashboardService:DashboardService) { }
+    public vanityUrlService:VanityURLService) { }
 
   ngOnInit() {
     this.findDashboardBanners();
@@ -47,6 +46,9 @@ export class DashboardBannerImagesComponent implements OnInit {
       this.vanityUrlService.findCustomLinks(this.pagination).subscribe(
         response=>{
           this.dashboardBanners = response.data.list;
+          if(this.dashboardBanners.length==0){
+            this.customResponse = new CustomResponse('INFO',"No Dashboard Banners Found",true);
+          }
           this.isDataLoading = false;
         },error=>{
           this.isDataError = true;

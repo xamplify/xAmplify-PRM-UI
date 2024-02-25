@@ -1,13 +1,15 @@
 <!-- carousel start -->
 <div class="page-bar page-bar-shadow" style="padding: 1em;">
   <app-modal-popup-loader [height]="150" *ngIf="isDataLoading"></app-modal-popup-loader>
-  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && isDataError"></app-response-message>
-  <div id="myCarousel" class="carousel slide" data-ride="carousel" *ngIf="!isDataLoading && !isDataError">
+  <app-response-message [customResponse]="customResponse" [showCloseIcon]="false" *ngIf="customResponse.isVisible"></app-response-message>
+  <div id="myCarousel" class="carousel slide" data-ride="carousel" *ngIf="!isDataLoading && !isDataError && dashboardBanners?.length>0">
       <!-- Menu -->
       <ol class="carousel-indicators" *ngIf="dashboardBanners?.length>1">
-          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-          <li data-target="#myCarousel" data-slide-to="1"></li>
-          <li data-target="#myCarousel" data-slide-to="2"></li>
+          <li data-target="#myCarousel"  data-slide-to="0" class="active"></li>
+          <li data-target="#myCarousel" *ngIf="dashboardBanners?.length>1" data-slide-to="1"></li>
+          <li data-target="#myCarousel" *ngIf="dashboardBanners?.length>2" data-slide-to="2"></li>
+          <li data-target="#myCarousel" *ngIf="dashboardBanners?.length>3" data-slide-to="3"></li>
+          <li data-target="#myCarousel" *ngIf="dashboardBanners?.length>4" data-slide-to="4"></li>
       </ol>
       <!-- Items -->
       <div class="carousel-inner">
@@ -18,7 +20,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h1 class="carousel-headings" title="{{dashboardBanners[0]?.title}}">{{dashboardBanners[0]?.title}}</h1>
-                            <p *ngIf="dashboardBanners[0]?.title.length>0" title="{{dashboardBanners[0]?.title}}">{{dashboardBanners[0]?.description}}</p>
+                            <p class="text-overflow" *ngIf="dashboardBanners[0]?.description.length>0" title="{{dashboardBanners[0]?.description}}">{{dashboardBanners[0]?.description}}</p>
                             <p><a class="btn btn-large btn-primary" href="{{dashboardBanners[0]?.link}}" target="{{dashboardBanners[0]?.openLinkInNewTab ? '_blank' : '_self'}}">Learn More</a></p>
                         </div>
                     </div>
@@ -32,7 +34,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h1 class="carousel-headings" title="{{dashboardBanners[1]?.title}}">{{dashboardBanners[1]?.title}}</h1>
-                            <p *ngIf="dashboardBanners[1]?.title.length>0" title="{{dashboardBanners[1]?.description}}">{{dashboardBanners[1]?.description}}</p>
+                            <p class="text-overflow"  *ngIf="dashboardBanners[1]?.description.length>0" title="{{dashboardBanners[1]?.description}}">{{dashboardBanners[1]?.description}}</p>
                             <p><a class="btn btn-large btn-primary" href="{{dashboardBanners[1]?.link}}" target="{{dashboardBanners[1]?.openLinkInNewTab ? '_blank' : '_self'}}">Learn More</a></p>
                         </div>
                     </div>
@@ -46,7 +48,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h1 class="carousel-headings" title="{{dashboardBanners[2]?.title}}">{{dashboardBanners[2]?.title}}</h1>
-                            <p *ngIf="dashboardBanners[2]?.title.length>0" title="{{dashboardBanners[2]?.description}}">{{dashboardBanners[2]?.description}}</p>
+                            <p class="text-overflow"  *ngIf="dashboardBanners[2]?.description.length>0" title="{{dashboardBanners[2]?.description}}">{{dashboardBanners[2]?.description}}</p>
                             <p><a class="btn btn-large btn-primary" href="{{dashboardBanners[2]?.link}}" target="{{dashboardBanners[2]?.openLinkInNewTab ? '_blank' : '_self'}}">Learn More</a></p>
                         </div>
                     </div>
@@ -60,7 +62,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h1 class="carousel-headings" title="{{dashboardBanners[3]?.title}}">{{dashboardBanners[3]?.title}}</h1>
-                            <p *ngIf="dashboardBanners[3]?.title.length>0" title="{{dashboardBanners[3]?.description}}">{{dashboardBanners[3]?.description}}</p>
+                            <p class="text-overflow"  *ngIf="dashboardBanners[3]?.description.length>0" title="{{dashboardBanners[3]?.description}}">{{dashboardBanners[3]?.description}}</p>
                             <p><a class="btn btn-large btn-primary" href="{{dashboardBanners[3]?.link}}" target="{{dashboardBanners[3]?.openLinkInNewTab ? '_blank' : '_self'}}">Learn More</a></p>
                         </div>
                     </div>
@@ -74,7 +76,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h1 class="carousel-headings" title="{{dashboardBanners[4]?.title}}">{{dashboardBanners[4]?.title}}</h1>
-                            <p *ngIf="dashboardBanners[4]?.title.length>0" title="{{dashboardBanners[4]?.description}}">{{dashboardBanners[4]?.description}}</p>
+                            <p class="text-overflow"  *ngIf="dashboardBanners[4]?.description.length>0" title="{{dashboardBanners[4]?.description}}">{{dashboardBanners[4]?.description}}</p>
                             <p><a class="btn btn-large btn-primary" href="{{dashboardBanners[4]?.link}}" target="{{dashboardBanners[4]?.openLinkInNewTab ? '_blank' : '_self'}}">Learn More</a></p>
                         </div>
                     </div>
@@ -88,7 +90,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h1 class="carousel-headings" title="{{dashboardBanners[5]?.title}}">{{dashboardBanners[5]?.title}}</h1>
-                            <p *ngIf="dashboardBanners[5]?.title.length>0" title="{{dashboardBanners[5]?.description}}">{{dashboardBanners[5]?.description}}</p>
+                            <p class="text-overflow"  *ngIf="dashboardBanners[5]?.description.length>0" title="{{dashboardBanners[5]?.description}}">{{dashboardBanners[5]?.description}}</p>
                             <p><a class="btn btn-large btn-primary" href="{{dashboardBanners[5]?.link}}" target="{{dashboardBanners[5]?.openLinkInNewTab ? '_blank' : '_self'}}">Learn More</a></p>
                         </div>
                     </div>
