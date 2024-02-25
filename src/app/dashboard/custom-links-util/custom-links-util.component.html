@@ -1,6 +1,7 @@
 <form [formGroup]="customLinkForm" autocomplete="off" (keydown.enter)="$event.preventDefault()">
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <fieldset>
+  <app-response-message [customResponse]="dashboardBannersInfoMessage" [showCloseIcon]="false" *ngIf="dashboardBannersInfoMessage.isVisible && isAddDashboardBannersDivHidden"></app-response-message>
+  <fieldset *ngIf="!isAddDashboardBannersDivHidden">
     <legend>{{headerText}}</legend>
       <div class="form-group col-md-12">
         <app-response-message [customResponse]="customResponse" [showCloseIcon]="false" *ngIf="customResponse.isVisible"></app-response-message>

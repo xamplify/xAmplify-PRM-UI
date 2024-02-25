@@ -14,12 +14,8 @@ import { max120CharactersLimitValidator,noWhiteSpaceOrMax20CharactersLimitValida
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CustomLinkType } from '../models/custom-link-type.enum';
 import { ErrorResponse } from 'app/util/models/error-response';
-import { ImageCroppedEvent } from 'app/common/image-cropper/interfaces/image-cropped-event.interface';
 import { UtilService } from 'app/core/services/util.service';
-
-
 declare var swal: any, $:any;
-
 @Component({
   selector: 'app-custom-links-util',
   templateUrl: './custom-links-util.component.html',
@@ -78,6 +74,8 @@ export class CustomLinksUtilComponent implements OnInit {
   formData: any = new FormData();
   isImageLoading = false;
   isAdd = true;
+  isAddDashboardBannersDivHidden = false;
+  dashboardBannersInfoMessage:CustomResponse = new CustomResponse();
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
@@ -177,6 +175,8 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customLinkForm.get('customLinkType').setValue(this.defaultType);
     this.clearImage();
     this.previouslySelectedImagePath = "";
+    this.isAddDashboardBannersDivHidden= false;
+    this.dashboardBannersInfoMessage = new CustomResponse();
     this.findLinks(this.pagination);
   }
 
@@ -197,6 +197,13 @@ export class CustomLinksUtilComponent implements OnInit {
             this.customLinkDtos = data.list;
           }
           pagination = this.pagerService.getPagedItems(pagination, this.customLinkDtos);
+          if(this.moduleType==this.properties.dashboardBanners){
+            this.isAddDashboardBannersDivHidden = pagination.totalRecords==5;
+            this.dashboardBannersInfoMessage = new CustomResponse('INFO',this.properties.maximumDashboardBannersLimitReached,true);
+          }else{
+            this.isAddDashboardBannersDivHidden = false;
+            this.dashboardBannersInfoMessage = new CustomResponse();
+          }
         }
         if(this.customLinkDto.id>0){
           this.buttonActionType = false;
@@ -260,6 +267,9 @@ export class CustomLinksUtilComponent implements OnInit {
       this.referenceService.goToTop();
       this.saving = false;
       this.ngxLoading = false;
+      if(message==this.properties.maximumDashboardBannersLimitReached){
+        this.callInitMethods();
+      }
     });
   }
 
