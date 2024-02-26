@@ -81,6 +81,7 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
   navigate(instantNavigation:any){
     let router = "";
     if(instantNavigation.type=="Asset"){
+      localStorage.setItem('assetName', instantNavigation.title);
       if(this.isPartnerLoggedInThroughVanityUrl){
         router = "/home/dam/sharedp/view/"+instantNavigation.damPartnerId+"/l";
       }else{
