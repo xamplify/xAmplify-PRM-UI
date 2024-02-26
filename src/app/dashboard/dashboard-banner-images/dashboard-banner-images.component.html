@@ -28,9 +28,6 @@
         <div class="item" *ngIf="dashboardBanners?.length>4">
             <ng-template [ngTemplateOutlet]="dashboardBannerImageTemplate" [ngTemplateOutletContext]="{dashboardBanner:dashboardBanners[4]}"></ng-template>
         </div>
-        <div class="item" *ngIf="dashboardBanners?.length==5">
-            <ng-template [ngTemplateOutlet]="dashboardBannerImageTemplate" [ngTemplateOutletContext]="{dashboardBanner:dashboardBanners[5]}"></ng-template>
-        </div>
     </div>
     <ng-container *ngIf="dashboardBanners?.length>1">
     <a class="left carousel-control" href="#myCarousel" data-slide="prev">
