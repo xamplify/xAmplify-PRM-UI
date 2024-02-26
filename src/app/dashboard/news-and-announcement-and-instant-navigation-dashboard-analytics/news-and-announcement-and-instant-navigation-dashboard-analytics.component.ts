@@ -17,8 +17,8 @@ import { DashboardService } from '../dashboard.service';
 })
 export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent implements OnInit {
   isVanityUrlEnabled = false;
-  isNewsAndAnnouncementApiLoading = false;
-  isInstantNavigationLinksApiLoading = false;
+  isNewsAndAnnouncementApiLoading = true;
+  isInstantNavigationLinksApiLoading = true;
   pagination:Pagination = new Pagination();
   customResponse:CustomResponse = new CustomResponse();
   properties:Properties = new Properties();
@@ -41,6 +41,7 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
 
 
   private findInstantNavigationLinks() {
+    this.isInstantNavigationLinksApiLoading = true;
     this.vanityLoginDto.userId = this.authenticationService.getUserId();
     let companyProfileName = this.authenticationService.companyProfileName;
     if (companyProfileName !== undefined && companyProfileName !== "") {
@@ -49,14 +50,13 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
     } else {
       this.vanityLoginDto.vanityUrlFilter = false;
     }
-    this.isInstantNavigationLinksApiLoading = true;
     this.dashboardService.findInstantNavigationLinks(this.vanityLoginDto).subscribe(
       response => {
         this.instantNavigationLinks = response.data;
-        this.isInstantNavigationLinksApiLoading = false;
         let map = response.map;
         this.companyId = map['companyId'];
-        this.isPartnerLoggedInThroughVanityUrl = map['isPartnerLoggedInThroughVanityUrl']
+        this.isPartnerLoggedInThroughVanityUrl = map['isPartnerLoggedInThroughVanityUrl'];
+        this.isInstantNavigationLinksApiLoading = false;
       }, error => {
         this.isInstantNavigationLinksApiLoading = false;
         this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
