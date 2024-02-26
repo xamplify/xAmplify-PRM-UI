@@ -154,6 +154,7 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   callInitMethods(){
+    this.clearImage();
     if(this.moduleType==this.properties.dashboardButtons){
       this.headerText = "Add Button";
       this.listHeaderText = "Your Dashboard Button's List";
@@ -173,7 +174,6 @@ export class CustomLinksUtilComponent implements OnInit {
     this.setDefaultValuesForForm();
     this.buildCustomLinkForm();
     this.customLinkForm.get('customLinkType').setValue(this.defaultType);
-    this.clearImage();
     this.previouslySelectedImagePath = "";
     this.isAddDashboardBannersDivHidden= false;
     this.dashboardBannersInfoMessage = new CustomResponse();
