@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 
 @Component({
@@ -18,8 +19,9 @@ export class ConfirmUnpublishTracksOrPlaybooksModelPopupComponent implements OnI
   @Input()
   isPublishing:boolean;
   selectedOption : boolean;
+  @Input() type:string;
   
-  constructor(public referenceService:ReferenceService) { }
+  constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
     this.referenceService.openModalPopup("unpublished-modal");

@@ -40,6 +40,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
   selectedTrackOrPlayBookId:number;
   isPublishing:boolean;
   isOptionClicked = false;
+  type = "";
 
   constructor(public referenceService: ReferenceService,  public tracksPlayBookUtilService:TracksPlayBookUtilService, public authenticationService: AuthenticationService,public xtremandLogger:XtremandLogger,public pagerService:PagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -54,11 +55,13 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared tracks' : 'Click here to manage tracks'
       this.addButtonText = "Add Tracks";
       this.titleHeader = "Tracks";
+      this.type = "track";
     }else{
       this.headerTitle = this.isPartnerView ? 'Shared Play Books':'Play Books';
       this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared play books' : 'Click here to manage play books'
       this.addButtonText = "Add Play Books";
       this.titleHeader = "Play Books";
+      this.type = "play book";
     }
     this.listLearningTracks(this.pagination);
   }
@@ -246,6 +249,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
         }
         else{
           this.isOptionClicked = true;
+
         }
         } catch (error) {
           this.xtremandLogger.error(this.referenceService.errorPrepender + " ChangePublish():" + error);
