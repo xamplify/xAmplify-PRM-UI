@@ -306,6 +306,7 @@ export class CustomLinksUtilComponent implements OnInit {
   edit(id: number) {
     this.isImageLoading = true;
     this.isAdd = false;
+    this.isAddDashboardBannersDivHidden = false;
     this.customResponse = new CustomResponse();
     this.previouslySelectedImagePath = "";
     this.clearImage();
@@ -445,6 +446,13 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customLinkForm.get('customLinkType').setValue(this.defaultType);
     this.previouslySelectedImagePath = "";
     this.clearImage();
+    if(this.moduleType==this.properties.dashboardBanners){
+      this.isAddDashboardBannersDivHidden = this.customLinkDtos.length==5;
+      this.dashboardBannersInfoMessage = new CustomResponse('INFO',this.properties.maximumDashboardBannersLimitReached,true);
+    }else{
+      this.isAddDashboardBannersDivHidden = false;
+      this.dashboardBannersInfoMessage = new CustomResponse();
+    }
   }
 
   showAlert(item: any) {
