@@ -931,13 +931,13 @@
                                           <div class="clickicons"></div>
                                        </a>
                                        <ng-container
-                                          *ngIf="((contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.moduleName!='SHARE LEADS'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true) && !authenticationService?.module?.deletedPartner">
+                                          *ngIf="(((contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.moduleName!='SHARE LEADS'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true) || contactList.isDefaultContactList == true) && !authenticationService?.module?.deletedPartner">
                                           <a class="Iconhover custom-grid-icon" data-toggle="tooltip"
                                              data-placement="top"
                                              title="{{actionsDescription.contact_list_synchronize}}"
-                                             [class.disabled]="(!contactList.emailValidationInd) || ((contactList.socialNetwork=='GOOGLE' || contactList.socialNetwork=='SALESFORCE' || contactList.socialNetwork=='ZOHO' )&& (loggedInUserId != contactList.uploadedUserId))"
-                                             *ngIf="hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
-                                             (click)="synchronizeContactList(contactList)" data-rel="fancybox-button"
+                                             [class.disabled]="(masterContactListSync && contactList.isDefaultContactList) || (!contactList.emailValidationInd) || ((contactList.socialNetwork=='GOOGLE' || contactList.socialNetwork=='SALESFORCE' || contactList.socialNetwork=='ZOHO' )&& (loggedInUserId != contactList.uploadedUserId))"
+                                             *ngIf=" contactList.isDefaultContactList || hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
+                                             (click)="!contactList.isDefaultContactList?synchronizeContactList(contactList):confirmsync()" data-rel="fancybox-button"
                                              style="left: 18%; top: -20px;">
                                              <i class="fa fa-refresh" aria-hidden="true"></i>
                                              <div class="clickicons"></div>
@@ -949,7 +949,7 @@
                                           <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList"
                                              *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
                                                 || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
-                                                   && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList && !contactList.companyList)"
+                                                   && !contactList.defaultPartnerList &&  !contactList.isDefaultContactList  && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList && !contactList.companyList)"
                                              (click)="showAlert(contactList.id)" data-toggle="tooltip"
                                              data-placement="top" class="delete custom-icon"
                                              title="{{actionsDescription.contact_list_delete}}"
