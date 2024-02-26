@@ -4,7 +4,7 @@
         <div class="portlet light h-240" *ngIf="!isNewsAndAnnouncementApiLoading">
             <div class="portlet-title">
                 <div class="caption">
-                    <span class="caption-subject">{{properties?.newsAndAnnouncements}}</span>
+                    <h4 class="caption-subject header-css">{{properties?.newsAndAnnouncements}}</h4>
                 </div>
             </div>
             <div class="portlet-body pt0">
@@ -29,15 +29,20 @@
 
 
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl-7 pd_btm5">
-        <app-modal-popup-loader [height]="220" *ngIf="isNewsAndAnnouncementApiLoading"></app-modal-popup-loader>
-        <div class="portlet light h-240" *ngIf="!isNewsAndAnnouncementApiLoading">
+        <app-modal-popup-loader [height]="220" *ngIf="isInstantNavigationLinksApiLoading"></app-modal-popup-loader>
+        <div class="portlet light h-240" *ngIf="!isInstantNavigationLinksApiLoading">
             <div class="portlet-title">
                 <div class="caption">
-                    <span class="caption-subject">Instant Navigation</span>
+                    <i class="fa fa-bar-chart" aria-hidden="false"></i>
+                    <h4 class="caption-subject header-css">{{properties?.instantNavigation}}</h4>
                 </div>
             </div>
             <div class="portlet-body pt0">
                 <div class="inline-flex border-end" *ngFor="let instantNavigationLink of instantNavigationLinks">
+                    <div class="col w430 text-overflow">
+                        <h5 class="line-height m0 text-overflow" title="{{instantNavigationLink?.title}}">
+                            {{instantNavigationLink?.title}}</h5>
+                    </div>
                     <div class="col">
                         <div class="instant-links-type">
                             <span *ngIf="instantNavigationLink?.type=='Asset'"
@@ -47,10 +52,6 @@
                             <span *ngIf="instantNavigationLink?.type=='Play Book'"
                                 class="view-banner published mr5">{{instantNavigationLink?.type}}</span>
                         </div>
-                    </div>
-                    <div class="col w430 text-overflow">
-                        <h5 class="line-height m0 text-overflow" title="{{instantNavigationLink?.title}}">
-                            {{instantNavigationLink?.title}}</h5>
                     </div>
                     <div class="col mt10">
                         <a (click)="navigate(instantNavigationLink)"><i class="fa fa-link"></i></a>
