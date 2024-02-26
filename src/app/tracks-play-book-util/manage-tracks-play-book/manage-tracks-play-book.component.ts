@@ -69,7 +69,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     this.moduleId = this.tracksModule ? this.roles.learningTrackId :this.roles.playbookId;
     this.isPartnerView = this.router.url.indexOf('/shared') > -1;
     this.titleHeader = this.tracksModule ? "Tracks" : "Play Books";
-    this.trackOrPlayBookText = this.tracksModule ? "Track" : "Play Book";
+    this.trackOrPlayBookText = this.tracksModule ? "track" : "play book";
     this.suffixHeader = this.isPartnerView ? 'Shared ':'Manage ';
     if(this.folderListViewCategoryId!=undefined){
 			this.categoryId = this.folderListViewCategoryId;
