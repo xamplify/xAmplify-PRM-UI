@@ -76,7 +76,7 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
     private vanityServiceURL:VanityURLService) {
     try{
       if(this.authenticationService.isLocalHost() || this.authenticationService.isQADomain()){
-        this.connectToWebSocket();
+       // this.connectToWebSocket();
       }
     this.isLoggedInFromAdminSection = this.utilService.isLoggedInFromAdminPortal();
     this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
