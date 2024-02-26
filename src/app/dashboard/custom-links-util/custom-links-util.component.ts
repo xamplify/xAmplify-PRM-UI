@@ -15,6 +15,7 @@ import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CustomLinkType } from '../models/custom-link-type.enum';
 import { ErrorResponse } from 'app/util/models/error-response';
 import { UtilService } from 'app/core/services/util.service';
+import { ThrowStmt } from '@angular/compiler';
 declare var swal: any, $:any;
 @Component({
   selector: 'app-custom-links-util',
@@ -154,6 +155,10 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   callInitMethods(){
+    this.ngxLoading = false;
+    this.isAdd = true;
+    this.saving = false;
+    this.previouslySelectedImagePath = "";
     this.clearImage();
     if(this.moduleType==this.properties.dashboardButtons){
       this.headerText = "Add Button";
@@ -231,12 +236,7 @@ export class CustomLinksUtilComponent implements OnInit {
           message = result.message;
         }
         this.customResponse = new CustomResponse('SUCCESS',message, true);
-        this.resetFormDataAndDtoProperties();
-        this.setDefaultValuesForForm();
-        this.buildCustomLinkForm();
-        this.clearImage();
-        this.customLinkForm.get('customLinkType').setValue(this.defaultType);
-        this.findLinks(this.pagination);
+        this.callInitMethods();
       } else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
       }else if(result.statusCode==400){
@@ -250,6 +250,11 @@ export class CustomLinksUtilComponent implements OnInit {
              self.customResponse = new CustomResponse('ERROR', "Title Already Exists", true);
              $("#customLinkTitle").removeClass('ng-valid');
              $("#customLinkTitle").addClass('ng-invalid');
+             if(self.properties.dashboardBanners==self.moduleType){
+              if(self.formData!=undefined){
+                self.formData.delete('customLinkDto');
+              }
+             }
           }
         });
       }
@@ -266,6 +271,7 @@ export class CustomLinksUtilComponent implements OnInit {
       this.customResponse = new CustomResponse('ERROR', message, true);
       this.referenceService.goToTop();
       this.saving = false;
+      this.formData.delete('customLinkDto');
       this.ngxLoading = false;
       if(message==this.properties.maximumDashboardBannersLimitReached){
         this.callInitMethods();
@@ -359,11 +365,7 @@ export class CustomLinksUtilComponent implements OnInit {
           let statusCode = response.statusCode;
           if(statusCode==200){
             this.customResponse = new CustomResponse('SUCCESS',response.message,true);
-            this.resetFormDataAndDtoProperties();
-            this.findLinks(this.pagination);
-            this.ngxLoading = false;
-            this.saving = false;
-            this.buttonActionType = false;
+            this.callInitMethods();
           }else{
             this.removeTitleErrorClass();
             let data = response.data;

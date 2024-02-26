@@ -330,7 +330,7 @@ export class Properties {
 	domainWhitelistingUrlDescription = "Please share the below URL with users who need to sign up into the xAmplify as your team members.";
 	noDataFound = "No Data Found";
 	maximumDashboardBannersLimitReached = "You have reached the limit of displaying up to 5 dashboard banners. You cannot add any more banners.";
-
+	instantNavigation = "Instant Navigation";
 
 
 
