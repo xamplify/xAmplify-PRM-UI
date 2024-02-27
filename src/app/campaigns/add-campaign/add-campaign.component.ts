@@ -1118,6 +1118,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         this.setRecipientsHeaderText();
         this.campaignRecipientsPagination.pageIndex = 1;
         this.campaignRecipientsPagination.maxResults = 4;
+        this.campaignRecipientsPagination.filterBy = 'ALL';
         this.clearSelectedContactList();
         if(this.isPageCampaign){
             this.setCoBrandingLogoForPageCampaign();

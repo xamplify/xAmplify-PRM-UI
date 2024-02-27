@@ -915,6 +915,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
         this.contactListsPagination.channelCampaign = this.eventCampaign.channelCampaign;
         this.contactListsPagination.pageIndex = 1;
+        this.contactListsPagination.filterBy = 'ALL';
         this.showContactType = true;
         if (!this.eventCampaign.channelCampaign) {
             this.eventCampaign.enableCoBrandingLogo = false;

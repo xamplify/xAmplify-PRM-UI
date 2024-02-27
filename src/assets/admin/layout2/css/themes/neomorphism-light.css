@@ -4091,3 +4091,7 @@ table.table.table-bordered {
 .pd_btm5{
   padding-bottom: 5px !important;
 }
+/**** Sudha Sri(27-2-2024)****/
+.highlightRow, .highlightRow:hover{
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+}

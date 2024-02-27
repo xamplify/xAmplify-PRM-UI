@@ -2,7 +2,7 @@
 <div class="page-bar page-bar-shadow" style="padding: 1em;" *ngIf="isVanityUrlEnabled">
   <app-modal-popup-loader [height]="150" *ngIf="isDataLoading"></app-modal-popup-loader>
   <app-response-message [customResponse]="customResponse" [showCloseIcon]="false" *ngIf="customResponse.isVisible"></app-response-message>
-  <div id="myCarousel" class="carousel slide" data-ride="carousel" *ngIf="!isDataLoading && !isDataError && dashboardBanners?.length>0">
+  <div id="myCarousel" class="carousel slide" data-interval="5000"  data-ride="carousel" *ngIf="!isDataLoading && !isDataError && dashboardBanners?.length>0">
       <!-- Menu -->
       <ol class="carousel-indicators" *ngIf="dashboardBanners?.length>1">
           <li data-target="#myCarousel"  data-slide-to="0" class="active"></li>
