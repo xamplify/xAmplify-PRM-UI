@@ -888,7 +888,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
       }else{
         if(!this.isAdd){
             let extension = this.referenceService.getFileExtension(uploadedCloudAssetName);
-            if (extension == this.damUploadPostDto.assetType) {
+            if (extension.toLocaleLowerCase() == this.damUploadPostDto.assetType.toLocaleLowerCase()) {
                 this.setFormDataAndCloudContentFileProperties(uploadedCloudAssetName, downloadLink);
             } else {
                 this.uploadedCloudAssetName = "";

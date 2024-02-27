@@ -32,4 +32,5 @@ export class Lead {
     leadApprovalOrRejection:any;
     approvalStatusComment:any;
     leadComment:any;
+    selfLead:boolean;
 }

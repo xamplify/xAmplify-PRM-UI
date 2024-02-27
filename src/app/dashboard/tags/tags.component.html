@@ -82,7 +82,7 @@
                                 <div class="clickicons"></div>
                             </a>
                             <a class="custom-icon" id="template-delete"
-                                [ngClass]="{'disable-click' : (loggedInUserId !== tag.createdBy)}"
+                                [ngClass]="{'disable-click' : !authenticationService?.module?.isAnyAdminOrSupervisor}"
                                 (click)="confirmDeleteTag(tag)" data-toggle="tooltip" data-placement="top"
                                 title="Delete">
                                 <i class="fa fa-trash-o trashIconCustomization"></i>

@@ -16,11 +16,12 @@ declare var swal, $, videojs: any;
 @Component({
   selector: 'app-select-lead',
   templateUrl: './select-lead.component.html',
-  styleUrls: ['./select-lead.component.css']
+  styleUrls: ['./select-lead.component.css'],
+  providers:[SortOption]
 })
 export class SelectLeadComponent implements OnInit {  
   @Input() public dealToLead: any;
-  @Input() public createdForCompanyId:any;
+ // @Input() public createdForCompanyId:any;
   @Output() notifyClose = new EventEmitter();
   @Output() notifyLeadSelected = new EventEmitter();
 
@@ -31,7 +32,6 @@ export class SelectLeadComponent implements OnInit {
   showLeadForm: boolean = false;  
   leadId = 0;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
-  leadApprovalStatus:boolean = false;
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     private leadsService: LeadsService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService) {
@@ -87,21 +87,19 @@ export class SelectLeadComponent implements OnInit {
     pagination.userId = this.loggedInUserId;    
     pagination.ignoreSelfLeadsOrDeals = false;
     pagination.filterKey = "not-converted";
-    pagination.companyId= this.createdForCompanyId;
     if (this.vanityLoginDto.vanityUrlFilter) {
       pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName      
     }
-    if (this.dealToLead.dealActionType === 'edit') {
-      pagination.vendorCompanyId = this.dealToLead.createdForCompanyId;
-    }
+    // if (this.dealToLead.dealActionType === 'edit') {
+    //   pagination.vendorCompanyId = this.dealToLead.createdForCompanyId;
+    // }
     this.leadsService.listLeadsForPartner(pagination)
       .subscribe(
         response => {
           this.referenceService.loading(this.httpRequestLoader, false);          
           this.sortOption.totalRecords = response.totalRecords;
           this.pagination.totalRecords = response.totalRecords;
-          this.leadApprovalStatus = response.leadApprovalStatus;
           this.pagination = this.pagerService.getPagedItems(this.pagination, response.data);
         },
         error => {

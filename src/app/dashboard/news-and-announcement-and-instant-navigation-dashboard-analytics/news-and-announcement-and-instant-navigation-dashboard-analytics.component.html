@@ -1,0 +1,64 @@
+<div class="row" *ngIf="isVanityUrlEnabled">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pr-7 pd_btm5">
+        <app-modal-popup-loader [height]="220" *ngIf="isNewsAndAnnouncementApiLoading"></app-modal-popup-loader>
+        <div class="portlet light h-240" *ngIf="!isNewsAndAnnouncementApiLoading">
+            <div class="portlet-title">
+                <div class="caption">
+                    <h4 class="caption-subject header-css">{{properties?.newsAndAnnouncements}}</h4>
+                </div>
+            </div>
+            <div class="portlet-body pt0">
+                <div class="inline-flex border-end" *ngFor="let item of customLinkDtos">
+                    <div class="col">
+                        <div class="user-profiles">
+                            <i class="fa {{item?.icon}}" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="col w430 text-overflow">
+                        <h5 class="line-height m0 text-overflow" title="{{item?.title}}">{{item?.title}}</h5>
+                    </div>
+                    <div class="col">
+                        <a href="{{item?.link}}" target="{{item?.openLinkInNewTab ? '_blank' : '_self'}}"
+                            class="read-text pull-right">Read More</a>
+                    </div>
+                </div>
+                <div class="alert alert-info text-center" *ngIf="customLinkDtos?.length==0">No Data Found</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl-7 pd_btm5">
+        <app-modal-popup-loader [height]="220" *ngIf="isInstantNavigationLinksApiLoading"></app-modal-popup-loader>
+        <div class="portlet light h-240" *ngIf="!isInstantNavigationLinksApiLoading">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-link" aria-hidden="false"></i>
+                    <h4 class="caption-subject header-css">{{properties?.instantNavigation}}</h4>
+                </div>
+            </div>
+            <div class="portlet-body pt0">
+                <div class="inline-flex border-end" *ngFor="let instantNavigationLink of instantNavigationLinks">
+                    <div class="col w430 text-overflow">
+                        <h5 class="line-height m0 text-overflow" title="{{instantNavigationLink?.title}}">
+                            {{instantNavigationLink?.title}}</h5>
+                    </div>
+                    <div class="col">
+                        <div class="instant-links-type">
+                            <span *ngIf="instantNavigationLink?.type=='Asset'"
+                                class="view-banner banner-top mr5">{{instantNavigationLink?.type}}</span>
+                            <span *ngIf="instantNavigationLink?.type=='Track'"
+                                class="view-banner orange-lable-cu1 mr5">{{instantNavigationLink?.type}}</span>
+                            <span *ngIf="instantNavigationLink?.type=='Play Book'"
+                                class="view-banner published mr5">{{instantNavigationLink?.type}}</span>
+                        </div>
+                    </div>
+                    <div class="col mt10">
+                        <a (click)="navigate(instantNavigationLink)"><i class="fa fa-link"></i></a>
+                    </div>
+                </div>
+                <div class="alert alert-info text-center" *ngIf="instantNavigationLinks?.length==0">No Data Found</div>
+            </div>
+        </div>
+    </div>
+</div>

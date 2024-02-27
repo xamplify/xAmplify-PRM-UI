@@ -2499,6 +2499,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
 							this.referenceService.setTeamMemberFilterForPagination(this.downloadAssociatedPagination, this.selectedFilterIndex);
 						}
+						this.downloadAssociatedPagination.searchKey = this.searchKey;
 						this.contactService.downloadContactList(this.downloadAssociatedPagination)
 							.subscribe(
 								data => this.downloadFile(data),
@@ -4761,5 +4762,23 @@ unsubscribeUser(selectedUserForUnsubscribed : any){
 	this.shareUnPublishedComponent.openPopUp(this.partnerListId, contact, "Partner",contact.name);
  }
 
+ /***** XNFR-471 *****/
+ downloadPartnerListCsv(pagination: Pagination) {
+	this.contactService.downloadPartnerListCsv(this.partnerListId, this.loggedInUserId, pagination)
+	.subscribe(
+		data =>{
+			if(data.statusCode == 200){
+				this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+			}
+			if(data.statusCode == 401){
+				this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+			}
+		},(error: any) => {
+			this.xtremandLogger.error(error);
+			this.xtremandLogger.errorPage(error);
+		},
+		() => this.xtremandLogger.info("download partner List completed")
+	);
+ }
 
 }

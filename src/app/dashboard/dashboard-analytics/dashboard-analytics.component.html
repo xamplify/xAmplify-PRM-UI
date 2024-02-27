@@ -62,14 +62,16 @@
                     </div>
                     <app-team-member-filter-option
                         *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
-                && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner" [filterIcon]="true"
+                        && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner" [filterIcon]="true"
                         (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
                     <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
                 </div>
             </div>
         </div>
-        <ng-container
-            *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
+        <ng-container *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
+            <!--XNFR-458--->
+            <app-dashboard-banner-images></app-dashboard-banner-images>
+            <!--XNFR-458--->
             <!------------Modules Count Anlatyics Boxes---------------------->
             <div class="page-bar page-bar-shadow" style="padding: 1em 1em 0 1em;">
                 <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
@@ -79,6 +81,9 @@
                     (notifyLeadSuccess)="showSubmitLeadSuccess()" [applyFilter]="applyFilter"></app-module-analytics>
             </div>
 
+            <!---XNFR-459--->
+            <app-news-and-announcement-and-instant-navigation-dashboard-analytics></app-news-and-announcement-and-instant-navigation-dashboard-analytics>
+            <!---XNFR-459--->
             <!------------Dashbaord Button Carusel---------------------->
             <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
             <!--Opportunity Stats-->

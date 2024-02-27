@@ -55,6 +55,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() isDefaultPartnerList: boolean;
 	@Input() isDefaultContactList: boolean;
 	@Input() isSynchronizationList: boolean;
+	@Input() isPartnerUserList: boolean;
+	@Input() masterContactListSync: boolean;
 	@Input('value') value: number;
 	@Input() isFormList: boolean;
 	@Input() companyName: any;
@@ -151,6 +153,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	showInvalidMaills = false;
 	downloadDataList = [];
 	isEmailExist: boolean = false;
+	contactsCompanyListSync : boolean = false;
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
 		{ 'name': 'Email (A-Z)', 'value': 'emailId-ASC' },
@@ -735,7 +738,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						//this.allUsers = this.contactsByType.allContactsCount;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList,this.isPartnerUserList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
 						$("tr.new_row").each(function () {
 							$(this).remove();
 						});
@@ -966,7 +969,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList,this.isPartnerUserList, this.isDefaultContactList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
 						$("tr.new_row").each(function () {
 							$(this).remove();
 						});
@@ -1665,7 +1668,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList, this.isSynchronizationList,this.isPartnerUserList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
 						$("tr.new_row").each(function () {
 							$(this).remove();
 
@@ -1991,7 +1994,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					});
 					this.xtremandLogger.log("paginationUserIDs" + contactIds);
 					this.xtremandLogger.log("Selected UserIDs" + this.selectedContactListIds);
-					if (items.length == pagination.totalRecords || items.length == this.pagination.pagedItems.length) {
+					if ((items.length == pagination.totalRecords || items.length == this.pagination.pagedItems.length) && items.length > 0) {
 						this.isHeaderCheckBoxChecked = true;
 					} else {
 						this.isHeaderCheckBoxChecked = false;
@@ -2547,6 +2550,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.copyFromClipboard();
 			this.isShowUsers = false;
 		}
+		 this.selectedAddContactsOption = 1;
 	}
 
 	resetResponse() {
@@ -3384,6 +3388,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
 				this.pagination.partnerTeamMemberGroupFilter = true;
 			}
+			if(this.router.url.includes('home/contacts')){
+				this.checkSyncStatus();
+			}	
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();
 			this.selectedContactListName = this.contactListName;
@@ -3870,5 +3877,46 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
+
+	
+syncContactsInMasterContactList(){
+	this.masterContactListSync= true;
+	this.manageContact.syncContactsInMasterContactList();
+	
+}
+
+
+confirmsync(){
+	let self = this;
+	swal({
+		title: 'Are you sure?',
+		text: 'Clicking "Sync" will update this list by adding all the existing contacts',
+		type: 'success',
+		showCancelButton: true,
+		swalConfirmButtonColor: '#54a7e9',
+		swalCancelButtonColor: '#999',
+		confirmButtonText: 'Sync'
+
+	}).then(function () {
+		self.syncContactsInMasterContactList();
+	}, function (dismiss: any) {
+		console.log('you clicked on option' + dismiss);
+	});
+
+}
+
+checkSyncStatus(){
+	this.contactService.checkSyncStatus(this.loggedInUserId).subscribe(
+		response => {
+			if (response.statusCode == 200) {
+				this.masterContactListSync= response.data.masterContactListSync;
+               this.contactsCompanyListSync = response.data.contactsCompanyListSync;
+			}
+		},
+		error => {
+			this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+		}
+	);
+  }
 
 }

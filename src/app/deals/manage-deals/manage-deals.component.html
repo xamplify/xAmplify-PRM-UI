@@ -152,7 +152,7 @@
                       </ng-container>
                       <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" style="margin-right: 4px;"
                         data-toggle="tooltip" title="Download" [class.disabled]="dealsSortOption.totalRecords == 0"
-                        *ngIf="listView" (click)="downloadDeals()">
+                        *ngIf="listView" (click)="downloadDeals(dealsPagination)">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
@@ -363,10 +363,10 @@
                                 <a class="custom-icon" data-rel="fancybox-button" (click)="viewDeal(deal)"
                                   data-toggle="tooltip" data-placement="bottom" title="View Deal" id="deal">
                                   <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
-                                  <span *ngIf="deal.unReadPropertyChatCount > 0" class="badge badge-default"
-                                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
                                   <div class="clickicons"></div>
                                 </a>
+                                <span *ngIf="deal.unReadPropertyChatCount > 0" class="badge badge-default notify-badge"
+                                  style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
                                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                   <a class="custom-icon" data-rel="fancybox-button"
                                     *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
@@ -389,10 +389,10 @@
                                   title="Comments/History">
                                   <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
                                   </i>
-                                  <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
-                                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
                                   <div class="clickicons"></div>
                                 </a>
+                                <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default notify-badge"
+                                  style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
                               </div>
                             </td>
                           </tr>
@@ -469,7 +469,7 @@
                               <span align="right">
                                 <strong translate>Launched On</strong>
                               </span>
-                              <span align="right" title="Upload Date">
+                              <span align="right" data-toggle="tooltip" data-placement="bottom" title="Launch Date">
                                 <strong>
                                   <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchTimeInString">
                                   </app-timestamp>

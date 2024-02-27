@@ -183,6 +183,11 @@
                                        </button>
                                     </div>
                                     <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space"
+                                       data-toggle="tooltip" title="Click here to export excel" (click)="downloadCampaignsData(pagination)"
+                                       *ngIf="downloadCampaigns">
+                                       <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
+                                    </span>
+                                    <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space"
                                        data-toggle="tooltip" title="Filter" (click)="toggleFilterOption()">
                                        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                                     </span>
@@ -433,7 +438,7 @@
                                              <span *ngIf="campaign.scheduleType=='SAVE'">
                                                 <app-timestamp *ngIf="!refService.isSafariBrowser()"
                                                    [isOnlyDate]="false" [showInLine]="true"
-                                                   [dateAndTime]="campaign.displayTime">
+                                                   [dateAndTime]="campaign.createdDate">
                                                 </app-timestamp>
                                                 <span
                                                    *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
@@ -1224,7 +1229,7 @@
                                           </span>
                                           <span title="Launch Time">
                                              <ng-container
-                                                *ngIf="campaign.scheduleType!='SCHEDULE' || campaign.launched">
+                                                *ngIf="campaign.launched">
                                                 <span *ngIf="!refService.isSafariBrowser()">{{campaign.displayTime
                                                    |date:'mediumDate'}},{{campaign.displayTime
                                                    |date:'shortTime'}}</span>
@@ -1236,6 +1241,11 @@
                                                 <span>{{campaign.campaignScheduleDateInString}}</span>
                                                 <br>
                                                 <span>{{campaign.campaignScheduleTimeInString}}</span>
+                                             </ng-container>
+                                             <ng-container *ngIf="campaign.scheduleType!='SCHEDULE' && !campaign.launched">
+                                                <span *ngIf="!refService.isSafariBrowser()">{{campaign.createdDate
+                                                   |date:'mediumDate'}},{{campaign.createdDate
+                                                   |date:'shortTime'}}</span>
                                              </ng-container>
                                           </span>
                                        </h6>

@@ -121,7 +121,7 @@
                                         [ngClass]="{'active-tab': activeTabName == 'tags'}">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'tags'}"
                                             (click)="activateTab('tags');clearCustomResponse()" translate>
-                                            {{properties.tags | translate}} </a>
+                                            {{properties.tags}} </a>
                                     </li>
 
                                     <!-- Customize left menu -->
@@ -235,12 +235,25 @@
                                     </li>
                                     <!--------------Admin----------------------->
                                     <div class="my-profile-header-text">Admin</div>
-                                    <!--Dashboard Buttons-->
-                                    <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}"
-                                        *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dbButtonSettings'}"
-                                            (click)="activateTab('dbButtonSettings');clearCustomResponse()">{{properties.dashboardButtons}}</a>
-                                    </li>
+                                    <ng-container  *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService.module.loggedInThroughOwnVanityUrl">
+                                        <!--Dashboard Buttons-->
+                                        <li [ngClass]="{'active': activeTabName == properties?.dashboardButtons}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName ==  properties?.dashboardButtons}"
+                                                (click)="activateTab(properties?.dashboardButtons);clearCustomResponse()">{{properties.dashboardButtons}}</a>
+                                        </li>
+                                        <!--XNFR-459-->
+                                        <!--News & Announcements -->
+                                        <li [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.newsAndAnnouncements}"
+                                                (click)="activateTab(properties?.newsAndAnnouncements);clearCustomResponse()">{{properties?.newsAndAnnouncements}}</a>
+                                        </li>
+                                        <!--Dashboard Banners-->
+                                        <li [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.dashboardBanners}"
+                                                (click)="activateTab(properties?.dashboardBanners);clearCustomResponse()">{{properties?.dashboardBanners}}</a>
+                                        </li>
+                                    </ng-container>
+                                    <!--XNFR-459-->
                                     <!--Your Templates-->
                                     <li *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor"
                                         [ngClass]="{'active': activeTabName == 'templates'}">
@@ -248,7 +261,6 @@
                                             (click)="activateTab('templates');clearCustomResponse()" translate>
                                             Your Templates </a>
                                     </li>
-
                                     <!--Unsubscribe Reasons-->
                                     <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
                                         [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}">
@@ -1857,9 +1869,9 @@
                                         <!-- END GDPR SETTINGS TAB -->
 
                                         <!-- Dashboard SETTINGS TAB -->
-                                        <div class="tab-pane hidden-xs"
-                                            [ngClass]="{'active': activeTabName == 'dbButtonSettings'}">
-                                            <app-dashboard-buttons> </app-dashboard-buttons>
+                                        <div class="tab-pane hidden-xs" *ngIf="isDashboardButtonsOptionClicked"
+                                            [ngClass]="{'active': activeTabName == properties?.dashboardButtons}">
+                                            <app-custom-links-util [moduleType]="properties?.dashboardButtons"></app-custom-links-util>
                                         </div>
 
                                         <!-- Customize Left Menu -->
@@ -1890,11 +1902,8 @@
                                                     <div class="row">
                                                         <div class="col-xs-12 col-sm-12 col-lg-12">
                                                             <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
-                                                                <button class="button_blue bgcolor-unset pd_lft2"
-                                                                    (click)="addCategory()" translate><span
-                                                                        class="btn btn-primary transition txt_pd-top3">Create
-                                                                        a
-                                                                        Folder</span></button>
+                                                                <button class="button_blue bgcolor-unset pd_lft2" (click)="addCategory()">
+                                                                    <span class="btn btn-primary transition txt_pd-top3">Create a Folder</span></button>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                                                                 <div class="page-toolbar">
@@ -2198,32 +2207,32 @@
                                             *ngIf="activeTabName == 'customTheme'"
                                             (closeEvent)="showThemeAlert($event)">
                                         </app-custom-skin>
-                                        <app-tags class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
-                                        <app-spf class="tab-pane" *ngIf="showSpfConfigurationDiv"
-                                            [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
-                                        <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
-                                        <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
+                                        <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
+                                        <app-spf class="tab-pane" *ngIf="showSpfConfigurationDiv" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
+                                        <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
+                                        <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane" [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
                                         <!--Notify Partners-->
-                                        <app-notify-partners
-                                            *ngIf="showNotifyPartnersOption && authenticationService?.module.notifyPartners"
-                                            class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'notifyPartners'}"></app-notify-partners>
+                                        <app-notify-partners *ngIf="showNotifyPartnersOption && authenticationService?.module.notifyPartners"
+                                            class="tab-pane" [ngClass]="{'active': activeTabName == 'notifyPartners'}"></app-notify-partners>
                                         <!--XNFR-326 Email Notification Settings-->
-                                        <app-email-notification-settings
-                                            *ngIf="showEmailNotificationSettingsOption && authenticationService?.module?.emailNotificationSettings"
-                                            class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
+                                        <app-email-notification-settings *ngIf="showEmailNotificationSettingsOption && authenticationService?.module?.emailNotificationSettings"
+                                            class="tab-pane" [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
                                         </app-email-notification-settings>
 
                                         <!--XNFR-454 Domain Configuration-->
-                                        <app-add-or-manage-domains *ngIf="isAddDomainsOptionClicked"
-                                            [moduleName]="'addDomains'" class="tab-pane"
+                                        <app-add-or-manage-domains *ngIf="isAddDomainsOptionClicked" [moduleName]="'addDomains'" class="tab-pane"
                                             [ngClass]="{'active': activeTabName == properties?.addDomainsText}">
                                         </app-add-or-manage-domains>
 
+                                        <!--XNFR-459 News & Announcements-->
+                                        <div class="tab-pane hidden-xs" *ngIf="isNewsAndAnnouncementsOptionClicked" [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
+                                            <app-custom-links-util [moduleType]="properties?.newsAndAnnouncements"></app-custom-links-util>
+                                        </div>
+
+                                        <!--XNFR-459 Dashboard Banners-->
+                                        <div class="tab-pane hidden-xs" *ngIf="isDashboardBannersOptionClicked" [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
+                                            <app-custom-links-util [moduleType]="properties?.dashboardBanners"></app-custom-links-util>
+                                        </div>
 
                                         <!--video default player settings-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
@@ -3176,8 +3185,6 @@
                     only images</div>
                 <div>
                     <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-
-
                     <div [hidden]="!imageChangedEvent">
                         <app-img-croppr-v2 [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
                             [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="1 / 1"

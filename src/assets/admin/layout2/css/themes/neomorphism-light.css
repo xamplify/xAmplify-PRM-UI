@@ -1772,9 +1772,23 @@ input#copy-link {
   box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
 }
 #download-template:hover {
-  border: 0px solid #000 !important;
-  background: #f0f5fa !important;
+  border: 1px solid #00a7c3!important;
+  background: #5bb2f5;
   color: #000 !important;
+}
+ul.dropdown-menu.pull-right.custome-dropdown-changs li a:hover{
+  border: 1px solid #00a7c3!important;
+  background-color: #5bb2f5!important;
+  color: #000 !important;
+}
+ul.dropdown-menu.pull-right.custome-dropdown-changs li a {
+  width: 30px;
+  height: 30px;
+  line-height: 1.5;
+  border: none !important;
+  color: #000 !important;
+  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+  background: #f0f5fa;
 }
 .custome-dropdown-changs li a {
   border: 1px solid #000 !important;
@@ -1790,10 +1804,9 @@ i.singleIconCustomization {
   color: #000 !important;
 }
 #download-template-grid:hover {
-  border: 0px solid #000 !important;
-  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  border: 1px solid #00a7c3!important;
+  background: #5bb2f5;
   color: #22313a !important;
-  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
 }
 .portlet.light.borderNone {
   border: none !important;
@@ -1981,6 +1994,11 @@ tbody {
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff;
   border-radius: 0px 0px 10px 10px !important;
 }
+/* table header border top remove */
+.table>thead:first-child>tr:first-child>th {
+  border-top: none!important;
+}
+/* End */
 .setting-icon-cu .gearDropdownMenu {
   color: #000 !important;
 }
@@ -2785,7 +2803,9 @@ justify-content: center!important;
   .Btn-Green,     
   .Btn-Green:hover   
   .btn-primary,
-  .btn-primary:hover,.btn.Btn-Green:hover{
+  .btn-primary:hover,.btn.Btn-Green:hover,
+  .btn-primary[disabled],
+  .Btn-Green[disabled]{
     position: relative !important;
     background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
     color: #fff !important;
@@ -3959,6 +3979,10 @@ tr.col-md-12.col-lg-12:hover{
 .textCss{
   width: 100%!important;
 }
+/*edit-partner-campaigns */
+.ml-5{
+  margin-left: 5px;
+ }
 /* leads Approval in myprofile */
 .display-grid{
   display: grid;
@@ -3996,4 +4020,78 @@ button.right-border.widthauto i.fa.fa-edit:hover{
 .preview-shown {
   background-color: initial  !important;
   box-shadow: initial;
+}
+/* leftside bar menu */
+@media (max-width: 991px){
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li > a, .page-sidebar .page-sidebar-menu > li > a {
+    border-top: 1px solid #eff5fa;
+ }
+}
+.imghover-unset{
+  transform: unset!important;
+  }
+i.download_file:hover {
+ background-color: #5bb2f5!important;
+}
+/* email-template preview popup start */
+#email-template-content tbody{
+  box-shadow: none;
+  background-color: unset!important;
+}
+#email-template-content.row{
+  margin-right: 0px;
+  margin-left: 0px;
+}
+div#htmlContent tbody{
+  box-shadow: none;
+  background-color: unset!important;
+}
+div#htmlContent .row{
+  margin-right: 0px;
+  margin-left: 0px;
+}
+/* end */
+/*** Sudha Sri(20-2-2024) ***/
+.circled-grey{
+  background: #f0f5fa !important;
+  border: none !important;
+  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+}
+.pos_pd_lft8{
+  padding-left: 0px !important;
+}
+.mrg_lft66{
+  margin-left: 66px !important;
+}
+/***** Sudha Sri(22-2-2024) *****/
+.dam_upload_img:hover{
+  width: 0px;
+  margin-bottom: -157px;
+}
+.btn-file input[type="file"]{
+  position: absolute !important;
+}
+table.table.table-bordered > tbody {
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+table.table.table-bordered {
+  border: none !important;
+}
+.table tbody tr.upload_csv_validate:hover{
+  background: none !important;
+  box-shadow: none !important;
+}
+.table > tbody > tr > th#csverror-th {
+  background: none !important;
+  border-top: none !important;
+  box-shadow: none !important;
+}
+.pd_btm5{
+  padding-bottom: 5px !important;
+}
+/**** Sudha Sri(27-2-2024)****/
+.highlightRow, .highlightRow:hover{
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
 }

@@ -128,6 +128,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	socialNetworkForSyncLocal: any;	
 	disableSave : boolean =false;
 	loggedInUserCompanyId: any;
+	masterContactListSync: boolean = false;
+	contactsCompanyListSync: boolean = false; 
+	isPartnerUserList :boolean;
 
 	public currentContactType: string = "valid";
 
@@ -436,6 +439,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             } catch (error) {
                 this.xtremandLogger.error(error, "ManageContactsComponent", "loadAllContactList()");
             }
+			if(this.router.url.includes('home/contacts')){
+				this.checkSyncStatus();
+			}
         }
 	}
 
@@ -870,8 +876,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, 
-		isDefaultPartnerList: boolean,isDefaultContactList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean, isCompanyList:boolean, selectedAssociatedCompany: string, selectedAssociatedCompanyId: number) {
+		isDefaultPartnerList: boolean,isPartnerUserList : boolean,isDefaultContactList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean, isCompanyList:boolean, selectedAssociatedCompany: string, selectedAssociatedCompanyId: number) {
 		this.uploadedUserId = uploadUserId;
+		this.isPartnerUserList = isPartnerUserList;
 		this.selectedContactListId = contactSelectedListId;
 		this.selectedContactListName = contactListName;
 		this.isDefaultPartnerList = isDefaultPartnerList;
@@ -2856,7 +2863,84 @@ resubscribeUserResult(event : any){
 }
  
 
+downloadUserListCsv(){
+	try{
+		this.contactsByType.contactPagination.filterKey = 'isPartnerUserList';
+		this.contactsByType.contactPagination.filterValue = this.isPartner;
+		this.contactsByType.contactPagination.criterias = this.criterias;
+		this.contactsByType.contactPagination.maxResults = this.contactsByType.pagination.totalRecords;
+				
+		this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
+		this.userListPaginationWrapper.pagination.searchKey = this.searchKey;
+        this.userListPaginationWrapper.userList.contactType = this.contactsByType.selectedCategory;
+        this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
+        this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
+		this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
+		.subscribe(
+			data => {
+				if(data.statusCode == 200){
+					this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+				}
+				if(data.statusCode == 401){
+					this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+				}
+			},
+			(error: any) => {
+				this.xtremandLogger.error(error);
+				this.xtremandLogger.errorPage(error);
+			});
+	} catch (error) {
+		this.xtremandLogger.error(error, "ManageContactsComponent", "downloadUserListCsv()");
+	}
+}
 
+checkSyncStatus(){
+	this.contactService.checkSyncStatus(this.loggedInUserId).subscribe(
+		response => {
+			if (response.statusCode == 200) {
+				this.masterContactListSync= response.data.masterContactListSync;
+               this.contactsCompanyListSync = response.data.contactsCompanyListSync;
+			}
+		},
+		error => {
+			this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+		}
+	);
+  }
+
+  syncContactsInMasterContactList(){
+	this.contactService.syncContactsInMasterContactList(this.loggedInUserId).subscribe(
+		response => {
+			if (response.statusCode == 200) {
+				this.masterContactListSync = true;
+				this.customResponse = new CustomResponse('SUCCESS', "We are Synchronizing your Master Contact List", true);
+			}
+		},
+		error => {
+			this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+		}
+	);
+}
+
+
+
+confirmsync(){
+	let self = this;
+	swal({
+		title: 'Are you sure?',
+		text: 'Clicking "Sync" will update this list by adding all the existing contacts',
+		type: 'success',
+		showCancelButton: true,
+		swalConfirmButtonColor: '#54a7e9',
+		swalCancelButtonColor: '#999',
+		confirmButtonText: 'Sync'
+
+	}).then(function () {
+		self.syncContactsInMasterContactList();
+	}, function (dismiss: any) {
+		console.log('you clicked on option' + dismiss);
+	});
+}
 
 
 }
