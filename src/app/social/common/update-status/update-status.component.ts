@@ -145,6 +145,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.updateButtonText();
 		this.contactListsPagination.pageIndex = 1;
 		this.contactListsPagination.maxResults = 12;
+		this.contactListsPagination.filterBy = 'ALL';
 		//this.socialCampaign.userListIds = [];//Write Logic For Only OrgAdmin & Marketing company
 		this.loadContactLists(this.contactListsPagination);
 	}
