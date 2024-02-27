@@ -219,4 +219,10 @@ export class LandingPageService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    findPartnerVendorJourneyLandingPages(pagination: any) {
+        return this.http.post(this.URL + "findPartnerVendorJourneyLandingPages?searchKey=" + pagination.searchKey + "&access_token=" + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

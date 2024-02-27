@@ -334,7 +334,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     mergeTagsInput: any = {};
 	loggedInUserCompanyId = 0;
-
+	vendorJourney:boolean = false;
+	isLandingPages:boolean = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -1983,6 +1984,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		else if (this.activeTabName == "vendorJourney") {
 			this.activeTabHeader = this.properties.vendorJourney;
 			this.resetVendorJourney();
+			this.vendorJourney = true;
+		}
+		else if (this.activeTabName == "landingPages") {
+			this.activeTabHeader = this.properties.landingPages;
+			this.resetVendorJourney();
+			this.isLandingPages = true;
 		}
 		this.referenceService.goToTop();
 	}
@@ -4487,6 +4494,8 @@ resetVendorJourney(){
 	this.landingPageService.vendorJourney = false;
 	this.landingPageService.id = 0;
 	this.mergeTagsInput['page'] = false;
+	this.vendorJourney = false;
+	this.isLandingPages = false;
 }
 
 checkOrUncheckOpenLinksInNewTabOption(){

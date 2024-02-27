@@ -70,6 +70,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @Output() vendorLandingPage = new EventEmitter();
   showShareListPopup:boolean = false;
   @Input() loggedInUserCompanyId = 0;
+  @Input() isLandingPages =  false;
   selectedLandingPageId:any;
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
@@ -94,13 +95,17 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
     /******** user guides ************/
     this.mergeTagForGuide = this.isPartnerLandingPage ? 'accessing_shared_pages':'manage_pages';
     this.sefDefaultViewType();
-    this.listLandingPages(this.pagination);
+    if(this.isLandingPages){
+        this.findPartnerVendorJourneyLandingPages(this.pagination);
+    }else{
+        this.listLandingPages(this.pagination);
+    }
     this.showMessageOnTop();
 }
 
 
   private sefDefaultViewType() {
-    if(this.vendorJourney){
+    if(this.vendorJourney || this.isLandingPages){
         this.viewType = 'g';
     }else if (this.folderListViewCategoryId != undefined) {
         this.categoryId = this.folderListViewCategoryId;
@@ -157,7 +162,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       }
       if(this.vendorJourney){
         this.pagination.source = "VENDOR_JOURNEY";
-        this.pagination.defaultLandingPage = true;
+        this.pagination.defaultLandingPage = false;
       }else{
         this.pagination.source = "MANUAL";
       }
@@ -270,7 +275,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 
 
   editLandingPage(id: number) {
-    if(this.vendorJourney){
+    if(this.vendorJourney || this.isLandingPages){
         this.landingPageService.getById(id).subscribe(
             (data: any) => {
                 this.vendorLandingPage.emit(data.data);
@@ -462,4 +467,48 @@ copy(landingPage:any){
         $('#partnerCompaniesPopup').modal('hide');
     }
 
+    findPartnerVendorJourneyLandingPages(pagination: Pagination) {
+        this.referenceService.loading(this.httpRequestLoader, true);
+        if(!this.folderListView){
+          this.referenceService.goToTop();
+        }
+        if(this.categoryId!=undefined && this.categoryId>0){
+          pagination.categoryId = this.categoryId;
+          this.pagination.categoryType = this.referenceService.getCategoryType(this.roles.landingPageId);
+        }
+        /**********Vanity Url Filter**************** */
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            this.pagination.vanityUrlFilter = true;
+        }
+          this.pagination.source = "VENDOR_JOURNEY";
+          this.pagination.defaultLandingPage = false;
+          this.pagination.companyId = this.loggedInUserCompanyId;
+          let self = this;
+
+        this.landingPageService.findPartnerVendorJourneyLandingPages(pagination).subscribe(
+            (response: any) => {
+                if(response.access){
+                    const data = response.data;
+                    self.statusCode = response.statusCode;
+                    if (self.statusCode == 200) {
+                        pagination.totalRecords = data.totalRecords;
+                        this.sortOption.totalRecords = data.totalRecords;
+                        $.each(data.landingPages, function (index, landingPage) {
+                            landingPage.displayTime = new Date(landingPage.createdDateInString);
+                        });
+                        pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+                    }
+                    this.referenceService.loading(this.httpRequestLoader, false);
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
+                this.referenceService.loading(this.httpRequestLoader, false);
+            },
+            (error: any) => { 
+              this.logger.errorPage(error); 
+          },()=>{
+              this.callFolderListViewEmitter();
+          });
+    }
 }
