@@ -734,6 +734,7 @@ export class AddDealComponent implements OnInit {
       }
     }
     this.submitButtonStatus();
+    this.showAttachLeadButton = false;
   }
 
 
