@@ -418,6 +418,7 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   delete(item: any) {
+    this.customResponse = new CustomResponse();
     this.vanityURLService.deleteCustomLink(item.id,this.moduleType).subscribe(result => {
       if (result.statusCode === 200) {
         let message = "";
@@ -434,6 +435,9 @@ export class CustomLinksUtilComponent implements OnInit {
       }
     }, error => {
       let message = this.moduleType==this.properties.dashboardButtons ? 'Error while deleting dashboard button':this.properties.serverErrorMessage;
+      if(this.moduleType==this.properties.dashboardBanners){
+        message = this.referenceService.getApiErrorMessage(error);
+      }
       this.customResponse = new CustomResponse('ERROR', message, true);
       this.referenceService.goToTop();
     });
