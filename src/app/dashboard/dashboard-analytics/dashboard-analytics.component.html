@@ -46,7 +46,7 @@
                 <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0px;">
                     <div
                         [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-lg-6 col-md-4 col-xs-6 col-sm-6':'col-md-5 col-xs-5 col-sm-5'">
-                        <h4 title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' |
+                        <h4 data-toggle="tooltip" data-placement="bottom" title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' |
                             translate}} {{logedInCustomerCompanyName}}</h4>
                     </div>
                     <div class="col-lg-5 col-md-5 col-xs-5 col-sm-5"
