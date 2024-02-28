@@ -24,6 +24,7 @@ declare var swal: any, $:any;
   providers: [Properties, HttpRequestLoader,RegularExpressions]
 })
 export class CustomLinksUtilComponent implements OnInit {
+  @Input() moduleType:string="";
   customResponse: CustomResponse = new CustomResponse();
   customLinkDto: CustomLinkDto = new CustomLinkDto();
   pagination: Pagination = new Pagination();
@@ -34,12 +35,22 @@ export class CustomLinksUtilComponent implements OnInit {
   customLinkTypes :Array<any> = new Array<any>();
   selectedProtocol: string;
   saving = false;
-  @Input() moduleType:string="";
   defaultType: string = CustomLinkType[CustomLinkType.NEWS];  
   headerText = "";
   listHeaderText = "";
   isDuplicateTitle = false;
   ngxLoading = false;
+  customLinkForm: FormGroup;
+  croppedImage:any;
+  previouslySelectedImagePath = "";
+  uploadImageOptionClicked = false;
+  isDashboardBannerImageUploaded = true;
+  formData: any = new FormData();
+  isImageLoading = false;
+  isAdd = true;
+  isAddDashboardBannersDivHidden = false;
+  dashboardBannersInfoMessage:CustomResponse = new CustomResponse();
+  
   formErrors = {
     'title': '',
     'link': '',
@@ -67,16 +78,6 @@ export class CustomLinksUtilComponent implements OnInit {
       
       }
   };
-  customLinkForm: FormGroup;
-  croppedImage:any;
-  previouslySelectedImagePath = "";
-  uploadImageOptionClicked = false;
-  isDashboardBannerImageUploaded = true;
-  formData: any = new FormData();
-  isImageLoading = false;
-  isAdd = true;
-  isAddDashboardBannersDivHidden = false;
-  dashboardBannersInfoMessage:CustomResponse = new CustomResponse();
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
@@ -159,6 +160,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.isAdd = true;
     this.saving = false;
     this.previouslySelectedImagePath = "";
+    this.formData = new FormData();
     this.clearImage();
     if(this.moduleType==this.properties.dashboardButtons){
       this.headerText = "Add Button";
@@ -377,6 +379,11 @@ export class CustomLinksUtilComponent implements OnInit {
                 self.customResponse = new CustomResponse('ERROR', "Title Already Exists", true);
                 $("#customLinkTitle").removeClass('ng-valid');
                 $("#customLinkTitle").addClass('ng-invalid');
+                if(self.properties.dashboardBanners==self.moduleType){
+                  if(self.formData!=undefined){
+                    self.formData.delete('customLinkDto');
+                  }
+                 }
               }
             });
             this.saving = false;
