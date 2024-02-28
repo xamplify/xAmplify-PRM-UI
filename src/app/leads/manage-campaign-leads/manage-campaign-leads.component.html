@@ -169,14 +169,14 @@
 
 
               <div
-                *ngIf="lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner">
+                *ngIf="(lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner) || (lead?.selfLead && lead?.associatedDealId == undefined)">
                 <button class="button_blue bgcolor-unset" (click)="registerDeal(lead)" translate>
                   <span class="btn btn-primary transition d-inline"> Register Deal</span>
                 </button>
               </div>
 
               <!--toggle on --><!--------XNFR-426--------->
-              <div *ngIf="lead?.leadApprovalOrRejection">
+              <div *ngIf="lead?.leadApprovalOrRejection  && !lead?.selfLead">
                 <div *ngIf="!authenticationService?.module?.deletedPartner">
                   <div style="color: #06c306;"
                     *ngIf="lead?.leadApprovalStatusType == 'APPROVED' && lead?.associatedDealId == undefined">

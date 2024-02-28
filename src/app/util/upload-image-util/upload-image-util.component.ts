@@ -49,6 +49,7 @@ export class UploadImageUtilComponent implements OnInit {
   
   openModalPopup() {
     this.cropRounded = false;
+    this.croppedImage = "";
     this.fileSizeError = false;
     this.imageChangedEvent = null;
     if(this.properties.dashboardBanners==this.moduleName){

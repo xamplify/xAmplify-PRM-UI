@@ -338,7 +338,7 @@ export class CustomLinksUtilComponent implements OnInit {
             this.customLinkDto.openInNewTab = this.customLinkDto.openLinkInNewTab;
             this.buildCustomLinkForm();
             this.previouslySelectedImagePath = this.customLinkDto.bannerImagePath;
-            $('.dashboard-banner-image').css('height', 'auto');
+            //$('.dashboard-banner-image').css('height', 'auto');
             this.ngxLoading = false;
         },error=>{
           this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
@@ -510,15 +510,15 @@ export class CustomLinksUtilComponent implements OnInit {
     this.croppedImage = "";
     this.formData.delete("dashboardBannerImage");
     this.isDashboardBannerImageUploaded = false;
-    $('.dashboard-banner-image').css('height', '120px');
+    //$('.dashboard-banner-image').css('height', '120px');
   }
 
   modalPopupClosedEventReceiver(){
-    this.clearImage();
+    this.formData.delete("dashboardBannerImage");
   }
 
   croppedImageEventReceiver(event:any){
-    $('.dashboard-banner-image').css('height', 'auto');
+   // $('.dashboard-banner-image').css('height', 'auto');
     this.croppedImage = event['croppedImage'];
     let uploadedImageName = event['fileName'];
     let fileObj: any;
