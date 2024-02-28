@@ -32,8 +32,6 @@ export class LogRegularCampaignComponent implements OnInit {
     this.processor.set(this.processor);
     this.alias = this.activatedRoute.snapshot.params['alias'];
     this.getRegularTemplateHtml();
-    //this.referenceService.removeCssStyles();
-    //this.referenceService.removeElementById();
   }
   
   errorMessage(){
@@ -48,7 +46,6 @@ export class LogRegularCampaignComponent implements OnInit {
       this.videoFileService.showCampaignEmail(this.alias)
         .subscribe((result: any) => {
               this.templatehtml = result.templatehtml;
-              this.xtremandLogger.log(this.templatehtml);
               let updatedBody = this.templatehtml;
               updatedBody = updatedBody.replace("view in browser", '');
               updatedBody = updatedBody.replace("SocialUbuntuURL", '');
@@ -62,10 +59,6 @@ export class LogRegularCampaignComponent implements OnInit {
               updatedBody = updatedBody.replace("<company_name></company_name>", "");
               updatedBody = updatedBody.replace("<Company_Logo>", '');
               updatedBody = updatedBody.replace("<Title_here>", '');
-              //updatedBody = updatedBody.replace("<unsubscribeURL>","");
-              //updatedBody = updatedBody.replace('click here','');
-              //updatedBody = updatedBody.replace("If you'd like to unsubscribe and stop receiving these emails click here"," ");
-              //updatedBody = updatedBody.replace("If you'd like to unsubscribe and stop receiving these emails","");
               this.templatehtml = updatedBody;
               document.getElementById('regular-campaign').innerHTML = this.templatehtml;
               this.processor.remove(this.processor);
