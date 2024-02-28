@@ -3462,4 +3462,19 @@ getEncodedUri(input:string){
   }
 }
 
+removeCssStyles(){
+  var hs = document.getElementsByTagName('style');
+    for (var i=0, max = hs.length; i < max; i++) {
+      if(hs[i]!=undefined){
+        if(hs[i]['parentNode']!=undefined){
+          hs[i].parentNode.removeChild(hs[i]);
+        }
+      }
+    } 
+}
+
+removeElementById(){
+  $('link[id="head-link-rel"]').remove();
+}
+
 }

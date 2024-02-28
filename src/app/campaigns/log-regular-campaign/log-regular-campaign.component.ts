@@ -32,6 +32,8 @@ export class LogRegularCampaignComponent implements OnInit {
     this.processor.set(this.processor);
     this.alias = this.activatedRoute.snapshot.params['alias'];
     this.getRegularTemplateHtml();
+    //this.referenceService.removeCssStyles();
+    //this.referenceService.removeElementById();
   }
   
   errorMessage(){
