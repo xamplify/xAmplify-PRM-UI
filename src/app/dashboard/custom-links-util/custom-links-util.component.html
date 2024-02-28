@@ -177,4 +177,5 @@
 
 </fieldset>
 
-<app-upload-image-util *ngIf="uploadImageOptionClicked"  [moduleName]="properties?.dashboardBanners" (croppedImageEventEmitter)="croppedImageEventReceiver($event)"></app-upload-image-util>
+<app-upload-image-util *ngIf="uploadImageOptionClicked"  [moduleName]="properties?.dashboardBanners" 
+(croppedImageEventEmitter)="croppedImageEventReceiver($event)" (modalPopupClosedEventEmitter)="modalPopupClosedEventReceiver()"></app-upload-image-util>

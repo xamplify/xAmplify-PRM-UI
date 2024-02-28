@@ -31,6 +31,7 @@ export class UploadImageUtilComponent implements OnInit {
   @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
   isImageUploadIsInProgress = false;
   @Output() croppedImageEventEmitter = new EventEmitter<any>();
+  @Output() modalPopupClosedEventEmitter = new EventEmitter<any>();
   aspectRatio = "16/9";
   @Input() moduleName:string="";
   errorMessage = "";
@@ -61,6 +62,11 @@ export class UploadImageUtilComponent implements OnInit {
     this.croppedImage = '';
     this.fileObj = null;
     $('#cropImageModal').modal('hide');
+  }
+
+  closeImageUploadModalOnClick(){
+    this.closeImageUploadModal();
+    this.modalPopupClosedEventEmitter.emit();
   }
 
   uploadImage(event:any) {
