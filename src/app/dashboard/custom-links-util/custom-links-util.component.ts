@@ -50,7 +50,7 @@ export class CustomLinksUtilComponent implements OnInit {
   isAdd = true;
   isAddDashboardBannersDivHidden = false;
   dashboardBannersInfoMessage:CustomResponse = new CustomResponse();
-  
+
   formErrors = {
     'title': '',
     'link': '',
@@ -511,6 +511,10 @@ export class CustomLinksUtilComponent implements OnInit {
     this.formData.delete("dashboardBannerImage");
     this.isDashboardBannerImageUploaded = false;
     $('.dashboard-banner-image').css('height', '120px');
+  }
+
+  modalPopupClosedEventReceiver(){
+    this.clearImage();
   }
 
   croppedImageEventReceiver(event:any){
