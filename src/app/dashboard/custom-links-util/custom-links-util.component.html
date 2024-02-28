@@ -22,23 +22,25 @@
             </div>
             <div class="dashboard-banner-image" style="cursor: pointer;text-align:center;color:#fff;" (click)="openModalPopUp()">
               <div *ngIf="!croppedImage">
-                <img *ngIf="!previouslySelectedImagePath" src="assets/images/contentPlaceholderImages.png" class="profile-image img-grid" alt="">
+                <img *ngIf="!previouslySelectedImagePath" src="assets/images/contentPlaceholderImages.png" class="profile-image img-grid" alt="No Image Found">
               </div>
               <div *ngIf="croppedImage; else showImage">
-                <img class="img-grids" [src]="croppedImage" alt="">
+                <img class="img-grids" [src]="croppedImage" alt="No Image Found">
               </div>
               <ng-template #showImage>
-                <img *ngIf="isAdd"  class="img-grids" [src]="previouslySelectedImagePath" alt="">
+                <ng-container *ngIf="isAdd && previouslySelectedImagePath?.length>0">
+                  <img  class="img-grids" [src]="previouslySelectedImagePath" alt="No Image Found">
+                </ng-container>
                 <ng-container *ngIf="!isAdd && !ngxLoading">
                   <div  *ngIf="isImageLoading">
-                    <img src="assets/images/image-loader.gif" style="height: 120px;" onerror="this.src='assets/images/no-preview.jpg';" alt="No image" class="center-image"/>
+                    <img src="assets/images/image-loader.gif" style="height: 235px;" onerror="this.src='assets/images/no-preview.jpg';" alt="No Image Found" class="center-image"/>
                   </div>
                   <img [hidden]="isImageLoading" class="img-grids" [src]="previouslySelectedImagePath" onerror="this.src='assets/images/no-preview.jpg';"
                   alt="No image" (load)="isImageLoading=false" (error)="isImageLoading=false">
                 </ng-container>
               </ng-template>
               <a class="btn btn-primary1 profile-pic" data-toggle="tooltip" data-placement="bottom"
-                title="Upload 6:1 ratio logo"><i class="fa fa-camera icon" aria-hidden="true"
+                title="Upload 5:1 ratio logo"><i class="fa fa-camera icon" aria-hidden="true"
                   style="font-size:25px;padding-top:4px;margin-right: -5px;"></i></a>
             </div>
           </div>
