@@ -55,7 +55,7 @@
                         <div class="profile-usertitle">
                             <div class="profile-usertitle-name" style="overflow: auto">
                                 <span style="font-size: 17px !important;"
-                                    [title]="userData?.displayName">{{userData?.displayName | slice:0:18}}</span>
+                                data-toggle="tooltip" data-placement="bottom" [title]="userData?.displayName">{{userData?.displayName | slice:0:18}}</span>
                                 <span *ngIf="userData?.displayName?.length>18">...</span>
                                 <h5>{{userData.emailId}}</h5>
                             </div>
