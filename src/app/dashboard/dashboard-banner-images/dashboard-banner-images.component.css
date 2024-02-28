@@ -1,6 +1,18 @@
 .description-width{
     width: 700px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical !important;
 }
 .title-width{
     width: 500px;
+}
+.carousel-caption{
+    top: -11px;
+}
+.carousel-caption .btn {
+    position: fixed;
+    bottom: 36px;
 }
