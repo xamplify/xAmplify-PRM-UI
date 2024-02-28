@@ -514,7 +514,7 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   modalPopupClosedEventReceiver(){
-    this.clearImage();
+    this.formData.delete("dashboardBannerImage");
   }
 
   croppedImageEventReceiver(event:any){
