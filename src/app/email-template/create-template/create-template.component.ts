@@ -362,6 +362,10 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                        
                     } else if (data.statusCode == 500) {
                         this.customResponse = new CustomResponse('ERROR', data.message, true);
+                        this.ngxLoading = false;
+                        this.saveLoader = false;
+                        this.buttonClicked = false;
+                        this.closeModalPopup();
                     }                    
                 } else {
                     this.saveLoader = false;
@@ -417,9 +421,11 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                             this.loadBeeContainer(this.emailTemplateService,this.authenticationService,false);
                         }
                     } else if (data.statusCode == 500) {
+                        this.customResponse = new CustomResponse('ERROR', data.message, true);
+                        this.ngxLoading = false;
                         this.saveLoader = false;
                         this.buttonClicked = false;
-                        this.customResponse = new CustomResponse('ERROR', data.message, true);
+                        this.closeModalPopup();
                     }    
                 } else {
                     this.saveLoader = false;
