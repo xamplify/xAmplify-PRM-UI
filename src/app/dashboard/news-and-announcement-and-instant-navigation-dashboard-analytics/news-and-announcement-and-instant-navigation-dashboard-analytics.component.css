@@ -150,3 +150,10 @@
   display: flex;
   font-size: 16px !important;
 }
+.title-custom-font{
+  font-size: 40px !important;
+  width: 900px !important;
+}
+.description-custom-font{
+  font-size: 24px !important;
+}
