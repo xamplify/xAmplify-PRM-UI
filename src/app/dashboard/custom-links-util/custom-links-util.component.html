@@ -132,7 +132,11 @@
   <legend>{{listHeaderText}}</legend>
   <div class="alert alert-info text-center" *ngIf="pagination.totalRecords==0">No Data Found</div>
   <ng-container *ngIf="pagination?.totalRecords>0">
-    <div  class="table-responsive" style="overflow-x: inherit; padding:15px;">
+    <ng-container *ngIf="moduleType==properties?.dashboardBanners">
+      <div class="alert alert-info text-center" *ngIf="!isAddDashboardBannersDivHidden">{{properties?.maximumDashboardBannersLimitMessage}}</div>
+       <span><strong>Dashboard banners : <span>{{pagination.totalRecords}}</span> / 5</strong></span>
+    </ng-container>
+    <div  class="table-responsive">
       <table class='table tgrid table-hover'>
         <thead>
           <tr>
@@ -171,7 +175,7 @@
         </tbody>
       </table>
     </div>
-    <div class="form-group col-md-12">
+    <div  *ngIf="moduleType!=properties?.dashboardBanners">
       <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
         (notifyParentDropDown)="findLinks($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
     </div>
