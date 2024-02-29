@@ -12,6 +12,7 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { UserService } from "../../../app/core/services/user.service";
 import { ParterService } from "../../../app/partners/services/parter.service";
 import { ContactService } from '../../contacts/services/contact.service';
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 declare var $: any, swal: any;
 
 
@@ -47,13 +48,16 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
     selectedFilterIndex: number = 0;
     showFilter = true;
     isTableLoaded: boolean = true;
+    @Input() vendorJourney: boolean = false;
+    @Input() vendorJourneyLandingPageId:any;
   constructor(public partnerService: ParterService,public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
-	        public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService, public contactService: ContactService) { 
+	        public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService, public contactService: ContactService,
+            public landingPageService: LandingPageService) { 
 	  this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
-      if (this.companyId != undefined && this.companyId > 0 && this.inputId != undefined && this.inputId > 0 ) {
+      if (this.companyId != undefined && this.companyId > 0 &&(this.vendorJourney  ||(this.inputId != undefined && this.inputId > 0) )) {
               this.pagination.vendorCompanyId = this.companyId;
               this.pagination.partnerTeamMemberGroupFilter = true;
               this.openPopup();
@@ -275,12 +279,21 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
   
   setValuesAndPublish(){
       this.startLoaders();
+      if(this.vendorJourney){
+        let shareLandingPageDTO = {
+            "loggedInUserId": this.loggedInUserId,
+            "partnerIds": this.selectedTeamMemberIds,
+            "vendorJourneyLandingPageId": this.vendorJourneyLandingPageId,
+        }
+    this.shareLandingPageToPartners(shareLandingPageDTO);
+      }else{
       let shareLeadsDTO = {
               "userId": this.loggedInUserId,
               "partnerIds": this.selectedTeamMemberIds,
               "userListId": this.inputId,
           }
       this.publishToPartners(shareLeadsDTO);
+        }
   }
   
   publishToPartners(shareLeadsDTO : any){
@@ -323,5 +336,28 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
       this.findPartnerCompanies(this.pagination);
     }
   
-  
+    shareLandingPageToPartners(shareLandingPageDTO : any){
+        this.landingPageService.shareVendorJourneyLandingPageToPartners(shareLandingPageDTO).subscribe((data: any) => {
+            this.referenceService.scrollToModalBodyTopByClass();
+            this.stopLoaders();
+            if (data.access) {
+                this.sendSuccess = true;
+                this.statusCode = data.statusCode;
+                if (data.statusCode == 200) {
+                    this.responseMessage = "Published Successfully";
+                } else {
+                    this.responseMessage = data.message;
+                }
+                this.resetFields();
+            } else {
+                this.ngxLoading = false;
+                this.authenticationService.forceToLogout();
+            }
+        }, _error => {
+            this.stopLoaders();
+            this.sendSuccess = false;
+            this.referenceService.goToTop();
+            this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+        });
+    }
 }

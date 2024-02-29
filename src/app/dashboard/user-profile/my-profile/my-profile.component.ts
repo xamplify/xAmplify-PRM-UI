@@ -65,6 +65,9 @@ import { CompanyLoginTemplateActive } from 'app/email-template/models/company-lo
 import { CompanyProfileService } from 'app/dashboard/company-profile/services/company-profile.service';
 
 import { DefaultDashBoardForPartners } from 'app/dashboard/models/default-dashboard-for-partners';
+import { PreviewPopupComponent } from 'app/forms/preview-popup/preview-popup.component';
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
+import { LandingPage } from 'app/landing-pages/models/landing-page';
 declare var swal, $, videojs: any, Papa: any;
 
 @Component({
@@ -325,7 +328,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	checkSelectedDashboardType=[];
 	companyIdFromCompanyProfileNameForVanity:number;	
 	removeMarketingNonInteractiveBox:boolean = false;
-
 	/** XNFR-426 **/
 	leadApprovalRejectionStatus: boolean = false;
 	leadApprovalStatus:boolean = false;
@@ -336,13 +338,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/**XNFR-459****/
 	isNewsAndAnnouncementsOptionClicked:boolean;
 	isDashboardBannersOptionClicked:boolean;
+	editVendorPage:boolean =false;
+	vendorDefaultTemplate:LandingPage = new LandingPage();
+	openLinksInNewTabCheckBoxId = "openLinksInNewTab-page-links";
+    @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
+    mergeTagsInput: any = {};
+	loggedInUserCompanyId = 0;
+	vendorJourney:boolean = false;
+	isLandingPages:boolean = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService) {
+			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService,
+			public landingPageService: LandingPageService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isLocalHost = this.authenticationService.isLocalHost();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
@@ -648,6 +659,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
 			this.authenticationService.logout();
 		}
+		this.getCompanyId();
 	}
 
 	getModuleAccessByUser() {
@@ -1994,6 +2006,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 500);
 			this.activeTabHeader = this.properties.customLoginScreen;
 		}
+
 		/****XNFR-454****/
 		else if(this.activeTabName==this.properties.addDomainsText){
 			this.ngxloading = true;
@@ -2027,7 +2040,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.dashboardBanners;
-
+    }
+		else if (this.activeTabName == "vendorJourney") {
+			this.activeTabHeader = this.properties.vendorJourney;
+			this.resetVendorJourney();
+			this.vendorJourney = true;
+		}
+		else if (this.activeTabName == "landingPages") {
+			this.activeTabHeader = this.properties.landingPages;
+			this.resetVendorJourney();
+			this.isLandingPages = true;
 		}
 		this.referenceService.goToTop();
 	}
@@ -4529,6 +4551,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.integrationTabIndex = 7;
 	}
 
+
 	/*******xnfr-426********/
 	getLeadApprovalstatus(){
 		this.authenticationService.getLeadApprovalStatus(this.referenceService.companyId)
@@ -4580,4 +4603,50 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		);
 	}
 
+editVendorLandingPage(event){
+	this.vendorDefaultTemplate = event;
+	this.landingPageService.vendorJourney = true;
+	this.landingPageService.id = this.vendorDefaultTemplate.id;
+	this.mergeTagsInput['page'] = true;
+	this.editVendorPage = true;
+	
+}
+resetVendorJourney(){
+	this.editVendorPage = false;
+	this.vendorDefaultTemplate = new LandingPage() ;
+	this.landingPageService.vendorJourney = false;
+	this.landingPageService.id = 0;
+	this.mergeTagsInput['page'] = false;
+	this.vendorJourney = false;
+	this.isLandingPages = false;
+}
+
+checkOrUncheckOpenLinksInNewTabOption(){
+	let isChecked = $('#'+this.openLinksInNewTabCheckBoxId).is(':checked');
+	if(isChecked){
+		$('#' + this.openLinksInNewTabCheckBoxId).prop("checked", false);
+		this.vendorDefaultTemplate.openLinksInNewTab = false;
+	}else{
+		$('#' + this.openLinksInNewTabCheckBoxId).prop("checked", true);
+		this.vendorDefaultTemplate.openLinksInNewTab = true;
+	}
+
+}
+
+
+getCompanyId() {
+	if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+			(result: any) => {
+				if (result !== "") {
+					this.loggedInUserCompanyId = result;
+					this.referenceService.loading(this.httpRequestLoader, false);
+				}
+			}, (error: any) => {
+				this.referenceService.loading(this.httpRequestLoader, false);
+			}
+		);
+	}
+  }
 }

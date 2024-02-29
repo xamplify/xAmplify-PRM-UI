@@ -435,6 +435,13 @@
 															[(ngModel)]="campaignAccess.createWorkflow"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
+												<!--XNFR-428-->
+												<tr *ngIf="!marketing">
+													<th scope="row">Vendor Journey</th>
+													<td><input type="checkbox"
+															[(ngModel)]="campaignAccess.vendorJourney"
+															[ngModelOptions]="{standalone: true}"></td>
+												</tr>
 
 											</table>
 										</div>

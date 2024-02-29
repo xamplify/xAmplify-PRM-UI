@@ -62,7 +62,8 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
         if (this.router.url.indexOf("/home/emailtemplates/create") > -1 ||
             this.router.url.indexOf("/home/pages/add") > -1 || this.router.url.indexOf("/home/pages/edit") > -1 || this.router.url.indexOf("/home/campaigns/create") > -1 
             || this.router.url.indexOf("/home/campaigns/edit") > -1 
-            || this.router.url.indexOf("/home/emailtemplates/edit") > -1) {
+            || this.router.url.indexOf("/home/emailtemplates/edit") > -1
+            || this.router.url.indexOf("/home/dashboard/myprofile") > -1) {
             this.showButton = true;
         }
         if (this.authenticationService.isShowForms) {
