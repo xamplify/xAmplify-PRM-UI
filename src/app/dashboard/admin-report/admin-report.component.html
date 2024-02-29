@@ -333,7 +333,7 @@
                   <tr>
                     <td>{{companyInfo?.companyName}}</td>
                     <td class="text-center">{{companyInfo?.companyProfileName}}</td>
-                    <td [className]="companyInfo?.companyType=='Partner' && upgradeAccountStatusCode==200 ? 'text-center success':'text-center danger'">
+                    <td [className]="companyInfo?.companyType=='Partner' && upgradeAccountStatusCode==200 ? 'text-center success':'text-center info'">
                       <strong>{{companyInfo?.companyType}}</strong></td>
                     <td class="text-center" *ngIf="upgradeAccountStatusCode==200"> 
                       <select id="upgrade-account-type" class="form-control" *ngIf="companyInfo?.companyType=='Partner'" (change)="upgradeAccountType()">

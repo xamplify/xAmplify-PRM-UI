@@ -123,5 +123,5 @@
 </div>
 <app-confirm-unpublish-tracks-or-playbooks-model-popup *ngIf="isOptionClicked"
     [selectedTrackOrPlayBookId]="selectedTrackOrPlayBookId" [isPublishing]="isPublishing"
-    (eventOutput)="toCallChangePublishFromUnpublishPopup($event)" (cancelEmitter)="resetUnPublishOptionInputValues()">
+    (eventOutput)="toCallChangePublishFromUnpublishPopup($event)" [type]="type" (cancelEmitter)="resetUnPublishOptionInputValues()">
 </app-confirm-unpublish-tracks-or-playbooks-model-popup>

@@ -42,5 +42,6 @@ export class CampaignAccess {
   /**** XNFR-255 *****/
   shareWhiteLabeledContent = false;
   createWorkflow = false;
+  vendorJourney : boolean = false ;
 
 }

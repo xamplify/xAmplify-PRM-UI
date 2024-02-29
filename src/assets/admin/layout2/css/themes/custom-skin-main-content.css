@@ -2553,3 +2553,7 @@ button.button_blue:disabled span{
 .button.button.bgcolor-unset.btn_border{
   border :none !important;
 }
+/**** Sudha Sri(27-2-2024)****/
+table tr:nth-child(odd).highlightRow, table tr:nth-child(odd).highlightRow:hover{
+  background: var(--page-content) !important;
+}

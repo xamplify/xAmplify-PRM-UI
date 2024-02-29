@@ -192,7 +192,8 @@ export class Properties {
 	notifyPartners = "Onboarding Configurations";
 	notifyPartnersHeaderText = "Onboarding configurations of your partners";
 
-
+	vendorJourney = "Vendor Journey";
+	landingPages = "Landing Pages";
 
 	/********Error Messages************* */
 	roleUpdatedMessage = "Your role has been changed.Please login again.";
@@ -330,6 +331,7 @@ export class Properties {
 	domainWhitelistingUrlDescription = "Please share the below URL with users who need to sign up into the xAmplify as your team members.";
 	noDataFound = "No Data Found";
 	maximumDashboardBannersLimitReached = "You have reached the limit of displaying up to 5 dashboard banners. You cannot add any more banners.";
+	maximumDashboardBannersLimitMessage = "You can upload maximum 5 dashboard banners"
 	instantNavigation = "Instant Navigation";
 
 

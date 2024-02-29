@@ -1,6 +1,6 @@
 <div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError"
   style="border:none !important;padding-bottom: 8px;">
-  <app-response-message class="pg8" [customResponse]="leadsResponse"
+  <app-response-message class="pg8 col-lg-12 col-md-12 col-sm-12 col-xs-12 p0" [customResponse]="leadsResponse"
     *ngIf="leadsResponse.isVisible"></app-response-message>
   <div class="col-xs-12 col-sm-5 col-lg-5" *ngIf="fromAnalytics && showTeamMemberFilter">
     <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"
@@ -25,9 +25,9 @@
           (click)="toggleFilterOption()">
           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
         </span>
-        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Download"
-          [class.disabled]="leadsSortOption.totalRecords == 0" (click)="downloadLeads()">
-          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Click here to email the report"
+          [class.disabled]="leadsSortOption.totalRecords == 0" (click)="downloadLeads(leadsPagination)">
+          <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
         </span>
       </div>
     </div>
@@ -169,14 +169,14 @@
 
 
               <div
-                *ngIf="lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner">
+                *ngIf="(lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner) || (lead?.selfLead && lead?.associatedDealId == undefined)">
                 <button class="button_blue bgcolor-unset" (click)="registerDeal(lead)" translate>
                   <span class="btn btn-primary transition d-inline"> Register Deal</span>
                 </button>
               </div>
 
               <!--toggle on --><!--------XNFR-426--------->
-              <div *ngIf="lead?.leadApprovalOrRejection">
+              <div *ngIf="lead?.leadApprovalOrRejection  && !lead?.selfLead">
                 <div *ngIf="!authenticationService?.module?.deletedPartner">
                   <div style="color: #06c306;"
                     *ngIf="lead?.leadApprovalStatusType == 'APPROVED' && lead?.associatedDealId == undefined">

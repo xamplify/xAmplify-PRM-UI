@@ -49,10 +49,10 @@
         (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
     </div>
   </div>
+  <!--XNFR-458--->
+  <app-dashboard-banner-images></app-dashboard-banner-images>
+  <!--XNFR-458--->
   <div class="page-bar page-bar-shadow shadow-radius">
-    <!--XNFR-458--->
-    <app-dashboard-banner-images></app-dashboard-banner-images>
-    <!--XNFR-458--->
     <app-response-message class="pg8" [customResponse]="dealResponse"
       *ngIf="dealResponse.isVisible"></app-response-message>
     <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>

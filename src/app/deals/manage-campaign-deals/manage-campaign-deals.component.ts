@@ -186,7 +186,7 @@ export class ManageCampaignDealsComponent implements OnInit {
  }
 
 
- downloadDeals() {
+ downloadDeals1() {
   let type = this.dealsPagination.filterKey;
   let fileName = "";
   if (type == null || type == undefined || type == "") {
@@ -499,5 +499,40 @@ resetModalPopup(){
 stageUpdateResponse(event:any){
   this.dealsResponse = (event === 200) ? new CustomResponse('SUCCESS', "Status Updated Successfully", true) : new CustomResponse('ERROR', "Invalid Input", true);
 }
+
+downloadDeals(pagination: Pagination){
+  let type = this.dealsPagination.filterKey;
+  if (type == null || type == undefined || type == "") {
+    type = "all";
+  } 
+  let partnerTeamMemberGroupFilter = false;    
+  let userType = "";
+  if (this.isVendorVersion) {
+    partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
+    userType = "v";
+  } else if (this.isPartnerVersion) {
+    userType = "p";
+  }
+  pagination.type = type;
+  pagination.userType = userType;
+  pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  pagination.partnerTeamMemberGroupFilter = partnerTeamMemberGroupFilter;
+  pagination.forCampaignAnalytics = this.fromAnalytics
+  this.dealsService.downloadDeals(pagination, this.loggedInUserId)
+      .subscribe(
+          data => {    
+              if(data.statusCode == 200){
+                this.dealsResponse = new CustomResponse('SUCCESS', data.message, true);
+              }else if(data.statusCode == 401){
+                this.dealsResponse = new CustomResponse('SUCCESS', data.message, true);
+              }
+          },error => {
+            this.httpRequestLoader.isServerError = true;
+          },
+          () => { console.log("DownloadDeals() Completed...!") }
+        );
+}
+
+
 
 }

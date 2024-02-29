@@ -606,10 +606,10 @@
 	   !campaign?.shareLeadsListExists ? properties.emptyOneClickLaunchCampaignErrorMessage:'One Click Launch'"
 			data-rel="fancybox-button"
 			(click)="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? false: launchOneClickCampaign(campaign)">
-			<i
-				[className]="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? 'fa fa-hand-pointer-o  cancelled-event':'fa fa-hand-pointer-o '"></i>
+			<i [className]="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? 'fa fa-hand-pointer-o  cancelled-event':'fa fa-hand-pointer-o '"></i>
 			<div class="clickicons"></div>
-		</a> <a class="custom-icon" *ngIf="campaign.campaignType != 'EVENT' && campaign.ended" data-toggle="tooltip"
+		</a>
+		<a class="custom-icon" *ngIf="campaign.campaignType != 'EVENT' && campaign.ended" data-toggle="tooltip"
 			data-placement="top" title="{{properties?.oneClickLaunchCampaignExpiredMessage}}"
 			data-rel="fancybox-button"> <i class="fa fa-hand-pointer-o cancelled-event IconCustomization"
 				aria-hidden="true"></i>
@@ -626,7 +626,7 @@
 <ng-template #disableIconsTemplate let-campaign="campaign">
 	<ng-container *ngIf="!campaign.allowRedistribution">
 		<!----XNFR-125---->
-		<a class="custom-icon" data-toggle="tooltip" data-placement="top"
+		<a *ngIf="campaign?.oneClickLaunch" class="custom-icon" data-toggle="tooltip" data-placement="top"
 			title="{{campaign?.redistibuteToolTipMessage}}" data-rel="fancybox-button"> <i
 				class="fa fa-hand-pointer-o cancelled-event IconCustomization" aria-hidden="true"></i>
 			<div class="clickicons"></div>

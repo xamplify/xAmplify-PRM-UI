@@ -3070,7 +3070,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.loggedInUserId = this.authenticationService.getUserId();
             this.partnerEmails();
             this.socialContactImage();
-            this.checkSyncStatus();
+            if(this.router.url.includes('home/contacts')){
+				this.checkSyncStatus();
+			}
             //this.hideModal();
             if (!this.assignLeads) {
                 this.loadContactListsNames();
