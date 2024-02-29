@@ -205,4 +205,23 @@ export class FormService {
     private handleError( error: any ) {
         return Observable.throw( error );
     }
+
+    /***** XNFR-467 *****/
+    
+    downloadCsv(formSubmitId: number){
+        let url = this.URL+"survey/download/" + formSubmitId +"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+        .map(( response: any ) => response )
+        .catch( this.handleError );
+    }
+    
+    /***** XNFR-467 *****/
+
+    downloadCsvFile(alias:string){
+    let url = this.URL+"survey/analytics/download/" + alias +"?access_token=" + this.authenticationService.access_token;
+         return this.http.get(url)
+        .map(( response: any ) => response )
+       .catch( this.handleError );
+     }
+
 }

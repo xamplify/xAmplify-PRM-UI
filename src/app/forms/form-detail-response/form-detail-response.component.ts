@@ -17,6 +17,7 @@ export class FormDetailResponseComponent implements OnInit {
   geoLocationDetails: any;
   questionAndAnswers: any;
   @Output() notifyClose = new EventEmitter();
+  loggedInUser: number;
 
   constructor(public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public formService: FormService,
@@ -45,5 +46,35 @@ export class FormDetailResponseComponent implements OnInit {
   closeDetailedResponse() {
     this.notifyClose.emit(); 
   }
+  
+  /***** XNFR-467 *****/
+  downloadCsv(){
+    this.loggedInUser = this.authenticationService.getUserId();
+    this.formService.downloadCsv(this.formSubmitId)
+    .subscribe(
+      response => {
+          this.downloadFile(response, "Survey-Data", this.loggedInUser);
+        },
+      (error: any) => { this.logger.errorPage(error); 
+      });
+  }
 
+  downloadFile(data: any, selectedleadType: any, name: any) {
+    let parsedResponse = data.text();
+    let blob = new Blob([parsedResponse], { type: 'text/csv' });
+    let url = window.URL.createObjectURL(blob);
+
+    if (navigator.msSaveOrOpenBlob) {
+      navigator.msSaveBlob(blob, 'UserList.csv');
+    } else {
+      let a = document.createElement('a');
+      a.href = url;
+      a.download = selectedleadType + "_" + name + ' List.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+    window.URL.revokeObjectURL(url);
+  }
+     
 }

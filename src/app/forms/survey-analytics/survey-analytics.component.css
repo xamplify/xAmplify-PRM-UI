@@ -87,3 +87,15 @@ table.table.table-allsideboders {
 		padding: 10px 7px!important;
 	}
 }
+/***** XNFR-467 *****/
+.mr200{
+	margin-right: 200px;
+}
+.mr80{
+	margin-right: 80px;
+	margin-top: -60px;
+}
+.download-customized{
+    margin-top: -4px;
+	margin-right: 40px;
+}
