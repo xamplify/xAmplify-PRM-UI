@@ -346,7 +346,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	loggedInUserCompanyId = 0;
 	vendorJourney:boolean = false;
 	isLandingPages:boolean = false;
-
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,

@@ -278,7 +278,8 @@
                                         </li>
                                     </ng-container>
                                     <!--Vendor Journey-->
-                                    <ng-container
+                                    <ng-container *ngIf="isLocalHost">
+                                        <ng-container
                                         *ngIf="(authenticationService?.module?.adminOrSuperVisor || authenticationService?.isVendor())">
                                         <li [ngClass]="{'active-tab': activeTabName == 'vendorJourney'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorJourney'}"
@@ -294,6 +295,7 @@
                                                 (click)="activateTab('landingPages');clearCustomResponse()">
                                                 {{properties.landingPages | translate}}</a>
                                         </li>
+                                    </ng-container>
                                     </ng-container>
                                     <!--Folders-->
                                     <li *ngIf="authenticationService.folders"
@@ -3057,7 +3059,6 @@
                                                     <div class="tile mScroll" id="CardBgforSection" style="border-radius: 5px;">
                                                         <app-xamplify-default-templates *ngIf="editVendorPage" [vendorJourney] = 'true'
                                                         [landingPage]="vendorDefaultTemplate" (redirect)="resetVendorJourney()"></app-xamplify-default-templates>
-            
                                                     </div>
                                                 </div>
                                             </div>
