@@ -194,7 +194,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   this.showCommentsPopUp.emit(deal);
  }
 
- downloadLeads() {
+ downloadLeads1() {
   let type = this.leadsPagination.filterKey;
   let fileName = "";
   if (type == null || type == undefined || type == "") {
@@ -443,5 +443,40 @@ closeApprovalStatusModelPopup(){
   this.updateCurrentStage = false;
   this.listCampaignLeads(this.leadsPagination);
 }
+
+downloadLeads(pagination: Pagination){
+  let type = this.leadsPagination.filterKey;
+  if (type == null || type == undefined || type == "") {
+    type = "all";
+  } 
+  let partnerTeamMemberGroupFilter = false;    
+  let userType = "";
+  if (this.isVendorVersion) {
+    partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
+    userType = "v";
+  } else if (this.isPartnerVersion) {
+    userType = "p";
+  }
+  pagination.type = type;
+  pagination.userType = userType;
+  pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  pagination.partnerTeamMemberGroupFilter = partnerTeamMemberGroupFilter;
+  pagination.forCampaignAnalytics = this.fromAnalytics
+  this.leadsService.downloadLeads(pagination, this.loggedInUserId)
+      .subscribe(
+          data => {    
+              if(data.statusCode == 200){
+                this.leadsResponse = new CustomResponse('SUCCESS', data.message, true);
+              }else if(data.statusCode == 401){
+                this.leadsResponse = new CustomResponse('SUCCESS', data.message, true);
+              }
+          },error => {
+            this.httpRequestLoader.isServerError = true;
+          },
+          () => { console.log("DownloadLeads() Completed...!") }
+        );
+}
+
+
 
 }
