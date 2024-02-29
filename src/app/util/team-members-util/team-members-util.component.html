@@ -29,7 +29,7 @@
     <div>
       <table class="table table-bordered" aria-describedby="csv-error-messages-table">
         <ng-container *ngFor="let error of csvErrors">
-          <tr>
+          <tr class="upload_csv_validate">
             <th class="align-bold" id="csverror-th">{{error}}</th>
           </tr>
         </ng-container>
@@ -270,7 +270,7 @@
                         <a *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner"
                           data-toggle="tooltip" data-placement="bottom" title="Edit"
                           (click)="edit(teamMember.teamMemberId)"
-                          [className]="isLoggedInAsTeamMember? 'pointer-events-none':'custom-icon'">
+                          [className]="isLoggedInAsTeamMember? 'pointer-events-none custom-icon':'custom-icon'">
                           <i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
                           <div class="clickicons"></div>
                         </a>

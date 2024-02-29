@@ -45,7 +45,6 @@ import { RegionalStatisticsAnalyticsComponent } from './dashboard-analytics-comp
 import { VideoStatisticsAnalyticsComponent } from './dashboard-analytics-components/video-statistics-analytics/video-statistics-analytics.component';
 import { EmailStatsAnalyticsComponent } from './dashboard-analytics-components/email-stats-analytics/email-stats-analytics.component';
 import { SocialAccountsAnalyticsComponent } from './dashboard-analytics-components/social-accounts-analytics/social-accounts-analytics.component';
-import { DashboardButtonsComponent } from './dashboard-buttons/dashboard-buttons.component';
 import { DashboardButtonsCarouselComponent } from './dashboard-buttons-carousel/dashboard-buttons-carousel.component';
 import { VanityEmailTemplatesComponent } from 'app/email-template/vanity-email-templates/vanity-email-templates.component';
 import { ModuleAccessComponent } from './module-access/module-access.component';
@@ -89,6 +88,9 @@ import { ActiveThreadsInfoComponent } from './active-threads-info/active-threads
 import { CustomLoginScreenSettingsComponent } from './custom-login-screen-settings/custom-login-screen-settings.component';
 import { ConnectwiseAuthenticationComponent } from './connectwise-authentication/connectwise-authentication.component';
 import { AddOrManageDomainsComponent } from './add-or-manage-domains/add-or-manage-domains.component';
+import { CustomLinksUtilComponent } from './custom-links-util/custom-links-util.component';
+import { NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent } from './news-and-announcement-and-instant-navigation-dashboard-analytics/news-and-announcement-and-instant-navigation-dashboard-analytics.component';
+import { DashboardBannerImagesComponent } from './dashboard-banner-images/dashboard-banner-images.component';
 
 
 @NgModule({
@@ -111,7 +113,6 @@ import { AddOrManageDomainsComponent } from './add-or-manage-domains/add-or-mana
         VideoStatisticsAnalyticsComponent,
         EmailStatsAnalyticsComponent,
         SocialAccountsAnalyticsComponent,
-        DashboardButtonsComponent,        
         DashboardButtonsCarouselComponent, 
         VanityEmailTemplatesComponent,
         ModuleAccessComponent,
@@ -154,7 +155,10 @@ import { AddOrManageDomainsComponent } from './add-or-manage-domains/add-or-mana
         ActiveThreadsInfoComponent,
         CustomLoginScreenSettingsComponent,
         ConnectwiseAuthenticationComponent,
-        AddOrManageDomainsComponent
+        AddOrManageDomainsComponent,
+        CustomLinksUtilComponent,
+        NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent,
+        DashboardBannerImagesComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

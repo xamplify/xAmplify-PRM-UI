@@ -49,6 +49,9 @@
         (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
     </div>
   </div>
+  <!--XNFR-458--->
+  <app-dashboard-banner-images></app-dashboard-banner-images>
+  <!--XNFR-458--->
   <div class="page-bar page-bar-shadow shadow-radius">
     <app-response-message class="pg8" [customResponse]="dealResponse"
       *ngIf="dealResponse.isVisible"></app-response-message>
@@ -56,6 +59,9 @@
     <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true"
       [applyFilter]="applyFilter"></app-module-analytics>
   </div>
+   <!---XNFR-459--->
+   <app-news-and-announcement-and-instant-navigation-dashboard-analytics></app-news-and-announcement-and-instant-navigation-dashboard-analytics>
+   <!---XNFR-459--->
   <!------------Dashbaord Button Carusel---------------------->
   <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
   <app-vendor-activity-analytics></app-vendor-activity-analytics>

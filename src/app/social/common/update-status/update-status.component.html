@@ -727,6 +727,19 @@
                                         class="fa fa-search" aria-hidden="true"></i></button>
                             </div>
                         </div>
+                        <div class="col-sm-6 col-md-6 col-lg-8 pl0 pr0" style="margin-left: 14px;" *ngIf="!socialCampaign?.channelCampaign && (authenticationService?.module?.isMarketingCompany || authenticationService?.module?.isOrgAdminCompany)">
+                            <ul class="mix-filter m0">
+                                <li class="filter" [class.active]="'ALL' == contactListsPagination.filterBy" (click)="filterContacts('ALL')">All</li>
+                                <li class="filter" [class.active]="'MY-CONTACTS' == contactListsPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
+                                </li>
+                                <li class="filter" *ngIf="!authenticationService?.module?.isMarketingCompany" [class.active]="'MY-PARTNERS' == contactListsPagination.filterBy" (click)="filterContacts('MY-PARTNERS')" translate>My Partners
+                                </li>
+                                <li class="filter" [class.active]="'FORM-CONTACTS' == contactListsPagination.filterBy" (click)="filterContacts('FORM-CONTACTS')" translate>Form
+                                    Contacts</li>
+                                <li class="filter" [class.active]="'COMPANY-CONTACTS' == contactListsPagination.filterBy" (click)="filterContacts('COMPANY-CONTACTS')" translate>Company
+                                    Contacts</li>
+                            </ul>
+                        </div>
                     </div>
                     <app-list-loader *ngIf="recipientsLoader?.isLoading"></app-list-loader>
 
@@ -839,6 +852,13 @@
                                                         class="view-banner view-banner-green mt5 left-flt" translate>
                                                         <span class="" data-toggle="tooltip" data-placement="top"
                                                             title="This list is associated with a form." translate>Form
+                                                            Contact List
+                                                        </span>
+                                                    </h6>
+                                                    <h6 *ngIf="contactList?.companyList"
+                                                        class="view-banner view-banner-green mt5 left-flt" translate>
+                                                        <span class="" data-toggle="tooltip" data-placement="top"
+                                                            title="This list is associated with a company." translate>Company
                                                             Contact List
                                                         </span>
                                                     </h6>

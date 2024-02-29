@@ -444,15 +444,20 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.uploadedThumbnailName = "";
 	}
 
-	validateForm(columnName: string) {
-		if (columnName == "assetName") {
-			this.damUploadPostDto.validName = $.trim(this.damUploadPostDto.assetName) != undefined && $.trim(this.damUploadPostDto.assetName).length > 0;
-		} else if (columnName == "description") {
-            this.damUploadPostDto.validDescription = this.referenceService.validateCkEditorDescription(this.damUploadPostDto.description);
-			this.updateDescriptionErrorMessage();
-		}
-		this.validateAllFields();
-	}
+    validateForm(columnName: string) {
+        if (columnName == "assetName") {
+            this.damUploadPostDto.validName = $.trim(this.damUploadPostDto.assetName) != undefined && $.trim(this.damUploadPostDto.assetName).length > 0;
+        } else if (columnName == "description") {
+            let trimmedDescription = this.referenceService.getTrimmedCkEditorDescription(this.damUploadPostDto.description);
+            trimmedDescription = trimmedDescription.substring(3, trimmedDescription.length - 4).trim();
+            this.damUploadPostDto.validDescription =
+                $.trim(trimmedDescription) != undefined &&
+                $.trim(trimmedDescription).length > 0 &&
+                $.trim(trimmedDescription).length < 5000;
+            this.updateDescriptionErrorMessage();
+        }
+        this.validateAllFields();
+    }
 
 	validateAllFields() {
 		if(this.isAdd){
@@ -463,14 +468,17 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		}
 	}
 
-	updateDescriptionErrorMessage(){
+    updateDescriptionErrorMessage() {
         let trimmedDescription = this.referenceService.getTrimmedCkEditorDescription(this.damUploadPostDto.description);
-		if(trimmedDescription.length < 5000){
-			this.descriptionErrorMessage = "";
-		} else {
-			this.descriptionErrorMessage = "Description can't exceed 5000 characters.";
-		}
-	}
+        trimmedDescription = trimmedDescription.substring(3, trimmedDescription.length - 4).trim();
+        if (trimmedDescription.length < 1) {
+            this.descriptionErrorMessage = "Description can not be empty";
+        } else if (trimmedDescription.length >= 1 && trimmedDescription.length < 5000) {
+            this.descriptionErrorMessage = "";
+        } else {
+            this.descriptionErrorMessage = "Description can't exceed 5000 characters.";
+        }
+    }
 
 	uploadOrUpdate() {
         this.damService.uploadAssetInProgress = true;
@@ -880,7 +888,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
       }else{
         if(!this.isAdd){
             let extension = this.referenceService.getFileExtension(uploadedCloudAssetName);
-            if (extension == this.damUploadPostDto.assetType) {
+            if (extension.toLocaleLowerCase() == this.damUploadPostDto.assetType.toLocaleLowerCase()) {
                 this.setFormDataAndCloudContentFileProperties(uploadedCloudAssetName, downloadLink);
             } else {
                 this.uploadedCloudAssetName = "";

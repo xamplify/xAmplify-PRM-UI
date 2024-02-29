@@ -54,6 +54,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 	@Input() folderListViewExpanded = false;
   titleHeader:string = "";
   suffixHeader:string = "";
+  trackOrPlayBookText = "";
   /****XNFR-327****/
   showRefreshNotification = false;
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
@@ -68,6 +69,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     this.moduleId = this.tracksModule ? this.roles.learningTrackId :this.roles.playbookId;
     this.isPartnerView = this.router.url.indexOf('/shared') > -1;
     this.titleHeader = this.tracksModule ? "Tracks" : "Play Books";
+    this.trackOrPlayBookText = this.tracksModule ? "track" : "play book";
     this.suffixHeader = this.isPartnerView ? 'Shared ':'Manage ';
     if(this.folderListViewCategoryId!=undefined){
 			this.categoryId = this.folderListViewCategoryId;
@@ -327,6 +329,7 @@ setViewType(viewType: string) {
 
   UnpublishedModalPopUp(id: number){
     this.UnPublishedId =id ;
+
     $('#unpublished-modal').modal('show');
   }
 

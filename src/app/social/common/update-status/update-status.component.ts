@@ -145,6 +145,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.updateButtonText();
 		this.contactListsPagination.pageIndex = 1;
 		this.contactListsPagination.maxResults = 12;
+		this.contactListsPagination.filterBy = 'ALL';
 		//this.socialCampaign.userListIds = [];//Write Logic For Only OrgAdmin & Marketing company
 		this.loadContactLists(this.contactListsPagination);
 	}
@@ -769,6 +770,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				contactListsPagination.filterValue = false;
         		contactListsPagination.filterKey = null;
 			}
+			if (this.contactListsPagination.filterBy == null || this.contactListsPagination.filterBy == undefined || this.contactListsPagination.filterBy.trim().length == 0) {
+                this.contactListsPagination.filterBy = 'ALL'
+            }
 			contactListsPagination.channelCampaign = this.socialCampaign.channelCampaign;
 			contactListsPagination.isLoading = true;
 			this.paginationType = 'updatestatuscontactlists';
@@ -1668,6 +1672,12 @@ checkAliasAccess(socialCampaignAlias: string) {
 	validateFromName(fromName:string){
 		let trimmedFromName = this.referenceService.replaceMultipleSpacesWithSingleSpace($.trim(fromName));
 		this.isValidFromName = trimmedFromName!=undefined && trimmedFromName.length>0;
+	}
+
+	filterContacts(filterType:string){
+		this.contactListsPagination.pageIndex = 1;
+		this.contactListsPagination.filterBy = filterType;
+		this.loadContactLists(this.contactListsPagination)
 	}
 	
 }

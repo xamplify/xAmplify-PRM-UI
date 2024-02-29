@@ -21,6 +21,7 @@ import { UserService } from '../../core/services/user.service';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { utc } from 'moment';
 import { Properties } from 'app/common/models/properties';
+import { access } from 'fs';
 
 declare var swal, $: any, flatpickr;
 
@@ -1287,5 +1288,30 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     this.editButtonClicked = false;
     }
    
+    /***** XNFR-445 *****/
+    downloadCampaignsData(pagination: Pagination){
+        this.isloading = true;
+        try{
+            this.campaignService.downloadCampaignsData(pagination, this.loggedInUserId)
+        .subscribe(
+            data => {    
+                if(data.statusCode==200){
+                    this.isloading = false;
+                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);   
+                }
+                if(data.statusCode==401){
+                    this.isloading = false;
+                    this.customResponse = new CustomResponse('SUCCESS',data.message,true);
+                }
+            },
+            (error: any) => {
+                this.logger.errorPage(error);
+            },
+            ()=> this.logger.info("download completed")
+            );
+        }catch(error){
+            this.logger.error(error, "ManagePublishComponent", "downloadCampaignsData()");
+        }
+    }
 
 }

@@ -20,7 +20,6 @@ import { VendorRequestReportComponent } from './vendor-request-report/vendor-req
 import { SocialContactsCallbackComponent } from "app/contacts/social-contacts-callback/social-contacts-callback.component";
 import { SamlsecurityComponent } from "./samlsecurity/samlsecurity.component";
 import { DashboardAnalyticsComponent } from './dashboard-analytics/dashboard-analytics.component';
-import { DashboardButtonsComponent } from "./dashboard-buttons/dashboard-buttons.component";
 import { VanityEmailTemplatesComponent } from "app/email-template/vanity-email-templates/vanity-email-templates.component";
 import { ModuleAccessComponent } from "./module-access/module-access.component";
 import { DetailedDashboardComponent } from './detailed-dashboard/detailed-dashboard.component';
@@ -56,7 +55,6 @@ const routes: Routes = [
   { path: 'hubspot-callback',component:SocialContactsCallbackComponent},
   { path: 'isalesforce-callback',component:SocialContactsCallbackComponent},
   {path:'sso-samlsecurity',component:SamlsecurityComponent},
-  {path:'buttons', component:DashboardButtonsComponent},
   {path:'v-templates', component:VanityEmailTemplatesComponent},
   {path:'module-access/:alias/:userAlias/:companyProfileName', component:ModuleAccessComponent},
   {path:'spf', component:SpfComponent},

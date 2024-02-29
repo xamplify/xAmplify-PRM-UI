@@ -47,6 +47,12 @@ export class CompanyService {
       .catch(this.handleError);
   } 
 
+  syncCompanyContactLists(loggedInUserId: number){
+    return this.http.get(this.companyUrl + "/migration/company/contacts/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
   private extractData(res: Response) {
     const body = res.json();
     // return body || {};

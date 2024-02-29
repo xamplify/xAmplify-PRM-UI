@@ -131,6 +131,7 @@ export class AddDealComponent implements OnInit {
     this.deal.pipelineStageId = 0;
     if (this.actionType === "add") {
       this.showCommentActions = true;
+      this.showAttachLeadButton = true;
       this.dealFormTitle = "Add a Deal";
       if (this.leadId > 0) {
         this.getLead(this.leadId);
@@ -150,6 +151,7 @@ export class AddDealComponent implements OnInit {
       }
     } else if (this.actionType === "edit") {
       this.edit = true;
+      this.showAttachLeadButton = true;
       this.dealFormTitle = "Edit Deal";
       if (this.dealId > 0) {
         this.getDeal(this.dealId);
@@ -229,6 +231,8 @@ export class AddDealComponent implements OnInit {
                 self.deal.campaignName = self.lead.campaignName;
                 // this.getCampaignDealPipeline();
               } else {
+                self.deal.campaignId = 0;
+                self.deal.campaignName = '';
                 //self.getPipelines();
               }
               //this.isSalesForceEnabled();         
@@ -439,7 +443,6 @@ export class AddDealComponent implements OnInit {
       this.pipelines = [];
       this.activeCRMDetails.hasDealPipeline = false;
       this.stages = [];
-      this.showAttachLeadButton = false;
       this.showDefaultForm = false;
       this.propertiesQuestions = [];
     }
@@ -982,13 +985,6 @@ export class AddDealComponent implements OnInit {
               && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
                 || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type)) {
               this.showCustomForm = true;
-            }
-            if ( !this.activeCRMDetails.activeCRM || "CONNECTWISE" === this.activeCRMDetails.type) {
-              if (this.actionType !== 'view' && (this.actionType !== 'edit' || this.deal.associatedContact === undefined)) {
-                this.showAttachLeadButton = true;
-              }
-            }else{
-              this.showAttachLeadButton = false;
             }
           }
         },

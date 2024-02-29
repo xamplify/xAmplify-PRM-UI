@@ -3,11 +3,11 @@
       <div class="modal-content mSweetalertWid popup-cu-widthalign">
           <div class="modal-header">
               <h4 class="modal-title f-w-600" id="" translate="">Are you sure you want to unpublish this
-                  track?</h4>
+                  {{type}}?</h4>
           </div>
           <div class="modal-body">
               <div>
-                  <h4 class="modal-title">Please share your reason for unpublishing this Track.</h4>
+                  <h4 class="modal-title">Please share your reason for unpublishing this {{type}}.</h4>
               </div>
               <div class="form-check pointer mt15"> 
                   
@@ -16,16 +16,14 @@
                   <label class="option-color">Want to update Assets/Quiz</label><br>
                   <input class="pointer radioButton_shadow" type="radio" 
                       name="rdaction" value="Partner_List" (click)="selectedOption=true">
-                  <label class="option-color">Want to update the partner/list of partners</label><br>
+                  <label class="option-color">Want to update the {{authenticationService?.partnerModule?.customName}}/list of {{authenticationService?.partnerModule?.customName}}</label><br>
                   <input class="pointer radioButton_shadow" type="radio" 
       
                   name="rdaction" value="Other" (click)="selectedOption=true">
                   <label class="option-color">Other</label><br>
               </div>
               <div>
-                  <p class="warning-text">* When you unpublish the track,all the related analytics
-                      will no
-                      longer exists.</p>
+                  <p class="warning-text">* When you unpublish the {{type}},all the related analytics will no longer exists.</p>
               </div>
           </div>
           <div class="modal-footer">

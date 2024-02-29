@@ -2964,7 +2964,7 @@ export class ReferenceService {
   getApiErrorMessage(error: any) {
     let statusCode = JSON.parse(error["status"]);
     let message = "";
-    if (statusCode == 409 || statusCode == 400 || statusCode == 500) {
+    if (statusCode == 409 || statusCode == 400 || statusCode == 500 || statusCode==403) {
       let errorResponse = JSON.parse(error["_body"]);
       message = errorResponse["message"];
     } else {
@@ -3460,6 +3460,19 @@ getEncodedUri(input:string){
   }else{
     return input;
   }
+}
+
+removeCssStyles(){
+  var hs = document.getElementsByTagName('style');
+    for (var i=0, max = hs.length; i < max; i++) {
+      if(hs[i]!=undefined && hs[i]['parentNode']!=undefined){
+        hs[i].parentNode.removeChild(hs[i]);
+      }
+    } 
+}
+
+removeElementById(){
+  $('link[id="head-link-rel"]').remove();
 }
 
 }

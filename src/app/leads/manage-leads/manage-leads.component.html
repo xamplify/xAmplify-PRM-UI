@@ -159,9 +159,10 @@
                         </span>
                       </ng-container>
                       <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-                        style="margin-left: 3px !important;" title="Download"
-                        [class.disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView" (click)="downloadLeads()">
-                        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+                        style="margin-left: 3px !important;" title="Click here to email the report"
+                        [class.disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView"
+                        (click)="downloadLeads(leadsPagination)">
+                        <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                       </span>
 
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
@@ -378,7 +379,7 @@
                               </div>
 
                               <div
-                                *ngIf="lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner">
+                                *ngIf="(lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner) || (lead?.selfLead && lead?.associatedDealId == undefined)">
                                 <button class="button_blue bgcolor-unset" (click)="showDealRegistrationForm(lead)"
                                   translate>
                                   <span class="btn btn-primary transition d-inline"> Register Deal</span>
@@ -386,7 +387,7 @@
                               </div>
 
                               <!----XNFR-426----->
-                              <div *ngIf="lead?.leadApprovalOrRejection">
+                              <div *ngIf="lead?.leadApprovalOrRejection && !lead?.selfLead">
                                 <div *ngIf="!authenticationService?.module?.deletedPartner">
                                   <div style="color: #06c306;"
                                     *ngIf="lead?.leadApprovalStatusType == 'APPROVED' && lead?.associatedDealId == undefined"
@@ -403,7 +404,9 @@
                                     Rejected
                                   </div>
                                   <div *ngIf="lead?.canRegisterDeal">
-                                    <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom" title="{{lead?.approvalStatusComment ? (lead?.leadApprovalStatusType !== 'APPROVED' ? 'You can not register a deal for a rejected lead' : '') : 'You can not register a deal for an unapproved lead'}}"
+                                    <button class="button_blue bgcolor-unset" data-toggle="tooltip"
+                                      data-placement="bottom"
+                                      title="{{lead?.approvalStatusComment ? (lead?.leadApprovalStatusType !== 'APPROVED' ? 'You can not register a deal for a rejected lead' : '') : 'You can not register a deal for an unapproved lead'}}"
                                       [disabled]="(((lead?.leadApprovalStatusType == 'REJECTED') || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection)))"
                                       (click)="showDealRegistrationForm(lead)" translate>
                                       <span class="btn btn-primary transition d-inline"> Register Deal</span>
@@ -448,10 +451,10 @@
                                   title="Comments/History">
                                   <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
                                   </i>
-                                  <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
-                                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
                                   <div class="clickicons"></div>
                                 </a>
+                                <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default notify-badge"
+                                  style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
                               </div>
                             </td>
                           </tr>

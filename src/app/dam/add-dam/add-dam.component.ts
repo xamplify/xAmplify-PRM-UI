@@ -259,6 +259,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
         $.trim(this.damPostDto.name).length > 0;
     } else if (columnName == "description") {
       let trimmedDescription =  this.referenceService.getTrimmedCkEditorDescription(this.damPostDto.description);
+      trimmedDescription = trimmedDescription.substring(3,trimmedDescription.length-4).trim();
       this.isValidDescription =
         $.trim(trimmedDescription) != undefined &&
         $.trim(trimmedDescription).length > 0 &&
@@ -272,8 +273,10 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.validForm = this.isValidName && this.isValidDescription;
   }
 
-  updateDescriptionErrorMessage(description:string) {
-    if ($.trim(description).length < 5000) {
+  updateDescriptionErrorMessage(description: string) {
+    if (description.length < 1) {
+      this.descriptionErrorMessage = "Description can not be empty";
+    } else if (description.length >= 1 && description.length < 5000) {
       this.descriptionErrorMessage = "";
     } else {
       this.descriptionErrorMessage = "Description can't exceed 5000 characters.";

@@ -2601,3 +2601,14 @@ button.unlink-button {
 .unlink-button:hover {
   color:#333!important;
 }
+/***** Sudha Sri(22-2-204) *****/
+.inline-flex.border-end:nth-child(even) {
+  background-color: #22313a !important;
+}
+.border-end {
+  border-bottom: 1px solid #2f4857 !important;
+}
+/**** Sudha Sri(27-2-2024)****/
+table tr:nth-child(odd).highlightRow, table tr:nth-child(odd).highlightRow:hover{
+  background: #22313a!important;
+}

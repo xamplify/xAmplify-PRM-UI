@@ -251,6 +251,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     endDatePickr: any;
     showMicrosoftAuthenticationForm: boolean = false;
     activeCRMDetails: any;
+    campaignRecipientsLoader = false;
 
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
@@ -914,6 +915,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
         this.contactListsPagination.channelCampaign = this.eventCampaign.channelCampaign;
         this.contactListsPagination.pageIndex = 1;
+        this.contactListsPagination.filterBy = 'ALL';
         this.showContactType = true;
         if (!this.eventCampaign.channelCampaign) {
             this.eventCampaign.enableCoBrandingLogo = false;
@@ -981,10 +983,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     //   }
 
     contactListMethod(contactListsPagination: Pagination) {
-
         if (this.reDistributeEvent || this.reDistributeEventManage) {
             this.loadRedistributionContactList(contactListsPagination)
         } else {
+            if (this.contactListsPagination.filterBy == null || this.contactListsPagination.filterBy == undefined || this.contactListsPagination.filterBy.trim().length == 0) {
+                this.contactListsPagination.filterBy = 'ALL'
+            }
+            this.campaignRecipientsLoader = true;
             this.contactService.findContactsAndPartnersForCampaign(contactListsPagination)
                 .subscribe(
                     (response: any) => {
@@ -1012,6 +1017,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         } else {
                             this.isHeaderCheckBoxChecked = false;
                         }
+                        this.campaignRecipientsLoader = false;
                     },
                     (error: any) => { this.logger.error(error); },
                     () => { this.logger.info('event campaign page contactListMethod() finished'); });
@@ -3170,4 +3176,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
         this.loading = false;
     }
+
+    filterContacts(filterType:string){
+		this.contactListsPagination.pageIndex = 1;
+		this.contactListsPagination.filterBy = filterType;
+		this.contactListMethod(this.contactListsPagination)
+	}
 }
