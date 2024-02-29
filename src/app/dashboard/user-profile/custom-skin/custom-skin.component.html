@@ -27,13 +27,13 @@
 		?'disabled':''" [disabled]="isValid || isValidContactName || name.hasError('required') " id="sample_editable_1_new"
 				style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme"
 				(click)="getThemePropertiesWrapperObj(form)"><span
-					class="btn btn-primary transition txt_pd-top3">Save</span></button>
+					class="btn btn-primary transition text_pd-top1">Save</span></button>
 			<button class="button_blue padding align bgcolor-unset" [ngClass]="isValid ?'disabled':''"
 				[disabled]="isValid || isValidContactName || headerBg.hasError('required')|| footerText.hasError('required') || footerBg.hasError('required') || name.hasError('required') || 
 		mainText.hasError('required') || mainCardBg.hasError('required') || mainBg.hasError('required') || btnColor.hasError('required') || btnBorderColor.hasError('required') || btnName.hasError('required')
 		|| leftBg.hasError('required') || leftBorder.hasError('required') || btnBgColor.hasError('required') ||btnPrimaryBorderColor.hasError('required') || btnValueColor.hasError('required') || btnSecondaryBgColor.hasError('required') || btnSecondaryBorderColor.hasError('required') || btnSecondaryTextColor.hasError('required') || leftIcon.hasError('required') || mainBorder.hasError('required') || iconColors.hasError('required') || iconBorder.hasError('required') || leftText.hasError('required')"
 				style="border-radius: 3px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme" (click)="update()"><span
-					class="btn btn-primary transition txt_pd-top3">Update</span></button>
+					class="btn btn-primary transition text_pd-top1">Update</span></button>
 		</div>
 	</div>
 
@@ -70,17 +70,17 @@
 </div>
 <div class="page-breadcrumb">
 	<ul class="nav nav-pills" style="border-bottom: 2px solid #2b5ec4;">
-		<li [ngClass]="{'active': activeTabName == 'header'}"><a class="text-white"
+		<li [ngClass]="{'active theme_activation_bg': activeTabName == 'header'}"><a class="text-white"
 				[ngClass]="{'active-tab-anchor-text': activeTabName == 'header'}"
 				(click)="activeTabNav('header');clearCustomResponse()" selected="true">Header</a></li>
-		<li [ngClass]="{'active': activeTabName == 'leftmenu'}"><a class="text-white"
+		<li [ngClass]="{'active theme_activation_bg': activeTabName == 'leftmenu'}"><a class="text-white"
 				[ngClass]="{'active-tab-anchor-text': activeTabName == 'leftmenu'}"
 				(click)="activeTabNav('leftmenu');clearCustomResponse()">Left
 				Menu</a></li>
-		<li [ngClass]="{'active': activeTabName == 'footer'}"><a class="text-white"
+		<li [ngClass]="{'active theme_activation_bg': activeTabName == 'footer'}"><a class="text-white"
 				[ngClass]="{'active-tab-anchor-text': activeTabName == 'footer'}"
 				(click)="activeTabNav('footer');clearCustomResponse()">Footer</a></li>
-		<li [ngClass]="{'active': activeTabName == 'pagecontent'}"><a class="text-white"
+		<li [ngClass]="{'active theme_activation_bg': activeTabName == 'pagecontent'}"><a class="text-white"
 				[ngClass]="{'active-tab-anchor-text': activeTabName == 'pagecontent'}"
 				(click)="activeTabNav('pagecontent');clearCustomResponse()">Page
 				Content</a></li>

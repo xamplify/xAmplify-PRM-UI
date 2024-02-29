@@ -1,6 +1,6 @@
 <div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError"
   style="border:none !important;padding-bottom: 8px;">
-  <app-response-message class="pg8" [customResponse]="leadsResponse"
+  <app-response-message class="pg8 col-lg-12 col-md-12 col-sm-12 col-xs-12 p0" [customResponse]="leadsResponse"
     *ngIf="leadsResponse.isVisible"></app-response-message>
   <div class="col-xs-12 col-sm-5 col-lg-5" *ngIf="fromAnalytics && showTeamMemberFilter">
     <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"
@@ -25,9 +25,9 @@
           (click)="toggleFilterOption()">
           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
         </span>
-        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Download"
-          [class.disabled]="leadsSortOption.totalRecords == 0" (click)="downloadLeads()">
-          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Click here to email the report"
+          [class.disabled]="leadsSortOption.totalRecords == 0" (click)="downloadLeads(leadsPagination)">
+          <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
         </span>
       </div>
     </div>
@@ -166,10 +166,47 @@
                 Deal
               </div>
 
-              <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner"
-                class="register_deal">
-                <a style="color: #008fd5;" (click)="registerDeal(lead)" translate>
-                  Register Deal</a>
+
+
+              <div
+                *ngIf="(lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner) || (lead?.selfLead && lead?.associatedDealId == undefined)">
+                <button class="button_blue bgcolor-unset" (click)="registerDeal(lead)" translate>
+                  <span class="btn btn-primary transition d-inline"> Register Deal</span>
+                </button>
+              </div>
+
+              <!--toggle on --><!--------XNFR-426--------->
+              <div *ngIf="lead?.leadApprovalOrRejection  && !lead?.selfLead">
+                <div *ngIf="!authenticationService?.module?.deletedPartner">
+                  <div style="color: #06c306;"
+                    *ngIf="lead?.leadApprovalStatusType == 'APPROVED' && lead?.associatedDealId == undefined">
+                    <i class="fa fa-check-circle mr5" aria-hidden="true"
+                      style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                    Approved
+                  </div>
+                  <div style="color: #f71111;"
+                    *ngIf="lead?.leadApprovalStatusType == 'REJECTED' && lead?.associatedDealId == undefined">
+                    <i class="fa fa-times-circle mr5" aria-hidden="true"
+                      style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                    Rejected
+                  </div>
+                  <div *ngIf="lead?.canRegisterDeal">
+                    <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom" title="{{lead?.approvalStatusComment ? (lead?.leadApprovalStatusType !== 'APPROVED' ? 'You can not register a deal for a rejected lead' : '') : 'You can not register a deal for an unapproved lead'}}"
+                      [disabled]="(  ((lead?.leadApprovalStatusType == 'REJECTED') || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection)))"
+                      (click)="registerDeal(lead)" translate>
+                      <span class="btn btn-primary transition d-inline"> Register Deal</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="buttons"
+                  *ngIf="!(lead?.associatedDealId > 0) && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection">
+                  <button type="button" class="button_blue bgcolor-unset" translate
+                    (click)="addApprovalStatusModelPopup(lead,'APPROVED')"><span
+                      class="btn btn-primary transition txt_pd-top3">Approve</span></button>
+                  <button type="button" class="btn Btn-Gray neg_mrg_top4 pos_mrg_top3"
+                    (click)="addApprovalStatusModelPopup(lead,'REJECTED')" translate>Reject</button>
+                </div>
+
               </div>
 
             </td>
@@ -191,7 +228,7 @@
                     <div class="del-icon"></div>
                   </a>
                   <a class="custom-icon" *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)"
-                    title="Comments">
+                    title="Comments/History">
                     <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px"> </i>
                     <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
                       style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
@@ -223,3 +260,7 @@
 <div *ngIf="!httpRequestLoader.isLoading && leadsSortOption.totalRecords==0" class="alert alert-info">
   <strong translate>No Leads Found.</strong>
 </div>
+
+<app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [leadApprovalStatusType]="leadApprovalStatusType"
+  [lead]="selectedLead" [loggedInUserId]="loggedInUserId" (closePopupEmitter)="closeApprovalStatusModelPopup()">
+</app-opportunities-chat-modal-popup>

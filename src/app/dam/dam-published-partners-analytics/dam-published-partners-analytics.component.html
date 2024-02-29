@@ -7,22 +7,23 @@
       <div class="page-bar">
          <ul class="page-breadcrumb">
             <li>
-               <i class="fa fa-home" aria-hidden="true"></i> 
-               <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
+               <i class="fa fa-home" aria-hidden="true"></i>
+               <a [routerLink]="referenceService.homeRouter" translate>Home</a>
                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li>
-               <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+               <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li><a translate (click)="goBack()">DAM</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
-            <li><a class="default-cursor" translate>Published {{authenticationService?.partnerModule?.customName}}</a></li>
+            <li><a class="default-cursor" translate>Published {{authenticationService?.partnerModule?.customName}}</a>
+            </li>
          </ul>
          <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
-         <i class="fa fa-times" aria-hidden="true"></i>
+            <i class="fa fa-times" aria-hidden="true"></i>
          </a>
          <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
-         <i class="fa fa-refresh" aria-hidden="true"></i>
+            <i class="fa fa-refresh" aria-hidden="true"></i>
          </a>
       </div>
       <div class="row">
@@ -30,25 +31,32 @@
             <div class="clearfix">
                <div class="col-xs-12">
                   <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                  <div class="portlet light">
+                  <div class="portlet light remove_cardBgcolor">
                      <div class="portlet-title" style="padding-bottom: 3px;border-bottom: none;">
-                        <div class="caption" style="padding-top: 9px !important;padding-left: 4px !important;" translate>
+                        <div class="caption" style="padding-top: 9px !important;padding-left: 4px !important;"
+                           translate>
                            <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                            Published {{authenticationService?.partnerModule?.customName}}
                         </div>
                         <div class="inputs sort-published-partners d-flex">
                            <div class="" style="float: left; margin: 0 10px;">
-                              <select class="form-control" [(ngModel)]="sortOption.publishedPartnerAnalyticsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                              <option *ngFor="let option of sortOption.publishedPartnerAnalyticsDropDown"
-                              [ngValue]="option" translate>
-                              {{option.name}}</option>
+                              <select class="form-control" [(ngModel)]="sortOption.publishedPartnerAnalyticsSortOption"
+                                 (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                 <option *ngFor="let option of sortOption.publishedPartnerAnalyticsDropDown"
+                                    [ngValue]="option" translate>
+                                    {{option.name}}</option>
                               </select>
                            </div>
                            <div class="portlet-input input-inline">
                               <div class="input-icon right">
-                                 <input type="text" id="sort-text" style="height: 34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search.." (keypress)="eventHandler($event.keyCode)">
-                                 <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>
-                                 <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                 <input type="text" id="sort-text" style="height: 34px;" class="form-control"
+                                    [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                                    placeholder="Search.." (keypress)="eventHandler($event.keyCode)">
+                                 <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                    *ngIf="sortOption.searchKey"
+                                    (click)="sortOption.searchKey='';searchPartners();"></button>
+                                 <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i
+                                       class="fa fa-search" aria-hidden="true"></i></button>
                               </div>
                            </div>
                         </div>
@@ -58,13 +66,14 @@
                            <ul class="page-breadcrumb">
                               <li>
                                  <span title="{{selectedAssetName}}">
-                                 <strong class="bold-asset">Asset Name </strong>: {{selectedAssetName}}
+                                    <strong class="bold-asset">Asset Name </strong>: {{selectedAssetName}}
                                  </span>
                               </li>
                            </ul>
                         </div>
                         <!---Filter (XNFR-85)-->
-                        <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                        <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"
+                           (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                         <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
                         <div class="clearfix" *ngIf="!listLoader.isLoading">
                            <div class="col-xs-12" style="padding: 0px 0;margin-top: 5px;">
@@ -72,29 +81,34 @@
                                  <table class="table tgrid" aria-describedby="published-partners-list">
                                     <thead>
                                        <tr>
-                                          <th scope="col" translate >{{authenticationService?.partnerModule?.customName}} Info</th>
-                                          <th scope="col"  translate class="text-center">Views</th>
-                                          <th scope="col" translate  class="text-center">Downloads</th>
+                                          <th scope="col" translate>{{authenticationService?.partnerModule?.customName}}
+                                             Info</th>
+                                          <th scope="col" translate class="text-center">Views</th>
+                                          <th scope="col" translate class="text-center">Downloads</th>
                                           <th scope="col" translate class="text-center">ACTIONS</th>
                                        </tr>
                                     </thead>
                                     <tbody>
                                        <ng-container *ngFor="let partner of pagination.pagedItems;let i=index">
                                           <tr>
-                                             <td >
-                                                <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="partner">
+                                             <td>
+                                                <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true"
+                                                   [userInfo]="partner">
                                                 </app-user-info>
                                              </td>
-                                             <td  class="text-center">
+                                             <td class="text-center">
                                                 <span><strong>{{partner?.viewCount}}</strong></span>
                                              </td>
-                                             <td  class="text-center">
+                                             <td class="text-center">
                                                 <span><strong>{{partner?.downloadCount}}</strong></span>
                                              </td>
                                              <td class="text-center">
                                                 <div class=" actions-block no-float override-actions">
-                                                   <a (click)="viewDetailedAnalytics(partner)" title="View Detailed Analytics">
-                                                   <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                                                   <a class="custom-icon" (click)="viewDetailedAnalytics(partner)"
+                                                      title="View Detailed Analytics">
+                                                      <i class="fa fa-line-chart IconCustomization"
+                                                         aria-hidden="true"></i>
+                                                      <div class="clickicons"></div>
                                                    </a>
                                                 </div>
                                              </td>
@@ -102,7 +116,8 @@
                                        </ng-container>
                                     </tbody>
                                  </table>
-                                 <div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading" class="alert alert-info mAlert">
+                                 <div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading"
+                                    class="alert alert-info mAlert">
                                     <strong>No Data Found.</strong>
                                  </div>
                               </div>
@@ -110,16 +125,18 @@
                         </div>
                         <!----Pagination-->
                         <div *ngIf="pagination.pagedItems.length !== 0" [hidden]="listLoader.isLoading">
-                        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listPartners($event)" [hidden]="listLoader.isLoading">
-                        </app-pagination>
+                           <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+                              (notifyParentDropDown)="listPartners($event)" [hidden]="listLoader.isLoading">
+                           </app-pagination>
+                        </div>
                      </div>
                   </div>
+                  <!-- END EXAMPLE TABLE PORTLET-->
+                  <app-video-based-report *ngIf="campaignReport" [selectedVideo]="selectedVideo"
+                     [damId]="damId"></app-video-based-report>
                </div>
-               <!-- END EXAMPLE TABLE PORTLET-->
-               <app-video-based-report *ngIf="campaignReport" [selectedVideo]="selectedVideo" [damId]="damId"></app-video-based-report>
             </div>
          </div>
       </div>
-</div>
-</ng-container>
+   </ng-container>
 </div>

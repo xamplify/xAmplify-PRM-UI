@@ -3,7 +3,7 @@ import { Http, Response } from "@angular/http";
 import { SaveVideoFile } from "../../videos/models/save-video-file";
 import { AuthenticationService } from "./authentication.service";
 import { Observable } from "rxjs/Observable";
-import { Router } from "@angular/router";
+import { Router,ActivatedRoute } from "@angular/router";
 import { Category } from "../../videos/models/category";
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { DefaultVideoPlayer } from "../../videos/models/default-video-player";
@@ -148,6 +148,7 @@ export class ReferenceService {
   loginTemplateId = 53;
   assetResponseMessage = "";
   createdOrUpdatedSuccessMessage = "";
+  teamMemberSignedUpSuccessfullyMessage = "";
 
   /*** XNFR-433 ***/
   isCopyForm: boolean = false;
@@ -157,7 +158,8 @@ export class ReferenceService {
     private logger: XtremandLogger,
     private router: Router,
     public deviceService: Ng2DeviceService,
-    private envService:EnvService
+    private envService:EnvService,
+    private route:ActivatedRoute
   ) {
     this.videoTag =
       '<img src="' + authenticationService.imagesHost + 'xtremand-video.gif">';
@@ -2962,7 +2964,7 @@ export class ReferenceService {
   getApiErrorMessage(error: any) {
     let statusCode = JSON.parse(error["status"]);
     let message = "";
-    if (statusCode == 409 || statusCode == 400 || statusCode == 500) {
+    if (statusCode == 409 || statusCode == 400 || statusCode == 500 || statusCode==403) {
       let errorResponse = JSON.parse(error["_body"]);
       message = errorResponse["message"];
     } else {
@@ -3356,6 +3358,11 @@ export class ReferenceService {
     return $.trim(input);
   }
 
+
+  getRouterParameter(parameter:string){
+    return this.route.snapshot.params[parameter];
+  }
+
   convertToLowerCaseAndGetTrimmedData(input:any){
     return $.trim(input.toLowerCase());
   }
@@ -3445,6 +3452,27 @@ closeDamModalPopup(){
   $('#myModal').modal('hide');
   $('body').removeClass('modal-open');
   $('.modal-backdrop fade in').remove();
+}
+
+getEncodedUri(input:string){
+  if(input!=undefined && $.trim(input).length>0){
+    return encodeURIComponent(input);
+  }else{
+    return input;
+  }
+}
+
+removeCssStyles(){
+  var hs = document.getElementsByTagName('style');
+    for (var i=0, max = hs.length; i < max; i++) {
+      if(hs[i]!=undefined && hs[i]['parentNode']!=undefined){
+        hs[i].parentNode.removeChild(hs[i]);
+      }
+    } 
+}
+
+removeElementById(){
+  $('link[id="head-link-rel"]').remove();
 }
 
 }

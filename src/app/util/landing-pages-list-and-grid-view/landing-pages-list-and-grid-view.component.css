@@ -210,8 +210,8 @@
   .bar a {
     width: 28px;
     height: 28px;
-    padding: 2px 0px 0px 0px !important;
-    line-height: 21px;
+    padding: 4px 0px 0px 0px;
+    line-height: 20px;
   }
   
   #landing-page-title {
@@ -307,10 +307,13 @@
       border: 1px solid;
     }
     .mActionDiv {
-      white-space: pre-line !important;
+      white-space: inherit !important;
       line-height: 1.8px !important;
     }
     .mPadAction {
       padding-left: 30px !important;
     }
   }
+  .justify-content-center{
+    justify-content: center;
+   }

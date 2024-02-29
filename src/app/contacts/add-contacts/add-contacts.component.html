@@ -47,7 +47,7 @@
 </style>
 <div class="page-content">
 	<div class="my-container">
-		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+		<ngx-loading [show]="loading || pageLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	</div>
 	<div></div>
 	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -88,7 +88,14 @@
 			</a>
 		</div>
 		<app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
-
+	</div>
+	<div *ngIf="masterContactListSync" class="alert alert-dismissible alert-info mt-10 mb10">
+		<span><img alt="" src="assets/images/loadbar.gif" class="loader-image-customize"></span>
+		<span class="text-css"> Please Wait, while we are synchronizing your master contact list. </span>
+	</div>
+	<div *ngIf="contactsCompanyListSync" class="alert alert-dismissible alert-info mt-10 mb10">
+		<span><img alt="" src="assets/images/loadbar.gif" class="loader-image-customize"></span>
+		<span class="text-css">Please Wait, while we are synchronizing your existing company contact lists. </span>
 	</div>
 	<!-- BEGIN PAGE CONTENT-->
 	<div class="portlet-body">
@@ -105,40 +112,40 @@
 								<div class="portlet-body">
 									<div class="row">
 										<div class="col-xs-12 col-sm-4 col-md-4 SideParddings1">
-											<div class="card_effect_bg_color">
-												<button class="btn-primary btn-block SidePaddings card_effect"
-													id="addContacts" (click)="addContactModalOpen()"
-													[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
-													<i class="fa fa-user-plus IconTopMargin"></i>
-													<span translate>One at a Time</span>
-												</button>
-											</div>
+											<button class="color-flow-button btn-primary btn-block white-co"
+												id="addContacts" (click)="addContactModalOpen()"
+												[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
+												[disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
+												<span class="buttonSPan" translate>
+													<i class="fa fa-user-plus IconTopMargin" aria-hidden="true"></i>One
+													at a Time</span>
+											</button>
 										</div>
 										<div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings2">
-											<div class="card_effect_bg_color">
-												<button class="Btn-Green btn-block SidePaddings card_effect"
-													id="copyFromClipBoard" (click)="copyFromClipboard()"
-													[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
-													<i class="fa fa-users IconTopMargin"></i> <span translate>Copy list
-														from clipboard</span>
-												</button>
-											</div>
+											<button class="color-flow-button Btn-Green btn-block white-co"
+												id="copyFromClipBoard" (click)="copyFromClipboard()"
+												[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
+												[disabled]="contactsCompanyListSync || masterContactListSync ||selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
+												<span class="buttonSPan" translate>
+													<i class="fa fa-users IconTopMargin" aria-hidden="true"></i>Copy
+													list from clipboard</span>
+											</button>
 										</div>
 										<div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings3">
-											<div class="card_effect_bg_color">
-												<button
-													class="btn-primary fileinput-button btn-block SidePaddings card_effect"
-													id="uploadCSV"
-													[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
-													<i style="display: block; text-align: center; font-size: 24px;"
-														class="fa fa-file-excel-o IconTopMargin"></i> <span
-														style="display: block; text-align: center" translate>Upload a
-														CSV</span> <input type="file" title=" "
-														(click)="input.value = null;resetResponse();"
-														(change)="fileChange(input)" accept=".csv" #input
-														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
-												</button>
-											</div>
+											<button
+												class="color-flow-button btn-primary fileinput-button btn-block white-co"
+												id="uploadCSV" [ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
+												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
+												<span class="buttonSPan" style="z-index: 0;" translate>
+													<i class="fa fa-file-excel-o cct IconTopMargin"
+														aria-hidden="true"></i>Upload a
+													CSV
+												</span>
+												<input type="file" title=" "
+													(click)="input.value = null;resetResponse();"
+													(change)="fileChange(input)" accept=".csv" #input
+													[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
+											</button>
 											<div style="margin-top: 5px;">
 												<a (click)="downloadEmptyCsv()"> <i class="fa fa-download"
 														aria-hidden="true"
@@ -164,12 +171,13 @@
 											style="display: contents !important; font-size: 15px !important"></i></a>
 								</div>
 								<div class="portlet-body">
-									<div class="row">
+									<div class="row cloud_platforms_paddings">
 										<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
+											[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
 											style="margin-top: 10px;">
 											<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"
 												style="background-color: white" (click)="salesforceContacts()"
-												[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 2 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 2 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
 													src="assets/images/crm/sf.png" class="salesForceImageClass"
 													style="border-radius:8px;" data-toggle="tooltip"
@@ -178,7 +186,7 @@
 													height="86" width="90" alt="No Image Found">
 											</a> <a *ngIf="sfImageBlur" id="salesforceContact_button"
 												style="background-color: white" (click)="salesforceContacts()"
-												[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+												[class.disabled]="masterContactListSync || contactsCompanyListSync || selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
 													src="assets/images/crm/sf.png" class="salesForceImageClass"
 													data-toggle="tooltip" data-placement="top"
@@ -198,10 +206,11 @@
 											</div>
 										</div>
 										<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
+											[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
 											style="margin-top: 10px;">
 											<a *ngIf="googleImageBlur" id="googleContact_button"
 												style="background-color: white" (click)="googleContacts()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
 													src="assets/images/crm/google.png" class="googleImageClass"
 													style="border-radius:8px;" data-toggle="tooltip"
@@ -212,7 +221,7 @@
 													onmouseout="this.src='assets/images/crm/google.png';">
 											</a> <a id="googleContact_buttonNormal" *ngIf="googleImageNormal"
 												style="background-color: white" (click)="googleContacts()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
 													src="assets/images/crm/google.png" class="googleImageClass"
 													style="border-radius:8px;" data-toggle="tooltip"
@@ -228,11 +237,12 @@
 											</div>
 										</div>
 										<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
+											[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
 											style="margin-top: 10px;">
 											<a *ngIf="zohoImageBlur" id="zohoContact_button"
 												style="background-color: white"
 												(click)="checkingZohoContactsAuthentication()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 													src="assets/images/crm/Zoho.png" class="zohoImageClass"
 													data-toggle="tooltip" data-placement="top"
@@ -243,7 +253,7 @@
 											</a> <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal"
 												style="background-color: white"
 												(click)="checkingZohoContactsAuthentication()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
 													src="assets/images/crm/Zoho.png" class="zohoImageClass"
 													style="border-radius:8px;" data-toggle="tooltip"
@@ -259,11 +269,12 @@
 											</div>
 										</div>
 										<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
+											[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
 											style="margin-top: 10px;">
 											<a *ngIf="microsoftDynamicsImageBlur" id="MicrosoftContact_button"
 												style="background-color: white"
 												(click)="checkingMicrosoftContactsAuthentication()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
 												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
 													src="assets/images/crm/microsoft.png" style="border-radius: 8px;"
 													class="microsoftImageClass" data-toggle="tooltip"
@@ -275,7 +286,7 @@
 											</a> <a *ngIf="microsoftDynamicsImageNormal"
 												id="MicrosoftContact_buttonNormal" style="background-color: white"
 												(click)="checkingMicrosoftContactsAuthentication()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
 												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
 													src="assets/images/crm/microsoft.png" style="border-radius:8px;"
 													class="microsoftImageClass" data-toggle="tooltip"
@@ -285,11 +296,12 @@
 											</a>
 										</div>
 										<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
+											[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
 											style="margin-top: 10px;">
 											<a *ngIf="hubspotImageBlur" id="hubspotContact_button"
 												style="background-color: white"
 												(click)="checkingHubSpotContactsAuthentication()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
 												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}"
 													src="assets/images/crm/hubspot.png" class="hubspotImageClass"
 													data-toggle="tooltip" data-placement="top"
@@ -300,7 +312,7 @@
 											</a> <a *ngIf="hubspotImageNormal" id="HubspotContact_buttonNormal"
 												style="background-color: white"
 												(click)="checkingHubSpotContactsAuthentication()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
 												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}"
 													src="assets/images/crm/hubspot.png" style="border-radius:8px;"
 													class="hubspotImageClass" data-toggle="tooltip" data-placement="top"
@@ -309,11 +321,12 @@
 											</a>
 										</div>
 										<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
+											[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
 											style="margin-top: 10px;">
 											<a *ngIf="connectWiseImageBlur" id="connectWiseContact_button"
 												style="background-color: white"
 												(click)="checkingConnectWiseContactsAuthentication()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
+												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
 												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
 													src="assets/images/crm/connectwise.png" style="border-radius:8px;"
 													class="connectWiseImageClass" data-toggle="tooltip"
@@ -325,7 +338,7 @@
 											</a> <a *ngIf="connectWiseImageNormal" id="connectWise_buttonNormal"
 												style="background-color: white"
 												(click)="checkingConnectWiseContactsAuthentication()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
+												[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
 												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
 													src="assets/images/crm/connectwise.png" style="border-radius:8px;"
 													class="connectWiseImageClass" data-toggle="tooltip"
@@ -337,11 +350,12 @@
 										<!-- XNFR-230 -->
 										<div id="showCRM" class="collapse">
 											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
+												[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
 												style="margin-top: 10px;">
 												<a *ngIf="pipedriveImageBlur" id="pipedriveContact_button"
 													style="background-color: white"
 													(click)="checkingPipedriveContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
+													[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
 														src="assets/images/crm/pipedrive.png" style="border-radius:8px;"
 														class="pipedriveImageClass" data-toggle="tooltip"
@@ -353,7 +367,7 @@
 												</a> <a *ngIf="pipedriveImageNormal" id="pipedrive_buttonNormal"
 													style="background-color: white"
 													(click)="checkingPipedriveContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
+													[class.disabled]=" contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
 														src="assets/images/crm/pipedrive.png" style="border-radius:8px;"
 														class="pipedriveImageClass" data-toggle="tooltip"
@@ -363,11 +377,12 @@
 												</a>
 											</div>
 											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
+												[ngClass]=" {'disable-class':masterContactListSync || contactsCompanyListSync}"
 												style="margin-top: 10px;">
 												<a *ngIf="marketoImageBlur" id="marketoContact_button"
 													style="background-color: white"
 													(click)="checkingMarketoContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+													[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
 														src="assets/images/crm/marketo.png" style="border-radius:8px;"
 														class="marketoImageClass" data-toggle="tooltip"
@@ -379,7 +394,7 @@
 												</a> <a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal"
 													style="background-color: white"
 													(click)="checkingMarketoContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+													[class.disabled]="contactsCompanyListSync || masterContactListSync || selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
 														src="assets/images/crm/marketo.png" style="border-radius:8px;"
 														class="marketoImageClass" data-toggle="tooltip"
@@ -402,13 +417,13 @@
 						</div>
 					</div>
 					<div class="portlet light mt10 pos_mrg_btm19"
-						*ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)">
+						*ngIf="(gdprStatus && filePreview) ||(clipBoard) || (gdprStatus && selectedAddContactsOption==2)">
 						<div class="row" style="margin-bottom: 15px;"
-							*ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)">
+							*ngIf="(gdprStatus && filePreview) ||(clipBoard)|| (gdprStatus && selectedAddContactsOption==2)">
 							<br>
 							<br>
 							<div class="col-xs-12 col-md-12">
-								<div class="form-group">
+								<div *ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)" class="form-group">
 									<label for="name" class="col-xs-12 col-lg-2 col-md-3 col-sm-2 control-label pr0"
 										translate>Legal Basis Options
 										<span class="danger">*</span>
@@ -535,7 +550,7 @@
 								<button id="sample_editable_1_new" class="button bgcolor-unset txt_pd-top3"
 									(click)="saveContacts()" translate>
 									<span class="btn Btn-Green transition text_pd5">Save<i
-											class="fa fa-save"></i></span>
+											class="fa fa-save ml-3"></i></span>
 								</button>
 								<button id="cancel_button" class="button bgcolor-unset txt_pd-top3"
 									(click)="cancelContacts()" translate>

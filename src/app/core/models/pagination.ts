@@ -119,6 +119,10 @@ export class Pagination {
 	customFilterOption:boolean = false;
 	/*** XNFR-409 *****/
 
+	userType:string = "";
+	/*** XNFR-427 *****/
+	ignoreSelfLeadsOrDeals:boolean = true;
 	source:string;
 	defaultLandingPage:boolean;
+
 }

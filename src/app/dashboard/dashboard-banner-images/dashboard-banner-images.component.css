@@ -1,0 +1,25 @@
+.description-width {
+    width: 700px;
+}
+
+.title-width {
+    width: 500px;
+}
+
+.carousel-caption {
+    top: -11px;
+}
+
+.carousel-caption .btn {
+    position: fixed;
+    bottom: 36px;
+}
+
+.dashboard-ellipsis {
+    -webkit-box-orient: vertical;
+    display: block;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

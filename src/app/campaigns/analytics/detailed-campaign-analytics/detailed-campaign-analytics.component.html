@@ -707,7 +707,7 @@
                         </ng-container>
                         <!----This is For DataShare Vendor Analytics------->
                         <ng-container *ngIf="isNavigatedThroughAnalytics">
-                           <button class="portlet light color1-invert crcb black-blue-c"
+                           <button class="portlet light color1-invert crcb black-blue-c detail_card"
                               (click)="showClickedUrlsForVendor(campaign.campaignId)" [disabled]="
   campaignReport.dataShareClickedUrlsCountForVendor < 1
   ">
@@ -2029,8 +2029,8 @@
          <div class="portlet-body">
             <a (click)="closeCampaignDeals()" class="pull-right close-circle"
                style="margin: 9px 14px; padding-top: 3px; padding-left: 5px">
-               <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px"
-                  aria-hidden="true"></span></a>
+               <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px" aria-hidden="true"></span>
+            </a>
             <app-manage-campaign-deals [campaignId]="campaignId" [isDataShare]="isDataShare"
                [fromAnalytics]="!isNavigatedThroughAnalytics" [showTeamMemberFilter]="campaign.channelCampaign"
                [isPartnerVersion]="campaign.nurtureCampaign" (viewCampaignDealForm)="viewCampaignDealForm($event)"
@@ -2047,6 +2047,14 @@
       <a (click)="closeDealForm()" class="pull-right close-circle"
          style="margin: 9px 14px; padding-top: 3px; padding-left: 5px">
          <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px" aria-hidden="true"></span></a>
+      <a class="pull-right close-circle" *ngIf="dealActionType=='edit'" data-rel="fancybox-button"
+         (click)="showDealComments(selectedDealForComments)" data-toggle="tooltip" data-placement="bottom" title="Comments/History"
+         style="margin: 9px 0px;padding-top: 7px;padding-left: 5px;">
+         <span class="fa fa-comments IconCustomization" style="z-index: 1;font-size: 13px;" aria-hidden="true"
+            style="font-size:18px"></span>
+         <span *ngIf="selectedDealForComments.unReadChatCount > 0" class="badge badge-default"
+            style="margin-top: -62px; margin-right: -15px;background-color: #ed1c24 !important;">{{selectedDealForComments.unReadChatCount}}</span>
+      </a> 
       <app-add-deal [leadId]="leadId" [dealId]="dealId" [actionType]="dealActionType"
          (notifySubmitSuccess)="showSubmitDealSuccess()">
       </app-add-deal>
@@ -3452,7 +3460,7 @@
             <div id="email-template-content"></div>
          </div>
          <div class="modal-footer">
-            <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+            <a href="javascript:void(0)" data-dismiss="modal" class="btn Btn-Gray" style="float: right">Close</a>
          </div>
       </div>
    </div>
@@ -3534,7 +3542,7 @@
             </div>
          </div>
          <div class="modal-footer">
-            <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+            <a data-dismiss="modal" class="btn Btn-Gray" style="float: right">Close</a>
          </div>
       </div>
    </div>
@@ -3630,7 +3638,7 @@
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
+            <button type="button" class="btn Btn-Gray" data-dismiss="modal">
                Close
             </button>
          </div>
@@ -3803,7 +3811,7 @@
       (notifyAnalyticsComponentToHidePopup)="closeLeadsForm()" (notifySubmitSuccess)="showSubmitLeadSuccess()">
    </app-add-lead>
 </ng-container>
-<app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" [deal]="selectedDeal"
+<app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" [deal]="selectedDeal" [editTextArea]="editTextArea"
    (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
 <!-- --Lead Registration -->
 <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

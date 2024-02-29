@@ -14,11 +14,11 @@
          <div class="page-logo pttpx">
             <div
                [ngClass]="refService.isSidebarClosed ? 'company-logo-thumbnail-wrapper clhidden':'company-logo-thumbnail-wrapper'">
-               <img class="cls-pointer"  [routerLink]="['/home/dashboard/default']"
+               <img class="cls-pointer" [routerLink]="['/home/dashboard/default']"
                   *ngIf="!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo"
                   [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" alt=""
                   onerror="this.src='assets/images/xamplify-logo.png';" />
-               <img class="cls-pointer"  [routerLink]="['/home/dashboard/default']"
+               <img class="cls-pointer" [routerLink]="['/home/dashboard/default']"
                   *ngIf="authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo"
                   [src]="authenticationService.v_companyLogoImagePath" alt=""
                   onerror="this.src='assets/images/xamplify-logo.png';" />
@@ -309,9 +309,11 @@
                </div>
             </div>
             <div class="modal-footer" style="border: none" *ngIf="!isValidationMessage">
-               <button class="btn btn-default" (click)="closeInvitationModal()" data-dismiss="modal">Cancel</button>
-               <button type="submit" class="btn green" [disabled]="emailIds.length ==0"
-                  (click)="sendRequestForVendorEmail()">Send</button>
+               <button class="btn Btn-Gray neg_mrg_top4" (click)="closeInvitationModal()"
+                  data-dismiss="modal">Cancel</button>
+               <button type="submit" class="button bgcolor-unset" [disabled]="emailIds.length ==0"
+                  (click)="sendRequestForVendorEmail()"><span
+                     class="btn Btn-Green transition txt_pd-top3">Send</span></button>
             </div>
          </div>
       </div>

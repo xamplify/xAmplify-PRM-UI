@@ -46,7 +46,7 @@
                 <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0px;">
                     <div
                         [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-lg-6 col-md-4 col-xs-6 col-sm-6':'col-md-5 col-xs-5 col-sm-5'">
-                        <h4 title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' |
+                        <h4 data-toggle="tooltip" data-placement="bottom" title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' |
                             translate}} {{logedInCustomerCompanyName}}</h4>
                     </div>
                     <div class="col-lg-5 col-md-5 col-xs-5 col-sm-5"
@@ -62,14 +62,16 @@
                     </div>
                     <app-team-member-filter-option
                         *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
-                && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner" [filterIcon]="true"
+                        && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner" [filterIcon]="true"
                         (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
                     <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
                 </div>
             </div>
         </div>
-        <ng-container
-            *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
+        <ng-container *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
+            <!--XNFR-458--->
+            <app-dashboard-banner-images></app-dashboard-banner-images>
+            <!--XNFR-458--->
             <!------------Modules Count Anlatyics Boxes---------------------->
             <div class="page-bar page-bar-shadow" style="padding: 1em 1em 0 1em;">
                 <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
@@ -79,12 +81,15 @@
                     (notifyLeadSuccess)="showSubmitLeadSuccess()" [applyFilter]="applyFilter"></app-module-analytics>
             </div>
 
+            <!---XNFR-459--->
+            <app-news-and-announcement-and-instant-navigation-dashboard-analytics></app-news-and-announcement-and-instant-navigation-dashboard-analytics>
+            <!---XNFR-459--->
             <!------------Dashbaord Button Carusel---------------------->
             <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
             <!--Opportunity Stats-->
             <div *ngIf="!authenticationService?.module?.deletedPartner 
              &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.module?.hasOpportunityRole)"
-                class="clearfix" style="padding-top: 6px;">
+                class="clearfix cards_height">
                 <div class="portlet light">
                     <div class="portlet-title">
                         <div class="caption">
@@ -112,7 +117,7 @@
 
             <div class="row" *ngIf="authenticationService.module.showCampaignsAnalyticsDivInDashboard">
                 <ngx-loading [show]="topFourLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                <div class="portlet light" style="margin: 14px;margin-top: 12px;margin-bottom: 20px;">
+                <div class="portlet light campaigns_card_height">
                     <div class="portlet-title" *ngIf="authenticationService?.module?.createCampaign">
                         <h4 class="pull-left m10 f-w-600 text-primary" translate>Campaigns</h4>
                         <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
@@ -266,7 +271,7 @@
             <div *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
                             && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
                             (authenticationService?.mdf || authenticationService?.leadsAndDeals) ">
-                <div class="row">
+                <div class="row pd_top10">
                     <div class="page-bar portlet light  mmtp" *ngIf="authenticationService?.mdf">
                         <app-mdf-statistics [applyFilter]="applyFilter"
                             *ngIf="authenticationService?.mdf && !ngxLoading"></app-mdf-statistics>
@@ -316,7 +321,7 @@
                 </div>
             </div>
             <!-- High Level Analytics -->
-            <div class="clearfix" style="padding-top: 2px;"
+            <div class="clearfix high_level_height"
                 *ngIf=" authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
                 <div class="portlet light" id="hla-adv-dashboard">
                     <div class="portlet-title" style="min-height: 0px;">

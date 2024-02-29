@@ -293,7 +293,7 @@
     padding: 4px 2px !important;
     display: flex;
     font-size: 10px !important;
-    right: 0px !important;
+    right: 1px !important;
   }
   #alignline-m-margin {
   margin-right: 0px !important;
@@ -371,6 +371,9 @@
 }
 .mb-btns {
   font-size: 13px !important;
+}
+.btn-transitions{
+  top:0px!important;
 }
 }
 @media only screen and (min-width: 300px) and (max-width: 580px) {  

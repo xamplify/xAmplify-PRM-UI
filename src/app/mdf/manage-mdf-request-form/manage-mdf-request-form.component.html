@@ -4,7 +4,7 @@
       <div class="clearfix">
          <div class="col-xs-12">
             <!-- BEGIN EXAMPLE TABLE PORTLET-->
-            <div class="portlet light">
+            <div class="portlet light remove_cardBgcolor">
                <div class="portlet-title" style="padding-bottom: 6px;">
                   <div class="caption" style="padding-top: 11px !important;padding-left: 4px !important;" translate>
                      <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
@@ -178,7 +178,7 @@
                         </div>
                      </div>
                   </div>
-                  <div *ngIf="pagination.pagedItems.length !== 0 && !httpRequestLoader.isLoading" class="pg8">
+                  <div *ngIf="pagination.pagedItems.length !== 0 && !httpRequestLoader.isLoading" class="pg8 only_top1">
                      <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
                         (notifyParentDropDown)="listSubmittedData($event)"></app-pagination>
                   </div>
@@ -283,8 +283,8 @@
                   <div>
                      <button (click)="saveComment()" [disabled]="invalidComment"
                         [style.pointer-events]="invalidComment ? 'none' : 'auto' "
-                        class="button_blue bgcolor-unset request-comment txt_pd-top3"><span
-                           class="btn btn-primary transition txt_pd-top3">Submit</span></button>
+                        class="button_blue bgcolor-unset request-comment"><span
+                           class="btn btn-primary transition neg_mrg_top8">Submit</span></button>
                   </div>
                </div>
             </ng-container>

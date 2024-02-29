@@ -1,0 +1,366 @@
+.Btn-Green::before,       
+.btn-primary::before,
+.button_blue::before,
+div > button.btn-primary:hover,
+div.Btn-Green:hover,
+.button::before ,
+/** 23-01-2024 **/
+.btn-success:hover {
+  background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important;
+  box-shadow: none !important;
+  border-radius: 7px !important;
+} 
+.toggleOnOff .sliderOnOff,
+span.switch.switch-small {
+  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+.btn-group button.salesforce-btn,
+.btn-group button.button_blue,
+.button_blue, 
+.Btn-Green, 
+.button,      
+.btn-primary,
+.button_blue:hover,
+.btn-primary:hover,
+.Btn-Green:hover,
+button#save\&delete_button, 
+/** 23-01-2024 **/
+.btn-success,
+button.button.bgcolor-unset
+{
+  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  /* background: linear-gradient(87deg, #00ACEC 0%, #00ED95 100%) !important; */
+  box-shadow: none !important;
+  border-radius: 7px !important;
+}
+.Btn-Gray:hover {
+  box-shadow: none !important;
+  /* background-image: linear-gradient(206deg, #2b343a 0, #cbd8d7 100%) !important; */
+  /* background: linear-gradient(89deg, #777777 100%, #969696 0%) !important; */
+  /* background: linear-gradient(90deg, #969696 0, #777777 100%) !important; */
+  background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%);
+  transition: 0.5s ease-in-out;
+}
+.Btn-Gray{ 
+-webkit-filter: grayscale(100%);
+filter: grayscale(100%);
+ box-shadow: none !important;
+background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%) !important;
+box-shadow: 8px 8px 22px rgba(21, 22, 24, 0.38), -4px -2px 16px rgba(195, 200, 205, 0.08) !important;
+ color:#fff !important;
+ border-radius: 7px;
+}
+/* .card_effect_bg_color {
+  background: #fff !important;
+  box-shadow: none !important;
+} */
+button#copyFromClipBoard,
+.btn-primary:hover,
+.full_popup {
+  box-shadow : none !important
+}
+.btn-group .invite_vendor_radius,
+.btn-group .analytics_icon_radius {
+  box-shadow: none !important;
+  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  border: 0px solid #0104ff !important;
+  padding: 7px 14px !important;
+}
+button.btn.custom {
+  box-shadow: none !important;
+  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  padding: 7px 14px !important;
+  }
+.invite_vendor_radius {
+  border-radius: 7px 0px 0px 7px !important;
+}
+.analytics_icon_radius {
+  border-radius: 0px 7px 7px 0px !important;
+}
+button.btn.custom {
+  border-radius: 7px !important;
+}
+.btn-group.refer-vendor-button.btnVendor:hover,
+button.btn.custom:hover {
+  transform: scale(1.05);
+  transition: all 0.1s ease;
+  /* background: linear-gradient(180deg, #0c86cc 0%, #3ec7e0 100%) !important; */
+}
+span.btn.Btn-Green.transition {
+    box-shadow: none !important;
+    /* padding-top: 1px !important; */
+}
+/* .p-rgt_p-top.bgcolor-unset {
+  background: none !important;
+} */
+/**** tharak(12-01-2024) *********/
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a > i, 
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active.open > a > i,
+.page-sidebar .page-sidebar-menu > li.active > a > i, 
+.page-sidebar .page-sidebar-menu > li.active.open > a > i {
+  color: #04afff !important;
+}
+.help-iconbgadd.selectRecord {
+  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+}
+.help-iconbgadd.selectRecord:hover {
+  background: linear-gradient(360deg, rgb(1 180 255)  0%, rgb(53 58 241) 100%) !important;
+}
+/**** tharak(12-01-2024) *********/
+h3#notifications {
+  border: unset!important;
+  background-image: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+.p-rgt_p-top {
+  border-radius: 7px !important;
+}
+
+.page-container-bg-solid .page-sidebar .page-sidebar-menu > li.active > a > .selected {
+  border-color: transparent #07b6bb transparent transparent !important;
+}
+
+button.button_blue:disabled,
+ button.button:disabled {
+  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  box-shadow: none !important;
+  /* opacity: 0.5; */
+}
+i.disabled, a.inactive {
+  opacity: 0.5;
+}
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info, 
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info, 
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default,
+ .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default,
+  .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, 
+  .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success, 
+  .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger, 
+  .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger, 
+  .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning,
+   .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning,
+   .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary
+ {
+  /* color: #fff !important; */
+  background: #0c86cc !important;
+  box-shadow: inset -1.1em 0 0.9em #06beb8;
+}
+.clickicons{
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+/*** 19-01-2024 (Tharak) ****/
+.bookmark-ribbon {
+  border-right:15px solid #06beb8 !important;
+  border-left:15px solid #06beb8 !important;
+}
+/* .dashboard-stat2:hover {
+  transform: scale(1.05);
+} */
+/* .campaign-type-selected, */
+.mix-filter li {
+  border-radius: 5px !important;
+}
+.mix-filter-li-selected,
+li.mix-filter-li-selected,
+li.mix-filter-li-selected:hover,
+ul.alt-row-style1 li:hover,
+.filter.form-selected,
+.filter.landing-page-selected,
+.mix-filter li.contact-filter-selected,
+.mix-filter li:hover, .mix-filter li.active, 
+.mix-filter li.campaign-type-selected, 
+.mix-filter li.emailtemplate-selected {
+  background-image: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  box-shadow: none !important;
+  border-radius: 5px;
+}
+.campaign-type-selected:hover,
+ul.alt-row-style1 li:hover,
+.filter.form-selected:hover,
+.filter.landing-page-selected:hover,
+.mix-filter li.contact-filter-selected:hover {
+  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  box-shadow: none !important;
+  border-radius: 5px;
+}
+input.cmn-toggle-round-flat + label,
+input.cmn-toggle-round-flat:checked + label,
+button.btn.btn-primary.add-btn {
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+input.cmn-toggle-round-flat + label:before {
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+input.cmn-toggle-round-flat:checked + label:after {
+  background-color: #fff !important;
+}
+/*** 19-01-2024 (Tharak) ****/
+/*** 23-01-2024 (Tharak) ****/
+div#click-1:hover,
+div#reply-1:hover,
+.col-sm-12.dashboard-stat2.p0.clearfix:hover,
+div#content-div:hover,
+div#social-campaign-list-div:hover,
+.col-sm-12.dashboard-stat2.pt0:hover,
+label.ng-tns-c35-19.btn.btn-primary.button-border:hover,
+label.ng-tns-c35-19.btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow:hover,
+div#reply-2:hover,
+div#reply-4:hover,
+div#reply-3:hover {
+  transform: none !important;
+}
+.dashboard-stat2.m0:hover{
+  transform: scale(1.05);
+}
+/***** 24-01-2024 ***/
+.card_padding{
+  border-radius: 0px 0px 15px 15px !important;
+  background: linear-gradient(0deg, #178dd1 0, #2ebab5 100%) !important;
+}
+.aspect_ratio {
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  border-radius: 7px;
+}
+.aspect_ratio:hover {
+  background: linear-gradient(89deg,#06beb8 0, #0c86cc 100%) !important;
+}
+
+.page-sidebar .page-sidebar-menu > li.active > a, .page-sidebar .page-sidebar-menu > li.hover > a {
+  background-color: #444649 !important;
+}
+.left-menu-color ul li a:hover{
+    background-color: #444649 !important;
+}
+.p0-neo-dark {
+  padding: 0px !important;
+}
+.pbc-m3 {
+ margin: 1px -10px !important;
+}
+#sort-text,
+.input-icon.right > .form-control {
+  padding-left: 10px !important;
+}
+.partner_stat_card_height{
+  padding: 0px !important;
+}
+/* .card_effect:hover {
+  transform: rotate(12deg);
+} */
+.card_effect_bg_color {
+  background: none !important;
+  border-radius: 20px;
+}
+.color-flow-button {
+  position: relative;
+  display: inline-block;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  transform-origin: 0 50% !important;
+  transition: all 0.475s;
+  border-radius: 7px !important;
+}
+.color-flow-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  transition: all 0.475s;
+}
+.color-flow-button:hover {
+  background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important; /* Updated gradient color on hover */
+}
+
+.color-flow-button:hover:before {
+  left: 0;
+}
+.buttonSPan {
+color: #fff;
+z-index: 1;
+position: relative;
+}
+/*** 30-01-2024 (Tharak) ***/
+.pagination>li.disabled>a {
+  opacity: 0.5;
+}
+.pagination>li>a {
+  background-color: #2c2f33 !important;
+  border: 1px solid #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.pagination .active > a {
+  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  box-shadow: none !important;
+} 
+.pagination >li>a:hover {
+  background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important; /* Updated gradient color on hover */
+  box-shadow: none !important;
+}
+/* vanity */
+.vanity_cards_blue {
+  border-radius: 15px 15px 0px 0px;
+}
+.mrg-neo{
+  margin: 5px 0px;
+}
+.neu-l-d {
+height: 48px !important;
+margin-left: 10px;
+}
+.neu-l-d-sales {
+  height: 52px !important;
+  margin-left: 10px;
+}
+.neu-l-d-spinner {
+margin-top: -70px !important;
+margin-left: 8px !important;
+}
+.profile-usermenu ul li a:hover {
+  background-color: #80808047 !important;
+}
+
+/****07-02-2024 (Tharak) ***/
+button.swal2-confirm.styled {
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;;
+  background-position: 100%;
+}
+
+button.swal2-confirm.styled:hover {
+  background:  linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
+  background-position: 0 100%;
+  transition: background-color 0.5s ease; /* Transition duration and easing */
+}
+
+button.swal2-cancel.styled {
+  background: #2c2f33 !important;
+  background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%)!important;
+  background-position: 0% 0%, 100% 100%!important;
+  background-size: 200% 200%!important;
+  background-clip: padding-box, border-box!important;
+  background-origin: padding-box, border-box!important;
+  transition: 0.5s ease-in-out;
+  }
+button.swal2-cancel.styled:hover {
+  color: #fff !important;
+    text-decoration: none;
+    background-position: 100% 100%, 0% 0%!important;
+    border-color: transparent;
+    background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%)!important;
+  }
+
+  .swal2-modal {
+    background-color: #2c2f33 !important;
+  }
+
+  button.unlink-button {
+    background-color:#2c2f33 !important ;
+  }
+
+  button.btn.Btn-Green.float-left.mobileBottomPa.responsiveBtnCU:hover {
+    background: linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
+  }

@@ -45,7 +45,6 @@ import { RegionalStatisticsAnalyticsComponent } from './dashboard-analytics-comp
 import { VideoStatisticsAnalyticsComponent } from './dashboard-analytics-components/video-statistics-analytics/video-statistics-analytics.component';
 import { EmailStatsAnalyticsComponent } from './dashboard-analytics-components/email-stats-analytics/email-stats-analytics.component';
 import { SocialAccountsAnalyticsComponent } from './dashboard-analytics-components/social-accounts-analytics/social-accounts-analytics.component';
-import { DashboardButtonsComponent } from './dashboard-buttons/dashboard-buttons.component';
 import { DashboardButtonsCarouselComponent } from './dashboard-buttons-carousel/dashboard-buttons-carousel.component';
 import { VanityEmailTemplatesComponent } from 'app/email-template/vanity-email-templates/vanity-email-templates.component';
 import { ModuleAccessComponent } from './module-access/module-access.component';
@@ -71,7 +70,6 @@ import { NotifyPartnersComponent } from './notify-partners/notify-partners.compo
 import { ShowPrmContentComponent } from './dashboard-analytics-components/show-prm-content/show-prm-content.component';
 import { EditModuleNameComponent } from './edit-module-name/edit-module-name.component';
 import { FunnelChartAnalyticsComponent } from './dashboard-analytics-components/funnel-chart-analytics/funnel-chart-analytics.component';
-import { MicrosoftAuthenticationComponent } from './microsoft-authentication/microsoft-authentication.component';
 import { PieChartAnalyticsComponent } from './dashboard-analytics-components/pie-chart-analytics/pie-chart-analytics.component';
 import { PieChartStatisticsBarGraphComponent } from './dashboard-analytics-components/pie-chart-statistics-bar-graph/pie-chart-statistics-bar-graph.component';
 import { MarketingRoleRequestsComponent } from './marketing-role-requests/marketing-role-requests.component';
@@ -89,7 +87,14 @@ import { EmailNotificationSettingsComponent } from './email-notification-setting
 import { ActiveThreadsInfoComponent } from './active-threads-info/active-threads-info.component';
 import { CustomLoginScreenSettingsComponent } from './custom-login-screen-settings/custom-login-screen-settings.component';
 import { ConnectwiseAuthenticationComponent } from './connectwise-authentication/connectwise-authentication.component';
+
+import { AddOrManageDomainsComponent } from './add-or-manage-domains/add-or-manage-domains.component';
+import { CustomLinksUtilComponent } from './custom-links-util/custom-links-util.component';
+import { NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent } from './news-and-announcement-and-instant-navigation-dashboard-analytics/news-and-announcement-and-instant-navigation-dashboard-analytics.component';
+import { DashboardBannerImagesComponent } from './dashboard-banner-images/dashboard-banner-images.component';
+
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
+
 
 
 @NgModule({
@@ -112,7 +117,6 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
         VideoStatisticsAnalyticsComponent,
         EmailStatsAnalyticsComponent,
         SocialAccountsAnalyticsComponent,
-        DashboardButtonsComponent,        
         DashboardButtonsCarouselComponent, 
         VanityEmailTemplatesComponent,
         ModuleAccessComponent,
@@ -155,6 +159,11 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
         ActiveThreadsInfoComponent,
         CustomLoginScreenSettingsComponent,
         ConnectwiseAuthenticationComponent,
+        AddOrManageDomainsComponent,
+        CustomLinksUtilComponent,
+        NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent,
+        DashboardBannerImagesComponent
+
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

@@ -1093,10 +1093,34 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         try {
             this.isScheduledCampaignLaunched = false;
             this.listCampaign(this.pagination);
-     } catch (error) {
+        } catch (error) {
          this.logger.error("error in manage-publish-component init() ", error);
-     }
- }
+        }
+    }
 
+ downloadCampaignsData(pagination: Pagination){
+    this.isloading = true;
+    try{
+        this.campaignService.downloadCampaignsData(pagination, this.loggedInUserId)
+    .subscribe(
+        data => {    
+            if(data.statusCode==200){
+                this.isloading = false;
+                this.customResponse = new CustomResponse('SUCCESS', data.message, true);   
+            }
+            if(data.statusCode==401){
+                this.isloading = false;
+                this.customResponse = new CustomResponse('SUCCESS',data.message,true);
+            }
+        },
+        (error: any) => {
+            this.logger.errorPage(error);
+        },
+        ()=> this.logger.info("download completed")
+        );
+    }catch(error){
+        this.logger.error(error, "CampaignsListViewUtilComponent", "downloadCampaignsData()");
+    }
+}
 
 }

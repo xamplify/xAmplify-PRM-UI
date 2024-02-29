@@ -30,10 +30,12 @@
                *ngIf="isPartnerView && (vanityLogin || loginAsPartner)">
                <div class="btn-group refer-vendor-button"
                   style="padding-top: 7px;padding-bottom: 4px;padding-right: 3px;">
-                  <button (click)="goToAddRequest(vendorCompanyId)" class="btn btn-primary"
+                  <button (click)="goToAddRequest(vendorCompanyId)" class="button_blue bgcolor-unset"
                      style="border-radius: 3px !important;">
-                     <span class="hidden-xs margin-right-design" translate>Request MDF</span>
-                     <i class="fa fa-user-plus" data-toggle="tooltip" aria-hidden="true"></i>
+                     <span class="hidden-xs margin-right-design btn btn-primary transition text_pd-top1"
+                        translate>Request MDF<i class="fa fa-user-plus" data-toggle="tooltip"
+                           aria-hidden="true"></i></span>
+
                   </button>
                </div>
             </div>
@@ -195,7 +197,7 @@
                      <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
                      <div class="clearfix" *ngIf="!listLoader.isLoading">
                         <div class="col-xs-12" style="padding: 0px 0;">
-                           <div class="table-responsive">
+                           <div class="table-responsive pos_pd-top4">
                               <table class='table tgrid' aria-describedby="manage-mdf-requests-table">
                                  <thead>
                                     <tr>
@@ -206,23 +208,30 @@
                                  </thead>
                                  <tbody>
 
-                                  <ng-container *ngFor="let vendor of pagination.pagedItems;let i=index">
-                                    <tr>
-                                       <td>
-                                          <div class="col-md-12 col-lg-12">
-                                             <div class="row">
-                                                <div class="col-md-2 col-lg-2 text-right">
-                                                  <img class="img-circle float-left" src="{{vendor?.companyLogoPath}}" alt="No Image Found" onerror="this.src='assets/images/default-company.png';">
+                                    <ng-container *ngFor="let vendor of pagination.pagedItems;let i=index">
+                                       <tr>
+                                          <td>
+                                             <div class="col-md-12 col-lg-12">
+                                                <div class="row">
+                                                   <div class="col-md-2 col-lg-2 text-right">
+                                                      <img class="img-circle float-left"
+                                                         src="{{vendor?.companyLogoPath}}" alt="No Image Found"
+                                                         onerror="this.src='assets/images/default-company.png';">
+                                                   </div>
+                                                   <div class="col-md-10 col-lg-10 "
+                                                      style="padding-left: 34px!important;">
+                                                      <label class="xamplify-ellipsis" data-toggle="tooltip"
+                                                         data-placement="top" title="{{vendor?.companyName}}"
+                                                         style="overflow: initial;">
+                                                         <b>Company Name:</b> {{vendor?.companyName}}
+                                                      </label><br>
+                                                      <label class="xamplify-ellipsis" data-toggle="tooltip"
+                                                         data-placement="top" title="{{vendor?.companyProfileName}}"
+                                                         style="overflow: initial;">
+                                                         <b>Company Profile Name:</b> {{vendor?.companyProfileName}}
+                                                      </label>
+                                                   </div>
                                                 </div>
-                                                <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
-                                                   <label class="xamplify-ellipsis" data-toggle="tooltip" data-placement="top" title="{{vendor?.companyName}}" style="overflow: initial;">
-                                                      <b>Company Name:</b> {{vendor?.companyName}}
-                                                   </label><br>
-                                                   <label class="xamplify-ellipsis" data-toggle="tooltip" data-placement="top" title="{{vendor?.companyProfileName}}" style="overflow: initial;">
-                                                     <b>Company Profile Name:</b> {{vendor?.companyProfileName}}
-                                                   </label>
-                                                </div>
-                                             </div>
                                              </div>
                                           </td>
                                           <td class="center-align">

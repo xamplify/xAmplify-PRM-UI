@@ -102,6 +102,11 @@ export class DamService {
     return this.utilPostSaveOrUpdateMethod("updatePublishedAsset", damPostDto);
   }
 
+  updatePDFData(damPostDto: DamPostDto){
+    return this.http.put(this.URL + "updatePDFData?access_token=" + this.authenticationService.access_token,damPostDto)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
   
 
 

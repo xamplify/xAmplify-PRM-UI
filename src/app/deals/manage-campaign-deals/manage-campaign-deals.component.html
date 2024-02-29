@@ -1,5 +1,5 @@
 <div class="m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError">
-  <app-response-message class="pg8" [customResponse]="dealsResponse" *ngIf="dealsResponse.isVisible">
+  <app-response-message class="pg8 col-lg-12 col-md-12 col-sm-12 col-xs-12 p0" [customResponse]="dealsResponse" *ngIf="dealsResponse.isVisible">
   </app-response-message>
   <div class="col-xs-12 col-sm-5 col-lg-5" *ngIf="fromAnalytics && showTeamMemberFilter">
     <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"
@@ -26,9 +26,9 @@
           (click)="toggleFilterOption()">
           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
         </span>
-        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Download"
-          [class.disabled]="dealsSortOption.totalRecords == 0" (click)="downloadDeals()">
-          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Click here to email the report"
+          [class.disabled]="dealsSortOption.totalRecords == 0" (click)="downloadDeals(dealsPagination)">
+          <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
         </span>
       </div>
     </div>
@@ -158,7 +158,7 @@
               </h5>
             </td>
             <td style="width: 10%;">
-              <span style="display:flex">
+              <!-- <span style="display:flex">
                 <select
                   [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage && !isDataShare)"
                   class="form-control" [(ngModel)]="deal.pipelineStageId"
@@ -171,7 +171,16 @@
                 <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
                   *ngIf="isPartnerVersion && deal?.onNonInteractiveStage && !isDataShare"
                   title="You can not edit this deal as it is on a non interactive deal stage."></span>
-              </span>
+              </span> -->
+              
+              <!-- xnfr-426-->
+              <span class="comment-color" translate>
+                {{deal.currentStageName}}</span>
+              <a data-rel="fancybox-button" (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
+                data-toggle="tooltip" data-placement="bottom" title="Edit Deal Stage">
+                <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
+              </a>
+
             </td>
             <td style="width: 30%;">
               <div class="actions-block override-actions">
@@ -196,10 +205,10 @@
                   </a>
                 </ng-container>
                 <a class="custom-icon" *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)"
-                  data-toggle="tooltip" data-placement="bottom" title="Comments">
+                  data-toggle="tooltip" data-placement="bottom" title="Comments/History">
                   <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px"></i>
-                  <span class="badge badge-default"
-                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">0</span>
+                  <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
+                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
                   <div class="clickicons"></div>
                 </a>
               </div>
@@ -226,3 +235,10 @@
 <div *ngIf="!httpRequestLoader.isLoading && dealsSortOption.totalRecords==0" class="col-xs-12 alert alert-info">
   <strong translate>No Deals Found.</strong>
 </div>
+
+
+<!--XNFR-426-->
+<app-opportunities-chat-modal-popup  *ngIf="updateCurrentStage" [deal]="currentDealToUpdateStage"
+[isPartnerVersion]="isPartnerVersion"  [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable"
+(showCommentsEmitter)="showComments(deal)" (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusCode)="stageUpdateResponse($event)">
+</app-opportunities-chat-modal-popup>

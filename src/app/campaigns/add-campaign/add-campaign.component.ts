@@ -1118,6 +1118,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         this.setRecipientsHeaderText();
         this.campaignRecipientsPagination.pageIndex = 1;
         this.campaignRecipientsPagination.maxResults = 4;
+        this.campaignRecipientsPagination.filterBy = 'ALL';
         this.clearSelectedContactList();
         if(this.isPageCampaign){
             this.setCoBrandingLogoForPageCampaign();
@@ -1673,6 +1674,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
 
     findCampaignRecipients(campaignRecipientsPagination: Pagination) {
         this.campaignRecipientsLoader = true;
+       if (this.campaignRecipientsPagination.filterBy == null || this.campaignRecipientsPagination.filterBy == undefined || this.campaignRecipientsPagination.filterBy.trim().length == 0) {
+            this.campaignRecipientsPagination.filterBy = 'ALL'
+        }
         campaignRecipientsPagination.channelCampaign = this.campaign.channelCampaign;
         this.showContactType = this.isOrgAdminCompany && !this.campaign.channelCampaign;
         if (!this.isAdd) {
@@ -2409,4 +2413,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     setNotifyChannelCampaignWorkflows(event:boolean){
         this.campaign.notifyChannelCampaignWorkflows = event;
     }
+
+    filterContacts(filterType:string){
+		this.campaignRecipientsPagination.pageIndex = 1;
+		this.campaignRecipientsPagination.filterBy = filterType;
+		this.findCampaignRecipients(this.campaignRecipientsPagination)
+	}
 }

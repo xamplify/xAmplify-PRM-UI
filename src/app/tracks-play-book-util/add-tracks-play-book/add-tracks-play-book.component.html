@@ -486,7 +486,7 @@
         </h4>
       </div>
       <div class="modal-body" style="overflow-y: unset !important;">
-        <div style="position: relative; top: -5px; width: 118px;" class="btn green fileinput-button-css"
+        <div style="position: relative; top: -5px; width: 118px;" class="btn Btn-Green fileinput-button-css"
           *ngIf="!imageChangedEvent; else uploadButton">
           <span>Upload image</span> <input style="height: 36px;" title=" " id="custom-input" type="file"
             (change)="filenewChangeEvent($event)">
@@ -523,7 +523,7 @@
         </div>
         <div class="d-flex justify-content-between">
           <div class="button-group" style="position: relative;text-align:left">
-            <button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
+            <button class="btn-info aspect_ratio" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
               <!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
               {{
               containWithinAspectRatio
@@ -531,16 +531,16 @@
               : 'Contain Within Aspect Ratio'
               }}
             </button>
-            <button class="btn-info" (click)="zoomOut()" [disabled]="!showCropper"><i class="fa fa-search-minus"
-                title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
-            <button class="btn-info" (click)="zoomIn()" [disabled]="!showCropper"><i class="fa fa-search-plus"
-                title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
-            <button class="btn-info" (click)="resetImage()" [disabled]="!showCropper"> <i class="fa fa-refresh"
-                title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>
+            <button class="btn-info aspect_ratio" (click)="zoomOut()" [disabled]="!showCropper"><i
+                class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
+            <button class="btn-info aspect_ratio" (click)="zoomIn()" [disabled]="!showCropper"><i
+                class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
+            <button class="btn-info aspect_ratio" (click)="resetImage()" [disabled]="!showCropper"> <i
+                class="fa fa-refresh" title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>
           </div>
           <div>
             <button class="button_blue bgcolor-unset" [disabled]="!showCropper" (click)="uploadImage()"><span
-                class="btn btn-primary transition">Save
+                class="btn btn-primary transition txt_pd-top3">Save
                 Changes</span></button>
           </div>
         </div>

@@ -1,98 +1,127 @@
-<div [className]="hideRowClass ? '':'row'">
-	<div class="page-bar portlet light border-radius-0 shadow tfamt">
-		<div class="portlet-title" *ngIf="!loader">
-			<h4 class="pull-left m10 f-w-600 text-primary" translate>
+<div [className]="hideRowClass ? '':'row pd_top10'">
+    <div class="page-bar portlet light border-radius-0 shadow tfamt">
+        <div class="portlet-title" *ngIf="!loader">
+            <h4 class="pull-left m10 f-w-600 text-primary" translate>
                 <a (click)="goToManage()">{{headerTitle}}</a>
                 <a class="fstpx" (click)="goToManage()">( {{subHeaderTitle}} )</a>
             </h4>
-			<a class="close-circle" title="Refresh"  (click)="refresh()">
-				 <i class="fa fa-refresh" aria-hidden="true"></i>
+            <a class="close-circle" title="Refresh" (click)="refresh()">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
             </a>
-            <button *ngIf="!isPartnerView" class="btn btn-primary add-design-upload" (click)="goToCreate()">
-				<i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
-				<span class="hidden-xs" translate>{{addButtonText}}</span>
-			</button>
+            <button *ngIf="!isPartnerView" class="btn btn-primary add-design-upload btns_border_radius"
+                (click)="goToCreate()">
+                <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
+                <span class="hidden-xs" translate>{{addButtonText}}</span>
+            </button>
         </div>
         <div style="position: relative; top: -10px;">
-			<app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
-		</div>
-		<div class="portlet-body clearfix">
-			<app-grid-loader [count]="4" *ngIf="loader"></app-grid-loader>
-			<section *ngIf="!loader">
-				<div *ngIf="contents?.length==0" class="alert alert-info text-center">
-					<strong>No Data Found</strong>
-				</div>
-				<div *ngFor="let learningTrack of contents ;let i =index;"  class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_grid GridviewSidePaddings">
-					<div class="grid-box box-shadow">
-                        <img class="img-grid-track image_effect" [src]="learningTrack.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack.title}}">
-                        <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent1" data-toggle="tooltip" data-placement="bottom" title="{{learningTrack.title}}"  style="margin-bottom: 0px;padding: 0;margin-top: 10px;">
+            <app-response-message [customResponse]="customResponse"
+                *ngIf="customResponse.isVisible"></app-response-message>
+        </div>
+        <div class="portlet-body clearfix">
+            <app-grid-loader [count]="4" *ngIf="loader"></app-grid-loader>
+            <section *ngIf="!loader">
+                <div *ngIf="contents?.length==0" class="alert alert-info text-center">
+                    <strong>No Data Found</strong>
+                </div>
+                <div *ngFor="let learningTrack of contents ;let i =index;"
+                    class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_grid GridviewSidePaddings">
+                    <div class="grid-box box-shadow">
+                        <img class="img-grid-track image_effect" [src]="learningTrack.featuredImage"
+                            onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack.title}}">
+                        <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent1" data-toggle="tooltip"
+                            data-placement="bottom" title="{{learningTrack.title}}"
+                            style="margin-bottom: 0px;padding: 0;margin-top: 10px;">
                             <span><b>{{titleHeader}} Title: </b>{{learningTrack.title}}</span>
-                         </h4>
-                         <div class="mt5"> 
-                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')" style="margin: 4px 15px 0px 15px;">
+                        </h4>
+                        <div class="mt5">
+                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')&& hasAccessToSharedPlaybooks"
+                                style="margin: 4px 15px 0px 15px;">
                                 <div class="progress">
-                                    <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{learningTrack.progress}}%" [ngStyle]="{'width': learningTrack.progress + '%'}" style="border-radius:1px;" role="progressbar"></div>
+                                    <div class="progress-bar" data-toggle="tooltip" data-placement="top"
+                                        title="{{learningTrack.progress}}%"
+                                        [ngStyle]="{'width': learningTrack.progress + '%'}" style="border-radius:1px;"
+                                        role="progressbar"></div>
                                 </div>
-                                <span class="progresleft" *ngIf="learningTrack.progress != undefined">{{learningTrack.progress}}%</span>
+                                <span class="progresleft"
+                                    *ngIf="learningTrack.progress != undefined">{{learningTrack.progress}}%</span>
                                 <span class="progresleft" *ngIf="learningTrack.progress == undefined">0%</span>
                                 <br>
                             </div>
-                            <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{learningTrack?.category?.name}}">
-                               <b>Folder: </b>{{learningTrack?.category?.name}} 
+                            <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top"
+                                title="{{learningTrack?.category?.name}}">
+                                <b>Folder: </b>{{learningTrack?.category?.name}}
                             </h6>
-                            <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{learningTrack.createdByName}}">
-                                <b>By: </b>{{learningTrack.createdByName}} 
-                             </h6>
+                            <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top"
+                                title="{{learningTrack.createdByName}}">
+                                <b>By: </b>{{learningTrack.createdByName}}
+                            </h6>
                             <h6 class="xamplify-ellipsis GridViewCotent">
-                             <b> Created On: </b><app-timestamp [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString"></app-timestamp>
+                                <b> Created On: </b><app-timestamp [isOnlyDate]="true"
+                                    [dateAndTime]="learningTrack.createdDateString"></app-timestamp>
                             </h6>
                         </div>
                         <!---XNFR-327--->
                         <div class="ribbon tab-ribbon">
-                            <span *ngIf="learningTrack.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress">Published</span>
+                            <span
+                                *ngIf="learningTrack.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress">Published</span>
                             <span *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress && !isPartnerView">
                                 <img src="assets/images/loading.gif" class="margin-0-ht5px" alt="Processing">Processing
                             </span>
                         </div>
                         <!---XNFR-327--->
                         <div class="bar auto-height gridIconCustomization">
-                             <!---XNFR-327--->
-                            <ng-container *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList">
-                                <a class="Iconhover" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
+                            <!---XNFR-327--->
+                            <ng-container
+                                *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList">
+                                <a class="Iconhover" *ngIf="learningTrack.canUpdate && !isPartnerView"
+                                    data-toggle="tooltip" data-placement="top" title="Preview & Edit"
+                                    (click)="edit(learningTrack.id)">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
-                                <a class="Iconhover" *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
+                                <a class="Iconhover"
+                                    *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish"
+                                    data-toggle="tooltip" data-placement="top" title="Unpublish"
+                                    (click)="confirmChangePublish(learningTrack.id, false)">
                                     <i class="fa fa-reply" aria-hidden="true"></i>
                                 </a>
-                                <a class="Iconhover" *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
+                                <a class="Iconhover"
+                                    *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
+                                    data-toggle="tooltip" data-placement="top" title="Publish"
+                                    (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
                                     <i class="fa fa-share" aria-hidden="true"></i>
                                 </a>
-                                <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
+                                <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="View"
+                                    (click)="view(learningTrack)">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
-                                <a class="Iconhover" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="goToAnalytics(learningTrack)">
+                                <a class="Iconhover" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top"
+                                    title="View Analytics" (click)="goToAnalytics(learningTrack)">
                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                                 </a>
-                                <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmDelete(learningTrack)">
+                                <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip"
+                                    data-placement="top" title="Delete" class="delete"
+                                    (click)="confirmDelete(learningTrack)">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>
                             </ng-container>
                             <!---XNFR-327--->
-                            <ng-container *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList">
-                                <a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listLearningTracks(pagination)"> 
+                            <ng-container
+                                *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList">
+                                <a data-toggle="tooltip" data-placement="top" title="Refresh"
+                                    (click)="listLearningTracks(pagination)">
                                     <i class="fa fa-refresh" aria-hidden="true"></i>
-                                </a> 
+                                </a>
                             </ng-container>
                             <!---XNFR-327--->
                         </div>
-					</div>
-				</div>
-			</section>
-		</div>
-	</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
 </div>
 <app-confirm-unpublish-tracks-or-playbooks-model-popup *ngIf="isOptionClicked"
- [selectedTrackOrPlayBookId]="selectedTrackOrPlayBookId" [isPublishing]="isPublishing" 
- (eventOutput)="toCallChangePublishFromUnpublishPopup($event)"
- (cancelEmitter)="resetUnPublishOptionInputValues()">
+    [selectedTrackOrPlayBookId]="selectedTrackOrPlayBookId" [isPublishing]="isPublishing"
+    (eventOutput)="toCallChangePublishFromUnpublishPopup($event)" [type]="type" (cancelEmitter)="resetUnPublishOptionInputValues()">
 </app-confirm-unpublish-tracks-or-playbooks-model-popup>

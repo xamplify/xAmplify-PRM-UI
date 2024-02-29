@@ -419,8 +419,8 @@ label {
 .item__content {
   position: relative;
   min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
   padding-top: 15px;
 }
 
@@ -1757,4 +1757,10 @@ div.switch5 > input.switch:focus ~ label:before {
 
 .margin-top-5 {
   margin-top: 5px;
+}
+/* dollar input border */
+.input-border{
+  border: 1px solid #e5e5e5;
+  border-top-left-radius: 0!important;
+  border-bottom-left-radius: 0!important;
 }

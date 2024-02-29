@@ -19,6 +19,7 @@ import { Lead } from '../models/lead';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { DealComments } from 'app/deal-registration/models/deal-comments';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -88,6 +89,10 @@ export class ManageLeadsComponent implements OnInit {
   vendorRole:boolean;
   vendorList:any ;
   vendorCompanyIdFilter:any;
+  /*******XNFR-426*******/
+  leadApprovalStatusType:any;
+  updateCurrentStage:boolean = false;
+
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
@@ -881,7 +886,7 @@ export class ManageLeadsComponent implements OnInit {
     this.isCommentSection = !this.isCommentSection;
   }
 
-  downloadLeads() {
+  downloadLeads1() {
     let type = this.leadsPagination.filterKey;
     let fileName = "";
     if (type == null || type == undefined || type == "") {
@@ -1223,5 +1228,60 @@ export class ManageLeadsComponent implements OnInit {
       ()=> { }
     );
   }
+
   
+  /***** XNFR-456 *****/
+  downloadLeads(pagination: Pagination){
+    let type = this.leadsPagination.filterKey;
+    if (type == null || type == undefined || type == "") {
+      type = "all";
+    } 
+    let partnerTeamMemberGroupFilter = false;    
+    let userType = "";
+    if (this.isVendorVersion) {
+      partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
+      userType = "v";
+    } else if (this.isPartnerVersion) {
+      userType = "p";
+    }
+    pagination.type = type;
+    pagination.userType = userType;
+    pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    pagination.partnerTeamMemberGroupFilter = partnerTeamMemberGroupFilter;
+    this.leadsService.downloadLeads(pagination, this.loggedInUserId)
+        .subscribe(
+            data => {    
+                if(data.statusCode == 200){
+                  this.leadsResponse = new CustomResponse('SUCCESS', data.message, true);
+                }else if(data.statusCode == 401){
+                  this.leadsResponse = new CustomResponse('SUCCESS', data.message, true);
+                }
+            },error => {
+              this.httpRequestLoader.isServerError = true;
+            },
+            () => { console.log("DownloadLeads() Completed...!") }
+          );
+  }
+
+
+
+  /*********XNFR-426******/
+  addApprovalStatusModelPopup(lead:Lead , leadApprovalStatusType:string){
+    this.leadApprovalStatusType = leadApprovalStatusType;
+    this.selectedLead = lead;
+    this.updateCurrentStage = true;
+  }
+
+  closeApprovalStatusModelPopup(){
+    this.leadApprovalStatusType = null;
+    this.updateCurrentStage = false;
+    this.showLeads();
+  }
+
+  resetUnReadChatCount() {
+    this.showLeadForm = false;
+    this.showFilterOption = false;
+    this.showLeads();
+  }
+
 }

@@ -1,0 +1,61 @@
+<!-- carousel start -->
+<div class="page-bar page-bar-shadow" style="padding: 1em;" *ngIf="isVanityUrlEnabled">
+  <app-modal-popup-loader [height]="150" *ngIf="isDataLoading"></app-modal-popup-loader>
+  <app-response-message [customResponse]="customResponse" [showCloseIcon]="false" *ngIf="customResponse.isVisible"></app-response-message>
+  <div id="myCarousel" class="carousel slide" data-interval="5000"  data-ride="carousel" *ngIf="!isDataLoading && !isDataError && dashboardBanners?.length>0">
+      <!-- Menu -->
+      <ol class="carousel-indicators" *ngIf="dashboardBanners?.length>1">
+          <li data-target="#myCarousel"  data-slide-to="0" class="active"></li>
+          <li data-target="#myCarousel" *ngIf="dashboardBanners?.length>1" data-slide-to="1"></li>
+          <li data-target="#myCarousel" *ngIf="dashboardBanners?.length>2" data-slide-to="2"></li>
+          <li data-target="#myCarousel" *ngIf="dashboardBanners?.length>3" data-slide-to="3"></li>
+          <li data-target="#myCarousel" *ngIf="dashboardBanners?.length>4" data-slide-to="4"></li>
+      </ol>
+      <!-- Items -->
+      <div class="carousel-inner">
+        <div class="item active">
+            <ng-template [ngTemplateOutlet]="dashboardBannerImageTemplate" [ngTemplateOutletContext]="{dashboardBanner:dashboardBanners[0]}"></ng-template>
+        </div>
+        <div class="item" *ngIf="dashboardBanners?.length>1">
+            <ng-template [ngTemplateOutlet]="dashboardBannerImageTemplate" [ngTemplateOutletContext]="{dashboardBanner:dashboardBanners[1]}"></ng-template>
+        </div>
+        <div class="item" *ngIf="dashboardBanners?.length>2">
+            <ng-template [ngTemplateOutlet]="dashboardBannerImageTemplate" [ngTemplateOutletContext]="{dashboardBanner:dashboardBanners[2]}"></ng-template>
+        </div>
+        <div class="item" *ngIf="dashboardBanners?.length>3">
+            <ng-template [ngTemplateOutlet]="dashboardBannerImageTemplate" [ngTemplateOutletContext]="{dashboardBanner:dashboardBanners[3]}"></ng-template>
+        </div>
+        <div class="item" *ngIf="dashboardBanners?.length>4">
+            <ng-template [ngTemplateOutlet]="dashboardBannerImageTemplate" [ngTemplateOutletContext]="{dashboardBanner:dashboardBanners[4]}"></ng-template>
+        </div>
+    </div>
+    <ng-container *ngIf="dashboardBanners?.length>1">
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+        <span class="icon-prev"></span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+        <span class="icon-next"></span>
+    </a>
+    </ng-container> 
+  </div>
+</div>
+
+<ng-template #dashboardBannerImageTemplate let-dashboardBanner="dashboardBanner">
+    <img class="imgh" src="{{dashboardBanner?.bannerImagePath}}" alt="No Image Found" />
+    <div class="container">
+        <div class="carousel-caption">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1 class="carousel-headings text-overflow title-width title-custom-font" title="{{dashboardBanner?.title}}">{{dashboardBanner?.title}}</h1>
+                    <p style="-webkit-box-orient: vertical;
+                    display: block;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    overflow: hidden;
+                    text-overflow: ellipsis;" class="description-width description-custom-font" *ngIf="dashboardBanner?.description.length>0" title="{{dashboardBanner?.description}}">{{dashboardBanner?.description}}</p>
+                    <p><a class="btn btn-large btn-primary" href="{{dashboardBanner?.link}}" target="{{dashboardBanner?.openLinkInNewTab ? '_blank' : '_self'}}">Learn More</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

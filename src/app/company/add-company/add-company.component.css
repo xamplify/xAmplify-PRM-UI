@@ -1,0 +1,116 @@
+.textCss {
+    background-color: rgba(0, 0, 0, 0.12);
+    bottom: -2px;
+    height: 1px;
+    left: 13;
+    margin: 0;
+    padding: 0;
+    width: 91%;
+  }
+  
+  #addCompanyModal {
+    padding-right: 0 !important;
+    display: block;
+  }
+  @media screen and (max-width: 600px) {
+    .accounts-modal {
+      width: 100% !important;
+      position: relative !important;
+    }
+    .px0 {
+      padding: 0 !important;
+    }
+    .pxl0 {
+      padding-left: 0 !important;
+    }
+    .star {
+      position: relative;
+      left: 42px !important;
+      top: 9px !important;
+    }
+    .email-css {
+      border: none;
+      font-size: 15px;
+      cursor: not-allowed;
+      position: relative;
+    }
+  }
+  @media screen and (min-width: 601px) {
+    .accounts-modal {
+      width: 55% !important;
+      float: right;
+      position: relative !important;
+    }
+    .email-css {
+      border: none;
+      font-size: 15px;
+      cursor: not-allowed;
+      right: -8px;
+      position: relative;
+    }
+  }
+  .danger {
+    color: red !important;
+  }
+  .star {
+    color: red !important;
+    margin-right: -25px;
+  }
+  .size-font {
+    font-weight: 600;
+  }
+  #multiselect-sample {
+    margin-left: 74px;
+  }
+  #custom-width {
+    /* width: 84.333333%; */
+    width: 82.9%;
+  }
+  .right-twelevepx {
+    right: -12px;
+  }
+  
+  .modal-header {
+    padding: 10px !important;
+  }
+  .blue-buttons-radius {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .hide-scrollbar {
+    overflow: hidden;
+  }
+  /* 22-8-2023 sudha sri */
+  .legal-basis-width {
+    padding-left: 6px;
+  }
+  #major-field-width {
+    width: 82.9%;
+  }
+  #minor-field-width {
+    width: 42%;
+  }
+  #mobile-field-width {
+    width: 80%;
+  }
+  .border-bottom-1px {
+    border-bottom: 1px solid #ddd;
+  }
+  /* XNFR 319 popup alignment */
+  @media only screen and (min-width:992px) and (max-width:1040px) {   
+    #multiselect-sample {margin-left: 95px;}
+  }
+  @media only screen and (min-width:1040px) and (max-width:1065px) { 
+    #multiselect-sample {margin-left: 90px;}
+  }
+  @media only screen and (min-width:1065px) and (max-width:1200px) { 
+    #multiselect-sample {margin-left: 103px;}
+    #custom-width{width: 88.9%;}
+  }
+  .form-control, .form-control, fieldset .form-control  {
+    background-color: transparent;
+}
+  
+  

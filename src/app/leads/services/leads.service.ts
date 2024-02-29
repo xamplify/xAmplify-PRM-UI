@@ -250,5 +250,22 @@ export class LeadsService {
     .map(this.extractData)
     .catch(this.handleError);
   }
+
+
+  downloadLeads(pagination: Pagination, userId: number){
+    let url = this.URL + "download/" + userId + "?access_token=" + this.authenticationService.access_token
+    return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+  }
   
+
+  /*******XNFR-426*******/
+  updateLeadApprovalStatus(lead: Lead){
+    return this.http.post(this.URL + `/update/leadApprovalStatus?access_token=${this.authenticationService.access_token}`,lead)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+
 }

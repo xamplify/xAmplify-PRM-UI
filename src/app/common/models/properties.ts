@@ -90,11 +90,12 @@ export class Properties {
 	/* Authentication Module*/
 
 	ACCOUNT_NOT_CREATED = "You don't have an account, Please sign up to create your account.";
-	ACCOUNT_ACTIVATED_WITH_PASSWORD = 'Thanks for adding password. Please login to access the platform.'
+	ACCOUNT_ACTIVATED_WITH_PASSWORD = 'Thanks for adding password. Please login to access the platform.';
 	FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Check your inbox for a temporary password.";
 	FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail.";
 
 	SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for activation email.";
+	TEAM_MEMBER_SIGN_UP_SUCCESS = "Thanks for signing up! Please login to access the platform.";
 	ACCOUNT_ACTIVATED_SUCESS = 'Thanks for activating your account. Please log in to complete your company profile.';
 	SIGN_UP_ERROR = "An error occurred while processing your request. Please try after some time.";
 	ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done.";
@@ -171,6 +172,9 @@ export class Properties {
 	samlSettings = "Allbound SAML Settings";
 	leadPipelines = "Lead Pipelines";
 	dealPipelines = "Deal Pipelines";
+	
+	/************XNFR-426**********/
+	leadDealApprove = "Lead Approval/Rejection";
 	tags = "Tags";
 	customskin = "Themes";
 	customizeleftmenu = "Customize Left Menu";
@@ -218,6 +222,7 @@ export class Properties {
 	microsoftImage: string = 'assets/admin/pages/media/works/microsoft-contact.png';
 	pipedriveImage: string = 'assets/admin/pages/media/works/pipedrive-contacts.png';
 	connectwiseImage: string = 'assets/admin/pages/media/works/connectwise-contacts.png';
+	companyListImage: string = 'assets/admin/pages/media/works/company.png';
 
 	teamMemberGroups = 'Team Member Groups';
 
@@ -318,6 +323,16 @@ export class Properties {
 	playBooksHeaderText = "Play Books";
 	/****XNFR-342****/
 
+	/***XNFR-454*****/
+	newsAndAnnouncements = "News & Announcements";
+	dashboardBanners = "Dashboard Banners";
+	addDomainsText = "Domain Whitelisting";
+	domainWhitelistingDescription = "A whitelist is a list of domains approved for authorized team members to signup and access the platform.";
+	domainWhitelistingUrlDescription = "Please share the below URL with users who need to sign up into the xAmplify as your team members.";
+	noDataFound = "No Data Found";
+	maximumDashboardBannersLimitReached = "You have reached the limit of displaying up to 5 dashboard banners. You cannot add any more banners.";
+	maximumDashboardBannersLimitMessage = "You can upload maximum 5 dashboard banners"
+	instantNavigation = "Instant Navigation";
 
 
 

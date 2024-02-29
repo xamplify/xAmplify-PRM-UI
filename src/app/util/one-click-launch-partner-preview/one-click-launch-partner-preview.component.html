@@ -40,9 +40,9 @@
             </td>
             <td class="text-center">
                <div class="actions-block float-none">
-                  <span *ngIf="viewType=='tda'" class="circled-number" title="Download Count">{{downloadCount}}</span>
-                  <span *ngIf="viewType=='teoa'" class="circled-number"
-                     title="Email Opened Count">{{openedCount}}</span>
+                  <a *ngIf="viewType=='tda'" class="custom-icon" title="Download Count"><i class="circled-number IconCustomization fontStyleNormal"> <strong>{{downloadCount}}</strong></i><div class="clickicons"></div></a>
+                  <a *ngIf="viewType=='teoa'" class="custom-icon"
+                     title="Email Opened Count"><i class="circled-number IconCustomization fontStyleNormal"> <strong>{{openedCount}}</strong></i><div class="clickicons"></div></a>
                   <a class="custom-icon"
                      *ngIf="showShareLeadsList || viewType=='analytics' || ((viewType=='tda' &&downloadCount>0) || (viewType=='teoa' && openedCount>0))"
                      (click)="expandList(oneClickLaunchPartnerCompany)">
@@ -55,8 +55,8 @@
             </td>
             <td class="text-center" *ngIf="viewType=='analytics'">
                <div class="actions-block float-none">
-                  <span *ngIf="viewType=='analytics'" class="circled-number"
-                     title="Redistributed Count">{{redistributedCount}}</span>
+                  <a *ngIf="viewType=='analytics'" class="custom-icon"
+                     title="Redistributed Count"><i class="circled-number IconCustomization fontStyleNormal"><strong>{{redistributedCount}}</strong></i><div class="clickicons"></div></a>
                </div>
             </td>
          </tr>
@@ -124,6 +124,9 @@
                                           <img
                                              *ngIf="shareLead.socialNetwork=='PIPEDRIVE' && shareLead.synchronisedList"
                                              src="{{properties?.pipedriveImage}}" alt="manual" style="height: 70px;">
+                                          <img
+                                             *ngIf="shareLead.socialNetwork=='CONNECTWISE' && shareLead.synchronisedList"
+                                             src="{{properties?.connectwiseImage}}" alt="manual" style="height: 70px;">
                                           <img *ngIf="shareLead.socialNetwork=='MARKETO' && shareLead.synchronisedList"
                                              src="{{properties?.marketoImage}}" alt="manual" style="height: 70px;">
                                           <img

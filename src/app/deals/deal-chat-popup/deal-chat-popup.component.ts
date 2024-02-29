@@ -13,6 +13,8 @@ export class DealChatPopupComponent implements OnInit {
   @Input() deal: any;
   @Input() lead: any;
   @Output() isCommentSection = new EventEmitter<any>();
+  //XNFR-426
+  @Input() editTextArea: boolean;
 
   campaignName: String;
   dealTitle: String;
