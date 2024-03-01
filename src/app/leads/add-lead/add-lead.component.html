@@ -48,7 +48,7 @@
                       </label>
                       <select class="form-control" [(ngModel)]="lead.createdForCompanyId"
                         [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId" id="createdForCompanyId"
-                        [disabled]="disableCreatedFor"
+                        [disabled]="disableCreatedFor || disableCreatedForVendor"
                         (ngModelChange)="onChangeCreatedFor()">
                         <option [value]="0">Select Company</option>
                         <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">{{vendor.companyName}}

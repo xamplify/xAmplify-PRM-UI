@@ -124,5 +124,6 @@ export class Pagination {
 	ignoreSelfLeadsOrDeals:boolean = true;
 	source:string;
 	defaultLandingPage:boolean;
+	showLeadsForAttachingLead:boolean = false; /*** XNFR-476 ***/
 
 }
