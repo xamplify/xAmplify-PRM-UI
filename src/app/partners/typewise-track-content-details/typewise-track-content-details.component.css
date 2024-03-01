@@ -117,6 +117,8 @@
 .table>tbody>tr>td {
 	vertical-align: middle !important;
 }
-
+.status-details{
+  white-space: nowrap;
+}
 
 

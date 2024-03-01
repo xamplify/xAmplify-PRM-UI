@@ -159,10 +159,10 @@
                         </span>
                       </ng-container>
                       <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-                        style="margin-left: 3px !important;" title="Download"
+                        style="margin-left: 3px !important;" title="Click here to email the report"
                         [class.disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView"
                         (click)="downloadLeads(leadsPagination)">
-                        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+                        <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                       </span>
 
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"

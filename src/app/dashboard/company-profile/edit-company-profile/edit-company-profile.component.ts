@@ -202,7 +202,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     canvasRotation = 0;
     rotation = 0;
     marketing: boolean;
-    // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
+    isLocalHost = false;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -252,7 +252,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.containWithinAspectRatio = !this.containWithinAspectRatio;
 		}else{
         this.showCropper = false;
-        //this.errorUploadCropper = true;
         }
     }
     
@@ -363,6 +362,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
     
     ngOnInit() {
+        this.isLocalHost = this.authenticationService.isLocalHost();
         this.geoLocation();
         if(!this.isFromAdminPanel){
             this.upadatedUserId = this.authenticationService.isSuperAdmin()? this.authenticationService.selectedVendorId: this.loggedInUserId;

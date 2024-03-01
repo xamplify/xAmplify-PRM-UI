@@ -2875,6 +2875,9 @@ downloadUserListCsv(){
         this.userListPaginationWrapper.userList.contactType = this.contactsByType.selectedCategory;
         this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
         this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
+		if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember ) {
+            this.userListPaginationWrapper.pagination.partnerTeamMemberGroupFilter = true;
+        }
 		this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
 		.subscribe(
 			data => {

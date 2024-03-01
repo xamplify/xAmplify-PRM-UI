@@ -435,6 +435,13 @@
 															[(ngModel)]="campaignAccess.createWorkflow"
 															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
+												<!--XNFR-428-->
+												<tr *ngIf="!marketing && isLocalHost">
+													<th scope="row">Vendor Journey</th>
+													<td><input type="checkbox"
+															[(ngModel)]="campaignAccess.vendorJourney"
+															[ngModelOptions]="{standalone: true}"></td>
+												</tr>
 
 											</table>
 										</div>
@@ -581,18 +588,6 @@
 													(input)="validatePattern('website')"
 													(blur)="validatePattern('website')" /> <span *ngIf="websiteError"
 													style="color: #f55d7a">{{websiteErrorMessage}}</span>
-											</div>
-										</div>
-										<div class="col-md-6 col-lg-6">
-											<div class="form-group"
-												*ngIf="!companyProfile.isAdd && publicVideos?.length>0">
-												<label class="control-label">Select Video</label> <select
-													class="form-control" name="companyProfile.videoId"
-													[(ngModel)]="companyProfile.videoId">
-													<option [ngValue]="null">---Please Select Video---</option>
-													<option *ngFor="let videoFile of publicVideos"
-														[ngValue]="videoFile.id">{{videoFile.title}}</option>
-												</select>
 											</div>
 										</div>
 										<div class="col-md-12 col-lg-12">

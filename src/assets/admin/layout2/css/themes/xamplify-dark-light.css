@@ -2608,3 +2608,7 @@ button.unlink-button {
 .border-end {
   border-bottom: 1px solid #2f4857 !important;
 }
+/**** Sudha Sri(27-2-2024)****/
+table tr:nth-child(odd).highlightRow, table tr:nth-child(odd).highlightRow:hover{
+  background: #22313a!important;
+}

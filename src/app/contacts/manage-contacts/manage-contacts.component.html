@@ -683,7 +683,7 @@
                                                       <a class="custom-icon" data-toggle="tooltip" data-placement="top"
                                                          title="{{actionsDescription.contact_list_synchronize}}"
                                                          [class.disabled]="((masterContactListSync && contactList.isDefaultContactList) ||contactsCompanyListSync ) || (!contactList.emailValidationInd)  || ((contactList.socialNetwork=='GOOGLE' || contactList.socialNetwork=='SALESFORCE' || contactList.socialNetwork=='ZOHO' )&& (loggedInUserId != contactList.uploadedUserId))"
-                                                         *ngIf="hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember  || authenticationService.module.isVendorTier || authenticationService.vanityURLEnabled == true  || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
+                                                         *ngIf="contactList.isDefaultContactList || hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember  || authenticationService.module.isVendorTier || authenticationService.vanityURLEnabled == true  || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
                                                          (click)="!contactList.isDefaultContactList?synchronizeContactList(contactList):confirmsync()">
                                                          <i class="fa fa-refresh IconCustomization"
                                                             aria-hidden="true"></i>
@@ -1165,8 +1165,8 @@
                                           style="font-size: 14px; float: right" aria-hidden="true"></i>
                                     </span>
                                     <span data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip" 
-                                       title="Download" (click)="downloadUserListCsv(pagination)" style="margin-right: 10px;">
-                                       <i aria-hidden="true" class="fas fa-download p10"></i>
+                                       title="Click here to email the list" (click)="downloadUserListCsv(pagination)" style="margin-right: 10px;">
+                                       <i aria-hidden="true" class="fas fa-file-export p10"></i>
                                     </span>
                                     <ul class="dropdown-menu pull-right">
                                        <li *ngIf="contactsByType.selectedCategory == 'all' && !sharedLeads "><a

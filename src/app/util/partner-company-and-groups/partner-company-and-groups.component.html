@@ -1,7 +1,17 @@
 <span [hidden]="authenticationService?.module?.isMarketingCompany">
   <label>Select {{authenticationService?.partnerModule?.customName}} / List Of
     {{authenticationService?.partnerModule?.customName}} For Publishing (Optional) </label>
-  <div class="panel with-nav-tabs panel-default">
+	<div class="thank-you-pop" *ngIf="sendSuccess">
+    <ng-container *ngIf="statusCode==200">
+       <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
+       <h4 class="event-success">{{responseMessage}}</h4>
+    </ng-container>
+    <ng-container *ngIf="statusCode!=200">
+       <i class="fa fa-info-circle" id="font-size-info" aria-hidden="true"></i>
+       <h4 class="event-info">{{responseMessage}}</h4>
+    </ng-container>
+ </div>
+  <div class="panel with-nav-tabs panel-default" *ngIf = "(!vendorJourney || (vendorJourney && !sendSuccess))">
     <div class="panel-heading" id="company-and-group-tabs">
       <ul class="nav nav-tabs">
         <li id="partners-li">

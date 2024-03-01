@@ -22,23 +22,25 @@
             </div>
             <div class="dashboard-banner-image" style="cursor: pointer;text-align:center;color:#fff;" (click)="openModalPopUp()">
               <div *ngIf="!croppedImage">
-                <img *ngIf="!previouslySelectedImagePath" src="assets/images/contentPlaceholderImages.png" class="profile-image img-grid" alt="">
+                <img *ngIf="!previouslySelectedImagePath" src="assets/images/contentPlaceholderImages.png" class="profile-image img-grid" alt="No Image Found">
               </div>
               <div *ngIf="croppedImage; else showImage">
-                <img class="img-grids" [src]="croppedImage" alt="">
+                <img class="img-grids" [src]="croppedImage" alt="No Image Found">
               </div>
               <ng-template #showImage>
-                <img *ngIf="isAdd"  class="img-grids" [src]="previouslySelectedImagePath" alt="">
+                <ng-container *ngIf="isAdd && previouslySelectedImagePath?.length>0">
+                  <img  class="img-grids" [src]="previouslySelectedImagePath" alt="No Image Found">
+                </ng-container>
                 <ng-container *ngIf="!isAdd && !ngxLoading">
                   <div  *ngIf="isImageLoading">
-                    <img src="assets/images/image-loader.gif" style="height: 120px;" onerror="this.src='assets/images/no-preview.jpg';" alt="No image" class="center-image"/>
+                    <img src="assets/images/image-loader.gif" style="height: 235px;" onerror="this.src='assets/images/no-preview.jpg';" alt="No Image Found" class="center-image"/>
                   </div>
                   <img [hidden]="isImageLoading" class="img-grids" [src]="previouslySelectedImagePath" onerror="this.src='assets/images/no-preview.jpg';"
                   alt="No image" (load)="isImageLoading=false" (error)="isImageLoading=false">
                 </ng-container>
               </ng-template>
               <a class="btn btn-primary1 profile-pic" data-toggle="tooltip" data-placement="bottom"
-                title="Upload 6:1 ratio logo"><i class="fa fa-camera icon" aria-hidden="true"
+                title="Upload 5:1 ratio logo"><i class="fa fa-camera icon" aria-hidden="true"
                   style="font-size:25px;padding-top:4px;margin-right: -5px;"></i></a>
             </div>
           </div>
@@ -130,7 +132,11 @@
   <legend>{{listHeaderText}}</legend>
   <div class="alert alert-info text-center" *ngIf="pagination.totalRecords==0">No Data Found</div>
   <ng-container *ngIf="pagination?.totalRecords>0">
-    <div  class="table-responsive" style="overflow-x: inherit; padding:15px;">
+    <ng-container *ngIf="moduleType==properties?.dashboardBanners">
+      <div class="alert alert-info text-center" *ngIf="!isAddDashboardBannersDivHidden">{{properties?.maximumDashboardBannersLimitMessage}}</div>
+       <span><strong>Dashboard banners : <span>{{pagination.totalRecords}}</span> / 5</strong></span>
+    </ng-container>
+    <div  class="table-responsive">
       <table class='table tgrid table-hover'>
         <thead>
           <tr>
@@ -169,7 +175,7 @@
         </tbody>
       </table>
     </div>
-    <div class="form-group col-md-12">
+    <div  *ngIf="moduleType!=properties?.dashboardBanners">
       <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
         (notifyParentDropDown)="findLinks($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
     </div>
@@ -177,4 +183,5 @@
 
 </fieldset>
 
-<app-upload-image-util *ngIf="uploadImageOptionClicked"  [moduleName]="properties?.dashboardBanners" (croppedImageEventEmitter)="croppedImageEventReceiver($event)"></app-upload-image-util>
+<app-upload-image-util *ngIf="uploadImageOptionClicked"  [moduleName]="properties?.dashboardBanners" 
+(croppedImageEventEmitter)="croppedImageEventReceiver($event)" (modalPopupClosedEventEmitter)="modalPopupClosedEventReceiver()"></app-upload-image-util>
