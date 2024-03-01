@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { LogService } from "../../core/services/log.service";
 import { Processor } from "../../core/models/processor";
+import { Properties } from "app/common/models/properties";
+
 declare var $: any;
 
 @Component({
@@ -11,7 +13,7 @@ declare var $: any;
     "./log-unsubscribe.component.css",
     "../../../assets/css/loader.css"
   ],
-  providers: [Processor]
+  providers: [Processor,Properties]
 })
 export class LogUnsubscribeComponent implements OnInit {
   public userAlias: string;
@@ -32,7 +34,8 @@ export class LogUnsubscribeComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private logService: LogService,
-    public processor: Processor
+    public processor: Processor,
+    public properties:Properties
   ) {}
 
   logunsubscribedUser() {
