@@ -55,6 +55,7 @@
 .line-height {
   padding-top: 11px;
   padding-bottom: 7px;
+  padding-left: 5px;
 }
 .carousel-control .icon-prev {
   top: 47% !important;
@@ -75,7 +76,7 @@
 }
 .user-profiles {
   color: #007cb7;
-  width: 47px;
+  width: 32px;
   height: 37px;
   border-radius: 50%;
   display: flex;
@@ -148,4 +149,11 @@
 .header-css{
   display: flex;
   font-size: 16px !important;
+}
+.title-custom-font{
+  font-size: 40px !important;
+  width: 900px !important;
+}
+.description-custom-font{
+  font-size: 24px !important;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { DamService } from 'app/dam/services/dam.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -14,6 +14,7 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ParterService } from "app/partners/services/parter.service";
 import { UserService } from "app/core/services/user.service";
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 declare var $: any, swal: any;
 
 @Component({
@@ -23,7 +24,7 @@ declare var $: any, swal: any;
   providers: [HttpRequestLoader, SortOption, Properties, DamService,CallActionSwitch]
 
 })
-export class PartnerCompanyAndGroupsComponent implements OnInit {
+export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
  
 	ngxLoading = false;
 	loggedInUserId: number = 0;
@@ -66,8 +67,12 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	selectedTab = 1;
 	/***XNFR-326****/
 	@Input() isAssetPublishedEmailNotification = false;
+	@Input() vendorJourney:boolean = false;
+	@Output() closePopup = new EventEmitter();
+	companyAndPartnerMap = new Map<number, number[]>();
+
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
-		public referenceService: ReferenceService, public properties: Properties,
+		public referenceService: ReferenceService, public properties: Properties, public landingPageService: LandingPageService,
 		 public utilService: UtilService, public userService: UserService,public callActionSwitch:CallActionSwitch) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -94,7 +99,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 					this.selectedTab = 1;
 					this.findPartnerCompanies(this.pagination);
 					this.disableOrEnablePartnerListsTab();
-
 				}
 			}else{
 				$('#partners-li').addClass('active');
@@ -108,7 +112,26 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 		}
 	}
 
-	findPartnerCompanies(pagination: Pagination) {
+	ngAfterViewInit(){
+		if (this.moduleName != undefined && $.trim(this.moduleName).length > 0) {
+			if(this.inputId!=undefined && this.inputId>0){
+				if (this.isPublishedToPartnerGroups) {
+					$('#partnerGroups-li').addClass('active');
+					$('#partnerGroups').addClass('tab-pane fade in active');
+					this.disableOrEnablePartnerCompaniesTab();
+				}else {
+					$('#partners-li').addClass('active');
+					$('#partners').addClass('tab-pane fade in active');
+					this.disableOrEnablePartnerListsTab();
+				}
+			}else{
+				$('#partners-li').addClass('active');
+				$('#partners').addClass('tab-pane fade in active');
+			}
+		} 
+	}
+
+	findPartnerCompanies(pagination: Pagination) { 
 		this.referenceService.startLoader(this.httpRequestLoader);
 		pagination.campaignId = this.inputId;//This is asset id
 		pagination.userId = this.loggedInUserId;
@@ -172,7 +195,9 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 		this.selectedTeamMemberIds = [];
 		this.selectedPartnershipIds = [];
 		this.ngxLoading = false;
-        this.sendEmitterValues();
+		if(!this.vendorJourney){
+			this.sendEmitterValues();
+		}
 
 	}
 
@@ -250,14 +275,23 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 		this.getTeamMembersAndAdmins(this.teamMembersPagination);
 	}
 	/************Partner Company Checkbox related code starts here****************/
-	highlightAdminOrTeamMemberRowOnCheckBoxClick(teamMemberId: number, partnershipId: number, event: any) {
+	highlightAdminOrTeamMemberRowOnCheckBoxClick(teamMemberId: number, partnershipId: number,companyId: number, event: any) {
 		let isChecked = $('#' + teamMemberId).is(':checked');
 		if (isChecked) {
 			$('#publishToPartners' + teamMemberId).addClass('row-selected');
 			this.selectedTeamMemberIds.push(teamMemberId);
+			if(this.companyAndPartnerMap.has(companyId)){
+				this.companyAndPartnerMap.get(companyId).push(teamMemberId);
+			}else{
+				this.companyAndPartnerMap.set(companyId,[teamMemberId]);
+			}
 		} else {
 			$('#publishToPartners' + teamMemberId).removeClass('row-selected');
 			this.selectedTeamMemberIds.splice($.inArray(teamMemberId, this.selectedTeamMemberIds), 1);
+			this.companyAndPartnerMap.get(companyId).splice($.inArray(teamMemberId, this.companyAndPartnerMap.get(companyId)), 1)
+			if(this.companyAndPartnerMap.get(companyId).length ==0){
+				this.companyAndPartnerMap.delete(companyId);
+			}
 		}
 		this.checkHeaderCheckBox(partnershipId);
 		this.disableOrEnablePartnerListsTab();
@@ -276,18 +310,27 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 		this.isHeaderCheckBoxChecked = (trLength == selectedRowsLength);
 	}
 
-	highlightSelectedAdminOrTeamMemberRowOnRowClick(teamMemberId: number, partnershipId: number, event: any) {
+	highlightSelectedAdminOrTeamMemberRowOnRowClick(teamMemberId: number, partnershipId: number,companyId:number, event: any) {
 		let isChecked = $('#' + teamMemberId).is(':checked');
 		if (isChecked) {
 			//Removing Highlighted Row
 			$('#' + teamMemberId).prop("checked", false);
 			$('#publishToPartners' + teamMemberId).removeClass('row-selected');
 			this.selectedTeamMemberIds.splice($.inArray(teamMemberId, this.selectedTeamMemberIds), 1);
+			this.companyAndPartnerMap.get(companyId).splice($.inArray(teamMemberId, this.companyAndPartnerMap.get(companyId)), 1)
+			if(this.companyAndPartnerMap.get(companyId).length ==0){
+				this.companyAndPartnerMap.delete(companyId);
+			}
 		} else {
 			//Highlighting Row
 			$('#' + teamMemberId).prop("checked", true);
 			$('#publishToPartners' + teamMemberId).addClass('row-selected');
 			this.selectedTeamMemberIds.push(teamMemberId);
+			if(this.companyAndPartnerMap.has(companyId)){
+				this.companyAndPartnerMap.get(companyId).push(teamMemberId);
+			}else{
+				this.companyAndPartnerMap.set(companyId,[teamMemberId]);
+			}
 		}
 		this.checkHeaderCheckBox(partnershipId);
 		this.disableOrEnablePartnerListsTab();
@@ -309,7 +352,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 
 	}
 
-	selectAllTeamMembersOfTheCurrentPage(ev: any, partnershipId: number) {
+	selectAllTeamMembersOfTheCurrentPage(ev: any, partnershipId: number, companyId:number) {
 		if (ev.target.checked) {
 			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', true);
 			let self = this;
@@ -317,6 +360,11 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 				var id = $(this).val();
 				self.selectedTeamMemberIds.push(parseInt(id));
 				$('#publishToPartners' + id).addClass('row-selected');
+				if(self.companyAndPartnerMap.has(companyId)){
+					self.companyAndPartnerMap.get(companyId).push(parseInt(id))
+				}else{
+					self.companyAndPartnerMap.set(companyId,[parseInt(id)])
+				}
 			});
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
 			this.selectedPartnershipIds.push(partnershipId);
@@ -327,6 +375,9 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedTeamMemberIds, currentPageSelectedIds);
 			this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
 			this.selectedPartnershipIds.splice($.inArray(partnershipId, this.selectedPartnershipIds), 1);
+			if(this.companyAndPartnerMap.has(companyId)){
+				this.companyAndPartnerMap.delete(companyId);
+			}
 		}
 		this.disableOrEnablePartnerListsTab();
 		ev.stopPropagation();
@@ -354,11 +405,13 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	}
 
 	clearTabs(){
-		let selectedTabName = this.selectedTabName();
+		let selectedTabName = this.vendorJourney? (this.selectedTab == 1? "partners": "partnerGroups"): this.selectedTabName();
+
 		if ("partners" == selectedTabName) {
 			this.selectedTeamMemberIds = [];
 			this.selectedPartnershipIds = [];
 			this.isHeaderCheckBoxChecked = false;
+			this.companyAndPartnerMap.clear();
 			this.disableOrEnablePartnerListsTab();
 		} else {
 			this.selectedPartnerGroupIds = [];
@@ -490,5 +543,63 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 		this.findPartnerCompanies(pagination);
 	}
 	
+	publish() {
+		this.customResponse = new CustomResponse();
+		if (this.selectedTeamMemberIds.length > 0 || this.selectedPartnerGroupIds ) {
+			this.setValuesAndPublish();
+		} else {
+			this.referenceService.goToTop();
+			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one row', true);
+		}
+	}
 
+	setValuesAndPublish(){
+		this.startLoaders();
+		  let shareLandingPageDTO = {
+			  "loggedInUserId": this.loggedInUserId,
+			  "partnerIds": this.selectedTeamMemberIds,
+			  "userListIds": this.selectedPartnerGroupIds,
+			  "vendorJourneyLandingPageId": this.inputId,
+			  "companyPartnerIds": null,
+			  "partnerGroupSelected": this.selectedPartnerGroupIds != null && this.selectedPartnerGroupIds.length>0
+		  }
+		  if(this.companyAndPartnerMap != undefined && this.companyAndPartnerMap!= null && this.companyAndPartnerMap.size > 0 ){
+			let obj = Array.from(this.companyAndPartnerMap).reduce((obj, [key, value]) => {
+				obj[key] = value;
+				return obj;
+			  }, {});
+			shareLandingPageDTO['companyPartnerIds'] = obj;
+		  }
+	  	this.shareLandingPageToPartners(shareLandingPageDTO);
+		}
+
+		shareLandingPageToPartners(shareLandingPageDTO : any){
+			this.landingPageService.shareVendorJourneyLandingPageToPartners(shareLandingPageDTO).subscribe((data: any) => {
+				this.referenceService.scrollToModalBodyTopByClass();
+				this.stopLoaders();
+				if (data.access) {
+					this.sendSuccess = true;
+					this.statusCode = data.statusCode;
+					if (data.statusCode == 200) {
+						this.responseMessage = "Published Successfully";
+					} else {
+						this.responseMessage = data.message;
+					}
+					this.resetFields();
+				} else {
+					this.ngxLoading = false;
+					this.authenticationService.forceToLogout();
+				}
+			}, _error => {
+				this.stopLoaders();
+				this.sendSuccess = false;
+				this.referenceService.goToTop();
+				this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+			});
+		}
+
+		closePopupEmit() {
+			this.closePopup.emit();
+			this.resetFields();
+		}
 }
