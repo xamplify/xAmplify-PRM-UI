@@ -24,6 +24,7 @@ export class LandingPageService {
     id: number = 0;
     URL = this.authenticationService.REST_URL + "landing-page/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/"
+    vendorJourney:boolean = false;
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
          private router: Router,private utilService:UtilService,public referenceService:ReferenceService) { }
 
@@ -216,4 +217,15 @@ export class LandingPageService {
         return Observable.throw( error );
     }
 
+    shareVendorJourneyLandingPageToPartners(shareLeadsDTO: any) {
+        return this.http.post(this.URL + "shareVendorJourneyLandingPageToPartners?access_token=" + this.authenticationService.access_token, shareLeadsDTO)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+    findPartnerVendorJourneyLandingPages(pagination: any) {
+        return this.http.post(this.URL + "findPartnerVendorJourneyLandingPages?searchKey=" + pagination.searchKey + "&access_token=" + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

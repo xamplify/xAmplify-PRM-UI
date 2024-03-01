@@ -642,7 +642,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	navigateToTermsAndConditions() {
-		window.open("https://www.xamplify.com/terms-conditions", "_blank");
+		window.open(this.properties.termsOfServiceUrl, "_blank");
 	}
 
 
@@ -3367,19 +3367,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	navigateToTermsOfUse() {
-		window.open("https://www.xamplify.com/terms-conditions/", "_blank");
+		window.open(this.properties.termsOfServiceUrl, "_blank");
 	}
 
 	navigateToPrivacy() {
-		window.open("https://www.xamplify.com/privacy-policy/", "_blank");
+		window.open(this.properties.privacyPolicyUrl, "_blank");
 	}
 
 	navigateToGDPR() {
-		window.open("https://gdpr-info.eu/", "_blank");
+		window.open(this.properties.gdprUrl, "_blank");
 	}
 
 	navigateToCCPA() {
-		window.open("https://www.caprivacy.org/", "_blank");
+		window.open(this.properties.ccpaUrl, "_blank");
 	}
 
 	ngOnInit() {

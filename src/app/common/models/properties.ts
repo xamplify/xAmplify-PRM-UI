@@ -192,7 +192,8 @@ export class Properties {
 	notifyPartners = "Onboarding Configurations";
 	notifyPartnersHeaderText = "Onboarding configurations of your partners";
 
-
+	vendorJourney = "Vendor Journey";
+	landingPages = "Landing Pages";
 
 	/********Error Messages************* */
 	roleUpdatedMessage = "Your role has been changed.Please login again.";
@@ -235,6 +236,8 @@ export class Properties {
 	cookiesPolicyUrl = "https://xamplify.com/cookies-policy/";
 	termsOfServiceUrl ="https://xamplify.com/terms-of-uses/";
 	subProcessorsUrl = "https://www.xamplify.com/subprocessors/";
+	gdprUrl = "https://gdpr-info.eu/";
+	ccpaUrl = "https://www.caprivacy.org/";
 
 	/***One-Click Launch Error Messages */
 	emptyShareListErrorMessage =  "Edit campaign is no longer available because the vendor deleted the shared list (or) no list associated with this campaign";
