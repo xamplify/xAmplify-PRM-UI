@@ -1538,13 +1538,14 @@
          <div class="modal-body">
             <div class="form-group">
                <label for="campaignName" translate>Campaign Name</label>
-               <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName">
+               <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName" (input)="validateEmptyData()">
+               <span class="required" *ngIf="!isValidCopyCampaignName">Please enter campaign name</span>
             </div>
          </div>
          <div class="modal-footer">
             <button type="button" class="btn Btn-Gray btn-hvr-text neg_mrg_top4" data-dismiss="modal"
                translate>Close</button>
-            <button type="button" [disabled]="clicked" class="button_blue bgcolor-unset"
+            <button type="button" [disabled]="clicked || !isValidCopyCampaignName" class="button_blue bgcolor-unset"
                (click)="saveAsCampaign(); clicked = true" translate><span
                   class="btn btn-primary transition txt_pd-top3">Save
                   changes</span></button>
