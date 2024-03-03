@@ -338,14 +338,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/**XNFR-459****/
 	isNewsAndAnnouncementsOptionClicked:boolean;
 	isDashboardBannersOptionClicked:boolean;
-	editVendorPage:boolean =false;
-	vendorDefaultTemplate:LandingPage = new LandingPage();
-	openLinksInNewTabCheckBoxId = "openLinksInNewTab-page-links";
-    @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
-    mergeTagsInput: any = {};
-	loggedInUserCompanyId = 0;
 	vendorJourney:boolean = false;
 	isLandingPages:boolean = false;
+	loggedInUserCompanyId:number = 0;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -2041,14 +2036,26 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.dashboardBanners;
     }
 		else if (this.activeTabName == "vendorJourney") {
+			this.ngxloading = true;
+			this.vendorJourney = false;
+			let self = this;
+			setTimeout(() => {
+				self.vendorJourney = true;
+				self.ngxloading = false;
+			}, 500);
 			this.activeTabHeader = this.properties.vendorJourney;
-			this.resetVendorJourney();
-			this.vendorJourney = true;
+
 		}
 		else if (this.activeTabName == "landingPages") {
+
+			this.ngxloading = true;
+			this.isLandingPages = false;
+			let self = this;
+			setTimeout(() => {
+				self.isLandingPages = true;
+				self.ngxloading = false;
+			}, 500);
 			this.activeTabHeader = this.properties.landingPages;
-			this.resetVendorJourney();
-			this.isLandingPages = true;
 		}
 		this.referenceService.goToTop();
 	}
@@ -4602,7 +4609,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		);
 	}
 
-editVendorLandingPage(event){
+/* editVendorLandingPage(event){
 	this.vendorDefaultTemplate = event;
 	this.landingPageService.vendorJourney = true;
 	this.landingPageService.id = this.vendorDefaultTemplate.id;
@@ -4630,7 +4637,7 @@ checkOrUncheckOpenLinksInNewTabOption(){
 		this.vendorDefaultTemplate.openLinksInNewTab = true;
 	}
 
-}
+} */
 
 
 getCompanyId() {

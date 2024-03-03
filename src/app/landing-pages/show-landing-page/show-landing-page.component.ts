@@ -33,6 +33,7 @@ export class ShowLandingPageComponent implements OnInit {
     show: boolean;
     message: string;
     isPartnerLandingPage:boolean=false;
+    isVendorJourney:boolean = false;
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,private landingPageService:LandingPageService,
           private authenticationService:AuthenticationService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
           public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService,private vanityURLService:VanityURLService) {
@@ -54,6 +55,10 @@ export class ShowLandingPageComponent implements OnInit {
       }else if(this.router.url.includes("/pl/")){
           this.isPartnerLandingPage = true;
           this.getHtmlBodyAlias(this.alias);
+      }else if(this.router.url.includes("/vjpl/")){
+        this.isPartnerLandingPage = true;
+        this.isVendorJourney = true;
+        this.getHtmlBodyAlias(this.alias);
       }else{
           this.getHtmlBodyAlias(this.alias);
       }
