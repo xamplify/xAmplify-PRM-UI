@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <div class="col w430 text-overflow">
-                        <h5 class="line-height m0 text-overflow" title="{{item?.title}}">{{item?.title}}</h5>
+                        <h5 class="line-height m0 text-overflow"><span data-toggle="tooltip" data-placement="bottom"  title="{{item?.title}}">{{item?.title}}</span></h5>
                     </div>
                     <div class="col">
                         <a href="{{item?.link}}" target="{{item?.openLinkInNewTab ? '_blank' : '_self'}}"
@@ -40,8 +40,9 @@
             <div class="portlet-body pt0">
                 <div class="inline-flex border-end" *ngFor="let instantNavigationLink of instantNavigationLinks">
                     <div class="col w430 text-overflow">
-                        <h5 class="line-height m0 text-overflow" title="{{instantNavigationLink?.title}}">
-                            {{instantNavigationLink?.title}}</h5>
+                        <h5 class="line-height m0 text-overflow">
+                         <span data-toggle="tooltip" data-placement="bottom"  title="{{instantNavigationLink?.title}}">{{instantNavigationLink?.title}}</span>
+                         </h5>
                     </div>
                     <div class="col">
                         <div class="instant-links-type">
