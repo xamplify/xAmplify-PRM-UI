@@ -108,12 +108,12 @@
 <!--Added On 11/12/2023-->
 <ng-template #formFields let-columnInfo="columnInfo">
   <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0">
-    <label *ngIf ="this.activeCRM != 'HUBSPOT'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0 control-label">{{columnInfo.labelName}} <span class="required" *ngIf="columnInfo.required">*</span>
+    <label *ngIf ="this.activeCRM != 'HUBSPOT' && this.activeCRM != 'PIPEDRIVE'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0 control-label">{{columnInfo.labelName}} <span class="required" *ngIf="columnInfo.required">*</span>
       <span
         *ngIf="!(columnInfo.labelType=='textarea' || columnInfo.labelType=='text' || columnInfo.labelType=='number' || columnInfo.labelType=='email' || columnInfo.labelType=='percent' || columnInfo.labelType=='geolocation' || columnInfo.labelType=='phone' || columnInfo.labelType=='url') && columnInfo.placeHolder?.length > 0">({{columnInfo.placeHolder}})
       </span>
     </label>
-    <label *ngIf="this.activeCRM === 'HUBSPOT'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0 control-label">{{columnInfo.displayName}} <span class="required" *ngIf="columnInfo.required">*</span>
+    <label *ngIf="this.activeCRM === 'HUBSPOT' || this.activeCRM === 'PIPEDRIVE'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0 control-label">{{columnInfo.displayName}} <span class="required" *ngIf="columnInfo.required">*</span>
       <span
         *ngIf="!(columnInfo.labelType=='textarea' || columnInfo.labelType=='text' || columnInfo.labelType=='number' || columnInfo.labelType=='email' || columnInfo.labelType=='percent' || columnInfo.labelType=='geolocation' || columnInfo.labelType=='phone' || columnInfo.labelType=='url') && columnInfo.placeHolder?.length > 0">({{columnInfo.placeHolder}})
       </span>
