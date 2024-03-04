@@ -74,35 +74,41 @@
                             <!---XNFR-327--->
                             <ng-container
                                 *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList">
-                                <a class="Iconhover" *ngIf="learningTrack.canUpdate && !isPartnerView"
+                                <a class="Iconhover custom-grid-icon" *ngIf="learningTrack.canUpdate && !isPartnerView"
                                     data-toggle="tooltip" data-placement="top" title="Preview & Edit"
                                     (click)="edit(learningTrack.id)">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
-                                <a class="Iconhover"
+                                <a class="Iconhover custom-grid-icon"
                                     *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish"
                                     data-toggle="tooltip" data-placement="top" title="Unpublish"
                                     (click)="confirmChangePublish(learningTrack.id, false)">
                                     <i class="fa fa-reply" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
-                                <a class="Iconhover"
+                                <a class="Iconhover custom-grid-icon"
                                     *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
                                     data-toggle="tooltip" data-placement="top" title="Publish"
                                     (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
                                     <i class="fa fa-share" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
-                                <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="View"
+                                <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top" title="View"
                                     (click)="view(learningTrack)">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
-                                <a class="Iconhover" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top"
+                                <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top"
                                     title="View Analytics" (click)="goToAnalytics(learningTrack)">
                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
                                 <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip"
-                                    data-placement="top" title="Delete" class="delete"
+                                    data-placement="top" title="Delete" class="delete custom-icon"
                                     (click)="confirmDelete(learningTrack)">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    <div class="del-icon"></div>
                                 </a>
                             </ng-container>
                             <!---XNFR-327--->
