@@ -124,6 +124,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     clicked = false;
     editButtonClicked = false;
     selectedCampaignId = 0;
+    isValidCopyCampaignName = true;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService, private route: ActivatedRoute, public renderer: Renderer,
@@ -570,6 +571,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         this.saveAsCampaignId = campaign.campaignId;
         this.saveAsCampaignName = campaign.campaignName + "_copy";
         this.saveAsCampaignInfo = campaign;
+        this.validateCopyCampaignName();
     }
     setCampaignData() {
         let campaignData: any;
@@ -1121,6 +1123,11 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     }catch(error){
         this.logger.error(error, "CampaignsListViewUtilComponent", "downloadCampaignsData()");
     }
+}
+
+validateCopyCampaignName(){
+    let trimmedData = this.refService.getTrimmedData(this.saveAsCampaignName);
+    this.isValidCopyCampaignName = trimmedData.length>0;
 }
 
 }
