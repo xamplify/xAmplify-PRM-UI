@@ -143,7 +143,7 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
   editButtonClicked = false;
   selectedCampaignId = 0;
   showCalendarView = false;
-
+  isValidCopyCampaignName = true;
   constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, 
     private router: Router, private logger: XtremandLogger,
     private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -611,6 +611,7 @@ openSaveAsModal(campaign: any) {
   this.saveAsCampaignId = campaign.campaignId;
   this.saveAsCampaignName = campaign.campaignName + "_copy";
   this.saveAsCampaignInfo = campaign;
+  this.validateCopyCampaignName();
 }
 setCampaignData() {
   let campaignData: any;
@@ -1212,5 +1213,10 @@ callFolderListViewEmitter(){
         this.updatedItemsCountEmitter.emit(this.exportObject);
     }
  }
+
+ validateCopyCampaignName(){
+    let trimmedData = this.referenceService.getTrimmedData(this.saveAsCampaignName);
+    this.isValidCopyCampaignName = trimmedData.length>0;
+}
 
 }

@@ -1281,11 +1281,12 @@
            <div class="form-group">
               <label for="campaignName" translate>Campaign Name</label>
               <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName">
+              <span class="required" *ngIf="!isValidCopyCampaignName">Please enter campaign name</span>
            </div>
         </div>
         <div class="modal-footer">
            <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" translate>Close</button>
-           <button type="button" [disabled]="clicked" class="btn btn-primary" (click)="saveAsCampaign(); clicked = true"  translate>Save changes</button>
+           <button type="button" [disabled]="clicked || !isValidCopyCampaignName" class="btn btn-primary" (click)="saveAsCampaign(); clicked = true"  translate>Save changes</button>
         </div>
      </div>
   </div>

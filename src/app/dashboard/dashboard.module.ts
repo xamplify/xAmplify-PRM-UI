@@ -94,6 +94,7 @@ import { NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent } fr
 import { DashboardBannerImagesComponent } from './dashboard-banner-images/dashboard-banner-images.component';
 
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
+import { VendorJourneyComponent } from './vendor-journey/vendor-journey.component';
 
 
 
@@ -162,7 +163,8 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
         AddOrManageDomainsComponent,
         CustomLinksUtilComponent,
         NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent,
-        DashboardBannerImagesComponent
+        DashboardBannerImagesComponent,
+        VendorJourneyComponent
 
             
     ],

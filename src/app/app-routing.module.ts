@@ -140,6 +140,7 @@ export const routes: Routes = [
 	{ path: 'pl/:alias/:seoName', component: ShowLandingPageComponent },
 	{ path: 'l/:alias', component: ShowLandingPageComponent },
 	{ path: 'pl/:alias', component: ShowLandingPageComponent },
+	{ path: 'vjpl/:alias', component: ShowLandingPageComponent },
 	{ path: 'showCampaignLandingPage/:alias', component: ShowLandingPageComponent },
 	{ path: 'scp/:alias', component: ShowLandingPageComponent },
 	{ path: 'clpl/:alias', component: ShowLandingPageComponent },

@@ -1,9 +1,11 @@
 .description-width {
     width: 700px;
+    text-transform: capitalize;
 }
 
 .title-width {
     width: 500px;
+    text-transform: capitalize;
 }
 
 .carousel-caption {
@@ -11,7 +13,7 @@
 }
 
 .carousel-caption .btn {
-    position: fixed;
+    position: fixed!important;
     bottom: 36px;
 }
 
@@ -22,4 +24,12 @@
     -webkit-line-clamp: 2;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+@media screen and (max-width:1024px){
+    .title-custom-font{
+        width: auto!important;
+    }
+    .description-width {
+        width: auto!important;
+    }
 }

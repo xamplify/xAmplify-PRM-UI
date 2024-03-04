@@ -500,6 +500,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                 this.referenceService.assetResponseMessage = result.message;
 				if (result.statusCode == 200) {
 					if(this.isAdd){
+                        if(result.message==undefined){
+                            this.referenceService.assetResponseMessage = "Uploaded Successfully";
+                        }
 						this.referenceService.isUploaded = true;
 					}else{
 						this.referenceService.isAssetDetailsUpldated = true;

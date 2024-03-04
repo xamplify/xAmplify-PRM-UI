@@ -3475,4 +3475,9 @@ removeElementById(){
   $('link[id="head-link-rel"]').remove();
 }
 
+removeCssStylesAndCssFiles(){
+  this.removeCssStyles();
+  this.removeElementById();
+}
+
 }
