@@ -13,7 +13,7 @@
 }
 
 .carousel-caption .btn {
-    position: fixed!important;
+    position: fixed !important;
     bottom: 36px;
 }
 
@@ -27,9 +27,9 @@
 }
 @media screen and (max-width:1024px){
     .title-custom-font{
-        width: auto!important;
+        width: auto !important;
     }
     .description-width {
-        width: auto!important;
+        width: auto !important;
     }
 }

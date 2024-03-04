@@ -1,5 +1,5 @@
 <div class="row" *ngIf="isVanityUrlEnabled">
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pr-7 pd_btm5">
+    <div [ngClass]="!authenticationService?.module?.isInstanceNavigationLinksOptionDisplayed ? 'col-xs-12 col-sm-12 col-md-12 col-lg-12 pr-7 pd_btm5':'col-xs-12 col-sm-6 col-md-6 col-lg-6 pr-7 pd_btm5'">
         <app-modal-popup-loader [height]="220" *ngIf="isNewsAndAnnouncementApiLoading"></app-modal-popup-loader>
         <div class="portlet light h-240" *ngIf="!isNewsAndAnnouncementApiLoading">
             <div class="portlet-title">
@@ -28,7 +28,7 @@
     </div>
 
 
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl-7 pd_btm5">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl-7 pd_btm5"  *ngIf="authenticationService?.module?.isInstanceNavigationLinksOptionDisplayed">
         <app-modal-popup-loader [height]="220" *ngIf="isInstantNavigationLinksApiLoading"></app-modal-popup-loader>
         <div class="portlet light h-240" *ngIf="!isInstantNavigationLinksApiLoading">
             <div class="portlet-title">
