@@ -35,7 +35,7 @@
                             <span><b>{{titleHeader}} Title: </b>{{learningTrack.title}}</span>
                         </h4>
                         <div class="mt5">
-                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')&& hasAccessToSharedPlaybooks"
+                            <div *ngIf="isPartnerView && tracks"
                                 style="margin: 4px 15px 0px 15px;">
                                 <div class="progress">
                                     <div class="progress-bar" data-toggle="tooltip" data-placement="top"
