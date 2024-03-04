@@ -1538,8 +1538,8 @@
          <div class="modal-body">
             <div class="form-group">
                <label for="campaignName" translate>Campaign Name</label>
-               <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName" (input)="validateEmptyData()">
-               <span class="required" *ngIf="!isValidCopyCampaignName">Please enter campaign name</span>
+               <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName" (input)="validateCopyCampaignName()">
+               <span class="required" *ngIf="!isValidCopyCampaignName">Please Enter Campaign Name</span>
             </div>
          </div>
          <div class="modal-footer">
