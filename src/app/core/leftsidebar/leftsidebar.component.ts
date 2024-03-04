@@ -281,7 +281,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.playbookAccess = data.playbook;
 		module.playbookAccessAsPartner = data.playbookAccessAsPartner;
 		if (data.content) {
-			//this.contentDivs.push(module.isVideo);
 			this.contentDivs.push(module.damAccess || module.damAccessAsPartner);
 			this.contentDivs.push(module.lmsAccess || module.lmsAccessAsPartner);
 			this.contentDivs.push(module.playbookAccess || module.playbookAccessAsPartner);
@@ -295,6 +294,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 			module.contentDivsCount = 0;
 			module.prmContentDivsCount = 0;
 		}
+		/***XBI-2313***/
+		module.isInstanceNavigationLinksOptionDisplayed = module.damAccess || module.damAccessAsPartner || module.lmsAccess || module.lmsAccessAsPartner 
+														|| module.playbookAccess || module.playbookAccessAsPartner;
 	}
 
 	setDesignMenu(data: any,module:any) {
