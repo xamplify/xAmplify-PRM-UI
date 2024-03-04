@@ -108,14 +108,14 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
-    getHtmlContentByAlias( alias: string,isPartnerLandingPage:boolean) {
-        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+    getHtmlContentByAlias( landingPageHtmlDto:any,isPartnerLandingPage:boolean ) {
+        landingPageHtmlDto['vanityUrlFilter']  = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
         if(isPartnerLandingPage){
-            return this.http.get( this.authenticationService.REST_URL + "/getPartnerHtmlBodyByAlias/" + alias+"/"+vanityUrlFilter,"")
+            return this.http.post( this.authenticationService.REST_URL + "/getPartnerHtmlBodyByAlias",landingPageHtmlDto)
             .map( this.extractData )
             .catch( this.handleError );
         }else{
-            return this.http.get( this.authenticationService.REST_URL + "/getHtmlBodyByAlias/" + alias+"/"+vanityUrlFilter, "" )
+            return this.http.post( this.authenticationService.REST_URL + "/getHtmlBodyByAlias" , landingPageHtmlDto )
             .map( this.extractData )
             .catch( this.handleError );
         }

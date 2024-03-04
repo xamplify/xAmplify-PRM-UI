@@ -168,7 +168,11 @@ export class ShowLandingPageComponent implements OnInit {
   
   
   getHtmlBodyAlias(alias:string){
-      this.landingPageService.getHtmlContentByAlias(alias,this.isPartnerLandingPage)
+      let landingPageHtmlDto = {
+        "alias":alias,
+        "vendorJourney":this.isVendorJourney
+      }
+      this.landingPageService.getHtmlContentByAlias(landingPageHtmlDto,this.isPartnerLandingPage)
       .subscribe(
         (response: any) => {
           if (response.statusCode === 200) {
