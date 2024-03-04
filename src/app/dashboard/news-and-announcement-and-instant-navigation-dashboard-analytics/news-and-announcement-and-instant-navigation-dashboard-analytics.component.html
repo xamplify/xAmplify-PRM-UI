@@ -46,20 +46,75 @@
                     </div>
                     <div class="col">
                         <div class="instant-links-type">
-                            <span *ngIf="instantNavigationLink?.type=='Asset'"
-                                class="view-banner banner-top mr5">{{instantNavigationLink?.type}}</span>
-                            <span *ngIf="instantNavigationLink?.type=='Track'"
-                                class="view-banner orange-lable-cu1 mr5">{{instantNavigationLink?.type}}</span>
-                            <span *ngIf="instantNavigationLink?.type=='Play Book'"
-                                class="view-banner published mr5">{{instantNavigationLink?.type}}</span>
+                            <span *ngIf="instantNavigationLink?.type=='Asset'" class="view-banner banner-top mr5">{{instantNavigationLink?.type}}</span>
+                            <span *ngIf="instantNavigationLink?.type=='Track'" class="view-banner orange-lable-cu1 mr5">{{instantNavigationLink?.type}}</span>
+                            <span *ngIf="instantNavigationLink?.type=='Play Book'" class="view-banner published mr5">{{instantNavigationLink?.type}}</span>
                         </div>
                     </div>
-                    <div class="col mt10">
-                        <a (click)="navigate(instantNavigationLink)"><i class="fa fa-link"></i></a>
-                    </div>
+                    <!--Asset-->
+                    <ng-container *ngIf="instantNavigationLink?.type=='Asset'">
+                        <!--Asset / Vendor View-->
+                        <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
+                            access:authenticationService?.module?.damAccess,
+                            title: authenticationService?.module?.damAccess ?'Click here to see asset analytics':'You do not have permission to see analytics'}">
+                        </ng-template>
+                        <!--Asset / Partner View-->
+                        <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
+                            access:authenticationService?.module?.damAccessAsPartner,
+                            title: authenticationService?.module?.damAccessAsPartner ?'Click here to see asset shared by your vendor':'You do not have permission'}">
+                        </ng-template>
+                    </ng-container>
+
+                    <!--Track-->
+                    <ng-container *ngIf="instantNavigationLink?.type=='Track'">
+                        <!--Track / Vendor View-->
+                        <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
+                            access:authenticationService?.module?.lmsAccess,
+                            title: authenticationService?.module?.lmsAccess ?'Click here to see track analytics':'You do not have permission'}">
+                        </ng-template>
+                        <!--Track / Partner View-->
+                        <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
+                            access:authenticationService?.module?.lmsAccessAsPartner,
+                            title: authenticationService?.module?.lmsAccessAsPartner ?'Click here to see track shared by your vendor':'You do not have permission'}">
+                        </ng-template>
+                    </ng-container>
+
+                    <!--Play Book-->
+                    <ng-container *ngIf="instantNavigationLink?.type=='Track'">
+                        <!--Play Book / Vendor View-->
+                        <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
+                            access:authenticationService?.module?.playbookAccess,
+                            title: authenticationService?.module?.playbookAccess ?'Click here to see play book analytics':'You do not have permission'}">
+                        </ng-template>
+                        <!--Play Book / Partner View-->
+                        <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
+                            access:authenticationService?.module?.playbookAccessAsPartner,
+                            title: authenticationService?.module?.playbookAccessAsPartner ?'Click here to see play book shared by your vendor':'You do not have permission'}">
+                        </ng-template>
+                    </ng-container>
+                    
                 </div>
                 <div class="alert alert-info text-center" *ngIf="instantNavigationLinks?.length==0">No Data Found</div>
             </div>
         </div>
     </div>
 </div>
+<ng-template #instantNavigationLinkNgTemplateIcon let-instantNavigationLink="instantNavigationLink" let-access="access" let-title="title">
+    <div [ngClass]="access ? 'col mt10':'disabled-div col mt10'" title="{{title}}">
+        <a [ngClass]="!access? 'disabled-div':''" (click)="access && navigate(instantNavigationLink)">
+            <i class="fa fa-link" [ngClass]="!access ?'disabled':''"></i>
+        </a>
+    </div>
+</ng-template>
