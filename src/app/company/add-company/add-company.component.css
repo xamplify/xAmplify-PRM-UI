@@ -112,5 +112,9 @@
   .form-control, .form-control, fieldset .form-control  {
     background-color: transparent;
 }
-  
-  
+.hide-icons
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+     margin: 0;
+}
