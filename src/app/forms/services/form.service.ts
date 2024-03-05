@@ -67,8 +67,8 @@ export class FormService {
             .catch( this.handleError );
     }
 
-    getByAlias( alias: string ) {
-        return this.http.get( this.authenticationService.REST_URL + "/getByFormAlias/" + alias, "" )
+    getByAlias( alias: string, vendorJourney:boolean ) {
+        return this.http.get( this.authenticationService.REST_URL + "/getByFormAlias/" + alias+"/"+vendorJourney, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }

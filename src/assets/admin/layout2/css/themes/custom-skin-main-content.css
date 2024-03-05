@@ -2557,3 +2557,10 @@ button.button_blue:disabled span{
 table tr:nth-child(odd).highlightRow, table tr:nth-child(odd).highlightRow:hover{
   background: var(--page-content) !important;
 }
+/* News & Announcements */
+.inline-flex.border-end:nth-child(even){
+  background-color: var(--page-content) !important;
+}
+.border-end{
+  border-bottom: 1px solid var(--border-color) !important ;
+}
