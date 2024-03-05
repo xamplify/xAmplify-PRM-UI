@@ -307,7 +307,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
             this.gdprStatus = this.gdprInput.gdprStatus;
         }
-        this.getActiveCompanies();
+        if ( this.router.url.includes( 'home/contacts' ) ){
+            this.getActiveCompanies();
+        }
         /*****XNFR-98*****/
         if(this.isTeamMemberPartnerList==undefined){
             this.isTeamMemberPartnerList = false;
@@ -422,12 +424,15 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 	}
 
     getActiveCompanies() {
+        this.loading= true;
         this.contactService.getCompaniesForDropdown().subscribe(result => {
             this.searchableDropDownDto.data = result.data;
             this.searchableDropDownDto.placeHolder = "Please Select Company";
+            this.loading = false;
           }
         , error => {
             console.log("error")
+            this.loading = false;
         }); 
     }
 
