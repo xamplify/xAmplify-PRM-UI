@@ -53,9 +53,9 @@ export class ContactService {
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
     hubSpotContactUrl = this.authenticationService.REST_URL + 'hubSpot';
     oauthCallbackMessage: string = "";
-    isUnsubscribeContactModalPopup : boolean = false;
-    isresubscribeContactModalPopup : boolean = false;
-    
+    isUnsubscribeContactModalPopup: boolean = false;
+    isresubscribeContactModalPopup: boolean = false;
+
     constructor(private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private utilService: UtilService) {
     }
 
@@ -63,7 +63,7 @@ export class ContactService {
 
     loadUsersOfContactList(contactListId: number, pagination: Pagination) {
         let userId = this.authenticationService.user.id;
-         userId = this.authenticationService.checkLoggedInUserId(userId);
+        userId = this.authenticationService.checkLoggedInUserId(userId);
         return this._http.post(this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token + "&userId=" + userId, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -93,13 +93,13 @@ export class ContactService {
         this.logger.info("Service class loadContact() completed");
         /****XNFR-252*****/
         let companyProfileName = this.authenticationService.companyProfileName;
-        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
-        if(xamplifyLogin){
+        let xamplifyLogin = companyProfileName == undefined || companyProfileName.length == 0;
+        if (xamplifyLogin) {
             pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
         }
         /****XNFR-252*****/
 
-         /***XNFR-252****/
+        /***XNFR-252****/
         return this._http.post(this.contactsUrl + '?userId=' + userId + "&access_token=" + this.authenticationService.access_token, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -149,10 +149,10 @@ export class ContactService {
         userId = this.authenticationService.checkLoggedInUserId(userId);
         /****XNFR-252*****/
         let companyProfileName = this.authenticationService.companyProfileName;
-        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
-        if(xamplifyLogin){
-        userListPaginationWrapper.pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-        userListPaginationWrapper.pagination.vanityUrlFilter = userListPaginationWrapper.pagination.loginAsUserId>0;
+        let xamplifyLogin = companyProfileName == undefined || companyProfileName.length == 0;
+        if (xamplifyLogin) {
+            userListPaginationWrapper.pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+            userListPaginationWrapper.pagination.vanityUrlFilter = userListPaginationWrapper.pagination.loginAsUserId > 0;
         }
         /****XNFR-252****/
         var requestoptions = new RequestOptions({
@@ -174,16 +174,16 @@ export class ContactService {
         userId = this.authenticationService.checkLoggedInUserId(userId);
         /****XNFR-252*****/
         let companyProfileName = this.authenticationService.companyProfileName;
-        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
-        if(xamplifyLogin){
+        let xamplifyLogin = companyProfileName == undefined || companyProfileName.length == 0;
+        if (xamplifyLogin) {
             contactListObject.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-            if(contactListObject.loginAsUserId>0){
+            if (contactListObject.loginAsUserId > 0) {
                 contactListObject.vanityUrlFilter = true;
             }
         }
         /****XNFR-252****/
 
-        
+
         this.logger.info("Service class loadContactCount() completed");
         return this._http.post(this.contactsUrl + "contacts_count/" + userId + "?access_token=" + this.authenticationService.access_token, contactListObject)
             .map(this.extractData)
@@ -468,7 +468,7 @@ export class ContactService {
     }
 
     vanityConfigMicrosoft() {
-        return this._http.get(this.authenticationService.REST_URL + 'microsoft/' + localStorage.getItem('vanityUserId') + "/authorize" )
+        return this._http.get(this.authenticationService.REST_URL + 'microsoft/' + localStorage.getItem('vanityUserId') + "/authorize")
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -781,11 +781,12 @@ export class ContactService {
             .catch(this.handleError);
     }
 
-    deleteContactById(contactId: number) {
-        return this._http.get(this.contactsUrl + "deleteFromAllContactLists/" + contactId + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
+    deleteContactById(contactIds: any) {
+        return this._http.post(this.contactsUrl + "deleteFromAllContactLists/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, contactIds)
             .map(this.extractData)
             .catch(this.handleError);
     }
+
 
     findUsersByUserListId(pagination: Pagination) {
         return this._http.post(this.contactsUrl + "findUsersByUserListId?access_token=" + this.authenticationService.access_token, pagination)
@@ -821,54 +822,54 @@ export class ContactService {
             .map((response: any) => response.json())
             .catch(this.handleError);
     }
-    
-      findUnsubscribeReasons(userId: number) {
-        var url = this.contactsUrl + "/findAllUnsubscribeReasons/"+userId + "?access_token=" + this.authenticationService.access_token;
+
+    findUnsubscribeReasons(userId: number) {
+        var url = this.contactsUrl + "/findAllUnsubscribeReasons/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this._http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
-       unsubscribeOrResubscribeUser(object:any){
-        return this._http.post(this.contactsUrl + "unsubscribe-or-resubscribe-User"+  "/"  + this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token, object)
-        .map(this.extractData)
-        .catch(this.handleError);
-    }
-    
-    validatePartnersCompany(partners : any, partnerListId:number){
-      return this._http.post(this.contactsUrl + "validate-partners"+  "/" + partnerListId +  "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, partners)
-        .map(this.extractData)
-        .catch(this.handleError);
-    
-    }
-    
-      validateCompanyName(companyName:string, partnerCompanyId:number){
-      return this._http.get(this.contactsUrl + "validate-partner-company"+  "/" + companyName +  "/" + partnerCompanyId + "?access_token=" + this.authenticationService.access_token)
-        .map(this.extractData)
-        .catch(this.handleError);
-    
+
+    unsubscribeOrResubscribeUser(object: any) {
+        return this._http.post(this.contactsUrl + "unsubscribe-or-resubscribe-User" + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, object)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    excludedUserMakeAsValid(object:any){
-        return this._http.post(this.contactsUrl + "excluded-user-make-as-valid"+  "/" + this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token, object)
-        .map(this.extractData)
-        .catch(this.handleError);
+    validatePartnersCompany(partners: any, partnerListId: number) {
+        return this._http.post(this.contactsUrl + "validate-partners" + "/" + partnerListId + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, partners)
+            .map(this.extractData)
+            .catch(this.handleError);
+
+    }
+
+    validateCompanyName(companyName: string, partnerCompanyId: number) {
+        return this._http.get(this.contactsUrl + "validate-partner-company" + "/" + companyName + "/" + partnerCompanyId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+
+    }
+
+    excludedUserMakeAsValid(object: any) {
+        return this._http.post(this.contactsUrl + "excluded-user-make-as-valid" + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, object)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
 
-    downloadPartnerListCsv(contactListId: number, userId: number, pagination: Pagination){
-        return this._http.post(this.contactsUrl + "download/"+ contactListId +"/"+ userId +"?access_token=" + this.authenticationService.access_token, pagination)
-        .map(this.extractData)
-        .catch(this.handleError);
+    downloadPartnerListCsv(contactListId: number, userId: number, pagination: Pagination) {
+        return this._http.post(this.contactsUrl + "download/" + contactListId + "/" + userId + "?access_token=" + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    downloadUserListCsv(userId: number, userListPaginationWrapper: UserListPaginationWrapper){
-        return this._http.post(this.contactsUrl + "download/" + userId +"?access_token=" + this.authenticationService.access_token, userListPaginationWrapper)
-        .map(this.extractData)
-        .catch(this.handleError);
+    downloadUserListCsv(userId: number, userListPaginationWrapper: UserListPaginationWrapper) {
+        return this._http.post(this.contactsUrl + "download/" + userId + "?access_token=" + this.authenticationService.access_token, userListPaginationWrapper)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
     getCompaniesForDropdown() {
-        var url = this.companyUrl + "list"+ "/" +this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+        var url = this.companyUrl + "list" + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
         return this._http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
@@ -881,14 +882,14 @@ export class ContactService {
             .catch(this.handleError);
     }
 
-    syncContactsInMasterContactList(userId: number){
-        return this._http.get(this.contactsUrl + "syncMasterContactList/" + userId + "/"+ "?access_token=" + this.authenticationService.access_token)
+    syncContactsInMasterContactList(userId: number) {
+        return this._http.get(this.contactsUrl + "syncMasterContactList/" + userId + "/" + "?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    checkSyncStatus(userId: number){
-        return this._http.get(this.contactsUrl + "checkSyncStatus/" + userId + "/"+ "?access_token=" + this.authenticationService.access_token)
+    checkSyncStatus(userId: number) {
+        return this._http.get(this.contactsUrl + "checkSyncStatus/" + userId + "/" + "?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
 

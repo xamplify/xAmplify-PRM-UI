@@ -361,7 +361,7 @@
 													*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList">
 													<a id="delete_button"
 														*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) && !sharedLeads"
-														(click)="showAlert(selectedContactListId)" translate> Delete</a>
+														(click)="!isDefaultContactList ? showAlert(selectedContactListId) : confirmdelete(selectedContactListIds)" translate> Delete</a>
 												</li>
 												<!---XNFR-278-->
 												<li
