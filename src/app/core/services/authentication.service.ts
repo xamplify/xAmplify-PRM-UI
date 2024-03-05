@@ -1266,7 +1266,7 @@ signUpAsTeamMember(data: any) {
   return this.callPostMethod(url,data)
 }
 unpublishLearingTracks(learningTrackIds:any){
-  let url = this.REST_URL + "lms/unpublishLearingTracks";
+  let url = this.REST_URL + "lms/unpublishLearingTracks?access_token="+this.access_token;
   let data = {};
   data['ids'] = learningTrackIds;
   return this.callPostMethod(url,data)
