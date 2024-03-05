@@ -542,27 +542,6 @@ export class IntegrationSettingsComponent implements OnInit {
 		sfCustomField.showSettings = !sfCustomField.showSettings;
 	}
 		
-	// onFieldSelectionChange(selectedField: any): void {
-	// 	const selectedFieldType = selectedField.formDefaultFieldType;
-	// 	let countSelectedType = 0;
-
-	// 	this.sfCustomFieldsResponse.forEach(field => {
-	// 		if (field.formDefaultFieldType === selectedFieldType) {
-	// 			countSelectedType++;
-	// 			field.required = true;
-	// 			field.canUnselect = false;
-	// 		}
-	// 	});
-	// 	if (countSelectedType > 1) {
-	// 		this.sfCustomFieldsResponse.forEach(field => {
-	// 			if (field.formDefaultFieldType === selectedFieldType && field !== selectedField) {
-	// 				field.formDefaultFieldType = null;
-	// 				field.canUnselect = true;
-	// 			}
-	// 		});
-	// 	}
-	// }
-
 	onFieldSelectionChange(selectedField: any): void {
 		const selectedFieldType = selectedField.formDefaultFieldType;
 		const selectedFieldTypeName = selectedField.type;
@@ -599,6 +578,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				countSelectedType++;
 				field.required = true;
 				field.canUnselect = false;
+				field.canEditRequired = false;
 			} else {
 				field.typeMismatch = false;
 				field.typeMismatchMessage = '';
@@ -616,6 +596,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				) {
 					field.formDefaultFieldType = null;
 					field.canUnselect = true;
+					field.canEditRequired = true;
 				}
 			});
 		}
