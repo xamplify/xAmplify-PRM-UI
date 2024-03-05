@@ -2557,3 +2557,9 @@ button.button_blue:disabled span{
 table tr:nth-child(odd).highlightRow, table tr:nth-child(odd).highlightRow:hover{
   background: var(--page-content) !important;
 }
+.inline-flex.border-end:nth-child(even){
+  background-color: var(--border-color) !important;
+}
+.border-end{
+  border-bottom: 1px solid var(--border-color) !important ;
+}
