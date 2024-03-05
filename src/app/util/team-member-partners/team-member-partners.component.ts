@@ -36,6 +36,7 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
   customResponse:CustomResponse = new CustomResponse();
   deleteTeamMemberPartnerRequestDto :DeleteTeamMemberPartnerRequestDto = new DeleteTeamMemberPartnerRequestDto();
   refershTeamMemberList = false;
+  learingTrackIds = [];
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService, public teamMemberService: TeamMemberService,
     public xtremandLogger: XtremandLogger, public pagerService: PagerService, public utilService: UtilService,public properties:Properties) { }
   
@@ -149,15 +150,7 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
         .subscribe(
           (response: any) => {
             if (response.statusCode == 200) {
-              this.removeAllSelectedPartners();
-              this.refershTeamMemberList = true;
-              this.deleteTeamMemberPartnerRequestDto = new DeleteTeamMemberPartnerRequestDto();
-              let partnersModuleName = this.authenticationService.partnerModule.customName;
-              let message = partnersModuleName+" Deleted Successfully";
-              this.customResponse = new CustomResponse('SUCCESS', message, true);
-              this.partnersPagination.pageIndex = 1;
-              this.partnersPagination.maxResults = 12;
-              this.findPartners(this.partnersPagination);
+              this.learingTrackIds = response.data;
             }
           },
           (error: any) => {
@@ -171,10 +164,34 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
              message = errorResponse['message'];
             } 
             this.customResponse = new CustomResponse('ERROR', message, true);
+          },()=>{
+            if(this.learingTrackIds!=undefined && this.learingTrackIds.length>0){
+              this.authenticationService.unpublishLearingTracks(this.learingTrackIds).subscribe(
+                response=>{
+                  this.showPartnerDeletedSuccessMessage();
+                },error=>{
+                  this.showPartnerDeletedSuccessMessage();
+                }
+              );
+            }else{
+              this.showPartnerDeletedSuccessMessage();
+            }
           }
         );
     }
     this.isDelete = false;
   }
 
+
+  private showPartnerDeletedSuccessMessage() {
+    this.removeAllSelectedPartners();
+    this.refershTeamMemberList = true;
+    this.deleteTeamMemberPartnerRequestDto = new DeleteTeamMemberPartnerRequestDto();
+    let partnersModuleName = this.authenticationService.partnerModule.customName;
+    let message = partnersModuleName + " Deleted Successfully";
+    this.customResponse = new CustomResponse('SUCCESS', message, true);
+    this.partnersPagination.pageIndex = 1;
+    this.partnersPagination.maxResults = 12;
+    this.findPartners(this.partnersPagination);
+  }
 }
