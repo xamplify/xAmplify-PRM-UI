@@ -68,7 +68,7 @@ export class FormPreviewComponent implements OnInit {
 
   /*****XNFR-423****/
   countryNames = [];
-
+  vendorJourney:boolean =false;
   resolved(captchaResponse: string) {
     if(captchaResponse){
       this.formService.validateCaptcha(captchaResponse).subscribe(
@@ -108,6 +108,9 @@ export class FormPreviewComponent implements OnInit {
       this.alias = this.authenticationService.formAlias;
     } else {
       this.alias = this.route.snapshot.params['alias'];
+      if(this.router.url.includes("/vjf/")){
+        this.vendorJourney = true;
+      }
     }
     let loggedInUser = localStorage.getItem('currentUser');
     if (loggedInUser !== undefined && loggedInUser !== null) {
@@ -132,7 +135,7 @@ export class FormPreviewComponent implements OnInit {
 
   getFormFieldsByAlias(alias: string) {
     this.ngxLoading = true;
-    this.formService.getByAlias(alias)
+    this.formService.getByAlias(alias, this.vendorJourney)
       .subscribe(
         (response: any) => {
           if (response.statusCode === 200) {
