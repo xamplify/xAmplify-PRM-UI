@@ -153,8 +153,8 @@
               <td>{{item.buttonLink}}</td>
             </ng-container>
             <ng-container *ngIf="moduleType!=properties?.dashboardButtons">
-              <td class="td-overflow-text" title="{{item.title}}"><span class="mr5"><i class="fa {{item.icon}}" aria-hidden="true"></i></span>{{item.title}}</td>
-              <td class="td-overflow-text" title="{{item.link}}">{{item.link}}</td>
+              <td class="td-overflow-text"><span  data-toggle="tooltip" data-placement="bottom" title="{{item.title}}"><i class="fa mr5 {{item.icon}}" aria-hidden="true"></i>{{item.title}}</span></td>
+              <td class="td-overflow-text"><span data-toggle="tooltip" data-placement="bottom" title="{{item.link}}">{{item.link}}</span></td> 
             </ng-container>
             <ng-container *ngIf="moduleType==properties?.newsAndAnnouncements">
               <td>{{item.type}}</td>
