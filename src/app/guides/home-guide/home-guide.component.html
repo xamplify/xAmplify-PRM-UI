@@ -148,6 +148,16 @@
   <h4 class="user_txt">Configuration</h4>
   </div>
 </div>
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu"
+*ngIf="menuItem?.contacts && !authenticationService.module.deletedPartner">
+  <div class="user_card icon-bg4" (click)="getTitlesByModule(32)">
+
+    <div class="acc_img">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGE4cnVcQI3K_8gFN__8UFvNI42r_J7gJPoQ&usqp=CAU" alt="" class="m-auto">
+  </div>
+  <h4 class="user_txt">Companies</h4>
+  </div>
+</div>
 </div>
 </div>
 <!-- Show Titles -->
@@ -155,7 +165,7 @@
   <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 subCardBg" style="margin-bottom:15px;" *ngFor="let name of userGudeTitles">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 subCardBg" style="margin-bottom:15px;" *ngFor="let name of pagination.pagedItems;let i =index">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 allignItemsLeft">
           <h4 class="fontWeigtug"><a (click)="getGuideLinkByTitle(name.title)">{{name?.title}}</a></h4>
         </div>

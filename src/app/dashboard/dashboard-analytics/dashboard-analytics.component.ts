@@ -142,11 +142,17 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
                 (response) => {
                     this.userGuideDashboardDto = response.data;
                     if (this.userGuideDashboardDto.partnerLoggedInThroughVanityUrl) {
-                        this.mergeTagForGuide = 'partner_account_dashboard';
+                        if(this.userGuideDashboardDto.prmCompany){
+                            this.mergeTagForGuide = 'vanity_prm_partner_account_dashboard';
+                        } else {
+                        this.mergeTagForGuide = 'vanity_partner_account_dashboard';
+                        }
                     } else if (this.userGuideDashboardDto.vendorLoggedInThroughOwnVanityUrl) {
-                        if (this.userGuideDashboardDto.orgAdminCompany || this.userGuideDashboardDto.vendorCompany) {
+                        if ( this.userGuideDashboardDto.vendorCompany) {
                             this.mergeTagForGuide = 'vanity_vendor_account_dashboard';
-                        } else if(this.userGuideDashboardDto.prmCompany) {
+                        } else if(this.userGuideDashboardDto.orgAdminCompany){
+                            this.mergeTagForGuide = 'vanity_orgadmin_account_dashboard';
+                        }else if(this.userGuideDashboardDto.prmCompany) {
                             this.mergeTagForGuide = 'vanity_prm_account_dashboard';
                         } else {
                             this.mergeTagForGuide = 'vanity_marketing_account_dashboard';
