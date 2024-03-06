@@ -150,7 +150,7 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
         .subscribe(
           (response: any) => {
             if (response.statusCode == 200) {
-              this.learingTrackIds = response.data;
+              this.showPartnerDeletedSuccessMessage();
             }
           },
           (error: any) => {
@@ -164,20 +164,7 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
              message = errorResponse['message'];
             } 
             this.customResponse = new CustomResponse('ERROR', message, true);
-          },()=>{
-            if(this.learingTrackIds!=undefined && this.learingTrackIds.length>0){
-              this.authenticationService.unpublishLearingTracks(this.learingTrackIds).subscribe(
-                response=>{
-                  this.showPartnerDeletedSuccessMessage();
-                },error=>{
-                  this.showPartnerDeletedSuccessMessage();
-                }
-              );
-            }else{
-              this.showPartnerDeletedSuccessMessage();
-            }
-          }
-        );
+          },()=>{});
     }
     this.isDelete = false;
   }
