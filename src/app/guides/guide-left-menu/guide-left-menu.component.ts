@@ -146,6 +146,8 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 			this.expansionModuleName = 'Track Builder';
 		} else if (moduleId === 19) {
 			this.expansionModuleName = 'Configuration';
+		} else if(moduleId === 32) {
+			this.expansionModuleName = 'Companies';
 		}
 		this.getUserGuidesByModuleName(this.expansionModuleName);
 	}
