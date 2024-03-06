@@ -26,10 +26,10 @@
           (click)="toggleFilterOption()">
           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
         </span>
-        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Click here to email the report"
-          [class.disabled]="dealsSortOption.totalRecords == 0" (click)="downloadDeals(dealsPagination)">
+        <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Click here to email the report"
+          [disabled]="dealsSortOption.totalRecords == 0" (click)="downloadDeals(dealsPagination)">
           <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
-        </span>
+        </button>
       </div>
     </div>
   </div>
