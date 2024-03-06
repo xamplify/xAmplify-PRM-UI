@@ -182,10 +182,11 @@
                                           <i class="fa fa-search" aria-hidden="true"></i>
                                        </button>
                                     </div>
-                                    <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" 
-                                       title="Click here to email the report" (click)="downloadCampaignsData(pagination)" *ngIf="!archived">
+                                    <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" 
+                                       title="Click here to email the report" (click)="downloadCampaignsData(pagination)" *ngIf="!archived"
+                                       [disabled]="pagination.totalRecords == 0">
                                        <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
-                                    </span>
+                                    </button>
                                     <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space"
                                        data-toggle="tooltip" title="Filter" (click)="toggleFilterOption()">
                                        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>

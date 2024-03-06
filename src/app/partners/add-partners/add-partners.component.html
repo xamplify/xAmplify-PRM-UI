@@ -810,10 +810,10 @@
                                     </button>
                                 </div>
                             </div>
-                            <span data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+                            <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip" [disabled]="pagination.totalRecords == 0"
                                 title="Click here to email the list" (click)="downloadPartnerListCsv(pagination)" style="margin: 3px -5px 0px 3px;">
                                 <i aria-hidden="true" class="fas fa-file-export p10"></i>
-                            </span>
+                            </button>
                             <div class="btn-group pull-right" style="margin:3px;">
                                 <ng-template [ngTemplateOutlet]="actionsButton"></ng-template>
                             </div>
