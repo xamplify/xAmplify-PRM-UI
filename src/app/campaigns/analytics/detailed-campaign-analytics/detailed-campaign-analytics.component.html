@@ -2055,7 +2055,7 @@
          <span *ngIf="selectedDealForComments.unReadChatCount > 0" class="badge badge-default"
             style="margin-top: -62px; margin-right: -15px;background-color: #ed1c24 !important;">{{selectedDealForComments.unReadChatCount}}</span>
       </a> 
-      <app-add-deal [leadId]="leadId" [dealId]="dealId" [actionType]="dealActionType"
+      <app-add-deal [leadId]="leadId" [dealId]="dealId" [actionType]="dealActionType" [hideAttachLeadButton]="true"
          (notifySubmitSuccess)="showSubmitDealSuccess()">
       </app-add-deal>
    </div>

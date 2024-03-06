@@ -72,7 +72,9 @@ export class LogRegularCampaignComponent implements OnInit {
             document.getElementById('regular-campaign').innerHTML = this.errorHtml;
             this.updateBackGroundColor();
         },
-        () => console.log('getRegularTemplateHtml method completed:')
+        ()=>{
+          this.referenceService.removeCssStylesAndCssFiles();
+        }
         );
     } catch (error) {
       this.xtremandLogger.error('error in showCampaign method :' + error);

@@ -3905,3 +3905,7 @@ table.table.table-bordered {
 .highlightRow, .highlightRow:hover{
   background-color: #23272c !important;
 }
+/* vantity banner btn */
+.carousel-btn{
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}

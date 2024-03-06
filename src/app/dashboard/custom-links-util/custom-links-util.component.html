@@ -13,7 +13,7 @@
             <div class="portlet-title tabbable-line ">
               <div class="caption caption-md">
                 <i class="icon-globe theme-font hide " aria-hidden="true "></i>
-                <span class="caption-subject font-blue-madison bold uppercase ">Dashboard Banner</span>
+                <span class="caption-subject font-blue-madison bold uppercase">Dashboard Banner<span class="required"> *</span></span>
               </div>
               <div class="inline" style="float: right; padding-bottom: 5px;" *ngIf="croppedImage">
                 <button type="button" class="button_blue bgcolor-unset" (click)="clearImage()"><span
@@ -49,13 +49,13 @@
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <!--Title-->
         <div class="form-group">
-          <label>Title</label>
+          <label>Title<span class="required"> *</span></label>
           <input class="form-control" type="text" placeholder="Title" required formControlName="title" autocomplete="off" required id="customLinkTitle" />
           <span *ngIf="formErrors.title" class="required">{{ formErrors.title }}</span>
         </div>
         <!--Link-->
         <div class="form-group">
-          <label>Link</label>
+          <label>Link<span class="required"> *</span></label>
           <input class="form-control" type="text" placeholder="Link" required formControlName="link" autocomplete="off" />
           <span *ngIf="formErrors.link" class="required">{{ formErrors.link }}</span>
         </div>
@@ -153,8 +153,8 @@
               <td>{{item.buttonLink}}</td>
             </ng-container>
             <ng-container *ngIf="moduleType!=properties?.dashboardButtons">
-              <td class="td-overflow-text" title="{{item.title}}"><span class="mr5"><i class="fa {{item.icon}}" aria-hidden="true"></i></span>{{item.title}}</td>
-              <td class="td-overflow-text" title="{{item.link}}">{{item.link}}</td>
+              <td class="td-overflow-text"><span  data-toggle="tooltip" data-placement="bottom" title="{{item.title}}"><i class="fa mr5 {{item.icon}}" aria-hidden="true"></i>{{item.title}}</span></td>
+              <td class="td-overflow-text"><span data-toggle="tooltip" data-placement="bottom" title="{{item.link}}">{{item.link}}</span></td> 
             </ng-container>
             <ng-container *ngIf="moduleType==properties?.newsAndAnnouncements">
               <td>{{item.type}}</td>

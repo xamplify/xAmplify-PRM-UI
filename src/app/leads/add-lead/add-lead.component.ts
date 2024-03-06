@@ -33,6 +33,7 @@ export class AddLeadComponent implements OnInit {
   @Input() public isVendorVersion: any;
   @Input() public isOrgAdmin: any;
   @Input() public dealToLead: any;
+  @Input() public disableCreatedForVendor;
   @Output() notifyOtherComponent = new EventEmitter();
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyManageLeadsComponentToHidePopup = new EventEmitter();

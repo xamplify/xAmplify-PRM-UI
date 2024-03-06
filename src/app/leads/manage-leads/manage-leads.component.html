@@ -732,7 +732,7 @@
       style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
       <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;padding-top:6px;"
         aria-hidden="true"></span></a>
-    <app-add-deal [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitDealSuccess()">
+    <app-add-deal [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitDealSuccess()" [hideAttachLeadButton]="true">
     </app-add-deal>
   </div>
 </section>

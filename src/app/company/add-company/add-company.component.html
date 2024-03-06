@@ -45,7 +45,7 @@
                 <span class="danger" *ngIf="!isCompanyEmailValid" translate>Please enter a valid email
                   address</span>
               </div>
-              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+              <div class="form-group col-xs-5 col-sm-5 field-width hide-icons" id="minor-field-width">
                 <input type="number" style="border: none !important" class="form-control placeholder-bg-color"
                   id="phone" [(ngModel)]="addCompany.phone" [ngModelOptions]="{standalone: true}"
                   placeholder="Enter your Mobile no" maxlength="20" [disabled]="preview">
