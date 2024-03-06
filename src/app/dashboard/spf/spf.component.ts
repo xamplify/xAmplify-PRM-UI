@@ -448,7 +448,7 @@ refreshText :string;
     );
   }
   openDomainCheck(){
-    window.open('https://dmarcian.com/domain-checker/', '_blank');
+    window.open('https://dmarcian.com/spf-survey/', '_blank');
   }
   deleteDnsAllRecordsByTypeAndName(){
     let self = this;
