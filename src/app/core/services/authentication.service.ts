@@ -1264,7 +1264,14 @@ findCompanyDetails(companyProfileName:string) {
 signUpAsTeamMember(data: any) {
   let url = this.REST_URL + "signUpAsTeamMember";
   return this.callPostMethod(url,data)
-  
 }
+unpublishLearingTracks(learningTrackIds:any){
+  let url = this.REST_URL + "lms/unpublishLearingTracks?access_token="+this.access_token;
+  let data = {};
+  data['ids'] = learningTrackIds;
+  return this.callPostMethod(url,data)
+}
+
+
 
 }
