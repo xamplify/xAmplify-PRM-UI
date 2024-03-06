@@ -900,9 +900,9 @@
                                                         <legend class="leg-custome-borders-bot fs-17">Turn Lead
                                                             Approval/Rejection option ON or OFF</legend>
                                                     </fieldset>
-                                                    <tr class="col-md-12 col-lg-12">
+                                                    <tr class="col-md-12 col-lg-12 p0">
                                                         <div class="flex row">
-                                                            <div class="col-md-9 col-lg-9 p0">
+                                                            <div class="col-md-9 col-lg-9">
                                                                 <h4 class="f-w-600" id="text-color-my-profile"
                                                                     translate>You have the ability to Approve or
                                                                     Reject the leads registered by the partners.
@@ -1889,7 +1889,7 @@
                                         <!-- END GDPR SETTINGS TAB -->
 
                                         <!-- Dashboard SETTINGS TAB -->
-                                        <div class="tab-pane hidden-xs" *ngIf="isDashboardButtonsOptionClicked"
+                                        <div class="tab-pane" *ngIf="isDashboardButtonsOptionClicked"
                                             [ngClass]="{'active': activeTabName == properties?.dashboardButtons}">
                                             <app-custom-links-util [moduleType]="properties?.dashboardButtons"></app-custom-links-util>
                                         </div>
@@ -2245,12 +2245,12 @@
                                         </app-add-or-manage-domains>
 
                                         <!--XNFR-459 News & Announcements-->
-                                        <div class="tab-pane hidden-xs" *ngIf="isNewsAndAnnouncementsOptionClicked" [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
+                                        <div class="tab-pane" *ngIf="isNewsAndAnnouncementsOptionClicked" [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
                                             <app-custom-links-util [moduleType]="properties?.newsAndAnnouncements"></app-custom-links-util>
                                         </div>
 
                                         <!--XNFR-459 Dashboard Banners-->
-                                        <div class="tab-pane hidden-xs" *ngIf="isDashboardBannersOptionClicked" [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
+                                        <div class="tab-pane" *ngIf="isDashboardBannersOptionClicked" [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
                                             <app-custom-links-util [moduleType]="properties?.dashboardBanners"></app-custom-links-util>
                                         </div>
 

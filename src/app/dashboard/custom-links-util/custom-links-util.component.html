@@ -3,7 +3,7 @@
   <app-response-message [customResponse]="dashboardBannersInfoMessage" [showCloseIcon]="false" *ngIf="dashboardBannersInfoMessage.isVisible && isAddDashboardBannersDivHidden"></app-response-message>
   <fieldset *ngIf="!isAddDashboardBannersDivHidden">
     <legend>{{headerText}}</legend>
-      <div class="form-group col-md-12">
+      <div class="form-group col-xs-12 col-md-12">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
       </div>
        <!--Dashboard Banner-->
@@ -106,13 +106,13 @@
       
       </div>
       <!--Description-->
-      <div class="form-group col-md-12">
+      <div class="form-group col-md-12 col-xs-12">
       <label>Description</label>
       <textarea class="form-control" rows="3" placeholder="Description" formControlName="description" style="resize: none;"></textarea>
         <span *ngIf="formErrors.description" class="required">{{ formErrors.description }}</span>
       </div>
       <div class="form-row">
-        <div class="form-group col-md-12">
+        <div class="form-group col-xs-12 col-md-12">
           <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
             [disabled]="!customLinkForm.valid || saving || !isDashboardBannerImageUploaded" (click)="saving=true;save();">
             <span class="btn btn-primary transition txt_pd-top3">Save</span>

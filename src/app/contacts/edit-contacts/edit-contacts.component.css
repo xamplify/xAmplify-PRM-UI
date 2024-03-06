@@ -248,4 +248,17 @@ a.disabled {
   height: 35px;
   margin: -7px;
 }
-
+/*filter  tooltip */
+.filter-content{
+  overflow: initial;
+}
+@media only screen and (min-width: 768px) and (max-width:1024px) { 
+  .field-names{
+   margin-left:13px!important;
+  }
+}
+@media only screen and (min-width: 992px) and (max-width:1220px) { 
+  .filter-delete {
+    left: 0px!important;
+}
+}

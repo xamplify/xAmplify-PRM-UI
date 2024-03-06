@@ -1575,23 +1575,23 @@
 							class="fa fa-times"></i></a>
 					<h4 class="modal-title" translate>Filter</h4>
 				</div>
-				<div class="modal-body" style="padding: 20px 10px;">
+				<div class="modal-body filter-content" style="padding: 20px 10px;">
 					<div class="row">
 						<div class="col-sm-12">
-							<div class="row col-sm-11" *ngFor="let addRow of criterias; let i = index"
+							<div class="row col-sm-12 col-md-11 col-lg-11" *ngFor="let addRow of criterias; let i = index"
 								style="padding-bottom: 10px;">
 								<div class="form-group">
 									<div class="form-inline col-sm-12">
-										<div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-4 tab_v_flex tab_p0">
+										<div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4 tab_v_flex tab_p0">
 											<b [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}"
 												class="dataAlignment">{{i+1}}</b>
-											<select class="form-control" [(ngModel)]="criterias[i].property"
+											<select class="form-control field-names" [(ngModel)]="criterias[i].property"
 												[ngStyle]="{'margin-left':i=== 1?'2px':'0px'}">
 												<option *ngFor="let filterOption of filterOptions; let i = index">
 													{{filterOption.value}}</option>
 											</select>
 										</div>
-										<div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+										<div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-3">
 											<select class="form-control" [(ngModel)]="criterias[i].operation">
 												<option *ngFor="let filterCondition of filterConditions; let i = index">
 													{{filterCondition.value}}</option>
@@ -1613,11 +1613,11 @@
 								</div>
 							</div>
 							<!-- <div class="row col-sm-3 col-lg-1 tab_ml0" style="margin-left: 30px;"> -->
-							<div class="row col-xs-6 col-sm-3 col-md-1 col-lg-1 tab_ml0">
+							<div class="row col-xs-3 col-sm-3 col-md-1 col-lg-1  tab_ml0">
 								<div>
 									<span [class.disabled]="criterias.length > 5" (click)="addNewRow()" type="button"
-										class="btn btn-default pull-right">
-										<i data-toggle="tooltip" data-placement="left" title="Add a condition"
+										class="btn btn-default pull-right"  data-toggle="tooltip" data-placement="top" title="Add a condition">
+										<i 
 											class="fa fa-plus-square" aria-hidden="true" style="color: #0196da"></i>
 									</span>
 								</div>
