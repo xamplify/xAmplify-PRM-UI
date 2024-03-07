@@ -2604,6 +2604,7 @@ a.delete.custom-icon:hover {
 .actionicons{
 display: flex!important;
 justify-content: center!important;
+float: inherit;
 }
 .mrgt-unset{
  margin-top:unset!important;

@@ -382,3 +382,6 @@ h6 {
   left: 0;
   top: 7px;
 }
+.filter-content {
+  overflow: initial;
+}

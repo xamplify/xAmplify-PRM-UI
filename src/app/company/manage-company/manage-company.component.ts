@@ -40,6 +40,9 @@ customResponse: CustomResponse = new CustomResponse();
   contactsCompanyListSync: boolean = false;
   masterContactListSync: boolean = false;
   pageLoader : boolean = false;
+  /*** XBI-2228 ***/
+  mergeTagForGuide = "add_a_company";
+  /*** XBI-2228 ***/
   constructor(public referenceService: ReferenceService, private router: Router, public companyService: CompanyService, public authenticationService: AuthenticationService, public contactService: ContactService, public pagerService: PagerService, public properties: Properties,public listLoaderValue: ListLoaderValue,public xtremandLogger: XtremandLogger, public utilService: UtilService, public sortOption: SortOption
     ) { this.loggedInUserId = this.authenticationService.getUserId();}
 
