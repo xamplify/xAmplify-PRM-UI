@@ -330,7 +330,7 @@ export class Properties {
 	dashboardBanners = "Dashboard Banners";
 	addDomainsText = "Domain Whitelisting";
 	domainWhitelistingDescription = "A whitelist is a list of domains approved for authorized team members to signup and access the platform.";
-	domainWhitelistingUrlDescription = "Please share the below URL with users who need to sign up into the xAmplify as your team members.";
+	domainWhitelistingUrlDescription = "Please share the below URL with users who need to sign up as your team members.";
 	noDataFound = "No Data Found";
 	maximumDashboardBannersLimitReached = "You have reached the limit of displaying up to 5 dashboard banners. You cannot add any more banners.";
 	maximumDashboardBannersLimitMessage = "You can upload maximum 5 dashboard banners"
