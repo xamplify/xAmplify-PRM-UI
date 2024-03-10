@@ -1,5 +1,9 @@
-<div [hidden]="processor.isProcessing" class="mobile-camp">
+<div [hidden]="processor.isProcessing">
   <div id="html-preview">
+  </div>
+  <div class="error" style="background-color: #f2dede !important; border-radius: 3px !important; 
+      color: #a94442 !important;padding: 10px !important;text-align: center;" *ngIf="customResponse.isVisible && !success">
+      <strong>{{customResponse?.responseMessage}}</strong>
   </div>
 </div>
 <div [hidden]="!processor.isProcessing">
