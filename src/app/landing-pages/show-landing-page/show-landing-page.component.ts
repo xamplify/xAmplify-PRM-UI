@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { ActivatedRoute,Router,NavigationStart, NavigationEnd  } from '@angular/router';
-import { ReferenceService } from '../../core/services/reference.service';
-import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Processor } from '../../core/models/processor';
@@ -34,8 +32,7 @@ export class ShowLandingPageComponent implements OnInit {
     message: string;
     isPartnerLandingPage:boolean=false;
     isVendorJourney:boolean = false;
-  constructor(private route: ActivatedRoute,private referenceService:ReferenceService,private landingPageService:LandingPageService,
-          private authenticationService:AuthenticationService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
+  constructor(private route: ActivatedRoute,private landingPageService:LandingPageService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
           public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService,private vanityURLService:VanityURLService) {
           }
 

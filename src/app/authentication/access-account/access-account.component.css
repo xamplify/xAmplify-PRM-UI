@@ -42,3 +42,160 @@ a:link {
 	background: var(--login-bg-color);
 }
 
+
+a.forget-password:hover {
+	color: #4db1e2;
+}
+
+.login .content .login-form, .login .content .forget-form {
+	padding: 3px 0;
+}
+
+.login-options h4 {
+	font-weight: normal;
+}
+
+.alert-dismissible .close {
+	top: 0 !important;
+	right: 0px !important;
+}
+
+.alert {
+	padding: 10px;
+}
+
+a.forget-password:hover {
+	color: #4db1e2;
+}
+
+.login .content .login-form, .login .content .forget-form {
+	padding: 3px 0;
+}
+
+.login-options h4 {
+	font-weight: normal;
+}
+
+.alert-dismissible .close {
+	top: 0 !important;
+	right: 0px !important;
+}
+
+.alert {
+	padding: 10px;
+}
+
+.text {
+	padding-top: 12px;
+}
+
+.underlinetext:hover {
+	text-decoration: underline !important;
+}
+
+.login-content-left {
+	margin-left: 50px;
+}
+
+.login-content-right {
+	margin-right: 50px;
+}
+
+/***08/06/2022****/
+.agree-link {
+	color: white;
+	cursor: pointer;
+}
+
+.agree-link:hover {
+	color: #5b9bd1;
+}
+
+.solid-wb {
+	border-top: 1px solid #eee;
+}
+
+/*** 07-02-2023***/
+.img-child {
+	height: 28px !important;
+	width: 28px !important;
+	display: flex;
+}
+
+/** tharak **/
+.field-icon {
+	color: #333 !important;
+}
+
+.text {
+	padding-top: 12px;
+}
+
+.underlinetext:hover {
+	text-decoration: underline !important;
+}
+
+.login-content-left {
+	margin-left: 50px;
+}
+
+.login-content-right {
+	margin-right: 50px;
+}
+
+/***08/06/2022****/
+.agree-link {
+	color: white;
+	cursor: pointer;
+}
+
+.agree-link:hover {
+	color: #5b9bd1;
+}
+
+.solid-wb {
+	border-top: 1px solid #eee;
+}
+
+/*** 07-02-2023***/
+.img-child {
+	height: 28px !important;
+	width: 28px !important;
+	display: flex;
+}
+/** tharak **/
+.field-icon {
+	color: #333 !important;
+}
+
+
+.bg_image {
+	background-image: var(--login-bg-image-style1);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	position: sticky;
+	top:0;
+	min-height: 100vh;
+	overflow: hidden;
+}
+.bg_color{
+	background: var(--login-bg-color-style1);
+	position: sticky;
+	top:0;
+	min-height: 100vh;
+	overflow: hidden;
+}
+.bg_image2 {
+    background-image: var(--login-bg-image);
+}
+.bg_color2 {
+	background: var(--login-bg-color);
+}
+
+
+.rightcontent {
+	background-color: #0b1c2f;
+	overflow: auto;
+	/* padding: 40px 100px; */
+}

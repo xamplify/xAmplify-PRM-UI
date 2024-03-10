@@ -1,0 +1,11 @@
+<div [hidden]="processor.isProcessing" class="mobile-camp">
+  <div id="html-preview">
+  </div>
+</div>
+<div [hidden]="!processor.isProcessing">
+    <div class="loader-container">
+      <div class="loader"></div>
+      <img  alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
+    </div>
+</div>
+
