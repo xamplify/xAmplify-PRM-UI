@@ -1498,10 +1498,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     }
 
     previewEmailTemplate(emailTemplate:any){
-        this.selectedEmailTemplateIdForPreview = emailTemplate.id;
-        this.selectedEmailTemplateNameForPreview = emailTemplate.name;
-        this.isPreviewEmailTemplateButtonClicked = true;
-
+        this.referenceService.previewEmailTemplateInNewTab(emailTemplate.id);
     }
 
     openSendTestEmailModalPopUp(){

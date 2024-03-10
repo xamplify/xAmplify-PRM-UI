@@ -24,12 +24,12 @@ export class PreviewComponent implements OnInit {
     this.processor.set(this.processor);
     this.id = this.route.snapshot.params['id'];
     if(this.id!=undefined && this.id>0){
-      this.getHtmlBodyAndMergeTags();
+      this.getHtmlBody();
     }
   }
 
-  getHtmlBodyAndMergeTags(){
-    this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(0).subscribe(
+  getHtmlBody(){
+    this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(this.id).subscribe(
       response=>{
         let statusCode = response.statusCode;
         let data = response.data;
