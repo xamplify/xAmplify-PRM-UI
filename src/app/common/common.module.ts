@@ -163,6 +163,7 @@ import { LandingPagesListAndGridViewComponent } from 'app/util/landing-pages-lis
 import { BrowseContentComponent } from 'app/util/browse-content/browse-content.component';
 import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component';
 import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-image-util.component';
+import { PreviewComponent } from 'app/util/preview/preview.component';
 
 
 
@@ -197,7 +198,7 @@ import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-imag
 		ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
 		LandingPagesListAndGridViewComponent,BrowseContentComponent,AddCompanyComponent, SelectLeadComponent,DealChatPopupComponent,
-		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent],
+		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewComponent],
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
@@ -227,7 +228,7 @@ import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-imag
 		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,AddCompanyComponent,
 		LandingPagesListAndGridViewComponent,BrowseContentComponent, SelectLeadComponent,DealChatPopupComponent,ChatComponent,
-		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent]
+		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewComponent]
 
 
 

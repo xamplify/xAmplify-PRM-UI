@@ -3480,4 +3480,17 @@ removeCssStylesAndCssFiles(){
   this.removeElementById();
 }
 
+previewEmailTemplateInNewTab(id:number){
+  this.openWindowInNewTab("/home/pv/t/"+id);
+}
+previewPageInNewTab(id:number){
+  this.openWindowInNewTab("/home/pv/p/"+id);
+}
+
+openWindowInNewTab(url:string){
+  window.open(url,"_blank");
+}
+
+
+
 }
