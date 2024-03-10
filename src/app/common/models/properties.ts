@@ -335,6 +335,7 @@ export class Properties {
 	maximumDashboardBannersLimitReached = "You have reached the limit of displaying up to 5 dashboard banners. You cannot add any more banners.";
 	maximumDashboardBannersLimitMessage = "You can upload maximum 5 dashboard banners"
 	instantNavigation = "Instant Navigation";
+	pageNotFound = "The page you are looking for doesn't exist";
 
 
 
