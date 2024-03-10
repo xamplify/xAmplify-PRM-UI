@@ -3,10 +3,8 @@
   	</div>
   
   <ng-container *ngIf="!hasLandingPage">
-						<div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
-		
+	<div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
 </ng-container>
-  
   </div>
 	<div [hidden]="!processor.isProcessing">
 			<div class="loader-container">

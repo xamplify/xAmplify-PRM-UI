@@ -3480,11 +3480,17 @@ removeCssStylesAndCssFiles(){
   this.removeElementById();
 }
 
+clearHeadScriptFiles(){
+  $('.loader-container').hide();
+  $("#xamplify-index-head").html("");
+  $('#page-loader-index-html').css({'display':'block'});
+}
+
 previewEmailTemplateInNewTab(id:number){
-  this.openWindowInNewTab("/home/pv/t/"+id);
+  this.openWindowInNewTab("/pv/t/"+id);
 }
 previewPageInNewTab(id:number){
-  this.openWindowInNewTab("/home/pv/p/"+id);
+  this.openWindowInNewTab("/pv/p/"+id);
 }
 
 openWindowInNewTab(url:string){
