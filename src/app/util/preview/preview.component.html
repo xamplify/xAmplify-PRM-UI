@@ -1,10 +1,18 @@
+
+
 <div [hidden]="processor.isProcessing">
   <div id="html-preview">
   </div>
-  <div class="error" style="background-color: #f2dede !important; border-radius: 3px !important; 
-      color: #a94442 !important;padding: 10px !important;text-align: center;" *ngIf="customResponse.isVisible && !success">
-      <strong>{{customResponse?.responseMessage}}</strong>
+  <!--404 Page Not Found-->
+  <div *ngIf="customResponse.isVisible && !success"  style="font-family: 'Montserrat', sans-serif;">
+    <img src="{{loggedInUserCompanyLogo}}" alt="No Image Found" 
+      style="height: auto; margin: 0 auto;display: block;margin-bottom: 25px;position:fixed">
+      <div class="error" style="text-align: center; padding: 16px;position: relative;top: 50%;" >
+        <h1 style="color:red; margin: -10px 0 -30px;font-size: calc(17vw + 40px);opacity: .8;">404</h1>
+        <p style="color:red;opacity: .8;font-size: 20px;margin: 8px 0 38px 0;font-weight: bold">{{customResponse?.responseMessage}}</p>
+      </div>
   </div>
+
 </div>
 <div [hidden]="!processor.isProcessing">
     <div class="loader-container">

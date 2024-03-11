@@ -16,6 +16,7 @@ export class PreviewComponent implements OnInit {
   id:number = 0;
   success = false;
   customResponse:CustomResponse = new CustomResponse();
+  loggedInUserCompanyLogo="";
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties) { }
 
@@ -29,14 +30,19 @@ export class PreviewComponent implements OnInit {
   }
 
   getHtmlBody(){
-    this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(this.id).subscribe(
+    this.loggedInUserCompanyLogo = this.authenticationService.APP_URL+"/assets/images/company-profile-logo.png";
+    this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(0).subscribe(
       response=>{
         let statusCode = response.statusCode;
         let data = response.data;
         if(statusCode==200){
           this.success = true;
-          document.getElementById('html-preview').innerHTML = data;
+          document.getElementById('html-preview').innerHTML = data.htmlBody;
+          this.loggedInUserCompanyLogo = data.companyLogo;
         }else{
+          if(statusCode==403){
+            this.loggedInUserCompanyLogo = data.companyLogo;
+          }
           this.customResponse = new CustomResponse('ERROR',this.properties.pageNotFound,true);
         }
         this.processor.remove(this.processor);
