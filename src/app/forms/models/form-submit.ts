@@ -7,4 +7,5 @@ export class FormSubmit {
     userId:number;
     learningTrackId:number;
     geoLocationAnalyticsDTO: GeoLocationAnalytics;
+    vendorJourney: boolean = false;
 }
