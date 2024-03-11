@@ -341,6 +341,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	vendorJourney:boolean = false;
 	isLandingPages:boolean = false;
 	loggedInUserCompanyId:number = 0;
+	/*** XNFR-483 ***/
+	isAggreedToDisableLeadApprovalFeature: boolean = false;
+	disableSaveChangesButtonForLeadApproval: boolean = false;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -4559,54 +4563,57 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 	/*******xnfr-426********/
-	getLeadApprovalstatus(){
+	getLeadApprovalstatus() {
 		this.authenticationService.getLeadApprovalStatus(this.referenceService.companyId)
-		.subscribe(
-		data => {
-				this.leadApprovalStatus = data.data;
-				this.leadApprovalRejectionStatus = data.data;
-		});
+			.subscribe(
+				data => {
+					this.leadApprovalStatus = data.data;
+					this.leadApprovalRejectionStatus = data.data;
+					this.isAggreedToDisableLeadApprovalFeature = false;
+					if (!this.leadApprovalStatus) {
+						this.disableSaveChangesButtonForLeadApproval = true;
+					}
+				});
 	}
 
-	setLeadApprovalOrRejectionStatus(event:any){
+	setLeadApprovalOrRejectionStatus(event: any) {
 		if (event) {
 			this.leadApprovalRejectionStatus = true;
+			this.disableSaveChangesButtonForLeadApproval = false;
+			this.isAggreedToDisableLeadApprovalFeature = false;
 		}
 		else {
 			this.leadApprovalRejectionStatus = false;
+			this.isAggreedToDisableLeadApprovalFeature = false;
+			this.disableSaveChangesButtonForLeadApproval = true;
 		}
 	}
 
-	updateLeadApprovalOrRejectionStatus(){
-		let self = this;
-		swal({
-			title: 'Are you sure want to continue?',
-			type: 'warning',
-			showCancelButton: true,
-			swalConfirmButtonColor: '#54a7e9',
-			swalCancelButtonColor: '#999',
-			allowOutsideClick: false,
-			confirmButtonText: 'Yes'
-		}).then(function () {
-			if (self.leadApprovalStatus == self.leadApprovalRejectionStatus){
-				self.saveLeadApprovalOrRejectionStatus(self.leadApprovalStatus);
-			} else{
-				self.saveLeadApprovalOrRejectionStatus(self.leadApprovalRejectionStatus);
-			}
-		}, function (dismiss: any) {
-			console.log('you clicked on option' + dismiss);
-			self.getLeadApprovalstatus();
-		});
+	checkAggreeToDisableLeadApprovalFeature(event: any) {
+		if (event.target.checked) {
+			this.disableSaveChangesButtonForLeadApproval = false;
+		}
+		else {
+			this.disableSaveChangesButtonForLeadApproval = true;
+		}
 	}
 
-	saveLeadApprovalOrRejectionStatus(leadApprovalRejectionStatus:boolean) {
+	updateLeadApprovalOrRejectionStatus() {
+		if (this.leadApprovalStatus == this.leadApprovalRejectionStatus) {
+			this.saveLeadApprovalOrRejectionStatus(this.leadApprovalStatus);
+		} else {
+			this.saveLeadApprovalOrRejectionStatus(this.leadApprovalRejectionStatus);
+		}
+	}
+
+	saveLeadApprovalOrRejectionStatus(leadApprovalRejectionStatus: boolean) {
 		this.leadApprovalCustomResponse = new CustomResponse();
 		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId, leadApprovalRejectionStatus)
-		.subscribe(
-			data => {
-				this.leadApprovalCustomResponse = new CustomResponse('SUCCESS', "Settings Updated Successfully", true);
-			}
-		);
+			.subscribe(
+				data => {
+					this.leadApprovalCustomResponse = new CustomResponse('SUCCESS', "Settings Updated Successfully", true);
+				}
+			);
 	}
 
 /* editVendorLandingPage(event){

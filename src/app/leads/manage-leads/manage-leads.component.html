@@ -369,43 +369,41 @@
                               </h5>
                             </td>
                             <td>
-
                               <!---xnfr-426---->
                               {{lead.currentStageName | slice:0:30}}
                               <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
-                                <i class="fa fa-check-circle mr5" aria-hidden="true"
-                                  style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                <i class="fa fa-check-circle mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                                 Deal
                               </div>
-
+                              <div style="color: #f71111;"
+                                *ngIf="lead?.leadApprovalStatusType == 'REJECTED' && lead?.associatedDealId == undefined && !lead?.leadApprovalOrRejection"
+                                translate>
+                                <i class="fa fa-times-circle mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                Rejected
+                              </div>
                               <div
-                                *ngIf="(lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner) || (lead?.selfLead && lead?.associatedDealId == undefined)">
-                                <button class="button_blue bgcolor-unset" (click)="showDealRegistrationForm(lead)"
-                                  translate>
+                                *ngIf="(lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType !== 'REJECTED') || (lead?.selfLead && lead?.associatedDealId == undefined)">
+                                <button class="button_blue bgcolor-unset" (click)="showDealRegistrationForm(lead)" translate>
                                   <span class="btn btn-primary transition d-inline"> Register Deal</span>
                                 </button>
                               </div>
-
-                              <!----XNFR-426----->
+                            
                               <div *ngIf="lead?.leadApprovalOrRejection && !lead?.selfLead">
                                 <div *ngIf="!authenticationService?.module?.deletedPartner">
                                   <div style="color: #06c306;"
-                                    *ngIf="lead?.leadApprovalStatusType == 'APPROVED' && lead?.associatedDealId == undefined"
-                                    translate>
+                                    *ngIf="lead?.leadApprovalStatusType == 'APPROVED' && lead?.associatedDealId == undefined" translate>
                                     <i class="fa fa-check-circle mr5" aria-hidden="true"
                                       style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                                     Approved
                                   </div>
                                   <div style="color: #f71111;"
-                                    *ngIf="lead?.leadApprovalStatusType == 'REJECTED' && lead?.associatedDealId == undefined"
-                                    translate>
+                                    *ngIf="lead?.leadApprovalStatusType == 'REJECTED' && lead?.associatedDealId == undefined" translate>
                                     <i class="fa fa-times-circle mr5" aria-hidden="true"
                                       style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                                     Rejected
                                   </div>
                                   <div *ngIf="lead?.canRegisterDeal">
-                                    <button class="button_blue bgcolor-unset" data-toggle="tooltip"
-                                      data-placement="bottom"
+                                    <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom"
                                       title="{{lead?.approvalStatusComment ? (lead?.leadApprovalStatusType !== 'APPROVED' ? 'You can not register a deal for a rejected lead' : '') : 'You can not register a deal for an unapproved lead'}}"
                                       [disabled]="(((lead?.leadApprovalStatusType == 'REJECTED') || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection)))"
                                       (click)="showDealRegistrationForm(lead)" translate>
@@ -418,12 +416,10 @@
                                   <button type="button" class="button_blue bgcolor-unset" translate
                                     (click)="addApprovalStatusModelPopup(lead,'APPROVED')"><span
                                       class="btn btn-primary transition txt_pd-top3">Approve</span></button>
-                                  <button type="button" class="btn Btn-Gray neg_mrg_top4"
-                                    (click)="addApprovalStatusModelPopup(lead,'REJECTED')" translate>Reject</button>
+                                  <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="addApprovalStatusModelPopup(lead,'REJECTED')"
+                                    translate>Reject</button>
                                 </div>
-
                               </div>
-
                             </td>
                             <td>
                               <div class="actions-block override-actions tb_view_actions">

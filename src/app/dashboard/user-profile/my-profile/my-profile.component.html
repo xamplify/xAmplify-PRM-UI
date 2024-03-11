@@ -889,50 +889,55 @@
                                         </div>
 
                                         <!-- XNFR-426 -->
-                                        <div class="tab-content" *ngIf="activeTabName == 'leadDealApprove'"
+                                        <div class="tab-pane" *ngIf="activeTabName == 'leadDealApprove'"
                                             [ngClass]="{'active': activeTabName == 'leadDealApprove'}">
                                             <app-response-message [customResponse]="leadApprovalCustomResponse"
                                                 *ngIf="leadApprovalCustomResponse.isVisible"></app-response-message>
-                                            <table class="table table-light"
-                                                style="border:0px!important;background-color:transparent!important">
-                                                <tbody class="remove_table_bg display-grid">
-                                                    <fieldset class="fild-custome-borders-none">
-                                                        <legend class="leg-custome-borders-bot fs-17">Turn Lead
-                                                            Approval/Rejection option ON or OFF</legend>
-                                                    </fieldset>
-                                                    <tr class="col-md-12 col-lg-12 p0">
-                                                        <div class="flex row">
-                                                            <div class="col-md-9 col-lg-9">
-                                                                <h4 class="f-w-600" id="text-color-my-profile"
-                                                                    translate>You have the ability to Approve or
-                                                                    Reject the leads registered by the partners.
-                                                                </h4>
+                                            <form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid"
+                                                *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                                                <table class="table table-light" style="border:0px!important;background-color:transparent!important">
+                                                    <tbody class="remove_table_bg display-grid">
+                                                        <fieldset class="fild-custome-borders-none">
+                                                            <legend class="leg-custome-borders-bot">Turn Lead
+                                                                Approval/Rejection option ON or OFF</legend>
+                                                        </fieldset>
+                                                        <tr class="col-md-12 col-lg-12">
+                                                            <div class="flex row">
+                                                                <div class="col-md-9 col-lg-9">
+                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>You have the ability to Approve or
+                                                                        Reject the leads registered by the partners.
+                                                                    </h5>
+                                                                    <h5 *ngIf="!leadApprovalRejectionStatus" id="text-color-my-profile">
+                                                                        <input type="checkbox" [disabled]="leadApprovalRejectionStatus"
+                                                                            (change)="checkAggreeToDisableLeadApprovalFeature($event)"
+                                                                            [ngModelOptions]="{standalone: true}" class="pointer checkBox_shadow"
+                                                                            [(ngModel)]="isAggreedToDisableLeadApprovalFeature" value="">&nbsp;By disabling this
+                                                                        option, the leads that are neither rejected nor
+                                                                        approved will be automatically approved!
+                                                                    </h5>
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+                                                                    <section>
+                                                                        <switch [(status)]="leadApprovalStatus" [onText]="callActionSwitch.onTextValue"
+                                                                            [offText]="callActionSwitch.offTextValue"
+                                                                            [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                                            [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+                                                                            (statusChange)="setLeadApprovalOrRejectionStatus($event)">
+                                                                        </switch>
+                                                                    </section>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-md-3 col-lg-3 text-right"
-                                                                style="padding-top:10px">
-                                                                <section>
-                                                                    <switch [(status)]="leadApprovalStatus"
-                                                                        [onText]="callActionSwitch.onTextValue"
-                                                                        [offText]="callActionSwitch.offTextValue"
-                                                                        [onColor]="callActionSwitch.onGreenColorSwitch"
-                                                                        [offColor]="callActionSwitch.offDefaultColor"
-                                                                        [size]="callActionSwitch.size"
-                                                                        (statusChange)="setLeadApprovalOrRejectionStatus($event)">
-                                                                    </switch>
-                                                                </section>
-                                                            </div>
-                                                        </div>
-                                                    </tr>
-                                                    <br>
-                                                </tbody>
-                                            </table>
-
-                                            <!-- <br> -->
-                                            <button type="submit" class="button bgcolor-unset p0"
-                                                (click)="updateLeadApprovalOrRejectionStatus()" translate><span
-                                                    class="btn Btn-Green transition txt_pd-top3">Save Changes
-                                                </span>
-                                            </button>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
+                                                    <button type="submit" class="button bgcolor-unset" [disabled]="disableSaveChangesButtonForLeadApproval"
+                                                        (click)="updateLeadApprovalOrRejectionStatus()" translate><span
+                                                            class="btn Btn-Green transition txt_pd-top3">Save Changes
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </div>
                                         <!---Integrations-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
@@ -2027,7 +2032,7 @@
                                                                             class="actions-block override-actions cwotpx mb_whitespace">
                                                                             <ng-container
                                                                                 *ngIf="category.defaultCategory">
-                                                                                <a  data-toggle="tooltip" data-placement="top"
+                                                                                <a data-placement="top"
                                                                                     class="disabled-event"
                                                                                     title="Default Folder Can't Be Edited">
                                                                                     <i class="fa fa-pencil-square-o disabled-event IconCustomization gray"
@@ -2035,7 +2040,6 @@
                                                                                 </a>
                                                                                 <a id="template-delete"
                                                                                     class="disabled-event"
-                                                                                    data-toggle="tooltip"
                                                                                     data-placement="top"
                                                                                     title="Default Folder Can't Be Deleted">
                                                                                     <i class="fa fa-trash-o disabled-event trashIconCustomization"
