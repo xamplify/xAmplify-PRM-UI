@@ -31,7 +31,7 @@ export class PreviewComponent implements OnInit {
 
   getHtmlBody(){
     this.loggedInUserCompanyLogo = this.authenticationService.APP_URL+"/assets/images/company-profile-logo.png";
-    this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(0).subscribe(
+    this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(this.id).subscribe(
       response=>{
         let statusCode = response.statusCode;
         let data = response.data;

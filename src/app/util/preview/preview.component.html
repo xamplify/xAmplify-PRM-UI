@@ -6,7 +6,7 @@
   <!--404 Page Not Found-->
   <div *ngIf="customResponse.isVisible && !success"  style="font-family: 'Montserrat', sans-serif;">
     <img src="{{loggedInUserCompanyLogo}}" alt="No Image Found" 
-      style="height: auto; margin: 0 auto;display: block;margin-bottom: 25px;position:fixed">
+      style="height: auto; margin: 0 auto;display: block;margin-bottom: 25px;">
       <div class="error" style="text-align: center; padding: 16px;position: relative;top: 50%;" >
         <h1 style="color:red; margin: -10px 0 -30px;font-size: calc(17vw + 40px);opacity: .8;">404</h1>
         <p style="color:red;opacity: .8;font-size: 20px;margin: 8px 0 38px 0;font-weight: bold">{{customResponse?.responseMessage}}</p>
