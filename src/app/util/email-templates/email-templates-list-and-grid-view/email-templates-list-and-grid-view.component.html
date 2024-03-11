@@ -423,7 +423,7 @@
 
 <!--Preview---->
 <ng-template #previewIcon let-emailTemplate="emailTemplate">
-    <a class="Iconhover custom-grid-icon" *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}">
+    <a class="Iconhover custom-grid-icon" *ngIf="!emailTemplate.draft" (click)="previewEmailTemplateInNewTab(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}">
         <i class="fa fa-eye" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>

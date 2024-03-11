@@ -1272,6 +1272,11 @@ unpublishLearingTracks(learningTrackIds:any){
   return this.callPostMethod(url,data)
 }
 
+getEmailTemplateHtmlBodyAndMergeTagsInfo(emailTemplateId:number){
+  let url = this.REST_URL+"/email-template/preview/id/"+emailTemplateId+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
+  return this.callGetMethod(url);
+}
+
 
 
 }

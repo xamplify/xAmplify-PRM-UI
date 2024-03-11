@@ -159,4 +159,8 @@ showErrorMessage(errorMessage:string){
     this.sendTestEmailComponentEventEmitter.emit();
   }
 
+  previewEmailTemplate(){
+    this.referenceService.previewEmailTemplateInNewTab(this.id);
+  }
+
 }

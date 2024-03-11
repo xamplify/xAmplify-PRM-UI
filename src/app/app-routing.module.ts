@@ -47,6 +47,7 @@ import { CustomSkinComponent } from './dashboard/user-profile/custom-skin/custom
 import { DevicesInfoComponent } from './azuga/devices-info/devices-info.component';
 import { MaintenanceComponent } from './authentication/maintenance/maintenance.component';
 import { PreviewLoginComponent } from './common/preview-login/preview-login.component';
+import { PreviewComponent } from './util/preview/preview.component';
 
 
 export const routes: Routes = [
@@ -106,6 +107,7 @@ export const routes: Routes = [
 			/*******XNFR-83*******/
 			{ path: 'azuga', loadChildren: 'app/azuga/azuga.module#AzugaModule',  data: { preload: true } },
 			{ path: 'help', loadChildren: 'app/guides/guides.module#GuidesModule',  data: { preload: true } },
+			
 			{ path: 'error/:errorStatusId', component: ErrorPagesComponent, data: { preload: true } }
 		]
 	},
@@ -155,6 +157,8 @@ export const routes: Routes = [
 	{ path: 'maintenance', component: MaintenanceComponent },
 	/*** XNFR-416 *****/
 	{ path: 'login/preview', component: PreviewLoginComponent},
+	{ path: 'pv/t/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/p/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
 	/*** XNFR-416 *****/
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },

@@ -543,6 +543,11 @@ copyModalPopupOutputReceiver(copyDto:CopyDto){
     this.pagination.pageIndex = 1;
     this.findEmailTemplates(this.pagination);
   }
+
+  previewEmailTemplateInNewTab(emailTemplate:EmailTemplate){
+    this.referenceService.previewEmailTemplateInNewTab(emailTemplate.id);
+
+  }
 }
 
 
