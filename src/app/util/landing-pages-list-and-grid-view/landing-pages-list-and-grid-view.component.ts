@@ -22,6 +22,7 @@ import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-po
 import { CopyDto } from '../models/copy-dto';
 import { Properties } from 'app/common/models/properties';
 import { VanityEmailTempalte } from 'app/email-template/models/vanity-email-template';
+import { LandingPageShareDto } from 'app/dashboard/user-profile/models/LandingPageShareDto';
 declare var swal: any, $: any;
 @Component({
   selector: 'app-landing-pages-list-and-grid-view',
@@ -72,6 +73,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @Input() loggedInUserCompanyId = 0;
   @Input() isLandingPages =  false;
   selectedLandingPageId:any;
+  landingPageSharedDetails:LandingPageShareDto = new LandingPageShareDto();
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -459,11 +461,26 @@ copy(landingPage:any){
     
     openShareListPopup(landingPageId:any) {
         this.selectedLandingPageId = landingPageId;
-        this.showShareListPopup = true;
-        setTimeout(() => $('#partnerCompaniesPopup').modal('show'), 0);
+            this.ngxloading = true;
+            let self = this;
+            this.landingPageService.getLandingPageSharedDetails(landingPageId).subscribe(
+              (response) => {
+                self.landingPageSharedDetails = response.data;
+                    if (self.landingPageSharedDetails == null) {
+                        self.landingPageSharedDetails = new LandingPageShareDto();
+                    }
+                  self.ngxloading = false;
+                  self.showShareListPopup = true;
+                  setTimeout(() => $('#partnerCompaniesPopup').modal('show'), 0);          
+              },
+              error => {
+                this.ngxloading = false;
+                this.logger.errorPage(error);
+              });
     }
     closeShareListPopup() {
         this.showShareListPopup = false;
+        this.ngxloading = false;
         $('#partnerCompaniesPopup').modal('hide');
     }
 

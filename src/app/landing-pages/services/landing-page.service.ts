@@ -228,4 +228,11 @@ export class LandingPageService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    getLandingPageSharedDetails( landingPageId: number ) {
+        return this.http.get( this.URL + "landingPageSharedDetails/" + landingPageId + "?access_token=" + this.authenticationService.access_token, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
 }

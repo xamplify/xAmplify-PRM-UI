@@ -440,7 +440,11 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <app-partner-company-and-groups *ngIf="showShareListPopup" [moduleName]="'My Profile'"
-                        [isPublishedToPartnerGroups]="false" [vendorJourney]="true" [inputId]="selectedLandingPageId"
+                        [isPublishedToPartnerGroups]="landingPageSharedDetails?.publishedToPartnerGroups"
+                        [selectedTeamMemberIds]="landingPageSharedDetails?.partnerIds"
+                        [selectedPartnershipIds]="landingPageSharedDetails?.partnershipIds"
+                        [selectedPartnerGroupIds]="landingPageSharedDetails?.partnerGroupIds"    
+                        [vendorJourney]="true" [inputId]="selectedLandingPageId"
                         (closePopup)=closeShareListPopup()>
                     </app-partner-company-and-groups>
                 </div>

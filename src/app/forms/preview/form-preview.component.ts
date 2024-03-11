@@ -349,6 +349,7 @@ export class FormPreviewComponent implements OnInit {
       
       let geoLocationAnalytics = this.geoLocationAnalytics;    
       formSubmit.geoLocationAnalyticsDTO = geoLocationAnalytics;
+      formSubmit.vendorJourney = this.vendorJourney;
       this.formService.submitForm(formSubmit, formType)
         .subscribe(
           (response: any) => {

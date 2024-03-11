@@ -209,12 +209,12 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
        if(this.gdprStatus){
             if(this.addContactuser.legalBasis.length>0){
                 this.isValidLegalOptions = true;
-                this.validatePartnerCompany();
+                 this.validatePartnerCompany();
             }else{
                 this.isValidLegalOptions = false;
             }
         }else{
-            this.validatePartnerCompany();
+             this.validatePartnerCompany();
         }
     }
     else{
@@ -404,13 +404,12 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     
     validatePartnerCompany(){
     try {
-    this.contactService.validateCompanyName(this.addContactuser.contactCompany, this.contactDetails.companyId)
+     this.partners.push(this.addContactuser);
+    this.contactService.validateCompanyName(this.partners, this.contactDetails.companyId)
     .subscribe(
 					(data: any) => {
 						if(data.statusCode == 200){
-						    $( '#addContactModal' ).modal( 'hide' );
-                            this.contactService.isContactModalPopup = false;
-                            this.notifyParent.emit( this.addContactuser );
+						    this.closeAndEmitData();
 						}else{
 					let updatedMessage = data.message + "\n" + data.data;
 					this.validationResponse = new CustomResponse('ERROR', updatedMessage, true);
