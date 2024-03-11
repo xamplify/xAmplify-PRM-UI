@@ -489,8 +489,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.isEmailExist = false;
 		var testArray = [];
 		for (var i = 0; i <= this.newPartnerUser.length - 1; i++) {
-			testArray.push(this.newPartnerUser[i].emailId.toLowerCase());
-			this.validateEmail(this.newPartnerUser[i].emailId);
+			testArray.push(this.newPartnerUser[i].emailId.trim().toLowerCase());
+			this.validateEmail(this.newPartnerUser[i].emailId.trim().toLowerCase());
 		}
 
 		var newArray = this.compressArray(testArray);
@@ -502,7 +502,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			console.log(newArray[w].count);
 		}
 		this.xtremandLogger.log("DUPLICATE EMAILS" + this.duplicateEmailIds);
-		var valueArr = this.newPartnerUser.map(function (item) { return item.emailId.toLowerCase() });
+		var valueArr = this.newPartnerUser.map(function (item) { return item.emailId.trim().toLowerCase() });
 		var isDuplicate = valueArr.some(function (item, idx) {
 			return valueArr.indexOf(item) != idx
 		});
@@ -525,14 +525,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		for (let i = 0; i < socialUsers.length; i++) {
 			if (socialUsers[i].emailId) {
 				if (socialUsers[i].emailId !== null && this.validateEmailAddress(socialUsers[i].emailId)) {
-					let email = socialUsers[i].emailId.toLowerCase();
+					let email = socialUsers[i].emailId.trim().toLowerCase();
 					socialUsers[i].emailId = email;
 					this.setLegalBasisOptions(socialUsers[i]);
 					users.push(socialUsers[i]);
 				}
 			} else {
 				if (socialUsers[i].email !== null && this.validateEmailAddress(socialUsers[i].email)) {
-					let email = socialUsers[i].email.toLowerCase();
+					let email = socialUsers[i].email.trim().toLowerCase();
 					socialUsers[i].emailId = email;
 					this.setLegalBasisOptions(socialUsers[i]);
 					users.push(socialUsers[i]);
@@ -554,13 +554,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			/*for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
 				this.teamMembersList.push( this.orgAdminsList[i] );
 			}*/
-			this.teamMembersList.push(this.authenticationService.user.emailId);
+			this.teamMembersList.push(this.authenticationService.user.emailId.trim().toLowerCase());
 			let emails = []
 			for (let i = 0; i < this.newPartnerUser.length; i++) {
 				if (this.newPartnerUser[i].emailId) {
-					emails.push(this.newPartnerUser[i].emailId);
+					emails.push(this.newPartnerUser[i].emailId.trim().toLowerCase());
 				} else {
-					emails.push(this.newPartnerUser[i].email);
+					emails.push(this.newPartnerUser[i].email.trim().toLowerCase());
 				}
 			}
 			let existedEmails = []
@@ -582,14 +582,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				let userDetails = {
 					"firstName": this.newPartnerUser[i].firstName,
 					"lastName": this.newPartnerUser[i].lastName,
-					"companyName": this.newPartnerUser[i].contactCompany,
-					"contactCompany": this.newPartnerUser[i].contactCompany
+					"companyName": this.newPartnerUser[i].contactCompany.trim(),
+					"contactCompany": this.newPartnerUser[i].contactCompany.trim()
 				}
 
 				if (this.newPartnerUser[i].emailId) {
-					userDetails["emailId"] = this.newPartnerUser[i].emailId;
+					userDetails["emailId"] = this.newPartnerUser[i].emailId.trim().toLowerCase();
 				} else {
-					userDetails["emailId"] = this.newPartnerUser[i].email;
+					userDetails["emailId"] = this.newPartnerUser[i].email.trim().toLowerCase();
 				}
 
 				this.newUserDetails.push(userDetails);
@@ -613,16 +613,16 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					this.newPartnerUser[i].country = null;
 				}
 				if (!this.validateEmailAddress(this.newPartnerUser[i].emailId)) {
-					this.invalidPatternEmails.push(this.newPartnerUser[i].emailId)
+					this.invalidPatternEmails.push(this.newPartnerUser[i].emailId.trim().toLowerCase())
 				}
 				if (this.newPartnerUser[i].emailId) {
-					if (this.validateEmailAddress(this.newPartnerUser[i].emailId)) {
+					if (this.validateEmailAddress(this.newPartnerUser[i].emailId.trim().toLowerCase())) {
 						this.validCsvContacts = true;
 					} else {
 						this.validCsvContacts = false;
 					}
 				} else {
-					if (this.validateEmailAddress(this.newPartnerUser[i].email)) {
+					if (this.validateEmailAddress(this.newPartnerUser[i].email.trim().toLowerCase())) {
 						this.validCsvContacts = true;
 					} else {
 						this.validCsvContacts = false;
@@ -2214,7 +2214,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		        }
 		        for (let i = 0; i < this.newPartnerUser.length; i++) {
 						if (this.newPartnerUser[i].email) {
-							this.newPartnerUser[i].emailId = this.newPartnerUser[i].email;
+							this.newPartnerUser[i].emailId = this.newPartnerUser[i].email.trim().toLowerCase();
 						}
 				}
 		       this.validatePartnersCompany(this.newPartnerUser, this.partnerListId) ;

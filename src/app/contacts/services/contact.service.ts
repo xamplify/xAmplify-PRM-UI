@@ -843,8 +843,8 @@ export class ContactService {
 
     }
 
-    validateCompanyName(companyName: string, partnerCompanyId: number) {
-        return this._http.get(this.contactsUrl + "validate-partner-company" + "/" + companyName + "/" + partnerCompanyId + "?access_token=" + this.authenticationService.access_token)
+    validateCompanyName(partners: any, partnerCompanyId: number) {
+        return this._http.post(this.contactsUrl + "validate-partner-company" + "/" + this.authenticationService.getUserId() + "/" + partnerCompanyId+ "?access_token=" + this.authenticationService.access_token, partners)
             .map(this.extractData)
             .catch(this.handleError);
 
