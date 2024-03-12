@@ -217,7 +217,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			}
 		});
 		 if (this.integrationType.toLowerCase() === 'salesforce') {
-		 	this.integrationService.syncSalesforceCustomForm(this.loggedInUserId, this.selectedCfIds)
+			this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, 'isalesforce')
 		 		.subscribe(
 		 			data => {
 		 				this.ngxloading = false;

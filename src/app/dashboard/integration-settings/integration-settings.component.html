@@ -66,7 +66,7 @@
               <th>Data Type</th>
               <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Required</th> -->
               <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Place Holder</th> -->
-              <th *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Actions</th>
+              <th *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -81,7 +81,7 @@
                     title="{{sfCustomField.label}}">{{sfCustomField.label | slice:0:30}}
                     <span *ngIf="sfCustomField.label?.length>30">...</span>
                   </span>
-                  <ul *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'" class="textDecoration">
+                  <ul *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'" class="textDecoration">
                     <li>{{sfCustomField.displayName}}</li>
                     <li
                       *ngIf="(sfCustomField.formDefaultFieldType != null)  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)">
@@ -118,14 +118,14 @@
                   <input *ngIf="sfCustomField.selected" type="text" class="form-control" placeholder="PlaceHolder"
                     [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
                 </td> -->
-                <td *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
-                  <a class="custom-icon" (click)="toggleSettings(sfCustomField)">
+                <td *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'">
+                  <a *ngIf="sfCustomField.selected" class="custom-icon" (click)="toggleSettings(sfCustomField)">
                     <i *ngIf="sfCustomField.selected" class="fa fa-edit mr5 IconCustomization SingleIconCu"></i>
                     <div class="clickicons"></div>
                   </a>
                 </td>
               </tr>
-              <tr *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE')"
+              <tr *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
                 [ngClass]="{'hidden': !sfCustomField.showSettings}">
                 <td colspan="4">
                   <div class="settings-table">
@@ -135,7 +135,7 @@
                         <ng-container>
                           <tr>
                             <td class="p10" style="width:25%;">
-                              <span *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE')"
+                              <span *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
                                 class="alignMiddle">Required
                                 <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip"
                                   data-placement="right"
@@ -150,16 +150,16 @@
                               </span>
                             </td>
                             <td class="p10" style="width:25%;">
-                              <label *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE')" for="html"
+                              <label *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')" for="html"
                                 style="float: left;">Display Name</label>
-                              <input *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE')" type="text"
+                              <input *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')" type="text"
                                 class="form-control" [(ngModel)]="sfCustomField.displayName"
                                 [ngModelOptions]="{standalone: true}" placeholder="Display Name">
                             </td>
                             <td class="p10" style="width:25%;">
-                              <label *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE')" for="html"
+                              <label *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')" for="html"
                                 style="float: left;">PlaceHolder</label>
-                              <input *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE')" type="text"
+                              <input *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')" type="text"
                                 class="form-control" placeholder="PlaceHolder" [(ngModel)]="sfCustomField.placeHolder"
                                 [ngModelOptions]="{standalone: true}">
                             </td>
