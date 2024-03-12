@@ -134,7 +134,7 @@
                                     </li>
 
                                     <!---Themes-->
-                                    <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"
+                                    <li *ngIf="customSkinSettingOption &&  roleNames !='Partner' && authenticationService.module.isAnyAdminOrSupervisor"
                                         [ngClass]="{'active-tab': activeTabName == 'customskin'}">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"
                                             (click)="activateTab('customskin');clearCustomResponse()" translate>
