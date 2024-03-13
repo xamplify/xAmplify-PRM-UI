@@ -1693,5 +1693,15 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
    
 }
 
+previewEmailTemplateInNewTab(campaign:any){
+  if(this.authenticationService.isLocalHost()){
+    this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
+  }else{
+    this.getEmailTemplatePreview(campaign);
+  }
+ 
+  
+}
+
 
 }
