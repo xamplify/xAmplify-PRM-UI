@@ -134,7 +134,7 @@
                                     </li>
 
                                     <!---Themes-->
-                                    <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"
+                                    <li *ngIf="customSkinSettingOption &&  roleNames !='Partner' && authenticationService.module.isAnyAdminOrSupervisor"
                                         [ngClass]="{'active-tab': activeTabName == 'customskin'}">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"
                                             (click)="activateTab('customskin');clearCustomResponse()" translate>
@@ -889,50 +889,55 @@
                                         </div>
 
                                         <!-- XNFR-426 -->
-                                        <div class="tab-content" *ngIf="activeTabName == 'leadDealApprove'"
+                                        <div class="tab-pane" *ngIf="activeTabName == 'leadDealApprove'"
                                             [ngClass]="{'active': activeTabName == 'leadDealApprove'}">
                                             <app-response-message [customResponse]="leadApprovalCustomResponse"
                                                 *ngIf="leadApprovalCustomResponse.isVisible"></app-response-message>
-                                            <table class="table table-light"
-                                                style="border:0px!important;background-color:transparent!important">
-                                                <tbody class="remove_table_bg display-grid">
-                                                    <fieldset class="fild-custome-borders-none">
-                                                        <legend class="leg-custome-borders-bot fs-17">Turn Lead
-                                                            Approval/Rejection option ON or OFF</legend>
-                                                    </fieldset>
-                                                    <tr class="col-md-12 col-lg-12 p0">
-                                                        <div class="flex row">
-                                                            <div class="col-md-9 col-lg-9">
-                                                                <h4 class="f-w-600" id="text-color-my-profile"
-                                                                    translate>You have the ability to Approve or
-                                                                    Reject the leads registered by the partners.
-                                                                </h4>
+                                            <form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid"
+                                                *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                                                <table class="table table-light" style="border:0px!important;background-color:transparent!important">
+                                                    <tbody class="remove_table_bg display-grid">
+                                                        <fieldset class="fild-custome-borders-none">
+                                                            <legend class="leg-custome-borders-bot">Turn Lead
+                                                                Approval/Rejection option ON or OFF</legend>
+                                                        </fieldset>
+                                                        <tr class="col-md-12 col-lg-12">
+                                                            <div class="flex row">
+                                                                <div class="col-md-9 col-lg-9">
+                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>You have the ability to Approve or
+                                                                        Reject the leads registered by the partners.
+                                                                    </h5>
+                                                                    <h5 *ngIf="!leadApprovalRejectionStatus" id="text-color-my-profile">
+                                                                        <input type="checkbox" [disabled]="leadApprovalRejectionStatus"
+                                                                            (change)="checkAggreeToDisableLeadApprovalFeature($event)"
+                                                                            [ngModelOptions]="{standalone: true}" class="pointer checkBox_shadow"
+                                                                            [(ngModel)]="isAggreedToDisableLeadApprovalFeature" value="">&nbsp;By disabling this
+                                                                        option, the leads that are neither rejected nor
+                                                                        approved will be automatically approved!
+                                                                    </h5>
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+                                                                    <section>
+                                                                        <switch [(status)]="leadApprovalStatus" [onText]="callActionSwitch.onTextValue"
+                                                                            [offText]="callActionSwitch.offTextValue"
+                                                                            [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                                            [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+                                                                            (statusChange)="setLeadApprovalOrRejectionStatus($event)">
+                                                                        </switch>
+                                                                    </section>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-md-3 col-lg-3 text-right"
-                                                                style="padding-top:10px">
-                                                                <section>
-                                                                    <switch [(status)]="leadApprovalStatus"
-                                                                        [onText]="callActionSwitch.onTextValue"
-                                                                        [offText]="callActionSwitch.offTextValue"
-                                                                        [onColor]="callActionSwitch.onGreenColorSwitch"
-                                                                        [offColor]="callActionSwitch.offDefaultColor"
-                                                                        [size]="callActionSwitch.size"
-                                                                        (statusChange)="setLeadApprovalOrRejectionStatus($event)">
-                                                                    </switch>
-                                                                </section>
-                                                            </div>
-                                                        </div>
-                                                    </tr>
-                                                    <br>
-                                                </tbody>
-                                            </table>
-
-                                            <!-- <br> -->
-                                            <button type="submit" class="button bgcolor-unset p0"
-                                                (click)="updateLeadApprovalOrRejectionStatus()" translate><span
-                                                    class="btn Btn-Green transition txt_pd-top3">Save Changes
-                                                </span>
-                                            </button>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
+                                                    <button type="submit" class="button bgcolor-unset" [disabled]="disableSaveChangesButtonForLeadApproval"
+                                                        (click)="updateLeadApprovalOrRejectionStatus()" translate><span
+                                                            class="btn Btn-Green transition txt_pd-top3">Save Changes
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </div>
                                         <!---Integrations-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
@@ -1215,6 +1220,50 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16"
+                                                    *ngIf="!httpRequestLoader.isLoading">
+                                                    <div
+                                                        [className]="activeCRMDetails?.type === 'HALOPSA'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
+                                                        <div class="card-body" style="padding:10px;">
+                                                            <span *ngIf="halopsaRibbonText == 'configured'"
+                                                                class="integration-cards">
+                                                                <!-- <a (click)="halopsaSettings()"
+                                                                    data-toggle="tooltip" data-placement="top"
+                                                                    title="HALOPSA Settings"><i
+                                                                        class="fa fa-cog"
+                                                                        style="font-size: 20px !important;"></i></a> -->
+                                                            </span>
+                                                            <h5 class="card-title  text-uppercase text-center"
+                                                                style="padding-top: 4%;">HALOPSA</h5>
+
+                                                            <div class="ribbon draft config" style="left:10px"
+                                                                *ngIf="halopsaRibbonText == 'configured'">
+                                                                <span
+                                                                    [style.background-color]="'green'">{{halopsaRibbonText}}</span>
+                                                            </div>
+                                                            <div class="ribbon draft" style="left:10px"
+                                                                *ngIf="halopsaRibbonText != 'configured'">
+                                                                <span
+                                                                    [style.background-color]="'yello'">{{halopsaRibbonText}}</span>
+                                                            </div>
+                                                            <div style="height: 120px;">
+                                                                <div>
+                                                                    <img src="assets/images/crm/halopsa-xamplify.png"
+                                                                        style="margin-top:20px; text-align: center;width:100%">
+                                                                </div>
+                                                            </div>
+                                                            <a (click)="configureHaloPsa()"
+                                                                class="btn btn-block btn-primary text-uppercase"
+                                                                *ngIf="halopsaRibbonText == 'configure'"
+                                                                translate>configure</a>
+                                                            <a (click)="configureHaloPsa()"
+                                                                class="btn btn-block btn-primary text-uppercase"
+                                                                *ngIf="halopsaRibbonText == 'configured'"
+                                                                translate>re configure</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 </div>
                                             </section>
 
@@ -1475,6 +1524,13 @@
                                                 <app-connectwise-authentication [loggedInUserId]="loggedInUserId"
                                                     (closeEvent)="refreshIntegrationSettings($event)">
                                                 </app-connectwise-authentication>
+                                            </div>
+
+                                             <!--halopsa -->
+                                             <div *ngIf="integrationTabIndex == 8">
+                                                <app-halopsa-authentication [loggedInUserId]="loggedInUserId"
+                                                    (closeEvent)="refreshIntegrationSettings($event)">
+                                                </app-halopsa-authentication>
                                             </div>
                                         </div>
                                         <!---Lead Pipe Lines-->
@@ -2027,7 +2083,7 @@
                                                                             class="actions-block override-actions cwotpx mb_whitespace">
                                                                             <ng-container
                                                                                 *ngIf="category.defaultCategory">
-                                                                                <a  data-toggle="tooltip" data-placement="top"
+                                                                                <a data-placement="top"
                                                                                     class="disabled-event"
                                                                                     title="Default Folder Can't Be Edited">
                                                                                     <i class="fa fa-pencil-square-o disabled-event IconCustomization gray"
@@ -2035,7 +2091,6 @@
                                                                                 </a>
                                                                                 <a id="template-delete"
                                                                                     class="disabled-event"
-                                                                                    data-toggle="tooltip"
                                                                                     data-placement="top"
                                                                                     title="Default Folder Can't Be Deleted">
                                                                                     <i class="fa fa-trash-o disabled-event trashIconCustomization"

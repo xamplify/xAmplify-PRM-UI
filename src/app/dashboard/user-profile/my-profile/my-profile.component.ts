@@ -341,6 +341,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	vendorJourney:boolean = false;
 	isLandingPages:boolean = false;
 	loggedInUserCompanyId:number = 0;
+	/*** XNFR-483 ***/
+	isAggreedToDisableLeadApprovalFeature: boolean = false;
+	disableSaveChangesButtonForLeadApproval: boolean = false;
+
+	// halo psa
+	halopsaRibbonText: string;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -1730,6 +1737,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.checkMicrosoftIntegration();
 		this.checkPipedriveIntegration();
 		this.checkConnectWiseIntegration();
+		this.checkHaloPsaIntegration();
 		this.getActiveCRMDetails();
 	}
 	checkMicrosoftIntegration() {
@@ -2881,6 +2889,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.integrationType = 'CONNECTWISE';
 		this.integrationTabIndex = 5;
 	}
+
+	// halopsaSettings() {
+	// 	this.sfcfPagedItems = [];
+	// 	this.sfcfMasterCBClicked = false;
+	// 	this.customFieldsResponse.isVisible = false;
+	// 	this.integrationType = 'HALOPSA';
+	// 	this.integrationTabIndex = 5;
+	// }
 
 	marketoSettings() {
 		this.sfcfPagedItems = [];
@@ -4557,56 +4573,84 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.integrationTabIndex = 7;
 	}
 
-
-	/*******xnfr-426********/
-	getLeadApprovalstatus(){
-		this.authenticationService.getLeadApprovalStatus(this.referenceService.companyId)
-		.subscribe(
-		data => {
-				this.leadApprovalStatus = data.data;
-				this.leadApprovalRejectionStatus = data.data;
-		});
+	// halo psa
+	checkHaloPsaIntegration() {
+		   this.halopsaRibbonText = "configure";
+		// this.referenceService.loading(this.httpRequestLoader, true);
+		// this.halopsaRibbonText = "configure";
+		// this.integrationService.checkConfigurationByType("halopsa").subscribe(data => {
+		// 	this.referenceService.loading(this.httpRequestLoader, false);
+		// 	let response = data;
+		// 	if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+		// 		this.halopsaRibbonText = "configured";
+		// 	}
+		// 	else {
+		// 		this.halopsaRibbonText = "configure";
+		// 	}
+		// }, error => {
+		// 	this.referenceService.loading(this.httpRequestLoader, false);
+		// 	this.sfRibbonText = "configure";
+		// 	this.logger.error(error, "Error in checkhalopsaIntegration() for Halopsa");
+		// }, () => this.logger.log("Halopsa Integration Configuration Checking done"));
 	}
 
-	setLeadApprovalOrRejectionStatus(event:any){
+	configureHaloPsa() {
+		this.integrationTabIndex = 8;
+	}
+
+
+	/*******xnfr-426********/
+	getLeadApprovalstatus() {
+		this.authenticationService.getLeadApprovalStatus(this.referenceService.companyId)
+			.subscribe(
+				data => {
+					this.leadApprovalStatus = data.data;
+					this.leadApprovalRejectionStatus = data.data;
+					this.isAggreedToDisableLeadApprovalFeature = false;
+					if (!this.leadApprovalStatus) {
+						this.disableSaveChangesButtonForLeadApproval = true;
+					}
+				});
+	}
+
+	setLeadApprovalOrRejectionStatus(event: any) {
 		if (event) {
 			this.leadApprovalRejectionStatus = true;
+			this.disableSaveChangesButtonForLeadApproval = false;
+			this.isAggreedToDisableLeadApprovalFeature = false;
 		}
 		else {
 			this.leadApprovalRejectionStatus = false;
+			this.isAggreedToDisableLeadApprovalFeature = false;
+			this.disableSaveChangesButtonForLeadApproval = true;
 		}
 	}
 
-	updateLeadApprovalOrRejectionStatus(){
-		let self = this;
-		swal({
-			title: 'Are you sure want to continue?',
-			type: 'warning',
-			showCancelButton: true,
-			swalConfirmButtonColor: '#54a7e9',
-			swalCancelButtonColor: '#999',
-			allowOutsideClick: false,
-			confirmButtonText: 'Yes'
-		}).then(function () {
-			if (self.leadApprovalStatus == self.leadApprovalRejectionStatus){
-				self.saveLeadApprovalOrRejectionStatus(self.leadApprovalStatus);
-			} else{
-				self.saveLeadApprovalOrRejectionStatus(self.leadApprovalRejectionStatus);
-			}
-		}, function (dismiss: any) {
-			console.log('you clicked on option' + dismiss);
-			self.getLeadApprovalstatus();
-		});
+	checkAggreeToDisableLeadApprovalFeature(event: any) {
+		if (event.target.checked) {
+			this.disableSaveChangesButtonForLeadApproval = false;
+		}
+		else {
+			this.disableSaveChangesButtonForLeadApproval = true;
+		}
 	}
 
-	saveLeadApprovalOrRejectionStatus(leadApprovalRejectionStatus:boolean) {
+	updateLeadApprovalOrRejectionStatus() {
+		if (this.leadApprovalStatus == this.leadApprovalRejectionStatus) {
+			this.saveLeadApprovalOrRejectionStatus(this.leadApprovalStatus);
+		} else {
+			this.saveLeadApprovalOrRejectionStatus(this.leadApprovalRejectionStatus);
+		}
+	}
+
+	saveLeadApprovalOrRejectionStatus(leadApprovalRejectionStatus: boolean) {
 		this.leadApprovalCustomResponse = new CustomResponse();
 		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId, leadApprovalRejectionStatus)
-		.subscribe(
-			data => {
-				this.leadApprovalCustomResponse = new CustomResponse('SUCCESS', "Settings Updated Successfully", true);
-			}
-		);
+			.subscribe(
+				data => {
+					this.leadApprovalCustomResponse = new CustomResponse('SUCCESS', "Settings Updated Successfully", true);
+				}
+			);
 	}
 
 /* editVendorLandingPage(event){
