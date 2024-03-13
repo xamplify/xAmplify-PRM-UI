@@ -124,7 +124,9 @@ h6 {
 .total-records-bg-color {
   color: white !important;
 }
-.grid-box,
+.grid-box{
+  background-color: #2b3c46 !important;
+}
 #vendor-details-tile,
 .xamplify-dropdown-content,
 .header {
@@ -2611,4 +2613,37 @@ button.unlink-button {
 /**** Sudha Sri(27-2-2024)****/
 table tr:nth-child(odd).highlightRow, table tr:nth-child(odd).highlightRow:hover{
   background: #22313a!important;
+}
+/**** Sudha Sri(5-3-2024)****/
+.gridViewImgBg{
+  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
+@media only screen and (min-width: 992px){
+  .grid-box{
+    border-radius: 15px !important;
+  }
+}
+.bar.gridIconCustomization{
+  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
+}
+div .grid-box{
+  border: 1px solid #0b8dc969 !important;
+}
+/**** Sudha Sri(6-3-2024)****/
+.grid-box img{
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
+.grid-box.zero-margin{
+  border: 1px solid #d0d5db !important;
+}
+.img1{
+  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
+}
+.img1:hover {
+  background: linear-gradient(358deg, #06beb8, #0c86cc) !important;
 }
