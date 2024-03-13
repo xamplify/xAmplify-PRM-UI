@@ -1039,22 +1039,7 @@
                                 <app-list-loader *ngIf="campaignRecipientsLoader"></app-list-loader>
                                 <div *ngIf="!campaignRecipientsLoader">
                                     <!--Search Key Icon-->
-                                    <div class="mb-flex">
-                                        <div class="input-icon right pull-right pr-epx">
-                                            <input type="text" [(ngModel)]="recipientsSortOption.searchKey"
-                                                [ngModelOptions]="{standalone: true}" class="form-control"
-                                                placeholder="Search here"
-                                                (keypress)="findCampaignRecipientsOnEnterKeyPress($event.keyCode)">
-                                            <button
-                                                class="glyphicon glyphicon-remove search-box-item-clear search-button-padding"
-                                                *ngIf="recipientsSortOption.searchKey"
-                                                (click)="recipientsSortOption.searchKey='';searchCampaignRecipients()"></button>
-                                            <button type="submit"
-                                                class="search-box-item-click email-search search-icon-rp"
-                                                (click)="searchCampaignRecipients()">
-                                                <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0 pr0" *ngIf="showMarketingAutomationOption && !campaign?.channelCampaign">
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 pl0 pr0" *ngIf="showMarketingAutomationOption && !campaign?.channelCampaign">
                                             <ul class="mix-filter m0">
                                                 <li class="filter" [class.active]="'ALL' == campaignRecipientsPagination.filterBy" (click)="filterContacts('ALL')">All</li>
                                                 <li class="filter" [class.active]="'MY-CONTACTS' == campaignRecipientsPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
@@ -1068,7 +1053,22 @@
                                             </ul>
                                         </div>
                                         <!--Sort DropDown-->
-                                        <div class="input-icon right pull-right pr-epx">
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 pl0 pr0 mb-flex search-fields">
+                                            <div class="input-icon right pull-right pr-epx">
+                                                <input type="text" [(ngModel)]="recipientsSortOption.searchKey"
+                                                    [ngModelOptions]="{standalone: true}" class="form-control"
+                                                    placeholder="Search here"
+                                                    (keypress)="findCampaignRecipientsOnEnterKeyPress($event.keyCode)">
+                                                <button
+                                                    class="glyphicon glyphicon-remove search-box-item-clear search-button-padding"
+                                                    *ngIf="recipientsSortOption.searchKey"
+                                                    (click)="recipientsSortOption.searchKey='';searchCampaignRecipients()"></button>
+                                                <button type="submit"
+                                                    class="search-box-item-click email-search search-icon-rp"
+                                                    (click)="searchCampaignRecipients()">
+                                                    <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
+                                            </div>
+                                            <div class="input-icon right pull-right pr-epx">
                                             <select class="form-control cc mTopSort"
                                                 [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
                                                 (ngModelChange)="sortRecipientsList($event)"
@@ -1079,9 +1079,11 @@
                                             </select>
                                         </div>
                                     </div>
+                                    
                                     <!--List Of Contacts/Partners-->
                                     <div class="portlet-body">
                                         <div class="row mrgt45">
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <div class="alert alert-success text-center mbgrid"
                                                 *ngIf="selectedContactListIds?.length>0">
                                                 <strong>Selected Rows : {{selectedContactListIds?.length}}</strong>
@@ -1098,6 +1100,7 @@
                                                         class="required float-right">No emails will be sent.</span>
                                                 </ng-container>
                                             </div>
+                                        </div>
                                             <table class="table table-filter"
                                                 *ngIf="campaignRecipientsPagination?.totalRecords==0"
                                                 aria-describedby="">
@@ -1109,6 +1112,7 @@
                                                     </th>
                                                 </tr>
                                             </table>
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                             <div class="table-responsive">
                                                 <table class="table tgrid table-hover table-sm"
                                                     id="campaignRecipientsTable" role="grid" aria-describedby=""
@@ -1295,12 +1299,12 @@
                                                                     {{contacts?.count}}
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <a class="custom-grid-icon"
+                                                                    <a class="custom-grid-icon" data-toggle="tooltip"
+                                                                    data-placement="bottom" title="Preview"
+                                                                    data-original-title="Preview"
                                                                         (click)="$event.stopPropagation();previewUsers(contacts)">
                                                                         <i class="fa fa-eye IconCustomization campaignViewIcon"
-                                                                            aria-hidden="true" data-toggle="tooltip"
-                                                                            data-replacement="bottom" title="Preview"
-                                                                            data-original-title="Preview"></i>
+                                                                            aria-hidden="true"></i>
                                                                         <div class="clickicons"></div>
                                                                     </a>
                                                                     <!-- style="color: #008fd5;padding-top: 3px; font-size: 20px;" -->
@@ -1317,6 +1321,7 @@
                                                     </tbody>
                                                 </table>
                                             </div>
+                                         </div>
                                         </div>
                                     </div>
                                 </div>
@@ -2023,7 +2028,7 @@
                                             <label
                                                 [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn Btn-Green mBtnAlign button-border campaign_save_shadow'">
                                                 <input type="radio" id="launch-option-{{i}}"
-                                                    class="text-center mLabelAlign mr10 pointer radioButton_shadow"
+                                                    class="text-center mLabelAlign mr10 pointer radioButton_shadow Launch-btns"
                                                     name="scheduleCampaign" [value]="launchOption.value"
                                                     [checked]="selectedLaunchOption==launchOption.value"
                                                     (click)="selectLaunchOption();buttonName=launchOption.key" />
