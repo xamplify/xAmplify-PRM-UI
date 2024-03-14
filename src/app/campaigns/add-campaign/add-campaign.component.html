@@ -1039,36 +1039,49 @@
                                 <app-list-loader *ngIf="campaignRecipientsLoader"></app-list-loader>
                                 <div *ngIf="!campaignRecipientsLoader">
                                     <!--Search Key Icon-->
-                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 pl0 pr0" *ngIf="showMarketingAutomationOption && !campaign?.channelCampaign">
-                                            <ul class="mix-filter m0">
-                                                <li class="filter" [class.active]="'ALL' == campaignRecipientsPagination.filterBy" (click)="filterContacts('ALL')">All</li>
-                                                <li class="filter" [class.active]="'MY-CONTACTS' == campaignRecipientsPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
-                                                </li>
-                                                <li class="filter" *ngIf="!authenticationService?.module?.isMarketingCompany" [class.active]="'MY-PARTNERS' == campaignRecipientsPagination.filterBy" (click)="filterContacts('MY-PARTNERS')" translate>My Partners
-                                                </li>
-                                                <li class="filter" [class.active]="'FORM-CONTACTS' == campaignRecipientsPagination.filterBy" (click)="filterContacts('FORM-CONTACTS')" translate>Form
-                                                    Contacts</li>
-                                                <li class="filter" [class.active]="'COMPANY-CONTACTS' == campaignRecipientsPagination.filterBy" (click)="filterContacts('COMPANY-CONTACTS')" translate>Company
-                                                    Contacts</li>
-                                            </ul>
+                                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 pl0 pr0"
+                                        *ngIf="showMarketingAutomationOption && !campaign?.channelCampaign">
+                                        <ul class="mix-filter m0">
+                                            <li class="filter"
+                                                [class.active]="'ALL' == campaignRecipientsPagination.filterBy"
+                                                (click)="filterContacts('ALL')">All</li>
+                                            <li class="filter"
+                                                [class.active]="'MY-CONTACTS' == campaignRecipientsPagination.filterBy"
+                                                (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
+                                            </li>
+                                            <li class="filter"
+                                                *ngIf="!authenticationService?.module?.isMarketingCompany"
+                                                [class.active]="'MY-PARTNERS' == campaignRecipientsPagination.filterBy"
+                                                (click)="filterContacts('MY-PARTNERS')" translate>My Partners
+                                            </li>
+                                            <li class="filter"
+                                                [class.active]="'FORM-CONTACTS' == campaignRecipientsPagination.filterBy"
+                                                (click)="filterContacts('FORM-CONTACTS')" translate>Form
+                                                Contacts</li>
+                                            <li class="filter"
+                                                [class.active]="'COMPANY-CONTACTS' == campaignRecipientsPagination.filterBy"
+                                                (click)="filterContacts('COMPANY-CONTACTS')" translate>Company
+                                                Contacts</li>
+                                        </ul>
+                                    </div>
+                                    <!--Sort DropDown-->
+                                    <div
+                                        class="col-xs-12 col-sm-12 col-md-6 col-lg-6 pl0 pr0 mb-flex search-fields float_right">
+                                        <div class="input-icon right pull-right pr-epx">
+                                            <input type="text" [(ngModel)]="recipientsSortOption.searchKey"
+                                                [ngModelOptions]="{standalone: true}" class="form-control"
+                                                placeholder="Search here"
+                                                (keypress)="findCampaignRecipientsOnEnterKeyPress($event.keyCode)">
+                                            <button
+                                                class="glyphicon glyphicon-remove search-box-item-clear search-button-padding"
+                                                *ngIf="recipientsSortOption.searchKey"
+                                                (click)="recipientsSortOption.searchKey='';searchCampaignRecipients()"></button>
+                                            <button type="submit"
+                                                class="search-box-item-click email-search search-icon-rp"
+                                                (click)="searchCampaignRecipients()">
+                                                <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                                         </div>
-                                        <!--Sort DropDown-->
-                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 pl0 pr0 mb-flex search-fields">
-                                            <div class="input-icon right pull-right pr-epx">
-                                                <input type="text" [(ngModel)]="recipientsSortOption.searchKey"
-                                                    [ngModelOptions]="{standalone: true}" class="form-control"
-                                                    placeholder="Search here"
-                                                    (keypress)="findCampaignRecipientsOnEnterKeyPress($event.keyCode)">
-                                                <button
-                                                    class="glyphicon glyphicon-remove search-box-item-clear search-button-padding"
-                                                    *ngIf="recipientsSortOption.searchKey"
-                                                    (click)="recipientsSortOption.searchKey='';searchCampaignRecipients()"></button>
-                                                <button type="submit"
-                                                    class="search-box-item-click email-search search-icon-rp"
-                                                    (click)="searchCampaignRecipients()">
-                                                    <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
-                                            </div>
-                                            <div class="input-icon right pull-right pr-epx">
+                                        <div class="input-icon right pull-right pr-epx">
                                             <select class="form-control cc mTopSort"
                                                 [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
                                                 (ngModelChange)="sortRecipientsList($event)"
@@ -1079,28 +1092,28 @@
                                             </select>
                                         </div>
                                     </div>
-                                    
+
                                     <!--List Of Contacts/Partners-->
                                     <div class="portlet-body">
                                         <div class="row mrgt45">
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                            <div class="alert alert-success text-center mbgrid"
-                                                *ngIf="selectedContactListIds?.length>0">
-                                                <strong>Selected Rows : {{selectedContactListIds?.length}}</strong>
-                                                <ng-container *ngIf="emailReceiversCountError">
-                                                    <span class="required float-right" translate>Something went
-                                                        wrong.Please contact admin</span>
-                                                </ng-container>
-                                                <ng-container
-                                                    *ngIf="!emailReceiversCountError && !campaign?.oneClickLaunch">
-                                                    <span *ngIf="campaign?.emailNotification"
-                                                        class="success float-right">Email will be sent to
-                                                        {{validUsersCount}}({{allUsersCount}}) users.</span>
-                                                    <span *ngIf="!campaign?.emailNotification"
-                                                        class="required float-right">No emails will be sent.</span>
-                                                </ng-container>
+                                                <div class="alert alert-success text-center mbgrid"
+                                                    *ngIf="selectedContactListIds?.length>0">
+                                                    <strong>Selected Rows : {{selectedContactListIds?.length}}</strong>
+                                                    <ng-container *ngIf="emailReceiversCountError">
+                                                        <span class="required float-right" translate>Something went
+                                                            wrong.Please contact admin</span>
+                                                    </ng-container>
+                                                    <ng-container
+                                                        *ngIf="!emailReceiversCountError && !campaign?.oneClickLaunch">
+                                                        <span *ngIf="campaign?.emailNotification"
+                                                            class="success float-right">Email will be sent to
+                                                            {{validUsersCount}}({{allUsersCount}}) users.</span>
+                                                        <span *ngIf="!campaign?.emailNotification"
+                                                            class="required float-right">No emails will be sent.</span>
+                                                    </ng-container>
+                                                </div>
                                             </div>
-                                        </div>
                                             <table class="table table-filter"
                                                 *ngIf="campaignRecipientsPagination?.totalRecords==0"
                                                 aria-describedby="">
@@ -1113,215 +1126,224 @@
                                                 </tr>
                                             </table>
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                            <div class="table-responsive">
-                                                <table class="table tgrid table-hover table-sm"
-                                                    id="campaignRecipientsTable" role="grid" aria-describedby=""
-                                                    *ngIf="campaignRecipientsPagination?.totalRecords > 0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="row" class="text-center">
-                                                                <input class="pointer checkBox_shadow" type="checkbox"
-                                                                    name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-                                                                    (change)="checkAll($event)"
-                                                                    id="checkAllExistingContacts" />
-                                                            </th>
-                                                            <th class="hidden-xs"
-                                                                *ngIf="showRecipientsSearchResultExpandButton"
-                                                                scope="col"></th>
-                                                            <th class="hidden-xs" scope="row" colspan="2"
-                                                                style="width: 35%">
-                                                                <span class="ui-column-resizer"
-                                                                    (mousedown)="referenceService?.onMouseDown($event,'campaignRecipientsTable',2)"></span>
-                                                                <span class="gridHeader" translate>List Name</span>
-                                                            </th>
-                                                            <th class="visible-xs" scope="row" colspan="1"
-                                                                style="width: 35%" translate>
-                                                                List Info
-                                                            </th>
-                                                            <th scope="row" class="text-center" *ngIf="showContactType"
-                                                                translate>Type
-                                                            </th>
-                                                            <th scope="row" class="text-center" translate>Created On
-                                                            </th>
-                                                            <th scope="row" class="text-center" translate>Count</th>
-                                                            <th scope="row" class="text-center" translate>Preview </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody class="pointer">
-                                                        <ng-container
-                                                            *ngFor="let contacts of campaignRecipientsPagination?.pagedItems;let i = index">
-                                                            <tr role="row" id="campaignContactListTable_{{contacts.id}}"
-                                                                (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)"
-                                                                [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)">
-                                                                <td class="text-center pointer">
-                                                                    <div class="form-group">
-                                                                        <input type="checkbox"
-                                                                            class="chk pointer checkBox_shadow"
-                                                                            lang="{{contacts.name}}"
-                                                                            id="{{contacts.id}}"
-                                                                            [checked]="selectedContactListIds.indexOf(contacts.id)>-1"
-                                                                            name="campaignContact[]"
-                                                                            value="{{contacts.id}}"
-                                                                            (click)="highlightRow(contacts,$event)"
-                                                                            [disabled]="(contacts.name==properties.activeMasterPartnerList  || contacts.name==properties.inActiveMasterPartnerList) && contacts.count==0">
-                                                                    </div>
-                                                                </td>
-                                                                <td class="cw"
-                                                                    *ngIf="showRecipientsSearchResultExpandButton">
-                                                                    <div class="actions-block left-float">
-                                                                        <a (click)="$event.stopPropagation();viewMatchedContacts(contacts)"
-                                                                            data-toggle="tooltip"
-                                                                            data-placement="bottom"
-                                                                            title="Matched Results">
-                                                                            <i class="fa"
-                                                                                [ngClass]="{'fa-angle-right': !contacts.expand, 'fa-angle-down': contacts.expand}"
-                                                                                aria-hidden="true"
-                                                                                style=" padding-top: 0px;"></i>
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td style="width: 10%;text-align: left;"
-                                                                    class="hidden-xs">
-                                                                    <img *ngIf="contacts?.socialNetwork=='ZOHO' && contacts.synchronisedList"
-                                                                        src="{{properties?.zohoImage}}" alt="Zoho"
-                                                                        class="img-class-list image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='GOOGLE' && contacts.synchronisedList"
-                                                                        src="{{properties?.googleImage}}" alt="Google"
-                                                                        class="img-class-list image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='SALESFORCE' && contacts.synchronisedList"
-                                                                        src="{{properties?.salesforceImage}}"
-                                                                        alt="Salesforce"
-                                                                        class="img-class-list image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='MANUAL' || !contacts.synchronisedList"
-                                                                        src="{{properties?.manualImage}}" alt="Manual"
-                                                                        class="img-class-list list-icons-sm image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='HUBSPOT' && contacts.synchronisedList"
-                                                                        src="{{properties?.hubspotImage}}" alt="Hubspot"
-                                                                        class="img-class-list image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='MARKETO' && contacts.synchronisedList"
-                                                                        src="{{properties?.marketoImage}}" alt="Marketo"
-                                                                        class="img-class-list image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='MICROSOFT' && contacts.synchronisedList"
-                                                                        src="{{properties?.microsoftImage}}"
-                                                                        alt="Microsoft"
-                                                                        class="img-class-list image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='PIPEDRIVE' && contacts.synchronisedList"
-                                                                        src="{{properties?.pipedriveImage}}"
-                                                                        alt="Pipedrive"
-                                                                        class="img-class-list image_effect">
-                                                                     <img *ngIf="contacts?.socialNetwork=='CONNECTWISE' && contacts.synchronisedList"
-                                                                        src="{{properties?.connectwiseImage}}"
-                                                                        alt="ConnectWise"
-                                                                        class="img-class-list image_effect">
-                                                                        
-
-                                                                </td>
-                                                                <td style="text-align: left;">
-                                                                    <h4 class="moreipsis mt5 mb5 f-w-600"
-                                                                        data-toggle="tooltip" data-placement="bottom"
-                                                                        title="{{contacts?.name}}">
-                                                                        <span><strong>{{contacts?.name}}</strong></span>
-                                                                    </h4>
-                                                                    <h6 class="moreipsis" data-toggle="tooltip"
-                                                                        data-placement="bottom"
-                                                                        title="{{contacts?.createdName}}">
-                                                                        <span translate> Created By
-                                                                            <strong>{{contacts?.creatorName}}</strong></span>
-                                                                    </h6>
-                                                                    <ng-container *ngIf="!contacts?.partnerList">
-                                                                        <div style="display: inline-flex;">
-                                                                            <h6 class="view-banner" translate>
-                                                                                <span *ngIf="contacts?.publicList"
-                                                                                    data-toggle="tooltip"
-                                                                                    data-placement="top"
-                                                                                    data-toggle="tooltip"
-                                                                                    data-placement="bottom"
-                                                                                    title="{{actionsDescription?.contact_list_public}}"
-                                                                                    translate>Public
-                                                                                </span>
-                                                                                <span *ngIf="!contacts?.publicList"
-                                                                                    data-toggle="tooltip"
-                                                                                    data-placement="top"
-                                                                                    data-toggle="tooltip"
-                                                                                    data-placement="bottom"
-                                                                                    title="{{actionsDescription?.contact_list_private}}"
-                                                                                    translate>Private
-                                                                                </span>
-                                                                            </h6>
-                                                                            <h6 *ngIf="contacts?.formList"
-                                                                                class="view-banner view-banner-green"
-                                                                                translate>
-                                                                                <span data-toggle="tooltip"
-                                                                                    data-placement="top"
-                                                                                    data-toggle="tooltip"
-                                                                                    data-placement="bottom"
-                                                                                    title="This list is associated with a form."
-                                                                                    translate>Form Contact List
-                                                                                </span>
-                                                                            </h6>
-                                                                            <h6 *ngIf="contacts?.companyList"
-                                                                            class="view-banner view-banner-green"
-                                                                            translate>
-                                                                            <span data-toggle="tooltip"
-                                                                                data-placement="top"
+                                                <div class="table-responsive">
+                                                    <table class="table tgrid table-hover table-sm"
+                                                        id="campaignRecipientsTable" role="grid" aria-describedby=""
+                                                        *ngIf="campaignRecipientsPagination?.totalRecords > 0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="row" class="text-center">
+                                                                    <input class="pointer checkBox_shadow"
+                                                                        type="checkbox" name="all"
+                                                                        [(ngModel)]="isHeaderCheckBoxChecked"
+                                                                        (change)="checkAll($event)"
+                                                                        id="checkAllExistingContacts" />
+                                                                </th>
+                                                                <th class="hidden-xs"
+                                                                    *ngIf="showRecipientsSearchResultExpandButton"
+                                                                    scope="col"></th>
+                                                                <th class="hidden-xs" scope="row" colspan="2"
+                                                                    style="width: 35%">
+                                                                    <span class="ui-column-resizer"
+                                                                        (mousedown)="referenceService?.onMouseDown($event,'campaignRecipientsTable',2)"></span>
+                                                                    <span class="gridHeader" translate>List Name</span>
+                                                                </th>
+                                                                <th class="visible-xs" scope="row" colspan="1"
+                                                                    style="width: 35%" translate>
+                                                                    List Info
+                                                                </th>
+                                                                <th scope="row" class="text-center"
+                                                                    *ngIf="showContactType" translate>Type
+                                                                </th>
+                                                                <th scope="row" class="text-center" translate>Created On
+                                                                </th>
+                                                                <th scope="row" class="text-center" translate>Count</th>
+                                                                <th scope="row" class="text-center" translate>Preview
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="pointer">
+                                                            <ng-container
+                                                                *ngFor="let contacts of campaignRecipientsPagination?.pagedItems;let i = index">
+                                                                <tr role="row"
+                                                                    id="campaignContactListTable_{{contacts.id}}"
+                                                                    (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)"
+                                                                    [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)">
+                                                                    <td class="text-center pointer">
+                                                                        <div class="form-group">
+                                                                            <input type="checkbox"
+                                                                                class="chk pointer checkBox_shadow"
+                                                                                lang="{{contacts.name}}"
+                                                                                id="{{contacts.id}}"
+                                                                                [checked]="selectedContactListIds.indexOf(contacts.id)>-1"
+                                                                                name="campaignContact[]"
+                                                                                value="{{contacts.id}}"
+                                                                                (click)="highlightRow(contacts,$event)"
+                                                                                [disabled]="(contacts.name==properties.activeMasterPartnerList  || contacts.name==properties.inActiveMasterPartnerList) && contacts.count==0">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="cw"
+                                                                        *ngIf="showRecipientsSearchResultExpandButton">
+                                                                        <div class="actions-block left-float">
+                                                                            <a (click)="$event.stopPropagation();viewMatchedContacts(contacts)"
                                                                                 data-toggle="tooltip"
                                                                                 data-placement="bottom"
-                                                                                title="This list is associated with a company."
-                                                                                translate>Company Contact List
-                                                                            </span>
-                                                                        </h6>
+                                                                                title="Matched Results">
+                                                                                <i class="fa"
+                                                                                    [ngClass]="{'fa-angle-right': !contacts.expand, 'fa-angle-down': contacts.expand}"
+                                                                                    aria-hidden="true"
+                                                                                    style=" padding-top: 0px;"></i>
+                                                                            </a>
                                                                         </div>
-                                                                    </ng-container>
-                                                                </td>
-                                                                <td class="text-center" *ngIf="showContactType">
-                                                                    <div>
-                                                                        <span
-                                                                            (mouseover)='showContactsAlert(contacts.count)'
+                                                                    </td>
+                                                                    <td style="width: 10%;text-align: left;"
+                                                                        class="hidden-xs">
+                                                                        <img *ngIf="contacts?.socialNetwork=='ZOHO' && contacts.synchronisedList"
+                                                                            src="{{properties?.zohoImage}}" alt="Zoho"
+                                                                            class="img-class-list image_effect">
+                                                                        <img *ngIf="contacts?.socialNetwork=='GOOGLE' && contacts.synchronisedList"
+                                                                            src="{{properties?.googleImage}}"
+                                                                            alt="Google"
+                                                                            class="img-class-list image_effect">
+                                                                        <img *ngIf="contacts?.socialNetwork=='SALESFORCE' && contacts.synchronisedList"
+                                                                            src="{{properties?.salesforceImage}}"
+                                                                            alt="Salesforce"
+                                                                            class="img-class-list image_effect">
+                                                                        <img *ngIf="contacts?.socialNetwork=='MANUAL' || !contacts.synchronisedList"
+                                                                            src="{{properties?.manualImage}}"
+                                                                            alt="Manual"
+                                                                            class="img-class-list list-icons-sm image_effect">
+                                                                        <img *ngIf="contacts?.socialNetwork=='HUBSPOT' && contacts.synchronisedList"
+                                                                            src="{{properties?.hubspotImage}}"
+                                                                            alt="Hubspot"
+                                                                            class="img-class-list image_effect">
+                                                                        <img *ngIf="contacts?.socialNetwork=='MARKETO' && contacts.synchronisedList"
+                                                                            src="{{properties?.marketoImage}}"
+                                                                            alt="Marketo"
+                                                                            class="img-class-list image_effect">
+                                                                        <img *ngIf="contacts?.socialNetwork=='MICROSOFT' && contacts.synchronisedList"
+                                                                            src="{{properties?.microsoftImage}}"
+                                                                            alt="Microsoft"
+                                                                            class="img-class-list image_effect">
+                                                                        <img *ngIf="contacts?.socialNetwork=='PIPEDRIVE' && contacts.synchronisedList"
+                                                                            src="{{properties?.pipedriveImage}}"
+                                                                            alt="Pipedrive"
+                                                                            class="img-class-list image_effect">
+                                                                        <img *ngIf="contacts?.socialNetwork=='CONNECTWISE' && contacts.synchronisedList"
+                                                                            src="{{properties?.connectwiseImage}}"
+                                                                            alt="ConnectWise"
+                                                                            class="img-class-list image_effect">
+
+
+                                                                    </td>
+                                                                    <td style="text-align: left;">
+                                                                        <h4 class="moreipsis mt5 mb5 f-w-600"
                                                                             data-toggle="tooltip"
                                                                             data-placement="bottom"
-                                                                            [attr.title]="emptyContactsMessage">
-                                                                            <ng-container
-                                                                                *ngIf="contacts?.listType=='Partners'">
-                                                                                {{authenticationService?.partnerModule?.customName}}
-                                                                            </ng-container>
-                                                                            <ng-container
-                                                                                *ngIf="contacts?.listType!='Partners'">
-                                                                                {{contacts?.listType}}
-                                                                            </ng-container>
-                                                                        </span>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="text-center sorting_1">
-                                                                    <app-display-date-and-time
-                                                                        [dateAndTimeUTCString]="contacts?.createdTimeInString"></app-display-date-and-time>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    {{contacts?.count}}
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <a class="custom-grid-icon" data-toggle="tooltip"
-                                                                    data-placement="bottom" title="Preview"
-                                                                    data-original-title="Preview"
-                                                                        (click)="$event.stopPropagation();previewUsers(contacts)">
-                                                                        <i class="fa fa-eye IconCustomization campaignViewIcon"
-                                                                            aria-hidden="true"></i>
-                                                                        <div class="clickicons"></div>
-                                                                    </a>
-                                                                    <!-- style="color: #008fd5;padding-top: 3px; font-size: 20px;" -->
-                                                                </td>
-                                                            </tr>
-                                                            <tr role="row" *ngIf="contacts?.expand">
-                                                                <td colspan="12">
-                                                                    <app-userlist-users
-                                                                        [searchKey]="campaignRecipientsPagination.searchKey"
-                                                                        [userListId]="contacts.id"></app-userlist-users>
-                                                                </td>
-                                                            </tr>
-                                                        </ng-container>
-                                                    </tbody>
-                                                </table>
+                                                                            title="{{contacts?.name}}">
+                                                                            <span><strong>{{contacts?.name}}</strong></span>
+                                                                        </h4>
+                                                                        <h6 class="moreipsis" data-toggle="tooltip"
+                                                                            data-placement="bottom"
+                                                                            title="{{contacts?.createdName}}">
+                                                                            <span translate> Created By
+                                                                                <strong>{{contacts?.creatorName}}</strong></span>
+                                                                        </h6>
+                                                                        <ng-container *ngIf="!contacts?.partnerList">
+                                                                            <div style="display: inline-flex;">
+                                                                                <h6 class="view-banner" translate>
+                                                                                    <span *ngIf="contacts?.publicList"
+                                                                                        data-toggle="tooltip"
+                                                                                        data-placement="top"
+                                                                                        data-toggle="tooltip"
+                                                                                        data-placement="bottom"
+                                                                                        title="{{actionsDescription?.contact_list_public}}"
+                                                                                        translate>Public
+                                                                                    </span>
+                                                                                    <span *ngIf="!contacts?.publicList"
+                                                                                        data-toggle="tooltip"
+                                                                                        data-placement="top"
+                                                                                        data-toggle="tooltip"
+                                                                                        data-placement="bottom"
+                                                                                        title="{{actionsDescription?.contact_list_private}}"
+                                                                                        translate>Private
+                                                                                    </span>
+                                                                                </h6>
+                                                                                <h6 *ngIf="contacts?.formList"
+                                                                                    class="view-banner view-banner-green"
+                                                                                    translate>
+                                                                                    <span data-toggle="tooltip"
+                                                                                        data-placement="top"
+                                                                                        data-toggle="tooltip"
+                                                                                        data-placement="bottom"
+                                                                                        title="This list is associated with a form."
+                                                                                        translate>Form Contact List
+                                                                                    </span>
+                                                                                </h6>
+                                                                                <h6 *ngIf="contacts?.companyList"
+                                                                                    class="view-banner view-banner-green"
+                                                                                    translate>
+                                                                                    <span data-toggle="tooltip"
+                                                                                        data-placement="top"
+                                                                                        data-toggle="tooltip"
+                                                                                        data-placement="bottom"
+                                                                                        title="This list is associated with a company."
+                                                                                        translate>Company Contact List
+                                                                                    </span>
+                                                                                </h6>
+                                                                            </div>
+                                                                        </ng-container>
+                                                                    </td>
+                                                                    <td class="text-center" *ngIf="showContactType">
+                                                                        <div>
+                                                                            <span
+                                                                                (mouseover)='showContactsAlert(contacts.count)'
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="bottom"
+                                                                                [attr.title]="emptyContactsMessage">
+                                                                                <ng-container
+                                                                                    *ngIf="contacts?.listType=='Partners'">
+                                                                                    {{authenticationService?.partnerModule?.customName}}
+                                                                                </ng-container>
+                                                                                <ng-container
+                                                                                    *ngIf="contacts?.listType!='Partners'">
+                                                                                    {{contacts?.listType}}
+                                                                                </ng-container>
+                                                                            </span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="text-center sorting_1">
+                                                                        <app-display-date-and-time
+                                                                            [dateAndTimeUTCString]="contacts?.createdTimeInString"></app-display-date-and-time>
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{contacts?.count}}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <a class="custom-grid-icon"
+                                                                            data-toggle="tooltip"
+                                                                            data-placement="bottom" title="Preview"
+                                                                            data-original-title="Preview"
+                                                                            (click)="$event.stopPropagation();previewUsers(contacts)">
+                                                                            <i class="fa fa-eye IconCustomization campaignViewIcon"
+                                                                                aria-hidden="true"></i>
+                                                                            <div class="clickicons"></div>
+                                                                        </a>
+                                                                        <!-- style="color: #008fd5;padding-top: 3px; font-size: 20px;" -->
+                                                                    </td>
+                                                                </tr>
+                                                                <tr role="row" *ngIf="contacts?.expand">
+                                                                    <td colspan="12">
+                                                                        <app-userlist-users
+                                                                            [searchKey]="campaignRecipientsPagination.searchKey"
+                                                                            [userListId]="contacts.id"></app-userlist-users>
+                                                                    </td>
+                                                                </tr>
+                                                            </ng-container>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
-                                         </div>
                                         </div>
                                     </div>
                                 </div>
