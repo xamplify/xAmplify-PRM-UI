@@ -1153,7 +1153,7 @@ input#copy-link {
 .feature-img {
   background: #2c2f33 !important;
   box-shadow: 6.223021507263184px 6.223021507263184px 15.669065px 0 #000,
-    10.776978px 10.776978px 20.669065px 0 #181b20 !important;
+    10.776978px 10.776978px 20.669065px 0 #181b20;
 }
 /* .btn-primary {
   background: #2c2f33 !important;
@@ -1956,16 +1956,11 @@ i.IconCustomization{
   color: #fff !important;
 }
 /* i.IconCustomization, */
-.setting-icon-cu {
-  border: none !important;
-  color: #fff !important;
-  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
-}
+.setting-icon-cu,
 .gridIconCustomization a {
   border: none !important;
   color: #fff !important;
-  box-shadow: none !important;
-  background: #2c2f33 !important;
+  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
 i.IconCustomization :hover,
 .setting-icon-cu:hover {
@@ -1987,7 +1982,7 @@ i.fa.fa-trash-o.trashIconCustomization,
 .gridIconCustomization a.delete {
   border: none;
   color: #cb5a5e !important;
-  box-shadow: none !important;
+  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
 i.fa.fa-trash-o.trashIconCustomization:hover {
   border: none;
@@ -1995,11 +1990,12 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   /* box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important; */
 }
 .gridIconCustomization a.Iconhover:hover {
-  box-shadow: none !important;
+  box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  background-color: #22313a !important;
 }
 .gridIconCustomization a.delete:hover {
   border: none;
-  box-shadow: none !important;
+  box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
   background-color: #22313a !important;
 }
 .table-eye-circle:hover {
@@ -2301,7 +2297,8 @@ left-menu-color ul li a,
 .barview,
 .gridIconCustomization,
 .vanity_cards_blue {
-  color:#fff !important
+  /* box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
+  box-shadow: inset 1px 2px 11px #000, inset -3px -1px 7px #3b4451 !important;
 }
 .table tbody tr:hover {
   background-color: #23272c !important;
@@ -3912,38 +3909,60 @@ table.table.table-bordered {
 .carousel-btn{
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
+/**** Sudha Sri(27-2-2024)****/
+.highlightRow, .highlightRow:hover{
+  background-color: #23272c !important;
+}
+/* vantity banner btn */
+.carousel-btn{
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
 /**** Sudha Sri(5-3-2024)****/
 .mrg_rgt5{
   margin-right: 5px !important;
 }
 .gridViewImgBg{
-  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
+  /* background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
   box-shadow: inset 2px 2px 5px #0c86cc,inset -3px -3px 7px #06beb8!important;
   border-top-left-radius: 15px !important;
-  border-top-right-radius: 15px !important;
+  border-top-right-radius: 15px !important; */
+  background-position: 100%;
+  background-color: #b8def1;
+  padding: 15px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
-@media only screen and (min-width: 992px){
+/* @media only screen and (min-width: 992px){
   .grid-box{
     border-radius: 15px !important;
     border: 1px solid #0b8dc969 !important;
   }
-}
-.bar.gridIconCustomization,
+} */
+/* .bar.gridIconCustomization,
 img.email-template-preview{
   border-bottom-left-radius: 15px !important;
   border-bottom-right-radius: 15px !important;
-}
+} */
 /**** Sudha Sri(6-3-2024)****/
 .grid-box img{
   border-top-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
 }
 .img1{
-  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
+  background: #34495a;
+  text-align: center;
+  border-radius: 10px 10px 0 0;
+  background-image: linear-gradient(30deg, #34495a 50%, transparent 0) !important;
+  background-size: 1090px;
+  background-repeat: no-repeat;
+  background-position: 0;
+  transition: background .3s ease-in-out;
 }
-.img1:hover {
+/* .img1:hover {
   background: linear-gradient(358deg, #06beb8, #0c86cc) !important;
-}
+} */
 /***** Sudha Sri(12-3-2024) *****/
 a i.fa.fa-trash-o.trashIconCustomization{
   box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;

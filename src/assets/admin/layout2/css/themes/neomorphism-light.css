@@ -1,3 +1,4 @@
+
 /***** colors class ******/
 .white-co,
 .profile-details b,
@@ -703,7 +704,7 @@ select {
   border: 1px solid #191b1e !important;
 }
 .design-bgcolor {
-  background-color: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  background-color: #fff !important;
   border: 1px solid #ececec !important;
 }
 .edit-field-prefix {
@@ -1632,8 +1633,7 @@ div#removeborder {
   transition: all 0.1s ease;
 }
 .help-iconbgadd i:hover,
-button.group-name-cclass.btn-primary.default-btn-cursor.white-co,
-.mix-filter li.emailtemplate-selected {
+button.group-name-cclass.btn-primary.default-btn-cursor.white-co {
   color: #fff !important;
 } /* end */
 .help-iconbgadd {
@@ -1887,7 +1887,7 @@ i.IconCustomization{
 .gridIconCustomization a {
   border: none !important;
   color: #000 !important;
-  box-shadow: none !important;
+  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
   background: #f0f5fa;
 }
 .setting-icon-cu:hover {
@@ -1901,16 +1901,11 @@ i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover {
   background: #22313a !important;
   line-height: 17px !important;
 }
-i.fa.fa-trash-o.trashIconCustomization{
-  border: none;
-  color: #cb5a5e !important;
-  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
-}
+i.fa.fa-trash-o.trashIconCustomization,
 .gridIconCustomization a.delete {
   border: none;
   color: #cb5a5e !important;
-  box-shadow: none !important;
-  background: #f0f5fa;
+  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
 }
 i.fa.fa-trash-o.trashIconCustomization:hover {
   border: none;
@@ -1919,7 +1914,6 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .gridIconCustomization a.Iconhover:hover {
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
   background: linear-gradient(225deg, #d8dde1, #ffffff);
-  color: #fff !important;
 }
 .gridIconCustomization a.delete:hover {
   border: none;
@@ -2133,8 +2127,8 @@ i.fa.fa-expand.fa-fa-consistency.IconCustomization {
 }
 .grid-box {
   background: linear-gradient(225deg, #d8dde1, #ffffff);
+  border: 1px solid #d0d5db!important;
   border-radius: 10px !important;
-  border: 1px solid #d0d5db !important;
 }
 .pricing-head h4#image-style {
   background-color: #2c2f33 !important;
@@ -2725,31 +2719,15 @@ i.fa.fa-history:hover,
 i.fa.fa-reply:hover,
 i.fa.fa-inbox:hover,
 i.fa.fa-envelope-o:hover,
-i.fa.fa-rocket:hover,
-i.fa.fa-share:hover,
-i.fa.fa-bell-slash-o:hover,
-i.fa.fa-envelope:hover,
-i.fa.fa-line-chart:hover,
-i.fa.fa-refresh:hover,
-i.fa.fa-eye:hover,
-i.fa.fa-download:hover,
-i.fa.fa-info:hover,
-span#download-drop:hover,
-i.fa.fa-user-o:hover,
-i.fa.fa-sign-in:hover,
-i.fa.fa-clipboard:hover,
-i.fa.fa-wpforms:hover,
-i.fa.fa-paint-brush:hover,
-i.fa.fa-handshake-o:hover,
-i.fa.fa-copy:hover{
+i.fa.fa-rocket:hover{
   background-color: unset !important;
   z-index: 999;
   position: relative;
-  color: #fff !important;
-}
-/* i.fa.fa-download:hover{
   color: #000 !important;
-} */
+}
+i.fa.fa-download:hover{
+  color: #000 !important;
+}
 .actions_width{
 width:inherit!important;
 }
@@ -2767,7 +2745,7 @@ a.delete.custom-icon {
 }
 /* manikanta */
 a.delete.custom-icon:hover {
-  color: #fff !important;
+  color: #000 !important;
   z-index: 99;
   position: relative;
 }
@@ -4118,33 +4096,41 @@ table.table.table-bordered {
 .highlightRow, .highlightRow:hover{
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
 }
+
 /**** Sudha Sri(5-3-2024)****/
-.img1:hover{
+/* .img1:hover{
   background-position: 100% !important;
   background-color: #b8def1 !important;
   transition-duration: 500ms !important;
-}
+} */
 .mrg_rgt5{
   margin-right: 5px !important;
 }
 .gridViewImgBg{
-  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
+  /* background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
   box-shadow: inset 2px 2px 5px #0c86cc,inset -3px -3px 7px #06beb8!important;
   border-top-left-radius: 15px !important;
-  border-top-right-radius: 15px !important;
+  border-top-right-radius: 15px !important; */
+  background-position: 100%;
+  background-color: #b8def1;
+  padding: 15px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
-@media only screen and (min-width: 992px){
+/* @media only screen and (min-width: 992px){
   .grid-box{
     border-radius: 15px !important;
     border: 1px solid #0b8dc969 !important;
   }
-}
-.bar.gridIconCustomization,
+} */
+/* .bar.gridIconCustomization,
 img.email-template-preview{
   border-bottom-left-radius: 15px !important;
   border-bottom-right-radius: 15px !important;
   box-shadow: none !important;
-}
+} */
 /**** Sudha Sri(6-3-2024)****/
 .grid-box img{
   border-top-left-radius: 15px !important;
@@ -4153,12 +4139,12 @@ img.email-template-preview{
 .grid-box.zero-margin{
   border: 1px solid #d0d5db !important;
 }
-.img1{
+/* .img1{
   background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
 }
 .img1:hover {
   background: linear-gradient(358deg, #06beb8, #0c86cc) !important;
-}
+} */
 /**** Sudha Sri(11-3-2024)****/
 .page-sidebar .page-sidebar-menu > li > a > i.fa.fa-paint-brush:hover, .page-sidebar .page-sidebar-menu > li > a >i.fa.fa-bullhorn {
   color: #5a738e !important;
@@ -4167,4 +4153,20 @@ img.email-template-preview{
 i.fa.IconCustomization.fa-minus:hover,
 i.fa.fa-exchange.mDisableColor.IconCustomization:hover{
   color:#fff !important;
+}
+/**** Sudha Sri(14-3-2024)****/
+.img-grid-track {
+  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+}
+.bar.hover-bar{
+  border-bottom-right-radius: 15px !important;
+  border-bottom-left-radius: 15px !important;
+}
+span.icon-alignments{
+  top: 5px !important;
+  right: 7px !important;
+}
+input.radio-custimization{
+  margin: 3px 3px !important;
 }

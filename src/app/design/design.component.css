@@ -14,11 +14,16 @@ h5 {
   font-weight: 400 !important;
 }
 .img-responsive {
+  /* padding-top: 30px;
+  padding-bottom: 30px;
+  display: block;
+  max-width: 64px;
+  height: auto; */
   padding-top: 15px;
-  padding-bottom: 15px;
   display: block;
   max-width: 112px;
   height: auto;
+  padding-bottom: 15px;
 }
 .hover-effect:hover {
   border: 1px solid #4eafd6;
