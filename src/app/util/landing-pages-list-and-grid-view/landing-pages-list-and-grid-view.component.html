@@ -392,7 +392,7 @@
 
     <!--Analytics-->
     <ng-template #analyticsIcon let-landingPage="landingPage">
-        <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
+        <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE') ">
             <a class="Iconhover custom-grid-icon" *ngIf="landingPage.analyticsCount<=0" data-rel="fancybox-button" id="cursor-not-allowed" data-toggle="tooltip"
                 data-placement="top" title="Analytics">
                 <i class="fa fa-line-chart" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" aria-hidden="true"></i>
