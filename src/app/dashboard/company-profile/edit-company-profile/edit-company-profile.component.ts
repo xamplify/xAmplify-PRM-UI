@@ -380,7 +380,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 this.setVendorLogoTooltipText();
             }
         }
-        this.getAllCompanyNames();
+       // this.getAllCompanyNames();
         this.getAllCompanyProfileNames();
         if(!this.companyLogoImageUrlPath){
           this.squareData = {};
@@ -609,6 +609,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.companyProfileService.save(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
+                    if(data.statusCode==400){
+                       this.companyNameErrorMessage = "";
+                       this.setCompanyNameError("This company name is already added");
+                        this.ngxloading = false;
+                        this.processor.remove(this.processor);
+                    }else{
 						this.authenticationService.leftSideMenuLoader = true;
                         this.isUpdateChaged = true;
                         this.message = data.message;
@@ -656,7 +662,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             self.homeComponent.getTeamMembersDetails();
 							
                         }, 3000);
-                    },
+                    }
+                  },
                     error => { this.ngxloading = false;
                           this.logger.errorPage(error) },
                     () => {
@@ -1864,16 +1871,15 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.companyProfileService.getPartnerDetails().subscribe(
                 (result: any) => {
                  this.companyProfile.isAdd = true;
-                this.companyProfile.companyName  = result.companyName;
-   						  this.companyProfile.street = result.street;
-    					  this.companyProfile.city = result.city;
-    					  this.companyProfile.state = result.state;
-    					  this.companyProfile.country = result.country;
-    					  this.companyProfile.zip = result.zip;
-
-    					  this.companyProfile.companyNameStatus = result.companyNameStatus;
-    					  this.existingCompanyName = result.companyName;
-
+                 this.companyProfile.companyName  = result.data.companyName;
+   				 this.companyProfile.street = result.data.street;
+    			 this.companyProfile.city = result.data.city;
+    			 this.companyProfile.state = result.data.state;
+    			 this.companyProfile.country = result.data.country;
+    			 this.companyProfile.zip = result.data.zip;
+    			 this.companyProfile.companyNameStatus = result.data.companyNameStatus;
+    			 this.existingCompanyName = result.data.companyName;
+                 this.companyProfile.addedAdminCompanyId = result.data.addedAdminCompanyId
                 }, (error: any) => {
                   console.log(error);
                 }

@@ -236,12 +236,15 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         
     }
 
-    contactCompanyChecking( event:any ) {
-        if ((this.checkingContactTypeName == 'Contact' ) 
-        ||  (this.isPartner && (this.addContactuser.contactCompany != null 
-        || this.addContactuser.contactCompany != null))) {
+contactCompanyChecking( event:any ) {
+        if (this.checkingContactTypeName == 'Contact' ) 
+        {
             this.isCompanyDetails = true;
-        } else {
+        } else if  (this.isPartner && (this.addContactuser.contactCompany != null 
+             && this.addContactuser.contactCompany !='' && this.addContactuser.contactCompany.trim().length>0 )){
+                this.isCompanyDetails = true;
+            }        
+        else {
             this.isCompanyDetails = false;
         }
         this.searchableDropdownEventReceiver(event);
