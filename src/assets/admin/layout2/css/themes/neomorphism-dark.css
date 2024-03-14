@@ -3971,3 +3971,13 @@ button.btn.btn-primary.activate-btn:hover {
   border-radius: 20px 0px 0px 20px !important;
   padding: 11px 30px;
 }
+/* integration-btn */
+.btn-group>button.integration-btn{
+  box-shadow: inset 2px 2px 5px #00b4bf, inset -3px -3px 7px #0095c8 !important;
+}
+/* welcome analytics btns */
+@media screen and (max-width: 600px) {
+  .guides_btn {
+    margin-left: 6px;
+  }
+}

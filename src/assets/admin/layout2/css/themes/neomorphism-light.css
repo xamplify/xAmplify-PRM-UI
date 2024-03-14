@@ -4170,3 +4170,23 @@ span.icon-alignments{
 input.radio-custimization{
   margin: 3px 3px !important;
 }
+/* integration-btn */
+.btn-group>button.integration-btn{
+  border: 1px solid #00abc2 !important;
+}
+.btn-group>button.integration-btn:active:hover{
+  border: 1px solid #00abc2 !important;
+}
+.btn-group>button.ActivatedBtn{
+  border: 1px solid #00abc2 !important;
+}
+.btn-group>button.deactivate-btn{
+  background: #f1f3fa !important;
+  border: 1px solid #d0d5db !important;
+}
+/* welcome analytics btns */
+@media screen and (max-width: 600px) {
+  .guides_btn {
+    margin-left: 6px;
+  }
+}
