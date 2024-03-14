@@ -17,21 +17,28 @@ export class PreviewComponent implements OnInit {
   success = false;
   customResponse:CustomResponse = new CustomResponse();
   loggedInUserCompanyLogo="";
+  isCampaignTemplatePreview = false;
+  campaignId = 0;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties) { }
 
   ngOnInit() {
+    let currentRouterUrl = this.referenceService.getCurrentRouteUrl();
+    this.isCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/ct/")>-1;
     this.referenceService.clearHeadScriptFiles();
     this.processor.set(this.processor);
     this.id = this.route.snapshot.params['id'];
-    if(this.id!=undefined && this.id>0){
+    this.campaignId = this.route.snapshot.params['campaignId'];
+    let isValidId = this.id!=undefined && this.id>0;
+    let isValidCampaignId = this.campaignId!=undefined && this.campaignId>0;
+    if(isValidId ||isValidCampaignId){
       this.getHtmlBody();
     }
   }
 
   getHtmlBody(){
     this.loggedInUserCompanyLogo = this.authenticationService.APP_URL+"/assets/images/company-profile-logo.png";
-    this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(this.id).subscribe(
+    this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(this.id,this.campaignId).subscribe(
       response=>{
         let statusCode = response.statusCode;
         let data = response.data;

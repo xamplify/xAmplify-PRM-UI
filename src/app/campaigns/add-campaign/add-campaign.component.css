@@ -499,6 +499,9 @@ fieldset {
     top: 10px;
     width: 100%;
   }
+  .Launch-btns{
+    margin: 4px 2px !important;
+  }
 }
 #download-drop {
   box-shadow: none;

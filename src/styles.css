@@ -1836,15 +1836,11 @@ h5.view-banner-green.white-labeled-cu1 {
   background: #34495a;
   text-align: center;
   border-radius: 10px 10px 0px 0px;
-  background-image: linear-gradient(
-    30deg,
-    #34495a 50%,
-    transparent 50%
-  ) !important;
+  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;;
   background-size: 1090px;
   background-repeat: no-repeat;
   background-position: 0;
-  transition: background 300ms ease-in-out;
+  /* transition: background 300ms ease-in-out; */
 }
 .d-flex {
   display: flex;
@@ -2692,7 +2688,7 @@ display: inline-flex;
 .gridViewImgBg {
   background-position: 100%;
   background-color: #b8def1;
-  padding: 15px;
+  padding: 24px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 0px;
@@ -2986,4 +2982,32 @@ span.btn.Btn-Green.transition.secondary_btn_width{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+/**** Sudha Sri(5-3-2024)****/
+.gridViewImgBg{
+  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
+@media only screen and (min-width: 992px){
+  .grid-box{
+    border-radius: 15px !important;
+    border: 1px solid #0b8dc969;
+  }
+}
+.bar.gridIconCustomization{
+  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
+}
+/**** Sudha Sri(6-3-2024)****/
+.grid-box img{
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
+.grid-box.zero-margin{
+  border: 1px solid #d0d5db;
+}
+.img1:hover {
+  background: linear-gradient(358deg, #06beb8, #0c86cc) !important;
 }
