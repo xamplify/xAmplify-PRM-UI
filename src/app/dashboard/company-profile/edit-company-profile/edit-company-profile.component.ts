@@ -714,6 +714,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
+                     if(data.statusCode==400){
+                       this.companyNameErrorMessage = "";
+                       this.setCompanyNameError("This company name is already added");
+                        this.ngxloading = false;
+                        this.processor.remove(this.processor);
+                    }else{
                         this.message = data.message;
                         if(this.message ==='Company Profile Info Updated Successfully'){
                           this.message = 'Company Profile updated successfully'
@@ -735,6 +741,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         currentUser['logedInCustomerCompanyNeme'] = this.companyProfile.companyName;
                         localStorage.setItem('currentUser',JSON.stringify(currentUser));
                         setTimeout(function () { $("#edit-sucess").slideUp(500); }, 5000);
+                        }
                     },
                     error => { this.ngxloading = false;
                         this.logger.errorPage(error) },
