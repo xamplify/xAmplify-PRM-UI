@@ -129,8 +129,10 @@ h3 {
   padding-top: 10px;
 }
 .imageClassCss {
+  /* width: 48px;
+  margin: 0px; */
   width: 60px;
-  margin: 0px;
+  margin: 0;
 }
 .disabled {
   pointer-events: none;
@@ -384,4 +386,9 @@ h6 {
 }
 .filter-content {
   overflow: initial;
+}
+.connectwise_image_size{
+  width: 95px;
+  margin: 0px;
+  height: 100%;
 }

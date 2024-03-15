@@ -19,6 +19,9 @@ export class VendorJourneyComponent implements OnInit {
 	vendorJourney:boolean = false;
 	isLandingPages:boolean = false;
   @Input() moduleType: string = "";
+
+  selectedLandingPageId:any;
+  isViewAnalytics:boolean = false;
   constructor(public landingPageService: LandingPageService) { }
 
   ngOnInit() {
@@ -43,6 +46,7 @@ export class VendorJourneyComponent implements OnInit {
     this.mergeTagsInput['page'] = false;
     this.vendorJourney = false;
     this.isLandingPages = false;
+    this.isViewAnalytics = false;
   }
   
   checkOrUncheckOpenLinksInNewTabOption(){
@@ -56,4 +60,8 @@ export class VendorJourneyComponent implements OnInit {
     }
   }
 
+  viewAnalytics(event){
+    this.selectedLandingPageId = event;
+    this.isViewAnalytics = true;
+  }
 }

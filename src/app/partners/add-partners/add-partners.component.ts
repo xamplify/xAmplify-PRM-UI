@@ -601,7 +601,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				}
 				if (this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7
 					&& this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9 && this.selectedAddPartnerOption !=10 && this.selectedAddPartnerOption !=11 && this.selectedAddPartnerOption !=12) {
-					if (this.newPartnerUser[i].contactCompany.trim() != '') {
+					if (this.newPartnerUser[i].contactCompany.replace(/[^a-zA-Z0-9]/g,'').trim() != '') {
 						this.isCompanyDetails = true;
 					} else {
 						this.isCompanyDetails = false;

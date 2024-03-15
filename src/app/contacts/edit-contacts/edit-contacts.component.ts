@@ -1757,7 +1757,28 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				if (this.selectedAddContactsOption == 0) {
 					this.getContactsLimit();
 				} else {
-					this.validatePartnersCompany();
+				if(this.isPartner){
+                        for (var i = 0; i <= this.users.length - 1; i++) {
+                        if(
+                            this.users[i].contactCompany != null
+                        && this.users[i].contactCompany.replace(/[^a-zA-Z0-9]/g,'').trim()!= '' && 
+                        this.users[i].contactCompany.trim().length > 0
+                        ){
+                            this.isCompanyDetails = true;
+        
+                        }else{
+                            this.isCompanyDetails = false;
+                            break;
+                        }
+                     }
+                    }
+                    
+                    if(this.isCompanyDetails){
+                        this.validatePartnersCompany();
+                    }else{
+                        this.loading = false;
+                        this.customResponse = new CustomResponse('ERROR', 'Company Details is required', true);
+                    }
 				}
 			} else {
 				this.saveData();

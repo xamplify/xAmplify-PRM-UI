@@ -216,23 +216,21 @@
                   </div>
                   <!-- ****************Email template info**************** -->
                   <div class="pl10 pr10 col-xs-12 tiles_hover_effect" [ngClass]="{
-  'col-sm-3': campaignType === 'VIDEO',
-  'col-sm-4':
-  campaignType === 'REGULAR' ||
-  campaignType === 'EVENT' ||
-  campaignType === 'SURVEY',
-  forbidden: !isPartnerEnabledAnalyticsAccess ? true : null
-  }" *ngIf="
-  (campaignType === 'VIDEO' ||
-  campaignType === 'REGULAR' ||
-  campaignType === 'EVENT' ||
-  campaignType === 'SURVEY') &&
-  campaign.selectedEmailTemplateId > 0
-  ">
+                     'col-sm-3': campaignType === 'VIDEO',
+                     'col-sm-4':
+                     campaignType === 'REGULAR' ||
+                     campaignType === 'EVENT' ||
+                     campaignType === 'SURVEY',
+                     forbidden: !isPartnerEnabledAnalyticsAccess ? true : null
+                     }" *ngIf="
+                     (campaignType === 'VIDEO' ||
+                     campaignType === 'REGULAR' ||
+                     campaignType === 'EVENT' ||
+                     campaignType === 'SURVEY') &&
+                     campaign.selectedEmailTemplateId > 0
+                     ">
                      <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" style="display: flex"
-                        (click)="showEmailTemplatePreview(campaign.emailTemplate)" [class.disabled]="
-  !isPartnerEnabledAnalyticsAccess ? true : null
-  ">
+                        (click)="openEmailTemplateInNewTab(campaign.emailTemplate)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ? true : null">
                         <div class="visual">
                            <i class="fa fa-envelope-open" aria-hidden="true"></i>
                         </div>
