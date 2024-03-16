@@ -750,7 +750,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.processingPartnersLoader = false;
             this.resetApplyFilter();
 		} else if (errorCount == 0) {
-			this.validatePartnership();
+			$('#assignContactAndMdfPopup').modal('hide');
+					this.showNotifyPartnerOption = false;
+					this.processingPartnersLoader = false;
+                    this.resetApplyFilter();
+					this.savePartners();
 		}
 	}
 

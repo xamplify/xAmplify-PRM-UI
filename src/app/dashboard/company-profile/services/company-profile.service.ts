@@ -147,4 +147,11 @@ export class CompanyProfileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+      validatePartnerCompany(companyProfile: CompanyProfile, partnerCompanyId: number) {
+        return this.http.post(this.URL + "validatePartnerCompany" + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, companyProfile)
+            .map(this.extractData)
+            .catch(this.handleError);
+
+    }
 }

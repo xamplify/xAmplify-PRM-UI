@@ -606,15 +606,17 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             if( this.companyProfile.phone.length < 6){
                 this.companyProfile.phone = "";
             }
-            this.companyProfileService.save(this.companyProfile, this.loggedInUserId)
+            this.validateCompanyName('save');
+        } else {
+            this.ngxloading = false;
+            $('#company-profile-error-div').show(600);
+        }
+    }
+    
+    saveCompanyProfile(){
+    this.companyProfileService.save(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
-                    if(data.statusCode==400){
-                       this.companyNameErrorMessage = "";
-                       this.setCompanyNameError("This company name is already added");
-                        this.ngxloading = false;
-                        this.processor.remove(this.processor);
-                    }else{
 						this.authenticationService.leftSideMenuLoader = true;
                         this.isUpdateChaged = true;
                         this.message = data.message;
@@ -662,7 +664,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             self.homeComponent.getTeamMembersDetails();
 							
                         }, 3000);
-                    }
                   },
                     error => { this.ngxloading = false;
                           this.logger.errorPage(error) },
@@ -670,11 +671,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         this.saveVideoBrandLog();
                         this.logger.info("Completed saveOrUpdate()") }
                 );
-        } else {
-            this.ngxloading = false;
-            $('#company-profile-error-div').show(600);
-        }
     }
+    
 
     validateCompanyLogo() {
         if (this.companyLogoImageUrlPath.length > 0) {
@@ -711,15 +709,17 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 }
              }
 
-            this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
+            this.validateCompanyName('update');
+        } else {
+            this.ngxloading = false;
+            $('#company-profile-error-div').show(600);
+        }
+    }
+    
+    updateCompanyProfile(){
+      this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
-                     if(data.statusCode==400){
-                       this.companyNameErrorMessage = "";
-                       this.setCompanyNameError("This company name is already added");
-                        this.ngxloading = false;
-                        this.processor.remove(this.processor);
-                    }else{
                         this.message = data.message;
                         if(this.message ==='Company Profile Info Updated Successfully'){
                           this.message = 'Company Profile updated successfully'
@@ -741,16 +741,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         currentUser['logedInCustomerCompanyNeme'] = this.companyProfile.companyName;
                         localStorage.setItem('currentUser',JSON.stringify(currentUser));
                         setTimeout(function () { $("#edit-sucess").slideUp(500); }, 5000);
-                        }
                     },
                     error => { this.ngxloading = false;
                         this.logger.errorPage(error) },
                     () => {  this.saveVideoBrandLog();this.logger.info("Completed saveOrUpdate()") }
                 );
-        } else {
-            this.ngxloading = false;
-            $('#company-profile-error-div').show(600);
-        }
     }
 
     checkValidations(){
@@ -1887,6 +1882,27 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     			 this.companyProfile.companyNameStatus = result.data.companyNameStatus;
     			 this.existingCompanyName = result.data.companyName;
                  this.companyProfile.addedAdminCompanyId = result.data.addedAdminCompanyId
+                }, (error: any) => {
+                  console.log(error);
+                }
+            );
+    }
+    
+        validateCompanyName(methodName:string) {
+                this.companyProfileService.validatePartnerCompany(this.companyProfile, this.loggedInUserId).subscribe(
+                (data: any) => {
+                         if(data.statusCode==400){
+                       this.companyNameErrorMessage = "";
+                       this.setCompanyNameError("This company name is already added");
+                        this.ngxloading = false;
+                        this.processor.remove(this.processor);
+                    }else{
+                    if(methodName==='save'){
+                    this.saveCompanyProfile();
+                    }else if(methodName==='update'){
+                    this.updateCompanyProfile();
+                    }
+                    }
                 }, (error: any) => {
                   console.log(error);
                 }
