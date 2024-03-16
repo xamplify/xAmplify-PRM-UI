@@ -248,12 +248,12 @@
                               </a>
                               <br>
                               <div class="d-flex">
-                                 <button class="pull-right btn-sm button_blue bgcolor-unset"
+                                 <button type="button" class="pull-right btn-sm button_blue bgcolor-unset"
                                     (click)="previewEmailTemplate(campaign.emailTemplate)"> <span
                                        class="btn btn-primary transition txt_pd-top3"><i class="fa fa-eye"></i>
                                        Preview</span> </button>
                                  <button *ngIf="campaign?.emailTemplate?.editPartnerTemplate"
-                                    class="pull-right btn-sm button_blue ml-5 bgcolor-unset" style="margin-right: 6px"
+                                    type="button" class="pull-right btn-sm button_blue ml-5 bgcolor-unset" style="margin-right: 6px"
                                     (click)="editPartnerTemplate()"> <span
                                        class="btn btn-primary transition txt_pd-top3"><i class="fa fa-edit"></i> Edit
                                     </span></button>
