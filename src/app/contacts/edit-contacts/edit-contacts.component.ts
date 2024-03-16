@@ -1838,7 +1838,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.processingPartnersLoader = false;
 			this.resetApplyFilter();
 		} else {
-			this.validatePartnership();
+			$('#assignContactAndMdfPopup').modal('hide');
+					this.processingPartnersLoader = false;
+					this.showNotifyPartnerOption = false;
+					this.resetApplyFilter();
+					this.saveData();
 		}
 	}
 
