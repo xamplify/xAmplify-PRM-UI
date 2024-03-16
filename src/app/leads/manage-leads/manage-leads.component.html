@@ -404,7 +404,7 @@
                                   </div>
                                   <div *ngIf="lead?.canRegisterDeal">
                                     <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom"
-                                      title="{{lead?.approvalStatusComment ? (lead?.leadApprovalStatusType !== 'APPROVED' ? 'You can not register a deal for a rejected lead' : '') : 'You can not register a deal for an unapproved lead'}}"
+                                      title="{{lead?.leadApprovalStatusType ? (lead?.leadApprovalStatusType === 'REJECTED' ? 'You can not register a deal for a rejected lead' : '') : 'You can not register a deal for an unapproved lead'}}"
                                       [disabled]="(((lead?.leadApprovalStatusType == 'REJECTED') || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection)))"
                                       (click)="showDealRegistrationForm(lead)" translate>
                                       <span class="btn btn-primary transition d-inline"> Register Deal</span>
