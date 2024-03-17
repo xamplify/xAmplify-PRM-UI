@@ -99,7 +99,7 @@
         <tr>
           <th class="center-aligned" translate>Lead Details</th>
           <th class="center" translate>Added By</th>
-          <th class="center" translate>Status</th>
+          <th class="center" style="text-align:center" translate>Status</th>
           <th style="width: 18%; text-align:center" translate>Actions</th>
         </tr>
 
@@ -108,7 +108,7 @@
       <tbody>
         <ng-container *ngFor='let lead of leadsPagination.pagedItems; let i=index'>
           <tr>
-            <td style="width: 40%;">
+            <td style="width: 36%;">
               <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
               <div style="margin-left: 60px;">
                 <h5 *ngIf="isPartnerVersion"><strong>Added For:</strong>
@@ -141,7 +141,7 @@
               </div>
 
             </td>
-            <td class="mAlignment" style="width: 20%;">
+            <td class="mAlignment" style="width: 23%;">
               <h5 *ngIf="!isPartnerVersion">{{lead.createdByCompanyName | slice:0:30}}
                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
               </h5>
@@ -158,7 +158,7 @@
                 </app-timestamp>
               </h5>
             </td>
-            <td style="width: 10%;">
+            <td style="width: 23%; text-align: center;">
               {{lead.currentStageName | slice:0:30}}
               <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
                 <i class="fa fa-check-circle mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
