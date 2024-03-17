@@ -2128,7 +2128,7 @@ i.fa.fa-expand.fa-fa-consistency.IconCustomization {
 .grid-box {
   background: linear-gradient(225deg, #d8dde1, #ffffff);
   border: 1px solid #d0d5db!important;
-  border-radius: 10px !important;
+  border-radius: 15px !important;
 }
 .pricing-head h4#image-style {
   background-color: #2c2f33 !important;
@@ -4189,4 +4189,7 @@ input.radio-custimization{
   .guides_btn {
     margin-left: 6px;
   }
+}
+.border_none{
+border: none !important;
 }
