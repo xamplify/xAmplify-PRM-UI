@@ -64,7 +64,8 @@ export class SelectLeadComponent implements OnInit {
     if(this.dealToLead.createdForCompanyId > 0){
       this.disableCreatedForVendor = true;
     }
-    this.showLeadForm = true;    
+    this.showLeadForm = true;
+    this.dealToLead.leadActionType = "add";    
   }
   
   closeLeadForm() {
@@ -121,6 +122,7 @@ export class SelectLeadComponent implements OnInit {
 
   searchKeyPress(keyCode: any) {
     if (keyCode === 13) {
+      this.leadId = 0;
       this.search();
     }
   }
