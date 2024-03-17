@@ -2218,7 +2218,7 @@ i.fa.fa-expand.fa-fa-consistency.IconCustomization {
   background-color: #2c2f33 !important;
   border: 1px solid #191b1e !important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
-  border-radius: 10px !important;
+  border-radius: 15px !important;
 }
 .pricing-head h4#image-style {
   background-color: #2c2f33 !important;
@@ -3981,3 +3981,6 @@ button.btn.btn-primary.activate-btn:hover {
     margin-left: 6px;
   }
 }
+.border_none{
+  border: none !important;
+  }

@@ -3019,3 +3019,33 @@ span.btn.Btn-Green.transition.secondary_btn_width{
 /* .img1:hover {
   background: linear-gradient(358deg, #06beb8, #0c86cc) !important;
 } */
+/*  */
+@media only screen and (min-width: 992px){
+.grid-box {
+    border-radius: 15px !important;
+    border: 1px solid #0b8dc969;
+}
+}
+.gridViewImgBg{
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
+input.radio-custimization {
+  margin: 3px 3px !important;
+}
+span.select-check-box{
+  background: none !important;
+  }
+  span.icon-alignments {
+    top: 5px !important;
+    right: 7px !important;
+}
+.bar.gridIconCustomization {
+  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+
+}
+.img-class.DesignGridViewImage {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
