@@ -4606,9 +4606,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				data => {
 					this.leadApprovalStatus = data.data;
 					this.leadApprovalRejectionStatus = data.data;
-					this.isAggreedToDisableLeadApprovalFeature = false;
-					if (!this.leadApprovalStatus) {
-						this.disableSaveChangesButtonForLeadApproval = true;
+					if(this.leadApprovalStatus){
+						this.disableSaveChangesButtonForLeadApproval = false;
+					}else{
+						this.isAggreedToDisableLeadApprovalFeature = true;
+						this.disableSaveChangesButtonForLeadApproval = false;
 					}
 				});
 	}
@@ -4617,7 +4619,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (event) {
 			this.leadApprovalRejectionStatus = true;
 			this.disableSaveChangesButtonForLeadApproval = false;
-			this.isAggreedToDisableLeadApprovalFeature = false;
 		}
 		else {
 			this.leadApprovalRejectionStatus = false;
