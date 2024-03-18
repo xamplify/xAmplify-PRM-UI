@@ -675,7 +675,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 			if (this.isPartner) {
 				for (let i = 0; i < this.users.length; i++) {
-					if (this.users[i].contactCompany.trim() != '') {
+					if (this.users[i].contactCompany && this.users[i].contactCompany.trim() != '') {
 						this.isCompanyDetails = true;
 					} else {
 						this.isCompanyDetails = false;
@@ -893,7 +893,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					this.isCompanyDetails = false;
 					if (this.isPartner) {
 						for (let i = 0; i < this.users.length; i++) {
-							if (this.users[i].contactCompany.trim() != '') {
+							if (this.users[i].contactCompany && this.users[i].contactCompany.trim() != '') {
 								this.isCompanyDetails = true;
 							} else {
 								this.isCompanyDetails = false;
@@ -1613,7 +1613,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.isCompanyDetails = false;
 				if (this.isPartner) {
 					for (let i = 0; i < this.users.length; i++) {
-						if (this.users[i].contactCompany.trim() != '') {
+						if (this.users[i].contactCompany && this.users[i].contactCompany.trim() != '') {
 							this.isCompanyDetails = true;
 						} else {
 							this.isCompanyDetails = false;
@@ -1762,7 +1762,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         if(
                             this.users[i].contactCompany != null
                         && this.users[i].contactCompany.replace(/[^a-zA-Z0-9]/g,'').trim()!= '' && 
-                        this.users[i].contactCompany.trim().length > 0
+                        (this.users[i].contactCompany && this.users[i].contactCompany.trim().length > 0)
                         ){
                             this.isCompanyDetails = true;
         
@@ -3297,7 +3297,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	contactCompanyChecking(contactCompany: string) {
-		if (contactCompany.trim() != '') {
+		if (contactCompany && contactCompany.trim() != '') {
 			this.isCompanyDetails = true;
 		} else {
 			this.isCompanyDetails = false;
