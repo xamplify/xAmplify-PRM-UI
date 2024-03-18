@@ -188,7 +188,7 @@
 
                                         <!-- XNFR-426 -->
                                         <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}"
-                                            *ngIf="!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember)">
+                                            *ngIf="authenticationService?.module?.isAdmin && (!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember))">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadDealApprove'}"
                                                 (click)="activateTab('leadDealApprove');getLeadApprovalstatus();">
                                                 {{properties.leadDealApprove | translate}}</a>
