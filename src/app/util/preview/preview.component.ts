@@ -18,6 +18,7 @@ export class PreviewComponent implements OnInit {
   customResponse:CustomResponse = new CustomResponse();
   loggedInUserCompanyLogo="";
   isCampaignTemplatePreview = false;
+  isSharedCampaignTemplatePreview = false;
   campaignId = 0;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties) { }
@@ -25,6 +26,7 @@ export class PreviewComponent implements OnInit {
   ngOnInit() {
     let currentRouterUrl = this.referenceService.getCurrentRouteUrl();
     this.isCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/ct/")>-1;
+    this.isSharedCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/sct/")>-1;
     this.referenceService.clearHeadScriptFiles();
     this.processor.set(this.processor);
     this.id = this.route.snapshot.params['id'];
@@ -38,7 +40,7 @@ export class PreviewComponent implements OnInit {
 
   getHtmlBody(){
     this.loggedInUserCompanyLogo = this.authenticationService.APP_URL+"/assets/images/company-profile-logo.png";
-    this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(this.id,this.campaignId).subscribe(
+    this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(this.id,this.campaignId,this.isSharedCampaignTemplatePreview).subscribe(
       response=>{
         let statusCode = response.statusCode;
         let data = response.data;

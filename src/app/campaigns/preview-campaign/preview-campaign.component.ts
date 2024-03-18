@@ -1695,7 +1695,8 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
 
 previewEmailTemplateInNewTab(campaign:any){
   if(this.authenticationService.isLocalHost()){
-    this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
+    let campaignId = campaign['campaignType']=='EVENT' ? campaign.id : campaign.campaignId;
+    this.referenceService.previewCampaignEmailTemplateInNewTab(campaignId);
   }else{
     this.getEmailTemplatePreview(campaign);
   }
