@@ -844,7 +844,8 @@ export class ContactService {
     }
 
     validatePartnerCompany(partner: User, partnerCompanyId: number) {
-        return this._http.post(this.contactsUrl + "validatePartnerCompany" + "/" + this.authenticationService.getUserId() + "/" + partnerCompanyId+ "?access_token=" + this.authenticationService.access_token, partner)
+        let isAdd  = false;
+        return this._http.post(this.contactsUrl + "validatePartnerCompany" + "/" + this.authenticationService.getUserId() + "/" + partnerCompanyId+ "/"  + isAdd + "?access_token=" + this.authenticationService.access_token, partner)
             .map(this.extractData)
             .catch(this.handleError);
 
