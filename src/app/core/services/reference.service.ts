@@ -3492,6 +3492,11 @@ previewEmailTemplateInNewTab(id:number){
 previewCampaignEmailTemplateInNewTab(campaignId:number){
   this.openWindowInNewTab("/pv/ct/"+campaignId);
 }
+
+previewSharedVendorCampaignEmailTemplateInNewTab(campaignId:number){
+  this.openWindowInNewTab("/pv/sct/"+campaignId);
+}
+
 previewPageInNewTab(id:number){
   this.openWindowInNewTab("/pv/p/"+id);
 }

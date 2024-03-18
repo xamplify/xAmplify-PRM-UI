@@ -578,12 +578,18 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			}
 			console.log(existedEmails);
 			for (let i = 0; i < this.newPartnerUser.length; i++) {
+			
+			
+                  if(this.newPartnerUser[i].contactCompany){
+                         this.newPartnerUser[i].contactCompany = this.newPartnerUser[i].contactCompany.trim();
+                   }
+
 
 				let userDetails = {
 					"firstName": this.newPartnerUser[i].firstName,
 					"lastName": this.newPartnerUser[i].lastName,
-					"companyName": this.newPartnerUser[i].contactCompany.trim(),
-					"contactCompany": this.newPartnerUser[i].contactCompany.trim()
+					"companyName": this.newPartnerUser[i].contactCompany,
+					"contactCompany": this.newPartnerUser[i].contactCompany
 				}
 
 				if (this.newPartnerUser[i].emailId) {
@@ -2555,7 +2561,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	contactCompanyChecking(contactCompany: string) {
-		if (contactCompany.trim() != '') {
+		if (contactCompany && contactCompany.trim() != '') {
 			this.isCompanyDetails = true;
 		} else {
 			this.isCompanyDetails = false;

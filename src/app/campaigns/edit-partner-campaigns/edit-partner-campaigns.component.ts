@@ -1577,4 +1577,16 @@ appendValueToSubjectLine(event:any){
         this.campaignDescriptionDivClass = trimmedDescription.length>0 ? this.successClass : this.formGroupClass;
     }
 
+    openEmailTemplateInNewTab(campaign:any){
+        if(this.authenticationService.isLocalHost()){
+            if(this.campaign.nurtureCampaign){
+                this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
+            }else{
+                this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
+            }
+        }else{
+            this.previewEmailTemplate(campaign);
+        }
+    }
+
 }
