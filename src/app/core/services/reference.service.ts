@@ -3489,6 +3489,9 @@ clearHeadScriptFiles(){
 previewEmailTemplateInNewTab(id:number){
   this.openWindowInNewTab("/pv/t/"+id);
 }
+previewWorkflowEmailTemplateInNewTab(id:number){
+  this.openWindowInNewTab("/pv/wt/"+id);
+}
 previewCampaignEmailTemplateInNewTab(campaignId:number){
   this.openWindowInNewTab("/pv/ct/"+campaignId);
 }

@@ -1272,13 +1272,14 @@ unpublishLearingTracks(learningTrackIds:any){
   return this.callPostMethod(url,data)
 }
 
-getEmailTemplateHtmlBodyAndMergeTagsInfo(emailTemplateId:number,campaignId:number,isSharedCampaignTemplatePreview:boolean){
+getEmailTemplateHtmlBodyAndMergeTagsInfo(emailTemplateId:number,campaignId:number,isSharedCampaignTemplatePreview:boolean,isWorkflowTemplate:boolean){
   let URL = "";
   if(campaignId!=undefined){
-    let campaignPrefixUrl = isSharedCampaignTemplatePreview ? "vendorCampaignId":"campaignId";
-    URL = this.REST_URL+"email-template/preview/"+campaignPrefixUrl+"/"+campaignId+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
+    let vendorCampaignIdOrCampaignIdParameter = isSharedCampaignTemplatePreview ? "vendorCampaignId":"campaignId";
+    URL = this.REST_URL+"email-template/preview/"+vendorCampaignIdOrCampaignIdParameter+"/"+campaignId+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
   }else{
-    URL = this.REST_URL+"email-template/preview/id/"+emailTemplateId+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
+    let workflowTemplateOrTemplateIdParameter = isWorkflowTemplate ? "workflowTemplateId":"id";
+    URL = this.REST_URL+"email-template/preview/"+workflowTemplateOrTemplateIdParameter+"/"+emailTemplateId+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
   }
   return this.callGetMethod(URL);
 }
