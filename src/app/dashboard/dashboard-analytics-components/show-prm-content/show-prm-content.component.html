@@ -1,137 +1,149 @@
-  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <div *ngIf="authenticationService?.module?.contentLoader">
-    <app-modal-popup-loader></app-modal-popup-loader>
-  </div>
-  <div class="alert alert-info" *ngIf="!authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">
-    <strong>No Modules Found</strong>
-  </div>
-  <div class="row" *ngIf="authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">
-    <div class="col-md-12">
-      <div [className]="hideRowClass ? 'page-bar portlet light mfpx' : 'portlet light'">
-        <div  class="portlet-title">
-          <div class="caption" translate>
-            <i class="fa fa-cogs" aria-hidden="true"></i>
-              <!-- Design  -->
-              Assets
-              <ng-container *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner">
-                ,Track
-              </ng-container>
-              <ng-container *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
-                 and Play Book 
-              </ng-container>
-              Module
-          </div>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div *ngIf="authenticationService?.module?.contentLoader">
+  <app-modal-popup-loader></app-modal-popup-loader>
+</div>
+<div class="alert alert-info"
+  *ngIf="!authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">
+  <strong>No Modules Found</strong>
+</div>
+<div class="row" *ngIf="authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">
+  <div class="col-md-12">
+    <div [className]="hideRowClass ? 'page-bar portlet light mfpx' : 'portlet light'">
+      <div class="portlet-title">
+        <div class="caption" translate>
+          <i class="fa fa-cogs" aria-hidden="true"></i>
+          <!-- Design  -->
+          Assets
+          <ng-container
+            *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner">
+            ,Track
+          </ng-container>
+          <ng-container
+            *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
+            and Play Book
+          </ng-container>
+          Module
         </div>
-        <div class="portlet-body">
-          <div class="row mtop" *ngIf="authenticationService?.user?.hasCompany">
-            <!--------DAM------------->
-            <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"  [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6':
+      </div>
+      <div class="portlet-body">
+        <div class="row mtop" *ngIf="authenticationService?.user?.hasCompany">
+          <!--------DAM------------->
+          <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"
+            [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.prmContentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.prmContentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer card-radius">
-                <div class="portlet-body prm-dark-border">
-                  <div class="img1">
-                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/asset-library.png">
-                  </div>
-                  <div>
-                    <h4 class="header-text-css" translate>Digital Asset Library</h4>
-                  </div>
-                  <ng-container *ngIf="authenticationService?.module?.damAccess">
+            <div class="portlet light cpad  hover-effect pointer card-radius">
+              <div class="portlet-body prm-dark-border">
+                <div class="img1">
+                  <img alt="Videos" class="pricing-head-img img-responsive mauto"
+                    src="assets/admin/pages/media/works/Grid_View_Icons/Digital_Asset_Library.png">
+                </div>
+                <div>
+                  <h4 class="header-text-css" translate>Digital Asset Library</h4>
+                </div>
+                <ng-container *ngIf="authenticationService?.module?.damAccess">
                   <div class="text row-space">
                     <h5>
                       <a class="prspx" (click)="navigate('dam/select')">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                      <span class="design-name" translate>Design / Upload</span></a>
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        <span class="design-name" translate>Design / Upload</span></a>
                     </h5>
                   </div>
-                  <div class="text row-space" [ngClass]="authenticationService?.module?.damAccessAsPartner?'':'border-none'">
+                  <div class="text row-space"
+                    [ngClass]="authenticationService?.module?.damAccessAsPartner?'':'border-none'">
                     <h5>
                       <a class="prfpx" (click)="navigate('dam/manage')">
-                      <i class="fa fa-list" aria-hidden="true"></i>
-                      <span  class="design-name" translate>Manage My Assets</span></a>
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <span class="design-name" translate>Manage My Assets</span></a>
                     </h5>
                   </div>
                 </ng-container>
-                  <div *ngIf="authenticationService?.module?.damAccessAsPartner" class="text border-none">
-                    <h5>
-                      <a class="prtfpx" (click)="navigate('dam/shared')">
+                <div *ngIf="authenticationService?.module?.damAccessAsPartner" class="text border-none">
+                  <h5>
+                    <a class="prtfpx" (click)="navigate('dam/shared')">
                       <i class="fa fa-list" aria-hidden="true"></i>
-                      <span  class="design-name" translate>Access Shared Assets</span></a>
-                    </h5>
-                  </div>
+                      <span class="design-name" translate>Access Shared Assets</span></a>
+                  </h5>
                 </div>
               </div>
             </div>
-            <!--------Learning Track------------->
-            <div *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"   [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6':
+          </div>
+          <!--------Learning Track------------->
+          <div *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"
+            [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.prmContentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.prmContentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer card-radius">
-                <div class="portlet-body prm-dark-border">
-                  <div class="img1">
-                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/track-builder.png">
-                  </div>
-                  <div>
-                    <h4 class="header-text-css" translate>Track Builder</h4>
-                  </div>
-                  <ng-container *ngIf="authenticationService?.module?.lmsAccess">
-                    <div class="text row-space">
-                      <h5>
-                        <a class="prspx" (click)="navigate('tracks/add')">
+            <div class="portlet light cpad  hover-effect pointer card-radius">
+              <div class="portlet-body prm-dark-border">
+                <div class="img1">
+                  <img alt="Videos" class="pricing-head-img img-responsive mauto"
+                    src="assets/admin/pages/media/works/Grid_View_Icons/Track_Builder.png">
+                </div>
+                <div>
+                  <h4 class="header-text-css" translate>Track Builder</h4>
+                </div>
+                <ng-container *ngIf="authenticationService?.module?.lmsAccess">
+                  <div class="text row-space">
+                    <h5>
+                      <a class="prspx" (click)="navigate('tracks/add')">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         <span class="design-name" translate>Add Tracks</span></a>
-                      </h5>
-                    </div>
-                    <div class="text row-space" [ngClass]="authenticationService?.module?.lmsAccessAsPartner?'':'border-none'">
-                      <h5>
-                        <a class="prfpx" (click)="navigate('tracks/manage')">
-                        <i class="fa fa-list" aria-hidden="true"></i>
-                        <span  class="design-name" translate>Manage Tracks</span></a>
-                      </h5>
-                    </div>
-                  </ng-container>
-                  <div *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="text border-none">
-                    <h5>
-                      <a (click)="navigate('tracks/shared')">
-                      <i class="fa fa-list" aria-hidden="true"></i>
-                      <span  class="design-name" translate>Access Shared Tracks</span></a>
                     </h5>
                   </div>
+                  <div class="text row-space"
+                    [ngClass]="authenticationService?.module?.lmsAccessAsPartner?'':'border-none'">
+                    <h5>
+                      <a class="prfpx" (click)="navigate('tracks/manage')">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <span class="design-name" translate>Manage Tracks</span></a>
+                    </h5>
+                  </div>
+                </ng-container>
+                <div *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="text border-none">
+                  <h5>
+                    <a (click)="navigate('tracks/shared')">
+                      <i class="fa fa-list" aria-hidden="true"></i>
+                      <span class="design-name" translate>Access Shared Tracks</span></a>
+                  </h5>
                 </div>
               </div>
             </div>
-            <!--------Play Books------------->
-            <div *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"  [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6':
+          </div>
+          <!--------Play Books------------->
+          <div
+            *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"
+            [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.prmContentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.prmContentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer card-radius">
-                <div class="portlet-body prm-dark-border">
-                  <div class="img1">
-                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/play-book.png">
-                  </div>
-                  <div>
-                    <h4 class="header-text-css" translate>Play Book</h4>
-                  </div>
-                  <ng-container *ngIf="authenticationService?.module?.playbookAccess">
-                    <div class="text row-space">
-                      <h5>
-                        <a class="prspx" (click)="navigate('playbook/add')">
+            <div class="portlet light cpad  hover-effect pointer card-radius">
+              <div class="portlet-body prm-dark-border">
+                <div class="img1">
+                  <img alt="Videos" class="pricing-head-img img-responsive mauto"
+                    src="assets/admin/pages/media/works/Grid_View_Icons/Play_Book.png">
+                </div>
+                <div>
+                  <h4 class="header-text-css" translate>Play Book</h4>
+                </div>
+                <ng-container *ngIf="authenticationService?.module?.playbookAccess">
+                  <div class="text row-space">
+                    <h5>
+                      <a class="prspx" (click)="navigate('playbook/add')">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         <span class="design-name" translate>Add Play Books</span></a>
-                      </h5>
-                    </div>
-                    <div class="text row-space" [ngClass]="authenticationService?.module?.playbookAccessAsPartner?'':'border-none'">
-                      <h5>
-                        <a class="prfpx" (click)="navigate('playbook/manage')">
-                        <i class="fa fa-list" aria-hidden="true"></i>
-                        <span  class="design-name" translate>Manage Play Books</span></a>
-                      </h5>
-                    </div>
-                  </ng-container>
-                  <div *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="text border-none">
-                    <h5>
-                      <a  (click)="navigate('playbook/shared')">
-                      <i class="fa fa-list" aria-hidden="true"></i>
-                      <span  class="design-name" translate>Access Shared Play Books</span></a>
                     </h5>
                   </div>
+                  <div class="text row-space"
+                    [ngClass]="authenticationService?.module?.playbookAccessAsPartner?'':'border-none'">
+                    <h5>
+                      <a class="prfpx" (click)="navigate('playbook/manage')">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <span class="design-name" translate>Manage Play Books</span></a>
+                    </h5>
+                  </div>
+                </ng-container>
+                <div *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="text border-none">
+                  <h5>
+                    <a (click)="navigate('playbook/shared')">
+                      <i class="fa fa-list" aria-hidden="true"></i>
+                      <span class="design-name" translate>Access Shared Play Books</span></a>
+                  </h5>
                 </div>
               </div>
             </div>
@@ -140,3 +152,4 @@
       </div>
     </div>
   </div>
+</div>
