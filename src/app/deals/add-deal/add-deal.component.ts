@@ -226,25 +226,29 @@ export class AddDealComponent implements OnInit {
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
             self.lead = data.data;
-              self.showContactInfo = true;
-              self.contact.firstName = self.lead.firstName;
-              self.contact.lastName = self.lead.lastName;
-              self.contact.emailId = self.lead.email;
-              self.deal.associatedLeadId = self.lead.id;
+            self.showContactInfo = true;
+            self.contact.firstName = self.lead.firstName;
+            self.contact.lastName = self.lead.lastName;
+            self.contact.emailId = self.lead.email;
+            self.deal.associatedLeadId = self.lead.id;
+            self.deal.associatedUserId = self.lead.associatedUserId;
+            //this.isSalesForceEnabled();
+            if (this.deal.createdForCompanyId == 0 && this.deal.createdForCompanyId != undefined) {
               self.deal.createdForCompanyId = self.lead.createdForCompanyId;
               self.createdForCompanyIdError = false;
-              self.deal.associatedUserId = self.lead.associatedUserId;
-              if (self.lead.campaignId != null && self.lead.campaignId > 0) {
-                self.deal.campaignId = self.lead.campaignId;
-                self.deal.campaignName = self.lead.campaignName;
-                // this.getCampaignDealPipeline();
-              } else {
-                self.deal.campaignId = 0;
-                self.deal.campaignName = '';
-                //self.getPipelines();
-              }
-              //this.isSalesForceEnabled();         
-              this.getActiveCRMDetails();
+              self.getActiveCRMDetails();
+            }
+            if (self.lead.campaignId != null && self.lead.campaignId > 0) {
+              self.deal.campaignId = self.lead.campaignId;
+              self.deal.campaignName = self.lead.campaignName;
+              this.getCampaignDealPipeline();
+              this.resetStages();
+            } else {
+              self.deal.campaignId = 0;
+              self.deal.campaignName = '';
+              this.hasCampaignPipeline = false;
+              //self.getPipelines();
+            }
           }
         },
         error => {
@@ -1162,10 +1166,15 @@ export class AddDealComponent implements OnInit {
     if (this.actionType == 'add' && !this.vanityLoginDto.vanityUrlFilter) {
       this.deal.createdForCompanyId = this.holdCreatedForCompanyId;
       if (this.deal.createdForCompanyId == 0) {
-        this.deal.pipelineId = 0;
+        this.resetPipelines();
+        this.resetStages();
+        this.isDealRegistrationFormValid = false;
       }
       if (this.deal.pipelineId == 0) {
         this.activeCRMDetails.hasDealPipeline = false;
+        this.hasCampaignPipeline = false;
+      }
+      if (this.hasCampaignPipeline) {
         this.hasCampaignPipeline = false;
       }
     }
