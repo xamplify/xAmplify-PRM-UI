@@ -19,16 +19,11 @@ h5 {
 .img-responsive,
 .thumbnail a > img,
 .thumbnail > img {
-  /* padding-top: 30px;
+  padding-top: 30px;
   display: block;
   max-width: 64px;
   height: auto;
-  padding-bottom: 30px; */
-  padding-top: 15px;
-  display: block;
-  max-width: 112px;
-  height: auto;
-  padding-bottom: 15px;
+  padding-bottom: 30px;
 }
 
 .hover-effect:hover {

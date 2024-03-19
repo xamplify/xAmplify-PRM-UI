@@ -129,10 +129,8 @@ h3 {
   padding-top: 10px;
 }
 .imageClassCss {
-  /* width: 48px;
-  margin: 0px; */
-  width: 60px;
-  margin: 0;
+  width: 48px;
+  margin: 0px;
 }
 .disabled {
   pointer-events: none;

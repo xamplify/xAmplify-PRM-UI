@@ -2564,3 +2564,6 @@ table tr:nth-child(odd).highlightRow, table tr:nth-child(odd).highlightRow:hover
 .border-end{
   border-bottom: 1px solid var(--border-color) !important ;
 }
+.write-new button{
+  box-shadow: none !important;
+}
