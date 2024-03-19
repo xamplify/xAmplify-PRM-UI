@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ReferenceService } from 'app/core/services/reference.service';
 
 @Component({
   selector: 'app-halopsa-authentication',
@@ -8,9 +9,10 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 export class HalopsaAuthenticationComponent implements OnInit {
   @Input() loggedInUserId: any;
   @Output() closeEvent = new EventEmitter<any>();
-  constructor() { }
+  constructor(public referenceService: ReferenceService,) { }
 
   ngOnInit() {
+    this.referenceService.goToTop();
   }
   closeForm() {
     console.log("Closed halopsa Auth")
