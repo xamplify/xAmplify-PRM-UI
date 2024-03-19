@@ -1272,14 +1272,8 @@ unpublishLearingTracks(learningTrackIds:any){
   return this.callPostMethod(url,data)
 }
 
-getEmailTemplateHtmlBodyAndMergeTagsInfo(emailTemplateId:number,campaignId:number,isSharedCampaignTemplatePreview:boolean){
-  let URL = "";
-  if(campaignId!=undefined){
-    let campaignPrefixUrl = isSharedCampaignTemplatePreview ? "vendorCampaignId":"campaignId";
-    URL = this.REST_URL+"email-template/preview/"+campaignPrefixUrl+"/"+campaignId+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
-  }else{
-    URL = this.REST_URL+"email-template/preview/id/"+emailTemplateId+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
-  }
+getEmailTemplateHtmlBodyAndMergeTagsInfo(suffixUrl:string){
+  let URL = this.REST_URL+"email-template/preview/"+suffixUrl+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
   return this.callGetMethod(URL);
 }
 

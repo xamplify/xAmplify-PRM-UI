@@ -3489,12 +3489,23 @@ clearHeadScriptFiles(){
 previewEmailTemplateInNewTab(id:number){
   this.openWindowInNewTab("/pv/t/"+id);
 }
+previewWorkflowEmailTemplateInNewTab(id:number){
+  this.openWindowInNewTab("/pv/wt/"+id);
+}
 previewCampaignEmailTemplateInNewTab(campaignId:number){
   this.openWindowInNewTab("/pv/ct/"+campaignId);
 }
 
 previewSharedVendorCampaignEmailTemplateInNewTab(campaignId:number){
   this.openWindowInNewTab("/pv/sct/"+campaignId);
+}
+
+previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number){
+  this.openWindowInNewTab("/pv/scwaret/"+vendorCampaignWorkflowId);
+}
+
+previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWorkflowId:number){
+  this.openWindowInNewTab("/pv/scwarwlt/"+vendorCampaignWorkflowId);
 }
 
 previewPageInNewTab(id:number){

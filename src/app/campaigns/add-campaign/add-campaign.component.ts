@@ -1497,8 +1497,18 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         });
     }
 
-    previewEmailTemplate(emailTemplate:any){
-        this.referenceService.previewEmailTemplateInNewTab(emailTemplate.id);
+    previewEmailTemplate(emailTemplate:any,isAutoResponseTemplate:boolean){
+        if(this.authenticationService.isLocalHost()){
+            if(isAutoResponseTemplate){
+                this.referenceService.previewWorkflowEmailTemplateInNewTab(emailTemplate.id);
+            }else{
+                this.referenceService.previewEmailTemplateInNewTab(emailTemplate.id);
+            }
+        }else{
+            this.selectedEmailTemplateIdForPreview = emailTemplate.id;
+            this.selectedEmailTemplateNameForPreview = emailTemplate.name;
+            this.isPreviewEmailTemplateButtonClicked = true;
+        }
     }
 
     openSendTestEmailModalPopUp(){
