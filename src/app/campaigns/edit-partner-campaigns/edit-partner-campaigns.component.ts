@@ -1585,7 +1585,7 @@ appendValueToSubjectLine(event:any){
                 this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
             }
         }else{
-            this.previewEmailTemplate(campaign);
+            this.previewEmailTemplate(campaign.emailTemplate);
         }
     }
 

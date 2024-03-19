@@ -53,7 +53,7 @@ export class PreviewComponent implements OnInit {
     }else{
       if(this.isVendorCampaignAutoReplyEmailWorkflowId){
         URL_SUFFIX = "vendorCampaignAutoReplyEmailWorkflowId/"+this.id;
-      }else if(this.isVendorCompanyViewingWorkflowTemplate){
+      }else if(this.vendorCampaignAutoReplyWebsiteLinkWorkflowId){
         URL_SUFFIX = "vendorCampaignAutoReplyWebsiteLinkWorkflowId/"+this.id;
       }else{
         URL_SUFFIX = this.isVendorCompanyViewingWorkflowTemplate ? "workflowTemplateId":"id"+"/"+this.id;
