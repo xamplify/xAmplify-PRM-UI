@@ -19,7 +19,9 @@ export class PreviewComponent implements OnInit {
   loggedInUserCompanyLogo="";
   isCampaignTemplatePreview = false;
   isSharedCampaignTemplatePreview = false;
-  isWorkflowTemplate = false;
+  isVendorCompanyViewingWorkflowTemplate = false;
+  isVendorCampaignAutoReplyEmailWorkflowId = false;
+  vendorCampaignAutoReplyWebsiteLinkWorkflowId = false;
   campaignId = 0;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties) { }
@@ -28,7 +30,9 @@ export class PreviewComponent implements OnInit {
     let currentRouterUrl = this.referenceService.getCurrentRouteUrl();
     this.isCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/ct/")>-1;
     this.isSharedCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/sct/")>-1;
-    this.isWorkflowTemplate = currentRouterUrl.indexOf("/pv/wt/")>-1;
+    this.isVendorCompanyViewingWorkflowTemplate = currentRouterUrl.indexOf("/pv/wt/")>-1;
+    this.isVendorCampaignAutoReplyEmailWorkflowId = currentRouterUrl.indexOf("/pv/scwaret")>-1;
+    this.vendorCampaignAutoReplyWebsiteLinkWorkflowId = currentRouterUrl.indexOf("/pv/scwarwlt")>-1;
     this.referenceService.clearHeadScriptFiles();
     this.processor.set(this.processor);
     this.id = this.route.snapshot.params['id'];
@@ -42,7 +46,20 @@ export class PreviewComponent implements OnInit {
 
   getHtmlBody(){
     this.loggedInUserCompanyLogo = this.authenticationService.APP_URL+"/assets/images/company-profile-logo.png";
-    this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(this.id,this.campaignId,this.isSharedCampaignTemplatePreview,this.isWorkflowTemplate).subscribe(
+    let URL_SUFFIX = "";
+    if(this.campaignId!=undefined){
+      let vendorCampaignIdOrCampaignIdParameter = this.isSharedCampaignTemplatePreview ? "vendorCampaignId":"campaignId";
+      URL_SUFFIX = vendorCampaignIdOrCampaignIdParameter+"/"+this.campaignId;
+    }else{
+      if(this.isVendorCampaignAutoReplyEmailWorkflowId){
+        URL_SUFFIX = "vendorCampaignAutoReplyEmailWorkflowId/"+this.id;
+      }else if(this.isVendorCompanyViewingWorkflowTemplate){
+        URL_SUFFIX = "vendorCampaignAutoReplyWebsiteLinkWorkflowId/"+this.id;
+      }else{
+        URL_SUFFIX = this.isVendorCompanyViewingWorkflowTemplate ? "workflowTemplateId":"id"+"/"+this.id;
+      }
+    }
+    this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(URL_SUFFIX).subscribe(
       response=>{
         let statusCode = response.statusCode;
         let data = response.data;

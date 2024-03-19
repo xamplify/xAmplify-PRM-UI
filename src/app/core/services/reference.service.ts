@@ -3500,6 +3500,14 @@ previewSharedVendorCampaignEmailTemplateInNewTab(campaignId:number){
   this.openWindowInNewTab("/pv/sct/"+campaignId);
 }
 
+previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number){
+  this.openWindowInNewTab("/pv/scwaret/"+vendorCampaignWorkflowId);
+}
+
+previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWorkflowId:number){
+  this.openWindowInNewTab("/pv/scwarwlt/"+vendorCampaignWorkflowId);
+}
+
 previewPageInNewTab(id:number){
   this.openWindowInNewTab("/pv/p/"+id);
 }

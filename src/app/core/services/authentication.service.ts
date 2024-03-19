@@ -1272,15 +1272,8 @@ unpublishLearingTracks(learningTrackIds:any){
   return this.callPostMethod(url,data)
 }
 
-getEmailTemplateHtmlBodyAndMergeTagsInfo(emailTemplateId:number,campaignId:number,isSharedCampaignTemplatePreview:boolean,isWorkflowTemplate:boolean){
-  let URL = "";
-  if(campaignId!=undefined){
-    let vendorCampaignIdOrCampaignIdParameter = isSharedCampaignTemplatePreview ? "vendorCampaignId":"campaignId";
-    URL = this.REST_URL+"email-template/preview/"+vendorCampaignIdOrCampaignIdParameter+"/"+campaignId+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
-  }else{
-    let workflowTemplateOrTemplateIdParameter = isWorkflowTemplate ? "workflowTemplateId":"id";
-    URL = this.REST_URL+"email-template/preview/"+workflowTemplateOrTemplateIdParameter+"/"+emailTemplateId+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
-  }
+getEmailTemplateHtmlBodyAndMergeTagsInfo(suffixUrl:string){
+  let URL = this.REST_URL+"email-template/preview/"+suffixUrl+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
   return this.callGetMethod(URL);
 }
 
