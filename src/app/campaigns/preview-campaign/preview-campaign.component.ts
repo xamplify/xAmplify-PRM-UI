@@ -1700,9 +1700,24 @@ previewEmailTemplateInNewTab(campaign:any){
   }else{
     this.getEmailTemplatePreview(campaign);
   }
- 
-  
 }
+
+previewAutoReplyEmailTemplateInNewTab(campaign:any,reply:any){
+  if(this.authenticationService.isLocalHost()){
+    this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+  }else{
+    this.showEmailTemplate(campaign,reply.emailTemplate);
+  }
+}
+
+previewAutoReplyWebsiteLinkTemplateInNewTab(campaign:any,url:any){
+  if(this.authenticationService.isLocalHost()){
+    this.referenceService.previewVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id);
+  }else{
+    this.showEmailTemplate(campaign,url.emailTemplate);
+  }
+}
+
 
 
 }

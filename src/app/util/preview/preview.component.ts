@@ -23,6 +23,8 @@ export class PreviewComponent implements OnInit {
   isVendorCampaignAutoReplyEmailWorkflowId = false;
   vendorCampaignAutoReplyWebsiteLinkWorkflowId = false;
   campaignId = 0;
+  isCampaignAutoReplyEmailWorkflowId: boolean;
+  campaignAutoReplyWebsiteLinkWorkflowId: boolean;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties) { }
 
@@ -32,7 +34,9 @@ export class PreviewComponent implements OnInit {
     this.isSharedCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/sct/")>-1;
     this.isVendorCompanyViewingWorkflowTemplate = currentRouterUrl.indexOf("/pv/wt/")>-1;
     this.isVendorCampaignAutoReplyEmailWorkflowId = currentRouterUrl.indexOf("/pv/scwaret")>-1;
+    this.isCampaignAutoReplyEmailWorkflowId = currentRouterUrl.indexOf("/pv/cwaret")>-1;
     this.vendorCampaignAutoReplyWebsiteLinkWorkflowId = currentRouterUrl.indexOf("/pv/scwarwlt")>-1;
+    this.campaignAutoReplyWebsiteLinkWorkflowId = currentRouterUrl.indexOf("/pv/cwarwlt")>-1;
     this.referenceService.clearHeadScriptFiles();
     this.processor.set(this.processor);
     this.id = this.route.snapshot.params['id'];
@@ -50,14 +54,16 @@ export class PreviewComponent implements OnInit {
     if(this.campaignId!=undefined){
       let vendorCampaignIdOrCampaignIdParameter = this.isSharedCampaignTemplatePreview ? "vendorCampaignId":"campaignId";
       URL_SUFFIX = vendorCampaignIdOrCampaignIdParameter+"/"+this.campaignId;
+    }else if(this.isCampaignAutoReplyEmailWorkflowId){
+      URL_SUFFIX = "campaignAutoReplyEmailWorkflowId/"+this.id;
+    }else if(this.campaignAutoReplyWebsiteLinkWorkflowId){
+      URL_SUFFIX = "campaignAutoReplyWebsiteLinkWorkflowId/"+this.id;
+    }else if(this.isVendorCampaignAutoReplyEmailWorkflowId){
+      URL_SUFFIX = "vendorCampaignAutoReplyEmailWorkflowId/"+this.id;
+    }else if(this.vendorCampaignAutoReplyWebsiteLinkWorkflowId){
+      URL_SUFFIX = "vendorCampaignAutoReplyWebsiteLinkWorkflowId/"+this.id;
     }else{
-      if(this.isVendorCampaignAutoReplyEmailWorkflowId){
-        URL_SUFFIX = "vendorCampaignAutoReplyEmailWorkflowId/"+this.id;
-      }else if(this.vendorCampaignAutoReplyWebsiteLinkWorkflowId){
-        URL_SUFFIX = "vendorCampaignAutoReplyWebsiteLinkWorkflowId/"+this.id;
-      }else{
-        URL_SUFFIX = this.isVendorCompanyViewingWorkflowTemplate ? "workflowTemplateId/"+this.id:"id/"+this.id;
-      }
+      URL_SUFFIX = this.isVendorCompanyViewingWorkflowTemplate ? "workflowTemplateId/"+this.id:"id/"+this.id;
     }
     this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(URL_SUFFIX).subscribe(
       response=>{

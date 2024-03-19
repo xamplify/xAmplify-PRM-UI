@@ -3492,12 +3492,21 @@ previewEmailTemplateInNewTab(id:number){
 previewWorkflowEmailTemplateInNewTab(id:number){
   this.openWindowInNewTab("/pv/wt/"+id);
 }
+
 previewCampaignEmailTemplateInNewTab(campaignId:number){
   this.openWindowInNewTab("/pv/ct/"+campaignId);
 }
 
 previewSharedVendorCampaignEmailTemplateInNewTab(campaignId:number){
   this.openWindowInNewTab("/pv/sct/"+campaignId);
+}
+
+previewSharedCampaignAutoReplyEmailTemplateInNewTab(replyId:number){
+  this.openWindowInNewTab("/pv/cwaret/"+replyId);
+}
+
+previewVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(urlId:number){
+  this.openWindowInNewTab("/pv/cwarwlt/"+urlId);
 }
 
 previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number){
