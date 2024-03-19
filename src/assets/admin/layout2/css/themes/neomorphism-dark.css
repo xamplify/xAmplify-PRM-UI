@@ -1956,11 +1956,17 @@ i.IconCustomization{
   color: #fff !important;
 }
 /* i.IconCustomization, */
-.setting-icon-cu,
-.gridIconCustomization a {
+.setting-icon-cu {
   border: none !important;
   color: #fff !important;
   box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  background-color: #22313a !important;
+}
+.gridIconCustomization a {
+  border: none !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  background-color: #22313a !important;
 }
 i.IconCustomization :hover,
 .setting-icon-cu:hover {
@@ -1978,11 +1984,15 @@ i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover {
   background: #22313a !important;
   line-height: 17px !important;
 }
-i.fa.fa-trash-o.trashIconCustomization,
-.gridIconCustomization a.delete {
+i.fa.fa-trash-o.trashIconCustomization {
   border: none;
   color: #cb5a5e !important;
   box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+}
+.gridIconCustomization a.delete {
+  border: none;
+  color: #cb5a5e !important;
+  box-shadow: none !important;
 }
 i.fa.fa-trash-o.trashIconCustomization:hover {
   border: none;
@@ -3982,8 +3992,9 @@ button.btn.btn-primary.activate-btn:hover {
 .bar.gridIconCustomization {
     box-shadow: none !important;
 }
-a.Iconhover.custom-grid-icon,
-a.delete.custom-icon {
-  box-shadow: none !important;
+/* a.Iconhover.custom-grid-icon{
   background-color: #22313a !important;
 }
+a.delete.custom-icon {
+  box-shadow: none !important;
+} */
