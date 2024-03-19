@@ -691,14 +691,14 @@ select {
 .input-group .input-group-addon {
   color: #000 !important;
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
-  border: 1px solid #d0d5db !important;
-  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+  border: 1px solid #d0d5db;
+  /* box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important; */
 }
 .input-group-addon {
   color: #000 !important;
-  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff);
   border: 1px solid #d0d5db !important;
-  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+  /* box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important; */
 }
 .input-group-addon {
   border: 1px solid #191b1e !important;
@@ -1887,7 +1887,7 @@ i.IconCustomization{
 .gridIconCustomization a {
   border: none !important;
   color: #000 !important;
-  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+  box-shadow: none !important;
   background: #f0f5fa;
 }
 .setting-icon-cu:hover {
@@ -1901,11 +1901,16 @@ i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover {
   background: #22313a !important;
   line-height: 17px !important;
 }
-i.fa.fa-trash-o.trashIconCustomization,
-.gridIconCustomization a.delete {
+i.fa.fa-trash-o.trashIconCustomization{
   border: none;
   color: #cb5a5e !important;
   box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+}
+.gridIconCustomization a.delete {
+  border: none;
+  color: #cb5a5e !important;
+  /* box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important; */
+  background: #f0f5fa;
 }
 i.fa.fa-trash-o.trashIconCustomization:hover {
   border: none;
@@ -4194,8 +4199,8 @@ border: none !important;
 .bar.gridIconCustomization {
   box-shadow: none !important;
 }
-a.Iconhover.custom-grid-icon,
+/* a.Iconhover.custom-grid-icon,
 a.delete.custom-icon{
 box-shadow: none !important;
 background-color: #f0f5fa;
-}
+} */
