@@ -4,8 +4,8 @@ export class Properties {
 	/*App Info*/
 	COMPANY_LOGO = 'assets/images/xamplify-logo.png';
 	FULL_YEAR = new Date().getFullYear();
-	COPY_RIGHT_PREFIX = '&copy; '+this.FULL_YEAR;
-	BOTTOM_MESSAGE = this.COPY_RIGHT_PREFIX+' xAmplify. All rights reserved.'
+	COPY_RIGHT_PREFIX = '&copy; ' + this.FULL_YEAR;
+	BOTTOM_MESSAGE = this.COPY_RIGHT_PREFIX + ' xAmplify. All rights reserved.'
 	APP_WEBSITE = 'xAmplify';
 	APP_WELCOME_MESSAGE = 'Welcome to xAmplify';
 	APP_Xamplify_URL = "https://xamplify.io";
@@ -31,9 +31,9 @@ export class Properties {
 	CONTACT_LIST_SYNCHRONIZATION_SUCCESS = "Your contact list has been synchronized successfully.";
 	CONTACT_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Contact List.";
 	MARKETO_CONTACT_LIST_SYNCHRONIZATION_SUCCESS = "Synchronization initiated successfully. It might take few minutes.";
-	
+
 	LEAD_LIST_SYNCHRONIZATION_SUCCESS = "Your lead list has been synchronized successfully.";
-    LEAD_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Lead List.";
+	LEAD_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Lead List.";
 
 	CONTACTS_CREATE_SUCCESS = "Your contacts list have been created successfully.";
 	CONTACTS_CREATE_ERROR = "An error occured while creating your Contacts";
@@ -107,7 +107,7 @@ export class Properties {
 	USER_ACCOUNT_DOESNOT_EXIST = "The email address that you've entered doesn't match any account. Sign for an account.";
 	/*****XNFR-334 *****/
 	RESEND_ACTIVATION_MAIL = 'Please check your inbox for the account activation email.';
-	USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated."+this.RESEND_ACTIVATION_MAIL;
+	USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated." + this.RESEND_ACTIVATION_MAIL;
 	ACCOUNT_SUSPENDED = "This account has been suspended.Please contact admin.";
 	/*****XNFR-334 *****/
 	EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
@@ -172,7 +172,7 @@ export class Properties {
 	samlSettings = "Allbound SAML Settings";
 	leadPipelines = "Lead Pipelines";
 	dealPipelines = "Deal Pipelines";
-	
+
 	/************XNFR-426**********/
 	leadDealApprove = "Lead Approval/Rejection";
 	tags = "Tags";
@@ -224,23 +224,34 @@ export class Properties {
 	connectwiseImage: string = 'assets/admin/pages/media/works/connectwise-contacts.png';
 	companyListImage: string = 'assets/admin/pages/media/works/company.png';
 
+	connectwiseGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/connectwise-contacts.png';
+	pipedriveGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/pipedrive.png'
+	marketoGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Marketo_Logo.png'
+	updated_Manual_Image: string = 'assets/admin/pages/media/works/Grid_View_Icons/Manual_Contacts.png';
+	hubspotGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Hubspot.png';
+	googleGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Google_Contacts.png';
+	zohoGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/ZOHO.png';
+	salesforceGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Salesforce.png';
+	microsoftGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Microsoft.png';
+
+
 	teamMemberGroups = 'Team Member Groups';
 
 	activeMasterPartnerList = 'Active Master Partner List';
-	inActiveMasterPartnerList= 'Inactive Master Partner List';
+	inActiveMasterPartnerList = 'Inactive Master Partner List';
 
 	sandboxText = "The xAmplify Sandbox instance is ideal for safely designing, loading, updating, and testing all modules of the platform. The xAmplify Sandbox instance type can be used only for testing or user acceptance testing.";
 	oneClickLaunch = "One-Click Launch";
 	/*****Privacy Policy,Cookies,Terms and conidtions urls */
 	privacyPolicyUrl = "https://xamplify.com/privacy-policy-2/";
 	cookiesPolicyUrl = "https://xamplify.com/cookies-policy/";
-	termsOfServiceUrl ="https://xamplify.com/terms-of-uses/";
+	termsOfServiceUrl = "https://xamplify.com/terms-of-uses/";
 	subProcessorsUrl = "https://www.xamplify.com/subprocessors/";
 	gdprUrl = "https://gdpr-info.eu/";
 	ccpaUrl = "https://www.caprivacy.org/";
 
 	/***One-Click Launch Error Messages */
-	emptyShareListErrorMessage =  "Edit campaign is no longer available because the vendor deleted the shared list (or) no list associated with this campaign";
+	emptyShareListErrorMessage = "Edit campaign is no longer available because the vendor deleted the shared list (or) no list associated with this campaign";
 	oneClickLaunchRedistributeAccessRemovedErrorMessage = "Edit campaign is no longer available because the vendor deleted the shared list (or) no list associated with this campaign";
 	oneClickLaunchAccessErrorMessage = "Edit Campaign is not available because your account no longer has One-Click Launch access";
 	oneClickLaunchCampaignExpiredMessage = "Because the campaign has expired, it cannot be redistributed";
@@ -251,7 +262,7 @@ export class Properties {
 	partnerTeamMemberGroupSelectionSweetAlertMessage = "The selected Team Member Group will be applied and saved to all rows.";
 	/***XNFR-128***/
 	downloadRequestNotificationMessage = "We are processing your download request.We will send an email once it is completed.";
-	
+
 	/****XNFR-83****/
 	agencies = "Agencies";
 	agency = "Agency";
@@ -286,7 +297,7 @@ export class Properties {
 	campaignVideoEmailsFilter = "CampaignVideoEmails";
 	campaignSurveyEmailsFilter = "CampaignSurveyEmails";
 	sendTestEmail = "Send Test Email";
-	
+
 	/***24/07/2023******/
 	playbackRates = [0.5, 1, 1.5, 2];
 
@@ -302,20 +313,20 @@ export class Properties {
 	/***XNFR-386****/
 	customLoginScreen = "Custom Login Screen Settings";
 
-	loginScreenDirectionOptions = ["Center","Left","Right"];
+	loginScreenDirectionOptions = ["Center", "Left", "Right"];
 
 	vendorLogoTooltipText = "<b> On </b> - Your company logo will appear on the partner(s) account. <br/>"
-	+ "<b> Off </b> -  Your partner(s) logo will remain unchanged. <br/>" + "<b>*This setting does not affect co-branding.</b>";
+		+ "<b> Off </b> -  Your partner(s) logo will remain unchanged. <br/>" + "<b>*This setting does not affect co-branding.</b>";
 
 	/***XNFR-386****/
 	/**** XNFR-233 **** */
-	loginFormPosition = ["Left","Right"]
+	loginFormPosition = ["Left", "Right"]
 
 	/***Refer A Vendor ****/
 	inviteAVendor = "Invite A vendor";
 	inviteVendorToJoinxAmplify = "Invite a vendor to join xAmplify";
 	vendorInvites = "Vendor Invites";
-	InvitedVendorAnalytics = "Invited Vendor Analytics"; 
+	InvitedVendorAnalytics = "Invited Vendor Analytics";
 	inviteAVendorToJoinxAmplify = "Invite a vendor to join xAmplify";
 
 	/****XNFR-342****/

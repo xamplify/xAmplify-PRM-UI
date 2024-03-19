@@ -1833,22 +1833,14 @@ h5.view-banner-green.white-labeled-cu1 {
 }
 
 .img1 {
-  /* background: #34495a;
+  background: #34495a;
   text-align: center;
   border-radius: 10px 10px 0px 0px;
   background: linear-gradient(358deg, #0c86cc, #06beb8) !important;;
   background-size: 1090px;
   background-repeat: no-repeat;
-  background-position: 0; */
-
-  background: #34495a;
-    text-align: center;
-    border-radius: 10px 10px 0 0;
-    background-image: linear-gradient(30deg, #34495a 50%, transparent 0) !important;
-    background-size: 1090px;
-    background-repeat: no-repeat;
-    background-position: 0;
-    transition: background .3s ease-in-out;
+  background-position: 0;
+  /* transition: background 300ms ease-in-out; */
 }
 .d-flex {
   display: flex;
@@ -2992,22 +2984,22 @@ span.btn.Btn-Green.transition.secondary_btn_width{
   white-space: nowrap;
 }
 /**** Sudha Sri(5-3-2024)****/
-/* .gridViewImgBg{
+.gridViewImgBg{
   background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
   border-top-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
-} */
-/* @media only screen and (min-width: 992px){
+} 
+@media only screen and (min-width: 992px){
   .grid-box{
     border-radius: 15px !important;
     border: 1px solid #0b8dc969;
   }
-} */
-/* .bar.gridIconCustomization{
+} 
+.bar.gridIconCustomization{
   border-bottom-left-radius: 15px !important;
   border-bottom-right-radius: 15px !important;
   background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
-} */
+} 
 /**** Sudha Sri(6-3-2024)****/
 .grid-box img{
   border-top-left-radius: 15px !important;
@@ -3016,10 +3008,9 @@ span.btn.Btn-Green.transition.secondary_btn_width{
 .grid-box.zero-margin{
   border: 1px solid #d0d5db;
 }
-/* .img1:hover {
+ .img1:hover {
   background: linear-gradient(358deg, #06beb8, #0c86cc) !important;
-} */
-/*  */
+} 
 @media only screen and (min-width: 992px){
 .grid-box {
     border-radius: 15px !important;
@@ -3036,9 +3027,9 @@ input.radio-custimization {
 span.select-check-box{
   background: none !important;
   }
-  span.icon-alignments {
-    top: 5px !important;
-    right: 7px !important;
+span.icon-alignments {
+  top: 5px !important;
+  right: 7px !important;
 }
 .bar.gridIconCustomization {
   border-bottom-left-radius: 15px !important;
@@ -3048,4 +3039,12 @@ span.select-check-box{
 .img-class.DesignGridViewImage {
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
+}
+.bar.hover-bar{
+  border-bottom-right-radius: 15px !important;
+  border-bottom-left-radius: 15px !important;
+}
+.img-grid-track {
+  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
 }

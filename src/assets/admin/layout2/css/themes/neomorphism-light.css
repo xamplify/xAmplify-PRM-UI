@@ -2107,6 +2107,7 @@ a.title.padding_bottom.text-color.content-bg{
 }
 i.IconCustomization:hover {
   background-color: #22313a !important;
+  color: #fff !important;
 }
 i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
 i.fa.fa-plus.fa-fa-consistency.IconCustomization,
@@ -2723,9 +2724,11 @@ i.fa.fa-rocket:hover{
   background-color: unset !important;
   z-index: 999;
   position: relative;
-  color: #000 !important;
+  color: #fff !important;
 }
-i.fa.fa-download:hover{
+i.fa.fa-download:hover,
+i.fa.IconCustomization.fa-angle-right:hover,
+i.fa.IconCustomization.fa-angle-down:hover{
   color: #000 !important;
 }
 .actions_width{
@@ -4098,39 +4101,32 @@ table.table.table-bordered {
 }
 
 /**** Sudha Sri(5-3-2024)****/
-/* .img1:hover{
+.img1:hover{
   background-position: 100% !important;
   background-color: #b8def1 !important;
   transition-duration: 500ms !important;
-} */
+}
 .mrg_rgt5{
   margin-right: 5px !important;
 }
 .gridViewImgBg{
-  /* background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
+  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
   box-shadow: inset 2px 2px 5px #0c86cc,inset -3px -3px 7px #06beb8!important;
   border-top-left-radius: 15px !important;
-  border-top-right-radius: 15px !important; */
-  background-position: 100%;
-  background-color: #b8def1;
-  padding: 15px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+  border-top-right-radius: 15px !important;
 }
-/* @media only screen and (min-width: 992px){
+@media only screen and (min-width: 992px){
   .grid-box{
     border-radius: 15px !important;
     border: 1px solid #0b8dc969 !important;
   }
-} */
-/* .bar.gridIconCustomization,
+}
+.bar.gridIconCustomization,
 img.email-template-preview{
   border-bottom-left-radius: 15px !important;
   border-bottom-right-radius: 15px !important;
   box-shadow: none !important;
-} */
+}
 /**** Sudha Sri(6-3-2024)****/
 .grid-box img{
   border-top-left-radius: 15px !important;
@@ -4139,12 +4135,12 @@ img.email-template-preview{
 .grid-box.zero-margin{
   border: 1px solid #d0d5db !important;
 }
-/* .img1{
+.img1{
   background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
 }
 .img1:hover {
   background: linear-gradient(358deg, #06beb8, #0c86cc) !important;
-} */
+}
 /**** Sudha Sri(11-3-2024)****/
 .page-sidebar .page-sidebar-menu > li > a > i.fa.fa-paint-brush:hover, .page-sidebar .page-sidebar-menu > li > a >i.fa.fa-bullhorn {
   color: #5a738e !important;
@@ -4192,4 +4188,14 @@ input.radio-custimization{
 }
 .border_none{
 border: none !important;
+}
+/***** Sudha Sri(19-3-2024) *****/
+/***** Grid View Icon Changes *****/
+.bar.gridIconCustomization {
+  box-shadow: none !important;
+}
+a.Iconhover.custom-grid-icon,
+a.delete.custom-icon{
+box-shadow: none !important;
+background-color: #f0f5fa;
 }

@@ -124,7 +124,9 @@ h6 {
 .total-records-bg-color {
   color: white !important;
 }
-.grid-box,
+.grid-box{
+  background-color: #2b3c46 !important;
+}
 #vendor-details-tile,
 .xamplify-dropdown-content,
 .header {
@@ -940,7 +942,7 @@ span.ui-column-resize {
 }
 /* remved ,button:disabled */
 .btn-hvr-text {
-  color: black !important;
+  color: #fff !important;
   background-color: #ddd;
 }
 .table tr.row-selected td {
@@ -1840,7 +1842,8 @@ input#copy-link {
   color: inherit !important;
 }
 /* 16-8-2023 sudha sri */
-.border-none {
+.border-none,
+a.Iconhover.custom-grid-icon.border-none i.fa.fa-trash-o.trashIconCustomization {
   border: none !important;
 }
 /* search box boder */
@@ -2614,35 +2617,49 @@ table tr:nth-child(odd).highlightRow, table tr:nth-child(odd).highlightRow:hover
 }
 /**** Sudha Sri(5-3-2024)****/
 .gridViewImgBg{
-  /* background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
+  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
   border-top-left-radius: 15px !important;
-  border-top-right-radius: 15px !important; */
-  background-color: #22313a;
+  border-top-right-radius: 15px !important;
 }
-/* @media only screen and (min-width: 992px){
+@media only screen and (min-width: 992px){
   .grid-box{
     border-radius: 15px !important;
   }
-} */
-/* .bar.gridIconCustomization{
+}
+.bar.gridIconCustomization{
   border-bottom-left-radius: 15px !important;
   border-bottom-right-radius: 15px !important;
   background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
-} */
-/* div .grid-box{
+}
+div .grid-box{
   border: 1px solid #0b8dc969 !important;
-} */
+}
 /**** Sudha Sri(6-3-2024)****/
 .grid-box img{
   border-top-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
 }
 .grid-box.zero-margin{
-  border: 1px solid #d0d5db !important;
+  border: 1px solid #2f4857 !important;
 }
-/* .img1{
+.img1{
   background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
 }
 .img1:hover {
   background: linear-gradient(358deg, #06beb8, #0c86cc) !important;
-} */
+}
+/****** Sudha Sri(19-3-2024) ******/
+.template_image_border{
+  border: 1px solid #2f4857 !important;
+}
+.nav-tabs > li > a{
+  border-radius: 1px 1px 0 0 !important;
+}
+a.Iconhover.custom-grid-icon.border-none i.fa.fa-trash-o.trashIconCustomization:hover{
+  border: none !important;
+  background: none !important;
+  color: #cb5a5e !important;
+}
+.silvertm{
+  background: none !important;
+}

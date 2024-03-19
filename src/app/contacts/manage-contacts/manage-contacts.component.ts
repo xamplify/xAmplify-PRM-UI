@@ -1887,7 +1887,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
 						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
 					}
-					if (this.contactsByType.selectedCategory != 'excluded') {
+					if (this.authenticationService.module.isCampaign && ((!this.authenticationService.module.isPrmAndPartner
+						 && !this.authenticationService.module.isPrmAndPartnerTeamMember) || !this.isPartner)
+						 && this.contactsByType.selectedCategory != 'invalid'
+					 && this.contactsByType.selectedCategory !='excluded' && !this.assignLeads ) {
 						object["Total Campaigns"] = this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
 							object["Active Campaigns"] = this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
 							object["Email Opend"] = this.contactsByType.listOfAllContacts[i].emailOpenedCount,

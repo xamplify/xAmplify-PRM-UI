@@ -56,7 +56,7 @@ export class PreviewComponent implements OnInit {
       }else if(this.vendorCampaignAutoReplyWebsiteLinkWorkflowId){
         URL_SUFFIX = "vendorCampaignAutoReplyWebsiteLinkWorkflowId/"+this.id;
       }else{
-        URL_SUFFIX = this.isVendorCompanyViewingWorkflowTemplate ? "workflowTemplateId":"id"+"/"+this.id;
+        URL_SUFFIX = this.isVendorCompanyViewingWorkflowTemplate ? "workflowTemplateId/"+this.id:"id/"+this.id;
       }
     }
     this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(URL_SUFFIX).subscribe(

@@ -3922,29 +3922,22 @@ table.table.table-bordered {
   margin-right: 5px !important;
 }
 .gridViewImgBg{
-  /* background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
+  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
   box-shadow: inset 2px 2px 5px #0c86cc,inset -3px -3px 7px #06beb8!important;
   border-top-left-radius: 15px !important;
-  border-top-right-radius: 15px !important; */
-  background-position: 100%;
-  background-color: #b8def1;
-  padding: 15px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+  border-top-right-radius: 15px !important;
 }
-/* @media only screen and (min-width: 992px){
+@media only screen and (min-width: 992px){
   .grid-box{
     border-radius: 15px !important;
     border: 1px solid #0b8dc969 !important;
   }
-} */
-/* .bar.gridIconCustomization,
+}
+.bar.gridIconCustomization,
 img.email-template-preview{
   border-bottom-left-radius: 15px !important;
   border-bottom-right-radius: 15px !important;
-} */
+}
 /**** Sudha Sri(6-3-2024)****/
 .grid-box img{
   border-top-left-radius: 15px !important;
@@ -3954,15 +3947,15 @@ img.email-template-preview{
   background: #34495a;
   text-align: center;
   border-radius: 10px 10px 0 0;
-  background-image: linear-gradient(30deg, #34495a 50%, transparent 0) !important;
+  background-image:  linear-gradient(358deg, #0c86cc, #06beb8) !important;
   background-size: 1090px;
   background-repeat: no-repeat;
   background-position: 0;
   transition: background .3s ease-in-out;
 }
-/* .img1:hover {
+.img1:hover {
   background: linear-gradient(358deg, #06beb8, #0c86cc) !important;
-} */
+}
 /***** Sudha Sri(12-3-2024) *****/
 a i.fa.fa-trash-o.trashIconCustomization{
   box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
@@ -3984,3 +3977,13 @@ button.btn.btn-primary.activate-btn:hover {
 .border_none{
   border: none !important;
   }
+/***** Sudha Sri(19-3-2024) *****/
+/***** Grid View Icon Changes *****/
+.bar.gridIconCustomization {
+    box-shadow: none !important;
+}
+a.Iconhover.custom-grid-icon,
+a.delete.custom-icon {
+  box-shadow: none !important;
+  background-color: #22313a !important;
+}
