@@ -3960,7 +3960,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	readExcludedUsersCSVFileContent(allTextLines: any, csvUserPagination: Pagination) {
 		this.customResponse = new CustomResponse();
 		for (var i = 1; i < allTextLines.length; i++) {
-			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
+			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0
+			&& !this.excludedUsers.some(user=>user.emailId === allTextLines[i][0].trim() )) {
 				let user = new User();
 				user.emailId = allTextLines[i][0].trim();
 				this.excludedUsers.push(user);
@@ -3983,7 +3984,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	readExcludedDomainsCSVFileContent(allTextLines: any, csvDomainPagination: Pagination) {
 		this.excludeDomainCustomResponse = new CustomResponse
 		for (var i = 1; i < allTextLines.length; i++) {
-			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
+			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0
+			&& !this.excludedDomains.some(domain=>domain === allTextLines[i][0].trim())) {
 				let domain = allTextLines[i][0].trim();
 				this.excludedDomains.push(domain);
 			}
