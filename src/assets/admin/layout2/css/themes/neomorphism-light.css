@@ -2328,7 +2328,7 @@ input {
 }
 .portlet.light.cpad.hover-effect.pointer.card-radius,
 .portlet.light.cpad.hover-effect.pointer {
-  padding: 2px 0px !important;
+  padding: 1px 0px !important;
 }
 .portlet-title.tabbable-line.bt-zero-px.mh-zero-px {
   border-bottom: 1px solid #d0d5db !important;
@@ -4123,7 +4123,7 @@ table.table.table-bordered {
 @media only screen and (min-width: 992px){
   .grid-box{
     border-radius: 15px !important;
-    border: 1px solid #0b8dc969 !important;
+    border: 1px solid #d0d5db !important;
   }
 }
 .bar.gridIconCustomization,
