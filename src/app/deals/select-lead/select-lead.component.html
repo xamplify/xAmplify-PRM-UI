@@ -27,8 +27,11 @@
                     <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
                       <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right m_mb8">
                         <div class="btn-group pull-right" style="width: max-content;display:flex">
-                          <a *ngIf="disableAddLeadButton" (click)="addLead()" style="padding-right: 4px;">
-                            <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                          <a (click)="addLead()" style="padding-right: 4px;">
+                            <button class="button_blue bgcolor-unset p0 btn-transitions" [disabled]="!disableAddLeadButton"
+                            data-toggle="tooltip" data-placement="bottom"
+                            title="{{ (dealToLead?.createdForCompanyId > 0 && !disableAddLeadButton) ? 'As the Lead Approval Mechanism is enabled for the selected vendor, the \'Add a Lead\' button stays disabled.' : (!disableAddLeadButton)  ? 'Select the vendor company in the deal form to enable the \'Add a Lead\' option.' : '' }}"
+                            translate>
                               <span class="btn btn-primary transition d-inline"><i class="fa fa-plus  mb-btns"
                                   aria-hidden="true"></i> Add a
                                 Lead</span>

@@ -430,9 +430,9 @@
                                 </a>
                                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                   <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate"
-                                    (click)="editLead(lead)" data-toggle="tooltip" data-placement="bottom"
-                                    title="Edit Lead" id="lead">
-                                    <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+                                    (click)="lead?.leadApprovalStatusType !== 'REJECTED' ? editLead(lead) : ''" data-toggle="tooltip" data-placement="bottom"
+                                    title="{{lead?.leadApprovalStatusType == 'REJECTED' ? 'Editing rejected leads is not permitted' : 'Edit Lead'}}" id="lead">
+                                    <i [ngClass]="lead?.leadApprovalStatusType == 'REJECTED' ? 'fa fa-edit mr5 IconCustomization disabled gray':'fa fa-edit mr5 IconCustomization'" class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
                                     <div class="clickicons"></div>
                                   </a>
                                   <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate"
