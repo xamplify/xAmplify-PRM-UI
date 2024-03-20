@@ -207,8 +207,8 @@
                                     <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}"
                                         *ngIf="(authenticationService.isOrgAdmin() || 
                                         authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || 
-                                        authenticationService.isOnlyPartner() || roleNames=='Partner') && !authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
-                                        &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember">
+                                        authenticationService.isOnlyPartner() || roleNames=='Partner') || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
+                                        || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"
                                             (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings
                                             | translate}}</a>
