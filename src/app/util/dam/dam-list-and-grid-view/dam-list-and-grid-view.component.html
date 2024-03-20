@@ -15,13 +15,13 @@
 				</div>
 				<ng-container *ngIf="!isGridViewHistory && !assetDetailsPreview">
 					<ng-template *ngIf="!listLoader?.isLoading" [ngTemplateOutlet]="damHeaderOptions"></ng-template>
+					<!-- XNFR-409 -->
+					<ng-template [ngTemplateOutlet]="filterOptionDiv"></ng-template>
+					<!-- XNFR-409 -->
 					<app-list-loader *ngIf="listLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
 					<app-grid-loader *ngIf="listLoader.isLoading && modulesDisplayType.isGridView"></app-grid-loader>
 					<!---List View----->
 					<section *ngIf="modulesDisplayType.isListView && !listLoader.isLoading">
-						<!-- XNFR-409 -->
-						<ng-template [ngTemplateOutlet]="filterOptionDiv"></ng-template>
-						<!-- XNFR-409 -->
 						<div class="table-responsive pd_top10">
 							<table class='table tgrid table-hover table-sm' id="manage-assets-table"
 								*ngIf="pagination.pagedItems?.length>0" aria-describedby="manageAssetTables">
@@ -537,9 +537,6 @@
 					</section>
 					<!----Grid View------->
 					<section *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading">
-						<!-- XNFR-409 -->
-						<ng-template [ngTemplateOutlet]="filterOptionDiv"></ng-template>
-						<!-- XNFR-409 -->
 						<div class="row p17 neg_margin-10"
 							*ngIf="modulesDisplayType.isGridView && !listLoader.isLoading && !listLoader.isServerError">
 							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tb_view_10 GridviewSidePaddings"
@@ -670,18 +667,11 @@
 				<div class="btn-group pull-right">
 					<div class="d-flex">
 						<!-- Start XNFR-409 -->
-						<div class="" (click)="toggleFilterOption()" style="cursor: pointer; margin-right: 5px"
-							*ngIf="!isclearFilter">
-							<span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space"
+						<div class="btn btn-xs l-g-view margin-space mr5" (click)="toggleFilterOption()" [ngClass]="showFilterOption?'disabled':''">
+							<span data-placement="bottom"
 								data-toggle="tooltip" title="Filter">
 								<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
 							</span>
-						</div>
-						<div (click)="clearFilterOptions()" style="margin-right: 5px; cursor: pointer;"
-							*ngIf="isclearFilter">
-							<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
-								title="Remove a filter" style="color: red; font-size: 28px; margin-top: 10px;"></i> <i
-								class="fa fa-times" aria-hidden="true" style="color: red; margin-left: -8px;"></i>
 						</div>
 						<!-- End XNFR-409 -->
 						<div class="group-dropdown">
@@ -780,10 +770,9 @@
 <!---XNFR-381-->
 <!-- XNFR-409 -->
 <ng-template #filterOptionDiv>
-	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [criterias]="criterias"
-		[showFilterOption]="showFilterOption" [type]="assets" [filterOptions]="filterOptions"
-		[filterConditions]="filterConditions" [fileTypes]="fileTypes" (filterConditionsEmitter)="assetsFilter($event)"
-		(closeFilterEmitter)="closeFilterOption($event)"></app-custom-ui-filter>
+	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [type]="'Assets'"
+		[fileTypes]="fileTypes" (filterConditionsEmitter)="assetsFilter($event)"
+		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
 </ng-template>
 <!-- XNFR-409 -->
 <app-confirm-sweet-alert-util *ngIf="isChangeAsParentPdfIconClicked"
