@@ -723,7 +723,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     }else{
         this.showCampaignPreview(campaign);
     }
-    
   }
   
 }
