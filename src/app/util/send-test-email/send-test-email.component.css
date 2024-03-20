@@ -1,9 +1,70 @@
-.plspx{
+.plspx {
     padding-left: 16px;
 }
-.table-striped > tbody > tr:nth-of-type(odd), table tr:nth-child(odd) td, table tr:nth-child(even) td, .search-box-item-clear, input{
+
+.table-striped>tbody>tr:nth-of-type(odd),
+table tr:nth-child(odd) td,
+table tr:nth-child(even) td,
+.search-box-item-clear,
+input {
     background: none !important;
 }
-.ml-4{
-margin-left:4px;
+
+.ml-4 {
+    margin-left: 4px;
+}
+
+#send-test-email-modal-popup {
+    padding-right: 0px !important;
+}
+
+.popup-align {
+    position: relative !important;
+    float: right;
+}
+
+.modal-dialog {
+    width: 85% !important;
+}
+
+.modal-content {
+    box-shadow: 0 0 0 rgb(255 255 255 / 0%) !important;
+    border-radius: 0px !important;
+}
+
+.hide-scrollbar {
+    overflow: hidden;
+}
+
+@media only screen and (max-width: 1024px) {
+    .vertical-center {
+        margin: 10px 30px 0px 30px !important;
+    }
+}
+
+@media only screen and (max-width: 578px) {
+
+    .modal.left.fade.in .modal-dialog,
+    .modal.right.fade.in .mb-wth {
+        width: 85% !important;
+    }
+}
+
+@media (min-width: 1000px) and (max-width: 1220px) {
+    input.fieldWidthCustimization {
+        width: calc(100% - 70px) !important;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1066px) {
+    input.form-control.responsiveWidthCu {
+        width: 90% !important;
+    }
+}
+
+
+@media (min-width: 992px) {
+    .modal-lg {
+        width: 850px !important;
+    }
 }

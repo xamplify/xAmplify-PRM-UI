@@ -17,7 +17,9 @@
               </li>
             </ul>
           </div>
-          <app-user-guide-help-button></app-user-guide-help-button>
+          <!-- XBI-2228 -->
+          <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+          <!-- XBI-2228 -->
         </div>
       </div>
       <div class="row">
@@ -40,7 +42,7 @@
                       <div class="number">
                         <span>{{companyCount}}</span>
                       </div>
-                      <div class="desc" style="font-weight:500" translate>All</div>
+                      <div class="desc" style="font-weight:500" translate>Companies</div>
                     </div>
                     <span id="permhref" class="morePadding ">
                       <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"

@@ -489,8 +489,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.isEmailExist = false;
 		var testArray = [];
 		for (var i = 0; i <= this.newPartnerUser.length - 1; i++) {
-			testArray.push(this.newPartnerUser[i].emailId.toLowerCase());
-			this.validateEmail(this.newPartnerUser[i].emailId);
+			testArray.push(this.newPartnerUser[i].emailId.trim().toLowerCase());
+			this.validateEmail(this.newPartnerUser[i].emailId.trim().toLowerCase());
 		}
 
 		var newArray = this.compressArray(testArray);
@@ -502,7 +502,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			console.log(newArray[w].count);
 		}
 		this.xtremandLogger.log("DUPLICATE EMAILS" + this.duplicateEmailIds);
-		var valueArr = this.newPartnerUser.map(function (item) { return item.emailId.toLowerCase() });
+		var valueArr = this.newPartnerUser.map(function (item) { return item.emailId.trim().toLowerCase() });
 		var isDuplicate = valueArr.some(function (item, idx) {
 			return valueArr.indexOf(item) != idx
 		});
@@ -525,14 +525,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		for (let i = 0; i < socialUsers.length; i++) {
 			if (socialUsers[i].emailId) {
 				if (socialUsers[i].emailId !== null && this.validateEmailAddress(socialUsers[i].emailId)) {
-					let email = socialUsers[i].emailId.toLowerCase();
+					let email = socialUsers[i].emailId.trim().toLowerCase();
 					socialUsers[i].emailId = email;
 					this.setLegalBasisOptions(socialUsers[i]);
 					users.push(socialUsers[i]);
 				}
 			} else {
 				if (socialUsers[i].email !== null && this.validateEmailAddress(socialUsers[i].email)) {
-					let email = socialUsers[i].email.toLowerCase();
+					let email = socialUsers[i].email.trim().toLowerCase();
 					socialUsers[i].emailId = email;
 					this.setLegalBasisOptions(socialUsers[i]);
 					users.push(socialUsers[i]);
@@ -554,13 +554,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			/*for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
 				this.teamMembersList.push( this.orgAdminsList[i] );
 			}*/
-			this.teamMembersList.push(this.authenticationService.user.emailId);
+			this.teamMembersList.push(this.authenticationService.user.emailId.trim().toLowerCase());
 			let emails = []
 			for (let i = 0; i < this.newPartnerUser.length; i++) {
 				if (this.newPartnerUser[i].emailId) {
-					emails.push(this.newPartnerUser[i].emailId);
+					emails.push(this.newPartnerUser[i].emailId.trim().toLowerCase());
 				} else {
-					emails.push(this.newPartnerUser[i].email);
+					emails.push(this.newPartnerUser[i].email.trim().toLowerCase());
 				}
 			}
 			let existedEmails = []
@@ -578,6 +578,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			}
 			console.log(existedEmails);
 			for (let i = 0; i < this.newPartnerUser.length; i++) {
+			
+			
+                  if(this.newPartnerUser[i].contactCompany){
+                         this.newPartnerUser[i].contactCompany = this.newPartnerUser[i].contactCompany.trim();
+                   }
+
 
 				let userDetails = {
 					"firstName": this.newPartnerUser[i].firstName,
@@ -587,9 +593,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				}
 
 				if (this.newPartnerUser[i].emailId) {
-					userDetails["emailId"] = this.newPartnerUser[i].emailId;
+					userDetails["emailId"] = this.newPartnerUser[i].emailId.trim().toLowerCase();
 				} else {
-					userDetails["emailId"] = this.newPartnerUser[i].email;
+					userDetails["emailId"] = this.newPartnerUser[i].email.trim().toLowerCase();
 				}
 
 				this.newUserDetails.push(userDetails);
@@ -601,7 +607,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				}
 				if (this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7
 					&& this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9 && this.selectedAddPartnerOption !=10 && this.selectedAddPartnerOption !=11 && this.selectedAddPartnerOption !=12) {
-					if (this.newPartnerUser[i].contactCompany.trim() != '') {
+					if (this.newPartnerUser[i].contactCompany.replace(/[^a-zA-Z0-9]/g,'').trim() != '') {
 						this.isCompanyDetails = true;
 					} else {
 						this.isCompanyDetails = false;
@@ -613,16 +619,16 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					this.newPartnerUser[i].country = null;
 				}
 				if (!this.validateEmailAddress(this.newPartnerUser[i].emailId)) {
-					this.invalidPatternEmails.push(this.newPartnerUser[i].emailId)
+					this.invalidPatternEmails.push(this.newPartnerUser[i].emailId.trim().toLowerCase())
 				}
 				if (this.newPartnerUser[i].emailId) {
-					if (this.validateEmailAddress(this.newPartnerUser[i].emailId)) {
+					if (this.validateEmailAddress(this.newPartnerUser[i].emailId.trim().toLowerCase())) {
 						this.validCsvContacts = true;
 					} else {
 						this.validCsvContacts = false;
 					}
 				} else {
-					if (this.validateEmailAddress(this.newPartnerUser[i].email)) {
+					if (this.validateEmailAddress(this.newPartnerUser[i].email.trim().toLowerCase())) {
 						this.validCsvContacts = true;
 					} else {
 						this.validCsvContacts = false;
@@ -750,7 +756,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.processingPartnersLoader = false;
             this.resetApplyFilter();
 		} else if (errorCount == 0) {
-			this.validatePartnership();
+			$('#assignContactAndMdfPopup').modal('hide');
+					this.showNotifyPartnerOption = false;
+					this.processingPartnersLoader = false;
+                    this.resetApplyFilter();
+					this.savePartners();
 		}
 	}
 
@@ -886,7 +896,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 
 	navigateToTermsAndConditions() {
-		window.open("https://www.xamplify.com/terms-conditions", "_blank");
+		window.open(this.properties.termsOfServiceUrl, "_blank");
 	}
 
 
@@ -2214,7 +2224,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		        }
 		        for (let i = 0; i < this.newPartnerUser.length; i++) {
 						if (this.newPartnerUser[i].email) {
-							this.newPartnerUser[i].emailId = this.newPartnerUser[i].email;
+							this.newPartnerUser[i].emailId = this.newPartnerUser[i].email.trim().toLowerCase();
 						}
 				}
 		       this.validatePartnersCompany(this.newPartnerUser, this.partnerListId) ;
@@ -2551,7 +2561,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	contactCompanyChecking(contactCompany: string) {
-		if (contactCompany.trim() != '') {
+		if (contactCompany && contactCompany.trim() != '') {
 			this.isCompanyDetails = true;
 		} else {
 			this.isCompanyDetails = false;
@@ -3270,19 +3280,19 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	navigateToTermsOfUse() {
-		window.open("https://www.xamplify.com/terms-conditions/", "_blank");
+		window.open(this.properties.termsOfServiceUrl, "_blank");
 	}
 
 	navigateToPrivacy() {
-		window.open("https://www.xamplify.com/privacy-policy/", "_blank");
+		window.open(this.properties.privacyPolicyUrl, "_blank");
 	}
 
 	navigateToGDPR() {
-		window.open("https://gdpr-info.eu/", "_blank");
+		window.open(this.properties.gdprUrl, "_blank");
 	}
 
 	navigateToCCPA() {
-		window.open("https://www.caprivacy.org/", "_blank");
+		window.open(this.properties.ccpaUrl, "_blank");
 	}
 
 

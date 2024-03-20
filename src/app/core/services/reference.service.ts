@@ -3475,4 +3475,56 @@ removeElementById(){
   $('link[id="head-link-rel"]').remove();
 }
 
+removeCssStylesAndCssFiles(){
+  this.removeCssStyles();
+  this.removeElementById();
+}
+
+clearHeadScriptFiles(){
+  $('.loader-container').hide();
+  $("#xamplify-index-head").html("");
+  $('#page-loader-index-html').css({'display':'block'});
+}
+
+previewEmailTemplateInNewTab(id:number){
+  this.openWindowInNewTab("/pv/t/"+id);
+}
+previewWorkflowEmailTemplateInNewTab(id:number){
+  this.openWindowInNewTab("/pv/wt/"+id);
+}
+
+previewCampaignEmailTemplateInNewTab(campaignId:number){
+  this.openWindowInNewTab("/pv/ct/"+campaignId);
+}
+
+previewSharedVendorCampaignEmailTemplateInNewTab(campaignId:number){
+  this.openWindowInNewTab("/pv/sct/"+campaignId);
+}
+
+previewSharedCampaignAutoReplyEmailTemplateInNewTab(replyId:number){
+  this.openWindowInNewTab("/pv/cwaret/"+replyId);
+}
+
+previewVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(urlId:number){
+  this.openWindowInNewTab("/pv/cwarwlt/"+urlId);
+}
+
+previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number){
+  this.openWindowInNewTab("/pv/scwaret/"+vendorCampaignWorkflowId);
+}
+
+previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWorkflowId:number){
+  this.openWindowInNewTab("/pv/scwarwlt/"+vendorCampaignWorkflowId);
+}
+
+previewPageInNewTab(id:number){
+  this.openWindowInNewTab("/pv/p/"+id);
+}
+
+openWindowInNewTab(url:string){
+  window.open(url,"_blank");
+}
+
+
+
 }

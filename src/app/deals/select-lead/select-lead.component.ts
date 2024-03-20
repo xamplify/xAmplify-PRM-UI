@@ -21,7 +21,6 @@ declare var swal, $, videojs: any;
 })
 export class SelectLeadComponent implements OnInit {  
   @Input() public dealToLead: any;
- // @Input() public createdForCompanyId:any;
   @Output() notifyClose = new EventEmitter();
   @Output() notifyLeadSelected = new EventEmitter();
 
@@ -32,6 +31,9 @@ export class SelectLeadComponent implements OnInit {
   showLeadForm: boolean = false;  
   leadId = 0;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+  /*** XNFR-476 ***/
+  disableCreatedForVendor: boolean = false;
+  disableAddLeadButton: boolean = false;
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     private leadsService: LeadsService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService) {
@@ -59,7 +61,11 @@ export class SelectLeadComponent implements OnInit {
   }
 
   addLead() {
-    this.showLeadForm = true;    
+    if(this.dealToLead.createdForCompanyId > 0){
+      this.disableCreatedForVendor = true;
+    }
+    this.showLeadForm = true;
+    this.dealToLead.leadActionType = "add";    
   }
   
   closeLeadForm() {
@@ -87,19 +93,19 @@ export class SelectLeadComponent implements OnInit {
     pagination.userId = this.loggedInUserId;    
     pagination.ignoreSelfLeadsOrDeals = false;
     pagination.filterKey = "not-converted";
+    pagination.showLeadsForAttachingLead = true;
+    pagination.vendorCompanyId = this.dealToLead.createdForCompanyId;
     if (this.vanityLoginDto.vanityUrlFilter) {
       pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName      
     }
-    // if (this.dealToLead.dealActionType === 'edit') {
-    //   pagination.vendorCompanyId = this.dealToLead.createdForCompanyId;
-    // }
     this.leadsService.listLeadsForPartner(pagination)
       .subscribe(
         response => {
           this.referenceService.loading(this.httpRequestLoader, false);          
           this.sortOption.totalRecords = response.totalRecords;
           this.pagination.totalRecords = response.totalRecords;
+          this.disableAddLeadButton = response.isVendorEnabledLeadApprovalRejectionFeature;
           this.pagination = this.pagerService.getPagedItems(this.pagination, response.data);
         },
         error => {
@@ -107,6 +113,7 @@ export class SelectLeadComponent implements OnInit {
         },
         () => { }
       );
+      
   }
 
   search() {
@@ -115,6 +122,7 @@ export class SelectLeadComponent implements OnInit {
 
   searchKeyPress(keyCode: any) {
     if (keyCode === 13) {
+      this.leadId = 0;
       this.search();
     }
   }

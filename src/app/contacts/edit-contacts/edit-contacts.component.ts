@@ -153,7 +153,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	showInvalidMaills = false;
 	downloadDataList = [];
 	isEmailExist: boolean = false;
-	contactsCompanyListSync : boolean = false;
+	contactsCompanyListSync: boolean = false;
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
 		{ 'name': 'Email (A-Z)', 'value': 'emailId-ASC' },
@@ -675,7 +675,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 			if (this.isPartner) {
 				for (let i = 0; i < this.users.length; i++) {
-					if (this.users[i].contactCompany.trim() != '') {
+					if (this.users[i].contactCompany && this.users[i].contactCompany.trim() != '') {
 						this.isCompanyDetails = true;
 					} else {
 						this.isCompanyDetails = false;
@@ -738,7 +738,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						//this.allUsers = this.contactsByType.allContactsCount;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList,this.isPartnerUserList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList, this.isPartnerUserList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
 						$("tr.new_row").each(function () {
 							$(this).remove();
 						});
@@ -893,7 +893,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					this.isCompanyDetails = false;
 					if (this.isPartner) {
 						for (let i = 0; i < this.users.length; i++) {
-							if (this.users[i].contactCompany.trim() != '') {
+							if (this.users[i].contactCompany && this.users[i].contactCompany.trim() != '') {
 								this.isCompanyDetails = true;
 							} else {
 								this.isCompanyDetails = false;
@@ -969,7 +969,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList,this.isPartnerUserList, this.isDefaultContactList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isPartnerUserList, this.isDefaultContactList, this.isSynchronizationList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
 						$("tr.new_row").each(function () {
 							$(this).remove();
 						});
@@ -1134,11 +1134,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.xtremandLogger.info("userIdForChecked" + this.selectedContactListIds);
 		this.resetResponse();
 		if (this.selectedContactListIds.length != 0) {
-			this.xtremandLogger.info("contactListId in sweetAlert() " + this.contactListId);
+			let message = '';
+			let partnerModuleCustomName = this.authenticationService.partnerModule.customName;
+			if (this.assignLeads) {
+				message = "The lead(s) will be deleted and this action can't be undone.";
+			} else if (this.isPartner && this.isDefaultPartnerList) {
+				message = 'The ' + partnerModuleCustomName + '(s) will be deleted from this and all other ' + partnerModuleCustomName + ' lists.';
+			} else if (this.isPartner && !this.isDefaultPartnerList) {
+				message = 'This will only delete the ' + partnerModuleCustomName + '(s) from this list. To remove the ' + partnerModuleCustomName + '(s) completely from your account, please delete the record(s) from the Master List.';
+			} else {
+				message = "This will only delete the Contact(s) from this list. To remove the Contact(s) completely from your account, please delete the record(s) from the Master Contact List.";
+			}
 			let self = this;
 			swal({
 				title: 'Are you sure?',
-				text: "You won't be able to undo this action!",
+				text: message,
 				type: 'warning',
 				showCancelButton: true,
 				swalConfirmButtonColor: '#54a7e9',
@@ -1603,7 +1613,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.isCompanyDetails = false;
 				if (this.isPartner) {
 					for (let i = 0; i < this.users.length; i++) {
-						if (this.users[i].contactCompany.trim() != '') {
+						if (this.users[i].contactCompany && this.users[i].contactCompany.trim() != '') {
 							this.isCompanyDetails = true;
 						} else {
 							this.isCompanyDetails = false;
@@ -1668,7 +1678,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList, this.isSynchronizationList,this.isPartnerUserList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isDefaultContactList, this.isSynchronizationList, this.isPartnerUserList, this.isFormList, this.isTeamMemberPartnerList, this.manageCompanies, this.companyName, this.selectedCompanyId);
 						$("tr.new_row").each(function () {
 							$(this).remove();
 
@@ -1747,7 +1757,28 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				if (this.selectedAddContactsOption == 0) {
 					this.getContactsLimit();
 				} else {
-					this.validatePartnersCompany();
+				if(this.isPartner){
+                        for (var i = 0; i <= this.users.length - 1; i++) {
+                        if(
+                            this.users[i].contactCompany != null
+                        && this.users[i].contactCompany.replace(/[^a-zA-Z0-9]/g,'').trim()!= '' && 
+                        (this.users[i].contactCompany && this.users[i].contactCompany.trim().length > 0)
+                        ){
+                            this.isCompanyDetails = true;
+        
+                        }else{
+                            this.isCompanyDetails = false;
+                            break;
+                        }
+                     }
+                    }
+                    
+                    if(this.isCompanyDetails){
+                        this.validatePartnersCompany();
+                    }else{
+                        this.loading = false;
+                        this.customResponse = new CustomResponse('ERROR', 'Company Details is required', true);
+                    }
 				}
 			} else {
 				this.saveData();
@@ -1807,7 +1838,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.processingPartnersLoader = false;
 			this.resetApplyFilter();
 		} else {
-			this.validatePartnership();
+			$('#assignContactAndMdfPopup').modal('hide');
+					this.processingPartnersLoader = false;
+					this.showNotifyPartnerOption = false;
+					this.resetApplyFilter();
+					this.saveData();
 		}
 	}
 
@@ -2333,7 +2368,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		} else if (this.isPartner && !this.isDefaultPartnerList) {
 			message = 'This will only delete the ' + partnerModuleCustomName + '(s) from this list. To remove the ' + partnerModuleCustomName + '(s) completely from your account, please delete the record(s) from the Master List.';
 		} else {
-			message = "The contact(s) will be deleted and this action can't be undone.";
+			message = "This will only delete the Contact(s) from this list. To remove the Contact(s) completely from your account, please delete the record(s) from the Master Contact List.";
 		}
 
 		let self = this;
@@ -2550,7 +2585,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.copyFromClipboard();
 			this.isShowUsers = false;
 		}
-		 this.selectedAddContactsOption = 1;
+		this.selectedAddContactsOption = 1;
 	}
 
 	resetResponse() {
@@ -2636,7 +2671,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 	editListName() {
 		this.saveAsListName = this.selectedContactListName;
-   }
+	}
 	closeSaveAsModal() {
 		this.saveAsListName = undefined;
 		this.refService.namesArray = undefined;
@@ -3203,7 +3238,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
 				//"Notes": this.contactsByType.listOfAllContacts[i].description
 			}
-			if(this.contactsByType.selectedCategory === 'excluded'){
+			if (this.contactsByType.selectedCategory === 'excluded') {
 				object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 			}
 			if (this.contactsByType.selectedCategory === 'unsubscribe') {
@@ -3223,7 +3258,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				"Country": null,
 				"Mobile Number": null
 			}
-			if(this.contactsByType.selectedCategory === 'excluded'){
+			if (this.contactsByType.selectedCategory === 'excluded') {
 				object["Excluded Catagory"] = null;
 			}
 			if (this.contactsByType.selectedCategory === 'unsubscribe') {
@@ -3262,7 +3297,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	contactCompanyChecking(contactCompany: string) {
-		if (contactCompany.trim() != '') {
+		if (contactCompany && contactCompany.trim() != '') {
 			this.isCompanyDetails = true;
 		} else {
 			this.isCompanyDetails = false;
@@ -3388,9 +3423,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
 				this.pagination.partnerTeamMemberGroupFilter = true;
 			}
-			if(this.router.url.includes('home/contacts')){
+			if (this.router.url.includes('home/contacts')) {
 				this.checkSyncStatus();
-			}	
+			}
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();
 			this.selectedContactListName = this.contactListName;
@@ -3833,7 +3868,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 
-	confirmdelete(contactId: number) {
+	confirmdelete(contactId: any) {
 		let self = this;
 		swal({
 			title: 'Are you sure?',
@@ -3854,8 +3889,15 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	deleteContactFromAllLists(contactId: any) {
 		this.loading = true;
+		let contactIds: any = [];
 		this.xtremandLogger.info(this.selectedContactListIds);
-		this.contactService.deleteContactById(contactId).subscribe(
+		if (this.selectedContactListIds.length == 0) {
+			contactIds.push(contactId);
+		}
+		else {
+			contactIds.push(...this.selectedContactListIds);
+		}
+		this.contactService.deleteContactById(contactIds).subscribe(
 			response => {
 				if (response.statusCode == 200) {
 					this.loading = false;
@@ -3865,8 +3907,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					this.checkingLoadContactsCount = true
 					this.editContactListLoadAllUsers(this.contactListId, this.pagination);
 					this.contactsCount(this.selectedContactListId);
-					this.loading = false;
 				} else {
+					this.loading = false;
 					this.customResponse = new CustomResponse('ERROR', 'This contact cannot be deleted as it is shared by one of your vendors', true);
 				}
 
@@ -3878,45 +3920,45 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	
-syncContactsInMasterContactList(){
-	this.masterContactListSync= true;
-	this.manageContact.syncContactsInMasterContactList();
-	
-}
+
+	syncContactsInMasterContactList() {
+		this.masterContactListSync = true;
+		this.manageContact.syncContactsInMasterContactList();
+
+	}
 
 
-confirmsync(){
-	let self = this;
-	swal({
-		title: 'Are you sure?',
-		text: 'Clicking "Sync" will update this list by adding all the existing contacts',
-		type: 'success',
-		showCancelButton: true,
-		swalConfirmButtonColor: '#54a7e9',
-		swalCancelButtonColor: '#999',
-		confirmButtonText: 'Sync'
+	confirmsync() {
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: 'Clicking "Sync" will update this list by adding all the existing contacts',
+			type: 'success',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Sync'
 
-	}).then(function () {
-		self.syncContactsInMasterContactList();
-	}, function (dismiss: any) {
-		console.log('you clicked on option' + dismiss);
-	});
+		}).then(function () {
+			self.syncContactsInMasterContactList();
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
 
-}
+	}
 
-checkSyncStatus(){
-	this.contactService.checkSyncStatus(this.loggedInUserId).subscribe(
-		response => {
-			if (response.statusCode == 200) {
-				this.masterContactListSync= response.data.masterContactListSync;
-               this.contactsCompanyListSync = response.data.contactsCompanyListSync;
+	checkSyncStatus() {
+		this.contactService.checkSyncStatus(this.loggedInUserId).subscribe(
+			response => {
+				if (response.statusCode == 200) {
+					this.masterContactListSync = response.data.masterContactListSync;
+					this.contactsCompanyListSync = response.data.contactsCompanyListSync;
+				}
+			},
+			error => {
+				this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 			}
-		},
-		error => {
-			this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-		}
-	);
-  }
+		);
+	}
 
 }

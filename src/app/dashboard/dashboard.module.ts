@@ -87,10 +87,16 @@ import { EmailNotificationSettingsComponent } from './email-notification-setting
 import { ActiveThreadsInfoComponent } from './active-threads-info/active-threads-info.component';
 import { CustomLoginScreenSettingsComponent } from './custom-login-screen-settings/custom-login-screen-settings.component';
 import { ConnectwiseAuthenticationComponent } from './connectwise-authentication/connectwise-authentication.component';
+
 import { AddOrManageDomainsComponent } from './add-or-manage-domains/add-or-manage-domains.component';
 import { CustomLinksUtilComponent } from './custom-links-util/custom-links-util.component';
 import { NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent } from './news-and-announcement-and-instant-navigation-dashboard-analytics/news-and-announcement-and-instant-navigation-dashboard-analytics.component';
 import { DashboardBannerImagesComponent } from './dashboard-banner-images/dashboard-banner-images.component';
+
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
+import { VendorJourneyComponent } from './vendor-journey/vendor-journey.component';
+import { HalopsaAuthenticationComponent } from './halopsa-authentication/halopsa-authentication.component';
+
 
 
 @NgModule({
@@ -158,10 +164,13 @@ import { DashboardBannerImagesComponent } from './dashboard-banner-images/dashbo
         AddOrManageDomainsComponent,
         CustomLinksUtilComponent,
         NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent,
-        DashboardBannerImagesComponent
+        DashboardBannerImagesComponent,
+        VendorJourneyComponent,
+        HalopsaAuthenticationComponent
+
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
-    providers: [DashboardService,CompanyProfileService,DealRegistrationService]
+    providers: [DashboardService,CompanyProfileService,DealRegistrationService, LandingPageService]
 })
 export class DashboardModule { }

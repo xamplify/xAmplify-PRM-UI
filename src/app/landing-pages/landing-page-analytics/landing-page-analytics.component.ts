@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import {ActivatedRoute,Router} from '@angular/router';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -50,6 +50,8 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     managePagesRouterLink = "/home/pages/manage";
     routerLink = "";
     pageLoader = false;
+    @Input() vendorJourney = false;
+    @Input() vendorLandingPageId;
     constructor(public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public pagerService: PagerService, public authenticationService: AuthenticationService, 
         public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService,private campaignService:CampaignService) {
@@ -64,6 +66,9 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
         this.landingPageAlias = this.route.snapshot.params['alias'];
         this.partnerId = this.route.snapshot.params['partnerId'];
         let categoryId = this.route.snapshot.params['categoryId'];
+        if(this.vendorJourney){
+            this.landingPageId = this.vendorLandingPageId;
+        }
         if(categoryId>0){
             this.routerLink = this.managePagesRouterLink+"/"+categoryId;
         }else{

@@ -248,15 +248,14 @@
                               </a>
                               <br>
                               <div class="d-flex">
-                                 <button class="pull-right btn-sm button_blue bgcolor-unset"
-                                    (click)="previewEmailTemplate(campaign.emailTemplate)"> <span
-                                       class="btn btn-primary transition txt_pd-top3"><i class="fa fa-eye"></i>
-                                       Preview</span> </button>
-                                 <button *ngIf="campaign?.emailTemplate?.editPartnerTemplate"
-                                    class="pull-right btn-sm button_blue ml-5 bgcolor-unset" style="margin-right: 6px"
-                                    (click)="editPartnerTemplate()"> <span
-                                       class="btn btn-primary transition txt_pd-top3"><i class="fa fa-edit"></i> Edit
-                                    </span></button>
+                                 <button type="button" class="pull-right btn-sm button_blue bgcolor-unset" (click)="openEmailTemplateInNewTab(campaign)">
+                                    <span class="btn btn-primary transition txt_pd-top3"><i class="fa fa-eye"></i> Preview</span> 
+                                 </button>
+                                 <button *ngIf="campaign?.emailTemplate?.editPartnerTemplate"  type="button" class="pull-right btn-sm button_blue ml-5 bgcolor-unset" style="margin-right: 6px"
+                                    (click)="editPartnerTemplate()">
+                                    <span  class="btn btn-primary transition txt_pd-top3"><i class="fa fa-edit"></i> Edit
+                                    </span>
+                                 </button>
                               </div>
                            </div>
                         </div>
@@ -334,7 +333,7 @@
                                                    <button class="glyphicon glyphicon-remove search-box-item-clear"
                                                       *ngIf="contactSearchInput"
                                                       (click)="contactSearchInput='';searchContactList()"></button>
-                                                   <button type="submit" class="search-box-item-click"
+                                                   <button type="button" class="search-box-item-click"
                                                       (click)="searchContactList()"><i
                                                          class="fa fa-search"></i></button>
                                                 </div>
@@ -632,10 +631,7 @@
                                                                         <span class="ng-scope">
                                                                            <a class="item__preview item__preview--image img-container custom"
                                                                               target="_BLANK">
-                                                                              <img class="thumb ng-scope"
-                                                                                 style="width:98px !important"
-                                                                                 src="{{reply.emailTemplate.subject}}"
-                                                                                 alt="">
+                                                                              <img class="thumb ng-scope" style="width:98px !important" src="{{reply.emailTemplate.subject}}" alt="No Image Found">
                                                                            </a>
                                                                            <a href="javascript:;"> </a>
                                                                         </span>
@@ -674,10 +670,8 @@
                                                                                     target="_BLANK"
                                                                                     data-toggle="tooltip"
                                                                                     data-placement="top" title="Preview"
-                                                                                    (click)="$event.stopPropagation();previewEmailTemplate(reply.emailTemplate)">
-                                                                                    <i class="fa fa-external-link-square"
-                                                                                       aria-hidden="true"
-                                                                                       style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                                    (click)="$event.stopPropagation();openAutoResponseEmailTemplateInNewTab(reply)">
+                                                                                    <i class="fa fa-external-link-square" aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                                                                                  </a>
                                                                                  <!--XNFR-330---->
                                                                                  <a style="float:left; right: -6px;"
@@ -876,7 +870,7 @@
                                                                                  class="fm external-link"
                                                                                  target="_BLANK" data-toggle="tooltip"
                                                                                  data-placement="top" title="Preview"
-                                                                                 (click)="$event.stopPropagation();previewEmailTemplate(url.emailTemplate)">
+                                                                                 (click)="$event.stopPropagation();openAutoResponseWebsiteLinkTemplateInNewTab(url)">
                                                                                  <i class="fa fa-external-link-square"
                                                                                     aria-hidden="true"
                                                                                     style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>

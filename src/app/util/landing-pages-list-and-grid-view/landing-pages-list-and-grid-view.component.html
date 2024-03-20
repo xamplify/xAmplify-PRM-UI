@@ -14,8 +14,9 @@
                 <app-landing-page-loader [maxBoxLength]=4
                     *ngIf="httpRequestLoader?.isLoading && modulesDisplayType?.isGridView"></app-landing-page-loader>
                 <!---List View----->
-                <section *ngIf="modulesDisplayType.isListView && !httpRequestLoader?.isLoading ">
-                    <div class="table-responsive pos_mrg_top8">
+                <section
+                    *ngIf="modulesDisplayType.isListView && !httpRequestLoader?.isLoading  && !vendorJourney && !isLandingPages">
+                    <div class="table-responsive">
                         <table class='table tgrid table-hover table-sm' id="manage-page-list"
                             *ngIf="pagination.pagedItems?.length>0" aria-describedby="landing-page-desc">
                             <thead>
@@ -112,34 +113,35 @@
                                         </td>
                                     </ng-container>
                                     <td id="actions-td-width-xamp">
-                                        <div class="d-flex justify-content-center">
-                                            <div
-                                                class="actions-block override-actions flex mPadAction IconCustomizationcondition">
-                                                <div class="mActionDiv whitespace_nowrap display-inlineflex">
-                                                    <!--Copy Icon-->
-                                                    <ng-template [ngTemplateOutlet]="copyIcon"
-                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                    <!--Edit Icon-->
-                                                    <ng-template [ngTemplateOutlet]="editIcon"
-                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                    <!--Preview Icon-->
-                                                    <ng-template [ngTemplateOutlet]="previewIcon"
-                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                    <!--Copy/Embed Link Icon-->
-                                                    <ng-template [ngTemplateOutlet]="copyOrEmbedLinkIcon"
-                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                    <!--Form Icon-->
-                                                    <ng-template [ngTemplateOutlet]="formIcon"
-                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                    <!--Analytics Icon-->
-                                                    <ng-template [ngTemplateOutlet]="analyticsIcon"
-                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                </div>
-                                                <div class="mActionDiv whitespace_nowrap">
-                                                    <!--Delete Icon-->
-                                                    <ng-template [ngTemplateOutlet]="deleteIcon"
-                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                </div>
+                                        <div
+                                            class="actions-block override-actions flex mPadAction IconCustomizationcondition">
+                                            <div class="mActionDiv whitespace_nowrap display-inlineflex">
+                                                <!--Share Icon-->
+                                                <ng-template *ngIf="vendorJourney" [ngTemplateOutlet]="shareIcon"
+                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                <!--Copy Icon-->
+                                                <ng-template [ngTemplateOutlet]="copyIcon"
+                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                <!--Edit Icon-->
+                                                <ng-template [ngTemplateOutlet]="editIcon"
+                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                <!--Preview Icon-->
+                                                <ng-template [ngTemplateOutlet]="previewIcon"
+                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                <!--Copy/Embed Link Icon-->
+                                                <ng-template [ngTemplateOutlet]="copyOrEmbedLinkIcon"
+                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                <!--Form Icon-->
+                                                <ng-template [ngTemplateOutlet]="formIcon"
+                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                <!--Analytics Icon-->
+                                                <ng-template [ngTemplateOutlet]="analyticsIcon"
+                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                            </div>
+                                            <div class="mActionDiv whitespace_nowrap">
+                                                <!--Delete Icon-->
+                                                <ng-template [ngTemplateOutlet]="deleteIcon"
+                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                             </div>
                                         </div>
                                     </td>
@@ -150,7 +152,7 @@
                 </section>
                 <!---Grid View----->
                 <section *ngIf="modulesDisplayType?.isGridView &&  !httpRequestLoader?.isLoading">
-                    <div class="row p10 neg_margin-10" style="padding: 0px 3px 0px 3px;">
+                    <div class="row p10" style="padding: 0px 3px 0px 3px;">
                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20 GridviewSidePaddings"
                             *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                             <div class="grid-box grid-box-height" id="landingPageListDiv_{{landingPage.id}}">
@@ -209,6 +211,9 @@
                                 </div>
                                 <!---Icons-->
                                 <div class="bar gridIconCustomization flex icons-center" id="notificationBarCu">
+                                    <!--Share Icon-->
+                                    <ng-template *ngIf="vendorJourney" [ngTemplateOutlet]="shareIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Copy Icon-->
                                     <ng-template [ngTemplateOutlet]="copyIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
@@ -481,7 +486,7 @@
 
 <!--Analytics-->
 <ng-template #analyticsIcon let-landingPage="landingPage">
-    <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
+    <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE') ">
         <a class="Iconhover custom-grid-icon" *ngIf="landingPage.analyticsCount<=0" data-rel="fancybox-button"
             id="cursor-not-allowed" data-toggle="tooltip" data-placement="top" title="Analytics">
             <i class="fa fa-line-chart" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
@@ -515,7 +520,34 @@
         <div class="del-icon"></div>
     </a>
 </ng-template>
+<!---Share-->
+<ng-template #shareIcon let-landingPage="landingPage">
+    <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && (vendorJourney )" data-toggle="tooltip"
+        data-placement="top" title="Share" (click)="openShareListPopup(landingPage.id)">
+        <i class="fa fa-share" aria-hidden="true"></i>
+        <div class="clickicons"></div>
+    </a>
+</ng-template>
 <!--XNFR-432-->
 <app-copy-modal-popup #copyModalPopupComponent
     (copyModalPopupOutputEmitter)="copyModalPopupOutputReceiver($event)"></app-copy-modal-popup>
+<ng-container *ngIf="showShareListPopup">
+    <div [style.display]="showShareListPopup ? 'block' : 'none'" class="modal fade right" id="partnerCompaniesPopup"
+        role="dialog" aria-labelledby="partnerCompaniesPopup" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <app-partner-company-and-groups *ngIf="showShareListPopup" [moduleName]="'My Profile'"
+                    [isPublishedToPartnerGroups]="landingPageSharedDetails?.publishedToPartnerGroups"
+                    [selectedTeamMemberIds]="landingPageSharedDetails?.partnerIds"
+                    [selectedPartnershipIds]="landingPageSharedDetails?.partnershipIds"
+                    [selectedPartnerGroupIds]="landingPageSharedDetails?.partnerGroupIds" [vendorJourney]="true"
+                    [inputId]="selectedLandingPageId" (closePopup)=closeShareListPopup()>
+                </app-partner-company-and-groups>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<!--<app-partner-company-modal-popup [companyId]="loggedInUserCompanyId" [vendorJourney] = "vendorJourney" [vendorJourneyLandingPageId] = "selectedLandingPageId"
+   *ngIf="showShareListPopup" (notifyOtherComponent)="closeShareListPopup()">
+</app-partner-company-modal-popup>-->
 <app-scroll-top></app-scroll-top>

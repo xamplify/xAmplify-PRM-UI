@@ -28,7 +28,10 @@
                       <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right m_mb8">
                         <div class="btn-group pull-right" style="width: max-content;display:flex">
                           <a (click)="addLead()" style="padding-right: 4px;">
-                            <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                            <button class="button_blue bgcolor-unset p0 btn-transitions" [disabled]="!disableAddLeadButton"
+                            data-toggle="tooltip" data-placement="bottom"
+                            title="{{ (dealToLead?.createdForCompanyId > 0 && !disableAddLeadButton) ? 'As the Lead Approval Mechanism is enabled for the selected vendor, the \'Add a Lead\' button stays disabled.' : (!disableAddLeadButton)  ? 'Select the vendor company in the deal form to enable the \'Add a Lead\' option.' : '' }}"
+                            translate>
                               <span class="btn btn-primary transition d-inline"><i class="fa fa-plus  mb-btns"
                                   aria-hidden="true"></i> Add a
                                 Lead</span>
@@ -62,6 +65,7 @@
                         <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                           <thead>
                             <tr>
+                              <th>     </th>
                               <th class="center-aligned leadTablewidth0" translate>Lead Details</th>
                               <th class="center leadTablewidth1" translate>Added By</th>
                               <th class="leadTablewidth3" style="text-align:center" translate>Actions</th>
@@ -71,6 +75,9 @@
                           <tbody>
                             <ng-container *ngFor='let lead of pagination.pagedItems; let i=index'>
                               <tr (click)="selectLead(lead.id)" [ngClass]="lead.id === leadId ? 'highlightRow' : ''">
+                                <td width="5%">
+                                  <i *ngIf="lead.id === leadId" class="fa fa-check active-status" aria-hidden="true" style="font-size: 14px;"></i>
+                                </td>
                                 <td>
                                   <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
                                   <div class="mrg_lft66" style="margin-left: 60px;">
@@ -184,7 +191,7 @@
 
 <!-- Add Lead Model-->
 <app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="dealToLead.leadActionType" [dealToLead]="dealToLead"
-  (notifySubmitSuccess)="leadCreated($event)" (notifyClose)="closeLeadForm()"
+  (notifySubmitSuccess)="leadCreated($event)" (notifyClose)="closeLeadForm()" [disableCreatedForVendor]="disableCreatedForVendor"
   [isVendorVersion]="dealToLead.isVendorVersion" [isOrgAdmin]="dealToLead.isOrgAdmin"></app-add-lead>
 
 <!-- END CONTENT -->

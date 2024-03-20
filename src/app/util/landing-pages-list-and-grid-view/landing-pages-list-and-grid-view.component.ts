@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild,Renderer,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,Renderer,Input,Output,EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -21,6 +21,8 @@ import { PreviewLandingPageComponent } from 'app/landing-pages/preview-landing-p
 import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
 import { CopyDto } from '../models/copy-dto';
 import { Properties } from 'app/common/models/properties';
+import { VanityEmailTempalte } from 'app/email-template/models/vanity-email-template';
+import { LandingPageShareDto } from 'app/dashboard/user-profile/models/LandingPageShareDto';
 declare var swal: any, $: any;
 @Component({
   selector: 'app-landing-pages-list-and-grid-view',
@@ -56,6 +58,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   modulesDisplayType = new ModulesDisplayType();
   @Input() folderListViewCategoryId:any;
   @Input() folderListViewExpanded = false;
+  @Input() vendorJourney = false;
   folderListView = false;
   viewType: string;
   showUpArrowButton = false;
@@ -64,11 +67,19 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   /*  XNFR-432 */
   @ViewChild("copyModalPopupComponent") copyModalPopupComponent:CopyModalPopupComponent;
   @Output() updatedItemsCountEmitter = new EventEmitter();
+  @Output() vendorLandingPage = new EventEmitter();
+  showShareListPopup:boolean = false;
+  @Input() loggedInUserCompanyId = 0;
+  @Input() isLandingPages =  false;
+  selectedLandingPageId:any;
+  landingPageSharedDetails:LandingPageShareDto = new LandingPageShareDto();
+  @Output() viewAnalytics = new EventEmitter();
+
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
       private utilService: UtilService, private route: ActivatedRoute,public renderer:Renderer,
-      private vanityUrlService:VanityURLService,public properties:Properties) {
+      private vanityUrlService:VanityURLService,public properties:Properties, private changeDetectorRef: ChangeDetectorRef,) {
         this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
         this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.renderer = this.renderer;
@@ -87,12 +98,19 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
     /******** user guides ************/
     this.mergeTagForGuide = this.isPartnerLandingPage ? 'accessing_shared_pages':'manage_pages';
     this.sefDefaultViewType();
-    this.listLandingPages(this.pagination);
+    if(this.isLandingPages){
+        this.findPartnerVendorJourneyLandingPages(this.pagination);
+    }else{
+        this.listLandingPages(this.pagination);
+    }
     this.showMessageOnTop();
 }
 
+
   private sefDefaultViewType() {
-    if (this.folderListViewCategoryId != undefined) {
+    if(this.vendorJourney || this.isLandingPages){
+        this.viewType = 'g';
+    }else if (this.folderListViewCategoryId != undefined) {
         this.categoryId = this.folderListViewCategoryId;
         this.folderListView = true;
     } else {
@@ -144,6 +162,12 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
           this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
           this.pagination.vanityUrlFilter = true;
+      }
+      if(this.vendorJourney){
+        this.pagination.source = "VENDOR_JOURNEY";
+        this.pagination.defaultLandingPage = false;
+      }else{
+        this.pagination.source = "MANUAL";
       }
       this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
           (response: any) => {
@@ -254,11 +278,21 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 
 
   editLandingPage(id: number) {
-      this.landingPageService.id = id;
-      let viewType = this.route.snapshot.params['viewType'];
-      let categoryId = this.route.snapshot.params['categoryId'];
-      let folderViewType = this.route.snapshot.params['folderViewType'];
-      this.referenceService.navigateToEditLandingPageByViewType(folderViewType,viewType,categoryId);
+    if(this.vendorJourney || this.isLandingPages){
+        this.landingPageService.getById(id).subscribe(
+            (data: any) => {
+                this.vendorLandingPage.emit(data.data);
+            },
+            error => {
+              this.logger.errorPage(error);
+            });
+    }else{
+        this.landingPageService.id = id;
+        let viewType = this.route.snapshot.params['viewType'];
+        let categoryId = this.route.snapshot.params['categoryId'];
+        let folderViewType = this.route.snapshot.params['folderViewType'];
+        this.referenceService.navigateToEditLandingPageByViewType(folderViewType,viewType,categoryId);
+    }
   }
 
 
@@ -338,10 +372,14 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       this.router.navigate(['/home/forms/partner/lf/' + alias]);
   }
   goToLandingPageAnalytics(id: number) {
+    if(this.vendorJourney){
+        this.viewAnalytics.emit(id);
+    }else{
       if(this.categoryId>0){
           this.router.navigate(['/home/pages/' + id + '/category/'+this.categoryId+'/analytics']);
       }else{
       this.router.navigate(['/home/pages/' + id + '/analytics']);
+      }
   }
      
   }
@@ -425,6 +463,74 @@ copy(landingPage:any){
       }
     );
   }
-
     
+    openShareListPopup(landingPageId:any) {
+        this.selectedLandingPageId = landingPageId;
+            this.ngxloading = true;
+            let self = this;
+            this.landingPageService.getLandingPageSharedDetails(landingPageId).subscribe(
+              (response) => {
+                self.landingPageSharedDetails = response.data;
+                    if (self.landingPageSharedDetails == null) {
+                        self.landingPageSharedDetails = new LandingPageShareDto();
+                    }
+                  self.ngxloading = false;
+                  self.showShareListPopup = true;
+                  setTimeout(() => $('#partnerCompaniesPopup').modal('show'), 0);          
+              },
+              error => {
+                this.ngxloading = false;
+                this.logger.errorPage(error);
+              });
+    }
+    closeShareListPopup() {
+        this.showShareListPopup = false;
+        this.ngxloading = false;
+        $('#partnerCompaniesPopup').modal('hide');
+    }
+
+    findPartnerVendorJourneyLandingPages(pagination: Pagination) {
+        this.referenceService.loading(this.httpRequestLoader, true);
+        if(!this.folderListView){
+          this.referenceService.goToTop();
+        }
+        if(this.categoryId!=undefined && this.categoryId>0){
+          pagination.categoryId = this.categoryId;
+          this.pagination.categoryType = this.referenceService.getCategoryType(this.roles.landingPageId);
+        }
+        /**********Vanity Url Filter**************** */
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            this.pagination.vanityUrlFilter = true;
+        }
+          this.pagination.source = "VENDOR_JOURNEY";
+          this.pagination.defaultLandingPage = false;
+          this.pagination.companyId = this.loggedInUserCompanyId;
+          let self = this;
+
+        this.landingPageService.findPartnerVendorJourneyLandingPages(pagination).subscribe(
+            (response: any) => {
+                if(response.access){
+                    const data = response.data;
+                    self.statusCode = response.statusCode;
+                    if (self.statusCode == 200) {
+                        pagination.totalRecords = data.totalRecords;
+                        this.sortOption.totalRecords = data.totalRecords;
+                        $.each(data.landingPages, function (index, landingPage) {
+                            landingPage.displayTime = new Date(landingPage.createdDateInString);
+                        });
+                        pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+                    }
+                    this.referenceService.loading(this.httpRequestLoader, false);
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
+                this.referenceService.loading(this.httpRequestLoader, false);
+            },
+            (error: any) => { 
+              this.logger.errorPage(error); 
+          },()=>{
+              this.callFolderListViewEmitter();
+          });
+    }
 }

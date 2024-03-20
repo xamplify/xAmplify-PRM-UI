@@ -375,6 +375,12 @@
 .btn-transitions{
   top:0px!important;
 }
+.subscribe-btn{
+flex-wrap: wrap;
+}
+.active-details{
+  padding-right: 0px!important;
+}
 }
 @media only screen and (min-width: 300px) and (max-width: 580px) {  
   /* myprofile old dropdown */
@@ -440,6 +446,9 @@
   }
   .img_fit-content{
     width: 100%!important;
+  }
+  .search-fields{
+  padding: 5px 0px 10px 0px;
   }
 }
 /*Select Campaign- campaign */

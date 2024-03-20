@@ -129,7 +129,7 @@ h3 {
   padding-top: 10px;
 }
 .imageClassCss {
-  width: 60px;
+  width: 48px;
   margin: 0px;
 }
 .disabled {
@@ -381,4 +381,12 @@ h6 {
   position: absolute;
   left: 0;
   top: 7px;
+}
+.filter-content {
+  overflow: initial;
+}
+.connectwise_image_size{
+  width: 95px;
+  margin: 0px;
+  height: 100%;
 }

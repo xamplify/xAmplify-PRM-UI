@@ -337,7 +337,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_grid GridviewSidePaddings"
                         *ngFor="let form of pagination.pagedItems ;let i =index" id="formListDiv_{{form.id}}">
                         <div class="grid-box gridCardBoxHeight">
-                            <div class="img-class tab_view_img DesignGridViewImage image_effect">
+                            <div class="img-class tab_view_img DesignGridViewImage">
                                 <img class="fit-image" style="margin: unset;" [src]="form.thumbnailImage"
                                     onerror="this.src='assets/images/form.png';" alt="{{form.name}}">
                             </div>
@@ -375,7 +375,7 @@
                                 <span *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</span>
                                 <span *ngIf="form.formSubType === 'SURVEY'" translate>Survey</span>
                             </div>
-                            <div class="bar gridIconCustomization">
+                            <div class="bar gridIconCustomization icons_align">
                                 <a class="Iconhover custom-grid-icon"
                                     *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm"
                                     data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyForm(form.id)">

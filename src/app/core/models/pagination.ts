@@ -118,8 +118,12 @@ export class Pagination {
 	dateFilterOpionEnable:boolean = false;
 	customFilterOption:boolean = false;
 	/*** XNFR-409 *****/
+
 	userType:string = "";
 	/*** XNFR-427 *****/
 	ignoreSelfLeadsOrDeals:boolean = true;
+	source:string;
+	defaultLandingPage:boolean;
+	showLeadsForAttachingLead:boolean = false; /*** XNFR-476 ***/
 
 }

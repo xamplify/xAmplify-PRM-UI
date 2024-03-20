@@ -291,6 +291,9 @@ export class HomeGuideComponent implements OnInit {
 	goToHome() {
 		this.hidePageBarClass = false;
 		this.location.replaceState('home/help/guides');
+		this.pagination.moduleName = "";
+		this.pagination.pageIndex = 1;
+		this.userGudeTitles = [];
 	}
 
 	getUserGuidesByModuleName(moduleName: any) {
@@ -301,12 +304,15 @@ export class HomeGuideComponent implements OnInit {
 		this.getGuideTitlesByModuleName(this.pagination);
 	}
    getGuideTitlesByModuleName(pagination:Pagination){
+	this.loading = true;
 	this.dashboardService.getUserGuidesByModuleName(pagination).subscribe(
 		(data) => {
 			if (data.statusCode === 200) {
 				this.userGudeTitles = data.data;
 				pagination.totalRecords = this.userGudeTitles.length;
 				pagination = this.pagerService.getPagedItems(pagination, data.data);
+				this.pager = this.socialPagerService.getPager(this.userGudeTitles.length, this.pagination.pageIndex, this.pagination.maxResults);
+				this.pagination.pagedItems = this.userGudeTitles.slice(this.pager.startIndex, this.pager.endIndex + 1);
 				this.loading = false;
 			} else {
 				this.statusCode = 400;

@@ -95,10 +95,10 @@
                                         <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
                                             <i class="fa fa-search" aria-hidden="true"></i></button>
                                     </div>
-                                    <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" 
+                                    <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" [disabled]="pagination.totalRecords == 0"
                                         title="Click here to email the report" (click)="downloadCampaignsData(pagination)" *ngIf="!archived">
                                         <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
-                                    </span>
+                                    </button>
                                     <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view"
                                         data-toggle="tooltip" title="Filter" (click)="toggleFilterOption()">
                                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
@@ -1307,7 +1307,8 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="campaignName">Campaign Name</label>
-                    <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName">
+                    <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName" (input)="validateCopyCampaignName()">
+                    <span class="required" *ngIf="!isValidCopyCampaignName">Please Enter Campaign Name</span>
                 </div>
             </div>
             <div class="modal-footer">

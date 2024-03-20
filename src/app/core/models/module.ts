@@ -127,6 +127,8 @@ export class Module {
     showWorkFlow = false;
     navigateToSPFConfigurationSection = false;
     xamplifyCustomerSupportContactNumber = "";
+    /***XBI-2313***/
+    isInstanceNavigationLinksOptionDisplayed = false;
 
 
 }

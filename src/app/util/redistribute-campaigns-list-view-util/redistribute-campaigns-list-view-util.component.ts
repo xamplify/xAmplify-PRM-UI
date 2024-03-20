@@ -12,7 +12,6 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { UtilService } from 'app/core/services/util.service';
-
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
@@ -562,5 +561,13 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
         });
 
       }
+  }
+
+  openEmailTemplateInNewTab(campaign:any){
+    if(this.authenticationService.isLocalHost()){
+        this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
+    }else{
+        this.showCampaignPreview(campaign);
+    }
   }
 }

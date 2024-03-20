@@ -24,6 +24,7 @@ export class LandingPageService {
     id: number = 0;
     URL = this.authenticationService.REST_URL + "landing-page/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/"
+    vendorJourney:boolean = false;
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
          private router: Router,private utilService:UtilService,public referenceService:ReferenceService) { }
 
@@ -107,14 +108,14 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
-    getHtmlContentByAlias( alias: string,isPartnerLandingPage:boolean) {
-        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+    getHtmlContentByAlias( landingPageHtmlDto:any,isPartnerLandingPage:boolean ) {
+        landingPageHtmlDto['vanityUrlFilter']  = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
         if(isPartnerLandingPage){
-            return this.http.get( this.authenticationService.REST_URL + "/getPartnerHtmlBodyByAlias/" + alias+"/"+vanityUrlFilter,"")
+            return this.http.post( this.authenticationService.REST_URL + "/getPartnerHtmlBodyByAlias",landingPageHtmlDto)
             .map( this.extractData )
             .catch( this.handleError );
         }else{
-            return this.http.get( this.authenticationService.REST_URL + "/getHtmlBodyByAlias/" + alias+"/"+vanityUrlFilter, "" )
+            return this.http.post( this.authenticationService.REST_URL + "/getHtmlBodyByAlias" , landingPageHtmlDto )
             .map( this.extractData )
             .catch( this.handleError );
         }
@@ -214,6 +215,24 @@ export class LandingPageService {
 
     private handleError( error: any ) {
         return Observable.throw( error );
+    }
+
+    shareVendorJourneyLandingPageToPartners(shareLeadsDTO: any) {
+        return this.http.post(this.URL + "shareVendorJourneyLandingPageToPartners?access_token=" + this.authenticationService.access_token, shareLeadsDTO)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+    findPartnerVendorJourneyLandingPages(pagination: any) {
+        return this.http.post(this.URL + "findPartnerVendorJourneyLandingPages?searchKey=" + pagination.searchKey + "&access_token=" + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getLandingPageSharedDetails( landingPageId: number ) {
+        return this.http.get( this.URL + "landingPageSharedDetails/" + landingPageId + "?access_token=" + this.authenticationService.access_token, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
     }
 
 }

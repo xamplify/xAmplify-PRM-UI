@@ -209,12 +209,12 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
        if(this.gdprStatus){
             if(this.addContactuser.legalBasis.length>0){
                 this.isValidLegalOptions = true;
-                this.validatePartnerCompany();
+                 this.validatePartnerCompany();
             }else{
                 this.isValidLegalOptions = false;
             }
         }else{
-            this.validatePartnerCompany();
+             this.validatePartnerCompany();
         }
     }
     else{
@@ -236,12 +236,15 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         
     }
 
-    contactCompanyChecking( event:any ) {
-        if ((this.checkingContactTypeName == 'Contact' ) 
-        ||  (this.isPartner && (this.addContactuser.contactCompany != null 
-        || this.addContactuser.contactCompany != null))) {
+contactCompanyChecking( event:any ) {
+        if (this.checkingContactTypeName == 'Contact' ) 
+        {
             this.isCompanyDetails = true;
-        } else {
+        } else if  (this.isPartner && (this.addContactuser.contactCompany != null 
+             && this.addContactuser.contactCompany !='' && this.addContactuser.contactCompany.trim().length>0 )){
+                this.isCompanyDetails = true;
+            }        
+        else {
             this.isCompanyDetails = false;
         }
         this.searchableDropdownEventReceiver(event);
@@ -307,7 +310,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
             this.gdprStatus = this.gdprInput.gdprStatus;
         }
-        this.getActiveCompanies();
+        if ( this.router.url.includes( 'home/contacts' ) ){
+            this.getActiveCompanies();
+        }
         /*****XNFR-98*****/
         if(this.isTeamMemberPartnerList==undefined){
             this.isTeamMemberPartnerList = false;
@@ -402,13 +407,11 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     
     validatePartnerCompany(){
     try {
-    this.contactService.validateCompanyName(this.addContactuser.contactCompany, this.contactDetails.companyId)
+    this.contactService.validatePartnerCompany(this.addContactuser, this.contactDetails.companyId)
     .subscribe(
 					(data: any) => {
 						if(data.statusCode == 200){
-						    $( '#addContactModal' ).modal( 'hide' );
-                            this.contactService.isContactModalPopup = false;
-                            this.notifyParent.emit( this.addContactuser );
+						    this.closeAndEmitData();
 						}else{
 					let updatedMessage = data.message + "\n" + data.data;
 					this.validationResponse = new CustomResponse('ERROR', updatedMessage, true);
@@ -422,12 +425,15 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 	}
 
     getActiveCompanies() {
+        this.loading= true;
         this.contactService.getCompaniesForDropdown().subscribe(result => {
             this.searchableDropDownDto.data = result.data;
             this.searchableDropDownDto.placeHolder = "Please Select Company";
+            this.loading = false;
           }
         , error => {
             console.log("error")
+            this.loading = false;
         }); 
     }
 

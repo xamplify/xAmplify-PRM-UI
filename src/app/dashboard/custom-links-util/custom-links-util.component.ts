@@ -156,21 +156,26 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   callInitMethods(){
+    this.initializeVariables();
+    this.findLinks(this.pagination);
+  }
+
+  private initializeVariables() {
     this.ngxLoading = false;
     this.isAdd = true;
     this.saving = false;
     this.previouslySelectedImagePath = "";
     this.formData = new FormData();
     this.clearImage();
-    if(this.moduleType==this.properties.dashboardButtons){
+    if (this.moduleType == this.properties.dashboardButtons) {
       this.headerText = "Add Button";
       this.listHeaderText = "Your Dashboard Button's List";
       this.isDashboardBannerImageUploaded = true;
-    }else if(this.moduleType==this.properties.newsAndAnnouncements){
+    } else if (this.moduleType == this.properties.newsAndAnnouncements) {
       this.headerText = "Add News & Announcements";
       this.listHeaderText = "Your News & Announcements List";
       this.isDashboardBannerImageUploaded = true;
-    }else if(this.moduleType==this.properties.dashboardBanners){
+    } else if (this.moduleType == this.properties.dashboardBanners) {
       this.headerText = "Add Dashboard Banner";
       this.listHeaderText = "Your Dashboard Banners List";
       this.isDashboardBannerImageUploaded = false;
@@ -182,9 +187,8 @@ export class CustomLinksUtilComponent implements OnInit {
     this.buildCustomLinkForm();
     this.customLinkForm.get('customLinkType').setValue(this.defaultType);
     this.previouslySelectedImagePath = "";
-    this.isAddDashboardBannersDivHidden= false;
+    this.isAddDashboardBannersDivHidden = false;
     this.dashboardBannersInfoMessage = new CustomResponse();
-    this.findLinks(this.pagination);
   }
 
   findLinks(pagination: Pagination) {
@@ -453,12 +457,7 @@ export class CustomLinksUtilComponent implements OnInit {
   cancel() {
     this.customLinkDto = new CustomLinkDto();
     this.customResponse = new CustomResponse();
-    this.buttonActionType = true;
-    this.setDefaultValuesForForm();
-    this.buildCustomLinkForm();
-    this.customLinkForm.get('customLinkType').setValue(this.defaultType);
-    this.previouslySelectedImagePath = "";
-    this.clearImage();
+    this.initializeVariables();
     if(this.moduleType==this.properties.dashboardBanners){
       this.isAddDashboardBannersDivHidden = this.customLinkDtos.length==5;
       this.dashboardBannersInfoMessage = new CustomResponse('INFO',this.properties.maximumDashboardBannersLimitReached,true);

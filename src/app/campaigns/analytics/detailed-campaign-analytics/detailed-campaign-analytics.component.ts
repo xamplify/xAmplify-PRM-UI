@@ -2118,7 +2118,6 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
         tempalteObject = emailTemplate;
         campaign = this.campaign;
       }
-
       let userId = 0;
       if (this.campaign.nurtureCampaign) {
         userId = this.campaign.parentCampaignUserId;
@@ -3131,6 +3130,14 @@ viewCampaignLeadForm(leadId: any) {
           }
       );
 	  }
+
+    openEmailTemplateInNewTab(emailTemplate:any){
+      if(this.authenticationService.isLocalHost()){
+        this.referenceService.previewCampaignEmailTemplateInNewTab(this.campaignId);
+      }else{
+        this.showEmailTemplatePreview(emailTemplate);
+      }
+    }
 
 }
 

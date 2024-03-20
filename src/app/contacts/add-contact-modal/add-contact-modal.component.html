@@ -311,14 +311,17 @@
         <button class="btn Btn-Gray neg_mrg_top4 pos_mar_rgt3" (click)="addContactModalClose()"
           translate>Cancel</button>
         <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset pos_pd_top2"
-          [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
+          [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
+          ||addContactuser.contactCompany == ''"
           (click)="addRow()" translate><span class="btn Btn-Green transition pos_pd_top6">Proceed</span></button>
         <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset pos_pd_top2"
-          [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
+          [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
+          ||addContactuser.contactCompany == ''"
           (click)="addEditContactRow()" translate><span
             class="btn Btn-Green transition pos_pd_top6">Proceed</span></button>
         <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset"
-          [disabled]="!checkingForEmail || !isCompanyDetails || !validLimit  || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
+          [disabled]="!checkingForEmail || !isCompanyDetails || !validLimit  || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
+          ||addContactuser.contactCompany == ''"
           (click)="updateUser()" translate><span class="btn Btn-Green transition txt_pd-top3">Update</span></button>
       </div>
     </div>

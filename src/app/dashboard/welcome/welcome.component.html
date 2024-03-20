@@ -88,7 +88,7 @@
                 <button class="button_blue bgcolor-unset btn-xs bgcolor-unset" [routerLink]="['/home/partners/add']"
                   translate><span class="btn btn-primary transition">Add
                     {{authenticationService?.partnerModule?.customName}}</span></button>
-                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent" data-toggle="modal"
+                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent guides_btn" data-toggle="modal"
                   (click)="goToUserGuidePage(11,true)" translate>
                   <a href="{{urlLink}}" target="_blank"><span class="btn Btn-Green transition">Tell me
                       how</span></a></button>
@@ -115,9 +115,13 @@
               <h1 style="text-align: left" translate>Content</h1>
               <p class="mb_left0" style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
               <div class="tab_Flex" style="text-align: left">
-                <button class="button_blue btn-xs bgcolor-unset" [routerLink]="['/home/select-modules']" translate><span
-                    class="btn btn-primary transition">Upload Content</span></button>
-                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent" data-toggle="modal"
+                <button class="button_blue btn-xs bgcolor-unset" [routerLink]="['/home/select-modules']" translate>
+                  <!--- XBI-2315 --->
+                  <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl" class="btn btn-primary transition">Upload Content</span>
+                  <span *ngIf="authenticationService?.module?.isOnlyPartnerCompany || authenticationService?.module?.loggedInThroughVendorVanityUrl" class="btn btn-primary transition">Manage Content</span>
+                  <!---- XBI-2315 -->
+                </button>
+                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent guides_btn" data-toggle="modal"
                   (click)="goToUserGuidePage(4,true)" translate>
                   <a href="{{urlLink}}" target="_blank"><span class="btn Btn-Green transition">Tell me
                       how</span></a></button>
@@ -148,7 +152,7 @@
                 <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/contacts/add')"
                   translate><span class="btn btn-primary transition">Add contacts</span></button>
-                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent" data-toggle="modal"
+                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent guides_btn" data-toggle="modal"
                   (click)="goToUserGuidePage(3,true)" translate>
                   <a href="{{urlLink}}" target="_blank"><span class="btn Btn-Green transition">Tell me
                       how</span></a></button>
@@ -177,7 +181,7 @@
                 <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/emailtemplates/select')"
                   translate><span class="btn btn-primary transition">Create templates</span></button>
-                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent" data-toggle="modal"
+                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent guides_btn" data-toggle="modal"
                   (click)="goToUserGuidePage('how_to_designing_email_template',false)" translate>
                   <a href="{{urlLink}}" target="_blank"><span class="btn Btn-Green transition">Tell me
                       how</span></a></button>
@@ -206,7 +210,7 @@
                 <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/campaigns/select')"
                   translate><span class="btn btn-primary transition">Create campaigns</span></button>
-                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent" data-toggle="modal"
+                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent guides_btn" data-toggle="modal"
                   (click)="goToUserGuidePage(2,true)" translate>
                   <a href="{{urlLink}}" target="_blank"><span class="btn Btn-Green transition">Tell me
                       how</span></a></button>
@@ -235,7 +239,7 @@
                 <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/team/add-team')"
                   translate><span class="btn btn-primary transition">Add team member</span></button>
-                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent" data-toggle="modal"
+                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent guides_btn" data-toggle="modal"
                   (click)="goToUserGuidePage(16,true)" translate>
                   <a href="{{urlLink}}" target="_blank"><span class="btn Btn-Green transition">Tell me
                       how</span></a></button>
@@ -265,7 +269,7 @@
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/social/manage/all')"
                   [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate><span
                     class="btn btn-primary transition">Connect</span></button>
-                <button type="button" class="button bgcolor-unset btn-xs Btn-Green" data-toggle="modal"
+                <button type="button" class="button bgcolor-unset btn-xs Btn-Green guides_btn" data-toggle="modal"
                   [disabled]="true" data-target="#myModal" translate><span
                     class="btn Btn-Green transition">Tell
                     me how</span></button>
@@ -295,7 +299,7 @@
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/dashboard')"
                   [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate><span
                     class="btn btn-primary transition">Analytics</span></button>
-                <button type="button" class="button bgcolor-unset btn-xs" data-toggle="modal" [disabled]="true"
+                <button type="button" class="button bgcolor-unset btn-xs guides_btn" data-toggle="modal" [disabled]="true"
                   data-target="#myModal" translate><span class="btn Btn-Green transition">Tell me
                     how</span></button>
               </div>

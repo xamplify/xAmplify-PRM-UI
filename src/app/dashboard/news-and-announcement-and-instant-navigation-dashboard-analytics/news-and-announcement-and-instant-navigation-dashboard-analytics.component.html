@@ -1,5 +1,5 @@
 <div class="row" *ngIf="isVanityUrlEnabled">
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pr-7 pd_btm5">
+    <div [ngClass]="!authenticationService?.module?.isInstanceNavigationLinksOptionDisplayed ? 'col-xs-12 col-sm-12 col-md-12 col-lg-12 pr-7 pd_btm5':'col-xs-12 col-sm-6 col-md-6 col-lg-6 pr-7 pd_btm5'">
         <app-modal-popup-loader [height]="220" *ngIf="isNewsAndAnnouncementApiLoading"></app-modal-popup-loader>
         <div class="portlet light h-240" *ngIf="!isNewsAndAnnouncementApiLoading">
             <div class="portlet-title">
@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <div class="col w430 text-overflow">
-                        <h5 class="line-height m0 text-overflow" title="{{item?.title}}">{{item?.title}}</h5>
+                        <h5 class="line-height m0 text-overflow"><span data-toggle="tooltip" data-placement="bottom"  title="{{item?.title}}">{{item?.title}}</span></h5>
                     </div>
                     <div class="col">
                         <a href="{{item?.link}}" target="{{item?.openLinkInNewTab ? '_blank' : '_self'}}"
@@ -28,7 +28,7 @@
     </div>
 
 
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl-7 pd_btm5">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl-7 pd_btm5"  *ngIf="authenticationService?.module?.isInstanceNavigationLinksOptionDisplayed">
         <app-modal-popup-loader [height]="220" *ngIf="isInstantNavigationLinksApiLoading"></app-modal-popup-loader>
         <div class="portlet light h-240" *ngIf="!isInstantNavigationLinksApiLoading">
             <div class="portlet-title">
@@ -40,25 +40,81 @@
             <div class="portlet-body pt0">
                 <div class="inline-flex border-end" *ngFor="let instantNavigationLink of instantNavigationLinks">
                     <div class="col w430 text-overflow">
-                        <h5 class="line-height m0 text-overflow" title="{{instantNavigationLink?.title}}">
-                            {{instantNavigationLink?.title}}</h5>
+                        <h5 class="line-height m0 text-overflow">
+                         <span data-toggle="tooltip" data-placement="bottom"  title="{{instantNavigationLink?.title}}">{{instantNavigationLink?.title}}</span>
+                         </h5>
                     </div>
                     <div class="col">
                         <div class="instant-links-type">
-                            <span *ngIf="instantNavigationLink?.type=='Asset'"
-                                class="view-banner banner-top mr5">{{instantNavigationLink?.type}}</span>
-                            <span *ngIf="instantNavigationLink?.type=='Track'"
-                                class="view-banner orange-lable-cu1 mr5">{{instantNavigationLink?.type}}</span>
-                            <span *ngIf="instantNavigationLink?.type=='Play Book'"
-                                class="view-banner published mr5">{{instantNavigationLink?.type}}</span>
+                            <span *ngIf="instantNavigationLink?.type=='Asset'" class="view-banner banner-top mr5">{{instantNavigationLink?.type}}</span>
+                            <span *ngIf="instantNavigationLink?.type=='Track'" class="view-banner orange-lable-cu1 mr5">{{instantNavigationLink?.type}}</span>
+                            <span *ngIf="instantNavigationLink?.type=='Play Book'" class="view-banner published mr5">{{instantNavigationLink?.type}}</span>
                         </div>
                     </div>
-                    <div class="col mt10">
-                        <a (click)="navigate(instantNavigationLink)"><i class="fa fa-link"></i></a>
-                    </div>
+                    <!--Asset-->
+                    <ng-container *ngIf="instantNavigationLink?.type=='Asset'">
+                        <!--Asset / Vendor View-->
+                        <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
+                            access:authenticationService?.module?.damAccess,
+                            title: authenticationService?.module?.damAccess ?'Click here to view asset analytics':'You do not have permission to view the analytics'}">
+                        </ng-template>
+                        <!--Asset / Partner View-->
+                        <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
+                            access:authenticationService?.module?.damAccessAsPartner,
+                            title: authenticationService?.module?.damAccessAsPartner ?'Click here to view the asset that has been shared by your vendor':'You do not have permission to view the asset'}">
+                        </ng-template>
+                    </ng-container>
+
+                    <!--Track-->
+                    <ng-container *ngIf="instantNavigationLink?.type=='Track'">
+                        <!--Track / Vendor View-->
+                        <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
+                            access:authenticationService?.module?.lmsAccess,
+                            title: authenticationService?.module?.lmsAccess ?'Click here to view track analytics':'You do not have permission to view the analytics'}">
+                        </ng-template>
+                        <!--Track / Partner View-->
+                        <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
+                            access:authenticationService?.module?.lmsAccessAsPartner,
+                            title: authenticationService?.module?.lmsAccessAsPartner ?'Click here to view the track that has been shared by your vendor':'You do not have permission to view the track'}">
+                        </ng-template>
+                    </ng-container>
+
+                    <!--Play Book-->
+                    <ng-container *ngIf="instantNavigationLink?.type=='Play Book'">
+                        <!--Play Book / Vendor View-->
+                        <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
+                            access:authenticationService?.module?.playbookAccess,
+                            title: authenticationService?.module?.playbookAccess ?'Click here to view play book analytics':'You do not have permission to view the analytics'}">
+                        </ng-template>
+                        <!--Play Book / Partner View-->
+                        <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="instantNavigationLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{instantNavigationLink:instantNavigationLink,
+                            access:authenticationService?.module?.playbookAccessAsPartner,
+                            title: authenticationService?.module?.playbookAccessAsPartner ?'Click here to view the play book that has been shared by your vendor':'You do not have permission to view the play book'}">
+                        </ng-template>
+                    </ng-container>
+                    
                 </div>
                 <div class="alert alert-info text-center" *ngIf="instantNavigationLinks?.length==0">No Data Found</div>
             </div>
         </div>
     </div>
 </div>
+<ng-template #instantNavigationLinkNgTemplateIcon let-instantNavigationLink="instantNavigationLink" let-access="access" let-title="title">
+    <div [ngClass]="access ? 'col mt10':'disabled-div col mt10'" title="{{title}}">
+        <a [ngClass]="!access? 'disabled-div':''" (click)="access && navigate(instantNavigationLink)">
+            <i class="fa fa-link" [ngClass]="!access ?'disabled':''"></i>
+        </a>
+    </div>
+</ng-template>

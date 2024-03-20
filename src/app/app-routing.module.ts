@@ -47,6 +47,7 @@ import { CustomSkinComponent } from './dashboard/user-profile/custom-skin/custom
 import { DevicesInfoComponent } from './azuga/devices-info/devices-info.component';
 import { MaintenanceComponent } from './authentication/maintenance/maintenance.component';
 import { PreviewLoginComponent } from './common/preview-login/preview-login.component';
+import { PreviewComponent } from './util/preview/preview.component';
 
 
 export const routes: Routes = [
@@ -106,6 +107,7 @@ export const routes: Routes = [
 			/*******XNFR-83*******/
 			{ path: 'azuga', loadChildren: 'app/azuga/azuga.module#AzugaModule',  data: { preload: true } },
 			{ path: 'help', loadChildren: 'app/guides/guides.module#GuidesModule',  data: { preload: true } },
+			
 			{ path: 'error/:errorStatusId', component: ErrorPagesComponent, data: { preload: true } }
 		]
 	},
@@ -136,10 +138,12 @@ export const routes: Routes = [
 	{ path: 'showEventCampaignSMS/:alias', component: LogEventCampaignComponentSMS },
 	{ path: 'logs/:alias', component: LogSMSClickComponent },
 	{ path: 'f/:alias', component: FormPreviewComponent },
+	{ path: 'vjf/:alias', component: FormPreviewComponent },
 	{ path: 'l/:alias/:seoName', component: ShowLandingPageComponent },
 	{ path: 'pl/:alias/:seoName', component: ShowLandingPageComponent },
 	{ path: 'l/:alias', component: ShowLandingPageComponent },
 	{ path: 'pl/:alias', component: ShowLandingPageComponent },
+	{ path: 'vjpl/:alias', component: ShowLandingPageComponent },
 	{ path: 'showCampaignLandingPage/:alias', component: ShowLandingPageComponent },
 	{ path: 'scp/:alias', component: ShowLandingPageComponent },
 	{ path: 'clpl/:alias', component: ShowLandingPageComponent },
@@ -153,6 +157,15 @@ export const routes: Routes = [
 	{ path: 'maintenance', component: MaintenanceComponent },
 	/*** XNFR-416 *****/
 	{ path: 'login/preview', component: PreviewLoginComponent},
+	{ path: 'pv/t/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/ct/:campaignId', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/sct/:campaignId', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/scwaret/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/cwaret/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/scwarwlt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/cwarwlt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/wt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/p/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
 	/*** XNFR-416 *****/
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },

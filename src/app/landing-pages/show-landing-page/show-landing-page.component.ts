@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { ActivatedRoute,Router,NavigationStart, NavigationEnd  } from '@angular/router';
-import { ReferenceService } from '../../core/services/reference.service';
-import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Processor } from '../../core/models/processor';
@@ -33,8 +31,8 @@ export class ShowLandingPageComponent implements OnInit {
     show: boolean;
     message: string;
     isPartnerLandingPage:boolean=false;
-  constructor(private route: ActivatedRoute,private referenceService:ReferenceService,private landingPageService:LandingPageService,
-          private authenticationService:AuthenticationService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
+    isVendorJourney:boolean = false;
+  constructor(private route: ActivatedRoute,private landingPageService:LandingPageService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
           public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService,private vanityURLService:VanityURLService) {
           }
 
@@ -54,6 +52,10 @@ export class ShowLandingPageComponent implements OnInit {
       }else if(this.router.url.includes("/pl/")){
           this.isPartnerLandingPage = true;
           this.getHtmlBodyAlias(this.alias);
+      }else if(this.router.url.includes("/vjpl/")){
+        this.isPartnerLandingPage = true;
+        this.isVendorJourney = true;
+        this.getHtmlBodyAlias(this.alias);
       }else{
           this.getHtmlBodyAlias(this.alias);
       }
@@ -163,7 +165,11 @@ export class ShowLandingPageComponent implements OnInit {
   
   
   getHtmlBodyAlias(alias:string){
-      this.landingPageService.getHtmlContentByAlias(alias,this.isPartnerLandingPage)
+      let landingPageHtmlDto = {
+        "alias":alias,
+        "vendorJourney":this.isVendorJourney
+      }
+      this.landingPageService.getHtmlContentByAlias(landingPageHtmlDto,this.isPartnerLandingPage)
       .subscribe(
         (response: any) => {
           if (response.statusCode === 200) {

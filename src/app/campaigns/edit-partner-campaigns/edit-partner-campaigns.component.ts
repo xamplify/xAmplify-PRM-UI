@@ -1577,4 +1577,42 @@ appendValueToSubjectLine(event:any){
         this.campaignDescriptionDivClass = trimmedDescription.length>0 ? this.successClass : this.formGroupClass;
     }
 
+    openEmailTemplateInNewTab(campaign:any){
+        if(this.authenticationService.isLocalHost()){
+            if(this.campaign.nurtureCampaign){
+                this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
+            }else{
+                this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
+            }
+        }else{
+            this.previewEmailTemplate(campaign.emailTemplate);
+        }
+    }
+
+    openAutoResponseEmailTemplateInNewTab(reply:any){
+        if(this.authenticationService.isLocalHost()){
+            if(this.campaign.nurtureCampaign){
+               // this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
+            }else{
+                this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+            }
+        }else{
+            this.previewEmailTemplate(reply.emailTemplate);
+        }
+    }
+
+    openAutoResponseWebsiteLinkTemplateInNewTab(url:any){
+        if(this.authenticationService.isLocalHost()){
+            if(this.campaign.nurtureCampaign){
+               // this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
+            }else{
+                this.referenceService.previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id);
+            }
+        }else{
+            this.previewEmailTemplate(url.emailTemplate);
+        }
+    }
+
+
+
 }

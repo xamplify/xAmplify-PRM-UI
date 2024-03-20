@@ -136,8 +136,8 @@
                   </div>
                   <div class="page-toolbar col-xs-12 col-sm-5 col-lg-6 pull-right" style="padding: 0px 4px 8px 0px;">
                     <div class="btn-group pull-right width">
-                      <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
-                        <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
+                      <ng-container class='m10' *ngIf="!prm || !isVendorVersion"> 
+                        <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view mrg_rgt5"
                           data-toggle="tooltip" [class.disabled]="listView" title="List View">
                           <i aria-hidden="true" class="fa fa-th-list p10"></i>
                         </span>
@@ -150,11 +150,11 @@
                         </span>
 
                       </ng-container>
-                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" style="margin-right: 4px;"
-                        data-toggle="tooltip" title="Click here to email the report" [class.disabled]="dealsSortOption.totalRecords == 0"
+                      <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" style="margin-right: 4px;"
+                        data-toggle="tooltip" title="Click here to email the report" [disabled]="dealsSortOption.totalRecords == 0"
                         *ngIf="listView" (click)="downloadDeals(dealsPagination)">
                         <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
-                      </span>
+                      </button>
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
                         (click)="addDeal()" style="padding-left: 11px;">
                         <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>

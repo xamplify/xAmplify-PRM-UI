@@ -67,8 +67,8 @@ export class FormService {
             .catch( this.handleError );
     }
 
-    getByAlias( alias: string ) {
-        return this.http.get( this.authenticationService.REST_URL + "/getByFormAlias/" + alias, "" )
+    getByAlias( alias: string, vendorJourney:boolean ) {
+        return this.http.get( this.authenticationService.REST_URL + "/getByFormAlias/" + alias+"/"+vendorJourney, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -205,4 +205,23 @@ export class FormService {
     private handleError( error: any ) {
         return Observable.throw( error );
     }
+
+    /***** XNFR-467 *****/
+    
+    downloadCsv(formSubmitId: number){
+        let url = this.URL+"survey/download/" + formSubmitId +"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+        .map(( response: any ) => response )
+        .catch( this.handleError );
+    }
+    
+    /***** XNFR-467 *****/
+
+    downloadCsvFile(alias:string){
+    let url = this.URL+"survey/analytics/download/" + alias +"?access_token=" + this.authenticationService.access_token;
+         return this.http.get(url)
+        .map(( response: any ) => response )
+       .catch( this.handleError );
+     }
+
 }

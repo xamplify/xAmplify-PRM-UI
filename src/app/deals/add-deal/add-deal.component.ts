@@ -47,6 +47,7 @@ export class AddDealComponent implements OnInit {
   @Input() public actionType: string;
   @Input() public isVendorVersion: boolean;
   @Input() public isOrgAdmin: boolean;
+  @Input() public hideAttachLeadButton: boolean;
   @Output() notifySubmitSuccess = new EventEmitter();
 
   preview = false;
@@ -108,9 +109,13 @@ export class AddDealComponent implements OnInit {
 
   showLeadForm: boolean = false;
   dealToLead: any;
-  showSelectLeadModel: boolean;
+  showSelectLeadModel: boolean = false;
   showAttachLeadButton: boolean = false;
   attachLeadText: string = "Attach a Lead";
+  /*** XNFR-476 ***/
+  holdActiveCRMPipelineId: number = 0;
+  showDetachLeadButton: boolean  = false;
+  holdCreatedForCompanyId: number = 0;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -132,6 +137,9 @@ export class AddDealComponent implements OnInit {
     if (this.actionType === "add") {
       this.showCommentActions = true;
       this.showAttachLeadButton = true;
+      if(this.hideAttachLeadButton){
+        this.showAttachLeadButton = false;
+      }
       this.dealFormTitle = "Add a Deal";
       if (this.leadId > 0) {
         this.getLead(this.leadId);
@@ -218,25 +226,29 @@ export class AddDealComponent implements OnInit {
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
             self.lead = data.data;
-              self.showContactInfo = true;
-              self.contact.firstName = self.lead.firstName;
-              self.contact.lastName = self.lead.lastName;
-              self.contact.emailId = self.lead.email;
-              self.deal.associatedLeadId = self.lead.id;
+            self.showContactInfo = true;
+            self.contact.firstName = self.lead.firstName;
+            self.contact.lastName = self.lead.lastName;
+            self.contact.emailId = self.lead.email;
+            self.deal.associatedLeadId = self.lead.id;
+            self.deal.associatedUserId = self.lead.associatedUserId;
+            //this.isSalesForceEnabled();
+            if (this.deal.createdForCompanyId == 0 && this.deal.createdForCompanyId != undefined) {
               self.deal.createdForCompanyId = self.lead.createdForCompanyId;
               self.createdForCompanyIdError = false;
-              self.deal.associatedUserId = self.lead.associatedUserId;
-              if (self.lead.campaignId != null && self.lead.campaignId > 0) {
-                self.deal.campaignId = self.lead.campaignId;
-                self.deal.campaignName = self.lead.campaignName;
-                // this.getCampaignDealPipeline();
-              } else {
-                self.deal.campaignId = 0;
-                self.deal.campaignName = '';
-                //self.getPipelines();
-              }
-              //this.isSalesForceEnabled();         
-              this.getActiveCRMDetails();
+              self.getActiveCRMDetails();
+            }
+            if (self.lead.campaignId != null && self.lead.campaignId > 0) {
+              self.deal.campaignId = self.lead.campaignId;
+              self.deal.campaignName = self.lead.campaignName;
+              this.getCampaignDealPipeline();
+              this.resetStages();
+            } else {
+              self.deal.campaignId = 0;
+              self.deal.campaignName = '';
+              this.hasCampaignPipeline = false;
+              //self.getPipelines();
+            }
           }
         },
         error => {
@@ -436,6 +448,7 @@ export class AddDealComponent implements OnInit {
   }
 
   onChangeCreatedFor() {
+    this.holdCreatedForCompanyId = this.deal.createdForCompanyId;
     if (this.deal.createdForCompanyId > 0) {
       this.getActiveCRMDetails();
     } else {
@@ -445,6 +458,7 @@ export class AddDealComponent implements OnInit {
       this.stages = [];
       this.showDefaultForm = false;
       this.propertiesQuestions = [];
+      this.hasCampaignPipeline = false;
     }
   }
 
@@ -1046,6 +1060,7 @@ export class AddDealComponent implements OnInit {
               self.pipelineIdError = false;
               self.stages = activeCRMPipeline.stages;
               self.activeCRMDetails.hasDealPipeline = true;
+              this.holdActiveCRMPipelineId = activeCRMPipeline.id;
             } else {
               let dealPipelineExist = false;
               for (let p of activeCRMPipelines) {
@@ -1060,6 +1075,7 @@ export class AddDealComponent implements OnInit {
                 self.deal.pipelineStageId = 0;
                 this.setFieldErrorStates();
               }
+              self.hasCampaignPipeline = false;
               self.activeCRMDetails.hasDealPipeline = false;
             }
           } else if (data.statusCode == 404) {
@@ -1110,6 +1126,7 @@ export class AddDealComponent implements OnInit {
     this.showSelectLeadModel = false;
     this.leadId = leadId;
     this.attachLeadText = "Change Lead";
+    this.showDetachLeadButton = true;
     this.getLead(this.leadId);
   }
 
@@ -1135,6 +1152,32 @@ export class AddDealComponent implements OnInit {
 
   closeSelectLeadModel() {
     this.showSelectLeadModel = false;
+  }
+
+  /*** XNFR-476 ***/
+  resetAttachedLeadInfo() {
+    this.showContactInfo = false;
+    this.deal.associatedLeadId = 0;
+    this.attachLeadText = 'Attach Lead';
+    this.showDetachLeadButton = false;
+    this.deal.campaignId = 0;
+    this.deal.campaignName = '';
+    this.leadId = 0;
+    if (this.actionType == 'add' && !this.vanityLoginDto.vanityUrlFilter) {
+      this.deal.createdForCompanyId = this.holdCreatedForCompanyId;
+      if (this.deal.createdForCompanyId == 0) {
+        this.resetPipelines();
+        this.resetStages();
+        this.isDealRegistrationFormValid = false;
+      }
+      if (this.deal.pipelineId == 0) {
+        this.activeCRMDetails.hasDealPipeline = false;
+        this.hasCampaignPipeline = false;
+      }
+      if (this.hasCampaignPipeline) {
+        this.hasCampaignPipeline = false;
+      }
+    }
   }
 
 }

@@ -34,7 +34,7 @@
             <!-- Sidebar Holder -->
             <nav id="sidebar">
               <ul class="list-unstyled components">
-                <li *ngIf="menuItem?.accountDashboard"
+                <!-- <li *ngIf="menuItem?.accountDashboard"
                   [ngClass]="expansionModuleName === 'Account Dashboard'? 'active':''">
                   <a *ngIf="!menuItem?.isOnlyPartnerCompany"
                     (click)="getGuideLinkByType()">
@@ -42,6 +42,19 @@
                     <span class="title" translate>Account Dashboard</span>
                     <span class=""></span>
                   </a>
+                </li> -->
+                <li *ngIf="menuItem?.accountDashboard" [ngClass]="showListId === 'Account Dashboard'? 'active':''">
+                  <a href="#Account" data-toggle="collapse" aria-expanded="false"
+                    (click)="getUserGuidesByModuleName('Account Dashboard')"
+                    [ngClass]="expansionModuleName === 'Account Dashboard'?'show':''">
+                    <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                    <span class="title" translate>Account Dashboard</span>
+                  </a>
+                  <ul *ngIf="showListId === 'Account Dashboard' " class="collapse list-unstyled" id="Account"
+                    [ngClass]="expansionModuleName === 'Account Dashboard'?'in':''">
+                    <li *ngFor="let name of userGudeTitles"><a
+                        (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                  </ul>
                 </li>
                 <!--Partners-->
                 <li *ngIf="menuItem?.partners" [ngClass]="showListId === 'Partner'? 'active':''">
@@ -210,6 +223,21 @@
                         (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                   </ul>
                 </li>
+                <!-- Companies-->
+                <li *ngIf="menuItem?.contacts && !authenticationService.module.deletedPartner"
+                [ngClass]="showListId === 'Companies'? 'active':''">
+                <a href="#Companies" data-toggle="collapse" aria-expanded="false"
+                  [ngClass]="expansionModuleName === 'Companies'?'show':''"
+                  (click)="getUserGuidesByModuleName('Companies')">
+                  <i class="fa fa-id-card" aria-hidden="true"></i>
+                  <span class="title" translate>Companies</span>
+                </a>
+                <ul *ngIf="showListId === 'Companies'" class="collapse list-unstyled"
+                  [ngClass]="expansionModuleName === 'Companies'?'in':''" id="Companies">
+                  <li *ngFor="let name of userGudeTitles" ><a
+                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul>
+              </li>
               </ul>
             </nav>
           </div>

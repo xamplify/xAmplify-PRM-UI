@@ -65,6 +65,9 @@ import { CompanyLoginTemplateActive } from 'app/email-template/models/company-lo
 import { CompanyProfileService } from 'app/dashboard/company-profile/services/company-profile.service';
 
 import { DefaultDashBoardForPartners } from 'app/dashboard/models/default-dashboard-for-partners';
+import { PreviewPopupComponent } from 'app/forms/preview-popup/preview-popup.component';
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
+import { LandingPage } from 'app/landing-pages/models/landing-page';
 declare var swal, $, videojs: any, Papa: any;
 
 @Component({
@@ -325,7 +328,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	checkSelectedDashboardType=[];
 	companyIdFromCompanyProfileNameForVanity:number;	
 	removeMarketingNonInteractiveBox:boolean = false;
-
 	/** XNFR-426 **/
 	leadApprovalRejectionStatus: boolean = false;
 	leadApprovalStatus:boolean = false;
@@ -336,15 +338,27 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/**XNFR-459****/
 	isNewsAndAnnouncementsOptionClicked:boolean;
 	isDashboardBannersOptionClicked:boolean;
+	vendorJourney:boolean = false;
+	isLandingPages:boolean = false;
+	loggedInUserCompanyId:number = 0;
+	/*** XNFR-483 ***/
+	isAggreedToDisableLeadApprovalFeature: boolean = false;
+	disableSaveChangesButtonForLeadApproval: boolean = false;
+
+	// halo psa
+	halopsaRibbonText: string;
+	isProduction: boolean = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService) {
+			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService,
+			public landingPageService: LandingPageService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isLocalHost = this.authenticationService.isLocalHost();
+		this.isProduction = this.authenticationService.isProductionDomain();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		this.referenceService.renderer = this.renderer;
 		this.isUser = this.authenticationService.isOnlyUser();
@@ -648,6 +662,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
 			this.authenticationService.logout();
 		}
+		this.getCompanyId();
 	}
 
 	getModuleAccessByUser() {
@@ -1724,6 +1739,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.checkMicrosoftIntegration();
 		this.checkPipedriveIntegration();
 		this.checkConnectWiseIntegration();
+		this.checkHaloPsaIntegration();
 		this.getActiveCRMDetails();
 	}
 	checkMicrosoftIntegration() {
@@ -1994,6 +2010,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 500);
 			this.activeTabHeader = this.properties.customLoginScreen;
 		}
+
 		/****XNFR-454****/
 		else if(this.activeTabName==this.properties.addDomainsText){
 			this.ngxloading = true;
@@ -2027,7 +2044,28 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.dashboardBanners;
+    }
+		else if (this.activeTabName == "vendorJourney") {
+			this.ngxloading = true;
+			this.vendorJourney = false;
+			let self = this;
+			setTimeout(() => {
+				self.vendorJourney = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.vendorJourney;
 
+		}
+		else if (this.activeTabName == "landingPages") {
+
+			this.ngxloading = true;
+			this.isLandingPages = false;
+			let self = this;
+			setTimeout(() => {
+				self.isLandingPages = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.landingPages;
 		}
 		this.referenceService.goToTop();
 	}
@@ -2853,6 +2891,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.integrationType = 'CONNECTWISE';
 		this.integrationTabIndex = 5;
 	}
+
+	// halopsaSettings() {
+	// 	this.sfcfPagedItems = [];
+	// 	this.sfcfMasterCBClicked = false;
+	// 	this.customFieldsResponse.isVisible = false;
+	// 	this.integrationType = 'HALOPSA';
+	// 	this.integrationTabIndex = 5;
+	// }
 
 	marketoSettings() {
 		this.sfcfPagedItems = [];
@@ -3914,7 +3960,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	readExcludedUsersCSVFileContent(allTextLines: any, csvUserPagination: Pagination) {
 		this.customResponse = new CustomResponse();
 		for (var i = 1; i < allTextLines.length; i++) {
-			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
+			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0
+			&& !this.excludedUsers.some(user=>user.emailId === allTextLines[i][0].trim() )) {
 				let user = new User();
 				user.emailId = allTextLines[i][0].trim();
 				this.excludedUsers.push(user);
@@ -3937,7 +3984,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	readExcludedDomainsCSVFileContent(allTextLines: any, csvDomainPagination: Pagination) {
 		this.excludeDomainCustomResponse = new CustomResponse
 		for (var i = 1; i < allTextLines.length; i++) {
-			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
+			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0
+			&& !this.excludedDomains.some(domain=>domain === allTextLines[i][0].trim())) {
 				let domain = allTextLines[i][0].trim();
 				this.excludedDomains.push(domain);
 			}
@@ -4529,55 +4577,131 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.integrationTabIndex = 7;
 	}
 
-	/*******xnfr-426********/
-	getLeadApprovalstatus(){
-		this.authenticationService.getLeadApprovalStatus(this.referenceService.companyId)
-		.subscribe(
-		data => {
-				this.leadApprovalStatus = data.data;
-				this.leadApprovalRejectionStatus = data.data;
-		});
+	// halo psa
+	checkHaloPsaIntegration() {
+		   this.halopsaRibbonText = "configure";
+		// this.referenceService.loading(this.httpRequestLoader, true);
+		// this.halopsaRibbonText = "configure";
+		// this.integrationService.checkConfigurationByType("halopsa").subscribe(data => {
+		// 	this.referenceService.loading(this.httpRequestLoader, false);
+		// 	let response = data;
+		// 	if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+		// 		this.halopsaRibbonText = "configured";
+		// 	}
+		// 	else {
+		// 		this.halopsaRibbonText = "configure";
+		// 	}
+		// }, error => {
+		// 	this.referenceService.loading(this.httpRequestLoader, false);
+		// 	this.sfRibbonText = "configure";
+		// 	this.logger.error(error, "Error in checkhalopsaIntegration() for Halopsa");
+		// }, () => this.logger.log("Halopsa Integration Configuration Checking done"));
 	}
 
-	setLeadApprovalOrRejectionStatus(event:any){
+	configureHaloPsa() {
+		this.integrationTabIndex = 8;
+	}
+
+
+	/*******xnfr-426********/
+	getLeadApprovalstatus() {
+		this.authenticationService.getLeadApprovalStatus(this.referenceService.companyId)
+			.subscribe(
+				data => {
+					this.leadApprovalStatus = data.data;
+					this.leadApprovalRejectionStatus = data.data;
+					if(this.leadApprovalStatus){
+						this.disableSaveChangesButtonForLeadApproval = false;
+					}else{
+						this.isAggreedToDisableLeadApprovalFeature = true;
+						this.disableSaveChangesButtonForLeadApproval = false;
+					}
+				});
+	}
+
+	setLeadApprovalOrRejectionStatus(event: any) {
 		if (event) {
 			this.leadApprovalRejectionStatus = true;
+			this.disableSaveChangesButtonForLeadApproval = false;
 		}
 		else {
 			this.leadApprovalRejectionStatus = false;
+			this.isAggreedToDisableLeadApprovalFeature = false;
+			this.disableSaveChangesButtonForLeadApproval = true;
 		}
 	}
 
-	updateLeadApprovalOrRejectionStatus(){
-		let self = this;
-		swal({
-			title: 'Are you sure want to continue?',
-			type: 'warning',
-			showCancelButton: true,
-			swalConfirmButtonColor: '#54a7e9',
-			swalCancelButtonColor: '#999',
-			allowOutsideClick: false,
-			confirmButtonText: 'Yes'
-		}).then(function () {
-			if (self.leadApprovalStatus == self.leadApprovalRejectionStatus){
-				self.saveLeadApprovalOrRejectionStatus(self.leadApprovalStatus);
-			} else{
-				self.saveLeadApprovalOrRejectionStatus(self.leadApprovalRejectionStatus);
-			}
-		}, function (dismiss: any) {
-			console.log('you clicked on option' + dismiss);
-			self.getLeadApprovalstatus();
-		});
+	checkAggreeToDisableLeadApprovalFeature(event: any) {
+		if (event.target.checked) {
+			this.disableSaveChangesButtonForLeadApproval = false;
+		}
+		else {
+			this.disableSaveChangesButtonForLeadApproval = true;
+		}
 	}
 
-	saveLeadApprovalOrRejectionStatus(leadApprovalRejectionStatus:boolean) {
+	updateLeadApprovalOrRejectionStatus() {
+		if (this.leadApprovalStatus == this.leadApprovalRejectionStatus) {
+			this.saveLeadApprovalOrRejectionStatus(this.leadApprovalStatus);
+		} else {
+			this.saveLeadApprovalOrRejectionStatus(this.leadApprovalRejectionStatus);
+		}
+	}
+
+	saveLeadApprovalOrRejectionStatus(leadApprovalRejectionStatus: boolean) {
 		this.leadApprovalCustomResponse = new CustomResponse();
 		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId, leadApprovalRejectionStatus)
-		.subscribe(
-			data => {
-				this.leadApprovalCustomResponse = new CustomResponse('SUCCESS', "Settings Updated Successfully", true);
+			.subscribe(
+				data => {
+					this.leadApprovalCustomResponse = new CustomResponse('SUCCESS', "Settings Updated Successfully", true);
+				}
+			);
+	}
+
+/* editVendorLandingPage(event){
+	this.vendorDefaultTemplate = event;
+	this.landingPageService.vendorJourney = true;
+	this.landingPageService.id = this.vendorDefaultTemplate.id;
+	this.mergeTagsInput['page'] = true;
+	this.editVendorPage = true;
+	
+}
+resetVendorJourney(){
+	this.editVendorPage = false;
+	this.vendorDefaultTemplate = new LandingPage() ;
+	this.landingPageService.vendorJourney = false;
+	this.landingPageService.id = 0;
+	this.mergeTagsInput['page'] = false;
+	this.vendorJourney = false;
+	this.isLandingPages = false;
+}
+
+checkOrUncheckOpenLinksInNewTabOption(){
+	let isChecked = $('#'+this.openLinksInNewTabCheckBoxId).is(':checked');
+	if(isChecked){
+		$('#' + this.openLinksInNewTabCheckBoxId).prop("checked", false);
+		this.vendorDefaultTemplate.openLinksInNewTab = false;
+	}else{
+		$('#' + this.openLinksInNewTabCheckBoxId).prop("checked", true);
+		this.vendorDefaultTemplate.openLinksInNewTab = true;
+	}
+
+} */
+
+
+getCompanyId() {
+	if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+			(result: any) => {
+				if (result !== "") {
+					this.loggedInUserCompanyId = result;
+					this.referenceService.loading(this.httpRequestLoader, false);
+				}
+			}, (error: any) => {
+				this.referenceService.loading(this.httpRequestLoader, false);
 			}
 		);
 	}
-
+  }
 }

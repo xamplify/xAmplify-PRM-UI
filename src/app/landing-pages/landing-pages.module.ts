@@ -9,7 +9,6 @@ import {LandingPagesRoutingModule} from "./landing-pages-routing.module";
 import { AddLandingPageComponent } from './add-landing-page/add-landing-page.component';
 import { SelectLandingPageComponent } from './select-landing-page/select-landing-page.component';
 import { ManageLandingPageComponent } from './manage-landing-page/manage-landing-page.component';
-import { LandingPageAnalyticsComponent } from './landing-page-analytics/landing-page-analytics.component';
 import { LandingPageAnalyticsUtilComponent } from './landing-page-analytics-util/landing-page-analytics-util.component';
 import { PartnerLandingPageComponent } from './partner-landing-page/partner-landing-page.component';
 import { PendingChangesGuard } from 'app/component-can-deactivate';
@@ -18,7 +17,7 @@ import { PendingChangesGuard } from 'app/component-can-deactivate';
     imports: [
         CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, LandingPagesRoutingModule
     ],
-    declarations: [AddLandingPageComponent, SelectLandingPageComponent, ManageLandingPageComponent, LandingPageAnalyticsComponent, LandingPageAnalyticsUtilComponent, PartnerLandingPageComponent],
+    declarations: [AddLandingPageComponent, SelectLandingPageComponent, ManageLandingPageComponent, LandingPageAnalyticsUtilComponent, PartnerLandingPageComponent],
     providers: [LandingPageService,PendingChangesGuard]
 })
 export class LandingPagesModule { }

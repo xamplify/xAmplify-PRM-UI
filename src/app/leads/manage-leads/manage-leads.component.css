@@ -148,3 +148,6 @@ select.form-control.select-width.FilerFormWidth {
   width: 184px;
   height: 32px;
 }
+.override-actions {
+  float: inherit;
+}

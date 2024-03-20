@@ -25,10 +25,10 @@
           (click)="toggleFilterOption()">
           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
         </span>
-        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Click here to email the report"
-          [class.disabled]="leadsSortOption.totalRecords == 0" (click)="downloadLeads(leadsPagination)">
+        <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Click here to email the report"
+          [disabled]="leadsSortOption.totalRecords == 0" (click)="downloadLeads(leadsPagination)">
           <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
-        </span>
+        </button>
       </div>
     </div>
   </div>
@@ -99,7 +99,7 @@
         <tr>
           <th class="center-aligned" translate>Lead Details</th>
           <th class="center" translate>Added By</th>
-          <th class="center" translate>Status</th>
+          <th class="center" style="text-align:center" translate>Status</th>
           <th style="width: 18%; text-align:center" translate>Actions</th>
         </tr>
 
@@ -108,7 +108,7 @@
       <tbody>
         <ng-container *ngFor='let lead of leadsPagination.pagedItems; let i=index'>
           <tr>
-            <td style="width: 40%;">
+            <td style="width: 36%;">
               <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
               <div style="margin-left: 60px;">
                 <h5 *ngIf="isPartnerVersion"><strong>Added For:</strong>
@@ -141,7 +141,7 @@
               </div>
 
             </td>
-            <td class="mAlignment" style="width: 20%;">
+            <td class="mAlignment" style="width: 23%;">
               <h5 *ngIf="!isPartnerVersion">{{lead.createdByCompanyName | slice:0:30}}
                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
               </h5>
@@ -158,24 +158,26 @@
                 </app-timestamp>
               </h5>
             </td>
-            <td style="width: 10%;">
+            <td style="width: 23%; text-align: center;">
               {{lead.currentStageName | slice:0:30}}
               <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
-                <i class="fa fa-check-circle mr5" aria-hidden="true"
-                  style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                <i class="fa fa-check-circle mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                 Deal
               </div>
-
-
-
+              <!-- XNFR-426 -->
+              <div style="color: #f71111;"
+                *ngIf="lead?.leadApprovalStatusType == 'REJECTED' && lead?.associatedDealId == undefined && !lead?.leadApprovalOrRejection"
+                translate>
+                <i class="fa fa-times-circle mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                Rejected
+              </div>
               <div
-                *ngIf="(lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner) || (lead?.selfLead && lead?.associatedDealId == undefined)">
+                *ngIf="(lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType !== 'REJECTED') || (lead?.selfLead && lead?.associatedDealId == undefined)">
                 <button class="button_blue bgcolor-unset" (click)="registerDeal(lead)" translate>
                   <span class="btn btn-primary transition d-inline"> Register Deal</span>
                 </button>
               </div>
-
-              <!--toggle on --><!--------XNFR-426--------->
+            
               <div *ngIf="lead?.leadApprovalOrRejection  && !lead?.selfLead">
                 <div *ngIf="!authenticationService?.module?.deletedPartner">
                   <div style="color: #06c306;"
@@ -191,7 +193,8 @@
                     Rejected
                   </div>
                   <div *ngIf="lead?.canRegisterDeal">
-                    <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom" title="{{lead?.approvalStatusComment ? (lead?.leadApprovalStatusType !== 'APPROVED' ? 'You can not register a deal for a rejected lead' : '') : 'You can not register a deal for an unapproved lead'}}"
+                    <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom"
+                      title="{{lead?.leadApprovalStatusType ? (lead?.leadApprovalStatusType === 'REJECTED' ? 'You can not register a deal for a rejected lead' : '') : 'You can not register a deal for an unapproved lead'}}"
                       [disabled]="(  ((lead?.leadApprovalStatusType == 'REJECTED') || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection)))"
                       (click)="registerDeal(lead)" translate>
                       <span class="btn btn-primary transition d-inline"> Register Deal</span>
@@ -206,9 +209,7 @@
                   <button type="button" class="btn Btn-Gray neg_mrg_top4 pos_mrg_top3"
                     (click)="addApprovalStatusModelPopup(lead,'REJECTED')" translate>Reject</button>
                 </div>
-
               </div>
-
             </td>
             <td>
               <div class="actions-block override-actions tb_view_actions">
@@ -217,9 +218,9 @@
                   <div class="clickicons"></div>
                 </a>
                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                  <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="editLead(lead)"
-                    title="Edit Lead" id="lead">
-                    <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+                  <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="lead?.leadApprovalStatusType !== 'REJECTED' ? editLead(lead) : ''"
+                    title="{{lead?.leadApprovalStatusType == 'REJECTED' ? 'Editing rejected leads is not permitted' : 'Edit Lead'}}" id="lead">
+                    <i [ngClass]="lead?.leadApprovalStatusType == 'REJECTED' ? 'fa fa-edit mr5 IconCustomization disabled gray':'fa fa-edit mr5 IconCustomization'" aria-hidden="true"></i>
                     <div class="clickicons"></div>
                   </a>
                   <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate"

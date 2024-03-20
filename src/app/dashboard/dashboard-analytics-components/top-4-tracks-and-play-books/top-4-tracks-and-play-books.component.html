@@ -5,6 +5,7 @@
                 <a (click)="goToManage()">{{headerTitle}}</a>
                 <a class="fstpx" (click)="goToManage()">( {{subHeaderTitle}} )</a>
             </h4>
+            <div class="mb-upload-btns">
             <a class="close-circle" title="Refresh" (click)="refresh()">
                 <i class="fa fa-refresh" aria-hidden="true"></i>
             </a>
@@ -13,6 +14,7 @@
                 <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
                 <span class="hidden-xs" translate>{{addButtonText}}</span>
             </button>
+            </div>
         </div>
         <div style="position: relative; top: -10px;">
             <app-response-message [customResponse]="customResponse"
@@ -26,8 +28,8 @@
                 </div>
                 <div *ngFor="let learningTrack of contents ;let i =index;"
                     class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_grid GridviewSidePaddings">
-                    <div class="grid-box box-shadow">
-                        <img class="img-grid-track image_effect" [src]="learningTrack.featuredImage"
+                    <div class="grid-box box-shadow grid-card-shadow">
+                        <img class="img-grid-track" [src]="learningTrack.featuredImage"
                             onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack.title}}">
                         <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent1" data-toggle="tooltip"
                             data-placement="bottom" title="{{learningTrack.title}}"
@@ -35,7 +37,7 @@
                             <span><b>{{titleHeader}} Title: </b>{{learningTrack.title}}</span>
                         </h4>
                         <div class="mt5">
-                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')&& hasAccessToSharedPlaybooks"
+                            <div *ngIf="isPartnerView && tracks"
                                 style="margin: 4px 15px 0px 15px;">
                                 <div class="progress">
                                     <div class="progress-bar" data-toggle="tooltip" data-placement="top"
@@ -74,35 +76,41 @@
                             <!---XNFR-327--->
                             <ng-container
                                 *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList">
-                                <a class="Iconhover" *ngIf="learningTrack.canUpdate && !isPartnerView"
+                                <a class="Iconhover custom-grid-icon" *ngIf="learningTrack.canUpdate && !isPartnerView"
                                     data-toggle="tooltip" data-placement="top" title="Preview & Edit"
                                     (click)="edit(learningTrack.id)">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
-                                <a class="Iconhover"
+                                <a class="Iconhover custom-grid-icon"
                                     *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish"
                                     data-toggle="tooltip" data-placement="top" title="Unpublish"
                                     (click)="confirmChangePublish(learningTrack.id, false)">
                                     <i class="fa fa-reply" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
-                                <a class="Iconhover"
+                                <a class="Iconhover custom-grid-icon"
                                     *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
                                     data-toggle="tooltip" data-placement="top" title="Publish"
                                     (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
                                     <i class="fa fa-share" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
-                                <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="View"
+                                <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top" title="View"
                                     (click)="view(learningTrack)">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
-                                <a class="Iconhover" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top"
+                                <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top"
                                     title="View Analytics" (click)="goToAnalytics(learningTrack)">
                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
                                 <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip"
-                                    data-placement="top" title="Delete" class="delete"
+                                    data-placement="top" title="Delete" class="delete custom-icon"
                                     (click)="confirmDelete(learningTrack)">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    <div class="del-icon"></div>
                                 </a>
                             </ng-container>
                             <!---XNFR-327--->

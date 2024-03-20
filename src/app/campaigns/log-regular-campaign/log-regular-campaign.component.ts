@@ -29,6 +29,7 @@ export class LogRegularCampaignComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.referenceService.clearHeadScriptFiles();
     this.processor.set(this.processor);
     this.alias = this.activatedRoute.snapshot.params['alias'];
     this.getRegularTemplateHtml();
@@ -72,7 +73,9 @@ export class LogRegularCampaignComponent implements OnInit {
             document.getElementById('regular-campaign').innerHTML = this.errorHtml;
             this.updateBackGroundColor();
         },
-        () => console.log('getRegularTemplateHtml method completed:')
+        ()=>{
+          
+        }
         );
     } catch (error) {
       this.xtremandLogger.error('error in showCampaign method :' + error);

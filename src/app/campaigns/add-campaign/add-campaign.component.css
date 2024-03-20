@@ -499,6 +499,9 @@ fieldset {
     top: 10px;
     width: 100%;
   }
+  .Launch-btns{
+    margin: 4px 2px !important;
+  }
 }
 #download-drop {
   box-shadow: none;
@@ -811,4 +814,7 @@ button.btn.mBtnAlign.f-w-600.w-10em.prev-btn:hover {
 }
 .mt-4{
   margin-top:4px;
+}
+.float_right{
+  float: right;
 }

@@ -182,10 +182,12 @@
                                           <i class="fa fa-search" aria-hidden="true"></i>
                                        </button>
                                     </div>
-                                    <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" 
-                                       title="Click here to email the report" (click)="downloadCampaignsData(pagination)" *ngIf="!archived">
+                                    <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space"
+                                       data-toggle="tooltip" title="Click here to email the report"
+                                       (click)="downloadCampaignsData(pagination)" *ngIf="!archived"
+                                       [disabled]="pagination.totalRecords == 0">
                                        <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
-                                    </span>
+                                    </button>
                                     <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space"
                                        data-toggle="tooltip" title="Filter" (click)="toggleFilterOption()">
                                        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
@@ -1227,8 +1229,7 @@
                                              </ng-container>
                                           </span>
                                           <span title="Launch Time">
-                                             <ng-container
-                                                *ngIf="campaign.launched">
+                                             <ng-container *ngIf="campaign.launched">
                                                 <span *ngIf="!refService.isSafariBrowser()">{{campaign.displayTime
                                                    |date:'mediumDate'}},{{campaign.displayTime
                                                    |date:'shortTime'}}</span>
@@ -1241,7 +1242,8 @@
                                                 <br>
                                                 <span>{{campaign.campaignScheduleTimeInString}}</span>
                                              </ng-container>
-                                             <ng-container *ngIf="campaign.scheduleType!='SCHEDULE' && !campaign.launched">
+                                             <ng-container
+                                                *ngIf="campaign.scheduleType!='SCHEDULE' && !campaign.launched">
                                                 <span *ngIf="!refService.isSafariBrowser()">{{campaign.createdDate
                                                    |date:'mediumDate'}},{{campaign.createdDate
                                                    |date:'shortTime'}}</span>
@@ -1538,13 +1540,15 @@
          <div class="modal-body">
             <div class="form-group">
                <label for="campaignName" translate>Campaign Name</label>
-               <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName">
+               <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName"
+                  (input)="validateCopyCampaignName()">
+               <span class="required" *ngIf="!isValidCopyCampaignName">Please Enter Campaign Name</span>
             </div>
          </div>
          <div class="modal-footer">
             <button type="button" class="btn Btn-Gray btn-hvr-text neg_mrg_top4" data-dismiss="modal"
                translate>Close</button>
-            <button type="button" [disabled]="clicked" class="button_blue bgcolor-unset"
+            <button type="button" [disabled]="clicked || !isValidCopyCampaignName" class="button_blue bgcolor-unset"
                (click)="saveAsCampaign(); clicked = true" translate><span
                   class="btn btn-primary transition txt_pd-top3">Save
                   changes</span></button>

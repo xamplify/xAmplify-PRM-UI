@@ -1693,5 +1693,31 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
    
 }
 
+previewEmailTemplateInNewTab(campaign:any){
+  if(this.authenticationService.isLocalHost()){
+    let campaignId = campaign['campaignType']=='EVENT' ? campaign.id : campaign.campaignId;
+    this.referenceService.previewCampaignEmailTemplateInNewTab(campaignId);
+  }else{
+    this.getEmailTemplatePreview(campaign);
+  }
+}
+
+previewAutoReplyEmailTemplateInNewTab(campaign:any,reply:any){
+  if(this.authenticationService.isLocalHost()){
+    this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+  }else{
+    this.showEmailTemplate(campaign,reply.emailTemplate);
+  }
+}
+
+previewAutoReplyWebsiteLinkTemplateInNewTab(campaign:any,url:any){
+  if(this.authenticationService.isLocalHost()){
+    this.referenceService.previewVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id);
+  }else{
+    this.showEmailTemplate(campaign,url.emailTemplate);
+  }
+}
+
+
 
 }
