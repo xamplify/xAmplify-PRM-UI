@@ -3182,4 +3182,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 		this.contactListsPagination.filterBy = filterType;
 		this.contactListMethod(this.contactListsPagination)
 	}
+
+    openTemplateInNewTab(id:number){
+        if(this.authenticationService.isLocalHost()){
+
+        }else{
+            this.previewEventCampaignEmailTemplate(id);
+        }
+    }
 }
