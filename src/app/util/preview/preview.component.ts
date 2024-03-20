@@ -25,6 +25,7 @@ export class PreviewComponent implements OnInit {
   campaignId = 0;
   isCampaignAutoReplyEmailWorkflowId: boolean;
   campaignAutoReplyWebsiteLinkWorkflowId: boolean;
+  isEventCampaignTemplatePreview: boolean;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties) { }
 
@@ -37,6 +38,7 @@ export class PreviewComponent implements OnInit {
     this.isCampaignAutoReplyEmailWorkflowId = currentRouterUrl.indexOf("/pv/cwaret")>-1;
     this.vendorCampaignAutoReplyWebsiteLinkWorkflowId = currentRouterUrl.indexOf("/pv/scwarwlt")>-1;
     this.campaignAutoReplyWebsiteLinkWorkflowId = currentRouterUrl.indexOf("/pv/cwarwlt")>-1;
+    this.isEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/evt")>-1;
     this.referenceService.clearHeadScriptFiles();
     this.processor.set(this.processor);
     this.id = this.route.snapshot.params['id'];
@@ -62,6 +64,8 @@ export class PreviewComponent implements OnInit {
       URL_SUFFIX = "vendorCampaignAutoReplyEmailWorkflowId/"+this.id;
     }else if(this.vendorCampaignAutoReplyWebsiteLinkWorkflowId){
       URL_SUFFIX = "vendorCampaignAutoReplyWebsiteLinkWorkflowId/"+this.id;
+    }else if(this.isEventCampaignTemplatePreview){
+      URL_SUFFIX = "eventCampaignTemplateId/"+this.id;
     }else{
       URL_SUFFIX = this.isVendorCompanyViewingWorkflowTemplate ? "workflowTemplateId/"+this.id:"id/"+this.id;
     }

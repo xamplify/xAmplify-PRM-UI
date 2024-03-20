@@ -30,6 +30,7 @@ import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { CopyGroupUsersDto } from 'app/common/models/copy-group-users-dto';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
+import { Properties } from 'app/common/models/properties';
 
 @Injectable()
 export class AuthenticationService {
@@ -155,6 +156,7 @@ export class AuthenticationService {
   /*** XNFR-416 ****/
   isstyleTWoBgColor: boolean;
   /*** XNFR-416 ****/
+  properties = new Properties();
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -1273,9 +1275,29 @@ unpublishLearingTracks(learningTrackIds:any){
 }
 
 getEmailTemplateHtmlBodyAndMergeTagsInfo(suffixUrl:string){
-  let URL = this.REST_URL+"email-template/preview/"+suffixUrl+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
+  let URL = "";
+  let s = this.getLocalStorageItemByKey("eventCampaignTemplatePreviewData");
+   console.log(s);
+  if(suffixUrl.indexOf("event")>-1){
+    URL = this.REST_URL+"email-template/preview/"+suffixUrl+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
+  }else{
+    URL = this.REST_URL+"email-template/preview/"+suffixUrl+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
+  }
   return this.callGetMethod(URL);
 }
+
+setLocalStorageItemByKeyAndValue(key:string,value:any){
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+removeLocalStorageItemByKey(key:string){
+  localStorage.removeItem(key);
+}
+
+getLocalStorageItemByKey(key:string){
+  return JSON.parse(localStorage.getItem(key));
+}
+
 
 
 

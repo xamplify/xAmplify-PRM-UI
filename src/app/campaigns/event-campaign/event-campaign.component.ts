@@ -2722,6 +2722,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     ngOnDestroy() {
+        this.authenticationService.removeLocalStorageItemByKey(this.properties.eventCampaignTemplateLocalStorageKey);
         this.campaignService.eventCampaign = undefined;
         this.authenticationService.isShowForms = false;
         CKEDITOR.config.readOnly = false;
@@ -3185,7 +3186,23 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
     openTemplateInNewTab(id:number){
         if(this.authenticationService.isLocalHost()){
-
+            let key = this.properties.eventCampaignTemplateLocalStorageKey;
+            this.authenticationService.removeLocalStorageItemByKey(key);
+            let eventCampaignPreviewData = {};
+            eventCampaignPreviewData['eventTitle'] = this.eventCampaign.campaign;
+            eventCampaignPreviewData['onlineMeeting'] = this.eventCampaign.onlineMeeting;
+            eventCampaignPreviewData['eventStartTime'] = this.eventCampaign.campaignEventTimes[0].startTimeString;
+            eventCampaignPreviewData['eventEndTime'] = this.eventCampaign.campaignEventTimes[0].endTimeString;
+            eventCampaignPreviewData['allDay'] = this.eventCampaign.campaignEventTimes[0].allDay;
+            eventCampaignPreviewData['eventDescription'] = this.eventCampaign.message;
+            eventCampaignPreviewData['street'] = this.eventCampaign.campaignLocation.street;
+            eventCampaignPreviewData['address2'] = this.eventCampaign.campaignLocation.address2;
+            eventCampaignPreviewData['city'] = this.eventCampaign.campaignLocation.city;
+            eventCampaignPreviewData['state'] = this.eventCampaign.campaignLocation.state;
+            eventCampaignPreviewData['zip'] = this.eventCampaign.campaignLocation.zip;
+            eventCampaignPreviewData['country'] = this.eventCampaign.campaignLocation.country;
+            this.authenticationService.setLocalStorageItemByKeyAndValue(key,eventCampaignPreviewData);
+            this.referenceService.previewEventCampaignEmailTemplateInNewTab(id);
         }else{
             this.previewEventCampaignEmailTemplate(id);
         }
