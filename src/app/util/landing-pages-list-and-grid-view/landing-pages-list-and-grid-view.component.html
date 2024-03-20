@@ -513,7 +513,7 @@
 
 <!--Delete---->
 <ng-template #deleteIcon let-landingPage="landingPage">
-    <a class="Iconhover custom-grid-icon border-none"
+    <a class="Iconhover custom-grid-icon"
         *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)"
         data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(landingPage)">
         <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>

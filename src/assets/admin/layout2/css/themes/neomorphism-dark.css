@@ -3998,3 +3998,13 @@ button.btn.btn-primary.activate-btn:hover {
 a.delete.custom-icon {
   box-shadow: none !important;
 } */
+.gridViewImgpositioning {
+  border-bottom: 1px solid #181b1e;
+}
+.img-grid-track {
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+.icons_align a{
+  padding: 4px !important;
+}
