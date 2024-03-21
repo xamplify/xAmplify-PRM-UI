@@ -95,6 +95,7 @@ import { DashboardBannerImagesComponent } from './dashboard-banner-images/dashbo
 
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { VendorJourneyComponent } from './vendor-journey/vendor-journey.component';
+import { HalopsaAuthenticationComponent } from './halopsa-authentication/halopsa-authentication.component';
 
 
 
@@ -164,7 +165,8 @@ import { VendorJourneyComponent } from './vendor-journey/vendor-journey.componen
         CustomLinksUtilComponent,
         NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent,
         DashboardBannerImagesComponent,
-        VendorJourneyComponent
+        VendorJourneyComponent,
+        HalopsaAuthenticationComponent
 
             
     ],

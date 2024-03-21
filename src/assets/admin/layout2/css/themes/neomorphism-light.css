@@ -1,3 +1,4 @@
+
 /***** colors class ******/
 .white-co,
 .profile-details b,
@@ -690,14 +691,14 @@ select {
 .input-group .input-group-addon {
   color: #000 !important;
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
-  border: 1px solid #d0d5db !important;
-  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+  border: 1px solid #d0d5db;
+  /* box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important; */
 }
 .input-group-addon {
   color: #000 !important;
-  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff);
   border: 1px solid #d0d5db !important;
-  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+  /* box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important; */
 }
 .input-group-addon {
   border: 1px solid #191b1e !important;
@@ -1886,7 +1887,7 @@ i.IconCustomization{
 .gridIconCustomization a {
   border: none !important;
   color: #000 !important;
-  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+  box-shadow: none !important;
   background: #f0f5fa;
 }
 .setting-icon-cu:hover {
@@ -1900,11 +1901,16 @@ i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover {
   background: #22313a !important;
   line-height: 17px !important;
 }
-i.fa.fa-trash-o.trashIconCustomization,
-.gridIconCustomization a.delete {
+i.fa.fa-trash-o.trashIconCustomization{
   border: none;
   color: #cb5a5e !important;
   box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+}
+.gridIconCustomization a.delete {
+  border: none;
+  color: #cb5a5e !important;
+  /* box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important; */
+  background: #f0f5fa;
 }
 i.fa.fa-trash-o.trashIconCustomization:hover {
   border: none;
@@ -2106,6 +2112,7 @@ a.title.padding_bottom.text-color.content-bg{
 }
 i.IconCustomization:hover {
   background-color: #22313a !important;
+  color: #fff !important;
 }
 i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
 i.fa.fa-plus.fa-fa-consistency.IconCustomization,
@@ -2127,7 +2134,7 @@ i.fa.fa-expand.fa-fa-consistency.IconCustomization {
 .grid-box {
   background: linear-gradient(225deg, #d8dde1, #ffffff);
   border: 1px solid #d0d5db!important;
-  border-radius: 10px !important;
+  border-radius: 15px !important;
 }
 .pricing-head h4#image-style {
   background-color: #2c2f33 !important;
@@ -2321,7 +2328,7 @@ input {
 }
 .portlet.light.cpad.hover-effect.pointer.card-radius,
 .portlet.light.cpad.hover-effect.pointer {
-  padding: 2px 0px !important;
+  padding: 1px 0px !important;
 }
 .portlet-title.tabbable-line.bt-zero-px.mh-zero-px {
   border-bottom: 1px solid #d0d5db !important;
@@ -2722,9 +2729,11 @@ i.fa.fa-rocket:hover{
   background-color: unset !important;
   z-index: 999;
   position: relative;
-  color: #000 !important;
+  color: #fff !important;
 }
-i.fa.fa-download:hover{
+i.fa.fa-download:hover,
+i.fa.IconCustomization.fa-angle-right:hover,
+i.fa.IconCustomization.fa-angle-down:hover{
   color: #000 !important;
 }
 .actions_width{
@@ -4094,4 +4103,107 @@ table.table.table-bordered {
 /**** Sudha Sri(27-2-2024)****/
 .highlightRow, .highlightRow:hover{
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+}
+
+/**** Sudha Sri(5-3-2024)****/
+.img1:hover{
+  background-position: 100% !important;
+  background-color: #b8def1 !important;
+  transition-duration: 500ms !important;
+}
+.mrg_rgt5{
+  margin-right: 5px !important;
+}
+.gridViewImgBg{
+  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
+  box-shadow: inset 2px 2px 5px #0c86cc,inset -3px -3px 7px #06beb8!important;
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
+@media only screen and (min-width: 992px){
+  .grid-box{
+    border-radius: 15px !important;
+    border: 1px solid #d0d5db !important;
+  }
+}
+.bar.gridIconCustomization,
+img.email-template-preview{
+  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+  box-shadow: none !important;
+}
+/**** Sudha Sri(6-3-2024)****/
+.grid-box img{
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+}
+.grid-box.zero-margin{
+  border: 1px solid #d0d5db !important;
+}
+.img1{
+  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
+}
+.img1:hover {
+  background: linear-gradient(358deg, #06beb8, #0c86cc) !important;
+}
+/**** Sudha Sri(11-3-2024)****/
+.page-sidebar .page-sidebar-menu > li > a > i.fa.fa-paint-brush:hover, .page-sidebar .page-sidebar-menu > li > a >i.fa.fa-bullhorn {
+  color: #5a738e !important;
+}
+/**** Sudha Sri(13-3-2024)****/
+i.fa.IconCustomization.fa-minus:hover,
+i.fa.fa-exchange.mDisableColor.IconCustomization:hover{
+  color:#fff !important;
+}
+/**** Sudha Sri(14-3-2024)****/
+/* .img-grid-track {
+  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+} */
+.bar.hover-bar{
+  border-bottom-right-radius: 15px !important;
+  border-bottom-left-radius: 15px !important;
+}
+span.icon-alignments{
+  top: 5px !important;
+  right: 7px !important;
+}
+input.radio-custimization{
+  margin: 3px 3px !important;
+}
+/* integration-btn */
+.btn-group>button.integration-btn{
+  border: 1px solid #00abc2 !important;
+}
+.btn-group>button.integration-btn:active:hover{
+  border: 1px solid #00abc2 !important;
+}
+.btn-group>button.ActivatedBtn{
+  border: 1px solid #00abc2 !important;
+}
+.btn-group>button.deactivate-btn{
+  background: #f1f3fa !important;
+  border: 1px solid #d0d5db !important;
+}
+/* welcome analytics btns */
+@media screen and (max-width: 600px) {
+  .guides_btn {
+    margin-left: 6px;
+  }
+}
+.border_none{
+border: none !important;
+}
+/***** Sudha Sri(19-3-2024) *****/
+/***** Grid View Icon Changes *****/
+.bar.gridIconCustomization {
+  box-shadow: none !important;
+}
+/* a.Iconhover.custom-grid-icon,
+a.delete.custom-icon{
+box-shadow: none !important;
+background-color: #f0f5fa;
+} */
+.icons_align a{
+  padding: 4px !important;
 }

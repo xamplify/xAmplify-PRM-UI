@@ -345,6 +345,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isAggreedToDisableLeadApprovalFeature: boolean = false;
 	disableSaveChangesButtonForLeadApproval: boolean = false;
 
+	// halo psa
+	halopsaRibbonText: string;
+	isProduction: boolean = false;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -354,6 +358,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			public landingPageService: LandingPageService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isLocalHost = this.authenticationService.isLocalHost();
+		this.isProduction = this.authenticationService.isProductionDomain();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		this.referenceService.renderer = this.renderer;
 		this.isUser = this.authenticationService.isOnlyUser();
@@ -1734,6 +1739,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.checkMicrosoftIntegration();
 		this.checkPipedriveIntegration();
 		this.checkConnectWiseIntegration();
+		this.checkHaloPsaIntegration();
 		this.getActiveCRMDetails();
 	}
 	checkMicrosoftIntegration() {
@@ -2886,6 +2892,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.integrationTabIndex = 5;
 	}
 
+	// halopsaSettings() {
+	// 	this.sfcfPagedItems = [];
+	// 	this.sfcfMasterCBClicked = false;
+	// 	this.customFieldsResponse.isVisible = false;
+	// 	this.integrationType = 'HALOPSA';
+	// 	this.integrationTabIndex = 5;
+	// }
+
 	marketoSettings() {
 		this.sfcfPagedItems = [];
 		this.sfcfMasterCBClicked = false;
@@ -3946,7 +3960,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	readExcludedUsersCSVFileContent(allTextLines: any, csvUserPagination: Pagination) {
 		this.customResponse = new CustomResponse();
 		for (var i = 1; i < allTextLines.length; i++) {
-			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
+			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0
+			&& !this.excludedUsers.some(user=>user.emailId === allTextLines[i][0].trim() )) {
 				let user = new User();
 				user.emailId = allTextLines[i][0].trim();
 				this.excludedUsers.push(user);
@@ -3969,7 +3984,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	readExcludedDomainsCSVFileContent(allTextLines: any, csvDomainPagination: Pagination) {
 		this.excludeDomainCustomResponse = new CustomResponse
 		for (var i = 1; i < allTextLines.length; i++) {
-			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
+			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0
+			&& !this.excludedDomains.some(domain=>domain === allTextLines[i][0].trim())) {
 				let domain = allTextLines[i][0].trim();
 				this.excludedDomains.push(domain);
 			}
@@ -4561,6 +4577,31 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.integrationTabIndex = 7;
 	}
 
+	// halo psa
+	checkHaloPsaIntegration() {
+		   this.halopsaRibbonText = "configure";
+		// this.referenceService.loading(this.httpRequestLoader, true);
+		// this.halopsaRibbonText = "configure";
+		// this.integrationService.checkConfigurationByType("halopsa").subscribe(data => {
+		// 	this.referenceService.loading(this.httpRequestLoader, false);
+		// 	let response = data;
+		// 	if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+		// 		this.halopsaRibbonText = "configured";
+		// 	}
+		// 	else {
+		// 		this.halopsaRibbonText = "configure";
+		// 	}
+		// }, error => {
+		// 	this.referenceService.loading(this.httpRequestLoader, false);
+		// 	this.sfRibbonText = "configure";
+		// 	this.logger.error(error, "Error in checkhalopsaIntegration() for Halopsa");
+		// }, () => this.logger.log("Halopsa Integration Configuration Checking done"));
+	}
+
+	configureHaloPsa() {
+		this.integrationTabIndex = 8;
+	}
+
 
 	/*******xnfr-426********/
 	getLeadApprovalstatus() {
@@ -4569,9 +4610,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				data => {
 					this.leadApprovalStatus = data.data;
 					this.leadApprovalRejectionStatus = data.data;
-					this.isAggreedToDisableLeadApprovalFeature = false;
-					if (!this.leadApprovalStatus) {
-						this.disableSaveChangesButtonForLeadApproval = true;
+					if(this.leadApprovalStatus){
+						this.disableSaveChangesButtonForLeadApproval = false;
+					}else{
+						this.isAggreedToDisableLeadApprovalFeature = true;
+						this.disableSaveChangesButtonForLeadApproval = false;
 					}
 				});
 	}
@@ -4580,7 +4623,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (event) {
 			this.leadApprovalRejectionStatus = true;
 			this.disableSaveChangesButtonForLeadApproval = false;
-			this.isAggreedToDisableLeadApprovalFeature = false;
 		}
 		else {
 			this.leadApprovalRejectionStatus = false;

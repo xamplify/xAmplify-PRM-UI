@@ -174,7 +174,7 @@
                   <td>
                     <div class="actions-block override-actions IconCustomizationcondition"
                       style="text-align: center !important;width: max-content;">
-                      <a  class ="custom-icon" *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="showCampaignPreview(campaign)"
+                      <a  class ="custom-icon" *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="openEmailTemplateInNewTab(campaign)"
                         data-toggle="tooltip" data-placement="top" title="Preview Campaign">
                         <i class="fa fa-eye mr5"></i><div class="clickicons"></div>
                       </a>
@@ -295,7 +295,7 @@
                     </div>
                     <div class="bar gridIconCustomization">
                       <a class="Iconhover custom-grid-icon" *ngIf="campaign.campaignType != 'SOCIAL'"
-                        (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top"
+                        (click)="openEmailTemplateInNewTab(campaign)" data-toggle="tooltip" data-placement="top"
                         title="Preview Campaign">
                         <i class="fa fa-eye" aria-hidden="true"></i><div class="clickicons"></div>
                       </a>

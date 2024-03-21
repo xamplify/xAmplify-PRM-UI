@@ -182,8 +182,9 @@
                                           <i class="fa fa-search" aria-hidden="true"></i>
                                        </button>
                                     </div>
-                                    <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" 
-                                       title="Click here to email the report" (click)="downloadCampaignsData(pagination)" *ngIf="!archived"
+                                    <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space"
+                                       data-toggle="tooltip" title="Click here to email the report"
+                                       (click)="downloadCampaignsData(pagination)" *ngIf="!archived"
                                        [disabled]="pagination.totalRecords == 0">
                                        <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                                     </button>
@@ -1228,8 +1229,7 @@
                                              </ng-container>
                                           </span>
                                           <span title="Launch Time">
-                                             <ng-container
-                                                *ngIf="campaign.launched">
+                                             <ng-container *ngIf="campaign.launched">
                                                 <span *ngIf="!refService.isSafariBrowser()">{{campaign.displayTime
                                                    |date:'mediumDate'}},{{campaign.displayTime
                                                    |date:'shortTime'}}</span>
@@ -1242,7 +1242,8 @@
                                                 <br>
                                                 <span>{{campaign.campaignScheduleTimeInString}}</span>
                                              </ng-container>
-                                             <ng-container *ngIf="campaign.scheduleType!='SCHEDULE' && !campaign.launched">
+                                             <ng-container
+                                                *ngIf="campaign.scheduleType!='SCHEDULE' && !campaign.launched">
                                                 <span *ngIf="!refService.isSafariBrowser()">{{campaign.createdDate
                                                    |date:'mediumDate'}},{{campaign.createdDate
                                                    |date:'shortTime'}}</span>
@@ -1539,7 +1540,8 @@
          <div class="modal-body">
             <div class="form-group">
                <label for="campaignName" translate>Campaign Name</label>
-               <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName" (input)="validateCopyCampaignName()">
+               <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName"
+                  (input)="validateCopyCampaignName()">
                <span class="required" *ngIf="!isValidCopyCampaignName">Please Enter Campaign Name</span>
             </div>
          </div>

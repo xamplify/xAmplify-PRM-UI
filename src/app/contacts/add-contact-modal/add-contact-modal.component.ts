@@ -236,12 +236,15 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         
     }
 
-    contactCompanyChecking( event:any ) {
-        if ((this.checkingContactTypeName == 'Contact' ) 
-        ||  (this.isPartner && (this.addContactuser.contactCompany != null 
-        || this.addContactuser.contactCompany != null))) {
+contactCompanyChecking( event:any ) {
+        if (this.checkingContactTypeName == 'Contact' ) 
+        {
             this.isCompanyDetails = true;
-        } else {
+        } else if  (this.isPartner && (this.addContactuser.contactCompany != null 
+             && this.addContactuser.contactCompany !='' && this.addContactuser.contactCompany.trim().length>0 )){
+                this.isCompanyDetails = true;
+            }        
+        else {
             this.isCompanyDetails = false;
         }
         this.searchableDropdownEventReceiver(event);
@@ -404,8 +407,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     
     validatePartnerCompany(){
     try {
-     this.partners.push(this.addContactuser);
-    this.contactService.validateCompanyName(this.partners, this.contactDetails.companyId)
+    this.contactService.validatePartnerCompany(this.addContactuser, this.contactDetails.companyId)
     .subscribe(
 					(data: any) => {
 						if(data.statusCode == 200){

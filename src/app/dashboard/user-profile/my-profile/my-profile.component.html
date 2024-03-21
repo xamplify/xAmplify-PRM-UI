@@ -54,8 +54,8 @@
                         </div>
                         <div class="profile-usertitle">
                             <div class="profile-usertitle-name" style="overflow: auto">
-                                <span style="font-size: 17px !important;"
-                                data-toggle="tooltip" data-placement="bottom" [title]="userData?.displayName">{{userData?.displayName | slice:0:18}}</span>
+                                <span style="font-size: 17px !important;" data-toggle="tooltip" data-placement="bottom"
+                                    [title]="userData?.displayName">{{userData?.displayName | slice:0:18}}</span>
                                 <span *ngIf="userData?.displayName?.length>18">...</span>
                                 <h5>{{userData.emailId}}</h5>
                             </div>
@@ -188,7 +188,7 @@
 
                                         <!-- XNFR-426 -->
                                         <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}"
-                                            *ngIf="!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember)">
+                                            *ngIf="authenticationService?.module?.isAdmin && (!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember))">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadDealApprove'}"
                                                 (click)="activateTab('leadDealApprove');getLeadApprovalstatus();">
                                                 {{properties.leadDealApprove | translate}}</a>
@@ -207,8 +207,8 @@
                                     <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}"
                                         *ngIf="(authenticationService.isOrgAdmin() || 
                                         authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || 
-                                        authenticationService.isOnlyPartner() || roleNames=='Partner') && !authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
-                                        &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember">
+                                        authenticationService.isOnlyPartner() || roleNames=='Partner') || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
+                                        || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"
                                             (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings
                                             | translate}}</a>
@@ -235,7 +235,8 @@
                                     </li>
                                     <!--------------Admin----------------------->
                                     <div class="my-profile-header-text">Admin</div>
-                                    <ng-container  *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService.module.loggedInThroughOwnVanityUrl">
+                                    <ng-container
+                                        *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService.module.loggedInThroughOwnVanityUrl">
                                         <!--Dashboard Buttons-->
                                         <li [ngClass]="{'active': activeTabName == properties?.dashboardButtons}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName ==  properties?.dashboardButtons}"
@@ -280,22 +281,22 @@
                                     <!--Vendor Journey-->
                                     <ng-container *ngIf="isLocalHost">
                                         <ng-container
-                                        *ngIf="(authenticationService?.module?.adminOrSuperVisor || authenticationService?.isVendor())">
-                                        <li [ngClass]="{'active-tab': activeTabName == 'vendorJourney'}">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorJourney'}"
-                                                (click)="activateTab('vendorJourney');clearCustomResponse()">
-                                                {{properties.vendorJourney | translate}}</a>
-                                        </li>
-                                    </ng-container>
-                                    <!--Landing Pages-->
-                                    <ng-container
-                                        *ngIf="(authenticationService?.isPartner() || authenticationService?.isTeamMember())">
-                                        <li [ngClass]="{'active-tab': activeTabName == 'landingPages'}">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'landingPages'}"
-                                                (click)="activateTab('landingPages');clearCustomResponse()">
-                                                {{properties.landingPages | translate}}</a>
-                                        </li>
-                                    </ng-container>
+                                            *ngIf="(authenticationService?.module?.adminOrSuperVisor || authenticationService?.isVendor())">
+                                            <li [ngClass]="{'active-tab': activeTabName == 'vendorJourney'}">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorJourney'}"
+                                                    (click)="activateTab('vendorJourney');clearCustomResponse()">
+                                                    {{properties.vendorJourney | translate}}</a>
+                                            </li>
+                                        </ng-container>
+                                        <!--Landing Pages-->
+                                        <ng-container
+                                            *ngIf="(authenticationService?.isPartner() || authenticationService?.isTeamMember())">
+                                            <li [ngClass]="{'active-tab': activeTabName == 'landingPages'}">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'landingPages'}"
+                                                    (click)="activateTab('landingPages');clearCustomResponse()">
+                                                    {{properties.landingPages | translate}}</a>
+                                            </li>
+                                        </ng-container>
                                     </ng-container>
                                     <!--Folders-->
                                     <li *ngIf="authenticationService.folders"
@@ -314,8 +315,7 @@
                                     <!---XNFR-326---->
                                     <!--Email Notification Settings-->
                                     <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module?.emailNotificationSettings"
-                                        [ngClass]="{'active-tab': activeTabName == properties?.emailNotificationSettings}"
-                                        style="border-bottom: none !important;">
+                                        [ngClass]="{'active-tab': activeTabName == properties?.emailNotificationSettings}">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.emailNotificationSettings}"
                                             (click)="activateTab(properties?.emailNotificationSettings);clearCustomResponse()">{{properties?.emailNotificationSettings}}</a>
                                     </li>
@@ -895,7 +895,8 @@
                                                 *ngIf="leadApprovalCustomResponse.isVisible"></app-response-message>
                                             <form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid"
                                                 *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                                                <table class="table table-light" style="border:0px!important;background-color:transparent!important">
+                                                <table class="table table-light"
+                                                    style="border:0px!important;background-color:transparent!important">
                                                     <tbody class="remove_table_bg display-grid">
                                                         <fieldset class="fild-custome-borders-none">
                                                             <legend class="leg-custome-borders-bot">Turn Lead
@@ -904,24 +905,32 @@
                                                         <tr class="col-md-12 col-lg-12">
                                                             <div class="flex row">
                                                                 <div class="col-md-9 col-lg-9">
-                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>You have the ability to Approve or
+                                                                    <h5 class="f-w-600" id="text-color-my-profile"
+                                                                        translate>You have the ability to Approve or
                                                                         Reject the leads registered by the partners.
                                                                     </h5>
-                                                                    <h5 *ngIf="!leadApprovalRejectionStatus" id="text-color-my-profile">
-                                                                        <input type="checkbox" [disabled]="leadApprovalRejectionStatus"
+                                                                    <h5 *ngIf="!leadApprovalRejectionStatus"
+                                                                        id="text-color-my-profile">
+                                                                        <input type="checkbox"
+                                                                            [disabled]="leadApprovalRejectionStatus"
                                                                             (change)="checkAggreeToDisableLeadApprovalFeature($event)"
-                                                                            [ngModelOptions]="{standalone: true}" class="pointer checkBox_shadow"
-                                                                            [(ngModel)]="isAggreedToDisableLeadApprovalFeature" value="">&nbsp;By disabling this
+                                                                            [ngModelOptions]="{standalone: true}"
+                                                                            class="pointer checkBox_shadow"
+                                                                            [(ngModel)]="isAggreedToDisableLeadApprovalFeature"
+                                                                            value="">&nbsp;By disabling this
                                                                         option, the leads that are neither rejected nor
                                                                         approved will be automatically approved!
                                                                     </h5>
                                                                 </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+                                                                <div class="col-md-3 col-lg-3 text-right"
+                                                                    style="padding-top:10px">
                                                                     <section>
-                                                                        <switch [(status)]="leadApprovalStatus" [onText]="callActionSwitch.onTextValue"
+                                                                        <switch [(status)]="leadApprovalStatus"
+                                                                            [onText]="callActionSwitch.onTextValue"
                                                                             [offText]="callActionSwitch.offTextValue"
                                                                             [onColor]="callActionSwitch.onGreenColorSwitch"
-                                                                            [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+                                                                            [offColor]="callActionSwitch.offDefaultColor"
+                                                                            [size]="callActionSwitch.size"
                                                                             (statusChange)="setLeadApprovalOrRejectionStatus($event)">
                                                                         </switch>
                                                                     </section>
@@ -930,8 +939,10 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                                <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
-                                                    <button type="submit" class="button bgcolor-unset" [disabled]="disableSaveChangesButtonForLeadApproval"
+                                                <div class="col-xs-12"
+                                                    style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
+                                                    <button type="submit" class="button bgcolor-unset"
+                                                        [disabled]="disableSaveChangesButtonForLeadApproval"
                                                         (click)="updateLeadApprovalOrRejectionStatus()" translate><span
                                                             class="btn Btn-Green transition txt_pd-top3">Save Changes
                                                         </span>
@@ -1220,6 +1231,50 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16"
+                                                        *ngIf="!httpRequestLoader.isLoading && !isProduction">
+                                                        <div
+                                                            [className]="activeCRMDetails?.type === 'HALOPSA'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
+                                                            <div class="card-body" style="padding:10px;">
+                                                                <span *ngIf="halopsaRibbonText == 'configured'"
+                                                                    class="integration-cards">
+                                                                    <!-- <a (click)="halopsaSettings()"
+                                                                    data-toggle="tooltip" data-placement="top"
+                                                                    title="HALOPSA Settings"><i
+                                                                        class="fa fa-cog"
+                                                                        style="font-size: 20px !important;"></i></a> -->
+                                                                </span>
+                                                                <h5 class="card-title  text-uppercase text-center"
+                                                                    style="padding-top: 4%;">HALOPSA</h5>
+
+                                                                <div class="ribbon draft config" style="left:10px"
+                                                                    *ngIf="halopsaRibbonText == 'configured'">
+                                                                    <span
+                                                                        [style.background-color]="'green'">{{halopsaRibbonText}}</span>
+                                                                </div>
+                                                                <div class="ribbon draft" style="left:10px"
+                                                                    *ngIf="halopsaRibbonText != 'configured'">
+                                                                    <span
+                                                                        [style.background-color]="'yello'">{{halopsaRibbonText}}</span>
+                                                                </div>
+                                                                <div style="height: 120px;">
+                                                                    <div>
+                                                                        <img src="assets/images/crm/halopsa-xamplify.png"
+                                                                            style="margin-top:20px; text-align: center;width:100%">
+                                                                    </div>
+                                                                </div>
+                                                                <a (click)="configureHaloPsa()"
+                                                                    class="btn btn-block btn-primary text-uppercase"
+                                                                    *ngIf="halopsaRibbonText == 'configure'"
+                                                                    translate>configure</a>
+                                                                <a (click)="configureHaloPsa()"
+                                                                    class="btn btn-block btn-primary text-uppercase"
+                                                                    *ngIf="halopsaRibbonText == 'configured'"
+                                                                    translate>re configure</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </section>
 
@@ -1480,6 +1535,13 @@
                                                 <app-connectwise-authentication [loggedInUserId]="loggedInUserId"
                                                     (closeEvent)="refreshIntegrationSettings($event)">
                                                 </app-connectwise-authentication>
+                                            </div>
+
+                                            <!--halopsa -->
+                                            <div *ngIf="integrationTabIndex == 8">
+                                                <app-halopsa-authentication [loggedInUserId]="loggedInUserId"
+                                                    (closeEvent)="refreshIntegrationSettings($event)">
+                                                </app-halopsa-authentication>
                                             </div>
                                         </div>
                                         <!---Lead Pipe Lines-->
@@ -1896,7 +1958,8 @@
                                         <!-- Dashboard SETTINGS TAB -->
                                         <div class="tab-pane" *ngIf="isDashboardButtonsOptionClicked"
                                             [ngClass]="{'active': activeTabName == properties?.dashboardButtons}">
-                                            <app-custom-links-util [moduleType]="properties?.dashboardButtons"></app-custom-links-util>
+                                            <app-custom-links-util
+                                                [moduleType]="properties?.dashboardButtons"></app-custom-links-util>
                                         </div>
 
                                         <!-- Customize Left Menu -->
@@ -1927,8 +1990,11 @@
                                                     <div class="row">
                                                         <div class="col-xs-12 col-sm-12 col-lg-12">
                                                             <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
-                                                                <button class="button_blue bgcolor-unset pd_lft2" (click)="addCategory()">
-                                                                    <span class="btn btn-primary transition txt_pd-top3">Create a Folder</span></button>
+                                                                <button class="button_blue bgcolor-unset pd_lft2"
+                                                                    (click)="addCategory()">
+                                                                    <span
+                                                                        class="btn btn-primary transition txt_pd-top3">Create
+                                                                        a Folder</span></button>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                                                                 <div class="page-toolbar">
@@ -2232,31 +2298,44 @@
                                             *ngIf="activeTabName == 'customTheme'"
                                             (closeEvent)="showThemeAlert($event)">
                                         </app-custom-skin>
-                                        <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
-                                        <app-spf class="tab-pane" *ngIf="showSpfConfigurationDiv" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
-                                        <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
-                                        <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane" [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
+                                        <app-tags class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
+                                        <app-spf class="tab-pane" *ngIf="showSpfConfigurationDiv"
+                                            [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
+                                        <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
+                                        <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
                                         <!--Notify Partners-->
-                                        <app-notify-partners *ngIf="showNotifyPartnersOption && authenticationService?.module.notifyPartners"
-                                            class="tab-pane" [ngClass]="{'active': activeTabName == 'notifyPartners'}"></app-notify-partners>
+                                        <app-notify-partners
+                                            *ngIf="showNotifyPartnersOption && authenticationService?.module.notifyPartners"
+                                            class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'notifyPartners'}"></app-notify-partners>
                                         <!--XNFR-326 Email Notification Settings-->
-                                        <app-email-notification-settings *ngIf="showEmailNotificationSettingsOption && authenticationService?.module?.emailNotificationSettings"
-                                            class="tab-pane" [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
+                                        <app-email-notification-settings
+                                            *ngIf="showEmailNotificationSettingsOption && authenticationService?.module?.emailNotificationSettings"
+                                            class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
                                         </app-email-notification-settings>
 
                                         <!--XNFR-454 Domain Configuration-->
-                                        <app-add-or-manage-domains *ngIf="isAddDomainsOptionClicked" [moduleName]="'addDomains'" class="tab-pane"
+                                        <app-add-or-manage-domains *ngIf="isAddDomainsOptionClicked"
+                                            [moduleName]="'addDomains'" class="tab-pane"
                                             [ngClass]="{'active': activeTabName == properties?.addDomainsText}">
                                         </app-add-or-manage-domains>
 
                                         <!--XNFR-459 News & Announcements-->
-                                        <div class="tab-pane" *ngIf="isNewsAndAnnouncementsOptionClicked" [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
-                                            <app-custom-links-util [moduleType]="properties?.newsAndAnnouncements"></app-custom-links-util>
+                                        <div class="tab-pane" *ngIf="isNewsAndAnnouncementsOptionClicked"
+                                            [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
+                                            <app-custom-links-util
+                                                [moduleType]="properties?.newsAndAnnouncements"></app-custom-links-util>
                                         </div>
 
                                         <!--XNFR-459 Dashboard Banners-->
-                                        <div class="tab-pane" *ngIf="isDashboardBannersOptionClicked" [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
-                                            <app-custom-links-util [moduleType]="properties?.dashboardBanners"></app-custom-links-util>
+                                        <div class="tab-pane" *ngIf="isDashboardBannersOptionClicked"
+                                            [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
+                                            <app-custom-links-util
+                                                [moduleType]="properties?.dashboardBanners"></app-custom-links-util>
                                         </div>
 
                                         <!--video default player settings-->
@@ -3022,11 +3101,15 @@
                                         </div>
                                         <!-- Vendor Journey -->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'vendorJourney'}">
-                                            <app-vendor-journey *ngIf="vendorJourney" [loggedInUserCompanyId]="loggedInUserCompanyId" [moduleType] = "properties.vendorJourney"></app-vendor-journey>
+                                            <app-vendor-journey *ngIf="vendorJourney"
+                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                [moduleType]="properties.vendorJourney"></app-vendor-journey>
                                         </div>
                                         <!-- Landing Pages -->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'landingPages'}">
-                                            <app-vendor-journey  *ngIf="isLandingPages"[loggedInUserCompanyId]="loggedInUserCompanyId" [moduleType] = "properties.landingPages"></app-vendor-journey>
+                                            <app-vendor-journey *ngIf="isLandingPages"
+                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                [moduleType]="properties.landingPages"></app-vendor-journey>
                                         </div>
                                         <!-- Support Settings -->
                                         <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption"

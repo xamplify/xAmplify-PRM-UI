@@ -158,6 +158,14 @@ export const routes: Routes = [
 	/*** XNFR-416 *****/
 	{ path: 'login/preview', component: PreviewLoginComponent},
 	{ path: 'pv/t/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/evt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/ct/:campaignId', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/sct/:campaignId', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/scwaret/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/cwaret/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/scwarwlt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/cwarwlt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/wt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/p/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
 	/*** XNFR-416 *****/
 	{ path: '404', component: PageNotFoundComponent },

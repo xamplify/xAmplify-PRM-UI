@@ -42,7 +42,7 @@
      display: inline-block;
      width: 28px;
      height: 28px;
-     padding: 2px !important;
+     padding: 2px;
      margin: 10px 2px !important;
      line-height: 22px;
  }

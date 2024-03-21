@@ -1239,7 +1239,7 @@
 																	<span class="icon-alignments">
 																		<a data-toggle="tooltip" data-placement="top"
 																			title=""
-																			(click)="$event.stopPropagation();previewEventCampaignEmailTemplate(eventCampaign.selectedEditEmailTemplate.id)"
+																			(click)="$event.stopPropagation();openTemplateInNewTab(eventCampaign?.selectedEditEmailTemplate?.id);"
 																			data-original-title="Preview">
 																			<i class="fa fa-external-link-square preview-edit-color tooltip-cls"
 																				aria-hidden="true"></i> </a>
@@ -1329,7 +1329,7 @@
 																alt="">
 															<span class="icon-alignments">
 																<a data-toggle="tooltip" data-placement="top" title=""
-																	(click)="$event.stopPropagation();previewEventCampaignEmailTemplate(emailTemplate.id)"
+																	(click)="$event.stopPropagation(); openTemplateInNewTab(emailTemplate.id);"
 																	data-original-title="Preview">
 																	<i class="fa fa-external-link-square preview-edit-color tooltip-cls"
 																		aria-hidden="true"></i> </a>
@@ -1536,7 +1536,7 @@
 														Template</span>
 												</td>
 												<td width="55%" style="text-align:center">
-													<a (click)="previewEventCampaignEmailTemplate(eventCampaign?.emailTemplate?.id)"
+													<a (click)="openTemplateInNewTab(eventCampaign?.emailTemplate?.id);"
 														title="{{eventCampaign?.emailTemplate?.name}}">
 														<span *ngIf="eventCampaign?.emailTemplate?.name">
 															{{eventCampaign?.emailTemplate?.name | slice:0:30}}<span

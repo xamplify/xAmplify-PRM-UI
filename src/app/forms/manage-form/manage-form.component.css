@@ -94,7 +94,7 @@ cursor: default;
 .bar a {
 	width: 28px;
 	height: 28px;
-	padding: 2px !important;
+	padding: 2px;
 	margin: 4px 3px !important;
   line-height: 21px;
 }

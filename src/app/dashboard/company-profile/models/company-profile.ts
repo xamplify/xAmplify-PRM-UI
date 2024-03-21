@@ -46,5 +46,6 @@ export class CompanyProfile {
     backgroundLogoStyle2 = "";
     /*** XNFR-233 */
     
+    addedAdminCompanyId : number;
 
 }

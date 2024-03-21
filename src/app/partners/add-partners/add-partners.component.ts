@@ -578,12 +578,18 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			}
 			console.log(existedEmails);
 			for (let i = 0; i < this.newPartnerUser.length; i++) {
+			
+			
+                  if(this.newPartnerUser[i].contactCompany){
+                         this.newPartnerUser[i].contactCompany = this.newPartnerUser[i].contactCompany.trim();
+                   }
+
 
 				let userDetails = {
 					"firstName": this.newPartnerUser[i].firstName,
 					"lastName": this.newPartnerUser[i].lastName,
-					"companyName": this.newPartnerUser[i].contactCompany.trim(),
-					"contactCompany": this.newPartnerUser[i].contactCompany.trim()
+					"companyName": this.newPartnerUser[i].contactCompany,
+					"contactCompany": this.newPartnerUser[i].contactCompany
 				}
 
 				if (this.newPartnerUser[i].emailId) {
@@ -601,7 +607,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				}
 				if (this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7
 					&& this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9 && this.selectedAddPartnerOption !=10 && this.selectedAddPartnerOption !=11 && this.selectedAddPartnerOption !=12) {
-					if (this.newPartnerUser[i].contactCompany.trim() != '') {
+					if (this.newPartnerUser[i].contactCompany.replace(/[^a-zA-Z0-9]/g,'').trim() != '') {
 						this.isCompanyDetails = true;
 					} else {
 						this.isCompanyDetails = false;
@@ -750,7 +756,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.processingPartnersLoader = false;
             this.resetApplyFilter();
 		} else if (errorCount == 0) {
-			this.validatePartnership();
+			$('#assignContactAndMdfPopup').modal('hide');
+					this.showNotifyPartnerOption = false;
+					this.processingPartnersLoader = false;
+                    this.resetApplyFilter();
+					this.savePartners();
 		}
 	}
 
@@ -2551,7 +2561,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	contactCompanyChecking(contactCompany: string) {
-		if (contactCompany.trim() != '') {
+		if (contactCompany && contactCompany.trim() != '') {
 			this.isCompanyDetails = true;
 		} else {
 			this.isCompanyDetails = false;

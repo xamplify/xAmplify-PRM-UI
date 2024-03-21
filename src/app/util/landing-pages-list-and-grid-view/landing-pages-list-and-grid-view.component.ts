@@ -59,7 +59,6 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @Input() folderListViewCategoryId:any;
   @Input() folderListViewExpanded = false;
   @Input() vendorJourney = false;
-  
   folderListView = false;
   viewType: string;
   showUpArrowButton = false;
@@ -74,6 +73,8 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @Input() isLandingPages =  false;
   selectedLandingPageId:any;
   landingPageSharedDetails:LandingPageShareDto = new LandingPageShareDto();
+  @Output() viewAnalytics = new EventEmitter();
+
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -371,10 +372,14 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       this.router.navigate(['/home/forms/partner/lf/' + alias]);
   }
   goToLandingPageAnalytics(id: number) {
+    if(this.vendorJourney){
+        this.viewAnalytics.emit(id);
+    }else{
       if(this.categoryId>0){
           this.router.navigate(['/home/pages/' + id + '/category/'+this.categoryId+'/analytics']);
       }else{
       this.router.navigate(['/home/pages/' + id + '/analytics']);
+      }
   }
      
   }

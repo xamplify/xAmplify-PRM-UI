@@ -70,14 +70,16 @@
                                     <h4 title="{{form.name}}">{{form.name|slice:0:23}} <span
                                             *ngIf="form.name?.length>23">....</span></h4>
                                     <div class="bar gridIconCustomization">
-                                        <a class="Iconhover" data-toggle="tooltip" data-placement="top"
+                                        <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top"
                                             title="Create Form" (click)="$event.stopPropagation();createForm(form.id)">
                                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                            <div class="clickicons"></div>
                                         </a>
-                                        <a class="Iconhover" *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip"
+                                        <a class="Iconhover custom-grid-icon" *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip"
                                             data-placement="top" title="Delete Form"
                                             (click)="$event.stopPropagation();confirmDeleteForm(form.id)">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
+                                            <div class="del-icon"></div>
                                         </a>
                                     </div>
                                 </div>

@@ -27,6 +27,7 @@ import { ChatComponent } from 'app/util/chat/chat.component';
 import { DealChatPopupComponent } from 'app/deals/deal-chat-popup/deal-chat-popup.component';
 import { EditVideoComponent } from 'app/videos/manage-video/edit-video/edit-video.component';
 import { PlayVideoComponent } from 'app/videos/manage-video/play-video/play-video.component';
+import { LandingPageAnalyticsComponent } from 'app/landing-pages/landing-page-analytics/landing-page-analytics.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
@@ -35,7 +36,7 @@ import { PlayVideoComponent } from 'app/videos/manage-video/play-video/play-vide
                   CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule],
 
         declarations: [AddDealComponent,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent,
-                LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent],
+                LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -43,7 +44,7 @@ import { PlayVideoComponent } from 'app/videos/manage-video/play-video/play-vide
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,BoxLoaderComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
-                EditVideoComponent, PlayVideoComponent],
+                EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent],
         providers: [],
 })
 

@@ -19,4 +19,9 @@
   margin: 0px;
   width: 100%;
 }
-
+@media screen and (max-width:600px) {
+  .mb-upload-btns{
+    display: inline-block;
+    float: right;
+  }
+}

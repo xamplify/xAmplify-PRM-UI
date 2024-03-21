@@ -762,31 +762,31 @@
                                     <div class="gridViewImgBg">
                                        <img alt="" class="imageClassCss image_effect"
                                           *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList"
-                                          src="{{properties?.manualImage}}">
+                                          src="{{properties?.updated_Manual_Image}}">
                                        <img alt="" class="imageClassCss image_effect"
                                           *ngIf="contactList.socialNetwork=='ZOHO' && contactList.synchronisedList"
-                                          src="{{properties?.zohoImage}}">
+                                          src="{{properties?.zohoGridImage}}">
                                        <img alt="" class="imageClassCss image_effect"
                                           *ngIf="contactList.socialNetwork=='GOOGLE' && contactList.synchronisedList"
-                                          src="{{properties?.googleImage}}">
+                                          src="{{properties?.googleGridImage}}">
                                        <img class="imageClassCss image_effect" alt=""
                                           *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList"
-                                          src="{{properties?.salesforceImage}}">
+                                          src="{{properties?.salesforceGridImage}}">
                                        <img alt="" class="imageClassCss image_effect"
                                           *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList"
-                                          src="{{properties?.hubspotImage}}">
+                                          src="{{properties?.hubspotGridImage}}">
                                        <img alt="" class="imageClassCss image_effect"
                                           *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList"
-                                          src="{{properties?.microsoftImage}}">
+                                          src="{{properties?.microsoftGridImage}}">
                                        <img alt="" class="imageClassCss image_effect"
                                           *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList"
-                                          src="{{properties?.pipedriveImage}}">
-                                          <img alt="" class="imageClassCss image_effect"
+                                          src="{{properties?.pipedriveGridImage}}">
+                                       <img alt="" class="imageClassCss image_effect"
                                           *ngIf="contactList.socialNetwork=='CONNECTWISE' && contactList.synchronisedList"
-                                          src="{{properties?.connectwiseImage}}">
+                                          src="{{properties?.connectwiseGridImage}}">
                                        <img class="imageClassCss image_effect"
                                           *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"
-                                          src="{{properties?.marketoImage}}" alt="manual" style="height: 60px;">
+                                          src="{{properties?.marketoGridImage}}" alt="manual">
                                     </div>
                                     <div id="container"
                                        *ngIf="contactList.uploadInProgress || contactList.validationInProgress || (!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
@@ -894,7 +894,7 @@
                                           [class.disabled]="!contactList.emailValidationInd || (contactList.noOfContacts == 0 && contactList.formList)"
                                           *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
                      (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
-                                          (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.isPartnerUserList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany, contactList.associatedCompanyId);setListType(contactList.publicList)"
+                                          (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.isPartnerUserList,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany, contactList.associatedCompanyId);setListType(contactList.publicList)"
                                           data-toggle="tooltip" data-placement="top"
                                           title="{{actionsDescription.contact_list_edit}}" data-rel="fancybox-button">
                                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -904,7 +904,7 @@
                                           <a class="Iconhover custom-grid-icon"
                                              [class.disabled]="!contactList.emailValidationInd" style="" *ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) || contactList.synchronisedList
                         || ((sharedLeads)  || (assignLeads && contactList.assignedToPartner))"
-                                             (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.isPartnerUserList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany, contactList.associatedCompanyId);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
+                                             (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.isPartnerUserList,contactList.defaultPartnerList,contactList.isDefaultContactList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList, (!contactList?.partnerUserList && contactList?.companyList),contactList.associatedCompany, contactList.associatedCompanyId);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
                                              data-toggle="tooltip" data-placement="top"
                                              title="{{actionsDescription.contact_list_info}}"
                                              data-rel="fancybox-button">
@@ -937,8 +937,8 @@
                                              title="{{actionsDescription.contact_list_synchronize}}"
                                              [class.disabled]="(masterContactListSync && contactList.isDefaultContactList) || (!contactList.emailValidationInd) || ((contactList.socialNetwork=='GOOGLE' || contactList.socialNetwork=='SALESFORCE' || contactList.socialNetwork=='ZOHO' )&& (loggedInUserId != contactList.uploadedUserId))"
                                              *ngIf=" contactList.isDefaultContactList || hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
-                                             (click)="!contactList.isDefaultContactList?synchronizeContactList(contactList):confirmsync()" data-rel="fancybox-button"
-                                             style="left: 18%; top: -20px;">
+                                             (click)="!contactList.isDefaultContactList?synchronizeContactList(contactList):confirmsync()"
+                                             data-rel="fancybox-button" style="left: 18%; top: -20px;">
                                              <i class="fa fa-refresh" aria-hidden="true"></i>
                                              <div class="clickicons"></div>
                                           </a>
@@ -1021,8 +1021,8 @@
          [isDefaultPartnerList]="isDefaultPartnerList" [isDefaultContactList]="isDefaultContactList"
          [isSynchronizationList]="isSynchronizationList" [isFormList]="isFormList"
          [isPartnerUserList]="isPartnerUserList" [masterContactListSync]="masterContactListSync"
-         [isTeamMemberPartnerList]="isTeamMemberPartnerList" [selectedCompanyId]="selectedCompanyId" [companyName]="selectedAssociatedCompany"
-         [manageCompanies]="isCompanyList"></app-edit-contacts>
+         [isTeamMemberPartnerList]="isTeamMemberPartnerList" [selectedCompanyId]="selectedCompanyId"
+         [companyName]="selectedAssociatedCompany" [manageCompanies]="isCompanyList"></app-edit-contacts>
    </div>
 
 
@@ -1164,8 +1164,9 @@
                                           aria-hidden="true"></i><i class="fa fa-angle-down"
                                           style="font-size: 14px; float: right" aria-hidden="true"></i>
                                     </span>
-                                    <span data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip" 
-                                       title="Click here to email the list" (click)="downloadUserListCsv(pagination)" style="margin-right: 10px;">
+                                    <span data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view"
+                                       data-toggle="tooltip" title="Click here to email the list"
+                                       (click)="downloadUserListCsv(pagination)" style="margin-right: 10px;">
                                        <i aria-hidden="true" class="fas fa-file-export p10"></i>
                                     </span>
                                     <ul class="dropdown-menu pull-right">
@@ -1350,7 +1351,8 @@
                                              </td>
                                              <td class="Mark-as-ValidBtn"
                                                 *ngIf="( contactsByType.selectedCategory =='excluded')  && !authenticationService?.module?.deletedPartner">
-                                                <button *ngIf="contact.excludedCatagory == 'Excluded User' && !(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
+                                                <button
+                                                   *ngIf="contact.excludedCatagory == 'Excluded User' && !(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
                                                    type="submit" class=" bgcolor-unset button_height"
                                                    [disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
                                                    (click)="showMakeAsOptinAlert(contact.id, contact.emailId)"
