@@ -1923,14 +1923,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         data.body = data.body.replace("{{event_title}}", this.eventCampaign.campaign);
                     }
                     if (this.eventCampaign.campaignEventTimes[0].startTimeString) {
-                        /* let startTime = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
-                         let srtTime = this.referenceService.formatAMPM(startTime);
-                         let date1 = startTime.toDateString()*/
-
                         let date1 = new Date(this.eventCampaign.campaignEventTimes[0].startTimeString);
                         date1 = dateFormat(date1, "dddd, mmmm dS, yyyy, h:MM TT");
-
-
                         if (!this.eventCampaign.campaignEventTimes[0].allDay) {
                             data.body = data.body.replace("{{event_start_time}}", date1);
                             data.body = data.body.replace("&lt;To&gt;", 'To');
@@ -1942,10 +1936,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     }
 
                     if (this.eventCampaign.campaignEventTimes[0].endTimeString) {
-                        //              let endDate = new Date(this.eventCampaign.campaignEventTimes[0].endTimeString);
-                        //              let endTime = this.referenceService.formatAMPM(endDate);
-                        //              let date2 = endDate.toDateString()
-
                         let date2 = new Date(this.eventCampaign.campaignEventTimes[0].endTimeString);
                         date2 = dateFormat(date2, "dddd, mmmm dS, yyyy, h:MM TT");
 
@@ -1982,15 +1972,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         }
 
                         if (this.eventCampaign.campaignLocation.location) {
-
                             let address1 = this.eventCampaign.campaignLocation.location;
                             let address2 = "";
                             let address3 = "";
                             let address4 = "";
                             let fullAddress = "";
-
-
-
                             if (this.eventCampaign.campaignLocation.street && this.eventCampaign.campaignLocation.address2) {
                                 address2 = this.eventCampaign.campaignLocation.street + "<br>" + this.eventCampaign.campaignLocation.address2;
                             } else if (this.eventCampaign.campaignLocation.street) {
@@ -2038,12 +2024,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                             } else {
                                 fullAddress = address1;
                             }
-
-
-
-
                             data.body = data.body.replace(/{{event_address}}/g, fullAddress);
-                            /* data.body = data.body.replace( /{{addreess_lane2}}/g, this.eventCampaign.campaignLocation.city + "," + this.eventCampaign.campaignLocation.state + "," + this.eventCampaign.campaignLocation.zip );*/
                         }
                     } else {
                         data.body = data.body.replace(/{{event_address}}/g, "Online Meeting")
@@ -2055,7 +2036,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     if (this.eventCampaign.email) {
                         data.body = data.body.replace("{{event_emailId}}", this.eventCampaign.email);
                     }
-
 
                     if (!this.reDistributeEvent && !this.isPreviewEvent) {
                         if (this.eventCampaign.email) {
@@ -2070,10 +2050,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     } else {
                         data.body = data.body.replace("{{vendor_name}}", this.eventCampaign.userDTO.firstName + " " + this.eventCampaign.userDTO.lastName);
                         data.body = data.body.replace("{{vendor_emailId}}", this.eventCampaign.userDTO.emailId);
-
                     }
-
-
                     if (!this.eventCampaign.enableCoBrandingLogo) {
                         data.body = data.body.replace("https://xamp.io/vod/images/co-branding.png", "https://aravindu.com/vod/images/emptyImg.png");
                     }
@@ -2093,9 +2070,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     if (this.eventCampaign.email) {
                         data.body = data.body.replace("https://aravindu.com/vod/images/us_location.png", " ");
                     }
-
                     data.body = data.body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
-
                     this.getEmailTemplatePreview(data);
                 },
                 (error: string) => {
@@ -3188,20 +3163,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         if(this.authenticationService.isLocalHost()){
             let key = this.properties.eventCampaignTemplateLocalStorageKey;
             this.authenticationService.removeLocalStorageItemByKey(key);
-            let eventCampaignPreviewData = {};
-            eventCampaignPreviewData['eventTitle'] = this.eventCampaign.campaign;
-            eventCampaignPreviewData['onlineMeeting'] = this.eventCampaign.onlineMeeting;
-            eventCampaignPreviewData['eventStartTime'] = this.eventCampaign.campaignEventTimes[0].startTimeString;
-            eventCampaignPreviewData['eventEndTime'] = this.eventCampaign.campaignEventTimes[0].endTimeString;
-            eventCampaignPreviewData['allDay'] = this.eventCampaign.campaignEventTimes[0].allDay;
-            eventCampaignPreviewData['eventDescription'] = this.eventCampaign.message;
-            eventCampaignPreviewData['street'] = this.eventCampaign.campaignLocation.street;
-            eventCampaignPreviewData['address2'] = this.eventCampaign.campaignLocation.address2;
-            eventCampaignPreviewData['city'] = this.eventCampaign.campaignLocation.city;
-            eventCampaignPreviewData['state'] = this.eventCampaign.campaignLocation.state;
-            eventCampaignPreviewData['zip'] = this.eventCampaign.campaignLocation.zip;
-            eventCampaignPreviewData['country'] = this.eventCampaign.campaignLocation.country;
-            this.authenticationService.setLocalStorageItemByKeyAndValue(key,eventCampaignPreviewData);
+            this.eventCampaign.isRedistributeEvent = this.reDistributeEvent;
+            this.eventCampaign.isPreviewEvent = this.isPreviewEvent;
+            this.authenticationService.setLocalStorageItemByKeyAndValue(key,this.eventCampaign);
             this.referenceService.previewEventCampaignEmailTemplateInNewTab(id);
         }else{
             this.previewEventCampaignEmailTemplate(id);

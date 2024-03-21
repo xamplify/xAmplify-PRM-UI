@@ -1275,14 +1275,7 @@ unpublishLearingTracks(learningTrackIds:any){
 }
 
 getEmailTemplateHtmlBodyAndMergeTagsInfo(suffixUrl:string){
-  let URL = "";
-  let s = this.getLocalStorageItemByKey("eventCampaignTemplatePreviewData");
-   console.log(s);
-  if(suffixUrl.indexOf("event")>-1){
-    URL = this.REST_URL+"email-template/preview/"+suffixUrl+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
-  }else{
-    URL = this.REST_URL+"email-template/preview/"+suffixUrl+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
-  }
+  let URL = this.REST_URL+"email-template/preview/"+suffixUrl+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
   return this.callGetMethod(URL);
 }
 
