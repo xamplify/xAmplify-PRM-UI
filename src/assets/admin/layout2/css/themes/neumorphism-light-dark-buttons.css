@@ -1,7 +1,6 @@
 .Btn-Green::before,       
 .btn-primary::before,
 .button_blue::before,
-div > button.btn-primary:hover,
 div.Btn-Green:hover,
 .button::before ,
 /** 23-01-2024 **/
@@ -19,9 +18,7 @@ span.switch.switch-small {
 .button_blue, 
 .Btn-Green, 
 .button,      
-.btn-primary,
 .button_blue:hover,
-.btn-primary:hover,
 .Btn-Green:hover,
 button#save\&delete_button, 
 /** 23-01-2024 **/
@@ -32,6 +29,11 @@ button.button.bgcolor-unset
   /* background: linear-gradient(87deg, #00ACEC 0%, #00ED95 100%) !important; */
   box-shadow: none !important;
   border-radius: 7px !important;
+}
+.btn-primary,
+.btn-primary:hover{
+  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  box-shadow: none !important;
 }
 .Btn-Gray:hover {
   box-shadow: none !important;
@@ -98,7 +100,7 @@ span.btn.Btn-Green.transition {
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active.open > a > i,
 .page-sidebar .page-sidebar-menu > li.active > a > i, 
 .page-sidebar .page-sidebar-menu > li.active.open > a > i {
-  color: #04afff !important;
+  color: #01b6ff85 !important;
 }
 .help-iconbgadd.selectRecord {
   background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
@@ -116,7 +118,7 @@ h3#notifications {
 }
 
 .page-container-bg-solid .page-sidebar .page-sidebar-menu > li.active > a > .selected {
-  border-color: transparent #07b6bb transparent transparent !important;
+  border-color: transparent #01b6ff5c transparent transparent !important;
 }
 
 button.button_blue:disabled,
@@ -225,10 +227,10 @@ div#reply-3:hover {
 }
 
 .page-sidebar .page-sidebar-menu > li.active > a, .page-sidebar .page-sidebar-menu > li.hover > a {
-  background-color: #444649 !important;
+  background-color: #23272c !important;
 }
 .left-menu-color ul li a:hover{
-    background-color: #444649 !important;
+    background-color: #23272c !important;
 }
 .p0-neo-dark {
   padding: 0px !important;
@@ -321,7 +323,7 @@ margin-top: -70px !important;
 margin-left: 8px !important;
 }
 .profile-usermenu ul li a:hover {
-  background-color: #80808047 !important;
+  background-color: #23272c !important;
 }
 
 /****07-02-2024 (Tharak) ***/
@@ -363,4 +365,8 @@ button.swal2-cancel.styled:hover {
 
   button.btn.Btn-Green.float-left.mobileBottomPa.responsiveBtnCU:hover {
     background: linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
+  }
+  div > button.btn-primary:hover{
+    background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important;
+    box-shadow: none !important;
   }

@@ -158,6 +158,7 @@ export const routes: Routes = [
 	/*** XNFR-416 *****/
 	{ path: 'login/preview', component: PreviewLoginComponent},
 	{ path: 'pv/t/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/evt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/ct/:campaignId', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/sct/:campaignId', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/scwaret/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },

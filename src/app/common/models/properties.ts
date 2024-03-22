@@ -348,6 +348,8 @@ export class Properties {
 	instantNavigation = "Instant Navigation";
 	pageNotFound = "Oops, the page you're looking for does not exist.";
 
+	eventCampaignTemplateLocalStorageKey = "eventCampaignTemplatePreviewData";
+
 
 
 }
