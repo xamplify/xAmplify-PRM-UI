@@ -161,6 +161,7 @@ export const routes: Routes = [
 	{ path: 'pv/evt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/ct/:campaignId', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/sct/:campaignId', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/sect/:campaignId', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/scwaret/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/cwaret/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/scwarwlt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },

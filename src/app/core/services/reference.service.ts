@@ -3494,6 +3494,7 @@ previewEventCampaignEmailTemplateInNewTab(id:number){
   this.openWindowInNewTab("/pv/evt/"+id);
 }
 
+
 previewWorkflowEmailTemplateInNewTab(id:number){
   this.openWindowInNewTab("/pv/wt/"+id);
 }
@@ -3504,6 +3505,10 @@ previewCampaignEmailTemplateInNewTab(campaignId:number){
 
 previewSharedVendorCampaignEmailTemplateInNewTab(campaignId:number){
   this.openWindowInNewTab("/pv/sct/"+campaignId);
+}
+
+previewSharedVendorEventCampaignEmailTemplateInNewTab(campaignId:number){
+  this.openWindowInNewTab("/pv/sect/"+campaignId);
 }
 
 previewSharedCampaignAutoReplyEmailTemplateInNewTab(replyId:number){

@@ -111,7 +111,7 @@
 										maxlength="250" placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
 										[ngModelOptions]="{standalone: true}"
 										[ngClass]="{'has-error': eventError.eventTitleError}"
-										(input)="validateCampaignName(eventCampaign.campaign); resetTabClass()"
+										(input)="validateCampaignName(eventCampaign.campaign); setLocalStorageForEventTemplatePreview();resetTabClass()"
 										(blur)="eventTitleError()"
 										[attr.disabled]="(isPreviewEvent || isEventUpdate || reDistributeEvent || reDistributeEventManage)? '' : null">
 									<div class="text-danger" *ngIf="eventError.eventTitleError" translate>Event Title is
@@ -147,7 +147,7 @@
 										class="form-control pull-left" placeholder="Hosted By"
 										[(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}"
 										[ngClass]="{'has-error': eventError.eventHostByError}"
-										(input)="eventHostByError(); resetTabClass()" (blur)="eventHostByError()">
+										(input)="setLocalStorageForEventTemplatePreview();eventHostByError(); resetTabClass()" (blur)="eventHostByError()">
 									<div class="text-danger" *ngIf="eventError.eventHostByError" translate>Hosted By is
 										required
 									</div>
@@ -159,7 +159,7 @@
 									<select *ngIf="!isPreviewEvent"
 										[attr.disabled]="(isPreviewEvent || isEventUpdate)? '' : null"
 										class="form-control" [(ngModel)]="eventCampaign.email"
-										[ngModelOptions]="{standalone: true}" (change)="setFromName()">
+										[ngModelOptions]="{standalone: true}" (change)="setFromName();setLocalStorageForEventTemplatePreview();">
 										<option *ngFor="let teamMember of teamMemberEmailIds"
 											[ngValue]="teamMember.emailId">
 											{{teamMember.emailId}}
@@ -172,7 +172,7 @@
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 col-xs-12 labal-css color-css" translate>Subject Line
-									<font style="color: red"> <strong>*</strong></font>
+									<span class="required"><strong>*</strong></span>
 								</label>
 								<div class="col-sm-9">
 									<div
@@ -226,12 +226,6 @@
 										<i class="fa fa-question-circle" aria-hidden="true"></i>
 									</span>
 								</span>
-								<!-- <div class="col-sm-3 mLabel" style="padding: 0; margin-top: 5px;">
-				   <span class="tooltip-margin" style="cursor: pointer; color: #54a7e9;"
-					  data-html="true" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}} <br> {{THROUGH_PARTNER_MESSAGE}}">
-				   <i class="fa fa-question-circle" aria-hidden="true"></i>
-				   </span>
-				</div> -->
 							</div>
 							<div class="form-group"
 								*ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner()">
@@ -283,9 +277,9 @@
 							</div>
 							<div class="form-group" *ngIf="eventCampaign.configurePipelines"
 								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
-								<label class="control-label col-sm-3">Lead Pipeline<font>
+								<label class="control-label col-sm-3">Lead Pipeline<span>
 										<b style="color: #f55d7a !important">*</b>
-									</font></label>
+									</span></label>
 								<div class="col-sm-9">
 									<select class="form-control" [(ngModel)]="eventCampaign.leadPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="leadPipelineId"
@@ -298,9 +292,9 @@
 							</div>
 							<div class="form-group" *ngIf="eventCampaign.configurePipelines"
 								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
-								<label class="control-label col-sm-3">Deal Pipeline<font>
+								<label class="control-label col-sm-3">Deal Pipeline<span>
 										<b style="color: #f55d7a !important">*</b>
-									</font></label>
+									</span></label>
 								<div class="col-sm-9">
 									<select class="form-control" [(ngModel)]="eventCampaign.dealPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="dealPipelineId"
@@ -324,7 +318,7 @@
 											placeholder="Start"
 											[(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString"
 											[ngModelOptions]="{standalone: true}"
-											(input)="eventStartTimeError();validateUpdateButton()"
+											(input)="eventStartTimeError();validateUpdateButton();setLocalStorageForEventTemplatePreview()"
 											(blur)="eventStartTimeError()"
 											[ngClass]="{'has-error': eventError.eventStartTimeError && !eventCampaign.campaignEventTimes[0].startTimeString}">
 										<div class="col-sm-12 text-danger" style="padding: 0"
@@ -338,7 +332,7 @@
 											class="form-control eventflatpickr" placeholder="End"
 											[(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString"
 											[ngModelOptions]="{standalone: true}"
-											(input)="eventEndTimeError();validateUpdateButton()"
+											(input)="eventEndTimeError();validateUpdateButton();setLocalStorageForEventTemplatePreview()"
 											(blur)="eventEndTimeError()"
 											[ngClass]="{'has-error': eventError.eventEndDateError,'opacityCss':eventCampaign.campaignEventTimes[0].allDay}">
 										<div class="col-sm-12 text-danger" style="padding: 0"
@@ -352,7 +346,7 @@
 										<input type="checkbox" id="allDay" class="form-check-input mt10 checkBox_shadow"
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 											[checked]="eventCampaign.campaignEventTimes[0].allDay"
-											(change)="changeAllDay()" (input)="resetTabClass();validateUpdateButton()">
+											(change)="changeAllDay();setLocalStorageForEventTemplatePreview();" (input)="resetTabClass();validateUpdateButton()">
 										<label class="line-align" for="allDay" style="float:none" translate> All
 											Day</label>
 									</div>
@@ -370,7 +364,7 @@
 											[ngClass]="{'has-error': eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId}"
 											[(ngModel)]="eventCampaign.campaignEventTimes[0].countryId"
 											[ngModelOptions]="{standalone: true}"
-											(change)="onChangeCountryCampaignEventTime($event.target.value)"
+											(change)="onChangeCountryCampaignEventTime($event.target.value);setLocalStorageForEventTemplatePreview();"
 											(input)="eventCountryError()" (blur)="eventCountryError()">
 											<option *ngFor="let country of countries" [value]="country.id">
 												{{country.name}}</option>
@@ -379,7 +373,7 @@
 									<div class="col-sm-6 mPadTop">
 										<select
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
-											class="form-control" style="width: 100%" (change)="setEventTimeZone()"
+											class="form-control" style="width: 100%" (change)="setEventTimeZone();setLocalStorageForEventTemplatePreview();"
 											[(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone"
 											[ngModelOptions]="{standalone: true}" id="timezoneIdChange">
 											<option *ngIf="!timezonesCampaignEventTime" value="" disabled
@@ -419,7 +413,7 @@
 									</label>
 									<div class="col-sm-9">
 										<textarea style="font-size:14px !important" class="form-control"
-											[(ngModel)]="eventCampaign.message" (input)="characterSize()"
+											[(ngModel)]="eventCampaign.message" (input)="characterSize();setLocalStorageForEventTemplatePreview();"
 											[ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment"
 											maxlength="250"></textarea>
 										<label class="text-area-label-css pull-right">{{characterleft}} characters
@@ -436,7 +430,7 @@
 										<input type="text"
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 											class="form-control" id="eventDateTime" (blur)="eventLocationError()"
-											(input)="eventLocationError();validateUpdateButton()"
+											(input)="eventLocationError();validateUpdateButton();setLocalStorageForEventTemplatePreview();"
 											placeholder="Corporate headquarters, local restaurant, etc."
 											[ngClass]="{'has-error': eventError.eventLocationError}"
 											[(ngModel)]="eventCampaign.campaignLocation.location"
@@ -454,6 +448,7 @@
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 											class="form-control" id="address1" placeholder="Street Address"
 											maxlength="25" [(ngModel)]="eventCampaign.campaignLocation.street"
+											(input)="setLocalStorageForEventTemplatePreview();"
 											[ngModelOptions]="{standalone: true}">
 									</div>
 									<div class="col-sm-offset-3 col-sm-9 pt10">
@@ -461,6 +456,7 @@
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 											class="form-control" id="address2" placeholder="Address2" maxlength="25"
 											[(ngModel)]="eventCampaign.campaignLocation.address2"
+											(input)="setLocalStorageForEventTemplatePreview();"
 											[ngModelOptions]="{standalone: true}">
 									</div>
 									<div class="col-sm-offset-3 col-sm-9 pt10">
@@ -469,6 +465,7 @@
 												[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 												class="form-control" id="city" placeholder="City"
 												[(ngModel)]="eventCampaign.campaignLocation.city"
+												(input)="setLocalStorageForEventTemplatePreview();"
 												[ngModelOptions]="{standalone: true}">
 										</div>
 										<div class="col-sm-6 mPadState" style="padding-right: 0px">
@@ -476,6 +473,7 @@
 												[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 												class="form-control" id="state" placeholder="State"
 												[(ngModel)]="eventCampaign.campaignLocation.state"
+												(input)="setLocalStorageForEventTemplatePreview();"
 												[ngModelOptions]="{standalone: true}">
 										</div>
 									</div>
@@ -485,6 +483,7 @@
 												[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
 												class="form-control" id="zip" placeholder="Zip" maxlength="10"
 												[(ngModel)]="eventCampaign.campaignLocation.zip"
+												(input)="setLocalStorageForEventTemplatePreview();"
 												[ngModelOptions]="{standalone: true}">
 										</div>
 										<div class="col-sm-6 mPadCity" style="padding-right: 0px">
@@ -528,18 +527,6 @@
 											</span>
 										</div>
 									</div>
-								</div>
-							</div>
-							<div class="form-group" [attr.class]="smsTextDivClass" *ngIf="enableSmsText">
-								<label class="control-label col-sm-4">Sms Text
-									<font style="color: red">
-										<b>*</b>
-									</font>
-								</label>
-								<div class="col-sm-8">
-									<textarea id="smsText" placeholder="Sms Text" class="form-control"
-										[(ngModel)]="smsText" name="smsText"
-										(input)="validateForm();validateField('smsText');" maxlength="200"></textarea>
 								</div>
 							</div>
 							<div class="form-group" *ngIf="isEventUpdate">

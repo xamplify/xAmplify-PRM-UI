@@ -270,7 +270,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.vanityUrlService.isVanityURLEnabled();
         this.countries = this.referenceService.getCountries();
         this.eventCampaign.campaignLocation.country = (this.countryNames.countries[0]);
-        //this.listEmailTemplates();
         CKEDITOR.config.height = '100';
         this.isPreviewEvent = this.router.url.includes('/home/campaigns/event-preview') ? true : false;
         this.isEventUpdate = this.router.url.includes('/home/campaigns/event-update') ? true : false;
@@ -3161,14 +3160,22 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
     openTemplateInNewTab(id:number){
         if(this.authenticationService.isLocalHost()){
-            let key = this.properties.eventCampaignTemplateLocalStorageKey;
-            this.authenticationService.removeLocalStorageItemByKey(key);
-            this.eventCampaign.isRedistributeEvent = this.reDistributeEvent;
-            this.eventCampaign.isPreviewEvent = this.isPreviewEvent;
-            this.authenticationService.setLocalStorageItemByKeyAndValue(key,this.eventCampaign);
-            this.referenceService.previewEventCampaignEmailTemplateInNewTab(id);
+            this.setLocalStorageForEventTemplatePreview();
+            if(this.reDistributeEvent){
+                let campaignId = this.activatedRoute.snapshot.params['id'];
+                this.referenceService.previewSharedVendorEventCampaignEmailTemplateInNewTab(campaignId);
+            }else{
+                this.referenceService.previewEventCampaignEmailTemplateInNewTab(id);
+            }
         }else{
             this.previewEventCampaignEmailTemplate(id);
         }
+    }
+    setLocalStorageForEventTemplatePreview(){
+        let key = this.properties.eventCampaignTemplateLocalStorageKey;
+        this.authenticationService.removeLocalStorageItemByKey(key);
+        this.eventCampaign.isRedistributeEvent = this.reDistributeEvent;
+        this.eventCampaign.isPreviewEvent = this.isPreviewEvent;
+        this.authenticationService.setLocalStorageItemByKeyAndValue(key,this.eventCampaign);
     }
 }
