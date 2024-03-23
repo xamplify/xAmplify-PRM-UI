@@ -1592,7 +1592,7 @@ appendValueToSubjectLine(event:any){
     openAutoResponseEmailTemplateInNewTab(reply:any){
         if(this.authenticationService.isLocalHost()){
             if(this.campaign.nurtureCampaign){
-               // this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
+                this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
             }else{
                 this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id);
             }
@@ -1604,7 +1604,7 @@ appendValueToSubjectLine(event:any){
     openAutoResponseWebsiteLinkTemplateInNewTab(url:any){
         if(this.authenticationService.isLocalHost()){
             if(this.campaign.nurtureCampaign){
-               // this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
+                this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(url.id);
             }else{
                 this.referenceService.previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id);
             }

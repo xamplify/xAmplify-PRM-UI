@@ -3176,4 +3176,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.eventCampaign.isPreviewEvent = this.isPreviewEvent;
         this.authenticationService.setLocalStorageItemByKeyAndValue(key,this.eventCampaign);
     }
+
+    openAutoResponseEmailTemplateInNewTab(reply:any){
+        if(this.eventCampaign.nurtureCampaign){
+            this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+         }else{
+             this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+         }
+    }
 }
