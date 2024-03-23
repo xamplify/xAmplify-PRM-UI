@@ -29,6 +29,7 @@ declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
 @Injectable()
 export class ReferenceService {
+    
   renderer: Renderer;
   swalConfirmButtonColor: "#54a7e9";
   swalCancelButtonColor: "#999";
@@ -3493,7 +3494,9 @@ previewEmailTemplateInNewTab(id:number){
 previewEventCampaignEmailTemplateInNewTab(id:number){
   this.openWindowInNewTab("/pv/evt/"+id);
 }
-
+previewEditRedistributedEventCampaignTemplatePreview(campaignId: any) {
+  this.openWindowInNewTab("/pv/edevt/"+campaignId);
+}
 
 previewWorkflowEmailTemplateInNewTab(id:number){
   this.openWindowInNewTab("/pv/wt/"+id);

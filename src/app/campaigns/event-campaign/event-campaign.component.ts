@@ -3159,16 +3159,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 	}
 
     openTemplateInNewTab(id:number){
-        if(this.authenticationService.isLocalHost()){
-            this.setLocalStorageForEventTemplatePreview();
-            if(this.reDistributeEvent){
-                let campaignId = this.activatedRoute.snapshot.params['id'];
-                this.referenceService.previewSharedVendorEventCampaignEmailTemplateInNewTab(campaignId);
-            }else{
-                this.referenceService.previewEventCampaignEmailTemplateInNewTab(id);
-            }
+        this.setLocalStorageForEventTemplatePreview();
+        let campaignId = this.activatedRoute.snapshot.params['id'];
+        if(this.reDistributeEvent){
+            this.referenceService.previewSharedVendorEventCampaignEmailTemplateInNewTab(campaignId);
+        }else if(this.reDistributeEventManage){
+            this.referenceService.previewEditRedistributedEventCampaignTemplatePreview(campaignId);
         }else{
-            this.previewEventCampaignEmailTemplate(id);
+            this.referenceService.previewEventCampaignEmailTemplateInNewTab(id);
         }
     }
     setLocalStorageForEventTemplatePreview(){

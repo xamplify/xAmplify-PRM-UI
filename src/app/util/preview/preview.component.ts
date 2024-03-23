@@ -29,6 +29,7 @@ export class PreviewComponent implements OnInit {
   campaignAutoReplyWebsiteLinkWorkflowId: boolean;
   isEventCampaignTemplatePreview: boolean;
   isSharedEventCampaignTemplatePreview:boolean;
+  isEditRedistributedEventCampaignTemplatePreview:boolean;
   statusCode = 0;
   eventCampaign:EventCampaign = new EventCampaign();
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
@@ -45,6 +46,7 @@ export class PreviewComponent implements OnInit {
     this.vendorCampaignAutoReplyWebsiteLinkWorkflowId = currentRouterUrl.indexOf("/pv/scwarwlt")>-1;
     this.campaignAutoReplyWebsiteLinkWorkflowId = currentRouterUrl.indexOf("/pv/cwarwlt")>-1;
     this.isEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/evt")>-1;
+    this.isEditRedistributedEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/edevt")>-1;
     this.referenceService.clearHeadScriptFiles();
     this.processor.set(this.processor);
     this.id = this.route.snapshot.params['id'];
@@ -62,7 +64,7 @@ export class PreviewComponent implements OnInit {
     if(this.campaignId!=undefined){
       let vendorCampaignIdOrCampaignIdParameter = this.isSharedCampaignTemplatePreview   ? "vendorCampaignId" : this.isSharedEventCampaignTemplatePreview ? "vendorEventCampaignId":"campaignId";
       URL_SUFFIX = vendorCampaignIdOrCampaignIdParameter+"/"+this.campaignId;
-      if(this.isSharedEventCampaignTemplatePreview){
+      if(this.isSharedEventCampaignTemplatePreview || this.isEditRedistributedEventCampaignTemplatePreview){
         this.eventCampaign = this.authenticationService.getLocalStorageItemByKey(this.properties.eventCampaignTemplateLocalStorageKey);
         if(this.eventCampaign!=undefined){
           let hostedBy = this.eventCampaign.fromName;
@@ -101,7 +103,7 @@ export class PreviewComponent implements OnInit {
         }
         this.processor.remove(this.processor);
       },error=>{
-        this.statusCode = 500;
+        this.statusCode = JSON.parse(error["status"]);
         this.processor.remove(this.processor);
         this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
       });
