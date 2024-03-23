@@ -7,14 +7,14 @@ import { Processor } from '../../core/models/processor';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { EventCampaign } from 'app/campaigns/models/event-campaign';
-import { from } from 'rxjs/observable/from';
+
 @Component({
-  selector: 'app-preview',
-  templateUrl: './preview.component.html',
-  styleUrls: ['./preview.component.css'],
+  selector: 'app-preview-email-template',
+  templateUrl: './preview-email-template.component.html',
+  styleUrls: ['./preview-email-template.component.css'],
   providers:[Processor,Properties]
 })
-export class PreviewComponent implements OnInit {
+export class PreviewEmailTemplateComponent implements OnInit {
   id:number = 0;
   success = false;
   customResponse:CustomResponse = new CustomResponse();
@@ -277,3 +277,4 @@ export class PreviewComponent implements OnInit {
     return htmlBody;
   }
 }
+

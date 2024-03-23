@@ -21,7 +21,6 @@ import { SignupComponent } from './authentication/signup/signup.component';
 import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './authentication/verify-email/verify-email.component';
 import { CompanyPageComponent } from './dashboard/company-profile/company-page/company-page.component';
-// import { IntroComponent } from './authentication/intro/intro.component';
 import { TermsConditonComponent } from 'app/authentication/terms-conditon/terms-conditon.component';
 import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
 import { LogRegularCampaignComponentSMS } from './campaigns/log-regular-campaign-sms/log-regular-campaign-sms.component';
@@ -43,11 +42,9 @@ import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-
 import { LogoutComponent } from 'app/authentication/logout/logout.component';
 import {SelectContentModulesComponent} from 'app/core/select-content-modules/select-content-modules.component';
 import { UnauthorizedPageComponent } from './error-pages/unauthorized-page/unauthorized-page.component';
-import { CustomSkinComponent } from './dashboard/user-profile/custom-skin/custom-skin.component';
-import { DevicesInfoComponent } from './azuga/devices-info/devices-info.component';
 import { MaintenanceComponent } from './authentication/maintenance/maintenance.component';
 import { PreviewLoginComponent } from './common/preview-login/preview-login.component';
-import { PreviewComponent } from './util/preview/preview.component';
+import { PreviewEmailTemplateComponent } from './util/preview-email-template/preview-email-template.component';
 
 
 export const routes: Routes = [
@@ -157,18 +154,18 @@ export const routes: Routes = [
 	{ path: 'maintenance', component: MaintenanceComponent },
 	/*** XNFR-416 *****/
 	{ path: 'login/preview', component: PreviewLoginComponent},
-	{ path: 'pv/t/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/evt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/edevt/:campaignId', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/ct/:campaignId', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/sct/:campaignId', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/sect/:campaignId', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/scwaret/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/cwaret/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/scwarwlt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/cwarwlt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/wt/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/p/:id', component: PreviewComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/t/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/evt/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/edevt/:campaignId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/ct/:campaignId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/sct/:campaignId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/sect/:campaignId', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/scwaret/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/cwaret/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/scwarwlt/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/cwarwlt/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/wt/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/p/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	/*** XNFR-416 *****/
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },
