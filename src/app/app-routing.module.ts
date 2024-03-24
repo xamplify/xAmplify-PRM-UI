@@ -46,7 +46,6 @@ import { MaintenanceComponent } from './authentication/maintenance/maintenance.c
 import { PreviewLoginComponent } from './common/preview-login/preview-login.component';
 import { PreviewEmailTemplateComponent } from './util/preview-email-template/preview-email-template.component';
 import { PreviewPageComponent } from './util/preview-page/preview-page.component';
-import { PreviewLandingPageComponent } from './landing-pages/preview-landing-page/preview-landing-page.component';
 
 
 export const routes: Routes = [
@@ -167,7 +166,7 @@ export const routes: Routes = [
 	{ path: 'pv/cwarwlt/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/wt/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/p/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
-	{ path: 'pv/lp/:id', component: PreviewLandingPageComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/lp/:id', component: PreviewPageComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },
 	{ path: '**', component: PageNotFoundComponent },

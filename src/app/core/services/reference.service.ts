@@ -3531,7 +3531,7 @@ previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWo
 }
 
 previewPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/p/"+id);
+  this.openWindowInNewTab("/pv/lp/"+id);
 }
 
 openWindowInNewTab(url:string){
