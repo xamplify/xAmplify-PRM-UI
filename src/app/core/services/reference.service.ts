@@ -3534,6 +3534,10 @@ previewPageInNewTab(id:number){
   this.openWindowInNewTab("/pv/lp/"+id);
 }
 
+previewPartnerPageInNewTab(id:number){
+  this.openWindowInNewTab("/pv/plp/"+id);
+}
+
 openWindowInNewTab(url:string){
   window.open(url,"_blank");
 }

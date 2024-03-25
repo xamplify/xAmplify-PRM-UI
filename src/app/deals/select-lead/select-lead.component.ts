@@ -34,6 +34,7 @@ export class SelectLeadComponent implements OnInit {
   /*** XNFR-476 ***/
   disableCreatedForVendor: boolean = false;
   disableAddLeadButton: boolean = false;
+  showSelectedLead: number = 0;
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     private leadsService: LeadsService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService) {
@@ -45,13 +46,13 @@ export class SelectLeadComponent implements OnInit {
 
     }
   }
-
   ngOnInit() {
     $('#selectLeadModel').modal('show');    
     this.pagination.pageIndex = 1;
     this.pagination.searchKey = "";
     this.sortOption.searchKey = "";
     this.leadId = this.dealToLead.leadId;
+    this.showSelectedLead = this.dealToLead.leadId;
     this.getLeads(this.pagination);
   }
 
@@ -74,17 +75,19 @@ export class SelectLeadComponent implements OnInit {
   
   leadCreated(leadId : any) {
     this.showLeadForm = false;
-    this.leadId = leadId; 
+    this.leadId = leadId;
+    this.showSelectedLead = leadId;
     this.leadSelected();   
   }
 
   selectLead(leadId : any) {
-    this.leadId = leadId;    
+    this.leadId = leadId;
+    this.showSelectedLead = leadId;    
   }
 
   leadSelected() {
     $('#selectLeadModel').modal('hide');
-    this.notifyLeadSelected.emit(this.leadId);
+    this.notifyLeadSelected.emit(this.showSelectedLead);
   }
 
   getLeads(pagination: Pagination) {

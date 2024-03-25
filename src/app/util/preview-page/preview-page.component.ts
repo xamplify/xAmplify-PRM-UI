@@ -17,25 +17,29 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 export class PreviewPageComponent implements OnInit {
 
   isLandingPagePreview = false;
+  isPartnerLandingPagePreview = false;
   id = 0;
-  statusCode = 0;
+  statusCode = 404;
   customResponse:CustomResponse = new CustomResponse();
   success = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
-    public route:ActivatedRoute,public processor:Processor,public properties:Properties,public vanityUrlService:VanityURLService) { }
+    public route:ActivatedRoute,public processor:Processor,public properties:Properties,
+    public vanityUrlService:VanityURLService) { }
 
   ngOnInit() {
+    this.processor.set(this.processor);
     let currentRouterUrl = this.referenceService.getCurrentRouteUrl();
     this.isLandingPagePreview = currentRouterUrl.indexOf("/pv/lp/")>-1;
+    this.isPartnerLandingPagePreview = currentRouterUrl.indexOf("/pv/plp/")>-1;
     this.referenceService.clearHeadScriptFiles();
-    this.processor.set(this.processor);
     this.id = this.route.snapshot.params['id'];
     this.getHtmlBody();
   }
 
   getHtmlBody(){
-    let isSubDomain = this.vanityUrlService.isVanityURLEnabled();
-    this.authenticationService.getLandingPageHtmlBody(this.id,isSubDomain).
+    let isVanityURLEnabled = this.vanityUrlService.isVanityURLEnabled();
+    let isSubDomain = isVanityURLEnabled!=undefined ? isVanityURLEnabled : false;
+    this.authenticationService.getLandingPageHtmlBody(this.id,isSubDomain,this.isPartnerLandingPagePreview).
     subscribe(
       response=>{
         this.statusCode = response.statusCode;
@@ -44,6 +48,8 @@ export class PreviewPageComponent implements OnInit {
           let data = response.data;
           let htmlBody = data.htmlBody;
           document.getElementById('page-html-body').innerHTML = htmlBody;
+        }else if(this.statusCode==400){
+          this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
         }
         this.processor.remove(this.processor);
       },error=>{

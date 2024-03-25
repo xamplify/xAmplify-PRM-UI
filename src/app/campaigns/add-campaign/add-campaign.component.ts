@@ -2420,4 +2420,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
 		this.campaignRecipientsPagination.filterBy = filterType;
 		this.findCampaignRecipients(this.campaignRecipientsPagination)
 	}
+
+    openPageInNewTab(id:number){
+        this.referenceService.previewPageInNewTab(id);
+    }
 }
