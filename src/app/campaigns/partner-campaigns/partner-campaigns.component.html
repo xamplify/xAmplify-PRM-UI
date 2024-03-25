@@ -451,7 +451,7 @@
 													[ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
 												<!----XNFR-125---->
 												<ng-container class="pull-right"
-													*ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
+													*ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE' || campaign.campaignType === 'SURVEY'">
 													<div class="btn-group downloadicon" id="download-template-grid"
 														*ngIf="(campaign.allowDownload && campaign.campaignType !== 'EVENT') || (campaign.allowDownload && campaign.campaignType === 'EVENT' && !campaign.eventStarted)"
 														data-toggle="dropdown" data-toggle="tooltip" title="Download">
