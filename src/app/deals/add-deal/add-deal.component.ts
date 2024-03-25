@@ -242,7 +242,6 @@ export class AddDealComponent implements OnInit {
               self.deal.campaignId = self.lead.campaignId;
               self.deal.campaignName = self.lead.campaignName;
               this.getCampaignDealPipeline();
-              this.resetStages();
             } else {
               self.deal.campaignId = 0;
               self.deal.campaignName = '';
@@ -267,10 +266,15 @@ export class AddDealComponent implements OnInit {
             this.referenceService.loading(this.httpRequestLoader, false);
             if (data.statusCode == 200) {
               let campaignDealPipeline = data.data;
-              self.pipelines.push(campaignDealPipeline);
-              self.deal.pipelineId = campaignDealPipeline.id;
-              self.pipelineIdError = false;
-              self.stages = campaignDealPipeline.stages;
+              if ((self.deal.pipelineId !== campaignDealPipeline.id && this.actionType == 'add') || (this.actionType == 'edit' || this.actionType == 'view')) {
+                self.pipelines.push(campaignDealPipeline);
+                self.deal.pipelineId = campaignDealPipeline.id;
+                self.pipelineIdError = false;
+                self.stages = campaignDealPipeline.stages;
+                if (this.actionType == 'add') {
+                  self.resetStages();
+                }
+              }
               self.hasCampaignPipeline = true;
             } else if (data.statusCode == 404) {
               self.deal.pipelineId = 0;
