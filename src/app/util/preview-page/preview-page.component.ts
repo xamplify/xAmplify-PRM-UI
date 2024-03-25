@@ -34,7 +34,8 @@ export class PreviewPageComponent implements OnInit {
   }
 
   getHtmlBody(){
-    let isSubDomain = this.vanityUrlService.isVanityURLEnabled();
+    let isVanityURLEnabled = this.vanityUrlService.isVanityURLEnabled();
+    let isSubDomain = isVanityURLEnabled!=undefined ? isVanityURLEnabled : false;
     this.authenticationService.getLandingPageHtmlBody(this.id,isSubDomain).
     subscribe(
       response=>{
@@ -44,6 +45,8 @@ export class PreviewPageComponent implements OnInit {
           let data = response.data;
           let htmlBody = data.htmlBody;
           document.getElementById('page-html-body').innerHTML = htmlBody;
+        }else if(this.statusCode==400){
+          this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
         }
         this.processor.remove(this.processor);
       },error=>{
