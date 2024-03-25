@@ -3135,5 +3135,10 @@ viewCampaignLeadForm(leadId: any) {
       this.referenceService.previewCampaignEmailTemplateInNewTab(this.campaignId);
     }
 
+    openPageInNewTab(id:number){
+      this.referenceService.previewPageInNewTab(id);
+    }
+
+
 }
 
