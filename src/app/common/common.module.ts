@@ -163,9 +163,8 @@ import { LandingPagesListAndGridViewComponent } from 'app/util/landing-pages-lis
 import { BrowseContentComponent } from 'app/util/browse-content/browse-content.component';
 import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component';
 import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-image-util.component';
-import { PreviewComponent } from 'app/util/preview/preview.component';
-
-
+import { PreviewEmailTemplateComponent } from 'app/util/preview-email-template/preview-email-template.component';
+import { PreviewPageComponent } from 'app/util/preview-page/preview-page.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -198,7 +197,7 @@ import { PreviewComponent } from 'app/util/preview/preview.component';
 		ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
 		LandingPagesListAndGridViewComponent,BrowseContentComponent,AddCompanyComponent, SelectLeadComponent,DealChatPopupComponent,
-		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewComponent],
+		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent],
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
@@ -228,7 +227,7 @@ import { PreviewComponent } from 'app/util/preview/preview.component';
 		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,AddCompanyComponent,
 		LandingPagesListAndGridViewComponent,BrowseContentComponent, SelectLeadComponent,DealChatPopupComponent,ChatComponent,
-		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewComponent]
+		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent]
 
 
 

@@ -1,0 +1,21 @@
+
+
+<div [hidden]="processor.isProcessing">
+  <div id="page-html-body">
+  </div>
+  <!--404 Page Not Found-->
+  <div *ngIf="customResponse.isVisible && !success"  style="font-family: 'Montserrat', sans-serif;">
+      <div class="error" style="text-align: center; padding: 16px;position: relative;top: 50%;" >
+        <h1 style="color:red; margin: -10px 0 -30px;font-size: calc(17vw + 40px);opacity: .8;">{{statusCode}}</h1>
+        <p style="color:red;opacity: .8;font-size: 20px;margin: 8px 0 38px 0;font-weight: bold">{{customResponse?.responseMessage}}</p>
+      </div>
+  </div>
+
+</div>
+<div [hidden]="!processor.isProcessing">
+    <div class="loader-container">
+      <div class="loader"></div>
+      <img  alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
+    </div>
+</div>
+

@@ -29,6 +29,7 @@ declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
 @Injectable()
 export class ReferenceService {
+    
   renderer: Renderer;
   swalConfirmButtonColor: "#54a7e9";
   swalCancelButtonColor: "#999";
@@ -3493,6 +3494,9 @@ previewEmailTemplateInNewTab(id:number){
 previewEventCampaignEmailTemplateInNewTab(id:number){
   this.openWindowInNewTab("/pv/evt/"+id);
 }
+previewEditRedistributedEventCampaignTemplatePreview(campaignId: any) {
+  this.openWindowInNewTab("/pv/edevt/"+campaignId);
+}
 
 previewWorkflowEmailTemplateInNewTab(id:number){
   this.openWindowInNewTab("/pv/wt/"+id);
@@ -3504,6 +3508,10 @@ previewCampaignEmailTemplateInNewTab(campaignId:number){
 
 previewSharedVendorCampaignEmailTemplateInNewTab(campaignId:number){
   this.openWindowInNewTab("/pv/sct/"+campaignId);
+}
+
+previewSharedVendorEventCampaignEmailTemplateInNewTab(campaignId:number){
+  this.openWindowInNewTab("/pv/sect/"+campaignId);
 }
 
 previewSharedCampaignAutoReplyEmailTemplateInNewTab(replyId:number){
@@ -3523,7 +3531,7 @@ previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWo
 }
 
 previewPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/p/"+id);
+  this.openWindowInNewTab("/pv/lp/"+id);
 }
 
 openWindowInNewTab(url:string){

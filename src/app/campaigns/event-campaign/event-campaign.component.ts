@@ -270,7 +270,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.vanityUrlService.isVanityURLEnabled();
         this.countries = this.referenceService.getCountries();
         this.eventCampaign.campaignLocation.country = (this.countryNames.countries[0]);
-        //this.listEmailTemplates();
         CKEDITOR.config.height = '100';
         this.isPreviewEvent = this.router.url.includes('/home/campaigns/event-preview') ? true : false;
         this.isEventUpdate = this.router.url.includes('/home/campaigns/event-update') ? true : false;
@@ -3160,15 +3159,29 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 	}
 
     openTemplateInNewTab(id:number){
-        if(this.authenticationService.isLocalHost()){
-            let key = this.properties.eventCampaignTemplateLocalStorageKey;
-            this.authenticationService.removeLocalStorageItemByKey(key);
-            this.eventCampaign.isRedistributeEvent = this.reDistributeEvent;
-            this.eventCampaign.isPreviewEvent = this.isPreviewEvent;
-            this.authenticationService.setLocalStorageItemByKeyAndValue(key,this.eventCampaign);
-            this.referenceService.previewEventCampaignEmailTemplateInNewTab(id);
+        this.setLocalStorageForEventTemplatePreview();
+        let campaignId = this.activatedRoute.snapshot.params['id'];
+        if(this.reDistributeEvent){
+            this.referenceService.previewSharedVendorEventCampaignEmailTemplateInNewTab(campaignId);
+        }else if(this.reDistributeEventManage){
+            this.referenceService.previewEditRedistributedEventCampaignTemplatePreview(campaignId);
         }else{
-            this.previewEventCampaignEmailTemplate(id);
+            this.referenceService.previewEventCampaignEmailTemplateInNewTab(id);
         }
+    }
+    setLocalStorageForEventTemplatePreview(){
+        let key = this.properties.eventCampaignTemplateLocalStorageKey;
+        this.authenticationService.removeLocalStorageItemByKey(key);
+        this.eventCampaign.isRedistributeEvent = this.reDistributeEvent;
+        this.eventCampaign.isPreviewEvent = this.isPreviewEvent;
+        this.authenticationService.setLocalStorageItemByKeyAndValue(key,this.eventCampaign);
+    }
+
+    openAutoResponseEmailTemplateInNewTab(reply:any){
+        if(this.eventCampaign.nurtureCampaign){
+            this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+         }else{
+             this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+         }
     }
 }
