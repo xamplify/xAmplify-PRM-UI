@@ -240,21 +240,10 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 
   /***********Preview Page*********************/
   showPreview(landingPage: LandingPage) {
-    if(this.authenticationService.isLocalHost()){
-        if(this.isPartnerLandingPage){
-            this.referenceService.previewPartnerPageInNewTab(landingPage.partnerLandingPageId);
-        }else{
-            this.referenceService.previewPageInNewTab(landingPage.id);
-        }
+    if(this.isPartnerLandingPage){
+        this.referenceService.previewPartnerPageInNewTab(landingPage.partnerLandingPageId);
     }else{
-        if (this.isPartnerLandingPage) {
-            landingPage.showPartnerCompanyLogo = true;
-            landingPage.partnerId = this.loggedInUserId;
-            landingPage.partnerLandingPage = true;
-        } else {
-            landingPage.showYourPartnersLogo = true;
-        }
-        this.previewLandingPageComponent.showPreview(landingPage);
+        this.referenceService.previewPageInNewTab(landingPage.id);
     }
   }
 
