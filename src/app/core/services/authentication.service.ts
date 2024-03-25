@@ -1279,6 +1279,12 @@ getEmailTemplateHtmlBodyAndMergeTagsInfo(suffixUrl:string){
   return this.callGetMethod(URL);
 }
 
+getLandingPageHtmlBody(id:number,subDomain:boolean){
+  let userId = this.getUserId();
+  let URL = this.REST_URL+"landing-page/preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&access_token="+this.access_token;
+  return this.callGetMethod(URL);
+}
+
 setLocalStorageItemByKeyAndValue(key:string,value:any){
   localStorage.setItem(key, JSON.stringify(value));
 }
