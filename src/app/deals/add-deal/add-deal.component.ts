@@ -159,7 +159,6 @@ export class AddDealComponent implements OnInit {
       }
     } else if (this.actionType === "edit") {
       this.edit = true;
-      this.showAttachLeadButton = true;
       this.dealFormTitle = "Edit Deal";
       if (this.dealId > 0) {
         this.getDeal(this.dealId);
@@ -310,6 +309,9 @@ export class AddDealComponent implements OnInit {
               self.showContactInfo = true;
               self.showAttachLeadButton = false;
               self.contact = self.deal.associatedContact;
+            }
+            else if (this.actionType !== 'view') {
+              self.showAttachLeadButton = true;
             }
             self.setCloseDate(data);
             if (self.deal.createdForCompanyId > 0) {
