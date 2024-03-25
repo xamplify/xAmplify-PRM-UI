@@ -19,18 +19,19 @@ export class PreviewPageComponent implements OnInit {
   isLandingPagePreview = false;
   isPartnerLandingPagePreview = false;
   id = 0;
-  statusCode = 0;
+  statusCode = 404;
   customResponse:CustomResponse = new CustomResponse();
   success = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
-    public route:ActivatedRoute,public processor:Processor,public properties:Properties,public vanityUrlService:VanityURLService) { }
+    public route:ActivatedRoute,public processor:Processor,public properties:Properties,
+    public vanityUrlService:VanityURLService) { }
 
   ngOnInit() {
+    this.processor.set(this.processor);
     let currentRouterUrl = this.referenceService.getCurrentRouteUrl();
     this.isLandingPagePreview = currentRouterUrl.indexOf("/pv/lp/")>-1;
     this.isPartnerLandingPagePreview = currentRouterUrl.indexOf("/pv/plp/")>-1;
     this.referenceService.clearHeadScriptFiles();
-    this.processor.set(this.processor);
     this.id = this.route.snapshot.params['id'];
     this.getHtmlBody();
   }

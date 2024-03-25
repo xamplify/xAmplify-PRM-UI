@@ -30,12 +30,13 @@ export class PreviewEmailTemplateComponent implements OnInit {
   isEventCampaignTemplatePreview: boolean;
   isSharedEventCampaignTemplatePreview:boolean;
   isEditRedistributedEventCampaignTemplatePreview:boolean;
-  statusCode = 0;
+  statusCode = 404;
   eventCampaign:EventCampaign = new EventCampaign();
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties) { }
 
   ngOnInit() {
+    this.processor.set(this.processor);
     let currentRouterUrl = this.referenceService.getCurrentRouteUrl();
     this.isCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/ct/")>-1;
     this.isSharedCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/sct/")>-1;
@@ -48,7 +49,6 @@ export class PreviewEmailTemplateComponent implements OnInit {
     this.isEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/evt")>-1;
     this.isEditRedistributedEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/edevt")>-1;
     this.referenceService.clearHeadScriptFiles();
-    this.processor.set(this.processor);
     this.id = this.route.snapshot.params['id'];
     this.campaignId = this.route.snapshot.params['campaignId'];
     let isValidId = this.id!=undefined && this.id>0;
@@ -94,16 +94,18 @@ export class PreviewEmailTemplateComponent implements OnInit {
             htmlBody = this.replaceEventCampaignMergeTags(htmlBody);
           }
           document.getElementById('html-preview').innerHTML = htmlBody;
-          this.loggedInUserCompanyLogo = data.companyLogo;
         }else{
           if(this.statusCode==403){
-            this.loggedInUserCompanyLogo = data.companyLogo;
+            this.statusCode = 404;
           }
           this.customResponse = new CustomResponse('ERROR',this.properties.pageNotFound,true);
         }
         this.processor.remove(this.processor);
       },error=>{
         this.statusCode = JSON.parse(error["status"]);
+        if(this.statusCode==403){
+          this.statusCode = 404;
+        }
         this.processor.remove(this.processor);
         this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
       });
