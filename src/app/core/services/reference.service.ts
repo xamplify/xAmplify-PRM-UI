@@ -3051,6 +3051,16 @@ export class ReferenceService {
      }, 500);
   }
 
+  disableButtonById(buttonId:string){
+    $('#'+buttonId).attr('disabled',true);
+  }
+
+  enableButtonById(buttonId:string){
+    $('#'+buttonId).removeAttr('disabled');
+  }
+
+  
+
 
   showServerErrorCustomResponse(){
     return new CustomResponse("ERROR",this.properties.serverErrorMessage,true);

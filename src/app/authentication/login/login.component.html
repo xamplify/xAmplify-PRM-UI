@@ -52,13 +52,14 @@
 				(click)="referenceService.showPassword('password')"
 				*ngIf="referenceService.showInputPassword && model.password"></span>
 			 </div>
-			 <button id="submitBitton" type="submit" class="btn btn-primary pull-left  signin">{{signInText}}</button>
+			 <button *ngIf="!isPleaseWaitButtonDisplayed" id="submitBitton" type="submit" class="btn btn-primary pull-left  signin">{{signInText}}</button>
+			 <button  *ngIf="isPleaseWaitButtonDisplayed" class="btn btn-primary pull-left" disabled><i class="fa fa-spinner fa-spin mr5"></i>Please Wait</button>
 		  </form>
 		  <div class="form-actions login-form" style="border-bottom: 0!important;display: contents;">
 			 <label class="rememberme check">
 			 <span hidden><input class="checkBox_shadow" type="checkbox" name="remember" value="1" />&nbsp;Remember</span>
 			 </label>
-			 <a id="forgetAnchor" routerLink="/forgot-password" class="forget-password text-white">Forgot Password?</a>
+			 <a *ngIf="!isPleaseWaitButtonDisplayed" id="forgetAnchor" routerLink="/forgot-password" class="forget-password text-white">Forgot Password?</a>
 		  </div>
 		  <div class="row solid-wb" style="margin-top: 28px;"></div>
 		  <div class="login-options login-form m5" *ngIf="!authenticationService.vanityURLEnabled">
