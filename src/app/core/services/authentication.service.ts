@@ -1279,9 +1279,15 @@ getEmailTemplateHtmlBodyAndMergeTagsInfo(suffixUrl:string){
   return this.callGetMethod(URL);
 }
 
-getLandingPageHtmlBody(id:number,subDomain:boolean){
+getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:boolean){
   let userId = this.getUserId();
-  let URL = this.REST_URL+"landing-page/preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&access_token="+this.access_token;
+  let URL_PREFIX = "";
+  if(isPartnerLandingPagePreview){
+    URL_PREFIX = this.REST_URL+"landing-page/partner/";
+  }else{
+    URL_PREFIX = this.REST_URL+"landing-page/";
+  }
+  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&access_token="+this.access_token;
   return this.callGetMethod(URL);
 }
 

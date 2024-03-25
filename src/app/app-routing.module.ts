@@ -167,6 +167,7 @@ export const routes: Routes = [
 	{ path: 'pv/wt/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/p/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/lp/:id', component: PreviewPageComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/plp/:id', component: PreviewPageComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },
 	{ path: '**', component: PageNotFoundComponent },

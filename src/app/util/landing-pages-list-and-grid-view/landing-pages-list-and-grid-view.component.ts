@@ -21,7 +21,6 @@ import { PreviewLandingPageComponent } from 'app/landing-pages/preview-landing-p
 import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
 import { CopyDto } from '../models/copy-dto';
 import { Properties } from 'app/common/models/properties';
-import { VanityEmailTempalte } from 'app/email-template/models/vanity-email-template';
 import { LandingPageShareDto } from 'app/dashboard/user-profile/models/LandingPageShareDto';
 declare var swal: any, $: any;
 @Component({
@@ -242,7 +241,11 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   /***********Preview Page*********************/
   showPreview(landingPage: LandingPage) {
     if(this.authenticationService.isLocalHost()){
-        this.referenceService.previewPageInNewTab(landingPage.id);
+        if(this.isPartnerLandingPage){
+            this.referenceService.previewPartnerPageInNewTab(landingPage.partnerLandingPageId);
+        }else{
+            this.referenceService.previewPageInNewTab(landingPage.id);
+        }
     }else{
         if (this.isPartnerLandingPage) {
             landingPage.showPartnerCompanyLogo = true;

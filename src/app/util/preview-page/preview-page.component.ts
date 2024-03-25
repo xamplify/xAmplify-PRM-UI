@@ -17,6 +17,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 export class PreviewPageComponent implements OnInit {
 
   isLandingPagePreview = false;
+  isPartnerLandingPagePreview = false;
   id = 0;
   statusCode = 0;
   customResponse:CustomResponse = new CustomResponse();
@@ -27,6 +28,7 @@ export class PreviewPageComponent implements OnInit {
   ngOnInit() {
     let currentRouterUrl = this.referenceService.getCurrentRouteUrl();
     this.isLandingPagePreview = currentRouterUrl.indexOf("/pv/lp/")>-1;
+    this.isPartnerLandingPagePreview = currentRouterUrl.indexOf("/pv/plp/")>-1;
     this.referenceService.clearHeadScriptFiles();
     this.processor.set(this.processor);
     this.id = this.route.snapshot.params['id'];
@@ -36,7 +38,7 @@ export class PreviewPageComponent implements OnInit {
   getHtmlBody(){
     let isVanityURLEnabled = this.vanityUrlService.isVanityURLEnabled();
     let isSubDomain = isVanityURLEnabled!=undefined ? isVanityURLEnabled : false;
-    this.authenticationService.getLandingPageHtmlBody(this.id,isSubDomain).
+    this.authenticationService.getLandingPageHtmlBody(this.id,isSubDomain,this.isPartnerLandingPagePreview).
     subscribe(
       response=>{
         this.statusCode = response.statusCode;
