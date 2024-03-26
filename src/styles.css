@@ -3061,3 +3061,7 @@ span.icon-alignments {
   border-bottom-left-radius: 15px !important;
   border-bottom-right-radius: 15px !important;
 }
+.color1,
+.color1-invert:hover {
+  border-radius: 3px!important;
+}

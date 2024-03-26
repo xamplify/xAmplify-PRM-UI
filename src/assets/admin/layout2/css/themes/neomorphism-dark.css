@@ -1853,9 +1853,9 @@ i.singleIconCustomization {
   color: #fff !important;
 }
 #download-template-grid:hover {
-  border: 1px solid #00a7c3!important;
-  background: #5bb2f5;
+  background: #5bb2f5 !important;
   color: #fff !important;
+  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
 
 /* .gridIconCustomization a.delete {
@@ -1959,8 +1959,27 @@ i.IconCustomization{
 .setting-icon-cu {
   border: none !important;
   color: #fff !important;
+  background: #2c2f33!important;
   box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
-  background-color: #22313a !important;
+  
+}
+.dropdown-listicon{
+  border: none !important;
+  color: #fff !important;
+  background: #2c2f33!important;
+  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important; 
+}
+.dropdown-listicon:hover{
+background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+.dropdown-deleteicon{
+  border: none !important;
+  color: #fff !important;
+  background: #2c2f33!important;
+  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important; 
+}
+i.fa.fa-trash-o.dropdown-deleteicon:hover{
+  background-color: #cb5a5e !important;
 }
 .gridIconCustomization a {
   border: none !important;
@@ -2469,15 +2488,15 @@ fieldset {
   border: 1px solid #191b1e !important;
 }
 select.form-control.ng-untouched.ng-pristine.ng-valid,
-button.fa.fa-th-list.btn-xs.hidden-xs.l-g-view,
-button.fa.fa-th-large.btn-xs.hidden-xs.l-g-view,
-button.btn-xs.hidden-xs.l-g-view.fa.fa-folder,
-button.btn-xs.hidden-xs.l-g-view.fa.fa-th,
+button.fa.fa-th-list.btn-xs.l-g-view,
+button.fa.fa-th-large.btn-xs.l-g-view,
+button.btn-xs.l-g-view.fa.fa-folder,
+button.btn-xs.l-g-view.fa.fa-th,
 button.fa.fa-th-list.btn.btn-xs.l-g-view,
 button.fa.fa-th-large.btn.btn-xs.l-g-view,
-button.btn.btn-xs.hidden-xs.l-g-view.folder-list-span-custom-width,
-button.btn.btn-xs.hidden-xs.l-g-view,
-button.btn.btn-xs.hidden-xs.l-g-view.disabled {
+button.btn.btn-xs.l-g-view.folder-list-span-custom-width,
+button.btn.btn-xs.l-g-view,
+button.btn.btn-xs.l-g-view.disabled {
   box-shadow : inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
   border: 1px solid #191b1e !important;
   background: #2c2f33 !important;
@@ -3125,6 +3144,8 @@ justify-content: center!important;
   border: none!important;
   width: 32px!important;
   height: 32px!important;
+  background-color: #1c313a !important;
+  box-shadow: none !important;
 }
 .downloadicon-align{
 top: 6px !important;
@@ -3283,7 +3304,7 @@ input.field-border-customization {
   border-radius: 10px;
 }
 .setting-icon-cu:hover {
-  background-color: #3f68c5;
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
 .page-bar.p10 {
   box-shadow: none !important;
@@ -3357,10 +3378,10 @@ div.button span {
   position: relative;
 }
 i.chart-hover:hover{
-  background-color: #3f68c5 !important;
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
 i.fa.fa-line-chart.chart-hover:hover{
-  background-color: #3f68c5 !important;
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
 .btn-transitions{
 top:-3px;
@@ -3991,6 +4012,15 @@ button.btn.btn-primary.activate-btn:hover {
   .guides_btn {
     margin-left: 6px;
   }
+  .grid-email-card{
+    padding-bottom: 0px!important;
+    }
+  .prev-btn{
+    padding: 0px!important;
+   }
+   .email-tempbtn{
+    padding: 4px 7px !important;
+  }
 }
 .border_none{
   border: none !important;
@@ -4049,4 +4079,11 @@ button.group-name-cclass.btn-primary.default-btn-cursor{
 img.email-template-preview.image_effect.template_image_border {
   border-bottom-left-radius: 6px !important;
   border-bottom-right-radius: 6px !important;
+}
+li.filter.selectedBox{
+  box-shadow: none!important;
+}
+.color1,
+.color1-invert:hover {
+  border-radius: 10px!important;
 }

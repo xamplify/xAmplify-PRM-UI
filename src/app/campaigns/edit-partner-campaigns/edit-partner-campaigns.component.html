@@ -248,12 +248,12 @@
                               </a>
                               <br>
                               <div class="d-flex">
-                                 <button type="button" class="pull-right btn-sm button_blue bgcolor-unset" (click)="openEmailTemplateInNewTab(campaign)">
-                                    <span class="btn btn-primary transition txt_pd-top3"><i class="fa fa-eye"></i> Preview</span> 
+                                 <button type="button" class="pull-right btn-sm button_blue bgcolor-unset email-tempbtn" (click)="openEmailTemplateInNewTab(campaign)">
+                                    <span class="btn btn-primary transition txt_pd-top3 prev-btn"><i class="fa fa-eye"></i> Preview</span> 
                                  </button>
                                  <button *ngIf="campaign?.emailTemplate?.editPartnerTemplate"  type="button" class="pull-right btn-sm button_blue ml-5 bgcolor-unset" style="margin-right: 6px"
                                     (click)="editPartnerTemplate()">
-                                    <span  class="btn btn-primary transition txt_pd-top3"><i class="fa fa-edit"></i> Edit
+                                    <span  class="btn btn-primary transition txt_pd-top3 prev-btn"><i class="fa fa-edit"></i> Edit
                                     </span>
                                  </button>
                               </div>
@@ -533,7 +533,7 @@
                                                       Add an Auto-response to your e-mail-{{i+1}}
                                                    </h4>
                                                 </div>
-                                                <div class="col-xs-5 mb-flex" style="text-align:right">
+                                                <div class="col-xs-5 mb-flex  add_response-email" style="text-align:right">
                                                    <button type="button" class="btn btn-danger button-blue"
                                                       (click)="remove(reply.divId,'replies')">
                                                       <span class="glyphicon glyphicon-trash"></span>
@@ -994,7 +994,7 @@
                                  <button type="button" class="button bgcolor-unset"
                                     [disabled]="!isCampaignDetailsFormValid"
                                     (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)"
-                                    style="width:10em"><span class="btn Btn-Green transition txt_pd-top3">Send Test
+                                    style="width:10em"><span class="btn Btn-Green transition txt_pd-top3 prev-btn ">Send Test
                                        Email</span></button>
                                  <button type="submit" class="button mar-lft-40 bgcolor-unset mrgn_lft0"
                                     [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid"

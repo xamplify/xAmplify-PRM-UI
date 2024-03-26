@@ -94,29 +94,29 @@
                            *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                            <div class="col-xs-12">
                               <div class="row pull-right" style="display: flex;">
-                                 <div class="hidden-xs" style="padding-right:  5px">
+                                 <div  style="padding-right:  5px">
                                     <div class="group-dropdown">
                                        <button
-                                          [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
-                                          modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
+                                          [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs l-g-view':
+                                          modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs l-g-view':'fa fa-th-list btn-xs l-g-view'"
                                           style="padding: 10px !important"></button>
                                        <div class="group-dd-content">
                                           <ng-container class='m10'>
                                              <div
                                                 style="display: flex; justify-content: space-between; padding-left: 0;">
-                                                <span class="btn btn-xs hidden-xs l-g-view margin-space"
+                                                <span class="btn btn-xs l-g-view margin-space"
                                                    data-toggle="tooltip" data-placement="bottom" title="Calendar View"
                                                    tabindex="0">
                                                    <i class="fa fa-calendar p10" (click)="goToCalendarView()"
                                                       aria-hidden="true"></i>
                                                 </span>
-                                                <span class="btn btn-xs hidden-xs l-g-view margin-space"
+                                                <span class="btn btn-xs l-g-view margin-space"
                                                    data-toggle="tooltip" data-placement="bottom" title="List View"
                                                    [class.disabled]="modulesDisplayType.isListView"
                                                    (click)="!modulesDisplayType.isListView && setViewType('List')">
                                                    <i class="fa fa-th-list p10" aria-hidden="true"></i>
                                                 </span>
-                                                <span class="btn btn-xs hidden-xs l-g-view margin-space"
+                                                <span class="btn btn-xs l-g-view margin-space"
                                                    data-toggle="tooltip" data-placement="bottom" title="Grid View"
                                                    [class.disabled]="modulesDisplayType.isGridView"
                                                    (click)="!modulesDisplayType.isGridView && setViewType('Grid')">
@@ -126,14 +126,14 @@
                                                 </span>
                                                 <ng-container
                                                    *ngIf="(pagination?.categoryId==0 || pagination?.categoryId=='undefined')">
-                                                   <span class="btn btn-xs hidden-xs l-g-view margin-space"
+                                                   <span class="btn btn-xs l-g-view margin-space"
                                                       data-toggle="tooltip" data-placement="bottom"
                                                       title="Folder Grid View"
                                                       [class.disabled]="modulesDisplayType.isFolderGridView"
                                                       (click)="setViewType('Folder-Grid')">
                                                       <i class="fa fa-folder p10" aria-hidden="true"></i>
                                                    </span>
-                                                   <span class="btn btn-xs hidden-xs l-g-view margin-space"
+                                                   <span class="btn btn-xs l-g-view margin-space"
                                                       data-toggle="tooltip" data-placement="bottom"
                                                       title="Folder List View"
                                                       [class.disabled]="modulesDisplayType.isFolderListView"
@@ -146,7 +146,7 @@
                                        </div>
                                     </div>
                                  </div>
-                                 <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view"
+                                 <span *ngIf="pagination.categoryId>0" class="btn btn-xs l-g-view"
                                     style="margin-right: 5px;" data-toggle="tooltip" data-placement="bottom"
                                     title="Go back" (click)="setViewType('Folder-Grid')">
                                     <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
@@ -789,7 +789,7 @@
                                                       <a *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
                                                    || isOnlyPartner  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)"
                                                          (click)="editCampaign(campaign)" translate>
-                                                         <i class="fa fa-pencil-square-o IconCustomization"
+                                                         <i class="fa fa-pencil-square-o IconCustomization dropdown-listicon"
                                                             style="width: 30px;" aria-hidden="true"></i> Edit
                                                       </a>
                                                    </li>
@@ -800,13 +800,13 @@
                                                          <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0 "
                                                             data-rel="fancybox-button"
                                                             (click)="openSaveAsModal(campaign)" translate>
-                                                            <i class="fa fa-files-o IconCustomization"
+                                                            <i class="fa fa-files-o IconCustomization dropdown-listicon"
                                                                style="width: 30px;" aria-hidden="true"></i> Copy
                                                             Campaign
                                                          </a>
                                                          <a *ngIf="campaign.canEditEndDate" data-rel="fancybox-button"
                                                             (click)="showEndDateModal(campaign)" translate>
-                                                            <i class="fa fa-calendar-times-o IconCustomization"
+                                                            <i class="fa fa-calendar-times-o IconCustomization dropdown-listicon"
                                                                style="width: 30px;" aria-hidden="true"></i> Update End
                                                             Date
                                                          </a>
@@ -814,21 +814,21 @@
                                                             data-rel="fancybox-button"
                                                             (click)="openEventUrlModal(campaign)"
                                                             title="Copy Public Event Url" translate>
-                                                            <i class="fa fa-link IconCustomization" style="width: 30px;"
+                                                            <i class="fa fa-link IconCustomization dropdown-listicon" style="width: 30px;"
                                                                aria-hidden="true"></i> Copy Url
                                                          </a>
                                                          <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted"
                                                             data-rel="fancybox-button"
                                                             (click)="sendEventEmail(campaign)"
                                                             title="Send Preview Email" translate>
-                                                            <i class="fa fa-envelope IconCustomization"
+                                                            <i class="fa fa-envelope IconCustomization dropdown-listicon"
                                                                style="width: 30px;" aria-hidden="true"></i> Send
                                                             Preview Email
                                                          </a>
                                                          <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)"
                                                             data-rel="fancybox-button" (click)="inviteMore(campaign)"
                                                             title="Invite More" translate>
-                                                            <i class="fa fa-users IconCustomization"
+                                                            <i class="fa fa-users IconCustomization dropdown-listicon"
                                                                style="width: 30px;" aria-hidden="true"></i> Invite More
                                                          </a>
                                                       </li>
@@ -840,7 +840,7 @@
                                                    <li
                                                       *ngIf="!campaign.vendorCampaignDeleted && !authenticationService?.module?.deletedPartner">
                                                       <a (click)="showCampaignPreview(campaign)" translate>
-                                                         <i class="fa fa-eye IconCustomization" style="width: 30px;"
+                                                         <i class="fa fa-eye IconCustomization dropdown-listicon" style="width: 30px;"
                                                             aria-hidden="true"></i> Preview
                                                          Campaign
                                                       </a>
@@ -848,7 +848,7 @@
                                                    <li
                                                       *ngIf="!archived && campaign.canArchive && !authenticationService?.module?.deletedPartner">
                                                       <a (click)="archiveCampaign(campaign)" translate>
-                                                         <i class="fa fa-archive IconCustomization" style="width: 30px;"
+                                                         <i class="fa fa-archive IconCustomization dropdown-listicon" style="width: 30px;"
                                                             aria-hidden="true"></i> Archive
                                                          Campaign
                                                       </a>
@@ -856,7 +856,7 @@
                                                    <li
                                                       *ngIf="archived && campaign.canArchive && !authenticationService?.module?.deletedPartner">
                                                       <a (click)="unarchiveCampaign(campaign)" translate>
-                                                         <i class="fa fa-archive IconCustomization" style="width: 30px;"
+                                                         <i class="fa fa-archive IconCustomization dropdown-listicon" style="width: 30px;"
                                                             aria-hidden="true"></i> Unarchive
                                                          Campaign
                                                       </a>
@@ -868,7 +868,7 @@
                                                             *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||  authenticationService.module.isVendorTier"
                                                             (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)"
                                                             data-rel="fancybox-button" translate> <i
-                                                               class="fa fa-trash-o trashIconCustomization"
+                                                               class="fa fa-trash-o trashIconCustomization dropdown-deleteicon"
                                                                style="width: 30px;" aria-hidden="true">
                                                             </i>Delete
                                                          </a>
@@ -882,7 +882,7 @@
                                                             data-toggle="modal" data-target="#cancelEventModal"
                                                             title="Cancel Campaign" data-rel="fancybox-button" (click)="getCancelEventDetails(campaign.campaignId,campaign.channelCampaign,campaign.nurtureCampaign,campaign.toPartner
                                                       )" translate>
-                                                            <i class="fa fa-ban IconCustomization" style="width: 30px;"
+                                                            <i class="fa fa-ban IconCustomization dropdown-deleteicon" style="width: 30px;"
                                                                aria-hidden="true"></i> Cancel Event
                                                          </a>
                                                       </li>
@@ -1822,7 +1822,7 @@
       *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch">
       <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch "
          (click)="goToPreviewPartners(campaign)" data-rel="fancybox-button" translate>
-         <i class="fa fa-handshake-o" style="width: 30px; margin-right: 0px;" id="partner-icon" aria-hidden="true"></i>
+         <i class="fa fa-handshake-o dropdown-listicon" style="width: 30px; margin-right: 0px;" id="partner-icon" aria-hidden="true"></i>
          Preview & Delete
          {{authenticationService?.partnerModule?.customName}}
       </a>
