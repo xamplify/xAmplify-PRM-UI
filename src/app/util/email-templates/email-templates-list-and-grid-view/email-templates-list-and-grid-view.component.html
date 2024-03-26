@@ -123,8 +123,8 @@
                                     <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'">Email Co-Branding</span>
                                     <span *ngIf="emailTemplate.emailTemplateType !='Regular Co-Branding'">{{emailTemplate.emailTemplateType}}</span>
                                 </span>
-                                <img class="email-template-preview email-image-temp-custimize image_effect imghover-unset" *ngIf="emailTemplate.subject" src="{{emailTemplate.subject}}" alt="Image Not Found">
-                                <img alt="" class="email-template-preview email-image-temp-custimize image_effect imghover-unset" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg">
+                                <img class="email-template-preview email-image-temp-custimize imghover-unset" *ngIf="emailTemplate.subject" src="{{emailTemplate.subject}}" alt="Image Not Found">
+                                <img alt="" class="email-template-preview email-image-temp-custimize imghover-unset" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg">
                                 <h4 class="xamplify-ellipsis GridViewCotent gridViewDesignTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate?.name}}">
                                     <b translate>Template Name: </b> {{emailTemplate.name}}
                                 </h4>

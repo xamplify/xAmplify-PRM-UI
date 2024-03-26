@@ -29,6 +29,7 @@ declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
 @Injectable()
 export class ReferenceService {
+    
   renderer: Renderer;
   swalConfirmButtonColor: "#54a7e9";
   swalCancelButtonColor: "#999";
@@ -355,10 +356,8 @@ export class ReferenceService {
     return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
   }
 
-
-    validateFirstName(firstName:string){
+  validateFirstName(firstName:string){
     return this.regularExpressions.FIRSTNAME_PATTERN.test(firstName);
-
   }
 
   validateEmail(text: string) {
@@ -3050,6 +3049,16 @@ export class ReferenceService {
      }, 500);
   }
 
+  disableButtonById(buttonId:string){
+    $('#'+buttonId).attr('disabled',true);
+  }
+
+  enableButtonById(buttonId:string){
+    $('#'+buttonId).removeAttr('disabled');
+  }
+
+  
+
 
   showServerErrorCustomResponse(){
     return new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
@@ -3489,8 +3498,52 @@ clearHeadScriptFiles(){
 previewEmailTemplateInNewTab(id:number){
   this.openWindowInNewTab("/pv/t/"+id);
 }
+
+previewEventCampaignEmailTemplateInNewTab(id:number){
+  this.openWindowInNewTab("/pv/evt/"+id);
+}
+previewEditRedistributedEventCampaignTemplatePreview(campaignId: any) {
+  this.openWindowInNewTab("/pv/edevt/"+campaignId);
+}
+
+previewWorkflowEmailTemplateInNewTab(id:number){
+  this.openWindowInNewTab("/pv/wt/"+id);
+}
+
+previewCampaignEmailTemplateInNewTab(campaignId:number){
+  this.openWindowInNewTab("/pv/ct/"+campaignId);
+}
+
+previewSharedVendorCampaignEmailTemplateInNewTab(campaignId:number){
+  this.openWindowInNewTab("/pv/sct/"+campaignId);
+}
+
+previewSharedVendorEventCampaignEmailTemplateInNewTab(campaignId:number){
+  this.openWindowInNewTab("/pv/sect/"+campaignId);
+}
+
+previewSharedCampaignAutoReplyEmailTemplateInNewTab(replyId:number){
+  this.openWindowInNewTab("/pv/cwaret/"+replyId);
+}
+
+previewVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(urlId:number){
+  this.openWindowInNewTab("/pv/cwarwlt/"+urlId);
+}
+
+previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number){
+  this.openWindowInNewTab("/pv/scwaret/"+vendorCampaignWorkflowId);
+}
+
+previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWorkflowId:number){
+  this.openWindowInNewTab("/pv/scwarwlt/"+vendorCampaignWorkflowId);
+}
+
 previewPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/p/"+id);
+  this.openWindowInNewTab("/pv/lp/"+id);
+}
+
+previewPartnerPageInNewTab(id:number){
+  this.openWindowInNewTab("/pv/plp/"+id);
 }
 
 openWindowInNewTab(url:string){

@@ -12,7 +12,7 @@
 </div>
 
 <div class="tab-content tab-bg">
-  <div id="home" class="tab-pane fade in active pt-5 ">
+  <div id="home" class="tab-pane fade in active pt-5 integration-profile">
     <div class="user-profile">
       <div class="profile-image-wrapper-color">
         <img class="profile-image" alt="No image found" onerror="this.src='assets/images/icon-user-default.png';"
@@ -25,12 +25,12 @@
         <span>Organization: {{integrationDetails?.externalOrganizationName}}</span>
       </div>
       <div class="btn-group active-btns mb_right0" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-primary activate-btn" *ngIf="!(integrationDetails?.activeCRM)"
+        <button type="button" class="btn btn-primary activate-btn integration-btn" *ngIf="!(integrationDetails?.activeCRM)"
           (click)="activateCRM()">Activate</button>
         <button type="button" class="btn btn-primary inetgrations_activate_bgcolor activated-btn ActivatedBtn"
           *ngIf="integrationDetails?.activeCRM"><i class="fa fa-star"
             style="font-size: 15px !important;"></i>Activated</button>
-        <button type="button" class="btn btn-secondary unlink-btn disable-btn-text-color" (click)="unlinkCRM()"
+        <button type="button" class="btn btn-secondary unlink-btn disable-btn-text-color deactivate-btn" (click)="unlinkCRM()"
           [disabled]="!(integrationDetails?.enableUnlink)">Unlink</button>
       </div>
     </div>

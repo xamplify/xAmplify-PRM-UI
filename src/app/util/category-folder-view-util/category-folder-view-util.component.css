@@ -292,3 +292,6 @@ span.Track-countbg {
    		 margin-bottom: 15px;
 	}
 }
+.no-scrollbar {
+    overflow: hidden;
+}

@@ -29,6 +29,7 @@ export class LogRegularCampaignComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.referenceService.clearHeadScriptFiles();
     this.processor.set(this.processor);
     this.alias = this.activatedRoute.snapshot.params['alias'];
     this.getRegularTemplateHtml();
@@ -73,7 +74,7 @@ export class LogRegularCampaignComponent implements OnInit {
             this.updateBackGroundColor();
         },
         ()=>{
-          this.referenceService.removeCssStylesAndCssFiles();
+          
         }
         );
     } catch (error) {

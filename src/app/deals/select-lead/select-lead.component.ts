@@ -33,7 +33,8 @@ export class SelectLeadComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   /*** XNFR-476 ***/
   disableCreatedForVendor: boolean = false;
-  disableAddLeadButton: boolean = false;
+  enableAddLeadButton: boolean = false;
+  showSelectedLead: number = 0;
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     private leadsService: LeadsService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService) {
@@ -45,13 +46,13 @@ export class SelectLeadComponent implements OnInit {
 
     }
   }
-
   ngOnInit() {
     $('#selectLeadModel').modal('show');    
     this.pagination.pageIndex = 1;
     this.pagination.searchKey = "";
     this.sortOption.searchKey = "";
     this.leadId = this.dealToLead.leadId;
+    this.showSelectedLead = this.dealToLead.leadId;
     this.getLeads(this.pagination);
   }
 
@@ -64,7 +65,8 @@ export class SelectLeadComponent implements OnInit {
     if(this.dealToLead.createdForCompanyId > 0){
       this.disableCreatedForVendor = true;
     }
-    this.showLeadForm = true;    
+    this.showLeadForm = true;
+    this.dealToLead.leadActionType = "add";    
   }
   
   closeLeadForm() {
@@ -73,17 +75,19 @@ export class SelectLeadComponent implements OnInit {
   
   leadCreated(leadId : any) {
     this.showLeadForm = false;
-    this.leadId = leadId; 
+    this.leadId = leadId;
+    this.showSelectedLead = leadId;
     this.leadSelected();   
   }
 
   selectLead(leadId : any) {
-    this.leadId = leadId;    
+    this.leadId = leadId;
+    this.showSelectedLead = leadId;    
   }
 
   leadSelected() {
     $('#selectLeadModel').modal('hide');
-    this.notifyLeadSelected.emit(this.leadId);
+    this.notifyLeadSelected.emit(this.showSelectedLead);
   }
 
   getLeads(pagination: Pagination) {
@@ -104,7 +108,7 @@ export class SelectLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);          
           this.sortOption.totalRecords = response.totalRecords;
           this.pagination.totalRecords = response.totalRecords;
-          this.disableAddLeadButton = response.isVendorEnabledLeadApprovalRejectionFeature;
+          this.enableAddLeadButton = response.isVendorEnabledLeadApprovalRejectionFeature;
           this.pagination = this.pagerService.getPagedItems(this.pagination, response.data);
         },
         error => {
@@ -121,6 +125,7 @@ export class SelectLeadComponent implements OnInit {
 
   searchKeyPress(keyCode: any) {
     if (keyCode === 13) {
+      this.leadId = 0;
       this.search();
     }
   }

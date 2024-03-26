@@ -1693,5 +1693,23 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
    
 }
 
+previewEmailTemplateInNewTab(campaign:any){
+  let campaignId = campaign['campaignType']=='EVENT' ? campaign.id : campaign.campaignId;
+  this.referenceService.previewCampaignEmailTemplateInNewTab(campaignId);
+}
+
+previewAutoReplyEmailTemplateInNewTab(campaign:any,reply:any){
+  this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+}
+
+previewAutoReplyWebsiteLinkTemplateInNewTab(campaign:any,url:any){
+  this.referenceService.previewVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id);
+}
+
+openPageInNewTab(id:number){
+  this.referenceService.previewPageInNewTab(id);
+}
+
+
 
 }

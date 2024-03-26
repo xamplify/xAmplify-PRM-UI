@@ -717,5 +717,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
       }
   }
 
+  openEmailTemplateInNewTab(campaign:any){
+    this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
+  }
   
 }

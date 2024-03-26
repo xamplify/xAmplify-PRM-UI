@@ -142,6 +142,8 @@ export class PublicEventEmailPopupComponent implements OnInit,OnDestroy {
                 this.customResponse = new CustomResponse( 'ERROR', this.properties.serverErrorMessage, true );
             } );
     }
-
+    openEmailTemplateInNewTab(){
+        this.referenceService.previewCampaignEmailTemplateInNewTab(this.selectedCampaign.campaignId);
+    }
 
 }

@@ -349,7 +349,7 @@
                                                 <a style="float:left; right: -6px;" class="fm external-link"
                                                    target="_BLANK" data-toggle="tooltip" data-placement="top"
                                                    title="Preview"
-                                                   (click)="$event.stopPropagation();getEmailTemplatePreview(campaign)">
+                                                   (click)="$event.stopPropagation();previewEmailTemplateInNewTab(campaign)">
                                                    <i class="fa fa-external-link-square preview-edit-color"
                                                       aria-hidden="true"
                                                       style="padding-top: 1px !important;; font-size: 20px;"></i>
@@ -412,7 +412,7 @@
                                                 <a style="float:left; right: -6px;" class="fm external-link"
                                                    target="_BLANK" data-toggle="tooltip" data-placement="top"
                                                    title="Preview"
-                                                   (click)="$event.stopPropagation();showLandingPagePreview(campaign)">
+                                                   (click)="$event.stopPropagation();openPageInNewTab(campaign?.landingPage?.id)">
                                                    <i class="fa fa-external-link-square preview-edit-color"
                                                       aria-hidden="true"
                                                       style="padding-top: 1px !important;; font-size: 20px;"></i>
@@ -662,8 +662,7 @@
                                                          *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
                                                       <div class="col-xs-12 p0">
                                                          <div class="col-xs-8 p0">
-                                                            <img alt=""
-                                                               (click)="showEmailTemplate(campaign,reply.emailTemplate)"
+                                                            <img alt="No Image Found" (click)="previewAutoReplyEmailTemplateInNewTab(campaign,reply)"
                                                                title="preview" data-toggle="tooltip"
                                                                data-placement="top" class="thumb ng-scope pointer"
                                                                style="width: auto; height: 64px;float: left;"
@@ -692,7 +691,7 @@
                                                                   <a class="fm external-link" target="_BLANK"
                                                                      data-toggle="tooltip" data-placement="top"
                                                                      title="Preview"
-                                                                     (click)="$event.stopPropagation();showEmailTemplate(campaign,reply.emailTemplate)">
+                                                                     (click)="$event.stopPropagation();previewAutoReplyEmailTemplateInNewTab(campaign,reply)">
                                                                      <i class="fa fa-external-link-square preview-edit-color"
                                                                         aria-hidden="true"
                                                                         style="padding-top: 5px !important; font-size:15px;"></i>
@@ -795,7 +794,7 @@
                                                       <div class="col-xs-12 p0">
                                                          <div class="col-xs-8 p0">
                                                             <img alt="Email Template"
-                                                               (click)="showEmailTemplate(campaign,url.emailTemplate)"
+                                                               (click)="previewAutoReplyWebsiteLinkTemplateInNewTab(campaign,url)"
                                                                title="preview" data-toggle="tooltip"
                                                                data-placement="top" class="thumb ng-scope pointer"
                                                                style="width: auto; height: 64px;float: left;"
@@ -822,7 +821,7 @@
                                                                   <a class="fm external-link" target="_BLANK"
                                                                      data-toggle="tooltip" data-placement="top"
                                                                      title="Preview"
-                                                                     (click)="$event.stopPropagation();showEmailTemplate(campaign,url.emailTemplate)">
+                                                                     (click)="$event.stopPropagation();previewAutoReplyWebsiteLinkTemplateInNewTab(campaign,url)">
                                                                      <i class="fa fa-external-link-square preview-btn preview-edit-color"
                                                                         aria-hidden="true"></i>
                                                                   </a>

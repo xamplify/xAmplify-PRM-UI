@@ -52,12 +52,14 @@ export class LoginComponent implements OnInit, OnDestroy {
   /*** XNFR-416 ***/
   isBgColor:boolean;
   teamMemberSignedUpResponse:CustomResponse = new CustomResponse();
+  isPleaseWaitButtonDisplayed = false;
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer) {
       this.SERVER_URL = this.envService.SERVER_URL;
       this.APP_URL = this.envService.CLIENT_URL;
       this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
       this.loginStyleId = 53;
+      this.isPleaseWaitButtonDisplayed = false;
     if(this.referenceService.teamMemberSignedUpSuccessfullyMessage!=""){
       this.teamMemberSignedUpResponse = new CustomResponse('SUCCESS',this.referenceService.teamMemberSignedUpSuccessfullyMessage,true);
     }  
@@ -123,9 +125,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     if(userName!=undefined && userName!="undefined"){
       const authorization = 'Basic ' + btoa('my-trusted-client:');
       const body = new URLSearchParams();
-        body.set('username', userName);
-        body.set('password',  this.model.password);
-        body.set('grant_type', 'password');
+      body.set('username', userName);
+      body.set('password',  this.model.password);
+      body.set('grant_type', 'password');
+      if(this.isLoggedInVanityUrl){
+        this.isPleaseWaitButtonDisplayed = true;
+      }
       this.authenticationService.login(authorization, body.toString(), userName).subscribe(result => {
         if (localStorage.getItem('currentUser')) {
           const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -133,12 +138,14 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.redirectTo(currentUser);
         } else {
           this.loading = false;
+          this.isPleaseWaitButtonDisplayed = false;
           this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
         }
       },
         (error: any) => {
           try {
             this.loading = false;
+            this.isPleaseWaitButtonDisplayed = false;
             const body = error['_body'];
             if (body !== "") {
               const response = JSON.parse(body);
@@ -167,10 +174,14 @@ export class LoginComponent implements OnInit, OnDestroy {
               this.xtremandLogger.error("error:" + error)
             }
           } catch (err) {
-            if (error.status === 0) { this.setCustomeResponse("ERROR", 'Error Disconnected! Service unavailable, Please check you internet connection'); }
+            if (error.status === 0) {
+               this.isPleaseWaitButtonDisplayed = false;
+               this.setCustomeResponse("ERROR", 'Error Disconnected! Service unavailable, Please check you internet connection');
+             }
           }
         });
     }else{
+      this.isPleaseWaitButtonDisplayed = false; 
       this.loading = false;
     }
     return false;
@@ -480,10 +491,12 @@ bgIMage2:any;
       this.vanityURLService.getActiveLoginTemplate(companyProfileName)
       .subscribe(
         data => {
-         this.loginStyleId = data.data.templateId
-         this.authenticationService.lognTemplateId = this.loginStyleId;
-         this.createdUserId = data.data.createdBy;
-         this.previewTemplate(this.loginStyleId,this.createdUserId)
+          if(data['data']!=undefined){
+            this.loginStyleId = data.data.templateId;
+            this.authenticationService.lognTemplateId = this.loginStyleId;
+            this.createdUserId = data.data.createdBy;
+            this.previewTemplate(this.loginStyleId,this.createdUserId);
+          }
         })  
   }
   htmlContent:any;

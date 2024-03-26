@@ -1577,4 +1577,30 @@ appendValueToSubjectLine(event:any){
         this.campaignDescriptionDivClass = trimmedDescription.length>0 ? this.successClass : this.formGroupClass;
     }
 
+    openEmailTemplateInNewTab(campaign:any){
+        if(this.campaign.nurtureCampaign){
+            this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
+        }else{
+            this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
+        }
+    }
+
+    openAutoResponseEmailTemplateInNewTab(reply:any){
+        if(this.campaign.nurtureCampaign){
+            this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+        }else{
+            this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+        }
+    }
+
+    openAutoResponseWebsiteLinkTemplateInNewTab(url:any){
+        if(this.campaign.nurtureCampaign){
+            this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(url.id);
+        }else{
+            this.referenceService.previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id);
+        }
+    }
+
+
+
 }

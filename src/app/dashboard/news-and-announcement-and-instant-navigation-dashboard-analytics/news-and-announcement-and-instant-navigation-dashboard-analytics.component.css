@@ -157,3 +157,22 @@
 .description-custom-font{
   font-size: 24px !important;
 }
+@media screen and (max-width:1024px){
+  .title-custom-font{
+      width: auto !important;
+  }
+  .description-width {
+      width: auto !important;
+  }
+}
+@media screen and (max-width:578px){
+  .title-custom-font {
+    font-size: 27px !important;
+  }
+  .description-custom-font {
+    font-size: 18px !important;
+}
+.imgh[_ngcontent-c13] {
+  height: 200px !important;
+}
+}

@@ -54,8 +54,8 @@
                         </div>
                         <div class="profile-usertitle">
                             <div class="profile-usertitle-name" style="overflow: auto">
-                                <span style="font-size: 17px !important;"
-                                data-toggle="tooltip" data-placement="bottom" [title]="userData?.displayName">{{userData?.displayName | slice:0:18}}</span>
+                                <span style="font-size: 17px !important;" data-toggle="tooltip" data-placement="bottom"
+                                    [title]="userData?.displayName">{{userData?.displayName | slice:0:18}}</span>
                                 <span *ngIf="userData?.displayName?.length>18">...</span>
                                 <h5>{{userData.emailId}}</h5>
                             </div>
@@ -78,79 +78,105 @@
                         </div>
                         <div class="profile-usermenu">
                             <!--------------Account Details----------------------->
-                            <div class="my-profile-header-text">Account Details</div>
+
+
                             <ul class="nav neumorphismDark">
-                                <!---Personal Info--->
-                                <li [ngClass]="{'active-tab': activeTabName == 'personalInfo'}">
-                                    <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'personalInfo'}"
-                                        (click)="activateTab('personalInfo');clearCustomResponse()">
-                                        {{properties.personalInfo | translate}}
+                                <div class="my-profile-header-text neumorphismDark tab_alignments"
+                                    [ngClass]="[activeTabName =='personalInfo' ? 'show':'', activeTabName == 'password' ? 'show':'']">
+                                    Account Details
+                                    <a data-toggle="collapse" style="float: right;" href="#accountDetailsDropdown">
+                                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                     </a>
-                                </li>
-                                <!---Password--->
-                                <li [ngClass]="{'active-tab': activeTabName == 'password'}">
-                                    <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'password'}"
-                                        (click)="activateTab('password');clearCustomResponse()">
-                                        {{properties.changePassword | translate}}
-                                    </a>
-                                </li>
+                                </div>
+                                <ul id="accountDetailsDropdown" class="nav collapse"
+                                    [ngClass]="[activeTabName =='personalInfo' ? 'in':'', activeTabName == 'password' ? 'in':'']">
+                                    <!---Personal Info--->
+                                    <li [ngClass]="{'active-tab': activeTabName == 'personalInfo'}">
+                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'personalInfo'}"
+                                            (click)="activateTab('personalInfo');clearCustomResponse()">
+                                            {{properties.personalInfo | translate}}
+                                        </a>
+                                    </li>
+                                    <!---Password--->
+                                    <li [ngClass]="{'active-tab': activeTabName == 'password'}">
+                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'password'}"
+                                            (click)="activateTab('password');clearCustomResponse()">
+                                            {{properties.changePassword | translate}}
+                                        </a>
+                                    </li>
+                                </ul>
                                 <ng-container *ngIf="!isUser">
                                     <!--------------Settings----------------------->
-                                    <div class="my-profile-header-text">Settings</div>
+                                    <div class="my-profile-header-text neumorphismDark tab_alignments" [ngClass]="[activeTabName == 'playerSettings' ? 'show':'', 
+                                    activeTabName == 'settings' ? 'show': '',
+                                    activeTabName == 'tags' ? 'show':'',
+                                    activeTabName == 'customizeleftmenu' ? 'show':'',
+                                    activeTabName == 'customskin' ? 'show':'',
+                                    activeTabName == properties?.customLoginScreen ? 'show':'']">Settings <a
+                                            data-toggle="collapse" style="float: right;" href="#settingsDropdown">
+                                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                        </a></div>
                                     <!---Default Player Settings-->
-                                    <li [ngClass]="{'active-tab': activeTabName == 'playerSettings'}"
-                                        [class.disabled]="authenticationService.isSuperAdmin()"
-                                        *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                                    <ul id="settingsDropdown" class="nav collapse" [ngClass]="[activeTabName == 'playerSettings' ? 'in':'', 
+                                    activeTabName == 'settings' ? 'in': '',
+                                    activeTabName == 'tags' ? 'in':'',
+                                    activeTabName == 'customizeleftmenu' ? 'in':'',
+                                    activeTabName == 'customskin' ? 'in':'',
+                                    activeTabName == properties?.customLoginScreen ? 'in':'']">
+                                        <li [ngClass]="{'active-tab': activeTabName == 'playerSettings'}"
+                                            [class.disabled]="authenticationService.isSuperAdmin()"
+                                            *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
                              authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
                              !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && !authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                              &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember" (click)="videojsCall()">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'playerSettings'}"
-                                            (click)="activateTab('playerSettings');">
-                                            <span>{{properties.defaultPlayerSettings | translate}}</span>
-                                        </a>
-                                    </li>
-                                    <!---View Type-->
-                                    <li [ngClass]="{'active-tab': activeTabName == 'settings'}"
-                                        [class.disabled]="authenticationService.isSuperAdmin()">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}"
-                                            (click)="activateTab('settings');clearCustomResponse();getSelectedDashboardForPartner();checkDashboardTypes()">{{properties.viewType
-                                            | translate}}</a>
-                                    </li>
-                                    <!---Tags-->
-                                    <li *ngIf="authenticationService.lmsAccess || authenticationService?.module?.playbookAccess"
-                                        [ngClass]="{'active-tab': activeTabName == 'tags'}">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'tags'}"
-                                            (click)="activateTab('tags');clearCustomResponse()" translate>
-                                            {{properties.tags}} </a>
-                                    </li>
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'playerSettings'}"
+                                                (click)="activateTab('playerSettings');">
+                                                <span>{{properties.defaultPlayerSettings | translate}}</span>
+                                            </a>
+                                        </li>
+                                        <!---View Type-->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'settings'}"
+                                            [class.disabled]="authenticationService.isSuperAdmin()">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}"
+                                                (click)="activateTab('settings');clearCustomResponse();getSelectedDashboardForPartner();checkDashboardTypes()">{{properties.viewType
+                                                | translate}}</a>
+                                        </li>
+                                        <!---Tags-->
+                                        <li *ngIf="authenticationService.lmsAccess || authenticationService?.module?.playbookAccess"
+                                            [ngClass]="{'active-tab': activeTabName == 'tags'}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'tags'}"
+                                                (click)="activateTab('tags');clearCustomResponse()" translate>
+                                                {{properties.tags}} </a>
+                                        </li>
 
-                                    <!-- Customize left menu -->
-                                    <li [ngClass]="{'active-tab': activeTabName == 'customizeleftmenu'}"
-                                        [class.disabled]="authenticationService.isSuperAdmin()"
-                                        *ngIf="authenticationService.module.isAnyAdminOrSupervisor">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customizeleftmenu'}"
-                                            (click)="activateTab('customizeleftmenu');clearCustomResponse()"
-                                            translate>{{properties.customizeleftmenu | translate}}</a>
-                                    </li>
+                                        <!-- Customize left menu -->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'customizeleftmenu'}"
+                                            [class.disabled]="authenticationService.isSuperAdmin()"
+                                            *ngIf="authenticationService.module.isAnyAdminOrSupervisor">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customizeleftmenu'}"
+                                                (click)="activateTab('customizeleftmenu');clearCustomResponse()"
+                                                translate>{{properties.customizeleftmenu | translate}}</a>
+                                        </li>
 
-                                    <!---Themes-->
-                                    <li *ngIf="customSkinSettingOption &&  roleNames !='Partner' && authenticationService.module.isAnyAdminOrSupervisor"
-                                        [ngClass]="{'active-tab': activeTabName == 'customskin'}">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"
-                                            (click)="activateTab('customskin');clearCustomResponse()" translate>
-                                            {{properties.customskin | translate}} </a>
-                                    </li>
-                                    <!--XNFR-386--->
-                                    <!--Custom Login Screen Settings-->
-                                    <li [ngClass]="{'active-tab': activeTabName == properties?.customLoginScreen}"
-                                        [class.disabled]="authenticationService.isSuperAdmin()"
-                                        *ngIf="authenticationService?.vanityURLEnabled && authenticationService.module.isAnyAdminOrSupervisor && roleNames !='Partner'">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.customLoginScreen}"
-                                            (click)="activateTab(properties?.customLoginScreen);clearCustomResponse()"
-                                            translate>{{properties?.customLoginScreen}}</a>
-                                    </li>
+                                        <!---Themes-->
+                                        <li *ngIf="customSkinSettingOption &&  roleNames !='Partner' && authenticationService.module.isAnyAdminOrSupervisor"
+                                            [ngClass]="{'active-tab': activeTabName == 'customskin'}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"
+                                                (click)="activateTab('customskin');clearCustomResponse()" translate>
+                                                {{properties.customskin | translate}} </a>
+                                        </li>
+                                        <!--XNFR-386--->
+                                        <!--Custom Login Screen Settings-->
+                                        <li [ngClass]="{'active-tab': activeTabName == properties?.customLoginScreen}"
+                                            [class.disabled]="authenticationService.isSuperAdmin()"
+                                            *ngIf="authenticationService?.vanityURLEnabled && authenticationService.module.isAnyAdminOrSupervisor && roleNames !='Partner'">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.customLoginScreen}"
+                                                (click)="activateTab(properties?.customLoginScreen);clearCustomResponse()"
+                                                translate>{{properties?.customLoginScreen}}</a>
+                                        </li>
+                                    </ul>
                                     <!--------------Lead/Deal Configuration----------------------->
-                                    <div class="my-profile-header-text" *ngIf="((hasAllAccess || 
+                                    <div class="my-profile-header-text neumorphismDark tab_alignments" *ngIf="((hasAllAccess || 
                             hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
                              || authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
                              !authenticationService.isOnlyPartner() && authenticationService.enableLeads && 
@@ -159,174 +185,227 @@
                               authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
                               || authenticationService.module.isPrmAndPartner  || authenticationService.module.isPrmAndPartnerTeamMember)) 
                               || (!authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
-                              authenticationService.isVendor() || authenticationService.isVendorPartner()))">Lead/Deal
-                                        Configuration</div>
-                                    <!---Deal Registration--->
-                                    <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" *ngIf="(hasAllAccess || 
+                              authenticationService.isVendor() || authenticationService.isVendorPartner()))" [ngClass]="[activeTabName == 'dealTypes' ? 'show':'',
+                              activeTabName == 'leadPipelines' ? 'show':'',
+                              activeTabName == 'dealPipelines' ? 'show':'',
+                              activeTabName == 'leadDealApprove' ? 'show':'']">Lead/Deal
+                                        Configuration<a data-toggle="collapse" style="float: right;"
+                                            href="#leadAndDealDropdown">
+                                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                        </a></div>
+                                    <ul id="leadAndDealDropdown" class="nav collapse" [ngClass]="[activeTabName == 'dealTypes' ? 'in':'',
+                              activeTabName == 'leadPipelines' ? 'in':'',
+                              activeTabName == 'dealPipelines' ? 'in':'',
+                              activeTabName == 'leadDealApprove' ? 'in':'']">
+                                        <!---Deal Registration--->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" *ngIf="(hasAllAccess || 
                                     hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
                                      || authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
                                      !authenticationService.isOnlyPartner() || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
                                      || authenticationService.module.isPrmAndPartner  || authenticationService.module.isPrmAndPartnerTeamMember && authenticationService.enableLeads && 
                                       authenticationService.superiorRole != 'Partner'">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"
-                                            (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration
-                                            | translate}}</a>
-                                    </li>
-                                    <ng-container *ngIf="authenticationService?.leadsAndDeals">
-                                        <!---Lead Pipelines--->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadPipelines'}"
-                                                (click)="activateTab('leadPipelines');clearCustomResponse()">
-                                                {{properties.leadPipelines | translate}}</a>
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"
+                                                (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration
+                                                | translate}}</a>
                                         </li>
-                                        <!---Deal Pipelines--->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'dealPipelines'}">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealPipelines'}"
-                                                (click)="activateTab('dealPipelines');clearCustomResponse()">
-                                                {{properties.dealPipelines | translate}}</a>
-                                        </li>
+                                        <ng-container *ngIf="authenticationService?.leadsAndDeals">
+                                            <!---Lead Pipelines--->
+                                            <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadPipelines'}"
+                                                    (click)="activateTab('leadPipelines');clearCustomResponse()">
+                                                    {{properties.leadPipelines | translate}}</a>
+                                            </li>
+                                            <!---Deal Pipelines--->
+                                            <li [ngClass]="{'active-tab': activeTabName == 'dealPipelines'}">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealPipelines'}"
+                                                    (click)="activateTab('dealPipelines');clearCustomResponse()">
+                                                    {{properties.dealPipelines | translate}}</a>
+                                            </li>
 
-                                        <!-- XNFR-426 -->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}"
-                                            *ngIf="!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember)">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadDealApprove'}"
-                                                (click)="activateTab('leadDealApprove');getLeadApprovalstatus();">
-                                                {{properties.leadDealApprove | translate}}</a>
-                                        </li>
+                                            <!-- XNFR-426 -->
+                                            <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}"
+                                                *ngIf="authenticationService?.module?.isAdmin && (!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember))">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadDealApprove'}"
+                                                    (click)="activateTab('leadDealApprove');getLeadApprovalstatus();">
+                                                    {{properties.leadDealApprove | translate}}</a>
+                                            </li>
 
-                                    </ng-container>
+                                        </ng-container>
+                                    </ul>
                                     <!--------------Developers----------------------->
-                                    <div class="my-profile-header-text">Developers</div>
-                                    <!--SPF Configuration-->
-                                    <li [ngClass]="{'active-tab': activeTabName == 'spf'}">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'spf'}"
-                                            (click)="activateTab('spf');clearCustomResponse()">{{properties.spf |
-                                            translate}}</a>
-                                    </li>
-                                    <!--GDPR Settings-->
-                                    <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}"
-                                        *ngIf="(authenticationService.isOrgAdmin() || 
+                                    <div class="my-profile-header-text neumorphismDark tab_alignments" [ngClass]="[activeTabName == 'spf' ? 'show':'',
+                                    activeTabName == 'gdpr' ? 'show':'',
+                                    activeTabName == 'integrations' ? 'show':'',
+                                    activeTabName == 'samlSettings' ? 'show':'',
+                                    activeTabName == 'support' ? 'show':'']">Developers<a data-toggle="collapse"
+                                            style="float: right;" href="#developersDropdown">
+                                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                        </a></div>
+                                    <ul id="developersDropdown" class="nav collapse" [ngClass]="[activeTabName == 'spf' ? 'in':'',
+                                    activeTabName == 'gdpr' ? 'in':'',
+                                    activeTabName == 'integrations' ? 'in':'',
+                                    activeTabName == 'samlSettings' ? 'in':'',
+                                    activeTabName == 'support' ? 'in':'']">
+                                        <!--SPF Configuration-->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'spf'}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'spf'}"
+                                                (click)="activateTab('spf');clearCustomResponse()">{{properties.spf |
+                                                translate}}</a>
+                                        </li>
+                                        <!--GDPR Settings-->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}"
+                                            *ngIf="(authenticationService.isOrgAdmin() || 
                                         authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || 
-                                        authenticationService.isOnlyPartner() || roleNames=='Partner') && !authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
-                                        &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"
-                                            (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings
-                                            | translate}}</a>
-                                    </li>
-                                    <!--Integrations-->
-                                    <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                                        authenticationService.isOnlyPartner() || roleNames=='Partner') || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
+                                        || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"
+                                                (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings
+                                                | translate}}</a>
+                                        </li>
+                                        <!--Integrations-->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
                                authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() ||
                                 authenticationService.superiorRole != 'Partner'">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}"
-                                            (click)="activateTab('integrations');clearCustomResponse()">
-                                            {{properties.integrations | translate}}</a>
-                                    </li>
-                                    <!--Saml Settings-->
-                                    <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"
-                                        *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}"
-                                            (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings
-                                            | translate}}</a>
-                                    </li>
-                                    <li *ngIf="authenticationService?.vanityURLEnabled && authenticationService?.module?.showSupportSettingOption && !isLoggedInAsPartner"
-                                        [ngClass]="{'active-tab': activeTabName == 'support'}">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'support'}"
-                                            (click)="activateTab('support');clearCustomResponse()">{{properties.supportText}}</a>
-                                    </li>
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}"
+                                                (click)="activateTab('integrations');clearCustomResponse()">
+                                                {{properties.integrations | translate}}</a>
+                                        </li>
+                                        <!--Saml Settings-->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"
+                                            *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}"
+                                                (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings
+                                                | translate}}</a>
+                                        </li>
+                                        <li *ngIf="authenticationService?.vanityURLEnabled && authenticationService?.module?.showSupportSettingOption && !isLoggedInAsPartner"
+                                            [ngClass]="{'active-tab': activeTabName == 'support'}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'support'}"
+                                                (click)="activateTab('support');clearCustomResponse()">{{properties.supportText}}</a>
+                                        </li>
+                                    </ul>
                                     <!--------------Admin----------------------->
-                                    <div class="my-profile-header-text">Admin</div>
-                                    <ng-container  *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService.module.loggedInThroughOwnVanityUrl">
-                                        <!--Dashboard Buttons-->
-                                        <li [ngClass]="{'active': activeTabName == properties?.dashboardButtons}">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName ==  properties?.dashboardButtons}"
-                                                (click)="activateTab(properties?.dashboardButtons);clearCustomResponse()">{{properties.dashboardButtons}}</a>
-                                        </li>
-                                        <!--XNFR-459-->
-                                        <!--News & Announcements -->
-                                        <li [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.newsAndAnnouncements}"
-                                                (click)="activateTab(properties?.newsAndAnnouncements);clearCustomResponse()">{{properties?.newsAndAnnouncements}}</a>
-                                        </li>
-                                        <!--Dashboard Banners-->
-                                        <li [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.dashboardBanners}"
-                                                (click)="activateTab(properties?.dashboardBanners);clearCustomResponse()">{{properties?.dashboardBanners}}</a>
-                                        </li>
-                                    </ng-container>
-                                    <!--XNFR-459-->
-                                    <!--Your Templates-->
-                                    <li *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor"
-                                        [ngClass]="{'active': activeTabName == 'templates'}">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'templates'}"
-                                            (click)="activateTab('templates');clearCustomResponse()" translate>
-                                            Your Templates </a>
-                                    </li>
-                                    <!--Unsubscribe Reasons-->
-                                    <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
-                                        [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'unsubscribeReasons'}"
-                                            (click)="activateTab('unsubscribeReasons');clearCustomResponse()">{{properties.unsubscribeReasons
-                                            | translate}}</a>
-                                    </li>
-                                    <!--Exclusion-->
-                                    <ng-container
-                                        *ngIf="excludeUsersOrDomains && (authenticationService?.module?.adminOrSuperVisor || authenticationService?.isPartner())">
-                                        <li [ngClass]="{'active-tab': activeTabName == 'exclude'}">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'exclude'}"
-                                                (click)="activateTab('exclude');clearCustomResponse()">
-                                                {{properties.exclude | translate}}</a>
-                                        </li>
-                                    </ng-container>
-                                    <!--Vendor Journey-->
-                                    <ng-container *ngIf="isLocalHost">
+                                    <div class="my-profile-header-text neumorphismDark admin_tab_alignment" [ngClass]="[activeTabName == properties?.dashboardButtons ? 'show':'',
+                                    activeTabName == properties?.newsAndAnnouncements ? 'show':'',
+                                    activeTabName == properties?.dashboardBanners ? 'show':'',
+                                    activeTabName == 'templates' ? 'show':'',
+                                    activeTabName == 'unsubscribeReasons' ? 'show':'',
+                                    activeTabName == 'exclude' ? 'show':'',
+                                    activeTabName == 'vendorJourney' ? 'show':'',
+                                    activeTabName == 'landingPages' ? 'show':'',
+                                    activeTabName == 'categories' ? 'show':'',
+                                    activeTabName == 'team-group' ? 'show':'',
+                                    activeTabName == properties?.emailNotificationSettings ? 'show':'',
+                                    activeTabName == properties?.addDomainsText ? 'show':'']">Admin<a
+                                            data-toggle="collapse" style="float: right;" href="#adminDropdown">
+                                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                        </a></div>
+                                    <ul id="adminDropdown" class="nav collapse" [ngClass]="[activeTabName == properties?.dashboardButtons ? 'in':'',
+                                    activeTabName == properties?.newsAndAnnouncements ? 'in':'',
+                                    activeTabName == properties?.dashboardBanners ? 'in':'',
+                                    activeTabName == 'templates' ? 'in':'',
+                                    activeTabName == 'unsubscribeReasons' ? 'in':'',
+                                    activeTabName == 'exclude' ? 'in':'',
+                                    activeTabName == 'vendorJourney' ? 'in':'',
+                                    activeTabName == 'landingPages' ? 'in':'',
+                                    activeTabName == 'categories' ? 'in':'',
+                                    activeTabName == 'team-group' ? 'in':'',
+                                    activeTabName == properties?.emailNotificationSettings ? 'in':'',
+                                    activeTabName == properties?.addDomainsText ? 'in':'']">
                                         <ng-container
-                                        *ngIf="(authenticationService?.module?.adminOrSuperVisor || authenticationService?.isVendor())">
-                                        <li [ngClass]="{'active-tab': activeTabName == 'vendorJourney'}">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorJourney'}"
-                                                (click)="activateTab('vendorJourney');clearCustomResponse()">
-                                                {{properties.vendorJourney | translate}}</a>
+                                            *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService.module.loggedInThroughOwnVanityUrl">
+                                            <!--Dashboard Buttons-->
+                                            <li [ngClass]="{'active': activeTabName == properties?.dashboardButtons}">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName ==  properties?.dashboardButtons}"
+                                                    (click)="activateTab(properties?.dashboardButtons);clearCustomResponse()">{{properties.dashboardButtons}}</a>
+                                            </li>
+                                            <!--XNFR-459-->
+                                            <!--News & Announcements -->
+                                            <li
+                                                [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.newsAndAnnouncements}"
+                                                    (click)="activateTab(properties?.newsAndAnnouncements);clearCustomResponse()">{{properties?.newsAndAnnouncements}}</a>
+                                            </li>
+                                            <!--Dashboard Banners-->
+                                            <li [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.dashboardBanners}"
+                                                    (click)="activateTab(properties?.dashboardBanners);clearCustomResponse()">{{properties?.dashboardBanners}}</a>
+                                            </li>
+                                        </ng-container>
+                                        <!--XNFR-459-->
+                                        <!--Your Templates-->
+                                        <li *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor"
+                                            [ngClass]="{'active': activeTabName == 'templates'}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'templates'}"
+                                                (click)="activateTab('templates');clearCustomResponse()" translate>
+                                                Your Templates </a>
                                         </li>
-                                    </ng-container>
-                                    <!--Landing Pages-->
-                                    <ng-container
-                                        *ngIf="(authenticationService?.isPartner() || authenticationService?.isTeamMember())">
-                                        <li [ngClass]="{'active-tab': activeTabName == 'landingPages'}">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'landingPages'}"
-                                                (click)="activateTab('landingPages');clearCustomResponse()">
-                                                {{properties.landingPages | translate}}</a>
+                                        <!--Unsubscribe Reasons-->
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
+                                            [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'unsubscribeReasons'}"
+                                                (click)="activateTab('unsubscribeReasons');clearCustomResponse()">{{properties.unsubscribeReasons
+                                                | translate}}</a>
                                         </li>
-                                    </ng-container>
-                                    </ng-container>
-                                    <!--Folders-->
-                                    <li *ngIf="authenticationService.folders"
-                                        [ngClass]="{'active-tab': activeTabName == 'categories'}">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'categories'}"
-                                            (click)="activateTab('categories');clearCustomResponse()">{{properties.folders
-                                            | translate}}</a>
-                                    </li>
-                                    <!--Team Member Groups-->
-                                    <li [ngClass]="{'active-tab': activeTabName == 'team-group'}"
-                                        *ngIf="authenticationService?.user?.hasCompany &&  authenticationService?.module?.isAnyAdminOrSupervisor">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}"
-                                            (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups
-                                            | translate}}</a>
-                                    </li>
-                                    <!---XNFR-326---->
-                                    <!--Email Notification Settings-->
-                                    <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module?.emailNotificationSettings"
-                                        [ngClass]="{'active-tab': activeTabName == properties?.emailNotificationSettings}"
-                                        style="border-bottom: none !important;">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.emailNotificationSettings}"
-                                            (click)="activateTab(properties?.emailNotificationSettings);clearCustomResponse()">{{properties?.emailNotificationSettings}}</a>
-                                    </li>
-                                    <!--Adding Domains XNFR-454-->
-                                    <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
-                                        [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}"
-                                        style="border-bottom: none !important;">
-                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.addDomainsText}"
-                                            (click)="activateTab(properties?.addDomainsText);clearCustomResponse()">{{properties?.addDomainsText}}</a>
-                                    </li>
+                                        <!--Exclusion-->
+                                        <ng-container
+                                            *ngIf="excludeUsersOrDomains && (authenticationService?.module?.adminOrSuperVisor || authenticationService?.isPartner())">
+                                            <li [ngClass]="{'active-tab': activeTabName == 'exclude'}">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'exclude'}"
+                                                    (click)="activateTab('exclude');clearCustomResponse()">
+                                                    {{properties.exclude | translate}}</a>
+                                            </li>
+                                        </ng-container>
+                                        <!--Vendor Journey-->
+                                        <ng-container *ngIf="isLocalHost">
+                                            <ng-container
+                                                *ngIf="(authenticationService?.module?.adminOrSuperVisor || authenticationService?.isVendor())">
+                                                <li [ngClass]="{'active-tab': activeTabName == 'vendorJourney'}">
+                                                    <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorJourney'}"
+                                                        (click)="activateTab('vendorJourney');clearCustomResponse()">
+                                                        {{properties.vendorJourney | translate}}</a>
+                                                </li>
+                                            </ng-container>
+                                            <!--Landing Pages-->
+                                            <ng-container
+                                                *ngIf="(authenticationService?.isPartner() || authenticationService?.isTeamMember())">
+                                                <li [ngClass]="{'active-tab': activeTabName == 'landingPages'}">
+                                                    <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'landingPages'}"
+                                                        (click)="activateTab('landingPages');clearCustomResponse()">
+                                                        {{properties.landingPages | translate}}</a>
+                                                </li>
+                                            </ng-container>
+                                        </ng-container>
+                                        <!--Folders-->
+                                        <li *ngIf="authenticationService.folders"
+                                            [ngClass]="{'active-tab': activeTabName == 'categories'}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'categories'}"
+                                                (click)="activateTab('categories');clearCustomResponse()">{{properties.folders
+                                                | translate}}</a>
+                                        </li>
+                                        <!--Team Member Groups-->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'team-group'}"
+                                            *ngIf="authenticationService?.user?.hasCompany &&  authenticationService?.module?.isAnyAdminOrSupervisor">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}"
+                                                (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups
+                                                | translate}}</a>
+                                        </li>
+                                        <!---XNFR-326---->
+                                        <!--Email Notification Settings-->
+                                        <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module?.emailNotificationSettings"
+                                            [ngClass]="{'active-tab': activeTabName == properties?.emailNotificationSettings}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.emailNotificationSettings}"
+                                                (click)="activateTab(properties?.emailNotificationSettings);clearCustomResponse()">{{properties?.emailNotificationSettings}}</a>
+                                        </li>
+                                        <!--Adding Domains XNFR-454-->
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
+                                            [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}"
+                                            style="border-bottom: none !important;">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.addDomainsText}"
+                                                (click)="activateTab(properties?.addDomainsText);clearCustomResponse()">{{properties?.addDomainsText}}</a>
+                                        </li>
+                                    </ul>
                                 </ng-container>
+
                             </ul>
                         </div>
                         <!-- END MENU -->
@@ -895,7 +974,8 @@
                                                 *ngIf="leadApprovalCustomResponse.isVisible"></app-response-message>
                                             <form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid"
                                                 *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                                                <table class="table table-light" style="border:0px!important;background-color:transparent!important">
+                                                <table class="table table-light"
+                                                    style="border:0px!important;background-color:transparent!important">
                                                     <tbody class="remove_table_bg display-grid">
                                                         <fieldset class="fild-custome-borders-none">
                                                             <legend class="leg-custome-borders-bot">Turn Lead
@@ -904,24 +984,32 @@
                                                         <tr class="col-md-12 col-lg-12">
                                                             <div class="flex row">
                                                                 <div class="col-md-9 col-lg-9">
-                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>You have the ability to Approve or
+                                                                    <h5 class="f-w-600" id="text-color-my-profile"
+                                                                        translate>You have the ability to Approve or
                                                                         Reject the leads registered by the partners.
                                                                     </h5>
-                                                                    <h5 *ngIf="!leadApprovalRejectionStatus" id="text-color-my-profile">
-                                                                        <input type="checkbox" [disabled]="leadApprovalRejectionStatus"
+                                                                    <h5 *ngIf="!leadApprovalRejectionStatus"
+                                                                        id="text-color-my-profile">
+                                                                        <input type="checkbox"
+                                                                            [disabled]="leadApprovalRejectionStatus"
                                                                             (change)="checkAggreeToDisableLeadApprovalFeature($event)"
-                                                                            [ngModelOptions]="{standalone: true}" class="pointer checkBox_shadow"
-                                                                            [(ngModel)]="isAggreedToDisableLeadApprovalFeature" value="">&nbsp;By disabling this
+                                                                            [ngModelOptions]="{standalone: true}"
+                                                                            class="pointer checkBox_shadow"
+                                                                            [(ngModel)]="isAggreedToDisableLeadApprovalFeature"
+                                                                            value="">&nbsp;By disabling this
                                                                         option, the leads that are neither rejected nor
                                                                         approved will be automatically approved!
                                                                     </h5>
                                                                 </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+                                                                <div class="col-md-3 col-lg-3 text-right"
+                                                                    style="padding-top:10px">
                                                                     <section>
-                                                                        <switch [(status)]="leadApprovalStatus" [onText]="callActionSwitch.onTextValue"
+                                                                        <switch [(status)]="leadApprovalStatus"
+                                                                            [onText]="callActionSwitch.onTextValue"
                                                                             [offText]="callActionSwitch.offTextValue"
                                                                             [onColor]="callActionSwitch.onGreenColorSwitch"
-                                                                            [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+                                                                            [offColor]="callActionSwitch.offDefaultColor"
+                                                                            [size]="callActionSwitch.size"
                                                                             (statusChange)="setLeadApprovalOrRejectionStatus($event)">
                                                                         </switch>
                                                                     </section>
@@ -930,8 +1018,10 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                                <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
-                                                    <button type="submit" class="button bgcolor-unset" [disabled]="disableSaveChangesButtonForLeadApproval"
+                                                <div class="col-xs-12"
+                                                    style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
+                                                    <button type="submit" class="button bgcolor-unset"
+                                                        [disabled]="disableSaveChangesButtonForLeadApproval"
                                                         (click)="updateLeadApprovalOrRejectionStatus()" translate><span
                                                             class="btn Btn-Green transition txt_pd-top3">Save Changes
                                                         </span>
@@ -1220,6 +1310,50 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16"
+                                                        *ngIf="!httpRequestLoader.isLoading && !isProduction">
+                                                        <div
+                                                            [className]="activeCRMDetails?.type === 'HALOPSA'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
+                                                            <div class="card-body" style="padding:10px;">
+                                                                <span *ngIf="halopsaRibbonText == 'configured'"
+                                                                    class="integration-cards">
+                                                                    <!-- <a (click)="halopsaSettings()"
+                                                                    data-toggle="tooltip" data-placement="top"
+                                                                    title="HALOPSA Settings"><i
+                                                                        class="fa fa-cog"
+                                                                        style="font-size: 20px !important;"></i></a> -->
+                                                                </span>
+                                                                <h5 class="card-title  text-uppercase text-center"
+                                                                    style="padding-top: 4%;">HALOPSA</h5>
+
+                                                                <div class="ribbon draft config" style="left:10px"
+                                                                    *ngIf="halopsaRibbonText == 'configured'">
+                                                                    <span
+                                                                        [style.background-color]="'green'">{{halopsaRibbonText}}</span>
+                                                                </div>
+                                                                <div class="ribbon draft" style="left:10px"
+                                                                    *ngIf="halopsaRibbonText != 'configured'">
+                                                                    <span
+                                                                        [style.background-color]="'yello'">{{halopsaRibbonText}}</span>
+                                                                </div>
+                                                                <div style="height: 120px;">
+                                                                    <div>
+                                                                        <img src="assets/images/crm/halopsa-xamplify.png"
+                                                                            style="margin-top:20px; text-align: center;width:100%">
+                                                                    </div>
+                                                                </div>
+                                                                <a (click)="configureHaloPsa()"
+                                                                    class="btn btn-block btn-primary text-uppercase"
+                                                                    *ngIf="halopsaRibbonText == 'configure'"
+                                                                    translate>configure</a>
+                                                                <a (click)="configureHaloPsa()"
+                                                                    class="btn btn-block btn-primary text-uppercase"
+                                                                    *ngIf="halopsaRibbonText == 'configured'"
+                                                                    translate>re configure</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </section>
 
@@ -1480,6 +1614,13 @@
                                                 <app-connectwise-authentication [loggedInUserId]="loggedInUserId"
                                                     (closeEvent)="refreshIntegrationSettings($event)">
                                                 </app-connectwise-authentication>
+                                            </div>
+
+                                            <!--halopsa -->
+                                            <div *ngIf="integrationTabIndex == 8">
+                                                <app-halopsa-authentication [loggedInUserId]="loggedInUserId"
+                                                    (closeEvent)="refreshIntegrationSettings($event)">
+                                                </app-halopsa-authentication>
                                             </div>
                                         </div>
                                         <!---Lead Pipe Lines-->
@@ -1896,7 +2037,8 @@
                                         <!-- Dashboard SETTINGS TAB -->
                                         <div class="tab-pane" *ngIf="isDashboardButtonsOptionClicked"
                                             [ngClass]="{'active': activeTabName == properties?.dashboardButtons}">
-                                            <app-custom-links-util [moduleType]="properties?.dashboardButtons"></app-custom-links-util>
+                                            <app-custom-links-util
+                                                [moduleType]="properties?.dashboardButtons"></app-custom-links-util>
                                         </div>
 
                                         <!-- Customize Left Menu -->
@@ -1927,8 +2069,11 @@
                                                     <div class="row">
                                                         <div class="col-xs-12 col-sm-12 col-lg-12">
                                                             <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
-                                                                <button class="button_blue bgcolor-unset pd_lft2" (click)="addCategory()">
-                                                                    <span class="btn btn-primary transition txt_pd-top3">Create a Folder</span></button>
+                                                                <button class="button_blue bgcolor-unset pd_lft2"
+                                                                    (click)="addCategory()">
+                                                                    <span
+                                                                        class="btn btn-primary transition txt_pd-top3">Create
+                                                                        a Folder</span></button>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                                                                 <div class="page-toolbar">
@@ -2232,31 +2377,44 @@
                                             *ngIf="activeTabName == 'customTheme'"
                                             (closeEvent)="showThemeAlert($event)">
                                         </app-custom-skin>
-                                        <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
-                                        <app-spf class="tab-pane" *ngIf="showSpfConfigurationDiv" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
-                                        <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
-                                        <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane" [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
+                                        <app-tags class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
+                                        <app-spf class="tab-pane" *ngIf="showSpfConfigurationDiv"
+                                            [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
+                                        <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
+                                        <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
                                         <!--Notify Partners-->
-                                        <app-notify-partners *ngIf="showNotifyPartnersOption && authenticationService?.module.notifyPartners"
-                                            class="tab-pane" [ngClass]="{'active': activeTabName == 'notifyPartners'}"></app-notify-partners>
+                                        <app-notify-partners
+                                            *ngIf="showNotifyPartnersOption && authenticationService?.module.notifyPartners"
+                                            class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'notifyPartners'}"></app-notify-partners>
                                         <!--XNFR-326 Email Notification Settings-->
-                                        <app-email-notification-settings *ngIf="showEmailNotificationSettingsOption && authenticationService?.module?.emailNotificationSettings"
-                                            class="tab-pane" [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
+                                        <app-email-notification-settings
+                                            *ngIf="showEmailNotificationSettingsOption && authenticationService?.module?.emailNotificationSettings"
+                                            class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
                                         </app-email-notification-settings>
 
                                         <!--XNFR-454 Domain Configuration-->
-                                        <app-add-or-manage-domains *ngIf="isAddDomainsOptionClicked" [moduleName]="'addDomains'" class="tab-pane"
+                                        <app-add-or-manage-domains *ngIf="isAddDomainsOptionClicked"
+                                            [moduleName]="'addDomains'" class="tab-pane"
                                             [ngClass]="{'active': activeTabName == properties?.addDomainsText}">
                                         </app-add-or-manage-domains>
 
                                         <!--XNFR-459 News & Announcements-->
-                                        <div class="tab-pane" *ngIf="isNewsAndAnnouncementsOptionClicked" [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
-                                            <app-custom-links-util [moduleType]="properties?.newsAndAnnouncements"></app-custom-links-util>
+                                        <div class="tab-pane" *ngIf="isNewsAndAnnouncementsOptionClicked"
+                                            [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
+                                            <app-custom-links-util
+                                                [moduleType]="properties?.newsAndAnnouncements"></app-custom-links-util>
                                         </div>
 
                                         <!--XNFR-459 Dashboard Banners-->
-                                        <div class="tab-pane" *ngIf="isDashboardBannersOptionClicked" [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
-                                            <app-custom-links-util [moduleType]="properties?.dashboardBanners"></app-custom-links-util>
+                                        <div class="tab-pane" *ngIf="isDashboardBannersOptionClicked"
+                                            [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
+                                            <app-custom-links-util
+                                                [moduleType]="properties?.dashboardBanners"></app-custom-links-util>
                                         </div>
 
                                         <!--video default player settings-->
@@ -3022,11 +3180,15 @@
                                         </div>
                                         <!-- Vendor Journey -->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'vendorJourney'}">
-                                            <app-vendor-journey *ngIf="vendorJourney" [loggedInUserCompanyId]="loggedInUserCompanyId" [moduleType] = "properties.vendorJourney"></app-vendor-journey>
+                                            <app-vendor-journey *ngIf="vendorJourney"
+                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                [moduleType]="properties.vendorJourney"></app-vendor-journey>
                                         </div>
                                         <!-- Landing Pages -->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'landingPages'}">
-                                            <app-vendor-journey  *ngIf="isLandingPages"[loggedInUserCompanyId]="loggedInUserCompanyId" [moduleType] = "properties.landingPages"></app-vendor-journey>
+                                            <app-vendor-journey *ngIf="isLandingPages"
+                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                [moduleType]="properties.landingPages"></app-vendor-journey>
                                         </div>
                                         <!-- Support Settings -->
                                         <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption"

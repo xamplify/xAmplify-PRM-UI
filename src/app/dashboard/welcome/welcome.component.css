@@ -101,6 +101,9 @@
   .block {
     border-bottom: 1px solid #f1f1f1;
   }
+  .tab_Flex{
+  display: flex;
+  }
 }
 
 .divider-border {

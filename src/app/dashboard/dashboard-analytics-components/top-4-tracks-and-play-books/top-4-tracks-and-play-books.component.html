@@ -5,6 +5,7 @@
                 <a (click)="goToManage()">{{headerTitle}}</a>
                 <a class="fstpx" (click)="goToManage()">( {{subHeaderTitle}} )</a>
             </h4>
+            <div class="mb-upload-btns">
             <a class="close-circle" title="Refresh" (click)="refresh()">
                 <i class="fa fa-refresh" aria-hidden="true"></i>
             </a>
@@ -13,6 +14,7 @@
                 <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
                 <span class="hidden-xs" translate>{{addButtonText}}</span>
             </button>
+            </div>
         </div>
         <div style="position: relative; top: -10px;">
             <app-response-message [customResponse]="customResponse"
@@ -26,8 +28,8 @@
                 </div>
                 <div *ngFor="let learningTrack of contents ;let i =index;"
                     class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_grid GridviewSidePaddings">
-                    <div class="grid-box box-shadow">
-                        <img class="img-grid-track image_effect" [src]="learningTrack.featuredImage"
+                    <div class="grid-box box-shadow grid-card-shadow">
+                        <img class="img-grid-track" [src]="learningTrack.featuredImage"
                             onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack.title}}">
                         <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent1" data-toggle="tooltip"
                             data-placement="bottom" title="{{learningTrack.title}}"
