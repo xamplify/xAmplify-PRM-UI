@@ -98,11 +98,13 @@ export class LoginComponent implements OnInit, OnDestroy {
           const userName = this.model.username.toLowerCase();
           this.referenceService.userName = userName;
           if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined) {
+            this.isPleaseWaitButtonDisplayed = true;
             this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName, userName).subscribe(result => {
               if (result.message === "success") {
                 this.loginWithUser(userName);
               } else {
                 this.loading = false;
+                this.isPleaseWaitButtonDisplayed = false;
                 this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
               }
             });
