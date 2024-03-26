@@ -1,5 +1,4 @@
-<app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading">
-</app-landing-page-loader>
+<app-grid-loader  *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
 <div class="row fullRowCuPaddings" *ngIf="!httpRequestLoader.isLoading">
   <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 sidePaddingsAbjustment"
     *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
