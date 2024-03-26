@@ -143,7 +143,8 @@ h6 {
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
 }
 .gu-block:hover {
-  background-color: #22313a !important;
+  background: #f0f5fa !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
 }
 .total-records-bg-color {
   color: #000 !important;
@@ -837,9 +838,10 @@ span.ui-column-resize {
 }
 
 .alert-warning {
-  background-color: #22313a !important;
-  border: 1px solid #2f4857 !important;
+  background: #f0f5fa!important;
+  border: 0px solid #2f4857 !important;
   color: #000 !important;
+  box-shadow: inset 5px 5px 10px #d6dadf,inset -5px -5px 10px #fff!important;
 }
 .form-border {
   border: 1px solid #ececec !important;
@@ -1139,6 +1141,7 @@ input#copy-link {
 .cards {
   border: 1px solid #d0d5db !important;
   background: #f0f5fa !important;
+  border-radius: 10px !important;
 }
 .phone {
   color: #000 !important;
@@ -2214,7 +2217,7 @@ left-menu-color ul li a,
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
   box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
 }
-.neumorphismDark li a {
+.neumorphismDark li a{
   appearance: none;
   width: 100%;
   border-radius: 10px;
@@ -4206,4 +4209,21 @@ background-color: #f0f5fa;
 } */
 .icons_align a{
   padding: 4px !important;
+}
+/***** Sudha Sri(21-3-2024) *****/
+.my-profile-header-text.neumorphismDark {
+  appearance: none;
+  width: 100%;
+  border-radius: 10px;
+  min-height: 30px;
+  padding: 10px 15px;
+  margin: 6px 0px;
+  background: #f0f5fa !important;
+  box-shadow: inset -5px -5px 10px #d6dadf, inset 5px 5px 10px #ffffff !important;
+  border: 0px solid #2f4857 !important;
+  color: #5b9bd1 !important;
+}
+img.email-template-preview.image_effect.template_image_border {
+  border-bottom-left-radius: 6px !important;
+  border-bottom-right-radius: 6px !important;
 }
