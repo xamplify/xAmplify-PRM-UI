@@ -404,7 +404,7 @@
                                              id="border-bottom"><span [hidden]="!assignLeads">status</span></th>
                                           <th scope="col" class="hidden-xs text-center"
                                              [hidden]="isPartner || assignLeads" translate id="border-bottom"><span
-                                                [hidden]="assignLeads">Type</span></th>
+                                                [hidden]="isPartner ||assignLeads">Type</span></th>
                                           <th scope="col" class="hidden-xs" [hidden]="assignLeads" translate
                                              id="border-bottom"><span [hidden]="assignLeads">Created
                                                 On</span>
@@ -562,7 +562,7 @@
                                                    </a>
                                                 </h5>
                                              </td>
-                                             <td class="hidden-xs" *ngIf="!assignLeads  &&(!sharedLeads && !authenticationService.isOnlyPartner())">
+                                             <td class="hidden-xs" *ngIf="!assignLeads  && !isPartner">
                                                 <h5 class="view-banner green-btn-cu"
                                                    *ngIf="!contactList?.partnerUserList" [hidden]="assignLeads">
                                                    <span *ngIf="contactList.publicList" data-toggle="tooltip"
