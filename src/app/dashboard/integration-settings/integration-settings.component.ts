@@ -103,7 +103,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						});
 						this.setSfCfPage(1);
 					} else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
-						this.customFieldsResponse = new CustomResponse('ERROR', "We found something wrong about your Vendor's configuration. Please contact your Vendor.", true);
+						this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
 					}
 				},
 				error => {
