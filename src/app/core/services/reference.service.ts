@@ -356,10 +356,8 @@ export class ReferenceService {
     return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
   }
 
-
-    validateFirstName(firstName:string){
+  validateFirstName(firstName:string){
     return this.regularExpressions.FIRSTNAME_PATTERN.test(firstName);
-
   }
 
   validateEmail(text: string) {
