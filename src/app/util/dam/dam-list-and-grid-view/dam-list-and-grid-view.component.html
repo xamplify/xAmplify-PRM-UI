@@ -770,8 +770,10 @@
 <!---XNFR-381-->
 <!-- XNFR-409 -->
 <ng-template #filterOptionDiv>
-	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [type]="'Assets'"
-		[fileTypes]="fileTypes" (filterConditionsEmitter)="assetsFilter($event)"
+		<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [type]="'Assets'"
+		[isWhiteLabeledAsset]="isWhiteLabeledAsset"
+		[whiteLableContentSharedByVendorCompanies]="whiteLableContentSharedByVendorCompanies" [fileTypes]="fileTypes"
+		(filterConditionsEmitter)="assetsFilter($event)"
 		(closeFilterEmitter)="closeFilterEmitter($event)"></app-custom-ui-filter>
 </ng-template>
 <!-- XNFR-409 -->

@@ -11,11 +11,13 @@
           <div class="page-toolbar col-xs-6 col-sm-2 col-md-9 col-lg-9">
             <div class="btn-group pull-right">
               <div class="d-flex">
-                <div class="btn btn-xs l-g-view margin-space mr5" (click)="closeFilterOption('clear')" style="height: 28px;width: 28px;margin-top: 5px;border: 1px solid #f05556 !important;" *ngIf="isclearFilter">
-                  <span data-placement="bottom" data-toggle="tooltip" title="Remove a filter" >
+                <div class="btn btn-xs l-g-view margin-space mr5" (click)="closeFilterOption('clear')"
+                  style="height: 28px;width: 28px;margin-top: 5px;border: 1px solid #f05556 !important;"
+                  *ngIf="isclearFilter">
+                  <span data-placement="bottom" data-toggle="tooltip" title="Remove a filter">
                     <i class="fa fa-filter" aria-hidden="true"
-                    style="color: #f05556;;font-size: 22px;margin: 7px 0px 0px 0px;"></i>  <i class="fa fa-times" aria-hidden="true"
-                    style="color: #f05556;;font-size: 12px;margin: 7px 0px 0px -6px;"></i>
+                      style="color: #f05556;;font-size: 22px;margin: 7px 0px 0px 0px;"></i> <i class="fa fa-times"
+                      aria-hidden="true" style="color: #f05556;;font-size: 12px;margin: 7px 0px 0px -6px;"></i>
                   </span>
                 </div>
                 <button type="button" class="close-circle" (click)="closeFilterOption('close')"
@@ -30,35 +32,48 @@
       <div class="portlet box custom_fiter-asset" style="margin-bottom: 10px !important;">
         <div class="">
           <div class="row">
+
             <div class="col-md-12 mb10" *ngFor="let addRow of criterias; let i = index">
               <div class="col-md-4 pl0" style="display: flex">
                 <!-- Dropdown 1 -->
                 <b style="margin: 7px;">{{i+1}}</b>
                 <select class="form-control" [(ngModel)]="criterias[i].property"
-                  [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}">
+                  [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}" (change)="getOptionsForCriteria(criterias[i],i)"  [disabled]="dropdownDisabled[i]">
                   <option *ngFor="let filterOption of filterOptions; let i = index">
                     {{filterOption.value}}</option>
                 </select>
               </div>
 
               <div class="col-md-4 mobileTopandBottomSpace">
-                <!-- Dropdown 2 -->
-                <select class="form-control responsiveMargin" [(ngModel)]="criterias[i].operation">
-                  <option *ngFor="let filterCondition of filterConditions; let i = index">
-                    {{filterCondition.value}}</option>
+                <select class="form-control responsiveMargin" [(ngModel)]="criterias[i].operation"
+                  [ngModelOptions]="{standalone: true}"
+                  [disabled]="criterias[i].property === 'From' || criterias[i].property === 'Type'">
+                  <ng-container *ngIf="criterias[i].property !== 'From' && criterias[i].property !== 'Type' ">
+                    <option *ngFor="let filterCondition of filterConditions" value="{{filterCondition.value}}">
+                      {{filterCondition.value}}</option>
+                  </ng-container>
+                  <ng-container *ngIf="criterias[i].property === 'From' || criterias[i].property === 'Type'">
+                    <option>{{filterConditions[1].value}}</option>
+                  </ng-container>
                 </select>
               </div>
-
-              <div class="col-md-3" *ngIf="criterias[i].property != 'Type'">
+              <div class="col-md-3" *ngIf="criterias[i].property !== 'Type' && criterias[i].property !== 'From'">
                 <input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" required
                   (keypress)="eventEnterKeyHandler($event.keyCode)">
               </div>
-              <div class="col-md-3" *ngIf="criterias[i].property === 'Type'">
+              <div class="col-md-3" *ngIf="criterias[i].property === 'Type' ||  criterias[i].property === 'From'">
                 <select class="form-control" [(ngModel)]="criterias[i].value1">
-                  <option value="undefined">Select Asset Type</option>
-                  <option *ngFor="let fileType of fileTypes">
-                    {{fileType}}
-                  </option>
+                  <ng-container *ngIf="criterias[i].property === 'Type' ">
+                    <option value="undefined">Select Asset Type</option>
+                    <option *ngFor="let fileType of fileTypes">{{fileType}}</option>
+                  </ng-container>
+                  <ng-container *ngIf="criterias[i].property === 'From'">
+                    <option value="undefined">Select Company Name</option>
+                    <option *ngFor="let vendorCompany of whiteLableContentSharedByVendorCompanies"
+                      [value]="vendorCompany.sharedByVendorCompanyId">
+                      {{vendorCompany.sharedByVendorCompanyName}}
+                    </option>
+                  </ng-container>
                 </select>
               </div>
 
@@ -110,7 +125,10 @@
       <div class="row">
         <div class="form-inline col-sm-12">
           <div class="float-right">
-            <button class="buttom_customise btn-primary" (click)="submittFilterData()">Submit</button>
+            <!-- <button class="button buttom_customise bgcolor-unset" (click)="submittFilterData()" [disabled]="isclearFilter"><span
+              class="btn-primary" style="padding: 5px 14px !important;">Submit</span></button> -->
+            <button  class="buttom_customise btn-primary" 
+              (click)="submittFilterData()">Submit</button>
             <button class="buttom_customise Btn-Gray" (click)="closeFilterOption('close')">Cancel</button>
           </div>
         </div>

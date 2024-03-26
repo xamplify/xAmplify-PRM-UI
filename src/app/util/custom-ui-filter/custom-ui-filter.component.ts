@@ -1,18 +1,23 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Criteria } from 'app/contacts/models/criteria';
 import { Pagination } from 'app/core/models/pagination';
+import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/white-labeled-content-shared-by-vendor-companies-dto';
 
 @Component({
 	selector: 'app-custom-ui-filter',
 	templateUrl: './custom-ui-filter.component.html',
 	styleUrls: ['./custom-ui-filter.component.css']
 })
-export class CustomUiFilterComponent implements OnInit {
+export class CustomUiFilterComponent implements OnInit, OnDestroy {
 
 	@Input() type: any
 	@Input() fileTypes = [];
 	@Input() isPartnerView: boolean;
+	/*** XBI-2133 ****/
+	@Input() isWhiteLabeledAsset: boolean;
+	@Input() whiteLableContentSharedByVendorCompanies: WhiteLabeledContentSharedByVendorCompaniesDto[] = [];
+	/**** XBI-2133 ***/
 	@Output() filterConditionsEmitter = new EventEmitter();
 	@Output() closeFilterEmitter = new EventEmitter();
 	filterOptions: any[] = [];
@@ -29,8 +34,10 @@ export class CustomUiFilterComponent implements OnInit {
 	filterConditionErrorMessage: any;
 	pagination: Pagination = new Pagination();
 	parterViewText: string;
-
+	dropdownDisabled: boolean[] = [];
 	constructor(private router: Router) {
+	}
+	ngOnDestroy(): void {
 	}
 	ngOnInit() {
 		this.addFilterOptionsValues(this.type)
@@ -54,14 +61,18 @@ export class CustomUiFilterComponent implements OnInit {
 			} else {
 				this.filterOptions.push({ 'name': 'createdby', 'value': 'Created By' });
 				this.parterViewText = "Created On";
+				/*** XBI-2133 ***/
+				if (this.isWhiteLabeledAsset) {
+					this.filterOptions.push({ 'name': 'from', 'value': 'From' });
+				}
 			}
 		}
 		this.addNewRow();
 	}
-
 	addNewRow() {
 		let criteria = new Criteria();
 		this.criterias.push(criteria);
+		this.dropdownDisabled.push(false);
 	}
 	eventEnterKeyHandler(keyCode: any) {
 		if (keyCode === 13) {
@@ -103,11 +114,7 @@ export class CustomUiFilterComponent implements OnInit {
 	}
 	criteriaValidation() {
 		for (let i = 0; i < this.criterias.length; i++) {
-			alert((this.criterias[i].property == "Field Name*") + "Field Name*")
-			alert((this.criterias[i].operation == "Condition*") + "Condition")
-			alert((this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" || this.criterias[i].value1 == "undefined") + "value")
 			if (this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" || this.criterias[i].value1 == "undefined")) {
-
 				if (this.pagination.dateFilterOpionEnable && this.criterias.length == 1) {
 					this.isValidationErrorMessage = false
 				} else {
@@ -138,6 +145,10 @@ export class CustomUiFilterComponent implements OnInit {
 			} else {
 				this.isValidationErrorMessage = false;
 				this.pagination.filterOptionEnable = true;
+				const lastIndex = this.criterias.length - 1;
+				if (lastIndex >= 0) {
+					this.dropdownDisabled[lastIndex] = true;
+				}
 			}
 		}
 		if (!this.isValidationErrorMessage) {
@@ -215,8 +226,18 @@ export class CustomUiFilterComponent implements OnInit {
 			this.pagination.dateFilterOpionEnable = false;
 			this.pagination.filterOptionEnable = false;
 			this.isValidationErrorMessage = false;
+			this.dropdownDisabled = [];
 			this.addNewRow();
 		}
 		this.closeFilterEmitter.emit(event);
+	}
+	getOptionsForCriteria(criteria: any, index: number) {
+		if (criteria.property === 'From' || criteria.property === 'Type') {
+			this.criterias[index].operation = "=";
+			this.criterias[index].value1 = "undefined";
+		} else {
+			this.criterias[index].operation = "Condition*";
+			this.criterias[index].value1 = "";
+		}
 	}
 }

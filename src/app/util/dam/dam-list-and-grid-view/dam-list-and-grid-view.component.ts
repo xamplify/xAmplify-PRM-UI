@@ -24,6 +24,7 @@ import { ActionsDescription } from 'app/common/models/actions-description';
 import { Roles } from 'app/core/models/roles';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { Criteria } from 'app/contacts/models/criteria';
+import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/white-labeled-content-shared-by-vendor-companies-dto';
 declare var $: any, swal: any, flatpickr;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
@@ -158,6 +159,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (this.viewType != "fl" && this.viewType != "fg") {
 			this.getCompanyId();
 		}
+		
 	}
 
 	ngOnDestroy() {
@@ -213,10 +215,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 								this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 							}
 							this.findFileTypesForPartnerView();
+							/*** XBI-2133 ****/
+							this.findSharedAssetsByCompaniesForPartnerView();
 							this.pagination.userId = this.loggedInUserId;
 							this.listPublishedAssets(this.pagination);
 						} else {
 							this.findFileTypes();
+							/*** XBI-2133 ****/
+							this.fetchWhiteLabeledContentSharedByVendorCompanies()
 							this.pagination.userId = this.loggedInUserId;
 							this.listAssets(this.pagination);
 						}
@@ -779,12 +785,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 	/****** XNFR-409  *******/
 	showFilterOption: boolean;
+	/** XBI-2133 ***/
+	isWhiteLabeledAsset:boolean;
+	whiteLableContentSharedByVendorCompanies: WhiteLabeledContentSharedByVendorCompaniesDto[]=[];
 	toggleFilterOption() {
 		this.showFilterOption = true;
 	}
-	closeFilterOption(event:any) {
-        this.showFilterOption = event;
-    }
 	assetsFilter(event:any){
 		let input = event;
 	    this.pagination.fromDateFilterString = input['fromDate'];
@@ -812,5 +818,52 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.pagination.pageIndex = 1;
 		this.listItems(this.pagination);
 	}
+
+	/***** XBI-2133 ****/
+	fetchWhiteLabeledContentSharedByVendorCompanies() {
+		this.loading = true;
+		this.damService.fetchWhiteLabeledContentSharedByVendorCompanies(this.loggedInUserCompanyId)
+			.subscribe(
+				(result) => {
+					if (result.statusCode === 200) {
+						this.whiteLableContentSharedByVendorCompanies = result.data;
+						if (this.whiteLableContentSharedByVendorCompanies.length > 0) {
+							this.isWhiteLabeledAsset = true;
+						}
+					} else {
+						console.error('Status Code Error:', result.statusCode);
+					}
+					this.loading = false;
+				},
+				(error) => {
+					console.error('Fetch Error:', error);
+					this.whiteLableContentSharedByVendorCompanies = [];
+					this.loading = false;
+				}
+			);
+	}
+	findSharedAssetsByCompaniesForPartnerView() {
+		this.loading = true;
+		this.damService.findSharedAssetsByCompaniesForPartnerView(this.vanityLoginDto)
+			.subscribe(
+				(result) => {
+					if (result.statusCode === 200) {
+						this.whiteLableContentSharedByVendorCompanies = result.data;
+						if (this.whiteLableContentSharedByVendorCompanies.length > 0) {
+							this.isWhiteLabeledAsset = true;
+						}
+					} else {
+						console.error('Status Code Error:', result.statusCode);
+					}
+					this.loading = false;
+				},
+				(error) => {
+					console.error('Fetch Error:', error);
+					this.whiteLableContentSharedByVendorCompanies = [];
+					this.loading = false;
+				}
+			);
+	}
+
 
 }
