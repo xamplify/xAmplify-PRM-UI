@@ -1885,7 +1885,7 @@ i.IconCustomization:hover {
 }
 
 button.btn.TableDataBtn {
-  border-color: #fff !important;
+  border-color: #2f4857 !important;
 }
 button.btn.TableDataBtn .sky-blue {
   color: #fff !important;
@@ -2662,4 +2662,13 @@ a.Iconhover.custom-grid-icon.border-none i.fa.fa-trash-o.trashIconCustomization:
 }
 .silvertm{
   background: none !important;
+}
+.tab_alignments{
+  padding-top: 2px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #2f4857 !important;
+}
+.admin_tab_alignment{
+  padding-top: 2px;
+  padding-bottom: 10px;
 }

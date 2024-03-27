@@ -336,8 +336,16 @@ setAutoResponsesPage(event: any,campaign:any) {
 				url = url+"contacts/";
 				this.referenceService.goToRouter(url+"manage");
 			}
-			
-	   }
+	   }else if (this.previousRouterAlias == "sl") {
+		if (this.navigatedFrom == "a") {
+			this.referenceService.goToRouter(manageCampaignsUrl);
+		} else if (this.navigatedFrom == "b") {
+			this.referenceService.goToRouter(campaignAnalyticsUrl);
+		} else {
+			url = url + "sharedleads/";
+			this.referenceService.goToRouter(url + "manage");
+		}
+   }
 	}
 	
 }

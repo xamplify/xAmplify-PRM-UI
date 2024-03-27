@@ -2561,7 +2561,8 @@ table tr:nth-child(odd).highlightRow, table tr:nth-child(odd).highlightRow:hover
 .inline-flex.border-end:nth-child(even){
   background-color: var(--page-content) !important;
 }
-.border-end{
+.border-end,
+.tab_alignments{
   border-bottom: 1px solid var(--border-color) !important ;
 }
 .write-new button{

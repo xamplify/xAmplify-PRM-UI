@@ -60,10 +60,10 @@
 				<div *ngIf="showRefreshNotification" class="alert alert-info">
 					<strong>Please <a (click)="refreshList()">click here</a> to find latest updates</strong>
 				</div>
-				<div class="row" *ngIf="!historyLoader.isLoading && !historyLoader.isServerError">
+				<div class="row p17 neg_margin-10" *ngIf="!historyLoader.isLoading && !historyLoader.isServerError">
 				   <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tb_view_10 GridviewSidePaddings" *ngFor="let asset of pagination.pagedItems ;let i =index"	id="assetList_{{asset.id}}">
 					  <div class="grid-box min-h default-cursor mHeight box-shadow">
-						<div class="gridViewImgpositioning image_effect">
+						<div class="gridViewImgpositioning">
 							<img  class="img-class mxv" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"alt="Image Not Found">
 						</div>
 						<h4 class="xamplify-ellipsis overflow-hidden GridViewCotent gridViewTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{asset?.assetName}}">

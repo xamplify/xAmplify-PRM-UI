@@ -8,7 +8,7 @@ label {
 
 .fa.fa-users {
   padding: 1em;
-  font-size: 1.8em;
+  font-size: 20px;
   line-height: 1em;
   background: #00a6e8;
   color: white;
@@ -99,6 +99,15 @@ fieldset {
   }
   .mrg-left25{
     margin-left:0px!important;
+  }
+  .email-tempbtn{
+    padding: 4px;
+  }
+  .custom-change-css{
+    width: 107%;
+  }
+  .add_response-email{
+    padding-left: 12px!important;
   }
 }
 

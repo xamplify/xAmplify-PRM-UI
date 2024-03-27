@@ -21,7 +21,7 @@
           <app-modal-popup-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
           </app-modal-popup-loader>
           <div class="alert alert-danger" id="company-profile-error-div" *ngIf="!isValid">
-            <a class="close" aria-label="close">x</a>
+            <a class="close" aria-label="close" (click)="isValid = true">x</a>
             <strong>{{errorMessage}}</strong>
           </div>
           <app-response-message class="pg8" [customResponse]="leadModalResponse" *ngIf="leadModalResponse.isVisible">

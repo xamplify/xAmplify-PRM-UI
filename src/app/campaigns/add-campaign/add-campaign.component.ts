@@ -1498,16 +1498,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     }
 
     previewEmailTemplate(emailTemplate:any,isAutoResponseTemplate:boolean){
-        if(this.authenticationService.isLocalHost()){
-            if(isAutoResponseTemplate){
-                this.referenceService.previewWorkflowEmailTemplateInNewTab(emailTemplate.id);
-            }else{
-                this.referenceService.previewEmailTemplateInNewTab(emailTemplate.id);
-            }
+        if(isAutoResponseTemplate){
+            this.referenceService.previewWorkflowEmailTemplateInNewTab(emailTemplate.id);
         }else{
-            this.selectedEmailTemplateIdForPreview = emailTemplate.id;
-            this.selectedEmailTemplateNameForPreview = emailTemplate.name;
-            this.isPreviewEmailTemplateButtonClicked = true;
+            this.referenceService.previewEmailTemplateInNewTab(emailTemplate.id);
         }
     }
 
@@ -2426,4 +2420,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
 		this.campaignRecipientsPagination.filterBy = filterType;
 		this.findCampaignRecipients(this.campaignRecipientsPagination)
 	}
+
+    openPageInNewTab(id:number){
+        this.referenceService.previewPageInNewTab(id);
+    }
 }

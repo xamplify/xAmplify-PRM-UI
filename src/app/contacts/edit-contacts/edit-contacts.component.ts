@@ -1774,7 +1774,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     }
                     
                     if(this.isCompanyDetails){
-                        this.validatePartnersCompany();
+						this.vaildateclipboardCSVPartners();
+						this.loading = false;
                     }else{
                         this.loading = false;
                         this.customResponse = new CustomResponse('ERROR', 'Company Details is required', true);
@@ -3216,7 +3217,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.logListName = this.selectedContactListName + '_list_Inactive_' + this.checkingContactTypeName + 's.csv';
 		} else if (this.contactsByType.selectedCategory === 'invalid') {
 			this.logListName = this.selectedContactListName + '_list_Invalid_' + this.checkingContactTypeName + 's.csv';
-		} else if (this.contactsByType.selectedCategory === 'unsubscribe') {
+		} else if (this.contactsByType.selectedCategory === 'unsubscribed') {
 			this.logListName = this.selectedContactListName + '_list_Unsubscribe_' + this.checkingContactTypeName + 's.csv';
 		} else if (this.contactsByType.selectedCategory === 'valid') {
 			this.logListName = this.selectedContactListName + '_list_Valid_' + this.checkingContactTypeName + 's.csv';
@@ -3241,7 +3242,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			if (this.contactsByType.selectedCategory === 'excluded') {
 				object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 			}
-			if (this.contactsByType.selectedCategory === 'unsubscribe') {
+			if (this.contactsByType.selectedCategory === 'unsubscribed') {
 				object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
 			}
 			this.downloadDataList.push(object);
@@ -3261,7 +3262,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			if (this.contactsByType.selectedCategory === 'excluded') {
 				object["Excluded Catagory"] = null;
 			}
-			if (this.contactsByType.selectedCategory === 'unsubscribe') {
+			if (this.contactsByType.selectedCategory === 'unsubscribed') {
 				object["Unsubscribed Reason"] = null;
 			}
 			this.downloadDataList.push(object);
@@ -3735,7 +3736,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	resubscribeUserResult(event: any) {
 		this.contactService.isresubscribeContactModalPopup = false;
 		this.selectedUser = null;
-		if (this.contactsByType.selectedCategory === 'unsubscribe') {
+		if (this.contactsByType.selectedCategory === 'unsubscribed') {
 			this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
 		} else if (this.currentContactType == "all_contacts") {
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
@@ -3959,6 +3960,46 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 			}
 		);
+	}
+	vaildateclipboardCSVPartners() {
+		try {
+			this.duplicateEmailIds = [];
+			this.dublicateEmailId = false;
+			this.existedEmailIds = [];
+			var testArray = [];
+			for (var i = 0; i <= this.users.length - 1; i++) {
+				testArray.push(this.users[i].emailId);
+				this.validateEmail(this.users[i].emailId);
+			}
+
+			var newArray = this.compressArray(testArray);
+			for (var w = 0; w < newArray.length; w++) {
+				if (newArray[w].count >= 2) {
+					this.duplicateEmailIds.push(newArray[w].value);
+				}
+				console.log(newArray[w].value);
+				console.log(newArray[w].count);
+			}
+			this.xtremandLogger.log("DUPLICATE EMAILS" + this.duplicateEmailIds);
+			var valueArr = this.users.map(function (item) { return item.emailId });
+			var isDuplicate = valueArr.some(function (item, idx) {
+				return valueArr.indexOf(item) != idx
+			});
+			console.log(isDuplicate);
+			this.isDuplicateEmailId = isDuplicate;
+			if (!isDuplicate && !this.isEmailExist) {
+				this.validatePartnersCompany();
+			} else if (this.isEmailExist) {
+				this.customResponse = new CustomResponse('ERROR', "These email(s) are already added " + this.existedEmailIds, true);
+			} else {
+				this.dublicateEmailId = true;
+			}
+		} catch (error) {
+			this.xtremandLogger.error(error, "editContactComponent", "updatingListFromClipboard()");
+		}
+	}
+	closeDuplicateEmailErrorMessage() {
+		this.dublicateEmailId = false;
 	}
 
 }

@@ -2832,7 +2832,7 @@ span.progresleft {
     text-align: center;
     position: relative;
     border: 1px solid #e0e0e0;
-    border-radius: 5px;
+    border-radius: 15px;
   }
 }
 
@@ -3047,4 +3047,21 @@ span.icon-alignments {
 .img-grid-track {
   border-bottom-left-radius: 15px !important;
   border-bottom-right-radius: 15px !important;
+}
+.tab_alignments{
+  padding-top: 2px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd !important;
+}
+.admin_tab_alignment{
+  padding-top: 2px;
+  padding-bottom: 10px;
+}
+.grid-box img.email-template-preview {
+  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
+}
+.color1,
+.color1-invert:hover {
+  border-radius: 3px!important;
 }

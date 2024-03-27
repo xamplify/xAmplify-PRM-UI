@@ -171,7 +171,7 @@
   }
   .ref-mar {
     margin-left: -16px !important;
-    margin-right: 2px;
+    margin-right: 5px;
   }
 }
 
@@ -256,4 +256,9 @@
 }
 
 .gridViewImgBg img{margin: 0px;}
-
+/* grid bar */
+@media only screen and (min-width: 768px) and (max-width: 1281px) { 
+    .bar {
+      width: 95% !important;
+    }
+}

@@ -10,22 +10,22 @@
 				<div class="pull-right d-flex">
 					<div class="group-dropdown" style="padding-right: 4px;">
 						<button
-							[ngClass]="folderViewType=='l' ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :folderViewType == 'g' ?'fa fa-th-large btn-xs hidden-xs l-g-view':
-                    			folderViewType == 'fl' ? 'fa fa-th btn-xs hidden-xs l-g-view': folderViewType == 'fg' ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
+							[ngClass]="folderViewType=='l' ? 'fa fa-th-list btn-xs l-g-view' :folderViewType == 'g' ?'fa fa-th-large btn-xs l-g-view':
+                    			folderViewType == 'fl' ? 'fa fa-th btn-xs l-g-view': folderViewType == 'fg' ?'fa fa-folder btn-xs l-g-view':'fa fa-th-list btn-xs l-g-view'"
 							style="padding: 10px !important"></button>
 						<div class="group-dd-content" style="padding: 10px !important; min-width: max-content;">
-							<ng-container class='m10'> <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+							<ng-container class='m10'> <span class="btn btn-xs l-g-view" data-toggle="tooltip"
 									data-placement="bottom" title="List View" (click)="setViewType('l')"> <i
 										class="fa fa-th-list p10" aria-hidden="true"></i>
-								</span> <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip"
+								</span> <span class="btn btn-xs l-g-view margin-space" data-toggle="tooltip"
 									data-placement="bottom" title="Grid View" (click)="setViewType('g')"> <i
 										class="fa fa-th-large p10" aria-hidden="true"></i>
-								</span> <span class="btn btn-xs hidden-xs l-g-view margin-space"
+								</span> <span class="btn btn-xs l-g-view margin-space"
 									[class.disabled]="folderViewType=='fg'" (click)="setViewType('fg')"
 									data-toggle="tooltip" data-placement="bottom" title="Folder Grid View"> <i
 										class="fa fa-folder p10" aria-hidden="true"></i>
 								</span> <span
-									class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width"
+									class="btn btn-xs l-g-view margin-space folder-list-span-custom-width"
 									[class.disabled]="folderViewType=='fl'" (click)="setViewType('fl')"
 									data-toggle="tooltip" data-placement="bottom" title="Folder List View">
 									<i class="fa fa-th p10" aria-hidden="true"></i>

@@ -27,7 +27,7 @@
 		<li *ngIf="! showEditContactData"><i class="fa fa-angle-right" aria-hidden="true">
 			</i>
 			<span class="capitalize"
-				*ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'unsubscribe' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory != 'invalid'">
+				*ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'unsubscribed' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory != 'invalid'">
 				<ng-container *ngIf="module == 'partners'">{{contactsByType.selectedCategory}}</ng-container>
 				<ng-container
 					*ngIf="module != 'partners' && contactsByType.selectedCategory != 'excluded'">Valid</ng-container>
@@ -42,7 +42,7 @@
 					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 			</span>
-			<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate>Unsubscribed
+			<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'unsubscribed'" translate>Unsubscribed
 				<span
 					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
@@ -265,14 +265,14 @@
 								<div class="col-xs-6 col-sm-2 col-lg-2 mt5  pr pr15 tiles_hover_effect "
 									[ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' || checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
 									<button class="btn-block dashboard-stat red"
-										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
-										(click)="showingContactDetails('unsubscribe')"
+										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribed'"
+										(click)="showingContactDetails('unsubscribed')"
 										[disabled]="contactsByType.unsubscribedContactsCount == 0">
 										<div class="visual">
 											<i class="fa fa-check-circle"
 												style="font-size: 40px;line-height: 60px;opacity: 1"
-												[ngStyle]="{'color': contactsByType.selectedCategory == 'unsubscribe' ? '#white' : '#ccc' }"
-												*ngIf="contactsByType.selectedCategory == 'unsubscribe'"
+												[ngStyle]="{'color': contactsByType.selectedCategory == 'unsubscribed' ? '#white' : '#ccc' }"
+												*ngIf="contactsByType.selectedCategory == 'unsubscribed'"
 												aria-hidden="true"></i>
 										</div>
 										<div class="details">
@@ -544,7 +544,8 @@
 									</div>
 									<div *ngIf="dublicateEmailId" class="col-md-6"
 										class="col-md-9 alert alert alert-danger alert-dismissable" style="width: 100%">
-										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+										<a class="close" data-dismiss="alert" aria-label="close"
+										(click)="closeDuplicateEmailErrorMessage()">&times;</a>
 										<h4 translate>Duplicate EmailId Exist Please Remove..
 											<u>{{duplicateEmailIds}}</u>
 										</h4>
@@ -1315,7 +1316,7 @@
 													*ngIf="contactsByType.selectedCategory !== 'invalid' && contactsByType.selectedCategory !== 'excluded' && (gdprStatus || isPartner)"
 													scope="col"></th>
 												<th class="text-center hidden-xs"
-													*ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate
+													*ngIf="contactsByType.selectedCategory == 'unsubscribed'" translate
 													scope="col">Reason</th>
 												<th scope="col" class="text-center" *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||  
 					  contactsByType.selectedCategory == 'all') && isPartner)" style="width:17%" translate></th>
@@ -1326,7 +1327,7 @@
 													*ngIf="!isPartner || contactsByType.selectedCategory =='invalid' || contactsByType.selectedCategory =='excluded'">
 												</th>
 												<th scope="col"
-													*ngIf="isPartner && contactsByType.selectedCategory =='unsubscribe'">
+													*ngIf="isPartner && contactsByType.selectedCategory =='unsubscribed'">
 												</th>
 											</tr>
 										</thead>
@@ -1425,7 +1426,7 @@
 														</h5>
 													</td>
 													<td *ngIf="contactsByType.selectedCategory == 'valid'"></td>
-													<!--  <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td> -->
+													<!--  <td *ngIf="contactsByType.selectedCategory == 'unsubscribed'">{{allcontacts.unsubscribedReason}}</td> -->
 													<td
 														*ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads">
 														<button type="submit" class="bgcolor-unset button_height"
@@ -1456,7 +1457,7 @@
 													</td>
 
 													<td class="hidden-xs"
-														*ngIf="contactsByType.selectedCategory == 'unsubscribe'">
+														*ngIf="contactsByType.selectedCategory == 'unsubscribed'">
 														<h5 class='mb0 ellipsis' data-toggle="tooltip"
 															data-placement="bottom"
 															title="{{allcontacts.unsubscribedReason}}">
@@ -1468,9 +1469,9 @@
 
 
 													<td
-														*ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribe'">
+														*ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribed'">
 														<button class="btn Btn-Green"
-															*ngIf="contactsByType.selectedCategory == 'unsubscribe' && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces)"
+															*ngIf="contactsByType.selectedCategory == 'unsubscribed' && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces)"
 															[disabled]="assignLeads"
 															(click)="resubscribeUser(allcontacts)" translate>
 															Subscribe

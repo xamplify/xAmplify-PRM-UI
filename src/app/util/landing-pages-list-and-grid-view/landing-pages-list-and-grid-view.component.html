@@ -342,11 +342,11 @@
                 </div>
             </div>
 
-            <div class="page-toolbar col-xs-12 col-sm-12 col-md-7 col-lg-6"
+            <div class="page-toolbar col-xs-12 col-sm-12 col-md-7 col-lg-6 mb_6"
                 *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView"
                 style="padding-right: 22px;padding-left: 5px;">
                 <div class="btn-group pull-right" style="display: flex;">
-                    <div class="">
+                    <div class="ml_10">
                         <div class="group-dropdown">
                             <button
                                 [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
@@ -355,25 +355,25 @@
                             </button>
                             <div class="group-dd-content">
                                 <ng-container class='m10'>
-                                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                                    <span class="btn btn-xs l-g-view" data-toggle="tooltip"
                                         data-placement="bottom" title="List View"
                                         [class.disabled]="modulesDisplayType.isListView"
                                         (click)="!modulesDisplayType.isListView && setViewType('l')">
                                         <i class="fa fa-th-list p10" aria-hidden="true"></i>
                                     </span>
-                                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip"
+                                    <span class="btn btn-xs l-g-view margin-space" data-toggle="tooltip"
                                         data-placement="bottom" title="Grid View"
                                         [class.disabled]="modulesDisplayType.isGridView"
                                         (click)="!modulesDisplayType.isGridView && setViewType('g')">
                                         <i class="fa fa-th-large p10" aria-hidden="true"></i>
                                     </span>
                                     <ng-container *ngIf="!showUpArrowButton && !folderListView">
-                                        <span class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
+                                        <span class="btn btn-xs l-g-view margin-space" data-toggle="tooltip"
                                             data-placement="bottom" title="Folder Grid View"
                                             (click)="setViewType('fg')">
                                             <i class="fa fa-folder p10" aria-hidden="true"></i>
                                         </span>
-                                        <span class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width"
+                                        <span class="btn btn-xs l-g-view margin-space folder-list-span-custom-width"
                                             data-toggle="tooltip" data-placement="bottom" title="Folder List View"
                                             (click)="setViewType('fl')">
                                             <i class="fa fa-th p10" aria-hidden="true"></i>
@@ -383,7 +383,7 @@
                             </div>
                         </div>
                     </div>
-                    <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
+                    <span *ngIf="showUpArrowButton" class="btn btn-xs l-g-view margin-space" data-toggle="tooltip"
                         data-placement="bottom" title="Go back" (click)="setViewType('fg')">
                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
                     </span>
