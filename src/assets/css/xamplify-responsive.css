@@ -381,6 +381,16 @@ flex-wrap: wrap;
 .active-details{
   padding-right: 0px!important;
 }
+.grid-email-card {
+  padding-bottom: 0px !important;
+}
+.img-grid-track {
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+.template-selected-border{
+  border-radius: 15px !important;
+}
 }
 @media only screen and (min-width: 300px) and (max-width: 580px) {  
   /* myprofile old dropdown */

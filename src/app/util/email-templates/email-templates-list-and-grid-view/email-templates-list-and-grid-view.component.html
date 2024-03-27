@@ -272,8 +272,8 @@
                 <div class="btn-group pull-right" style="display: flex;">
                     <div>
                         <div class="group-dropdown">
-                            <button [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
-                                    modulesDisplayType?.isFolderListView? 'fa fa-th btn btn-xs l-g-view': modulesDisplayType?.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view'"
+                            <button [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view mr_4' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view mr_4':
+                                    modulesDisplayType?.isFolderListView? 'fa fa-th btn btn-xs l-g-view  mr_4': modulesDisplayType?.isFolderGridView?'fa fa-folder btn btn-xs l-g-view mr_4':'fa fa-th-list btn btn-xs l-g-view mr_4'"
                                 style="padding:10px !important"></button>
                                 <div class="group-dd-content">
                                     <ng-container class='m10'>
@@ -303,7 +303,7 @@
 							<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
 						</span>
                         <div class="inputs mDamTop alignline-m-flex" style="float: right">
-                            <a class="close-circle ref-mar refresh-icon" id="alignline-m-ref-mar"
+                            <a class="close-circle ref-mar refresh-icon mr_4" id="alignline-m-ref-mar"
                                 (click)="refreshList()" data-toggle="tooltip" data-placement="bottom" title="Refresh">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>
                             </a>
