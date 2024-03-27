@@ -145,10 +145,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			} else {
 				this.isValidationErrorMessage = false;
 				this.pagination.filterOptionEnable = true;
-				const lastIndex = this.criterias.length - 1;
-				// if (lastIndex >= 0) {
-					this.dropdownDisabled[i] = true;
-				//}
+				this.dropdownDisabled[i] = true;
 			}
 		}
 		if (!this.isValidationErrorMessage) {

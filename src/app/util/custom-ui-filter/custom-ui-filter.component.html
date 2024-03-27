@@ -20,10 +20,10 @@
                       aria-hidden="true" style="color: #f05556;;font-size: 12px;margin: 7px 0px 0px -6px;"></i>
                   </span>
                 </div>
-                <button type="button" class="close-circle" (click)="closeFilterOption('close')"
+                <a type="button" class="close-circle" (click)="closeFilterOption('close')"
                   style="width: 30px;height: 30px;margin-top: 4px;">
                   <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i>
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -35,15 +35,16 @@
 
             <div class="col-md-12 mb10" *ngFor="let addRow of criterias; let i = index">
               <div class="col-md-4 pl0" style="display: flex">
-                <!-- Dropdown 1 -->
+                <!-- Field Name DropDown -->
                 <b style="margin: 7px;">{{i+1}}</b>
                 <select class="form-control" [(ngModel)]="criterias[i].property"
-                  [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}" (change)="getOptionsForCriteria(criterias[i],i)"  [disabled]="dropdownDisabled[i]">
+                  [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}" (change)="getOptionsForCriteria(criterias[i],i)"
+                  [disabled]="dropdownDisabled[i]">
                   <option *ngFor="let filterOption of filterOptions; let i = index">
                     {{filterOption.value}}</option>
                 </select>
               </div>
-
+              <!-- Conditions Dropdown-->
               <div class="col-md-4 mobileTopandBottomSpace">
                 <select class="form-control responsiveMargin" [(ngModel)]="criterias[i].operation"
                   [ngModelOptions]="{standalone: true}"
@@ -57,6 +58,7 @@
                   </ng-container>
                 </select>
               </div>
+
               <div class="col-md-3" *ngIf="criterias[i].property !== 'Type' && criterias[i].property !== 'From'">
                 <input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" required
                   (keypress)="eventEnterKeyHandler($event.keyCode)">
@@ -83,7 +85,6 @@
                     data-placement="top" title="Remove a condition"></i>
                 </span>
                 <ng-template [ngTemplateOutlet]="addIcon" *ngIf="i === criterias.length-1"></ng-template>
-
               </div>
             </div>
             <ng-template #addIcon>
@@ -96,7 +97,6 @@
             </ng-template>
           </div>
           <ng-template [ngTemplateOutlet]="addIcon" *ngIf="criterias.length <= 0"></ng-template>
-
           <div class="row alert alert-danger alert-su m0" *ngIf="isValidationErrorMessage ">
             <strong>{{filterConditionErrorMessage}}</strong>
           </div>
@@ -125,10 +125,7 @@
       <div class="row">
         <div class="form-inline col-sm-12">
           <div class="float-right">
-            <!-- <button class="button buttom_customise bgcolor-unset" (click)="submittFilterData()" [disabled]="isclearFilter"><span
-              class="btn-primary" style="padding: 5px 14px !important;">Submit</span></button> -->
-            <button  class="buttom_customise btn-primary" 
-              (click)="submittFilterData()">Submit</button>
+            <button class="buttom_customise btn-primary" (click)="submittFilterData()">Submit</button>
             <button class="buttom_customise Btn-Gray" (click)="closeFilterOption('close')">Cancel</button>
           </div>
         </div>
