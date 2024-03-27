@@ -168,27 +168,27 @@
 																	aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class="mMobileDisable custom-icon"
+															<a class="custom-icon"
 																*ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"
 																data-toggle="tooltip" data-placement="top"
 																title="Design" (click)="addOrEdit(asset.id)">
-																<i class="fa fa-paint-brush mDisableColor IconCustomization"
+																<i class="fa fa-paint-brush IconCustomization"
 																	aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class="mMobileDisable custom-icon"
+															<a class="custom-icon"
 																*ngIf="asset?.beeTemplate && isPartnerView"
 																data-toggle="tooltip" data-placement="top" title="Edit"
 																(click)="addOrEdit(asset.id)">
-																<i class="fa fa-edit mDisableColor IconCustomization"
+																<i class="fa fa-edit IconCustomization"
 																	aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class="mMobileDisable custom-icon"
+															<a class="custom-icon"
 																*ngIf="!isPartnerView && asset?.edit"
 																data-toggle="tooltip" data-placement="top" title="Edit"
 																(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId)">
-																<i class="fa fa-edit mDisableColor IconCustomization"
+																<i class="fa fa-edit IconCustomization"
 																	aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
@@ -432,39 +432,39 @@
 																		<div class="actions-block override-actions ActionAlign"
 																			*ngIf="!asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
 																			<!--XNFR-381-->
-																			<a class="mMobileDisable custom-icon"
+																			<a class="custom-icon"
 																				data-toggle="tooltip"
 																				data-placement="top"
 																				title="Switch To Parent Template"
 																				(click)="changeAsParentPdf(asset.id)">
-																				<i class="fa fa-exchange mDisableColor IconCustomization"
+																				<i class="fa fa-exchange IconCustomization"
 																					aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>
 																			<!--XNFR-381-->
-																			<a class="mMobileDisable custom-icon"
+																			<a class="custom-icon"
 																				data-toggle="tooltip"
 																				data-placement="top" title="Design"
 																				(click)="addOrEdit(asset.id)">
-																				<i class="fa fa-paint-brush mDisableColor IconCustomization"
+																				<i class="fa fa-paint-brush IconCustomization"
 																					aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>
-																			<a class="mMobileDisable custom-icon"
+																			<a class="custom-icon"
 																				*ngIf="asset?.beeTemplate && isPartnerView"
 																				data-toggle="tooltip"
 																				data-placement="top" title="Edit"
 																				(click)="addOrEdit(asset.id)">
-																				<i class="fa fa-edit mDisableColor IconCustomization"
+																				<i class="fa fa-edit IconCustomization"
 																					aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>
-																			<a class="mMobileDisable custom-icon"
+																			<a class="custom-icon"
 																				*ngIf="!isPartnerView && asset?.edit"
 																				data-toggle="tooltip"
 																				data-placement="top" title="Edit"
 																				(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
-																				<i class="fa fa-edit mDisableColor IconCustomization"
+																				<i class="fa fa-edit IconCustomization"
 																					aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>

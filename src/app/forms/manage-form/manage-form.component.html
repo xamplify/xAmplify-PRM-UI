@@ -70,17 +70,17 @@
                                     <div class="">
                                         <div class="group-dropdown">
                                             <button
-                                                [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
-                                                    modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
+                                                [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs l-g-view':
+                                                    modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs l-g-view':'fa fa-th-list btn-xs l-g-view'"
                                                 style="padding: 10px !important"></button>
                                             <div class="group-dd-content">
                                                 <ng-container class='m10'>
-                                                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                                                    <span class="btn btn-xs l-g-view" data-toggle="tooltip"
                                                         data-placement="bottom" title="List View"
                                                         [class.disabled]="modulesDisplayType.isListView"
                                                         (click)="!modulesDisplayType.isListView && setViewType('List')">
                                                         <i class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                                                    <span class="btn btn-xs hidden-xs l-g-view margin-space"
+                                                    <span class="btn btn-xs l-g-view margin-space"
                                                         data-toggle="tooltip" style="margin-right: -2px;"
                                                         data-placement="bottom" title="Grid View"
                                                         [class.disabled]="modulesDisplayType.isGridView"
@@ -89,7 +89,7 @@
                                                     </span>
                                                     <ng-container
                                                         *ngIf="(pagination.categoryId==0 || pagination.categoryId=='undefined') && showFolderView">
-                                                        <span class="btn btn-xs hidden-xs l-g-view margin-space"
+                                                        <span class="btn btn-xs l-g-view margin-space"
                                                             data-toggle="tooltip" data-placement="bottom"
                                                             title="Folder Grid View"
                                                             [class.disabled]="modulesDisplayType.isFolderGridView"
@@ -97,7 +97,7 @@
                                                             <i class="fa fa-folder p10" aria-hidden="true"></i>
                                                         </span>
                                                         <span
-                                                            class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width"
+                                                            class="btn btn-xs l-g-view margin-space folder-list-span-custom-width"
                                                             data-toggle="tooltip" data-placement="bottom"
                                                             title="Folder List View"
                                                             [class.disabled]="modulesDisplayType.isFolderListView"
@@ -113,7 +113,7 @@
                                         <!-- close  group-dropdown-->
                                     </div>
                                     <span *ngIf="pagination.categoryId>0"
-                                        class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip"
+                                        class="btn btn-xs l-g-view margin-space" data-toggle="tooltip"
                                         data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
                                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                                     <div class="inputs mb-dflex" style="float: right">

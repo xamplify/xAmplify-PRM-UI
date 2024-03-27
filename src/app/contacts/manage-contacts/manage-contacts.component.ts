@@ -1864,7 +1864,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.logListName = 'All_Inactive_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'invalid') {
 				this.logListName = 'All_Invalid_' + csvNameSuffix + 's_list.csv';
-			} else if (this.contactsByType.selectedCategory === 'unsubscribe') {
+			} else if (this.contactsByType.selectedCategory === 'unsubscribed') {
 				this.logListName = 'All_Unsubscribed_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'valid') {
 				this.logListName = 'All_Valid_' + csvNameSuffix + 's_list.csv';
@@ -1899,7 +1899,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					if (this.contactsByType.selectedCategory === 'excluded') {
 						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 					}
-					if (this.contactsByType.selectedCategory === 'unsubscribe') {
+					if (this.contactsByType.selectedCategory === 'unsubscribed') {
 						object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
 					}
 					this.downloadDataList.push(object);
@@ -1920,7 +1920,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					if (this.contactsByType.selectedCategory === 'excluded') {
 						object["Excluded Catagory"] = this.contactsByType.listOfAllContacts[i].excludedCatagory
 					}
-					if (this.contactsByType.selectedCategory === 'unsubscribe') {
+					if (this.contactsByType.selectedCategory === 'unsubscribed') {
 						object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
 					}
 					this.downloadDataList.push(object);
@@ -2552,7 +2552,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			if (self.isPartner) {
 				self.referenceService.goToRouter(prefixUrl + "/pm/" + userId);
 			} else {
-				self.referenceService.goToRouter(prefixUrl + "/c/" + userId);
+				if(!self.sharedLeads){
+					self.referenceService.goToRouter(prefixUrl + "/c/" + userId);
+				}
+				else{
+					self.referenceService.goToRouter(prefixUrl + "/sl/" + userId);
+				}
 			}
 		}, 250);
 

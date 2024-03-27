@@ -177,6 +177,10 @@ h3 {
   .modal-copy {
     width: 100% !important;
   }
+  .mb-downloadfile{
+    white-space: nowrap;
+    width: 117px;
+  }
 }
 @media screen and (min-width: 601px) {
   .modal-css {
@@ -389,4 +393,16 @@ h6 {
   width: 95px;
   margin: 0px;
   height: 100%;
+}
+@media only screen and (min-width: 768px) and (max-width: 1281px) { 
+  span.dropdown-toggle.white-co {
+      float: right !important;
+    }
+    .bar {
+      width: 95% !important;
+    }
+    .grid-box {
+      margin: 7px 0;
+      padding-bottom: 1em;
+    }
 }

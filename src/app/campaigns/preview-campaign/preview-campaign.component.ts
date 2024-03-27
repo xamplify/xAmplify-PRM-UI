@@ -1706,6 +1706,10 @@ previewAutoReplyWebsiteLinkTemplateInNewTab(campaign:any,url:any){
   this.referenceService.previewVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id);
 }
 
+openPageInNewTab(id:number){
+  this.referenceService.previewPageInNewTab(id);
+}
+
 
 
 }

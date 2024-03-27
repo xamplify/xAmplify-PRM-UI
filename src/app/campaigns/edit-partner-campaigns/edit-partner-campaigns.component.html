@@ -248,12 +248,12 @@
                               </a>
                               <br>
                               <div class="d-flex">
-                                 <button type="button" class="pull-right btn-sm button_blue bgcolor-unset" (click)="openEmailTemplateInNewTab(campaign)">
-                                    <span class="btn btn-primary transition txt_pd-top3"><i class="fa fa-eye"></i> Preview</span> 
+                                 <button type="button" class="pull-right btn-sm button_blue bgcolor-unset email-tempbtn" (click)="openEmailTemplateInNewTab(campaign)">
+                                    <span class="btn btn-primary transition txt_pd-top3 prev-btn"><i class="fa fa-eye"></i> Preview</span> 
                                  </button>
                                  <button *ngIf="campaign?.emailTemplate?.editPartnerTemplate"  type="button" class="pull-right btn-sm button_blue ml-5 bgcolor-unset" style="margin-right: 6px"
                                     (click)="editPartnerTemplate()">
-                                    <span  class="btn btn-primary transition txt_pd-top3"><i class="fa fa-edit"></i> Edit
+                                    <span  class="btn btn-primary transition txt_pd-top3 prev-btn"><i class="fa fa-edit"></i> Edit
                                     </span>
                                  </button>
                               </div>
@@ -320,7 +320,20 @@
                                        *ngIf="campaignContact.httpRequestLoader.isServerError"></app-error-pages>
                                     <ng-container
                                        *ngIf="!campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
-                                       <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
+                                       <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">    
+                                          <div class="col-sm-6 col-md-6 col-lg-6 pl0 pr0" *ngIf="(authenticationService.module.isOrgAdmin || authenticationService.module.isOnlyPartner || authenticationService.module.isPrmAndPartner || authenticationService.isVendorPartner())">
+                                             <ul class="mix-filter m0">
+                                                <li class="filter" [class.active]="'ALL' == contactListPagination.filterBy" (click)="filterContacts('ALL')">All</li>
+                                                <li class="filter" [class.active]="'MY-CONTACTS' == contactListPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
+                                                </li>
+                                                <li class="filter" [class.active]="'SHARED-LEADS' == contactListPagination.filterBy" (click)="filterContacts('SHARED-LEADS')" translate>Shared Leads
+                                                </li>
+                                                <li class="filter" [class.active]="'FORM-CONTACTS' == contactListPagination.filterBy" (click)="filterContacts('FORM-CONTACTS')" translate>Form
+                                                   Contacts</li>
+                                                <li class="filter" [class.active]="'COMPANY-CONTACTS' == contactListPagination.filterBy" (click)="filterContacts('COMPANY-CONTACTS')" translate>Company
+                                                   Contacts</li>
+                                             </ul>
+                                          </div>
                                           <div class="inputs" align="right"
                                              style="float:right;padding: 5px 5px 12px 0px;">
                                              <div class="portlet-input input-inline input-large"
@@ -419,6 +432,8 @@
                                                                   {{contacts.type}}
                                                                   <ng-template [ngIf]="contacts?.formList">, Form
                                                                      Contact List</ng-template>
+                                                                     <ng-template [ngIf]="checkCompanyList(contacts.name)">, Company
+                                                                        Contact List</ng-template>    
                                                                </span>
                                                             </td>
                                                             <td class="text-center sorting_1">
@@ -518,7 +533,7 @@
                                                       Add an Auto-response to your e-mail-{{i+1}}
                                                    </h4>
                                                 </div>
-                                                <div class="col-xs-5 mb-flex" style="text-align:right">
+                                                <div class="col-xs-5 mb-flex  add_response-email" style="text-align:right">
                                                    <button type="button" class="btn btn-danger button-blue"
                                                       (click)="remove(reply.divId,'replies')">
                                                       <span class="glyphicon glyphicon-trash"></span>
@@ -979,7 +994,7 @@
                                  <button type="button" class="button bgcolor-unset"
                                     [disabled]="!isCampaignDetailsFormValid"
                                     (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)"
-                                    style="width:10em"><span class="btn Btn-Green transition txt_pd-top3">Send Test
+                                    style="width:10em"><span class="btn Btn-Green transition txt_pd-top3 prev-btn ">Send Test
                                        Email</span></button>
                                  <button type="submit" class="button mar-lft-40 bgcolor-unset mrgn_lft0"
                                     [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid"

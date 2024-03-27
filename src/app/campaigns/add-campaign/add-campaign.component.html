@@ -753,7 +753,7 @@
                                                 *ngFor="let emailTemplate of emailTemplatesPagination?.pagedItems ;let i =index">
                                                 <div class="row">
                                                     <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="grid-box imgage-paddings"
+                                                        <div class="grid-box imgage-paddings grid-email-card"
                                                             [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' :'' "
                                                             (click)="selectEmailTemplate(emailTemplate)">
                                                             <span class="select-check-box"
@@ -916,7 +916,7 @@
                                                 *ngFor="let page of pagesPagination?.pagedItems ;let i =index">
                                                 <div class="row">
                                                     <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="grid-box imgage-paddings" [ngClass]="page?.id === selectedPageId ? 'template-selected-border' :'' "
+                                                        <div class="grid-box imgage-paddings grid-email-card" [ngClass]="page?.id === selectedPageId ? 'template-selected-border' :'' "
                                                             (click)="selectPage(page)">
                                                             <span class="select-check-box">
                                                                 <label>
@@ -1592,7 +1592,7 @@
                                                                                                 <div class="row">
                                                                                                     <div
                                                                                                         class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
-                                                                                                        <div class="grid-box imgage-paddings"
+                                                                                                        <div class="grid-box imgage-paddings grid-email-card"
                                                                                                             [ngClass]="emailTemplate?.id === reply?.selectedEmailTemplateId ? 'template-selected-border' :'' "
                                                                                                             (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)">
                                                                                                             <span
@@ -1893,7 +1893,7 @@
                                                                                             <div class="row">
                                                                                                 <div
                                                                                                     class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
-                                                                                                    <div class="grid-box imgage-paddings"
+                                                                                                    <div class="grid-box imgage-paddings grid-email-card"
                                                                                                         [ngClass]="emailTemplate?.id === url?.selectedEmailTemplateId ? 'template-selected-border' :'' "
                                                                                                         (click)="setWebsiteLinkEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)">
                                                                                                         <span

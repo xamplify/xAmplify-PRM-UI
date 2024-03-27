@@ -341,7 +341,7 @@ span.label-color-custmization {
     height: 95px;
     width: 100%;
     border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px !important;
+    border-bottom-left-radius: 15px !important;
   }
 }
 

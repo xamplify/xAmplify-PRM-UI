@@ -111,7 +111,7 @@
 		  </div>
 		  <ng-container *ngIf="detailType!='TOTAL_LEADS' && detailType!='TOTAL_ATTENDEES' && detailType!='TOTAL_PARTNER_LEADS'">
 			 <div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
-				<div class="col-xs-12 col-sm-7 col-lg-7">
+				<div class="col-xs-12 col-sm-7 col-lg-7 pl0">
 				   <h4 class="pull-left" *ngIf="detailType === 'invities'">Total invitees</h4>
 				   <h4 class="pull-left" *ngIf="detailType === 'YES'">People who have responded YES</h4>
 				   <h4 class="pull-left" *ngIf="detailType === 'NO'">People who have responded NO</h4>
@@ -131,7 +131,7 @@
 					  <button class="clear-search" *ngIf="analyticsComponent.searchKey" (click)="analyticsComponent.searchKey='';analyticsComponent.search()">
 					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
 					  </button>
-					  <button type="submit" class="search-box-item-click" (click)="analyticsComponent.search()"><i class="fa fa-search" style="color:black !important"></i></button>
+					  <button type="submit" class="search-box-item-click" (click)="analyticsComponent.search()"><i class="fa fa-search"></i></button>
 				   </div>
 				   <div class="col-xs-2 col-sm-2 col-lg-2">
 					  <div class="btn-group pull-right" [class.disabled]="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length == 0" style="cursor:pointer; color: #7d8c98;margin-top: 8px;">

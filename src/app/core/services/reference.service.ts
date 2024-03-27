@@ -356,10 +356,8 @@ export class ReferenceService {
     return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
   }
 
-
-    validateFirstName(firstName:string){
+  validateFirstName(firstName:string){
     return this.regularExpressions.FIRSTNAME_PATTERN.test(firstName);
-
   }
 
   validateEmail(text: string) {
@@ -3050,6 +3048,16 @@ export class ReferenceService {
       }      
      }, 500);
   }
+
+  disableButtonById(buttonId:string){
+    $('#'+buttonId).attr('disabled',true);
+  }
+
+  enableButtonById(buttonId:string){
+    $('#'+buttonId).removeAttr('disabled');
+  }
+
+  
 
 
   showServerErrorCustomResponse(){

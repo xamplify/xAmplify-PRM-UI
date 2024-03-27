@@ -220,6 +220,11 @@ export class SfDealComponent implements OnInit {
       let allGeoLocations = this.form.formLabelDTOs.filter(column => column.labelType === "geolocation");
       for (let geoObj of allGeoLocations) {
         this.validateGeoLocation(geoObj);
+      }
+      
+      let allAmount = this.form.formLabelDTOs.filter(column => column.labelType === "number");
+      for (let amoObj of allAmount) {
+          this.validateAmount(amoObj);
       }      
     }
     /*******XNFR-403*******/
@@ -227,6 +232,16 @@ export class SfDealComponent implements OnInit {
     /*******XNFR-403*******/
 
   }
+  validateAmount(columnInfo: ColumnInfo) {
+    let amount = columnInfo.value;
+    if (amount<0) {
+      columnInfo.errorMessage = "Please enter valid amount ";
+      columnInfo.divClass = "error";
+      this.isDealRegistrationFormInvalid = true;
+    } else {
+      columnInfo.divClass = "success";
+    }
+}
 
   private validateRepValues() {
     if (this.isConnectWiseEnabledAsActiveCRM) {

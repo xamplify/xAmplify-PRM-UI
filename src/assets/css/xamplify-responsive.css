@@ -399,6 +399,9 @@ flex-wrap: wrap;
     width: 34px;
   }
    /* myprofile old dropdown end*/
+   .grid-box {
+    padding-bottom: 1em;
+}
 }
 
 @media only screen and (max-width:1024px){

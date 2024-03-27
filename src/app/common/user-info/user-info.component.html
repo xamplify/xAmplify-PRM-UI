@@ -49,7 +49,7 @@
 					title="{{userInfo?.jobTitle}}"><span>{{userInfo?.jobTitle | slice:0:25}}</span><span *ngIf="userInfo?.jobTitle?.length>25">..</span>
 				</p>
 			</ng-container>
-			<span *ngIf="userInfo?.mobileNumber">
+			<span class="mobile_no" *ngIf="userInfo?.mobileNumber">
 				<a href="tel:{{userInfo?.mobileNumber}}"><i class="fa fa-phone" aria-hidden="true" style="padding-right: 4px;"></i>
 					<b>Mobile no:</b> {{userInfo?.mobileNumber}}
 				</a>

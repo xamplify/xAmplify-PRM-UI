@@ -33,7 +33,7 @@ export class SelectLeadComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   /*** XNFR-476 ***/
   disableCreatedForVendor: boolean = false;
-  disableAddLeadButton: boolean = false;
+  enableAddLeadButton: boolean = false;
   showSelectedLead: number = 0;
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, public referenceService: ReferenceService,
@@ -108,7 +108,7 @@ export class SelectLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);          
           this.sortOption.totalRecords = response.totalRecords;
           this.pagination.totalRecords = response.totalRecords;
-          this.disableAddLeadButton = response.isVendorEnabledLeadApprovalRejectionFeature;
+          this.enableAddLeadButton = response.isVendorEnabledLeadApprovalRejectionFeature;
           this.pagination = this.pagerService.getPagedItems(this.pagination, response.data);
         },
         error => {

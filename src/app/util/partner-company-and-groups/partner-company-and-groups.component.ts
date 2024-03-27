@@ -132,6 +132,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	}
 
 	findPartnerCompanies(pagination: Pagination) { 
+		this.selectedTab = 1;
 		this.referenceService.startLoader(this.httpRequestLoader);
 		pagination.campaignId = this.inputId;//This is asset id
 		pagination.userId = this.loggedInUserId;
@@ -439,6 +440,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 
 	/******************Partner Group related code starts here*********************/
 	findPartnerGroups(pagination: Pagination) {
+		this.selectedTab = 2
 		if (this.selectedTeamMemberIds.length == 0) {
 			this.customResponse = new CustomResponse();
 			this.referenceService.startLoader(this.httpRequestLoader);
@@ -538,7 +540,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	}
 
 	findPartnerCompaniesByFilterIndex(pagination:Pagination){
-		this.selectedFilterIndex = 1;
+		this.selectedTab = 1;
 		this.referenceService.setTeamMemberFilterForPagination(pagination,this.selectedFilterIndex);
 		this.findPartnerCompanies(pagination);
 	}

@@ -530,13 +530,12 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.team.emailIdErrorMessage = this.team.validEmailId ? '' : 'Please enter a valid email address';
       this.emaillIdDivClass = this.team.validEmailId ? this.successClass : this.errorClass;
     }
-   
+
     if ("firstName" == fieldName) {
-      this.team.validFirstName = this.referenceService.validateFirstName(this.team.firstName);
-      this.team.lastNameErrorMessage = this.team.validFirstName ? '' : 'Please enter a valid name';
+      this.team.validFirstName = $.trim(this.team.firstName) !== '' ? true : false;
       this.firstNameDivClass = this.team.validFirstName ? this.successClass : this.errorClass;
     }
-    
+
     else if ("teamMemberGroup" == fieldName) {
       this.team.validTeamMemberGroupId = this.team.teamMemberGroupId != undefined && this.team.teamMemberGroupId > 0;
     }
@@ -546,12 +545,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   validateAllFields() {
     if (this.editTeamMember) {
       this.team.validEmailId = this.referenceService.validateEmailId(this.team.emailId);
-      this.team.validTeamMemberGroupId = this.team.teamMemberGroupId != undefined && this.team.teamMemberGroupId > 0;
-      if(this.team.firstName.length > 0 ){
-        this.team.validFirstName = this.referenceService.validateFirstName(this.team.firstName);
-      }else{
-        this.team.validFirstName = false;
-      }    
+      this.team.validTeamMemberGroupId = this.team.teamMemberGroupId != undefined && this.team.teamMemberGroupId > 0;   
     }
     this.team.validForm = this.team.validEmailId && this.team.validTeamMemberGroupId && this.team.validFirstName ;
   }
@@ -757,48 +751,49 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.getPartnersCount(teamMemberGroupId,team);
     }
   }
-  validateCsvData() {
-    let names = this.csvRecords.map(function (a) {return a[0].split(',')[0].toLowerCase() });
-    let namesfirstname=this.csvRecords.map(function(a){ return a[0].split(',')[1].toLowerCase()});
-    for(var x=1; x<namesfirstname.length; x++){
-     if( (names[x].length>0) && (namesfirstname[x].length>0)){
-          let duplicateEmailIds = this.referenceService.returnDuplicates(names);
-          this.newlyAddedTeamMembers = [];
-          if (duplicateEmailIds.length == 0) {
-            for (var i = 1; i < this.csvRecords.length; i++) {
-              let rows = this.csvRecords[i];
-              let row = rows[0].split(',');
-              let emailId = row[0];
-              if (emailId != undefined && $.trim(emailId).length > 0) {
-                if (!this.referenceService.validateEmailId(emailId)) {
-                  this.csvErrors.push(emailId + " is invalid email address.");
-                }
-              }
 
+  validateCsvData() {
+    let email = this.csvRecords.map(function (a) { return a[0].split(',')[0].toLowerCase() });
+    let firstNames = this.csvRecords.map(function (a) { return a[0].split(',')[1].toLowerCase() });
+    let duplicateEmailIds = this.referenceService.returnDuplicates(email);
+    this.newlyAddedTeamMembers = [];
+    if ((email.length > 0) && (firstNames.length > 0)) {
+      for (let r = 1; r < email.length; r++) {
+        let rows = this.csvRecords[r];
+        let row = rows[0].split(',');
+        let emailId = row[0];
+        let firstName = row[1];
+        let lastName = row[2];
+        firstName = $.trim(firstName);
+        if (firstName.length <= 0 && emailId.length > 0 && emailId !== '') {
+          this.csvErrors.push('First Name is not available for : "' + emailId + '"');
+        }
+        if (emailId !== undefined && emailId !== '' && $.trim(emailId.length > 0)) {
+          if (duplicateEmailIds.length == 0) {
+            if (!this.referenceService.validateEmailId(emailId)) {
+              this.csvErrors.push(emailId + " is invalid email address.");
             }
-          } else {
+          }
+          else {
             for (let d = 0; d < duplicateEmailIds.length; d++) {
-              let emailId = duplicateEmailIds[d];
-              if (emailId != undefined && $.trim(emailId).length > 0) {
-                this.csvErrors.push(duplicateEmailIds[d] + " is duplicate email address.");
+              let duplicateEmailId = duplicateEmailIds[d];
+              if (duplicateEmailId != undefined && $.trim(duplicateEmailId).length > 0) {
+                this.csvErrors.push(duplicateEmailId + " is duplicate email address.");
                 this.isUploadCsv = false;
               }
             }
+            duplicateEmailIds = [];
+          }
+        }
+        else if (firstName.length > 0 && firstName !== '') {
+          this.csvErrors.push('Email is not available for : " ' + firstName + ' "');
+        }
+        else if (lastName.length > 0 && lastName !== '') {
+          this.csvErrors.push('First Name & Email are mandatory for : " ' + lastName + ' "');
+        }
       }
     }
-    else{
-      if(namesfirstname[x].length<=0  && !(names[x].length<=0)){
-        this.csvErrors.push('First Name is not available for : " '+names[x]+' "');
-      }
-      if(names[x].length<=0  && !(namesfirstname[x].length<=0)){
-        this.csvErrors.push('Email is not available for : " '+namesfirstname[x]+' "');
-      }
-      if(names[x].length<=0  && namesfirstname[x].length<=0){
-        this.csvErrors.push('First Name & Email are mandatory');
-      }
-   }
   }
-}
 
   validateHeaders(headers: any) {
     return (headers[0] == "Email Id" && headers[1] == "First Name" && headers[2] == "Last Name");
