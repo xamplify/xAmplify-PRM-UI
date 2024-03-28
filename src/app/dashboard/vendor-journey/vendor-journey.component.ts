@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { PreviewPopupComponent } from 'app/forms/preview-popup/preview-popup.component';
 import { LandingPage } from 'app/landing-pages/models/landing-page';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
@@ -19,9 +19,11 @@ export class VendorJourneyComponent implements OnInit {
 	vendorJourney:boolean = false;
 	isLandingPages:boolean = false;
   @Input() moduleType: string = "";
-
+  @Output() goBackToMyProfile: EventEmitter<any> = new EventEmitter();
+  @Output() vendorJourneyEditOrViewAnalytics: EventEmitter<any> = new EventEmitter();
   selectedLandingPageId:any;
   isViewAnalytics:boolean = false;
+  
   constructor(public landingPageService: LandingPageService) { }
 
   ngOnInit() {
@@ -36,7 +38,7 @@ export class VendorJourneyComponent implements OnInit {
     this.landingPageService.id = this.vendorDefaultTemplate.id;
     this.mergeTagsInput['page'] = true;
     this.editVendorPage = true;
-    
+    this.vendorJourneyEditOrViewAnalytics.emit();
   }
   resetVendorJourney(){
     this.editVendorPage = false;
@@ -63,5 +65,12 @@ export class VendorJourneyComponent implements OnInit {
   viewAnalytics(event){
     this.selectedLandingPageId = event;
     this.isViewAnalytics = true;
+    this.vendorJourneyEditOrViewAnalytics.emit();
+  }
+
+  goBack(){
+    this.isViewAnalytics = false;
+    this.editVendorPage = false;
+    this.goBackToMyProfile.emit();
   }
 }
