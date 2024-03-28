@@ -5120,7 +5120,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.setSocialUsers(this.socialContact);
         }
         this.setLegalBasisOptions(this.socialUsers);
-        if (this.contactType === undefined) {
+        if (this.contactType === undefined || this.contactType === "" || this.contactType === 'contacts') {
             this.contactType = "CONTACT";
         }
         this.userUserListWrapper = this.getUserUserListWrapperObj(this.socialUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
