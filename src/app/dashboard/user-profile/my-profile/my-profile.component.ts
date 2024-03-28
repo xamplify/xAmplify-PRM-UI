@@ -348,7 +348,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	// halo psa
 	halopsaRibbonText: string;
 	isProduction: boolean = false;
-
+	vendorJourneyEditOrViewAnalytics:boolean = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -2838,6 +2838,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	goBackToMyProfile() {
 		this.editXamplifyDefaultTemplate = false;
 		this.editCustomLoginTemplate = false;
+		this.vendorJourneyEditOrViewAnalytics = false;
 		this.xamplifyDefaultTemplate = new VanityEmailTempalte();
 		this.referenceService.goToTop();
 	}
