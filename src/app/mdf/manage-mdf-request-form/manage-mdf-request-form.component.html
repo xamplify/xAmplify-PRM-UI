@@ -52,14 +52,14 @@
                                        <ng-container
                                           *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
                                           <td *ngIf="columnIndex==0" class="request-details-td">
-                                             <div class="col-md-12 col-lg-12" *ngIf="columnValue?.values?.length>0">
+                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="columnValue?.values?.length>0">
                                                 <div class="row">
-                                                   <div class="col-md-2 col-lg-2 text-right">
+                                                   <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
                                                       <img class="img-circle" src="{{columnValue?.values[0]}}"
                                                          alt="No Image Found"
                                                          onerror="this.src='assets/images/default-company.png';">
                                                    </div>
-                                                   <div class="col-md-10 col-lg-10">
+                                                   <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                                       <label data-toggle="tooltip" data-placement="top"
                                                          title="{{columnValue?.values[1]}}">
                                                          <b>Company Name:</b> {{columnValue?.values[1] | slice:0:30}}

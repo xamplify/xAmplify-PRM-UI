@@ -866,7 +866,7 @@ span.ui-column-resize {
 .actions-block i,
 .circled-number {
   color: #cedbdc;
-  width: 32px;
+  width: 32px!important;
   height: 32px;
   line-height: 32px !important;
   background: #2c2f33;

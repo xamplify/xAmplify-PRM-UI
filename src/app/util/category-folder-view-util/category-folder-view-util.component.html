@@ -7,35 +7,35 @@
             </div>
             <div class="page-toolbar col-xs-12 col-sm-9 col-lg-9" style="padding-right: 23px;">
                 <div class="btn-group pull-right">
-                    <div class="group-dropdown" style="padding-right:5px">
+                    <div class="group-dropdown mb_9" style="padding-right:5px">
                         <button
                             [ngClass]="folderViewType=='List' ? 'fa fa-th-list' :folderViewType=='Grid' ?'fa fa-th-large':
                         folderViewType=='Folder-List' ? 'fa fa-th': folderViewType=='Folder-Grid' ?'fa fa-folder':'fa fa-th-list'"
-                            style="padding: 10px !important" class=" btn-xs hidden-xs l-g-view"></button>
+                            style="padding: 10px !important" class=" btn-xs l-g-view"></button>
                         <div class="group-dd-content" style="min-width: max-content;">
                             <ng-container class='m10'>
                                 <span *ngIf="isFromCampaignModule && !isFromRedistributedCampaignSection"
-                                    class=" btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip"
+                                    class=" btn btn-xs l-g-view margin-right-calendar" data-toggle="tooltip"
                                     data-placement="bottom" title="Calendar View">
                                     <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
                                 </span>
-                                <span class="btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip"
+                                <span class="btn btn-xs l-g-view margin-right-calendar" data-toggle="tooltip"
                                     data-placement="bottom" title="List View" (click)="setViewType('List')">
                                     <i class="fa fa-th-list p10" aria-hidden="true"></i>
                                 </span>
-                                <span class="btn btn btn-xs hidden-xs l-g-view margin-right-calendar"
+                                <span class="btn btn btn-xs l-g-view margin-right-calendar"
                                     data-toggle="tooltip" data-placement="bottom" title="Grid View"
                                     (click)="setViewType('Grid')">
                                     <i class="fa fa-th-large p10" aria-hidden="true"></i>
                                 </span>
-                                <span class="btn btn-xs hidden-xs l-g-view margin-right-calendar"
+                                <span class="btn btn-xs l-g-view margin-right-calendar"
                                     [class.disabled]="folderViewType=='Folder-Grid'"
                                     (click)="folderViewType='Folder-Grid';" data-toggle="tooltip"
                                     data-placement="bottom" title="Folder Grid View">
                                     <i class="fa fa-folder p10" aria-hidden="true"></i>
                                 </span>
                                 <span
-                                    class="btn btn-xs hidden-xs l-g-view margin-right-calendar folder-list-span-custom-width "
+                                    class="btn btn-xs l-g-view margin-right-calendar folder-list-span-custom-width "
                                     [class.disabled]="folderViewType=='Folder-List'"
                                     (click)="folderViewType='Folder-List';" data-toggle="tooltip"
                                     data-placement="bottom" title="Folder List View">
@@ -130,7 +130,7 @@
     </div>
 
     <!-----------------------Folder List View----------------------------------------->
-    <div class="table-responsive scroll-onoverflow no-scrollbar" *ngIf="folderViewType=='Folder-List'">
+    <div class="table-responsive scroll-onoverflow no-scrollbar mscroll_x" *ngIf="folderViewType=='Folder-List'">
         <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
         <table class='table tgrid table-hover table-sm' id="folder-list-view" *ngIf="pagination.pagedItems?.length>0"
             aria-describedby="">

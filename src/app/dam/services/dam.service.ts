@@ -308,8 +308,17 @@ export class DamService {
     let findAllUrl = this.DAM_PREFIX_URL+'/findAllUnPublishedAndFilteredPublishedAssets/'+userId+'/'+pagination.userListId+'/'+pagination.partnerId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
     return this.authenticationService.callGetMethod(findAllUrl);
   }
+  
+  /**** XBI-2133 ****/
+  fetchWhiteLabeledContentSharedByVendorCompanies(companyId: number) {
+    return this.utilGetMethod("sharedByVendorCompany/" + companyId);
+  }
 
- 
+  findSharedAssetsByCompaniesForPartnerView(vanityLoginDto:VanityLoginDto) {
+    return this.http.post(this.URL + "findSharedAssetsByCompaniesForPartnerView/?access_token=" + this.authenticationService.access_token, vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
 
 
 

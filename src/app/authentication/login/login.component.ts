@@ -419,15 +419,15 @@ bgIMage2:any;
       client_secret = "bfdJ4u0j6izlWSyd";
     } else if (providerName === "microsoftsso") {
       if(this.SERVER_URL=="https://xamp.io/" && this.APP_URL=="https://xamplify.io/"){
-        console.log("production keys are used");        
+        this.xtremandLogger.info("production keys are used");        
         client_id = this.envService.microsoftProdClientId;
         client_secret = this.envService.microsoftProdClientSecret;
       }else if(this.SERVER_URL=="https://aravindu.com/" && this.APP_URL=="https://xamplify.co/"){
-        console.log("QA keys are used");
+        this.xtremandLogger.info("QA keys are used");
         client_id = this.envService.microsoftQAClientId;
         client_secret = this.envService.microsoftQAClientSecret;
       }else{
-        console.log("dev keys are used");
+        this.xtremandLogger.info("dev keys are used");
         client_id = this.envService.microsoftDevClientId;
         client_secret = this.envService.microsoftDevClientSecret;
       }

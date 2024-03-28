@@ -103,7 +103,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						});
 						this.setSfCfPage(1);
 					} else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
-						this.customFieldsResponse = new CustomResponse('ERROR', "We found something wrong about your Vendor's configuration. Please contact your Vendor.", true);
+						this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
 					}
 				},
 				error => {
@@ -217,7 +217,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			}
 		});
 		 if (this.integrationType.toLowerCase() === 'salesforce') {
-		 	this.integrationService.syncSalesforceCustomForm(this.loggedInUserId, this.selectedCfIds)
+			this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, 'isalesforce')
 		 		.subscribe(
 		 			data => {
 		 				this.ngxloading = false;
@@ -542,27 +542,6 @@ export class IntegrationSettingsComponent implements OnInit {
 		sfCustomField.showSettings = !sfCustomField.showSettings;
 	}
 		
-	// onFieldSelectionChange(selectedField: any): void {
-	// 	const selectedFieldType = selectedField.formDefaultFieldType;
-	// 	let countSelectedType = 0;
-
-	// 	this.sfCustomFieldsResponse.forEach(field => {
-	// 		if (field.formDefaultFieldType === selectedFieldType) {
-	// 			countSelectedType++;
-	// 			field.required = true;
-	// 			field.canUnselect = false;
-	// 		}
-	// 	});
-	// 	if (countSelectedType > 1) {
-	// 		this.sfCustomFieldsResponse.forEach(field => {
-	// 			if (field.formDefaultFieldType === selectedFieldType && field !== selectedField) {
-	// 				field.formDefaultFieldType = null;
-	// 				field.canUnselect = true;
-	// 			}
-	// 		});
-	// 	}
-	// }
-
 	onFieldSelectionChange(selectedField: any): void {
 		const selectedFieldType = selectedField.formDefaultFieldType;
 		const selectedFieldTypeName = selectedField.type;
@@ -599,6 +578,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				countSelectedType++;
 				field.required = true;
 				field.canUnselect = false;
+				field.canEditRequired = false;
 			} else {
 				field.typeMismatch = false;
 				field.typeMismatchMessage = '';
@@ -616,6 +596,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				) {
 					field.formDefaultFieldType = null;
 					field.canUnselect = true;
+					field.canEditRequired = true;
 				}
 			});
 		}
