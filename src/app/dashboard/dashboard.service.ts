@@ -1343,5 +1343,12 @@ getDefaultThemes(){
             .catch(this.handleError);
     }
 
+    /*****XNFR-502*****/
+    saveHalopsaCredentials(formData: any) {
+        return this.http.post(this.authenticationService.REST_URL + `/halopsa/saveCredentials?access_token=${this.authenticationService.access_token}`, formData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     
 }
