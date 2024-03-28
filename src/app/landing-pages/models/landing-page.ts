@@ -28,5 +28,5 @@ export class LandingPage {
     copyPage = false;
      /*XNFR-432*/
      partnerLandingPageId = 0;
-
+    sourceInString:string;
 }
