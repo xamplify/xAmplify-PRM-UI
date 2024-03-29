@@ -2892,13 +2892,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.integrationTabIndex = 5;
 	}
 
-	// halopsaSettings() {
-	// 	this.sfcfPagedItems = [];
-	// 	this.sfcfMasterCBClicked = false;
-	// 	this.customFieldsResponse.isVisible = false;
-	// 	this.integrationType = 'HALOPSA';
-	// 	this.integrationTabIndex = 5;
-	// }
+	halopsaSettings() {
+		this.sfcfPagedItems = [];
+		this.sfcfMasterCBClicked = false;
+		this.customFieldsResponse.isVisible = false;
+		this.integrationType = 'HALOPSA';
+		this.integrationTabIndex = 5;
+	}
 
 	marketoSettings() {
 		this.sfcfPagedItems = [];
