@@ -45,6 +45,8 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
   isDeleteOptionClicked: boolean;
   selectedDomainId = 0;
   signUpUrl = "";
+  isTeamMemberDomainsTabSelected = false;
+  isPartnerDomainsTabSelected = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,public fileUtil:FileUtil,public sortOption:SortOption,
 	public utilService:UtilService,public regularExpressions:RegularExpressions,public dashboardService:DashboardService,
@@ -52,17 +54,10 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	
   ngOnInit() {
 	this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.isAddDomainsModule = this.moduleName=="addDomains";
-    this.isExcludeDomainModule = this.moduleName=="excludeDomains";
-    if(this.isAddDomainsModule){
-      this.headerText = "Add Domains";
-      this.downloadCsvText = "Download CSV Template";
-      this.descriptionText = "Adding a domain ensures that the specified domain based yours will be added as team members using your company link.";
-      this.descriptionText = "Add a domain to invite team members who share your company's domain and join using your unique link, streamlining team management and identification.";
-	  this.descriptionText = "Added domain users will be allowed to sign up as team members";		
-	}else if(this.isExcludeDomainModule){
-      this.headerText = "Exclude A Domain";
-    }
+	$('#team-member-domains-li').addClass('active');
+	$('#teamMemberDomains').addClass('tab-pane fade in active');
+	this.isTeamMemberDomainsTabSelected = true;
+	this.descriptionText = "Added domain users will be allowed to sign up as team members";		
 	this.findCompanySignUpUrl();
 	this.findDomains(this.pagination);
   }
@@ -84,11 +79,11 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 
   addDomainModalOpen(){
     this.domain = "";
-	this.referenceService.openModalPopup("teamMemberDomainModal");
+	this.referenceService.openModalPopup("domainModal");
   }
 
   closeAddDomainModal(){
-	this.referenceService.closeModalPopup("teamMemberDomainModal");
+	this.referenceService.closeModalPopup("domainModal");
 	this.domain = "";
 	this.isDomainExist = false;
 	this.validDomainFormat = true;
@@ -155,22 +150,6 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 
 	confirmAndsaveExcludedDomain(domain: string) {
 		this.saveDomains();
-		/* let text = "Adding this domain ensures that users can signup as team members using the link";
-		let self = this;
-		swal({
-			title: 'Are you sure want to continue?',
-			text: text,
-			type: 'warning',
-			showCancelButton: true,
-			swalConfirmButtonColor: '#54a7e9',
-			swalCancelButtonColor: '#999',
-			allowOutsideClick: false,
-			confirmButtonText: 'Yes'
-		}).then(function () {
-			self.saveDomains();
-		}, function (dismiss: any) {
-			console.log('you clicked on option' + dismiss);
-		}); */
 	}
 
 	getCompanyName() {
@@ -262,3 +241,6 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 }
 
 }
+
+
+
