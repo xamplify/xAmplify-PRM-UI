@@ -545,7 +545,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   validateAllFields() {
     if (this.editTeamMember) {
       this.team.validEmailId = this.referenceService.validateEmailId(this.team.emailId);
-      this.team.validTeamMemberGroupId = this.team.teamMemberGroupId != undefined && this.team.teamMemberGroupId > 0;   
+      this.team.validTeamMemberGroupId = this.team.teamMemberGroupId != undefined && this.team.teamMemberGroupId > 0; 
+      this.team.validFirstName = this.referenceService.getTrimmedData(this.team.firstName);  
     }
     this.team.validForm = this.team.validEmailId && this.team.validTeamMemberGroupId && this.team.validFirstName ;
   }

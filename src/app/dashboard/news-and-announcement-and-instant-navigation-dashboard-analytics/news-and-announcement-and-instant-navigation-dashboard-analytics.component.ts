@@ -80,24 +80,25 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
 
   navigate(instantNavigation:any){
     let router = "";
+    let viewType = "/"+this.referenceService.getListOrGridViewType();
     if(instantNavigation.type=="Asset"){
       localStorage.setItem('assetName', instantNavigation.title);
       if(this.isPartnerLoggedInThroughVanityUrl){
-        router = "/home/dam/sharedp/view/"+instantNavigation.damPartnerId+"/l";
+        router = "/home/dam/sharedp/view/"+instantNavigation.damPartnerId+viewType;
       }else{
-        router = "/home/dam/partnerAnalytics/"+instantNavigation.id+"/l";
+        router = "/home/dam/partnerAnalytics/"+instantNavigation.id+viewType;
       }
     }else if(instantNavigation.type=="Track"){
       if(this.isPartnerLoggedInThroughVanityUrl){
-        router = "home/tracks/tb/"+this.companyId+"/"+instantNavigation.slug+"/l";
+        router = "home/tracks/tb/"+this.companyId+"/"+instantNavigation.slug+viewType;
       }else{
-        router = "/home/tracks/analytics/"+instantNavigation.id+"/l";
+        router = "/home/tracks/analytics/"+instantNavigation.id+viewType;
       }
     }else if(instantNavigation.type=="Play Book"){
       if(this.isPartnerLoggedInThroughVanityUrl){
-        router = "home/playbook/pb/"+this.companyId+"/"+instantNavigation.slug+"/l";
+        router = "home/playbook/pb/"+this.companyId+"/"+instantNavigation.slug+viewType;
       }else{
-        router = "/home/playbook/analytics/"+instantNavigation.id+"/l";
+        router = "/home/playbook/analytics/"+instantNavigation.id+viewType;
       }
     }
     this.referenceService.goToRouter(router);
