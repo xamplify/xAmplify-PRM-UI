@@ -320,8 +320,9 @@
                                        *ngIf="campaignContact.httpRequestLoader.isServerError"></app-error-pages>
                                     <ng-container
                                        *ngIf="!campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
-                                       <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">    
-                                          <div class="col-sm-6 col-md-6 col-lg-6 pl0 pr0" *ngIf="(authenticationService.module.isOrgAdmin || authenticationService.module.isOnlyPartner || authenticationService.module.isPrmAndPartner || authenticationService.isVendorPartner())">
+                                       <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
+                                          <div class="row m0 pt10">    
+                                          <div class="col-sm-6 col-md-6 col-lg-9 pl0 pr0" *ngIf="(authenticationService.module.isOrgAdmin || authenticationService.module.isOnlyPartner || authenticationService.module.isPrmAndPartner || authenticationService.isVendorPartner() || authenticationService.module.isMarketing )">
                                              <ul class="mix-filter m0">
                                                 <li class="filter" [class.active]="'ALL' == contactListPagination.filterBy" (click)="filterContacts('ALL')">All</li>
                                                 <li class="filter" [class.active]="'MY-CONTACTS' == contactListPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
@@ -334,6 +335,7 @@
                                                    Contacts</li>
                                              </ul>
                                           </div>
+                                          <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                           <div class="inputs" align="right"
                                              style="float:right;padding: 5px 5px 12px 0px;">
                                              <div class="portlet-input input-inline input-large"
@@ -351,6 +353,8 @@
                                                          class="fa fa-search"></i></button>
                                                 </div>
                                              </div>
+                                          </div>
+                                          </div>
                                           </div>
                                           <div class="row-fluid">
                                              <table class="table table-filter"
@@ -444,7 +448,7 @@
                                                          <td class="text-center">
                                                             <div
                                                                [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block float-none'">
-                                                               <a title="Preview" class="custom-icon"
+                                                               <a title="Preview" class="custom-icon"data-toggle="tooltip" data-placement="right"
                                                                   (click)="$event.stopPropagation();previewUsers(contacts)">
                                                                   <i class="fa fa-eye IconCustomization"
                                                                      aria-hidden="true"></i>

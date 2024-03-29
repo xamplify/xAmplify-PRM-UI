@@ -1169,6 +1169,8 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             this.previewText = "Select";
         }
         $('#campaign-contact-list').toggle(500);
+        this.filterContacts('ALL');
+
     }
     searchContactList(){
         this.contactListPagination.pageIndex = 1;

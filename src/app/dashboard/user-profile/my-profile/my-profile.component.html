@@ -3565,6 +3565,7 @@
                                                 <select class="formSelectCustomization"
                                                     [(ngModel)]="pipelineStage.markAs"
                                                     [disabled]="pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE')"
+                                                    [ngClass]="{'disabled-cursor': (pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE'))}"
                                                     (change)="handleMarkAsChange(x)">
                                                     <option value="markAs">Mark as</option>
                                                     <option value="won">Won</option>
@@ -3583,7 +3584,8 @@
                                                         class="fa fa-info-circle pipelinedata" data-toggle="tooltip"
                                                         data-placement="right"
                                                         title="This pipeline stage will not be accesible by your partners if you check this option."></span>
-                                                    <label class="toggleOnOff">
+                                                    <label class="toggleOnOff"
+                                                        [ngClass]="{'disabled-cursor': (shouldDisableCheckbox(x) || pipelinePreview)}">
                                                         <input class="checkBox_shadow" type="checkbox"
                                                             [(ngModel)]="pipelineStage.private" name="private"
                                                             [disabled]="shouldDisableCheckbox(x) || pipelinePreview">
