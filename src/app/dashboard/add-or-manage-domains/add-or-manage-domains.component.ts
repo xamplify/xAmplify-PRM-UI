@@ -23,22 +23,14 @@ declare var $:any,Papa: any, swal:any;
 })
 export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
   customResponse:CustomResponse = new CustomResponse();
-  @Input() moduleName:string;
   headerText = "";
-  downloadCsvText = "";
-  isAddDomainsModule = false;
-  isExcludeDomainModule = false;
-  uploadedCsvFilePreview = false;
   domain = "";
   descriptionText = "";
   isDomainExist: boolean = false;
   validDomainFormat: boolean = true;
   validDomainPattern: boolean = false;
-  isListLoader = false;
-  excludedUsers: any[];
   pagination: Pagination = new Pagination();
   addedDomains: string[] = [];
-  currentUser: any;
   domainRequestDto:DomainRequestDto = new DomainRequestDto();
   ngxloading = false;
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
@@ -47,22 +39,72 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
   signUpUrl = "";
   isTeamMemberDomainsTabSelected = false;
   isPartnerDomainsTabSelected = false;
+  domainWhitelistingDescription = "";
+  domainWhitelistingUrlDescription = "";
+
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,public fileUtil:FileUtil,public sortOption:SortOption,
 	public utilService:UtilService,public regularExpressions:RegularExpressions,public dashboardService:DashboardService,
 	public xtremandLogger:XtremandLogger) { }
 	
   ngOnInit() {
-	this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-	$('#team-member-domains-li').addClass('active');
-	$('#teamMemberDomains').addClass('tab-pane fade in active');
-	this.isTeamMemberDomainsTabSelected = true;
-	this.descriptionText = "Added domain users will be allowed to sign up as team members";		
-	this.findCompanySignUpUrl();
-	this.findDomains(this.pagination);
+	this.activateTeamMemberDomainsTab();
   }
 
-  findCompanySignUpUrl(){
+  resetValues(){
+	this.customResponse = new CustomResponse();
+	this.headerText = "";
+	this.domain = "";
+	this.descriptionText = "";
+	this.isDomainExist = false;
+	this.validDomainFormat = true;
+	this.validDomainPattern = false;
+	this.pagination = new Pagination();
+	this.addedDomains =  [];
+	this.domainRequestDto = new DomainRequestDto();
+	this.ngxloading = false;
+	this.httpRequestLoader = new HttpRequestLoader();
+	this.isDeleteOptionClicked = false;
+	this.selectedDomainId = 0;
+	this.signUpUrl = "";
+	this.isTeamMemberDomainsTabSelected = false;
+	this.isPartnerDomainsTabSelected = false;
+	this.domainWhitelistingDescription = "";
+	this.domainWhitelistingUrlDescription = "";
+  }
+
+	private activateTeamMemberDomainsTab() {
+		this.referenceService.loading(this.httpRequestLoader, true);
+		$('#team-member-domains-li').addClass('active');
+		$('#partner-domains-li').removeClass('active');
+		$('#teamMemberDomains').addClass('tab-pane fade in active');
+		this.isTeamMemberDomainsTabSelected = true;
+		this.isPartnerDomainsTabSelected = false;
+		this.pagination.filterKey = "teamMember";
+		this.descriptionText = "Added domain users will be allowed to sign up as team members";
+		this.domainWhitelistingDescription = this.properties.domainWhitelistingDescription.replace("{{moduleName}}","team members");
+		this.domainWhitelistingUrlDescription = this.properties.domainWhitelistingUrlDescription.replace("{{moduleName}}","team members");
+		this.findTeamMemberOrPartnerSignUpUrl();
+		this.findTeamMemberOrPartnerDomains(this.pagination);	
+	}
+
+	private activatePartnersDomainsTab() {
+		this.referenceService.loading(this.httpRequestLoader, true);
+		$('#partner-domains-li').addClass('active');
+		$('#team-member-domains-li').removeClass('active');
+		$('#partnerDomains').addClass('tab-pane fade in active');
+		this.isPartnerDomainsTabSelected = true;
+		this.isTeamMemberDomainsTabSelected = false;
+		this.pagination.filterKey = "Partner";
+		let partnerModuleCustomName = this.authenticationService.getPartnerModuleCustomName();
+		this.descriptionText = "Added domain users will be allowed to sign up as "+partnerModuleCustomName;
+		this.domainWhitelistingDescription = this.properties.domainWhitelistingDescription.replace("{{moduleName}}",partnerModuleCustomName);
+		this.domainWhitelistingUrlDescription = this.properties.domainWhitelistingUrlDescription.replace("{{moduleName}}",partnerModuleCustomName);
+		this.findTeamMemberOrPartnerSignUpUrl();
+		this.findTeamMemberOrPartnerDomains(this.pagination);	
+	}
+
+  findTeamMemberOrPartnerSignUpUrl(){
 	this.dashboardService.findCompanySignUpUrl().subscribe(
 		response=>{
 			this.signUpUrl = response.data;
@@ -95,7 +137,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	/********Pagination & Search Code***********/
 	paginateDomains(event: any) {
 		this.pagination.pageIndex = event.page;
-		this.findDomains(this.pagination);
+		this.findTeamMemberOrPartnerDomains(this.pagination);
 	  }
 	
 	  searchDomains() {
@@ -110,11 +152,11 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	
 	  getAllFilteredResults(pagination: Pagination) {
 		pagination = this.utilService.sortOptionValues(this.sortOption.selectedDomainDropDownOption, pagination);
-		this.findDomains(pagination);
+		this.findTeamMemberOrPartnerDomains(pagination);
 	  }
 
 
-	findDomains(pagination: Pagination) {
+	findTeamMemberOrPartnerDomains(pagination: Pagination) {
 		this.referenceService.scrollSmoothToTop();
 		this.referenceService.loading(this.httpRequestLoader, true);
 		this.dashboardService.findDomains(pagination).subscribe(
@@ -152,15 +194,6 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 		this.saveDomains();
 	}
 
-	getCompanyName() {
-		let companyName = " your company";
-		if (this.currentUser != undefined) {
-			if (this.currentUser['logedInCustomerCompanyNeme'] != undefined) {
-				companyName = this.currentUser['logedInCustomerCompanyNeme'];
-			}
-		}
-		return companyName;
-	}
 
 
 	saveDomains(){
@@ -175,7 +208,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 				this.customResponse = new CustomResponse('SUCCESS',response.message,true);
 				this.closeAddDomainModal();
 				this.pagination.pageIndex = 1;
-				this.findDomains(this.pagination);
+				this.findTeamMemberOrPartnerDomains(this.pagination);
 				this.ngxloading = false;
 			},(error:any)=>{
 				let errorMessage = this.referenceService.showHttpErrorMessage(error);
@@ -227,7 +260,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 		this.referenceService.scrollSmoothToTop();
 		this.pagination.pageIndex = 1;
 		this.pagination.searchKey = "";
-		this.findDomains(this.pagination);
+		this.findTeamMemberOrPartnerDomains(this.pagination);
 	  }
 	
 	  /*********Copy The Link/Iframe Link */
