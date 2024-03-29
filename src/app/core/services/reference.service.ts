@@ -2543,17 +2543,9 @@ export class ReferenceService {
   setDefaultDisplayType(modulesDisplayType: ModulesDisplayType) {
     let defaultDisplayType = localStorage.getItem("defaultDisplayType");
     if ("LIST" == defaultDisplayType) {
-      modulesDisplayType.isListView = true;
-      modulesDisplayType.isGridView = false;
-      modulesDisplayType.isFolderGridView = false;
-      modulesDisplayType.isFolderListView = false;
-      modulesDisplayType.defaultDisplayType = defaultDisplayType;
+      this.setListViewType(modulesDisplayType, defaultDisplayType);
     } else if ("GRID" == defaultDisplayType) {
-      modulesDisplayType.isListView = false;
-      modulesDisplayType.isGridView = true;
-      modulesDisplayType.isFolderGridView = false;
-      modulesDisplayType.isFolderListView = false;
-      modulesDisplayType.defaultDisplayType = defaultDisplayType;
+      this.setGridViewType(modulesDisplayType, defaultDisplayType);
     } else if ("FOLDER_LIST" == defaultDisplayType) {
       modulesDisplayType.isListView = false;
       modulesDisplayType.isGridView = false;
@@ -2573,6 +2565,32 @@ export class ReferenceService {
       modulesDisplayType.isFolderListView = false;
     }
     return modulesDisplayType;
+  }
+
+  private setGridViewType(modulesDisplayType: ModulesDisplayType, defaultDisplayType: string) {
+    modulesDisplayType.isListView = false;
+    modulesDisplayType.isGridView = true;
+    modulesDisplayType.isFolderGridView = false;
+    modulesDisplayType.isFolderListView = false;
+    modulesDisplayType.defaultDisplayType = defaultDisplayType;
+  }
+
+  private setListViewType(modulesDisplayType: ModulesDisplayType, defaultDisplayType: string) {
+    modulesDisplayType.isListView = true;
+    modulesDisplayType.isGridView = false;
+    modulesDisplayType.isFolderGridView = false;
+    modulesDisplayType.isFolderListView = false;
+    modulesDisplayType.defaultDisplayType = defaultDisplayType;
+  }
+
+  /****XBI-2417***/
+  getListOrGridViewType(){
+    let defaultDisplayType = localStorage.getItem("defaultDisplayType");
+    if ("LIST" == defaultDisplayType || "FOLDER_LIST" == defaultDisplayType) {
+       return "l";
+    }else if("GRID" == defaultDisplayType || "FOLDER_GRID" == defaultDisplayType){
+      return "g";
+    }
   }
 
   setDisplayType(modulesDisplayType: ModulesDisplayType, viewType: string) {
