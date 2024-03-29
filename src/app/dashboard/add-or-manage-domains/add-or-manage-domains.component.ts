@@ -41,6 +41,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
   isPartnerDomainsTabSelected = false;
   domainWhitelistingDescription = "";
   domainWhitelistingUrlDescription = "";
+  selectedTab = 1;
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,public fileUtil:FileUtil,public sortOption:SortOption,
@@ -73,8 +74,10 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	this.domainWhitelistingUrlDescription = "";
   }
 
-	private activateTeamMemberDomainsTab() {
+	public activateTeamMemberDomainsTab() {
+		this.resetValues();
 		this.referenceService.loading(this.httpRequestLoader, true);
+		this.selectedTab = 1;
 		$('#team-member-domains-li').addClass('active');
 		$('#partner-domains-li').removeClass('active');
 		$('#teamMemberDomains').addClass('tab-pane fade in active');
@@ -88,14 +91,15 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 		this.findTeamMemberOrPartnerDomains(this.pagination);	
 	}
 
-	private activatePartnersDomainsTab() {
+	public activatePartnersDomainsTab() {
+		this.resetValues();
+		this.selectedTab = 2;
 		this.referenceService.loading(this.httpRequestLoader, true);
 		$('#partner-domains-li').addClass('active');
 		$('#team-member-domains-li').removeClass('active');
 		$('#partnerDomains').addClass('tab-pane fade in active');
 		this.isPartnerDomainsTabSelected = true;
 		this.isTeamMemberDomainsTabSelected = false;
-		this.pagination.filterKey = "Partner";
 		let partnerModuleCustomName = this.authenticationService.getPartnerModuleCustomName();
 		this.descriptionText = "Added domain users will be allowed to sign up as "+partnerModuleCustomName;
 		this.domainWhitelistingDescription = this.properties.domainWhitelistingDescription.replace("{{moduleName}}",partnerModuleCustomName);
@@ -105,7 +109,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	}
 
   findTeamMemberOrPartnerSignUpUrl(){
-	this.dashboardService.findCompanySignUpUrl().subscribe(
+	this.dashboardService.findCompanySignUpUrl(this.selectedTab).subscribe(
 		response=>{
 			this.signUpUrl = response.data;
 		},error=>{
@@ -159,7 +163,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	findTeamMemberOrPartnerDomains(pagination: Pagination) {
 		this.referenceService.scrollSmoothToTop();
 		this.referenceService.loading(this.httpRequestLoader, true);
-		this.dashboardService.findDomains(pagination).subscribe(
+		this.dashboardService.findDomains(pagination,this.selectedTab).subscribe(
 		response=>{
 			pagination = this.utilService.setPaginatedRows(response,pagination);
 			this.referenceService.loading(this.httpRequestLoader, false);
@@ -203,7 +207,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 		this.customResponse = new CustomResponse();
 		this.domainRequestDto = new DomainRequestDto();
 		this.domainRequestDto.domainNames.push(this.domain);
-		this.dashboardService.saveDomains(this.domainRequestDto).subscribe(
+		this.dashboardService.saveDomains(this.domainRequestDto,this.selectedTab).subscribe(
 			response=>{
 				this.customResponse = new CustomResponse('SUCCESS',response.message,true);
 				this.closeAddDomainModal();

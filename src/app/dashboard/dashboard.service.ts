@@ -1298,16 +1298,18 @@ getDefaultThemes(){
     }
 
     /***XNFR-454*****/
-    findDomains(pagination:Pagination){
+    findDomains(pagination:Pagination,selectedTab:number){
         let userId = this.authenticationService.getUserId();
         let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-        let findAllUrl = this.domainUrl+'/'+userId+this.QUERY_PARAMETERS+pageableUrl;
+        let teamMemberOrPartnerDomain = selectedTab==1 ? '/' :'/partners/';
+        let findAllUrl = this.domainUrl+teamMemberOrPartnerDomain+userId+this.QUERY_PARAMETERS+pageableUrl;
         return this.authenticationService.callGetMethod(findAllUrl);
       }
 
     /***XNFR-454*****/
-    saveDomains(domainRequestDto:DomainRequestDto){
-        const url = this.domainUrl + this.QUERY_PARAMETERS;
+    saveDomains(domainRequestDto:DomainRequestDto,selectedTab:number){
+        let teamMemberOrPartnerDomain = selectedTab==1 ? '' :'/partners';
+        const url = this.domainUrl +teamMemberOrPartnerDomain+ this.QUERY_PARAMETERS;
         domainRequestDto.createdUserId = this.authenticationService.getUserId();
         return this.authenticationService.callPostMethod(url,domainRequestDto);
     }
@@ -1319,7 +1321,7 @@ getDefaultThemes(){
         return this.authenticationService.callDeleteMethod(deleteDomainUrl);
     }
     /***XNFR-454*****/
-    findCompanySignUpUrl(){
+    findCompanySignUpUrl(selectedTab:number){
         let vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
         let domainName = this.authenticationService.companyProfileName;
         let userId = this.authenticationService.getUserId();
@@ -1333,7 +1335,8 @@ getDefaultThemes(){
         }else{
             vanityUrlFilterQueryParameter = "&isVanityLogin=false";
         }
-        let signUpUrl = this.domainUrl+'/signUpUrl'+this.QUERY_PARAMETERS+"&loggedInUserId="+userId+vanityUrlFilterQueryParameter+domainNameQueryParameter;
+        let teamMemberOrPartnerDomain = selectedTab==1 ? '/' :'/partners/';
+        let signUpUrl = this.domainUrl+teamMemberOrPartnerDomain+'signUpUrl'+this.QUERY_PARAMETERS+"&loggedInUserId="+userId+vanityUrlFilterQueryParameter+domainNameQueryParameter;
         return this.authenticationService.callGetMethod(signUpUrl);
     }
 
