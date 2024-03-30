@@ -84,7 +84,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 		this.isTeamMemberDomainsTabSelected = true;
 		this.isPartnerDomainsTabSelected = false;
 		this.pagination.filterKey = "teamMember";
-		this.descriptionText = "Added domain users will be allowed to sign up as team members";
+		this.descriptionText = "Added domain users will be allowed to sign up as team members.";
 		this.domainWhitelistingDescription = this.properties.domainWhitelistingDescription.replace("{{moduleName}}","team members");
 		this.domainWhitelistingUrlDescription = this.properties.domainWhitelistingUrlDescription.replace("{{moduleName}}","team members");
 		this.findTeamMemberOrPartnerSignUpUrl();
@@ -101,7 +101,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 		this.isPartnerDomainsTabSelected = true;
 		this.isTeamMemberDomainsTabSelected = false;
 		let partnerModuleCustomName = this.authenticationService.getPartnerModuleCustomName();
-		this.descriptionText = "Added domain users will be allowed to sign up as "+partnerModuleCustomName;
+		this.descriptionText = "Added domain users will be allowed to sign up as "+partnerModuleCustomName+".";
 		this.domainWhitelistingDescription = this.properties.domainWhitelistingDescription.replace("{{moduleName}}",partnerModuleCustomName);
 		this.domainWhitelistingUrlDescription = this.properties.domainWhitelistingUrlDescription.replace("{{moduleName}}",partnerModuleCustomName);
 		this.findTeamMemberOrPartnerSignUpUrl();
