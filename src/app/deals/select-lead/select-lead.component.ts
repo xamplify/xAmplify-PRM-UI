@@ -102,7 +102,7 @@ export class SelectLeadComponent implements OnInit {
       pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName      
     }
-    this.leadsService.listLeadsForPartner(pagination)
+    this.leadsService.getLeadsForLeadAttachment(pagination)
       .subscribe(
         response => {
           this.referenceService.loading(this.httpRequestLoader, false);          
