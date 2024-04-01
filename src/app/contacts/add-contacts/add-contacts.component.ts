@@ -733,10 +733,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else if (this.contactOption == 'csvContacts') {
             this.saveCsvContactsWithPermission();
         } else if (this.contactOption == 'googleContacts') {
+            this.contactType = "CONTACT";
             this.saveExternalContactsWithPermission('GOOGLE');
         } else if (this.contactOption == 'googleSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
         } else if (this.contactOption == 'zohoContacts') {
+            this.contactType = "CONTACT";
             this.saveExternalContactsWithPermission('ZOHO');
         } else if (this.contactOption == 'zohoSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
@@ -745,22 +747,26 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else if (this.contactOption == 'salesforceSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
         } else if (this.contactOption == 'marketoContacts') {
-            this.saveMarketoContactsWithPermission();
+            this.contactType = "CONTACT";
+            this.saveExternalContactsWithPermission('MARKETO');
         } else if (this.contactOption == 'marketoSelectedContacts') {
-            this.saveMarketoSelectedContactsWithPermission();
+            this.saveExternalSelectedContactsWithPermission();
         } else if (this.contactOption == 'hubSpotContacts') {
             this.saveExternalContactsWithPermission('HUBSPOT');
         } else if (this.contactOption == 'hubSpotSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
         } else if (this.contactOption == 'microsoftContacts') {
+            this.contactType = "CONTACT";
             this.saveExternalContactsWithPermission('microsoft');
         } else if (this.contactOption == 'microsoftSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
         } else if (this.contactOption == 'pipedriveContacts') {
+            this.contactType = "CONTACT";
             this.saveExternalContactsWithPermission('pipedrive');
         } else if (this.contactOption == 'pipedriveSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
         } else if (this.contactOption == 'connectWiseContacts') {
+            this.contactType = "CONTACT";
             this.saveExternalContactsWithPermission('connectWise');
         } else if (this.contactOption == 'connectWiseSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
@@ -5124,7 +5130,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.contactType = "CONTACT";
         }
         this.userUserListWrapper = this.getUserUserListWrapperObj(this.socialUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
-            this.contactType.toLocaleUpperCase(), type.toLocaleUpperCase(), this.salesforceListViewId, true);
+            this.contactType.toLocaleUpperCase(), type.toLocaleUpperCase(), this.salesforceListViewId, type === 'MARKETO' ? false : true);
         this.userUserListWrapper.userList.externalListId = this.hubSpotSelectContactListOption;
         this.saveList(this.userUserListWrapper);
     }
