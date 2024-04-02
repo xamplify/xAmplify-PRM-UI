@@ -4283,3 +4283,6 @@ padding-bottom: 0px!important;
 i.fa.fa-trash-o.trashIconCustimization.trash_bgcolor:hover {
   color: red !important;
 }
+.neg_mrg_left1{
+  margin-left: -1px !important;
+}

@@ -81,7 +81,7 @@
 
 
                             <ul class="nav neumorphismDark">
-                                <div class="my-profile-header-text neumorphismDark tab_alignments"
+                                <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
                                     [ngClass]="[activeTabName =='personalInfo' ? 'show':'', activeTabName == 'password' ? 'show':'']">
                                     Account Details
                                     <a data-toggle="collapse" style="float: right;" href="#accountDetailsDropdown">
@@ -107,7 +107,8 @@
                                 </ul>
                                 <ng-container *ngIf="!isUser">
                                     <!--------------Settings----------------------->
-                                    <div class="my-profile-header-text neumorphismDark tab_alignments" [ngClass]="[activeTabName == 'playerSettings' ? 'show':'', 
+                                    <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
+                                        [ngClass]="[activeTabName == 'playerSettings' ? 'show':'', 
                                     activeTabName == 'settings' ? 'show': '',
                                     activeTabName == 'tags' ? 'show':'',
                                     activeTabName == 'customizeleftmenu' ? 'show':'',
@@ -176,7 +177,8 @@
                                         </li>
                                     </ul>
                                     <!--------------Lead/Deal Configuration----------------------->
-                                    <div class="my-profile-header-text neumorphismDark tab_alignments" *ngIf="((hasAllAccess || 
+                                    <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
+                                        *ngIf="((hasAllAccess || 
                             hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
                              || authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
                              !authenticationService.isOnlyPartner() && authenticationService.enableLeads && 
@@ -233,7 +235,8 @@
                                         </ng-container>
                                     </ul>
                                     <!--------------Developers----------------------->
-                                    <div class="my-profile-header-text neumorphismDark tab_alignments" [ngClass]="[activeTabName == 'spf' ? 'show':'',
+                                    <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
+                                        [ngClass]="[activeTabName == 'spf' ? 'show':'',
                                     activeTabName == 'gdpr' ? 'show':'',
                                     activeTabName == 'integrations' ? 'show':'',
                                     activeTabName == 'samlSettings' ? 'show':'',
@@ -284,7 +287,8 @@
                                         </li>
                                     </ul>
                                     <!--------------Admin----------------------->
-                                    <div class="my-profile-header-text neumorphismDark admin_tab_alignment" [ngClass]="[activeTabName == properties?.dashboardButtons ? 'show':'',
+                                    <div class="my-profile-header-text neumorphismDark admin_tab_alignment neg_mrg_left1"
+                                        [ngClass]="[activeTabName == properties?.dashboardButtons ? 'show':'',
                                     activeTabName == properties?.newsAndAnnouncements ? 'show':'',
                                     activeTabName == properties?.dashboardBanners ? 'show':'',
                                     activeTabName == 'templates' ? 'show':'',
@@ -3182,7 +3186,9 @@
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'vendorJourney'}">
                                             <app-vendor-journey *ngIf="vendorJourney"
                                                 [loggedInUserCompanyId]="loggedInUserCompanyId"
-                                                [moduleType]="properties.vendorJourney" (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true" (goBackToMyProfile) = "goBackToMyProfile()"></app-vendor-journey>
+                                                [moduleType]="properties.vendorJourney"
+                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                                (goBackToMyProfile)="goBackToMyProfile()"></app-vendor-journey>
                                         </div>
                                         <!-- Landing Pages -->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'landingPages'}">

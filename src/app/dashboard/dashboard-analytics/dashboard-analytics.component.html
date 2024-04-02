@@ -43,10 +43,11 @@
                 </div>
             </div>
             <div class="page-bar p0" [hidden]="ngxLoading">
-                <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0px;">
+                <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
                     <div
                         [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-lg-6 col-md-4 col-xs-6 col-sm-6':'col-md-5 col-xs-5 col-sm-5'">
-                            <h4 class="welcome-header text-overflow"><span data-toggle="tooltip" data-placement="bottom" title="{{logedInCustomerCompanyName}}">{{'Welcome' |
+                        <h4 class="welcome-header text-overflow"><span data-toggle="tooltip" data-placement="bottom"
+                                title="{{logedInCustomerCompanyName}}">{{'Welcome' |
                                 translate}} {{logedInCustomerCompanyName}}</span></h4>
                     </div>
                     <div class="col-lg-5 col-md-5 col-xs-5 col-sm-5"
@@ -62,13 +63,15 @@
                     </div>
                     <app-team-member-filter-option
                         *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
-                        && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner" [filterIcon]="true"
+                        && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"
+                        [filterIcon]="true"
                         (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
                     <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
                 </div>
             </div>
         </div>
-        <ng-container *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
+        <ng-container
+            *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
             <!--XNFR-458--->
             <app-dashboard-banner-images></app-dashboard-banner-images>
             <!--XNFR-458--->
