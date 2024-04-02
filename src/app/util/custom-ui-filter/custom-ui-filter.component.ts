@@ -83,6 +83,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 	cancelSegmentationRow(rowId: number) {
 		if (rowId !== -1) {
 			this.criterias.splice(rowId, 1);
+			this.dropdownDisabled.splice(rowId, 1);
 		}
 	}
 	validateDateFilters() {

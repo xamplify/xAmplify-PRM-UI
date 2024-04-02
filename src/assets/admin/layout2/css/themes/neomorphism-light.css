@@ -1907,7 +1907,7 @@ i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover {
 i.fa.fa-trash-o.trashIconCustomization{
   border: none;
   color: #cb5a5e !important;
-  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+  /* box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important; */
 }
 .gridIconCustomization a.delete {
   border: none;
@@ -1917,7 +1917,7 @@ i.fa.fa-trash-o.trashIconCustomization{
 }
 i.fa.fa-trash-o.trashIconCustomization:hover {
   border: none;
-  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+  /* box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important; */
 }
 .gridIconCustomization a.Iconhover:hover {
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
@@ -4279,4 +4279,7 @@ padding-bottom: 0px!important;
    background: #f0f5fa !important;
    border: 1px solid #cfd6de !important;
  }
+}
+i.fa.fa-trash-o.trashIconCustimization.trash_bgcolor:hover {
+  color: red !important;
 }

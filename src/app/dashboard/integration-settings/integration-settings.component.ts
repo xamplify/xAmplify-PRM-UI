@@ -217,6 +217,20 @@ export class IntegrationSettingsComponent implements OnInit {
 			}
 		});
 		 if (this.integrationType.toLowerCase() === 'salesforce') {
+			const displayName = this.selectedCustomFieldsDtos.find(field => $.trim(field.displayName).length <= 0);
+			if((this.integrationType.toLowerCase() === 'salesforce') && displayName)
+			{
+				this.ngxloading = false;
+				const missingFields: string[] = [];
+				this.selectedCustomFieldsDtos.forEach(field => {
+							if ($.trim(field.displayName).length <= 0) {
+								missingFields.push(field.label);
+							}
+						});
+						const missingFieldsMessage = missingFields.join(', ');
+						this.referenceService.goToTop();
+						return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);	
+			}
 			this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, 'isalesforce')
 		 		.subscribe(
 		 			data => {
@@ -252,7 +266,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				 this.referenceService.goToTop();
 				 return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);	
 			}
-			if((this.integrationType === 'HUBSPOT') && displayName)
+			if((this.integrationType === 'HUBSPOT' || this.integrationType === 'PIPEDRIVE' || this.integrationType === 'CONNECTWISE') && displayName)
 			{
 				this.ngxloading = false;
 				const missingFields: string[] = [];

@@ -184,8 +184,7 @@
 																	aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class="custom-icon"
-																*ngIf="!isPartnerView && asset?.edit"
+															<a class="custom-icon" *ngIf="!isPartnerView && asset?.edit"
 																data-toggle="tooltip" data-placement="top" title="Edit"
 																(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId)">
 																<i class="fa fa-edit IconCustomization"
@@ -432,8 +431,7 @@
 																		<div class="actions-block override-actions ActionAlign"
 																			*ngIf="!asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
 																			<!--XNFR-381-->
-																			<a class="custom-icon"
-																				data-toggle="tooltip"
+																			<a class="custom-icon" data-toggle="tooltip"
 																				data-placement="top"
 																				title="Switch To Parent Template"
 																				(click)="changeAsParentPdf(asset.id)">
@@ -442,8 +440,7 @@
 																				<div class="clickicons"></div>
 																			</a>
 																			<!--XNFR-381-->
-																			<a class="custom-icon"
-																				data-toggle="tooltip"
+																			<a class="custom-icon" data-toggle="tooltip"
 																				data-placement="top" title="Design"
 																				(click)="addOrEdit(asset.id)">
 																				<i class="fa fa-paint-brush IconCustomization"
@@ -667,9 +664,9 @@
 				<div class="btn-group pull-right">
 					<div class="d-flex">
 						<!-- Start XNFR-409 -->
-						<div class="btn btn-xs l-g-view margin-space mr5" (click)="toggleFilterOption()" [ngClass]="showFilterOption?'disabled':''">
-							<span data-placement="bottom"
-								data-toggle="tooltip" title="Filter">
+						<div class="btn btn-xs l-g-view margin-space mr5" (click)="toggleFilterOption()"
+							[ngClass]="showFilterOption?'disabled':''">
+							<span data-placement="left" data-toggle="tooltip" title="Filter">
 								<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
 							</span>
 						</div>
@@ -770,7 +767,7 @@
 <!---XNFR-381-->
 <!-- XNFR-409 -->
 <ng-template #filterOptionDiv>
-		<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [type]="'Assets'"
+	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView" [type]="'Assets'"
 		[isWhiteLabeledAsset]="isWhiteLabeledAsset"
 		[whiteLableContentSharedByVendorCompanies]="whiteLableContentSharedByVendorCompanies" [fileTypes]="fileTypes"
 		(filterConditionsEmitter)="assetsFilter($event)"
