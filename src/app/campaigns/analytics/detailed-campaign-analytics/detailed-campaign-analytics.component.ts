@@ -3132,12 +3132,13 @@ viewCampaignLeadForm(leadId: any) {
 	  }
 
     openEmailTemplateInNewTab(emailTemplate:any){
-      if(this.authenticationService.isLocalHost()){
-        this.referenceService.previewCampaignEmailTemplateInNewTab(this.campaignId);
-      }else{
-        this.showEmailTemplatePreview(emailTemplate);
-      }
+      this.referenceService.previewCampaignEmailTemplateInNewTab(this.campaignId);
     }
+
+    openPageInNewTab(id:number){
+      this.referenceService.previewPageInNewTab(id);
+    }
+
 
 }
 

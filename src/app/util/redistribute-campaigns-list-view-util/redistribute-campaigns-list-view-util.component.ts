@@ -564,10 +564,6 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   }
 
   openEmailTemplateInNewTab(campaign:any){
-    if(this.authenticationService.isLocalHost()){
-        this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
-    }else{
-        this.showCampaignPreview(campaign);
-    }
+    this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
   }
 }

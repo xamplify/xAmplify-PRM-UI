@@ -27,5 +27,6 @@ export class LandingPage {
     vanityUrlFilter = false;
     copyPage = false;
      /*XNFR-432*/
-
+     partnerLandingPageId = 0;
+    sourceInString:string;
 }

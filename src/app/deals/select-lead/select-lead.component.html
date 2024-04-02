@@ -28,9 +28,9 @@
                       <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right m_mb8">
                         <div class="btn-group pull-right" style="width: max-content;display:flex">
                           <a (click)="addLead()" style="padding-right: 4px;">
-                            <button class="button_blue bgcolor-unset p0 btn-transitions" [disabled]="!disableAddLeadButton"
+                            <button class="button_blue bgcolor-unset p0 btn-transitions" [disabled]="!enableAddLeadButton"
                             data-toggle="tooltip" data-placement="bottom"
-                            title="{{ (dealToLead?.createdForCompanyId > 0 && !disableAddLeadButton) ? 'As the Lead Approval Mechanism is enabled for the selected vendor, the \'Add a Lead\' button stays disabled.' : (!disableAddLeadButton)  ? 'Select the vendor company in the deal form to enable the \'Add a Lead\' option.' : '' }}"
+                            title="{{ (dealToLead?.createdForCompanyId > 0 && !enableAddLeadButton) ? 'As the Lead Approval Mechanism is enabled for the selected vendor, the \'Add a Lead\' button stays disabled.' : (!enableAddLeadButton)  ? 'Select the vendor company in the deal form to enable the \'Add a Lead\' option.' : '' }}"
                             translate>
                               <span class="btn btn-primary transition d-inline"><i class="fa fa-plus  mb-btns"
                                   aria-hidden="true"></i> Add a
@@ -74,11 +74,11 @@
 
                           <tbody>
                             <ng-container *ngFor='let lead of pagination.pagedItems; let i=index'>
-                              <tr (click)="selectLead(lead.id)" [ngClass]="lead.id === leadId ? 'highlightRow' : ''">
-                                <td width="5%">
-                                  <i *ngIf="lead.id === leadId" class="fa fa-check active-status" aria-hidden="true" style="font-size: 14px;"></i>
+                              <tr [ngClass]="lead.id === showSelectedLead ? 'highlightRow' : ''">
+                                <td (click)="selectLead(lead.id)" width="5%">
+                                  <i *ngIf="lead.id === showSelectedLead" class="fa fa-check active-status" aria-hidden="true" style="font-size: 14px;"></i>
                                 </td>
-                                <td>
+                                <td (click)="selectLead(lead.id)">
                                   <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
                                   <div class="mrg_lft66" style="margin-left: 60px;">
                                     <h5 class="m0"><strong>Added For:</strong>
@@ -120,7 +120,7 @@
                                     </h5>
                                   </div>
                                 </td>
-                                <td>
+                                <td (click)="selectLead(lead.id)">
                                   <h5 class='m_t_view' data-toggle="tooltip" data-placement="bottom"
                                     title="{{lead.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
                                     {{lead.createdByName | slice:0:20}}
@@ -180,7 +180,7 @@
 
       </div>
       <div class="pull-right" style="margin: 15px">
-        <button [disabled]=" leadId==undefined || leadId==0" type="submit" id="saveLead" (click)="leadSelected()"
+        <button [disabled]=" showSelectedLead==undefined || showSelectedLead==0" type="submit" id="saveLead" (click)="leadSelected()"
           class="button_blue button_disabled bgcolor-unset"><span class="btn btn-primary transition txt_pd-top3">Attach
             Selected</span>
         </button>

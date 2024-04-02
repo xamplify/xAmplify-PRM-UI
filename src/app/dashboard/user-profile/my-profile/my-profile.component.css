@@ -2136,4 +2136,11 @@ margin-left: 10px;
 .fs-17{
   font-size: 18px;
 }
+.my-profile-header-text.active{
+  color: #fff;
+  background: #1F94D2;
+}
 
+.disabled-cursor {
+  cursor: not-allowed;
+}

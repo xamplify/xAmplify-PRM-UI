@@ -1143,8 +1143,6 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
                 if(contactsPagination.filterBy!=null){
                     if(contactsPagination.filterBy==0){
                         contactsPagination.maxResults = response.totalRecords;
-                    }else{
-                        contactsPagination.maxResults = contactsPagination.filterBy;
                     }
                 }
                 this.contactListPagination = this.pagerService.getPagedItems(contactsPagination,this.userLists);
@@ -1171,6 +1169,8 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             this.previewText = "Select";
         }
         $('#campaign-contact-list').toggle(500);
+        this.filterContacts('ALL');
+
     }
     searchContactList(){
         this.contactListPagination.pageIndex = 1;
@@ -1578,40 +1578,38 @@ appendValueToSubjectLine(event:any){
     }
 
     openEmailTemplateInNewTab(campaign:any){
-        if(this.authenticationService.isLocalHost()){
-            if(this.campaign.nurtureCampaign){
-                this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
-            }else{
-                this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
-            }
+        if(this.campaign.nurtureCampaign){
+            this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
         }else{
-            this.previewEmailTemplate(campaign.emailTemplate);
+            this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
         }
     }
 
     openAutoResponseEmailTemplateInNewTab(reply:any){
-        if(this.authenticationService.isLocalHost()){
-            if(this.campaign.nurtureCampaign){
-               // this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
-            }else{
-                this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id);
-            }
+        if(this.campaign.nurtureCampaign){
+            this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
         }else{
-            this.previewEmailTemplate(reply.emailTemplate);
+            this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id);
         }
     }
 
     openAutoResponseWebsiteLinkTemplateInNewTab(url:any){
-        if(this.authenticationService.isLocalHost()){
-            if(this.campaign.nurtureCampaign){
-               // this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
-            }else{
-                this.referenceService.previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id);
-            }
+        if(this.campaign.nurtureCampaign){
+            this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(url.id);
         }else{
-            this.previewEmailTemplate(url.emailTemplate);
+            this.referenceService.previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id);
         }
     }
+    checkCompanyList(name: any){
+        let position=  name.search('Company List');
+        return  position != -1 ? true: false;
+    }
+   
+    filterContacts(filterType:string){
+		this.contactListPagination.pageIndex = 1;
+		this.contactListPagination.filterBy =filterType;
+		this.loadContactList(this.contactListPagination);
+	}
 
 
 

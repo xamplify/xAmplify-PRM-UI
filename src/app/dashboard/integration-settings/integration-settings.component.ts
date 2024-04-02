@@ -103,7 +103,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						});
 						this.setSfCfPage(1);
 					} else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
-						this.customFieldsResponse = new CustomResponse('ERROR', "We found something wrong about your Vendor's configuration. Please contact your Vendor.", true);
+						this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
 					}
 				},
 				error => {
@@ -217,7 +217,21 @@ export class IntegrationSettingsComponent implements OnInit {
 			}
 		});
 		 if (this.integrationType.toLowerCase() === 'salesforce') {
-		 	this.integrationService.syncSalesforceCustomForm(this.loggedInUserId, this.selectedCfIds)
+			const displayName = this.selectedCustomFieldsDtos.find(field => $.trim(field.displayName).length <= 0);
+			if((this.integrationType.toLowerCase() === 'salesforce') && displayName)
+			{
+				this.ngxloading = false;
+				const missingFields: string[] = [];
+				this.selectedCustomFieldsDtos.forEach(field => {
+							if ($.trim(field.displayName).length <= 0) {
+								missingFields.push(field.label);
+							}
+						});
+						const missingFieldsMessage = missingFields.join(', ');
+						this.referenceService.goToTop();
+						return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);	
+			}
+			this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, 'isalesforce')
 		 		.subscribe(
 		 			data => {
 		 				this.ngxloading = false;
@@ -252,7 +266,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				 this.referenceService.goToTop();
 				 return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);	
 			}
-			if((this.integrationType === 'HUBSPOT') && displayName)
+			if((this.integrationType === 'HUBSPOT' || this.integrationType === 'PIPEDRIVE' || this.integrationType === 'CONNECTWISE') && displayName)
 			{
 				this.ngxloading = false;
 				const missingFields: string[] = [];
@@ -299,13 +313,20 @@ export class IntegrationSettingsComponent implements OnInit {
 			}
 			sfCustomField.selected = true;
 		} else {
-			this.selectedCfIds.splice($.inArray(cfName, this.selectedCfIds), 1);
-			this.paginatedSelectedIds.splice($.inArray(cfName, this.paginatedSelectedIds), 1);
+			let indexInSelectedIds = this.selectedCfIds.indexOf(cfName);
+			if (indexInSelectedIds !== -1) {
+				this.selectedCfIds.splice(indexInSelectedIds, 1);
+			}
+			
+			let indexInPaginatedIds = this.paginatedSelectedIds.indexOf(cfName);
+			if (indexInPaginatedIds !== -1) {
+				this.paginatedSelectedIds.splice(indexInPaginatedIds, 1);
+			}
+	
 			sfCustomField.selected = false;
 			sfCustomField.required = false;
 		}
 		this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
-		
 	}
 
 	reloadCustomFields() {
@@ -542,27 +563,6 @@ export class IntegrationSettingsComponent implements OnInit {
 		sfCustomField.showSettings = !sfCustomField.showSettings;
 	}
 		
-	// onFieldSelectionChange(selectedField: any): void {
-	// 	const selectedFieldType = selectedField.formDefaultFieldType;
-	// 	let countSelectedType = 0;
-
-	// 	this.sfCustomFieldsResponse.forEach(field => {
-	// 		if (field.formDefaultFieldType === selectedFieldType) {
-	// 			countSelectedType++;
-	// 			field.required = true;
-	// 			field.canUnselect = false;
-	// 		}
-	// 	});
-	// 	if (countSelectedType > 1) {
-	// 		this.sfCustomFieldsResponse.forEach(field => {
-	// 			if (field.formDefaultFieldType === selectedFieldType && field !== selectedField) {
-	// 				field.formDefaultFieldType = null;
-	// 				field.canUnselect = true;
-	// 			}
-	// 		});
-	// 	}
-	// }
-
 	onFieldSelectionChange(selectedField: any): void {
 		const selectedFieldType = selectedField.formDefaultFieldType;
 		const selectedFieldTypeName = selectedField.type;
@@ -599,6 +599,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				countSelectedType++;
 				field.required = true;
 				field.canUnselect = false;
+				field.canEditRequired = false;
 			} else {
 				field.typeMismatch = false;
 				field.typeMismatchMessage = '';
@@ -616,6 +617,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				) {
 					field.formDefaultFieldType = null;
 					field.canUnselect = true;
+					field.canEditRequired = true;
 				}
 			});
 		}

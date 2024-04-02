@@ -104,3 +104,8 @@
     font-size: 12px;
   }
 }
+@media only screen and (max-width:578px){
+  .thumbnail-wrapper {
+    margin-left: 15px;
+}
+}

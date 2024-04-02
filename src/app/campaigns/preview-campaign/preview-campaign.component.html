@@ -412,7 +412,7 @@
                                                 <a style="float:left; right: -6px;" class="fm external-link"
                                                    target="_BLANK" data-toggle="tooltip" data-placement="top"
                                                    title="Preview"
-                                                   (click)="$event.stopPropagation();showLandingPagePreview(campaign)">
+                                                   (click)="$event.stopPropagation();openPageInNewTab(campaign?.landingPage?.id)">
                                                    <i class="fa fa-external-link-square preview-edit-color"
                                                       aria-hidden="true"
                                                       style="padding-top: 1px !important;; font-size: 20px;"></i>

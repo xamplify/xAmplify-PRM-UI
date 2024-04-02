@@ -718,11 +718,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
   }
 
   openEmailTemplateInNewTab(campaign:any){
-    if(this.authenticationService.isLocalHost()){
-        this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
-    }else{
-        this.showCampaignPreview(campaign);
-    }
+    this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
   }
   
 }

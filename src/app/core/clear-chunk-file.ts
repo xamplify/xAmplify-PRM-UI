@@ -4,8 +4,10 @@ declare var swal: any;
 @Injectable()
 export class ClearChunkFile implements ErrorHandler {
   handleError(error: any): void {
-    console.log(error);
     let message = error.message;
+    if(message!="e.data.includes is not a function"){
+      console.log(error);
+    }
     let emptyChunk = 'Loading chunk 0 failed';
     if(message!=undefined && message!=""){
       let loadingChunk = message.indexOf('Loading chunk') > -1;

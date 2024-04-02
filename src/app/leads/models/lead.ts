@@ -33,4 +33,6 @@ export class Lead {
     approvalStatusComment:any;
     leadComment:any;
     selfLead:boolean;
+    /*** XNFR-505 ***/
+    enableRegisterDealButton:boolean = false;
 }

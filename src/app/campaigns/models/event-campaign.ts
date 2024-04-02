@@ -82,6 +82,9 @@ export class EventCampaign {
   configurePipelines = false;
   campaignProcessed = false;
 
+  isRedistributeEvent = false;
+  isPreviewEvent = false;
+
   constructor() {
     this.campaignEventMedias.push(new CampaignEventMedia());
     this.campaignEventTimes.push(new CampaignEventTime());

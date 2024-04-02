@@ -366,8 +366,6 @@
                       <input type="text" autocomplete="off" id="firstName" placeholder="First Name" class="form-control"
                         (input)="validateAddTeamMemberForm('firstName')" [(ngModel)]="team.firstName"
                         [ngModelOptions]="{standalone: true}" name="firstName" maxlength="255">
-                      <span class="required"
-                        *ngIf="team?.lastNameErrorMessage?.length>0">{{team?.lastNameErrorMessage}}</span>
                     </div>
                   </div>
                 </div>

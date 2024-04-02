@@ -30,6 +30,7 @@ import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { CopyGroupUsersDto } from 'app/common/models/copy-group-users-dto';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
+import { Properties } from 'app/common/models/properties';
 
 @Injectable()
 export class AuthenticationService {
@@ -155,6 +156,7 @@ export class AuthenticationService {
   /*** XNFR-416 ****/
   isstyleTWoBgColor: boolean;
   /*** XNFR-416 ****/
+  properties = new Properties();
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -168,25 +170,25 @@ export class AuthenticationService {
 
     this.SHARE_URL = this.SERVER_URL + 'embed/';
     if (this.SERVER_URL == "https://xamp.io/" && this.APP_URL == "https://xamplify.io/") {
-      console.log("production keys are used");
+      xtremandLogger.info("production keys are used");
       this.clientId = this.envService.clientId;
       this.clientSecret = this.envService.clientSecret;
       this.beePageClientId = this.envService.beePageProdClientId;
       this.beePageClientSecret = this.envService.beePageProdClientSecret;
     } else if (this.SERVER_URL == "https://aravindu.com/" && this.APP_URL == "https://xamplify.co/") {
-      console.log("QA keys are used");
+      xtremandLogger.info("QA keys are used");
       this.clientId = this.envService.beeTemplateQAClientId;
       this.clientSecret = this.envService.beeTemplateQAClientSecret;
       this.beePageClientId = this.envService.beePageQAClientId;
       this.beePageClientSecret = this.envService.beePageQAClientSecret;
     } else if (this.SERVER_URL == "https://release.xamp.io/" && this.APP_URL == "https://xtremand.com/") {
-      console.log("Release keys are used");
+      xtremandLogger.info("Release keys are used");
       this.clientId = this.envService.beeTemplateReleaseClientId;
       this.clientSecret = this.envService.beeTemplateReleaseClientSecret;
       this.beePageClientId = this.envService.beePageReleaseClientId;
       this.beePageClientSecret = this.envService.beePageReleaseClientSecret;
     } else {
-      console.log("dev keys are used");
+      xtremandLogger.info("dev keys are used");
       this.clientId = this.envService.beeTemplateDevClientId;
       this.clientSecret = this.envService.beeTemplateDevClientSecret;
       this.beePageClientId = this.envService.beePageDevClientId;
@@ -393,7 +395,7 @@ export class AuthenticationService {
       const roleNames = this.getRoles();
       return roleNames && roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1
         && roleNames.indexOf('ROLE_VENDOR') < 0 && roleNames.indexOf('ROLE_ORG_ADMIN') < 0 &&
-        roleNames.indexOf('ROLE_MARKETING') < 0;
+        roleNames.indexOf('ROLE_MARKETING') < 0 && roleNames.indexOf('ROLE_PRM') < 0; 
     } catch (error) {
       this.xtremandLogger.log('error' + error);
     }
@@ -542,7 +544,7 @@ export class AuthenticationService {
           return false;
         }
       }
-    } catch (error) { console.log('error' + error); }
+    } catch (error) { this.xtremandLogger.log('error' + error); }
   }
 
   removeZenDeskScript() {
@@ -684,7 +686,7 @@ export class AuthenticationService {
     try {
       swal.close();
     } catch (error) {
-      console.log(error);
+      this.xtremandLogger.log(error);
     }
   }
 
@@ -1276,6 +1278,31 @@ getEmailTemplateHtmlBodyAndMergeTagsInfo(suffixUrl:string){
   let URL = this.REST_URL+"email-template/preview/"+suffixUrl+"/userId/"+this.getUserId()+"?access_token="+this.access_token;
   return this.callGetMethod(URL);
 }
+
+getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:boolean){
+  let userId = this.getUserId();
+  let URL_PREFIX = "";
+  if(isPartnerLandingPagePreview){
+    URL_PREFIX = this.REST_URL+"landing-page/partner/";
+  }else{
+    URL_PREFIX = this.REST_URL+"landing-page/";
+  }
+  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&access_token="+this.access_token;
+  return this.callGetMethod(URL);
+}
+
+setLocalStorageItemByKeyAndValue(key:string,value:any){
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+removeLocalStorageItemByKey(key:string){
+  localStorage.removeItem(key);
+}
+
+getLocalStorageItemByKey(key:string){
+  return JSON.parse(localStorage.getItem(key));
+}
+
 
 
 

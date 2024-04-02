@@ -58,22 +58,22 @@
 					<div class="page-toolbar col-xs-12 col-sm-12 col-md-6"
 						*ngIf="!this.modulesDisplayType.isFolderGridView && !this.modulesDisplayType.isFolderListView">
 						<div class="row btn-group pull-right" style="display: flex;">
-							<div class="col-xs-12 col-sm-2 col-md-2 hidden-xs p0">
+							<div class="col-xs-12 col-sm-2 col-md-2 p0">
 								<div style="float: right;">
 									<div class="group-dropdown">
 										<button
-											[ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
-								  modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
+											[ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs l-g-view':
+								  modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs l-g-view':'fa fa-th-list btn-xs l-g-view'"
 											style="padding: 10px !important"></button>
 										<div class="group-dd-content">
 											<ng-container class='m10'>
-												<button class="btn btn-xs hidden-xs l-g-view padding_0"
+												<button class="btn btn-xs l-g-view padding_0"
 													[class.disabled]="this.modulesDisplayType.isListView"
 													(click)="setViewType('List')" data-toggle="tooltip"
 													data-placement="bottom" title="List View">
 													<i class="fa fa-th-list p10" aria-hidden="true"></i>
 												</button>
-												<button class="btn btn-xs hidden-xs l-g-view padding_0"
+												<button class="btn btn-xs l-g-view padding_0"
 													[class.disabled]="this.modulesDisplayType.isGridView"
 													(click)="setViewType('Grid')" data-toggle="tooltip"
 													data-placement="bottom" title="Grid View">
@@ -81,7 +81,7 @@
 												</button>
 												<ng-container
 													*ngIf="(pagination.categoryId==0 || pagination.categoryId=='undefined')">
-													<button class="btn btn-xs hidden-xs l-g-view padding_0"
+													<button class="btn btn-xs l-g-view padding_0"
 														data-toggle="tooltip" data-placement="bottom"
 														title="Folder Grid View"
 														[class.disabled]="this.modulesDisplayType.isFolderGridView"
@@ -89,7 +89,7 @@
 														<i class="fa fa-folder p10" aria-hidden="true"></i>
 													</button>
 													<button
-														class="btn btn-xs hidden-xs l-g-view folder-list-span-custom-width padding_0"
+														class="btn btn-xs l-g-view folder-list-span-custom-width padding_0"
 														data-toggle="tooltip" data-placement="bottom"
 														title="Folder List View"
 														[class.disabled]="this.modulesDisplayType.isFolderListView"
@@ -102,7 +102,7 @@
 									</div>
 								</div>
 							</div>
-							<button *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view"
+							<button *ngIf="pagination.categoryId>0" class="btn btn-xs l-g-view"
 								style="margin-left: 5px;" data-toggle="tooltip" data-placement="bottom" title="Go back"
 								(click)="setViewType('Folder-Grid')">
 								<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
@@ -451,7 +451,7 @@
 													[ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
 												<!----XNFR-125---->
 												<ng-container class="pull-right"
-													*ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
+													*ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE' || campaign.campaignType === 'SURVEY'">
 													<div class="btn-group downloadicon" id="download-template-grid"
 														*ngIf="(campaign.allowDownload && campaign.campaignType !== 'EVENT') || (campaign.allowDownload && campaign.campaignType === 'EVENT' && !campaign.eventStarted)"
 														data-toggle="dropdown" data-toggle="tooltip" title="Download">

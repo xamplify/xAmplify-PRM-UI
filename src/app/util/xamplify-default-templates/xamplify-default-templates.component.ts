@@ -445,6 +445,9 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                   this.landingPage.type = landingPage.type;
                   this.landingPage.categoryId = landingPage.categoryId;
                   this.landingPage.openLinksInNewTab = landingPage.openLinksInNewTab;
+                  if(landingPage.sourceInString == 'VENDOR_JOURNEY'){
+                    this.landingPage.sourceInString = landingPage.sourceInString;
+                  }
                   $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", this.landingPage.openLinksInNewTab);
                   var request = function (method, url, data, type, callback) {
                       var req = new XMLHttpRequest();

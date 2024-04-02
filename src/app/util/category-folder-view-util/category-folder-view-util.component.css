@@ -259,6 +259,9 @@ span.Track-countbg {
     margin-top: 0px;
     margin-bottom: 40px;
 }
+.mb_9{
+margin-bottom: 9px;
+}
 }
 
 /* tablet */
@@ -291,4 +294,7 @@ span.Track-countbg {
 	.scroll-onoverflow {
    		 margin-bottom: 15px;
 	}
+}
+.no-scrollbar {
+    overflow: hidden;
 }

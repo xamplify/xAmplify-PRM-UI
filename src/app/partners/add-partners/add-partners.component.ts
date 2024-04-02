@@ -498,15 +498,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			if (newArray[w].count >= 2) {
 				this.duplicateEmailIds.push(newArray[w].value);
 			}
-			console.log(newArray[w].value);
-			console.log(newArray[w].count);
 		}
 		this.xtremandLogger.log("DUPLICATE EMAILS" + this.duplicateEmailIds);
 		var valueArr = this.newPartnerUser.map(function (item) { return item.emailId.trim().toLowerCase() });
 		var isDuplicate = valueArr.some(function (item, idx) {
 			return valueArr.indexOf(item) != idx
 		});
-		console.log("emailDuplicate" + isDuplicate);
 		this.isDuplicateEmailId = isDuplicate;
 		if (this.newPartnerUser[0].emailId != undefined) {
 			if (!isDuplicate && !this.isEmailExist) {
@@ -576,15 +573,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					if (isEmail) { existedEmails.push(emails[i]) }
 				}
 			}
-			console.log(existedEmails);
 			for (let i = 0; i < this.newPartnerUser.length; i++) {
-			
-			
                   if(this.newPartnerUser[i].contactCompany){
                          this.newPartnerUser[i].contactCompany = this.newPartnerUser[i].contactCompany.trim();
                    }
-
-
 				let userDetails = {
 					"firstName": this.newPartnerUser[i].firstName,
 					"lastName": this.newPartnerUser[i].lastName,
@@ -636,7 +628,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				}
 			}
 			this.newPartnerUser = this.validateSocialContacts(this.newPartnerUser);
-			console.log(this.newPartnerUser);
 			if (existedEmails.length === 0) {
 				if (this.isCompanyDetails) {
 					if (this.validCsvContacts) {
@@ -882,7 +873,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					}
 					this.xtremandLogger.error(error);
 					this.loading = false;
-					console.log(error);
 					this.newPartnerUser.length = 0;
 					this.allselectedUsers.length = 0;
 					this.loadPartnerList(this.pagination);
@@ -1044,13 +1034,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				let headersRow = self.fileUtil
 					.getHeaderArray(csvRecordsArray);
 				let headers = headersRow[0].split(',');
-
 				if ((headers.length == 15)) {
 					if (self.validateHeaders(headers)) {
-
-
 						var csvResult = Papa.parse(contents);
-
 						var allTextLines = csvResult.data;
 						for (var i = 1; i < allTextLines.length; i++) {
 							if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
@@ -1081,8 +1067,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							self.setSocialPage(1);
 						}
 						self.isListLoader = false;
-
-
 					} else {
 						self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
 						self.cancelPartners();
@@ -1103,7 +1087,24 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 
 	validateHeaders(headers) {
-		return (headers[0].trim() == "FIRSTNAME" && headers[1].trim() == "LASTNAME" && headers[2].trim() == "COMPANY" && headers[3].trim() == "JOBTITLE" && headers[4].trim() == "EMAILID" && headers[5].trim() == "VERTICAL" && headers[6].trim() == "REGION" && headers[7].trim() == "TYPE" && headers[8].trim() == "CATEGORY" && headers[9].trim() == "ADDRESS" && headers[10].trim() == "CITY" && headers[11].trim() == "STATE" && headers[12].trim() == "ZIP" && headers[13].trim() == "COUNTRY" && headers[14].trim() == "MOBILE NUMBER");
+		let isFirstNameMatched = headers[0].trim() == "FIRSTNAME" || headers[0].trim() == "\"FIRSTNAME\"";
+		let isLastNameMatched =  headers[1].trim() == "LASTNAME" || headers[1].trim() == "\"LASTNAME\"";
+		let isCompanyMatched = headers[2].trim() == "COMPANY" || headers[2].trim() == "\"COMPANY\"";
+		let isJobTitleMatched = headers[3].trim() == "JOBTITLE" || headers[3].trim() == "\"JOBTITLE\"";
+		let isEmailIdMatched = headers[4].trim() == "EMAILID" || headers[4].trim() == "\"EMAILID\"";
+		let isVerticalMatched = headers[5].trim() == "VERTICAL" || headers[5].trim() == "\"VERTICAL\"";
+		let isRegionMatched = headers[6].trim() == "REGION" || headers[6].trim() == "\"REGION\"";
+		let isTypeMatched = headers[7].trim() == "TYPE" || headers[7].trim() == "\"TYPE\"";
+		let isCategoryMatched = headers[8].trim() == "CATEGORY" || headers[8].trim() == "\"CATEGORY\"";
+		let isAddressMatched = headers[9].trim() == "ADDRESS" || headers[9].trim() == "\"ADDRESS\"";
+		let isCityMatched = headers[10].trim() == "CITY" || headers[10].trim() == "\"CITY\"" ;
+		let isStateMatched =  headers[11].trim() == "STATE" || headers[11].trim() == "\"STATE\"";
+		let isZipMatched = headers[12].trim() == "ZIP" || headers[12].trim() == "\"ZIP\"";
+		let isCountryMatched = headers[13].trim() == "COUNTRY" || headers[13].trim() == "\"COUNTRY\"";
+		let isMobileNumberMatched = headers[14].trim() == "MOBILE NUMBER" || headers[14].trim() == "\"MOBILE NUMBER\"";
+		return (isFirstNameMatched && isLastNameMatched && isCompanyMatched && isJobTitleMatched
+			  && isEmailIdMatched && isVerticalMatched  && isRegionMatched  && isTypeMatched  &&
+			  isCategoryMatched  &&  isAddressMatched && isCityMatched && isStateMatched && isZipMatched && isCountryMatched && isMobileNumberMatched);
 	}
 
 	copyFromClipboard() {
@@ -1977,7 +1978,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							response => {
 								this.storeLogin = response.data;
 								let data = response.data;
-								console.log(data);
 								if (response.statusCode == 200) {
 									this.showModal();
 									console.log("AddContactComponent salesforce() Authentication Success");
@@ -1985,8 +1985,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								} else {
 									localStorage.setItem("userAlias", data.userAlias)
 									localStorage.setItem("currentModule", data.module)
-									console.log(data.redirectUrl);
-									console.log(data.userAlias);
 									window.location.href = "" + data.redirectUrl;
 								}
 							},
@@ -2324,7 +2322,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	unlinkSocailAccount() {
 		try {
 			let socialNetwork = this.settingSocialNetwork.toUpperCase();
-			console.log("CheckBoXValueUNlink" + this.isUnLinkSocialNetwork);
 			this.contactService.unlinkSocailAccount(socialNetwork, this.isUnLinkSocialNetwork)
 				.subscribe(
 					(data: any) => {
@@ -2356,7 +2353,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						} else {
 							this.xtremandLogger.errorPage(error);
 						}
-						console.log(error);
 					},
 					() => {
 						$('#settingSocialNetworkPartner').modal('hide');
@@ -2385,13 +2381,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	checkAll(ev: any) {
 		if (this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9) {
 			if (ev.target.checked) {
-				console.log("checked");
 				$('[name="campaignContact[]"]').prop('checked', true);
 				let self = this;
 				$('[name="campaignContact[]"]:checked').each(function () {
 					var id = $(this).val();
 					self.selectedContactListIds.push(parseInt(id));
-					console.log(self.selectedContactListIds);
 					$('#ContactListTable_' + id).addClass('contact-list-selected');
 					for (var i = 0; i < self.pagedItems.length; i++) {
 						var object = {
@@ -2431,7 +2425,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	highlightRow(contactId: number, email: any, firstName: any, lastName: any, event: any, company: any) {
 		let isChecked = $('#' + contactId).is(':checked');
-		console.log(this.selectedContactListIds)
 		if (isChecked) {
 			$('#row_' + contactId).addClass('contact-list-selected');
 			this.selectedContactListIds.push(contactId);
@@ -2442,7 +2435,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				"contactCompany": company,
 			}
 			this.allselectedUsers.push(object);
-			console.log(this.allselectedUsers);
 		} else {
 			$('#row_' + contactId).removeClass('contact-list-selected');
 			this.selectedContactListIds.splice($.inArray(contactId, this.selectedContactListIds), 1);
@@ -2767,8 +2759,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 			window.addEventListener('message', function (e) {
 				window.removeEventListener('message', function (e) { }, true);
-				console.log('received message:  ' + e.data, e);
-
 				if (e.data == 'isGoogleAuth') {
 					localStorage.setItem('isGoogleAuth', 'yes');
 				}
@@ -3187,20 +3177,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				"mobileNumber": user.mobilePhone
 			}
 			this.allselectedUsers.push(object);
-			console.log(this.allselectedUsers);
 		} else {
 			$('#row_' + user.id).removeClass('contact-list-selected');
 			this.selectedContactListIds.splice($.inArray(user.id, this.selectedContactListIds), 1);
 
 			this.allselectedUsers.forEach((value) => {
 				if (value.id == user.id) {
-					console.log(value);
-					console.log(this.allselectedUsers.indexOf(value))
 					this.allselectedUsers.splice(this.allselectedUsers.indexOf(value), 1);
 				}
 			});
-
-			//  this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
 		}
 		if (this.selectedContactListIds.length == this.pagedItems.length) {
 			this.isHeaderCheckBoxChecked = true;
@@ -3208,18 +3193,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.isHeaderCheckBoxChecked = false;
 		}
 		event.stopPropagation();
-		console.log(this.allselectedUsers);
 	}
 
 	checkAllForMarketo(ev: any) {
 		if (ev.target.checked) {
-			console.log("checked");
 			$('[name="campaignContact[]"]').prop('checked', true);
 			let self = this;
 			$('[name="campaignContact[]"]:checked').each(function () {
 				var id = $(this).val();
 				self.selectedContactListIds.push(parseInt(id));
-				console.log(self.selectedContactListIds);
 				$('#ContactListTable_' + id).addClass('contact-list-selected');
 				for (var i = 0; i < self.pagedItems.length; i++) {
 					var object = {
@@ -3241,7 +3223,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						"mobilePhone": self.pagedItems[i].mobilePhone,
 						"mobileNumber": self.pagedItems[i].mobilePhone
 					}
-					console.log(object);
 					self.allselectedUsers.push(object);
 				}
 			});
@@ -3263,7 +3244,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
 			}
 		}
-		console.log(this.allselectedUsers);
 		ev.stopPropagation();
 	}
 
@@ -3523,7 +3503,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.setSocialPage(1);
 			this.customResponse.isVisible = false;
 			this.selectedAddPartnerOption = 9;
-			console.log("Social Contact Users for HubSpot::" + this.socialPartnerUsers);
 		}
 	}
 
@@ -4061,8 +4040,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						localStorage.setItem("currentModule", data.module);
 						localStorage.setItem("statusCode", data.statusCode);
 						localStorage.setItem('vanityUrlFilter', 'true');
-						console.log(data.redirectUrl);
-						console.log(data.userAlias);
 						this.googleCurrentUser = localStorage.getItem('currentUser');
 						const encodedData = window.btoa(this.googleCurrentUser);
 						let vanityUserId = JSON.parse(this.googleCurrentUser)['userId'];
@@ -4104,7 +4081,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			.subscribe(
 				response => {
 					let data = response.data;
-					console.log(data);
 					if (response.statusCode == 200) {
 						this.showModal();
 						console.log("AddContactComponent salesforce() Authentication Success");
@@ -4113,8 +4089,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						localStorage.setItem("userAlias", data.userAlias)
 						localStorage.setItem("currentModule", data.module)
 						localStorage.setItem('vanityUrlFilter', 'true');
-						console.log(data.redirectUrl);
-						console.log(data.userAlias);
 						this.salesForceCurrentUser = localStorage.getItem('currentUser');
 						let vanityUserId = JSON.parse(this.salesForceCurrentUser)['userId'];
 						let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/" + null;
