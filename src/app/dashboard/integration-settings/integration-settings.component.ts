@@ -313,13 +313,20 @@ export class IntegrationSettingsComponent implements OnInit {
 			}
 			sfCustomField.selected = true;
 		} else {
-			this.selectedCfIds.splice($.inArray(cfName, this.selectedCfIds), 1);
-			this.paginatedSelectedIds.splice($.inArray(cfName, this.paginatedSelectedIds), 1);
+			let indexInSelectedIds = this.selectedCfIds.indexOf(cfName);
+			if (indexInSelectedIds !== -1) {
+				this.selectedCfIds.splice(indexInSelectedIds, 1);
+			}
+			
+			let indexInPaginatedIds = this.paginatedSelectedIds.indexOf(cfName);
+			if (indexInPaginatedIds !== -1) {
+				this.paginatedSelectedIds.splice(indexInPaginatedIds, 1);
+			}
+	
 			sfCustomField.selected = false;
 			sfCustomField.required = false;
 		}
 		this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
-		
 	}
 
 	reloadCustomFields() {
