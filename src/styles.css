@@ -3065,3 +3065,7 @@ span.icon-alignments {
 .color1-invert:hover {
   border-radius: 3px!important;
 }
+.cloud_platforms_margins{
+  margin-right: -20px !important;
+  margin-left: -7px !important;
+}
