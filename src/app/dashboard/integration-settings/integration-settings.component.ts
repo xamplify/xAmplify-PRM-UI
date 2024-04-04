@@ -7,7 +7,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { IntegrationService } from 'app/core/services/integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { CustomFieldsDto } from '../models/custom-fields-dto';
-declare var swal: any, $: any;
+declare var swal:any, $:any;
 
 @Component({
 	selector: 'app-integration-settings',
@@ -62,15 +62,13 @@ export class IntegrationSettingsComponent implements OnInit {
 	];
 
 	public sortOption: any = this.sortOptions[0].value;
-
-
 	constructor(private integrationService: IntegrationService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent,
 		public referenceService: ReferenceService, public authenticationService: AuthenticationService) {
 		this.pageNumber = this.paginationComponent.numberPerPage[0];
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
 	}
-
+	
 	ngOnInit() {
 		this.getIntegrationDetails();
 	}
@@ -102,7 +100,6 @@ export class IntegrationSettingsComponent implements OnInit {
 				data => {
 					this.ngxloading = false;
 					if (data.statusCode == 200) {
-						this.haveCustomFields = true;
 						if (!this.isSortApplied && !this.isFilterApplied) {
 							self.selectedCfIds = [];
 							this.sfCustomFieldsResponse = data.data;
@@ -127,7 +124,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						}
 						this.setSfCfPage(1);
 					} else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
-						this.customFieldsResponse = new CustomResponse('ERROR', "We found something wrong about your Vendor's configuration. Please contact your Vendor.", true);
+						this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
 					}
 					this.customFieldsDtosLoader = false;
 				},
@@ -183,7 +180,7 @@ export class IntegrationSettingsComponent implements OnInit {
 					this.ngxloading = false;
 					this.haveCustomFields = false;
 					let errorMessage = this.referenceService.getApiErrorMessage(error);
-					this.customFieldsResponse = new CustomResponse('ERROR', errorMessage, true);
+                    this.customFieldsResponse = new CustomResponse('ERROR',errorMessage,true);
 					this.customFieldsDtosLoader = false;
 				},
 				() => { }
@@ -257,6 +254,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			}
 		} catch (error) {
 		}
+
 	}
 
 	selectedPageNumber(event) {
@@ -277,8 +275,8 @@ export class IntegrationSettingsComponent implements OnInit {
 
 		/*****XNFR-339*****/
 		this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
-		$.each(this.sfCustomFieldsResponse, function (_index: number, customFiledDto: any) {
-			if (customFiledDto.selected) {
+		$.each(this.sfCustomFieldsResponse,function(_index:number,customFiledDto:any){
+			if(customFiledDto.selected){
 				let selectedCustomFieldsDto = new CustomFieldsDto();
 				selectedCustomFieldsDto.name = customFiledDto.name;
 				selectedCustomFieldsDto.label = customFiledDto.label;
@@ -289,86 +287,88 @@ export class IntegrationSettingsComponent implements OnInit {
 				self.selectedCustomFieldsDtos.push(selectedCustomFieldsDto);
 			}
 		});
-		if (this.integrationType.toLowerCase() === 'salesforce') {
+		 if (this.integrationType.toLowerCase() === 'salesforce') {
 			const displayName = this.selectedCustomFieldsDtos.find(field => $.trim(field.displayName).length <= 0);
-			if ((this.integrationType.toLowerCase() === 'salesforce') && displayName) {
+			if((this.integrationType.toLowerCase() === 'salesforce') && displayName)
+			{
 				this.ngxloading = false;
 				const missingFields: string[] = [];
 				this.selectedCustomFieldsDtos.forEach(field => {
-					if ($.trim(field.displayName).length <= 0) {
-						missingFields.push(field.label);
-					}
-				});
-				const missingFieldsMessage = missingFields.join(', ');
-				this.referenceService.goToTop();
-				return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);
+							if ($.trim(field.displayName).length <= 0) {
+								missingFields.push(field.label);
+							}
+						});
+						const missingFieldsMessage = missingFields.join(', ');
+						this.referenceService.goToTop();
+						return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);	
 			}
 			this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, 'isalesforce')
-				.subscribe(
-					data => {
-						this.ngxloading = false;
+		 		.subscribe(
+		 			data => {
+		 				this.ngxloading = false;
 						if (data.statusCode == 200) {
 							this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
 							this.isFilterApplied = false;
 							this.isSortApplied = false;
 							this.listSalesforceCustomFields();
-						}
-					},
+		 				}
+		 			},
 					error => {
 						this.ngxloading = false;
-					},
+				},
 					() => { }
-				);
-		} else {
+		 		);
+		 } else {
 			const amountField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'AMOUNT');
 			const closeDateField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'CLOSE_DATE');
 			const dealNameField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'DEAL_NAME');
-			const displayName = this.selectedCustomFieldsDtos.find(field => $.trim(field.displayName).length <= 0);
-			if (((this.integrationType === 'HUBSPOT') && (!amountField || !closeDateField || !dealNameField)) && (!this.authenticationService.module.isTeamMember || this.authenticationService.module.isAdmin)) {
-				this.ngxloading = false;
-				const missingFields: string[] = [];
-				if (!amountField) {
+			const displayName = this.selectedCustomFieldsDtos.find(field => $.trim(field.displayName).length <= 0);	
+			 if (((this.integrationType === 'HUBSPOT') && (!amountField || !closeDateField || !dealNameField)) && (!this.authenticationService.module.isTeamMember || this.authenticationService.module.isAdmin)) {
+				 this.ngxloading = false;
+				 const missingFields: string[] = [];
+				 if (!amountField) {
 					missingFields.push('Amount');
-				}
-				if (!closeDateField) {
-					missingFields.push('Close Date');
-				}
-				if (!dealNameField) {
-					missingFields.push('Deal Name');
-				}
-				const missingFieldsMessage = missingFields.join(', ');
-				this.referenceService.goToTop();
-				return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);
+				 }
+				 if (!closeDateField) {
+					 missingFields.push('Close Date');
+				 }
+				 if (!dealNameField) {
+					 missingFields.push('Deal Name');
+				 }
+				 const missingFieldsMessage = missingFields.join(', ');
+				 this.referenceService.goToTop();
+				 return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);	
 			}
-			if ((this.integrationType === 'HUBSPOT' || this.integrationType === 'PIPEDRIVE' || this.integrationType === 'CONNECTWISE') && displayName) {
+			if((this.integrationType === 'HUBSPOT' || this.integrationType === 'PIPEDRIVE' || this.integrationType === 'CONNECTWISE') && displayName)
+			{
 				this.ngxloading = false;
 				const missingFields: string[] = [];
 				this.selectedCustomFieldsDtos.forEach(field => {
-					if ($.trim(field.displayName).length <= 0) {
-						missingFields.push(field.label);
-					}
-				});
-				const missingFieldsMessage = missingFields.join(', ');
-				this.referenceService.goToTop();
-				return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);
+							if ($.trim(field.displayName).length <= 0) {
+								missingFields.push(field.label);
+							}
+						});
+						const missingFieldsMessage = missingFields.join(', ');
+						this.referenceService.goToTop();
+						return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);	
 			}
-			this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, this.integrationType.toLowerCase())
+		 	this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, this.integrationType.toLowerCase())
 				.subscribe(
-					data => {
-						this.ngxloading = false;
+		 			data => {
+	 				this.ngxloading = false;
 						if (data.statusCode == 200) {
-							this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-							this.isFilterApplied = false;
-							this.isSortApplied = false;
-							this.listExternalCustomFields();
-						}
+		 					this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+							 this.isFilterApplied = false;
+							 this.isSortApplied = false;
+		 					this.listExternalCustomFields();
+		 				}
 					},
 					error => {
 						this.ngxloading = false;
 					},
-					() => { }
-				);
-		}
+		 			() => { }
+		 		);
+		 }
 
 	}
 
@@ -392,12 +392,12 @@ export class IntegrationSettingsComponent implements OnInit {
 			if (indexInSelectedIds !== -1) {
 				this.selectedCfIds.splice(indexInSelectedIds, 1);
 			}
-
+			
 			let indexInPaginatedIds = this.paginatedSelectedIds.indexOf(cfName);
 			if (indexInPaginatedIds !== -1) {
 				this.paginatedSelectedIds.splice(indexInPaginatedIds, 1);
 			}
-
+	
 			sfCustomField.selected = false;
 			sfCustomField.required = false;
 		}
@@ -454,20 +454,20 @@ export class IntegrationSettingsComponent implements OnInit {
 	getIntegrationDealPipelines() {
 		this.ngxloading = true;
 		this.integrationService.getCRMPipelines(this.loggedInUserId, this.integrationType)
-			.subscribe(
-				data => {
-					this.referenceService.loading(this.httpRequestLoader, false);
-					if (data.statusCode == 200) {
-						this.integrationPipelines = data.data;
-					}
-					this.ngxloading = false;
-				},
-				error => {
-					this.ngxloading = false;
-					this.httpRequestLoader.isServerError = true;
-				},
-				() => { }
-			);
+		.subscribe(
+		  data => {
+		    this.referenceService.loading(this.httpRequestLoader, false);
+		    if (data.statusCode == 200) {
+				this.integrationPipelines = data.data;
+		    }
+			this.ngxloading = false;
+		  },
+		  error => {
+			this.ngxloading = false;
+		    this.httpRequestLoader.isServerError = true;
+		  },
+		  () => { }
+		);
 	}
 
 
@@ -585,7 +585,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				() => {
 					if (this.integrationType.toLowerCase() === 'salesforce') {
 						this.listSalesforceCustomFields();
-					} else {
+					} else {						
 						if (this.integrationType.toLowerCase() === 'hubspot' || this.integrationType.toLowerCase() === 'pipedrive') {
 							this.getIntegrationDealPipelines();
 						}
@@ -606,7 +606,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			});
 			this.selectedCfIds = this.referenceService.removeDuplicates(this.selectedCfIds);
 			this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
-			$.each(this.sfcfPagedItems, function (index: number, value: any) {
+			$.each(this.sfcfPagedItems,function(index:number,value:any){
 				value.selected = true;
 			});
 
@@ -628,18 +628,18 @@ export class IntegrationSettingsComponent implements OnInit {
 				this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
 				this.selectedCfIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedCfIds, currentPageCfIds);
 			}
-			$.each(self.sfcfPagedItems, function (index: number, value: any) {
-				if (value.canUnselect) {
+			$.each(self.sfcfPagedItems,function(index:number,value:any){
+				if(value.canUnselect){
 					value.selected = false;
 				}
 			});
 		}
 		ev.stopPropagation();
 	}
-	toggleSettings(sfCustomField) {
+	toggleSettings(sfCustomField){
 		sfCustomField.showSettings = !sfCustomField.showSettings;
 	}
-
+		
 	onFieldSelectionChange(selectedField: any): void {
 		const selectedFieldType = selectedField.formDefaultFieldType;
 		const selectedFieldTypeName = selectedField.type;

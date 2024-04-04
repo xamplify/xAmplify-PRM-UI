@@ -59,9 +59,6 @@
           (click)="unlinkCRM()" [disabled]="!(integrationDetails?.enableUnlink)">Unlink</button>
       </div>
     </div>
-
-
-
   </div>
   <div id="menu1" class="tab-pane fade pt-top">
     <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
@@ -89,9 +86,11 @@
               </th>
               <th>Field Name</th>
               <th>Data Type</th>
-              <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Required</th>
-              <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Place Holder</th>
-              <th *ngIf="integrationType === 'HUBSPOT'">Actions</th>
+              <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Required</th> -->
+              <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Place Holder</th> -->
+              <th
+                *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'">
+                Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -106,7 +105,9 @@
                     title="{{sfCustomField.label}}">{{sfCustomField.label | slice:0:30}}
                     <span *ngIf="sfCustomField.label?.length>30">...</span>
                   </span>
-                  <ul *ngIf="integrationType === 'HUBSPOT'" class="textDecoration">
+                  <ul
+                    *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'"
+                    class="textDecoration">
                     <li>{{sfCustomField.displayName}}</li>
                     <li
                       *ngIf="(sfCustomField.formDefaultFieldType != null)  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)">
@@ -127,7 +128,7 @@
                 <td><span>{{sfCustomField.type}}</span><span
                     *ngIf="sfCustomField.entryType">-{{sfCustomField.entryType}}</span>
                 </td>
-                <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
+                <!-- <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
                   <span *ngIf="sfCustomField.selected">Required
                     <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right"
                       title="Your partner must fill in this custom field if you toggle on this option."></span>
@@ -138,19 +139,21 @@
                       <span class="labels" data-on="ON" data-off="OFF"></span>
                     </label>
                   </span>
-                </td>
-                <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
+                </td> -->
+                <!-- <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
                   <input *ngIf="sfCustomField.selected" type="text" class="form-control" placeholder="PlaceHolder"
                     [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
-                </td>
-                <td *ngIf="integrationType === 'HUBSPOT'">
-                  <a class="custom-icon" (click)="toggleSettings(sfCustomField)">
+                </td> -->
+                <td
+                  *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'">
+                  <a *ngIf="sfCustomField.selected" class="custom-icon" (click)="toggleSettings(sfCustomField)">
                     <i *ngIf="sfCustomField.selected" class="fa fa-edit mr5 IconCustomization SingleIconCu"></i>
                     <div class="clickicons"></div>
                   </a>
                 </td>
               </tr>
-              <tr *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'"
+              <tr
+                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
                 [ngClass]="{'hidden': !sfCustomField.showSettings}">
                 <td colspan="4">
                   <div class="settings-table">
@@ -160,36 +163,42 @@
                         <ng-container>
                           <tr>
                             <td class="p10" style="width:25%;">
-                              <span *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'"
+                              <span
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
                                 class="alignMiddle">Required
                                 <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip"
                                   data-placement="right"
                                   title="Your partner must fill in this custom field if you toggle on this option."></span>
                                 <label class="toggleOnOff"
-                                  [ngClass]="!sfCustomField?.canUnselect ? 'disabled-opacity':''">
-                                  <input class="checkBox_shadow" type="checkbox" [disabled]="!sfCustomField.canUnselect"
-                                    [(ngModel)]="sfCustomField.required" [ngModelOptions]="{standalone: true}">
+                                  [ngClass]="!sfCustomField?.canEditRequired ? 'disabled-opacity':''">
+                                  <input class="checkBox_shadow" type="checkbox"
+                                    [disabled]="!sfCustomField.canEditRequired" [(ngModel)]="sfCustomField.required"
+                                    [ngModelOptions]="{standalone: true}">
                                   <span class="sliderOnOff"></span>
                                   <span class="labels" data-on="ON" data-off="OFF"></span>
                                 </label>
                               </span>
                             </td>
                             <td class="p10" style="width:25%;">
-                              <label *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'" for="html"
-                                style="float: left;">Display Name</label>
-                              <input *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'" type="text"
-                                class="form-control" [(ngModel)]="sfCustomField.displayName"
+                              <label
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                                for="html" style="float: left;">Display Name</label>
+                              <input
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                                type="text" class="form-control" [(ngModel)]="sfCustomField.displayName"
                                 [ngModelOptions]="{standalone: true}" placeholder="Display Name">
                             </td>
                             <td class="p10" style="width:25%;">
-                              <label *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'" for="html"
-                                style="float: left;">PlaceHolder</label>
-                              <input *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'" type="text"
-                                class="form-control" placeholder="PlaceHolder" [(ngModel)]="sfCustomField.placeHolder"
-                                [ngModelOptions]="{standalone: true}">
+                              <label
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                                for="html" style="float: left;">PlaceHolder</label>
+                              <input
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                                type="text" class="form-control" placeholder="PlaceHolder"
+                                [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
                             </td>
                             <td
-                              *ngIf="(sfCustomField.type === 'number' || sfCustomField.type === 'text' || sfCustomField.type === 'date')  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)"
+                              *ngIf="(sfCustomField.type === 'number' || sfCustomField.type === 'text' || sfCustomField.type === 'date')  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin) && integrationType === 'HUBSPOT'"
                               class="text-center p10" style="width:25%;">
                               <label *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'" for="html"
                                 style="float: left;">Map As</label>
@@ -258,8 +267,5 @@
             class="btn btn-primary transition txt_pd-top3">Submit</span></button>
       </div>
     </ng-container>
-
-
   </div>
 </div>
-<!--Nav-end-->
