@@ -268,5 +268,8 @@ span.gearicon-font-cu {
 .active-campaign-color {
   background-color: #5cb85c;
 }
-
+.loading{
+  width: 48px;
+  height: 48px;
+}
 
