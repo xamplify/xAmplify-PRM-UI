@@ -326,11 +326,11 @@
                                  [className]="checkingContactTypeName=='Contact' ? 'col-xs-12 col-sm-6 col-lg-6 pb6':'col-xs-12 col-sm-6 col-lg-6 p0 pull-right'">
                                  <div class="btn-group pull-right">
                                     <ng-container class='m10'>
-                                       <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" ng
+                                       <span class="btn btn-xs l-g-view" data-toggle="tooltip" ng
                                           data-placement="bottom" style="margin-right: 10px;" title="List View"
                                           [class.disabled]="isListView" (click)="isListView = true"><i
                                              class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                                       <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                                       <span class="btn btn-xs l-g-view mr_4" data-toggle="tooltip"
                                           data-placement="bottom" title="Grid View"
                                           [class.disabled]="!isListView || showExpandButton"
                                           (click)="isListView = false"><i class="fa fa-th-large p10"
@@ -478,7 +478,7 @@
                                                 <img class="neu-l-d-spinner"
                                                    *ngIf="contactList.uploadInProgress || contactList.validationInProgress || ((!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd)))"
                                                    src="assets/images/Spinner.gif"
-                                                   style="width: 55px; margin-top: -88px; margin-left: 17px;" alt="">
+                                                   style="width: 55px; margin-top: -88px;" alt="">
                                              </td>
                                              <td>
                                                 <h4 class="m0 moreipsis ListFontCu">
@@ -1155,7 +1155,7 @@
                               </div>
                               <div class="btn-group pull-right" style="margin-top: 4px; display: flex;">
                                  <ng-template [ngTemplateOutlet]="filterButton"></ng-template>
-                                 <div *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
+                                 <div class="mb-downloadfile" *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
                            authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() ||
                            authenticationService.isOrgAdminPartner()) && !sharedLeads">
                                     <span class="dropdown-toggle white-co" data-toggle="dropdown"
@@ -1164,7 +1164,7 @@
                                           aria-hidden="true"></i><i class="fa fa-angle-down"
                                           style="font-size: 14px; float: right" aria-hidden="true"></i>
                                     </span>
-                                    <span data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view"
+                                    <span data-placement="bottom" class="btn btn-xs l-g-view"
                                        data-toggle="tooltip" title="Click here to email the list"
                                        (click)="downloadUserListCsv(pagination)" style="margin-right: 10px;">
                                        <i aria-hidden="true" class="fas fa-file-export p10"></i>

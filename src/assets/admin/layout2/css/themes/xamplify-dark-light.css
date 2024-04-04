@@ -2672,3 +2672,7 @@ a.Iconhover.custom-grid-icon.border-none i.fa.fa-trash-o.trashIconCustomization:
   padding-top: 2px;
   padding-bottom: 10px;
 }
+.cloud_platforms_margins{
+  margin-right: -20px !important;
+  margin-left: -7px !important;
+}

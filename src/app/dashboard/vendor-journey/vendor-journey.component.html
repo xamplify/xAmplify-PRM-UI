@@ -1,3 +1,9 @@
+<div class="caption caption-md col-xs-12" *ngIf="editVendorPage || isViewAnalytics">
+  <i class="icon-globe theme-font hide" aria-hidden="true"></i>
+  <a class="close-circle pull-right" (click)="goBack()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+  </a>
+</div>
 <app-landing-pages-list-and-grid-view *ngIf="!editVendorPage && !isViewAnalytics" [vendorJourney]='vendorJourney'
   [isLandingPages] ='isLandingPages' [loggedInUserCompanyId]="loggedInUserCompanyId"
   (vendorLandingPage)='editVendorLandingPage($event)' (viewAnalytics) = "viewAnalytics($event)"></app-landing-pages-list-and-grid-view>

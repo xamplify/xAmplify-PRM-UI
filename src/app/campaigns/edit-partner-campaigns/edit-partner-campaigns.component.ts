@@ -1143,8 +1143,6 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
                 if(contactsPagination.filterBy!=null){
                     if(contactsPagination.filterBy==0){
                         contactsPagination.maxResults = response.totalRecords;
-                    }else{
-                        contactsPagination.maxResults = contactsPagination.filterBy;
                     }
                 }
                 this.contactListPagination = this.pagerService.getPagedItems(contactsPagination,this.userLists);
@@ -1171,6 +1169,8 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             this.previewText = "Select";
         }
         $('#campaign-contact-list').toggle(500);
+        this.filterContacts('ALL');
+
     }
     searchContactList(){
         this.contactListPagination.pageIndex = 1;
@@ -1600,6 +1600,16 @@ appendValueToSubjectLine(event:any){
             this.referenceService.previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id);
         }
     }
+    checkCompanyList(name: any){
+        let position=  name.search('Company List');
+        return  position != -1 ? true: false;
+    }
+   
+    filterContacts(filterType:string){
+		this.contactListPagination.pageIndex = 1;
+		this.contactListPagination.filterBy =filterType;
+		this.loadContactList(this.contactListPagination);
+	}
 
 
 

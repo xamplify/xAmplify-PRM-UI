@@ -531,7 +531,7 @@
 															style="color: #f55d7a">{{companyProfileNameErrorMessage}}</span>
 													</ng-container>
 													<ng-container *ngIf="!companyProfile.isAdd"> <input type="text"
-															id="companyProfileName" disabled="disabled"
+															id="companyProfileName" [disabled]="isDisable"
 															placeholder="Company Profile Name" class="form-control"
 															name="companyProfileName"
 															[(ngModel)]="companyProfile.companyProfileName" />

@@ -53,13 +53,13 @@ export class FormDetailResponseComponent implements OnInit {
     this.formService.downloadCsv(this.formSubmitId)
     .subscribe(
       response => {
-          this.downloadFile(response, "Survey-Data", this.loggedInUser);
+          this.downloadFile(response, "Survey-form-data");
         },
       (error: any) => { this.logger.errorPage(error); 
       });
   }
 
-  downloadFile(data: any, selectedleadType: any, name: any) {
+  downloadFile(data: any, name:any) {
     let parsedResponse = data.text();
     let blob = new Blob([parsedResponse], { type: 'text/csv' });
     let url = window.URL.createObjectURL(blob);
@@ -69,7 +69,7 @@ export class FormDetailResponseComponent implements OnInit {
     } else {
       let a = document.createElement('a');
       a.href = url;
-      a.download = selectedleadType + "_" + name + ' List.csv';
+      a.download = name + ' .csv';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

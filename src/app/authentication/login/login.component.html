@@ -53,13 +53,14 @@
 				*ngIf="referenceService.showInputPassword && model.password"></span>
 			 </div>
 			 <button *ngIf="!isPleaseWaitButtonDisplayed" id="submitBitton" type="submit" class="btn btn-primary pull-left  signin">{{signInText}}</button>
-			 <button  *ngIf="isPleaseWaitButtonDisplayed" class="btn btn-primary pull-left" disabled><i class="fa fa-spinner fa-spin mr5"></i>Please Wait</button>
+			 <button  *ngIf="isPleaseWaitButtonDisplayed" class="btn btn-primary pull-left" disabled><i class="fa fa-spinner fa-spin mr5"></i>{{signInText}}</button>
 		  </form>
 		  <div class="form-actions login-form" style="border-bottom: 0!important;display: contents;">
 			 <label class="rememberme check">
 			 <span hidden><input class="checkBox_shadow" type="checkbox" name="remember" value="1" />&nbsp;Remember</span>
 			 </label>
 			 <a *ngIf="!isPleaseWaitButtonDisplayed" id="forgetAnchor" routerLink="/forgot-password" class="forget-password text-white">Forgot Password?</a>
+			 <span *ngIf="isPleaseWaitButtonDisplayed"  class="forget-password text-white disabled">Forgot Password?</span>
 		  </div>
 		  <div class="row solid-wb" style="margin-top: 28px;"></div>
 		  <div class="login-options login-form m5" *ngIf="!authenticationService.vanityURLEnabled">
@@ -68,7 +69,7 @@
 				<ng-container *ngFor="let socialProvider of socialProviders">
 				   <li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
 					  <a class="" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
-					  <span class="img-child {{socialProvider.iconName}}"></span>
+					  	<span class="img-child {{socialProvider.iconName}}"></span>
 					  </a>
 				   </li>
 				</ng-container>
@@ -79,9 +80,12 @@
 			 <ul class="social-icons">
 				<ng-container *ngFor="let socialProvider of vanitySocialProviders">
 				   <li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
-					  <a class="" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
-					  <span class="img-child {{socialProvider.iconName}}"></span>
+					  <a *ngIf="!isPleaseWaitButtonDisplayed" class="" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
+					  	<span class="img-child {{socialProvider.iconName}}"></span>
 					  </a>
+					  <span *ngIf="isPleaseWaitButtonDisplayed"  class="disabled" title="{{socialProvider.name}}">
+						<span class="img-child {{socialProvider.iconName}}"></span>
+					  </span>
 				   </li>
 				</ng-container>
 			 </ul>

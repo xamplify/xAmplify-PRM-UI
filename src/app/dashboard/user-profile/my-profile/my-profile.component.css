@@ -2140,3 +2140,7 @@ margin-left: 10px;
   color: #fff;
   background: #1F94D2;
 }
+
+.disabled-cursor {
+  cursor: not-allowed;
+}

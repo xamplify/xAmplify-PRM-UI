@@ -170,25 +170,25 @@ export class AuthenticationService {
 
     this.SHARE_URL = this.SERVER_URL + 'embed/';
     if (this.SERVER_URL == "https://xamp.io/" && this.APP_URL == "https://xamplify.io/") {
-      console.log("production keys are used");
+      xtremandLogger.info("production keys are used");
       this.clientId = this.envService.clientId;
       this.clientSecret = this.envService.clientSecret;
       this.beePageClientId = this.envService.beePageProdClientId;
       this.beePageClientSecret = this.envService.beePageProdClientSecret;
     } else if (this.SERVER_URL == "https://aravindu.com/" && this.APP_URL == "https://xamplify.co/") {
-      console.log("QA keys are used");
+      xtremandLogger.info("QA keys are used");
       this.clientId = this.envService.beeTemplateQAClientId;
       this.clientSecret = this.envService.beeTemplateQAClientSecret;
       this.beePageClientId = this.envService.beePageQAClientId;
       this.beePageClientSecret = this.envService.beePageQAClientSecret;
     } else if (this.SERVER_URL == "https://release.xamp.io/" && this.APP_URL == "https://xtremand.com/") {
-      console.log("Release keys are used");
+      xtremandLogger.info("Release keys are used");
       this.clientId = this.envService.beeTemplateReleaseClientId;
       this.clientSecret = this.envService.beeTemplateReleaseClientSecret;
       this.beePageClientId = this.envService.beePageReleaseClientId;
       this.beePageClientSecret = this.envService.beePageReleaseClientSecret;
     } else {
-      console.log("dev keys are used");
+      xtremandLogger.info("dev keys are used");
       this.clientId = this.envService.beeTemplateDevClientId;
       this.clientSecret = this.envService.beeTemplateDevClientSecret;
       this.beePageClientId = this.envService.beePageDevClientId;
@@ -544,7 +544,7 @@ export class AuthenticationService {
           return false;
         }
       }
-    } catch (error) { console.log('error' + error); }
+    } catch (error) { this.xtremandLogger.log('error' + error); }
   }
 
   removeZenDeskScript() {
@@ -686,7 +686,7 @@ export class AuthenticationService {
     try {
       swal.close();
     } catch (error) {
-      console.log(error);
+      this.xtremandLogger.log(error);
     }
   }
 

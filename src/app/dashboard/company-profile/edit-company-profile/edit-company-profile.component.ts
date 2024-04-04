@@ -203,6 +203,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     rotation = 0;
     marketing: boolean;
     isLocalHost = false;
+    isDisable = false;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -741,6 +742,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         currentUser['logedInCustomerCompanyNeme'] = this.companyProfile.companyName;
                         localStorage.setItem('currentUser',JSON.stringify(currentUser));
                         setTimeout(function () { $("#edit-sucess").slideUp(500); }, 5000);
+                        this.isDisable = this.companyProfile.companyProfileName.length == 0 ? false : true;
                     },
                     error => { this.ngxloading = false;
                         this.logger.errorPage(error) },
@@ -803,6 +805,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         this.authenticationService.loginScreenDirection = data.data.loginScreenDirection;
                         this.setCompanyProfileViewData(data.data.companyName);
                     }
+                    this.isDisable = data.data.companyProfileName.length == 0 ? false : true;
                 },
                 error => { this.logger.errorPage(error) },
                 () => { this.logger.info("Completed getCompanyProfileByUserId()") }

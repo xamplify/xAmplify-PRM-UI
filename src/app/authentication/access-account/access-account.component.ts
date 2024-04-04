@@ -261,7 +261,7 @@ export class AccessAccountComponent implements OnInit {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             if (currentUser != undefined) {
                 this.anotherUserLoggedIn = true;
-                this.customResponse = new CustomResponse( 'ERROR', "The user is already logged in on this browser.Please logout to access this page.", true );
+                this.customResponse = new CustomResponse('ERROR', "The user is currently logged in on this browser. To access this page, please log out or use another browser.", true );
             }else{
                 this.anotherUserLoggedIn = false;
                 this.mainLoader = true;

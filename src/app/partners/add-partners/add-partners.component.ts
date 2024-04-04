@@ -33,6 +33,7 @@ import { CampaignService } from '../../campaigns/services/campaign.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { UtilService } from 'app/core/services/util.service';
+import { UserUserListWrapper } from 'app/contacts/models/user-userlist-wrapper';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
 declare var $:any, Papa:any, swal:any;
 
@@ -277,6 +278,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	/*****XNFR-342*****/
    @ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
    isLocalHost = false; 
+   userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -798,7 +800,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	savePartners() {
 		/*****************Sravan*********************/
 		this.loading = true;
-		this.contactService.updateContactList(this.partnerListId, this.newPartnerUser)
+		this.userUserListWrapper = this.manageContactComponent.getUserUserListWrapperObj(this.newPartnerUser, "", this.isPartner, true, 'CONTACT', 'MANUAL', null, false)
+		this.userUserListWrapper.userList.id = this.partnerListId;
+		this.contactService.updateContactList(this.userUserListWrapper)
 			.subscribe(
 				(data: any) => {
 					if (data.access) {

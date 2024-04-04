@@ -236,3 +236,10 @@ margin-left:10px;
     width: 46%;
   }
 }
+.align-item-left{
+  float: left;
+}
+
+.align-width {
+  width: 160px;
+}

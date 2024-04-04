@@ -1,202 +1,241 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Criteria } from 'app/contacts/models/criteria';
 import { Pagination } from 'app/core/models/pagination';
+import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/white-labeled-content-shared-by-vendor-companies-dto';
 
 @Component({
-  selector: 'app-custom-ui-filter',
-  templateUrl: './custom-ui-filter.component.html',
-  styleUrls: ['./custom-ui-filter.component.css']
+	selector: 'app-custom-ui-filter',
+	templateUrl: './custom-ui-filter.component.html',
+	styleUrls: ['./custom-ui-filter.component.css']
 })
-export class CustomUiFilterComponent implements OnInit {
+export class CustomUiFilterComponent implements OnInit, OnDestroy {
 
-   @Input() type:any
-   @Input() filterOptions =[];
-   @Input() filterConditions = [];
-   @Input() fileTypes=[];
-   @Input() showFilterOption:boolean;
-   @Input() isPartnerView:boolean;
-   @Output() filterConditionsEmitter =  new EventEmitter();
-   @Output() closeFilterEmitter = new EventEmitter();
-   @Input() criterias = new Array<Criteria>();
-   isclearFilter:boolean;
-   fromDateFilter:any;
-   toDateFilter:any;
-   isValidationErrorMessage:boolean;
-   filterConditionErrorMessage:any;
-   pagination: Pagination = new Pagination();
-   parterViewText:string;
-   isFromDateless:boolean;
-   isDateError:boolean = false;
-  constructor() {
-   }
-
-  ngOnInit() {
-    this.parterViewText = this.isPartnerView? "Published On":"Created On"
-  }
-  
-  addNewRow() {
+	@Input() type: any
+	@Input() fileTypes = [];
+	@Input() isPartnerView: boolean;
+	/*** XBI-2133 ****/
+	@Input() isWhiteLabeledAsset: boolean;
+	@Input() whiteLableContentSharedByVendorCompanies: WhiteLabeledContentSharedByVendorCompaniesDto[] = [];
+	/**** XBI-2133 ***/
+	@Output() filterConditionsEmitter = new EventEmitter();
+	@Output() closeFilterEmitter = new EventEmitter();
+	filterOptions: any[] = [];
+	filterConditions = [
+		{ 'name': '', 'value': 'Condition*' },
+		{ 'name': 'eq', 'value': '=' },
+		{ 'name': 'like', 'value': 'Contains' },
+	];
+	criterias = new Array<Criteria>();
+	isclearFilter: boolean;
+	fromDateFilter: any;
+	toDateFilter: any;
+	isValidationErrorMessage: boolean;
+	filterConditionErrorMessage: any;
+	pagination: Pagination = new Pagination();
+	parterViewText: string;
+	dropdownDisabled: boolean[] = [];
+	constructor(private router: Router) {
+	}
+	ngOnDestroy(): void {
+	}
+	ngOnInit() {
+		this.addFilterOptionsValues(this.type)
+	}
+	addFilterOptionsValues(type: string) {
+		if (type === "Assets") {
+			this.filterOptions.push(
+				{ 'name': '', 'value': 'Field Name*' },
+				{ 'name': 'assetsname', 'value': 'Assets Name' },
+				{ 'name': 'folder', 'value': 'Folder' },
+				{ 'name': 'type', 'value': 'Type' },
+				{ 'name': 'tags', 'value': 'Tags' }
+			);
+			if (this.router.url.indexOf('/fl') > -1 || this.router.url.indexOf('/fg') > -1) {
+				this.filterOptions = this.filterOptions.filter(item => item.name !== 'folder'); //XNFR-409
+			}
+			if (this.isPartnerView) {
+				this.filterOptions.push({ 'name': 'publishedby', 'value': 'Published By' },
+					{ 'name': 'from', 'value': 'From' });
+				this.parterViewText = "Published On";
+			} else {
+				this.filterOptions.push({ 'name': 'createdby', 'value': 'Created By' });
+				this.parterViewText = "Created On";
+				/*** XBI-2133 ***/
+				if (this.isWhiteLabeledAsset) {
+					this.filterOptions.push({ 'name': 'from', 'value': 'From' });
+				}
+			}
+		}
+		this.addNewRow();
+	}
+	addNewRow() {
 		let criteria = new Criteria();
 		this.criterias.push(criteria);
+		this.dropdownDisabled.push(false);
 	}
-  closeFilterOption() {
-    this.showFilterOption = false;
-    this.fromDateFilter = "";
-    this.toDateFilter = "";
-	this.criterias.splice(0, this.criterias.length);
-    this.pagination.fromDateFilterString = "";
-    this.pagination.toDateFilterString = "";
-    this.closeFilterEmitter.emit(this.showFilterOption);
-  }
-  eventEnterKeyHandler(keyCode: any) {
+	eventEnterKeyHandler(keyCode: any) {
 		if (keyCode === 13) {
 			this.submittFilterData();
 			this.validateDateFilters();
 		}
 	}
-  cancelSegmentationRow(rowId: number) {
+	cancelSegmentationRow(rowId: number) {
 		if (rowId !== -1) {
 			this.criterias.splice(rowId, 1);
+			this.dropdownDisabled.splice(rowId, 1);
 		}
 	}
-  validateDateFilters() {
+	validateDateFilters() {
 		if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
 			var fromDate = Date.parse(this.fromDateFilter);
 			if (this.toDateFilter != undefined && this.toDateFilter != "") {
 				var toDate = Date.parse(this.toDateFilter);
-				this.isDateError = this.validateDateLessThanOrGreaterThan(fromDate,toDate);
+				this.isValidationErrorMessage = this.validateDateLessThanOrGreaterThan(fromDate, toDate);
 			} else {
 				this.isValidationErrorMessage = true;
-				this.isDateError = true
 				this.filterConditionErrorMessage = "Please pick To Date";
 			}
-		} else if(this.toDateFilter != undefined && this.toDateFilter != "") {
+		} else if (this.toDateFilter != undefined && this.toDateFilter != "") {
 			this.isValidationErrorMessage = true;
 			var toDate = Date.parse(this.toDateFilter);
-			if(this.fromDateFilter != undefined && this.fromDateFilter != "") {
+			if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
 				var fromDate = Date.parse(this.fromDateFilter);
-				this.isDateError =this.validateDateLessThanOrGreaterThan(fromDate,toDate);
+				this.isValidationErrorMessage = this.validateDateLessThanOrGreaterThan(fromDate, toDate);
 			} else {
 				this.isValidationErrorMessage = true;
-				this.isDateError = true;
 				this.filterConditionErrorMessage = "Please pick From Date";
 			}
 		} else {
-			this.isDateError = false;
+			this.isValidationErrorMessage = false;
 		}
-        if(!this.isDateError) {
-		this.criteriaValidation();
+		if (!this.isValidationErrorMessage) {
+			this.criteriaValidation();
 		}
 	}
 	criteriaValidation() {
 		for (let i = 0; i < this.criterias.length; i++) {
-			if (this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
-				if(this.pagination.dateFilterOpionEnable && this.criterias.length == 1) {
+			if (this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" || this.criterias[i].value1 == "undefined")) {
+				if (this.pagination.dateFilterOpionEnable && this.criterias.length == 1) {
 					this.isValidationErrorMessage = false
 				} else {
-				this.isValidationErrorMessage = true;
+					this.isValidationErrorMessage = true;
 				}
-				if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
-					this.filterConditionErrorMessage = "Please fill the required data at position " + (i+1);
+				if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" || this.criterias[i].value1 == "undefined")) {
+					this.filterConditionErrorMessage = "Please fill the required data at position " + (i + 1);
 				} else if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*") {
 					this.isValidationErrorMessage = true;
-					this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + (i+1);
-				} else if (this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
+					this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + (i + 1);
+				} else if (this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" || this.criterias[i].value1 == "undefined")) {
 					this.isValidationErrorMessage = true;
-					this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + (i+1);
-				} else if (this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
+					this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + (i + 1);
+				} else if (this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" || this.criterias[i].value1 == "undefined")) {
 					this.isValidationErrorMessage = true;
-					this.filterConditionErrorMessage = "Please select the Condition and Value at position " + (i+1);
+					this.filterConditionErrorMessage = "Please select the Condition and Value at position " + (i + 1);
 				} else if (this.criterias[i].operation == "Condition*") {
 					this.isValidationErrorMessage = true;
-					this.filterConditionErrorMessage = "Please select the Condition at position " + (i+1);
+					this.filterConditionErrorMessage = "Please select the Condition at position " + (i + 1);
 				} else if (this.criterias[i].property == "Field Name*") {
 					this.isValidationErrorMessage = true;
-					this.filterConditionErrorMessage = "Please select the Field Name at position " + (i+1);
-				} else if (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "") {
+					this.filterConditionErrorMessage = "Please select the Field Name at position " + (i + 1);
+				} else if (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "" || this.criterias[i].value1 == "undefined") {
 					this.isValidationErrorMessage = true;
-					this.filterConditionErrorMessage = "Please fill the value at position " + (i+1);
+					this.filterConditionErrorMessage = "Please fill the value at position " + (i + 1);
 				}
 				break;
 			} else {
 				this.isValidationErrorMessage = false;
 				this.pagination.filterOptionEnable = true;
+				this.dropdownDisabled[i] = true;
 			}
 		}
-		if(!this.isValidationErrorMessage) {
+		if (!this.isValidationErrorMessage) {
 			this.addCriteriasCondtions();
 		}
 	}
 	private addCriteriasCondtions() {
 		if (!this.isValidationErrorMessage) {
+			let criteriaConditionsArray = new Array<Criteria>();
 			for (let i = 0; i < this.criterias.length; i++) {
+				let criteriaObject = new Criteria();
 				if (this.criterias[i].operation == "=") {
-					this.criterias[i].operation = "eq";
+					criteriaObject.operation = "eq";
 				}
-
 				if (this.criterias[i].operation == "Contains") {
-					this.criterias[i].operation = "like";
+					criteriaObject.operation = "like";
 				}
-
 				if (this.criterias[i].property == "Assets Name") {
-					this.criterias[i].property = "assetsname";
+					criteriaObject.property = "assetsname";
+				} else if (this.criterias[i].property == "Folder") {
+					criteriaObject.property = "folder";
+				} else if (this.criterias[i].property == "Type") {
+					criteriaObject.property = "type";
+				} else if (this.criterias[i].property == "Tags") {
+					criteriaObject.property = "tags";
+				} else if (this.criterias[i].property == "Created By") {
+					criteriaObject.property = "createdby";
+				} else if (this.criterias[i].property == "Published By") {
+					criteriaObject.property = "publishedby";
+				} else if (this.criterias[i].property == "From") {
+					criteriaObject.property = "from";
 				}
-				else if (this.criterias[i].property == "Folder") {
-					this.criterias[i].property = "folder";
-				}
-				else if (this.criterias[i].property == "Type") {
-					this.criterias[i].property = "type";
-				}
-				else if (this.criterias[i].property == "Tags") {
-					this.criterias[i].property = "tags";
-				}
-				else if (this.criterias[i].property == "Created By") {
-					this.criterias[i].property = "createdby";
-				}
-				else if (this.criterias[i].property == "Published By") {
-					this.criterias[i].property = "publishedby";
-				}	
-                else if (this.criterias[i].property == "From") {
-					this.criterias[i].property = "from";
-				} 
+				criteriaObject.value1 = this.criterias[i].value1;
+				criteriaConditionsArray.push(criteriaObject);
 			}
-			this.pagination.criterias = this.criterias;
-			this.showFilterOption = false;
+			this.pagination.criterias = criteriaConditionsArray;
 			this.pagination.pageIndex = 1;
-			this.showFilterOption = false;
-			this.isclearFilter = true;
 		}
 	}
-   
-	validateDateLessThanOrGreaterThan(fromDate: any, toDate: any):boolean {
+	validateDateLessThanOrGreaterThan(fromDate: any, toDate: any): boolean {
 		if (fromDate <= toDate) {
 			this.pagination.fromDateFilterString = this.fromDateFilter;
 			this.pagination.toDateFilterString = this.toDateFilter;
 			this.pagination.dateFilterOpionEnable = true;
 			this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 			this.isValidationErrorMessage = false;
-			this.isFromDateless = false;
 		} else {
 			this.isValidationErrorMessage = true;
-			this.isFromDateless = true;
 			this.filterConditionErrorMessage = "From date should be less than To date";
 		}
-		return this.isFromDateless;
+		return this.isValidationErrorMessage;
 	}
-
-  submittFilterData(){
-	this.validateDateFilters();
-    let input = {};
-    input['showFilterOption'] = this.showFilterOption;
-    input['isClearFilter'] = this.isclearFilter;
-    input['fromDate'] = this.pagination.fromDateFilterString;
-    input['toDate'] = this.pagination.toDateFilterString;
-    input['zone'] = this.pagination.timeZone;
-    input['criterias'] = this.pagination.criterias;
-    input['isDateFilter'] = this.pagination.dateFilterOpionEnable;
-    input['isCriteriasFilter'] = this.pagination.filterOptionEnable;
-    if(!this.isValidationErrorMessage) {
-    this.filterConditionsEmitter.emit(input);
-    }
-  }
-
+	submittFilterData() {
+		this.validateDateFilters();
+		let input = {};
+		input['fromDate'] = this.pagination.fromDateFilterString;
+		input['toDate'] = this.pagination.toDateFilterString;
+		input['zone'] = this.pagination.timeZone;
+		input['criterias'] = this.pagination.criterias;
+		input['isDateFilter'] = this.pagination.dateFilterOpionEnable;
+		input['isCriteriasFilter'] = this.pagination.filterOptionEnable;
+		if (!this.isValidationErrorMessage) {
+			this.isclearFilter = true;
+			this.filterConditionsEmitter.emit(input);
+		}
+	}
+	closeFilterOption(event: any) {
+		if (event == "clear") {
+			this.criterias = new Array<Criteria>();
+			this.isclearFilter = false;
+			this.fromDateFilter = "";
+			this.toDateFilter = "";
+			this.pagination.fromDateFilterString = "";
+			this.pagination.toDateFilterString = "";
+			this.pagination.dateFilterOpionEnable = false;
+			this.pagination.filterOptionEnable = false;
+			this.isValidationErrorMessage = false;
+			this.dropdownDisabled = [];
+			this.addNewRow();
+		}
+		this.closeFilterEmitter.emit(event);
+	}
+	getOptionsForCriteria(criteria: any, index: number) {
+		if (criteria.property === 'From' || criteria.property === 'Type') {
+			this.criterias[index].operation = "=";
+			this.criterias[index].value1 = "undefined";
+		} else {
+			this.criterias[index].operation = "Condition*";
+			this.criterias[index].value1 = "";
+		}
+	}
 }

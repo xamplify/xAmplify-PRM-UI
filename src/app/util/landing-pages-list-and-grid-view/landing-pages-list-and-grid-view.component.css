@@ -261,7 +261,6 @@
     #notification-list {
       background-color: #ed1c24;
       color: white;
-      margin-bottom: 0px;
       margin-left: -23px;
       margin-top: -5px;
     }
@@ -312,6 +311,9 @@
     }
     .mPadAction {
       padding-left: 30px !important;
+    }
+    .ml_10{
+      margin-left: 10px;
     }
   }
   .justify-content-center{

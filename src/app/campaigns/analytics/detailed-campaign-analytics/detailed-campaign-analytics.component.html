@@ -266,7 +266,7 @@
                         forbidden: !isPartnerEnabledAnalyticsAccess ? true : null
                         }" *ngIf="campaignType === 'LANDINGPAGE' && campaign.landingPageId > 0">
                          <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" [class.disabled]="!isPartnerEnabledAnalyticsAccess ? true : null">
-                        <div class="visual">
+                        <div class="visual mb-pageinfo">
                            <i class="fa fa-envelope-open" aria-hidden="true"></i>
                         </div>
                         <div class="camp-details">
@@ -3482,7 +3482,9 @@
                   <div class="table-responsive">
                      <table class="table tgrid">
                         <thead>
+                           <tr>
                            <th class="center">List name</th>
+                        </tr>
                         </thead>
                         <tbody>
                            <tr *ngFor="let item of campaingContactLists">
@@ -3503,9 +3505,11 @@
                   <div class="table-responsive">
                      <table class="table tgrid">
                         <thead>
+                           <tr>
                            <th class="center">Email Id</th>
                            <th class="center">First Name</th>
                            <th class="center">Last Name</th>
+                        </tr>
                         </thead>
                         <tbody>
                            <tr *ngFor="let item of campaingContactListValues">

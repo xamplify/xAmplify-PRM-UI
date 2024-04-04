@@ -207,7 +207,6 @@ export class FormService {
     }
 
     /***** XNFR-467 *****/
-    
     downloadCsv(formSubmitId: number){
         let url = this.URL+"survey/download/" + formSubmitId +"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
@@ -216,10 +215,14 @@ export class FormService {
     }
     
     /***** XNFR-467 *****/
-
-    downloadCsvFile(alias:string){
-    let url = this.URL+"survey/analytics/download/" + alias +"?access_token=" + this.authenticationService.access_token;
-         return this.http.get(url)
+    downloadCsvFile(alias:string,campaignId:any){
+        let url = this.URL+"survey/analytics/download/" + alias;    
+        if (campaignId != undefined && campaignId != null && campaignId > 0) {
+            url = url +"/"+ campaignId;
+        }else{
+            url = url +"/"+ 0;
+        }
+        return this.http.get(url+"?access_token=" + this.authenticationService.access_token)
         .map(( response: any ) => response )
        .catch( this.handleError );
      }

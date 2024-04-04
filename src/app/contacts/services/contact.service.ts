@@ -284,16 +284,16 @@ export class ContactService {
             .catch(this.handleError);
     }
 
-    updateContactList(contactListId: number, users: Array<User>): Observable<any> {
+    updateContactList(userUserListWrapper: UserUserListWrapper): Observable<any> {
         var requestoptions = new RequestOptions({
-            body: users,
+            body: userUserListWrapper,
         })
         var headers = new Headers();
         headers.append('Content-Type', 'application/json');
         var options = {
             headers: headers
         };
-        var url = this.contactsUrl + contactListId + "/update?" + 'userId=' + this.authenticationService.getUserId() + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
+        var url = this.contactsUrl + "/update?" + 'userId=' + this.authenticationService.getUserId() + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
         return this._http.post(url, options, requestoptions)
             .map(this.extractData)
             .catch(this.handleError);
