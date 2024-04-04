@@ -5131,6 +5131,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
         this.userUserListWrapper = this.getUserUserListWrapperObj(this.socialUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
             this.contactType.toLocaleUpperCase(), type.toLocaleUpperCase(), this.salesforceListViewId, type === 'MARKETO' ? false : true);
+        if (this.assignLeads) {
+            this.userUserListWrapper.userList.assignedLeadsList = true;
+        }
         this.userUserListWrapper.userList.externalListId = this.hubSpotSelectContactListOption;
         this.saveList(this.userUserListWrapper);
     }
@@ -5140,6 +5143,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.setLegalBasisOptions(this.allselectedUsers);
         this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
             "CONTACT", "MANUAL", this.alias, false);
+        if (this.assignLeads) {
+            this.userUserListWrapper.userList.assignedLeadsList = true;
+        }
         this.saveList(this.userUserListWrapper);
     }
 
