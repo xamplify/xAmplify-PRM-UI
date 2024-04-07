@@ -1,5 +1,8 @@
 <!-- BEGIN DASHBOARD STATS -->
-	<div class="row">
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<app-box-loader [countLoader]=3 *ngIf="loading"></app-box-loader>
+
+<div class="row" *ngIf="!loading">
     <div class="col-sm-4 col-xs-6"
       [ngClass]="{'col-lg-3 col-md-3':
             (authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner()  ||  authenticationService.isPartnerTeamMember|| authenticationService.isOnlyPartner() || authenticationService.isOrgAdmin()),

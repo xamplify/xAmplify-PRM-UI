@@ -14,6 +14,7 @@ import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 export class DashboardStatsComponent implements OnInit {
   dashboardReport: DashboardReport = new DashboardReport();
   isAdmin: boolean;
+  loading = true;
   constructor(public router: Router,public xtremandLogger:XtremandLogger,public dashboardService: DashboardService,
     public authenticationService: AuthenticationService) {
   }
@@ -35,8 +36,12 @@ export class DashboardStatsComponent implements OnInit {
         this.dashboardReport.totalSocialAccounts = data.totalSocialConnectionsCount;
         this.dashboardReport.totalCompanyPartnersCount = data.totalCompanyPartnersCount;
         this.dashboardReport.vendorsCount = data.vendorsCount;
+        this.loading = false;
       },
-      error => this.xtremandLogger.log(error),
+      error => {
+        this.xtremandLogger.log(error);
+        this.loading = false;
+      },
       () => this.xtremandLogger.log("dashboard reports counts completed")
     );
   }

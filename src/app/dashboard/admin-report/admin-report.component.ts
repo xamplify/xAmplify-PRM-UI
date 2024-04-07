@@ -205,7 +205,6 @@ export class AdminReportComponent implements OnInit {
           this.dashboardService.loadDashboardReportsCount( selectedVendor.id )
               .subscribe(
               ( data: any ) => {
-                  console.log( data );
                   this.selectedVendorsDetails = data;
                  this.detailsTielsView = true;
                  this.loading = false;
@@ -227,7 +226,6 @@ export class AdminReportComponent implements OnInit {
   
 
   ngOnInit() {
-      this.getVendorsDetails();
       this.listTop10RecentUsers();
   }
   

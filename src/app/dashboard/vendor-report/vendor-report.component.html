@@ -1,4 +1,4 @@
-
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="wrap-collabsible">
   <input id="collapsible-vendor-report" class="toggle" type="checkbox">
   <label for="collapsible-vendor-report" class="lbl-toggle">Vendor Report</label>
@@ -49,7 +49,7 @@
                   <tbody>
                     <ng-container *ngFor="let report of vendorsDetails;let i = index">
                       <!-- this div for ngFor -->
-                      <tr (click)="selectedVendorDetails(report)" class="highletedRow">
+                      <tr (click)="navigateToDashboardStats(report)" class="highletedRow">
                         <td>
                           <app-user-info [userInfo]="report">
                           </app-user-info>
@@ -107,3 +107,4 @@
     </div>
   </div>
 </div>
+<app-dynamic-email-content #dynamicEmailContentComponent></app-dynamic-email-content>
