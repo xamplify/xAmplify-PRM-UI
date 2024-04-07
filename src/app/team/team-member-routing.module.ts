@@ -4,7 +4,8 @@ import { AddAndManageTeamMembersComponent } from './add-and-manage-team-members/
 
 export const routes: Routes = [
   { path: "", redirectTo: "add-team", pathMatch: "full" },
-  { path: "add-team", component:  AddAndManageTeamMembersComponent}
+  { path: "add-team", component:  AddAndManageTeamMembersComponent},
+  { path: "superadmin-manage-team/:userId", component:  AddAndManageTeamMembersComponent}
 ];
 
 @NgModule({
