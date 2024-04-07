@@ -1,120 +1,132 @@
-<div class="col-xs-12">
-  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }">
-  </ngx-loading>
-   <div class="portlet light">
-     <div class="portlet-title">
-       <div class="caption">{{header}}</div>
-        <div class="inputs">
-          <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
-            <i class="fa fa-refresh margin" aria-hidden="true"></i>
-          </a>
-          <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-          <div class="input-icon right" id="icon-right">
-            <input type="text" id="search-text" class="form-control" [(ngModel)]="pagination.searchKey"
-              [ngModelOptions]="{standalone: true}" placeholder="search..."
-              (keypress)="eventHandler($event.keyCode)">
-            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
-              (click)="pagination.searchKey='';search()"></button>
-            <button type="submit" class="search-box-item-click" (click)="search()">
-              <i class="fa fa-search" aria-hidden="true"></i></button>
-          </div>
-        </div> 
-        </div>
-     </div>
-    <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-    <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-     <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !apiError">
-       <div>
-         <div class="table-responsive">
-           <table class='table tgrid' aria-describedby="">
-             <thead>
-               <tr>
-                <th>Campaign</th>
-                <th scope="row" translate></th>
-                <th class="text-center" scope="row" translate>Launched</th>
-                <th *ngIf="!scheduledCampaigns" class="text-center" scope="row" translate>Channel Campaign Shared To Partners</th>
-                <th class="text-center" scope="row" translate>Campaign User User List Status</th>
-                <th *ngIf="!scheduledCampaigns" class="text-center" scope="row" translate>Email Notifications</th>
-               </tr>
-             </thead>
-             <tbody>
-               <ng-container *ngFor="let campaign of pagination.pagedItems;let i = index">
-                 <tr>
-                  <td style="width: 10%;" class="hidden-xs">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 " src="assets/images/video-email.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" src="assets/images/regular-email.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" src="assets/images/social-campaign.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 " src="assets/images/event-campaign.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1" src="assets/images/landing-page.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1" src="assets/images/survey.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <br>
-                    <h6 class="view-banner banner-top mt5" *ngIf="campaign.channelCampaign" translate>Through Campaign</h6>
-                    <h6 class="view-banner banner-top mt5" *ngIf="!campaign.channelCampaign && !campaign.nurtureCampaign" translate>To Campaign</h6>
-                    <h6 class="view-banner banner-top mt5" *ngIf="!campaign.channelCampaign && campaign.nurtureCampaign" translate>Redistributed Campaign</h6>
-                    <h5 class="view-banner mt5" *ngIf="campaign.campaignScheduleType==='SCHEDULE'" translate>Scheduled</h5>
-                  </td>
-                  <td title="{{campaign?.campaignName}}">{{campaign?.campaignName | slice: 0: 30}}
-                    <span *ngIf="campaign.campaignName?.length>30">...</span>
-                    <h5  [title]="campaign.id">
-                      <span translate>Id : <strong>{{campaign.campaignId}}</strong></span>
-                    </h5>
-                    <h5  [title]="campaign.companyName">
-                      <span translate>Company Name : <strong>{{campaign.companyName | slice: 0: 30}}</strong>
-                        <span *ngIf="campaign.companyName?.length>30">...</span>
-                      </span>
-                    </h5>
-                    <h5  title="Launch Time">
-                      <span translate> Launch Time : <strong>{{campaign?.launchTimeInString}}</strong>
-                      </span>
-                    </h5>
-                    <h5  title="Time Zone">
-                      <span translate> Time Zone : <strong>{{campaign?.timeZone}}</strong>
-                      </span>
-                    </h5>
-                    <h5  title="Total Users">
-                      <span translate> Total Users : <strong>{{campaign?.totalUsers}}</strong>
-                      </span>
-                    </h5>
-                    <h5  title="Distinct Users">
-                      <span translate> Distinct Users : <strong>{{campaign?.distinctUsers}}</strong>
-                      </span>
-                    </h5>
-
-                  </td>
-                  <td class="text-center">
-                      <i  [className]="campaign?.launched ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
-                  </td>
-                  <td *ngIf="!scheduledCampaigns" class="text-center" title="{{campaign?.campaignPartnerStatus}}">
-                    <i  title="{{campaign?.campaignPartnerStatus}}" [className]="campaign?.campaignPartnerStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignPartnerStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignPartnerStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
-                  </td>
-                  <td class="text-center" title="{{campaign?.campaignUserListStatus}}">
-                      <i title="{{campaign?.campaignUserListStatus}}" [className]="campaign?.campaignUserListStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignUserListStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignUserListStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
-                  </td>
-                  <td *ngIf="!scheduledCampaigns" class="text-center" title="{{campaign?.campaignEmailNotificationsStatus}}">
-                    <i title="{{campaign?.campaignEmailNotificationsStatus}}"  [className]="campaign?.campaignEmailNotificationsStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignEmailNotificationsStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignEmailNotificationsStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
-                  </td>
-                 </tr>
-               </ng-container>
-             </tbody>
-           </table>
-         </div>
+<div class="wrap-collabsible">
+  <input id="{{collapsableDivId}}" class="toggle" type="checkbox">
+  <label for="{{collapsableDivId}}" class="lbl-toggle">{{header}}</label>
+  <div class="collapsible-content">
+    <div class="content-inner">
+      <!--Processing Campaigns-->
+      <div>
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }">
+        </ngx-loading>
+         <div class="portlet light">
+           <div class="portlet-title">
+             <div class="caption">{{header}}</div>
+              <div class="inputs">
+                <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+                  <i class="fa fa-refresh margin" aria-hidden="true"></i>
+                </a>
+                <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+                <div class="input-icon right" id="icon-right">
+                  <input type="text" id="search-text" class="form-control" [(ngModel)]="pagination.searchKey"
+                    [ngModelOptions]="{standalone: true}" placeholder="search..."
+                    (keypress)="eventHandler($event.keyCode)">
+                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
+                    (click)="pagination.searchKey='';search()"></button>
+                  <button type="submit" class="search-box-item-click" (click)="search()">
+                    <i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+              </div> 
+              </div>
+           </div>
+          <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+          <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+           <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !apiError">
+             <div>
+               <div class="table-responsive">
+                 <table class='table tgrid' aria-describedby="">
+                   <thead>
+                     <tr>
+                      <th>Campaign</th>
+                      <th scope="row" translate></th>
+                      <th class="text-center" scope="row" translate>Launched</th>
+                      <th *ngIf="!scheduledCampaigns" class="text-center" scope="row" translate>Channel Campaign Shared To Partners</th>
+                      <th class="text-center" scope="row" translate>Campaign User User List Status</th>
+                      <th *ngIf="!scheduledCampaigns" class="text-center" scope="row" translate>Email Notifications</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <ng-container *ngFor="let campaign of pagination.pagedItems;let i = index">
+                       <tr>
+                        <td style="width: 10%;" class="hidden-xs">
+                          <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 " src="assets/images/video-email.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                          <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" src="assets/images/regular-email.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                          <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" src="assets/images/social-campaign.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                          <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 " src="assets/images/event-campaign.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                          <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1" src="assets/images/landing-page.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                          <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1" src="assets/images/survey.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                          <br>
+                          <h6 class="view-banner banner-top mt5" *ngIf="campaign.channelCampaign" translate>Through Campaign</h6>
+                          <h6 class="view-banner banner-top mt5" *ngIf="!campaign.channelCampaign && !campaign.nurtureCampaign" translate>To Campaign</h6>
+                          <h6 class="view-banner banner-top mt5" *ngIf="!campaign.channelCampaign && campaign.nurtureCampaign" translate>Redistributed Campaign</h6>
+                          <h5 class="view-banner mt5" *ngIf="campaign.campaignScheduleType==='SCHEDULE'" translate>Scheduled</h5>
+                        </td>
+                        <td title="{{campaign?.campaignName}}">{{campaign?.campaignName | slice: 0: 30}}
+                          <span *ngIf="campaign.campaignName?.length>30">...</span>
+                          <h5  [title]="campaign.id">
+                            <span translate>Id : <strong>{{campaign.campaignId}}</strong></span>
+                          </h5>
+                          <h5  [title]="campaign.companyName">
+                            <span translate>Company Name : <strong>{{campaign.companyName | slice: 0: 30}}</strong>
+                              <span *ngIf="campaign.companyName?.length>30">...</span>
+                            </span>
+                          </h5>
+                          <h5  title="Launch Time">
+                            <span translate> Launch Time : <strong>{{campaign?.launchTimeInString}}</strong>
+                            </span>
+                          </h5>
+                          <h5  title="Time Zone">
+                            <span translate> Time Zone : <strong>{{campaign?.timeZone}}</strong>
+                            </span>
+                          </h5>
+                          <h5  title="Total Users">
+                            <span translate> Total Users : <strong>{{campaign?.totalUsers}}</strong>
+                            </span>
+                          </h5>
+                          <h5  title="Distinct Users">
+                            <span translate> Distinct Users : <strong>{{campaign?.distinctUsers}}</strong>
+                            </span>
+                          </h5>
+      
+                        </td>
+                        <td class="text-center">
+                            <i  [className]="campaign?.launched ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
+                        </td>
+                        <td *ngIf="!scheduledCampaigns" class="text-center" title="{{campaign?.campaignPartnerStatus}}">
+                          <i  title="{{campaign?.campaignPartnerStatus}}" [className]="campaign?.campaignPartnerStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignPartnerStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignPartnerStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
+                        </td>
+                        <td class="text-center" title="{{campaign?.campaignUserListStatus}}">
+                            <i title="{{campaign?.campaignUserListStatus}}" [className]="campaign?.campaignUserListStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignUserListStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignUserListStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
+                        </td>
+                        <td *ngIf="!scheduledCampaigns" class="text-center" title="{{campaign?.campaignEmailNotificationsStatus}}">
+                          <i title="{{campaign?.campaignEmailNotificationsStatus}}"  [className]="campaign?.campaignEmailNotificationsStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignEmailNotificationsStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignEmailNotificationsStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
+                        </td>
+                       </tr>
+                     </ng-container>
+                   </tbody>
+                 </table>
+               </div>
+             </div>
+           </div>
+           <ng-container *ngIf="!apiError">
+              <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+              <app-pagination [pagination]="pagination"
+                (notifyParent)="setPage($event)"
+                (notifyParentDropDown)="findProcessingCampaigns($event)"
+                [hidden]="httpRequestLoader.isLoading">
+              </app-pagination>
+            </div>
+              <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
+                <strong>No Data Found.</strong>
+              </div>
+           </ng-container>
+           <div *ngIf="apiError" class="alert alert-danger">
+         <strong>Oops!Something went wrong.Please try again after sometime</strong>
        </div>
-     </div>
-     <ng-container *ngIf="!apiError">
-        <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-        <app-pagination [pagination]="pagination"
-          (notifyParent)="setPage($event)"
-          (notifyParentDropDown)="findProcessingCampaigns($event)"
-          [hidden]="httpRequestLoader.isLoading">
-        </app-pagination>
+         </div>
       </div>
-        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
-          <strong>No Data Found.</strong>
-        </div>
-     </ng-container>
-     <div *ngIf="apiError" class="alert alert-danger">
-   <strong>Oops!Something went wrong.Please try again after sometime</strong>
- </div>
-   </div>
+    </div>
+  </div>
 </div>
+
+
+
 

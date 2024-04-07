@@ -1,87 +1,96 @@
-<div class="col-xs-12">
-    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }">
-    </ngx-loading>
-     <div class="portlet light">
-       <div class="portlet-title">
-         <div class="caption">All Partner Companies</div>
-     <div class="inputs">
-     <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
-       <i class="fa fa-refresh margin" aria-hidden="true"></i>
-     </a>
-       <div id="left" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-           <select class="form-control" [(ngModel)]="sortOption.selectedPartnerCompanyDropDownOption"
-                       (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-                       <option *ngFor="let option of sortOption.partnerCompanySortDropDownOptions" [ngValue]="option">
-                         {{option.name}}</option>
-          </select>
-       </div>
-      <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-     <div class="input-icon right" id="icon-right">
-       <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
-         [ngModelOptions]="{standalone: true}" placeholder="search..."
-         (keypress)="eventHandler($event.keyCode)">
-       <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
-         (click)="sortOption.searchKey='';search()"></button>
-       <button type="submit" class="search-box-item-click" (click)="search()">
-         <i class="fa fa-search" aria-hidden="true"></i></button>
-     </div>
-   </div> 
-       </div>
-       </div>
-         <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-       <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
-         <div>
-           <div class="table-responsive">
-             <table class='table tgrid' aria-describedby="all-Approved-users">
-               <thead>
-                 <tr>
-                   <th scope="col">Company Name</th>
-                   <th scope="col">Company Profile Name</th>
-                   <th scope="col" class="text-center">Maximum Admins</th>
-                  <th id="center" scope="col">Action</th>
-                 </tr>
-               </thead>
-               <tbody>
-                 <ng-container *ngFor="let partnerCompany of pagination.pagedItems;let i = index">
-                   <tr>
-                     <td>
-                       {{partnerCompany?.companyName}}
-                     </td>
-                     <td>
-                      {{partnerCompany?.companyProfileName}}
-                    </td>
-                    <td class="text-center">
-                      {{partnerCompany?.maxAdmins}}
-                    </td>
-                    <td id="center">
-                      <a (click)="viewModules(partnerCompany)">
-                        <i class="fa fa-pencil-square-o"  aria-hidden="true" style="font-size: 20px;margin-left:5px"></i>
-                      </a>
-                    </td>
-                   </tr>
-                 </ng-container>
-               </tbody>
-             </table>
-           </div>
-         </div>
-       </div>
-       <ng-container *ngIf="!hasError">
-          <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-          <app-pagination [pagination]="pagination"
-            (notifyParent)="setPage($event)"
-            (notifyParentDropDown)="listAllPartners($event)"
-            [hidden]="httpRequestLoader.isLoading">
-          </app-pagination>
-        </div>
-          <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-            <strong>No Data Found.</strong>
+<div class="wrap-collabsible">
+  <input id="collapsible-partner-companies" class="toggle" type="checkbox">
+  <label for="collapsible-partner-companies" class="lbl-toggle">Partner Companies</label>
+  <div class="collapsible-content">
+    <div class="content-inner">
+      <!--Partner Companies-->
+      <div>
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }">
+        </ngx-loading>
+        <div class="portlet light">
+          <div class="portlet-title">
+            <div class="caption">All Partner Companies</div>
+        <div class="inputs">
+        <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+          <i class="fa fa-refresh margin" aria-hidden="true"></i>
+        </a>
+          <div id="left" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+              <select class="form-control" [(ngModel)]="sortOption.selectedPartnerCompanyDropDownOption"
+                          (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+                          <option *ngFor="let option of sortOption.partnerCompanySortDropDownOptions" [ngValue]="option">
+                            {{option.name}}</option>
+              </select>
           </div>
-       </ng-container>
-       <div *ngIf="hasError" class="alert alert-danger">
-     <strong>Oops!Something went wrong.Please try again after sometime</strong>
-   </div>
-     </div>
+          <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+        <div class="input-icon right" id="icon-right">
+          <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+            [ngModelOptions]="{standalone: true}" placeholder="search..."
+            (keypress)="eventHandler($event.keyCode)">
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+            (click)="sortOption.searchKey='';search()"></button>
+          <button type="submit" class="search-box-item-click" (click)="search()">
+            <i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+      </div> 
+          </div>
+          </div>
+            <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+          <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
+            <div>
+              <div class="table-responsive">
+                <table class='table tgrid' aria-describedby="all-Approved-users">
+                  <thead>
+                    <tr>
+                      <th scope="col">Company Name</th>
+                      <th scope="col">Company Profile Name</th>
+                      <th scope="col" class="text-center">Maximum Admins</th>
+                      <th id="center" scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let partnerCompany of pagination.pagedItems;let i = index">
+                      <tr>
+                        <td>
+                          {{partnerCompany?.companyName}}
+                        </td>
+                        <td>
+                          {{partnerCompany?.companyProfileName}}
+                        </td>
+                        <td class="text-center">
+                          {{partnerCompany?.maxAdmins}}
+                        </td>
+                        <td id="center">
+                          <a (click)="viewModules(partnerCompany)">
+                            <i class="fa fa-pencil-square-o"  aria-hidden="true" style="font-size: 20px;margin-left:5px"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="!hasError">
+              <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+              <app-pagination [pagination]="pagination"
+                (notifyParent)="setPage($event)"
+                (notifyParentDropDown)="listAllPartners($event)"
+                [hidden]="httpRequestLoader.isLoading">
+              </app-pagination>
+            </div>
+              <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                <strong>No Data Found.</strong>
+              </div>
+          </ng-container>
+          <div *ngIf="hasError" class="alert alert-danger">
+        <strong>Oops!Something went wrong.Please try again after sometime</strong>
+      </div>
+        </div>
+      </div>
+    </div>
   </div>
+
 
    <!-- ----------------------Module Access------------------- -->
    <div class="modal fade right" id="partner-module-access" data-backdrop="static">

@@ -120,4 +120,10 @@ export class RecentLoggedInUsersComponent implements OnInit {
     this.notifyAdminReportComponent.emit(user);
   }
 
+  
+  navigateToDashboardStats(report:any){
+    this.loading = true;
+    this.referenceService.goToRouter('/home/dashboard/dashboard-stats/'+report.userId);
+   } 
+
 }

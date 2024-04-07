@@ -1,72 +1,82 @@
-<div class="col-xs-12">
-  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <div class="portlet light">
-     <div class="portlet-title">
-        <div class="caption">Active Queries</div>
-        <div class="inputs">
-           <a *ngIf="activeQueries?.length>0" class="close-circle" (click)="exportexcel()" data-toggle="tooltip" data-placement="top" title="Export To Excel">
-           <i class="fa fa-download margin" aria-hidden="true"></i>
-           </a>
-           <a class="close-circle" (click)="findActiveQueries()" data-toggle="tooltip" data-placement="top" title="Refresh">
-           <i class="fa fa-refresh margin" aria-hidden="true"></i>
-           </a>
-        </div>
+
+<div class="wrap-collabsible">
+   <input id="collapsible-active-queries" class="toggle" type="checkbox">
+   <label for="collapsible-active-queries" class="lbl-toggle">Active Queries</label>
+   <div class="collapsible-content">
+     <div class="content-inner">
+      <!--Active Queries-->
+      <div>
+         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+         <div class="portlet light">
+            <div class="portlet-title">
+               <div class="caption">Active Queries</div>
+               <div class="inputs">
+                  <a *ngIf="activeQueries?.length>0" class="close-circle" (click)="exportexcel()" data-toggle="tooltip" data-placement="top" title="Export To Excel">
+                  <i class="fa fa-download margin" aria-hidden="true"></i>
+                  </a>
+                  <a class="close-circle" (click)="findActiveQueries()" data-toggle="tooltip" data-placement="top" title="Refresh">
+                  <i class="fa fa-refresh margin" aria-hidden="true"></i>
+                  </a>
+               </div>
+            </div>
+            <div class="alert alert-warning text-center">
+               <strong>Please Click On The Refresh Icon To See Active Queries</strong>
+            </div>
+            <p class="success"><strong>Total Active Queries : {{activeQueries?.length}}</strong></p>
+            <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+            <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !apiError">
+               <div>
+                  <div class="table-responsive">
+                     <table class='table tgrid' aria-describedby="" id="active-queries-table">
+                        <thead>
+                           <tr>
+                              <th class="text-center" scope="row" translate>PID</th>
+                              <th class="text-center" scope="row" translate>DB</th>
+                              <th class="text-center" scope="row" translate>Ip</th>
+                              <th class="text-center" scope="row" translate>Accessed From</th>
+                              <th class="text-center" scope="row" translate>Start Time</th>
+                              <th class="text-center" scope="row" translate>Used In</th>
+                              <th class="text-center"  scope="row" translate>Query</th>
+                              <th class="text-center" scope="row" translate>Copy</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <ng-container *ngFor="let activeQuery of activeQueries;let i = index">
+                              <tr>
+                                 <td class="text-center">{{activeQuery?.processId}}</td>
+                                 <td class="text-center">{{activeQuery?.dataBaseName}}</td>
+                                 <td class="text-center">{{activeQuery?.ipAddress}}</td>
+                                 <td class="text-center">{{activeQuery?.queryAccessedFrom}}</td>
+                                 <td class="text-center">
+                                    <app-display-date-and-time [dateAndTimeUTCString]="activeQuery?.queryStartedOnInUTCString"></app-display-date-and-time>
+                                 </td>
+                                 <td class="text-center">{{activeQuery?.queryUsedIn}}
+                                    <br>
+                                    <span class="success" id="copied-query-{{i}}" style="display: none;">
+                                    <strong>Query copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+                                    </span>
+                                 </td>
+                                 <td class="text-center">
+                                    <textarea readonly="readonly" class="form-control" #queryText>{{activeQuery?.query}}</textarea>
+                                 </td>
+                                 <td class="text-center">
+                                    <a (click)="copyQueryText(queryText,i)"><i class="fa fa-copy fsfpx" aria-hidden="true"></i></a>
+                                 </td>
+                              </tr>
+                           </ng-container>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+               <div *ngIf="activeQueries?.length==0 && !httpRequestLoader.isLoading && !apiError" class="alert alert-info text-center">
+                  <strong>No Active Queries Found</strong>
+               </div>
+            </div>
+            <div *ngIf="apiError" class="alert alert-danger">
+               <strong>Oops!Something went wrong.Please try again after sometime</strong>
+            </div>
+         </div>
+      </div>
      </div>
-     <div class="alert alert-warning text-center">
-        <strong>Please Click On The Refresh Icon To See Active Queries</strong>
-     </div>
-     <p class="success"><strong>Total Active Queries : {{activeQueries?.length}}</strong></p>
-     <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-     <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !apiError">
-        <div>
-           <div class="table-responsive">
-              <table class='table tgrid' aria-describedby="" id="active-queries-table">
-                 <thead>
-                    <tr>
-                       <th class="text-center" scope="row" translate>PID</th>
-                       <th class="text-center" scope="row" translate>DB</th>
-                       <th class="text-center" scope="row" translate>Ip</th>
-                       <th class="text-center" scope="row" translate>Accessed From</th>
-                       <th class="text-center" scope="row" translate>Start Time</th>
-                       <th class="text-center" scope="row" translate>Used In</th>
-                       <th class="text-center"  scope="row" translate>Query</th>
-                       <th class="text-center" scope="row" translate>Copy</th>
-                    </tr>
-                 </thead>
-                 <tbody>
-                    <ng-container *ngFor="let activeQuery of activeQueries;let i = index">
-                       <tr>
-                          <td class="text-center">{{activeQuery?.processId}}</td>
-                          <td class="text-center">{{activeQuery?.dataBaseName}}</td>
-                          <td class="text-center">{{activeQuery?.ipAddress}}</td>
-                          <td class="text-center">{{activeQuery?.queryAccessedFrom}}</td>
-                          <td class="text-center">
-                             <app-display-date-and-time [dateAndTimeUTCString]="activeQuery?.queryStartedOnInUTCString"></app-display-date-and-time>
-                          </td>
-                          <td class="text-center">{{activeQuery?.queryUsedIn}}
-                             <br>
-                             <span class="success" id="copied-query-{{i}}" style="display: none;">
-                             <strong>Query copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
-                             </span>
-                          </td>
-                          <td class="text-center">
-                             <textarea readonly="readonly" class="form-control" #queryText>{{activeQuery?.query}}</textarea>
-                          </td>
-                          <td class="text-center">
-                             <a (click)="copyQueryText(queryText,i)"><i class="fa fa-copy fsfpx" aria-hidden="true"></i></a>
-                          </td>
-                       </tr>
-                    </ng-container>
-                 </tbody>
-              </table>
-           </div>
-        </div>
-        <div *ngIf="activeQueries?.length==0 && !httpRequestLoader.isLoading && !apiError" class="alert alert-info text-center">
-           <strong>No Active Queries Found</strong>
-        </div>
-     </div>
-     <div *ngIf="apiError" class="alert alert-danger">
-        <strong>Oops!Something went wrong.Please try again after sometime</strong>
-     </div>
-  </div>
-</div>
+   </div>
+ </div>

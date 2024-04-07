@@ -10,7 +10,7 @@ declare var $:any;
 @Component({
   selector: "app-active-queries",
   templateUrl: "./active-queries.component.html",
-  styleUrls: ["./active-queries.component.css"],
+  styleUrls: ["./active-queries.component.css","../admin-report/admin-report.component.css"],
   providers: [HttpRequestLoader, Properties],
 })
 export class ActiveQueriesComponent implements OnInit {
