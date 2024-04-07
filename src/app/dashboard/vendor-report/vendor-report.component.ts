@@ -9,6 +9,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { DynamicEmailContentComponent } from '../dynamic-email-content/dynamic-email-content.component';
+import { unescape } from 'querystring';
 declare var $: any, swal: any;
 @Component({
     selector: 'app-vendor-report',
@@ -49,7 +50,6 @@ export class VendorReportComponent implements OnInit {
     eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
 
     search() {
-
         try {
             this.pagination.searchKey = this.searchKey;
             this.pagination.pageIndex = 1;
@@ -88,23 +88,22 @@ export class VendorReportComponent implements OnInit {
 
     getVendorsDetails() {
         try {
+            this.customResponse = new CustomResponse();
             this.isListLoading = true;
             this.dashboardService.getVendorsList(this.pagination)
                 .subscribe(
                     (data: any) => {
-                        console.log(data);
                         this.totalRecords = data.totalRecords;
                         this.vendorsDetails = data.data;
                         this.pagination.totalRecords = this.totalRecords;
                         this.pagination = this.pagerService.getPagedItems(this.pagination, this.vendorsDetails);
-
                         if (data.totalRecords === 0) {
                             this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
                         }
                         this.isListLoading = false;
                     },
                     error => console.error(error),
-                    () => console.info("vendors reports() finished")
+                    () => {}
                 )
         } catch (error) {
             console.error(error, "adminReportComponent", "loadingAllVendors()");
@@ -226,8 +225,14 @@ export class VendorReportComponent implements OnInit {
     }
 
    navigateToDashboardStats(report:any){
-    this.loading = true;
-    this.referenceService.goToRouter('/home/dashboard/dashboard-stats/'+report.id);
+    let companyProfileName = report['companyProfileName'];
+    if(companyProfileName!=undefined){
+        this.loading = true;
+        this.referenceService.goToRouter('/home/dashboard/dashboard-stats/'+report.id+"/"+report.companyId+"/"+report.alias);
+    }else{
+        this.referenceService.showSweetAlertErrorMessage("Company Profile Not Created.");
+    }
+   
    } 
 
 }

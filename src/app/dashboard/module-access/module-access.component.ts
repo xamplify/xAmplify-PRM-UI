@@ -47,14 +47,19 @@ export class ModuleAccessComponent implements OnInit {
   downloadLoader = false;
   headerName = "";
   isDashboardStats = false;
-  userId = 0;
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService, private mdfService: MdfService) { }
   ngOnInit() {
     this.isDashboardStats = this.referenceService.getCurrentRouteUrl().indexOf("dashboard-stats")>-1;
     if(this.isDashboardStats){
       this.headerName = "Dashboard Stats";
-      this.userId = this.route.snapshot.params['userId'];
-      this.authenticationService.selectedVendorId = this.userId;
+      this.authenticationService.selectedVendorId = this.route.snapshot.params['userId'];
+      this.companyId = this.route.snapshot.params['companyId'];
+      this.userAlias = this.route.snapshot.params['userAlias'];
+      if(this.userAlias!=undefined){
+        this.getCompanyAndUserDetails();
+      }else{
+        this.companyLoader = false;
+      }
     }else{
       this.companyId = this.route.snapshot.params['alias'];
       this.userAlias = this.route.snapshot.params['userAlias'];
