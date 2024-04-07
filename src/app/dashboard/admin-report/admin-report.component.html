@@ -46,6 +46,7 @@
       </div>
     </section>
     <!---Vendor Report-->
+    <app-vendor-report *ngIf="!detailsTielsView"></app-vendor-report>
     <div class="col-xs-12" *ngIf="!detailsTielsView">
       <app-list-loader [rowsCount]="12" *ngIf="isListLoading"></app-list-loader>
       <div class="portlet light">
