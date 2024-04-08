@@ -1,5 +1,5 @@
 <div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
-	<div class="page-bar" style="margin-bottom:0px!important">
+	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li>
 				<i class="fa fa-home" aria-hidden="true"></i>
@@ -7,12 +7,11 @@
 				<i class="fa fa-angle-right" aria-hidden="true"></i>
 			</li>
 			<li>
-				<i class="fa fa-pencil-square-o" aria-hidden="true"></i>Module Access
+				{{headerName}}
 			</li>
 		</ul>
 	</div>
-
-	<div class="portlet light">
+	<div class="portlet light" *ngIf="!isDashboardStats">
 		<div class="portlet-body clearfix">
 			<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 			<app-dashboard-loader *ngIf="companyLoader"></app-dashboard-loader>
@@ -54,7 +53,7 @@
 					</ng-container>
 				  </tbody>
 				</table>
-			  </div>
+			</div>
 			  <app-dashboard-loader *ngIf="dnsLoader"></app-dashboard-loader>
 			  <div class="table-responsive" *ngIf="!dnsLoader">
 				  <div *ngIf="dnsError" class="alert alert-danger">
@@ -358,6 +357,49 @@
 				<button *ngIf="!moduleLoader" type="button" (click)="updateModuleAccess()" class="btn Btn-Green pull-right">Update</button>
 			</fieldset>
 		</div>
+	</div>
+	<div *ngIf="isDashboardStats">
+		<app-dashboard-loader *ngIf="companyLoader"></app-dashboard-loader>
+			<div class="table-responsive" *ngIf="!companyLoader && userAlias">
+				<table class='table tgrid' aria-describedby="company-details-table">
+				  <thead>
+					<tr>
+					  <th style="width: 20%;" scope="row">NAME</th>
+					  <th scope="row">COMPANY</th>
+					  <th scope="row">STATUS</th>
+					  <th class='text-center' scope="row">REGISTRATION DATE</th>
+					  <th class='text-center' scope="row">LAST LOGIN</th>
+					  <th class='text-center' scope="row">UPDATED TIME</th>
+					  <th class='text-center' scope="row">Role</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<ng-container>
+					  <tr>
+						<td>
+						  <app-user-info [userInfo]="companyAndUserDetails">
+						  </app-user-info>
+						</td>
+						<td>{{companyAndUserDetails.companyName}}</td>
+						<td>{{companyAndUserDetails.userStatus}}</td>
+						<td class='text-center'>
+						  <app-timestamp [dateAndTime]="companyAndUserDetails.dateReg"> </app-timestamp>
+						</td>
+						<td class='text-center'>
+						  <app-timestamp [dateAndTime]="companyAndUserDetails.dateLastLogin"> </app-timestamp>
+						</td>
+						<td class='text-center'>
+						  <app-timestamp [dateAndTime]="companyAndUserDetails.updatedTime"> </app-timestamp>
+						</td>
+						<td class='text-center'>
+							{{companyAndUserDetails.roleName}}
+						  </td>
+					  </tr>
+					</ng-container>
+				  </tbody>
+				</table>
+			</div>
+		<app-dashboard-stats></app-dashboard-stats>
 	</div>
 </div>
 <ng-template #scheduleCampaignsInfo>

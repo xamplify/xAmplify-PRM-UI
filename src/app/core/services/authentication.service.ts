@@ -1109,6 +1109,9 @@ export class AuthenticationService {
   /****XNFR-317****/
   findAllTeamMembers(pagination: Pagination) {
     pagination.userId = this.getUserId();
+    if(pagination.userId==1){
+      pagination.userId = pagination.userListId;
+    }
     let url = this.REST_URL + "teamMember/findAll?access_token=" + this.access_token;
     return this.callPostMethod(url, pagination);
   }

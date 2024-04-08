@@ -2568,3 +2568,7 @@ table tr:nth-child(odd).highlightRow, table tr:nth-child(odd).highlightRow:hover
 .write-new button{
   box-shadow: none !important;
 }
+.panel-heading {
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+}

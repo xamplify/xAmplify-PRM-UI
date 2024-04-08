@@ -45,16 +45,33 @@ export class ModuleAccessComponent implements OnInit {
   statusCode = 0;
   analyticsCountDto: AnalyticsCountDto = new AnalyticsCountDto();
   downloadLoader = false;
+  headerName = "";
+  isDashboardStats = false;
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService, private mdfService: MdfService) { }
   ngOnInit() {
-    this.companyId = this.route.snapshot.params['alias'];
-    this.userAlias = this.route.snapshot.params['userAlias'];
-    this.companyProfilename = this.route.snapshot.params['companyProfileName'];
-    this.getCompanyAndUserDetails();
-    this.getModuleAccessByCompanyId();
-    this.getDnsConfiguredDetails();
-    this.getSpfConfiguredDetails();
-    this.findMaximumAdminsLimitDetails();
+    this.isDashboardStats = this.referenceService.getCurrentRouteUrl().indexOf("dashboard-stats")>-1;
+    if(this.isDashboardStats){
+      this.headerName = "Dashboard Stats";
+      this.authenticationService.selectedVendorId = this.route.snapshot.params['userId'];
+      this.companyId = this.route.snapshot.params['companyId'];
+      this.userAlias = this.route.snapshot.params['userAlias'];
+      if(this.userAlias!=undefined){
+        this.getCompanyAndUserDetails();
+      }else{
+        this.companyLoader = false;
+      }
+    }else{
+      this.companyId = this.route.snapshot.params['alias'];
+      this.userAlias = this.route.snapshot.params['userAlias'];
+      this.companyProfilename = this.route.snapshot.params['companyProfileName'];
+      this.getCompanyAndUserDetails();
+      this.getModuleAccessByCompanyId();
+      this.getDnsConfiguredDetails();
+      this.getSpfConfiguredDetails();
+      this.findMaximumAdminsLimitDetails();
+      this.headerName = "Module Access";
+    }
+   
   }
 
   

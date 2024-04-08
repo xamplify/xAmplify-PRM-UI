@@ -4,10 +4,35 @@
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div>
   <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
-    <li class="active"><a data-toggle="tab" href="#home">User Info</a></li>
-    <li *ngIf="!(authenticationService.module?.isOnlyPartner || isPartnerTeamMember)"><a data-toggle="tab"
-        href="#menu1">Custom fields</a></li>
+    <li class="active"><a (click)="setActiveTab('home')" data-toggle="tab" href="#home">User Info</a></li>
+    <li *ngIf="!(authenticationService.module?.isOnlyPartner || isPartnerTeamMember)"><a (click)="setActiveTab('menu1')"
+        data-toggle="tab" href="#menu1">Custom fields</a>
+    </li>
     <li class="closebtn"><button type="button" class="btn btn-warning" (click)="closeSfSettings()">Close</button></li>
+    <li *ngIf="activeTab === 'menu1' && haveCustomFields " class="closebtn">
+      <div class="inputs mr10">
+        <div class="portlet-input input-inline align-width">
+          <div class="input-icon right">
+            <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+              placeholder="Search.." (keypress)="searchFieldsKeyPress($event.keyCode)">
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+              (click)="clearFieldSearch()"></button>
+            <button type="submit" class="search-box-item-click" (click)="searchFields()"><i
+                class="fa fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li *ngIf="activeTab === 'menu1' && haveCustomFields " class="closebtn">
+      <div class="inputs mr10">
+        <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
+          (ngModelChange)="sortFieldsByOption()">
+          <ng-container *ngFor="let sort of sortOptions">
+            <option [ngValue]="sort.value">{{sort.name}}</option>
+          </ng-container>
+        </select>
+      </div>
+    </li>
   </ul>
 </div>
 
@@ -25,18 +50,15 @@
         <span>Organization: {{integrationDetails?.externalOrganizationName}}</span>
       </div>
       <div class="btn-group active-btns mb_right0" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-primary activate-btn integration-btn" *ngIf="!(integrationDetails?.activeCRM)"
-          (click)="activateCRM()">Activate</button>
+        <button type="button" class="btn btn-primary activate-btn integration-btn"
+          *ngIf="!(integrationDetails?.activeCRM)" (click)="activateCRM()">Activate</button>
         <button type="button" class="btn btn-primary inetgrations_activate_bgcolor activated-btn ActivatedBtn"
           *ngIf="integrationDetails?.activeCRM"><i class="fa fa-star"
             style="font-size: 15px !important;"></i>Activated</button>
-        <button type="button" class="btn btn-secondary unlink-btn disable-btn-text-color deactivate-btn" (click)="unlinkCRM()"
-          [disabled]="!(integrationDetails?.enableUnlink)">Unlink</button>
+        <button type="button" class="btn btn-secondary unlink-btn disable-btn-text-color deactivate-btn"
+          (click)="unlinkCRM()" [disabled]="!(integrationDetails?.enableUnlink)">Unlink</button>
       </div>
     </div>
-
-
-
   </div>
   <div id="menu1" class="tab-pane fade pt-top">
     <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
@@ -66,7 +88,9 @@
               <th>Data Type</th>
               <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Required</th> -->
               <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Place Holder</th> -->
-              <th *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'">Actions</th>
+              <th
+                *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'">
+                Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -81,7 +105,9 @@
                     title="{{sfCustomField.label}}">{{sfCustomField.label | slice:0:30}}
                     <span *ngIf="sfCustomField.label?.length>30">...</span>
                   </span>
-                  <ul *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'" class="textDecoration">
+                  <ul
+                    *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'"
+                    class="textDecoration">
                     <li>{{sfCustomField.displayName}}</li>
                     <li
                       *ngIf="(sfCustomField.formDefaultFieldType != null)  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)">
@@ -118,14 +144,16 @@
                   <input *ngIf="sfCustomField.selected" type="text" class="form-control" placeholder="PlaceHolder"
                     [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
                 </td> -->
-                <td *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'">
+                <td
+                  *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'">
                   <a *ngIf="sfCustomField.selected" class="custom-icon" (click)="toggleSettings(sfCustomField)">
                     <i *ngIf="sfCustomField.selected" class="fa fa-edit mr5 IconCustomization SingleIconCu"></i>
                     <div class="clickicons"></div>
                   </a>
                 </td>
               </tr>
-              <tr *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+              <tr
+                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
                 [ngClass]="{'hidden': !sfCustomField.showSettings}">
                 <td colspan="4">
                   <div class="settings-table">
@@ -135,33 +163,39 @@
                         <ng-container>
                           <tr>
                             <td class="p10" style="width:25%;">
-                              <span *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                              <span
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
                                 class="alignMiddle">Required
                                 <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip"
                                   data-placement="right"
                                   title="Your partner must fill in this custom field if you toggle on this option."></span>
                                 <label class="toggleOnOff"
                                   [ngClass]="!sfCustomField?.canEditRequired ? 'disabled-opacity':''">
-                                  <input class="checkBox_shadow" type="checkbox" [disabled]="!sfCustomField.canEditRequired"
-                                    [(ngModel)]="sfCustomField.required" [ngModelOptions]="{standalone: true}">
+                                  <input class="checkBox_shadow" type="checkbox"
+                                    [disabled]="!sfCustomField.canEditRequired" [(ngModel)]="sfCustomField.required"
+                                    [ngModelOptions]="{standalone: true}">
                                   <span class="sliderOnOff"></span>
                                   <span class="labels" data-on="ON" data-off="OFF"></span>
                                 </label>
                               </span>
                             </td>
                             <td class="p10" style="width:25%;">
-                              <label *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')" for="html"
-                                style="float: left;">Display Name</label>
-                              <input *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')" type="text"
-                                class="form-control" [(ngModel)]="sfCustomField.displayName"
+                              <label
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                                for="html" style="float: left;">Display Name</label>
+                              <input
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                                type="text" class="form-control" [(ngModel)]="sfCustomField.displayName"
                                 [ngModelOptions]="{standalone: true}" placeholder="Display Name">
                             </td>
                             <td class="p10" style="width:25%;">
-                              <label *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')" for="html"
-                                style="float: left;">PlaceHolder</label>
-                              <input *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')" type="text"
-                                class="form-control" placeholder="PlaceHolder" [(ngModel)]="sfCustomField.placeHolder"
-                                [ngModelOptions]="{standalone: true}">
+                              <label
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                                for="html" style="float: left;">PlaceHolder</label>
+                              <input
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                                type="text" class="form-control" placeholder="PlaceHolder"
+                                [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
                             </td>
                             <td
                               *ngIf="(sfCustomField.type === 'number' || sfCustomField.type === 'text' || sfCustomField.type === 'date')  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin) && integrationType === 'HUBSPOT'"
@@ -224,14 +258,14 @@
         <span *ngIf="integrationType !='SALESFORCE'">There are no custom fields in your {{ integrationType | titlecase
           }} account.</span>
       </div>
-      <div class="modal-footer border-none pr0 pt0">
+      <div class="modal-footer border-none pr0 pt0 pl0">
+        <span *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="align-item-left">
+          <strong>Total Records :{{sfcfPager.totalItems}}</strong>
+        </span>
         <button type="button" class="button_blue bgcolor-unset pr0 px-9"
           *ngIf="sfcfPager.pages && sfcfPager.pages.length" (click)="saveCustomFieldsSelection()"><span
             class="btn btn-primary transition txt_pd-top3">Submit</span></button>
       </div>
     </ng-container>
-
-
   </div>
 </div>
-<!--Nav-end-->

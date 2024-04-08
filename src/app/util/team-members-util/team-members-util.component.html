@@ -3,12 +3,12 @@
   <!--Page-bar---->
   <div class="page-bar" *ngIf="isTeamMemberModule">
     <ul class="page-breadcrumb">
-      <li *ngIf="!authenticationService.isSuperAdmin()">
+      <li *ngIf="!isSuperAdminAccessing">
         <i class="fa fa-home" aria-hidden="true"></i>
         <a (click)="goToHome()">Home</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
-      <li *ngIf="authenticationService.isSuperAdmin()">
+      <li *ngIf="isSuperAdminAccessing">
         <i class="fa fa-home" aria-hidden="true"></i>
         <a (click)="goToAdminReport('/home/dashboard/admin-report')">Admin Report</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -59,18 +59,16 @@
               <div class="caption mg-top7">Team Members
               </div>
             </div>
-            <div class="col-lg-4 col-md-3 col-sm-5 col-xs-4  moveButtonsCu button_placement"
-              style="padding-right: 10px;">
+            <div class="col-lg-4 col-md-3 col-sm-5 col-xs-4  moveButtonsCu button_placement" style="padding-right: 10px;">
               <div class="row">
-                <div class="clearfix" *ngIf="isTeamMemberModule">
+                <div class="clearfix" *ngIf="isTeamMemberModule &&!isNavigatedFromSuperAdminScreen">
                   <section class="clearfix" style="margin-top:-4px;">
                     <ng-container
                       *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
                       <div class="col-xs-6 col-sm-4 hidden-xs pull-right" style="padding:0px">
                         <button class="btn-xs btn-padding fileinput-button btn-block rounded-0 button bgcolor-unset"
                           style="position: relative;">
-                          <span class="btn Btn-Green transition secondary_btn_width team_green_btn_text">Upload a
-                            CSV</span>
+                          <span class="btn Btn-Green transition secondary_btn_width team_green_btn_text">Upload a CSV</span>
                           <input type="file" title="" class="file-upload" #fileImportInput name="File Upload"
                             id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
                         </button>

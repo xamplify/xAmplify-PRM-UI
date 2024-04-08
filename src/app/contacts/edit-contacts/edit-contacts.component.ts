@@ -721,7 +721,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	updateListFromOneAtTimeWithPermission() {
 		this.loading = true;
 		this.xtremandLogger.info("update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify(this.users));
-		this.contactService.updateContactList(this.contactListId, this.users)
+		this.setLegalBasisOptions(this.users);
+		this.userUserListWrapper = this.manageContact.getUserUserListWrapperObj(this.users, this.contactListName, this.isPartner, true,
+			"CONTACT", "MANUAL", null, false);
+		this.userUserListWrapper.userList.id = this.contactListId;
+		this.contactService.updateContactList(this.userUserListWrapper)
 			.subscribe(
 				(data: any) => {
 					if (data.access) {
@@ -745,6 +749,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 						if (data.statusCode == 417) {
 							this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
+						}
+						if(data.statusCode == 401){
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
+						}
+						if(data.statusCode == 402){
+							this.emailNotificationCustomResponse = new CustomResponse('ERROR', data.message, true);
 						}
 						this.checkingLoadContactsCount = true;
 						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
@@ -943,7 +953,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.setLegalBasisOptions(this.users);
 		}
 		this.xtremandLogger.info("update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify(this.users));
-		this.contactService.updateContactList(this.contactListId, this.users)
+		this.userUserListWrapper = this.manageContact.getUserUserListWrapperObj(this.users, this.contactListName, this.isPartner, true,
+			"CONTACT", "MANUAL", null, false);
+		this.userUserListWrapper.userList.id = this.contactListId;
+		this.contactService.updateContactList(this.userUserListWrapper)
 			.subscribe(
 				data => {
 					if (data.access) {
@@ -977,11 +990,16 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						if (data.statusCode == 417) {
 							this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
 						}
+						if (data.statusCode == 401) {
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
+						}
+						if (data.statusCode == 402) {
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
+						}
 
 						this.checkingLoadContactsCount = true;
 						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 						this.contactsCount(this.selectedContactListId);
-
 
 						if (data.statusCode == 200) {
 							//this.getContactsAssocialteCampaigns();
@@ -1639,7 +1657,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	updateListFromClipBoardWithPermission() {
 		this.loading = true;
 		this.setLegalBasisOptions(this.users);
-		this.contactService.updateContactList(this.contactListId, this.users)
+		this.userUserListWrapper = this.manageContact.getUserUserListWrapperObj(this.users, this.contactListName, this.isPartner, true,
+			"CONTACT", "MANUAL", null, false);
+		this.userUserListWrapper.userList.id = this.contactListId;
+		this.contactService.updateContactList(this.userUserListWrapper)
 			.subscribe(
 				data => {
 					if (data.access) {
@@ -1671,6 +1692,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 						if (data.statusCode == 417) {
 							this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
+						}
+						if(data.statusCode == 401){
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
+						}
+						if(data.statusCode == 402){
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
 						}
 
 						this.checkingLoadContactsCount = true;

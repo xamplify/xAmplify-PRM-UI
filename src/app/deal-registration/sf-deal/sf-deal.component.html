@@ -202,6 +202,7 @@
       <textarea [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control"
         placeholder="{{columnInfo.placeHolder}}" maxlength="{{columnInfo.labelLength}}"
         (input)="validateField(columnInfo)" [disabled]="isVendor || isPreview"></textarea>
+        <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
     </ng-container>
     <!--------------------------------Radio------------------------------------------->
     <ng-container *ngIf="columnInfo.labelType=='radio'">

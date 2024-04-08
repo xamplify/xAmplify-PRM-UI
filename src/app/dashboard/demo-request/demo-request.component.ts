@@ -16,7 +16,7 @@ declare var  $: any;
 @Component({
   selector: 'app-demo-request',
   templateUrl: './demo-request.component.html',
-  styleUrls: ['./demo-request.component.css'],
+  styleUrls: ['./demo-request.component.css','../admin-report/admin-report.component.css'],
   providers: [Pagination, HttpRequestLoader, Properties,SortOption]
 })
 export class DemoRequestComponent implements OnInit {

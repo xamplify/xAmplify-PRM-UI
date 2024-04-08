@@ -57,6 +57,8 @@ const routes: Routes = [
   {path:'sso-samlsecurity',component:SamlsecurityComponent},
   {path:'v-templates', component:VanityEmailTemplatesComponent},
   {path:'module-access/:alias/:userAlias/:companyProfileName', component:ModuleAccessComponent},
+  {path:'dashboard-stats/:userId/:companyId/:userAlias', component:ModuleAccessComponent},
+  {path:'dashboard-stats/:userId/:companyId', component:ModuleAccessComponent},
   {path:'spf', component:SpfComponent},
   {path:'workflow-analytics',component:AdminReportCampaignWorkflowAnalyticsComponent},
   {path:'edit-module-names/:companyId',component:EditModuleNameComponent},

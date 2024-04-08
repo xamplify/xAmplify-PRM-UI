@@ -7,10 +7,7 @@
         <i class="fa fa-home" aria-hidden="true"></i>
         <a (click)="detailsTielsView = false">Admin Report</a>
       </li>
-      <li *ngIf="detailsTielsView">
-        <i class="fa fa-angle-right" aria-hidden="true"></i>
-        <a>Vendor Report</a>
-      </li>
+      
     </ul>
   </div>
   <!--Upgrade Account-->
@@ -26,241 +23,103 @@
   </div>
 
   <div>
-   <app-list-all-users *ngIf="!detailsTielsView"></app-list-all-users> 
-    <app-demo-request *ngIf="!detailsTielsView"></app-demo-request>
-	  <section *ngIf="!detailsTielsView">
-	  <!-- -Top 10 Recent Registered Users -->
-	  <app-recent-logged-in-users [type]="'registered'" (notifyAdminReportComponent)="selectedVendorDetails($event)"></app-recent-logged-in-users>
-	  <!-- ---Top 10 Recent LoggedIn Users -->
-	  <app-recent-logged-in-users [type]="'logged in'" (notifyAdminReportComponent)="selectedVendorDetails($event)"></app-recent-logged-in-users>
-    </section>
-    <div class="col-xs-12" *ngIf="!detailsTielsView">
-      <app-list-loader [rowsCount]="12" *ngIf="isListLoading"></app-list-loader>
-      <div class="portlet light">
-        <div class="portlet-title">
-          <div class="caption">Vendor Report</div>
-		  <div class="inputs sort-class col-xs-5" align="right" style="float: right; margin-top: 2px;">
-      <div class="col-xs-6" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-        <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
-			<ng-container *ngFor="let sort of sortOptions; let i = index">
-				<option [ngValue]="sort">{{sort.name}}</option>
-			</ng-container>
-		</select>
-      </div>
-      <div class="col-xs-6 portlet-input input-inline search-class" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-        <div class="input-icon right" style="width: 230px; margin-left: -22px;">
-          <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search"
-            (keypress)="eventHandler($event.keyCode)">
-
-          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
-          <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
-        </div>
-      </div>
-    </div>
-        </div>
-        <div class="portlet-body clearfix">
-          <div *ngIf="!isListLoading">
-            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-            <div class="table-responsive" *ngIf="pagination.totalRecords">
-              <table class='table tgrid'  aria-describedby="">
-                <thead>
-                  <tr>
-                    <th style="width: 20%;" scope="col">NAME</th>
-                    <th class='text-center' scope="col">COMPANY</th>
-                    <th class='text-center' scope="col">ROLE</th>
-                    <th class='text-center' scope="col">STATUS</th>
-                    <th class='text-center' scope="col">REGISTRATION DATE</th>
-                    <th class='text-center' scope="col">LAST LOGIN</th>
-                    <th class='text-center' scope="col">UPDATED TIME</th>
-                    <th class="text-center" scope="col">ACTIONS</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ng-container *ngFor="let report of vendorsDetails;let i = index">
-                    <!-- this div for ngFor -->
-                    <tr (click)="selectedVendorDetails(report)" class="highletedRow">
-                      <td>
-                        <app-user-info [userInfo]="report">
-                        </app-user-info>
-                      </td>
-                      <td>{{report.companyName}}</td>
-                      <td>
-                        <span *ngIf="report.roleId==2">OrgAdmin</span>
-                        <span *ngIf="report.roleId==13">Vendor</span>
-                        <span *ngIf="report.roleId==20">PRM</span>
-                        <span *ngIf="report.roleId==18">Marketing</span>
-                      </td>
-                      <td>{{report.userStatus}}</td>
-                      <td>
-                        <app-timestamp [dateAndTime]="report.dateReg"> </app-timestamp>
-                      </td>
-                      <td>
-                        <app-timestamp [dateAndTime]="report.dateLastLogin"> </app-timestamp>
-                      </td>
-                      <td>
-                        <app-timestamp [dateAndTime]="report.updatedTime"> </app-timestamp>
-                      </td>
-                      <td class="inline-custom-width" (click)="$event.stopPropagation();">
-                        <a title="Company profile details" (click)="getVendorCompanyProfile(report)"> 
-                          <i class="fa fa-building-o" style="font-size: 20px;" aria-hidden="true"></i>
-                        </a>
-                        <a  title="My profile details" (click)="getVendorMyProfile(report)"> 
-                          <i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
-                        </a>
-						            <a  title="Send welcome email" (click)="$event.stopPropagation();sendWelcomeEmail(report)"> 
-                          <i class="fa fa fa-envelope" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
-                        </a>
-                        <a  title="Copy link" (click)="$event.stopPropagation();openLinkInPopup(report)"> 
-                          <i class="fa fa fa-copy" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
-                        </a>
-                        <a  title="Activate/Deactivate" (click)="$event.stopPropagation();activateOrDeactivate(report)"> 
-                            <i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
-                        </a>
-                        <a  title="Edit Modules" (click)="$event.stopPropagation();displayModuleAccess(report)"> 
-                          <i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
-                        </a>
-                        <a  title="Edit Module Names" (click)="$event.stopPropagation();editModuleNames(report)"> 
-                          <i class="fa fa-font" style="font-size: 20px;" aria-hidden="true"></i>
-                        </a>
-                      </td>
-                    </tr>
-                  </ng-container>
-                </tbody>
-              </table>
-            </div>
+    <!--List All Users-->
+    <app-list-all-users></app-list-all-users> 
+    <!--Demo Requests-->
+    <app-demo-request></app-demo-request>
+    <!--Top 10 Recent Registered / Loggedin Users-->
+	  <section>
+      <div class="wrap-collabsible">
+        <input id="collapsible-recent-users" class="toggle" type="checkbox">
+        <label for="collapsible-recent-users" class="lbl-toggle">Top 10 recent registered/logged in users</label>
+        <div class="collapsible-content">
+          <div>
+             <!-- -Top 10 Recent Registered Users -->
+            <app-recent-logged-in-users [type]="'registered'" (notifyAdminReportComponent)="selectedVendorDetails($event)"></app-recent-logged-in-users>
+            <!-- ---Top 10 Recent LoggedIn Users -->
+            <app-recent-logged-in-users [type]="'logged in'" (notifyAdminReportComponent)="selectedVendorDetails($event)"></app-recent-logged-in-users>
           </div>
         </div>
       </div>
-      <app-pagination [pagination]="pagination" [type]="'admin-reports'" (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
-    </div>
-<!-----------Partner Companies------->
-  <app-admin-partner-companies *ngIf="!detailsTielsView"></app-admin-partner-companies>
-
-  <!------Vendor Invitation Reports-->
-  <app-vendor-invitation-report *ngIf="!detailsTielsView"></app-vendor-invitation-report>
-
-  <!------Marketing Role Requests-->
-  <app-marketing-role-requests *ngIf="!detailsTielsView"></app-marketing-role-requests>
-
-  
-    <app-processing-campaigns [scheduledCampaigns]="false"  *ngIf="!detailsTielsView"></app-processing-campaigns>
-    <app-processing-campaigns [scheduledCampaigns]="true" *ngIf="!detailsTielsView"></app-processing-campaigns>
-    <app-active-queries *ngIf="!detailsTielsView"></app-active-queries>
-    <app-active-threads-info *ngIf="!detailsTielsView"></app-active-threads-info>
-    <section *ngIf="detailsTielsView">
-      <div class="portlet light">
-        <div class="portlet-title">
-          <div class="caption">Vendor Report</div>
-        </div>
-        <div class="portlet-body clearfix">
-            <div class="table-responsive">
-              <table class='table tgrid' aria-describedby="">
-                <thead>
-                  <tr>
-                    <th style="width: 20%;" scope="col">NAME</th>
-                    <th scope="col">COMPANY</th>
-                    <th scope="col">STATUS</th>
-                    <th class='text-center' scope="col">REGISTRATION DATE</th>
-                    <th class='text-center' scope="col">LAST LOGIN</th>
-                    <th class='text-center' scope="col">UPDATED TIME</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ng-container>
-                    <!-- this div for ngFor -->
-                    <tr>
-                      <td>
-                        <app-user-info [userInfo]="companyAndUserDetails">
-                        </app-user-info>
-                      </td>
-                      <td>{{companyAndUserDetails?.companyName}}</td>
-                      <td>{{companyAndUserDetails?.userStatus}}</td>
-                      <td>
-                        <app-timestamp [dateAndTime]="companyAndUserDetails?.dateReg"> </app-timestamp>
-                      </td>
-                      <td>
-                        <app-timestamp [dateAndTime]="companyAndUserDetails?.dateLastLogin"> </app-timestamp>
-                      </td>
-                      <td>
-                        <app-timestamp [dateAndTime]="companyAndUserDetails?.updatedTime"> </app-timestamp>
-                      </td>
-                    </tr>
-                  </ng-container>
-
-                </tbody>
-              </table>
-            </div>
-        </div>
-      </div>
-
-      <div class="clearfix"></div>
-
-      <app-dashboard-stats></app-dashboard-stats>
     </section>
+    <!---Vendor Report-->
+    <app-vendor-report></app-vendor-report>
+    <!-----------Partner Companies------->
+    <app-admin-partner-companies></app-admin-partner-companies>
+    <!------Vendor Invitation Reports-->
+    <app-vendor-invitation-report></app-vendor-invitation-report>
+    <!------Marketing Role Requests-->
+    <app-marketing-role-requests></app-marketing-role-requests>
+    <!------Processing Campaigns-->
+    <app-processing-campaigns [scheduledCampaigns]="false"  ></app-processing-campaigns>
+    <!------Scheduled Campaigns-->
+    <app-processing-campaigns [scheduledCampaigns]="true" ></app-processing-campaigns>
+    <!------Active Queries-->
+    <app-active-queries ></app-active-queries>
+    <!------Active Threads Info-->
+    <app-active-threads-info ></app-active-threads-info>
   </div>
   <app-scroll-top></app-scroll-top>
-  
-  
    <section>
-  <!-- ---Access Modal Pop Up -->
-  <div class="modal right " id="access-modal" data-backdrop="static">
-			<div class="modal-dialog modal-lg" style="width: 75%;right:0">
-				<div class="modal-content">
- 			   <ngx-loading [show]="updateFormLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-					<div class="modal-header">
-						<button type="button" class="close-circle" data-dismiss="modal">
-							<i class="fa fa-times"></i>
-						</button>
-						<h4 class="modal-title text-center" id="email-template-title">Available Modules</h4>
-					</div>
-					<div class="modal-body">
-						<app-response-message [customResponse]="updateFormCustomResponse" *ngIf="updateFormCustomResponse.isVisible"></app-response-message>
-						<div class="portlet-body clearfix">
-						<div class="table-responsive" style="overflow-x:inherit">
-							<table class="table table-striped  table-hover" style="width:100%">
-							  <tr>
-							    <th>Email Campaign</th>
-							    <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.emailCampaign"></td>
-							  </tr>
-							  <tr>
-							    <th>Video Campaign</th>
-							    <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.videoCampaign"></td>
-							  </tr>
-							  <tr>
-							    <th>Social Campaign</th>
-							    <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.socialCampaign"></td>
-							  </tr>
-							  <tr>
-							    <th>Event Campaign</th>
-							    <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.eventCampaign"></td>
-							  </tr>
-							  <tr>
-							    <th>Leads</th>
-							    <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.leads"></td>
-							  </tr>
-							  <tr>
-							    <th>Form Builder</th>
-							   <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.formBuilder"></td>
-							  </tr>
-							   <tr>
-							    <th>Page</th>
-							   	<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.landingPage"></td>
-							  </tr>
-							  <tr>
-							    <th>Page Campaign</th>
-							   	<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign"></td>
-							  </tr>
-							</table>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" (click)="updateAccess()" class="btn btn-info">Update</button>
-						<a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
-					</div>
-				</div>
-			</div>
-		</div>
+    <!-- ---Access Modal Pop Up -->
+    <div class="modal right " id="access-modal" data-backdrop="static">
+        <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+          <div class="modal-content">
+          <ngx-loading [show]="updateFormLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <div class="modal-header">
+              <button type="button" class="close-circle" data-dismiss="modal">
+                <i class="fa fa-times"></i>
+              </button>
+              <h4 class="modal-title text-center" id="email-template-title">Available Modules</h4>
+            </div>
+            <div class="modal-body">
+              <app-response-message [customResponse]="updateFormCustomResponse" *ngIf="updateFormCustomResponse.isVisible"></app-response-message>
+              <div class="portlet-body clearfix">
+              <div class="table-responsive" style="overflow-x:inherit">
+                <table class="table table-striped  table-hover" style="width:100%">
+                  <tr>
+                    <th>Email Campaign</th>
+                    <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.emailCampaign"></td>
+                  </tr>
+                  <tr>
+                    <th>Video Campaign</th>
+                    <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.videoCampaign"></td>
+                  </tr>
+                  <tr>
+                    <th>Social Campaign</th>
+                    <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.socialCampaign"></td>
+                  </tr>
+                  <tr>
+                    <th>Event Campaign</th>
+                    <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.eventCampaign"></td>
+                  </tr>
+                  <tr>
+                    <th>Leads</th>
+                    <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.leads"></td>
+                  </tr>
+                  <tr>
+                    <th>Form Builder</th>
+                  <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.formBuilder"></td>
+                  </tr>
+                  <tr>
+                    <th>Page</th>
+                    <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.landingPage"></td>
+                  </tr>
+                  <tr>
+                    <th>Page Campaign</th>
+                    <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign"></td>
+                  </tr>
+                </table>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" (click)="updateAccess()" class="btn btn-info">Update</button>
+              <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+            </div>
+          </div>
+        </div>
+    </div>
   </section>
 </div>
 <app-dynamic-email-content #dynamicEmailContentComponent></app-dynamic-email-content>

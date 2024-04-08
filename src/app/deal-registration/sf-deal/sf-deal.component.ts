@@ -8,13 +8,13 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { FadeAnimation } from 'app/core/animations/fade-animation';
 
-declare var $: any, swal:any;
+declare var $: any, swal: any;
 
 @Component({
   selector: 'app-sf-deal',
   templateUrl: './sf-deal.component.html',
   styleUrls: ['./sf-deal.component.css'],
-  animations:[FadeAnimation]
+  animations: [FadeAnimation]
 })
 export class SfDealComponent implements OnInit {
   @Input() public createdForCompanyId: any;
@@ -29,7 +29,7 @@ export class SfDealComponent implements OnInit {
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
-  
+
   optionObj: any;
   showSFFormError: boolean = false;
   sfFormError: string = "";
@@ -39,24 +39,24 @@ export class SfDealComponent implements OnInit {
   isCollapsed2: boolean;
   isCollapsed3: any;
   /*********XNFR-403*********/
-  @Input() forecastItemsJson:string;
-  forecastItems:Array<any> = new Array<any>();
-  searchableDropDownDto:SearchableDropdownDto = new SearchableDropdownDto();
+  @Input() forecastItemsJson: string;
+  forecastItems: Array<any> = new Array<any>();
+  searchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   isConnectWiseEnabledAsActiveCRM: boolean = false;
   isValidRepValues = true;
   /*******XNFR-403****/
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
-  addLoader(){
+  addLoader() {
     this.isLoading = true;
     this.referenceService.showSweetAlertProceesor('We are fetching the deal form');
   }
 
-   removeLoader(){
+  removeLoader() {
     this.isLoading = false;
     this.referenceService.closeSweetAlert();
-   }
+  }
 
   ngOnInit() {
     this.showSFFormError = false;
@@ -78,17 +78,17 @@ export class SfDealComponent implements OnInit {
         this.getSalesforceCustomForm();
       } else {
         this.getActiveCRMCustomForm();
-      }      
+      }
     }
 
     if ("CONNECTWISE" === this.activeCRM) {
       this.isConnectWiseEnabledAsActiveCRM = true;
     }
   }
-  
+
   getActiveCRMCustomForm() {
     this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId).subscribe(result => {
-      this.showSFFormError = false; 
+      this.showSFFormError = false;
       this.removeLoader();
       if (result.statusCode == 200) {
         this.form = result.data;
@@ -98,46 +98,46 @@ export class SfDealComponent implements OnInit {
             let selectedOptions = multiSelectObj.value.split(';');
             let multiSelectvalueArray = [];
             for (let option of selectedOptions) {
-              
+
               this.optionObj = multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
               multiSelectvalueArray.push(this.optionObj);
             }
             multiSelectObj.value = multiSelectvalueArray;
           }
-        }      
-  
+        }
+
         let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
         if (reqFieldsCheck.length === 0) {
           this.isDealRegistrationFormInvalid = false;
         }
         /*********XNFR-403*********/
-        if(this.dealId>0){
+        if (this.dealId > 0) {
           this.forecastItems = this.referenceService.convertJsonStringToJsonObject(this.forecastItemsJson);
-          if(this.forecastItems!=undefined && this.forecastItems.length>0){
-            $.each(this.forecastItems,function(index:number, 
-                forecastItemDto:any){
-                  forecastItemDto['price'] = forecastItemDto['revenue'];
+          if (this.forecastItems != undefined && this.forecastItems.length > 0) {
+            $.each(this.forecastItems, function (index: number,
+              forecastItemDto: any) {
+              forecastItemDto['price'] = forecastItemDto['revenue'];
             });
           }
         }
         this.searchableDropDownDto.data = result.data.connectWiseProducts;
         this.searchableDropDownDto.placeHolder = "Please Select Product";
         /*********XNFR-403*********/
-      } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") { 
-        this.showSFFormError = true;    
+      } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") {
+        this.showSFFormError = true;
         this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
-      } 
-      
+      }
+
     }, error => {
       this.removeLoader();
-      this.showSFFormError = true; 
-      this.sfFormError = this.referenceService.getApiErrorMessage(error);       
+      this.showSFFormError = true;
+      this.sfFormError = this.referenceService.getApiErrorMessage(error);
     });
   }
 
   getSalesforceCustomForm() {
     this.contactService.getSfForm(this.createdForCompanyId, this.dealId).subscribe(result => {
-      this.showSFFormError = false; 
+      this.showSFFormError = false;
       this.removeLoader();
       this.referenceService.closeSweetAlert();
       if (result.statusCode == 200) {
@@ -153,17 +153,17 @@ export class SfDealComponent implements OnInit {
             }
             multiSelectObj.value = multiSelectvalueArray;
           }
-        }      
-  
+        }
+
         let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
         if (reqFieldsCheck.length === 0) {
           this.isDealRegistrationFormInvalid = false;
         }
-      } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") { 
-        this.showSFFormError = true;    
+      } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") {
+        this.showSFFormError = true;
         this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
       }
-      
+
     }, error => {
       console.log(error);
     });
@@ -190,16 +190,25 @@ export class SfDealComponent implements OnInit {
   }
 
   validateAllFields() {
-    let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === "" || column.value === null || (column.value !== null && column.value.length === 0)));
+    let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === "" || column.value === null || (column.value !== null && column.value.length === 0) || column.value === "false"));
     if (reqFieldsCheck.length === 0) {
       this.isDealRegistrationFormInvalid = false;
     } else {
       this.isDealRegistrationFormInvalid = true;
     }
-    if (!this.isDealRegistrationFormInvalid) {
       let allEmails = this.form.formLabelDTOs.filter(column => column.labelType === "email");
       for (let emailObj of allEmails) {
         this.validateEmailId(emailObj);
+      }
+
+      let allTexts = this.form.formLabelDTOs.filter(column => column.labelType === "text");
+      for (let textObj of allTexts) {
+        this.validateRequiredTextFields(textObj);
+      }
+
+      let allTextAreas = this.form.formLabelDTOs.filter(column => column.labelType === "textarea");
+      for (let textAreaObj of allTextAreas) {
+        this.validateRequiredTextAreaFields(textAreaObj);
       }
 
       let allURLs = this.form.formLabelDTOs.filter(column => column.labelType === "url");
@@ -221,27 +230,26 @@ export class SfDealComponent implements OnInit {
       for (let geoObj of allGeoLocations) {
         this.validateGeoLocation(geoObj);
       }
-      
+
       let allAmount = this.form.formLabelDTOs.filter(column => column.labelType === "number");
       for (let amoObj of allAmount) {
-          this.validateAmount(amoObj);
-      }      
-    }
+        this.validateAmount(amoObj);
+      }
     /*******XNFR-403*******/
-    this.validateRepValues(); 
+    this.validateRepValues();
     /*******XNFR-403*******/
 
   }
   validateAmount(columnInfo: ColumnInfo) {
     let amount = columnInfo.value;
-    if (amount<0) {
+    if (amount < 0) {
       columnInfo.errorMessage = "Please enter valid amount ";
       columnInfo.divClass = "error";
       this.isDealRegistrationFormInvalid = true;
     } else {
       columnInfo.divClass = "success";
     }
-}
+  }
 
   private validateRepValues() {
     if (this.isConnectWiseEnabledAsActiveCRM) {
@@ -254,8 +262,8 @@ export class SfDealComponent implements OnInit {
       let isValidInsideRepFormInfo = insideRepFormInfo != undefined && insideRepFormInfo.length > 0;
       let insideRepValue = isValidInsideRepFormInfo ? insideRepFormInfo[0]['value'] : "";
       let isValidInsideRepValue = insideRepValue != undefined && insideRepValue != "";
-      
-      if(isValidSalesRepValue && isValidInsideRepValue){
+
+      if (isValidSalesRepValue && isValidInsideRepValue) {
         let isBothRepValuesSame = salesRepValue == insideRepValue;
         this.isDealRegistrationFormInvalid = isBothRepValuesSame;
         this.isValidRepValues = !isBothRepValuesSame;
@@ -271,6 +279,28 @@ export class SfDealComponent implements OnInit {
     if (columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
       if (!this.referenceService.validateEmailId($.trim(columnInfo.value))) {
         columnInfo.errorMessage = "Please enter a valid email address";
+        columnInfo.divClass = "error";
+        this.isDealRegistrationFormInvalid = true;
+      }
+    }
+  }
+
+  validateRequiredTextFields(columnInfo: ColumnInfo) {
+    columnInfo.divClass = "success";
+    if (columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
+      if (!($.trim(columnInfo.value).length > 0) && columnInfo.required) {
+        columnInfo.errorMessage = "Required";
+        columnInfo.divClass = "error";
+        this.isDealRegistrationFormInvalid = true;
+      }
+    }
+  }
+
+  validateRequiredTextAreaFields(columnInfo: ColumnInfo) {
+    columnInfo.divClass = "success";
+    if (columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
+      if (!($.trim(columnInfo.value).length > 0) && columnInfo.required) {
+        columnInfo.errorMessage = "Required";
         columnInfo.divClass = "error";
         this.isDealRegistrationFormInvalid = true;
       }
@@ -304,7 +334,7 @@ export class SfDealComponent implements OnInit {
         columnInfo.divClass = "error";
         this.isDealRegistrationFormInvalid = true;
       }
-    }    
+    }
   }
 
   validatePhoneNumber(columnInfo: ColumnInfo) {
@@ -334,14 +364,14 @@ export class SfDealComponent implements OnInit {
     this.validateAllFields();
   }
 
-  validateGeoLocation(columnInfo: ColumnInfo){    
+  validateGeoLocation(columnInfo: ColumnInfo) {
     if (columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
-      var x = parseFloat($.trim(columnInfo.value));      
+      var x = parseFloat($.trim(columnInfo.value));
       if ((columnInfo.labelName.includes('Latitude')) && (isNaN(x) || x < -90 || x > 90)) {
         columnInfo.errorMessage = "Please enter a value from -90 to 90";
         columnInfo.divClass = "error";
         this.isDealRegistrationFormInvalid = true;
-      }else if ((columnInfo.labelName.includes('Longitude')) && (isNaN(x) || x < -180 || x > 180)) {
+      } else if ((columnInfo.labelName.includes('Longitude')) && (isNaN(x) || x < -180 || x > 180)) {
         columnInfo.errorMessage = "Please enter a value from -180 to 180";
         columnInfo.divClass = "error";
         this.isDealRegistrationFormInvalid = true;
@@ -368,9 +398,9 @@ export class SfDealComponent implements OnInit {
     this.isCollapsed3 = !this.isCollapsed3;
   }
 
-  
+
   /*****XNFR-403*****/
-  addProduct(){
+  addProduct() {
     let forecastItem = {};
     forecastItem['forecastType'] = "Product";
     let catalogItem = {};
@@ -390,7 +420,7 @@ export class SfDealComponent implements OnInit {
   }
 
   /*****XNFR-403*****/
-  searchableDropdownEventReceiver(event:any,index:number){
+  searchableDropdownEventReceiver(event: any, index: number) {
     let forecastItem = this.forecastItems[index];
     forecastItem['catalogItem']['id'] = event['id'];
     forecastItem['price'] = event['price'];
@@ -399,9 +429,9 @@ export class SfDealComponent implements OnInit {
   }
 
   /****XNFR-403****/
-  removeProduct(index:number){
-   this.forecastItems = this.referenceService.spliceArrayByIndex(this.forecastItems,index);
-   this.referenceService.removeRowWithAnimation(index);
-    
+  removeProduct(index: number) {
+    this.forecastItems = this.referenceService.spliceArrayByIndex(this.forecastItems, index);
+    this.referenceService.removeRowWithAnimation(index);
+
   }
 }

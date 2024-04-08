@@ -1,89 +1,96 @@
-<div class="col-xs-12">
-      <div class="portlet light">
-        <div class="portlet-title">
-          <div class="caption">Demo Request(s)</div>
-		  <div class="inputs" align="right">
-		  <a [routerLink]="['../admin-company-profile']" class="btn btn-info" id="left">Create An Account</a>
-		  <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
-				<i class="fa fa-refresh margin"></i>
-			</a>
-	      <div id="left" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-	          <select class="form-control" [(ngModel)]="sortOption.selectedDemoRequestSortOption"
-	                      (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-	                      <option *ngFor="let option of sortOption.demoRequestSortOptions" [ngValue]="option">
-	                        {{option.name}}</option>
-	           </select>
-	      </div>
-       <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-			<div class="input-icon right" id="icon-right">
-				<input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
-					[ngModelOptions]="{standalone: true}" placeholder="search..."
-					(keypress)="eventHandler($event.keyCode)">
-				<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
-					(click)="sortOption.searchKey='';search()"></button>
-				<button type="submit" class="search-box-item-click" (click)="search()">
-					<i class="fa fa-search"></i></button>
-			</div>
-		</div> 
-   		 </div>
-        </div>
-          <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-        <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
-          <div>
-            <div class="table-responsive">
-              <table class='table tgrid'>
-                <thead>
-                  <tr>
-                    <th style="width: 20%;">NAME</th>
-                    <th class='text-center'>COMPANY</th>
-                    <th class='text-center'>MOBILE NUMBER</th>
-                    <th class='text-center'>STATUS</th>
-                     <th class='text-center'>TIME ZONE</th>
-                    <th class='text-center'>REMARKS</th>
-                    <th class='text-center'>CREATED TIME</th>
-                    <th class='text-center'>CREATE ACCOUNT</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <ng-container *ngFor="let request of pagination.pagedItems;let i = index">
-                    <tr>
-                      <td>
-                        <app-user-info [userInfo]="request" [isFromAdminList]="true">
-                        </app-user-info>
-                      </td>
-                      <td align="center">{{request.company}}</td>
-                       <td align="center">{{request.mobileNumber}}</td>
-                      <td align="center">{{request.status}}</td>
-                      <td align="center">{{request.timezone}}</td>
-                      <td align="center">
-                        {{request.remarks}}
-                      </td>
-                      <td align="center">
-                        <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="request.displayTime"> </app-timestamp>
-                        <span *ngIf="referenceService.isSafariBrowser()">{{request.displayTime}}</span>
-                      </td>
-                      <td id="center" class="xAmpColor"><a routerLink = "../admin-company-profile/{{request.emailId}}"><i class="fa fa-plus" id="create-account" aria-hidden="true"></i></a></td>
-                    </tr>
-                  </ng-container>
-                </tbody>
-              </table>
+
+<div class="wrap-collabsible">
+  <input id="collapsible" class="toggle" type="checkbox">
+  <label for="collapsible" class="lbl-toggle">Demo Requests</label>
+  <div class="collapsible-content">
+    <div class="content-inner">
+      <!--Demo Requests-->
+      <div>
+        <div class="portlet light">
+          <div class="portlet-title">
+            <div class="caption">Demo Request(s)</div>
+            <div class="inputs">
+          <a [routerLink]="['../admin-company-profile']" class="btn btn-info" id="left">Create An Account</a>
+          <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+            <i class="fa fa-refresh margin"></i>
+          </a>
+            <div id="left" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+                <select class="form-control" [(ngModel)]="sortOption.selectedDemoRequestSortOption"
+                            (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+                            <option *ngFor="let option of sortOption.demoRequestSortOptions" [ngValue]="option">
+                              {{option.name}}</option>
+                </select>
+            </div>
+          <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+          <div class="input-icon right" id="icon-right">
+            <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+              [ngModelOptions]="{standalone: true}" placeholder="search..."
+              (keypress)="eventHandler($event.keyCode)">
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+              (click)="sortOption.searchKey='';search()"></button>
+            <button type="submit" class="search-box-item-click" (click)="search()">
+              <i class="fa fa-search"></i></button>
+          </div>
+        </div> 
             </div>
           </div>
+          <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+          <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
+            <div>
+              <div class="table-responsive">
+                <table class='table tgrid'>
+                  <thead>
+                    <tr>
+                      <th style="width: 20%;">NAME</th>
+                      <th class='text-center'>COMPANY</th>
+                      <th class='text-center'>MOBILE NUMBER</th>
+                      <th class='text-center'>STATUS</th>
+                        <th class='text-center'>TIME ZONE</th>
+                      <th class='text-center'>REMARKS</th>
+                      <th class='text-center'>CREATED TIME</th>
+                      <th class='text-center'>CREATE ACCOUNT</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let request of pagination.pagedItems;let i = index">
+                      <tr>
+                        <td>
+                          <app-user-info [userInfo]="request" [isFromAdminList]="true">
+                          </app-user-info>
+                        </td>
+                        <td align="center">{{request.company}}</td>
+                          <td align="center">{{request.mobileNumber}}</td>
+                        <td align="center">{{request.status}}</td>
+                        <td align="center">{{request.timezone}}</td>
+                        <td align="center">
+                          {{request.remarks}}
+                        </td>
+                        <td align="center">
+                          <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="request.displayTime"> </app-timestamp>
+                          <span *ngIf="referenceService.isSafariBrowser()">{{request.displayTime}}</span>
+                        </td>
+                        <td id="center" class="xAmpColor"><a routerLink = "../admin-company-profile/{{request.emailId}}"><i class="fa fa-plus" id="create-account" aria-hidden="true"></i></a></td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="!hasError">
+              <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+                <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listDemoRequests($event)" [hidden]="httpRequestLoader.isLoading">
+                </app-pagination>
+              </div>
+              <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info"><strong>No Data Found.</strong></div>
+          </ng-container>
+          <div *ngIf="hasError" class="alert alert-danger">
+            <strong>Oops!Something went wrong.Please try again after sometime</strong>
+          </div>
         </div>
-        <ng-container *ngIf="!hasError">
-        	 <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-			<app-pagination [pagination]="pagination"
-				(notifyParent)="setPage($event)"
-				(notifyParentDropDown)="listDemoRequests($event)"
-				[hidden]="httpRequestLoader.isLoading"></app-pagination>
-		</div>
-		<div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading"
-			class="alert alert-info">
-			<strong>No Data Found.</strong>
-		</div>
-        </ng-container>
-        <div *ngIf="hasError" class="alert alert-danger">
-			<strong>Oops!Something went wrong.Please try again after sometime</strong>
-		</div>
       </div>
+    </div>
+  </div>
 </div>
+
+

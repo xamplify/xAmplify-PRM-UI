@@ -4094,3 +4094,7 @@ li.filter.selectedBox{
 .neg_mrg_left1{
   margin-left: -1px !important;
 }
+.cloud_platforms_margins{
+  margin-right: -20px !important;
+  margin-left: -6px !important;
+}
