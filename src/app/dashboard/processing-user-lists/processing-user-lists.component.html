@@ -32,6 +32,7 @@
                 </div> 
               </div>
            </div>
+            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
             <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
            <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
              <div>
@@ -42,8 +43,9 @@
                        <th scope="col">List Name</th>
                        <th class='text-center' scope="col">Company Name</th>
                        <th class='text-center' scope="col">Count</th>
-                       <th class='text-center' scope="col">Created Time</th>
+                       <th class='text-center' scope="col">Uploaded On</th>
                        <th class='text-center' scope="col">Download Csv</th>
+                       <th class='text-center' scope="col">Status</th>
                        <th class='text-center' scope="col">Actions</th>
                      </tr>
                    </thead>
@@ -54,12 +56,39 @@
                          <td class="text-center">{{userList?.companyName}}</td>
                          <td class="text-center">{{userList?.usersCount}}</td>
                          <td class="text-center">
-                            <app-display-date-and-time [dateAndTimeUTCString]="userList?.createdTimeInUTCString"></app-display-date-and-time>
+                            <app-display-date-and-time [dateAndTimeUTCString]="userList?.updatedTimeInUTCString"></app-display-date-and-time>
                          </td>
                          <td class="text-center">
                             <a target="_blank" href="{{userList?.csvPath}}">Download</a>
                          </td>
-                         <td class="text-center">-</td>
+                         <td class="text-center">
+                          <table>
+                            <tr>
+                              <td>Uploading</td>
+                              <td>
+                                <i title="Uploading Is In Progress" *ngIf="userList?.uploadInProgress" class="fa fa-spinner active-status"></i>
+                                <i title="Uploading Completed" *ngIf="!userList?.uploadInProgress" class="fa fa-check active-status"></i>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Zero Bounce Validation</td>
+                              <td>
+                                <i title="Zero Bounce Validation In Progress" *ngIf="userList?.zeroBounceEmailValidationInProgress" class="fa fa-spinner active-status"></i>
+                                <i title="Zero Bounce Validation Completed" *ngIf="!userList?.zeroBounceEmailValidationInProgress" class="fa fa-check active-status"></i>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Processing Time Limit Reached</td>
+                              <td>
+                                <i  *ngIf="userList?.processingTimeLimitReached" class="fa fa-check inactive-status"></i>
+                                <i  *ngIf="!userList?.processingTimeLimitReached" class="fa fa-times active-status"></i>
+                              </td>
+                            </tr>
+                          </table>
+                         </td>
+                         <td class="text-center">
+                            <a (click)="deleteUserList(userList)"><i class="fa fa-trash required"></i></a>
+                         </td>
                        </tr>
                      </ng-container>
                    </tbody>

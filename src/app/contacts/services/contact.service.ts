@@ -234,6 +234,12 @@ export class ContactService {
             .catch(this.handleErrorDelete);
     }
 
+    deleteContactListFromSuperAdminScreen(contactListId: number,userId:any) {
+        return this._http.post(this.contactsUrl + contactListId + "/remove?access_token=" + this.authenticationService.access_token + '&userId=' + userId, +"")
+            .map(this.extractData)
+            .catch(this.handleErrorDelete);
+    }
+
     saveContactList(userUserListWrapper: UserUserListWrapper): Observable<any> {
         var requestoptions = new RequestOptions({
             body: userUserListWrapper,

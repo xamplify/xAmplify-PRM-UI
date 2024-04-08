@@ -406,8 +406,8 @@ export class SortOption {
 		{ 'name': 'Company Name(Z-A)', 'value': 'companyName-DESC' },
 		{ 'name': 'Count(ASC)', 'value': 'count-ASC' },
 		{ 'name': 'Count(DESC)', 'value': 'count-DESC' },
-		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
-		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+		{ 'name': 'Uploaded On(ASC)', 'value': 'updatedTime-ASC' },
+		{ 'name': 'Uploaded On(DESC)', 'value': 'updatedTime-DESC' }
 	];
 	
 
