@@ -190,13 +190,12 @@ export class SfDealComponent implements OnInit {
   }
 
   validateAllFields() {
-    let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === "" || column.value === null || (column.value !== null && column.value.length === 0)));
+    let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === "" || column.value === null || (column.value !== null && column.value.length === 0) || column.value === "false"));
     if (reqFieldsCheck.length === 0) {
       this.isDealRegistrationFormInvalid = false;
     } else {
       this.isDealRegistrationFormInvalid = true;
     }
-    if (!this.isDealRegistrationFormInvalid) {
       let allEmails = this.form.formLabelDTOs.filter(column => column.labelType === "email");
       for (let emailObj of allEmails) {
         this.validateEmailId(emailObj);
@@ -236,7 +235,6 @@ export class SfDealComponent implements OnInit {
       for (let amoObj of allAmount) {
         this.validateAmount(amoObj);
       }
-    }
     /*******XNFR-403*******/
     this.validateRepValues();
     /*******XNFR-403*******/
