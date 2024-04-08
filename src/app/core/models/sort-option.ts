@@ -399,6 +399,18 @@ export class SortOption {
 		{ 'name': 'Published On(DESC)', 'value': 'createdTime-DESC' }
 	];
 
+	processingUserListsDropDownOptions = [
+		{ 'name': 'Name(A-Z)', 'value': 'name-ASC' },
+		{ 'name': 'Name(Z-A)', 'value': 'name-DESC' },
+		{ 'name': 'Company Name(A-Z)', 'value': 'companyName-ASC' },
+		{ 'name': 'Company Name(Z-A)', 'value': 'companyName-DESC' },
+		{ 'name': 'Count(ASC)', 'value': 'count-ASC' },
+		{ 'name': 'Count(DESC)', 'value': 'count-DESC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+	];
+	
+
 
 	public selectedSortedOption: any = this.sortByDropDown[0];
 	public defaultSortOption: any = this.partnerCampaignDetailsSortDropDown[0];
@@ -451,6 +463,8 @@ export class SortOption {
 
 	/*****XNFR-454*****/
 	selectedDomainDropDownOption = this.domainsDropDownOptions[this.domainsDropDownOptions.length-1];
+
+	selectedProcessingUserListsDropDownOption = this.processingUserListsDropDownOptions[this.processingUserListsDropDownOptions.length-1];
 
 
 }
