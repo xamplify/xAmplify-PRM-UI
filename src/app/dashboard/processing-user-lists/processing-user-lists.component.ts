@@ -37,7 +37,7 @@ export class ProcessingUserListsComponent implements OnInit {
 	}
 
   ngOnInit() {
-    this.findProcessingUserLists(this.pagination);
+   this.getAllFilteredResults();
   }
 
   findProcessingUserLists(pagination:Pagination){

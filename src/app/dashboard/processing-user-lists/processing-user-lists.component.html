@@ -39,7 +39,7 @@
                  <table class='table tgrid' aria-describedby="">
                    <thead>
                      <tr>
-                       <th style="width: 20%;" scope="col">List Name</th>
+                       <th scope="col">List Name</th>
                        <th class='text-center' scope="col">Company Name</th>
                        <th class='text-center' scope="col">Count</th>
                        <th class='text-center' scope="col">Created Time</th>
@@ -51,11 +51,15 @@
                      <ng-container *ngFor="let userList of processingUserLists;let i = index">
                        <tr>
                          <td>{{userList?.userListName}}</td>
-                         <td>{{userList?.companyName}}</td>
-                         <td>{{userList?.usersCount}}</td>
-                         <td>{{userList?.createdTime}}</td>
-                         <td>{{userList?.csvPath}}</td>
-                         <td>-</td>
+                         <td class="text-center">{{userList?.companyName}}</td>
+                         <td class="text-center">{{userList?.usersCount}}</td>
+                         <td class="text-center">
+                            <app-display-date-and-time [dateAndTimeUTCString]="userList?.createdTimeInUTCString"></app-display-date-and-time>
+                         </td>
+                         <td class="text-center">
+                            <a target="_blank" href="{{userList?.csvPath}}">Download</a>
+                         </td>
+                         <td class="text-center">-</td>
                        </tr>
                      </ng-container>
                    </tbody>
