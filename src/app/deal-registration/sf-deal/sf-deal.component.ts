@@ -22,7 +22,7 @@ export class SfDealComponent implements OnInit {
   @Input() campaign: any;
   @Input() public isPreview = false;
   @Input() isVendor = false;
-  @Input() activeCRM: string;
+  @Input() activeCRM: any;
   form: Form = new Form();
   errorMessage: string;
   isDealRegistrationFormInvalid: boolean = true;
@@ -74,14 +74,15 @@ export class SfDealComponent implements OnInit {
         this.dealId = 0;
       }
       this.addLoader();
-      if ("SALESFORCE" === this.activeCRM) {
-        this.getSalesforceCustomForm();
-      } else {
-        this.getActiveCRMCustomForm();
-      }
+      this.getActiveCRMCustomForm();
+      // if ("SALESFORCE" === this.activeCRM) {
+      //   this.getSalesforceCustomForm();
+      // } else {
+      //   this.getActiveCRMCustomForm();
+      // }
     }
 
-    if ("CONNECTWISE" === this.activeCRM) {
+    if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType )) {
       this.isConnectWiseEnabledAsActiveCRM = true;
     }
   }

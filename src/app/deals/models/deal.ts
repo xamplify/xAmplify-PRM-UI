@@ -42,4 +42,10 @@ export class Deal {
    /****XNFR-403****/
    forecastItemsJson = "";
    dealComment:string; /****xnfr-426 */
+   
+    /***XNFR-461***/
+    createdByPipelineId: number;         
+    createdByPipelineStageId: number;
+    createdForPipelineId: number;         
+    createdForPipelineStageId: number;
 }
