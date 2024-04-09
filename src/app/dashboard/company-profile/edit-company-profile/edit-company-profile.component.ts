@@ -953,7 +953,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     validateProfileNames(value: any) {
         if ($.trim(value).length > 0) {
-            let valueWithSpace = $.trim(value).toLowerCase();
             let valueWithOutSpaces = $.trim(value).toLowerCase().replace(/\s/g, '');
             if (!this.regularExpressions.ALPHA_NUMERIC.test(value)) {
                 this.setCompanyProfileNameError("Please enter alpha numerics & lower case letters only");

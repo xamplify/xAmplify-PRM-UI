@@ -60,7 +60,8 @@
                             <app-display-date-and-time [dateAndTimeUTCString]="userList?.updatedTimeInUTCString"></app-display-date-and-time>
                          </td>
                          <td class="text-center">
-                            <a target="_blank" href="{{userList?.csvPath}}">Download</a>
+                            <span class="required" *ngIf="userList?.csvPath=='javascript:void(0)'">CSV Not Available</span>
+                            <a *ngIf="userList?.csvPath!='javascript:void(0)'" target="_blank" href="{{userList?.csvPath}}">Download</a>
                          </td>
                          <td class="text-center">
                           <table>
