@@ -524,13 +524,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	deleteContactList(contactListId: number) {
 		try {
+			this.campaignLoader = true;
 			this.resetResponse();
-			this.xtremandLogger.info("MangeContacts deleteContactList : " + contactListId);
 			this.contactService.deleteContactList(contactListId)
 				.subscribe(
 					data => {
 						if (data.access) {
-							this.xtremandLogger.info("MangeContacts deleteContactList success : " + data);
 							this.contactsCount();
 							$('#contactListDiv_' + contactListId).remove();
 							this.loadContactLists(this.pagination);
@@ -547,18 +546,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 								this.loadContactLists(this.pagination);
 
 							}
+							this.campaignLoader = false;
 						} else {
+							this.campaignLoader = false;
 							this.authenticationService.forceToLogout();
 						}
 					},
 					(error: any) => {
+						this.campaignLoader = false;
 						if (error._body.includes('Please launch or delete those campaigns first')) {
-							// this.responseMessage = ['ERROR', error,'show'];
 							this.customResponse = new CustomResponse('ERROR', error._body, true);
 						} else {
 							this.xtremandLogger.errorPage(error);
 						}
-						console.log(error);
 					},
 					() => this.xtremandLogger.info("deleted completed")
 				);

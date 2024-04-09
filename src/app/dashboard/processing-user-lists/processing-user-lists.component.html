@@ -35,6 +35,7 @@
             <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
             <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
            <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
+            <span class="success"><strong>Total Records : {{processingUserLists?.length}}</strong></span>
              <div>
                <div class="table-responsive">
                  <table class='table tgrid' aria-describedby="">
