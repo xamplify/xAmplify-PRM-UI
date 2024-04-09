@@ -126,7 +126,8 @@ export class AddDealComponent implements OnInit {
   holdActiveCRMPipelineId: number = 0;
   showDetachLeadButton: boolean  = false;
   holdCreatedForCompanyId: number = 0;
-
+  createdForPipelineId:any;
+  createdForPipelineStageId:any;
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public userService: UserService, private integrationService: IntegrationService) {

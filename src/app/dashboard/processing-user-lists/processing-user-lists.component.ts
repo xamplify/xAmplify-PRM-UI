@@ -45,6 +45,9 @@ export class ProcessingUserListsComponent implements OnInit {
 		this.getAllFilteredResults();
 	}
 
+	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
+
+
 	refreshList() {
 		this.sortOption.searchKey = "";
 		this.getAllFilteredResults();
