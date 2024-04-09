@@ -11,7 +11,7 @@
             <strong>New Update Is Available.Please refresh your browser to see new changes</strong>
          </div>
          <!-- BEGIN LOGO -->
-         <div class="page-logo pttpx">
+         <div class="page-logo pttpx" *ngIf="!authenticationService?.isSuperAdmin()">
             <div
                [ngClass]="refService.isSidebarClosed ? 'company-logo-thumbnail-wrapper clhidden':'company-logo-thumbnail-wrapper'">
                <img class="cls-pointer" [routerLink]="['/home/dashboard/default']"

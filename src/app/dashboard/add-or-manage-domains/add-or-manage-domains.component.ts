@@ -42,7 +42,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
   domainWhitelistingDescription = "";
   domainWhitelistingUrlDescription = "";
   selectedTab = 1;
-
+  isTabDisplayed = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,public fileUtil:FileUtil,public sortOption:SortOption,
 	public utilService:UtilService,public regularExpressions:RegularExpressions,public dashboardService:DashboardService,

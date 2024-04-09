@@ -1,7 +1,7 @@
 <app-response-message [customResponse]="customResponse"></app-response-message>
 <app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
 <div>
-    <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
+    <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;" *ngIf="isTabDisplayed">
       <li id="team-member-domains-li">
         <a class="teamMemberDomainC" id="width-205px" (click)="!isTeamMemberDomainsTabSelected && activateTeamMemberDomainsTab()"  data-toggle="tab" href="#teamMemberDomains">Team Member Domains
             <i *ngIf="isTeamMemberDomainsTabSelected" class="fa fa-check-circle-o success"></i>

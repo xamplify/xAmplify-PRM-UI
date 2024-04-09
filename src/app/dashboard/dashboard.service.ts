@@ -310,6 +310,13 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    updateCompanyProfileName(companyId:number,companyProfileName:string){
+        return this.http.get(this.authenticationService.REST_URL + `superadmin/updateCompanyProfileName/${companyId}/${companyProfileName}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
     changeAccess(campaignAccess: any) {
         return this.http.post(this.authenticationService.REST_URL + `module/updateAccess?access_token=${this.authenticationService.access_token}`, campaignAccess)
             .map(this.extractData)
