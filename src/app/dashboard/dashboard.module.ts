@@ -97,6 +97,7 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
 import { VendorJourneyComponent } from './vendor-journey/vendor-journey.component';
 import { HalopsaAuthenticationComponent } from './halopsa-authentication/halopsa-authentication.component';
 import { VendorReportComponent } from './vendor-report/vendor-report.component';
+import { ProcessingUserListsComponent } from './processing-user-lists/processing-user-lists.component';
 
 
 @NgModule({
@@ -167,7 +168,8 @@ import { VendorReportComponent } from './vendor-report/vendor-report.component';
         DashboardBannerImagesComponent,
         VendorJourneyComponent,
         HalopsaAuthenticationComponent,
-        VendorReportComponent
+        VendorReportComponent,
+        ProcessingUserListsComponent
 
             
     ],

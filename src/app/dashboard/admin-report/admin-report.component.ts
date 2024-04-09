@@ -81,7 +81,7 @@ export class AdminReportComponent implements OnInit {
                   this.top10RecentUsers = data;
               },
               error => console.error( error ),
-              () => console.info( "vendors reports() finished" )
+              () => {}
               )
       } catch ( error ) {
           console.error( error, "adminReportComponent", "loadingAllVendors()" );

@@ -1,0 +1,112 @@
+<div class="wrap-collabsible">
+  <input id="collapsible-processing-user-lists" class="toggle" type="checkbox">
+  <label for="collapsible-processing-user-lists" class="lbl-toggle">Processing User Lists</label>
+  <div class="collapsible-content">
+    <div class="content-inner">
+      <!--Processing User Lists-->
+      <div>
+         <div class="portlet light">
+           <div class="portlet-title">
+             <div class="caption">Processing User Lists</div>
+              <div class="inputs">
+              <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+                <i class="fa fa-refresh margin" aria-hidden="true"></i>
+              </a>
+              <!---Sort-->
+                <div id="left" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+                    <select class="form-control" [(ngModel)]="sortOption.selectedProcessingUserListsDropDownOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+                        <option *ngFor="let option of sortOption.processingUserListsDropDownOptions" [ngValue]="option">{{option.name}}</option>
+                      </select>
+                </div>
+                <!--Search-->
+                <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+                  <div class="input-icon right" id="icon-right">
+                    <input type="text" autocomplete="off" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                      [ngModelOptions]="{standalone: true}" placeholder="search..."
+                      (keypress)="eventHandler($event.keyCode)">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                      (click)="sortOption.searchKey='';search()"></button>
+                    <button type="submit" class="search-box-item-click" (click)="search()">
+                      <i class="fa fa-search" aria-hidden="true"></i></button>
+                  </div>
+                </div> 
+              </div>
+           </div>
+            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+            <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+           <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
+            <span class="success"><strong>Total Records : {{processingUserLists?.length}}</strong></span>
+             <div>
+               <div class="table-responsive">
+                 <table class='table tgrid' aria-describedby="">
+                   <thead>
+                     <tr>
+                       <th scope="col">List Name</th>
+                       <th class='text-center' scope="col">Company Name</th>
+                       <th class='text-center' scope="col">Count</th>
+                       <th class='text-center' scope="col">Uploaded On</th>
+                       <th class='text-center' scope="col">Download Csv</th>
+                       <th class='text-center' scope="col">Status</th>
+                       <th class='text-center' scope="col">Actions</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <ng-container *ngFor="let userList of processingUserLists;let i = index">
+                       <tr>
+                         <td>{{userList?.userListName}}</td>
+                         <td class="text-center">{{userList?.companyName}}</td>
+                         <td class="text-center">{{userList?.usersCount}}</td>
+                         <td class="text-center">
+                            <app-display-date-and-time [dateAndTimeUTCString]="userList?.updatedTimeInUTCString"></app-display-date-and-time>
+                         </td>
+                         <td class="text-center">
+                            <a target="_blank" href="{{userList?.csvPath}}">Download</a>
+                         </td>
+                         <td class="text-center">
+                          <table>
+                            <tr>
+                              <td>Uploading</td>
+                              <td>
+                                <i title="Uploading Is In Progress" *ngIf="userList?.uploadInProgress" class="fa fa-spinner active-status"></i>
+                                <i title="Uploading Completed" *ngIf="!userList?.uploadInProgress" class="fa fa-check active-status"></i>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Zero Bounce Validation</td>
+                              <td>
+                                <i title="Zero Bounce Validation In Progress" *ngIf="userList?.zeroBounceEmailValidationInProgress" class="fa fa-spinner active-status"></i>
+                                <i title="Zero Bounce Validation Completed" *ngIf="!userList?.zeroBounceEmailValidationInProgress" class="fa fa-check active-status"></i>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Processing Time Limit Reached</td>
+                              <td>
+                                <i  *ngIf="userList?.processingTimeLimitReached" class="fa fa-check inactive-status"></i>
+                                <i  *ngIf="!userList?.processingTimeLimitReached" class="fa fa-times active-status"></i>
+                              </td>
+                            </tr>
+                          </table>
+                         </td>
+                         <td class="text-center">
+                            <a (click)="deleteUserList(userList)"><i class="fa fa-trash required"></i></a>
+                         </td>
+                       </tr>
+                     </ng-container>
+                   </tbody>
+                 </table>
+               </div>
+             </div>
+           </div>
+           <ng-container *ngIf="!hasError">
+              <div *ngIf="processingUserLists?.length==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                <strong>No Data Found.</strong>
+              </div>
+           </ng-container>
+           <div *ngIf="hasError" class="alert alert-danger">
+            <strong>Oops!Something went wrong.Please try again after sometime</strong>
+           </div>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>

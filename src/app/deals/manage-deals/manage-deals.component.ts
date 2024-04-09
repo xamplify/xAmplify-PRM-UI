@@ -257,6 +257,7 @@ export class ManageDealsComponent implements OnInit {
     this.isPartnerVersion = true;
     //this.getPartnerCounts();
     this.showDeals();
+    this.getActiveCRMDetails();
   }
 
   getVendorCounts() {

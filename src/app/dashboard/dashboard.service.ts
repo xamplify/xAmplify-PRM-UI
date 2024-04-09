@@ -1343,5 +1343,11 @@ getDefaultThemes(){
             .catch(this.handleError);
     }
 
+    findProcessingUserLists(pagination: Pagination) {
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        let url = this.superAdminUrl+"/processingUserLists?access_token=" + this.authenticationService.access_token+pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+    }
+
     
 }

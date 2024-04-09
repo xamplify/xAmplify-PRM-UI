@@ -2624,6 +2624,7 @@ span.input-group-btn {
 }
 button.glyphicon.glyphicon-remove.search-box-item-clear {
   box-shadow: none !important;
+  background: none !important;
 }
 .angle-down {
   color: #191b1e !important;
