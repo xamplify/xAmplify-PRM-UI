@@ -1182,7 +1182,12 @@ export class AuthenticationService {
 
   /***XNFR-326***/
   getPartnerModuleCustomName() {
-    return localStorage.getItem("partnerModuleCustomName");
+    let name = "Partner";
+    let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
+    if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
+      name = partnerModuleCustomName;
+    }
+    return name;
   }
 
   getDefaultM3U8FileForLocal(videoUrl: string) {
@@ -1305,6 +1310,7 @@ removeLocalStorageItemByKey(key:string){
 getLocalStorageItemByKey(key:string){
   return JSON.parse(localStorage.getItem(key));
 }
+
 
 
 
