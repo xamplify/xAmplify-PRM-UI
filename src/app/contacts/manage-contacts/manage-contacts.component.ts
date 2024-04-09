@@ -2220,16 +2220,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	forceProcessList(contactListId: number) {
+		this.campaignLoader = true;
 		try {
 			this.contactService.forceProcessList(contactListId)
 				.subscribe(
 					data => {
+						this.campaignLoader = false;
 						if (data.message == "success") {
 							this.customResponse = new CustomResponse('SUCCESS', "We are processing your contact list, once done will send you an email.", true);
 							this.loadContactLists(this.pagination);
 						}
 					},
 					(error: any) => {
+						this.campaignLoader = false;
 						this.xtremandLogger.error(error);
 					},
 					() => this.xtremandLogger.log("Manage component forcce Process method successfull")
