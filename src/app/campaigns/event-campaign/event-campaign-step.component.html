@@ -841,13 +841,16 @@
 								</div>
 							</div>
 							<div class="col-xs-12 mb-p0" style="margin-top: 10px;">
-								<div class="col-sm-6 col-md-6 col-lg-6 pl0 pr0" *ngIf="isOrgAdminOrOrgAdminTeamMember && !eventCampaign?.channelCampaign">
+								<div class="col-sm-6 col-md-6 col-lg-6 pl0 pr0" *ngIf="isOrgAdminOrOrgAdminTeamMember && !eventCampaign?.channelCampaign || reDistributeEvent" >
 									<ul class="mix-filter m0">
 										<li class="filter" [class.active]="'ALL' == contactListsPagination.filterBy" (click)="filterContacts('ALL')">All</li>
 										<li class="filter" [class.active]="'MY-CONTACTS' == contactListsPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
 										</li>
-										<li class="filter" *ngIf="!authenticationService?.module?.isMarketingCompany" [class.active]="'MY-PARTNERS' == contactListsPagination.filterBy" (click)="filterContacts('MY-PARTNERS')" translate>My Partners
+										<li class="filter" *ngIf="!authenticationService?.module?.isMarketingCompany && !(reDistributeEvent) " [class.active]="'MY-PARTNERS' == contactListsPagination.filterBy" (click)="filterContacts('MY-PARTNERS')" translate>My Partners
 										</li>
+
+										<li class="filter" *ngIf="reDistributeEvent" [class.active]="'SHARED-LEADS' == contactListsPagination.filterBy" (click)="filterContacts('SHARED-LEADS')" translate>Shared Leads</li>
+
 										<li class="filter" [class.active]="'FORM-CONTACTS' == contactListsPagination.filterBy" (click)="filterContacts('FORM-CONTACTS')" translate>Form
 											Contacts</li>
 										<li class="filter" [class.active]="'COMPANY-CONTACTS' == contactListsPagination.filterBy" (click)="filterContacts('COMPANY-CONTACTS')" translate>Company
