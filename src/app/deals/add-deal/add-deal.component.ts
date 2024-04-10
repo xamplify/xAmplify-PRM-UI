@@ -1246,7 +1246,7 @@ export class AddDealComponent implements OnInit {
   }
   //
   // isCollapsedcontact:boolean=true;
-  toggleCollapsepipepline(event: Event) {
+  toggleDealpipepline(event: Event) {
     event.preventDefault();
     this.isCollapsed = !this.isCollapsed;
   }
@@ -1257,6 +1257,10 @@ export class AddDealComponent implements OnInit {
   toggleCollapsecampaignInfo(event: Event) {
     event.preventDefault();
     this.isCollapsed2 = !this.isCollapsed2;
+  }
+  toggleCollapsepipepline(event: Event) {
+    event.preventDefault();
+    this.isCollapsed3 = !this.isCollapsed3;
   }
 
   addLead() {
