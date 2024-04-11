@@ -245,6 +245,7 @@ export class AccessAccountComponent implements OnInit {
             }else if(this.isPartnerSignUpPage){
                 data['emailId'] = this.signUpUser.emailId;
                 data['companyProfileName'] = this.companyProfileName;
+                data['companyName'] = this.signUpUser.companyName;
                 this.signUpAsPartner(data);
             }else{
                 data['emailId'] = this.signUpUser.emailId;
@@ -256,20 +257,28 @@ export class AccessAccountComponent implements OnInit {
         }
     }
 
-     /**XNFR-454****/
+     /**XNFR-506****/
     signUpAsPartner(data: {}) {
         this.customResponse = new CustomResponse();
         $("#teamMember-signup-emailId").removeClass('ng-valid');
         $("#teamMember-signup-emailId").removeClass('ng-invalid');
+        $("#partner-company-name").removeClass('ng-valid');
+        $("#partner-company-name").removeClass('ng-invalid');
         this.authenticationService.signUpAsPartner(data).subscribe(response=>{
-           this.referenceService.teamMemberSignedUpSuccessfullyMessage = this.properties.TEAM_MEMBER_SIGN_UP_SUCCESS;
-           this.router.navigate(['./login']);
+            this.loading = false;
         },error=>{
             let message = this.referenceService.showHttpErrorMessage(error);
             if(this.properties.serverErrorMessage!=message){
-                this.formErrors.emailId = message;
-                $("#teamMember-signup-emailId").removeClass('ng-valid');
-                $("#teamMember-signup-emailId").addClass('ng-invalid');
+                if("Company name has already been added."==message){
+                    this.formErrors.companyName = message;
+                    $("#partner-company-name").removeClass('ng-valid');
+                    $("#partner-company-name").addClass('ng-invalid');
+                }else{
+                    this.formErrors.emailId = message;
+                    $("#teamMember-signup-emailId").removeClass('ng-valid');
+                    $("#teamMember-signup-emailId").addClass('ng-invalid');
+                }
+                
             }else{
                 this.customResponse = new CustomResponse('ERROR',message,true);
             }
