@@ -264,7 +264,10 @@ export class AccessAccountComponent implements OnInit {
         $("#teamMember-signup-emailId").removeClass('ng-invalid');
         $("#partner-company-name").removeClass('ng-valid');
         $("#partner-company-name").removeClass('ng-invalid');
-        this.authenticationService.signUpAsPartner(data).subscribe(response=>{
+        this.authenticationService.signUpAsPartner(data).
+        subscribe(response=>{
+            this.referenceService.teamMemberSignedUpSuccessfullyMessage = this.properties.TEAM_MEMBER_SIGN_UP_SUCCESS;
+            this.router.navigate(['./login']);
             this.loading = false;
         },error=>{
             let message = this.referenceService.showHttpErrorMessage(error);
