@@ -981,6 +981,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				() => {
 					this.listAllTeamMemberEmailIds();
 					this.loadContactLists(this.contactListsPagination);
+					this.filterContacts('ALL');
 					this.listSocialStatusProviders();
 				}
 			);

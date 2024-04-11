@@ -242,6 +242,10 @@ export class AccessAccountComponent implements OnInit {
             if(this.isActivateAccountPage){
                 data['id'] = this.userId;
                 this.accessAccount(data);
+            }else if(this.isPartnerSignUpPage){
+                data['emailId'] = this.signUpUser.emailId;
+                data['companyProfileName'] = this.companyProfileName;
+                this.signUpAsPartner(data);
             }else{
                 data['emailId'] = this.signUpUser.emailId;
                 data['companyProfileName'] = this.companyProfileName;
@@ -251,12 +255,36 @@ export class AccessAccountComponent implements OnInit {
             this.checkValidationMessages()
         }
     }
+
+     /**XNFR-454****/
+    signUpAsPartner(data: {}) {
+        this.customResponse = new CustomResponse();
+        $("#teamMember-signup-emailId").removeClass('ng-valid');
+        $("#teamMember-signup-emailId").removeClass('ng-invalid');
+        this.authenticationService.signUpAsPartner(data).subscribe(response=>{
+           this.referenceService.teamMemberSignedUpSuccessfullyMessage = this.properties.TEAM_MEMBER_SIGN_UP_SUCCESS;
+           this.router.navigate(['./login']);
+        },error=>{
+            let message = this.referenceService.showHttpErrorMessage(error);
+            if(this.properties.serverErrorMessage!=message){
+                this.formErrors.emailId = message;
+                $("#teamMember-signup-emailId").removeClass('ng-valid');
+                $("#teamMember-signup-emailId").addClass('ng-invalid');
+            }else{
+                this.customResponse = new CustomResponse('ERROR',message,true);
+            }
+            this.loading = false;
+        });
+        
+    }
+
     /**XNFR-454****/
     signUpAsTeamMember(data: {}) {
         this.customResponse = new CustomResponse();
         $("#teamMember-signup-emailId").removeClass('ng-valid');
         $("#teamMember-signup-emailId").removeClass('ng-invalid');
-        this.authenticationService.signUpAsTeamMember(data).subscribe(response=>{
+        this.authenticationService.signUpAsTeamMember(data).
+        subscribe(response=>{
            this.referenceService.teamMemberSignedUpSuccessfullyMessage = this.properties.TEAM_MEMBER_SIGN_UP_SUCCESS;
            this.router.navigate(['./login']);
         },error=>{

@@ -26,13 +26,13 @@
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
-                    <a href="pipelineDetails" (click)="toggleCollapsepipepline($event)"> <i
+                    <a href="dealDetails" (click)="toggleDealpipepline($event)"> <i
                         [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed, 'fa-chevron-down collapseIn': isCollapsed}"
                         class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;"></i>
-                      Pipeline Details</a>
+                      Deal Details</a>
                   </h4>
                 </div>
-                <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="pipelineDetails">
+                <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="dealDetails">
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
                       <!-- <div class="form-group" style="margin-bottom: 20px" *ngIf="!isVendorVersion && deal.campaignId > 0">
