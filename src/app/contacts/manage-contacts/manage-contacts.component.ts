@@ -2835,22 +2835,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-
 	downloadUserListCsv() {
 		try {
-			this.contactsByType.contactPagination.filterKey = 'isPartnerUserList';
-			this.contactsByType.contactPagination.filterValue = this.isPartner;
-			this.contactsByType.contactPagination.criterias = this.criterias;
-			this.contactsByType.contactPagination.maxResults = this.contactsByType.pagination.totalRecords;
-
-			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
-			this.userListPaginationWrapper.pagination.searchKey = this.searchKey;
-			this.userListPaginationWrapper.userList.contactType = this.contactsByType.selectedCategory;
-			this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
-			this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
-			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-				this.userListPaginationWrapper.pagination.partnerTeamMemberGroupFilter = true;
-			}
 			this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
 				.subscribe(
 					data => {

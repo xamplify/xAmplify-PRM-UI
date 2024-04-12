@@ -857,13 +857,6 @@ export class ContactService {
             .catch(this.handleError);
     }
 
-
-    downloadPartnerListCsv(contactListId: number, userId: number, pagination: Pagination) {
-        return this._http.post(this.contactsUrl + "download/" + contactListId + "/" + userId + "?access_token=" + this.authenticationService.access_token, pagination)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
     downloadUserListCsv(userId: number, userListPaginationWrapper: UserListPaginationWrapper) {
         return this._http.post(this.contactsUrl + "download/" + userId + "?access_token=" + this.authenticationService.access_token, userListPaginationWrapper)
             .map(this.extractData)
