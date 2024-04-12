@@ -166,6 +166,16 @@ export class VendorReportComponent implements OnInit {
     }
 
 
+    /*********Copy The Link */
+  copyAliasUrl(inputElement){
+    this.copiedLinkCustomResponse = new CustomResponse();
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    this.copiedLinkCustomResponse = new CustomResponse('SUCCESS','Copied to clipboard successfully.',true );  
+
+  }
+
 
     activateOrDeactivate(report: any) {
         let userStatus = report.userStatus;

@@ -205,4 +205,6 @@ export class AdminReportComponent implements OnInit {
     createNewAccount(){
         this.referenceService.goToRouter("home/dashboard/admin-company-profile");
     }
+
+    
 }
