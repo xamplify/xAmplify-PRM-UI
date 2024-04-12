@@ -304,6 +304,7 @@ export class AccessAccountComponent implements OnInit {
             allowOutsideClick: false,
             allowEscapeKey: false
         }).then(function () {
+            self.loading = true;
             data['skipPassword'] = true;
             self.signUpAsPartner(data);
             swal.close();
