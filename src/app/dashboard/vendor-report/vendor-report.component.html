@@ -108,3 +108,25 @@
   </div>
 </div>
 <app-dynamic-email-content #dynamicEmailContentComponent></app-dynamic-email-content>
+  <!-- ----------------------Copy Link Modal------------------- -->
+  <div class="modal fade right " id="user-alias-modal" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close-circle" data-dismiss="modal">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+          <h4 class="modal-title text-center">ACCOUNT LINK OF USER</h4>
+        </div>
+        <div class="modal-body">
+          <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
+          </app-response-message>
+          <input type="text"  class="form-control" readonly="readonly" value="{{accessAccountVanityURL}}" #userAliasId>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-primary" (click)="copyAliasUrl(userAliasId)">Copy Link</a>
+          <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>
