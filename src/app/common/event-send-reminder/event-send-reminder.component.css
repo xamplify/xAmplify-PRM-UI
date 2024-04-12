@@ -1,0 +1,5 @@
+@media screen and (max-width: 578px) {
+    .mb-pt0 {
+        padding-top:0px !important;
+    }  
+}

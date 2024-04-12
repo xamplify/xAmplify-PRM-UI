@@ -71,7 +71,7 @@
           <tr *ngFor="let unsubscribeReason of pagination.pagedItems ;let i =index"
             id="reasons-{{unsubscribeReason.id}}">
             <td>
-              <h4 class="moreipsis" title="{{unsubscribeReason?.reason}}">
+              <h4 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{unsubscribeReason?.reason}}">
                 <span>{{unsubscribeReason?.reason}}</span>
               </h4>
               <h6 class="moreipsis">

@@ -2,37 +2,39 @@
 <app-response-message class="pg8" [customResponse]="customFieldsResponse" *ngIf="customFieldsResponse.isVisible  ">
 </app-response-message>
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div>
-  <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
+<div class="scrollbar-x">
+<ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
     <li class="active"><a (click)="setActiveTab('home')" data-toggle="tab" href="#home">User Info</a></li>
     <li><a (click)="setActiveTab('menu1')"
         data-toggle="tab" href="#menu1">Custom fields</a>
     </li>
-    <li class="closebtn"><button type="button" class="btn btn-warning" (click)="closeSfSettings()">Close</button></li>
-    <li *ngIf="activeTab === 'menu1' && haveCustomFields " class="closebtn">
-      <div class="inputs mr10">
-        <div class="portlet-input input-inline align-width">
-          <div class="input-icon right">
-            <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-              placeholder="Search.." (keypress)="searchFieldsKeyPress($event.keyCode)">
-            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
-              (click)="clearFieldSearch()"></button>
-            <button type="submit" class="search-box-item-click" (click)="searchFields()"><i
-                class="fa fa-search"></i></button>
+    <div class="d-flex justify-content-end">
+      <li *ngIf="activeTab === 'menu1' && haveCustomFields " class ="ml_15">
+        <div class="inputs mr10 width100">
+          <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
+            (ngModelChange)="sortFieldsByOption()">
+            <ng-container *ngFor="let sort of sortOptions">
+              <option [ngValue]="sort.value">{{sort.name}}</option>
+            </ng-container>
+          </select>
+        </div>
+      </li>
+      <li *ngIf="activeTab === 'menu1' && haveCustomFields ">
+        <div class="inputs mr10">
+          <div class="portlet-input input-inline align-width">
+            <div class="input-icon right">
+              <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+                placeholder="Search.." (keypress)="searchFieldsKeyPress($event.keyCode)">
+              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+                (click)="clearFieldSearch()"></button>
+              <button type="submit" class="search-box-item-click" (click)="searchFields()"><i
+                  class="fa fa-search"></i></button>
+            </div>
           </div>
         </div>
-      </div>
-    </li>
-    <li *ngIf="activeTab === 'menu1' && haveCustomFields " class="closebtn">
-      <div class="inputs mr10">
-        <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
-          (ngModelChange)="sortFieldsByOption()">
-          <ng-container *ngFor="let sort of sortOptions">
-            <option [ngValue]="sort.value">{{sort.name}}</option>
-          </ng-container>
-        </select>
-      </div>
-    </li>
+      </li>
+      <li class ="ml_15"><button type="button" class="btn btn-warning" (click)="closeSfSettings()">Close</button></li>
+    </div>
   </ul>
 </div>
 
@@ -77,6 +79,7 @@
         </div>
       </div>
       <form class="form-horizontal" autocomplete="off">
+        <div class="table-responsive">
         <table class='table tgrid'>
           <thead>
             <tr>
@@ -227,6 +230,7 @@
             </ng-container>
           </tbody>
         </table>
+        </div>
       </form>
       <ul *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="pagination">
         <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a (click)="setSfCfPage(1)">First</a></li>
