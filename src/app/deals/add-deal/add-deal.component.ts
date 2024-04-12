@@ -128,6 +128,7 @@ export class AddDealComponent implements OnInit {
   holdCreatedForCompanyId: number = 0;
   createdForPipelineId:any;
   createdForPipelineStageId:any;
+  createdByActiveCRM: any;
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public userService: UserService, private integrationService: IntegrationService) {
@@ -550,10 +551,16 @@ export class AddDealComponent implements OnInit {
 
   getStages() {
     let self = this;
-    if (this.deal.pipelineId > 0) {
-      this.pipelines.forEach(p => {
-        if (p.id == this.deal.pipelineId) {
-          self.stages = p.stages;
+    if (this.deal.createdForPipelineId > 0) {
+      this.createdForPipelines.forEach(p => {
+        if (p.id == this.deal.createdForPipelineId) {
+          self.createdForStages = p.stages;
+        }
+      });
+    } else if (this.deal.createdByPipelineId > 0) {
+      this.createdByPipelines.forEach(p => {
+        if (p.id == this.deal.createdByPipelineId) {
+          self.createdByStages = p.stages;
         }
       });
     } else {
@@ -816,8 +823,7 @@ export class AddDealComponent implements OnInit {
     }
 
     if (!this.opportunityAmountError && !this.estimatedCloseDateError
-      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError
-      && !this.pipelineIdError && !this.pipelineStageIdError) {
+      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError) {
       let qCount = 0;
       let cCount = 0;
       this.propertiesQuestions.forEach(propery => {
@@ -1093,7 +1099,9 @@ export class AddDealComponent implements OnInit {
           } else {
             this.getActiveCRMPipelines();
           }
-          
+          // if (this.actionType === "view") {
+            // this.getDealPipelinesForView();
+          // }
           this.getDealPipelines();
 
         });
@@ -1102,6 +1110,7 @@ export class AddDealComponent implements OnInit {
   getDealPipelines() {
     this.isLoading = true;
     let campaignId = 0;
+    let self = this;
     if (this.deal.campaignId !== undefined && this.deal.campaignId > 0) {
       campaignId = this.deal.campaignId;
     }
@@ -1112,6 +1121,49 @@ export class AddDealComponent implements OnInit {
         this.isLoading = false;
         if (data.statusCode == 200) {
           let activeCRMPipelinesResponse: any = data.data;
+          self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
+          let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
+          if (createdByPipelines !== undefined && createdByPipelines !== null) {
+            this.handleCreatedByPipelines(createdByPipelines);
+          }
+          
+          let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
+          if (createdForPipelines !== undefined && createdForPipelines !== null) {
+            this.handleCreatedForPipelines(createdForPipelines);
+          }          
+          
+        } else if (data.statusCode == 404) {
+          this.deal.createdForPipelineId = 0;
+          this.deal.createdByPipelineId = 0;
+          this.createdForStages = [];
+          this.createdByStages = [];
+          this.getPipelines();
+          this.activeCRMDetails.hasCreatedForPipeline = false;
+          this.activeCRMDetails.hasCreatedByPipeline = false;
+        }
+      },
+      error => {
+        this.httpRequestLoader.isServerError = true;
+      },
+      () => { }
+    );
+  }
+
+  getDealPipelinesForView() {
+    this.isLoading = true;
+    let campaignId = 0;
+    let self = this;
+    if (this.deal.campaignId !== undefined && this.deal.campaignId > 0) {
+      campaignId = this.deal.campaignId;
+    }
+    this.dealsService.getDealPipelinesForView(this.dealId, this.loggedInUserId)
+    .subscribe(
+      data => {
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.isLoading = false;
+        if (data.statusCode == 200) {
+          let activeCRMPipelinesResponse: any = data.data;
+          self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
           let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
           if (createdByPipelines !== undefined && createdByPipelines !== null) {
             this.handleCreatedByPipelines(createdByPipelines);

@@ -52,7 +52,7 @@
                     </div> -->
 
                       <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
-                        *ngIf="!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany)) ">
+                      *ngIf="!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany)) ">
                         <label class="control-label">Deal For<span class="required"><strong>*</strong></span></label>
                         <select class="form-control" [(ngModel)]="deal.createdForCompanyId"
                           [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId"
@@ -167,7 +167,7 @@
                   <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="pipelineDetails">
                     <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                       <div class="card-bgcolors h-260 pl0 pr0">
-                         <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px">
+                         <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px" *ngIf="createdByActiveCRM">
                           <label class="control-label">Pipeline<span class="required"><strong>*</strong></span></label>
                           <select class="form-control" [(ngModel)]="deal.createdByPipelineId" [ngModelOptions]="{standalone: true}"
                             placeholder="pipelineId" id="createdByPipelineId"
@@ -180,7 +180,7 @@
                         </div>
   
                         <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px"
-                          id="dealStageDiv">
+                          id="dealStageDiv" *ngIf="createdByActiveCRM">
                           <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
                           <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
                             [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="createdByPipelineStageId"

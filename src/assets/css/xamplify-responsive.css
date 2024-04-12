@@ -45,7 +45,7 @@
   }
   .bar {
     width: 100%;
-   width: calc(100% - 32px);
+   width: 95%;
   }
   .mp-pt-carrdtop {
     margin-top: 9px;

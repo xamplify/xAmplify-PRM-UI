@@ -2008,6 +2008,9 @@ tbody {
 .table>thead:first-child>tr:first-child>th {
   border-top: none!important;
 }
+.table>thead:first-child>tr:first-child>td{         
+  border-top: none!important;
+}
 /* End */
 .setting-icon-cu .gearDropdownMenu {
   color: #000 !important;
@@ -4087,7 +4090,7 @@ div#htmlContent .row{
 .btn-file input[type="file"]{
   position: absolute !important;
 }
-table.table.table-bordered > tbody {
+table>.table>.table-bordered > tbody {
   background: none !important;
   box-shadow: none !important;
   border: none !important;
@@ -4289,4 +4292,9 @@ i.fa.fa-trash-o.trashIconCustimization.trash_bgcolor:hover {
 .cloud_platforms_margins{
   margin-right: -20px !important;
   margin-left: -6px !important;
+}
+.SingleIconCu{
+  width: 32px!important;
+  height: 32px!important;
+  line-height: 32px !important;
 }

@@ -179,7 +179,7 @@ p.warning-red-textcolor {
 .p0-p10{
   padding: 0px 10px Im !important;
 }
-@media only screen and (min-width: 768px) and (max-width: 1281px) { 
+@media only screen and (min-width: 768px) and (max-width:  992px) { 
     .bar {
       width: 95% !important;
     }
