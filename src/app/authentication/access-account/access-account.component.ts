@@ -18,7 +18,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { VanityURL } from 'app/vanity-url/models/vanity.url';
 
-declare var $: any;
+declare var $: any, swal:any;
 @Component({
   selector: 'app-access-account',
   templateUrl: './access-account.component.html',
@@ -276,12 +276,30 @@ export class AccessAccountComponent implements OnInit {
                     this.formErrors.companyName = message;
                     $("#partner-company-name").removeClass('ng-valid');
                     $("#partner-company-name").addClass('ng-invalid');
+                }else if(message.includes("The account already exists with a password")){
+                    let self = this;
+                    swal({
+                        title: 'Are you sure?',
+                        text: message,
+                        type: 'warning',
+                        showCancelButton: true,
+                        swalConfirmButtonColor: '#54a7e9',
+                        swalCancelButtonColor: '#999',
+                        confirmButtonText: "Yes",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    }).then(function () {
+                        data['skipPassword'] = true;
+                        self.signUpAsPartner(data);
+                        swal.close();
+                    }, function (_dismiss: any) {
+                        
+                    });
                 }else{
                     this.formErrors.emailId = message;
                     $("#teamMember-signup-emailId").removeClass('ng-valid');
                     $("#teamMember-signup-emailId").addClass('ng-invalid');
                 }
-                
             }else{
                 this.customResponse = new CustomResponse('ERROR',message,true);
             }
