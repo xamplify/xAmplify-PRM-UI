@@ -277,24 +277,7 @@ export class AccessAccountComponent implements OnInit {
                     $("#partner-company-name").removeClass('ng-valid');
                     $("#partner-company-name").addClass('ng-invalid');
                 }else if(message.includes("The account already exists with a password")){
-                    let self = this;
-                    swal({
-                        title: 'Are you sure?',
-                        text: message,
-                        type: 'warning',
-                        showCancelButton: true,
-                        swalConfirmButtonColor: '#54a7e9',
-                        swalCancelButtonColor: '#999',
-                        confirmButtonText: "Yes",
-                        allowOutsideClick: false,
-                        allowEscapeKey: false
-                    }).then(function () {
-                        data['skipPassword'] = true;
-                        self.signUpAsPartner(data);
-                        swal.close();
-                    }, function (_dismiss: any) {
-                        
-                    });
+                    this.skipPasswordAndAddAsPartner(message, data);
                 }else{
                     this.formErrors.emailId = message;
                     $("#teamMember-signup-emailId").removeClass('ng-valid');
@@ -306,6 +289,26 @@ export class AccessAccountComponent implements OnInit {
             this.loading = false;
         });
         
+    }
+
+    private skipPasswordAndAddAsPartner(message: string, data: {}) {
+        let self = this;
+        swal({
+            title: 'Are you sure?',
+            text: message,
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            confirmButtonText: "Yes",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then(function () {
+            data['skipPassword'] = true;
+            self.signUpAsPartner(data);
+            swal.close();
+        }, function (_dismiss: any) {
+        });
     }
 
     /**XNFR-454****/
