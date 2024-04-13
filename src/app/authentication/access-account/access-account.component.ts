@@ -266,7 +266,7 @@ export class AccessAccountComponent implements OnInit {
         $("#partner-company-name").removeClass('ng-invalid');
         this.authenticationService.signUpAsPartner(data).
         subscribe(response=>{
-            this.referenceService.teamMemberSignedUpSuccessfullyMessage = this.properties.TEAM_MEMBER_SIGN_UP_SUCCESS;
+            this.referenceService.teamMemberSignedUpSuccessfullyMessage = this.properties.PARTNERSHIP_ESTABLISHED_SUCCESSFULLY;
             this.router.navigate(['./login']);
             this.loading = false;
         },error=>{
@@ -276,7 +276,7 @@ export class AccessAccountComponent implements OnInit {
                     this.formErrors.companyName = message;
                     $("#partner-company-name").removeClass('ng-valid');
                     $("#partner-company-name").addClass('ng-invalid');
-                }else if(message.includes("The account already exists with a password")){
+                }else if(message.includes("The account already exists")){
                     this.skipPasswordAndAddAsPartner(message, data);
                 }else{
                     this.formErrors.emailId = message;
