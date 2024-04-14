@@ -191,8 +191,7 @@
                             <option *ngFor="let stage of createdByStages" [value]="stage.id">{{stage.stageName}}</option>
                           </select>
                         </div>
-  
-                        <div class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
+                        <div class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px" *ngIf="createdForActiveCRM">
                           <label class="control-label">{{pipelineText}}<span class="required"><strong>*</strong></span></label>
                           <select class="form-control" [(ngModel)]="deal.createdForPipelineId" [ngModelOptions]="{standalone: true}"
                             placeholder="pipelineId" id="createdForPipelineId"
@@ -205,7 +204,7 @@
                         </div>
   
                         <div class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
-                          id="dealStageDiv">
+                          id="dealStageDiv" *ngIf="createdForActiveCRM">
                           <label class="control-label">{{pipelinestageText}}<span class="required"><strong>*</strong></span></label>
                           <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
                             [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="createdForPipelineStageId"
