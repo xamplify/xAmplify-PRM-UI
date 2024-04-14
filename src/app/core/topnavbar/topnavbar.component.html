@@ -176,7 +176,7 @@
                            </ng-container>
                         </ng-container>
                         <!-- Guides Help Icon-->
-                        <li>
+                        <li *ngIf="!authenticationService.isOnlyUser() && authenticationService.user.hasCompany && userId!=1">
                            <a href="{{guideHomeUrl}}" target="_blank">
                               <i class="fa fa-question-circle-o" style="font-size: 15px;"
                                  aria-hidden="true"></i>&nbsp;Help

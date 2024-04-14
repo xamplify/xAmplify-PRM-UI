@@ -64,13 +64,15 @@
                   (keypress)="eventEnterKeyHandler($event.keyCode)">
               </div>
               <div class="col-md-3" *ngIf="criterias[i].property === 'Type' ||  criterias[i].property === 'From'">
-                <select class="form-control" [(ngModel)]="criterias[i].value1">
-                  <ng-container *ngIf="criterias[i].property === 'Type' ">
-                    <option value="undefined">Select Asset Type</option>
-                    <option *ngFor="let fileType of fileTypes">{{fileType}}</option>
+                <select class="form-control" [(ngModel)]="criterias[i].value1" (change)="onSelection(criterias[i],i)">
+                  <ng-container *ngIf="criterias[i].property === 'Type' " >
+                    <option [value]="undefined" *ngIf="criterias[i].value1 === 'undefined'">Select Asset Type</option>
+                    <option *ngIf="criterias[i].value1 !== 'undefined'">{{selectedTypes[i]}}</option>
+                    <option [value]="fileType" *ngFor="let fileType of fileTypes;">{{fileType}}</option>
                   </ng-container>
                   <ng-container *ngIf="criterias[i].property === 'From'">
-                    <option value="undefined">Select Company Name</option>
+                    <option value="undefined" *ngIf="criterias[i].value1 === 'undefined'">Select Company Name</option>
+                    <option *ngIf="criterias[i].value1 !== 'undefined'" [value]="selectedCompanies[i].sharedByVendorCompanyId">{{selectedCompanies[i].sharedByVendorCompanyName}}</option>
                     <option *ngFor="let vendorCompany of whiteLableContentSharedByVendorCompanies"
                       [value]="vendorCompany.sharedByVendorCompanyId">
                       {{vendorCompany.sharedByVendorCompanyName}}
@@ -80,7 +82,7 @@
               </div>
 
               <div class="col-md-1 p0 positionForAddandDelete" style="display: flex;">
-                <span (click)="cancelSegmentationRow(i)" type="button">
+                <span (click)="cancelSegmentationRow(i,criterias[i])" type="button">
                   <i class="fa fa-trash-o trashIconCustimization trash_bgcolor" aria-hidden="true" data-toggle="tooltip"
                     data-placement="top" title="Remove a condition"></i>
                 </span>
