@@ -260,23 +260,20 @@ export class AccessAccountComponent implements OnInit {
      /**XNFR-506****/
     signUpAsPartner(data: {}) {
         this.customResponse = new CustomResponse();
-        $("#teamMember-signup-emailId").removeClass('ng-valid');
-        $("#teamMember-signup-emailId").removeClass('ng-invalid');
-        $("#partner-company-name").removeClass('ng-valid');
-        $("#partner-company-name").removeClass('ng-invalid');
+        this.removeErrorClasses();
         this.authenticationService.signUpAsPartner(data).
         subscribe(response=>{
-            this.referenceService.teamMemberSignedUpSuccessfullyMessage = this.properties.TEAM_MEMBER_SIGN_UP_SUCCESS;
+            this.referenceService.teamMemberSignedUpSuccessfullyMessage = this.properties.PARTNERSHIP_ESTABLISHED_SUCCESSFULLY;
             this.router.navigate(['./login']);
             this.loading = false;
         },error=>{
             let message = this.referenceService.showHttpErrorMessage(error);
             if(this.properties.serverErrorMessage!=message){
-                if("Company name has already been added."==message){
-                    this.formErrors.companyName = message;
-                    $("#partner-company-name").removeClass('ng-valid');
-                    $("#partner-company-name").addClass('ng-invalid');
-                }else if(message.includes("The account already exists with a password")){
+                if(message.includes("Company name has already been added")){
+                    this.removeErrorClasses();
+                    this.showConfirmAlertForAddingAsTeamMember(this.properties.PARTNERSHIP_ALREADY_ESTABLISHED_WITH_COMPANY_NAME, data);
+                }else if(message.includes("The account already exists")){
+                    this.removeErrorClasses();
                     this.skipPasswordAndAddAsPartner(message, data);
                 }else{
                     this.formErrors.emailId = message;
@@ -291,6 +288,14 @@ export class AccessAccountComponent implements OnInit {
         
     }
 
+    private removeErrorClasses() {
+        $("#teamMember-signup-emailId").removeClass('ng-valid');
+        $("#teamMember-signup-emailId").removeClass('ng-invalid');
+        $("#partner-company-name").removeClass('ng-valid');
+        $("#partner-company-name").removeClass('ng-invalid');
+    }
+
+    /****XNFR-506******/
     private skipPasswordAndAddAsPartner(message: string, data: {}) {
         let self = this;
         swal({
@@ -304,12 +309,41 @@ export class AccessAccountComponent implements OnInit {
             allowOutsideClick: false,
             allowEscapeKey: false
         }).then(function () {
+            self.loading = true;
             data['skipPassword'] = true;
             self.signUpAsPartner(data);
             swal.close();
         }, function (_dismiss: any) {
         });
     }
+
+    /****XNFR-506******/
+    private showConfirmAlertForAddingAsTeamMember(message: string, data: {}) {
+        let self = this;
+        swal({
+            title: 'Are you sure?',
+            text: message,
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            confirmButtonText: "Yes",
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then(function () {
+            self.loading = true;
+            data['addAsPartnerTeamMember'] = true;
+            self.addAsPartnerTeamMember(data);
+            swal.close();
+        }, function (_dismiss: any) {
+        });
+    }
+    addAsPartnerTeamMember(data: {}) {
+       this.loading = false;
+       this.referenceService.showSweetAlertInfoMessage();
+    }
+
+
 
     /**XNFR-454****/
     signUpAsTeamMember(data: {}) {

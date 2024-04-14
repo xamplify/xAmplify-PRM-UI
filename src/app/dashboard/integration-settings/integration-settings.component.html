@@ -257,10 +257,11 @@
         </select>
       </div>
       <div class="text-center" *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
-        <span *ngIf="integrationType =='SALESFORCE'">Please Reconfigure {{ integrationType | titlecase }} as the token
+        <span *ngIf="integrationType =='SALESFORCE' && !isFilterApplied">Please Reconfigure {{ integrationType | titlecase }} as the token
           is an expired</span>
-        <span *ngIf="integrationType !='SALESFORCE'">There are no custom fields in your {{ integrationType | titlecase
+        <span *ngIf="integrationType !='SALESFORCE' && !isFilterApplied">There are no custom fields in your {{ integrationType | titlecase
           }} account.</span>
+          <span *ngIf="isFilterApplied">No Custom fields found</span>
       </div>
       <div class="modal-footer border-none pr0 pt0 pl0">
         <span *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="align-item-left">

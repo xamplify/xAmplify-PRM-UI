@@ -350,6 +350,9 @@ export class Properties {
 
 	eventCampaignTemplateLocalStorageKey = "eventCampaignTemplatePreviewData";
 
+	PARTNERSHIP_ESTABLISHED_SUCCESSFULLY = "The partnership has been established successfully.";
+	PARTNERSHIP_ALREADY_ESTABLISHED_WITH_COMPANY_NAME = "The company partnership is already established. Do you want to join as a team member?";
+
 
 
 }
