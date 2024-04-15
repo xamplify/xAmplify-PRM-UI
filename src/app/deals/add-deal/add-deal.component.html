@@ -64,6 +64,13 @@
                           </option>
                         </select>
                       </div>
+                      <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px" *ngIf="isVendorVersion">
+                        <label class="control-label">Deal By<span class="required"><strong>*</strong></span></label>
+                        <select class="form-control" [disabled]="preview || edit || leadId > 0 || vanityLoginDto?.vanityUrlFilter">
+                          <option [value]="deal?.createdByCompanyId">{{deal?.createdByCompanyName}}
+                          </option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>

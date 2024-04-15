@@ -322,10 +322,13 @@ export class AddDealComponent implements OnInit {
 
   getDeal(dealId: number) {
     let self = this;
+    this.isLoading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
     this.dealsService.getDeal(dealId, this.loggedInUserId)
       .subscribe(
         data => {
           this.referenceService.loading(this.httpRequestLoader, false);
+          this.isLoading = false;
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
             self.deal = data.data;
@@ -1122,9 +1125,10 @@ export class AddDealComponent implements OnInit {
   }
 
   getDealPipelines() {
-    this.isLoading = true;
     let campaignId = 0;
     let self = this;
+    this.isLoading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
     if (this.deal.campaignId !== undefined && this.deal.campaignId > 0) {
       campaignId = this.deal.campaignId;
     }
@@ -1165,9 +1169,10 @@ export class AddDealComponent implements OnInit {
   }
 
   getDealPipelinesForView() {
-    this.isLoading = true;
     let campaignId = 0;
     let self = this;
+    this.isLoading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
     if (this.deal.campaignId !== undefined && this.deal.campaignId > 0) {
       campaignId = this.deal.campaignId;
     }
@@ -1181,11 +1186,18 @@ export class AddDealComponent implements OnInit {
           self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
           self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
           let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
+          let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
+          
+          if (this.isVendorVersion) {
+            [createdByPipelines, createdForPipelines] = [createdForPipelines, createdByPipelines];
+            [this.deal.createdByPipelineId, this.deal.createdForPipelineId] = [this.deal.createdForPipelineId, this.deal.createdByPipelineId];
+            [this.deal.createdByPipelineStageId, this.deal.createdForPipelineStageId] = [this.deal.createdForPipelineStageId, this.deal.createdByPipelineStageId];
+          }
+
           if (createdByPipelines !== undefined && createdByPipelines !== null) {
             this.handleCreatedByPipelines(createdByPipelines);
           }
           
-          let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
           if (createdForPipelines !== undefined && createdForPipelines !== null) {
             this.handleCreatedForPipelines(createdForPipelines);
           }          
