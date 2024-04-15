@@ -332,13 +332,12 @@ export class AccessAccountComponent implements OnInit {
             allowEscapeKey: false
         }).then(function () {
             self.loading = true;
-            data['addAsPartnerTeamMember'] = true;
-            self.addAsPartnerTeamMember(data);
+            self.getTeamMemberSignUpUrl(data);
             swal.close();
         }, function (_dismiss: any) {
         });
     }
-    addAsPartnerTeamMember(data: {}) {
+    getTeamMemberSignUpUrl(data: {}) {
        this.loading = false;
        this.referenceService.showSweetAlertInfoMessage();
     }
