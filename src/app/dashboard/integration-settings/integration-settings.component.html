@@ -81,7 +81,7 @@
                     title="{{sfCustomField.label}}">{{sfCustomField.label | slice:0:30}}
                     <span *ngIf="sfCustomField.label?.length>30">...</span>
                   </span>
-                  <ul *ngIf="integrationType === 'HUBSPOT'" class="textDecoration">
+                  <ul *ngIf="integrationType === 'HALOPSA' || integrationType === 'HUBSPOT'" class="textDecoration">
                     <li>{{sfCustomField.displayName}}</li>
                     <li
                       *ngIf="(sfCustomField.formDefaultFieldType != null)  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)">
