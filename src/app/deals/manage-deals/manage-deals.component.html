@@ -165,7 +165,7 @@
                       </a>
 
 
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' || (isPartnerVersion && activeCRMDetails?.type == 'CONNECTWISE')"
+                      <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO') || (isPartnerVersion && activeCRMDetails?.type == 'CONNECTWISE')"
                         (click)="syncLeadsWithActiveCRM()">
 
                         <!-- <button class="btn btn-white salesforce-btn button neg-mar-top bgcolor-unset" -->
