@@ -162,6 +162,7 @@ export class AddDealComponent implements OnInit {
       this.pipelineText = "Vendor's xAmplify Pipeline";
       this.pipelinestageText = "Vendor's xAmplify Stage";
     }
+    this.isOnlyOrgAdminOrMarketing = (this.authenticationService.isOrgAdmin() && !this.authenticationService.isPartner()) || (this.authenticationService. module.isMarketing && !this.authenticationService.isPartner());  
     if (this.actionType === "add") {
       this.showCommentActions = true;
       this.showAttachLeadButton = true;
@@ -1185,7 +1186,6 @@ export class AddDealComponent implements OnInit {
           self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
           let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
           let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
-          this.isOnlyOrgAdminOrMarketing = (this.authenticationService.isOrgAdmin() && !this.authenticationService.isPartner()) || (this.authenticationService. module.isMarketing && !this.authenticationService.isPartner());
           if (this.isVendorVersion && !this.isOnlyOrgAdminOrMarketing) {
             [self.createdByActiveCRM, self.createdForActiveCRM] = [self.createdForActiveCRM, self.createdByActiveCRM];
             [createdByPipelines, createdForPipelines] = [createdForPipelines, createdByPipelines];
