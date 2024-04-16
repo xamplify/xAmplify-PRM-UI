@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { ParterService } from '../services/parter.service';
+import { ParterService } from '../../partners/services/parter.service';
 import { UtilService } from 'app/core/services/util.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
@@ -10,27 +10,26 @@ import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from 'app/core/models/sort-option';
 
 @Component({
-  selector: 'app-interacted-not-interacted-track-details',
-  templateUrl: './interacted-not-interacted-track-details.component.html',
-  styleUrls: ['./interacted-not-interacted-track-details.component.css'],
+  selector: 'app-redistributed-campaign-details',
+  templateUrl: './redistributed-campaign-details.component.html',
+  styleUrls: ['./redistributed-campaign-details.component.css'],
   providers: [SortOption]
 })
-export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
+export class RedistributedCampaignDetailsComponent implements OnInit {
   @Input() partnerCompanyId: any;
-  @Input() teamMemberId: any;
-  @Input() trackType: any = "";
-  @Output() notifyShowDetailedAnalytics = new EventEmitter();
-  @Input()  isDetailedAnalytics: boolean;
   @Input() applyFilter: boolean;
+  @Input() teamMemberId: any;
+  @Input() campaignTypeFilter: any = "";
+  @Input()  isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
-
-
+  @Output() notifyShowDetailedAnalytics = new EventEmitter();
+  @Input() isTeamMemberAnalytics: boolean = true;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
-  heading:any = "Interacted & Not Interacted Track Details";
+  colClass: any;
   scrollClass: any;
 
   constructor(public authenticationService: AuthenticationService,
@@ -39,62 +38,51 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
     public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
       this.loggedInUserId = this.authenticationService.getUserId();
   }
-
+ 
   ngOnInit() {    
   }
 
   ngOnChanges() {    
     this.pagination.pageIndex = 1;
-    this.setHeading();    
-    this.getInteractedNotInteractedTrackDetails(this.pagination);
-  }
-  setHeading() {
-    if (this.trackType != "") {
-      if (this.trackType === 'Interacted') {
-        this.heading = "Interacted Track Details";
-      } else if (this.trackType === 'Not Interacted') {
-        this.heading = "Not Interacted Track Details";
-      }
+    if (this.isDetailedAnalytics) {
+      this.colClass = "col-sm-12 col-md-12 col-lg-12 ml15m";
+      this.scrollClass = "";
     } else {
-      this.heading = "Interacted & Not Interacted Track Details"
-    } 
-
-    // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
-    //   this.isDetailedAnalytics = true;
-    // } else {
-    //   this.isDetailedAnalytics = false;
-    // }
+      this.colClass = "col-xs-12 col-sm-6 col-md-8 col-lg-8 ml15m responsiveMargins"
+      this.scrollClass = "tableHeightScroll";
+    }
+    this.getRedistributedCampaignDetails(this.pagination);
   }
 
-  getInteractedNotInteractedTrackDetails(pagination : Pagination) {
+  getRedistributedCampaignDetailsForPartnerJourney(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
-    this.pagination.detailedAnalytics = this.isDetailedAnalytics;
-    this.pagination.trackTypeFilter = this.trackType;
-    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.maxResults = 6;
+    this.pagination.detailedAnalytics = this.isDetailedAnalytics;
+    this.pagination.campaignTypeFilter = this.campaignTypeFilter;
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.teamMemberId = this.teamMemberId;
-    this.parterService.getPartnerJourneyTrackDetailsByInteraction(this.pagination).subscribe(
-			(response: any) => {	
+    this.parterService.getRedistributedCampaignDetails(this.pagination).subscribe(
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {          
+        if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
-				  this.pagination.totalRecords = response.data.totalRecords;
+          this.pagination.totalRecords = response.data.totalRecords;
           if(pagination.totalRecords == 0){
             this.scrollClass = 'noData'
           } else {
             this.scrollClass = 'tableHeightScroll'
           }
-				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-        }        	
-			},
-			(_error: any) => {
+          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }
+      },
+      (_error: any) => {
         this.httpRequestLoader.isServerError = true;
         this.xtremandLogger.error(_error);
-			}
-		);
+      }
+    );
   }
 
   search() {		
@@ -111,27 +99,62 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
     pagination.pageIndex = 1;
     pagination.searchKey = this.sortOption.searchKey;
     pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOption, pagination);
-    this.getInteractedNotInteractedTrackDetails(this.pagination);
+    this.getRedistributedCampaignDetails(this.pagination);
   }
 
   dropDownList(event) {
     this.pagination = event;
-    this.getInteractedNotInteractedTrackDetails(this.pagination);
+    this.getRedistributedCampaignDetails(this.pagination);
   }
 
   setPage(event:any) {
 		this.pagination.pageIndex = event.page;
-		this.getInteractedNotInteractedTrackDetails(this.pagination);
+		this.getRedistributedCampaignDetails(this.pagination);
 	}  
 
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
     this.getAllFilteredResults(this.pagination);
-  } 
-   
+  }  
+
   viewAnalytics(partnerCompanyId: any) {
     this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
-    this.referenseService.goToTop();
+    this.referenseService.goToTop(); 
+  }
+
+  getRedistributedCampaignDetails(pagination: Pagination){
+    if(!this.isTeamMemberAnalytics){
+      this.getRedistributedCampaignDetailsForPartnerJourney(this.pagination);
+    }else{
+      this.getRedistributedCampaignDetailsForTeamMember(this.pagination)
+    }
+  }
+
+
+  getRedistributedCampaignDetailsForTeamMember(pagination: Pagination) {
+    this.referenseService.loading(this.httpRequestLoader, true);
+    this.pagination.userId = this.loggedInUserId;
+    this.pagination.maxResults = 6;
+    this.pagination.campaignTypeFilter = this.campaignTypeFilter;
+    this.parterService.getRedistributedCampaignDetailsForTeamMember(this.pagination).subscribe(
+      (response: any) => {
+        this.referenseService.loading(this.httpRequestLoader, false);
+        if (response.statusCode == 200) {
+          this.sortOption.totalRecords = response.data.totalRecords;
+          this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
+          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }
+      },
+      (_error: any) => {
+        this.httpRequestLoader.isServerError = true;
+        this.xtremandLogger.error(_error);
+      }
+    );
   }
 
 }

@@ -89,6 +89,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   adminsLoader:HttpRequestLoader = new HttpRequestLoader();
   admins:Array<any> = new Array<any>();
   mergeTagForGuide:any;
+  selectedTrackType: any = "";
+  selectedAssetType: any = "";
+  selectedCampaignType: any = "";
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -974,6 +977,36 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         this.referenceService.showSweetAlertServerErrorMessage();
       }
     )
+  }
+  
+  interactionTracksDonutSliceSelected(type: any) {
+    this.selectedTrackType = type;
+    this.selectedAssetType = "";
+  }
+
+  interactionTracksDonutSliceUnSelected(type: any) {
+    if (this.selectedTrackType == type) {
+      this.selectedTrackType = "";
+      this.selectedAssetType = "";
+    } 
+  }
+
+  typeWiseTrackAssetsDonutSliceSelected(type: any) {
+    this.selectedAssetType = type;
+  }
+  typeWiseTrackAssetsDonutSliceUnSelected(type: any) {
+    if (this.selectedAssetType == type) {
+      this.selectedAssetType = "";
+    } 
+  }
+
+  redistributedCampaignDetailsPieChartSelected(type: any){
+    this.selectedCampaignType = type;
+  }
+  redistributedCampaignDetailsPieChartUnSelected(type: any){
+    if (this.selectedCampaignType == type) {
+        this.selectedCampaignType = "";
+      } 
   }
 
 }

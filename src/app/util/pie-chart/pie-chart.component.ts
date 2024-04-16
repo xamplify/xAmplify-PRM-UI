@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ParterService } from '../services/parter.service';
+import { ParterService } from '../../partners/services/parter.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
-import { PartnerJourneyRequest } from '../models/partner-journey-request';
+import { PartnerJourneyRequest } from '../../partners/models/partner-journey-request';
+import { TeamMemberAnalyticsRequest } from 'app/team/models/team-member-analytics-request';
 
 declare var Highcharts: any;
 @Component({
@@ -20,6 +21,7 @@ export class PieChartComponent implements OnInit {
   @Input() selectedPartnerCompanyIds: any = [];
   @Output() notifySelectSlice = new EventEmitter();
   @Output() notifyUnSelectSlice = new EventEmitter();
+  @Input() isTeamMemberAnalytics : boolean = false;
   headerText: string;
   loader = false;
   statusCode = 200;
@@ -116,7 +118,11 @@ export class PieChartComponent implements OnInit {
   }
   foundPieChart(){
     if(this.chartId == "redistributedCampaignDetailsPieChart"){
-          this.redistributedCampaignDetailsPieChart();
+      if(!this.isTeamMemberAnalytics){
+        this.redistributedCampaignDetailsPieChart();
+      }else{
+        this.redistributedCampaignDetailsPieChartForTeamMember();
+      }
           this.headerText = 'Redistributed Campaigns';
         } else {
          this.launchedCampaignsCountGroupByCampaignType();
@@ -148,6 +154,19 @@ export class PieChartComponent implements OnInit {
     this.loader = false;
     this.statusCode = 500;
   }
+
+
+  redistributedCampaignDetailsPieChartForTeamMember() {
+    let teamMemberAnalyticsRequest = new TeamMemberAnalyticsRequest();
+    teamMemberAnalyticsRequest.loggedInUserId = this.authenticationService.getUserId();
+    this.parterService.redistributedCampaignDetailsPieChartForTeamMember(teamMemberAnalyticsRequest).subscribe(
+      response => {
+        this.processResponse(response);
+      }, error => {
+        this.setErrorResponse(error);
+      }
+    );
+  } 
 
   processResponse(response: any) {
     this.statusCode = response.statusCode;

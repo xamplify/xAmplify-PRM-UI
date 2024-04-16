@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { ParterService } from '../services/parter.service';
+import { ParterService } from '../../partners/services/parter.service';
 import { UtilService } from 'app/core/services/util.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
@@ -22,6 +22,7 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Input() isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
+  @Input() isTeamMemberAnalytics : boolean = false;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -48,7 +49,7 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
     this.getDealDetails(this.pagination);
   }
 
-  getDealDetails(pagination : Pagination) {
+  getDealDetailsForPartnerJourney(pagination : Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
@@ -108,6 +109,33 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
   viewAnalytics(partnerCompanyId: any) {
     this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
     this.referenseService.goToTop(); 
+  }
+
+  getDealDetails(pagination : Pagination){
+    if(!this.isTeamMemberAnalytics){
+      this.getDealDetailsForPartnerJourney(this.pagination);
+    }else{
+      this.getDealDetailsForTeamMember(this.pagination);
+    }
+  }
+  getDealDetailsForTeamMember(pagination: Pagination) {
+    this.referenseService.loading(this.httpRequestLoader, true);
+    this.pagination.userId = this.loggedInUserId;
+    this.pagination.maxResults = 6;  
+    this.parterService.getDealDetailsForTeamMember(this.pagination).subscribe(
+			(response: any) => {	
+        this.referenseService.loading(this.httpRequestLoader, false);
+        if (response.statusCode == 200) {          
+          this.sortOption.totalRecords = response.data.totalRecords;
+				  this.pagination.totalRecords = response.data.totalRecords;
+				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }        	
+			},
+			(_error: any) => {
+        this.httpRequestLoader.isServerError = true;
+        this.xtremandLogger.error(_error);
+			}
+		);
   }
 
 }

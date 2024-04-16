@@ -12,7 +12,6 @@ import { TimepickerModule } from 'ngx-bootstrap';
 import { BootstrapSwitchModule } from 'angular2-bootstrap-switch';
 import { TimezonePickerModule } from 'ng2-timezone-selector';
 import { LoadingModule } from 'ngx-loading';
-import { BoxLoaderComponent } from '../box-loader/box-loader.component';
 import { LefsideNavigationLoaderComponent } from '../lefside-navigation-loader/lefside-navigation-loader.component';
 import { DynamicGridLoaderComponent } from '../dynamic-grid-loader/dynamic-grid-loader.component';
 import { CommonComponentModule } from '../common/common.module';
@@ -35,14 +34,14 @@ import { LandingPageAnalyticsComponent } from 'app/landing-pages/landing-page-an
                   BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, 
                   CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule],
 
-        declarations: [AddDealComponent,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent,
+        declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
                 LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
                   HttpModule, Ng2FilterPipeModule, ImageCropperModule, TimepickerModule,
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
-                  NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,BoxLoaderComponent,
+                  NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
                 EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent],
         providers: [],

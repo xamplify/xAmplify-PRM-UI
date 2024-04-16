@@ -336,6 +336,97 @@
           </div>
         </div>
       </div>
+      <app-partner-journey-count-tiles [isTeamMemberAnalytics]="true"></app-partner-journey-count-tiles>
+      <div class="row rowPaddingCustomization">
+        <div>
+          <!--******************Interacted & Not Interacted Donut Chart******************-->
+          <div class="ml15m">
+            <app-donut-pie-chart [chartId]="'interactedAndNotInteractedTracksDonut'" [isTeamMemberAnalytics]="true"
+              [applyFilter]="applyFilter" (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
+              [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+              (notifyUnSelectSlice)="interactionTracksDonutSliceUnSelected($event)"></app-donut-pie-chart>
+          </div>
+        </div>
+        <!--******************Interacted & Not Interacted Track Details*******************-->
+        <app-interacted-not-interacted-track-details [trackType]="selectedTrackType" [isTeamMemberAnalytics]="true"
+          [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter">
+        </app-interacted-not-interacted-track-details>
+      </div>
+      <!--******************Status wise Track Assets Donut Chart & Details******************-->
+  <div class="row rowPaddingCustomization">
+  <div class="cardPaddingCustomization">
+    <!--******************Type wise Track Assets Donut Chart******************-->
+    <div class="ml15m">
+      <app-donut-pie-chart [trackType]="selectedTrackType" [chartId]="'typewiseTrackContentDonut'"
+        [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
+        (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)"
+        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"></app-donut-pie-chart>
+    </div>
+
+    <!--******************Type wise Track Content Details*******************-->
+    <app-typewise-track-content-details [trackType]="selectedTrackType" [assetType]="selectedAssetType"
+      [isTeamMemberAnalytics]="true" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+      [applyFilter]="applyFilter"></app-typewise-track-content-details>
+  </div>
+  <div class="row rowPaddingCustomization1">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <!--******************Team Member wise Track Counts******************-->
+      <app-userwise-track-counts [type]="'TRACK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+        [isTeamMemberAnalytics]="true" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        [applyFilter]="applyFilter"></app-userwise-track-counts>
+
+      <!--******************Team Member wise Playbook Counts******************-->
+      <app-userwise-track-counts [type]="'PLAYBOOK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+        [isTeamMemberAnalytics]="true" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        [applyFilter]="applyFilter"></app-userwise-track-counts>
+    </div>
+    <div class="row rowPaddingCustomization2">
+      <app-userwise-track-details [isTeamMemberAnalytics]="true" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" 
+      [applyFilter]="applyFilter"></app-userwise-track-details>
+    </div>
+  </div>
+  <!--******************Track & Playbook Asset Details*******************-->
+  <div class="row rowPaddingCustomization1">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <!--******************Track Asset Details*******************-->
+      <app-track-asset-details  [type]="'TRACK'" [isTeamMemberAnalytics]="true"
+        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"></app-track-asset-details>
+
+      <!--******************Playbook Asset Details*******************-->
+      <app-track-asset-details  [type]="'PLAYBOOK'" [isTeamMemberAnalytics]="true"
+        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"></app-track-asset-details>
+    </div>
+  </div>
+  <!--******************Share Lead Details*******************-->
+  <div class="row rowPaddingCustomization2">
+    <app-share-lead-details [isTeamMemberAnalytics]="true" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+     [applyFilter]="applyFilter"></app-share-lead-details>
+  </div>
+   <!--******************Redistributed Camapign Details*******************-->
+   <div class="row rowPaddingCustomization4">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
+      <div>
+        <app-pie-chart [chartId]="'redistributedCampaignDetailsPieChart'"
+          (notifySelectSlice)="redistributedCampaignDetailsPieChartSelected($event)"
+          (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)" [isTeamMemberAnalytics]="true"
+           [applyFilter]="applyFilter"></app-pie-chart>
+      </div>
+      <app-redistributed-campaign-details [campaignTypeFilter]="selectedCampaignType"
+        [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"></app-redistributed-campaign-details>
+    </div>
+  </div>
+  <!--******************Lead Details*******************-->
+  <div class="row rowPaddingCustomization2">
+    <app-partner-journey-lead-details  [isTeamMemberAnalytics]="true"
+      [applyFilter]="applyFilter"></app-partner-journey-lead-details>
+  </div>
+  <!--******************Deal Details*******************-->
+  <div class="row rowPaddingCustomization2">
+    <app-partner-journey-deal-details  [isTeamMemberAnalytics]="true" 
+    [applyFilter]="applyFilter"></app-partner-journey-deal-details>
+  </div> 
+</div>
     </ng-container>
     <!---End Of Team Members---->
 

@@ -6,6 +6,7 @@ import { DashboardService } from "app/dashboard/dashboard.service";
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { PartnerJourneyRequest } from "app/partners/models/partner-journey-request";
 import { ParterService } from "app/partners/services/parter.service";
+import { TeamMemberAnalyticsRequest } from "app/team/models/team-member-analytics-request";
 import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 declare var Highcharts: any;
 
@@ -34,6 +35,7 @@ export class DonutPieChartComponent implements OnInit {
   @Output() notifyUnSelectSlice = new EventEmitter();
   @Input()  isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
+  @Input() isTeamMemberAnalytics : boolean = false;
   headerText: string;
   chartColors: string[];
   colClass:string;
@@ -73,13 +75,21 @@ export class DonutPieChartComponent implements OnInit {
       // this.colClass = "col-sm-5 col-lg-5";
       this.colClass = "col-sm-6 col-md-5 col-xs-12 col-lg-5";
       this.portletLightClass = "portlet light active-donut-pie-chart";
-      this.loadDonutChartForInteractedAndNotInteractedTracks();
+      if(!this.isTeamMemberAnalytics){
+        this.loadDonutChartForInteractedAndNotInteractedTracks();
+      }else{
+        this.loadDonutChartForInteractedAndNotInteractedTracksForTeamMember();
+      }
     } else if (this.chartId == "typewiseTrackContentDonut") {
       this.headerText = 'Status Wise Track Assets';
       this.chartColors = ['#3598dc', '#3480b5', '#8e5fa2', '#e87e04', '#26a69a'];
       this.colClass = "col-sm-6 col-md-5 col-xs-12 col-lg-4";
       this.portletLightClass = "portlet light active-donut-pie-chart";
-      this.loadDonutChartForTypewiseTrackContents();
+      if(!this.isTeamMemberAnalytics){
+       this.loadDonutChartForTypewiseTrackContents();;
+      }else{
+        this.loadDonutChartForTypewiseTrackContentsForTeamMember();
+      }
     } else {
       this.headerText = "";
       this.chartId = 'activeInActivePartnersDonut';
@@ -130,6 +140,30 @@ export class DonutPieChartComponent implements OnInit {
     partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
     this.partnerService.getPartnerJourneyInteractedAndNotInteractedCounts(partnerJourneyRequest).subscribe(
+      response => {
+        this.processResponse(response);
+      }, error => {
+        this.setErrorResponse(error);
+      }
+    );
+  }
+  loadDonutChartForInteractedAndNotInteractedTracksForTeamMember(){
+    let teamMemberAnalyticsRequest = new TeamMemberAnalyticsRequest();
+    teamMemberAnalyticsRequest.loggedInUserId = this.loggedInUserId;
+    this.partnerService.getTeamMemberAnalyticsInteractedAndNotInteractedCounts(teamMemberAnalyticsRequest).subscribe(
+      response => {
+        this.processResponse(response);
+      }, error => {
+        this.setErrorResponse(error);
+      }
+    );
+  }
+
+  loadDonutChartForTypewiseTrackContentsForTeamMember(){
+    let teamMemberAnalyticsRequest = new TeamMemberAnalyticsRequest();
+    teamMemberAnalyticsRequest.loggedInUserId = this.loggedInUserId;
+    teamMemberAnalyticsRequest.trackTypeFilter = this.trackType;
+    this.partnerService.getTeamMemberTypewiseTrackCounts(teamMemberAnalyticsRequest).subscribe(
       response => {
         this.processResponse(response);
       }, error => {

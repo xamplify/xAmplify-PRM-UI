@@ -20,7 +20,8 @@
           <thead>
             <tr>         
               <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team Member</th>
-              <th scope="col" *ngIf="!isDetailedAnalytics"><i class="fa fa-building" aria-hidden="true"></i> Company Name</th>
+              <th scope="col" *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><i class="fa fa-building" aria-hidden="true"></i> Company Name</th>
+              <th scope="col" *ngIf="isTeamMemberAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team Member</th>
               <th scope="col"><i class="fa fa-line-chart" aria-hidden="true"></i> Track</th>
               <th scope="col"><i class="fa fa-tasks" aria-hidden="true"></i> Avg. Progress</th>
               <th></th>
@@ -30,7 +31,8 @@
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <td *ngIf="isDetailedAnalytics"> <app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
               <!-- <td *ngIf="!isDetailedAnalytics"><a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">{{item?.companyName}}</a></td>  -->
-              <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <td *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <td *ngIf="isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button"><app-user-info [userInfo]="item"></app-user-info></a></td>
               <td>{{item?.title}}</td>              
               <!-- <td>{{item.progress}}%</td> -->
               <td>

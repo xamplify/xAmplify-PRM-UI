@@ -8,9 +8,11 @@ import { User } from '../../core/models/user';
 import { PartnerJourneyRequest } from '../models/partner-journey-request';
 import { WorkflowDto } from 'app/contacts/models/workflow-dto';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { TeamMemberAnalyticsRequest } from 'app/team/models/team-member-analytics-request';
 
 @Injectable()
 export class ParterService {
+  
     URL = this.authenticationService.REST_URL;
     ACCESS_TOKEN_SUFFIX_URL = "?access_token=";
     WORK_FLOW_PREFIX_URL = this.authenticationService.REST_URL + "workflow";
@@ -404,11 +406,96 @@ export class ParterService {
         return this.authenticationService.callGetMethod(findByWorkFlowUrl);
     }
 
-   
+    getTeamMemberAnalyticsCounts(teamMemberAnalyticsRequest: TeamMemberAnalyticsRequest) {
+        const url = this.URL + 'teamMemberAnalytics/counts?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, teamMemberAnalyticsRequest )
+            .catch( this.handleError );
+    }
+
+    getTeamMemberAnalyticsInteractedAndNotInteractedCounts(teamMemberAnalyticsRequest: TeamMemberAnalyticsRequest) {
+        const url = this.URL + 'teamMemberAnalytics/track/interaction/counts?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, teamMemberAnalyticsRequest )
+            .catch( this.handleError );
+      }
+
+      getTeamMemberTrackDetailsByInteraction(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/track/interaction?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+      }
+
+      getTeamMemberTypewiseTrackCounts(teamMemberAnalyticsRequest: TeamMemberAnalyticsRequest) {
+        const url = this.URL + 'teamMemberAnalytics/track/typewise/counts?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, teamMemberAnalyticsRequest )
+            .catch( this.handleError );
+      }
+
+      getTypeWiseTrackContentDetailsForTeamMember(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/track/content/typewise?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );;
+      }
+
+      getUserWiseTrackCountsForTeamMember(pagination: Pagination) {
+        let url = this.URL + 'teamMemberAnalytics/track/userwise/count?access_token=' + this.authenticationService.access_token;
+        if (pagination.lmsType === 'PLAYBOOK') {
+            url = this.URL + 'teamMemberAnalytics/playbook/userwise/count?access_token=' + this.authenticationService.access_token;
+        }
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+      }
+
+      getUserWiseTrackDetailsForTeamMember(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/track/userwise/details?access_token=' + this.authenticationService.access_token;       
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+      }
+
+      getTrackAssetDetailsForTeamMember(pagination: Pagination) {
+        let url = this.URL + 'teamMemberAnalytics/track/asset/details?access_token=' + this.authenticationService.access_token;
+        if (pagination.lmsType === 'PLAYBOOK') {
+            url = this.URL + 'teamMemberAnalytics/playbook/asset/details?access_token=' + this.authenticationService.access_token;
+        }        
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+      }
+
+      getShareLeadDetailsForTeamMember(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/share/lead/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+      }
+
+      redistributedCampaignDetailsPieChartForTeamMember(teamMemberAnalyticsRequest: TeamMemberAnalyticsRequest) {
+         const url = this.URL + 'teamMemberAnalytics/redistributed/campaign/details/count/pie/chart?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, teamMemberAnalyticsRequest )
+            .catch( this.handleError );
+      }
+
+      getRedistributedCampaignDetailsForTeamMember(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/redistributed/campaign/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+      }
+
+      getLeadDetailsForTeamMember(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/lead/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+      }
+
+      getDealDetailsForTeamMember(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/deal/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+      }
 
     /*********End : XNFR-316************/
     
     handleError( error: any ) {
         return Observable.throw( error );
     }
+
+
+
 }

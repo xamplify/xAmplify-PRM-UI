@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { ParterService } from '../services/parter.service';
+import { ParterService } from '../../partners/services/parter.service';
 import { UtilService } from 'app/core/services/util.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
@@ -24,6 +24,7 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Input()  isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
+  @Input() isTeamMemberAnalytics : boolean = false;
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -44,11 +45,11 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   }
 
   ngOnChanges() {   
-    this.pagination.pageIndex = 1;   
+    this.pagination.pageIndex = 1; 
     this.getTypeWiseTrackContentDetails(this.pagination);
   }
 
-  getTypeWiseTrackContentDetails(pagination : Pagination) {
+  getTypeWiseTrackContentDetailsForPartnerJourney(pagination : Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
@@ -60,6 +61,33 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     this.pagination.maxResults = 6;
     this.pagination.teamMemberId = this.teamMemberId;   
     this.parterService.getTypeWiseTrackContentDetails(this.pagination).subscribe(
+			(response: any) => {	
+        this.referenseService.loading(this.httpRequestLoader, false);
+        if (response.statusCode == 200) {          
+          this.sortOption.totalRecords = response.data.totalRecords;
+				  this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
+				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }        	
+			},
+			(_error: any) => {
+        this.httpRequestLoader.isServerError = true;
+        this.xtremandLogger.error(_error);
+			}
+		);
+  }
+
+  getTypeWiseTrackContentDetailsForTeamMember(pagination: Pagination) {
+    this.referenseService.loading(this.httpRequestLoader, true);
+    this.pagination.userId = this.loggedInUserId;
+    this.pagination.trackTypeFilter = this.trackType;
+    this.pagination.assetTypeFilter = this.assetType;
+    this.pagination.maxResults = 6;  
+    this.parterService.getTypeWiseTrackContentDetailsForTeamMember(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          
@@ -129,6 +157,13 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
       return 'downloaded-class';
     } else {
       return 'default-class';
+    }
+  }
+  getTypeWiseTrackContentDetails(pagination : Pagination){
+    if(!this.isTeamMemberAnalytics){
+      this.getTypeWiseTrackContentDetailsForPartnerJourney(this.pagination);
+    }else{
+      this.getTypeWiseTrackContentDetailsForTeamMember(this.pagination);
     }
   }
 }
