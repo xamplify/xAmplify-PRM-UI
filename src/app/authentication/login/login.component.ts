@@ -290,6 +290,7 @@ bgIMage2:any;
             this.authenticationService.vendorCompanyId = result.companyId;     
             this.authenticationService.v_companyName = result.companyName;
             this.authenticationService.vanityURLink = result.vanityURLink;
+            this.authenticationService.companyUrl = result.companyUrl;
             this.authenticationService.loginType = result.loginType;
             this.authenticationService.isstyleTWoBgColor = result.styleTwoBgColor;
             this.isBgColor = result.styleOneBgColor;

@@ -73,6 +73,7 @@ export class SamlsecurityauthComponent implements OnInit {
       this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
         this.authenticationService.v_companyName = result.companyName;
         this.authenticationService.vanityURLink = result.vanityURLink;
+        this.authenticationService.companyUrl = result.companyUrl;
         this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
         this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
         if (result.companyBgImagePath) {
