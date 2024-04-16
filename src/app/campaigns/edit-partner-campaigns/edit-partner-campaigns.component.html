@@ -52,7 +52,7 @@
                <div class="alert alert-danger error-div" *ngIf="invalidScheduleTime" id="invalidScheduleTimeDiv">
                   <strong>{{invalidScheduleTimeError}}</strong>
                </div>
-               <form role="form" [formGroup]="campaignLaunchForm" (ngSubmit)="launchCampaign();">
+               <form role="form" [formGroup]="campaignLaunchForm">
                   <!-- ----------Campaign details---------- -->
                   <div class="col-xs-12">
                      <fieldset class="scheduler-border">
@@ -64,7 +64,7 @@
                                  <span class="required"><strong> * </strong></span>
                                  <span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0"
                                     class="required">Already Exists</span>
-                                 <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control"
+                                 <input type="text" id="campaignName" autocomplete="off" placeholder="Campaign Name" class="form-control"
                                     [(ngModel)]="campaign.campaignName" name="campaignName"
                                     (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');"
                                     maxlength="200" />
@@ -83,7 +83,7 @@
                                  <label for="exampleInputPassword1">Subject line</label>
                                  <span class="required"><strong> * </strong></span>
                                  <div class="input-group merge-tag-input-border">
-                                    <input type="text" id="subjectLine" placeholder="{merge tag} + Subject line"
+                                    <input type="text"  autocomplete="off"  id="subjectLine" placeholder="{merge tag} + Subject line"
                                        class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine"
                                        (input)="validateForm();validateField('subjectLine');" maxlength="1000" />
                                     <span class="input-group-btn">
@@ -98,7 +98,7 @@
                               <div class="form-group col-xs-6 p0" [attr.class]="fromNameDivClass">
                                  <label for="exampleInputPassword1">From name</label>
                                  <span class="required"><strong> * </strong></span>
-                                 <input type="text" id="fromName" placeholder="From Name" class="form-control"
+                                 <input type="text"  autocomplete="off"  id="fromName" placeholder="From Name" class="form-control"
                                     [(ngModel)]="campaign.fromName" name="fromName"
                                     (input)="validateForm();validateField('fromName');" maxlength="200" />
                               </div>
@@ -129,7 +129,7 @@
                               <div class="form-group" [attr.class]="preHeaderDivClass">
                                  <label for="exampleInputPassword1">Pre header</label>
                                  <span class="required"><strong> * </strong></span>
-                                 <input type="text" id="preHeader" placeholder="Preheader" class="form-control"
+                                 <input type="text"  autocomplete="off"  id="preHeader" placeholder="Preheader" class="form-control"
                                     [(ngModel)]="campaign.preHeader" name="preHeader"
                                     (input)="validateForm();validateField('preHeader');" maxlength="200" />
                               </div>
@@ -1002,10 +1002,10 @@
                                     (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)"
                                     style="width:10em"><span class="btn Btn-Green transition txt_pd-top3 prev-btn ">Send Test
                                        Email</span></button>
-                                 <button type="submit" class="button mar-lft-40 bgcolor-unset mrgn_lft0"
+                                 <button type="button" class="button mar-lft-40 bgcolor-unset mrgn_lft0"
                                     [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid"
-                                    style="width:10em"><span
-                                       class="btn Btn-Green transition txt_pd-top3 mrg-left25">{{buttonName}}</span></button>
+                                    style="width:10em" (click)="campaignLaunchForm.valid && isCampaignDetailsFormValid && launchCampaign()">
+                                    <span class="btn Btn-Green transition txt_pd-top3 mrg-left25">{{buttonName}}</span></button>
                               </div>
                            </div>
                         </div>

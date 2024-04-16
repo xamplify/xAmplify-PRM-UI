@@ -4,10 +4,8 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 
 import { User } from '../../core/models/user';
 import { RegularExpressions } from '../../common/models/regular-expressions';
-
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
-
 import { UserService } from '../../core/services/user.service';
 import { matchingPasswords, noWhiteSpaceValidatorWithOutLimit } from '../../form-validator';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -17,6 +15,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { VanityURL } from 'app/vanity-url/models/vanity.url';
+
 
 declare var $: any, swal:any;
 @Component({
@@ -246,6 +245,7 @@ export class AccessAccountComponent implements OnInit {
                 data['emailId'] = this.signUpUser.emailId;
                 data['companyProfileName'] = this.companyProfileName;
                 data['companyName'] = this.signUpUser.companyName;
+                data['accessedFromVanityDomain'] = this.vanityURLService.isVanityURLEnabled();
                 this.signUpAsPartner(data);
             }else{
                 data['emailId'] = this.signUpUser.emailId;
@@ -332,13 +332,12 @@ export class AccessAccountComponent implements OnInit {
             allowEscapeKey: false
         }).then(function () {
             self.loading = true;
-            data['addAsPartnerTeamMember'] = true;
-            self.addAsPartnerTeamMember(data);
+            self.getTeamMemberSignUpUrl(data);
             swal.close();
         }, function (_dismiss: any) {
         });
     }
-    addAsPartnerTeamMember(data: {}) {
+    getTeamMemberSignUpUrl(data: {}) {
        this.loading = false;
        this.referenceService.showSweetAlertInfoMessage();
     }

@@ -35,11 +35,6 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 	pagination: Pagination = new Pagination();
 	parterViewText: string;
 	dropdownDisabled: boolean[] = [];
-	/** XBi-2427  ***/
-	selectedTypes: any[] = []
-	allTypes: any[] = [];
-	allCompanies: WhiteLabeledContentSharedByVendorCompaniesDto[] = [];
-	selectedCompanies: any[] = [];
 	constructor(private router: Router) {
 	}
 	ngOnDestroy(): void {
@@ -71,8 +66,6 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 					this.filterOptions.push({ 'name': 'from', 'value': 'From' });
 				}
 			}
-			this.allCompanies = this.whiteLableContentSharedByVendorCompanies;
-			this.allTypes = this.fileTypes;
 		}
 		this.addNewRow();
 	}
@@ -87,17 +80,10 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			this.validateDateFilters();
 		}
 	}
-	cancelSegmentationRow(rowId: number,criteria: any) {
+	cancelSegmentationRow(rowId: number) {
 		if (rowId !== -1) {
 			this.criterias.splice(rowId, 1);
 			this.dropdownDisabled.splice(rowId, 1);
-			if (criteria.property === "Type") {
-				this.selectedTypes.splice(rowId, 1);
-				this.compareArrays();
-			} else if (criteria.property === "From") {
-				this.selectedCompanies.splice(rowId, 1)
-				this.compareCompanyArrays();
-			}
 		}
 	}
 	validateDateFilters() {
@@ -243,7 +229,6 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 		}
 		this.closeFilterEmitter.emit(event);
 	}
-
 	getOptionsForCriteria(criteria: any, index: number) {
 		if (criteria.property === 'From' || criteria.property === 'Type') {
 			this.criterias[index].operation = "=";
@@ -253,38 +238,4 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			this.criterias[index].value1 = "";
 		}
 	}
-	onSelection(criteria: any, index: number) {
-		if (criteria.property === 'From') {
-			const value1Number = Number(criteria.value1);
-			this.selectedCompanies[index] = this.whiteLableContentSharedByVendorCompanies
-				.find(item => item.sharedByVendorCompanyId === value1Number);
-			this.compareCompanyArrays();
-		} else if (criteria.property === 'Type') {
-			this.selectedTypes[index] = criteria.value1;
-			this.compareArrays();
-		}
-	}
-	compareCompanyArrays() {
-		const resultArray = [];
-		resultArray.push(...this.allCompanies)
-		this.selectedCompanies.forEach(item => {
-			const index = resultArray.findIndex((element) => element.sharedByVendorCompanyId === item.sharedByVendorCompanyId);
-			if (index !== -1) {
-				resultArray.splice(index, 1)
-			}
-		});
-		this.whiteLableContentSharedByVendorCompanies = resultArray;
-	}
-	compareArrays() {
-		const resultArray = [];
-		resultArray.push(...this.allTypes);
-		this.selectedTypes.forEach((selectedItem) => {
-			const index = resultArray.indexOf(selectedItem);
-			if (index !== -1) {
-				resultArray.splice(index, 1);
-			}
-		});
-		this.fileTypes = resultArray;
-	}
-
 }
