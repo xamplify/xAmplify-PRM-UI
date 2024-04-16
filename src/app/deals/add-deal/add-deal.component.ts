@@ -131,6 +131,8 @@ export class AddDealComponent implements OnInit {
   createdByActiveCRM: any;
   createdForActiveCRM: any;
   isMarketingCompany: boolean = false;
+  hidePipelineDetails: boolean = false;
+  isOnlyOrgAdminOrMarketing: boolean = false;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -159,10 +161,6 @@ export class AddDealComponent implements OnInit {
     if (!this.isVendorVersion) {
       this.pipelineText = "Vendor's xAmplify Pipeline";
       this.pipelinestageText = "Vendor's xAmplify Stage";
-    }
-    if (this.isOrgAdmin || this.isMarketingCompany) {
-      this.pipelineText = "Pipeline";
-      this.pipelinestageText = "Stage";
     }
     if (this.actionType === "add") {
       this.showCommentActions = true;
@@ -1187,8 +1185,9 @@ export class AddDealComponent implements OnInit {
           self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
           let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
           let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
-          
-          if (this.isVendorVersion) {
+          this.isOnlyOrgAdminOrMarketing = (this.authenticationService.isOrgAdmin() && !this.authenticationService.isPartner()) || (this.authenticationService. module.isMarketing && !this.authenticationService.isPartner());
+          if (this.isVendorVersion && !this.isOnlyOrgAdminOrMarketing) {
+            [self.createdByActiveCRM, self.createdForActiveCRM] = [self.createdForActiveCRM, self.createdByActiveCRM];
             [createdByPipelines, createdForPipelines] = [createdForPipelines, createdByPipelines];
             [this.deal.createdByPipelineId, this.deal.createdForPipelineId] = [this.deal.createdForPipelineId, this.deal.createdByPipelineId];
             [this.deal.createdByPipelineStageId, this.deal.createdForPipelineStageId] = [this.deal.createdForPipelineStageId, this.deal.createdByPipelineStageId];
@@ -1301,6 +1300,9 @@ export class AddDealComponent implements OnInit {
   handleCreatedForPipelines(createdForPipelines: any) {
     let self = this;
     self.createdForPipelines = createdForPipelines;
+    if (createdForPipelines.length > 0 && !this.isOnlyOrgAdminOrMarketing){
+      this.hidePipelineDetails = true;
+    }
     if (createdForPipelines.length === 1) {
       let createdForPipeline = createdForPipelines[0];
       self.deal.createdForPipelineId = createdForPipeline.id;
