@@ -1157,8 +1157,8 @@
                                  <ng-template [ngTemplateOutlet]="filterButton"></ng-template>
                                  <div class="mb-downloadfile" *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
                            authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() ||
-                           authenticationService.isOrgAdminPartner()) && !sharedLeads">
-                                    <span class="dropdown-toggle white-co" data-toggle="dropdown"
+                           authenticationService.isOrgAdminPartner() || authenticationService.loggedInUserRole === 'Team Member')">
+                                    <span class="dropdown-toggle white-co" data-toggle="dropdown" *ngIf="!sharedLeads"
                                        style="box-shadow: none; margin-top: 8px; float: right;display: flex;">
                                        <i class="fa fa-cog" style="font-size: 20px; margin-right: 5px"
                                           aria-hidden="true"></i><i class="fa fa-angle-down"
@@ -1166,7 +1166,7 @@
                                     </span>
                                     <span data-placement="bottom" class="btn btn-xs l-g-view"
                                        data-toggle="tooltip" title="Click here to email the list"
-                                       (click)="downloadUserListCsv(pagination)" style="margin-right: 10px;">
+                                       (click)="downloadUserListCsv()" style="margin-right: 10px;">
                                        <i aria-hidden="true" class="fas fa-file-export p10"></i>
                                     </span>
                                     <ul class="dropdown-menu pull-right">
