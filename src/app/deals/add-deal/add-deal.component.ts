@@ -131,7 +131,8 @@ export class AddDealComponent implements OnInit {
   createdByActiveCRM: any;
   createdForActiveCRM: any;
   isMarketingCompany: boolean = false;
-  hidePipelineDetails: boolean = false;
+  showCreatedForPipelineDetails: boolean = false;
+  showCreatedByPipelineDetails: boolean = true;
   isOnlyOrgAdminOrMarketing: boolean = false;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -1191,6 +1192,11 @@ export class AddDealComponent implements OnInit {
             [createdByPipelines, createdForPipelines] = [createdForPipelines, createdByPipelines];
             [this.deal.createdByPipelineId, this.deal.createdForPipelineId] = [this.deal.createdForPipelineId, this.deal.createdByPipelineId];
             [this.deal.createdByPipelineStageId, this.deal.createdForPipelineStageId] = [this.deal.createdForPipelineStageId, this.deal.createdByPipelineStageId];
+            if(this.deal.createdForCompanyId == this.deal.createdByCompanyId) {
+              this.showCreatedByPipelineDetails = false;
+              this.pipelineText = "Pipeline";
+              this.pipelinestageText = "Stage";
+            }
           }
 
           if (createdByPipelines !== undefined && createdByPipelines !== null) {
@@ -1301,7 +1307,7 @@ export class AddDealComponent implements OnInit {
     let self = this;
     self.createdForPipelines = createdForPipelines;
     if (createdForPipelines.length > 0 && !this.isOnlyOrgAdminOrMarketing){
-      this.hidePipelineDetails = true;
+      this.showCreatedForPipelineDetails = true;
     }
     if (createdForPipelines.length === 1) {
       let createdForPipeline = createdForPipelines[0];
