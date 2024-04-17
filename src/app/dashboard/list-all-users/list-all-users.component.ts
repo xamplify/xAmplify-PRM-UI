@@ -26,6 +26,7 @@ export class ListAllUsersComponent implements OnInit {
 	statusCode: any;
 	pagination: Pagination = new Pagination();
 	isVanityUrlEnabled = false;
+	headerText = "All Approved Users";
 	constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,

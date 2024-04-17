@@ -1,6 +1,6 @@
 <div class="wrap-collabsible">
   <input id="collapsible-all-users" class="toggle" type="checkbox">
-  <label for="collapsible-all-users" class="lbl-toggle">All Apporved Users</label>
+  <label for="collapsible-all-users" class="lbl-toggle">{{headerText}}</label>
   <div class="collapsible-content">
     <div class="content-inner">
       <div>
@@ -8,7 +8,7 @@
         </ngx-loading>
          <div class="portlet light">
            <div class="portlet-title">
-             <div class="caption">All Approved Users</div>
+             <div class="caption">{{headerText}}</div>
          <div class="inputs">
          <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
            <i class="fa fa-refresh margin" aria-hidden="true"></i>
