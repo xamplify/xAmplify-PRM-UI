@@ -435,6 +435,11 @@
 																</button>
 															</div>
 														</div>
+														<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+															[disabled]="pagination.totalRecords == 0" title="Click here to email the list"
+															(click)="downloadUserListCsv()" style="margin-left: 4px;">
+															<i aria-hidden="true" class="fas fa-file-export p10"></i>
+														</button>
 													</div>
 												</div>
 											</div>
@@ -1275,6 +1280,11 @@
 															aria-hidden="true"></i></button>
 												</div>
 											</div>
+											<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+												[disabled]="contactsByType.pagination.totalRecords == 0" title="Click here to email the list"
+												(click)="downloadUserListCsv()" style="margin: 0px -10px 0px 10px;">
+												<i aria-hidden="true" class="fas fa-file-export p10"></i>
+											</button>
 										</div>
 									</div>
 								</div>
