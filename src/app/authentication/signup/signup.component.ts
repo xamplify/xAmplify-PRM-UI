@@ -238,6 +238,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
               this.vanityURLEnabled = true;
               this.authenticationService.v_companyName = result.companyName;
               this.authenticationService.vanityURLink = result.vanityURLink;
+              this.authenticationService.companyUrl = result.companyUrl;
               this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
               this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;           
                   if(result.companyBgImagePath){
