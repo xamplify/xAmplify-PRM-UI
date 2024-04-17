@@ -800,6 +800,21 @@ export class AuthenticationService {
       .catch((error: any) => { return error; });
   }
 
+  getVanityURLUserRolesForLoginAs(userName: string, userId:number) {
+    let dashboardAnalyticsDto = new DashboardAnalyticsDto();
+    let companyProfileName = this.companyProfileName;
+    dashboardAnalyticsDto.userId = userId;
+    if (companyProfileName != undefined && companyProfileName != "") {
+      dashboardAnalyticsDto.vanityUrlFilter = true;
+      dashboardAnalyticsDto.vendorCompanyProfileName = companyProfileName;
+    } else {
+      dashboardAnalyticsDto.vanityUrlFilter = false;
+    }
+    return this.http.post(this.REST_URL + 'v_url/userRoles?userName=' + userName + '&access_token=' + this.access_token, dashboardAnalyticsDto)
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+  }
+
   extractData(res: Response) {
     let body = res.json();
     return body || {};

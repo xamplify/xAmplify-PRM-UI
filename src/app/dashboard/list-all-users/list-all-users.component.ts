@@ -105,7 +105,7 @@ export class ListAllUsersComponent implements OnInit {
 	loginAs(result: any) {
 		this.utilService.addLoginAsLoader();
 		if(this.isVanityUrlEnabled){
-
+			this.loginAsTeamMemberForVanityLogin(result.emailId,false,result.userId);
 		}else{
 			this.loginAsTeamMember(result.emailId, false, result.userId);
 		}
@@ -113,8 +113,33 @@ export class ListAllUsersComponent implements OnInit {
 
 	}
 
-	loginAsTeamMemberForVanityLogin(){
-		
+	loginAsTeamMemberForVanityLogin(emailId:any,isLoggedInAsAdmin:boolean,userId:number){
+		let vanityUrlRoles:any;
+			this.authenticationService.getVanityURLUserRolesForLoginAs(emailId,userId).
+			subscribe(
+				response=>{
+					vanityUrlRoles = response.data;
+				},error=>{
+					this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+					this.loading = false;
+					this.referenceService.loaderFromAdmin = false;
+					this.authenticationService.logout();
+				},()=>{
+					this.authenticationService.getUserByUserName(emailId)
+					.subscribe(
+						response => {
+							response['roles'] = vanityUrlRoles;
+							this.addOrRemoveLocalStorage(isLoggedInAsAdmin, userId, emailId, response);
+						},
+						(error: any) => {
+							this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+							this.loading = false;
+							this.referenceService.loaderFromAdmin = false;
+						},
+						() => this.logger.info('Finished loginAsTeamMember()')
+					);
+
+				});
 	}
 
 	loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean, userId: number) {
@@ -157,7 +182,12 @@ export class ListAllUsersComponent implements OnInit {
 
 	logoutAsTeamMember() {
 		let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
-		this.loginAsTeamMember(adminEmailId, true, 1);
+		if(this.isVanityUrlEnabled){
+			this.loginAsTeamMemberForVanityLogin(adminEmailId, true, 1);
+		}else{
+			this.loginAsTeamMember(adminEmailId, true, 1);
+		}
+		
 	}
 	confirmLogout(result: any) {
 		try {
