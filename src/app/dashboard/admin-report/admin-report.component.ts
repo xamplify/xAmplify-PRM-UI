@@ -68,8 +68,10 @@ export class AdminReportComponent implements OnInit {
     upgradeAccountStatusCode = 0;
     adminsAndTeamMembers:Array<any>= new Array<any>();
     /***Upgrade Account */
+    isVanityUrlEnabled = false;
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public router:Router) {
+        this.isVanityUrlEnabled = this.authenticationService.vanityURLEnabled;
   }
   
   listTop10RecentUsers(){
@@ -90,7 +92,9 @@ export class AdminReportComponent implements OnInit {
   
 
   ngOnInit() {
-      this.listTop10RecentUsers();
+    if(!this.isVanityUrlEnabled){
+        this.listTop10RecentUsers();
+    }
   }
 
 
