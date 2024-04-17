@@ -261,6 +261,10 @@ export class AuthenticationService {
             userToken['roles'] = this.vanityURLUserRoles;
           }
 
+          if(this.vanityURLEnabled && this.companyProfileName && userName=="admin@xamplify.io"){
+            userToken['roles'] = res.json().roles;
+          }
+
           this.translateService.use(res.json().preferredLanguage);
 
           localStorage.setItem('currentUser', JSON.stringify(userToken));
