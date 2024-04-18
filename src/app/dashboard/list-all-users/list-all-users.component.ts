@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { SortOption } from '../../core/models/sort-option';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 declare var $:any, swal: any;
 
 
@@ -29,6 +30,9 @@ export class ListAllUsersComponent implements OnInit {
 	headerText = "All Approved Users";
 	@Input() showPartners = false;
 	collpsableId = "collapsible-all-users";
+	companiesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+	selectedCompanyId = 0;
+	dropdownDataLoading = true;
 	constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,
@@ -40,11 +44,52 @@ export class ListAllUsersComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.referenceService.loading(this.httpRequestLoader, true);
 		if(this.showPartners){
 			this.collpsableId = "collapsible-all-partners";
 			this.headerText = "Partner Company Users";
+			this.findAllPartnerCompanies();
+		}else{
+			this.findAllCompanyNames();
 		}
 		this.listAllApprovedUsers(this.pagination);
+	}
+	findAllPartnerCompanies() {
+		if (this.isVanityUrlEnabled) {
+			this.dashboardService.findAllPartnerCompanyNames(this.authenticationService.companyProfileName).subscribe(
+				response => {
+					this.setSearchableDropdownData(response);
+				}, error => {
+
+				});
+		}
+	}
+
+	findAllCompanyNames() {
+		this.dashboardService.findAllCompanyNames().subscribe(
+			response => {
+				this.setSearchableDropdownData(response);
+			}, error => {
+
+			});
+	}
+
+	private setSearchableDropdownData(response: any) {
+		this.companiesSearchableDropDownDto.data = response.data;
+		this.companiesSearchableDropDownDto.placeHolder = "Please Select Company";
+		this.dropdownDataLoading = false;
+	}
+
+	searchableDropdownEventReceiver(event:any){
+		if(event!=null){
+			this.pagination = new Pagination();
+			this.pagination.companyId = event['id'];
+			this.listAllApprovedUsers(this.pagination);
+		}else{
+			this.pagination = new Pagination();
+		}
+		this.listAllApprovedUsers(this.pagination);
+		
 	}
 
 	listAllApprovedUsers(pagination: Pagination) {

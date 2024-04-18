@@ -1,5 +1,5 @@
 <div class="wrap-collabsible">
-  <input id="{{collpsableId}}" class="toggle" type="checkbox">
+  <input id="{{collpsableId}}" class="toggle" type="checkbox" checked>
   <label for="{{collpsableId}}" class="lbl-toggle">{{headerText}}</label>
   <div class="collapsible-content">
     <div class="content-inner">
@@ -9,29 +9,42 @@
          <div class="portlet light">
            <div class="portlet-title">
              <div class="caption">{{headerText}}</div>
-         <div class="inputs">
-         <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
-           <i class="fa fa-refresh margin" aria-hidden="true"></i>
-         </a>
-           <div id="left" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-               <select class="form-control" [(ngModel)]="sortOption.selectedActiveUsersSortOption"
-                           (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-                           <option *ngFor="let option of sortOption.activeUsersSortDropDownOptions" [ngValue]="option">
-                             {{option.name}}</option>
-                </select>
-           </div>
-          <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-         <div class="input-icon right" id="icon-right">
-           <input type="text" autocomplete="off" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
-             [ngModelOptions]="{standalone: true}" placeholder="search..."
-             (keypress)="eventHandler($event.keyCode)">
-           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
-             (click)="sortOption.searchKey='';search()"></button>
-           <button type="submit" class="search-box-item-click" (click)="search()">
-             <i class="fa fa-search" aria-hidden="true"></i></button>
-         </div>
-       </div> 
-           </div>
+              <div class="inputs">
+                  <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+                    <i class="fa fa-refresh margin" aria-hidden="true"></i>
+                  </a>
+                  <!--Searchable DropDown-->
+                  <div  id="left" class="cw-500px" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+                    <p class="mt--10px" *ngIf="dropdownDataLoading">
+                      <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Companies...</strong>
+                    </p>
+                    <app-searchable-dropdown *ngIf="!dropdownDataLoading" [searchableDropDownDto]="companiesSearchableDropDownDto" [id]="selectedCompanyId"
+                      [disableDropDown]="false"
+                    (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event)">
+                    </app-searchable-dropdown>
+                  </div>
+                  <!--Sort-->
+                    <div id="left" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+                        <select class="form-control" [(ngModel)]="sortOption.selectedActiveUsersSortOption"
+                                    (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+                                    <option *ngFor="let option of sortOption.activeUsersSortDropDownOptions" [ngValue]="option">
+                                      {{option.name}}</option>
+                          </select>
+                    </div>
+                  <!--Search-->
+                    <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+                      <div class="input-icon right" id="icon-right">
+                        <input type="text" autocomplete="off" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                          [ngModelOptions]="{standalone: true}" placeholder="search..."
+                          (keypress)="eventHandler($event.keyCode)">
+                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                          (click)="sortOption.searchKey='';search()"></button>
+                        <button type="submit" class="search-box-item-click" (click)="search()">
+                          <i class="fa fa-search" aria-hidden="true"></i></button>
+                      </div>
+                    </div> 
+                    
+              </div>
            </div>
             <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
             <ng-container *ngIf="!httpRequestLoader.isLoading && !isVanityUrlEnabled">

@@ -1359,5 +1359,16 @@ getDefaultThemes(){
         return this.authenticationService.callGetMethod(url);
     }
 
+    findAllCompanyNames() {
+        const url = this.superAdminUrl + 'findAllCompanyNames?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    findAllPartnerCompanyNames(vendorCompanyProfileName:string) {
+        const url = this.superAdminUrl + 'findAllPartnerCompanyNames/'+vendorCompanyProfileName+'?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+
     
 }
