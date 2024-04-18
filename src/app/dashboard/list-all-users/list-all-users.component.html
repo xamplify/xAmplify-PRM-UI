@@ -1,6 +1,6 @@
 <div class="wrap-collabsible">
   <input id="collapsible-all-users" class="toggle" type="checkbox">
-  <label for="collapsible-all-users" class="lbl-toggle">All Apporved Users</label>
+  <label for="collapsible-all-users" class="lbl-toggle">{{headerText}}</label>
   <div class="collapsible-content">
     <div class="content-inner">
       <div>
@@ -8,7 +8,7 @@
         </ngx-loading>
          <div class="portlet light">
            <div class="portlet-title">
-             <div class="caption">All Approved Users</div>
+             <div class="caption">{{headerText}}</div>
          <div class="inputs">
          <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
            <i class="fa fa-refresh margin" aria-hidden="true"></i>
@@ -34,11 +34,11 @@
            </div>
            </div>
             <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-            <ng-container *ngIf="!httpRequestLoader.isLoading">
-            <button class="btn btn-primary" (click)="download('Admins.csv')">Download Admins</button>
-             <button class="btn btn-primary" (click)="download('Admin-Team-Members.csv')">Download Admin Team Members</button>
-             <button class="btn btn-primary" (click)="download('Partners.csv')">Download Partners</button>
-             <button class="btn btn-primary" (click)="download('Partner-Team-Members.csv')">Download Partner Team Members</button>
+            <ng-container *ngIf="!httpRequestLoader.isLoading && !isVanityUrlEnabled">
+              <button class="btn btn-primary" (click)="download('Admins.csv')">Download Admins</button>
+              <button class="btn btn-primary" (click)="download('Admin-Team-Members.csv')">Download Admin Team Members</button>
+              <button class="btn btn-primary" (click)="download('Partners.csv')">Download Partners</button>
+              <button class="btn btn-primary" (click)="download('Partner-Team-Members.csv')">Download Partner Team Members</button>
             </ng-container>
            <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
              <div>

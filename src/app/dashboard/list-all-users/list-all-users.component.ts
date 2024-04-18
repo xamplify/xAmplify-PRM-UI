@@ -25,11 +25,13 @@ export class ListAllUsersComponent implements OnInit {
 	hasError: boolean;
 	statusCode: any;
 	pagination: Pagination = new Pagination();
-
+	isVanityUrlEnabled = false;
+	headerText = "All Approved Users";
 	constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,
 		public logger: XtremandLogger, public sortOption: SortOption, private utilService: UtilService) {
+		this.isVanityUrlEnabled = this.authenticationService.vanityURLEnabled;
 		if (this.authenticationService.getUserId() != 1) {
 			this.router.navigate(['/access-denied']);
 		}
@@ -41,6 +43,9 @@ export class ListAllUsersComponent implements OnInit {
 
 	listAllApprovedUsers(pagination: Pagination) {
 		this.hasError = false;
+		if(this.isVanityUrlEnabled){
+			pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+		}
 		this.referenceService.loading(this.httpRequestLoader, true);
 		this.dashboardService.listAllApprovedUsers(pagination).subscribe(
 			(response: any) => {
@@ -100,8 +105,42 @@ export class ListAllUsersComponent implements OnInit {
 
 	loginAs(result: any) {
 		this.utilService.addLoginAsLoader();
-		this.loginAsTeamMember(result.emailId, false, result.userId);
+		if(this.isVanityUrlEnabled){
+			this.loginAsTeamMemberForVanityLogin(result.emailId,false,result.userId);
+		}else{
+			this.loginAsTeamMember(result.emailId, false, result.userId);
+		}
+		
 
+	}
+
+	loginAsTeamMemberForVanityLogin(emailId:any,isLoggedInAsAdmin:boolean,userId:number){
+		let vanityUrlRoles:any;
+			this.authenticationService.getVanityURLUserRolesForLoginAs(emailId,userId).
+			subscribe(
+				response=>{
+					vanityUrlRoles = response.data;
+				},error=>{
+					this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+					this.loading = false;
+					this.referenceService.loaderFromAdmin = false;
+					this.authenticationService.logout();
+				},()=>{
+					this.authenticationService.getUserByUserName(emailId)
+					.subscribe(
+						response => {
+							response['roles'] = vanityUrlRoles;
+							this.addOrRemoveLocalStorage(isLoggedInAsAdmin, userId, emailId, response);
+						},
+						(error: any) => {
+							this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+							this.loading = false;
+							this.referenceService.loaderFromAdmin = false;
+						},
+						() => this.logger.info('Finished loginAsTeamMember()')
+					);
+
+				});
 	}
 
 	loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean, userId: number) {
@@ -110,24 +149,7 @@ export class ListAllUsersComponent implements OnInit {
 		this.authenticationService.getUserByUserName(emailId)
 			.subscribe(
 				response => {
-					if (isLoggedInAsAdmin) {
-						localStorage.removeItem('loginAsUserId');
-						localStorage.removeItem('loginAsUserEmailId');
-					} else {
-						let loginAsUserId = JSON.parse(localStorage.getItem('loginAsUserId'));
-						if (loginAsUserId == null) {
-							localStorage.loginAsUserId = JSON.stringify(userId);
-							localStorage.loginAsUserEmailId = JSON.stringify(this.authenticationService.user.emailId);
-						}
-					}
-					this.utilService.setUserInfoIntoLocalStorage(emailId, response);
-					let self = this;
-					setTimeout(function() {
-						self.router.navigate(['home/dashboard/'])
-							.then(() => {
-								window.location.reload();
-							})
-					}, 500);
+					this.addOrRemoveLocalStorage(isLoggedInAsAdmin, userId, emailId, response);
 				},
 				(error: any) => {
 					this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
@@ -138,9 +160,35 @@ export class ListAllUsersComponent implements OnInit {
 			);
 	}
 
+	private addOrRemoveLocalStorage(isLoggedInAsAdmin: boolean, userId: number, emailId: string, response: any) {
+		if (isLoggedInAsAdmin) {
+			localStorage.removeItem('loginAsUserId');
+			localStorage.removeItem('loginAsUserEmailId');
+		} else {
+			let loginAsUserId = JSON.parse(localStorage.getItem('loginAsUserId'));
+			if (loginAsUserId == null) {
+				localStorage.loginAsUserId = JSON.stringify(userId);
+				localStorage.loginAsUserEmailId = JSON.stringify(this.authenticationService.user.emailId);
+			}
+		}
+		this.utilService.setUserInfoIntoLocalStorage(emailId, response);
+		let self = this;
+		setTimeout(function () {
+			self.router.navigate(['home/dashboard/'])
+				.then(() => {
+					window.location.reload();
+				});
+		}, 500);
+	}
+
 	logoutAsTeamMember() {
 		let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
-		this.loginAsTeamMember(adminEmailId, true, 1);
+		if(this.isVanityUrlEnabled){
+			this.loginAsTeamMemberForVanityLogin(adminEmailId, true, 1);
+		}else{
+			this.loginAsTeamMember(adminEmailId, true, 1);
+		}
+		
 	}
 	confirmLogout(result: any) {
 		try {

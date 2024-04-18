@@ -10,6 +10,8 @@
       
     </ul>
   </div>
+
+  <ng-container *ngIf="!isVanityUrlEnabled">
   <!--Upgrade Account-->
   <div class="page-bar">
     <ul class="page-breadcrumb float-right">
@@ -21,7 +23,6 @@
       </li>
     </ul>
   </div>
-
   <div>
     <!--List All Users-->
     <app-list-all-users></app-list-all-users> 
@@ -61,6 +62,13 @@
     <!------Active Threads Info-->
     <app-active-threads-info ></app-active-threads-info>
   </div>
+</ng-container>
+<!--Vanity Url Login-->
+  <div *ngIf="isVanityUrlEnabled">
+     <!--List All Users-->
+     <app-list-all-users></app-list-all-users> 
+  </div>
+
   <app-scroll-top></app-scroll-top>
    <section>
     <!-- ---Access Modal Pop Up -->

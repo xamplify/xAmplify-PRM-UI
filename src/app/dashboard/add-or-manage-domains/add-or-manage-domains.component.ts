@@ -53,13 +53,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	let isPartnerLoggedInThroughVendorVanityUrl = this.authenticationService.module.loggedInThroughVendorVanityUrl;
 	let isMarketingCompany = this.authenticationService.module.isMarketingCompany;
 	let isPartnerCompany = this.authenticationService.module.isOnlyPartnerCompany;
-	let isTabDisplayed = !isPartnerLoggedInThroughVendorVanityUrl && !isMarketingCompany && !isPartnerCompany;
-	if(this.authenticationService.isQADomain() || this.authenticationService.isProductionDomain()){
-		this.isTabDisplayed = false;
-	}else{
-		this.isTabDisplayed = isTabDisplayed;
-	}
-	
+	this.isTabDisplayed = !isPartnerLoggedInThroughVendorVanityUrl && !isMarketingCompany && !isPartnerCompany;
 	this.activateTeamMemberDomainsTab();
 	
   }

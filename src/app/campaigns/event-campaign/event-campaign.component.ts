@@ -1043,7 +1043,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 contactsPagination.parentCampaignId = this.eventCampaign.id;
             }
         }
-        contactsPagination.userId = this.loggedInUserId;
+        contactsPagination.userId = this.authenticationService.getUserId();
         contactsPagination.redistributingCampaign = true;
         if (this.vanityLoginDto.vanityUrlFilter) {
             contactsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;

@@ -261,6 +261,10 @@ export class AuthenticationService {
             userToken['roles'] = this.vanityURLUserRoles;
           }
 
+          if(this.vanityURLEnabled && this.companyProfileName && userName=="admin@xamplify.io"){
+            userToken['roles'] = res.json().roles;
+          }
+
           this.translateService.use(res.json().preferredLanguage);
 
           localStorage.setItem('currentUser', JSON.stringify(userToken));
@@ -792,6 +796,21 @@ export class AuthenticationService {
   getVanityURLUserRoles(userName: string, at: string) {
     this.dashboardAnalyticsDto = this.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
     return this.http.post(this.REST_URL + 'v_url/userRoles?userName=' + userName + '&access_token=' + at, this.dashboardAnalyticsDto)
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+  }
+
+  getVanityURLUserRolesForLoginAs(userName: string, userId:number) {
+    let dashboardAnalyticsDto = new DashboardAnalyticsDto();
+    let companyProfileName = this.companyProfileName;
+    dashboardAnalyticsDto.userId = userId;
+    if (companyProfileName != undefined && companyProfileName != "") {
+      dashboardAnalyticsDto.vanityUrlFilter = true;
+      dashboardAnalyticsDto.vendorCompanyProfileName = companyProfileName;
+    } else {
+      dashboardAnalyticsDto.vanityUrlFilter = false;
+    }
+    return this.http.post(this.REST_URL + 'v_url/userRoles?userName=' + userName + '&access_token=' + this.access_token, dashboardAnalyticsDto)
       .map((res: Response) => { return res.json(); })
       .catch((error: any) => { return error; });
   }
