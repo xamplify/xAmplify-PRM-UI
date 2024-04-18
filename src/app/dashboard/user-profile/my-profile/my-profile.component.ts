@@ -319,28 +319,28 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	connectwiseRibbonText: string;
 	isLocalHost = false;
 
-	 /* -- XNFR-415 -- */
+	/* -- XNFR-415 -- */
 	DefaultDashBoardForPartnersEnum = DefaultDashBoardForPartners;
-	defaultLoading=false;
-	updateDashboardError=false;
+	defaultLoading = false;
+	updateDashboardError = false;
 	modulesDashboardForPartner: CustomResponse = new CustomResponse();
 	defaultSelectedDashboardTypeSetting = this.getSelectedDashboardForPartner();
-	checkSelectedDashboardType=[];
-	companyIdFromCompanyProfileNameForVanity:number;	
-	removeMarketingNonInteractiveBox:boolean = false;
+	checkSelectedDashboardType = [];
+	companyIdFromCompanyProfileNameForVanity: number;
+	removeMarketingNonInteractiveBox: boolean = false;
 	/** XNFR-426 **/
 	leadApprovalRejectionStatus: boolean = false;
-	leadApprovalStatus:boolean = false;
+	leadApprovalStatus: boolean = false;
 	leadApprovalCustomResponse: CustomResponse = new CustomResponse();
 	/**XNFR-454****/
 	isAddDomainsOptionClicked: boolean;
 	isDashboardButtonsOptionClicked: boolean;
 	/**XNFR-459****/
-	isNewsAndAnnouncementsOptionClicked:boolean;
-	isDashboardBannersOptionClicked:boolean;
-	vendorJourney:boolean = false;
-	isLandingPages:boolean = false;
-	loggedInUserCompanyId:number = 0;
+	isNewsAndAnnouncementsOptionClicked: boolean;
+	isDashboardBannersOptionClicked: boolean;
+	vendorJourney: boolean = false;
+	isLandingPages: boolean = false;
+	loggedInUserCompanyId: number = 0;
 	/*** XNFR-483 ***/
 	isAggreedToDisableLeadApprovalFeature: boolean = false;
 	disableSaveChangesButtonForLeadApproval: boolean = false;
@@ -348,14 +348,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	// halo psa
 	halopsaRibbonText: string;
 	isProduction: boolean = false;
-	vendorJourneyEditOrViewAnalytics:boolean = false;
+	vendorJourneyEditOrViewAnalytics: boolean = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
 			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService,
-			public landingPageService: LandingPageService) {
+		public landingPageService: LandingPageService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isLocalHost = this.authenticationService.isLocalHost();
 		this.isProduction = this.authenticationService.isProductionDomain();
@@ -599,7 +599,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnInit() {
 		try {
-			
+
 			this.searchWithModuleName = 19;
 			this.activeTabName = 'personalInfo';
 			this.activeTabHeader = this.properties.personalInfo;
@@ -1857,9 +1857,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	activateTab(activeTabName: any) {
 		this.activeTabName = activeTabName;
 		if (this.activeTabName != 'playerSettings') {
-		  if(this.videoJSplayer){
-		     this.videoJSplayer.pause();
-		   }
+			if (this.videoJSplayer) {
+				this.videoJSplayer.pause();
+			}
 		}
 		if (this.activeTabName == "personalInfo") {
 			this.activeTabHeader = this.properties.personalInfo;
@@ -1922,7 +1922,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.listAllPipelines(this.pipelinePagination);
 		}
 		/*****XNFR-426 ******/
-		else if(this.activeTabName == "leadDealApprove") {
+		else if (this.activeTabName == "leadDealApprove") {
 			this.activeTabHeader = this.properties.leadDealApprove;
 		}
 		else if (this.activeTabName == "tags") {
@@ -1931,7 +1931,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.customskin;
 			this.themeName = "";
 			this.showThemes();
-		this.themeResponse = new CustomResponse();
+			this.themeResponse = new CustomResponse();
 		} else if (this.activeTabName == "exclude") {
 			this.activeTabHeader = this.properties.exclude;
 			this.excludeUserPagination = new Pagination();
@@ -2012,7 +2012,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 
 		/****XNFR-454****/
-		else if(this.activeTabName==this.properties.addDomainsText){
+		else if (this.activeTabName == this.properties.addDomainsText) {
 			this.ngxloading = true;
 			this.isAddDomainsOptionClicked = false;
 			let self = this;
@@ -2024,7 +2024,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		}
 		/****XNFR-459****/
-		else if(this.activeTabName==this.properties.newsAndAnnouncements){
+		else if (this.activeTabName == this.properties.newsAndAnnouncements) {
 			this.ngxloading = true;
 			this.isNewsAndAnnouncementsOptionClicked = false;
 			let self = this;
@@ -2035,7 +2035,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.newsAndAnnouncements;
 
 		}/****XNFR-459****/
-		else if(this.activeTabName==this.properties.dashboardBanners){
+		else if (this.activeTabName == this.properties.dashboardBanners) {
 			this.ngxloading = true;
 			this.isDashboardBannersOptionClicked = false;
 			let self = this;
@@ -2044,7 +2044,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.dashboardBanners;
-    }
+		}
 		else if (this.activeTabName == "vendorJourney") {
 			this.ngxloading = true;
 			this.vendorJourney = false;
@@ -2194,8 +2194,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
-	
-	
+
+
 
 	setAllGdprStatus() {
 		if (!this.gdprSetting.unsubscribeStatus && !this.gdprSetting.formStatus && !this.gdprSetting.termsAndConditionStatus
@@ -2692,22 +2692,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			);
 	}
 
-	 /* -- XNFR-415 -- */
-	setDashboardForPartner(){
-		this.defaultLoading = true;  
-		this.modulesDashboardForPartner = new CustomResponse();  
-		this.updateDashboardError = false; 
+	/* -- XNFR-415 -- */
+	setDashboardForPartner() {
+		this.defaultLoading = true;
+		this.modulesDashboardForPartner = new CustomResponse();
+		this.updateDashboardError = false;
 		let selectedOptionForDefaultDashboard = $("input[name=dashboardSelectedOption]:checked").val();
 		this.dashBoardService.updateDefaultDashboardForPartner(this.referenceService.companyId, selectedOptionForDefaultDashboard)
 			.subscribe(
-				data=>{
-					this.defaultLoading=true;
-					if(data.statusCode == 200 ){
+				data => {
+					this.defaultLoading = true;
+					if (data.statusCode == 200) {
 						this.referenceService.showSweetAlertSuccessMessage(data.message);
-						localStorage.setItem('selectedDashboard',selectedOptionForDefaultDashboard);
+						localStorage.setItem('selectedDashboard', selectedOptionForDefaultDashboard);
 					}
 					else {
-						this.updateDashboardError=true;
+						this.updateDashboardError = true;
 						this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
 					}
 				},
@@ -2720,60 +2720,60 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			);
 	}
 
-	 /* -- XNFR-415 -- */
+	/* -- XNFR-415 -- */
 	getSelectedDashboardForPartner() {
-		this.modulesDashboardForPartner = new CustomResponse();  
+		this.modulesDashboardForPartner = new CustomResponse();
 		this.updateDashboardError = false;
 		let companyProfileName = this.authenticationService.companyProfileName;
-		let isValidCompanyProfileName = companyProfileName!=undefined && companyProfileName!="";
-		if(isValidCompanyProfileName){
+		let isValidCompanyProfileName = companyProfileName != undefined && companyProfileName != "";
+		if (isValidCompanyProfileName) {
 			this.vanityUrlService.getVanityURLDetails(this.authenticationService.companyProfileName).
-			subscribe(result => {        
-			this.companyIdFromCompanyProfileNameForVanity = result.companyId
-			},error=>{
-				
-			},()=>{
-				if(this.companyIdFromCompanyProfileNameForVanity!=undefined && this.companyIdFromCompanyProfileNameForVanity>0){
-					this.dashBoardService.getDefaultDashboardForPartner(this.companyIdFromCompanyProfileNameForVanity)
-					.subscribe(
-						data => {
-							if (data.statusCode == 200) {
-								this.defaultSelectedDashboardTypeSetting = data.data;
-							} else {
-								this.updateDashboardError = true;
-								this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-							}
-						},
-						error => {
-							this.updateDashboardError = true;
-							this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-						},
-						() => { }
-					);
-				}
-			});
+				subscribe(result => {
+					this.companyIdFromCompanyProfileNameForVanity = result.companyId
+				}, error => {
+
+				}, () => {
+					if (this.companyIdFromCompanyProfileNameForVanity != undefined && this.companyIdFromCompanyProfileNameForVanity > 0) {
+						this.dashBoardService.getDefaultDashboardForPartner(this.companyIdFromCompanyProfileNameForVanity)
+							.subscribe(
+								data => {
+									if (data.statusCode == 200) {
+										this.defaultSelectedDashboardTypeSetting = data.data;
+									} else {
+										this.updateDashboardError = true;
+										this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+									}
+								},
+								error => {
+									this.updateDashboardError = true;
+									this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+								},
+								() => { }
+							);
+					}
+				});
 		}
 	}
 
-	checkDashboardTypes(){
-        this.userService.getDashboardType().
-        subscribe(
-          data=>{
-            this.checkSelectedDashboardType=data;
-          }
-        );
-    }
-    
-    get getDashboardForSelectedOption():string{
-        this.refService.filterArrayList(this.checkSelectedDashboardType,'Welcome');
-        if(this.checkSelectedDashboardType.includes('Advanced Dashboard')){
-            return 'Advanced Dashboard';
-        }
-        else if(this.checkSelectedDashboardType.includes('Detailed Dashboard')){
-            return 'Detailed Dashboard';
-        }
-        else return 'Dashboard';    
-    }
+	checkDashboardTypes() {
+		this.userService.getDashboardType().
+			subscribe(
+				data => {
+					this.checkSelectedDashboardType = data;
+				}
+			);
+	}
+
+	get getDashboardForSelectedOption(): string {
+		this.refService.filterArrayList(this.checkSelectedDashboardType, 'Welcome');
+		if (this.checkSelectedDashboardType.includes('Advanced Dashboard')) {
+			return 'Advanced Dashboard';
+		}
+		else if (this.checkSelectedDashboardType.includes('Detailed Dashboard')) {
+			return 'Detailed Dashboard';
+		}
+		else return 'Dashboard';
+	}
 
 	selectedLanguage(event: any) {
 		//this.translateService.use(this.selectedLanguageCode);        
@@ -2798,10 +2798,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.editXamplifyDefaultTemplate = false;
 	}
 
-	changeLoginTemplateNameEvent(event:any) {
+	changeLoginTemplateNameEvent(event: any) {
 		this.cutomLoginTemplate.name = event.replace(/\s/g, '')
 	}
-	saveOrUpdateCustomLogInTempalte(cutomLoginTemplate:CustomLoginTemplate){
+	saveOrUpdateCustomLogInTempalte(cutomLoginTemplate: CustomLoginTemplate) {
 		this.vanityUrlService.saveCustomLoginTemplate(cutomLoginTemplate).subscribe(result => {
 			if (result.statusCode === 200) {
 				// this.goBackToMyprofileForCustomLogin();
@@ -3165,7 +3165,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	addPipeline() {
 		this.pipelineModalTitle = "Add a Pipeline";
-		if(this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner'){
+		if (this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner') {
 			this.removeMarketingNonInteractiveBox = false;
 		}
 		$('#addPipelineModalPopup').modal('show');
@@ -3174,7 +3174,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	viewPipeline(pipelineToView: Pipeline) {
 		let self = this;
 		this.pipelineModalTitle = "View Pipeline";
-		if(this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner'){
+		if (this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner') {
 			this.removeMarketingNonInteractiveBox = false;
 		}
 		$('#addPipelineModalPopup').modal('show');
@@ -3185,7 +3185,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	editPipeline(pipeline: Pipeline) {
 		this.pipelineModalTitle = "Edit Pipeline";
-		if(this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner'){
+		if (this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner') {
 			this.removeMarketingNonInteractiveBox = true;
 		}
 		$('#addPipelineModalPopup').modal('show');
@@ -3745,8 +3745,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	validateDomainName(domain: string) {
 		var DOMAIN_NAME_PATTERN = new RegExp(this.regularExpressions.DOMAIN_PATTERN);
-		var matchedPattrenString:string[] = domain.match(DOMAIN_NAME_PATTERN)
-		if(matchedPattrenString.length ==0)
+		var matchedPattrenString: string[] = domain.match(DOMAIN_NAME_PATTERN)
+		if (matchedPattrenString.length == 0)
 			return false;
 		else
 			return matchedPattrenString[0] == domain;
@@ -3973,7 +3973,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.customResponse = new CustomResponse();
 		for (var i = 1; i < allTextLines.length; i++) {
 			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0
-			&& !this.excludedUsers.some(user=>user.emailId === allTextLines[i][0].trim() )) {
+				&& !this.excludedUsers.some(user => user.emailId === allTextLines[i][0].trim())) {
 				let user = new User();
 				user.emailId = allTextLines[i][0].trim();
 				this.excludedUsers.push(user);
@@ -3988,8 +3988,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (this.excludedUsers.length === 0) {
 			this.customResponse = new CustomResponse('ERROR', "No users found.", true);
 			this.csvExcludeUsersFilePreview = false;
-		}else{
-		this.csvExcludeUsersFilePreview = true;
+		} else {
+			this.csvExcludeUsersFilePreview = true;
 		}
 	}
 
@@ -3997,7 +3997,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.excludeDomainCustomResponse = new CustomResponse
 		for (var i = 1; i < allTextLines.length; i++) {
 			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0
-			&& !this.excludedDomains.some(domain=>domain === allTextLines[i][0].trim())) {
+				&& !this.excludedDomains.some(domain => domain === allTextLines[i][0].trim())) {
 				let domain = allTextLines[i][0].trim();
 				this.excludedDomains.push(domain);
 			}
@@ -4011,7 +4011,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (this.excludedDomains.length === 0) {
 			this.excludeDomainCustomResponse = new CustomResponse('ERROR', "No domains found.", true);
 			this.csvExcludeDomainsFilePreview = false;
-		}else{
+		} else {
 			this.csvExcludeDomainsFilePreview = true;
 
 		}
@@ -4040,24 +4040,24 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
-	validateAndSaveExcludedUsers(excludedUsers:User[]){
+	validateAndSaveExcludedUsers(excludedUsers: User[]) {
 		let self = this;
 		this.userService.validateExcludedUsers(excludedUsers, this.loggedInUserId)
-		.subscribe(
-			data => {
-				this.customResponse = new CustomResponse()
-				if (data.statusCode == 200) {
-					self.saveExcludedUsers(excludedUsers);
-				} else if (data.statusCode == 400) {
-					this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
-				}
-			},
-			error => {
-				this.referenceService.stopLoader(this.excludeUserLoader);
-			},
-			() => { }
-		);
-	} 
+			.subscribe(
+				data => {
+					this.customResponse = new CustomResponse()
+					if (data.statusCode == 200) {
+						self.saveExcludedUsers(excludedUsers);
+					} else if (data.statusCode == 400) {
+						this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
+					}
+				},
+				error => {
+					this.referenceService.stopLoader(this.excludeUserLoader);
+				},
+				() => { }
+			);
+	}
 	saveExcludedUsers(excludedUsers: User[]) {
 		this.referenceService.startLoader(this.excludeUserLoader);
 		this.validEmailFormat = true;
@@ -4124,23 +4124,23 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
-	validateAndSaveExcludedDomains(excludedDomains:string[]){
+	validateAndSaveExcludedDomains(excludedDomains: string[]) {
 		let self = this;
 		this.userService.validateExcludedDomains(excludedDomains, this.loggedInUserId)
-		.subscribe(
-			data => {
-				this.customResponse = new CustomResponse()
-				if (data.statusCode == 200) {
-					self.saveExcludedDomains(excludedDomains);
-				} else if (data.statusCode == 400) {
-					this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
-				}
-			},
-			error => {
-				this.referenceService.stopLoader(this.excludeUserLoader);
-			},
-			() => { }
-		);
+			.subscribe(
+				data => {
+					this.customResponse = new CustomResponse()
+					if (data.statusCode == 200) {
+						self.saveExcludedDomains(excludedDomains);
+					} else if (data.statusCode == 400) {
+						this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
+					}
+				},
+				error => {
+					this.referenceService.stopLoader(this.excludeUserLoader);
+				},
+				() => { }
+			);
 	}
 
 	saveExcludedDomains(excludedDomains: string[]) {
@@ -4386,7 +4386,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			(response) => {
 				this.ngxloading = false
 				// this.defaultThemes = response.data;
-			this.defaultThemes = response.data.sort((a, b) => a.id - b.id);
+				this.defaultThemes = response.data.sort((a, b) => a.id - b.id);
 			},
 			error => {
 				this.ngxloading = false;
@@ -4537,8 +4537,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	shouldDisableCheckbox(index: number): boolean {
 		const selectedCount = this.pipeline.stages.filter(item => item.private).length;
 		let remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
-		if(this.pipeline.integrationType === "PIPEDRIVE" || this.pipeline.integrationType === "CONNECTWISE")
-		{
+		if (this.pipeline.integrationType === "PIPEDRIVE" || this.pipeline.integrationType === "CONNECTWISE") {
 			remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 2;
 		}
 		if (remainingUnselectedCount === 0 && !this.pipeline.stages[index].private) {
@@ -4591,7 +4590,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	// halo psa
 	checkHaloPsaIntegration() {
-		   this.halopsaRibbonText = "configure";
+		this.halopsaRibbonText = "configure";
 		// this.referenceService.loading(this.httpRequestLoader, true);
 		// this.halopsaRibbonText = "configure";
 		// this.integrationService.checkConfigurationByType("halopsa").subscribe(data => {
@@ -4622,9 +4621,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				data => {
 					this.leadApprovalStatus = data.data;
 					this.leadApprovalRejectionStatus = data.data;
-					if(this.leadApprovalStatus){
+					if (this.leadApprovalStatus) {
 						this.disableSaveChangesButtonForLeadApproval = false;
-					}else{
+					} else {
 						this.isAggreedToDisableLeadApprovalFeature = true;
 						this.disableSaveChangesButtonForLeadApproval = false;
 					}
@@ -4670,50 +4669,70 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			);
 	}
 
-/* editVendorLandingPage(event){
-	this.vendorDefaultTemplate = event;
-	this.landingPageService.vendorJourney = true;
-	this.landingPageService.id = this.vendorDefaultTemplate.id;
-	this.mergeTagsInput['page'] = true;
-	this.editVendorPage = true;
-	
-}
-resetVendorJourney(){
-	this.editVendorPage = false;
-	this.vendorDefaultTemplate = new LandingPage() ;
-	this.landingPageService.vendorJourney = false;
-	this.landingPageService.id = 0;
-	this.mergeTagsInput['page'] = false;
-	this.vendorJourney = false;
-	this.isLandingPages = false;
-}
-
-checkOrUncheckOpenLinksInNewTabOption(){
-	let isChecked = $('#'+this.openLinksInNewTabCheckBoxId).is(':checked');
-	if(isChecked){
-		$('#' + this.openLinksInNewTabCheckBoxId).prop("checked", false);
-		this.vendorDefaultTemplate.openLinksInNewTab = false;
-	}else{
-		$('#' + this.openLinksInNewTabCheckBoxId).prop("checked", true);
-		this.vendorDefaultTemplate.openLinksInNewTab = true;
+	/* editVendorLandingPage(event){
+		this.vendorDefaultTemplate = event;
+		this.landingPageService.vendorJourney = true;
+		this.landingPageService.id = this.vendorDefaultTemplate.id;
+		this.mergeTagsInput['page'] = true;
+		this.editVendorPage = true;
+		
 	}
+	resetVendorJourney(){
+		this.editVendorPage = false;
+		this.vendorDefaultTemplate = new LandingPage() ;
+		this.landingPageService.vendorJourney = false;
+		this.landingPageService.id = 0;
+		this.mergeTagsInput['page'] = false;
+		this.vendorJourney = false;
+		this.isLandingPages = false;
+	}
+	
+	checkOrUncheckOpenLinksInNewTabOption(){
+		let isChecked = $('#'+this.openLinksInNewTabCheckBoxId).is(':checked');
+		if(isChecked){
+			$('#' + this.openLinksInNewTabCheckBoxId).prop("checked", false);
+			this.vendorDefaultTemplate.openLinksInNewTab = false;
+		}else{
+			$('#' + this.openLinksInNewTabCheckBoxId).prop("checked", true);
+			this.vendorDefaultTemplate.openLinksInNewTab = true;
+		}
+	
+	} */
 
-} */
 
-
-getCompanyId() {
-	if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
-		this.referenceService.loading(this.httpRequestLoader, true);
-		this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
-			(result: any) => {
-				if (result !== "") {
-					this.loggedInUserCompanyId = result;
+	getCompanyId() {
+		if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
+			this.referenceService.loading(this.httpRequestLoader, true);
+			this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+				(result: any) => {
+					if (result !== "") {
+						this.loggedInUserCompanyId = result;
+						this.referenceService.loading(this.httpRequestLoader, false);
+					}
+				}, (error: any) => {
 					this.referenceService.loading(this.httpRequestLoader, false);
 				}
-			}, (error: any) => {
-				this.referenceService.loading(this.httpRequestLoader, false);
-			}
-		);
+			);
+		}
 	}
-  }
+
+	getThemeImage(name: string): string {
+		switch (name) {
+			case 'Light':
+				return 'assets/images/theme/Final/light-theme.webp';
+			case 'Dark':
+				return 'assets/images/theme/Final/dark-theme.webp';
+			case 'Neumorphism Light':
+				return 'assets/images/theme/Final/beta-neumorphism-light.webp';
+			case 'Neumorphism Dark(Beta)':
+				return 'assets/images/theme/Final/beta-neumorphism-dark.webp';
+			case 'Glassomorphism Light':
+				return 'assets/images/theme/Final/beta-neumorphism-light.webp';
+			case 'Glassomorphism Dark':
+				return 'assets/images/theme/Final/beta-neumorphism-dark.webp'
+			default:
+				return '';
+		}
+	}
+
 }
