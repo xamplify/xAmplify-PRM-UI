@@ -48,20 +48,36 @@ export class ListAllUsersComponent implements OnInit {
 		if(this.showPartners){
 			this.collpsableId = "collapsible-all-partners";
 			this.headerText = "Partner Company Users";
+			this.findAllPartnerCompanies();
 		}else{
 			this.findAllCompanyNames();
 		}
 		this.listAllApprovedUsers(this.pagination);
 	}
+	findAllPartnerCompanies() {
+		if (this.isVanityUrlEnabled) {
+			this.dashboardService.findAllPartnerCompanyNames(this.authenticationService.companyProfileName).subscribe(
+				response => {
+					this.setSearchableDropdownData(response);
+				}, error => {
+
+				});
+		}
+	}
+
 	findAllCompanyNames() {
 		this.dashboardService.findAllCompanyNames().subscribe(
-			response=>{
-				this.companiesSearchableDropDownDto.data = response.data;
-				this.companiesSearchableDropDownDto.placeHolder = "Please Select Company";
-				this.dropdownDataLoading = false;
-			},error=>{
+			response => {
+				this.setSearchableDropdownData(response);
+			}, error => {
 
 			});
+	}
+
+	private setSearchableDropdownData(response: any) {
+		this.companiesSearchableDropDownDto.data = response.data;
+		this.companiesSearchableDropDownDto.placeHolder = "Please Select Company";
+		this.dropdownDataLoading = false;
 	}
 
 	searchableDropdownEventReceiver(event:any){
