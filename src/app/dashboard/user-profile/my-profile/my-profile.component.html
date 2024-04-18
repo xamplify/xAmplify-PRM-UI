@@ -195,7 +195,7 @@
                                                 (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration
                                                 | translate}}</a>
                                         </li>
-                                        <ng-container *ngIf="authenticationService?.leadsAndDeals && authenticationService?.module?.isAnyAdminOrSupervisor">
+                                        <ng-container *ngIf="(authenticationService?.leadsAndDeals || authenticationService?.module?.opportunitiesAccessAsPartner) && authenticationService?.module?.isAnyAdminOrSupervisor">
                                             <!---Lead Pipelines--->
                                             <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadPipelines'}"
@@ -211,7 +211,7 @@
 
                                             <!-- XNFR-426 -->
                                             <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}"
-                                                *ngIf="authenticationService?.module?.isAdmin && (!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember))">
+                                                *ngIf="authenticationService?.module?.isAdmin && (!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember)) && !authenticationService.isOnlyPartner()">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadDealApprove'}"
                                                     (click)="activateTab('leadDealApprove');getLeadApprovalstatus();">
                                                     {{properties.leadDealApprove | translate}}</a>

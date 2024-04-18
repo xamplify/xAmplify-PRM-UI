@@ -652,6 +652,10 @@ export class AddDealComponent implements OnInit {
 
     /********XNFR-403***********/
     //xnfr-461
+    if((this.isOrgAdmin || this.isMarketingCompany) && this.deal.createdForPipelineId == 0 && this.deal.createdForPipelineStageId == 0){
+      this.deal.createdForPipelineId = this.deal.createdByPipelineId;
+      this.deal.createdForPipelineStageId = this.deal.createdByPipelineStageId;
+    }
     if(this.deal.createdForPipelineId > 0 && this.deal.createdForPipelineStageId > 0){
       this.deal.pipelineId = this.deal.createdForPipelineId;
       this.deal.pipelineStageId = this.deal.createdForPipelineStageId;
