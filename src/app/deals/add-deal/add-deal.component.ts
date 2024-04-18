@@ -1141,9 +1141,6 @@ export class AddDealComponent implements OnInit {
             let activeCRMPipelinesResponse: any = data.data;
             self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
             self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
-            if (activeCRMPipelinesResponse.createdByActiveCRMType === "CONNECTWISE" && activeCRMPipelinesResponse.createdForActiveCRMType === "CONNECTWISE") {
-              this.showCreatedByPipelineDetails = false;
-            }
             let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
             if (createdByPipelines !== undefined && createdByPipelines !== null) {
               this.handleCreatedByPipelines(createdByPipelines);
@@ -1201,9 +1198,6 @@ export class AddDealComponent implements OnInit {
                 this.pipelinestageText = "Stage";
               }
             }
-            else if (activeCRMPipelinesResponse.createdByActiveCRMType === "CONNECTWISE" && activeCRMPipelinesResponse.createdForActiveCRMType === "CONNECTWISE") {
-              this.showCreatedByPipelineDetails = false;
-            }
 
             if (createdByPipelines !== undefined && createdByPipelines !== null) {
               this.handleCreatedByPipelines(createdByPipelines);
@@ -1211,11 +1205,6 @@ export class AddDealComponent implements OnInit {
 
             if (createdForPipelines !== undefined && createdForPipelines !== null) {
               this.handleCreatedForPipelines(createdForPipelines);
-            }
-
-            if (this.isVendorVersion && !this.isOnlyOrgAdminOrMarketing && activeCRMPipelinesResponse.createdForActiveCRMType === "CONNECTWISE"
-              && activeCRMPipelinesResponse.createdForActiveCRMType === "CONNECTWISE") {
-              self.showCreatedForPipelineDetails = false;
             }
 
           } else if (data.statusCode == 404) {
