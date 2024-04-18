@@ -3,7 +3,7 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { ParterService } from '../services/parter.service';
+import { ParterService } from '../../partners/services/parter.service';
 import { UtilService } from 'app/core/services/util.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { PagerService } from 'app/core/services/pager.service';
@@ -21,6 +21,9 @@ export class MdfDetailAnalyticsComponent implements OnInit {
   @Input()  isDetailedAnalytics: boolean;
   @Input() applyFilter: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
+  @Input() isTeamMemberAnalytics: boolean = true;
+  @Input() selectedVendorCompanyIds: any[] = [];
+  @Input() selectedTeamMemberIds: any[] = [];
   
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -42,7 +45,7 @@ export class MdfDetailAnalyticsComponent implements OnInit {
     this.getMdfDetails(this.pagination);
    }
 
-  getMdfDetails(pagination : Pagination) {
+   getMdfDetailsForPartnerJourney(pagination : Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.maxResults = 3;
@@ -105,6 +108,41 @@ export class MdfDetailAnalyticsComponent implements OnInit {
   viewAnalytics(partnerCompanyId: any) {
     this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
     this.referenseService.goToTop(); 
+  }
+
+  getMdfDetails(pagination : Pagination) {
+    if(!this.isTeamMemberAnalytics){
+      this.getMdfDetailsForPartnerJourney(this.pagination)
+    }else{
+      this.getMdfDetailsForTeamMember(this.pagination)
+    }
+  }
+  
+  getMdfDetailsForTeamMember(pagination: Pagination) {
+    this.referenseService.loading(this.httpRequestLoader, true);
+    this.pagination.userId = this.loggedInUserId;
+    this.pagination.maxResults = 3;
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    this.parterService.getMdfDetailsForTeamMember(this.pagination).subscribe(
+			(response: any) => {	
+        this.referenseService.loading(this.httpRequestLoader, false);
+        if (response.statusCode == 200) {          
+          this.sortOption.totalRecords = response.data.totalRecords;
+				  this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
+				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }        	
+			},
+			(_error: any) => {
+        this.httpRequestLoader.isServerError = true;
+        this.xtremandLogger.error(_error);
+			}
+		);
   }
 
 }

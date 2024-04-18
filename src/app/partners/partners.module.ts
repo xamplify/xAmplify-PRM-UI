@@ -23,7 +23,6 @@ import { CampaignCountTilesComponent } from './campaign-count-tiles/campaign-cou
 import { PartnersJourneyAutomationComponent } from './partners-journey-automation/partners-journey-automation.component';
 import { WorkflowFormComponent } from '../contacts/workflow-form/workflow-form.component';
 import { PendingChangesGuard } from "app/component-can-deactivate";
-import { MdfDetailAnalyticsComponent } from './mdf-detail-analytics/mdf-detail-analytics.component';
 import { PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent } from './partner-journey-team-member-high-level-analytics-table/partner-journey-team-member-high-level-analytics-table.component';
 
 
@@ -33,6 +32,6 @@ import { PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent } from './part
      SharedLibraryModule
   ],
   providers: [PendingChangesGuard],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, MdfDetailAnalyticsComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent]
 })
 export class PartnersModule { }

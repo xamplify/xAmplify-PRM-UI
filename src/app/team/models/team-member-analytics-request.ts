@@ -5,4 +5,5 @@ export class TeamMemberAnalyticsRequest {
     vendorCompanyId: number; 
     trackTypeFilter: any;
     selectedVendorCompanyIds: any[] = [];
+    selectedTeamMemberIds: any[] = [];
 }

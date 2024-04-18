@@ -490,6 +490,24 @@ export class ParterService {
             .catch( this.handleError );
       }
 
+      getMdfDetailsForTeamMember(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/mdf/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+      }
+
+      getVendorInfoForFilter(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/vendor/details/filter?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+      }
+
+      getTeamMemberInfoForFilter(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/teamMember/details/filter?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+      }
+
     /*********End : XNFR-316************/
     
     handleError( error: any ) {

@@ -427,6 +427,17 @@ img.LockIconCu {
 .lockIconCu {
   margin-left: 2px;
 }
+
+span.filterActiveBg {
+  background-color: #10ad39;
+}
+span.filterActiveBg i {
+  color: #fff;
+}
+.defaultFilterACtiveBg{
+  background-color: #f1f3fa;
+}
+
 /* 18-08-2023 */
 @media only screen and (min-width: 1000px) and (max-width: 1023px) { .moveButtonsCu {left: 20px;}}
 @media only screen and (min-width: 1024px) and (max-width: 1049px) { .moveButtonsCu {left: 30px;}}
@@ -462,3 +473,46 @@ img.LockIconCu {
 .button_placement{
   left : 0px !important;
 }
+
+.cardPaddingCustomization {
+  padding: 0px !important;
+}
+.rowPaddingCustomization {
+    margin-right: -20px;
+    margin-left: 0px;
+}
+.rowPaddingCustomization1 {
+  margin-right: -30px;
+    margin-left: 0px;
+}
+.rowPaddingCustomize2 {
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+.row.rowPaddingCustomize3 {
+  margin-right: 30px;
+  margin-left: 15px;
+}
+.row.rowPaddingCustomize4 {
+  margin-left: 15px;
+  margin-right: 0px;
+}
+
+.row.rowPaddingCustomization5 {
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+.rowMarginCustomization {
+  margin-right: 0px !important;
+}
+.responsivepaddding1 {
+  margin-left: 0px;
+}
+
+.row.rowPaddingCustomization4 {
+  margin-right: -25px;
+  margin-left: -15px;
+}
+

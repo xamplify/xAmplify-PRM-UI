@@ -24,6 +24,8 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
   @Input() selectedPartnerCompanyIds: any = [];
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Input() isTeamMemberAnalytics: boolean = true;
+  @Input() selectedVendorCompanyIds: any[] = [];
+  @Input() selectedTeamMemberIds: any[] = [];
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -136,6 +138,8 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.maxResults = 6;
     this.pagination.campaignTypeFilter = this.campaignTypeFilter;
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
     this.parterService.getRedistributedCampaignDetailsForTeamMember(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);

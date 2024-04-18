@@ -23,6 +23,8 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
   @Input() isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
   @Input() isTeamMemberAnalytics : boolean = false;
+  @Input() selectedVendorCompanyIds: any[] = [];
+  @Input() selectedTeamMemberIds: any[] = [];
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -124,6 +126,8 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.maxResults = 6;
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
     this.parterService.getLeadDetailsForTeamMember(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);

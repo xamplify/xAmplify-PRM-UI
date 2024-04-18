@@ -22,6 +22,9 @@ export class PieChartComponent implements OnInit {
   @Output() notifySelectSlice = new EventEmitter();
   @Output() notifyUnSelectSlice = new EventEmitter();
   @Input() isTeamMemberAnalytics : boolean = false;
+  @Input() selectedVendorCompanyIds: any[] = [];
+  @Input() selectedTeamMemberIds: any[] = [];
+
   headerText: string;
   loader = false;
   statusCode = 200;
@@ -159,6 +162,8 @@ export class PieChartComponent implements OnInit {
   redistributedCampaignDetailsPieChartForTeamMember() {
     let teamMemberAnalyticsRequest = new TeamMemberAnalyticsRequest();
     teamMemberAnalyticsRequest.loggedInUserId = this.authenticationService.getUserId();
+    teamMemberAnalyticsRequest.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    teamMemberAnalyticsRequest.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
     this.parterService.redistributedCampaignDetailsPieChartForTeamMember(teamMemberAnalyticsRequest).subscribe(
       response => {
         this.processResponse(response);

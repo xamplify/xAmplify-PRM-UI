@@ -25,6 +25,8 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   @Input()  isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
   @Input() isTeamMemberAnalytics : boolean = false;
+  @Input() selectedVendorCompanyIds: any[] = [];
+ @Input() selectedTeamMemberIds: any[] = [];
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -86,7 +88,9 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.trackTypeFilter = this.trackType;
     this.pagination.assetTypeFilter = this.assetType;
-    this.pagination.maxResults = 6;  
+    this.pagination.maxResults = 6; 
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds; 
     this.parterService.getTypeWiseTrackContentDetailsForTeamMember(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);

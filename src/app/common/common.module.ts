@@ -176,6 +176,7 @@ import { ShareLeadDetailsComponent } from '../util/share-lead-details/share-lead
 import { RedistributedCampaignDetailsComponent } from '../util/redistributed-campaign-details/redistributed-campaign-details.component';
 import { PartnerJourneyLeadDetailsComponent } from '../util/partner-journey-lead-details/partner-journey-lead-details.component';
 import { PartnerJourneyDealDetailsComponent } from '../util/partner-journey-deal-details/partner-journey-deal-details.component';
+import { MdfDetailAnalyticsComponent } from '../util/mdf-detail-analytics/mdf-detail-analytics.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -210,7 +211,8 @@ import { PartnerJourneyDealDetailsComponent } from '../util/partner-journey-deal
 		LandingPagesListAndGridViewComponent,BrowseContentComponent,AddCompanyComponent, SelectLeadComponent,DealChatPopupComponent,
 		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,InteractedNotInteractedTrackDetailsComponent,
 		TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
-		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent
+		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
+		MdfDetailAnalyticsComponent
 	],
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -243,7 +245,7 @@ import { PartnerJourneyDealDetailsComponent } from '../util/partner-journey-deal
 		LandingPagesListAndGridViewComponent,BrowseContentComponent, SelectLeadComponent,DealChatPopupComponent,ChatComponent,
 		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,
 		InteractedNotInteractedTrackDetailsComponent,TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
-		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent
+		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent
 	]
 
 

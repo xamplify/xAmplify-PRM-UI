@@ -23,6 +23,8 @@ export class UserwiseTrackDetailsComponent implements OnInit {
   @Input() selectedPartnerCompanyIds: any = [];
   @Input() applyFilter: boolean;
   @Input() isTeamMemberAnalytics : boolean = false;
+  @Input() selectedVendorCompanyIds: any[] = [];
+  @Input() selectedTeamMemberIds: any[] = [];
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -122,7 +124,9 @@ export class UserwiseTrackDetailsComponent implements OnInit {
   getUserWiseTrackDetailsForTeamMember(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
-    this.pagination.maxResults = 6;  
+    this.pagination.maxResults = 6;
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds; 
     this.parterService.getUserWiseTrackDetailsForTeamMember(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);

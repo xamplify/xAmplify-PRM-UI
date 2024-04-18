@@ -20,19 +20,27 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Company Name</th>
-              <th scope="col">Total Balance</th>              
-              <th scope="col">Used Balance</th>
-              <th scope="col">Available Balance</th>
+              <th scope="col" *ngIf = "!isTeamMemberAnalytics">Company Name</th>
+              <th scope="col" *ngIf = "!isTeamMemberAnalytics">Total Balance</th>              
+              <th scope="col" *ngIf = "!isTeamMemberAnalytics">Used Balance</th>
+              <th scope="col" *ngIf = "!isTeamMemberAnalytics">Available Balance</th>
+              <th scope="col" *ngIf = "isTeamMemberAnalytics">Team Member</th>
+              <th scope="col" *ngIf = "isTeamMemberAnalytics">Total Requests</th>              
+              <th scope="col" *ngIf = "isTeamMemberAnalytics">Average Request Size</th>
+              <th scope="col" *ngIf = "isTeamMemberAnalytics">Total Value</th>
             </tr>
           </thead>
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <!-- <td><a data-rel="fancybox-button" (click)="viewAnalytics(item?.companyId)">{{item?.companyName}}</a></td> -->
-              <td><a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
-              <td>{{item?.totalBalanceInString}}</td>
-              <td>{{item?.usedBalanceInString}}</td>              
-              <td>{{item?.availableBalanceInString}}</td>
+              <td *ngIf = "!isTeamMemberAnalytics"><a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <td *ngIf="isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button"><app-user-info [userInfo]="item"></app-user-info></a></td>
+              <td *ngIf = "!isTeamMemberAnalytics">{{item?.totalBalanceInString}}</td>
+              <td *ngIf = "!isTeamMemberAnalytics">{{item?.usedBalanceInString}}</td>              
+              <td *ngIf = "!isTeamMemberAnalytics">{{item?.availableBalanceInString}}</td>
+              <td *ngIf = "isTeamMemberAnalytics">{{item?.totalRequests}}</td>
+              <td *ngIf = "isTeamMemberAnalytics">{{item?.averageRequestSize}}</td>              
+              <td *ngIf = "isTeamMemberAnalytics">{{item?.totalValue}}</td>
             </tr>
           </tbody>
         </table>

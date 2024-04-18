@@ -24,6 +24,8 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
   @Input() applyFilter: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
   @Input() isTeamMemberAnalytics : boolean = false;
+  @Input() selectedVendorCompanyIds: any[] = [];
+  @Input() selectedTeamMemberIds: any[] = [];
 
 
 
@@ -139,6 +141,8 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.trackTypeFilter = this.trackType;
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
     this.pagination.maxResults = 6;
     this.parterService.getTeamMemberTrackDetailsByInteraction(this.pagination).subscribe(
 			(response: any) => {	

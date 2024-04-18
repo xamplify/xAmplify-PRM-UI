@@ -20,6 +20,8 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
   @Input() selectedPartnerCompanyIds: any = [];
   @Input() applyFilter: boolean;
   @Input() isTeamMemberAnalytics: boolean;
+  @Input() selectedVendorCompanyIds: any[] = [];
+	@Input() selectedTeamMemberIds: any[] = [];
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -69,6 +71,8 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
     this.referenseService.loading(this.httpRequestLoader, true);
     let teamMemberAnalyticsRequest = new TeamMemberAnalyticsRequest();
     teamMemberAnalyticsRequest.loggedInUserId = this.loggedInUserId;
+    teamMemberAnalyticsRequest.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    teamMemberAnalyticsRequest.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.parterService.getTeamMemberAnalyticsCounts(teamMemberAnalyticsRequest).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);

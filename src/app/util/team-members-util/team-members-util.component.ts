@@ -21,6 +21,7 @@ import { RegularExpressions } from '../../common/models/regular-expressions';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
+import { ParterService } from 'app/partners/services/parter.service';
 
 declare var $:any, swal: any;
 @Component({
@@ -39,6 +40,17 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   emailIds: any[] = [];
   teamMemberIdToDelete: number = 0;
   selectedTeamMemberEmailId: string = "";
+  public VendorInfoFilters: Array<any>;
+  public selectedVendorCompanyIds = [];
+  public selectedTeamMemberIds = [];
+  public selectedVendorCompanies = [];
+  public selectedTeamMembers = [];
+  public vendorInfoFilterPlaceHolder: string = 'Select Vendors';
+  public teamMemberInfoFilterPlaceHolder: string = 'Select Team Members';
+  public vendorInfoFields: any;
+  public teamMemberInfoFields: any;
+  public TeamMemberInfoFilters: Array<any>;
+  filterCategoryLoader = false;
   loading: boolean;
   selectedId: number;
   deletePopupLoader: boolean;
@@ -92,10 +104,16 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   selectedTrackType: any = "";
   selectedAssetType: any = "";
   selectedCampaignType: any = "";
+  isCollapsed : boolean = false;
+  filterApplied : boolean = false;
+  showFilterOption: boolean = false;
+  showFilterDropDown: boolean = false;
+  filterActiveBg: string;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
-    public utilService: UtilService, private vanityUrlService: VanityURLService, public properties: Properties, public regularExpressions: RegularExpressions) {
+    public utilService: UtilService, private vanityUrlService: VanityURLService, public properties: Properties, public regularExpressions: RegularExpressions,
+    public partnerService : ParterService) {
     this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
@@ -114,6 +132,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     /** User Guide */
     this.getGuideUrlByMergeTag()
     /** User Guide */
+    this.getVendorInfoForFilter();
+    this.getTeamMemberInfoForFilter();
   }
   /** User Guide **/
   getGuideUrlByMergeTag(){
@@ -148,6 +168,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     }
     this.referenceService.loading(this.httpRequestLoader, true);
     this.httpRequestLoader.isHorizontalCss = true;
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     if (!this.isTeamMemberModule) {
       pagination.filterKey = "teamMemberGroup";
       pagination.categoryId = this.teamMemberGroupId > 0 ? this.teamMemberGroupId : 0;
@@ -1007,6 +1028,86 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     if (this.selectedCampaignType == type) {
         this.selectedCampaignType = "";
       } 
+  }
+
+  toggleCollapse(event: Event) {
+    event.preventDefault();
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+  clickFilter() {
+    if(!this.filterApplied) {
+      this.showFilterOption = !this.showFilterOption;
+    } else {      
+      if (this.showFilterOption) {
+        this.showFilterOption = false;
+      } else {
+        this.showFilterDropDown = true;
+      }     
+    }
+    
+  }
+
+  getVendorInfoForFilter() {
+    this.filterCategoryLoader = true;
+      this.vendorInfoFields = { text: 'companyName', value: 'companyId' };
+      this.partnerService.getVendorInfoForFilter(this.pagination).
+      subscribe(response => {
+        this.VendorInfoFilters = response.data;
+      }, error => {
+          this.VendorInfoFilters = [];
+          this.filterCategoryLoader = false;
+      });
+  }
+
+  getTeamMemberInfoForFilter() {
+    this.filterCategoryLoader = true;
+      this.teamMemberInfoFields = { text: 'emailId', value: 'id' };
+      this.partnerService.getTeamMemberInfoForFilter(this.pagination).
+      subscribe(response => {
+        this.TeamMemberInfoFilters = response.data;
+      }, error => {
+          this.TeamMemberInfoFilters = [];
+          this.filterCategoryLoader = false;
+      });
+  }
+
+  viewDropDownFilter(){
+    this.showFilterOption = true;
+    this.showFilterDropDown = false;
+  }
+
+
+  closeFilterOption() {
+    this.showFilterOption = false;
+  }
+
+  clearFilter() {
+    this.selectedVendorCompanies = [];
+    this.selectedTeamMembers = [];
+    this.selectedTeamMemberIds = [];
+    this.selectedVendorCompanyIds = [];
+    this.showFilterDropDown = false;
+    this.filterActiveBg = 'defaultFilterACtiveBg';
+    this.filterApplied = false;
+    this.findAll(this.pagination);
+  }
+
+  applyFilters() {
+    this.selectedTeamMemberIds=this.selectedTeamMembers;
+    this.selectedVendorCompanyIds=this.selectedVendorCompanies;
+    this.filterApplied = true;
+    this.showFilterOption = false;
+    this.filterActiveBg = 'filterActiveBg';
+    this.isCollapsed = false;
+    this.findAll(this.pagination);
+  }
+  setFilterColor(){
+    if((this.selectedVendorCompanyIds != null && this.selectedVendorCompanyIds.length >0 && this.selectedVendorCompanyIds != undefined)||
+    (this.selectedTeamMemberIds != null && this.selectedTeamMemberIds.length >0 && this.selectedTeamMemberIds != undefined)){
+      this.filterActiveBg = 'filterActiveBg';
+      this.filterApplied = true;
+    }
   }
 
 }
