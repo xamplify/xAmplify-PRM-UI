@@ -65,8 +65,10 @@
 </ng-container>
 <!--Vanity Url Login-->
   <div *ngIf="isVanityUrlEnabled">
-     <!--List All Users-->
+     <!--List All Users For Logged In Vendor Vanity-->
      <app-list-all-users></app-list-all-users> 
+     <!--List All Partners For Logged In Vendor Vanity-->
+     <app-list-all-users [showPartners]="true"></app-list-all-users>
   </div>
 
   <app-scroll-top></app-scroll-top>
