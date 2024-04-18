@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { DashboardService } from '../dashboard.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -27,6 +27,8 @@ export class ListAllUsersComponent implements OnInit {
 	pagination: Pagination = new Pagination();
 	isVanityUrlEnabled = false;
 	headerText = "All Approved Users";
+	@Input() showPartners = false;
+	collpsableId = "collapsible-all-users";
 	constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,
@@ -38,6 +40,10 @@ export class ListAllUsersComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		if(this.showPartners){
+			this.collpsableId = "collapsible-all-partners";
+			this.headerText = "Partner Company Users";
+		}
 		this.listAllApprovedUsers(this.pagination);
 	}
 
@@ -45,6 +51,9 @@ export class ListAllUsersComponent implements OnInit {
 		this.hasError = false;
 		if(this.isVanityUrlEnabled){
 			pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+			if(this.showPartners){
+				this.pagination.filterBy = "vendorCompany";
+			}
 		}
 		this.referenceService.loading(this.httpRequestLoader, true);
 		this.dashboardService.listAllApprovedUsers(pagination).subscribe(
