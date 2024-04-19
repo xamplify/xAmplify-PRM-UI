@@ -15,7 +15,7 @@
 
 /******collapsible*******/
 
-input[type='checkbox'] {
+input[name='collapsibleCheckBox'] {
 	display: none;
 }
 
