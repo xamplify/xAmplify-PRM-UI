@@ -4107,3 +4107,21 @@ li.filter.selectedBox{
   height: 32px!important;
   line-height: 32px !important;
 }
+.track_title{
+  padding: 6px 12px;
+
+}
+/* deal pipelines btn */
+button.btn.btn-white {
+  color: #ffffff !important;
+}
+.Synchronize_btn{
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  box-shadow: none !important;
+  border-radius: 7px !important;
+}
+.Synchronize_btn:hover{
+    background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+    box-shadow: none !important;
+    color: #fff;
+}

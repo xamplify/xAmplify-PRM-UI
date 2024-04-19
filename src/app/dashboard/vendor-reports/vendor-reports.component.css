@@ -37,6 +37,7 @@
   position: relative;
   display: -ms-flexbox;
   display: flex;
+  flex-wrap: wrap;
   -ms-flex-direction: column;
   flex-direction: column;
   border-radius: 6px;
