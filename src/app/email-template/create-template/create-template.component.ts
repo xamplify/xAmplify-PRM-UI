@@ -116,7 +116,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                     uid: beeUserId,
                     container: 'bee-plugin-container',
                     autosave: 15,
-                    //language: 'en-US',
                     language: this.authenticationService.beeLanguageCode,
                     mergeTags: mergeTags,
                     roleHash: roleHash,
@@ -124,7 +123,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                         save(jsonFile, htmlFile);
                     },
                     onSaveAsTemplate: function (jsonFile) {
-                        //save('newsletter-template.json', jsonFile);
                     },
                     onAutoSave: function (jsonFile) {
                         window.localStorage.setItem('newsletter.autosave', jsonFile);
@@ -150,7 +148,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
 
     private loadBeeContainerWithClientIdAndClientSecret(request: (method: any, url: any, data: any, type: any, callback: any) => void, authenticationService: AuthenticationService, beeConfig: {
         uid: string; container: string; autosave: number;
-        //language: 'en-US',
         language: string; mergeTags: any[]; roleHash: string; onSave: (jsonFile: any, htmlFile: any) => void; onSaveAsTemplate: (jsonFile: any) => void; onAutoSave: (jsonFile: any) => void; onSend: (htmlFile: any) => void; onError: (errorMessage: string) => void;
         }, emailTemplateService: EmailTemplateService, self: this) {
         var bee = null;
@@ -274,8 +271,23 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             }
             let emailTemplateName = self.refService.getTrimmedData(self.emailTemplate.name);
             self.invalidTemplateName = emailTemplateName.length==0;
-            self.refService.showModalPopup("save-template-popup");
+            if(self.emailTemplateService.isEditingDefaultTemplate){
+                self.updateDefaultEmailTemplateJsonBody(self.emailTemplate);
+            }else{
+                self.refService.showModalPopup("save-template-popup");
+            }
+            
         };
+    }
+    updateDefaultEmailTemplateJsonBody(emailTemplate: EmailTemplate) {
+        this.customResponse = new CustomResponse();
+        emailTemplate.id = this.emailTemplateService.emailTemplate.id;
+        this.emailTemplateService.updateDefaultEmailTemplateJsonBody(emailTemplate).subscribe(
+            response=>{
+                this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+            },error=>{
+                this.refService.showSweetAlertServerErrorMessage();
+            });
     }
 
     private addTemplateName(emailTemplateService: EmailTemplateService, self: this) {
