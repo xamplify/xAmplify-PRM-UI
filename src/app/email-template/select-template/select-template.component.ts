@@ -343,7 +343,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     }
 
 
-    showTemplateById(template: any) {
+    showTemplateById(template: any,isAdd:boolean) {
         if (template.id != undefined) {
             this.emailTemplateService.getById(template.id)
                 .subscribe(
@@ -355,10 +355,8 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                                 data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
                             }
                         }
-
-                        
                         this.emailTemplateService.emailTemplate = data;
-                        this.emailTemplateService.isNewTemplate = true;
+                        this.emailTemplateService.isNewTemplate = isAdd;
                         this.router.navigate(["/home/emailtemplates/create"]);
                     },
                     (error: string) => {

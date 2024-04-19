@@ -165,6 +165,7 @@ import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component
 import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-image-util.component';
 import { PreviewEmailTemplateComponent } from 'app/util/preview-email-template/preview-email-template.component';
 import { PreviewPageComponent } from 'app/util/preview-page/preview-page.component';
+import { PreviewAssetPdfComponent } from './preview-asset-pdf/preview-asset-pdf.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -197,7 +198,7 @@ import { PreviewPageComponent } from 'app/util/preview-page/preview-page.compone
 		ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
 		LandingPagesListAndGridViewComponent,BrowseContentComponent,AddCompanyComponent, SelectLeadComponent,DealChatPopupComponent,
-		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent],
+		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent, PreviewAssetPdfComponent],
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,

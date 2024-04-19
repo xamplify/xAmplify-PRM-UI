@@ -1089,12 +1089,6 @@ export class AddDealComponent implements OnInit {
             if (this.activeCRMDetails.activeCRM && this.activeCRMDetails.hasCustomForm) {
               this.showCustomForm = true;
             }
-            if ( !this.activeCRMDetails.activeCRM || "CONNECTWISE" === this.activeCRMDetails.type) {
-              if (this.actionType !== 'view' && (this.actionType !== 'edit' || this.deal.associatedContact === undefined)) {
-                this.showAttachLeadButton = true;
-              }
-              
-            }
           }
         },
         error => {
