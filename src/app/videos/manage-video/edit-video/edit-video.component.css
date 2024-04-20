@@ -297,3 +297,8 @@ textarea {
  }
 
  .videoInfoTopBtns {margin-left: auto; float: right; top:2px}
+@media screen and (max-width: 578px) {
+  .d_flex {
+    display: flex !important;
+  }
+}

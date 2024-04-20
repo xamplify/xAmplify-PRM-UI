@@ -1307,11 +1307,11 @@
                                                             <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="halopsaRibbonText == 'configured'"
                                                                     class="integration-cards">
-                                                                    <!-- <a (click)="halopsaSettings()"
+                                                                    <a (click)="halopsaSettings()"
                                                                     data-toggle="tooltip" data-placement="top"
                                                                     title="HALOPSA Settings"><i
                                                                         class="fa fa-cog"
-                                                                        style="font-size: 20px !important;"></i></a> -->
+                                                                        style="font-size: 20px !important;"></i></a>
                                                                 </span>
                                                                 <h5 class="card-title  text-uppercase text-center"
                                                                     style="padding-top: 4%;">HALOPSA</h5>
@@ -1633,7 +1633,7 @@
                                                                     <div class="btn-group pull-right">
                                                                         <a *ngIf="activeCRMDetails?.activeCRM && (activeCRMDetails?.type == 'HUBSPOT' || activeCRMDetails?.type == 'PIPEDRIVE') && activeTabName == 'dealPipelines'"
                                                                             (click)="syncPipelines()">
-                                                                            <button class="btn btn-white"
+                                                                            <button class="btn btn-white Synchronize_btn"
                                                                                 data-toggle="tooltip"
                                                                                 data-placement="bottom"
                                                                                 title="Synchronize" translate>

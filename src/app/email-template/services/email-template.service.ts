@@ -13,7 +13,6 @@ import { ContentManagement } from 'app/videos/models/content-management';
 
 @Injectable()
 export class EmailTemplateService {
-   
 
     emailTemplate:EmailTemplate;
     public pagination: Pagination;
@@ -22,6 +21,7 @@ export class EmailTemplateService {
     MARKETO_URL = this.authenticationService.REST_URL;
     isNewTemplate = false;
     isTemplateSaved = false;
+    isEditingDefaultTemplate = false;
     constructor( private http: Http,  private authenticationService: AuthenticationService,
     		 private refService:ReferenceService,private router:Router) {
        }
@@ -227,6 +227,12 @@ export class EmailTemplateService {
     copy(emailTemplate:EmailTemplate){
         let url = this.URL+"/email-template/copy?access_token="+this.authenticationService.access_token;
         emailTemplate.userId = this.authenticationService.getUserId();
+        return this.authenticationService.callPostMethod(url,emailTemplate);
+    }
+
+    
+    updateDefaultEmailTemplateJsonBody(emailTemplate:EmailTemplate){
+        let url = this.URL+"/superadmin/updateDefaultEmailTemplateJsonBody?access_token="+this.authenticationService.access_token;
         return this.authenticationService.callPostMethod(url,emailTemplate);
     }
 
