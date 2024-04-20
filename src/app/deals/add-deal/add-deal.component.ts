@@ -131,11 +131,6 @@ export class AddDealComponent implements OnInit {
   createdByActiveCRM: any;
   createdForActiveCRM: any;
   isMarketingCompany: boolean = false;
-  showCreatedForPipelineDetails: boolean = false;
-  showCreatedByPipelineDetails: boolean = true;
-  isOnlyOrgAdminOrMarketing: boolean = false;
-  showCreatedByPipelinesForDefaultForm: boolean = false;
-  showCreatedForPipelinesForDefaultForm: boolean = false;
   showCreatedByPipelineAndStage: boolean = false;
   showCreatedByPipelineAndStageOnTop: boolean = false;
 
@@ -438,7 +433,6 @@ export class AddDealComponent implements OnInit {
           this.setFieldErrorStates();
           if (!this.showCustomForm) {
             this.showDefaultForm = true;
-            this.showCreatedByPipelinesForDefaultForm = true;
             this.hasSfPipeline = false;
             if (this.edit || this.preview) {
               this.setProperties();
@@ -781,7 +775,9 @@ export class AddDealComponent implements OnInit {
           this.pipelineIdError = true;
           this.pipelineStageId = errorClass;
           this.pipelineStageIdError = true;
+          this.createdForPipelineId = errorClass;
           this.createdForPipelineIdError = true;
+          this.createdForPipelineStageId = errorClass;
           this.createdForPipelineStageIdError = true;
         }
       }
@@ -798,12 +794,12 @@ export class AddDealComponent implements OnInit {
       }
       if (fieldId == "createdForPipelineId") {
         if (fieldValue.length > 0 && fieldValue != "0") {
-          this.pipelineId = successClass;
+          this.createdForPipelineId = successClass;
           this.createdForPipelineIdError = false;
         } else {
-          this.pipelineId = errorClass;
+          this.createdForPipelineId = errorClass;
           this.createdForPipelineIdError = true;
-          this.pipelineStageId = errorClass;
+          this.createdForPipelineStageId = errorClass;
           this.createdForPipelineStageIdError = true;
         }
       }
@@ -818,10 +814,10 @@ export class AddDealComponent implements OnInit {
       }
       if (fieldId == "createdForPipelineStageId") {
         if (fieldValue.length > 0 && fieldValue != "0") {
-          this.pipelineStageId = successClass;
+          this.createdForPipelineStageId = successClass;
           this.createdForPipelineStageIdError = false;
         } else {
-          this.pipelineStageId = errorClass;
+          this.createdForPipelineStageId = errorClass;
           this.createdForPipelineStageIdError = true;
         }
       }
@@ -831,6 +827,7 @@ export class AddDealComponent implements OnInit {
 
 
   submitButtonStatus() {
+    let self = this;
     if (this.showCustomForm) {
       this.opportunityAmountError = false;
       this.titleError = false;
@@ -840,8 +837,14 @@ export class AddDealComponent implements OnInit {
       this.propertiesQuestions.length = 0;
     }
 
+    if (!this.showCreatedByPipelineAndStage && !this.createdForPipelineStageIdError) {
+      this.pipelineIdError = false;
+      this.pipelineStageIdError = false;
+    }
+
     if (!this.opportunityAmountError && !this.estimatedCloseDateError
-      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError) {
+      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError 
+      && !this.pipelineStageIdError && !this.createdForPipelineStageIdError ) {
       let qCount = 0;
       let cCount = 0;
       this.propertiesQuestions.forEach(propery => {
@@ -1099,7 +1102,6 @@ export class AddDealComponent implements OnInit {
           this.setFieldErrorStates();
           if (!this.showCustomForm) {
             this.showDefaultForm = true;
-            this.showCreatedByPipelinesForDefaultForm = true;
             this.activeCRMDetails.hasDealPipeline = false;
             if (this.edit || this.preview) {
               this.setProperties();
@@ -1127,16 +1129,16 @@ export class AddDealComponent implements OnInit {
   getDealPipelines() {
     let campaignId = 0;
     let self = this;
-    this.isLoading = true;
-    this.referenceService.loading(this.httpRequestLoader, true);
+    self.isLoading = true;
+    self.referenceService.loading(this.httpRequestLoader, true);
     if (this.deal.campaignId !== undefined && this.deal.campaignId > 0) {
       campaignId = this.deal.campaignId;
     }
     this.dealsService.getActiveCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, campaignId)
       .subscribe(
         data => {
-          this.referenceService.loading(this.httpRequestLoader, false);
-          this.isLoading = false;
+          self.referenceService.loading(this.httpRequestLoader, false);
+          self.isLoading = false;
           if (data.statusCode == 200) {
             let activeCRMPipelinesResponse: any = data.data;
             self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
@@ -1314,9 +1316,6 @@ export class AddDealComponent implements OnInit {
   handleCreatedForPipelines(createdForPipelines: any) {
     let self = this;
     self.createdForPipelines = createdForPipelines;
-    if (createdForPipelines.length > 0 && !this.isOnlyOrgAdminOrMarketing){
-      this.showCreatedForPipelineDetails = true;
-    }
     if (createdForPipelines.length === 1) {
       let createdForPipeline = createdForPipelines[0];
       self.deal.createdForPipelineId = createdForPipeline.id;
