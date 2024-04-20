@@ -136,6 +136,8 @@ export class AddDealComponent implements OnInit {
   isOnlyOrgAdminOrMarketing: boolean = false;
   showCreatedByPipelinesForDefaultForm: boolean = false;
   showCreatedForPipelinesForDefaultForm: boolean = false;
+  showCreatedByPipelineAndStage: boolean = false;
+  showCreatedByPipelineAndStageOnTop: boolean = false;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -159,13 +161,6 @@ export class AddDealComponent implements OnInit {
     this.deal.createdByPipelineId = 0;
     this.deal.createdForPipelineStageId = 0;
     this.deal.createdByPipelineStageId = 0;
-    this.pipelineText = "Partner's xAmplify Pipeline";
-    this.pipelinestageText = "Partner's xAmplify Stage";
-    if (!this.isVendorVersion) {
-      this.pipelineText = "Vendor's xAmplify Pipeline";
-      this.pipelinestageText = "Vendor's xAmplify Stage";
-    }
-    this.isOnlyOrgAdminOrMarketing = (this.authenticationService.isOrgAdmin() && !this.authenticationService.isPartner()) || (this.authenticationService. module.isMarketing && !this.authenticationService.isPartner());  
     if (this.actionType === "add") {
       this.showCommentActions = true;
       this.showAttachLeadButton = true;
@@ -655,10 +650,10 @@ export class AddDealComponent implements OnInit {
 
     /********XNFR-403***********/
     //xnfr-461
-    if((this.isOrgAdmin || this.isMarketingCompany) && this.deal.createdForPipelineId == 0 && this.deal.createdForPipelineStageId == 0){
-      this.deal.createdForPipelineId = this.deal.createdByPipelineId;
-      this.deal.createdForPipelineStageId = this.deal.createdByPipelineStageId;
-    }
+    // if((this.isOrgAdmin || this.isMarketingCompany) && this.deal.createdForPipelineId == 0 && this.deal.createdForPipelineStageId == 0){
+    //   this.deal.createdForPipelineId = this.deal.createdByPipelineId;
+    //   this.deal.createdForPipelineStageId = this.deal.createdByPipelineStageId;
+    // }
     if(this.deal.createdForPipelineId > 0 && this.deal.createdForPipelineStageId > 0){
       this.deal.pipelineId = this.deal.createdForPipelineId;
       this.deal.pipelineStageId = this.deal.createdForPipelineStageId;
@@ -1143,6 +1138,8 @@ export class AddDealComponent implements OnInit {
             let activeCRMPipelinesResponse: any = data.data;
             self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
             self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
+            self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByPipelineAndStage;
+            self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByPipelineAndStageOnTop;
             let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
             if (createdByPipelines !== undefined && createdByPipelines !== null) {
               this.handleCreatedByPipelines(createdByPipelines);
@@ -1187,23 +1184,25 @@ export class AddDealComponent implements OnInit {
             let activeCRMPipelinesResponse: any = data.data;
             self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
             self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
+            self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByPipelineAndStage;
+            self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByPipelineAndStageOnTop;
             let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
             let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
-            if (this.isVendorVersion && !this.isOnlyOrgAdminOrMarketing) {
-              [self.createdByActiveCRM, self.createdForActiveCRM] = [self.createdForActiveCRM, self.createdByActiveCRM];
-              [createdByPipelines, createdForPipelines] = [createdForPipelines, createdByPipelines];
-              [this.deal.createdByPipelineId, this.deal.createdForPipelineId] = [this.deal.createdForPipelineId, this.deal.createdByPipelineId];
-              [this.deal.createdByPipelineStageId, this.deal.createdForPipelineStageId] = [this.deal.createdForPipelineStageId, this.deal.createdByPipelineStageId];
-              if (this.deal.createdForCompanyId == this.deal.createdByCompanyId) {
-                this.showCreatedByPipelineDetails = false;
-                this.pipelineText = "Pipeline";
-                this.pipelinestageText = "Stage";
-              }
-              if (this.showDefaultForm) {
-                this.showCreatedForPipelinesForDefaultForm = true;
-                this.showCreatedByPipelinesForDefaultForm = false;
-              }
-            }
+            // if (this.isVendorVersion && !this.isOnlyOrgAdminOrMarketing) {
+            //   [self.createdByActiveCRM, self.createdForActiveCRM] = [self.createdForActiveCRM, self.createdByActiveCRM];
+            //   [createdByPipelines, createdForPipelines] = [createdForPipelines, createdByPipelines];
+            //   [this.deal.createdByPipelineId, this.deal.createdForPipelineId] = [this.deal.createdForPipelineId, this.deal.createdByPipelineId];
+            //   [this.deal.createdByPipelineStageId, this.deal.createdForPipelineStageId] = [this.deal.createdForPipelineStageId, this.deal.createdByPipelineStageId];
+            //   if (this.deal.createdForCompanyId == this.deal.createdByCompanyId) {
+            //     this.showCreatedByPipelineDetails = false;
+            //     this.pipelineText = "Pipeline";
+            //     this.pipelinestageText = "Stage";
+            //   }
+            //   if (this.showDefaultForm) {
+            //     this.showCreatedForPipelinesForDefaultForm = true;
+            //     this.showCreatedByPipelinesForDefaultForm = false;
+            //   }
+            // }
 
             if (createdByPipelines !== undefined && createdByPipelines !== null) {
               this.handleCreatedByPipelines(createdByPipelines);
