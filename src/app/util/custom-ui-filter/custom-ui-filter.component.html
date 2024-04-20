@@ -1,68 +1,94 @@
-<div class="row" *ngIf="showFilterOption">
+<div class="row">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="portlet light" style="padding: 0px 10px 10px 10px!important;border-radius: 0px !important;">
-      <div class="portlet-title displayFlex" style="margin-bottom: 0px !important;">
-        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 p0">
-          <h4 class="">
-            <span style="font-size:15px"> Apply Filter</span>
-          </h4>
+      <div class="portlet-title" style="margin-bottom: 0px !important;">
+        <div class="row">
+          <div class="col-xs-6 col-sm-10 col-md-3 col-lg-3">
+            <h4 class="pull-left text-primary">
+              <span style="font-size:15px"> Apply Filter</span>
+            </h4>
+          </div>
+          <div class="page-toolbar col-xs-6 col-sm-2 col-md-9 col-lg-9">
+            <div class="btn-group pull-right">
+              <div class="d-flex">
+                <div class="btn btn-xs l-g-view margin-space mr5" (click)="closeFilterOption('clear')"
+                  style="height: 28px;width: 28px;margin-top: 5px;border: 1px solid #f05556 !important;"
+                  *ngIf="isclearFilter">
+                  <span data-placement="bottom" data-toggle="tooltip" title="Remove a filter">
+                    <i class="fa fa-filter" aria-hidden="true"
+                      style="color: #f05556;;font-size: 22px;margin: 7px 0px 0px 0px;"></i> <i class="fa fa-times"
+                      aria-hidden="true" style="color: #f05556;;font-size: 12px;margin: 7px 0px 0px -6px;"></i>
+                  </span>
+                </div>
+                <a type="button" class="close-circle" (click)="closeFilterOption('close')"
+                  style="width: 30px;height: 30px;margin-top: 4px;">
+                  <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
-        <button type="button" class="close-circle pull-right" (click)="closeFilterOption()"
-          style="width: 30px;height: 30px;margin-top: 4px;">
-          <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i>
-        </button>
       </div>
       <div class="portlet box custom_fiter-asset" style="margin-bottom: 10px !important;">
         <div class="">
           <div class="row">
+
             <div class="col-md-12 mb10" *ngFor="let addRow of criterias; let i = index">
               <div class="col-md-4 pl0" style="display: flex">
-                <!-- Dropdown 1 -->
+                <!-- Field Name DropDown -->
                 <b style="margin: 7px;">{{i+1}}</b>
                 <select class="form-control" [(ngModel)]="criterias[i].property"
-                  [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}" (change)="checkCriteriaCoditions()">
+                  [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}" (change)="getOptionsForCriteria(criterias[i],i)"
+                  [disabled]="dropdownDisabled[i]">
                   <option *ngFor="let filterOption of filterOptions; let i = index">
                     {{filterOption.value}}</option>
                 </select>
               </div>
-
+              <!-- Conditions Dropdown-->
               <div class="col-md-4 mobileTopandBottomSpace">
-                <!-- Dropdown 2 -->
                 <select class="form-control responsiveMargin" [(ngModel)]="criterias[i].operation"
-                  (change)="checkCriteriaCoditions()">
-                  <option *ngFor="let filterCondition of filterConditions; let i = index">
-                    {{filterCondition.value}}</option>
+                  [ngModelOptions]="{standalone: true}"
+                  [disabled]="criterias[i].property === 'From' || criterias[i].property === 'Type'">
+                  <ng-container *ngIf="criterias[i].property !== 'From' && criterias[i].property !== 'Type' ">
+                    <option *ngFor="let filterCondition of filterConditions" value="{{filterCondition.value}}">
+                      {{filterCondition.value}}</option>
+                  </ng-container>
+                  <ng-container *ngIf="criterias[i].property === 'From' || criterias[i].property === 'Type'">
+                    <option>{{filterConditions[1].value}}</option>
+                  </ng-container>
                 </select>
               </div>
 
-              <div class="col-md-3" *ngIf="criterias[i].property != 'Type'">
-                <!-- Input Text Field -->
+              <div class="col-md-3" *ngIf="criterias[i].property !== 'Type' && criterias[i].property !== 'From'">
                 <input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" required
-                  (keypress)="eventEnterKeyHandler($event.keyCode)" (change)="checkCriteriaCoditions()">
+                  (keypress)="eventEnterKeyHandler($event.keyCode)">
               </div>
-              <div class="col-md-3" *ngIf="criterias[i].property === 'Type'">
-                <select class="form-control" [(ngModel)]="criterias[i].value1" (change)="checkCriteriaCoditions()">
-                  <option value="undefined">Select Asset Type</option>
-                  <option *ngFor="let fileType of fileTypes">
-                    {{fileType}}
-                  </option>
+              <div class="col-md-3" *ngIf="criterias[i].property === 'Type' ||  criterias[i].property === 'From'">
+                <select class="form-control" [(ngModel)]="criterias[i].value1">
+                  <ng-container *ngIf="criterias[i].property === 'Type' " >
+                    <option [value]="undefined" *ngIf="criterias[i].value1 === 'undefined'">Select Asset Type</option>
+                    <!-- <option *ngIf="criterias[i].value1 !== 'undefined' && selectedTypes.length > 0">{{selectedTypes[i]}}</option> -->
+                    <option [value]="fileType" *ngFor="let fileType of fileTypes;">{{fileType}}</option>
+                  </ng-container>
+                  <ng-container *ngIf="criterias[i].property === 'From'">
+                    <option value="undefined" *ngIf="criterias[i].value1 === 'undefined'">Select Company Name</option>
+                    <!-- <option *ngIf="criterias[i].value1 !== 'undefined' && selectedCompanies.length> 0" [value]="selectedCompanies[i].sharedByVendorCompanyId">{{selectedCompanies[i].sharedByVendorCompanyName}}</option> -->
+                    <option *ngFor="let vendorCompany of whiteLableContentSharedByVendorCompanies"
+                      [value]="vendorCompany.sharedByVendorCompanyId">
+                      {{vendorCompany.sharedByVendorCompanyName}}
+                    </option>
+                  </ng-container>
                 </select>
               </div>
 
               <div class="col-md-1 p0 positionForAddandDelete" style="display: flex;">
-                <!-- Delete Button -->
                 <span (click)="cancelSegmentationRow(i)" type="button">
                   <i class="fa fa-trash-o trashIconCustimization trash_bgcolor" aria-hidden="true" data-toggle="tooltip"
                     data-placement="top" title="Remove a condition"></i>
                 </span>
                 <ng-template [ngTemplateOutlet]="addIcon" *ngIf="i === criterias.length-1"></ng-template>
-
               </div>
             </div>
-            <!-- <div class="col-md-1"> -->
-            <!-- Plus Button -->
-            <!-- <ng-template [ngTemplateOutlet]="addIcon" *ngIf="criterias.length <= 0"></ng-template> -->
-
             <ng-template #addIcon>
               <button [disabled]="criterias.length > 5"
                 [ngClass]="criterias.length <= 0 ? 'plus_icon_low':'plus_icon_high' " (click)="addNewRow()"
@@ -71,10 +97,8 @@
                   aria-hidden="true" style="color: #0196da"></i>
               </button>
             </ng-template>
-            <!-- </div> -->
           </div>
           <ng-template [ngTemplateOutlet]="addIcon" *ngIf="criterias.length <= 0"></ng-template>
-
           <div class="row alert alert-danger alert-su m0" *ngIf="isValidationErrorMessage ">
             <strong>{{filterConditionErrorMessage}}</strong>
           </div>
@@ -104,7 +128,7 @@
         <div class="form-inline col-sm-12">
           <div class="float-right">
             <button class="buttom_customise btn-primary" (click)="submittFilterData()">Submit</button>
-            <button class="buttom_customise Btn-Gray" (click)="closeFilterOption()">Cancel</button>
+            <button class="buttom_customise Btn-Gray" (click)="closeFilterOption('close')">Cancel</button>
           </div>
         </div>
       </div>

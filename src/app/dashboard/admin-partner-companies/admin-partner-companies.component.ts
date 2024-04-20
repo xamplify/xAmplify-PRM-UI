@@ -18,7 +18,7 @@ declare var $,swal: any;
 @Component({
 	selector: 'app-admin-partner-companies',
 	templateUrl: './admin-partner-companies.component.html',
-	styleUrls: ['./admin-partner-companies.component.css'],
+	styleUrls: ['./admin-partner-companies.component.css','../admin-report/admin-report.component.css'],
 	providers: [Pagination, HttpRequestLoader, Properties, SortOption]
 })
 export class AdminPartnerCompaniesComponent implements OnInit {

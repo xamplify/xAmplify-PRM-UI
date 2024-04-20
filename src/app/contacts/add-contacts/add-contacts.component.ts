@@ -449,7 +449,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     self.cancelContacts();
                 }
 
-                // console.log( "AddContacts : readFiles() contacts " + JSON.stringify( self.contacts ) );
             }
         } else {
             this.customResponse = new CustomResponse('ERROR', this.properties.FILE_TYPE_ERROR, true);
@@ -733,10 +732,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else if (this.contactOption == 'csvContacts') {
             this.saveCsvContactsWithPermission();
         } else if (this.contactOption == 'googleContacts') {
+            this.contactType = "CONTACT";
             this.saveExternalContactsWithPermission('GOOGLE');
         } else if (this.contactOption == 'googleSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
         } else if (this.contactOption == 'zohoContacts') {
+            this.contactType = "CONTACT";
             this.saveExternalContactsWithPermission('ZOHO');
         } else if (this.contactOption == 'zohoSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
@@ -745,22 +746,26 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else if (this.contactOption == 'salesforceSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
         } else if (this.contactOption == 'marketoContacts') {
-            this.saveMarketoContactsWithPermission();
+            this.contactType = "CONTACT";
+            this.saveExternalContactsWithPermission('MARKETO');
         } else if (this.contactOption == 'marketoSelectedContacts') {
-            this.saveMarketoSelectedContactsWithPermission();
+            this.saveExternalSelectedContactsWithPermission();
         } else if (this.contactOption == 'hubSpotContacts') {
             this.saveExternalContactsWithPermission('HUBSPOT');
         } else if (this.contactOption == 'hubSpotSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
         } else if (this.contactOption == 'microsoftContacts') {
+            this.contactType = "CONTACT";
             this.saveExternalContactsWithPermission('microsoft');
         } else if (this.contactOption == 'microsoftSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
         } else if (this.contactOption == 'pipedriveContacts') {
+            this.contactType = "CONTACT";
             this.saveExternalContactsWithPermission('pipedrive');
         } else if (this.contactOption == 'pipedriveSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
         } else if (this.contactOption == 'connectWiseContacts') {
+            this.contactType = "CONTACT";
             this.saveExternalContactsWithPermission('connectWise');
         } else if (this.contactOption == 'connectWiseSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
@@ -795,15 +800,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             if (newArray[w].count >= 2) {
                 this.duplicateEmailIds.push(newArray[w].value);
             }
-            console.log(newArray[w].value);
-            console.log(newArray[w].count);
         }
         this.xtremandLogger.log("DUPLICATE EMAILS" + this.duplicateEmailIds);
         var valueArr = this.newUsers.map(function (item) { return item.emailId.toLowerCase() });
         var isDuplicate = valueArr.some(function (item, idx) {
             return valueArr.indexOf(item) != idx
         });
-        console.log("emailDuplicate" + isDuplicate);
         this.isDuplicateEmailId = isDuplicate;
         this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
 
@@ -1003,8 +1005,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             if (newArray[w].count >= 2) {
                 this.duplicateEmailIds.push(newArray[w].value);
             }
-            console.log(newArray[w].value);
-            console.log(newArray[w].count);
         }
         this.xtremandLogger.log("DUPLICATE EMAILS" + this.duplicateEmailIds);
         $("button#sample_editable_1_new").prop('disabled', true);
@@ -1016,9 +1016,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             var isDuplicate = valueArr.some(function (item, idx) {
                 return valueArr.indexOf(item) != idx
             });
-            console.log("ERROREMails" + isDuplicate);
             this.isDuplicateEmailId = isDuplicate;
-
             if (this.invalidPattenMail === true) {
                 $("#clipBoardValidationMessage").append("<h4 style='color:#f68a55;'>" + "Email Address is not valid" + "</h4>");
                 testArray.length = 0;
@@ -1156,20 +1154,13 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 if (newArray[w].count >= 2) {
                                     this.duplicateEmailIds.push(newArray[w].value);
                                 }
-                                console.log(newArray[w].value);
-                                console.log(newArray[w].count);
                             }
                             this.xtremandLogger.log("DUPLICATE EMAILS" + this.duplicateEmailIds);
                             var valueArr = this.contacts.map(function (item) { return item.emailId.toLowerCase() });
                             var isDuplicate = valueArr.some(function (item, idx) {
                                 return valueArr.indexOf(item) != idx
                             });
-                            console.log("emailDuplicate" + isDuplicate);
                             this.isDuplicateEmailId = isDuplicate;
-
-                            /*if ( this.contacts[i].mobileNumber.length < 6 ) {
-                                this.contacts[i].mobileNumber = "";
-                            }*/
                         }
                         if (!isDuplicate) {
                             this.xtremandLogger.info("update contacts #contactSelectedListId " + " data => " + JSON.stringify(this.contacts));
@@ -1525,7 +1516,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     this.contactService.googleLogin(this.module)
                         .subscribe(
                             data => {
-                                console.log(data);
                                 if (data.statusCode == 200) {
                                     console.log("AddContactComponent googleContacts() Authentication Success");
                                     this.getGoogleContactsUsers();
@@ -1583,7 +1573,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 response => {
                     let data = response.data;
                     this.storeLogin = data;
-                    console.log(data);
                     if (response.statusCode == 200) {
                         console.log("AddContactComponent googleContacts() Authentication Success");
                         this.getGoogleContactsUsers();
@@ -1593,8 +1582,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         localStorage.setItem("currentModule", data.module);
                         localStorage.setItem("statusCode", data.statusCode);
                         localStorage.setItem('vanityUrlFilter', 'true');
-                        console.log(data.redirectUrl);
-                        console.log(data.userAlias);
                         this.googleCurrentUser = localStorage.getItem('currentUser');
                         const encodedData = window.btoa(this.googleCurrentUser);
                         const encodedUrl = window.btoa(data.redirectUrl);
@@ -1901,15 +1888,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     checkAll(ev: any) {
         if (this.selectedAddContactsOption != 6 && this.selectedAddContactsOption != 9 && this.selectedAddContactsOption != 10 && this.selectedAddContactsOption != 11 && this.selectedAddContactsOption != 12) {
             if (ev.target.checked) {
-                console.log("checked");
                 $('[name="campaignContact[]"]').prop('checked', true);
                 let self = this;
                 $('[name="campaignContact[]"]:checked').each(function () {
                     var id = $(this).val();
                     self.selectedContactListIds.push(parseInt(id));
                     self.paginatedSelectedIds.push(parseInt(id));
-
-                    console.log(self.selectedContactListIds);
                     $('#ContactListTable_' + id).addClass('contact-list-selected');
                     for (var i = 0; i < self.pagedItems.length; i++) {
                         var object = {
@@ -1925,8 +1909,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         if (self.pagedItems[i].contactCompany) {
                             object['contactCompany'] = self.pagedItems[i].contactCompany;
                         }
-
-                        console.log(object);
                         self.allselectedUsers.push(object);
                     }
                 });
@@ -1960,7 +1942,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     highlightRow(contactId: number, email: any, userEmail: any, firstName: any, lastName: any, event: any, company: any) {
         let isChecked = $('#' + contactId).is(':checked');
-        console.log(this.selectedContactListIds)
         if (isChecked) {
             $('#row_' + contactId).addClass('contact-list-selected');
             this.selectedContactListIds.push(contactId);
@@ -1976,7 +1957,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 object['emailId'] = email;
             }
             this.allselectedUsers.push(object);
-            console.log(this.allselectedUsers);
         } else {
             $('#row_' + contactId).removeClass('contact-list-selected');
             this.selectedContactListIds.splice($.inArray(contactId, this.selectedContactListIds), 1);
@@ -2098,8 +2078,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         } else {
                             this.xtremandLogger.errorPage(error);
                         }
-                        console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
-
                     },
                     () => this.xtremandLogger.log("googleContacts data :" + JSON.stringify(this.getZohoConatacts.contacts))
                 );
@@ -2429,7 +2407,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         .subscribe(
                             data => {
                                 this.storeLogin = data;
-                                console.log(data);
                                 if (data.statusCode == 200) {
                                     this.showModal();
                                     console.log("AddContactComponent salesforce() Authentication Success");
@@ -2470,7 +2447,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 .subscribe(
                     response => {
                         let data = response.data;
-                        console.log(data);
                         if (response.statusCode == 200) {
                             this.showModal();
                             console.log("AddContactComponent salesforce() Authentication Success");
@@ -2479,8 +2455,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                             localStorage.setItem("userAlias", data.userAlias)
                             localStorage.setItem("currentModule", data.module)
                             localStorage.setItem('vanityUrlFilter', 'true');
-                            console.log(data.redirectUrl);
-                            console.log(data.userAlias);
                             this.salesForceCurrentUser = localStorage.getItem('currentUser');
                             let vanityUserId = JSON.parse(this.salesForceCurrentUser)['userId'];
                             let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/" + null;
@@ -2944,7 +2918,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     unlinkSocailAccount() {
         try {
             let socialNetwork = this.settingSocialNetwork.toUpperCase();
-            console.log("CheckBoXValueUNlink" + this.isUnLinkSocialNetwork);
             this.contactService.unlinkSocailAccount(socialNetwork, this.isUnLinkSocialNetwork)
                 .subscribe(
                     (data: any) => {
@@ -2977,7 +2950,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         } else {
                             this.xtremandLogger.errorPage(error);
                         }
-                        console.log(error);
                     },
                     () => {
                         $('#settingSocialNetwork').modal('hide');
@@ -3197,8 +3169,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
             window.addEventListener('message', function (e) {
                 window.removeEventListener('message', function (e) { }, true);
-                console.log('received message:  ' + e.data, e);
-
                 if (e.data == 'isGoogleAuth') {
                     localStorage.setItem('isGoogleAuth', 'yes');
                 }
@@ -3256,7 +3226,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 .subscribe(
                     data => {
                         this.legalBasisOptions = data.data;
-                        console.log(this.legalBasisOptions);
                         this.parentInput['legalBasisOptions'] = this.legalBasisOptions;
                         this.loading = false;
                     },
@@ -3312,7 +3281,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 allowOutsideClick: false,
                 preConfirm: function (name: any) {
                     return new Promise(function () {
-                        console.log('logic begins');
                         var inputName = name.toLowerCase().replace(/\s/g, '');
                         if ($.inArray(inputName, self.names) > -1) {
                             swal.showValidationError('This list name is already taken.')
@@ -3334,7 +3302,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     });
                 }
             }).then(function (name: any) {
-                console.log(name);
             }, function (dismiss: any) {
                 if (dismiss === 'No') {
                     self.selectedAddContactsOption = 8;
@@ -3396,8 +3363,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 } else {
                                     this.xtremandLogger.errorPage(error);
                                 }
-                                console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
-
                             },
                             () => this.xtremandLogger.info("Add contact component loadContactListsName() finished")
                         )
@@ -3443,8 +3408,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                             } else {
                                 this.xtremandLogger.errorPage(error);
                             }
-                            console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
-
                         },
                         () => this.xtremandLogger.info("Add contact component loadContactListsName() finished")
                     )
@@ -3560,10 +3523,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
 
             if (this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0) {
-                console.log(this.allselectedUsers);
-
                 this.askForPermission('marketoSelectedContacts');
-
             }
             else {
                 this.contactListNameError = true;
@@ -3698,7 +3658,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                         $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                     }
-                    console.log(this.socialContactUsers);
                 }
                 this.xtremandLogger.info(this.getMarketoConatacts);
                 this.setPage(1);
@@ -3822,7 +3781,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 "mobileNumber": user.mobilePhone
             }
             this.allselectedUsers.push(object);
-            console.log(this.allselectedUsers);
         } else {
             $('#row_' + user.id).removeClass('contact-list-selected');
             this.selectedContactListIds.splice($.inArray(user.id, this.selectedContactListIds), 1);
@@ -3839,14 +3797,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     checkAllForMarketo(ev: any) {
         if (ev.target.checked) {
-            console.log("checked");
             $('[name="campaignContact[]"]').prop('checked', true);
             let self = this;
             $('[name="campaignContact[]"]:checked').each(function () {
                 var id = $(this).val();
                 self.selectedContactListIds.push(parseInt(id));
                 self.paginatedSelectedIds.push(parseInt(id));
-                console.log(self.selectedContactListIds);
                 $('#ContactListTable_' + id).addClass('contact-list-selected');
                 for (var i = 0; i < self.pagedItems.length; i++) {
                     var object = {
@@ -3869,7 +3825,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         "mobilePhone": self.pagedItems[i].mobilePhone,
                         "mobileNumber": self.pagedItems[i].mobilePhone
                     }
-                    console.log(object);
                     self.allselectedUsers.push(object);
                 }
             });
@@ -3894,7 +3849,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
             }
         }
-        console.log(this.allselectedUsers);
         ev.stopPropagation();
     }
 
@@ -4182,7 +4136,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.setPage(1);
         this.selectedAddContactsOption = 9;
         this.socialContact.contacts = this.socialContactUsers;
-        console.log("Social Contact Users for HubSpot::" + this.socialContactUsers);
     }
 
 
@@ -4623,7 +4576,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.getZohoAutherizedLeads(this.socialContact)
             .subscribe(
                 data => {
-                    console.log(data.statusCode);
                     this.getZohoConatacts = data;
                     this.selectedAddContactsOption = 6;
                     if (data.statusCode != null && data.statusCode != 200) {
@@ -4719,15 +4671,20 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 user.emailId = contacts[i].email.trim();
                 user.firstName = contacts[i].firstName;
                 user.lastName = contacts[i].lastName;
-                user.contactCompany = contacts[i].contactCompany;
+                user.contactCompany = contacts[i].company;
+                user.city = contacts[i].city;
+                user.state = contacts[i].city;
+                user.country = contacts[i].country;
+                user.zipCode = String(contacts[i].postalCode);
+                user.mobileNumber = contacts[i].mobilePhone;
+                user.jobTitle = contacts[i].title;
+                user.address = contacts[i].address;
                 this.socialUsers.push(user);
             }
-
         }
     }
 
     selectedSharePartner(event: any) {
-        console.log(event);
         this.sharedPartnerDetails = event;
         this.model.assignedTo = this.sharedPartnerDetails.emailId;
     }
@@ -4850,7 +4807,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.selectedAddContactsOption = 10;
         this.disableOtherFuctionality = true;
         this.socialContact.contacts = this.socialContactUsers;
-        console.log("Social Contact Users for Microsoft ::" + this.socialContactUsers);
     }
 
     // XNFR-230
@@ -4922,7 +4878,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.selectedAddContactsOption = 11;
         this.disableOtherFuctionality = true;
         this.socialContact.contacts = this.socialContactUsers;
-        console.log("Social Contact Users for Pipedrive ::" + this.socialContactUsers);
     }
 
     //XNFR-230
@@ -5089,7 +5044,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.selectedAddContactsOption = 12;
         this.disableOtherFuctionality = true;
         this.socialContact.contacts = this.socialContactUsers;
-        console.log("Social Contact Users for ConnectWise ::" + this.socialContactUsers);
     }
 
     //XNFR-403
@@ -5120,11 +5074,14 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.setSocialUsers(this.socialContact);
         }
         this.setLegalBasisOptions(this.socialUsers);
-        if (this.contactType === undefined) {
+        if (this.contactType === undefined || this.contactType === "" || this.contactType === 'contacts') {
             this.contactType = "CONTACT";
         }
         this.userUserListWrapper = this.getUserUserListWrapperObj(this.socialUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
-            this.contactType.toLocaleUpperCase(), type.toLocaleUpperCase(), this.salesforceListViewId, true);
+            this.contactType.toLocaleUpperCase(), type.toLocaleUpperCase(), this.salesforceListViewId, type === 'MARKETO' ? false : true);
+        if (this.assignLeads) {
+            this.userUserListWrapper.userList.assignedLeadsList = true;
+        }
         this.userUserListWrapper.userList.externalListId = this.hubSpotSelectContactListOption;
         this.saveList(this.userUserListWrapper);
     }
@@ -5134,6 +5091,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.setLegalBasisOptions(this.allselectedUsers);
         this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
             "CONTACT", "MANUAL", this.alias, false);
+        if (this.assignLeads) {
+            this.userUserListWrapper.userList.assignedLeadsList = true;
+        }
         this.saveList(this.userUserListWrapper);
     }
 

@@ -348,7 +348,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	// halo psa
 	halopsaRibbonText: string;
 	isProduction: boolean = false;
-
+	vendorJourneyEditOrViewAnalytics:boolean = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -2724,24 +2724,35 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	getSelectedDashboardForPartner() {
 		this.modulesDashboardForPartner = new CustomResponse();  
 		this.updateDashboardError = false;
-		this.vanityUrlService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {        
-			this.companyIdFromCompanyProfileNameForVanity = result.companyId});
-		this.dashBoardService.getDefaultDashboardForPartner(this.companyIdFromCompanyProfileNameForVanity)
-			.subscribe(
-				data => {
-					if (data.statusCode == 200) {
-						this.defaultSelectedDashboardTypeSetting = data.data;
-					} else {
-						this.updateDashboardError = true;
-						this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-					}
-				},
-				error => {
-					this.updateDashboardError = true;
-					this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-				},
-				() => { }
-			);
+		let companyProfileName = this.authenticationService.companyProfileName;
+		let isValidCompanyProfileName = companyProfileName!=undefined && companyProfileName!="";
+		if(isValidCompanyProfileName){
+			this.vanityUrlService.getVanityURLDetails(this.authenticationService.companyProfileName).
+			subscribe(result => {        
+			this.companyIdFromCompanyProfileNameForVanity = result.companyId
+			},error=>{
+				
+			},()=>{
+				if(this.companyIdFromCompanyProfileNameForVanity!=undefined && this.companyIdFromCompanyProfileNameForVanity>0){
+					this.dashBoardService.getDefaultDashboardForPartner(this.companyIdFromCompanyProfileNameForVanity)
+					.subscribe(
+						data => {
+							if (data.statusCode == 200) {
+								this.defaultSelectedDashboardTypeSetting = data.data;
+							} else {
+								this.updateDashboardError = true;
+								this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+							}
+						},
+						error => {
+							this.updateDashboardError = true;
+							this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+						},
+						() => { }
+					);
+				}
+			});
+		}
 	}
 
 	checkDashboardTypes(){
@@ -2838,6 +2849,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	goBackToMyProfile() {
 		this.editXamplifyDefaultTemplate = false;
 		this.editCustomLoginTemplate = false;
+		this.vendorJourneyEditOrViewAnalytics = false;
 		this.xamplifyDefaultTemplate = new VanityEmailTempalte();
 		this.referenceService.goToTop();
 	}

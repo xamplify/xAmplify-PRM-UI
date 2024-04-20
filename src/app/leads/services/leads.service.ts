@@ -267,5 +267,18 @@ export class LeadsService {
     .catch(this.handleError);
   }
 
+  /*** XNFR-505 ***/
+  getLeadsForLeadAttachment(pagination: Pagination) {
+    let companyProfileName = this.authenticationService.companyProfileName;
+    let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+    if(xamplifyLogin){
+        pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+    }
+      return this.http.post(this.URL + `/getLeadsForLeadAttachment/p?access_token=${this.authenticationService.access_token}`, pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+
 
 }

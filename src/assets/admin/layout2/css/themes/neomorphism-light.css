@@ -902,7 +902,7 @@ span.ui-column-resize {
 .actions-block i,
 .circled-number {
   color: #000;
-  width: 32px;
+  width: 32px!important;
   height: 32px;
   line-height: 32px !important;
   background: #f0f5fa;
@@ -1907,7 +1907,7 @@ i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover {
 i.fa.fa-trash-o.trashIconCustomization{
   border: none;
   color: #cb5a5e !important;
-  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+  /* box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important; */
 }
 .gridIconCustomization a.delete {
   border: none;
@@ -1917,7 +1917,7 @@ i.fa.fa-trash-o.trashIconCustomization{
 }
 i.fa.fa-trash-o.trashIconCustomization:hover {
   border: none;
-  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+  /* box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important; */
 }
 .gridIconCustomization a.Iconhover:hover {
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
@@ -2006,6 +2006,9 @@ tbody {
 }
 /* table header border top remove */
 .table>thead:first-child>tr:first-child>th {
+  border-top: none!important;
+}
+.table>thead:first-child>tr:first-child>td{         
   border-top: none!important;
 }
 /* End */
@@ -4087,7 +4090,7 @@ div#htmlContent .row{
 .btn-file input[type="file"]{
   position: absolute !important;
 }
-table.table.table-bordered > tbody {
+table>.table>.table-bordered > tbody {
   background: none !important;
   box-shadow: none !important;
   border: none !important;
@@ -4279,4 +4282,19 @@ padding-bottom: 0px!important;
    background: #f0f5fa !important;
    border: 1px solid #cfd6de !important;
  }
+}
+i.fa.fa-trash-o.trashIconCustimization.trash_bgcolor:hover {
+  color: red !important;
+}
+.neg_mrg_left1{
+  margin-left: -1px !important;
+}
+.cloud_platforms_margins{
+  margin-right: -20px !important;
+  margin-left: -6px !important;
+}
+.SingleIconCu{
+  width: 32px!important;
+  height: 32px!important;
+  line-height: 32px !important;
 }

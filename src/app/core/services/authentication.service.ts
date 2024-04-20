@@ -157,6 +157,7 @@ export class AuthenticationService {
   isstyleTWoBgColor: boolean;
   /*** XNFR-416 ****/
   properties = new Properties();
+  companyUrl = "";
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -170,25 +171,25 @@ export class AuthenticationService {
 
     this.SHARE_URL = this.SERVER_URL + 'embed/';
     if (this.SERVER_URL == "https://xamp.io/" && this.APP_URL == "https://xamplify.io/") {
-      console.log("production keys are used");
+      xtremandLogger.info("production keys are used");
       this.clientId = this.envService.clientId;
       this.clientSecret = this.envService.clientSecret;
       this.beePageClientId = this.envService.beePageProdClientId;
       this.beePageClientSecret = this.envService.beePageProdClientSecret;
     } else if (this.SERVER_URL == "https://aravindu.com/" && this.APP_URL == "https://xamplify.co/") {
-      console.log("QA keys are used");
+      xtremandLogger.info("QA keys are used");
       this.clientId = this.envService.beeTemplateQAClientId;
       this.clientSecret = this.envService.beeTemplateQAClientSecret;
       this.beePageClientId = this.envService.beePageQAClientId;
       this.beePageClientSecret = this.envService.beePageQAClientSecret;
     } else if (this.SERVER_URL == "https://release.xamp.io/" && this.APP_URL == "https://xtremand.com/") {
-      console.log("Release keys are used");
+      xtremandLogger.info("Release keys are used");
       this.clientId = this.envService.beeTemplateReleaseClientId;
       this.clientSecret = this.envService.beeTemplateReleaseClientSecret;
       this.beePageClientId = this.envService.beePageReleaseClientId;
       this.beePageClientSecret = this.envService.beePageReleaseClientSecret;
     } else {
-      console.log("dev keys are used");
+      xtremandLogger.info("dev keys are used");
       this.clientId = this.envService.beeTemplateDevClientId;
       this.clientSecret = this.envService.beeTemplateDevClientSecret;
       this.beePageClientId = this.envService.beePageDevClientId;
@@ -258,6 +259,10 @@ export class AuthenticationService {
 
           if (this.vanityURLEnabled && this.companyProfileName && this.vanityURLUserRoles) {
             userToken['roles'] = this.vanityURLUserRoles;
+          }
+
+          if(this.vanityURLEnabled && this.companyProfileName && userName=="admin@xamplify.io"){
+            userToken['roles'] = res.json().roles;
           }
 
           this.translateService.use(res.json().preferredLanguage);
@@ -544,7 +549,7 @@ export class AuthenticationService {
           return false;
         }
       }
-    } catch (error) { console.log('error' + error); }
+    } catch (error) { this.xtremandLogger.log('error' + error); }
   }
 
   removeZenDeskScript() {
@@ -686,7 +691,7 @@ export class AuthenticationService {
     try {
       swal.close();
     } catch (error) {
-      console.log(error);
+      this.xtremandLogger.log(error);
     }
   }
 
@@ -791,6 +796,21 @@ export class AuthenticationService {
   getVanityURLUserRoles(userName: string, at: string) {
     this.dashboardAnalyticsDto = this.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
     return this.http.post(this.REST_URL + 'v_url/userRoles?userName=' + userName + '&access_token=' + at, this.dashboardAnalyticsDto)
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+  }
+
+  getVanityURLUserRolesForLoginAs(userName: string, userId:number) {
+    let dashboardAnalyticsDto = new DashboardAnalyticsDto();
+    let companyProfileName = this.companyProfileName;
+    dashboardAnalyticsDto.userId = userId;
+    if (companyProfileName != undefined && companyProfileName != "") {
+      dashboardAnalyticsDto.vanityUrlFilter = true;
+      dashboardAnalyticsDto.vendorCompanyProfileName = companyProfileName;
+    } else {
+      dashboardAnalyticsDto.vanityUrlFilter = false;
+    }
+    return this.http.post(this.REST_URL + 'v_url/userRoles?userName=' + userName + '&access_token=' + this.access_token, dashboardAnalyticsDto)
       .map((res: Response) => { return res.json(); })
       .catch((error: any) => { return error; });
   }
@@ -1109,6 +1129,9 @@ export class AuthenticationService {
   /****XNFR-317****/
   findAllTeamMembers(pagination: Pagination) {
     pagination.userId = this.getUserId();
+    if(pagination.userId==1){
+      pagination.userId = pagination.userListId;
+    }
     let url = this.REST_URL + "teamMember/findAll?access_token=" + this.access_token;
     return this.callPostMethod(url, pagination);
   }
@@ -1179,7 +1202,12 @@ export class AuthenticationService {
 
   /***XNFR-326***/
   getPartnerModuleCustomName() {
-    return localStorage.getItem("partnerModuleCustomName");
+    let name = "Partner";
+    let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
+    if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
+      name = partnerModuleCustomName;
+    }
+    return name;
   }
 
   getDefaultM3U8FileForLocal(videoUrl: string) {
@@ -1267,6 +1295,13 @@ signUpAsTeamMember(data: any) {
   let url = this.REST_URL + "signUpAsTeamMember";
   return this.callPostMethod(url,data)
 }
+
+signUpAsPartner(data: any) {
+  let url = this.REST_URL + "signUpAsPartner";
+  return this.callPostMethod(url,data)
+}
+
+
 unpublishLearingTracks(learningTrackIds:any){
   let url = this.REST_URL + "lms/unpublishLearingTracks?access_token="+this.access_token;
   let data = {};
@@ -1291,6 +1326,18 @@ getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:b
   return this.callGetMethod(URL);
 }
 
+getAssetPdfHtmlBody(id:number,isPartnerView:boolean){
+  let userId = this.getUserId();
+  let URL_PREFIX = "";
+  if(isPartnerView){
+    URL_PREFIX = this.REST_URL+"landing-page/partner/";
+  }else{
+    URL_PREFIX = this.REST_URL+"dam/";
+  }
+  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&access_token="+this.access_token;
+  return this.callGetMethod(URL);
+}
+
 setLocalStorageItemByKeyAndValue(key:string,value:any){
   localStorage.setItem(key, JSON.stringify(value));
 }
@@ -1302,6 +1349,7 @@ removeLocalStorageItemByKey(key:string){
 getLocalStorageItemByKey(key:string){
   return JSON.parse(localStorage.getItem(key));
 }
+
 
 
 

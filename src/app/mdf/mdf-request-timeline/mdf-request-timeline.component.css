@@ -2,3 +2,9 @@
 ul.nav.nav-tabs {
     border-bottom: none !important;
 }
+@media only screen and (max-width: 578px) {
+    .panel-body.pt0 {
+        word-wrap: break-word;
+        padding-right: 10px !important;
+    }
+}

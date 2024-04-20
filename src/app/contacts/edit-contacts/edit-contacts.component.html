@@ -349,9 +349,12 @@
 														*ngIf=" ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads))"
 														(click)="saveAs(true)" translate>Create New List </a>
 												</li>
-												<li><a id="exportToExcel"
-														*ngIf="selectedAddContactsOption == 8 && (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads)) && !sharedLeads"
-														(click)="hasAccess()" translate>Export To Excel</a>
+												<li
+													[ngClass]="{'disabled': noContactsFound == true }">
+													<a id="exportToExcel" *ngIf=" selectedAddContactsOption== 8 && (assignLeads
+														||(contactService?.contactType!='ASSIGNED_LEADS_LIST' &&
+														!assignLeads)) && !sharedLeads" (click)="hasAccess()"
+														translate>Export To Excel</a>
 												</li>
 												<li><a id="download_empy_csv" (click)="downloadEmptyCsv()"
 														*ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))"
@@ -361,7 +364,8 @@
 													*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList">
 													<a id="delete_button"
 														*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) && !sharedLeads"
-														(click)="!isDefaultContactList ? showAlert(selectedContactListId) : confirmdelete(selectedContactListIds)" translate> Delete</a>
+														(click)="!isDefaultContactList ? showAlert(selectedContactListId) : confirmdelete(selectedContactListIds)"
+														translate> Delete</a>
 												</li>
 												<!---XNFR-278-->
 												<li
@@ -431,6 +435,11 @@
 																</button>
 															</div>
 														</div>
+														<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+															[disabled]="pagination.totalRecords == 0" title="Click here to email the list"
+															(click)="downloadUserListCsv()" style="margin-left: 4px;">
+															<i aria-hidden="true" class="fas fa-file-export p10"></i>
+														</button>
 													</div>
 												</div>
 											</div>
@@ -545,7 +554,7 @@
 									<div *ngIf="dublicateEmailId" class="col-md-6"
 										class="col-md-9 alert alert alert-danger alert-dismissable" style="width: 100%">
 										<a class="close" data-dismiss="alert" aria-label="close"
-										(click)="closeDuplicateEmailErrorMessage()">&times;</a>
+											(click)="closeDuplicateEmailErrorMessage()">&times;</a>
 										<h4 translate>Duplicate EmailId Exist Please Remove..
 											<u>{{duplicateEmailIds}}</u>
 										</h4>
@@ -1271,6 +1280,11 @@
 															aria-hidden="true"></i></button>
 												</div>
 											</div>
+											<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+												[disabled]="contactsByType.pagination.totalRecords == 0" title="Click here to email the list"
+												(click)="downloadUserListCsv()" style="margin: 0px -10px 0px 10px;">
+												<i aria-hidden="true" class="fas fa-file-export p10"></i>
+											</button>
 										</div>
 									</div>
 								</div>
@@ -1510,9 +1524,10 @@
 														<table cellpadding="5" cellspacing="0" class="border"
 															style="border:none !important;">
 															<tbody>
-																<ng-container  *ngIf="gdprStatus">
+																<ng-container *ngIf="gdprStatus">
 																	<tr class="bg-unset">
-																		<td class='pt10 pb10 bold' translate>Legal Basis :
+																		<td class='pt10 pb10 bold' translate>Legal Basis
+																			:
 																		</td>
 																		&nbsp;
 																		<td align="center" class="pt10 pb10">
@@ -1579,8 +1594,8 @@
 				<div class="modal-body filter-content" style="padding: 20px 10px;">
 					<div class="row">
 						<div class="col-sm-12">
-							<div class="row col-sm-12 col-md-11 col-lg-11" *ngFor="let addRow of criterias; let i = index"
-								style="padding-bottom: 10px;">
+							<div class="row col-sm-12 col-md-11 col-lg-11"
+								*ngFor="let addRow of criterias; let i = index" style="padding-bottom: 10px;">
 								<div class="form-group">
 									<div class="form-inline col-sm-12">
 										<div class="form-group col-xs-12 col-sm-6 col-md-4 col-lg-4 tab_v_flex tab_p0">
@@ -1617,9 +1632,9 @@
 							<div class="row col-xs-3 col-sm-3 col-md-1 col-lg-1  tab_ml0">
 								<div>
 									<span [class.disabled]="criterias.length > 5" (click)="addNewRow()" type="button"
-										class="btn btn-default pull-right"  data-toggle="tooltip" data-placement="top" title="Add a condition">
-										<i 
-											class="fa fa-plus-square" aria-hidden="true" style="color: #0196da"></i>
+										class="btn btn-default pull-right" data-toggle="tooltip" data-placement="top"
+										title="Add a condition">
+										<i class="fa fa-plus-square" aria-hidden="true" style="color: #0196da"></i>
 									</span>
 								</div>
 							</div>

@@ -1209,7 +1209,7 @@ export class ManageLeadsComponent implements OnInit {
 
         },
         () => {
-          this.referenceService.loading(this.httpRequestLoader, false);
+          // this.referenceService.loading(this.httpRequestLoader, false);
         }
       );
   }

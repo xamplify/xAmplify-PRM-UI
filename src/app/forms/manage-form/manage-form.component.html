@@ -375,7 +375,7 @@
                                 <span *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</span>
                                 <span *ngIf="form.formSubType === 'SURVEY'" translate>Survey</span>
                             </div>
-                            <div class="bar gridIconCustomization icons_align">
+                            <div class="bar gridIconCustomization auto-height icons_align">
                                 <a class="Iconhover custom-grid-icon"
                                     *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm"
                                     data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyForm(form.id)">

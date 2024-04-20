@@ -85,6 +85,7 @@ export class PreviewLoginComponent implements OnInit {
     this.isStyleTwoBgColor = result.styleTwoBgColor;
     this.authenticationService.isstyleTWoBgColor = result.styleTwoBgColor;
     this.authenticationService.v_companyLogoImagePath = result.companyLogoImagePath;
+    this.authenticationService.companyUrl = result.companyUrl;
     this.isBgColor = result.styleOneBgColor;
     let path = "https://xamplify.io/assets/images/stratapps.jpeg";
     if(result.loginType === "STYLE_ONE"){

@@ -358,6 +358,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     ngOnInit() {
+        this.filterContacts('ALL');
         if (!this.reDistributeEvent && !this.isEventUpdate) {
             this.authenticationService.isShowForms = true;
         }
@@ -1024,6 +1025,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     loadRedistributionContactList(contactsPagination: Pagination) {
+        this.loading = true;
+        this.campaignRecipientsLoader = true;
         if (this.eventCampaign.nurtureCampaign) {
             contactsPagination.editCampaign = true;
             contactsPagination.campaignId = this.eventCampaign.id;
@@ -1040,7 +1043,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 contactsPagination.parentCampaignId = this.eventCampaign.id;
             }
         }
-        contactsPagination.userId = this.loggedInUserId;
+        contactsPagination.userId = this.authenticationService.getUserId();
         contactsPagination.redistributingCampaign = true;
         if (this.vanityLoginDto.vanityUrlFilter) {
             contactsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
@@ -1049,7 +1052,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.campaignService.listCampaignUsers(contactsPagination)
             .subscribe(
                 (data: any) => {
-
+                    this.loading = false;
+                    this.campaignRecipientsLoader = false;
                     this.contactListsPagination.totalRecords = data.data.totalRecords;
                     if (this.contactListsPagination.totalRecords == 0) {
                         this.emptyContactListMessage = "No records found";
@@ -1091,7 +1095,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     //     this.isHeaderCheckBoxChecked = false;
                     // }
                 },
-                (error: string) => this.logger.error(error),
+                (error: string) =>{ this.logger.error(error);
+                    this.campaignRecipientsLoader = false;
+                },
                 () => console.info("Finished loadContactList()", this.contactListsPagination)
             );
     }

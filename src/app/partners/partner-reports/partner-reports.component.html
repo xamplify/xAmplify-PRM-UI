@@ -619,19 +619,21 @@
                   <ng-container
                     *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                     <div *ngFor="let campaign of throughPartnerCampaignPagination.pagedItems; let i= index"
-                      class="col-xs-12 col-sm-4 col-lg-3 mt_13">
+                      class="col-xs-12 col-sm-4 col-lg-3 GridviewSidePaddings mt_13">
                       <div class="grid-box">
+                        <div class="gridViewImgBg">
                         <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
-                        <h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
+                      </div>
+                        <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent active-campaigns-all-btns-oneinline" title="{{campaign.campaignName}}"> <b>Campaign Name:</b>{{campaign.campaignName | slice:0:25}}
                           <span *ngIf="campaign.campaignName?.length>25">...</span>
                         </h4>
-                        <h6 class="mt10 mb0" [title]="campaign.createdBy">By {{campaign.createdBy | slice:0:15}}<span
+                        <h6 class="GridViewCotent xamplify-ellipsis mt10 mb0" [title]="campaign.createdBy"><b>By:</b> {{campaign.createdBy | slice:0:15}}<span
                             *ngIf="campaign.createdBy?.length>15">...</span></h6>
-                        <h6 class="mt0"><b>{{campaign.companyName | slice:0:15}}<span
+                        <h6 class="mt0 GridViewCotent xamplify-ellipsis"><b>{{campaign.companyName | slice:0:15}}<span
                               *ngIf="campaign.companyName?.length>15">...</span></b></h6>
-                        <h6>
+                        <h6 class="GridViewCotent">
                           <span>
-                            <span *ngIf="campaign.launched">Launched On</span>
+                            <span *ngIf="campaign.launched"> <b>Launched On:</b></span>
                             <span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled For</span>
                             <span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved On</span>
                           </span>
@@ -653,7 +655,7 @@
                               aria-hidden="true"></i>
                             <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe"
                               aria-hidden="true"></i>
-                            <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar"
+                            <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar-check-o"
                               aria-hidden="true"></i>
                             <i *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1" class="fa fa-wpforms"
                               aria-hidden="true"></i>

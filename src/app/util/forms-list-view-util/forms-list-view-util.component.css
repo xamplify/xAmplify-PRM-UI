@@ -49,7 +49,7 @@ cursor: default;
 }
 .cursor{
 	cursor: not-allowed;
-  margin-top: -4px;
+  /* margin-top: -4px; */
 }
 
 

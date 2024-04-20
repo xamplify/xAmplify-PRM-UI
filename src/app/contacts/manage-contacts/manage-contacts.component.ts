@@ -348,7 +348,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.noSaveButtonDisable = true;
 
 		this.hasContactRole = this.referenceService.hasRole(this.referenceService.roles.contactsRole);
-		console.log("ContactRole" + this.hasContactRole);
 
 		this.hasPartnersRole = this.referenceService.hasRole(this.referenceService.roles.partnersRole);
 
@@ -525,13 +524,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	deleteContactList(contactListId: number) {
 		try {
+			this.campaignLoader = true;
 			this.resetResponse();
-			this.xtremandLogger.info("MangeContacts deleteContactList : " + contactListId);
 			this.contactService.deleteContactList(contactListId)
 				.subscribe(
 					data => {
 						if (data.access) {
-							this.xtremandLogger.info("MangeContacts deleteContactList success : " + data);
 							this.contactsCount();
 							$('#contactListDiv_' + contactListId).remove();
 							this.loadContactLists(this.pagination);
@@ -548,18 +546,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 								this.loadContactLists(this.pagination);
 
 							}
+							this.campaignLoader = false;
 						} else {
+							this.campaignLoader = false;
 							this.authenticationService.forceToLogout();
 						}
 					},
 					(error: any) => {
+						this.campaignLoader = false;
 						if (error._body.includes('Please launch or delete those campaigns first')) {
-							// this.responseMessage = ['ERROR', error,'show'];
 							this.customResponse = new CustomResponse('ERROR', error._body, true);
 						} else {
 							this.xtremandLogger.errorPage(error);
 						}
-						console.log(error);
 					},
 					() => this.xtremandLogger.info("deleted completed")
 				);
@@ -691,7 +690,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactService.googleLogin(this.module)
 				.subscribe(
 					data => {
-						console.log(data);
 						if (data.statusCode == 200) {
 							console.log("ManageContactComponent googleContacts() Authentication Success");
 							this.syncronizeContactList(socialContact);
@@ -945,7 +943,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 		let lowerCaseContactName = contactName.toLowerCase().replace(/\s/g, '');
 		var list = this.names;
-		console.log(list);
 		if ($.inArray(lowerCaseContactName, list) > -1) {
 			this.isValidContactName = true;
 			$(".ng-valid[required], .ng-valid.required").css("color", "red");
@@ -971,13 +968,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	checkAllInvalidContacts(ev: any) {
 		try {
 			if (ev.target.checked) {
-				console.log("checked");
 				$('[name="invalidContact[]"]').prop('checked', true);
 				let self = this;
 				$('[name="invalidContact[]"]:checked').each(function () {
 					var id = $(this).val();
 					self.selectedInvalidContactIds.push(parseInt(id));
-					console.log(self.selectedInvalidContactIds);
 					$('#campaignContactListTable_' + id).addClass('invalid-contacts-selected');
 				});
 				for (var i = 0; i < this.contactsByType.pagination.pagedItems.length; i++) {
@@ -996,7 +991,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						"userListIds": this.contactsByType.pagination.pagedItems[i].userListIds
 					}
 					this.invalidRemovableContacts.push(object);
-					console.log(object);
 				}
 				this.invalidRemovableContacts = this.removeDuplicates(this.invalidRemovableContacts, 'id');
 				this.selectedInvalidContactIds = this.referenceService.removeDuplicates(this.selectedInvalidContactIds);
@@ -1012,12 +1006,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						var paginationIds = this.contactsByType.pagination.pagedItems[j].id;
 						this.invalidRemovableContacts.splice(this.invalidRemovableContacts.indexOf(paginationIds), 1);
 					}
-					console.log('removed objects form else part');
-					console.log(this.invalidRemovableContacts);
 					let currentPageContactIds = this.contactsByType.pagination.pagedItems.map(function (a) { return a.id; });
 					this.selectedInvalidContactIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedInvalidContactIds, currentPageContactIds);
 				}
-				console.log(this.invalidRemovableContacts);
 			}
 			ev.stopPropagation();
 		} catch (error) {
@@ -1028,7 +1019,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	invalidContactsSelectedUserIds(contactId: number, event: any) {
 		try {
 			let isChecked = $('#' + contactId).is(':checked');
-			console.log(this.invalidRemovableContacts)
 			if (isChecked) {
 				$('#row_' + contactId).addClass('invalid-contacts-selected');
 				this.selectedInvalidContactIds.push(contactId);
@@ -1048,7 +1038,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							"profileImagePath": null,
 							"userListIds": this.userListIds[i].userListIds
 						}
-						console.log(object);
 						this.invalidRemovableContacts.push(object);
 
 					}
@@ -1071,13 +1060,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	checkAll(ev: any) {
 		try {
 			if (ev.target.checked) {
-				console.log("checked");
 				$('[name="campaignContact[]"]').prop('checked', true);
 				let self = this;
 				$('[name="campaignContact[]"]:checked').each(function () {
 					var id = $(this).val();
 					self.selectedContactListIds.push(parseInt(id));
-					console.log(self.selectedContactListIds);
 					$('#ContactListTable_' + id).addClass('contact-list-selected');
 					for (var i = 0; i < self.contactsByType.pagination.pagedItems.length; i++) {
 						var object = {
@@ -1100,8 +1087,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							object["partnerType"] = self.contactsByType.pagination.pagedItems[i].partnerType;
 							object["category"] = self.contactsByType.pagination.pagedItems[i].category;
 						}
-
-						console.log(object);
 						self.allselectedUsers.push(object);
 					}
 				});
@@ -1133,7 +1118,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		try {
 			// this.invalidContactsSelectedUserIds( contactId, event );
 			let isChecked = $('#' + contactId).is(':checked');
-			console.log(this.selectedContactListIds)
 			if (isChecked) {
 				$('#row_' + contactId).addClass('contact-list-selected');
 				this.selectedContactListIds.push(contactId);
@@ -1157,9 +1141,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					object["partnerType"] = selectedRow.partnerType;
 					object["category"] = selectedRow.category;
 				}
-
 				this.allselectedUsers.push(object);
-				console.log(this.allselectedUsers);
 			} else {
 				$('#row_' + contactId).removeClass('contact-list-selected');
 				this.selectedContactListIds.splice($.inArray(contactId, this.selectedContactListIds), 1);
@@ -1227,7 +1209,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 										this.xtremandLogger.errorPage(error);
 									}
 									this.xtremandLogger.error(error);
-									console.log(error);
 								},
 								() => this.xtremandLogger.info("allcontactComponent saveSelectedUsers() finished")
 							)
@@ -1334,10 +1315,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					data => {
 						data = data;
 						this.xtremandLogger.log(data);
-						console.log("update Contacts ListUsers:" + data);
 						$.each(removeUserIds, function (index: number, value: any) {
 							$('#row_' + value).remove();
-							console.log(index + "value" + value);
 						});
 						//this.invalidDeleteSucessMessage = true;
 						this.contactsCount();
@@ -1417,8 +1396,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					data => {
 						if (data.access) {
 							this.loading = false;
-							this.xtremandLogger.log(data);
-							console.log("update Contacts ListUsers:" + data);
 							this.contactsCount();
 							this.contactCountLoad = true;
 							this.listContactsByType(this.contactsByType.selectedCategory);
@@ -1774,16 +1751,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					else if (this.criterias[i].property == "Notes") {
 						this.criterias[i].property = "description";
 					}
-
-					console.log(this.criterias[i].operation);
-					console.log(this.criterias[i].property);
-					console.log(this.criterias[i].value1);
 				}
 			}
 			if (!this.isSegmentationErrorMessage) {
 				this.contactsByType.pagination.pageIndex = 1;
 				this.listContactsByType(this.contactsByType.selectedCategory);
-				console.log(this.criterias);
 				this.isSegmentation = true;
 				$('#filterModal').modal('toggle');
 				$("#filterModal .close").click();
@@ -2248,17 +2220,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	forceProcessList(contactListId: number) {
+		this.campaignLoader = true;
 		try {
 			this.contactService.forceProcessList(contactListId)
 				.subscribe(
 					data => {
-						console.log(data);
+						this.campaignLoader = false;
 						if (data.message == "success") {
 							this.customResponse = new CustomResponse('SUCCESS', "We are processing your contact list, once done will send you an email.", true);
 							this.loadContactLists(this.pagination);
 						}
 					},
 					(error: any) => {
+						this.campaignLoader = false;
 						this.xtremandLogger.error(error);
 					},
 					() => this.xtremandLogger.log("Manage component forcce Process method successfull")
@@ -2275,7 +2249,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactService.defaultPartnerList(userId)
 				.subscribe(
 					(data: any) => {
-						console.log(data);
 						this.defaultPartnerListId = data.id;
 						this.contactService.partnerListName = data.name;
 					},
@@ -2482,7 +2455,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.getLegalBasisOptions();
 
 			window.addEventListener('message', function (e) {
-				console.log('received message:  ' + e.data, e);
 				if (e.data == 'isGoogleAuth') {
 					localStorage.setItem('isGoogleAuth', 'yes');
 				}
@@ -2855,7 +2827,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						}
 					},
 					(error: any) => {
-						console.log(error);
 						this.loading = false;
 					},
 					() => this.xtremandLogger.info("MangeContactsComponent validateExcludedDetails() finished")
@@ -2867,22 +2838,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-
 	downloadUserListCsv() {
 		try {
-			this.contactsByType.contactPagination.filterKey = 'isPartnerUserList';
-			this.contactsByType.contactPagination.filterValue = this.isPartner;
-			this.contactsByType.contactPagination.criterias = this.criterias;
-			this.contactsByType.contactPagination.maxResults = this.contactsByType.pagination.totalRecords;
-
-			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
-			this.userListPaginationWrapper.pagination.searchKey = this.searchKey;
-			this.userListPaginationWrapper.userList.contactType = this.contactsByType.selectedCategory;
-			this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
-			this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
-			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-				this.userListPaginationWrapper.pagination.partnerTeamMemberGroupFilter = true;
-			}
 			this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
 				.subscribe(
 					data => {

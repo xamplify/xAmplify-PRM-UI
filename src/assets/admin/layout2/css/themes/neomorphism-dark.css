@@ -866,7 +866,7 @@ span.ui-column-resize {
 .actions-block i,
 .circled-number {
   color: #cedbdc;
-  width: 32px;
+  width: 32px!important;
   height: 32px;
   line-height: 32px !important;
   background: #2c2f33;
@@ -934,7 +934,7 @@ span.ui-column-resize {
   border: 1px solid #191b1e !important;
 }
 .circled-number {
-  color: #5bb2f5 !important;
+  color: #fff !important;
 }
 .btn-hvr-text {
   color: black !important;
@@ -2121,6 +2121,9 @@ tbody {
 .table>thead:first-child>tr:first-child>th {
   border-top: none!important;
 }
+.table>thead:first-child>tr:first-child>td{        
+  border-top: none!important;
+}
 /* End */
 .setting-icon-cu .gearDropdownMenu {
   color: #fff !important;
@@ -2624,6 +2627,7 @@ span.input-group-btn {
 }
 button.glyphicon.glyphicon-remove.search-box-item-clear {
   box-shadow: none !important;
+  background: none !important;
 }
 .angle-down {
   color: #191b1e !important;
@@ -3916,7 +3920,7 @@ button.btn.btn-primary {
 .btn-file input[type="file"]{
   position: absolute !important;
 }
-table.table.table-bordered > tbody {
+table>.table>.table-bordered > tbody {
   background: none !important;
   box-shadow: none !important;
   border: none !important;
@@ -4086,4 +4090,38 @@ li.filter.selectedBox{
 .color1,
 .color1-invert:hover {
   border-radius: 10px!important;
+}
+/***** Sudha Sri(02-04-2024) *****/
+.panel-default > .panel-heading + .panel-collapse .panel-body{
+  border-top-color: #191b1e;
+}
+.neg_mrg_left1{
+  margin-left: -1px !important;
+}
+.cloud_platforms_margins{
+  margin-right: -20px !important;
+  margin-left: -6px !important;
+}
+.SingleIconCu{
+  width: 32px!important;
+  height: 32px!important;
+  line-height: 32px !important;
+}
+.track_title{
+  padding: 6px 12px;
+
+}
+/* deal pipelines btn */
+button.btn.btn-white {
+  color: #ffffff !important;
+}
+.Synchronize_btn{
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  box-shadow: none !important;
+  border-radius: 7px !important;
+}
+.Synchronize_btn:hover{
+    background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+    box-shadow: none !important;
+    color: #fff;
 }

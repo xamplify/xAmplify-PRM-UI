@@ -24,6 +24,7 @@ import { ActionsDescription } from 'app/common/models/actions-description';
 import { Roles } from 'app/core/models/roles';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { Criteria } from 'app/contacts/models/criteria';
+import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/white-labeled-content-shared-by-vendor-companies-dto';
 declare var $: any, swal: any, flatpickr;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
@@ -114,12 +115,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.videoFileService.campaignReport = false;
 		}
 		this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';
-		if (this.isPartnerView) {
-			this.filterOptions.push({ 'name': 'publishedby', 'value': 'Published By' },
-			                        { 'name': 'from', 'value': 'From'});
-		} else {
-			this.filterOptions.push({ 'name': 'createdby', 'value': 'Created By' })
-		}
 	}
 
 	callInitMethods() {
@@ -164,6 +159,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (this.viewType != "fl" && this.viewType != "fg") {
 			this.getCompanyId();
 		}
+		
 	}
 
 	ngOnDestroy() {
@@ -219,10 +215,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 								this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 							}
 							this.findFileTypesForPartnerView();
+							/*** XBI-2133 ****/
+							this.findSharedAssetsByCompaniesForPartnerView();
 							this.pagination.userId = this.loggedInUserId;
 							this.listPublishedAssets(this.pagination);
 						} else {
 							this.findFileTypes();
+							/*** XBI-2133 ****/
+							this.fetchWhiteLabeledContentSharedByVendorCompanies()
 							this.pagination.userId = this.loggedInUserId;
 							this.listAssets(this.pagination);
 						}
@@ -784,41 +784,15 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.isChangeAsParentPdfIconClicked = false;
 	}
 	/****** XNFR-409  *******/
-	isclearFilter: boolean;
 	showFilterOption: boolean;
-	criterias = new Array<Criteria>();
-	filterOptions = [
-		{ 'name': '', 'value': 'Field Name*' },
-		{ 'name': 'assetsname', 'value': 'Assets Name' },
-		{ 'name': 'folder', 'value': 'Folder' },
-		{ 'name': 'type', 'value': 'Type' },
-		{ 'name': 'tags', 'value': 'Tags' },
-	];
-	filterConditions = [
-		{ 'name': '', 'value': 'Condition*' },
-		{ 'name': 'eq', 'value': '=' },
-		{ 'name': 'like', 'value': 'Contains' },
-	];
-	filterOption = this.filterOptions[0];
+	/** XBI-2133 ***/
+	isWhiteLabeledAsset:boolean;
+	whiteLableContentSharedByVendorCompanies: WhiteLabeledContentSharedByVendorCompaniesDto[]=[];
 	toggleFilterOption() {
-		this.showFilterOption = !this.showFilterOption;
-		if(this.showFilterOption) {
-			let criteria = new Criteria();
-				this.criterias.push(criteria);
-			} else {
-				this.criterias.splice(0, this.criterias.length);
-			}
-		if (this.router.url.indexOf('/fl') > -1 || this.router.url.indexOf('/fg') > -1) {
-			this.filterOptions = this.filterOptions.filter(item => item.name !== 'folder'); //XNFR-409
-		} 
+		this.showFilterOption = true;
 	}
-	closeFilterOption(event:any) {
-        this.showFilterOption = event;
-    }
 	assetsFilter(event:any){
 		let input = event;
-		this.isclearFilter = input['isClearFilter'];
-		this.showFilterOption = input['showFilterOption'];
 	    this.pagination.fromDateFilterString = input['fromDate'];
 		this.pagination.toDateFilterString = input['toDate'] ;
 		this.pagination.timeZone = input['zone'];
@@ -827,19 +801,69 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.pagination.filterOptionEnable = input['isCriteriasFilter'] ;
 		this.pagination.customFilterOption = true;
 		this.pagination.pageIndex = 1;
-		this.pagination.maxResults = 12;
 		this.listItems(this.pagination);
 	}
-	clearFilterOptions() {
-		this.isclearFilter = false;
-		this.showFilterOption = false;
+	closeFilterEmitter(event:any){
+		if(event === 'close') {
+			this.showFilterOption = false;
+		} else {
+			this.showFilterOption = true
+		}
 		this.pagination.fromDateFilterString = "";
 		this.pagination.toDateFilterString = "";
 		this.pagination.customFilterOption = false;
-		this.criterias.splice(0)
-		this.criterias = new Array<Criteria>();
-		this.pagination.criterias = this.criterias;
+		this.sortOption.searchKey = '';
+		this.pagination.searchKey = this.sortOption.searchKey;
+		this.pagination.criterias = new Array<Criteria>();
+		this.pagination.pageIndex = 1;
 		this.listItems(this.pagination);
 	}
+
+	/***** XBI-2133 ****/
+	fetchWhiteLabeledContentSharedByVendorCompanies() {
+		this.loading = true;
+		this.damService.fetchWhiteLabeledContentSharedByVendorCompanies(this.loggedInUserCompanyId)
+			.subscribe(
+				(result) => {
+					if (result.statusCode === 200) {
+						this.whiteLableContentSharedByVendorCompanies = result.data;
+						if (this.whiteLableContentSharedByVendorCompanies.length > 0) {
+							this.isWhiteLabeledAsset = true;
+						}
+					} else {
+						console.error('Status Code Error:', result.statusCode);
+					}
+					this.loading = false;
+				},
+				(error) => {
+					console.error('Fetch Error:', error);
+					this.whiteLableContentSharedByVendorCompanies = [];
+					this.loading = false;
+				}
+			);
+	}
+	findSharedAssetsByCompaniesForPartnerView() {
+		this.loading = true;
+		this.damService.findSharedAssetsByCompaniesForPartnerView(this.vanityLoginDto)
+			.subscribe(
+				(result) => {
+					if (result.statusCode === 200) {
+						this.whiteLableContentSharedByVendorCompanies = result.data;
+						if (this.whiteLableContentSharedByVendorCompanies.length > 0) {
+							this.isWhiteLabeledAsset = true;
+						}
+					} else {
+						console.error('Status Code Error:', result.statusCode);
+					}
+					this.loading = false;
+				},
+				(error) => {
+					console.error('Fetch Error:', error);
+					this.whiteLableContentSharedByVendorCompanies = [];
+					this.loading = false;
+				}
+			);
+	}
+
 
 }

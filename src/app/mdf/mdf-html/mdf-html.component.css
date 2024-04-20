@@ -785,7 +785,7 @@ html {
 .write-new button {
   float: right;
   /* background-color: #87bae1; */
-  box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.12);
+  /* box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.12); */
   border-radius: 2px;
   border: 0;
   color: #ffffff;

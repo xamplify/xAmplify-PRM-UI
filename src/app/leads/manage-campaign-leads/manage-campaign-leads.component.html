@@ -175,7 +175,7 @@
                 Rejected
               </div>
               <div
-                *ngIf="(lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType !== 'REJECTED') || (lead?.selfLead && lead?.associatedDealId == undefined)">
+                *ngIf="(lead?.canRegisterDeal  && lead.enableRegisterDealButton && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType !== 'REJECTED') || (lead?.selfLead && lead?.associatedDealId == undefined)">
                 <button class="button_blue bgcolor-unset" (click)="registerDeal(lead)" translate>
                   <span class="btn btn-primary transition d-inline"> Register Deal</span>
                 </button>
@@ -195,7 +195,7 @@
                       style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                     Rejected
                   </div>
-                  <div *ngIf="lead?.canRegisterDeal">
+                  <div *ngIf="lead?.canRegisterDeal  && lead.enableRegisterDealButton">
                     <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom"
                       title="{{lead?.leadApprovalStatusType ? (lead?.leadApprovalStatusType === 'REJECTED' ? 'You can not register a deal for a rejected lead' : '') : 'You can not register a deal for an unapproved lead'}}"
                       [disabled]="(  ((lead?.leadApprovalStatusType == 'REJECTED') || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection)))"
@@ -216,14 +216,14 @@
             </td>
             <td>
               <div class="actions-block override-actions tb_view_actions">
-                <a class="custom-icon" data-rel="fancybox-button" (click)="viewLead(lead)" data-toggle="tooltip" data-placement="bottom" title="View Lead"
+                <a *ngIf="lead.enableRegisterDealButton" class="custom-icon" data-rel="fancybox-button" (click)="viewLead(lead)" data-toggle="tooltip" data-placement="bottom" title="View Lead"
                   data-toggle="tooltip" data-placement="bottom" id="lead">
                   <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
                   <div class="clickicons"></div>
                 </a>
                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                   <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip" data-placement="bottom"
-                    *ngIf="lead.canUpdate" (click)="lead?.leadApprovalStatusType !== 'REJECTED' ? editLead(lead) : ''"
+                    *ngIf="lead.canUpdate  && lead.enableRegisterDealButton" (click)="lead?.leadApprovalStatusType !== 'REJECTED' ? editLead(lead) : ''"
                     title="{{lead?.leadApprovalStatusType == 'REJECTED' ? 'Editing rejected leads is not permitted' : 'Edit Lead'}}"
                     id="lead">
                     <i [ngClass]="lead?.leadApprovalStatusType == 'REJECTED' ? 'fa fa-edit mr5 IconCustomization disabled gray':'fa fa-edit mr5 IconCustomization'"

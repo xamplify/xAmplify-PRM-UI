@@ -69,3 +69,7 @@
 @media ( 992px <= width <= 1075px) { .positionForAddandDelete{position: relative;right: 12px;}}
 @media ( 200px <= width <= 991px) { .mobileTopandBottomSpace{margin: 10px 0px;}.positionForAddandDelete{margin-top: 15px;margin-left: 15px;}.displayFlex{display:flex;}}
 @media ( 200px <= width <= 767px) { .createdOnRow{display: initial;} }
+
+.form-control[disabled] {
+  opacity: 0.5;
+}
