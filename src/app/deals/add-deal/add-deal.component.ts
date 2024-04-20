@@ -967,11 +967,11 @@ export class AddDealComponent implements OnInit {
               this.deal.closeDateString = formLabel.value;
             }
           }
-          if (formLabel.labelId === "title" || formLabel.labelId === "name") {
+          if (formLabel.labelId === "title" || formLabel.labelId === "name" || formLabel.labelId === "symptom") {
             this.deal.title = formLabel.value;
-          } else if ((formLabel.labelId === "amount" || formLabel.labelId === "value") && this.activeCRMDetails.type != "HUBSPOT") {
+          } else if ((formLabel.labelId === "amount" || formLabel.labelId === "value" || formLabel.labelId === "FOppValue") && this.activeCRMDetails.type != "HUBSPOT") {
             this.deal.amount = formLabel.value;
-          } else if (formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate") {
+          } else if (formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate" || formLabel.labelId === "FOppTargetDate") {
             this.deal.closeDateString = formLabel.value;
           }
           let sfCfData = new SfCustomFieldsDataDTO();
@@ -1083,8 +1083,11 @@ export class AddDealComponent implements OnInit {
         response => {
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
-            //XNFR-461
-            if (this.activeCRMDetails.activeCRM && this.activeCRMDetails.hasCustomForm) {
+
+            if (this.activeCRMDetails.activeCRM && this.activeCRMDetails.hasCustomForm
+              && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
+                || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type 
+                || "HALOPSA" === this.activeCRMDetails.type) && this.activeCRMDetails.hasCustomForm) {
               this.showCustomForm = true;
             }
           }

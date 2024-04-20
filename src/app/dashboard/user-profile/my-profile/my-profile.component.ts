@@ -2904,13 +2904,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.integrationTabIndex = 5;
 	}
 
-	// halopsaSettings() {
-	// 	this.sfcfPagedItems = [];
-	// 	this.sfcfMasterCBClicked = false;
-	// 	this.customFieldsResponse.isVisible = false;
-	// 	this.integrationType = 'HALOPSA';
-	// 	this.integrationTabIndex = 5;
-	// }
+	halopsaSettings() {
+		this.sfcfPagedItems = [];
+		this.sfcfMasterCBClicked = false;
+		this.customFieldsResponse.isVisible = false;
+		this.integrationType = 'HALOPSA';
+		this.integrationTabIndex = 5;
+	}
 
 	marketoSettings() {
 		this.sfcfPagedItems = [];
@@ -4592,22 +4592,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	// halo psa
 	checkHaloPsaIntegration() {
 		   this.halopsaRibbonText = "configure";
-		// this.referenceService.loading(this.httpRequestLoader, true);
-		// this.halopsaRibbonText = "configure";
-		// this.integrationService.checkConfigurationByType("halopsa").subscribe(data => {
-		// 	this.referenceService.loading(this.httpRequestLoader, false);
-		// 	let response = data;
-		// 	if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-		// 		this.halopsaRibbonText = "configured";
-		// 	}
-		// 	else {
-		// 		this.halopsaRibbonText = "configure";
-		// 	}
-		// }, error => {
-		// 	this.referenceService.loading(this.httpRequestLoader, false);
-		// 	this.sfRibbonText = "configure";
-		// 	this.logger.error(error, "Error in checkhalopsaIntegration() for Halopsa");
-		// }, () => this.logger.log("Halopsa Integration Configuration Checking done"));
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.halopsaRibbonText = "configure";
+		this.integrationService.checkConfigurationByType("halopsa").subscribe(data => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.halopsaRibbonText = "configured";
+			}
+			else {
+				this.halopsaRibbonText = "configure";
+			}
+		}, error => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			this.sfRibbonText = "configure";
+			this.logger.error(error, "Error in checkhalopsaIntegration() for Halopsa");
+		}, () => this.logger.log("Halopsa Integration Configuration Checking done"));
 	}
 
 	configureHaloPsa() {

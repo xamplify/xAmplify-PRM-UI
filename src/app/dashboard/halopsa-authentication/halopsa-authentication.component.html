@@ -1,4 +1,4 @@
-<!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
+<ngx-loading [show]="loadingHalopsa" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div>
   <div>
     <div>
@@ -7,26 +7,34 @@
   </div>
 </div>
 <div class="modal-body">
-  <!-- <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" style="margin: 10px">
-  </app-response-message> -->
+  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" style="margin: 10px">
+  </app-response-message>
   <form class="form-horizontal" autocomplete="off">
     <div class="form-group">
-      <label class="control-label col-sm-3" for="resourceServerUrl">Resource Server URL:</label>
+      <label class="control-label col-sm-3" for="client">Client Id:</label>
       <div class="col-sm-8">
-        <input type="text" style="width: 75%" class="form-control" id="companyId" placeholder="Resource Server URL"
-          autocomplete="nope">
+        <input type="text" style="width: 75%" class="form-control" id="client" placeholder="Client Id" autocomplete="nope" [(ngModel)]="clientId" [ngModelOptions]="{standalone: true}"
+        (input)="validateModelForm('clientId')">
       </div>
-    </div>  
+    </div>
     <div class="form-group">
-      <label class="control-label col-sm-3 pl0" for="authorisationUrl">Authorisation Server URL:</label>
+      <label class="control-label col-sm-3" for="secret">Client Secret:</label>
       <div class="col-sm-8">
-        <input type="text" style="width: 75%" class="form-control" id="privateKey" placeholder="Authorisation Server URL"
-          autocomplete="nope">
+        <input type="password" style="width: 75%" class="form-control" id="secret" placeholder="Secret Id" autocomplete="new-password"  [(ngModel)]="secretId" [ngModelOptions]="{standalone: true}"
+        (input)="validateModelForm('secret')">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3" for="instance">Instance URL:</label>
+      <div class="col-sm-8">
+        <input type="text" style="width: 75%" class="form-control" id="instance" placeholder="HaloPSA Instance URL" [(ngModel)]="halopsaInstance" [ngModelOptions]="{standalone: true}"
+        (input)="validateModelForm('instance')">
       </div>
     </div>  
   </form>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-warning" (click)="closeForm()">CANCEL</button>
-  <button type="button" class="btn btn-primary">AUTHORIZE</button>
+  <button type="button" class="btn btn-primary" [class.disabled]="!isModelFormValid || !clientId || !secretId || !halopsaInstance" 
+  (click)="submitHalopsaCredentials()">AUTHORIZE</button>
 </div>

@@ -1353,6 +1353,15 @@ getDefaultThemes(){
             .catch(this.handleError);
     }
 
+
+    /*****XNFR-502*****/
+    saveHalopsaCredentials(formData: any) {
+        return this.http.post(this.authenticationService.REST_URL + `/halopsa/saveCredentials?access_token=${this.authenticationService.access_token}`, formData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
     findProcessingUserLists(pagination: Pagination) {
         let pageableUrl = this.referenceService.getPagebleUrl(pagination);
         let url = this.superAdminUrl+"/processingUserLists?access_token=" + this.authenticationService.access_token+pageableUrl;
@@ -1368,6 +1377,7 @@ getDefaultThemes(){
         const url = this.superAdminUrl + 'findAllPartnerCompanyNames/'+vendorCompanyProfileName+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
+
 
 
     
