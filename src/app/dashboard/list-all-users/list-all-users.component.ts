@@ -33,6 +33,7 @@ export class ListAllUsersComponent implements OnInit {
 	companiesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
 	selectedCompanyId = 0;
 	dropdownDataLoading = true;
+  isSearchableDropdownHidden = false;
 	constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,
@@ -48,8 +49,13 @@ export class ListAllUsersComponent implements OnInit {
 		if(this.showPartners){
 			this.collpsableId = "collapsible-all-partners";
 			this.headerText = "Partner Company Users";
+      this.isSearchableDropdownHidden = false;
 			this.findAllPartnerCompanies();
 		}else{
+      if(this.isVanityUrlEnabled){
+        this.isSearchableDropdownHidden = true;
+        this.headerText = this.authenticationService.v_companyName;
+      }
 			this.findAllCompanyNames();
 		}
 		this.listAllApprovedUsers(this.pagination);
@@ -89,7 +95,7 @@ export class ListAllUsersComponent implements OnInit {
 			this.pagination = new Pagination();
 		}
 		this.listAllApprovedUsers(this.pagination);
-		
+
 	}
 
 	listAllApprovedUsers(pagination: Pagination) {
@@ -164,7 +170,7 @@ export class ListAllUsersComponent implements OnInit {
 		}else{
 			this.loginAsTeamMember(result.emailId, false, result.userId);
 		}
-		
+
 
 	}
 
@@ -242,7 +248,7 @@ export class ListAllUsersComponent implements OnInit {
 		}else{
 			this.loginAsTeamMember(adminEmailId, true, 1);
 		}
-		
+
 	}
 	confirmLogout(result: any) {
 		try {
