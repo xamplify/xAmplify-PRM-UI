@@ -885,11 +885,11 @@ export class AddDealComponent implements OnInit {
               this.deal.closeDateString = formLabel.value;
             }
           }
-          if (formLabel.labelId === "title" || formLabel.labelId === "name") {
+          if (formLabel.labelId === "title" || formLabel.labelId === "name" || formLabel.labelId === "symptom") {
             this.deal.title = formLabel.value;
-          } else if ((formLabel.labelId === "amount" || formLabel.labelId === "value") && this.activeCRMDetails.type != "HUBSPOT") {
+          } else if ((formLabel.labelId === "amount" || formLabel.labelId === "value" || formLabel.labelId === "FOppValue") && this.activeCRMDetails.type != "HUBSPOT") {
             this.deal.amount = formLabel.value;
-          } else if (formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate") {
+          } else if (formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate" || formLabel.labelId === "FOppTargetDate") {
             this.deal.closeDateString = formLabel.value;
           }
           let sfCfData = new SfCustomFieldsDataDTO();

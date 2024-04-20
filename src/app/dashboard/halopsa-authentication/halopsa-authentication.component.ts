@@ -38,6 +38,9 @@ export class HalopsaAuthenticationComponent implements OnInit {
   }
 
   submitHalopsaCredentials() {
+    this.halopsaInstance = this.halopsaInstance.trim();
+    this.clientId = this.clientId.trim();
+    this.secretId = this.secretId.trim();
     this.loadingHalopsa = true;
         const obj = {
             userId: this.authenticationService.getUserId(),
@@ -52,6 +55,7 @@ export class HalopsaAuthenticationComponent implements OnInit {
             {
               this.customResponse = new CustomResponse('SUCCESS', response.message, true);
               this.loadingHalopsa = false;  
+              this.closeForm();
             } else
             {
               this.customResponse = new CustomResponse('ERROR', response.message, true);
