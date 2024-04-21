@@ -45,6 +45,8 @@ export class SfDealComponent implements OnInit {
   isConnectWiseEnabledAsActiveCRM: boolean = false;
   isValidRepValues = true;
   /*******XNFR-403****/
+  showProductsForMultiCRMCustomFormSC: boolean = false;
+
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
@@ -84,6 +86,10 @@ export class SfDealComponent implements OnInit {
 
     if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType )) {
       this.isConnectWiseEnabledAsActiveCRM = true;
+    }
+
+    if ((this.activeCRM.showCreatedByPipelineAndStageOnTop && this.activeCRM.showCreatedByPipelineAndStage) || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType) {
+      this.showProductsForMultiCRMCustomFormSC = true;
     }
   }
 
