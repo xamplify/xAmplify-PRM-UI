@@ -213,7 +213,7 @@ export class AdminReportComponent implements OnInit {
     }
 
     openUpdatePasswordModal(){
-
+        this.updatePasswordComponent.openModalPopup();
     }
     
 }
