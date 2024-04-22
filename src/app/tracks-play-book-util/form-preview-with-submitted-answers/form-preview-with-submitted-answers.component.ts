@@ -66,12 +66,12 @@ export class FormPreviewWithSubmittedAnswersComponent implements OnInit, OnDestr
               console.log(captchaResponse)
     }
 
-
     setFormSubmitValues(data: any) {
-        this.quizScore = data.score;
-        this.maxScore = data.maxScore;
-        let answers = data.submittedData;
-        $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
+      this.quizScore = data.score;
+      this.maxScore = data.maxScore;
+      let answers = data.submittedData;
+      $.each(this.form.formLabelDTORows, function (index: number, formLabelDTORow: any) {
+        $.each(formLabelDTORow.formLabelDTOs, function (columnIndex: number, value: any) {
           if (answers !== undefined && answers[value.id] !== undefined) {
             if (value.labelType === "select") {
               value.value = answers[value.id].submittedAnswer[0];
@@ -101,14 +101,13 @@ export class FormPreviewWithSubmittedAnswersComponent implements OnInit, OnDestr
             value.skipped = answers[value.id].skipped;
             value.submittedAnswerCorrect = answers[value.id].submittedAnswerCorrect;
           } else {
-
-   
             value.value = "";
             value.skipped = true;
           }
         });
-      }
-
+      });
+    }
+    
     showFormWithAnswers(selectedPartnerFormAnswers: Map<number, any>, formId: number, formInput: Form, formBackgroundImage: string, pageBackgroundColor: string){
         this.form = formInput;
         this.selectedPartnerFormAnswers = selectedPartnerFormAnswers;

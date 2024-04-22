@@ -70,5 +70,8 @@ export class Form {
     /***XNFR-423****/
     countryNames = [];
 
+    /** XNFR-424 **/
+    formLabelDTORows = [];
+   /** XNFR-424 ENDS ***/
 
 }

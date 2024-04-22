@@ -192,6 +192,17 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     /***XNFR-433***/
     @Input() isCopyForm: boolean = false;
 
+     /** XNFR-424 **/
+     rowInfos = [];
+     selectedRow: any;
+     totalRows: number = 0;
+     totalColumns: number = 0;
+     isRowClicked: boolean = false;
+     rowIndexForAdd: number;
+     columnIndexForAdd: number;
+     showRowsDragula: boolean = true;
+    /** XNFR-424 ENDS **/
+
     constructor(public regularExpressions: RegularExpressions, public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
         private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute,
@@ -202,8 +213,23 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         if (categoryId > 0) {
             this.routerLink += "/" + categoryId;
         }
-        dragulaService.setOptions('form-options', {})
-        dragulaService.dropModel.subscribe((value) => {
+        this.dragulaService.setOptions('form-options', {
+            revertOnSpill: true,
+        });
+        /** XNFR-424 **/
+        this.dragulaService.setOptions('form-columns', {
+            revertOnSpill: true,
+            accepts: (el, target, source, sibling) => {
+                let targetChildCount = 0;
+                targetChildCount = target.childElementCount;
+                if ((target === source) || (sibling === null && targetChildCount < 3) || (sibling !== null && !sibling.classList.contains('no-drag')))
+                    return true;
+                else
+                    return false;
+            },
+        });
+        /** XNFR-424 ENDS **/
+        this.dragulaService.drop.subscribe((value) => {
             this.onDropModel(value);
         });
         this.siteKey = this.envService.captchaSiteKey;
@@ -212,6 +238,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
 
     private onDropModel(args) {
+        /** XNFR-424 **/
+        console.log(this.rowInfos)
+        this.checkAndRemoveEmptyRows();
     }
 
     ngOnInit() {
@@ -242,7 +271,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             $('#add-form-name-modal').modal('show');
         }else {
             this.listDefaultColumns();
-            this.highlightByLength(1);
+            this.highlightByLength(1, 1);
         }
         this.cropperSettings();
         this.pageNumber = this.numberPerPage[0];
@@ -360,9 +389,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.form.isFormButtonValueValid = true;
         this.form.isValidFormSubmissionUrl = true;
         this.form.isValidColorCode = true;
-        this.listExistingColumns(this.form.formLabelDTOs);
+        this.listExistingColumns(this.form.formLabelDTORows);
         this.characterSize();
-        this.highlightByLength(1);
+        this.highlightByLength(1, 1);
         this.setShowQuizField();
         this.setCustomCssValues();
     }
@@ -430,32 +459,44 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             () => this.logger.info("Finished listCategories()"));
     }
 
+    /** XNFR-424 **/
     listExistingColumns(list) {
         const self = this;
-        $.each(list, function (index: number, column: any) {
-            if (column.labelType == 'quiz_radio') {
-                //column.labelType = "quiz"
-                column.choices = column.radioButtonChoices;
-                //column.choiceType = "radio";
-            } else if (column.labelType == 'quiz_checkbox') {
-                //column.labelType = "quiz"
-                column.choices = column.checkBoxChoices;
-                //column.choiceType = "checkbox";
-            }
-            const columnInfo = self.setColumns(column, false);
-            self.columnInfos.push(columnInfo);
+        $.each(list, function (rowIndex: number, formLabelDTORow: any) {
+            let rowInfoPerRow: Array<ColumnInfo> = new Array<ColumnInfo>();
+            $.each(formLabelDTORow.formLabelDTOs, function (columnIndex: number, column: any) {
+                if (column.labelType == 'quiz_radio') {
+                    //column.labelType = "quiz"
+                    column.choices = column.radioButtonChoices;
+                    //column.choiceType = "radio";
+                } else if (column.labelType == 'quiz_checkbox') {
+                    //column.labelType = "quiz"
+                    column.choices = column.checkBoxChoices;
+                    //column.choiceType = "checkbox";
+                }
+                self.totalColumns++;
+                const columnInfo = self.setColumns(column, false, self.totalColumns);
+                rowInfoPerRow.push(columnInfo);
+            });
+            self.totalRows++;
+            const rowInfo = self.setRowInfo(rowInfoPerRow, self.totalRows);
+            self.rowInfos.push(rowInfo);
         });
     }
 
-
+ 	/** XNFR-424 **/
     listDefaultColumns() {
         const self = this;
-        $.each(this.defaultColumns, function (index: number, column: any) {
-            const columnInfo = self.setColumns(column, true);
-            self.columnInfos.push(columnInfo);
+        $.each(this.defaultColumns, function (rowIndex: number, column: any) {
+            let rowInfoPerRow: Array<ColumnInfo> = new Array<ColumnInfo>();
+            self.totalColumns++;
+            const columnInfo = self.setColumns(column, false, self.totalColumns);
+            rowInfoPerRow.push(columnInfo);
+            self.totalRows++;
+            const rowInfo = self.setRowInfo(rowInfoPerRow, self.totalRows);
+            self.rowInfos.push(rowInfo);
         });
     }
-
 
     listFormNames() {
         let userId: number;
@@ -558,40 +599,64 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.formNameClass = "valid-form-name form-name-wrap";
     }
 
-    highlightByLength(length: number) {
-        if (length > 0) {
-            this.selectedColumn = this.columnInfos[length - 1];
+    highlightByLength(rowLength: number, columnLength: number) {
+        if (rowLength > 0 && columnLength > 0) {
+            this.selectedRow = this.rowInfos[rowLength - 1];
+            this.isRowClicked = true;
+            this.selectedColumn = this.selectedRow.formLabelDTOs[columnLength - 1];
             this.isColumnClicked = true;
         }
-
     }
 
     addColumn(column: any, isDefaultColumn: boolean) {
-        if (column.labelType === 'quiz_radio' || column.labelType === 'quiz_checkbox') {
-            if (!this.form.quizForm) {
-                this.existingOpenLinkInNewTabValue = this.form.openLinkInNewTab;
-            }
-            this.form.quizForm = true;
-            this.form.openLinkInNewTab = true;
+        let columnInfos: Array<ColumnInfo> = new Array<ColumnInfo>();
+        if(this.columnIndexForAdd === undefined && this.rowIndexForAdd === undefined){
+            columnInfos = undefined;
+        } else {
+            columnInfos = this.rowInfos[this.rowIndexForAdd].formLabelDTOs;
         }
-        this.columnInfo = new ColumnInfo();
-        this.columnInfo = this.setColumns(column, isDefaultColumn);
-        this.highLightSelectedColumn(this.columnInfo);
-        this.columnInfos.push(this.columnInfo);
-        this.referenceService.scrollToBottomByDivId('create-from-div');
+        if(columnInfos === undefined || columnInfos.length < 3){
+            if (column.labelType === 'quiz_radio' || column.labelType === 'quiz_checkbox') {
+                if (!this.form.quizForm) {
+                    this.existingOpenLinkInNewTabValue = this.form.openLinkInNewTab;
+                }
+                this.form.quizForm = true;
+                this.form.openLinkInNewTab = true;
+            }
+            this.columnInfo = new ColumnInfo();
+            this.totalColumns++;
+            this.columnInfo = this.setColumns(column, isDefaultColumn, this.totalColumns);
+            if(columnInfos === undefined){
+                let rowInfoPerRow: Array<ColumnInfo> = new Array<ColumnInfo>();
+                rowInfoPerRow.push(this.columnInfo);
+                this.totalRows++;
+                const rowInfo = this.setRowInfo(rowInfoPerRow, this.totalRows);
+                this.rowInfos.push(rowInfo);
+                this.referenceService.scrollToBottomByDivId('create-from-div');
+            } else {
+                this.highLightSelectedColumn(this.columnInfo, this.rowIndexForAdd, this.columnIndexForAdd);
+                columnInfos.splice(this.columnIndexForAdd + 1, 0, this.columnInfo);
+                this.rowInfos[this.rowIndexForAdd].formLabelDTOs = columnInfos;
+                this.closeFormFieldsModal();
+            }
+        } else {
+            this.customResponse = new CustomResponse('ERROR', 'Only 3 fields can be added for each row.', true);
+            this.closeFormFieldsModal();
+            this.referenceService.goToTop();
+        }
     }
 
 
-    setColumns(column: any, isDefaultColumn: boolean) {
+    setColumns(column: any, isDefaultColumn: boolean, columnIndex: number) {
         const columnInfo = new ColumnInfo();
-        let length = this.allItems.length;
-        length = length + 1;
-        columnInfo.divId = "column-" + length;
+        //let length = this.allItems.length;
+        //length = length + 1;
+        columnInfo.divId = "column-" + columnIndex;
         columnInfo.defaultColumn = column.defaultColumn;
         if (column.value !== undefined) {
             const field = column.value;
-            columnInfo.labelName = field + "-" + length;
-            columnInfo.placeHolder = field + "-" + length;
+            columnInfo.labelName = field + "-" + columnIndex;
+            columnInfo.placeHolder = field + "-" + columnIndex;
         } else {
             columnInfo.labelName = column.labelName
             columnInfo.placeHolder = column.labelName;
@@ -676,14 +741,20 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         return formOption;
     }
     /********On clicking create form  column div***********/
-    highLightSelectedColumn(columnInfo: ColumnInfo) {
-        this.selectedColumn = columnInfo;
-        this.isColumnClicked = true;
+    highLightSelectedColumn(columnInfo: ColumnInfo, rowIndex: number, columnIndex: number) {
+        if (rowIndex >= 0 && columnIndex >= 0) {
+            this.selectedRow = this.rowInfos[rowIndex];
+            this.isRowClicked = true;
+            this.selectedColumn = columnInfo;
+            this.isColumnClicked = true;
+        }
     }
     /***Remove Column from create form***********/
-    removeColumn(columnInfo: ColumnInfo, index: number) {
-        this.columnInfos = this.referenceService.removeObjectFromArrayList(this.columnInfos, columnInfo.divId, 'divId');
+    removeColumn(columnInfo: ColumnInfo, rowIndex: number, columnIndex: number) {
+        let columnInfos = this.rowInfos[rowIndex].formLabelDTOs;
+        this.rowInfos[rowIndex].formLabelDTOs = this.referenceService.removeObjectFromArrayList(columnInfos, columnInfo.divId, 'divId');
         $('#' + columnInfo.divId).remove();
+        this.checkAndRemoveEmptyRows();
         this.isColumnClicked = false;
         // this.highlightByLength(this.columnInfos.length);
         this.checkForQuizFields();
@@ -834,37 +905,57 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.ngxloading = true;
         this.form.quizForm = false;
         this.removeErrorMessage();
-        if (this.columnInfos.length > 0) {
-            const requiredFieldsLength = this.columnInfos.filter((item) => item.required === true).length;
-            const quizFieldsCount = this.columnInfos.filter((item) => item.labelType === 'quiz_radio' || item.labelType === 'quiz_checkbox' === true).length;
-            const requiredQuizFieldsLength = this.columnInfos.filter((item) => (item.required) && (item.labelType === 'quiz_radio' || item.labelType === 'quiz_checkbox') === true).length;
-            const requiredEmailFieldCount = this.columnInfos.filter((item) => item.labelType === 'email' && item.required === true).length;
+        if (this.rowInfos.length > 0) {
+            let requiredFieldsLength = 0;
+            let quizFieldsCount = 0;
+            let requiredQuizFieldsLength = 0;
+            let requiredEmailFieldCount = 0;
+            $.each(this.rowInfos, function (index, rowInfo) {
+                const requiredFieldsLengthRowWise = rowInfo.formLabelDTOs.filter((item) => item.required === true).length;
+                const quizFieldsCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.labelType === 'quiz_radio' || item.labelType === 'quiz_checkbox' === true).length;
+                const requiredQuizFieldsLengthRowWise = rowInfo.formLabelDTOs.filter((item) => (item.required) && (item.labelType === 'quiz_radio' || item.labelType === 'quiz_checkbox') === true).length
+                const requiredEmailFieldCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.labelType === 'email' && item.required === true).length;
+                requiredFieldsLength = requiredFieldsLength + requiredFieldsLengthRowWise;
+                quizFieldsCount = quizFieldsCount + quizFieldsCountRowWise;
+                requiredQuizFieldsLength = requiredQuizFieldsLength + requiredQuizFieldsLengthRowWise;
+                requiredEmailFieldCount = requiredEmailFieldCount + requiredEmailFieldCountRowWise;
+            });
             if (requiredFieldsLength >= 1 && (quizFieldsCount <= 0 || (quizFieldsCount > 0 && requiredQuizFieldsLength > 0 && requiredEmailFieldCount > 0))) {
                 const duplicateFieldLabels = this.referenceService.returnDuplicates(this.columnInfos.map(function (a) { return a.hiddenLabelId; }));
                 const self = this;
-                $.each(this.columnInfos, function (index, columnInfo) {
-                    $('#' + columnInfo.divId).removeClass(self.borderErrorClass);
-                    $('#' + columnInfo.divId).addClass(self.borderSuccessClass);
-                    columnInfo.editFormChoiceDivClass = this.borderSuccessClass;
-                    columnInfo.editFormLabelDivClass = this.borderSuccessClass;
-                    const labelName = $.trim(columnInfo.labelName);
-                    /*********Validate Empty Label Names********************/
-                    self.validateEmptyLabelNames(columnInfo, labelName);
-                    /**********Validate Empty Choice Values For Radio Button/DropDown/CheckBox********************/
-                    self.validateChoices(columnInfo);
-                    /*********Validate Duplicate Label Names********************/
-                    self.validateDuplicateFieldLabels(duplicateFieldLabels, columnInfo);
-                    /******validate Duplicate Radio Button/DropDown/CheckBox**************/
-                    self.validateDuplicateChoiceLables(columnInfo);
-                    /******validate Quiz Choices**************/
-                    if (columnInfo.labelType === 'quiz_radio' || columnInfo.labelType === 'quiz_checkbox') {
-                        self.validateQuizChoices(columnInfo);
-                    }
-
+                $.each(this.rowInfos, function(index, rowInfo) {
+                    $.each(rowInfo.formLabelDTOs, function (index, columnInfo) {
+                        $('#' + columnInfo.divId).removeClass(self.borderErrorClass);
+                        $('#' + columnInfo.divId).addClass(self.borderSuccessClass);
+                        columnInfo.editFormChoiceDivClass = this.borderSuccessClass;
+                        columnInfo.editFormLabelDivClass = this.borderSuccessClass;
+                        const labelName = $.trim(columnInfo.labelName);
+                        /*********Validate Empty Label Names********************/
+                        self.validateEmptyLabelNames(columnInfo, labelName);
+                        /**********Validate Empty Choice Values For Radio Button/DropDown/CheckBox********************/
+                        self.validateChoices(columnInfo);
+                        /*********Validate Duplicate Label Names********************/
+                        self.validateDuplicateFieldLabels(duplicateFieldLabels, columnInfo);
+                        /******validate Duplicate Radio Button/DropDown/CheckBox**************/
+                        self.validateDuplicateChoiceLables(columnInfo);
+                        /******validate Quiz Choices**************/
+                        if (columnInfo.labelType === 'quiz_radio' || columnInfo.labelType === 'quiz_checkbox') {
+                            self.validateQuizChoices(columnInfo);
+                        }
+    
+                    });
+                })
+                let invalidLabelDivCount = 0;
+                let invalidChoicesDivCount = 0;
+                let invalidQuizChoicesDivCount = 0;
+                $.each(this.rowInfos, function (index, rowInfo) {
+                    const invalidLabelDivCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.editFormLabelDivClass === this.borderErrorClass).length;
+                    const invalidChoicesDivCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.editFormChoiceDivClass === this.borderErrorClass).length;
+                    const invalidQuizChoicesDivCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.editQuizChoiceDivClass === this.borderErrorClass).length;
+                    invalidLabelDivCount = invalidLabelDivCount + invalidLabelDivCountRowWise;
+                    invalidChoicesDivCount = invalidChoicesDivCount + invalidChoicesDivCountRowWise;
+                    invalidQuizChoicesDivCount = invalidQuizChoicesDivCount + invalidQuizChoicesDivCountRowWise;
                 });
-                const invalidLabelDivCount = this.columnInfos.filter((item) => item.editFormLabelDivClass === this.borderErrorClass).length;
-                const invalidChoicesDivCount = this.columnInfos.filter((item) => item.editFormChoiceDivClass === this.borderErrorClass).length;
-                const invalidQuizChoicesDivCount = this.columnInfos.filter((item) => item.editQuizChoiceDivClass === this.borderErrorClass).length;
                 const totalCount = invalidLabelDivCount + invalidChoicesDivCount + invalidQuizChoicesDivCount;
                 if (totalCount == 0 && this.form.isValid) {
                     this.saveOrUpdateForm();
@@ -1052,7 +1143,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
 
     saveOrUpdateForm() {
-        this.form.formLabelDTOs = this.columnInfos;
+        this.form.formLabelDTORows = this.rowInfos;
 
         this.form.createdBy = this.authenticationService.getUserId();
         if (CKEDITOR != undefined) {
@@ -1209,13 +1300,14 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
 
     previewForm() {
-        this.previewPopUpComponent.formPreviewBeforeSave(this.columnInfos, this.form);
+        this.previewPopUpComponent.formPreviewBeforeSave(this.rowInfos, this.form);
     }
 
     ngOnDestroy() {
         this.selectedDefaultFormId = 0;
         this.selectedForm = undefined;
         this.dragulaService.destroy('form-options');
+        this.dragulaService.destroy('form-columns');
         this.minimizeForm();
         $('#add-form-name-modal').modal('hide');
         $('#add-form-designs').modal('hide');
@@ -1552,6 +1644,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
 
     closeFormFieldsModal() {
+        this.rowIndexForAdd = undefined;
+        this.columnIndexForAdd = undefined;
         $('#add-form-fields').modal('hide');
         this.removeBlurClass()
     }
@@ -1858,7 +1952,11 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
 
     checkForQuizFields() {
-        const quizFieldsCount = this.columnInfos.filter((item) => item.labelType === 'quiz_radio' || item.labelType === 'quiz_checkbox' === true).length;
+        let quizFieldsCount;
+        $.each(this.rowInfos, function(index, rowInfo) {
+            const quizFieldsCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.labelType === 'quiz_radio' || item.labelType === 'quiz_checkbox' === true).length;
+            quizFieldsCount = quizFieldsCount + quizFieldsCountRowWise;
+        });
         if (quizFieldsCount > 0) {
             if (!this.form.quizForm) {
                 this.existingOpenLinkInNewTabValue = this.form.openLinkInNewTab;
@@ -1903,5 +2001,50 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         } else {
             this.update(this.form);
         }
+    }
+
+     /*** XNFR-424 ***/
+     setRowInfo(columnInfos: any, rowIndex: number) {
+        const rowInfo: any = {};
+        rowInfo['divId'] = "row-" + rowIndex;
+        rowInfo['formLabelDTOs'] = columnInfos;
+        return rowInfo;
+    }
+
+    highLightSelectedRow(rowInfo: any) {
+        this.selectedRow = rowInfo;
+        this.isRowClicked = true;
+    }
+
+    checkAndRemoveEmptyRows() {
+        this.rowInfos = $.grep(this.rowInfos, function (data, index) {
+            return (data["formLabelDTOs"] !== undefined && data["formLabelDTOs"].length > 0)
+        });
+    }
+
+    setNewColumnIndex(rowIndex: number, columnIndex: number) {
+        this.rowIndexForAdd = rowIndex;
+        this.columnIndexForAdd = columnIndex;
+        this.openFormFields();
+    }
+
+    updateDragulaValue() {
+        this.rowInfos = this.rowInfos;
+        this.showRowsDragula = !this.showRowsDragula;
+    }
+
+    /** Move column to new row **/
+    moveToNextRow(columnInfo: ColumnInfo, rowIndex: number) {
+        /** Remove column for existing row **/
+        let columnInfos = this.rowInfos[rowIndex].formLabelDTOs;
+        this.rowInfos[rowIndex].formLabelDTOs = this.referenceService.removeObjectFromArrayList(columnInfos, columnInfo.divId, 'divId');
+        $('#' + columnInfo.divId).remove();
+        /** Add column for new row **/
+        let rowInfoPerRow: Array<ColumnInfo> = new Array<ColumnInfo>();
+        rowInfoPerRow.push(columnInfo);
+        this.totalRows++;
+        const rowInfo = this.setRowInfo(rowInfoPerRow, this.totalRows);
+        this.rowInfos.push(rowInfo);
+        this.referenceService.scrollToBottomByDivId('create-from-div');
     }
 }

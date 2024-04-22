@@ -1258,3 +1258,22 @@ ul.t-b-spacings {
 .asset_padding{
   padding-left: 0px;
 }
+
+/*** XNFR-424 ***/
+.padding-10px-lt-rgt {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+  
+.padding-20px {
+  padding: 20px;
+}
+
+.label-box {
+  border: #ddd solid 1px;
+  border-radius: 3px !important;
+  padding: 20px;
+  background: #fff;
+}
+/*** XNFR-424 ***/
+
