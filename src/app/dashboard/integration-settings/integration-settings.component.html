@@ -175,7 +175,10 @@
                                   data-placement="right"
                                   title="Your partner must fill in this custom field if you toggle on this option."></span>
                                 <label class="toggleOnOff"
-                                  [ngClass]="!sfCustomField?.canEditRequired ? 'disabled-opacity':''">
+                                  [ngClass]="!sfCustomField?.canEditRequired ? 'disabled-opacity':''"
+                                [attr.data-toggle]="!sfCustomField?.canEditRequired ? 'tooltip' : null"
+                                [attr.data-placement]="!sfCustomField?.canEditRequired ? 'top' : null"
+                                [attr.title]="!sfCustomField?.canEditRequired ? 'Marked as required in your CRM account.' : null">
                                   <input class="checkBox_shadow" type="checkbox"
                                     [disabled]="!sfCustomField.canEditRequired" [(ngModel)]="sfCustomField.required"
                                     [ngModelOptions]="{standalone: true}">

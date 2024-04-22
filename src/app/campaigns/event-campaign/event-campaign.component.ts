@@ -3158,6 +3158,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.loading = false;
     }
 
+    
+
+    checkNameForCompanyList(name: any): boolean {
+        let position = name.search('Company List');
+        return position != -1 ? true: false;
+      }
+
+
     filterContacts(filterType:string){
 		this.contactListsPagination.pageIndex = 1;
 		this.contactListsPagination.filterBy = filterType;
