@@ -764,6 +764,9 @@
                                         <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
                                             List Info
                                         </th>
+                                        <th scope="row" style="text-align: center;"
+                                        translate>Type
+                                    </th>
                                         <th scope="row" class="text-center" translate>Created On</th>
                                         <th *ngIf="!showNavigationBreadCrumbToPartner" scope="row" class="text-center"
                                             translate>Count</th>
@@ -864,9 +867,20 @@
                                                             Contact List
                                                         </span>
                                                     </h6>
+                                                    <h6 *ngIf="checkNameForCompanyList(contactList.name)"
+                                                    class="view-banner view-banner-green mt5 left-flt" translate>
+                                                    <span class="" data-toggle="tooltip" data-placement="top"
+                                                        title="This list is associated with a company." translate>Company
+                                                        Contact List
+                                                    </span>
+                                                </h6>
                                                 </ng-container>
                                             </td>
-
+                                            <td style="text-align:center"
+                                            *ngIf="this.nurtureCampaign">
+                                            {{contactList.type}}
+                                        </td>
+                                    
                                             <td class="text-center" *ngIf="!showNavigationBreadCrumbToPartner">
                                                 <app-display-date-and-time
                                                     [dateAndTimeUTCString]="contactList?.createdTimeInString"></app-display-date-and-time>

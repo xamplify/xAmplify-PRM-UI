@@ -1075,6 +1075,15 @@
 																					translate>Form Contact List
 																				</span>
 																			</h6>
+																			<h6 *ngIf="checkNameForCompanyList(contactList.name)"
+																				class="view-banner view-banner-green mt10"
+																				translate>
+																				<span data-toggle="tooltip"
+																					data-placement="top"
+																					title="This list is associated with a form."
+																					translate>Company Contact List
+																				</span>
+																			</h6>
 																		</td>
 																		<td class='text-center m0'
 																			*ngIf="!reDistributeEvent&&!reDistributeEventManage">
