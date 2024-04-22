@@ -8,6 +8,8 @@ import { DamPublishedPartnersAnalyticsComponent } from './dam-published-partners
 import { SelectUploadTypeComponent } from './select-upload-type/select-upload-type.component';
 import { ShowHistoryComponent } from './show-history/show-history.component';
 import { ViewDamComponent } from './view-dam/view-dam.component';
+import { PreviewAssetComponent } from './preview-asset/preview-asset.component';
+
 
 export const routes: Routes = [
 	{ path: "manage", component: ManageDamComponent },
@@ -55,14 +57,16 @@ export const routes: Routes = [
 	{ path: "vda/:damId/:damPartnerId/:partnerId/:viewType", component: DamAnalyticsComponent },
 	{ path: "vda/:damId/:damPartnerId/:partnerId/:viewType/:categoryId/:folderViewType", component: DamAnalyticsComponent },
 	/*****************************/
-	{path:"select",component:SelectUploadTypeComponent},
-	{path:"history/:assetId",component:ShowHistoryComponent},
-	{path:"history/:assetId/:viewType",component:ShowHistoryComponent},
+	{ path: "select", component: SelectUploadTypeComponent },
+	{ path: "history/:assetId", component: ShowHistoryComponent },
+	{ path: "history/:assetId/:viewType", component: ShowHistoryComponent },
 	{ path: "history/:assetId/:viewType/:categoryId/:folderViewType", component: ShowHistoryComponent },
 	/*********XNFR-169***********/
-	{path:"sharedp/view/:assetId",component:ViewDamComponent},
+	{ path: "sharedp/view/:assetId", component: ViewDamComponent },
 	{ path: "sharedp/view/:assetId/:viewType", component: ViewDamComponent },
 	{ path: "sharedp/view/:assetId/:viewType/:categoryId/:folderViewType", component: ViewDamComponent },
+	/*********XNFR-501***********/
+	{ path: "preview/:id", component: PreviewAssetComponent },
 ];
 
 @NgModule({

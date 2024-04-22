@@ -3564,6 +3564,10 @@ previewPartnerPageInNewTab(id:number){
   this.openWindowInNewTab("/pv/plp/"+id);
 }
 
+previewAssetPdfInNewTab(id:number){
+  this.openWindowInNewTab("/pv/v/pdf/"+id);
+}
+
 openWindowInNewTab(url:string){
   window.open(url,"_blank");
 }
