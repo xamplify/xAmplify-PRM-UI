@@ -152,6 +152,8 @@
                                           (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId,partner.partnerCompanyId)">
                                       </th>
                                       <th scope="row">Entity Info</th>
+                                      <th scope="row" *ngIf = "vendorJourney">Status</th>
+
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -170,6 +172,9 @@
                                       <td>
                                         <app-user-info [isPartnerEntityInfo]="false" [userInfo]="adminAndTeamMember">
                                         </app-user-info>
+                                      </td>
+                                      <td  *ngIf = "vendorJourney">
+                                        <span>{{getUserStatus(adminAndTeamMember.userId)}}</span>
                                       </td>
                                     </tr>
                                   </tbody>
@@ -329,7 +334,8 @@
 
 <ng-container *ngIf="showUsersPreview">
   <app-preview-user-list [userListName]="selectedPartnerGroupName" [userListId]="selectedPartnerGroupId"
-    [moduleName]="moduleName" [inputId]="inputId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+    [moduleName]="moduleName" [inputId]="inputId" (notifyParentComponent)="resetValues()"
+    [vendorJourney]="vendorJourney" [selectedPartnerGroupPartnerIdAndPartnerStatus]="selectedPartnerGroupPartnerIdAndPartnerStatus"></app-preview-user-list>
 </ng-container>
 
 <ng-template #clearAllSelectedRowsTemplate>
