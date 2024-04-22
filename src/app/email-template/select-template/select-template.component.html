@@ -158,7 +158,7 @@
                                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                             <div class="clickicons"></div>
                                         </a>
-                                        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top"
+                                        <a *ngIf="loggedInAsSuperAdmin" class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top"
                                             title="Edit template" (click)="showTemplateById(beeRegularTemplate,false)"
                                             *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
                                             <i class="fa fa-pencil" aria-hidden="true"></i>
