@@ -77,7 +77,7 @@
 										<span *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList
 							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList"
 											data-toggle="tooltip" data-placement="top" title="Edit list Name"
-											style="cursor:pointer;font-size: 16px;" (click)="editListName()">
+											style="cursor:pointer;font-size: 16px;" (click)="editListName()" [class.disabled]="isFormList">
 											<span class="ellipsis">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
 											</span>
