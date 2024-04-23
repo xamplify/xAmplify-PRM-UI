@@ -24,6 +24,7 @@ export class TrackAssetDetailsComponent implements OnInit {
   @Input() isTeamMemberAnalytics: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
+  @Input() isVendorVersion : boolean =  false;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -124,7 +125,7 @@ export class TrackAssetDetailsComponent implements OnInit {
     this.pagination.lmsType = this.type;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.parterService.getTrackAssetDetailsForTeamMember(this.pagination).subscribe(
+    this.parterService.getTrackAssetDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          

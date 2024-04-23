@@ -18,10 +18,12 @@
       </li>
     </ul>
     <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
-    <div class="col-xs-12 col-sm-7 col-lg-8 p0" *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember" >
+    <div class="col-xs-12 col-sm-7 col-lg-8 p0"
+      *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember">
       <ul class="mix-filter p0 m0" style="float: right">
-        <li class="filter"  style="float: right; margin-top: 5px;" translate>{{authenticationService?.partnerModule?.customName}} View </li>
-        <li  style="float: right; margin-top: 5px;" translate>Vendor View</li>
+        <li class="filter" style="float: right; margin-top: 5px;" (click)="showPartnerView()" translate>
+          {{authenticationService?.partnerModule?.customName}} View </li>
+        <li style="float: right; margin-top: 5px;" (click)="showVendorView()" translate>Vendor View</li>
         <p class="filter" style="float: right; margin: 10px;" translate>Team Member as: </p>
       </ul>
     </div>
@@ -400,7 +402,7 @@
       <!--******************COUNT TILES******************-->
       <div class="row rowPaddingCustomize2">
         <app-partner-journey-count-tiles [selectedTeamMemberIds]="selectedTeamMemberIds"
-          [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+          [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
           [isTeamMemberAnalytics]="true"></app-partner-journey-count-tiles>
       </div>
       <div class="row rowPaddingCustomization">
@@ -410,28 +412,31 @@
             <app-donut-pie-chart [chartId]="'interactedAndNotInteractedTracksDonut'" [isTeamMemberAnalytics]="true"
               [applyFilter]="applyFilter" (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
               [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+              [isVendorVersion]="isVendorVersion"
               (notifyUnSelectSlice)="interactionTracksDonutSliceUnSelected($event)"></app-donut-pie-chart>
           </div>
         </div>
         <!--******************Interacted & Not Interacted Track Details*******************-->
         <app-interacted-not-interacted-track-details [trackType]="selectedTrackType" [isTeamMemberAnalytics]="true"
-          [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-          [applyFilter]="applyFilter"> </app-interacted-not-interacted-track-details>
+          [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
+          [selectedVendorCompanyIds]="selectedVendorCompanyIds" [applyFilter]="applyFilter">
+        </app-interacted-not-interacted-track-details>
       </div>
       <!--******************Status wise Track Assets Donut Chart & Details******************-->
       <div class="row rowPaddingCustomization">
         <div class="cardPaddingCustomization">
           <!--******************Type wise Track Assets Donut Chart******************-->
-            <app-donut-pie-chart [trackType]="selectedTrackType" [chartId]="'typewiseTrackContentDonut'"
-              [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
-              (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)"
-              [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-              (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"></app-donut-pie-chart>
+          <app-donut-pie-chart [trackType]="selectedTrackType" [chartId]="'typewiseTrackContentDonut'"
+            [isTeamMemberAnalytics]="true" [isVendorVersion]="isVendorVersion"
+            (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)"
+            [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+            (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"></app-donut-pie-chart>
 
           <!--******************Type wise Track Content Details*******************-->
           <app-typewise-track-content-details [trackType]="selectedTrackType" [assetType]="selectedAssetType"
             [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [applyFilter]="applyFilter">
+            [isVendorVersion]="isVendorVersion" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+            [applyFilter]="applyFilter">
           </app-typewise-track-content-details>
         </div>
         <div class="row rowPaddingCustomization1">
@@ -439,13 +444,13 @@
             <!--******************Team Member wise Track Counts******************-->
             <app-userwise-track-counts [type]="'TRACK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
               [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
               [applyFilter]="applyFilter"></app-userwise-track-counts>
 
             <!--******************Team Member wise Playbook Counts******************-->
             <app-userwise-track-counts [type]="'PLAYBOOK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
               [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
               [applyFilter]="applyFilter"></app-userwise-track-counts>
           </div>
           <div class="row rowPaddingCustomize3">
@@ -460,33 +465,57 @@
             <!--******************Track Asset Details*******************-->
             <app-track-asset-details [type]="'TRACK'" [isTeamMemberAnalytics]="true"
               [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-              [applyFilter]="applyFilter"></app-track-asset-details>
+              [applyFilter]="applyFilter" [isVendorVersion]="isVendorVersion"></app-track-asset-details>
 
             <!--******************Playbook Asset Details*******************-->
             <app-track-asset-details [type]="'PLAYBOOK'" [isTeamMemberAnalytics]="true"
               [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-              [applyFilter]="applyFilter"></app-track-asset-details>
+              [applyFilter]="applyFilter" [isVendorVersion]="isVendorVersion"></app-track-asset-details>
           </div>
+        </div>
+         <!--******************All Partner Details*******************-->
+         <div *ngIf="isVendorVersion" class="row rowPaddingCustomize4">
+          <app-team-member-analytics-all-partners-details [selectedTeamMemberIds]="selectedTeamMemberIds"
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-member-analytics-all-partners-details>
         </div>
         <!--******************Share Lead Details*******************-->
         <div class="row rowPaddingCustomize4">
           <app-share-lead-details [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [applyFilter]="applyFilter"></app-share-lead-details>
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
+            [applyFilter]="applyFilter"></app-share-lead-details>
+        </div>
+
+        <div class="row rowPaddingCustomization1">
+          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true"
+            [partnerCompanyId]="loggedInUserId" [selectedTeamMemberIds]="selectedTeamMemberIds"
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+            [chartId]="'allRedistributeCampaignsAndLeadsCountBarChart'">
+          </app-redistributed-campaigns-and-leads-bar-chart>
+          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true"
+            [partnerCompanyId]="loggedInUserId" [selectedTeamMemberIds]="selectedTeamMemberIds"
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [chartId]="'allLeadsAndDealsBarChart'">
+          </app-redistributed-campaigns-and-leads-bar-chart>
+          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true"
+            [partnerCompanyId]="loggedInUserId" [selectedTeamMemberIds]="selectedTeamMemberIds"
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+            [chartId]="'redistributeCampaignsAndLeadsCountBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
+          <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true"
+            [partnerCompanyId]="loggedInUserId" [selectedTeamMemberIds]="selectedTeamMemberIds"
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+            [chartId]="'top10LeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
         </div>
         <!--******************Redistributed Camapign Details*******************-->
         <div class="row rowPaddingCustomization5">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
-            <div>
               <app-pie-chart [chartId]="'redistributedCampaignDetailsPieChart'"
                 (notifySelectSlice)="redistributedCampaignDetailsPieChartSelected($event)"
                 (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)"
-                [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
+                [isTeamMemberAnalytics]="true" [isVendorVersion]="isVendorVersion"
                 [selectedTeamMemberIds]="selectedTeamMemberIds"
                 [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-pie-chart>
-            </div>
             <app-redistributed-campaign-details [campaignTypeFilter]="selectedCampaignType"
               [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [applyFilter]="applyFilter">
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion">
             </app-redistributed-campaign-details>
           </div>
         </div>
@@ -503,10 +532,16 @@
             [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-partner-journey-deal-details>
         </div>
         <div class="row responsivepaddding1">
-          <!--******************MDF Details*******************-->
-          <app-mdf-detail-analytics [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <!--******************MDF Details*******************-->
+            <app-mdf-detail-analytics [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds"
             [applyFilter]="applyFilter"></app-mdf-detail-analytics>
+            <!--******************Contact Details*******************-->
+            <app-team-member-analytics-contact-details [selectedTeamMemberIds]="selectedTeamMemberIds"
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+            [isVendorVersion]="isVendorVersion"></app-team-member-analytics-contact-details>
+          </div>
         </div>
       </div>
     </ng-container>

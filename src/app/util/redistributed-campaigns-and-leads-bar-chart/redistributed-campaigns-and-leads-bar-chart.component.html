@@ -46,6 +46,46 @@
 
           </div>
         </div>
+        <div [hidden]="!isTeamMemberAnalytics">
+          <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChart'">
+            <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartDropDown"
+              (change)="filterRedistributeCampaignsAndLeadsCountBarChart()">
+              <option value="r">Top 10 Redistributed Campaigns</option>
+              <option value="l">Top 10 Leads</option>
+            </select>
+          </div>
+          <div *ngIf="chartId=='allRedistributeCampaignsAndLeadsCountBarChart'">
+            <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartDropDown"
+              (change)="filterRedistributeCampaignsAndLeadsCountBarChart()">
+              <option value="r"> Redistributed Campaigns</option>
+              <option value="l"> Leads</option>
+            </select>
+          </div>
+          <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'">
+            <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartQuarterlyDropDown"
+              (change)="filterRedistributeCampaignsAndLeadsCountBarChartQuarterly()">
+              <option value="r">Top 10 Redistributed Campaigns</option>
+              <option value="l">Top 10 Leads</option>
+            </select>
+          </div>
+          <div *ngIf="chartId=='top10LeadsAndDealsBarChart'">
+            <select class="form-control" id="top10LeadsAndDealsBarChartDropDown"
+              (change)="filterTop10LeadsAndDealsBarChartDropDown()">
+              <option value="l">Top 10 Leads</option>
+              <option value="d">Top 10 Deals</option>
+            </select>
+          </div>
+          <div *ngIf="chartId=='allLeadsAndDealsBarChart'">
+            <select class="form-control" id="allLeadsAndDealsBarChartDropDown"
+              (change)="filterAllLeadsAndDealsBarChartDropDown()">
+              <option value="l">Leads</option>
+              <option value="d">Deals</option>
+            </select>
+          </div>
+          <div *ngIf="chartId=='partnerJourneyLeadsAndDealsBarChart'">
+
+          </div>
+        </div>
       </div>
       <div class="portlet-body">
         <app-modal-popup-loader [height]="460" [hidden]="!chartLoader"></app-modal-popup-loader>

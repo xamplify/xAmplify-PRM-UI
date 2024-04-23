@@ -108,6 +108,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   filterApplied : boolean = false;
   showFilterOption: boolean = false;
   showFilterDropDown: boolean = false;
+  isVendorVersion : boolean = false;
+  isPartnerVersion : boolean = false;
   filterActiveBg: string;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
@@ -1108,6 +1110,14 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.filterActiveBg = 'filterActiveBg';
       this.filterApplied = true;
     }
+  }
+
+  showVendorView(){
+    this.isVendorVersion = true;
+  }
+
+  showPartnerView(){
+    this.isVendorVersion = false;
   }
 
 }

@@ -3,7 +3,8 @@ import {ParterService} from 'app/partners/services/parter.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { Properties } from 'app/common/models/properties';
 import {AuthenticationService} from 'app/core/services/authentication.service';
-import { PartnerJourneyRequest } from '../models/partner-journey-request';
+import { PartnerJourneyRequest } from '../../partners/models/partner-journey-request';
+import { TeamMemberAnalyticsRequest } from 'app/team/models/team-member-analytics-request';
 declare var Highcharts,$: any;
 
 @Component({
@@ -21,6 +22,9 @@ statusCode=200;
 //XNFR-316
 @Input() partnerCompanyId:any;
 @Input() teamMemberId:any;
+@Input() isTeamMemberAnalytics: boolean = false;
+@Input() selectedVendorCompanyIds: any[] = [];
+@Input() selectedTeamMemberIds: any[] = [];
 
 hasLeadsAndDealsAccess = false;
 headerText = "";
@@ -47,13 +51,13 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
         response=>{
             this.hasLeadsAndDealsAccess = response.enableLeads;
             if(this.chartId=='redistributeCampaignsAndLeadsCountBarChart' || this.chartId=='allRedistributeCampaignsAndLeadsCountBarChart'){
-                this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads':'Redistributed Campaigns';
+                this.headerText = this.hasLeadsAndDealsAccess || this.isTeamMemberAnalytics ? 'Redistributed Campaigns & Leads':'Redistributed Campaigns';
             }else if(this.chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'){
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Previous Quarter Leads':'Redistributed Campaigns For Previous Quarter';
             }
             //XNFR-316
             else if(this.chartId=='top10LeadsAndDealsBarChart' || this.chartId== 'partnerJourneyLeadsAndDealsBarChart' || this.chartId=='allLeadsAndDealsBarChart'){
-                if(this.hasLeadsAndDealsAccess){
+                if(this.hasLeadsAndDealsAccess || this.isTeamMemberAnalytics){
                     this.hideLeadsAndDealsChart = false;
                 }else{
                     this.hideLeadsAndDealsChart = true;
@@ -65,7 +69,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
         },()=>{
             //XNFR-316
             if(this.chartId=='top10LeadsAndDealsBarChart' || this.chartId== 'partnerJourneyLeadsAndDealsBarChart' || this.chartId=='allLeadsAndDealsBarChart'){
-                if(this.hasLeadsAndDealsAccess){
+                if(this.hasLeadsAndDealsAccess || this.isTeamMemberAnalytics){
                     this.getDataForBarChart();
                 }
             }else{
@@ -91,13 +95,27 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
           );
 
       } else {
-        this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(this.chartId,this.filterValue,this.applyTeamMemberFilter).subscribe(
+        if(!this.isTeamMemberAnalytics){
+            this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(this.chartId,this.filterValue,this.applyTeamMemberFilter).subscribe(
+                response=>{
+                    this.processResponse(response);
+                },error=>{
+                    this.setErrorResponse(error);
+                }
+              );
+        }else{
+            let teamMemberAnalyticsRequest = new TeamMemberAnalyticsRequest();
+            teamMemberAnalyticsRequest.loggedInUserId = this.partnerCompanyId;
+            teamMemberAnalyticsRequest.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+            teamMemberAnalyticsRequest.selectedTeamMemberIds = this.selectedTeamMemberIds;
+          this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDealsForTeamMember(teamMemberAnalyticsRequest,this.chartId,this.filterValue).subscribe(
             response=>{
-                this.processResponse(response);
+                this.processResponse(response);                
             },error=>{
                 this.setErrorResponse(error);
             }
           );
+        }
     }    
   }
 
@@ -150,7 +168,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
         secondaryYAxisText = "Deals";
     }
     let series = [];
-    if(this.hasLeadsAndDealsAccess){
+    if(this.hasLeadsAndDealsAccess || this.isTeamMemberAnalytics){
         series.push(this.setRedistributedCampaignsSeries(yAxis1,primayAxisColor,secondaryYAxisText));
         series.push(this.setLeadsSeries(yAxis2,secondaryAxisColor,primaryYAxisText));
     }else{

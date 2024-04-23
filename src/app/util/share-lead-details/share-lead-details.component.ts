@@ -25,6 +25,7 @@ export class ShareLeadDetailsComponent implements OnInit {
   @Input() isTeamMemberAnalytics : boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
+  @Input() isVendorVersion : boolean = false;
   
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -128,7 +129,7 @@ export class ShareLeadDetailsComponent implements OnInit {
     this.pagination.maxResults = 6; 
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.parterService.getShareLeadDetailsForTeamMember(this.pagination).subscribe(
+    this.parterService.getShareLeadDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          

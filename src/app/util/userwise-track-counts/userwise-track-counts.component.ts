@@ -26,6 +26,7 @@ export class UserwiseTrackCountsComponent implements OnInit {
   @Input() isTeamMemberAnalytics : boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
+  @Input() isVendorVersion : boolean = false;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -133,7 +134,7 @@ export class UserwiseTrackCountsComponent implements OnInit {
     this.pagination.maxResults = 8;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.parterService.getUserWiseTrackCountsForTeamMember(this.pagination).subscribe(
+    this.parterService.getUserWiseTrackCountsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          

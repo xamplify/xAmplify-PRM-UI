@@ -177,6 +177,9 @@ import { RedistributedCampaignDetailsComponent } from '../util/redistributed-cam
 import { PartnerJourneyLeadDetailsComponent } from '../util/partner-journey-lead-details/partner-journey-lead-details.component';
 import { PartnerJourneyDealDetailsComponent } from '../util/partner-journey-deal-details/partner-journey-deal-details.component';
 import { MdfDetailAnalyticsComponent } from '../util/mdf-detail-analytics/mdf-detail-analytics.component';
+import { RedistributedCampaignsAndLeadsBarChartComponent } from '../util/redistributed-campaigns-and-leads-bar-chart/redistributed-campaigns-and-leads-bar-chart.component';
+import { TeamMemberAnalyticsContactDetailsComponent } from 'app/util/team-member-analytics-contact-details/team-member-analytics-contact-details.component';
+import { TeamMemberAnalyticsAllPartnersDetailsComponent } from 'app/util/team-member-analytics-all-partners-details/team-member-analytics-all-partners-details.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -212,7 +215,7 @@ import { MdfDetailAnalyticsComponent } from '../util/mdf-detail-analytics/mdf-de
 		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,InteractedNotInteractedTrackDetailsComponent,
 		TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
-		MdfDetailAnalyticsComponent
+		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent
 	],
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -245,7 +248,8 @@ import { MdfDetailAnalyticsComponent } from '../util/mdf-detail-analytics/mdf-de
 		LandingPagesListAndGridViewComponent,BrowseContentComponent, SelectLeadComponent,DealChatPopupComponent,ChatComponent,
 		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,
 		InteractedNotInteractedTrackDetailsComponent,TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
-		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent
+		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
+		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent
 	]
 
 

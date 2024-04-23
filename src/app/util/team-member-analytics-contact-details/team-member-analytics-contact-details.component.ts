@@ -10,49 +10,45 @@ import { PagerService } from 'app/core/services/pager.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 
 @Component({
-  selector: 'app-mdf-detail-analytics',
-  templateUrl: './mdf-detail-analytics.component.html',
-  styleUrls: ['./mdf-detail-analytics.component.css'],
+  selector: 'app-team-member-analytics-contact-details',
+  templateUrl: './team-member-analytics-contact-details.component.html',
+  styleUrls: ['./team-member-analytics-contact-details.component.css'],
   providers: [SortOption]
 })
-export class MdfDetailAnalyticsComponent implements OnInit {
+export class TeamMemberAnalyticsContactDetailsComponent implements OnInit {
 
-  @Output() notifyShowDetailedAnalytics = new EventEmitter();
-  @Input()  isDetailedAnalytics: boolean;
-  @Input() applyFilter: boolean;
-  @Input() selectedPartnerCompanyIds: any = [];
-  @Input() isTeamMemberAnalytics: boolean = false;
+  @Input() isVendorVersion: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
-  
+
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
-	pagination: Pagination = new Pagination();
-  scrollClass:any;
+  pagination: Pagination = new Pagination();
+  scrollClass: any;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
-    public xtremandLogger: XtremandLogger, public sortOption: SortOption) { 
+    public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
     this.loggedInUserId = this.authenticationService.getUserId();
-    }
+  }
+
   ngOnInit() {
 
-  } 
-   ngOnChanges(){
+  }
+  ngOnChanges() {
     this.pagination.pageIndex = 1;
-    this.getMdfDetails(this.pagination);
-   }
-
-   getMdfDetailsForPartnerJourney(pagination : Pagination) {
+    this.getContactDetails(this.pagination);
+  }
+  
+  getContactDetails(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.maxResults = 3;
-    this.pagination.detailedAnalytics = this.isDetailedAnalytics;
-    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
-    this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
-    this.parterService.getMdfDetails(this.pagination).subscribe(
+    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    this.parterService.getContactDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          
@@ -87,17 +83,17 @@ export class MdfDetailAnalyticsComponent implements OnInit {
     pagination.pageIndex = 1;
     pagination.searchKey = this.sortOption.searchKey;
     pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOption, pagination);
-    this.getMdfDetails(this.pagination);
+    this.getContactDetails(this.pagination);
   }
 
   dropDownList(event) {
     this.pagination = event;
-    this.getMdfDetails(this.pagination);
+    this.getContactDetails(this.pagination);
   }
 
   setPage(event:any) {
 		this.pagination.pageIndex = event.page;
-		this.getMdfDetails(this.pagination);
+		this.getContactDetails(this.pagination);
 	}  
 
   getSortedResults(text: any) {
@@ -105,44 +101,6 @@ export class MdfDetailAnalyticsComponent implements OnInit {
     this.getAllFilteredResults(this.pagination);
   }
 
-  viewAnalytics(partnerCompanyId: any) {
-    this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
-    this.referenseService.goToTop(); 
-  }
 
-  getMdfDetails(pagination : Pagination) {
-    if(!this.isTeamMemberAnalytics){
-      this.getMdfDetailsForPartnerJourney(this.pagination)
-    }else{
-      this.getMdfDetailsForTeamMember(this.pagination)
-    }
-  }
-  
-  getMdfDetailsForTeamMember(pagination: Pagination) {
-    this.referenseService.loading(this.httpRequestLoader, true);
-    this.pagination.userId = this.loggedInUserId;
-    this.pagination.maxResults = 3;
-    this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
-    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.parterService.getMdfDetailsForTeamMember(this.pagination).subscribe(
-			(response: any) => {	
-        this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {          
-          this.sortOption.totalRecords = response.data.totalRecords;
-				  this.pagination.totalRecords = response.data.totalRecords;
-          if(pagination.totalRecords == 0){
-            this.scrollClass = 'noData'
-          } else {
-            this.scrollClass = 'tableHeightScroll'
-          }
-				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-        }        	
-			},
-			(_error: any) => {
-        this.httpRequestLoader.isServerError = true;
-        this.xtremandLogger.error(_error);
-			}
-		);
-  }
 
 }

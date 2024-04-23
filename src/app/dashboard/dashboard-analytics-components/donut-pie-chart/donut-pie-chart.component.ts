@@ -38,6 +38,7 @@ export class DonutPieChartComponent implements OnInit {
   @Input() isTeamMemberAnalytics : boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
+  @Input() isVendorVersion : boolean = false;
   
   headerText: string;
   chartColors: string[];
@@ -155,7 +156,7 @@ export class DonutPieChartComponent implements OnInit {
     teamMemberAnalyticsRequest.loggedInUserId = this.loggedInUserId;
     teamMemberAnalyticsRequest.selectedTeamMemberIds = this.selectedTeamMemberIds;
     teamMemberAnalyticsRequest.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.partnerService.getTeamMemberAnalyticsInteractedAndNotInteractedCounts(teamMemberAnalyticsRequest).subscribe(
+    this.partnerService.getTeamMemberAnalyticsInteractedAndNotInteractedCounts(teamMemberAnalyticsRequest,this.isVendorVersion).subscribe(
       response => {
         this.processResponse(response);
       }, error => {
@@ -170,7 +171,7 @@ export class DonutPieChartComponent implements OnInit {
     teamMemberAnalyticsRequest.trackTypeFilter = this.trackType;
     teamMemberAnalyticsRequest.selectedTeamMemberIds = this.selectedTeamMemberIds;
     teamMemberAnalyticsRequest.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.partnerService.getTeamMemberTypewiseTrackCounts(teamMemberAnalyticsRequest).subscribe(
+    this.partnerService.getTeamMemberTypewiseTrackCounts(teamMemberAnalyticsRequest,this.isVendorVersion).subscribe(
       response => {
         this.processResponse(response);
       }, error => {

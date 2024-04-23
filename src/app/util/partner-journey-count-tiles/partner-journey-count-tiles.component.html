@@ -1,5 +1,25 @@
 <div class="page-bar p_20">
    <div class="row" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+      <!-- card one For Team Member Analytics -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showAllPartnersCount && (isTeamMemberAnalytics && isVendorVersion)"
+         [scrollTo]="partnerJourneyAnalytics?.allPartnersCount > 0 ? '#ta-partners-details-div' : ''" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div [className]="partnerJourneyAnalytics?.allPartnersCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardTwo tiles-card' : 'disabled-event-pj pa-Card pa-CardTwo tiles-card'">
+            <i class="fa fa-users pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextTwo">{{partnerJourneyAnalytics?.allPartnersCount}}</p>
+            <p class="pa-text pa-TextTwo">All Partners</p>
+         </div>
+      </div>
+      <!-- card two For Team Member Analytics -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showlaunchedCampaignCount && (isTeamMemberAnalytics && isVendorVersion)" 
+         [scrollTo]="partnerJourneyAnalytics?.launchedCampaignCount > 0 ? '#pj-redistributed-campaigns-div' : ''" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div [className]="partnerJourneyAnalytics?.launchedCampaignCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardOne tiles-card' : 'disabled-event-pj pa-Card pa-CardOne tiles-card'">
+            <i class="fa fa-bullhorn pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextOne">{{partnerJourneyAnalytics?.launchedCampaignCount}}</p>
+            <p class="pa-text pa-TextOne">Launched Campaigns</p>
+         </div>
+      </div>
       <!-- card one  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
          *ngIf="partnerJourneyAnalytics?.showRedistributedCampaignCount" 
@@ -22,8 +42,9 @@
       </div>
       <!-- card three  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showContactCount">
-         <div class="pa-Card pa-CardThree disabled-event-pj tiles-card">
+         *ngIf="partnerJourneyAnalytics?.showContactCount"
+         [scrollTo]="partnerJourneyAnalytics?.contactCount > 0 ? '#ta-contact-details-div' : ''" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div [className]="(partnerJourneyAnalytics?.contactCount > 0) && isTeamMemberAnalytics ? 'xamplify-cursor-pointer pa-Card pa-CardThree tiles-card' : 'disabled-event-pj pa-Card pa-CardTwo tiles-card'">
             <i class="fa fa-id-card pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextThree">{{partnerJourneyAnalytics?.contactCount}}</p>
             <p class="pa-text pa-TextThree">Contacts</p>

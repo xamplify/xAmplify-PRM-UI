@@ -26,6 +26,7 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
   @Input() isTeamMemberAnalytics: boolean = true;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
+  @Input() isVendorVersion : boolean = false;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -33,6 +34,7 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
 	pagination: Pagination = new Pagination();
   colClass: any;
   scrollClass: any;
+  headerText: string = 'Redistributed Campaign Details';
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -140,7 +142,7 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
     this.pagination.campaignTypeFilter = this.campaignTypeFilter;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.parterService.getRedistributedCampaignDetailsForTeamMember(this.pagination).subscribe(
+    this.parterService.getRedistributedCampaignDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {

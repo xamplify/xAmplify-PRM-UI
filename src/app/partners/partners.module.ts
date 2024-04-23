@@ -9,7 +9,6 @@ import { AddPartnersComponent } from './add-partners/add-partners.component';
 import { PartnerReportsComponent } from './partner-reports/partner-reports.component';
 import { SharedLibraryModule } from '../shared/shared-library.module';
 import { CKEditorModule } from "ng2-ckeditor";
-import { RedistributedCampaignsAndLeadsBarChartComponent } from './redistributed-campaigns-and-leads-bar-chart/redistributed-campaigns-and-leads-bar-chart.component';
 import { KpiComponent } from './kpi/kpi.component';
 import { RedistributedCampaignsComponent } from './redistributed-campaigns/redistributed-campaigns.component';
 import { ViewPartnersComponent } from './view-partners/view-partners.component';
@@ -32,6 +31,6 @@ import { PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent } from './part
      SharedLibraryModule
   ],
   providers: [PendingChangesGuard],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent,KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent]
 })
 export class PartnersModule { }
