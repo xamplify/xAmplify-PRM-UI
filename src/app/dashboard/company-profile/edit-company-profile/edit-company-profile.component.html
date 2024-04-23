@@ -752,11 +752,11 @@
 									</ng-template>
 									<div class="pull-right" *ngIf="!isFromAdminPanel">
 										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
-											*ngIf="companyProfile.isAdd" id="saveOrUpdateCompanyButton" (click)="save()"
+											*ngIf="!isDisable" id="saveOrUpdateCompanyButton" (click)="save()"
 											class="button bgcolor-unset" disabled="disabled" translate><span
 												class="btn Btn-Green transition txt_pd-top3">Save</span></button>
 										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
-											*ngIf="!companyProfile.isAdd" id="saveOrUpdateCompanyButton"
+											*ngIf="isDisable" id="saveOrUpdateCompanyButton"
 											(click)="update()" class="button bgcolor-unset" translate><span
 												class="btn Btn-Green transition txt_pd-top3">Update</span></button>
 									</div>

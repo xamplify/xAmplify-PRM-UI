@@ -30,8 +30,8 @@ export class PreviewAssetPdfComponent implements OnInit {
   ngOnInit() {
     this.processor.set(this.processor);
     let currentRouterUrl = this.referenceService.getCurrentRouteUrl();
-    this.isPdfPreviewByVendor = currentRouterUrl.indexOf("/pv/v/pdf")>-1;
-    this.isPdfPreviewByPartner = currentRouterUrl.indexOf("/pv/p/pdf")>-1;
+    this.isPdfPreviewByVendor = currentRouterUrl.indexOf("/pv/v/pdf/")>-1;
+    this.isPdfPreviewByPartner = currentRouterUrl.indexOf("/pv/p/pdf/")>-1;
     this.referenceService.clearHeadScriptFiles();
     this.id = this.route.snapshot.params['id'];
     this.getHtmlBody();

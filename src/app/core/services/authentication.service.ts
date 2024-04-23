@@ -1330,7 +1330,7 @@ getAssetPdfHtmlBody(id:number,isPartnerView:boolean){
   let userId = this.getUserId();
   let URL_PREFIX = "";
   if(isPartnerView){
-    URL_PREFIX = this.REST_URL+"landing-page/partner/";
+    URL_PREFIX = this.REST_URL+"dam/partner/";
   }else{
     URL_PREFIX = this.REST_URL+"dam/";
   }

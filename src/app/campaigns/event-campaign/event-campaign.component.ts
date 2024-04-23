@@ -358,7 +358,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     ngOnInit() {
-        this.filterContacts('ALL');
         if (!this.reDistributeEvent && !this.isEventUpdate) {
             this.authenticationService.isShowForms = true;
         }
@@ -857,6 +856,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
 
         this.contactListMethod(this.contactListsPagination);
+        this.filterContacts('ALL');
     }
 
     /*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
