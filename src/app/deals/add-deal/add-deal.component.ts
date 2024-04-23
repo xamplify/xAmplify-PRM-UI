@@ -1086,11 +1086,10 @@ export class AddDealComponent implements OnInit {
         response => {
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
-
-            if (this.activeCRMDetails.activeCRM && this.activeCRMDetails.hasCustomForm
+            if (this.activeCRMDetails.hasCustomForm
               && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
                 || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type 
-                || "HALOPSA" === this.activeCRMDetails.type) && this.activeCRMDetails.hasCustomForm) {
+                || "HALOPSA" === this.activeCRMDetails.type)) {
               this.showCustomForm = true;
             }
           }

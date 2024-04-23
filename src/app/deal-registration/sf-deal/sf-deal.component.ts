@@ -45,7 +45,7 @@ export class SfDealComponent implements OnInit {
   isConnectWiseEnabledAsActiveCRM: boolean = false;
   isValidRepValues = true;
   /*******XNFR-403****/
-  showProductsForMultiCRMCustomFormSC: boolean = false;
+  showConnectWiseProducts: boolean = false;
 
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
@@ -88,9 +88,6 @@ export class SfDealComponent implements OnInit {
       this.isConnectWiseEnabledAsActiveCRM = true;
     }
 
-    if ((this.activeCRM.showCreatedByPipelineAndStageOnTop && this.activeCRM.showCreatedByPipelineAndStage) || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType) {
-      this.showProductsForMultiCRMCustomFormSC = true;
-    }
   }
 
   getActiveCRMCustomForm() {
@@ -129,6 +126,7 @@ export class SfDealComponent implements OnInit {
         }
         this.searchableDropDownDto.data = result.data.connectWiseProducts;
         this.searchableDropDownDto.placeHolder = "Please Select Product";
+        this.showConnectWiseProducts = result.data.showConnectWiseProducts;
         /*********XNFR-403*********/
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") {
         this.showSFFormError = true;
