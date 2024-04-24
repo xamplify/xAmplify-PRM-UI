@@ -18,10 +18,10 @@ background: linear-gradient(326deg, rgba(147, 13, 224, 1) 0%, rgba(0, 159, 231, 
 .dashboard-stat2,
 .tabbable-custom > .tab-content {
     background: rgba(16 18 27 / 40%) !important;
-    border-radius: 16px;
+    border-radius: 8px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    /* backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px); */
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 .page-container-bg-solid .page-content,
@@ -38,8 +38,8 @@ background: linear-gradient(326deg, rgba(147, 13, 224, 1) 0%, rgba(0, 159, 231, 
 .img-thumbnail {
     background: rgba(16 18 27 / 40%) !important;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-    backdrop-filter: blur(5px) !important;
-    -webkit-backdrop-filter: blur(5px) !important;
+    /* backdrop-filter: blur(5px) !important;
+    -webkit-backdrop-filter: blur(5px) !important; */
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .div.thembgc,
@@ -167,10 +167,10 @@ h6 {
 .bar,
 .tile,
 .progress {
-  background: #222528 !important;
+  background: rgba(16 18 27 / 40%) !important;
 }
 .heading-top {
-  background-color: #2e3033 !important;
+  background-color: rgb(146 151 179 / 8%) !important;
 }
 .text-primary,
 .special-progress-bar span {
@@ -254,7 +254,7 @@ ul.alt-row-style1 li a {
   color: white !important;
 }
 .td-new-n {
-  background: #2c2f33 !important;
+  background: rgb(146 151 179 / 8%) !important;
   color: white !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
@@ -286,7 +286,7 @@ ul.alt-row-style1 li:hover,
 .filter.form-selected,
 .filter.landing-page-selected,
 .mix-filter li.contact-filter-selected {
-  background-color: #222528 !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
 
 .list__item > .flex-row {
@@ -307,14 +307,14 @@ ul.alt-row-style1 li:hover,
 }
 /** Campaigns **/
 .box-content {
-  background-color: #2c2f33 !important;
+  background-color: rgba(16 18 27 / 40%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: white !important;
 }
 .table tbody tr.active:hover td,
 .table tbody tr.active:hover th,
 .boxes .portlet-title {
-  background-color: #2e3033 !important;
+  background-color: rgb(146 151 179 / 8%) !important;
 }
 .camp-card-bg {
   background-color: #2b3c46 !important;
@@ -573,7 +573,7 @@ tr {
 .dropdown-menu .active > a,
 .dropdown-menu .active > a:hover,
 .dropdown-menu li > a:hover {
-  background-color: #23272c !important;
+  background-color: rgb(146 151 179 / 8%) !important;
 }
 .dropdown-menu li > a {
   color: white !important;
@@ -627,7 +627,7 @@ tr {
   color: white !important;
 }
 .comment-color {
-  background: #2e3033 !important;
+  background: rgba(16 18 27 / 40%) !important;
 }
 .search-bgcolor {
   background-color: #2b3c46 !important;
@@ -817,7 +817,7 @@ select {
 .item__select-box-wrapper .select-box::before,
 .xamplify-dropdown-content-odd,
 span.ui-column-resizer {
-  background-color: #4f4f4f !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
 span.ui-column-resize {
   background-color: #2b3c46 !important;
@@ -910,7 +910,7 @@ span.ui-column-resize {
   width: 32px!important;
   height: 32px;
   line-height: 32px !important;
-  background: rgb(146 151 179 / 8%);
+  background: rgb(146 151 179 / 8%) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   border: 0px solid rgba(255, 255, 255, 0.1) !important;
 }
@@ -1060,7 +1060,7 @@ input#copy-link {
   color: white !important;
 }
 .flatpickr-days {
-  background: #22313a !important;
+  background: rgba(16 18 27 / 40%) !important;
   border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
@@ -1077,7 +1077,7 @@ input#copy-link {
   color: white !important;
 }
 .flatpickr-day.today {
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
 }
 .flatpickr-innerContainer {
   border: 0px !important;
@@ -1098,7 +1098,7 @@ input#copy-link {
 .flatpickr-day:focus,
 .flatpickr-day.prevMonthDay:focus,
 .flatpickr-day.nextMonthDay:focus {
-  background: #2b3c46 !important;
+  background: rgba(16 18 27 / 40%) !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
 .flatpickr-time input,
@@ -1183,7 +1183,7 @@ input#copy-link {
 }
 .mix-filter li {
   color: white !important;
-  background-color: rgb(146 151 179 / 8%) !important;
+  background-color: rgb(146 151 179 / 8%);
   border: 0px solid #191b1e !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   padding: 6px 6px !important;
@@ -1232,10 +1232,10 @@ input#copy-link {
   border: 2px dotted rgba(255, 255, 255, 0.1) !important;
 }
 .btn-primary-dark {
-  background-color: #23272c !important;
+  background-color: rgb(146 151 179 / 8%) !important;
 }
 .btn-primary-dark:hover {
-  background-color: #22313a !important;
+  background-color: rgba(16 18 27 / 40%) !important;
   color: white !important;
 }
 .thumbnail-wrapper {
@@ -1362,7 +1362,7 @@ table#team-members {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .portlet.light.rss-border {
-  border-color: #2f4857 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
   box-shadow: none !important;
 }
 /* 6-6-2023 sudha sri */
@@ -1945,7 +1945,7 @@ i.singleIconCustomization {
   border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .lbg {
-  background-color: #2e3033 !important;
+  background-color: rgb(146 151 179 / 8%) !important;
 }
 .lbg.show a h6 {
   color: #fff !important;
@@ -2020,8 +2020,8 @@ i.IconCustomization{
 .setting-icon-cu {
   border: none !important;
   color: #fff !important;
-  background: #2c2f33!important;
-  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  background: rgb(146 151 179 / 8%) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   
 }
 .dropdown-listicon{
@@ -2269,7 +2269,7 @@ textarea {
   background-image: none !important;
   filter: none;
   text-shadow: none;
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
 }
 .text-color {
   color: white !important;
@@ -2304,7 +2304,7 @@ a.title.padding_bottom.text-color.content-bg{
   background: #2c2f33 !important;
 }
 i.IconCustomization:hover {
-  background-color: #22313a !important;
+  background-color: rgba(16 18 27 / 40%) !important;
   border:0px solid #22313a!important;
 }
 i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
@@ -2321,9 +2321,9 @@ i.fa.fa-expand.fa-fa-consistency.IconCustomization {
   line-height: 17px;
   padding-right: 5px !important;
 }
-.port-heading {
+/* .port-heading {
   background-color: rgb(146 151 179 / 8%) !important;
-}
+} */
 .grid-box {
   background-color: rgba(16 18 27 / 40%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -2450,6 +2450,7 @@ a.UserguideBtnCustomization:hover {
 }
 .left-menu-color {
   padding: 0px 0px !important;
+  background: rgb(16 18 27 / 59%) !important;
 }
 .neumorphismDark li a:hover {
   outline: none !important;
@@ -2558,7 +2559,7 @@ input {
 }
 /* sudha sri (9-11-2023) */
 .mix-filter-li-selected {
-  background-color:#202020 !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
 .portlet.light.cpad.hover-effect.pointer.card-radius,
 .portlet.light.cpad.hover-effect.pointer {
@@ -2677,14 +2678,14 @@ th {
 ul.pagination.padding {
   border: 0px solid #212327 !important;
 }
-.left-menu-color {
+/* .left-menu-color {
     background: rgba(16 18 27 / 40%) !important;
-    /* border-radius: 16px ; */
+    /* border-radius: 16px ; *
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
     backdrop-filter: blur(5px) !important;
     -webkit-backdrop-filter: blur(5px) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
+} */
 .left-menu-color ul li a:hover {
   border-bottom: unset !important;
   background-color: rgba(16 18 27 / 40%) !important;
@@ -2723,9 +2724,10 @@ span.input-group-btn {
 button.glyphicon.glyphicon-remove.search-box-item-clear {
   box-shadow: none !important;
   background: none !important;
+  border: none !important;
 }
 .angle-down {
-  color: #191b1e !important;
+  color: rgba(255, 255, 255, 0.3) !important;
 }
 hr {
   border-top: 0.5px solid #191b1e !important;
@@ -2970,18 +2972,15 @@ a.UserguideBtnCustomization {
 }
 .Btn-Gray,
 button#cancel_button:active {
-  background: #14162b63  !important;
-  /* background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%)!important; */
-  background-position: 0% 0%, 100% 100%!important;
-  background-size: 200% 200%!important;
-  background-clip: padding-box, border-box!important;
-  background-origin: padding-box, border-box!important;
-  transition: 0.5s ease-in-out;
-  box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02) !important;
+  background: #14162b63 !important;
+	box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 8px;
-  padding: 8px 20px;
+	transition: 0.5s ease-in-out;
+  position: relative !important;
+  overflow: hidden !important;
   height: 3.5rem !important;
+	border-radius: 8px !important;
+	color: #fff !important;
 }
 .Btn-Gray:hover{
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
@@ -2996,7 +2995,7 @@ button#cancel_button:active {
   transform: scale(1.05);
 }
 .card-template:hover{
-  background-color: rgba(16 18 27 / 40%) !important; 
+  /* background-color: rgba(16 18 27 / 40%) !important;  */
   transition-duration: unset !important;
   background-position: unset!important;
 }
@@ -3368,9 +3367,9 @@ button.btn.custom {
 .d-justify-end{
   justify-content: center!important;
 }
-.prev-btn:hover{
+/* .prev-btn:hover{
   background-color: #2b2f33!important;
-}
+} */
 .toggleOnOff.sliderOnOff:before {
   border-color:  rgba(255, 255, 255, 0.1) !important;
   background-color: #6e6e6e !important;
@@ -3393,7 +3392,7 @@ input.field-border-customization {
 } */
 /* 5-12-2023 SUDHA SRI */
 .card-background-v{
-  background-color : #2b3c46 !important;
+  background-color : rgb(146 151 179 / 8%) !important;
 }
 .integration_cards{
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
@@ -3410,7 +3409,7 @@ input.field-border-customization {
   backdrop-filter: blur(5px);
 }
 .setting-icon-cu:hover {
-  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  background: rgba(16 18 27 / 40%) !important;
 }
 .page-bar.p10 {
   box-shadow: none !important;
@@ -3474,10 +3473,10 @@ div.button span {
 }
 .p-5x .detail_card:hover{
   border-radius: 10px !important;
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
-    background: #2b2f33!important;
-    transform: scale(1.04);
-    transition: all 0.3s ease;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background: rgb(146 151 179 / 8%) !important;
+  transform: scale(1.04);
+  transition: all 0.3s ease;
 }
 .tiles_hover_effect>.totalBoxFlex {
   border-radius: 10px!important;
@@ -3610,9 +3609,9 @@ span.btn.btn-primary.transition.merge_tag_text{
 .pos_pd_top6{
   padding-top: 6px !important;
 }
-.neg_mrg_top4{
-  margin-top: -4px !important;
-}
+/* .neg_mrg_top4{
+  margin-top: -7px !important;
+} */
 .mrg_rgt0{
   margin-right: 0px !important;
 }
@@ -4171,7 +4170,7 @@ a.delete.custom-icon {
   border-radius: 10px !important;
 }
 .page-sidebar .page-sidebar-menu>li.active>a{
-  border-bottom: 2px solid #01b6ff5c !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3) !important;
 }
 li.active-tab a.active-tab-anchor-text{
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
@@ -4257,11 +4256,18 @@ li.filter.selectedBox{
 .aspect_ratio:hover{
   background: rgba(16 18 27 / 40%) !important;
 }
-
-
-
-
-
+/***** *****/
+.portlet.light.shared-feeds-border.borderNone {
+  background-color: rgb(146 151 179 / 8%) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(5px);
+}
+.page-header-inner {
+  background: rgba(16 18 27 / 40%) !important;
+}
+.add-options button{
+  border-radius: 7px !important; 
+}
 
 
 
