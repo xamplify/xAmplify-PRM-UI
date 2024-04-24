@@ -855,7 +855,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
 
 
-        this.contactListMethod(this.contactListsPagination);
+        // this.contactListMethod(this.contactListsPagination);
         this.filterContacts('ALL');
     }
 
@@ -3167,7 +3167,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
 
     filterContacts(filterType:string){
-		this.contactListsPagination.pageIndex = 1;
 		this.contactListsPagination.filterBy = filterType;
 		this.contactListMethod(this.contactListsPagination)
 	}
