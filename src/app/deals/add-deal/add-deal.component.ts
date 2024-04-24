@@ -289,9 +289,13 @@ export class AddDealComponent implements OnInit {
               let campaignDealPipeline = data.data;
               if ((self.deal.pipelineId !== campaignDealPipeline.id && this.actionType == 'add') || (self.deal.pipelineId !== campaignDealPipeline.id && this.actionType == 'edit') || this.actionType == 'view') {
                 self.pipelines.push(campaignDealPipeline);
+                self.createdForPipelines.push(campaignDealPipeline);
                 self.deal.pipelineId = campaignDealPipeline.id;
+                self.deal.createdForPipelineId = campaignDealPipeline.id;
                 self.pipelineIdError = false;
+                self.createdForPipelineIdError = false;
                 self.stages = campaignDealPipeline.stages;
+                self.createdForStages = campaignDealPipeline.stages;
                 if (this.actionType == 'add' || this.actionType == 'edit') {
                   self.resetStages();
                 }
@@ -546,7 +550,9 @@ export class AddDealComponent implements OnInit {
       this.deal.pipelineStageId = 0;
       this.getStages();
       this.pipelineStageId = "form-group has-error has-feedback";
+      this.createdForPipelineStageId = "form-group has-error has-feedback";
       this.pipelineStageIdError = true;
+      this.createdForPipelineStageIdError = true;
       this.isDealRegistrationFormValid = false;
     }
 
