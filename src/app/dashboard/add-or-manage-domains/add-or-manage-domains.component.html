@@ -4,12 +4,12 @@
     <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;" [hidden]="!isTabDisplayed">
       <li id="team-member-domains-li">
         <a class="teamMemberDomainC" id="width-205px" (click)="!isTeamMemberDomainsTabSelected && activateTeamMemberDomainsTab()"  data-toggle="tab" href="#teamMemberDomains">Team Member Domains
-            <i *ngIf="isTeamMemberDomainsTabSelected" class="fa fa-check-circle-o success"></i>
+            <i *ngIf="isTeamMemberDomainsTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
         </a>
       </li>
       <li id="partner-domains-li">
         <a class="partnerDomainsC" id="width-205px" (click)="!isPartnerDomainsTabSelected && activatePartnersDomainsTab()" data-toggle="tab" href="#partnerDomains">{{authenticationService.partnerModule.customName}} Domains
-            <i *ngIf="isPartnerDomainsTabSelected" class="fa fa-check-circle-o success"></i>
+            <i *ngIf="isPartnerDomainsTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
         </a>
       </li>
     </ul>
@@ -108,7 +108,7 @@
               </div>
              <!--Pagination-->       
              <div class="pdl-mgt" *ngIf="pagination?.totalRecords>0">
-              <app-pagination [pagination]="pagination" (notifyParentDropDown)="findDomains($event)" (notifyParent)="paginateDomains($event)"></app-pagination>
+              <app-pagination [pagination]="pagination" (notifyParentDropDown)="findTeamMemberOrPartnerDomains($event)" (notifyParent)="paginateDomains($event)"></app-pagination>
               </div>
              </div>
           </fieldset>

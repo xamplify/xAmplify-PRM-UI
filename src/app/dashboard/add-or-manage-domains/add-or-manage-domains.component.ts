@@ -281,6 +281,7 @@ export class AddOrManageDomainsComponent implements OnInit,OnDestroy {
 	document.execCommand('copy');
 	inputElement.setSelectionRange(0, 0);
 	$('#copied-signup-url').show(500);
+	$('#tick-mark').css('display','inline-block');
 }
 
 }
