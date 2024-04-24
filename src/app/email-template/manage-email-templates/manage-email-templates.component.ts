@@ -17,7 +17,8 @@ export class ManageEmailTemplatesComponent implements OnInit {
   categoryId: number;
   folderViewType: string;
 	modulesDisplayType = new ModulesDisplayType();
-
+/*** XNFR-512 */
+mergeTagForGuide:any;
   constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,private route: ActivatedRoute) {
         this.viewType = this.route.snapshot.params['viewType'];
         this.categoryId = this.route.snapshot.params['categoryId'];
@@ -34,8 +35,28 @@ export class ManageEmailTemplatesComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+    /*** XNFR-512 ****/
+   this.getRoleByUserId();
   }
+  getRoleByUserId() {
+    let roleName: string = "";
+    this.authenticationService.getRoleByUserId().subscribe(
+      (data) => {
+        const role = data.data;
+        roleName = role.role == 'Team Member' ? role.superiorRole : role.role;
+        this.getuserGuideMergeTag(roleName);
+      }, error => {
+        this.xtremandLogger.errorPage(error);
+      }
+    )
+  }
+  /*** XNFR-512 ****/
+  getuserGuideMergeTag(roleName: string) {
+    this.mergeTagForGuide = (roleName === 'Marketing' || roleName === 'Marketing & Partner') ?
+      'manage_templates_marketing' :
+      'manage_templates';
+  }
+  /*** XNFR-512 ****/
 
 }
 

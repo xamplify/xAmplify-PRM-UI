@@ -1317,8 +1317,14 @@ removeLocalStorageItemByKey(key:string){
 getLocalStorageItemByKey(key:string){
   return JSON.parse(localStorage.getItem(key));
 }
-
-
+/*** XNFR-512 ****/
+getRoleByUserId() {
+  var url = this.REST_URL + "admin/getRolesByUserId/" + this.getUserId() + "?access_token=" + this.access_token;
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+/*** XNFR-512 ****/
 
 
 
