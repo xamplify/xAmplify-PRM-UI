@@ -134,6 +134,10 @@ export class AddDealComponent implements OnInit {
   showCreatedByPipelineAndStage: boolean = false;
   showCreatedByPipelineAndStageOnTop: boolean = false;
 
+  titleFields = ['title','name','symptom'];
+  amountFields = ['amount','value','FOppValue'];
+  closeDateFields = ['expected_close_date','expectedCloseDate','FOppTargetDate','CloseDate'];
+
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public userService: UserService, private integrationService: IntegrationService) {
@@ -976,11 +980,11 @@ export class AddDealComponent implements OnInit {
               this.deal.closeDateString = formLabel.value;
             }
           }
-          if (formLabel.labelId === "title" || formLabel.labelId === "name" || formLabel.labelId === "symptom") {
+          if (this.titleFields.includes(formLabel.labelId)) {
             this.deal.title = formLabel.value;
-          } else if ((formLabel.labelId === "amount" || formLabel.labelId === "value" || formLabel.labelId === "FOppValue") && this.activeCRMDetails.type != "HUBSPOT") {
+          } else if (this.amountFields.includes(formLabel.labelId) && this.activeCRMDetails.type != "HUBSPOT") {
             this.deal.amount = formLabel.value;
-          } else if (formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate" || formLabel.labelId === "FOppTargetDate") {
+          } else if (this.closeDateFields.includes(formLabel.labelId)) {
             this.deal.closeDateString = formLabel.value;
           }
           let sfCfData = new SfCustomFieldsDataDTO();
