@@ -8,9 +8,8 @@
 .copyright-css {
   color: white !important;
 }
-body,
-.bar-background {
-background: linear-gradient(326deg, rgba(147, 13, 224, 1) 0%, rgba(0, 159, 231, 1) 15%, rgba(0, 222, 223, 1) 50%, rgba(156, 0, 224, 1) 100%) !important;
+body{
+  background: linear-gradient(326deg, rgba(147, 13, 224, 1) 0%, rgba(0, 159, 231, 1) 15%, rgba(0, 222, 223, 1) 50%, rgba(156, 0, 224, 1) 100%) !important;
   color: white !important;
 }
 /*** MainContent ***/
@@ -290,7 +289,7 @@ ul.alt-row-style1 li:hover,
 }
 
 .list__item > .flex-row {
-  background-color: #2e3033 !important;
+  background-color: rgba(16 18 27 / 40%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .re-distributed-high-level:hover {
@@ -301,7 +300,7 @@ ul.alt-row-style1 li:hover,
 .campaign-email-template-filter-icon,
 .list__item.list__item--selected > .flex-row,
 .btn.btn-secondary {
-  background-color: #2e3033 !important;
+  background-color: rgb(146 151 179 / 8%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: white !important;
 }
@@ -722,7 +721,7 @@ select {
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
 .asset-name-class {
-  background-color: #2b3c46 !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
 .panel-success > .panel-heading,
 .deal-details,
@@ -856,7 +855,7 @@ span.ui-column-resize {
 }
 .imageClass {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background-color: #2b3c46  !important;
+  background-color: rgba(16 18 27 / 40%)  !important;
   /* box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
   margin-left: 6px;
 }
@@ -910,12 +909,15 @@ span.ui-column-resize {
   width: 32px!important;
   height: 32px;
   line-height: 32px !important;
-  background: rgb(146 151 179 / 8%) !important;
+  background: rgba(16 18 27 / 40%) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   border: 0px solid rgba(255, 255, 255, 0.1) !important;
 }
-.actions-block i:hover{
-  background: rgba(16 18 27 / 40%) !important;
+.actions-block i:hover,
+i.IconCustomization:hover{
+  background: rgb(146 151 179 / 8%) !important;
+  transition: .3s;
+  color: #262626 !important;
 }
 .gray,
 .page-header.navbar
@@ -952,7 +954,7 @@ span.ui-column-resize {
 .bootstrap-switch .bootstrap-switch-container,
 .bootstrap-switch .bootstrap-switch-label {
   border-color: rgba(255, 255, 255, 0.1) !important;
-  background-color: rgb(16 18 27 / 40%) !important;
+  background-color: rgb(16 18 27 / 10%) !important;
   backdrop-filter: blur(5px);
 }
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info,
@@ -1004,7 +1006,7 @@ input.cmn-toggle-round-flat + label:before {
   border-color: rgba(255, 255, 255, 0.1) !important ;
 }
 .social-border {
-  background-color: #191b1e !important;
+  background-color: rgba(255, 255, 255, 0.3) !important;
 }
 .active-tab-anchor-text {
   background-color: #80808047 !important;
@@ -1150,9 +1152,8 @@ input#copy-link {
 }
 .cards {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background-image: linear-gradient(to top, #f1f2f5, rgba(255, 255, 255, 0)),
-    linear-gradient(to bottom, #2f4758, #2f4758) !important;
-    border-radius: 10px !important;
+  background: rgb(146 151 179 / 8%) !important;
+  border-radius: 10px !important;
 }
 .phone {
   color: #fff !important;
@@ -1207,8 +1208,6 @@ input#copy-link {
     background: rgba(16 18 27 / 40%) !important;
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 /* .btn-primary {
@@ -1364,6 +1363,7 @@ table#team-members {
 .portlet.light.rss-border {
   border-color: rgba(255, 255, 255, 0.1) !important;
   box-shadow: none !important;
+  background: none !important;
 }
 /* 6-6-2023 sudha sri */
 ul.alt-row-style1 li:nth-child(even) {
@@ -1628,7 +1628,7 @@ a.dropdown-toggle.circlebg-none-v:hover {
   background-color: #22313a54 !important;
 }
 .dark-card-body-cu {
-  background-color: #2b3c46 !important;
+  background-color: rgb(146 151 179 / 8%) !important;
 }
 .number-vedor-card {
   background: #b8def1;
@@ -1676,10 +1676,11 @@ ul.drag-menu-cu li:hover {
   color: #fff !important;
 }
 .card-paddings-vcu {
-  background: #222528 !important;
+  background: rgba(16 18 27 / 40%) !important;
+  border-radius: 9px 9px 0px 0px !important;
 }
 .backgroundfor-mv-title {
-  background: #5a738e !important;
+  background: rgb(146 151 179 / 8%) !important;
 }
 .mv-color-text {
   color: #fff !important;
@@ -1852,12 +1853,14 @@ input#copy-link {
 #download-template {
   border: 0px solid #fff !important;
   color: #fff !important;
-  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background: rgba(16 18 27 / 40%) !important;
 }
 #download-template:hover {
-  border: 1px solid #00a7c3!important;
-  background: #5bb2f5;
-  color: #fff !important;
+  /* border: 1px solid rgba(255, 255, 255, 0.1) !important; */
+  background: rgb(146 151 179 / 8%) !important;
+  color: #262626 !important;
+  transition: .5s;
 }
 ul.dropdown-menu.pull-right.custome-dropdown-changs li a:hover{
   border: 1px solid #00a7c3!important;
@@ -2020,7 +2023,7 @@ i.IconCustomization{
 .setting-icon-cu {
   border: none !important;
   color: #fff !important;
-  background: rgb(146 151 179 / 8%) !important;
+  background: rgba(16 18 27 / 40%) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   
 }
@@ -2077,16 +2080,18 @@ i.fa.fa-trash-o.trashIconCustomization {
 i.fa.fa-trash-o.trashIconCustomization:hover {
   border: none;
   box-shadow: unset !important;
+  transition: .3s;
+  color: #e4405f !important;
   /* box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important; */
 }
 .gridIconCustomization a.Iconhover:hover {
-  box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
-  background-color: #22313a !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
 .gridIconCustomization a.delete:hover {
   border: none;
-  box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
-  background-color: #22313a !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
 .table-eye-circle:hover {
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
@@ -2273,7 +2278,7 @@ textarea {
 }
 .text-color {
   color: white !important;
-  background-color: #2e3033 !important;
+  background-color: rgb(146 151 179 / 8%) !important;
   border: 2px solid rgba(255, 255, 255, 0.1) !important;
 }
 .tiles_bradius {
@@ -2304,7 +2309,6 @@ a.title.padding_bottom.text-color.content-bg{
   background: #2c2f33 !important;
 }
 i.IconCustomization:hover {
-  background-color: rgba(16 18 27 / 40%) !important;
   border:0px solid #22313a!important;
 }
 i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
@@ -2411,8 +2415,8 @@ left-menu-color ul li a,
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
 }
 .table tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  border-radius: 10px;
+  background-color: rgb(146 151 179 / 8%) !important;
+  /* border-radius: 10px; */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
 }
@@ -2569,7 +2573,7 @@ input {
   border-bottom: 1px solid #2f4857 !important;
 }
 .unsubscribingPopup {
-  background-color: #222528 !important;
+  background-color: rgb(146 151 179 / 8%) !important;
 }
 fieldset {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -2880,7 +2884,7 @@ button.btn.custom {
   line-height: 24px !important;
   border: none !important;
   color: #fff !important;
-  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   border-radius: 50%;
   overflow: hidden;
   -webkit-backface-visibility: hidden;
@@ -3031,7 +3035,6 @@ button#cancel_button:active {
   top: 0%;
 }
 i.fa.fa-trash:hover,
-i.fa.fa-trash-o:hover,
 i.fa.fa-pencil-square-o:hover,
 i.fa.fa-files-o:hover,
 i.fa.fa-bullhorn:hover,
@@ -3048,7 +3051,8 @@ i.fa.fa-hand-pointer-o:hover,
 i.fa.fa-rocket:hover{
   z-index: 999;
   position: relative;
-  color: #ffffff!important;
+  color: #262626 !important;
+  transition: .5s;
 }
 .actions_width{
 width:inherit!important;
@@ -3065,9 +3069,9 @@ a.delete.custom-icon {
 .page-bar.m10 {
   box-shadow: none !important;
 }
-/* me */
+/* manikanta */
 a.delete.custom-icon:hover {
-  color: #ffff!important;
+  color: #e4405f !important;
   z-index: 99;
   position: relative;
 }
@@ -3125,6 +3129,7 @@ justify-content: center!important;
     color: #fff !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)!important;
+    margin-left: 4px;
   }
   /* .button:hover::before,
   .button_blue:hover::before {
@@ -3275,13 +3280,13 @@ button.unlink-button {
 }
 .tiles-card{
   color: #ffffff!important;
-  border:   1px solid rgba(255, 255, 255, 0.1) !important;
- box-shadow: inset 1px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
 }
 .tiles-card:hover{
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   color: #fff !important;
-  background:#2b2f33!important;
+  background: rgb(146 151 179 / 8%) !important;
   transform: scale(1.04);
   transition: all 0.3s ease;
 }
@@ -3289,17 +3294,17 @@ p.pa-text{
   color: #ffffff!important;
 }
 .tiles-card:hover p{
-  color: #ffffff!important;
-  background-color:#2b2f33!important;
+  color: #ffffff !important;
+  background-color: rgb(146 151 179 / 0%) !important;
 }
 .pjCardTitlebg {
-  background-color: #2c2f33 !important;
-  box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #111214fa !important;
+  background-color: rgb(146 151 179 / 8%) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   border-radius: 10px 10px 0px 0px !important;
 }
 .panel-bgMain > .panel-bg{
-  background-color: #2c2f33 !important;
-  box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #111214fa !important;
+  background-color: rgb(146 151 179 / 8%) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   border-radius: 10px 10px 0px 0px !important;
 }
 /* .panel-info >.panel-custom{
@@ -3312,22 +3317,22 @@ padding: 16px 15px!important;
   padding: 7px 15px!important;
 } */
 .panel-card{
-  box-shadow: 6.223021507263184px 6.223021507263184px 15.669065px 0 #000, 10.776978px 10.776978px 20.669065px 0 #181b20!important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   border-radius: 10px;
 }
 .pjCardTitlebg >.panel-bg{
-  background-color: #2c2f33 !important;
-  box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #111214fa !important;
+  background-color: rgb(146 151 179 / 8%) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   border-radius: 10px 10px 0px 0px !important;
   border-bottom:   1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .panel-bg{
-  background-color: #2c2f33 !important;
-  box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #111214fa !important;
+  background-color: rgb(146 151 179 / 8%) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   border-radius: 10px 10px 0px 0px !important;
 }
 .highchartsColorCu{
-  background-color: #2c2f33 !important;
+  background-color: rgb(146 151 179 / 8%) !important;
   border:0px!important;
 }
 .br-none{
@@ -3342,11 +3347,6 @@ border:0px!important;
   color: #fff !important;
   background-color: rgb(146 151 179 / 9%) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-  backdrop-filter: blur(5px);
-}
-.bootstrap-switch, .bootstrap-switch .bootstrap-switch-container, .bootstrap-switch .bootstrap-switch-label {
-  border-color: rgba(255, 255, 255, 0.1) !important;
-  background-color: rgba(16 18 27 / 40%) !important;
   backdrop-filter: blur(5px);
 }
 button.btn.custom {
@@ -3409,11 +3409,10 @@ input.field-border-customization {
   backdrop-filter: blur(5px);
 }
 .setting-icon-cu:hover {
-  background: rgba(16 18 27 / 40%) !important;
+  background: rgb(146 151 179 / 8%) !important;
 }
 .page-bar.p10 {
   box-shadow: none !important;
-  padding: 0px 1px 0px 1px !important;
 }
 .campaign_boxes{
   background: rgb(146 151 179 / 8%) !important;
@@ -3609,9 +3608,9 @@ span.btn.btn-primary.transition.merge_tag_text{
 .pos_pd_top6{
   padding-top: 6px !important;
 }
-/* .neg_mrg_top4{
-  margin-top: -7px !important;
-} */
+.neg_mrg_top4{
+  margin-top: -4px !important;
+}
 .mrg_rgt0{
   margin-right: 0px !important;
 }
@@ -3682,7 +3681,7 @@ span.btn.btn-primary.transition.merge_tag_text{
   border: 0px solid #191b1e !important;
 }
 .panel-heading.note_card_align {
-  border-bottom: 1px solid #191b1e !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
 .note_heading{
   margin-left: -12px;
@@ -4268,17 +4267,36 @@ li.filter.selectedBox{
 .add-options button{
   border-radius: 7px !important; 
 }
-
-
-
-
-
-
-
-
-
-
-
+/***** Sudha Sri(25-4-2024) *****/
+.page-sidebar .page-sidebar-menu > li:hover > a{
+  background: rgb(146 151 179 / 8%);
+}
+.pd_btm_8{
+  padding-bottom: 8px !important;
+}
+option{
+  background-color: #10121b66 !important;
+}
+.col-md-6.col-lg-6.track-title.text-color.content-bg.remove_unwanted_shadow{
+  background: none !important;
+  box-shadow: none !important;
+}
+a.title.padding_bottom.text-color.content-bg.m0,
+a.title.padding_bottom.text-color.content-bg.row-space {
+  background: none !important;
+}
+.col-md-12.col-lg-12.color-inline.border-line.remove_unwanted_shadow {
+  background: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+.portlet-title.port-heading.mdf-request-header {
+  background: rgba(16 18 27 / 40%) !important;
+}
+.bar.full-width-folder.gridIconCustomization{
+  border-bottom-left-radius: none !important;
+  border-bottom-right-radius: none !important;
+}
 
 
 

@@ -43,7 +43,8 @@
             <!---Active Partners Count-->
             <div *ngIf="!activePartnersLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths pd-l"
               (click)="activePartnersCount>0 ? goToActivePartnersDiv() : ''">
-              <a [className]="activePartnersCount > 0 ? 'dashboard-stat dashboard-stat-lighter yellow-gold' : 'dashboard-stat dashboard-stat-lighter yellow-gold disable-tile-pj'" [class.greay]="0!=selectedTabIndex">
+              <a [className]="activePartnersCount > 0 ? 'dashboard-stat dashboard-stat-lighter yellow-gold' : 'dashboard-stat dashboard-stat-lighter yellow-gold disable-tile-pj'"
+                [class.greay]="0!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 0===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 0"
@@ -58,7 +59,8 @@
                   </div>
                 </div>
                 <span id="permhref" class="morePadding">
-                  <a [className]="activePartnersCount>0 ? 'more' : 'more disable-tile-pj'" (click)="activePartnersCount>0 ? goToActivePartnersDiv() : ''"> Detailed view
+                  <a [className]="activePartnersCount>0 ? 'more' : 'more disable-tile-pj'"
+                    (click)="activePartnersCount>0 ? goToActivePartnersDiv() : ''"> Detailed view
                     <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                 </span>
               </a>
@@ -71,7 +73,8 @@
               *ngIf="!redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
               class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
               <a [className]="redistributedCampaignsCount > 0 ? 'dashboard-stat dashboard-stat-lighter purple-soft' : 'dashboard-stat dashboard-stat-lighter purple-soft disable-tile-pj'"
-                [class.greay]="2!=selectedTabIndex" (click)="redistributedCampaignsCount>0 ? goToReDistributedPartnersDiv() : ''">
+                [class.greay]="2!=selectedTabIndex"
+                (click)="redistributedCampaignsCount>0 ? goToReDistributedPartnersDiv() : ''">
                 <div class="visual">
                   <i *ngIf="selectedTabIndex == 2" class="fa fa-check-circle"
                     style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
@@ -79,10 +82,11 @@
                   </i>
                 </div>
                 <div class="details">
-                  <div class="number"><span *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
+                  <div class="number"><span
+                      *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
                       *ngIf="!redistributedCampaignsCount">0</span></div>
-                  <div class="desc mlabelWidth" data-toggle="tooltip" data-placement="top" title="Redistributed Campaigns"
-                    style="font-size: 13px">Redistributed Campaigns</div>
+                  <div class="desc mlabelWidth" data-toggle="tooltip" data-placement="top"
+                    title="Redistributed Campaigns" style="font-size: 13px">Redistributed Campaigns</div>
                 </div>
                 <span id="permhref" class="morePadding">
                   <a [className]="redistributedCampaignsCount > 0 ? 'more' : 'more disable-tile-pj'"
@@ -99,7 +103,8 @@
               *ngIf="!throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
               class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
               <a [className]="throughPartnerCampaignsCount > 0 ? 'dashboard-stat dashboard-stat-lighter green-soft' : 'dashboard-stat dashboard-stat-lighter green-soft disable-tile-pj'"
-                [class.greay]="3!=selectedTabIndex" (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''">
+                [class.greay]="3!=selectedTabIndex"
+                (click)="throughPartnerCampaignsCount>0 ? goToThroughPartnersDiv() : ''">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                     [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 3"
@@ -123,7 +128,8 @@
 
             <!--InActive Partner Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
-            <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths CardCustomeWidth"
+            <div *ngIf="!inActivePartnersCountLoader"
+              class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths CardCustomeWidth"
               (click)="inActivePartnersCount>0 ? goToInActivePartnersDiv() : ''">
               <a [className]="inActivePartnersCount>0 ? 'dashboard-stat dashboard-stat-lighter blue-soft' : 'dashboard-stat dashboard-stat-lighter blue-soft disable-tile-pj'"
                 [class.greay]="1!=selectedTabIndex">
@@ -389,7 +395,7 @@
             <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
             <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
             <div class="" [hidden]="httpRequestLoader.isLoading">
-              <ul class="mix-filter col-xs-12 col-sm-12 col-md-5 p0 m0 mDisplay" style="display: inline-flex;">
+              <ul class="mix-filter col-xs-12 col-sm-12 col-md-5 p0 m0 mDisplay pd_btm_8" style="display: inline-flex;">
                 <li class="filter" (click)="filterCampaigns('NONE',0)"
                   [class.campaign-type-selected]="0 == sortOption.selectedCampaignTypeIndex">All</li>
                 <li class="filter" (click)="filterCampaigns('REGULAR',1)"
@@ -842,7 +848,7 @@
       [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService?.enableLeads"></app-partner-journey-deal-details>
-  </div>  
+  </div>
 
   <div class="row responsivepaddding1">
     <app-kpi [applyTeamMemberFilter]="applyFilter" *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-kpi>

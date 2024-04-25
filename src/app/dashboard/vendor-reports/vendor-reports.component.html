@@ -18,49 +18,58 @@
 			<li><a>My Vendors</a></li>
 		</ul>
 	</div>
-	<div class="row" >
-		
-		<div class="col-xs-12" >
+	<div class="row">
+
+		<div class="col-xs-12">
 			<div class="custome-response-css">
 				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
 				</app-response-message>
 			</div>
-			<div class="page-bar" style="padding: 10px 25px 10px 25px; border: 1px solid #CCC;">
+			<div class="page-bar" style="padding: 10px 25px 10px 25px;">
 				<app-landing-page-loader [maxBoxLength]=3 *ngIf="loading"></app-landing-page-loader>
 				<div *ngIf="!loading">
 					<div class="row">
 						<div class="col-12 col-sm-6 col-md-6 col-lg-4 pt10" *ngFor="let vendorReport of vendorDetails">
 							<div class="cards boxshadow-to-card">
-								<div class="card-header bg-card-header card-paddings-vcu" [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}">
+								<div class="card-header bg-card-header card-paddings-vcu"
+									[ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}">
 									<div class="flex-row d-flex">
 										<div class="col-7 col-sm-7 col-md-7 col-lg-7 col-lg-auto marginvczero">
 											<div class="cards clogo vendor-img-cu">
-												<img 
-													src="{{vendorReport.companyLogo}}"
+												<img src="{{vendorReport.companyLogo}}"
 													alt="{{vendorReport.companyName}}" (error)="errorHandler($event)">
-											</div>											
+											</div>
 										</div>
-										  <div class="col-5 col-sm-5 col-md-5 col-lg-5 marginvczero additinal-paddings" (click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport, vendorReport.counts[0].name) : false">
+										<div class="col-5 col-sm-5 col-md-5 col-lg-5 marginvczero additinal-paddings"
+											(click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport, vendorReport.counts[0].name) : false">
 											<h3 class="mt-0 justify-content-end d-flex mv-color-text font-incresss-mv">
-												<b>{{vendorReport.counts[0].count}}</b></h3>
-											<h5 class="mt-0 justify-content-end d-flex mv-color-text font-incresss-mv">{{vendorReport.counts[0].name}}</h5>
-										</div>  
+												<b>{{vendorReport.counts[0].count}}</b>
+											</h3>
+											<h5 class="mt-0 justify-content-end d-flex mv-color-text font-incresss-mv">
+												{{vendorReport.counts[0].name}}</h5>
+										</div>
 									</div>
-									<div class="flex-row d-flex col-6 col-lg-auto pull-right mv-topspace fontControl" >
-										<h5 class="mt-0 justify-content-end d-flex mv-color-text" *ngFor="let count of vendorReport['counts'] | slice:1; let i = 'index+1'" (click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport, vendorReport.counts[i].name) : false"> {{vendorReport.counts[i].count}}  {{vendorReport.counts[i].name}} | &nbsp;</h5>
-								</div>
+									<div class="flex-row d-flex col-6 col-lg-auto pull-right mv-topspace fontControl">
+										<h5 class="mt-0 justify-content-end d-flex mv-color-text"
+											*ngFor="let count of vendorReport['counts'] | slice:1; let i = 'index+1'"
+											(click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport, vendorReport.counts[i].name) : false">
+											{{vendorReport.counts[i].count}} {{vendorReport.counts[i].name}} | &nbsp;
+										</h5>
+									</div>
 								</div>
 								<div class="card-body p-0 card-bgcolor dark-card-body-cu">
 									<!-- <div class="col-12 number-vedor-card"> 
 										<span> {{vendorReport.counts[0].count}} | {{vendorReport.counts[0].name}} </span>
 										<span *ngFor="let count of vendorReport['counts'] | slice:1; let i = 'index+1'"> {{vendorReport.counts[i].count}} | {{vendorReport.counts[i].name}} </span>
 									</div> -->
-									<div class="flex-row pl10 backgroundfor-mv-title" [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}" >
-										<h4 *ngIf="vendorReport?.companyName!=null && vendorReport?.companyName?.length>0">
+									<div class="flex-row pl10 backgroundfor-mv-title"
+										[ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}">
+										<h4
+											*ngIf="vendorReport?.companyName!=null && vendorReport?.companyName?.length>0">
 											<b>{{vendorReport?.companyName | slice:0:35}}</b>
 											<span *ngIf="vendorReport?.companyName?.length>35">...</span>
-										</h4>										
-									</div> 
+										</h4>
+									</div>
 									<div class="flex-row">
 										<div class="col-12">
 											<table class="table mrg-unset">
@@ -68,7 +77,9 @@
 													<tr class="card-tr">
 														<td>
 															<span class="">
-																<img alt="" class="img-circle" src="{{vendorReport.vendorProfileImage}}" (error)="userProfileErrorHandler($event)" />
+																<img alt="" class="img-circle"
+																	src="{{vendorReport.vendorProfileImage}}"
+																	(error)="userProfileErrorHandler($event)" />
 															</span>
 														</td>
 														<td>
@@ -77,93 +88,116 @@
 																		*ngIf="vendorReport?.vendorDisplayName?.length>20">...</span>
 																</b>
 															</div>
-															<div class="text-size mb-0">{{ vendorReport?.vendorEmailId }}</div>
+															<div class="text-size mb-0">{{ vendorReport?.vendorEmailId
+																}}</div>
 															<span *ngIf="vendorReport.vendorPhone" class="phone">
-																<i aria-hidden="true" class="fa fa-phone" style="padding-right: 4px;"></i><a href="tel:vendorReport?.vendorPhone">{{vendorReport?.vendorPhone |
-																slice:0:20}}</a><span *ngIf="vendorReport?.vendorPhone?.length>20">...</span>
+																<i aria-hidden="true" class="fa fa-phone"
+																	style="padding-right: 4px;"></i><a
+																	href="tel:vendorReport?.vendorPhone">{{vendorReport?.vendorPhone
+																	|
+																	slice:0:20}}</a><span
+																	*ngIf="vendorReport?.vendorPhone?.length>20">...</span>
 															</span>
 														</td>
 														<td>
 															<h6 class="vendor-badge">
 																<b>Vendor</b>
-															</h6>															
+															</h6>
 														</td>
 													</tr>
 													<tr class="card-tr">
 														<td>
 															<span class="">
-																<img alt="" class="img-circle" src="{{vendorReport?.vendorAdminProfileImage}}" (error)="userProfileErrorHandler($event)" />
+																<img alt="" class="img-circle"
+																	src="{{vendorReport?.vendorAdminProfileImage}}"
+																	(error)="userProfileErrorHandler($event)" />
 															</span>
 														</td>
 														<td>
 															<div class="text-size">
-																<b>{{vendorReport?.vendorAdminDisplayName | slice:0:20}}<span
+																<b>{{vendorReport?.vendorAdminDisplayName |
+																	slice:0:20}}<span
 																		*ngIf="vendorReport?.vendorAdminDisplayName?.length>20">...</span></b>
 															</div>
 
-                                                         	<div class="text-size mb-0">{{vendorReport?.vendorAdminEmailId}}</div>
+															<div class="text-size mb-0">
+																{{vendorReport?.vendorAdminEmailId}}</div>
 
 															<span *ngIf="vendorReport?.vendorAdminPhone" class="phone">
-																<i aria-hidden="true" class="fa fa-phone" style="padding-right: 4px;"></i>{{vendorReport?.vendorAdminPhone|
-																slice:0:20}}<span *ngIf="vendorReport?.vendorAdminPhone?.length>20">...</span>
+																<i aria-hidden="true" class="fa fa-phone"
+																	style="padding-right: 4px;"></i>{{vendorReport?.vendorAdminPhone|
+																slice:0:20}}<span
+																	*ngIf="vendorReport?.vendorAdminPhone?.length>20">...</span>
 															</span>
 														</td>
 														<td>
 															<h6 class="vendor-badge">
 																<b>Vendor Manager</b>
-															</h6>															
+															</h6>
 														</td>
 													</tr>
 													<tr class="card-tr">
 														<td>
 															<span class="">
-																<img alt="" class="img-circle" src="{{vendorReport.partnerProfileImage}}" (error)="userProfileErrorHandler($event)" />
+																<img alt="" class="img-circle"
+																	src="{{vendorReport.partnerProfileImage}}"
+																	(error)="userProfileErrorHandler($event)" />
 															</span>
 														</td>
 														<td>
 															<div class="text-size">
-																<b>{{vendorReport?.partnerDisplayName | slice:0:20}}<span
+																<b>{{vendorReport?.partnerDisplayName |
+																	slice:0:20}}<span
 																		*ngIf="vendorReport?.partnerDisplayName?.length>20">...</span>
 																</b>
 															</div>
 															<div class="text-size mb-0">{{vendorReport?.partnerEmailId}}
 															</div>
 															<span *ngIf="vendorReport.partnerPhone" class="phone">
-																<i aria-hidden="true" class="fa fa-phone" style="padding-right: 4px;"></i>{{vendorReport?.partnerPhone |
-																slice:0:20}}<span *ngIf="vendorReport?.partnerPhone?.length>20">...</span>
-																
+																<i aria-hidden="true" class="fa fa-phone"
+																	style="padding-right: 4px;"></i>{{vendorReport?.partnerPhone
+																|
+																slice:0:20}}<span
+																	*ngIf="vendorReport?.partnerPhone?.length>20">...</span>
+
 															</span>
 														</td>
 														<td>
 															<h6 class="partner-badge">
 																<b>Partner</b>
-															</h6>															
+															</h6>
 														</td>
-													</tr>													
+													</tr>
 													<tr class="card-tr">
 														<td>
 															<span class="">
-																<img alt="" class="img-circle" src="{{vendorReport.partnerAdminProfileImage}}" (error)="userProfileErrorHandler($event)" />
+																<img alt="" class="img-circle"
+																	src="{{vendorReport.partnerAdminProfileImage}}"
+																	(error)="userProfileErrorHandler($event)" />
 															</span>
 														</td>
 														<td>
 															<div class="text-size">
-																<b>{{vendorReport?.partnerAdminDisplayName | slice:0:20}}<span
+																<b>{{vendorReport?.partnerAdminDisplayName |
+																	slice:0:20}}<span
 																		*ngIf="vendorReport?.partnerAdminDisplayName?.length>20">...</span></b>
 															</div>
-															<div class="text-size mb-0">{{vendorReport?.partnerAdminEmailId}}
+															<div class="text-size mb-0">
+																{{vendorReport?.partnerAdminEmailId}}
 															</div>
 															<span *ngIf="vendorReport?.partnerAdminPhone" class="phone">
-																<i aria-hidden="true" class="fa fa-phone" style="padding-right: 4px;"></i>{{vendorReport?.partnerAdminPhone|
-																slice:0:20}}<span *ngIf="vendorReport?.partnerAdminPhone?.length>20">...</span>
+																<i aria-hidden="true" class="fa fa-phone"
+																	style="padding-right: 4px;"></i>{{vendorReport?.partnerAdminPhone|
+																slice:0:20}}<span
+																	*ngIf="vendorReport?.partnerAdminPhone?.length>20">...</span>
 															</span>
 														</td>
 														<td>
 															<h6 class="partner-badge">
 																<b>Partner Manager</b>
-															</h6>															
+															</h6>
 														</td>
-													</tr>													
+													</tr>
 												</tbody>
 											</table>
 										</div>
@@ -174,11 +208,11 @@
 					</div>
 					<div>
 
-					<div class="pt10">
-						<app-pagination [pagination]="pagination" [type]="'vendorReports'"
-							(notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllVendors($event)">
-						</app-pagination>
-					</div>
+						<div class="pt10">
+							<app-pagination [pagination]="pagination" [type]="'vendorReports'"
+								(notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllVendors($event)">
+							</app-pagination>
+						</div>
 					</div>
 				</div>
 			</div>
