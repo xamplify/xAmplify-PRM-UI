@@ -4537,7 +4537,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	shouldDisableCheckbox(index: number): boolean {
 		const selectedCount = this.pipeline.stages.filter(item => item.private).length;
 		let remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
-		if(this.pipeline.integrationType === "PIPEDRIVE" || this.pipeline.integrationType === "CONNECTWISE")
+		if(this.pipeline.integrationType === "PIPEDRIVE")
 		{
 			remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 2;
 		}
