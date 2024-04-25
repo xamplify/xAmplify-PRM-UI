@@ -504,6 +504,11 @@ span.filterActiveBg i {
   margin-left: 0px;
 }
 
+.row.rowPaddingCustomize6 {
+  margin-right: -15px;
+  margin-left: 15px;
+}
+
 .rowMarginCustomization {
   margin-right: 0px !important;
 }
@@ -516,3 +521,6 @@ span.filterActiveBg i {
   margin-left: -15px;
 }
 
+.campaign-type-selected {
+  background-color: #6dcff6;
+}

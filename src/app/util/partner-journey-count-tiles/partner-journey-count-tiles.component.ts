@@ -23,6 +23,7 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
   @Input() selectedVendorCompanyIds: any[] = [];
 	@Input() selectedTeamMemberIds: any[] = [];
   @Input() isVendorVersion : boolean = false;
+  shareLeadText : string = 'Share Leads';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -41,6 +42,11 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
     if (!this.isTeamMemberAnalytics) {
       this.getCounts();
     } else {
+      if(!this.isVendorVersion){
+        this.shareLeadText = 'Shared Leads';
+      }else{
+        this.shareLeadText = 'Share Leads';
+      }
       this.getTeamMemberCounts();
     }
   }

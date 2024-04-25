@@ -22,6 +22,7 @@ import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { ParterService } from 'app/partners/services/parter.service';
+import { Roles } from 'app/core/models/roles';
 
 declare var $:any, swal: any;
 @Component({
@@ -109,7 +110,12 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   showFilterOption: boolean = false;
   showFilterDropDown: boolean = false;
   isVendorVersion : boolean = false;
-  isPartnerVersion : boolean = false;
+  isOnlyPartner : boolean ;
+  roleName: Roles = new Roles();
+  vendorRole : boolean;
+  isOrgAdmin : boolean;
+  isPrm : boolean;
+  isMarketing : boolean;
   filterActiveBg: string;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
@@ -124,6 +130,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.vanityLoginDto.userId = this.loggedInUserId;
       this.vanityLoginDto.vanityUrlFilter = true;
     }
+    this.init();
   }
 
   ngOnInit() {
@@ -156,6 +163,37 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         this.referenceService.loading(this.httpRequestLoader, false);
       }
     );
+  }
+
+  init() {
+    const roles = this.authenticationService.getRoles();
+    if (roles !== undefined) {
+      if (this.authenticationService.loggedInUserRole != "Team Member") {
+        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+        if (roles.indexOf(this.roleName.orgAdminRole) > -1 ||
+          roles.indexOf(this.roleName.vendorRole) > -1 ||
+          roles.indexOf(this.roleName.vendorTierRole) > -1 ||
+          roles.indexOf(this.roleName.marketingRole) > -1 ||
+          roles.indexOf(this.roleName.prmRole) > -1) {
+          this.showVendorView();
+        }
+        if (roles.indexOf(this.roleName.prmRole) > -1) {
+          this.isPrm = true;
+        }
+        /** User Guide* */
+        if(roles.indexOf(this.roleName.vendorRole) > -1){
+          this.vendorRole = true;
+        }
+        /** User Guide */
+        if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
+          this.isOrgAdmin = true;
+        }
+
+        if(roles.indexOf(this.roleName.marketingRole) > -1){
+          this.isMarketing = true;
+        }
+      } 
+    }
   }
 
   ngOnDestroy(): void {

@@ -469,8 +469,12 @@ export class ParterService {
             .catch(this.handleError);
     }
 
-    getUserWiseTrackDetailsForTeamMember(pagination: Pagination) {
-        const url = this.URL + 'teamMemberAnalytics/track/userwise/details?access_token=' + this.authenticationService.access_token;
+    getUserWiseTrackDetailsForTeamMember(pagination: Pagination, isVendorVersion: boolean) {
+        let urlSuffix = "";
+        if (isVendorVersion) {
+            urlSuffix = "/v";
+        }
+        const url = this.URL + 'teamMemberAnalytics' + urlSuffix + '/track/userwise/details?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post(url, pagination)
             .catch(this.handleError);
     }
@@ -522,20 +526,32 @@ export class ParterService {
             .catch(this.handleError);
     }
 
-    getLeadDetailsForTeamMember(pagination: Pagination) {
-        const url = this.URL + 'teamMemberAnalytics/lead/details?access_token=' + this.authenticationService.access_token;
+    getLeadDetailsForTeamMember(pagination: Pagination, isVendorVersion: boolean) {
+        let urlSuffix = "";
+        if (isVendorVersion) {
+            urlSuffix = "/v";
+        }
+        const url = this.URL + 'teamMemberAnalytics' + urlSuffix + '/lead/details?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post(url, pagination)
             .catch(this.handleError);
     }
 
-    getDealDetailsForTeamMember(pagination: Pagination) {
-        const url = this.URL + 'teamMemberAnalytics/deal/details?access_token=' + this.authenticationService.access_token;
+    getDealDetailsForTeamMember(pagination: Pagination, isVendorVersion: boolean) {
+        let urlSuffix = "";
+        if (isVendorVersion) {
+            urlSuffix = "/v";
+        }
+        const url = this.URL + 'teamMemberAnalytics' + urlSuffix + '/deal/details?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post(url, pagination)
             .catch(this.handleError);
     }
 
-    getMdfDetailsForTeamMember(pagination: Pagination) {
-        const url = this.URL + 'teamMemberAnalytics/mdf/details?access_token=' + this.authenticationService.access_token;
+    getMdfDetailsForTeamMember(pagination: Pagination, isVendorVersion: boolean) {
+        let urlSuffix = "";
+        if (isVendorVersion) {
+            urlSuffix = "/v";
+        }
+        const url = this.URL + 'teamMemberAnalytics' + urlSuffix + '/mdf/details?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post(url, pagination)
             .catch(this.handleError);
     }
@@ -582,7 +598,19 @@ export class ParterService {
         const url = this.URL + 'teamMemberAnalytics/all/onboard/partner/details?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post(url, pagination)
             .catch(this.handleError);
-      }
+    }
+
+    getTeamMemberWiseAssetsCount(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/v/assets/count?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
+
+    getTeamMemberWiseTrackAssetDetails(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/v/assets/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
 
     /*********End : XNFR-316************/
 

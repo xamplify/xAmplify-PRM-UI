@@ -19,11 +19,13 @@
     </ul>
     <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     <div class="col-xs-12 col-sm-7 col-lg-8 p0"
-      *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember">
+      *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember && authenticationService?.module?.isAdminAndPartnerCompany">
       <ul class="mix-filter p0 m0" style="float: right">
-        <li class="filter" style="float: right; margin-top: 5px;" (click)="showPartnerView()" translate>
+        <li class="filter" style="float: right; margin-top: 5px;" (click)="showPartnerView()"
+          [class.campaign-type-selected]="!isVendorVersion" translate>
           {{authenticationService?.partnerModule?.customName}} View </li>
-        <li style="float: right; margin-top: 5px;" (click)="showVendorView()" translate>Vendor View</li>
+        <li style="float: right; margin-top: 5px; margin-right: 5px;" (click)="showVendorView()"
+          [class.campaign-type-selected]="isVendorVersion" translate>Vendor View</li>
         <p class="filter" style="float: right; margin: 10px;" translate>Team Member as: </p>
       </ul>
     </div>
@@ -453,9 +455,10 @@
               [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
               [applyFilter]="applyFilter"></app-userwise-track-counts>
           </div>
+          <!--****************** TeamMember Wise Track details******************-->
           <div class="row rowPaddingCustomize3">
             <app-userwise-track-details [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
               [applyFilter]="applyFilter"></app-userwise-track-details>
           </div>
         </div>
@@ -473,10 +476,34 @@
               [applyFilter]="applyFilter" [isVendorVersion]="isVendorVersion"></app-track-asset-details>
           </div>
         </div>
-         <!--******************All Partner Details*******************-->
-         <div *ngIf="isVendorVersion" class="row rowPaddingCustomize4">
+        <!--******************Team Member Wise Assets Details*******************-->
+        <div *ngIf="isVendorVersion" class="row rowPaddingCustomize6">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
+            <app-team-memberwise-assets-details [selectedTeamMemberIds]="selectedTeamMemberIds"
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-memberwise-assets-details>
+            <app-team-memberwise-assets-detailed-report [selectedTeamMemberIds]="selectedTeamMemberIds"
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-memberwise-assets-detailed-report>
+          </div>
+        </div>
+        <!--******************All Partner Details*******************-->
+        <div *ngIf="isVendorVersion" class="row rowPaddingCustomize4">
           <app-team-member-analytics-all-partners-details [selectedTeamMemberIds]="selectedTeamMemberIds"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-member-analytics-all-partners-details>
+        </div>
+        <!--******************Redistributed Camapign Details*******************-->
+        <div class="row rowPaddingCustomization5">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
+            <app-pie-chart [chartId]="'redistributedCampaignDetailsPieChart'"
+              (notifySelectSlice)="redistributedCampaignDetailsPieChartSelected($event)"
+              (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)"
+              [isTeamMemberAnalytics]="true" [isVendorVersion]="isVendorVersion"
+              [selectedTeamMemberIds]="selectedTeamMemberIds"
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-pie-chart>
+            <app-redistributed-campaign-details [campaignTypeFilter]="selectedCampaignType"
+              [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion">
+            </app-redistributed-campaign-details>
+          </div>
         </div>
         <!--******************Share Lead Details*******************-->
         <div class="row rowPaddingCustomize4">
@@ -484,8 +511,8 @@
             [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
             [applyFilter]="applyFilter"></app-share-lead-details>
         </div>
-
-        <div class="row rowPaddingCustomization1">
+        <!--******************Graphs Details*******************-->
+        <div *ngIf="!isVendorVersion" class="row rowPaddingCustomization1">
           <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true"
             [partnerCompanyId]="loggedInUserId" [selectedTeamMemberIds]="selectedTeamMemberIds"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds"
@@ -504,44 +531,29 @@
             [selectedVendorCompanyIds]="selectedVendorCompanyIds"
             [chartId]="'top10LeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
         </div>
-        <!--******************Redistributed Camapign Details*******************-->
-        <div class="row rowPaddingCustomization5">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
-              <app-pie-chart [chartId]="'redistributedCampaignDetailsPieChart'"
-                (notifySelectSlice)="redistributedCampaignDetailsPieChartSelected($event)"
-                (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)"
-                [isTeamMemberAnalytics]="true" [isVendorVersion]="isVendorVersion"
-                [selectedTeamMemberIds]="selectedTeamMemberIds"
-                [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-pie-chart>
-            <app-redistributed-campaign-details [campaignTypeFilter]="selectedCampaignType"
-              [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion">
-            </app-redistributed-campaign-details>
-          </div>
-        </div>
         <!--******************Lead Details*******************-->
-        <div class="row rowPaddingCustomize4">
+        <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
           <app-partner-journey-lead-details [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
-            [selectedTeamMemberIds]="selectedTeamMemberIds"
+            [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-partner-journey-lead-details>
         </div>
         <!--******************Deal Details*******************-->
-        <div class="row rowPaddingCustomize4">
+        <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
           <app-partner-journey-deal-details [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
-            [selectedTeamMemberIds]="selectedTeamMemberIds"
+            [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-partner-journey-deal-details>
         </div>
+        <!--******************Contact Details*******************-->
+        <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
+          <app-team-member-analytics-contact-details [selectedTeamMemberIds]="selectedTeamMemberIds"
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion">
+          </app-team-member-analytics-contact-details>
+        </div>
         <div class="row responsivepaddding1">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <!--******************MDF Details*******************-->
-            <app-mdf-detail-analytics [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+          <!--******************MDF Details*******************-->
+          <app-mdf-detail-analytics [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
             [applyFilter]="applyFilter"></app-mdf-detail-analytics>
-            <!--******************Contact Details*******************-->
-            <app-team-member-analytics-contact-details [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-            [isVendorVersion]="isVendorVersion"></app-team-member-analytics-contact-details>
-          </div>
         </div>
       </div>
     </ng-container>

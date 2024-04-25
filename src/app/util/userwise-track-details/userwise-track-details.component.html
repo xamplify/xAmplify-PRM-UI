@@ -25,12 +25,12 @@
               <th scope="col">Track</th>
               <th scope="col">Assets</th>
               <th scope="col">Published Time</th>
-              <th scope="col">Opened</th>
-              <th scope="col">Viewed</th>
-              <th scope="col">Downloaded</th>              
+              <th scope="col" *ngIf = "!isVendorVersion">Opened</th>
+              <th scope="col" *ngIf = "!isVendorVersion">Viewed</th>
+              <th scope="col" *ngIf = "!isVendorVersion">Downloaded</th>              
               <th scope="col">Avg. Progress</th>
               <th scope="col">Quiz</th>
-              <th scope="col">Score</th>
+              <th scope="col" *ngIf = "!isVendorVersion" >Score</th>
             </tr>
           </thead>
           <tbody>          
@@ -59,19 +59,19 @@
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOnInUTC">
                 </app-timestamp>
               </td>
-              <td>
+              <td *ngIf = "!isVendorVersion">
                 <div class="custom-icon">
                 <i class="circled-number IconopenedCount fontStyleNormal IconCustomization"> <strong >{{item?.openedCount}}</strong></i>
                 <div class="clickicons"></div>
                 </div>
               </td>
-              <td>
+              <td *ngIf = "!isVendorVersion">
                 <div class="custom-icon">
                 <i class="circled-number IconviewedCount fontStyleNormal IconCustomization"> <strong >{{item?.viewedCount}}</strong></i>
                 <div class="clickicons"></div>
                 </div>
               </td> 
-              <td>
+              <td *ngIf = "!isVendorVersion">
                 <div class="custom-icon">
                 <i class="circled-number IconodownloadedCount fontStyleNormal IconCustomization"> <strong >{{item?.downloadedCount}}</strong></i>
                 <div class="clickicons"></div>
@@ -88,7 +88,7 @@
                 <span *ngIf="item.progress == undefined">0%</span>
               </td>
               <td>{{item?.quizCount}}</td>
-              <td>{{item?.score}}</td>
+              <td  *ngIf = "!isVendorVersion">{{item?.score}}</td>
             </tr>
           </tbody>
         </table>

@@ -24,6 +24,7 @@ export class MdfDetailAnalyticsComponent implements OnInit {
   @Input() isTeamMemberAnalytics: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
+  @Input() isVendorVersion : boolean = false;
   
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -124,7 +125,7 @@ export class MdfDetailAnalyticsComponent implements OnInit {
     this.pagination.maxResults = 3;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.parterService.getMdfDetailsForTeamMember(this.pagination).subscribe(
+    this.parterService.getMdfDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          

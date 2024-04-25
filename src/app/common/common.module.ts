@@ -176,10 +176,12 @@ import { ShareLeadDetailsComponent } from '../util/share-lead-details/share-lead
 import { RedistributedCampaignDetailsComponent } from '../util/redistributed-campaign-details/redistributed-campaign-details.component';
 import { PartnerJourneyLeadDetailsComponent } from '../util/partner-journey-lead-details/partner-journey-lead-details.component';
 import { PartnerJourneyDealDetailsComponent } from '../util/partner-journey-deal-details/partner-journey-deal-details.component';
-import { MdfDetailAnalyticsComponent } from '../util/mdf-detail-analytics/mdf-detail-analytics.component';
+import { MdfDetailAnalyticsComponent } from 'app/util/mdf-detail-analytics/mdf-detail-analytics.component';
 import { RedistributedCampaignsAndLeadsBarChartComponent } from '../util/redistributed-campaigns-and-leads-bar-chart/redistributed-campaigns-and-leads-bar-chart.component';
 import { TeamMemberAnalyticsContactDetailsComponent } from 'app/util/team-member-analytics-contact-details/team-member-analytics-contact-details.component';
 import { TeamMemberAnalyticsAllPartnersDetailsComponent } from 'app/util/team-member-analytics-all-partners-details/team-member-analytics-all-partners-details.component';
+import { TeamMemberwiseAssetsDetailsComponent } from 'app/util/team-memberwise-assets-details/team-memberwise-assets-details.component';
+import { TeamMemberwiseAssetsDetailedReportComponent } from 'app/util/team-memberwise-assets-detailed-report/team-memberwise-assets-detailed-report.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -215,7 +217,8 @@ import { TeamMemberAnalyticsAllPartnersDetailsComponent } from 'app/util/team-me
 		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,InteractedNotInteractedTrackDetailsComponent,
 		TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
-		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent
+		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
+		TeamMemberwiseAssetsDetailsComponent,TeamMemberwiseAssetsDetailedReportComponent
 	],
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -249,7 +252,8 @@ import { TeamMemberAnalyticsAllPartnersDetailsComponent } from 'app/util/team-me
 		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,
 		InteractedNotInteractedTrackDetailsComponent,TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
-		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent
+		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetsDetailsComponent,
+		TeamMemberwiseAssetsDetailedReportComponent
 	]
 
 

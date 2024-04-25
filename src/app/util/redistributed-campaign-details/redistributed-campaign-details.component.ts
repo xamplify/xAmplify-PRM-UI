@@ -55,6 +55,11 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
       this.colClass = "col-xs-12 col-sm-6 col-md-8 col-lg-8 ml15m responsiveMargins"
       this.scrollClass = "tableHeightScroll";
     }
+    if(this.isVendorVersion){
+      this.headerText = 'Launched Campaign Details';
+    }else{
+      this.headerText = ' Redistributed Campaign Details';
+    }
     this.getRedistributedCampaignDetails(this.pagination);
   }
 
@@ -130,7 +135,7 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
     if(!this.isTeamMemberAnalytics){
       this.getRedistributedCampaignDetailsForPartnerJourney(this.pagination);
     }else{
-      this.getRedistributedCampaignDetailsForTeamMember(this.pagination)
+      this.getRedistributedCampaignDetailsForTeamMember(this.pagination);
     }
   }
 

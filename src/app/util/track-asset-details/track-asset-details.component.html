@@ -25,7 +25,7 @@
               <th scope="col">Asset Name</th>
               <th scope="col">Asset Type</th>
               <th scope="col">Asset Created Time</th>
-              <th scope="col">Opened</th>
+              <th scope="col" *ngIf="!isVendorVersion" >Opened</th>
               <th></th>
             </tr>
           </thead>
@@ -44,7 +44,7 @@
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.assetCreatedTime">
                 </app-timestamp>
               </td>
-              <td>
+              <td *ngIf="!isVendorVersion">
                 <div class="custom-icon">
                 <i class="circled-number IconopenedCount fontStyleNormal IconCustomization"> <strong >{{item?.openedCount}}</strong></i>
                 <div class="clickicons"></div>
