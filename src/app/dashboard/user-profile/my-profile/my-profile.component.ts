@@ -2625,11 +2625,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (count > 0 && item.previewAccess) {
 			this.ngxloading = true;
 			if ("Templates" == type) {
-				this.router.navigate(['/home/emailtemplates/manage/' + categoryId]);
+				this.router.navigate(['/home/emailtemplates/manage/l/' + categoryId+'/fg']);
 			} else if ("Forms" == type) {
 				this.router.navigate(['/home/forms/manage/' + categoryId]);
 			} else if ("Pages" == type) {
-				this.router.navigate(['/home/pages/manage/' + categoryId]);
+				this.router.navigate(['/home/pages/manage/l/' + categoryId+'/fg']);
 			} else if ("Campaigns" == type) {
 				this.router.navigate(['/home/campaigns/manage/' + categoryId]);
 			} else if ("Asset Library" == type) {
