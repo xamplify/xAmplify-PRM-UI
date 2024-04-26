@@ -855,7 +855,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.users[i].country = null;
 					}
 
-					this.validateEmail(this.users[i].emailId);
+					// this.validateEmail(this.users[i].emailId);
 
 
 
@@ -3490,6 +3490,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.id = id;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.moduleName = this.module;
+			this.contactListObject.isPartnerUserList = this.isPartnerUserList;
 
 			this.contactService.loadContactsCount(this.contactListObject)
 				.subscribe(
