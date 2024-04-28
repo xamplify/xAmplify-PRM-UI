@@ -239,7 +239,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
         if(this.isCreatedUser){
           this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
         }else{
-          this.referenceService.previewTrackOrPlayBOokAssetPdfAsPartnerInNewTab(assetDetails.id,this.tracksPlayBook.id);
+          this.referenceService.previewTrackOrPlayBOokAssetPdfAsPartnerInNewTab(this.tracksPlayBook.learningTrackContentMappingId);
         }
       }else{
         this.previewBeeTemplate(assetDetails);
