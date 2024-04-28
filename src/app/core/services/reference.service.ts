@@ -150,7 +150,7 @@ export class ReferenceService {
   assetResponseMessage = "";
   createdOrUpdatedSuccessMessage = "";
   teamMemberSignedUpSuccessfullyMessage = "";
-
+  website:String="";
   /*** XNFR-433 ***/
   isCopyForm: boolean = false;
   constructor(
