@@ -239,7 +239,8 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
         if(this.isCreatedUser){
           this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
         }else{
-          this.referenceService.previewTrackOrPlayBOokAssetPdfAsPartnerInNewTab(this.tracksPlayBook.learningTrackContentMappingId);
+          alert(assetDetails.learningTrackContentMappingId);
+          this.referenceService.previewTrackOrPlayBOokAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
         }
       }else{
         this.previewBeeTemplate(assetDetails);
@@ -362,7 +363,6 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     let self = this;
     if (this.tracksPlayBook.followAssetSequence) {
       $.each(this.tracksPlayBook.contents, function (index: number, content: any) {
-        console.log(index);
         let contentSubList = self.tracksPlayBook.contents.slice(0, index);
         if (contentSubList !== undefined && contentSubList.length > 0) {
           content.previousContentFinished = !(contentSubList.filter(x => !x.finished).findIndex(x => x) > -1);

@@ -40,7 +40,7 @@ export class PreviewAssetPdfComponent implements OnInit {
     this.isTrackOrPlayBookPdfPreview = currentRouterUrl.indexOf("/pv/ptp/pdf/")>-1;
     this.pageNotFoundImagePath = this.authenticationService.APP_URL+"assets/images/404.jpg";
     this.badRequestImagePath = this.authenticationService.APP_URL+"assets/images/400.jpg";
-    this.internalServerErrorImagePath = this.authenticationService.APP_URL+"assets/images/500.jpg";
+    this.internalServerErrorImagePath = this.authenticationService.APP_URL+"assets/images/500.png";
     this.referenceService.clearHeadScriptFiles();
     this.id = this.route.snapshot.params['id'];
     this.getHtmlBody();
