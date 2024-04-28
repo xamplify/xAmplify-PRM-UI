@@ -383,7 +383,8 @@
                               </div>
                               <div
                                 *ngIf="(lead?.canRegisterDeal && lead.enableRegisterDealButton && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType !== 'REJECTED') || (lead?.selfLead && lead?.associatedDealId == undefined)">
-                                <button class="button_blue bgcolor-unset" (click)="showDealRegistrationForm(lead)" translate>
+                                <button class="button_blue bgcolor-unset" (click)="showDealRegistrationForm(lead)" [disabled]="lead?.associatedCampaignDeleted" 
+                                  data-toggle="tooltip" data-placement="bottom" title="{{lead?.associatedCampaignDeleted ? 'This campaign has been deleted by your vendor. You can\'t register a lead' : ''}}" translate>
                                   <span class="btn btn-primary transition d-inline"> Register Deal</span>
                                 </button>
                               </div>
@@ -404,8 +405,8 @@
                                   </div>
                                   <div *ngIf="lead?.canRegisterDeal && lead.enableRegisterDealButton">
                                     <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom"
-                                      title="{{lead?.leadApprovalStatusType ? (lead?.leadApprovalStatusType === 'REJECTED' ? 'You can not register a deal for a rejected lead' : '') : 'You can not register a deal for an unapproved lead'}}"
-                                      [disabled]="(((lead?.leadApprovalStatusType == 'REJECTED') || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection)))"
+                                      title="{{(lead?.leadApprovalStatusType ? (lead?.leadApprovalStatusType === 'REJECTED' ? 'You can not register a deal for a rejected lead' : (lead?.associatedCampaignDeleted ? 'This campaign has been deleted by your vendor. You can\'t register a lead' : '')) : (!lead?.leadApprovalStatusType && !lead?.associatedCampaignDeleted ? 'You can not register a deal for an unapproved lead' : (lead?.associatedCampaignDeleted ? 'This campaign has been deleted by your vendor. You can\'t register a lead' : '')))}}"
+                                      [disabled]="(lead?.leadApprovalStatusType == 'REJECTED' || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection) || lead?.associatedCampaignDeleted)"
                                       (click)="showDealRegistrationForm(lead)" translate>
                                       <span class="btn btn-primary transition d-inline"> Register Deal</span>
                                     </button>
@@ -430,9 +431,9 @@
                                 </a>
                                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                   <a class="custom-icon" data-rel="fancybox-button" data-toggle="tooltip" data-placement="bottom" *ngIf="lead.canUpdate && lead.enableRegisterDealButton"
-                                    (click)="lead?.leadApprovalStatusType !== 'REJECTED' ? editLead(lead) : ''" data-toggle="tooltip" data-placement="bottom"
-                                    title="{{lead?.leadApprovalStatusType == 'REJECTED' ? 'Editing rejected leads is not permitted' : 'Edit Lead'}}" id="lead">
-                                    <i [ngClass]="lead?.leadApprovalStatusType == 'REJECTED' ? 'fa fa-edit mr5 IconCustomization disabled gray':'fa fa-edit mr5 IconCustomization'" class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+                                    (click)="(lead?.leadApprovalStatusType !== 'REJECTED' && !lead?.associatedCampaignDeleted) ? editLead(lead) : ''" data-toggle="tooltip" data-placement="bottom"
+                                    title="{{lead?.leadApprovalStatusType == 'REJECTED' ? 'Editing rejected leads is not permitted' : (lead?.associatedCampaignDeleted ? 'This campaign has been deleted by your vendor. You can\'t edit this lead' : 'Edit Lead')}}" id="lead">
+                                    <i [ngClass]="(lead?.leadApprovalStatusType == 'REJECTED' || lead?.associatedCampaignDeleted) ? 'fa fa-edit mr5 IconCustomization disabled gray':'fa fa-edit mr5 IconCustomization'" class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
                                     <div class="clickicons"></div>
                                   </a>
                                   <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate"
