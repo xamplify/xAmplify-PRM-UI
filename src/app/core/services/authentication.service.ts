@@ -1326,15 +1326,20 @@ getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:b
   return this.callGetMethod(URL);
 }
 
-getAssetPdfHtmlBody(id:number,isPartnerView:boolean){
+getAssetPdfHtmlBody(id:number,isPartnerView:boolean,isTrackOrPlayBookPdfPreview:boolean){
   let userId = this.getUserId();
+  let URL = "";
   let URL_PREFIX = "";
   if(isPartnerView){
     URL_PREFIX = this.REST_URL+"dam/partner/";
-  }else{
+    URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&access_token="+this.access_token;
+  }else if(isTrackOrPlayBookPdfPreview){
     URL_PREFIX = this.REST_URL+"dam/";
+    URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&trackOrPlayBookPdfPreview=true&access_token="+this.access_token;
+  } else{
+    URL_PREFIX = this.REST_URL+"dam/";
+    URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&access_token="+this.access_token;
   }
-  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&access_token="+this.access_token;
   return this.callGetMethod(URL);
 }
 

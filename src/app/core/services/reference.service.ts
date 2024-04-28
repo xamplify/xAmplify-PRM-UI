@@ -3568,6 +3568,10 @@ previewAssetPdfInNewTab(id:number){
   this.openWindowInNewTab("/pv/v/pdf/"+id);
 }
 
+previewTrackOrPlayBOokAssetPdfAsPartnerInNewTab(assetId:number,trackId:number){
+  this.openWindowInNewTab("/pv/ptp/pdf/"+assetId+"/"+trackId);
+}
+
 openWindowInNewTab(url:string){
   window.open(url,"_blank");
 }
