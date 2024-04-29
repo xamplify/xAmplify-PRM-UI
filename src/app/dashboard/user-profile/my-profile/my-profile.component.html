@@ -178,39 +178,24 @@
                                     </ul>
                                     <!--------------Lead/Deal Configuration----------------------->
                                     <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
-                                        *ngIf="((hasAllAccess || 
-                            hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
-                             || authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
-                             !authenticationService.isOnlyPartner() && authenticationService.enableLeads && 
-                              authenticationService.superiorRole != 'Partner') 
-                              || (!authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
-                              authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
-                              || authenticationService.module.isPrmAndPartner  || authenticationService.module.isPrmAndPartnerTeamMember)) 
-                              || (!authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
-                              authenticationService.isVendor() || authenticationService.isVendorPartner()))" [ngClass]="[activeTabName == 'dealTypes' ? 'show':'',
-                              activeTabName == 'leadPipelines' ? 'show':'',
-                              activeTabName == 'dealPipelines' ? 'show':'',
-                              activeTabName == 'leadDealApprove' ? 'show':'']">Lead/Deal
-                                        Configuration<a data-toggle="collapse" style="float: right;"
-                                            href="#leadAndDealDropdown">
+                                        *ngIf="(authenticationService?.leadsAndDeals || authenticationService?.module?.opportunitiesAccessAsPartner) && 
+                                            authenticationService?.module?.isAnyAdminOrSupervisor">
+                                        Lead/Deal Configuration
+                                        <a data-toggle="collapse" style="float: right;" href="#leadAndDealDropdown">
                                             <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                                        </a></div>
+                                        </a>
+                                    </div>
                                     <ul id="leadAndDealDropdown" class="nav collapse" [ngClass]="[activeTabName == 'dealTypes' ? 'in':'',
-                              activeTabName == 'leadPipelines' ? 'in':'',
-                              activeTabName == 'dealPipelines' ? 'in':'',
-                              activeTabName == 'leadDealApprove' ? 'in':'']">
+                                            activeTabName == 'leadPipelines' ? 'in':'',
+                                            activeTabName == 'dealPipelines' ? 'in':'',
+                                            activeTabName == 'leadDealApprove' ? 'in':'']">
                                         <!---Deal Registration--->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" *ngIf="(hasAllAccess || 
-                                    hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
-                                     || authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
-                                     !authenticationService.isOnlyPartner() || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
-                                     || authenticationService.module.isPrmAndPartner  || authenticationService.module.isPrmAndPartnerTeamMember && authenticationService.enableLeads && 
-                                      authenticationService.superiorRole != 'Partner'">
+                                        <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" *ngIf="authenticationService?.leadsAndDeals && authenticationService?.module?.isAnyAdminOrSupervisor">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"
                                                 (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration
                                                 | translate}}</a>
                                         </li>
-                                        <ng-container *ngIf="authenticationService?.leadsAndDeals">
+                                        <ng-container *ngIf="(authenticationService?.leadsAndDeals || authenticationService?.module?.opportunitiesAccessAsPartner) && authenticationService?.module?.isAnyAdminOrSupervisor">
                                             <!---Lead Pipelines--->
                                             <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadPipelines'}"
@@ -226,7 +211,7 @@
 
                                             <!-- XNFR-426 -->
                                             <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}"
-                                                *ngIf="authenticationService?.module?.isAdmin && (!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember))">
+                                                *ngIf="authenticationService?.module?.isAdmin && (!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember)) && !authenticationService.isOnlyPartner()">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadDealApprove'}"
                                                     (click)="activateTab('leadDealApprove');getLeadApprovalstatus();">
                                                     {{properties.leadDealApprove | translate}}</a>
@@ -1322,11 +1307,11 @@
                                                             <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="halopsaRibbonText == 'configured'"
                                                                     class="integration-cards">
-                                                                    <!-- <a (click)="halopsaSettings()"
+                                                                    <a (click)="halopsaSettings()"
                                                                     data-toggle="tooltip" data-placement="top"
                                                                     title="HALOPSA Settings"><i
                                                                         class="fa fa-cog"
-                                                                        style="font-size: 20px !important;"></i></a> -->
+                                                                        style="font-size: 20px !important;"></i></a>
                                                                 </span>
                                                                 <h5 class="card-title  text-uppercase text-center"
                                                                     style="padding-top: 4%;">HALOPSA</h5>
@@ -1648,7 +1633,7 @@
                                                                     <div class="btn-group pull-right">
                                                                         <a *ngIf="activeCRMDetails?.activeCRM && (activeCRMDetails?.type == 'HUBSPOT' || activeCRMDetails?.type == 'PIPEDRIVE') && activeTabName == 'dealPipelines'"
                                                                             (click)="syncPipelines()">
-                                                                            <button class="btn btn-white"
+                                                                            <button class="btn btn-white Synchronize_btn"
                                                                                 data-toggle="tooltip"
                                                                                 data-placement="bottom"
                                                                                 title="Synchronize" translate>
@@ -2402,8 +2387,7 @@
                                         </app-email-notification-settings>
 
                                         <!--XNFR-454 Domain Configuration-->
-                                        <app-add-or-manage-domains *ngIf="isAddDomainsOptionClicked"
-                                            [moduleName]="'addDomains'" class="tab-pane"
+                                        <app-add-or-manage-domains *ngIf="isAddDomainsOptionClicked" class="tab-pane"
                                             [ngClass]="{'active': activeTabName == properties?.addDomainsText}">
                                         </app-add-or-manage-domains>
 

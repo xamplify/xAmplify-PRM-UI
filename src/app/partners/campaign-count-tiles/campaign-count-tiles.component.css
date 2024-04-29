@@ -27,3 +27,7 @@
 @media (min-width: 300px) and (max-width: 767px)  {
   .dashboard-stat {margin-bottom: 15px !important;}
 }
+.disabled {
+  cursor: not-allowed;
+  
+}

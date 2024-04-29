@@ -10,7 +10,7 @@ declare var $:any;
 @Component({
   selector: 'app-active-threads-info',
   templateUrl: './active-threads-info.component.html',
-  styleUrls: ['./active-threads-info.component.css'],
+  styleUrls: ['./active-threads-info.component.css',"../admin-report/admin-report.component.css"],
   providers: [HttpRequestLoader, Properties],
 })
 export class ActiveThreadsInfoComponent implements OnInit {

@@ -34,6 +34,20 @@
   .mb_12 {
     margin-bottom: 12px !important;
   }
+  div#vendor-details-tile {
+    left: 4px;
+    width: 50%!important;
+    word-break: break-all;
+    }
+    .mdf-card-pr0{
+     padding-right: 0px;
+    }
+    .vendor_companyName{
+      padding-left: 20px !important;
+    }
+    .mrg_l0{
+      margin-left: -15px;
+    }
 }
 /* 27-06-2023 */
 .fa-fa-consistency {
@@ -46,4 +60,7 @@
   text-align: center;
   vertical-align: middle;
   font-size: 14px !important;
+}
+.mrg_l0{
+margin-left: 0px;
 }

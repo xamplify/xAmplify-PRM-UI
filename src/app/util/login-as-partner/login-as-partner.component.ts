@@ -72,6 +72,8 @@ export class LoginAsPartnerComponent implements OnInit {
     this.loginAsEmailNotificationDto.partnerCompanyUserId = this.contact.id;
     this.loginAsEmailNotificationDto.vendorCompanyUserId = this.authenticationService.user.id;
     this.loginAsEmailNotificationDto.domainName = this.authenticationService.companyProfileName;
+    let loginAsUserEmailId = this.authenticationService.getLocalStorageItemByKey("loginAsUserEmailId")
+    this.loginAsEmailNotificationDto.superAdminLoggedIn = "admin@xamplify.io"==loginAsUserEmailId;
     this.authenticationService.sendLoginAsPartnerEmailNotification(this.loginAsEmailNotificationDto).
     subscribe(
       response=>{

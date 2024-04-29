@@ -115,9 +115,10 @@ export class RecentLoggedInUsersComponent implements OnInit {
       )
   }
 
-  selectedVendorDetails(user:any){
-    user.id = user.userId;
-    this.notifyAdminReportComponent.emit(user);
-  }
+  
+  navigateToDashboardStats(report:any){
+    this.loading = true;
+    this.referenceService.goToRouter('/home/dashboard/dashboard-stats/'+report.userId+"/"+report.companyId);
+   } 
 
 }

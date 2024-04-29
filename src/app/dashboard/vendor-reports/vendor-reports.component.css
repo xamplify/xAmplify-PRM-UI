@@ -37,6 +37,7 @@
   position: relative;
   display: -ms-flexbox;
   display: flex;
+  flex-wrap: wrap;
   -ms-flex-direction: column;
   flex-direction: column;
   border-radius: 6px;
@@ -166,4 +167,15 @@
 }
 .fontControl h5 {
   font-size: 12px;
+}
+@media screen and (max-width: 1024px) {
+  .text-size.mb-0 {
+    width: 136px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+}
+.row{
+  display: flex;
+  flex-wrap: wrap;
 }

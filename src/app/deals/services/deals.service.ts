@@ -221,4 +221,16 @@ getStageNamesForCampaign(campaignId:number, userId:number){
             .catch(this.handleError);
   }
 
+  getActiveCRMPipelines(createdForCompanyId: number, loggedInUserId: number, campaignId: number) {
+    return this.http.get(this.authenticationService.REST_URL + `/crm/active/pipelines/${createdForCompanyId}/${loggedInUserId}/${campaignId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  getDealPipelinesForView(dealId: number, loggedInUserId: number) {
+    return this.http.get(this.authenticationService.REST_URL + `/deal/view/pipelines/${dealId}/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
 }

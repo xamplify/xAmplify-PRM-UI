@@ -24,7 +24,8 @@
                   <th scope="col">Company Name</th>
                   <th scope="col">EmailId</th>
                   <th scope="col">First Name</th>
-                  <th scope="col">Last Name</th>                  
+                  <th scope="col">Last Name</th>  
+                  <th scope="col" *ngIf = "vendorJourney">Status</th>                
                 </tr>
               </thead>
               <tbody>
@@ -45,7 +46,10 @@
                   </td>
                   <td>
                     {{user?.lastName}}
-                  </td>                  
+                  </td>    
+                  <td *ngIf = "vendorJourney">
+                    {{getUserStatus(user?.userId)}}
+                  </td>              
                 </tr>
               </tbody>
             </table>

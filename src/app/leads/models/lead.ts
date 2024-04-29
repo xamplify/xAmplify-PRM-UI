@@ -35,4 +35,5 @@ export class Lead {
     selfLead:boolean;
     /*** XNFR-505 ***/
     enableRegisterDealButton:boolean = false;
+    associatedCampaignDeleted:boolean = false;
 }

@@ -1,103 +1,115 @@
-<div class="col-xs-12">
-  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }">
-  </ngx-loading>
-   <div class="portlet light">
-     <div class="portlet-title">
-       <div class="caption">Marketing Requests</div>
-        <div class="inputs">
-          <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
-            <i class="fa fa-refresh margin" aria-hidden="true"></i>
-          </a>
-          <div  [ngClass]="{'search-css left-float': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-          <ul class="mix-filter">
-            <li class="mix-filter" [class.li-selected]="0 == selectedFilterIndex" (click)="filterRequests(0,'requested')">Requested</li>
-            <li class="mix-filter" [class.li-selected]="1 == selectedFilterIndex" (click)="filterRequests(1,'approved')">Approved</li>
-          </ul>
-        </div>
-          <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-          <div class="input-icon right" id="icon-right">
-            <input type="text" id="search-text" class="form-control" [(ngModel)]="pagination.searchKey"
-              [ngModelOptions]="{standalone: true}" placeholder="search..."
-              (keypress)="eventHandler($event.keyCode)">
-            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
-              (click)="pagination.searchKey='';search()"></button>
-            <button type="submit" class="search-box-item-click" (click)="search()">
-              <i class="fa fa-search" aria-hidden="true"></i></button>
+
+
+<div class="wrap-collabsible">
+  <input id="collapsible-marketing-requests" name="collapsibleCheckBox" class="toggle" type="checkbox" checked>
+  <label for="collapsible-marketing-requests" class="lbl-toggle">Marketing Requests</label>
+  <div class="collapsible-content">
+    <div class="content-inner">
+      <!--Marketing Requests-->
+      <div>
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }">
+        </ngx-loading>
+        <div class="portlet light">
+          <div class="portlet-title">
+            <div class="caption">Marketing Requests</div>
+              <div class="inputs">
+                <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+                  <i class="fa fa-refresh margin" aria-hidden="true"></i>
+                </a>
+                <div  [ngClass]="{'search-css left-float': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+                <ul class="mix-filter">
+                  <li class="mix-filter" [class.li-selected]="0 == selectedFilterIndex" (click)="filterRequests(0,'requested')">Requested</li>
+                  <li class="mix-filter" [class.li-selected]="1 == selectedFilterIndex" (click)="filterRequests(1,'approved')">Approved</li>
+                </ul>
+              </div>
+                <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+                <div class="input-icon right" id="icon-right">
+                  <input type="text" id="search-text" class="form-control" [(ngModel)]="pagination.searchKey"
+                    [ngModelOptions]="{standalone: true}" placeholder="search..."
+                    (keypress)="eventHandler($event.keyCode)">
+                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
+                    (click)="pagination.searchKey='';search()"></button>
+                  <button type="submit" class="search-box-item-click" (click)="search()">
+                    <i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+              </div> 
+              </div>
           </div>
-        </div> 
-        </div>
-     </div>
-    <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-    <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-     <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !apiError">
-       <div>
-         <div class="table-responsive">
-           <table class='table tgrid' aria-describedby="">
-             <thead>
-               <tr>
-                <th class="tpx" colspan="2" scope="col">
-                  <span translate>Requested Company Details</span>
-                </th>
-                <th class="text-center" scope="row" translate>Status</th>
-                <th class="text-center" scope="row" translate>Requested On</th>
-                <th class="text-center" scope="row" *ngIf="selectedFilterIndex==0">Upgrade</th>
-                <th class="text-center" scope="row" *ngIf="selectedFilterIndex==1">Upgraded On</th>
-               </tr>
-             </thead>
-             <tbody>
-               <ng-container *ngFor="let request of pagination.pagedItems;let i = index">
-                 <tr>
-                  <td style="width: 10%;">
-                    <div class="thumbnail-wrapper">
-                      <img onerror="this.src='assets/images/company-profile-logo.png';" class="custom-image-css" 
-                          src="{{request?.companyLogo}}" alt="Image Not Found">
-                    </div>
-                  </td>
-                  <td>
-                    <h4 class="moreipsis mt5 mb5 f-w-600"   title="{{request?.companyName}}">
-                      <span><strong>{{request?.companyName}}</strong></span>
-                    </h4>
-                    <h6 class="moreipsis" title="{{request?.emailId}}">
-                      <span><strong>{{request?.emailId}}</strong></span>
-                    </h6>
-                  </td>
-                  <td class="text-center">
-                    <span [ngClass]="request.status == 'REQUESTED' ? 'xamplify-folder-banner' 
-                      : request.status == 'REJECTED' ?  'red-banner' 
-                      : request.status == 'APPROVED' ?  'green-banner' :'' ">{{request?.status}}</span>
-                  </td>
-                  <td class="text-center">
-                    <app-display-date-and-time	[dateAndTimeUTCString]="request?.createdTimeInString"> </app-display-date-and-time>
-                  </td>
-                  <td class="text-center" *ngIf="selectedFilterIndex==0">
-                    <button class="btn btn-info" (click)="upgrade(request.id)">Upgrade</button>
-                  </td>
-                  <td class="text-center" *ngIf="selectedFilterIndex==1">
-                    <app-display-date-and-time	[dateAndTimeUTCString]="request?.updatedTimeInString"> </app-display-date-and-time>
-                  </td>
-                 </tr>
-               </ng-container>
-             </tbody>
-           </table>
-         </div>
-       </div>
-     </div>
-     <ng-container *ngIf="!apiError">
-        <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-        <app-pagination [pagination]="pagination"
-          (notifyParent)="setPage($event)"
-          (notifyParentDropDown)="findRequests($event)"
-          [hidden]="httpRequestLoader.isLoading">
-        </app-pagination>
+          <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+          <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+          <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !apiError">
+            <div>
+              <div class="table-responsive">
+                <table class='table tgrid' aria-describedby="">
+                  <thead>
+                    <tr>
+                      <th class="tpx" colspan="2" scope="col">
+                        <span translate>Requested Company Details</span>
+                      </th>
+                      <th class="text-center" scope="row" translate>Status</th>
+                      <th class="text-center" scope="row" translate>Requested On</th>
+                      <th class="text-center" scope="row" *ngIf="selectedFilterIndex==0">Upgrade</th>
+                      <th class="text-center" scope="row" *ngIf="selectedFilterIndex==1">Upgraded On</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let request of pagination.pagedItems;let i = index">
+                      <tr>
+                        <td style="width: 10%;">
+                          <div class="thumbnail-wrapper">
+                            <img onerror="this.src='assets/images/company-profile-logo.png';" class="custom-image-css" 
+                                src="{{request?.companyLogo}}" alt="Image Not Found">
+                          </div>
+                        </td>
+                        <td>
+                          <h4 class="moreipsis mt5 mb5 f-w-600"   title="{{request?.companyName}}">
+                            <span><strong>{{request?.companyName}}</strong></span>
+                          </h4>
+                          <h6 class="moreipsis" title="{{request?.emailId}}">
+                            <span><strong>{{request?.emailId}}</strong></span>
+                          </h6>
+                        </td>
+                        <td class="text-center">
+                          <span [ngClass]="request.status == 'REQUESTED' ? 'xamplify-folder-banner' 
+                            : request.status == 'REJECTED' ?  'red-banner' 
+                            : request.status == 'APPROVED' ?  'green-banner' :'' ">{{request?.status}}</span>
+                        </td>
+                        <td class="text-center">
+                          <app-display-date-and-time	[dateAndTimeUTCString]="request?.createdTimeInString"> </app-display-date-and-time>
+                        </td>
+                        <td class="text-center" *ngIf="selectedFilterIndex==0">
+                          <button class="btn btn-info" (click)="upgrade(request.id)">Upgrade</button>
+                        </td>
+                        <td class="text-center" *ngIf="selectedFilterIndex==1">
+                          <app-display-date-and-time	[dateAndTimeUTCString]="request?.updatedTimeInString"> </app-display-date-and-time>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="!apiError">
+              <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+              <app-pagination [pagination]="pagination"
+                (notifyParent)="setPage($event)"
+                (notifyParentDropDown)="findRequests($event)"
+                [hidden]="httpRequestLoader.isLoading">
+              </app-pagination>
+            </div>
+              <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
+                <strong>No Data Found.</strong>
+              </div>
+          </ng-container>
+          <div *ngIf="apiError" class="alert alert-danger">
+        <strong>Oops!Something went wrong.Please try again after sometime</strong>
       </div>
-        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
-          <strong>No Data Found.</strong>
         </div>
-     </ng-container>
-     <div *ngIf="apiError" class="alert alert-danger">
-   <strong>Oops!Something went wrong.Please try again after sometime</strong>
- </div>
-   </div>
+      </div>
+    </div>
+  </div>
 </div>
+
 
 <app-confirm-sweet-alert-util *ngIf="upgradeButtonClicked" [parameterDto]="sweetAlertParameterDto" (notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>

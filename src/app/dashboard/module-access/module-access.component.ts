@@ -9,6 +9,7 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { MdfService } from 'app/mdf/services/mdf.service';
 import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
 import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
+import { RegularExpressions } from 'app/common/models/regular-expressions';
 
 
 declare var $;
@@ -16,7 +17,7 @@ declare var $;
   selector: 'app-module-access',
   templateUrl: './module-access.component.html',
   styleUrls: ['./module-access.component.css'],
-  providers: [HttpRequestLoader,MdfService]
+  providers: [HttpRequestLoader,MdfService,RegularExpressions]
 })
 export class ModuleAccessComponent implements OnInit {
 
@@ -45,16 +46,38 @@ export class ModuleAccessComponent implements OnInit {
   statusCode = 0;
   analyticsCountDto: AnalyticsCountDto = new AnalyticsCountDto();
   downloadLoader = false;
-  constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService, private mdfService: MdfService) { }
+  headerName = "";
+  isDashboardStats = false;
+  companyProfileLoader = false;
+  companyProfileNameError = false;
+  companyProfileNameErrorMessage = "";
+  companyProfileName = "";
+  constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
+    public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions) { }
   ngOnInit() {
-    this.companyId = this.route.snapshot.params['alias'];
-    this.userAlias = this.route.snapshot.params['userAlias'];
-    this.companyProfilename = this.route.snapshot.params['companyProfileName'];
-    this.getCompanyAndUserDetails();
-    this.getModuleAccessByCompanyId();
-    this.getDnsConfiguredDetails();
-    this.getSpfConfiguredDetails();
-    this.findMaximumAdminsLimitDetails();
+    this.isDashboardStats = this.referenceService.getCurrentRouteUrl().indexOf("dashboard-stats")>-1;
+    if(this.isDashboardStats){
+      this.headerName = "Dashboard Stats";
+      this.authenticationService.selectedVendorId = this.route.snapshot.params['userId'];
+      this.companyId = this.route.snapshot.params['companyId'];
+      this.userAlias = this.route.snapshot.params['userAlias'];
+      if(this.userAlias!=undefined){
+        this.getCompanyAndUserDetails();
+      }else{
+        this.companyLoader = false;
+      }
+    }else{
+      this.companyId = this.route.snapshot.params['alias'];
+      this.userAlias = this.route.snapshot.params['userAlias'];
+      this.companyProfilename = this.route.snapshot.params['companyProfileName'];
+      this.getCompanyAndUserDetails();
+      this.getModuleAccessByCompanyId();
+      this.getDnsConfiguredDetails();
+      this.getSpfConfiguredDetails();
+      this.findMaximumAdminsLimitDetails();
+      this.headerName = "Module Access";
+    }
+   
   }
 
   
@@ -69,6 +92,8 @@ export class ModuleAccessComponent implements OnInit {
       this.stopLoaderWithErrorMessage('DNS Configuration Details Not Found.');
     });
   }
+
+  
 
   
   getSpfConfiguredDetails(){
@@ -88,6 +113,8 @@ export class ModuleAccessComponent implements OnInit {
     this.dnsError = false;
     this.dnsErrorMessage = '';
   }
+
+
 
   startSpfLoader(){
     this.spfLoader = true;
@@ -111,6 +138,8 @@ export class ModuleAccessComponent implements OnInit {
         this.stopLoaderWithErrorMessage('Unable to update DNS Configuartion.');
     });
   }
+
+ 
 
   updateSpf(){
     this.startSpfLoader();
@@ -145,6 +174,7 @@ export class ModuleAccessComponent implements OnInit {
     this.dashboardService.getCompanyDetailsAndUserId(this.companyId, this.userAlias).subscribe(result => {
       this.companyLoader = false;
       this.companyAndUserDetails = result;
+      this.companyProfileName = this.companyAndUserDetails.companyProfileName;
       this.roleId = result.roleId;
     }, error => {
       this.companyLoader = false;
@@ -327,5 +357,52 @@ downloadContactsCount(){
   this.referenceService.post(param, completeUrl);
   this.ngxLoading = false;
 }
+
+validateCompanyProfileName(){
+  this.companyProfileNameError = false;
+  this.companyProfileNameErrorMessage = "";
+  let trimmedCompanyProfileName = this.referenceService.getTrimmedData(this.companyProfileName);
+  let valueWithOutSpaces = $.trim(trimmedCompanyProfileName).toLowerCase().replace(/\s/g, '');
+  if(trimmedCompanyProfileName.length>0){
+    if (!this.regularExpressions.ALPHA_NUMERIC.test(trimmedCompanyProfileName)) {
+      this.companyProfileNameError = true;
+      this.companyProfileNameErrorMessage = "Please enter alpha numerics & lower case letters only";
+    } else if (valueWithOutSpaces.length < 3) {
+      this.companyProfileNameError = true;
+      this.companyProfileNameErrorMessage = "Minimum 3 letters required";
+    }
+  }else{
+    this.companyProfileNameError = true;
+    this.companyProfileNameErrorMessage = "Please etner company profile name";
+  }
+  
+}
+
+updateCompanyProfileName(){
+  this.startCompanyProfileLoader();
+  let trimmedCompanyProfileName = this.referenceService.getTrimmedData(this.companyProfileName);
+  let valueWithOutSpaces = $.trim(trimmedCompanyProfileName).toLowerCase().replace(/\s/g, '');
+  this.dashboardService.updateCompanyProfileName(this.companyId,valueWithOutSpaces).
+  subscribe(result => {
+    this.companyProfileLoader = false;
+    if(result.statusCode==200){
+      this.companyProfileLoader = false;
+      this.referenceService.showSweetAlertSuccessMessage(result.message);
+    }else{
+      this.companyProfileNameError = true;
+      this.companyProfileNameErrorMessage = result.message;
+    }
+    this.companyProfileLoader = false;
+  }, _error => {
+      this.stopLoaderWithErrorMessage('Unable to update Company Profile.');
+  });
+}
+
+startCompanyProfileLoader(){
+  this.companyProfileLoader = true;
+  this.companyProfileNameError = false;
+  this.companyProfileNameErrorMessage = '';
+}
+
 
 }

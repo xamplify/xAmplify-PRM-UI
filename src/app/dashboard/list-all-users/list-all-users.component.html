@@ -1,98 +1,120 @@
-<div class="col-xs-12">
-  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }">
-  </ngx-loading>
-   <div class="portlet light">
-     <div class="portlet-title">
-       <div class="caption">All Approved Users</div>
-   <div class="inputs">
-   <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
-     <i class="fa fa-refresh margin" aria-hidden="true"></i>
-   </a>
-     <div id="left" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-         <select class="form-control" [(ngModel)]="sortOption.selectedActiveUsersSortOption"
-                     (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-                     <option *ngFor="let option of sortOption.activeUsersSortDropDownOptions" [ngValue]="option">
-                       {{option.name}}</option>
-          </select>
-     </div>
-    <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-   <div class="input-icon right" id="icon-right">
-     <input type="text" autocomplete="off" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
-       [ngModelOptions]="{standalone: true}" placeholder="search..."
-       (keypress)="eventHandler($event.keyCode)">
-     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
-       (click)="sortOption.searchKey='';search()"></button>
-     <button type="submit" class="search-box-item-click" (click)="search()">
-       <i class="fa fa-search" aria-hidden="true"></i></button>
-   </div>
- </div> 
-     </div>
-     </div>
-      <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-      <ng-container *ngIf="!httpRequestLoader.isLoading">
-    	<button class="btn btn-primary" (click)="download('Admins.csv')">Download Admins</button>
-   		<button class="btn btn-primary" (click)="download('Admin-Team-Members.csv')">Download Admin Team Members</button>
-   		<button class="btn btn-primary" (click)="download('Partners.csv')">Download Partners</button>
-   		<button class="btn btn-primary" (click)="download('Partner-Team-Members.csv')">Download Partner Team Members</button>
-      </ng-container>
-     <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
-       <div>
-         <div class="table-responsive">
-           <table class='table tgrid' aria-describedby="all-Approved-users">
-             <thead>
-               <tr>
-                 <th style="width: 20%;" scope="col">NAME</th>
-                 <th class='text-center' scope="col">COMPANY</th>
-                 <th class='text-center' scope="col">Role</th>
-                 <th class='text-center' scope="col">Created Time</th>
-                  <th class='text-center' scope="col">Login</th>
-                  <th class='text-center' scope="col" (click)="confirmLogoutForAll()">
-                    <a (click)="confirmLogoutForAll()">Logout</a>
-                  </th>
-               </tr>
-             </thead>
-             <tbody>
-               <ng-container *ngFor="let request of pagination.pagedItems;let i = index">
-                 <tr>
-                   <td>
-                     <app-user-info [userInfo]="request" [isFromAdminList]="true">
-                     </app-user-info>
-                   </td>
-                   <td align="center" scope="col">{{request.companyName}}</td>
-                   <td align="center" scope="col">{{request.roleName}}</td>
-                   <td align="center" scope="col">{{request.createdTime | date:'mediumDate'}} {{request.createdTime | date:'shortTime'}}</td>
-                   <td id="center" class="xAmpColor">
-                     <a (click)="loginAs(request)">
-                      <button class="btn btn-primary">Login as </button>
-                    </a>
-                  </td>
-                  <td id="center" class="xAmpColor">
-                    <a (click)="confirmLogout(request)">
-                     <button class="btn btn-danger">Logout</button>
-                   </a>
-                 </td>
-                 </tr>
-               </ng-container>
-             </tbody>
-           </table>
-         </div>
+<div class="wrap-collabsible">
+  <input id="{{collpsableId}}" name="collapsibleCheckBox" class="toggle" type="checkbox" checked>
+  <label for="{{collpsableId}}" class="lbl-toggle">{{headerText}}</label>
+  <div class="collapsible-content">
+    <div class="content-inner">
+      <div>
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }">
+        </ngx-loading>
+         <div class="portlet light">
+           <div class="portlet-title">
+             <div class="caption">{{headerText}}</div>
+              <div class="inputs">
+                  <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+                    <i class="fa fa-refresh margin" aria-hidden="true"></i>
+                  </a>
+                  <!--Searchable DropDown-->
+                  <div *ngIf="!isSearchableDropdownHidden"  id="left" class="cw-500px" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+                    <p class="mt--10px" *ngIf="dropdownDataLoading">
+                      <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Companies...</strong>
+                    </p>
+                      <app-searchable-dropdown *ngIf="!dropdownDataLoading" [searchableDropDownDto]="companiesSearchableDropDownDto" [id]="selectedCompanyId"
+                       [disableDropDown]="false" (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event)">
+                      </app-searchable-dropdown>
+                  </div>
+                  <!--Sort-->
+                    <div id="left" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+                        <select class="form-control" [(ngModel)]="sortOption.selectedActiveUsersSortOption"
+                                    (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+                                    <option *ngFor="let option of sortOption.activeUsersSortDropDownOptions" [ngValue]="option">
+                                      {{option.name}}</option>
+                          </select>
+                    </div>
+                  <!--Search-->
+                    <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+                      <div class="input-icon right" id="icon-right">
+                        <input type="text" autocomplete="off" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                          [ngModelOptions]="{standalone: true}" placeholder="search..."
+                          (keypress)="eventHandler($event.keyCode)">
+                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                          (click)="sortOption.searchKey='';search()"></button>
+                        <button type="submit" class="search-box-item-click" (click)="search()">
+                          <i class="fa fa-search" aria-hidden="true"></i></button>
+                      </div>
+                    </div>
+
+              </div>
+           </div>
+            <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+            <ng-container *ngIf="!httpRequestLoader.isLoading && !isVanityUrlEnabled">
+              <button class="btn btn-primary" (click)="download('Admins.csv')">Download Admins</button>
+              <button class="btn btn-primary" (click)="download('Admin-Team-Members.csv')">Download Admin Team Members</button>
+              <button class="btn btn-primary" (click)="download('Partners.csv')">Download Partners</button>
+              <button class="btn btn-primary" (click)="download('Partner-Team-Members.csv')">Download Partner Team Members</button>
+            </ng-container>
+           <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
+             <div>
+               <div class="table-responsive">
+                 <table class='table tgrid' aria-describedby="all-Approved-users">
+                   <thead>
+                     <tr>
+                       <th style="width: 20%;" scope="col">NAME</th>
+                       <th class='text-center' scope="col">COMPANY</th>
+                       <th class='text-center' scope="col">Role</th>
+                       <th class='text-center' scope="col">Created Time</th>
+                        <th class='text-center' scope="col">Login</th>
+                        <th class='text-center' scope="col" (click)="confirmLogoutForAll()">
+                          <a (click)="confirmLogoutForAll()">Logout</a>
+                        </th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <ng-container *ngFor="let request of pagination.pagedItems;let i = index">
+                       <tr>
+                         <td>
+                           <app-user-info [userInfo]="request" [isFromAdminList]="true">
+                           </app-user-info>
+                         </td>
+                         <td align="center" scope="col">{{request.companyName}}</td>
+                         <td align="center" scope="col">{{request.roleName}}</td>
+                         <td align="center" scope="col">{{request.createdTime | date:'mediumDate'}} {{request.createdTime | date:'shortTime'}}</td>
+                         <td id="center" class="xAmpColor">
+                           <a (click)="loginAs(request)">
+                            <button class="btn btn-primary">Login as </button>
+                          </a>
+                        </td>
+                        <td id="center" class="xAmpColor">
+                          <a (click)="confirmLogout(request)">
+                           <button class="btn btn-danger">Logout</button>
+                         </a>
+                       </td>
+                       </tr>
+                     </ng-container>
+                   </tbody>
+                 </table>
+               </div>
+             </div>
+           </div>
+           <ng-container *ngIf="!hasError">
+              <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+              <app-pagination [pagination]="pagination"
+                (notifyParent)="setPage($event)"
+                (notifyParentDropDown)="listAllApprovedUsers($event)"
+                [hidden]="httpRequestLoader.isLoading">
+              </app-pagination>
+            </div>
+              <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                <strong>No Data Found.</strong>
+              </div>
+           </ng-container>
+           <div *ngIf="hasError" class="alert alert-danger">
+         <strong>Oops!Something went wrong.Please try again after sometime</strong>
        </div>
-     </div>
-     <ng-container *ngIf="!hasError">
-        <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-        <app-pagination [pagination]="pagination"
-          (notifyParent)="setPage($event)"
-          (notifyParentDropDown)="listAllApprovedUsers($event)"
-          [hidden]="httpRequestLoader.isLoading">
-        </app-pagination>
+         </div>
       </div>
-        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-          <strong>No Data Found.</strong>
-        </div>
-     </ng-container>
-     <div *ngIf="hasError" class="alert alert-danger">
-   <strong>Oops!Something went wrong.Please try again after sometime</strong>
- </div>
-   </div>
+    </div>
   </div>
-  
+</div>
+
+
+

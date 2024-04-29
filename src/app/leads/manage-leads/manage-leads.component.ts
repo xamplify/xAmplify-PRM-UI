@@ -1205,11 +1205,15 @@ export class ManageLeadsComponent implements OnInit {
         error => {
           this.referenceService.loading(this.httpRequestLoader, false);
           let integrationType = (this.activeCRMDetails.type).charAt(0)+(this.activeCRMDetails.type).substring(1).toLocaleLowerCase();
-          this.leadsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid API Token",true);
+          if(integrationType == 'Salesforce'){
+            this.leadsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid credentials ",true);
+          } else {
+            this.leadsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid API Token",true);
+          }
 
         },
         () => {
-          this.referenceService.loading(this.httpRequestLoader, false);
+          // this.referenceService.loading(this.httpRequestLoader, false);
         }
       );
   }

@@ -96,7 +96,9 @@ import { DashboardBannerImagesComponent } from './dashboard-banner-images/dashbo
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { VendorJourneyComponent } from './vendor-journey/vendor-journey.component';
 import { HalopsaAuthenticationComponent } from './halopsa-authentication/halopsa-authentication.component';
-
+import { VendorReportComponent } from './vendor-report/vendor-report.component';
+import { ProcessingUserListsComponent } from './processing-user-lists/processing-user-lists.component';
+import { UpdatePasswordComponent } from './super-admin/update-password/update-password.component';
 
 
 @NgModule({
@@ -166,7 +168,10 @@ import { HalopsaAuthenticationComponent } from './halopsa-authentication/halopsa
         NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent,
         DashboardBannerImagesComponent,
         VendorJourneyComponent,
-        HalopsaAuthenticationComponent
+        HalopsaAuthenticationComponent,
+        VendorReportComponent,
+        ProcessingUserListsComponent,
+        UpdatePasswordComponent
 
             
     ],

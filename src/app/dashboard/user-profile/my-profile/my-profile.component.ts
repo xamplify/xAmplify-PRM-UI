@@ -2625,11 +2625,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (count > 0 && item.previewAccess) {
 			this.ngxloading = true;
 			if ("Templates" == type) {
-				this.router.navigate(['/home/emailtemplates/manage/' + categoryId]);
+				this.router.navigate(['/home/emailtemplates/manage/l/' + categoryId+'/fg']);
 			} else if ("Forms" == type) {
 				this.router.navigate(['/home/forms/manage/' + categoryId]);
 			} else if ("Pages" == type) {
-				this.router.navigate(['/home/pages/manage/' + categoryId]);
+				this.router.navigate(['/home/pages/manage/l/' + categoryId+'/fg']);
 			} else if ("Campaigns" == type) {
 				this.router.navigate(['/home/campaigns/manage/' + categoryId]);
 			} else if ("Asset Library" == type) {
@@ -2724,24 +2724,35 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	getSelectedDashboardForPartner() {
 		this.modulesDashboardForPartner = new CustomResponse();  
 		this.updateDashboardError = false;
-		this.vanityUrlService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {        
-			this.companyIdFromCompanyProfileNameForVanity = result.companyId});
-		this.dashBoardService.getDefaultDashboardForPartner(this.companyIdFromCompanyProfileNameForVanity)
-			.subscribe(
-				data => {
-					if (data.statusCode == 200) {
-						this.defaultSelectedDashboardTypeSetting = data.data;
-					} else {
-						this.updateDashboardError = true;
-						this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-					}
-				},
-				error => {
-					this.updateDashboardError = true;
-					this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-				},
-				() => { }
-			);
+		let companyProfileName = this.authenticationService.companyProfileName;
+		let isValidCompanyProfileName = companyProfileName!=undefined && companyProfileName!="";
+		if(isValidCompanyProfileName){
+			this.vanityUrlService.getVanityURLDetails(this.authenticationService.companyProfileName).
+			subscribe(result => {        
+			this.companyIdFromCompanyProfileNameForVanity = result.companyId
+			},error=>{
+				
+			},()=>{
+				if(this.companyIdFromCompanyProfileNameForVanity!=undefined && this.companyIdFromCompanyProfileNameForVanity>0){
+					this.dashBoardService.getDefaultDashboardForPartner(this.companyIdFromCompanyProfileNameForVanity)
+					.subscribe(
+						data => {
+							if (data.statusCode == 200) {
+								this.defaultSelectedDashboardTypeSetting = data.data;
+							} else {
+								this.updateDashboardError = true;
+								this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+							}
+						},
+						error => {
+							this.updateDashboardError = true;
+							this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+						},
+						() => { }
+					);
+				}
+			});
+		}
 	}
 
 	checkDashboardTypes(){
@@ -2893,13 +2904,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.integrationTabIndex = 5;
 	}
 
-	// halopsaSettings() {
-	// 	this.sfcfPagedItems = [];
-	// 	this.sfcfMasterCBClicked = false;
-	// 	this.customFieldsResponse.isVisible = false;
-	// 	this.integrationType = 'HALOPSA';
-	// 	this.integrationTabIndex = 5;
-	// }
+	halopsaSettings() {
+		this.sfcfPagedItems = [];
+		this.sfcfMasterCBClicked = false;
+		this.customFieldsResponse.isVisible = false;
+		this.integrationType = 'HALOPSA';
+		this.integrationTabIndex = 5;
+	}
 
 	marketoSettings() {
 		this.sfcfPagedItems = [];
@@ -4524,9 +4535,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/************* XNFR-338 *********************/
 
 	shouldDisableCheckbox(index: number): boolean {
-		const selectedCount = this.pipeline.stages.filter(item => item.private).length;
+		if (!this.pipeline || !this.pipeline.stages || index < 0 || index >= this.pipeline.stages.length || !this.pipeline.stages[index]) {
+			return false;
+		}
+	
+		const selectedCount = this.pipeline.stages.filter(item => item && item.private).length;
 		let remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
-		if(this.pipeline.integrationType === "PIPEDRIVE" || this.pipeline.integrationType === "CONNECTWISE")
+		if(this.pipeline.integrationType === "PIPEDRIVE")
 		{
 			remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 2;
 		}
@@ -4581,22 +4596,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	// halo psa
 	checkHaloPsaIntegration() {
 		   this.halopsaRibbonText = "configure";
-		// this.referenceService.loading(this.httpRequestLoader, true);
-		// this.halopsaRibbonText = "configure";
-		// this.integrationService.checkConfigurationByType("halopsa").subscribe(data => {
-		// 	this.referenceService.loading(this.httpRequestLoader, false);
-		// 	let response = data;
-		// 	if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-		// 		this.halopsaRibbonText = "configured";
-		// 	}
-		// 	else {
-		// 		this.halopsaRibbonText = "configure";
-		// 	}
-		// }, error => {
-		// 	this.referenceService.loading(this.httpRequestLoader, false);
-		// 	this.sfRibbonText = "configure";
-		// 	this.logger.error(error, "Error in checkhalopsaIntegration() for Halopsa");
-		// }, () => this.logger.log("Halopsa Integration Configuration Checking done"));
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.halopsaRibbonText = "configure";
+		this.integrationService.checkConfigurationByType("halopsa").subscribe(data => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.halopsaRibbonText = "configured";
+			}
+			else {
+				this.halopsaRibbonText = "configure";
+			}
+		}, error => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			this.sfRibbonText = "configure";
+			this.logger.error(error, "Error in checkhalopsaIntegration() for Halopsa");
+		}, () => this.logger.log("Halopsa Integration Configuration Checking done"));
 	}
 
 	configureHaloPsa() {

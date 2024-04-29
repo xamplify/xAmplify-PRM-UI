@@ -146,10 +146,12 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
                 let downloadUrl = currentUrl.indexOf('download')>-1;
                 let samlSecurityUrl = currentUrl.indexOf('samlsecurity')>-1;
                 let teamMemberSignUpUrl = currentUrl.indexOf('tsignUp')>-1;
+                let partnerSignUpUrl = currentUrl.indexOf('psignUp')>-1;
                 let exculdeUrls =  ( !loginUrl && !emptyUrl && !signUpUrl && !forgotPasswordUrl && !userLockUrl && !registerUrl &&  !formUrl && !pageUrl && !partnerLandingPageUrl && !termsAndConditionUrl && !privacyPolicyUrl && !callbackUrl &&
                                   !shareUrl && !showCampaignVideoUrl &&  !showCampaignEmail &&  !companyPageUrl && !partnerPageUrl && !logeUrl &&
                                   !unsubscribeUrl && !serviceUnavailableUrl && !accessDeniedUrl &&   !rsvpUrl && !smsShowCampaignUrl && !showEventCampaignUrl &&
-                                  !logsUrl && !campaignLandingPageUrl && !scpUrl && !clplUrl && !requestdemoUrl && !activateAccountUrl && !downloadUrl && !samlSecurityUrl && !logoutUrl && !expiredUrl && !teamMemberSignUpUrl
+                                  !logsUrl && !campaignLandingPageUrl && !scpUrl && !clplUrl && !requestdemoUrl && !activateAccountUrl && !downloadUrl
+                                   && !samlSecurityUrl && !logoutUrl && !expiredUrl && !teamMemberSignUpUrl && !partnerSignUpUrl 
                                   );
 
                  if(exculdeUrls){

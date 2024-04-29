@@ -316,7 +316,7 @@
                       <ng-template [ngTemplateOutlet]="disableIconsTemplate"
                         [ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
                       <ng-container class="pull-right"
-                        *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
+                        *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE' || campaign.campaignType === 'SURVEY'">
                         <div class="btn-group downloadicon" id="download-template-grid" *ngIf="campaign.allowDownload">
                           <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu downloadicon-align"
                             data-toggle="dropdown" id="download-drop" title="Download"></span>

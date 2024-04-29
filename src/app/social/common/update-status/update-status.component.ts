@@ -981,6 +981,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				() => {
 					this.listAllTeamMemberEmailIds();
 					this.loadContactLists(this.contactListsPagination);
+					this.filterContacts('ALL');
 					this.listSocialStatusProviders();
 				}
 			);
@@ -1673,6 +1674,12 @@ checkAliasAccess(socialCampaignAlias: string) {
 		let trimmedFromName = this.referenceService.replaceMultipleSpacesWithSingleSpace($.trim(fromName));
 		this.isValidFromName = trimmedFromName!=undefined && trimmedFromName.length>0;
 	}
+
+	checkNameForCompanyList(name: any): boolean {
+        let position = name.search('Company List');
+        return position != -1 ? true: false;
+      }
+
 
 	filterContacts(filterType:string){
 		this.contactListsPagination.pageIndex = 1;

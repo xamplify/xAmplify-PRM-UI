@@ -130,7 +130,7 @@
                                         style="display: contents !important; font-size: 15px !important"></i></a>
                             </div>
                             <div class="portlet-body">
-                                <div class="row cloud_platforms_paddings">
+                                <div class="row cloud_platforms_paddings cloud_platforms_margins">
 
                                     <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8 image_effect"
                                         style="margin-top: 10px;">
@@ -447,7 +447,8 @@
             class="col-sm-12 form-group portlet light cloud_legal_basis">
             <a class="close-circle" *ngIf="clipBoard" data-dismiss="modal" (click)="cancelPartners()"><i
                     class="fa fa-times"></i></a>
-                    <div class="form-group" *ngIf="(gdprStatus) &&  ( (filePreview) || (clipBoard) || (selectedAddPartnerOption==2) )">
+            <div class="form-group"
+                *ngIf="(gdprStatus) &&  ( (filePreview) || (clipBoard) || (selectedAddPartnerOption==2) )">
                 <label for="name" class="col-xs-12 col-sm-3 control-label" translate>Legal
                     Basis Options <span class="danger">*</span>
                 </label>
@@ -810,8 +811,9 @@
                                     </button>
                                 </div>
                             </div>
-                            <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip" [disabled]="pagination.totalRecords == 0"
-                                title="Click here to email the list" (click)="downloadPartnerListCsv(pagination)" style="margin: 3px -5px 0px 3px;">
+                            <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+                                [disabled]="pagination.totalRecords == 0" title="Click here to email the list"
+                                (click)="downloadPartnerListCsv()" style="margin: 3px -5px 0px 3px;">
                                 <i aria-hidden="true" class="fas fa-file-export p10"></i>
                             </button>
                             <div class="btn-group pull-right" style="margin:3px;">
