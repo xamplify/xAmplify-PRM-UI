@@ -70,12 +70,13 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         private logger: XtremandLogger, public refService: ReferenceService, private hubSpotService: HubSpotService,private utilService:UtilService) {
         this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
         this.emailTemplateService.isTemplateSaved = false;
+        this.emailTemplateService.isEditingDefaultTemplate = false;
 
     }
     ngOnInit() {
         try {
-           this.mergeTagForGuide = 'design_email_template'
-            this.listDefaultTemplates();
+           this.mergeTagForGuide = 'design_email_template';
+           this.listDefaultTemplates();
         }
         catch (error) {
             this.logger.error(this.refService.errorPrepender + " ngOnInit():", error);
@@ -111,7 +112,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        //  this.emailTemplateService.emailTemplate = new EmailTemplate();
+        
     }
 
     showAllTemplates(index: number) {
@@ -349,6 +350,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                 .subscribe(
                     (data: any) => {
                         if(isAdd){
+                            this.emailTemplateService.isEditingDefaultTemplate = false;
                             if(this.authenticationService.module.isAgencyCompany){
                                 data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.v_companyLogoImagePath);
                             }else{

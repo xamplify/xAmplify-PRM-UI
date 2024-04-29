@@ -273,7 +273,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             }
             let emailTemplateName = self.refService.getTrimmedData(self.emailTemplate.name);
             self.invalidTemplateName = emailTemplateName.length==0;
-            if(self.emailTemplateService.isEditingDefaultTemplate){
+            if(self.emailTemplateService.isEditingDefaultTemplate && !self.emailTemplateService.emailTemplate.userDefined){
                 self.updateDefaultEmailTemplateJsonBody(self.emailTemplate);
             }else{
                 self.refService.showModalPopup("save-template-popup");
