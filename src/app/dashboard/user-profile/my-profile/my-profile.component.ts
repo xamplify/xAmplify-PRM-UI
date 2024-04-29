@@ -4535,7 +4535,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/************* XNFR-338 *********************/
 
 	shouldDisableCheckbox(index: number): boolean {
-		const selectedCount = this.pipeline.stages.filter(item => item.private).length;
+		if (!this.pipeline || !this.pipeline.stages || index < 0 || index >= this.pipeline.stages.length || !this.pipeline.stages[index]) {
+			return false;
+		}
+	
+		const selectedCount = this.pipeline.stages.filter(item => item && item.private).length;
 		let remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
 		if(this.pipeline.integrationType === "PIPEDRIVE")
 		{
