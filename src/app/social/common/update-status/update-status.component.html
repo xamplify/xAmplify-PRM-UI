@@ -764,7 +764,7 @@
                                         <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
                                             List Info
                                         </th>
-                                        <th style="display: none;" scope="row" style="text-align: center;"translate>Type
+                                        <th scope="row" style="text-align: center;display: none;"translate>Type
                                     </th>
                                         <th scope="row" class="text-center" translate>Created On</th>
                                         <th *ngIf="!showNavigationBreadCrumbToPartner" scope="row" class="text-center"
@@ -837,36 +837,38 @@
                                                     <span translate> Created By
                                                         <strong>{{contactList?.creatorName}}</strong></span>
                                                 </h6>
-                                                <ng-container style="display: none;" *ngIf="!contactList?.partnerList">
-                                                    <div class="displayinline-flex">
-                                                        <h6 class="view-banner" translate>
-                                                            <span *ngIf="contactList?.publicList" data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title="{{actionsDescription?.contact_list_public}}"
-                                                                translate>Public
-                                                            </span>
-                                                            <span *ngIf="!contactList?.publicList" data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title="{{actionsDescription?.contact_list_private}}"
-                                                                translate>Private
+                                                <div style="display: none;">
+                                                    <ng-container  *ngIf="!contactList?.partnerList">
+                                                        <div class="displayinline-flex">
+                                                            <h6 class="view-banner" translate>
+                                                                <span *ngIf="contactList?.publicList" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="{{actionsDescription?.contact_list_public}}"
+                                                                    translate>Public
+                                                                </span>
+                                                                <span *ngIf="!contactList?.publicList" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="{{actionsDescription?.contact_list_private}}"
+                                                                    translate>Private
+                                                                </span>
+                                                            </h6>
+                                                        </div>
+                                                        <h6 *ngIf="contactList?.formList"
+                                                            class="view-banner view-banner-green mt5 left-flt" translate>
+                                                            <span class="" data-toggle="tooltip" data-placement="top"
+                                                                title="This list is associated with a form." translate>Form
+                                                                Contact List
                                                             </span>
                                                         </h6>
-                                                    </div>
-                                                    <h6 *ngIf="contactList?.formList"
-                                                        class="view-banner view-banner-green mt5 left-flt" translate>
-                                                        <span class="" data-toggle="tooltip" data-placement="top"
-                                                            title="This list is associated with a form." translate>Form
-                                                            Contact List
-                                                        </span>
-                                                    </h6>
-                                                    <h6 *ngIf="contactList?.companyList || checkNameForCompanyList(contactList.name) && !bannerDisplayed"
-                                                        class="view-banner view-banner-green mt5 left-flt" translate>
-                                                        <span class="" data-toggle="tooltip" data-placement="top"
-                                                            title="This list is associated with a company." translate>Company
-                                                            Contact List
-                                                        </span>
-                                                    </h6>
-                                                </ng-container>
+                                                        <h6 *ngIf="contactList?.companyList || checkNameForCompanyList(contactList.name) && !bannerDisplayed"
+                                                            class="view-banner view-banner-green mt5 left-flt" translate>
+                                                            <span class="" data-toggle="tooltip" data-placement="top"
+                                                                title="This list is associated with a company." translate>Company
+                                                                Contact List
+                                                            </span>
+                                                        </h6>
+                                                    </ng-container>
+                                                </div>
                                             </td>
                                             <td style="text-align:center"
                                             *ngIf="nurtureCampaign">
