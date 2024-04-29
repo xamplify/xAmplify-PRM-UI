@@ -107,10 +107,6 @@
 												<!---XNFR-255-->
 												<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress"
 													class="view-banner published">Published</h6>
-												<span *ngIf="asset?.publishingOrWhiteLabelingInProgress"
-													class="view-banner-white-labeled mb5 G ListLabelSpacings">
-													<img src="assets/images/loading.gif"
-														alt="Processing">Processing</span>
 												<!---XNFR-255-->
 												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
 												<!---XNFR-255-->
@@ -334,10 +330,6 @@
 																		<!---XNFR-255-->
 																		<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress"
 																			class="view-banner published">Published</h6>
-																		<h6 *ngIf="asset?.publishingOrWhiteLabelingInProgress"
-																			class="view-banner">
-																			<span><img src="assets/images/loading.gif"alt="Processing"style="height:15px">Processing</span>
-																		</h6>
 																		<!---XNFR-255-->
 																		<span *ngIf="asset.viewBy=='DRAFT'"
 																			class="draft-video mb0">DRAFT</span>
