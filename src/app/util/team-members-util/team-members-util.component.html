@@ -160,14 +160,14 @@
                 </button>
               </div>
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div [ngClass]="isVendorVersion ?'col-lg-12 col-md-12 col-sm-12 col-xs-12':'col-lg-6 col-md-6 col-sm-6 col-xs-6'">
                   <ejs-multiselect [(ngModel)]='selectedTeamMembers' [ngModelOptions]="{standalone: true}"
                     [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
                     [dataSource]='TeamMemberInfoFilters' [fields]='teamMemberInfoFields'
                     [placeholder]='teamMemberInfoFilterPlaceHolder'>
                   </ejs-multiselect>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div *ngIf="!isVendorVersion" class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                   <ejs-multiselect [(ngModel)]='selectedVendorCompanies' [ngModelOptions]="{standalone: true}"
                     [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
                     [dataSource]='VendorInfoFilters' [fields]='vendorInfoFields'
@@ -549,7 +549,13 @@
             [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion">
           </app-team-member-analytics-contact-details>
         </div>
-        <div class="row responsivepaddding1">
+        <!--******************Company Details*******************-->
+        <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
+          <app-team-member-analytics-company-details [selectedTeamMemberIds]="selectedTeamMemberIds"
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion">
+          </app-team-member-analytics-company-details>
+        </div>
+        <div class="row rowPaddingCustomization2">
           <!--******************MDF Details*******************-->
           <app-mdf-detail-analytics [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"

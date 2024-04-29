@@ -182,6 +182,7 @@ import { TeamMemberAnalyticsContactDetailsComponent } from 'app/util/team-member
 import { TeamMemberAnalyticsAllPartnersDetailsComponent } from 'app/util/team-member-analytics-all-partners-details/team-member-analytics-all-partners-details.component';
 import { TeamMemberwiseAssetsDetailsComponent } from 'app/util/team-memberwise-assets-details/team-memberwise-assets-details.component';
 import { TeamMemberwiseAssetsDetailedReportComponent } from 'app/util/team-memberwise-assets-detailed-report/team-memberwise-assets-detailed-report.component';
+import { TeamMemberAnalyticsCompanyDetailsComponent } from 'app/util/team-member-analytics-company-details/team-member-analytics-company-details.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -218,7 +219,7 @@ import { TeamMemberwiseAssetsDetailedReportComponent } from 'app/util/team-membe
 		TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
-		TeamMemberwiseAssetsDetailsComponent,TeamMemberwiseAssetsDetailedReportComponent
+		TeamMemberwiseAssetsDetailsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent
 	],
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -253,7 +254,7 @@ import { TeamMemberwiseAssetsDetailedReportComponent } from 'app/util/team-membe
 		InteractedNotInteractedTrackDetailsComponent,TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetsDetailsComponent,
-		TeamMemberwiseAssetsDetailedReportComponent
+		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent
 	]
 
 

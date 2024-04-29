@@ -521,6 +521,11 @@ span.filterActiveBg i {
   margin-left: -15px;
 }
 
+.row.rowPaddingCustomization2 {
+  margin-right: -20px;
+  margin-left: 0px;
+}
+
 .campaign-type-selected {
   background-color: #6dcff6;
 }

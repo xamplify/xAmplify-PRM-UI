@@ -612,6 +612,12 @@ export class ParterService {
             .catch(this.handleError);
     }
 
+    getCompanyDetailsForTeamMember(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/company/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url, pagination)
+            .catch(this.handleError);
+    }
+
     /*********End : XNFR-316************/
 
     handleError(error: any) {
