@@ -16,6 +16,7 @@ import { SortOption } from '../../core/models/sort-option';
 import { CustomResponse } from '../../common/models/custom-response';
 import { ComponentCanDeactivate } from 'app/component-can-deactivate';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { Properties } from 'app/common/models/properties';
 
 declare var BeePlugin:any, swal:any, $: any;
 
@@ -23,7 +24,7 @@ declare var BeePlugin:any, swal:any, $: any;
     selector: 'app-create-template',
     templateUrl: './create-template.component.html',
     styleUrls: ['./create-template.component.css'],
-    providers: [EmailTemplate, FormService, Pagination, SortOption]
+    providers: [EmailTemplate, FormService, Pagination, SortOption,Properties]
 })
 export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,OnDestroy {
     senderMergeTag: SenderMergeTag = new SenderMergeTag();
@@ -64,6 +65,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     saveLoader = false;
     isSaveAsButtonDisabled = true;
     invalidTemplateName = false;
+    properties:Properties = new Properties();
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
