@@ -764,8 +764,7 @@
                                         <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
                                             List Info
                                         </th>
-                                        <th scope="row" style="text-align: center;"
-                                        translate>Type
+                                        <th style="display: none;" scope="row" style="text-align: center;"translate>Type
                                     </th>
                                         <th scope="row" class="text-center" translate>Created On</th>
                                         <th *ngIf="!showNavigationBreadCrumbToPartner" scope="row" class="text-center"
@@ -838,7 +837,7 @@
                                                     <span translate> Created By
                                                         <strong>{{contactList?.creatorName}}</strong></span>
                                                 </h6>
-                                                <ng-container *ngIf="!contactList?.partnerList">
+                                                <ng-container style="display: none;" *ngIf="!contactList?.partnerList">
                                                     <div class="displayinline-flex">
                                                         <h6 class="view-banner" translate>
                                                             <span *ngIf="contactList?.publicList" data-toggle="tooltip"

@@ -354,7 +354,6 @@ export class Properties {
 	PARTNERSHIP_ALREADY_ESTABLISHED_WITH_COMPANY_NAME = "The company partnership has been established. Please contact the company admin if you wish to continue as a team member.";
 	UPDATE_AND_CLOSE = "Update & Close";
 	SAVE_AND_CLOSE = "Save & Close";
-	CAMPAIGN_EMAIL_NOTIFICATION_PREVIEW_MESSAGE  = "Email will be sent to {{validRecipients}}({{totalRecipients}}) valid recipients.";
 
 
 
