@@ -78,7 +78,9 @@
                          </td>
                          <td align="center" scope="col">{{request.companyName}}</td>
                          <td align="center" scope="col">{{request.roleName}}</td>
-                         <td align="center"><a href="{{request.companyProfileName}}.{{authenticationService?.APP_URL}}login" target="_blank">{{request.companyProfileName}}.{{authenticationService?.APP_URL}}login</a></td>
+                         <td align="center">
+                            <a href="{{request?.vanityUrlLink}}" target="_blank">{{request?.vanityUrlLink}}</a>
+                         </td>
                          <td align="center" scope="col">{{request.createdTime | date:'mediumDate'}} {{request.createdTime | date:'shortTime'}}</td>
                          <td id="center" class="xAmpColor">
                            <a (click)="loginAs(request)">
