@@ -274,6 +274,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             let emailTemplateName = self.refService.getTrimmedData(self.emailTemplate.name);
             self.invalidTemplateName = emailTemplateName.length==0;
             if(self.emailTemplateService.isEditingDefaultTemplate && !self.emailTemplateService.emailTemplate.userDefined){
+                self.ngxLoading = true;
                 self.updateDefaultEmailTemplateJsonBody(self.emailTemplate);
             }else{
                 self.refService.showModalPopup("save-template-popup");
@@ -287,7 +288,10 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         this.emailTemplateService.updateDefaultEmailTemplateJsonBody(emailTemplate).subscribe(
             response=>{
                 this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+                this.refService.scrollSmoothToTop();
+                this.ngxLoading = false;
             },error=>{
+                this.ngxLoading = false;
                 this.refService.showSweetAlertServerErrorMessage();
             });
     }
