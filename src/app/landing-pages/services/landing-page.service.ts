@@ -29,7 +29,8 @@ export class LandingPageService {
          private router: Router,private utilService:UtilService,public referenceService:ReferenceService) { }
 
     listDefault( pagination: Pagination ): Observable<any> {
-        return this.http.post( this.URL + "default?access_token=" + this.authenticationService.access_token, pagination )
+        let encodedUrl = this.referenceService.getEncodedUri(pagination.searchKey);
+        return this.http.post( this.URL + "default?searchKey="+encodedUrl+"&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
