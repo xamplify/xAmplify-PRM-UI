@@ -70,11 +70,13 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         private logger: XtremandLogger, public refService: ReferenceService, private hubSpotService: HubSpotService,private utilService:UtilService) {
         this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
         this.emailTemplateService.isTemplateSaved = false;
+        this.emailTemplateService.isEditingDefaultTemplate = false;
 
     }
     ngOnInit() {
         try {
-            this.listDefaultTemplates();
+           this.mergeTagForGuide = 'design_email_template';
+           this.listDefaultTemplates();
         }
         catch (error) {
             this.logger.error(this.refService.errorPrepender + " ngOnInit():", error);
@@ -112,7 +114,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        //  this.emailTemplateService.emailTemplate = new EmailTemplate();
+        
     }
 
     showAllTemplates(index: number) {
@@ -343,22 +345,25 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     }
 
 
-    showTemplateById(template: any) {
+    showTemplateById(template: any,isAdd:boolean) {
         if (template.id != undefined) {
             this.emailTemplateService.getById(template.id)
                 .subscribe(
                     (data: any) => {
-                        if(this.authenticationService.module.isAgencyCompany){
-                            data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.v_companyLogoImagePath);
-                        }else{
-                            if (this.refService.companyProfileImage != undefined) {
-                                data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                        if(isAdd){
+                            this.emailTemplateService.isEditingDefaultTemplate = false;
+                            if(this.authenticationService.module.isAgencyCompany){
+                                data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.v_companyLogoImagePath);
+                            }else{
+                                if (this.refService.companyProfileImage != undefined) {
+                                    data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                                }
                             }
+                            this.emailTemplateService.isNewTemplate = true;
+                        }else{
+                            this.emailTemplateService.isEditingDefaultTemplate = true;
                         }
-
-                        
                         this.emailTemplateService.emailTemplate = data;
-                        this.emailTemplateService.isNewTemplate = true;
                         this.router.navigate(["/home/emailtemplates/create"]);
                     },
                     (error: string) => {

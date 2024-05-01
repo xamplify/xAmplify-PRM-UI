@@ -34,6 +34,7 @@ import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { Subject } from 'rxjs';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
+import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -259,6 +260,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() showEdit: boolean;
 	/*****XNFR-342*****/
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
+	contactListObj = new ContactList;
+	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -852,7 +855,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.users[i].country = null;
 					}
 
-					this.validateEmail(this.users[i].emailId);
+					// this.validateEmail(this.users[i].emailId);
 
 
 
@@ -3487,6 +3490,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.id = id;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.moduleName = this.module;
+			this.contactListObject.isPartnerUserList = this.isPartnerUserList;
 
 			this.contactService.loadContactsCount(this.contactListObject)
 				.subscribe(
@@ -3897,6 +3901,38 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 	closeDuplicateEmailErrorMessage() {
 		this.dublicateEmailId = false;
+	}
+	
+	downloadUserListCsv() {
+		try {
+			this.userListPaginationWrapper.pagination = this.pagination;
+			this.userListPaginationWrapper.pagination.searchKey = this.searchKey;
+			this.contactListObj.id = this.selectedContactListId;
+			this.contactListObj.moduleName = this.checkingContactTypeName+'s';
+			this.contactListObj.name = this.contactListName;
+			this.contactListObj.sharedLeads = this.sharedLeads;
+			this.contactListObj.isPartnerUserList = this.isPartner;
+			this.contactListObj.assignedLeadsList = this.assignLeads;
+			this.contactListObj.contactType = this.contactsByType.selectedCategory;
+			this.contactListObj.editList = true;
+			this.userListPaginationWrapper.userList = this.contactListObj;
+			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+				this.refService.setTeamMemberFilterForPagination(this.userListPaginationWrapper.pagination, this.selectedFilterIndex);
+			}
+			this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
+				.subscribe(data => {
+					if (data.statusCode == 200) {
+						this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+					}
+					if (data.statusCode == 401) {
+						this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+					}
+				},
+					error => this.xtremandLogger.error(error),
+					() => this.xtremandLogger.info("editContactsComponent downloadListUserListCsv() finished"));
+		} catch (error) {
+			this.xtremandLogger.error(error, "editContactComponent", "downloadListUserListCsv()");
+		}
 	}
 
 }

@@ -604,7 +604,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   addTeamMember() {
     this.loading = true;
     let teamMemberDtos = new Array<any>();
-        let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName.trim(), 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin };
+    let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName.trim(), 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin };
     teamMemberDtos.push(teamMemberDto);
     let teamInput = {};
     this.setTeamInputData(teamMemberDtos, teamInput);
@@ -619,11 +619,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           } else {
             this.team.validEmailId = false;
             this.team.emailIdErrorMessage = data.message;
-              this.team.validFirstName=false;
-              this.team.lastNameErrorMessage=data.mesaage;
-              
             this.emaillIdDivClass = this.errorClass;
-            this.firstNameDivClass = this.errorClass;
             this.team.validForm = false;
           }
           this.referenceService.loading(this.addTeamMemberLoader, false);

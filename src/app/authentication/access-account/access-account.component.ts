@@ -155,6 +155,7 @@ export class AccessAccountComponent implements OnInit {
                 this.authenticationService.vendorCompanyId = result.companyId;
                 this.authenticationService.v_companyName = result.companyName;
                 this.authenticationService.vanityURLink = result.vanityURLink;
+                this.authenticationService.companyUrl = result.companyUrl;
                 this.authenticationService.loginType = result.loginType;
                 this.authenticationService.isstyleTWoBgColor = result.styleTwoBgColor;
                 this.isBgColor = result.styleOneBgColor;
@@ -271,7 +272,10 @@ export class AccessAccountComponent implements OnInit {
             if(this.properties.serverErrorMessage!=message){
                 if(message.includes("Company name has already been added")){
                     this.removeErrorClasses();
-                    this.showConfirmAlertForAddingAsTeamMember(this.properties.PARTNERSHIP_ALREADY_ESTABLISHED_WITH_COMPANY_NAME, data);
+                    this.formErrors.companyName = this.properties.PARTNERSHIP_ALREADY_ESTABLISHED_WITH_COMPANY_NAME;
+                    $("#partner-company-name").removeClass('ng-valid');
+                    $("#partner-company-name").addClass('ng-invalid');
+                  //  this.showConfirmAlertForAddingAsTeamMember(this.properties.PARTNERSHIP_ALREADY_ESTABLISHED_WITH_COMPANY_NAME, data);
                 }else if(message.includes("The account already exists")){
                     this.removeErrorClasses();
                     this.skipPasswordAndAddAsPartner(message, data);
@@ -293,6 +297,8 @@ export class AccessAccountComponent implements OnInit {
         $("#teamMember-signup-emailId").removeClass('ng-invalid');
         $("#partner-company-name").removeClass('ng-valid');
         $("#partner-company-name").removeClass('ng-invalid');
+        this.formErrors.companyName = "";
+        this.formErrors.emailId = "";
     }
 
     /****XNFR-506******/

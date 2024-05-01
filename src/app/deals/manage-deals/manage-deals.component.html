@@ -165,7 +165,7 @@
                       </a>
 
 
-                      <a *ngIf="activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO'"
+                      <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO') || (isPartnerVersion && activeCRMDetails?.type == 'CONNECTWISE')"
                         (click)="syncLeadsWithActiveCRM()">
 
                         <!-- <button class="btn btn-white salesforce-btn button neg-mar-top bgcolor-unset" -->
@@ -183,7 +183,7 @@
                       </a>
 
                       <a *ngIf="isVendorVersion && syncMicrosoft" (click)="syncLeadsWithMicrosoft()">
-                        <button class="btn btn-white" style="margin-right: -7px;" data-toggle="tooltip"
+                        <button class="btn btn-white Synchronize_btn" style="margin-right: -7px;" data-toggle="tooltip"
                           data-placement="bottom" title="Synchronize with Microsoft Dynamics" translate>
                           <i class="fa fa-refresh" aria-hidden="true"></i> Microsoft Dynamics
                         </button>

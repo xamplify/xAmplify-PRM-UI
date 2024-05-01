@@ -108,9 +108,11 @@
                     title="{{sfCustomField.label}}">{{sfCustomField.label | slice:0:30}}
                     <span *ngIf="sfCustomField.label?.length>30">...</span>
                   </span>
+
                   <ul
-                    *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'"
+                    *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'HALOPSA' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'"
                     class="textDecoration">
+
                     <li>{{sfCustomField.displayName}}</li>
                     <li
                       *ngIf="(sfCustomField.formDefaultFieldType != null)  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)">
@@ -173,7 +175,10 @@
                                   data-placement="right"
                                   title="Your partner must fill in this custom field if you toggle on this option."></span>
                                 <label class="toggleOnOff"
-                                  [ngClass]="!sfCustomField?.canEditRequired ? 'disabled-opacity':''">
+                                  [ngClass]="!sfCustomField?.canEditRequired ? 'disabled-opacity':''"
+                                [attr.data-toggle]="!sfCustomField?.canEditRequired ? 'tooltip' : null"
+                                [attr.data-placement]="!sfCustomField?.canEditRequired ? 'top' : null"
+                                [attr.title]="!sfCustomField?.canEditRequired ? 'Marked as required in your CRM account.' : null">
                                   <input class="checkBox_shadow" type="checkbox"
                                     [disabled]="!sfCustomField.canEditRequired" [(ngModel)]="sfCustomField.required"
                                     [ngModelOptions]="{standalone: true}">

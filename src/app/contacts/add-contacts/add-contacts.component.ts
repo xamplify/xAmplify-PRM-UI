@@ -4671,10 +4671,16 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 user.emailId = contacts[i].email.trim();
                 user.firstName = contacts[i].firstName;
                 user.lastName = contacts[i].lastName;
-                user.contactCompany = contacts[i].contactCompany;
+                user.contactCompany = contacts[i].company;
+                user.city = contacts[i].city;
+                user.state = contacts[i].city;
+                user.country = contacts[i].country;
+                user.zipCode = String(contacts[i].postalCode);
+                user.mobileNumber = contacts[i].mobilePhone;
+                user.jobTitle = contacts[i].title;
+                user.address = contacts[i].address;
                 this.socialUsers.push(user);
             }
-
         }
     }
 

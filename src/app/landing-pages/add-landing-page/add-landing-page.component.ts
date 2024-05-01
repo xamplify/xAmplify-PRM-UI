@@ -16,12 +16,14 @@ import { PreviewPopupComponent } from '../../forms/preview-popup/preview-popup.c
 import { LandingPageService } from '../services/landing-page.service';
 import { LandingPage } from '../models/landing-page';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { Properties } from 'app/common/models/properties';
+
 declare var BeePlugin, swal, $: any;
 @Component({
     selector: 'app-add-landing-page',
     templateUrl: './add-landing-page.component.html',
     styleUrls: ['./add-landing-page.component.css'],
-    providers: [LandingPage, FormService, Pagination, SortOption]
+    providers: [LandingPage, FormService, Pagination, SortOption,Properties]
 })
 export class AddLandingPageComponent implements OnInit, OnDestroy {
     landingPage: LandingPage = new LandingPage();
@@ -51,6 +53,9 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     viewType = "";
     folderViewType = "";
     modulesDisplayType = new ModulesDisplayType();
+    properties:Properties = new Properties();
+    saveAndCloseButtonText = this.properties.SAVE_AND_CLOSE;
+    updatedAndCloseButtonText = this.properties.UPDATE_AND_CLOSE;
     constructor(private landingPageService: LandingPageService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public referenceService: ReferenceService, private location: Location,
         public pagerService: PagerService, public sortOption: SortOption, public utilService: UtilService, private route: ActivatedRoute) {
@@ -196,12 +201,12 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                         $('#pageTypeSpanError').text('Page Type cannot be changed');
                                     }
 
-                                })).append(self.createButton('Update & Redirect', function () {
+                                })).append(self.createButton(self.updatedAndCloseButtonText, function () {
                                     let selectedPageType = $('#pageType option:selected').val();
                                     if (self.landingPage.type == selectedPageType || selectedPageType == undefined) {
                                         $('#pageTypeSpanError').empty();
                                         self.ngxloading = true;
-                                        self.clickedButtonName = "UPDATE_AND_REDIRECT";
+                                        self.clickedButtonName = "UPDATE_AND_CLOSE";
                                         $("#bee-save-buton-loader").addClass("button-loader");
                                         self.updateLandingPage(true);
                                     } else {
@@ -250,8 +255,8 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                         }));
                                     }
 
-                                buttons.append(self.createButton('Save & Redirect', function () {
-                                    self.clickedButtonName = "SAVE_AND_REDIRECT";
+                                buttons.append(self.createButton(self.saveAndCloseButtonText, function () {
+                                    self.clickedButtonName = "SAVE_AND_CLOSE";
                                     self.saveLandingPage(true);
                                 })).append(self.createButton('Cancel', function () {
                                     self.clickedButtonName = "CANCEL";
@@ -312,7 +317,6 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 autosave: 15,
                                 mergeTags: mergeTags,
                                 preventClose: true,
-                                //language: 'en-US',
                                 language: this.authenticationService.beeLanguageCode,
                                 onSave: function (jsonFile, htmlFile) {
                                     save(jsonFile, htmlFile);
@@ -509,13 +513,13 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
         let cancelButtonSettings = this.isAdd ? 'class="'+cancelButtonClass+'"' : 'class="'+cancelButtonClass+'" style="margin-right: -35px !important;"';
         if (text == "Save") {
             return $('<input type="submit" class="'+buttonClass+'"  value="' + text + '" id="save" disabled="disabled">').on('click', cb);
-        }else if(text == "Save & Redirect"){
+        }else if(text == this.saveAndCloseButtonText){
             return $('<input type="submit" class="'+buttonClass+'"  value="' + text + '" id="save-and-redirect" disabled="disabled">').on('click', cb);
         }else if (text == "Save As") {
             return $('<input type="submit" class="'+buttonClass+'" style="margin-left: -33px !important" value="' + text + '" id="save-as" disabled="disabled">').on('click', cb);
         } else if (text == "Update") {
             return $('<input type="submit" class="'+buttonClass+'" value="' + text + '" id="update">').on('click', cb);
-        }else if (text == "Update & Redirect") {
+        }else if (text == this.updatedAndCloseButtonText) {
             return $('<input type="submit" class="'+buttonClass+'" value="' + text + '" id="update-and-close">').on('click', cb);
         }else {
             return $('<input type="submit" '+cancelButtonSettings+' value="' + text + '">').on('click', cb);

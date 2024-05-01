@@ -38,4 +38,5 @@ export class ContactList {
     loginAsUserId = 0;
     associatedCompany: string;
     companyList:boolean;
+    editList = false;
 }

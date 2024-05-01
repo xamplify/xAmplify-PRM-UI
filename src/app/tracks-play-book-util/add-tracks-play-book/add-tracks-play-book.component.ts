@@ -1341,7 +1341,11 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   assetPreview(assetDetails: any, isFromPopup: boolean) {
     this.isPreviewFromAssetPopup = isFromPopup;
     if (assetDetails.beeTemplate) {
-      this.previewBeeTemplate(assetDetails);
+      if(this.authenticationService.isLocalHost()){
+        this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
+      }else{
+        this.previewBeeTemplate(assetDetails);
+      }
     } else {
       let assetType = assetDetails.assetType;
       this.filePath = assetDetails.assetPath;
