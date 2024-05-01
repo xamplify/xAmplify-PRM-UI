@@ -43,10 +43,31 @@ export class ManageLandingPageComponent implements OnInit {
             this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
         }
         this.isPartnerLandingPage = this.router.url.indexOf("/pages/partner")>-1; 
-        this.mergeTagForGuide = this.isPartnerLandingPage ? 'accessing_shared_pages':'manage_pages';
+       this.getRoleByUserId();
 
 	}
-
+  /*** XNFR-512 ****/
+  getRoleByUserId() {
+    let roleName = "";
+    this.authenticationService.getRoleByUserId().subscribe(
+        (data) => {
+            const role = data.data;
+            roleName = role.role == 'Team Member' ? role.superiorRole : role.role;
+            this.getuserGuideMergeTag(roleName);
+        }, error => {
+            this.xtremandLogger.errorPage(error);
+        }
+    )
+}
+  getuserGuideMergeTag(roleName: any) {
+    const isMarketingCompany: boolean = roleName === 'Marketing' || roleName === 'Marketing & Partner';
+    this.mergeTagForGuide = isMarketingCompany && !this.isPartnerLandingPage
+      ? 'manage_pages_marketing'
+      : this.isPartnerLandingPage
+        ? 'accessing_shared_pages'
+        : 'manage_pages';
+  }
+  /*** XNFR-512 ****/
 
 
   ngOnInit() {

@@ -237,15 +237,19 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   mergeTagForUserGuide(){
-    if(this.authenticationService.module.loggedInThroughVendorVanityUrl){
-      this.mergeTagForGuide = "manage_leads_partner";
-    } else if((this.vendorRole && !this.isCompanyPartner) || (this.vendorRole && this.isCompanyPartner) || 
-     (this.prm && !this.isCompanyPartner) || (this.prm && this.isCompanyPartner)){
-      this.mergeTagForGuide = "manage_leads";
-    } else {
-      this.mergeTagForGuide = "manage_leads_partner";
-  
-    }
+    this.authenticationService.getRoleByUserId().subscribe(
+      (data: any) => {
+          const role = data.data;
+          const roleName = role.role == 'Team Member'? role.superiorRole : role.role;
+          if (roleName.includes('Marketing')) {
+              this.mergeTagForGuide = 'lead_registration_and_management_marketing';
+          } else if((this.vendorRole && !this.isCompanyPartner) || (this.vendorRole && this.isCompanyPartner) || 
+            (this.prm && !this.isCompanyPartner) || (this.prm && this.isCompanyPartner)){
+              this.mergeTagForGuide = 'manage_leads';
+          } else {
+              this.mergeTagForGuide = 'manage_leads_partner';
+          }
+      });
    }
 
   setViewType() {
