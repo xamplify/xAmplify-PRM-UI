@@ -74,7 +74,7 @@ export class CampaignService {
             pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
         }
         /****XNFR-252*****/
-        let url = this.URL + "admin/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "campaign/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -1328,6 +1328,14 @@ export class CampaignService {
     downloadCampaignsData(pagination: Pagination, userId: number){
         let url = this.URL + "campaign/downloadcampaigndata/"+userId+"?access_token=" + this.authenticationService.access_token
         return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+   getCampaignHighLevelAnalytics2(userId: number, campaign:any) {
+        userId = this.authenticationService.checkLoggedInUserId(userId);       
+        let url = this.URL + "campaign/campaignHighLevelAnaltyics/" + userId + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, campaign)
             .map(this.extractData)
             .catch(this.handleError);
     }

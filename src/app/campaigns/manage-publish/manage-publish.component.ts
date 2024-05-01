@@ -127,6 +127,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     /******** user guide *************/
     mergeTagForGuide:any;
     isValidCopyCampaignName = true;
+    showAllAnalytics : boolean = false ;
+    selectedIndex : number;
+    
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -201,6 +204,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     this.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                    pagination.pagedItems.forEach(item=>item['isExpand'] = false);
                     this.refService.loading(this.httpRequestLoader, false);
                 }else{
                     this.authenticationService.forceToLogout();
@@ -1320,5 +1324,61 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         let trimmedData = this.refService.getTrimmedData(this.saveAsCampaignName);
         this.isValidCopyCampaignName = trimmedData.length>0;
     }
+    
+    getCampaignHighLevelAnalytics2(campaign : any, index:number){
+     this.isloading = true;
+        try{
+        
+        if(this.selectedIndex!=undefined && this.selectedIndex != index){
+           this.showAllAnalytics = false;
+           this.pagination.pagedItems[this.selectedIndex]['isExpand']=false;
+        } 
+        
+         if(!campaign['isExpand'] && !campaign.openRate){
+        
+         this.campaignService.getCampaignHighLevelAnalytics2(this.loggedInUserId, campaign)
+        .subscribe(
+            data => {    
+                if(data.statusCode==200){
+                this.isloading = false;
+                    this.selectedIndex = index;
+                    this.showAllAnalytics = true;
+                    campaign['isExpand']=true;
+                    campaign.openRate = data.data.openRate;
+                    campaign.emailClicked = data.data.emailClicked;
+                    campaign.clickthroughRate = data.data.clickthroughRate;
+                    campaign.views = data.data.views;
+                    campaign.hardBounce  = data.data.hardBounce;
+                    campaign.softBounce  = data.data.softBounce;
+                    campaign.delivered   = data.data.delivered;
+                    campaign.leadCount   = data.data.leadCount;
+                    campaign.dealCount   = data.data.dealCount;
+                    campaign.redistributedCount  = data.data.redistributedCount;
+                    campaign.totalAttendeesCount  = data.data.totalAttendeesCount;
+                    campaign.attendeesCount        = data.data.attendeesCount;
+                }
+            },
+            (error: any) => {
+                this.logger.errorPage(error);
+            },
+            ()=> this.logger.info("download completed")
+            );//subscribe
+          }else if(!campaign['isExpand'] && campaign.openRate){
+                this.isloading = false;
+                this.selectedIndex = index;
+                this.showAllAnalytics = true;
+                campaign['isExpand']=true;
+                }else if(campaign['isExpand']){
+                this.isloading = false;
+                this.showAllAnalytics = false;
+                campaign['isExpand']=false;
+                }
+            
+        }catch(error){
+            this.logger.error(error, "ManagePublishComponent", "downloadCampaignsData()");
+        }
+    }
+    
+    
 
 }
