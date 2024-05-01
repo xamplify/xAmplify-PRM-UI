@@ -77,18 +77,16 @@
                             </div>
                         </div>
                         <div class="profile-usermenu">
-                            <!--------------Account Details----------------------->
-
-
                             <ul class="nav neumorphismDark">
+                                <!--------------Account Details----------------------->
                                 <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
                                     [ngClass]="[activeTabName =='personalInfo' ? 'show':'', activeTabName == 'password' ? 'show':'']">
                                     Account Details
-                                    <a data-toggle="collapse" style="float: right;" href="#accountDetailsDropdown">
-                                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                    <a data-toggle="collapse" style="float: right;" href="#accountDetailsDropdown" (click)="toggleClass('account-details-icon')">
+                                        <i id="account-details-icon" class="fa fa-minus" aria-hidden="true"></i>
                                     </a>
                                 </div>
-                                <ul id="accountDetailsDropdown" class="nav collapse"
+                                <ul id="accountDetailsDropdown" class="nav collapse in"
                                     [ngClass]="[activeTabName =='personalInfo' ? 'in':'', activeTabName == 'password' ? 'in':'']">
                                     <!---Personal Info--->
                                     <li [ngClass]="{'active-tab': activeTabName == 'personalInfo'}">
@@ -106,31 +104,32 @@
                                     </li>
                                 </ul>
                                 <ng-container *ngIf="!isUser">
-                                    <!--------------Settings----------------------->
+                                <!--------------Settings----------------------->
                                     <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
                                         [ngClass]="[activeTabName == 'playerSettings' ? 'show':'', 
-                                    activeTabName == 'settings' ? 'show': '',
-                                    activeTabName == 'tags' ? 'show':'',
-                                    activeTabName == 'customizeleftmenu' ? 'show':'',
-                                    activeTabName == 'customskin' ? 'show':'',
-                                    activeTabName == properties?.customLoginScreen ? 'show':'']">Settings <a
-                                            data-toggle="collapse" style="float: right;" href="#settingsDropdown">
-                                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                                        </a></div>
+                                            activeTabName == 'settings' ? 'show': '',
+                                            activeTabName == 'tags' ? 'show':'',
+                                            activeTabName == 'customizeleftmenu' ? 'show':'',
+                                            activeTabName == 'customskin' ? 'show':'',
+                                            activeTabName == properties?.customLoginScreen ? 'show':'']">Settings
+                                            <a data-toggle="collapse" style="float: right;" href="#settingsDropdown" (click)="toggleClass('settings-icon')">
+                                                <i id="settings-icon" class="fa fa-minus" aria-hidden="true"></i>
+                                            </a>
+                                    </div>
                                     <!---Default Player Settings-->
-                                    <ul id="settingsDropdown" class="nav collapse" [ngClass]="[activeTabName == 'playerSettings' ? 'in':'', 
-                                    activeTabName == 'settings' ? 'in': '',
-                                    activeTabName == 'tags' ? 'in':'',
-                                    activeTabName == 'customizeleftmenu' ? 'in':'',
-                                    activeTabName == 'customskin' ? 'in':'',
-                                    activeTabName == properties?.customLoginScreen ? 'in':'']">
+                                    <ul id="settingsDropdown" class="nav collapse in" [ngClass]="[activeTabName == 'playerSettings' ? 'in':'', 
+                                        activeTabName == 'settings' ? 'in': '',
+                                        activeTabName == 'tags' ? 'in':'',
+                                        activeTabName == 'customizeleftmenu' ? 'in':'',
+                                        activeTabName == 'customskin' ? 'in':'',
+                                        activeTabName == properties?.customLoginScreen ? 'in':'']">
                                         <li [ngClass]="{'active-tab': activeTabName == 'playerSettings'}"
                                             [class.disabled]="authenticationService.isSuperAdmin()"
                                             *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
-                             authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
-                             !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && !authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
-                             &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember" (click)="videojsCall()">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'playerSettings'}"
+                                            authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
+                                            !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && !authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
+                                            &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember" (click)="videojsCall()">
+                                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'playerSettings'}"
                                                 (click)="activateTab('playerSettings');">
                                                 <span>{{properties.defaultPlayerSettings | translate}}</span>
                                             </a>
@@ -181,11 +180,11 @@
                                         *ngIf="(authenticationService?.leadsAndDeals || authenticationService?.module?.opportunitiesAccessAsPartner) && 
                                             authenticationService?.module?.isAnyAdminOrSupervisor">
                                         Lead/Deal Configuration
-                                        <a data-toggle="collapse" style="float: right;" href="#leadAndDealDropdown">
-                                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                                        <a data-toggle="collapse" style="float: right;" href="#leadAndDealDropdown" (click)="toggleClass('lead-or-deal-config-icon')">
+                                            <i id="lead-or-deal-config-icon" class="fa fa-minus" aria-hidden="true"></i>
                                         </a>
                                     </div>
-                                    <ul id="leadAndDealDropdown" class="nav collapse" [ngClass]="[activeTabName == 'dealTypes' ? 'in':'',
+                                    <ul id="leadAndDealDropdown" class="nav collapse in" [ngClass]="[activeTabName == 'dealTypes' ? 'in':'',
                                             activeTabName == 'leadPipelines' ? 'in':'',
                                             activeTabName == 'dealPipelines' ? 'in':'',
                                             activeTabName == 'leadDealApprove' ? 'in':'']">
@@ -222,18 +221,20 @@
                                     <!--------------Developers----------------------->
                                     <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
                                         [ngClass]="[activeTabName == 'spf' ? 'show':'',
-                                    activeTabName == 'gdpr' ? 'show':'',
-                                    activeTabName == 'integrations' ? 'show':'',
-                                    activeTabName == 'samlSettings' ? 'show':'',
-                                    activeTabName == 'support' ? 'show':'']">Developers<a data-toggle="collapse"
-                                            style="float: right;" href="#developersDropdown">
-                                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                                        </a></div>
-                                    <ul id="developersDropdown" class="nav collapse" [ngClass]="[activeTabName == 'spf' ? 'in':'',
-                                    activeTabName == 'gdpr' ? 'in':'',
-                                    activeTabName == 'integrations' ? 'in':'',
-                                    activeTabName == 'samlSettings' ? 'in':'',
-                                    activeTabName == 'support' ? 'in':'']">
+                                        activeTabName == 'gdpr' ? 'show':'',
+                                        activeTabName == 'integrations' ? 'show':'',
+                                        activeTabName == 'samlSettings' ? 'show':'',
+                                        activeTabName == 'support' ? 'show':'']">
+                                        Developers
+                                        <a data-toggle="collapse" style="float: right;" href="#developersDropdown" (click)="toggleClass('developers-icon')">
+                                             <i id="developers-icon" class="fa fa-minus" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                    <ul id="developersDropdown" class="nav collapse in" [ngClass]="[activeTabName == 'spf' ? 'in':'',
+                                            activeTabName == 'gdpr' ? 'in':'',
+                                            activeTabName == 'integrations' ? 'in':'',
+                                            activeTabName == 'samlSettings' ? 'in':'',
+                                            activeTabName == 'support' ? 'in':'']">
                                         <!--SPF Configuration-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'spf'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'spf'}"
@@ -243,20 +244,20 @@
                                         <!--GDPR Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}"
                                             *ngIf="(authenticationService.isOrgAdmin() || 
-                                        authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || 
-                                        authenticationService.isOnlyPartner() || roleNames=='Partner') || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
-                                        || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"
-                                                (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings
-                                                | translate}}</a>
+                                            authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || 
+                                            authenticationService.isOnlyPartner() || roleNames=='Partner') || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
+                                            || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"
+                                                    (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings
+                                                    | translate}}</a>
                                         </li>
                                         <!--Integrations-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
-                               authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() ||
-                                authenticationService.superiorRole != 'Partner'">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}"
-                                                (click)="activateTab('integrations');clearCustomResponse()">
-                                                {{properties.integrations | translate}}</a>
+                                                authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() ||
+                                                authenticationService.superiorRole != 'Partner'">
+                                                        <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}"
+                                                            (click)="activateTab('integrations');clearCustomResponse()">
+                                                            {{properties.integrations | translate}}</a>
                                         </li>
                                         <!--Saml Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"
@@ -274,34 +275,35 @@
                                     <!--------------Admin----------------------->
                                     <div class="my-profile-header-text neumorphismDark admin_tab_alignment neg_mrg_left1"
                                         [ngClass]="[activeTabName == properties?.dashboardButtons ? 'show':'',
-                                    activeTabName == properties?.newsAndAnnouncements ? 'show':'',
-                                    activeTabName == properties?.dashboardBanners ? 'show':'',
-                                    activeTabName == 'templates' ? 'show':'',
-                                    activeTabName == 'unsubscribeReasons' ? 'show':'',
-                                    activeTabName == 'exclude' ? 'show':'',
-                                    activeTabName == 'vendorJourney' ? 'show':'',
-                                    activeTabName == 'landingPages' ? 'show':'',
-                                    activeTabName == 'categories' ? 'show':'',
-                                    activeTabName == 'team-group' ? 'show':'',
-                                    activeTabName == properties?.emailNotificationSettings ? 'show':'',
-                                    activeTabName == properties?.addDomainsText ? 'show':'']">Admin<a
-                                            data-toggle="collapse" style="float: right;" href="#adminDropdown">
-                                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                                        </a></div>
-                                    <ul id="adminDropdown" class="nav collapse" [ngClass]="[activeTabName == properties?.dashboardButtons ? 'in':'',
-                                    activeTabName == properties?.newsAndAnnouncements ? 'in':'',
-                                    activeTabName == properties?.dashboardBanners ? 'in':'',
-                                    activeTabName == 'templates' ? 'in':'',
-                                    activeTabName == 'unsubscribeReasons' ? 'in':'',
-                                    activeTabName == 'exclude' ? 'in':'',
-                                    activeTabName == 'vendorJourney' ? 'in':'',
-                                    activeTabName == 'landingPages' ? 'in':'',
-                                    activeTabName == 'categories' ? 'in':'',
-                                    activeTabName == 'team-group' ? 'in':'',
-                                    activeTabName == properties?.emailNotificationSettings ? 'in':'',
-                                    activeTabName == properties?.addDomainsText ? 'in':'']">
-                                        <ng-container
-                                            *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService.module.loggedInThroughOwnVanityUrl">
+                                            activeTabName == properties?.newsAndAnnouncements ? 'show':'',
+                                            activeTabName == properties?.dashboardBanners ? 'show':'',
+                                            activeTabName == 'templates' ? 'show':'',
+                                            activeTabName == 'unsubscribeReasons' ? 'show':'',
+                                            activeTabName == 'exclude' ? 'show':'',
+                                            activeTabName == 'vendorJourney' ? 'show':'',
+                                            activeTabName == 'landingPages' ? 'show':'',
+                                            activeTabName == 'categories' ? 'show':'',
+                                            activeTabName == 'team-group' ? 'show':'',
+                                            activeTabName == properties?.emailNotificationSettings ? 'show':'',
+                                            activeTabName == properties?.addDomainsText ? 'show':'']">
+                                            Admin
+                                            <a data-toggle="collapse" style="float: right;" href="#adminDropdown" (click)="toggleClass('admin-icon')" >
+                                                <i id="admin-icon" class="fa fa-minus" aria-hidden="true"></i>
+                                            </a>
+                                    </div>
+                                    <ul id="adminDropdown" class="nav collapse in" [ngClass]="[activeTabName == properties?.dashboardButtons ? 'in':'',
+                                            activeTabName == properties?.newsAndAnnouncements ? 'in':'',
+                                            activeTabName == properties?.dashboardBanners ? 'in':'',
+                                            activeTabName == 'templates' ? 'in':'',
+                                            activeTabName == 'unsubscribeReasons' ? 'in':'',
+                                            activeTabName == 'exclude' ? 'in':'',
+                                            activeTabName == 'vendorJourney' ? 'in':'',
+                                            activeTabName == 'landingPages' ? 'in':'',
+                                            activeTabName == 'categories' ? 'in':'',
+                                            activeTabName == 'team-group' ? 'in':'',
+                                            activeTabName == properties?.emailNotificationSettings ? 'in':'',
+                                            activeTabName == properties?.addDomainsText ? 'in':'']">
+                                        <ng-container *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService.module.loggedInThroughOwnVanityUrl">
                                             <!--Dashboard Buttons-->
                                             <li [ngClass]="{'active': activeTabName == properties?.dashboardButtons}">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName ==  properties?.dashboardButtons}"
