@@ -513,7 +513,7 @@ export class AddLeadComponent implements OnInit {
                 this.getCampaignLeadPipeline();
               } else {
                 this.getActiveCRMPipeline();
-                this.getDealPipelines();
+                // this.getDealPipelines();
               }
             }
           }
