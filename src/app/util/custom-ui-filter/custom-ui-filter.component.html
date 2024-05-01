@@ -40,6 +40,9 @@
                 <select class="form-control" [(ngModel)]="criterias[i].property"
                   [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}" (change)="getOptionsForCriteria(criterias[i],i)"
                   [disabled]="dropdownDisabled[i]">
+                  <option *ngIf="criterias[i].property === 'Field Name*'">Field Name*</option>
+                  <option *ngIf="criterias[i].property !== 'Field Name*' &&  seletedFiterArray.length > 0 ">
+                    {{seletedFiterArray[i]}}</option>
                   <option *ngFor="let filterOption of filterOptions; let i = index">
                     {{filterOption.value}}</option>
                 </select>
@@ -65,14 +68,12 @@
               </div>
               <div class="col-md-3" *ngIf="criterias[i].property === 'Type' ||  criterias[i].property === 'From'">
                 <select class="form-control" [(ngModel)]="criterias[i].value1">
-                  <ng-container *ngIf="criterias[i].property === 'Type' " >
+                  <ng-container *ngIf="criterias[i].property === 'Type' ">
                     <option [value]="undefined" *ngIf="criterias[i].value1 === 'undefined'">Select Asset Type</option>
-                    <!-- <option *ngIf="criterias[i].value1 !== 'undefined' && selectedTypes.length > 0">{{selectedTypes[i]}}</option> -->
                     <option [value]="fileType" *ngFor="let fileType of fileTypes;">{{fileType}}</option>
                   </ng-container>
                   <ng-container *ngIf="criterias[i].property === 'From'">
                     <option value="undefined" *ngIf="criterias[i].value1 === 'undefined'">Select Company Name</option>
-                    <!-- <option *ngIf="criterias[i].value1 !== 'undefined' && selectedCompanies.length> 0" [value]="selectedCompanies[i].sharedByVendorCompanyId">{{selectedCompanies[i].sharedByVendorCompanyName}}</option> -->
                     <option *ngFor="let vendorCompany of whiteLableContentSharedByVendorCompanies"
                       [value]="vendorCompany.sharedByVendorCompanyId">
                       {{vendorCompany.sharedByVendorCompanyName}}
@@ -90,7 +91,7 @@
               </div>
             </div>
             <ng-template #addIcon>
-              <button [disabled]="criterias.length > 5"
+              <button [disabled]="criterias.length > allfilterOptions.length-1"
                 [ngClass]="criterias.length <= 0 ? 'plus_icon_low':'plus_icon_high' " (click)="addNewRow()"
                 type="button" class="btn btn-default">
                 <i data-toggle="tooltip" data-placement="bottom" title="Add a condition" class="fa fa-plus-square"

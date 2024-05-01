@@ -28,6 +28,7 @@ export class SelectFormComponent implements OnInit {
   @ViewChild('previewPopupComponent') previewPopupComponent: PreviewPopupComponent;
   loggedInAsSuperAdmin = false;
   mergeTagForGuide = 'designing_forms';
+  roleName = "";
   constructor(public referenceService: ReferenceService,
     public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public authenticationService: AuthenticationService,
     public router: Router, public logger: XtremandLogger, public formService: FormService, public utilService: UtilService) {
@@ -39,16 +40,33 @@ export class SelectFormComponent implements OnInit {
     this.selectedFormTypeIndex = 0;
     this.pagination.filterKey = "All";
     this.listDefaultForms(this.pagination);
+    /*** XNFR-512 *****/
+    this.getRoleByUserId();
+    /*** XNFR-512 *****/
   }
-  getUrlByMergeTagForUserGuide(filterKey:string) {
+  /*** XNFR-512 *****/
+  getRoleByUserId() {
+    this.authenticationService.getRoleByUserId().subscribe(
+      (data) => {
+        const role = data.data;
+        this.roleName = role.role == 'Team Member' ? role.superiorRole : role.role;
+        this.getUrlByMergeTagForUserGuide("All");
+      }, error => {
+        this.logger.errorPage(error);
+      }
+    )
+  }
+  getUrlByMergeTagForUserGuide(filterKey: string) {
+    let isMarketingCompany = this.roleName === 'Marketing' || this.roleName === 'Marketing & Partner';
     if (filterKey === 'Quiz') {
-      this.mergeTagForGuide = 'designing_quiz_form';
+      this.mergeTagForGuide = isMarketingCompany ? 'designing_quiz_form_marketing' : 'designing_quiz_form';
     } else if (filterKey === 'Survey') {
-      this.mergeTagForGuide = 'designing_survey_form';
+      this.mergeTagForGuide = isMarketingCompany ? 'designing_survey_form_marketing' : 'designing_survey_form';
     } else {
-      this.mergeTagForGuide = 'design_forms';
+      this.mergeTagForGuide = isMarketingCompany ? 'designing_forms_marketing' : 'design_forms';
     }
   }
+  /*** XNFR-512 *****/
   showAllForms(type: string, index: number) {
     this.selectedFormTypeIndex = index;
     this.pagination.filterKey = type;

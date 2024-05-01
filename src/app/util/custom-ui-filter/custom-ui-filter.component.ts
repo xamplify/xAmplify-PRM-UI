@@ -35,6 +35,8 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 	pagination: Pagination = new Pagination();
 	parterViewText: string;
 	dropdownDisabled: boolean[] = [];
+	allfilterOptions: any[] = [];
+	seletedFiterArray: any[] = [];
 	constructor(private router: Router) {
 	}
 	ngOnDestroy(): void {
@@ -45,7 +47,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 	addFilterOptionsValues(type: string) {
 		if (type === "Assets") {
 			this.filterOptions.push(
-				{ 'name': '', 'value': 'Field Name*' },
+				// { 'name': '', 'value': 'Field Name*' },
 				{ 'name': 'assetsname', 'value': 'Assets Name' },
 				{ 'name': 'folder', 'value': 'Folder' },
 				{ 'name': 'type', 'value': 'Type' },
@@ -66,6 +68,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 					this.filterOptions.push({ 'name': 'from', 'value': 'From' });
 				}
 			}
+			this.allfilterOptions = this.filterOptions;
 		}
 		this.addNewRow();
 	}
@@ -80,11 +83,14 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			this.validateDateFilters();
 		}
 	}
-	cancelSegmentationRow(rowId: number) {
-		if (rowId !== -1) {
-			this.criterias.splice(rowId, 1);
-			this.dropdownDisabled.splice(rowId, 1);
+	cancelSegmentationRow(index: number) {
+		let removedOption = this.criterias[index].property;
+		if (removedOption) {
+			this.seletedFiterArray.splice(index, 1);
+			this.compareArrays();
 		}
+		this.criterias.splice(index, 1);
+		this.dropdownDisabled.splice(index, 1);
 	}
 	validateDateFilters() {
 		if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
@@ -225,6 +231,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			this.pagination.filterOptionEnable = false;
 			this.isValidationErrorMessage = false;
 			this.dropdownDisabled = [];
+			this.filterOptions = this.allfilterOptions;
 			this.addNewRow();
 		}
 		this.closeFilterEmitter.emit(event);
@@ -237,5 +244,22 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 			this.criterias[index].operation = "Condition*";
 			this.criterias[index].value1 = "";
 		}
+		this.onSelection(criteria, index);
+	}
+
+	onSelection(criteria: any, index: number) {
+		this.seletedFiterArray[index] = criteria.property;
+		this.compareArrays();
+	}
+	compareArrays() {
+		const resultArray = [];
+		resultArray.push(...this.allfilterOptions);
+		this.seletedFiterArray.forEach((selectedItem) => {
+			const index = resultArray.findIndex((element) => element.value === selectedItem);
+			if (index !== -1) {
+				resultArray.splice(index, 1);
+			}
+		});
+		this.filterOptions = resultArray;
 	}
 }
