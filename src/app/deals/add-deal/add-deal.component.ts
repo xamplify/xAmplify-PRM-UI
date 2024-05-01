@@ -137,6 +137,7 @@ export class AddDealComponent implements OnInit {
   titleFields = ['title','name','symptom'];
   amountFields = ['amount','value','FOppValue'];
   closeDateFields = ['expected_close_date','expectedCloseDate','FOppTargetDate','CloseDate'];
+  type = "DEAL";
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -1143,7 +1144,7 @@ export class AddDealComponent implements OnInit {
     if (this.deal.campaignId !== undefined && this.deal.campaignId > 0) {
       campaignId = this.deal.campaignId;
     }
-    this.dealsService.getActiveCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, campaignId)
+    this.dealsService.getActiveCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, campaignId, this.type)
       .subscribe(
         data => {
           self.referenceService.loading(this.httpRequestLoader, false);
