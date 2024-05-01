@@ -75,7 +75,6 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         try {
-           this.mergeTagForGuide = 'design_email_template';
            this.listDefaultTemplates();
         }
         catch (error) {
