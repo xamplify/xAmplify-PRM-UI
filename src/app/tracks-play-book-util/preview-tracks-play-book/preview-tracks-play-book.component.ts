@@ -235,15 +235,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
   assetPreview(assetDetails: any) {
     if (assetDetails.beeTemplate) {
-      if(this.authenticationService.isLocalHost()){
         if(this.isCreatedUser){
           this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
         }else{
           this.referenceService.previewTrackOrPlayBOokAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
         }
-      }else{
-        this.previewBeeTemplate(assetDetails);
-      }
     }else if(assetDetails.assetType != 'mp4') {
       let assetType = assetDetails.assetType;
       this.filePath = assetDetails.assetPath;
