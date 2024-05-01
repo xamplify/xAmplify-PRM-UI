@@ -151,8 +151,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		"Lead City", "Lead State/Province", "Lead Postal Code", "Lead Country", "Opportunity Amount", "Estimated Close date"];
 	isListFormSection: boolean;
 	customResponseForm: CustomResponse = new CustomResponse();
-
-
 	circleCropperSettings: CropperSettings;
 	circleData: any;
 	cropRounded = false;
@@ -1446,9 +1444,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.submitBUttonStateChange();
 		})
 		this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
-
 			this.dealtypes = dealTypes.data;
-
 		});
 	}
 
@@ -1470,9 +1466,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 	}
-	remove(i, id) {
-		if (id)
-			var index = 1;
+	remove(i:number) {
+		var index = 1;
 		this.questions = this.questions.filter(question => question.divId !== 'question-' + i)
 			.map(question => {
 				question.divId = 'question-' + index++;
@@ -1481,15 +1476,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.submitBUttonStateChange();
 
 	}
-	showAlert(i, question) {
+	removeQuestion(i:number, question) {
 		if (question.id) {
 			this.deleteQuestion(i, question);
-
 		} else {
-			this.remove(i, question.id);
+			this.remove(i);
 		}
 	}
-	deleteQuestion(i, question) {
+	deleteQuestion(i:number, question) {
 		try {
 			this.logger.info("Question in sweetAlert() " + question.id);
 			let self = this;
@@ -1503,8 +1497,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				confirmButtonText: 'Yes, delete it!'
 
 			}).then(function (myData: any) {
+				self.customResponse = new CustomResponse();
 				self.userService.deleteQuestion(question).subscribe(result => {
-					self.remove(i, question.id);
+					self.remove(i);
+					self.refService.scrollSmoothToTop();
 					self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
 				}, error => console.log(error))
 			}, function (dismiss: any) {
@@ -1549,6 +1545,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	}
 	saveForm() {
+		this.customResponse  = new CustomResponse();
 		this.ngxloading = true;
 		let self = this;
 		let data = []
@@ -1574,15 +1571,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		})
 
 		this.userService.saveForm(this.authenticationService.getUserId(), data).subscribe(result => {
-
 			this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+			this.refService.scrollSmoothToTop();
 			this.initializeForm();
-			// this.userService.listForm(this.loggedInUserId).subscribe(form => {
-			//     this.dealForms = form;
-			//     this.initializeForm();
-
-			//     this.ngxloading = false;
-			// })
 		}, (error: any) => {
 			console.log(error);
 			this.ngxloading = false;
@@ -1602,61 +1593,58 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		var id = 'dealType-' + length;
 		this.dealtype.divId = id;
 		this.dealtype.error = true;
-
-
 		this.dealtypes.push(this.dealtype);
 		this.dealTypeButtonStateChange();
 	}
 
-	deleteDealType(i, dealType) {
+	deleteDealType(i:number, dealType) {
 		try {
 			this.logger.info("Deal Type in sweetAlert() " + dealType.id);
-			let self = this;
-			swal({
-				title: 'Are you sure?',
-				text: "You won't be able to undo this action!",
-				type: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#54a7e9',
-				cancelButtonColor: '#999',
-				confirmButtonText: 'Yes, delete it!'
-
-			}).then(function (myData: any) {
-				self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
-					if (result.statusCode == 200) {
-						self.removeDealType(i, dealType.id);
-						self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-					} else if (result.statusCode == 403) {
-						self.customResponseForm = new CustomResponse('ERROR', result.message, true);
-					} else {
-						self.customResponseForm = new CustomResponse('ERROR', self.properties.serverErrorMessage, true);
-					}
-					self.ngxloading = false;
-
-				}, (error) => {
-					self.ngxloading = false;
-
-				}, () => {
-					self.dealRegSevice.listDealTypes(self.loggedInUserId).subscribe(dealTypes => {
-
-						self.dealtypes = dealTypes.data;
-
-					});
-				})
-			}, function (dismiss: any) {
-				console.log('you clicked on option');
-			});
+			if(dealType!=undefined && dealType.id!=undefined){
+				let self = this;
+				swal({
+					title: 'Are you sure?',
+					text: "You won't be able to undo this action!",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#54a7e9',
+					cancelButtonColor: '#999',
+					confirmButtonText: 'Yes, delete it!'
+	
+				}).then(function (myData: any) {
+					self.customResponse = new CustomResponse();
+					self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
+						if (result.statusCode == 200) {
+							self.removeDealType(i);
+							self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+						} else if (result.statusCode == 403) {
+							self.customResponseForm = new CustomResponse('ERROR', result.message, true);
+						} else {
+							self.customResponseForm = new CustomResponse('ERROR', self.properties.serverErrorMessage, true);
+						}
+						self.ngxloading = false;
+						self.refService.scrollSmoothToTop();
+					}, (error) => {
+						self.ngxloading = false;
+	
+					}, () => {
+						self.dealRegSevice.listDealTypes(self.loggedInUserId).subscribe(dealTypes => {
+							self.dealtypes = dealTypes.data;
+						});
+					})
+				}, function (dismiss: any) {
+					console.log('you clicked on option');
+				});
+			}else{
+				this.removeDealType(i);
+			}
+			
 		} catch (error) {
 			console.log(error);
 		}
 	}
-	removeDealType(i, id) {
-
-		if (id)
-			console.log(id)
-		console.log(i)
+	removeDealType(i:number) {
 		var index = 1;
-
 		this.dealtypes = this.dealtypes.filter(dealtype => dealtype.divId !== 'dealtype-' + i)
 			.map(dealtype => {
 				dealtype.divId = 'dealtype-' + index++;
@@ -1681,7 +1669,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	dealTypeButtonStateChange() {
 		let countForm = 0;
 		this.dealtypes.forEach(dealType => {
-
 			if (dealType.error)
 				countForm++;
 		})
@@ -1692,6 +1679,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	}
 	saveDealTypes() {
+		this.customResponse = new CustomResponse();
 		if (this.dealtypes.length > 0) {
 			this.ngxloading = true;
 			let dtArr = []
@@ -1715,16 +1703,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.dealRegSevice.saveDealTypes(dtArr, this.authenticationService.getUserId()).subscribe(result => {
 				this.ngxloading = false;
 				this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-
+				this.refService.scrollSmoothToTop();
 			}, (error) => {
 				this.ngxloading = false;
+				this.refService.scrollSmoothToTop();
 				this.customResponseForm = new CustomResponse('ERROR', "The dealtypes are already associate with deals", true);
-
 			}, () => {
 				this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
-
 					this.dealtypes = dealTypes.data;
-
 				});
 			})
 		}
@@ -1733,7 +1719,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 	checkIntegrations(): any {
-
 		this.checkMarketoIntegration();
 		this.checkHubspotIntegration();
 		this.checkSalesforceIntegration();
@@ -2058,7 +2043,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		}
 		else if (this.activeTabName == "landingPages") {
-
 			this.ngxloading = true;
 			this.isLandingPages = false;
 			let self = this;
@@ -2068,7 +2052,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 500);
 			this.activeTabHeader = this.properties.landingPages;
 		}
-		this.referenceService.goToTop();
+		this.referenceService.scrollSmoothToTop();
 	}
 
 
@@ -4417,7 +4401,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.ngxloading = false;
 				location.reload();
 				this.router.navigateByUrl(this.referenceService.homeRouter);
-				//this.router.navigate(['/home/dashboard/myprofile']);
 			},
 			error => {
 				this.referenceService.scrollSmoothToTop();
