@@ -124,11 +124,18 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
   /** User Guide **/
   getGuideUrlByMergeTag(){
-    if(this.authenticationService.module.loggedInThroughVendorVanityUrl || this.authenticationService.module.isOnlyPartnerCompany){
-      this.mergeTagForGuide = 'adding_team_members_partner';
-    } else {
-      this.mergeTagForGuide = 'add_and_manage_team_members';
-    }
+    this.authenticationService.getRoleByUserId().subscribe(
+      (data: any) => {
+          const role = data.data;
+          const roleName = role.role == 'Team Member'? role.superiorRole : role.role;
+          if (roleName == 'Marketing' || roleName == 'Marketing & Partner') {
+              this.mergeTagForGuide = 'adding_team_members_marketing';
+          } else if(roleName == 'Partner'){
+              this.mergeTagForGuide = 'adding_team_members_partner';
+          } else {
+              this.mergeTagForGuide = 'add_and_manage_team_members';
+          }
+      });
   }
   /** User Guide **/
   findMaximumAdminsLimitDetails(){

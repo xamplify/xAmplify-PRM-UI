@@ -285,6 +285,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     updateDefaultEmailTemplateJsonBody(emailTemplate: EmailTemplate) {
         this.customResponse = new CustomResponse();
         emailTemplate.id = this.emailTemplateService.emailTemplate.id;
+        this.updateCompanyLogo(emailTemplate);
         this.emailTemplateService.updateDefaultEmailTemplateJsonBody(emailTemplate).subscribe(
             response=>{
                 this.customResponse = new CustomResponse('SUCCESS', response.message, true);

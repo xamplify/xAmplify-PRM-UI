@@ -805,7 +805,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         this.authenticationService.loginScreenDirection = data.data.loginScreenDirection;
                         this.setCompanyProfileViewData(data.data.companyName);
                     }
-                    this.isDisable = data.data.companyProfileName.length == 0 ? false : true;
+                    let companyProfileName = data.data.companyProfileName;
+                    let isValidCompanyProfileName = companyProfileName!=null && companyProfileName.length>0;
+                    this.isDisable = isValidCompanyProfileName;
                 },
                 error => { this.logger.errorPage(error) },
                 () => { this.logger.info("Completed getCompanyProfileByUserId()") }
@@ -928,7 +930,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
 
     removeCompanyNameError() {
-        //  $('#saveOrUpdateCompanyButton').prop('disabled',false);
         this.enableOrDisableButton();
         this.companyNameError = false;
         this.companyNameDivClass = this.refService.successClass;
@@ -937,12 +938,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     enableOrDisableButton() {
         $('#saveOrUpdateCompanyButton').prop('disabled', false);
         $('#module-access-button').prop('disabled', false);
-        /*let errorLength = $('div.form-group.has-error.has-feedback').length;
-          if(errorLength==0){
-            $('#saveOrUpdateCompanyButton').prop('disabled',false);
-        }else{
-            $('#saveOrUpdateCompanyButton').prop('disabled',true);
-        }*/
     }
 
     disableButton() {
@@ -952,17 +947,20 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
 
     validateProfileNames(value: any) {
+        this.logger.info("validateProfileNames() called");
+        this.logger.info("Entered Company Profile Name : "+value);
         if ($.trim(value).length > 0) {
             let valueWithOutSpaces = $.trim(value).toLowerCase().replace(/\s/g, '');
-            if (!this.regularExpressions.ALPHA_NUMERIC.test(value)) {
-                this.setCompanyProfileNameError("Please enter alpha numerics & lower case letters only");
+            $("#companyProfileName").val(valueWithOutSpaces);
+            this.logger.info("Trimmed Company Profile Name : "+valueWithOutSpaces);
+            if (!this.regularExpressions.ALPHA_NUMERIC.test(valueWithOutSpaces)) {
+                this.setCompanyProfileNameError("Please enter alpha numerics");
             } else if (valueWithOutSpaces.length < 3) {
                 this.setCompanyProfileNameError("Minimum 3 letters required");
             }
             else if (this.companyProfileNames.indexOf(valueWithOutSpaces) > -1) {
                 this.setCompanyProfileNameError("Company Profile Name Already Exists");
             } else {
-                //   $('#saveOrUpdateCompanyButton').prop('disabled',false);
                 this.enableOrDisableButton();
                 this.companyProfileNameError = false;
                 this.companyProfileNameDivClass = this.refService.successClass;

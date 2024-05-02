@@ -561,12 +561,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			let url = "/home/dam/previewVideo/" + asset.videoId + "/" + asset.id;
 			this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 		} else {
-			if(this.authenticationService.isLocalHost()){
-				this.referenceService.previewAssetPdfInNewTab(asset.id);
-			}else{
-				this.isPreview = true;
-				this.asset = asset;
-			}
+			this.referenceService.previewAssetPdfInNewTab(asset.id);
 		}
 	}
 

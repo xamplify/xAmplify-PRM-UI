@@ -3564,6 +3564,9 @@ previewPartnerPageInNewTab(id:number){
   this.openWindowInNewTab("/pv/plp/"+id);
 }
 
+previewVendorJourneyPartnerPageInNewTab(id:number){
+  this.openWindowInNewTab("/pv/vjplp/"+id);
+}
 previewAssetPdfInNewTab(id:number){
   this.openWindowInNewTab("/pv/v/pdf/"+id);
 }
