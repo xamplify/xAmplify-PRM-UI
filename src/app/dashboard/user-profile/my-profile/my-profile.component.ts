@@ -350,6 +350,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isProduction: boolean = false;
 	vendorJourneyEditOrViewAnalytics:boolean = false;
 	expandOrCollapseClass = "";
+	isHalopsaDisplayed = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -558,6 +559,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.userData = this.authenticationService.userProfile;
 			}
 			this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+			if(this.isProduction){
+				this.isHalopsaDisplayed = "spai@mobinar.com"==this.currentUser.userName;
+			}else{
+				this.isHalopsaDisplayed = true;
+			}
 			this.getUserByUserName(this.currentUser.userName);
 			this.cropperSettings();
 			this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
