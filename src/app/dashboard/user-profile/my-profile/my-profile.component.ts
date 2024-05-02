@@ -337,7 +337,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isNewsAndAnnouncementsOptionClicked:boolean;
 	isDashboardBannersOptionClicked:boolean;
 	vendorJourney:boolean = false;
+	/**XNFR-428****/
 	isLandingPages:boolean = false;
+	isMasterLandingPages:boolean = false;
 	loggedInUserCompanyId:number = 0;
 	/*** XNFR-483 ***/
 	isAggreedToDisableLeadApprovalFeature: boolean = false;
@@ -2030,7 +2032,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.dashboardBanners;
-    }
+    }/**XNFR-428****/
 		else if (this.activeTabName == "vendorJourney") {
 			this.ngxloading = true;
 			this.vendorJourney = false;
@@ -2051,6 +2053,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.landingPages;
+		}else if (this.activeTabName == "masterLandingPages") {
+
+			this.ngxloading = true;
+			this.isMasterLandingPages = false;
+			let self = this;
+			setTimeout(() => {
+				self.isMasterLandingPages = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.properties.masterLandingPages;
 		}
 		this.referenceService.scrollSmoothToTop();
 	}
@@ -4657,37 +4669,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			);
 	}
-
-/* editVendorLandingPage(event){
-	this.vendorDefaultTemplate = event;
-	this.landingPageService.vendorJourney = true;
-	this.landingPageService.id = this.vendorDefaultTemplate.id;
-	this.mergeTagsInput['page'] = true;
-	this.editVendorPage = true;
-	
-}
-resetVendorJourney(){
-	this.editVendorPage = false;
-	this.vendorDefaultTemplate = new LandingPage() ;
-	this.landingPageService.vendorJourney = false;
-	this.landingPageService.id = 0;
-	this.mergeTagsInput['page'] = false;
-	this.vendorJourney = false;
-	this.isLandingPages = false;
-}
-
-checkOrUncheckOpenLinksInNewTabOption(){
-	let isChecked = $('#'+this.openLinksInNewTabCheckBoxId).is(':checked');
-	if(isChecked){
-		$('#' + this.openLinksInNewTabCheckBoxId).prop("checked", false);
-		this.vendorDefaultTemplate.openLinksInNewTab = false;
-	}else{
-		$('#' + this.openLinksInNewTabCheckBoxId).prop("checked", true);
-		this.vendorDefaultTemplate.openLinksInNewTab = true;
-	}
-
-} */
-
 
 getCompanyId() {
 	if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {

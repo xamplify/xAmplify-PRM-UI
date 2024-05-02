@@ -282,6 +282,7 @@
                                             activeTabName == 'exclude' ? 'show':'',
                                             activeTabName == 'vendorJourney' ? 'show':'',
                                             activeTabName == 'landingPages' ? 'show':'',
+                                            activeTabName == 'masterLandingPages' ? 'show':'',
                                             activeTabName == 'categories' ? 'show':'',
                                             activeTabName == 'team-group' ? 'show':'',
                                             activeTabName == properties?.emailNotificationSettings ? 'show':'',
@@ -363,6 +364,15 @@
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'landingPages'}"
                                                         (click)="activateTab('landingPages');clearCustomResponse()">
                                                         {{properties.landingPages | translate}}</a>
+                                                </li>
+                                            </ng-container>
+                                            
+                                            <!--Master Landing Pages-->
+                                            <ng-container *ngIf="(authenticationService?.isPartner() || authenticationService?.isTeamMember())">
+                                                <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPages'}">
+                                                    <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPages'}"
+                                                        (click)="activateTab('masterLandingPages');clearCustomResponse()">
+                                                        {{properties.masterLandingPages | translate}}</a>
                                                 </li>
                                             </ng-container>
                                         </ng-container>
@@ -3178,6 +3188,11 @@
                                             <app-vendor-journey *ngIf="isLandingPages"
                                                 [loggedInUserCompanyId]="loggedInUserCompanyId"
                                                 [moduleType]="properties.landingPages"></app-vendor-journey>
+                                        </div>
+                                        <!--Master Landing Pages -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'masterLandingPages'}">
+                                            <app-vendor-journey *ngIf="isMasterLandingPages" [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                 [moduleType]="properties.masterLandingPages"></app-vendor-journey>
                                         </div>
                                         <!-- Support Settings -->
                                         <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption"
