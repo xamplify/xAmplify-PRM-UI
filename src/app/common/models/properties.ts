@@ -194,7 +194,7 @@ export class Properties {
 
 	vendorJourney = "Vendor Journey";
 	landingPages = "Landing Pages";
-
+	masterLandingPages = "Master Landing Pages"
 	/********Error Messages************* */
 	roleUpdatedMessage = "Your role has been changed.Please login again.";
 

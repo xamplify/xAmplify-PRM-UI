@@ -123,7 +123,7 @@
                                                 <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="copyIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                 <!--Edit Icon-->
-                                                <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="editIcon"
+                                                <ng-template *ngIf="!isLandingPages" [ngTemplateOutlet]="editIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                 <!--Preview Icon-->
                                                 <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="previewIcon"
@@ -219,7 +219,7 @@
                                     <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="copyIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Edit Icon-->
-                                    <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="editIcon"
+                                    <ng-template *ngIf="!isLandingPages" [ngTemplateOutlet]="editIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Preview Icon-->
                                     <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="previewIcon"

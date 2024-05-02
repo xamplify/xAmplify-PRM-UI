@@ -86,8 +86,7 @@
                                         <i id="account-details-icon" class="fa fa-minus" aria-hidden="true"></i>
                                     </a>
                                 </div>
-                                <ul id="accountDetailsDropdown" class="nav collapse in"
-                                    [ngClass]="[activeTabName =='personalInfo' ? 'in':'', activeTabName == 'password' ? 'in':'']">
+                                <ul id="accountDetailsDropdown" class="nav collapse in">
                                     <!---Personal Info--->
                                     <li [ngClass]="{'active-tab': activeTabName == 'personalInfo'}">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'personalInfo'}"
@@ -117,12 +116,7 @@
                                             </a>
                                     </div>
                                     <!---Default Player Settings-->
-                                    <ul id="settingsDropdown" class="nav collapse in" [ngClass]="[activeTabName == 'playerSettings' ? 'in':'', 
-                                        activeTabName == 'settings' ? 'in': '',
-                                        activeTabName == 'tags' ? 'in':'',
-                                        activeTabName == 'customizeleftmenu' ? 'in':'',
-                                        activeTabName == 'customskin' ? 'in':'',
-                                        activeTabName == properties?.customLoginScreen ? 'in':'']">
+                                    <ul id="settingsDropdown" class="nav collapse in">
                                         <li [ngClass]="{'active-tab': activeTabName == 'playerSettings'}"
                                             [class.disabled]="authenticationService.isSuperAdmin()"
                                             *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
@@ -184,10 +178,7 @@
                                             <i id="lead-or-deal-config-icon" class="fa fa-minus" aria-hidden="true"></i>
                                         </a>
                                     </div>
-                                    <ul id="leadAndDealDropdown" class="nav collapse in" [ngClass]="[activeTabName == 'dealTypes' ? 'in':'',
-                                            activeTabName == 'leadPipelines' ? 'in':'',
-                                            activeTabName == 'dealPipelines' ? 'in':'',
-                                            activeTabName == 'leadDealApprove' ? 'in':'']">
+                                    <ul id="leadAndDealDropdown" class="nav collapse in">
                                         <!---Deal Registration--->
                                         <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" *ngIf="authenticationService?.leadsAndDeals && authenticationService?.module?.isAnyAdminOrSupervisor">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"
@@ -230,11 +221,7 @@
                                              <i id="developers-icon" class="fa fa-minus" aria-hidden="true"></i>
                                         </a>
                                     </div>
-                                    <ul id="developersDropdown" class="nav collapse in" [ngClass]="[activeTabName == 'spf' ? 'in':'',
-                                            activeTabName == 'gdpr' ? 'in':'',
-                                            activeTabName == 'integrations' ? 'in':'',
-                                            activeTabName == 'samlSettings' ? 'in':'',
-                                            activeTabName == 'support' ? 'in':'']">
+                                    <ul id="developersDropdown" class="nav collapse in">
                                         <!--SPF Configuration-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'spf'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'spf'}"
@@ -282,6 +269,7 @@
                                             activeTabName == 'exclude' ? 'show':'',
                                             activeTabName == 'vendorJourney' ? 'show':'',
                                             activeTabName == 'landingPages' ? 'show':'',
+                                            activeTabName == 'masterLandingPages' ? 'show':'',
                                             activeTabName == 'categories' ? 'show':'',
                                             activeTabName == 'team-group' ? 'show':'',
                                             activeTabName == properties?.emailNotificationSettings ? 'show':'',
@@ -291,18 +279,7 @@
                                                 <i id="admin-icon" class="fa fa-minus" aria-hidden="true"></i>
                                             </a>
                                     </div>
-                                    <ul id="adminDropdown" class="nav collapse in" [ngClass]="[activeTabName == properties?.dashboardButtons ? 'in':'',
-                                            activeTabName == properties?.newsAndAnnouncements ? 'in':'',
-                                            activeTabName == properties?.dashboardBanners ? 'in':'',
-                                            activeTabName == 'templates' ? 'in':'',
-                                            activeTabName == 'unsubscribeReasons' ? 'in':'',
-                                            activeTabName == 'exclude' ? 'in':'',
-                                            activeTabName == 'vendorJourney' ? 'in':'',
-                                            activeTabName == 'landingPages' ? 'in':'',
-                                            activeTabName == 'categories' ? 'in':'',
-                                            activeTabName == 'team-group' ? 'in':'',
-                                            activeTabName == properties?.emailNotificationSettings ? 'in':'',
-                                            activeTabName == properties?.addDomainsText ? 'in':'']">
+                                    <ul id="adminDropdown" class="nav collapse in">
                                         <ng-container *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService.module.loggedInThroughOwnVanityUrl">
                                             <!--Dashboard Buttons-->
                                             <li [ngClass]="{'active': activeTabName == properties?.dashboardButtons}">
@@ -363,6 +340,15 @@
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'landingPages'}"
                                                         (click)="activateTab('landingPages');clearCustomResponse()">
                                                         {{properties.landingPages | translate}}</a>
+                                                </li>
+                                            </ng-container>
+                                            
+                                            <!--Master Landing Pages-->
+                                            <ng-container *ngIf="(authenticationService?.isPartner() || authenticationService?.isTeamMember())">
+                                                <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPages'}">
+                                                    <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPages'}"
+                                                        (click)="activateTab('masterLandingPages');clearCustomResponse()">
+                                                        {{properties.masterLandingPages | translate}}</a>
                                                 </li>
                                             </ng-container>
                                         </ng-container>
@@ -1300,7 +1286,7 @@
                                                     </div>
 
                                                     <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16"
-                                                        *ngIf="!httpRequestLoader.isLoading && !isProduction">
+                                                        *ngIf="!httpRequestLoader.isLoading && isHalopsaDisplayed">
                                                         <div
                                                             [className]="activeCRMDetails?.type === 'HALOPSA'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
                                                             <div class="card-body" style="padding:10px;">
@@ -3178,6 +3164,11 @@
                                             <app-vendor-journey *ngIf="isLandingPages"
                                                 [loggedInUserCompanyId]="loggedInUserCompanyId"
                                                 [moduleType]="properties.landingPages"></app-vendor-journey>
+                                        </div>
+                                        <!--Master Landing Pages -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'masterLandingPages'}">
+                                            <app-vendor-journey *ngIf="isMasterLandingPages" [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                 [moduleType]="properties.masterLandingPages"></app-vendor-journey>
                                         </div>
                                         <!-- Support Settings -->
                                         <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption"
