@@ -248,7 +248,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     /**** user guide ****** */
     mergeTagForGuide: any;
-    socialContactsNames: string[] = ['HUBSPOT', 'MARKETO', 'microsoft', 'pipedrive', 'connectWise', 'HaloPSA'];
+    socialContactsNames: string[] = ['HUBSPOT', 'MARKETO', 'microsoft', 'pipedrive', 'connectWise', 'haloPSA'];
     constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -5200,7 +5200,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingHaloPSAContactsAuthentication() {
-        if (this.selectedAddContactsOption == 8) {
+        if (this.selectedAddContactsOption == 13) {
             this.integrationService.checkConfigurationByType('haloPSA').subscribe(data => {
                 let response = data;
                 if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
@@ -5229,7 +5229,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.customResponse = new CustomResponse('ERROR', data.message, true);
             } else {
                 let response = data.data;
-                this.selectedAddContactsOption = 11;
+                this.selectedAddContactsOption = 13;
                 this.disableOtherFuctionality = true;
                 this.haloPSAImageBlur = false;
                 this.haloPSAImageNormal = true;
@@ -5289,7 +5289,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
         }
         this.setPage(1);
-        this.selectedAddContactsOption = 11;
+        this.selectedAddContactsOption = 13;
         this.disableOtherFuctionality = true;
         this.socialContact.contacts = this.socialContactUsers;
     }
