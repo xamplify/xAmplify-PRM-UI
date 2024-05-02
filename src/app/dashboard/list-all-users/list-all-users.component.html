@@ -14,14 +14,13 @@
                     <i class="fa fa-refresh margin" aria-hidden="true"></i>
                   </a>
                   <!--Searchable DropDown-->
-                  <div  id="left" class="cw-500px" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+                  <div *ngIf="!isSearchableDropdownHidden"  id="left" class="cw-500px" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
                     <p class="mt--10px" *ngIf="dropdownDataLoading">
                       <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Companies...</strong>
                     </p>
-                    <app-searchable-dropdown *ngIf="!dropdownDataLoading" [searchableDropDownDto]="companiesSearchableDropDownDto" [id]="selectedCompanyId"
-                      [disableDropDown]="false"
-                    (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event)">
-                    </app-searchable-dropdown>
+                      <app-searchable-dropdown *ngIf="!dropdownDataLoading" [searchableDropDownDto]="companiesSearchableDropDownDto" [id]="selectedCompanyId"
+                       [disableDropDown]="false" (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event)">
+                      </app-searchable-dropdown>
                   </div>
                   <!--Sort-->
                     <div id="left" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
@@ -42,8 +41,8 @@
                         <button type="submit" class="search-box-item-click" (click)="search()">
                           <i class="fa fa-search" aria-hidden="true"></i></button>
                       </div>
-                    </div> 
-                    
+                    </div>
+
               </div>
            </div>
             <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
@@ -62,6 +61,7 @@
                        <th style="width: 20%;" scope="col">NAME</th>
                        <th class='text-center' scope="col">COMPANY</th>
                        <th class='text-center' scope="col">Role</th>
+                       <th class='text-center' scope="col">Vanity Link</th>
                        <th class='text-center' scope="col">Created Time</th>
                         <th class='text-center' scope="col">Login</th>
                         <th class='text-center' scope="col" (click)="confirmLogoutForAll()">
@@ -78,6 +78,9 @@
                          </td>
                          <td align="center" scope="col">{{request.companyName}}</td>
                          <td align="center" scope="col">{{request.roleName}}</td>
+                         <td align="center">
+                            <a href="{{request?.vanityUrlLink}}" target="_blank">{{request?.vanityUrlLink}}</a>
+                         </td>
                          <td align="center" scope="col">{{request.createdTime | date:'mediumDate'}} {{request.createdTime | date:'shortTime'}}</td>
                          <td id="center" class="xAmpColor">
                            <a (click)="loginAs(request)">
@@ -118,4 +121,4 @@
 </div>
 
 
-  
+

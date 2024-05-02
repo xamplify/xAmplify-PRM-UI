@@ -150,7 +150,7 @@ export class ReferenceService {
   assetResponseMessage = "";
   createdOrUpdatedSuccessMessage = "";
   teamMemberSignedUpSuccessfullyMessage = "";
-
+  website:String="";
   /*** XNFR-433 ***/
   isCopyForm: boolean = false;
   constructor(
@@ -3562,6 +3562,17 @@ previewPageInNewTab(id:number){
 
 previewPartnerPageInNewTab(id:number){
   this.openWindowInNewTab("/pv/plp/"+id);
+}
+
+previewVendorJourneyPartnerPageInNewTab(id:number){
+  this.openWindowInNewTab("/pv/vjplp/"+id);
+}
+previewAssetPdfInNewTab(id:number){
+  this.openWindowInNewTab("/pv/v/pdf/"+id);
+}
+
+previewTrackOrPlayBOokAssetPdfAsPartnerInNewTab(learningTrackContentMappingId:number){
+  this.openWindowInNewTab("/pv/ptp/pdf/"+learningTrackContentMappingId);
 }
 
 openWindowInNewTab(url:string){

@@ -107,10 +107,6 @@
 												<!---XNFR-255-->
 												<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress"
 													class="view-banner published">Published</h6>
-												<span *ngIf="asset?.publishingOrWhiteLabelingInProgress"
-													class="view-banner-white-labeled mb5 G ListLabelSpacings">
-													<img src="assets/images/loading.gif"
-														alt="Processing">Processing</span>
 												<!---XNFR-255-->
 												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
 												<!---XNFR-255-->
@@ -159,51 +155,29 @@
 													<ng-container
 														*ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
 														<div class="mActionAlign ActionButtonPad">
-															<a class="custom-icon"
-																*ngIf="asset?.history &&!isPartnerView  && asset?.edit"
-																data-toggle="tooltip" data-placement="top"
-																title="History" (click)="expandHistory(asset,i)">
-																<i class="fa IconCustomization"
-																	[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}"
-																	aria-hidden="true"></i>
+															<a class="custom-icon" *ngIf="asset?.history &&!isPartnerView  && asset?.edit" data-toggle="tooltip" data-placement="top" title="History" (click)="expandHistory(asset,i)">
+																<i class="fa IconCustomization"[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class="custom-icon"
-																*ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"
-																data-toggle="tooltip" data-placement="top"
-																title="Design" (click)="addOrEdit(asset.id)">
-																<i class="fa fa-paint-brush IconCustomization"
-																	aria-hidden="true"></i>
+															<a class="custom-icon" *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit" data-toggle="tooltip" data-placement="top" title="Design" (click)="addOrEdit(asset.id)">
+																<i class="fa fa-paint-brush IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class="custom-icon"
-																*ngIf="asset?.beeTemplate && isPartnerView"
-																data-toggle="tooltip" data-placement="top" title="Edit"
-																(click)="addOrEdit(asset.id)">
-																<i class="fa fa-edit IconCustomization"
-																	aria-hidden="true"></i>
+															<a class="custom-icon" *ngIf="asset?.beeTemplate && isPartnerView" data-toggle="tooltip" data-placement="top" title="Edit" (click)="addOrEdit(asset.id)">
+																<i class="fa fa-edit IconCustomization" aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-															<a class="custom-icon" *ngIf="!isPartnerView && asset?.edit"
-																data-toggle="tooltip" data-placement="top" title="Edit"
-																(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId)">
-																<i class="fa fa-edit IconCustomization"
-																	aria-hidden="true"></i>
+															<a class="custom-icon" *ngIf="!isPartnerView && asset?.edit" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId)">
+																<i class="fa fa-edit IconCustomization"aria-hidden="true"></i>
 																<div class="clickicons"></div>
 															</a>
-
 															<ng-container
 																*ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
-																<a class="custom-icon"
-																	*ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
-																	(click)="campaignRouter(asset.alias, asset.viewBy)"
-																	data-toggle="tooltip" data-placement="top"
-																	title="Create campaign">
-																	<i class="fa fa-bullhorn IconCustomization"
-																		aria-hidden="true"></i>
+																<a class="custom-icon" *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
+																	(click)="campaignRouter(asset.alias, asset.viewBy)" data-toggle="tooltip" data-placement="top" title="Create campaign">
+																	<i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
 																	<div class="clickicons"></div>
 																</a>
-
 																<a class="disable custom-icon"
 																	*ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 																	data-toggle="tooltip" data-placement="top"
@@ -265,13 +239,13 @@
 													<!--Added On 02/08/2023-->
 													<ng-container
 														*ngIf="asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">
-														<a class="custom-icon" data-toggle="tooltip"
-															data-placement="top" title="Refresh"
-															(click)="refreshList()">
-															<i class="fa fa-refresh IconCustomization"
-																aria-hidden="true"></i>
+														<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Refresh" (click)="refreshList()">
+															<i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
 															<div class="clickicons"></div>
 														</a>
+														<p class="success mt5" *ngIf="asset?.publishingToPartnerList || asset?.publishingOrWhiteLabelingInProgress">
+															<strong><img src="assets/images/loading.gif"alt="Publishing is in progress"style="height:15px">Publishing in progress</strong>
+														</p>
 													</ng-container>
 													<!--Added On 02/08/2023-->
 												</div>
@@ -282,9 +256,7 @@
 												<div class="table-responsive">
 													<div *ngIf="showRefreshNotificationForHistoryAssets"
 														class="alert alert-info">
-														<strong>Please <a
-																(click)="listAssetsHistory(historyPagination)">click
-																here</a> to find latest updates</strong>
+														<strong>Please <a (click)="listAssetsHistory(historyPagination)">click here</a> to find latest updates</strong>
 													</div>
 													<table class="table tgrid table-condensed"
 														aria-describedby="asset-history" id="asset-history">
@@ -358,13 +330,6 @@
 																		<!---XNFR-255-->
 																		<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress"
 																			class="view-banner published">Published</h6>
-																		<h6 *ngIf="asset?.publishingOrWhiteLabelingInProgress"
-																			class="view-banner">
-																			<span><img src="assets/images/loading.gif"
-																					alt="Processing"
-																					style="height:15px"></span>
-																			Processing
-																		</h6>
 																		<!---XNFR-255-->
 																		<span *ngIf="asset.viewBy=='DRAFT'"
 																			class="draft-video mb0">DRAFT</span>
@@ -498,13 +463,13 @@
 																		<!--Added On 02/08/2023----->
 																		<div class="actions-block override-actions ActionAlign"
 																			*ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">
-																			<a class="custom-icon" data-toggle="tooltip"
-																				data-placement="top" title="Refresh"
-																				(click)="listAssetsHistory(historyPagination)">
-																				<i class="fa fa-refresh IconCustomization"
-																					aria-hidden="true"></i>
+																			<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Refresh" (click)="listAssetsHistory(historyPagination)">
+																				<i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
 																				<div class="clickicons"></div>
 																			</a>
+																			<p class="success mt5" *ngIf="asset?.publishingToPartnerList || asset?.publishingOrWhiteLabelingInProgress">
+																				<strong><img src="assets/images/loading.gif"alt="Publishing is in progress"style="height:15px">Publishing in progress</strong>
+																			</p>
 																		</div>
 																		<!--Added On 02/08/2023----->
 																	</td>

@@ -16,6 +16,7 @@ import { SortOption } from '../../core/models/sort-option';
 import { CustomResponse } from '../../common/models/custom-response';
 import { ComponentCanDeactivate } from 'app/component-can-deactivate';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { Properties } from 'app/common/models/properties';
 
 declare var BeePlugin:any, swal:any, $: any;
 
@@ -23,7 +24,7 @@ declare var BeePlugin:any, swal:any, $: any;
     selector: 'app-create-template',
     templateUrl: './create-template.component.html',
     styleUrls: ['./create-template.component.css'],
-    providers: [EmailTemplate, FormService, Pagination, SortOption]
+    providers: [EmailTemplate, FormService, Pagination, SortOption,Properties]
 })
 export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,OnDestroy {
     senderMergeTag: SenderMergeTag = new SenderMergeTag();
@@ -64,6 +65,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     saveLoader = false;
     isSaveAsButtonDisabled = true;
     invalidTemplateName = false;
+    properties:Properties = new Properties();
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
@@ -271,7 +273,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             }
             let emailTemplateName = self.refService.getTrimmedData(self.emailTemplate.name);
             self.invalidTemplateName = emailTemplateName.length==0;
-            if(self.emailTemplateService.isEditingDefaultTemplate){
+            if(self.emailTemplateService.isEditingDefaultTemplate && !self.emailTemplateService.emailTemplate.userDefined){
+                self.ngxLoading = true;
                 self.updateDefaultEmailTemplateJsonBody(self.emailTemplate);
             }else{
                 self.refService.showModalPopup("save-template-popup");
@@ -282,10 +285,14 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     updateDefaultEmailTemplateJsonBody(emailTemplate: EmailTemplate) {
         this.customResponse = new CustomResponse();
         emailTemplate.id = this.emailTemplateService.emailTemplate.id;
+        this.updateCompanyLogo(emailTemplate);
         this.emailTemplateService.updateDefaultEmailTemplateJsonBody(emailTemplate).subscribe(
             response=>{
                 this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+                this.refService.scrollSmoothToTop();
+                this.ngxLoading = false;
             },error=>{
+                this.ngxLoading = false;
                 this.refService.showSweetAlertServerErrorMessage();
             });
     }

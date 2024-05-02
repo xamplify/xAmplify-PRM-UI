@@ -234,6 +234,8 @@ margin-left:25px;
 }
 .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
   border-bottom-width: 1px;
+  width: 5px;
+  padding-right: 6px;
 }
 @media screen and (max-width: 767px){
 .table-responsive>.table-bordered {

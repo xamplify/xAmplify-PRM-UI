@@ -131,13 +131,13 @@ export class AddDealComponent implements OnInit {
   createdByActiveCRM: any;
   createdForActiveCRM: any;
   isMarketingCompany: boolean = false;
-  showCreatedForPipelineDetails: boolean = false;
-  showCreatedByPipelineDetails: boolean = true;
-  isOnlyOrgAdminOrMarketing: boolean = false;
-  showCreatedByPipelinesForDefaultForm: boolean = false;
-  showCreatedForPipelinesForDefaultForm: boolean = false;
   showCreatedByPipelineAndStage: boolean = false;
   showCreatedByPipelineAndStageOnTop: boolean = false;
+
+  titleFields = ['title','name','symptom'];
+  amountFields = ['amount','value','FOppValue'];
+  closeDateFields = ['expected_close_date','expectedCloseDate','FOppTargetDate','CloseDate'];
+  type = "DEAL";
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -294,9 +294,13 @@ export class AddDealComponent implements OnInit {
               let campaignDealPipeline = data.data;
               if ((self.deal.pipelineId !== campaignDealPipeline.id && this.actionType == 'add') || (self.deal.pipelineId !== campaignDealPipeline.id && this.actionType == 'edit') || this.actionType == 'view') {
                 self.pipelines.push(campaignDealPipeline);
+                self.createdForPipelines.push(campaignDealPipeline);
                 self.deal.pipelineId = campaignDealPipeline.id;
+                self.deal.createdForPipelineId = campaignDealPipeline.id;
                 self.pipelineIdError = false;
+                self.createdForPipelineIdError = false;
                 self.stages = campaignDealPipeline.stages;
+                self.createdForStages = campaignDealPipeline.stages;
                 if (this.actionType == 'add' || this.actionType == 'edit') {
                   self.resetStages();
                 }
@@ -438,7 +442,6 @@ export class AddDealComponent implements OnInit {
           this.setFieldErrorStates();
           if (!this.showCustomForm) {
             this.showDefaultForm = true;
-            this.showCreatedByPipelinesForDefaultForm = true;
             this.hasSfPipeline = false;
             if (this.edit || this.preview) {
               this.setProperties();
@@ -552,7 +555,9 @@ export class AddDealComponent implements OnInit {
       this.deal.pipelineStageId = 0;
       this.getStages();
       this.pipelineStageId = "form-group has-error has-feedback";
+      this.createdForPipelineStageId = "form-group has-error has-feedback";
       this.pipelineStageIdError = true;
+      this.createdForPipelineStageIdError = true;
       this.isDealRegistrationFormValid = false;
     }
 
@@ -781,7 +786,9 @@ export class AddDealComponent implements OnInit {
           this.pipelineIdError = true;
           this.pipelineStageId = errorClass;
           this.pipelineStageIdError = true;
+          this.createdForPipelineId = errorClass;
           this.createdForPipelineIdError = true;
+          this.createdForPipelineStageId = errorClass;
           this.createdForPipelineStageIdError = true;
         }
       }
@@ -798,12 +805,12 @@ export class AddDealComponent implements OnInit {
       }
       if (fieldId == "createdForPipelineId") {
         if (fieldValue.length > 0 && fieldValue != "0") {
-          this.pipelineId = successClass;
+          this.createdForPipelineId = successClass;
           this.createdForPipelineIdError = false;
         } else {
-          this.pipelineId = errorClass;
+          this.createdForPipelineId = errorClass;
           this.createdForPipelineIdError = true;
-          this.pipelineStageId = errorClass;
+          this.createdForPipelineStageId = errorClass;
           this.createdForPipelineStageIdError = true;
         }
       }
@@ -818,10 +825,10 @@ export class AddDealComponent implements OnInit {
       }
       if (fieldId == "createdForPipelineStageId") {
         if (fieldValue.length > 0 && fieldValue != "0") {
-          this.pipelineStageId = successClass;
+          this.createdForPipelineStageId = successClass;
           this.createdForPipelineStageIdError = false;
         } else {
-          this.pipelineStageId = errorClass;
+          this.createdForPipelineStageId = errorClass;
           this.createdForPipelineStageIdError = true;
         }
       }
@@ -831,6 +838,7 @@ export class AddDealComponent implements OnInit {
 
 
   submitButtonStatus() {
+    let self = this;
     if (this.showCustomForm) {
       this.opportunityAmountError = false;
       this.titleError = false;
@@ -840,8 +848,14 @@ export class AddDealComponent implements OnInit {
       this.propertiesQuestions.length = 0;
     }
 
+    if (!this.showCreatedByPipelineAndStage && !this.createdForPipelineStageIdError) {
+      this.pipelineIdError = false;
+      this.pipelineStageIdError = false;
+    }
+
     if (!this.opportunityAmountError && !this.estimatedCloseDateError
-      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError) {
+      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError 
+      && !this.pipelineStageIdError && !this.createdForPipelineStageIdError ) {
       let qCount = 0;
       let cCount = 0;
       this.propertiesQuestions.forEach(propery => {
@@ -967,11 +981,11 @@ export class AddDealComponent implements OnInit {
               this.deal.closeDateString = formLabel.value;
             }
           }
-          if (formLabel.labelId === "title" || formLabel.labelId === "name" || formLabel.labelId === "symptom") {
+          if (this.titleFields.includes(formLabel.labelId)) {
             this.deal.title = formLabel.value;
-          } else if ((formLabel.labelId === "amount" || formLabel.labelId === "value" || formLabel.labelId === "FOppValue") && this.activeCRMDetails.type != "HUBSPOT") {
+          } else if (this.amountFields.includes(formLabel.labelId) && this.activeCRMDetails.type != "HUBSPOT") {
             this.deal.amount = formLabel.value;
-          } else if (formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate" || formLabel.labelId === "FOppTargetDate") {
+          } else if (this.closeDateFields.includes(formLabel.labelId)) {
             this.deal.closeDateString = formLabel.value;
           }
           let sfCfData = new SfCustomFieldsDataDTO();
@@ -1083,11 +1097,10 @@ export class AddDealComponent implements OnInit {
         response => {
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
-
-            if (this.activeCRMDetails.activeCRM && this.activeCRMDetails.hasCustomForm
+            if (this.activeCRMDetails.hasCustomForm
               && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
                 || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type 
-                || "HALOPSA" === this.activeCRMDetails.type) && this.activeCRMDetails.hasCustomForm) {
+                || "HALOPSA" === this.activeCRMDetails.type)) {
               this.showCustomForm = true;
             }
           }
@@ -1099,7 +1112,6 @@ export class AddDealComponent implements OnInit {
           this.setFieldErrorStates();
           if (!this.showCustomForm) {
             this.showDefaultForm = true;
-            this.showCreatedByPipelinesForDefaultForm = true;
             this.activeCRMDetails.hasDealPipeline = false;
             if (this.edit || this.preview) {
               this.setProperties();
@@ -1127,16 +1139,16 @@ export class AddDealComponent implements OnInit {
   getDealPipelines() {
     let campaignId = 0;
     let self = this;
-    this.isLoading = true;
-    this.referenceService.loading(this.httpRequestLoader, true);
+    self.isLoading = true;
+    self.referenceService.loading(this.httpRequestLoader, true);
     if (this.deal.campaignId !== undefined && this.deal.campaignId > 0) {
       campaignId = this.deal.campaignId;
     }
-    this.dealsService.getActiveCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, campaignId)
+    this.dealsService.getActiveCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, campaignId, this.type)
       .subscribe(
         data => {
-          this.referenceService.loading(this.httpRequestLoader, false);
-          this.isLoading = false;
+          self.referenceService.loading(this.httpRequestLoader, false);
+          self.isLoading = false;
           if (data.statusCode == 200) {
             let activeCRMPipelinesResponse: any = data.data;
             self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
@@ -1314,9 +1326,6 @@ export class AddDealComponent implements OnInit {
   handleCreatedForPipelines(createdForPipelines: any) {
     let self = this;
     self.createdForPipelines = createdForPipelines;
-    if (createdForPipelines.length > 0 && !this.isOnlyOrgAdminOrMarketing){
-      this.showCreatedForPipelineDetails = true;
-    }
     if (createdForPipelines.length === 1) {
       let createdForPipeline = createdForPipelines[0];
       self.deal.createdForPipelineId = createdForPipeline.id;

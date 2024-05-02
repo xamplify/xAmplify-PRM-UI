@@ -71,7 +71,9 @@
 		(click)="refreshListEmitter()">
 		<i class="fa fa-refresh" aria-hidden="true"></i>
 		<div class="clickicons"></div>
-
 	</a>
+	<p class="success" *ngIf="asset?.publishingToPartnerList || asset?.publishingOrWhiteLabelingInProgress">
+		<strong><img src="assets/images/loading.gif"alt="Publishing is in progress"style="height:15px">Publishing in progress</strong>
+	</p>
 </div>
 <!--Added On 02/08/2023-->

@@ -5,13 +5,13 @@
   </div>
   <ng-container *ngIf="!success && !processor.isProcessing">
     <div *ngIf="statusCode==404">
-      <img src="../../../assets/images/404.jpg" alt="No Image Found" style="position: absolute;left: 25%;height: 500px;">
+      <img src="{{pageNotFoundImagePath}}" alt="{{statusCode}}" style="position: absolute;left: 25%;height: 500px;">
     </div>
     <div *ngIf="statusCode==400">
-      <img src="../../../assets/images/400.jpg" alt="No Image Found" style="position: absolute;left: 25%;height: 500px;">
+      <img src="{{badRequestImagePath}}" alt="{{statusCode}}" style="position: absolute;left: 25%;height: 500px;">
     </div>
     <div *ngIf="statusCode==500">
-      <img src="../../../assets/images/500.png" alt="No Image Found" style="position: absolute;left: 25%;height: 500px;">
+      <img src="{{internalServerErrorImagePath}}" alt="{{statusCode}}" style="position: absolute;left: 25%;height: 500px;">
     </div>
   </ng-container>
   </div>

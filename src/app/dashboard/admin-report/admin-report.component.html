@@ -11,13 +11,14 @@
     </ul>
   </div>
 
-  <ng-container *ngIf="!isVanityUrlEnabled">
-  <!--Upgrade Account-->
+ <ng-container *ngIf="!isVanityUrlEnabled">
   <div class="page-bar">
     <ul class="page-breadcrumb float-right">
+      <!--Upgrade Partner Account-->
       <li class="topnav-button-css">
         <button class="btn btn-primary" (click)="openUpgradeAccountModal()"><span>Upgrade Partner Account</span><i class="fa fa-level-up" aria-hidden="true"></i></button>
       </li>
+      <!--Create An Account-->
       <li class="topnav-button-css">
           <button class="btn btn-primary" (click)="createNewAccount()"><span>Create An Account</span><i class="fa fa-user" aria-hidden="true"></i></button>
       </li>
@@ -154,7 +155,7 @@
                    [ngModelOptions]="{standalone: true}" (keypress)="upgradeAccountOnKeyPress($event.keyCode)">
                   <span *ngIf="!validEmailId" class="required"><strong>Please Enter Email</strong></span>
                 </th>
-                  <th scope="row">
+                  <th scope="row" class="inline-flex">
                     <button [disabled]="upgradeAccountLoader" class="btn btn-primary" (click)="findCompanyInfo()">Search</button>
                     <button (click)="closeUpgradeAccountModal()" [disabled]="upgradeAccountLoader" class="btn btn-danger float-right">Close</button>
                   </th>
@@ -259,5 +260,8 @@
     </div>
   </div>
 </div>
+
+<!--Update Password-->
+<app-update-password #updatePasswordComponent></app-update-password>
 
 

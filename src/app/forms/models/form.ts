@@ -69,6 +69,7 @@ export class Form {
     customSkinButtonBorderColor: string = "";
     /***XNFR-423****/
     countryNames = [];
+    showConnectWiseProducts: boolean = false;
 
 
 }

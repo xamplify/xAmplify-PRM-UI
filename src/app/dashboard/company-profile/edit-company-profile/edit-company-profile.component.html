@@ -518,17 +518,17 @@
 											<div class="col-md-6 col-lg-6 mPadCompanyProfile"
 												style="padding-left: 0px;">
 												<div class="form-group" [attr.class]="companyProfileNameDivClass">
-													<label class="control-label" translate>Company Profile Name <font><b
-																style="color: #f55d7a !important">*</b></font></label>
-													<ng-container *ngIf="companyProfile.isAdd"> <input type="text"
-															id="companyProfileName" placeholder="Company Profile Name"
-															maxlength="15" class="form-control"
+													<label class="control-label" translate>Company Profile Name 
+														<span><b style="color: #f55d7a !important">*</b></span>
+													</label>
+													<ng-container *ngIf="companyProfile.isAdd">
+														<input type="text" id="companyProfileName" placeholder="Company Profile Name"
+															maxlength="15" class="form-control lowercase-text"
 															name="companyProfileName"
 															[(ngModel)]="companyProfile.companyProfileName"
-															(input)="validateEmptySpace('companyProfileName')"
-															(blur)="validateProfileNames(companyProfile.companyProfileName)" autocomplete="off" />
-														<span *ngIf="companyProfileNameError"
-															style="color: #f55d7a">{{companyProfileNameErrorMessage}}</span>
+															(input)="validateEmptySpace('companyProfileName');validateProfileNames(companyProfile.companyProfileName);"
+															 autocomplete="off"/>
+														<span *ngIf="companyProfileNameError" style="color: #f55d7a">{{companyProfileNameErrorMessage}}</span>
 													</ng-container>
 													<ng-container *ngIf="!companyProfile.isAdd"> <input type="text"
 															id="companyProfileName" [disabled]="isDisable"
@@ -752,11 +752,11 @@
 									</ng-template>
 									<div class="pull-right" *ngIf="!isFromAdminPanel">
 										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
-											*ngIf="companyProfile.isAdd" id="saveOrUpdateCompanyButton" (click)="save()"
+											*ngIf="!isDisable" id="saveOrUpdateCompanyButton" (click)="save()"
 											class="button bgcolor-unset" disabled="disabled" translate><span
 												class="btn Btn-Green transition txt_pd-top3">Save</span></button>
 										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
-											*ngIf="!companyProfile.isAdd" id="saveOrUpdateCompanyButton"
+											*ngIf="isDisable" id="saveOrUpdateCompanyButton"
 											(click)="update()" class="button bgcolor-unset" translate><span
 												class="btn Btn-Green transition txt_pd-top3">Update</span></button>
 									</div>

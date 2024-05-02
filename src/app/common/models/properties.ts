@@ -194,7 +194,7 @@ export class Properties {
 
 	vendorJourney = "Vendor Journey";
 	landingPages = "Landing Pages";
-
+	masterLandingPages = "Master Landing Pages"
 	/********Error Messages************* */
 	roleUpdatedMessage = "Your role has been changed.Please login again.";
 
@@ -351,7 +351,9 @@ export class Properties {
 	eventCampaignTemplateLocalStorageKey = "eventCampaignTemplatePreviewData";
 
 	PARTNERSHIP_ESTABLISHED_SUCCESSFULLY = "The partnership has been established successfully. You can now log in to access the platform.";
-	PARTNERSHIP_ALREADY_ESTABLISHED_WITH_COMPANY_NAME = "The company partnership has been established. Please contact the company admin if you wish to continue as a team member.";//Do you want to join as a team member?
+	PARTNERSHIP_ALREADY_ESTABLISHED_WITH_COMPANY_NAME = "The company partnership has been established. Please contact the company admin if you wish to continue as a team member.";
+	UPDATE_AND_CLOSE = "Update & Close";
+	SAVE_AND_CLOSE = "Save & Close";
 
 
 

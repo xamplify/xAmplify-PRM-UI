@@ -19,10 +19,15 @@ export class PreviewAssetPdfComponent implements OnInit {
 
   isPdfPreviewByVendor = false;
   isPdfPreviewByPartner = false;
+  isPdfPreviewByPartnerFromTracksOrPlayBooks = false;
   id = 0;
   statusCode = 404;
+  pageNotFoundImagePath = "";
+  badRequestImagePath = "";
+  internalServerErrorImagePath = "";
   customResponse:CustomResponse = new CustomResponse();
   success = false;
+  isTrackOrPlayBookPdfPreview = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties,
     public vanityUrlService:VanityURLService) { }
@@ -30,15 +35,19 @@ export class PreviewAssetPdfComponent implements OnInit {
   ngOnInit() {
     this.processor.set(this.processor);
     let currentRouterUrl = this.referenceService.getCurrentRouteUrl();
-    this.isPdfPreviewByVendor = currentRouterUrl.indexOf("/pv/v/pdf")>-1;
-    this.isPdfPreviewByPartner = currentRouterUrl.indexOf("/pv/p/pdf")>-1;
+    this.isPdfPreviewByVendor = currentRouterUrl.indexOf("/pv/v/pdf/")>-1;
+    this.isPdfPreviewByPartner = currentRouterUrl.indexOf("/pv/p/pdf/")>-1;
+    this.isTrackOrPlayBookPdfPreview = currentRouterUrl.indexOf("/pv/ptp/pdf/")>-1;
+    this.pageNotFoundImagePath = this.authenticationService.APP_URL+"assets/images/404.jpg";
+    this.badRequestImagePath = this.authenticationService.APP_URL+"assets/images/400.jpg";
+    this.internalServerErrorImagePath = this.authenticationService.APP_URL+"assets/images/500.png";
     this.referenceService.clearHeadScriptFiles();
     this.id = this.route.snapshot.params['id'];
     this.getHtmlBody();
   }
 
   getHtmlBody(){
-    this.authenticationService.getAssetPdfHtmlBody(this.id,this.isPdfPreviewByPartner).
+    this.authenticationService.getAssetPdfHtmlBody(this.id,this.isPdfPreviewByPartner,this.isTrackOrPlayBookPdfPreview).
     subscribe(
       response=>{
         this.statusCode = response.statusCode;
