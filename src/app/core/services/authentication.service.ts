@@ -1314,15 +1314,15 @@ getEmailTemplateHtmlBodyAndMergeTagsInfo(suffixUrl:string){
   return this.callGetMethod(URL);
 }
 
-getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:boolean){
+getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:boolean, vendorJourney:boolean){
   let userId = this.getUserId();
   let URL_PREFIX = "";
-  if(isPartnerLandingPagePreview){
+  if(isPartnerLandingPagePreview || vendorJourney){
     URL_PREFIX = this.REST_URL+"landing-page/partner/";
   }else{
     URL_PREFIX = this.REST_URL+"landing-page/";
   }
-  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&access_token="+this.access_token;
+  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&vendorJourney="+vendorJourney+"&access_token="+this.access_token;
   return this.callGetMethod(URL);
 }
 
