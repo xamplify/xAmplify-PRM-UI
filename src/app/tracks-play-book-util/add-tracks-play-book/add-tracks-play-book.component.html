@@ -39,6 +39,8 @@
   <div class="tracks-bg-color container" style="width: 100%;padding-bottom: 10px;padding-left: 2px;border-radius: 5px;
     padding-right: 2px;">
 
+    
+
     <!-- step 1 -->
     <div *ngIf="activeTabName == 'step-1'" class="setup-content step activeStepInfo">
       <app-modal-popup-loader *ngIf="ngxloading"></app-modal-popup-loader>
@@ -117,17 +119,15 @@
                   </div>
                 </div>
                 <!--XNFR-523--->
-                <div class="row form-group pb10" *ngIf="isPushEmailNotificationOptionDisplayed">
-                  <label class="control-label col-sm-4" style="text-align: right;" translate>Push Email Notification
-                    <span class="required">*</span>
-                  </label>
+                <div class="row form-group pb10" *ngIf="isSendEmailNotificationOptionDisplayed">
+                  <label class="control-label col-sm-4" style="text-align: right;" translate>Send Email Notification</label>
                   <div class="col-sm-8 col-xs-12 mt--10px">
-                    <app-custom-ui-switch [customSwitch]="tracksPlayBook.notifyPartners"
-                        (customUiSwitchEventEmitter)="setNotifyPartnersOption($event)"></app-custom-ui-switch>
+                    <app-custom-ui-switch [customSwitch]="tracksPlayBook.trackUpdatedEmailNotification"
+                        (customUiSwitchEventEmitter)="setTrackUpdatedEmailNotification($event)"></app-custom-ui-switch>
                     <span class="info-color-xampc">
                         <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup"
                           data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                          title="Push email notification to partners who made progress"></i>
+                          title="{{sendEmailNotificationOptionToolTipMessage}}"></i>
                     </span>
                   </div>
                 </div>
@@ -462,6 +462,20 @@
 
     <!-- step 4 -->
     <div *ngIf="activeTabName == 'step-4'" class="setup-content step hiddenStepInfo" style="margin: 10px;">
+      <!--XNFR-523---->
+      <div class="col-xs-6 float-right">
+        <div class="pull-right">
+          <label class="switch-choose">Send Email Notification
+          </label>
+          <app-custom-ui-switch [customSwitch]="tracksPlayBook.trackUpdatedEmailNotification" (customUiSwitchEventEmitter)="setTrackUpdatedEmailNotification($event)"></app-custom-ui-switch>
+          <span class="info-color-xampc">
+            <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup"
+              data-toggle="tooltip" data-placement="top" aria-hidden="true"
+              title="{{sendEmailNotificationOptionToolTipMessage}}"></i>
+        </span>
+        </div>
+      </div>
+      <!--XNFR-523---->
       <div *ngIf="!isGroupOrCompanyValid" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center"
         style="margin: 5px;">
         <span class="required">{{groupOrCompanyErrorMessage}}</span>
