@@ -3513,66 +3513,71 @@ clearHeadScriptFiles(){
   $('#page-loader-index-html').css({'display':'block'});
 }
 
-previewEmailTemplateInNewTab(id:number){
-  this.openWindowInNewTab("/pv/t/"+id);
+encodePathVariable(input:any){
+  let encodedPathVariable = btoa(input);
+  return encodedPathVariable;
+}
+
+previewEmailTemplateInNewTab(id:any){
+  this.openWindowInNewTab("/pv/t/"+this.encodePathVariable(id));
 }
 
 previewEventCampaignEmailTemplateInNewTab(id:number){
-  this.openWindowInNewTab("/pv/evt/"+id);
+  this.openWindowInNewTab("/pv/evt/"+this.encodePathVariable(id));
 }
 previewEditRedistributedEventCampaignTemplatePreview(campaignId: any) {
-  this.openWindowInNewTab("/pv/edevt/"+campaignId);
+  this.openWindowInNewTab("/pv/edevt/"+this.encodePathVariable(campaignId));
 }
 
 previewWorkflowEmailTemplateInNewTab(id:number){
-  this.openWindowInNewTab("/pv/wt/"+id);
+  this.openWindowInNewTab("/pv/wt/"+this.encodePathVariable(id));
 }
 
 previewCampaignEmailTemplateInNewTab(campaignId:number){
-  this.openWindowInNewTab("/pv/ct/"+campaignId);
+  this.openWindowInNewTab("/pv/ct/"+this.encodePathVariable(campaignId));
 }
 
 previewSharedVendorCampaignEmailTemplateInNewTab(campaignId:number){
-  this.openWindowInNewTab("/pv/sct/"+campaignId);
+  this.openWindowInNewTab("/pv/sct/"+this.encodePathVariable(campaignId));
 }
 
 previewSharedVendorEventCampaignEmailTemplateInNewTab(campaignId:number){
-  this.openWindowInNewTab("/pv/sect/"+campaignId);
+  this.openWindowInNewTab("/pv/sect/"+this.encodePathVariable(campaignId));
 }
 
 previewSharedCampaignAutoReplyEmailTemplateInNewTab(replyId:number){
-  this.openWindowInNewTab("/pv/cwaret/"+replyId);
+  this.openWindowInNewTab("/pv/cwaret/"+this.encodePathVariable(replyId));
 }
 
 previewVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(urlId:number){
-  this.openWindowInNewTab("/pv/cwarwlt/"+urlId);
+  this.openWindowInNewTab("/pv/cwarwlt/"+this.encodePathVariable(urlId));
 }
 
 previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number){
-  this.openWindowInNewTab("/pv/scwaret/"+vendorCampaignWorkflowId);
+  this.openWindowInNewTab("/pv/scwaret/"+this.encodePathVariable(vendorCampaignWorkflowId));
 }
 
 previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWorkflowId:number){
-  this.openWindowInNewTab("/pv/scwarwlt/"+vendorCampaignWorkflowId);
+  this.openWindowInNewTab("/pv/scwarwlt/"+this.encodePathVariable(vendorCampaignWorkflowId));
 }
 
 previewPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/lp/"+id);
+  this.openWindowInNewTab("/pv/lp/"+this.encodePathVariable(id));
 }
 
 previewPartnerPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/plp/"+id);
+  this.openWindowInNewTab("/pv/plp/"+this.encodePathVariable(id));
 }
 
 previewVendorJourneyPartnerPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/vjplp/"+id);
+  this.openWindowInNewTab("/pv/vjplp/"+this.encodePathVariable(id));
 }
 previewAssetPdfInNewTab(id:number){
-  this.openWindowInNewTab("/pv/v/pdf/"+id);
+  this.openWindowInNewTab("/pv/v/pdf/"+this.encodePathVariable(id));
 }
 
-previewTrackOrPlayBOokAssetPdfAsPartnerInNewTab(learningTrackContentMappingId:number){
-  this.openWindowInNewTab("/pv/ptp/pdf/"+learningTrackContentMappingId);
+previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(learningTrackContentMappingId:number){
+  this.openWindowInNewTab("/pv/ptp/pdf/"+this.encodePathVariable(learningTrackContentMappingId));
 }
 
 openWindowInNewTab(url:string){
