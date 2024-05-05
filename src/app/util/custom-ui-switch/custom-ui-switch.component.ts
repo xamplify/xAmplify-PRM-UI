@@ -7,12 +7,16 @@ import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
 })
 export class CustomUiSwitchComponent implements OnInit {
  @Input() customSwitch = false;
+ @Input() isSwitchOptionDisabled = false;
  @Output() customUiSwitchEventEmitter = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
     if(this.customSwitch==undefined){
       this.customSwitch =false;
+    }
+    if(this.isSwitchOptionDisabled==undefined){
+      this.isSwitchOptionDisabled = false;
     }
   }
 

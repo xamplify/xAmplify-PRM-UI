@@ -192,6 +192,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   /**XNFR-523***/
   isSendEmailNotificationOptionDisplayed = false;
   sendEmailNotificationOptionToolTipMessage = "";
+  isSwitchOptionDisabled = false;
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties) {
@@ -234,9 +235,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       this.stepTwoTabClass = this.disableTabClass;
       this.stepThreeTabClass = this.disableTabClass;
       this.stepFourTabClass = this.disableTabClass;
+       /****XNFR-326******/
+      this.findTrackOrPlaybookPublishEmailNotificationOption();
     }
-    /****XNFR-326******/
-    this.findTrackOrPlaybookPublishEmailNotificationOption();
+   
   }
    /****XNFR-326******/
   findTrackOrPlaybookPublishEmailNotificationOption() {
@@ -245,9 +247,15 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     .subscribe(
         response=>{
             this.isTrackOrPlaybookPublishedEmailNotification = response.data;
+            this.isSwitchOptionDisabled = !this.isTrackOrPlaybookPublishedEmailNotification;
+            if(this.isSwitchOptionDisabled){
+              this.tracksPlayBook.trackUpdatedEmailNotification = false;
+            }
             this.trackOrPlaybookPublishEmailNotificationLoader = false;
+            this.ngxloading = false;
         },error=>{
             this.trackOrPlaybookPublishEmailNotificationLoader = false;
+            this.ngxloading = false;
         });
   }
 
@@ -351,7 +359,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
             this.isSendEmailNotificationOptionDisplayed = this.tracksPlayBook.published && !this.isAdd && this.authenticationService.isLocalHost();
             this.sendEmailNotificationOptionToolTipMessage = this.properties.SEND_UPDATED_TRACK_EMAIL_NOTIFICATION_MESSAGE.replace("{{partnersMergeTag}}",this.authenticationService.getPartnerModuleCustomName());
             /**XNFR-523***/
-            this.ngxloading = false;
           } else {
             this.goToManageSectionWithError();
             this.ngxloading = false;
@@ -365,6 +372,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         this.logger.errorPage(error);
         this.referenceService.showServerError(this.httpRequestLoader);
         this.ngxloading = false;
+      },()=>{
+        /***XNFR-523***/
+        this.findTrackOrPlaybookPublishEmailNotificationOption();
       });
   }
 
