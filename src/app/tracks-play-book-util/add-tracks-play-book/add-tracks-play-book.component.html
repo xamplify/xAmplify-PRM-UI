@@ -121,7 +121,7 @@
                   <label class="control-label col-sm-4" style="text-align: right;" translate>Send Email Notification</label>
                   <div class="col-sm-8 col-xs-12 mt--10px">
                     <app-custom-ui-switch [customSwitch]="tracksPlayBook.trackUpdatedEmailNotification" [isSwitchOptionDisabled]="isSwitchOptionDisabled"
-                        (customUiSwitchEventEmitter)="setTrackUpdatedEmailNotification($event)"></app-custom-ui-switch>
+                        (customUiSwitchEventEmitter)="setTrackUpdatedEmailNotification($event)" [tooltipMessage]="customSwitchToolTipMessage"></app-custom-ui-switch>
                     <span class="info-color-xampc">
                         <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup"
                           data-toggle="tooltip" data-placement="top" aria-hidden="true"

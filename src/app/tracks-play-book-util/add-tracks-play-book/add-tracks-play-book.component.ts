@@ -193,6 +193,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   isSendEmailNotificationOptionDisplayed = false;
   sendEmailNotificationOptionToolTipMessage = "";
   isSwitchOptionDisabled = false;
+  customSwitchToolTipMessage = "";
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties) {
@@ -250,6 +251,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
             this.isSwitchOptionDisabled = !this.isTrackOrPlaybookPublishedEmailNotification;
             if(this.isSwitchOptionDisabled){
               this.tracksPlayBook.trackUpdatedEmailNotification = false;
+              this.customSwitchToolTipMessage = this.properties.TRACK_OR_PLAY_BOOK_EMAIL_NOTIFICATION_OPTION_DISABLED;
+            }else{
+              this.customSwitchToolTipMessage = "";
             }
             this.trackOrPlaybookPublishEmailNotificationLoader = false;
             this.ngxloading = false;

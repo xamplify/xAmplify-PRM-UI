@@ -1,4 +1,4 @@
-<label [ngClass]="isSwitchOptionDisabled ? 'toggleOnOff disabled-opacity':'toggleOnOff'">
+<label [ngClass]="isSwitchOptionDisabled ? 'toggleOnOff disabled-opacity':'toggleOnOff'" [title]="tooltipMessage">
   <input class="checkBox_shadow" type="checkbox"  [(ngModel)]="customSwitch" [ngModelOptions]="{standalone: true}"
    (ngModelChange)="getSwitchValue($event)" [disabled]="isSwitchOptionDisabled">
   <span class="sliderOnOff"></span>
