@@ -39,18 +39,17 @@
   <div class="tracks-bg-color container" style="width: 100%;padding-bottom: 10px;padding-left: 2px;border-radius: 5px;
     padding-right: 2px;">
 
-
-
     <!-- step 1 -->
     <div *ngIf="activeTabName == 'step-1'" class="setup-content step activeStepInfo">
-      <div style="margin-top: 10px;">
+      <app-modal-popup-loader *ngIf="ngxloading"></app-modal-popup-loader>
+      <div style="margin-top: 10px;" *ngIf="!ngxloading">
         <div class="portlet box mPortlet" style="border-radius:5px;">
           <div class=" form mPortlet-body">
             <div class="row">
               <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 form-body">
                 <div class="row form-group">
                   <label class="control-label col-sm-4" style="text-align: right;" translate>Title
-                    <font style="color: red">*</font><br>
+                    <span class="required">*</span><br>
                   </label>
                   <div class="col-sm-8" style="padding-bottom: 10px;">
                     <input class="form-control" placeholder="Add title" [(ngModel)]="tracksPlayBook.title"
@@ -62,7 +61,7 @@
                 </div>
                 <div class="row form-group">
                   <label class="control-label col-sm-4" style="text-align: right;" translate>Link
-                    <font style="color: red">*</font>
+                    <span class="required">*</span>
                   </label>
                   <div class="col-sm-8" style="padding-bottom: 10px;">
                     <div *ngIf="isEditSlug">
@@ -96,7 +95,7 @@
                 </div>
                 <div class="row form-group" style="padding-bottom: 10px;">
                   <label class="control-label col-sm-4" style="text-align: right;" translate>Folder
-                    <font style="color: red">*</font>
+                    <span class="required">*</span>
                   </label>
                   <div class="inline col-sm-8 col-xs-12">
                     <div class="dropdown">
@@ -117,6 +116,22 @@
                     </div>
                   </div>
                 </div>
+                <!--XNFR-523--->
+                <div class="row form-group pb10" *ngIf="isPushEmailNotificationOptionDisplayed">
+                  <label class="control-label col-sm-4" style="text-align: right;" translate>Push Email Notification
+                    <span class="required">*</span>
+                  </label>
+                  <div class="col-sm-8 col-xs-12 mt--10px">
+                    <app-custom-ui-switch [customSwitch]="tracksPlayBook.notifyPartners"
+                        (customUiSwitchEventEmitter)="setNotifyPartnersOption($event)"></app-custom-ui-switch>
+                    <span class="info-color-xampc">
+                        <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup"
+                          data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                          title="Push email notification to partners who made progress"></i>
+                    </span>
+                  </div>
+                </div>
+                <!---Tags-->
                 <div class="row form-group mTags" style="padding-bottom: 10px;">
                   <label class="control-label col-sm-4 col-xs-6 mTextAlign" style="text-align: right;" translate>Tags
                   </label>
@@ -253,7 +268,7 @@
           <div class="col-xs-4 p0">
 
             <h4 claass="text-primary pull-left" style="padding-left: 0px;
-            padding-top: 2px;">Description <font style="color: red">*</font><br></h4>
+            padding-top: 2px;">Description <span class="required">*</span><br></h4>
 
           </div>
           <div class="input-icon right pull-right cebp" style="margin-right: -2px;

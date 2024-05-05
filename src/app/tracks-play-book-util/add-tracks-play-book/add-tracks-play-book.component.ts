@@ -187,6 +187,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
  /****XNFR-326*****/
   /*****XNFR-423****/
   countryNames = [];
+  /**XNFR-523***/
+  isPushEmailNotificationOptionDisplayed = false;
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
@@ -203,6 +205,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value);
     });
+    
+    
   }
 
   ngOnInit() {
@@ -340,6 +344,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
               this.folderName = this.tracksPlayBook.category.name;
             }
             this.validateLearningTrack();
+            this.isPushEmailNotificationOptionDisplayed = this.tracksPlayBook.published && !this.isAdd && this.authenticationService.isLocalHost();
             this.ngxloading = false;
           } else {
             this.goToManageSectionWithError();

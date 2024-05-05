@@ -40,4 +40,5 @@ export class TracksPlayBook {
     typeQuizId: boolean = false;
     companyProfileName = "";
     learningTrackContentMappingId = 0;
+    notifyPartners = false;
 }
