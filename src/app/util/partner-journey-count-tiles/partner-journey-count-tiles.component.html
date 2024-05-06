@@ -60,6 +60,18 @@
             <p class="pa-text pa-TextThree">Contacts</p>
          </div>
       </div>
+      <!-- card eleven  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showCompanyCount && isTeamMemberAnalytics"
+         [scrollTo]="partnerJourneyAnalytics?.companyCount > 0 ? '#ta-company-details-div' : ''" [scrollDuration]="1000"
+         [scrollOffset]="-100">
+         <div
+            [className]="partnerJourneyAnalytics?.companyCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardTwelve tiles-card' : 'disabled-event-pj pa-Card pa-CardTwelve tiles-card'">
+            <i class="fa fa-building-o pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextTwelv">{{partnerJourneyAnalytics?.companyCount}}</p>
+            <p class="pa-text pa-TextTwelv">Companies</p>
+         </div>
+      </div>
       <!-- card four  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
          *ngIf="partnerJourneyAnalytics?.showShareLeadCount"
@@ -142,18 +154,6 @@
             <i class="fa fa-book pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextTen">{{partnerJourneyAnalytics?.playbookCount}}</p>
             <p class="pa-text pa-TextTen">Playbooks</p>
-         </div>
-      </div>
-      <!-- card eleven  -->
-      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="isTeamMemberAnalytics && !isVendorVersion"
-         [scrollTo]="partnerJourneyAnalytics?.companyCount > 0 ? '#ta-company-details-div' : ''" [scrollDuration]="1000"
-         [scrollOffset]="-100">
-         <div
-            [className]="partnerJourneyAnalytics?.companyCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardTwelve tiles-card' : 'disabled-event-pj pa-Card pa-CardTwelve tiles-card'">
-            <i class="fa fa-building-o pa-fafaIconCustomization" aria-hidden="true"></i>
-            <p class="pa-text pa-TextTwelv">{{partnerJourneyAnalytics?.companyCount}}</p>
-            <p class="pa-text pa-TextTwelv">Companies</p>
          </div>
       </div>
    </div>

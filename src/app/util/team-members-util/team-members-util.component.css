@@ -485,6 +485,12 @@ span.filterActiveBg i {
   margin-right: -30px;
     margin-left: 0px;
 }
+
+.rowPaddingCustomization3{
+  margin-right: 25px;
+  margin-left: 0px;
+}
+
 .rowPaddingCustomize2 {
   margin-right: 15px;
   margin-left: 15px;
@@ -522,7 +528,7 @@ span.filterActiveBg i {
 }
 
 .row.rowPaddingCustomization2 {
-  margin-right: -20px;
+  margin-right: 15px;
   margin-left: 0px;
 }
 

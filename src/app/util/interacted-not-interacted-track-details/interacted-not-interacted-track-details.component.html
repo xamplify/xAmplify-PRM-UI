@@ -5,8 +5,7 @@
       <span class="pull-right mt25m mobilesearchdisplay">
         <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;top: -1px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
-            [ngModelOptions]="{standalone: true}" placeholder="Search"
-            (keypress)="searchKeyPress($event.keyCode)">
+            [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
             (click)="sortOption.searchKey='';search()"></button>
           <button type="submit" class="search-box-item-click" (click)="search()">
@@ -14,36 +13,82 @@
         </div>
       </span>
     </div>
-    <div class="panel-body">    
-      <div class="scroll table-responsive {{scrollClass}}"  *ngIf="!httpRequestLoader.isLoading">
+    <div class="panel-body">
+      <div class="scroll table-responsive {{scrollClass}}" *ngIf="!httpRequestLoader.isLoading"
+        [ngClass]="isVendorVersion?'scrolladjustment':''">
         <table class="table">
           <thead>
-            <tr>         
-              <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team Member</th>
-              <th scope="col" *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><i class="fa fa-building" aria-hidden="true"></i> Company Name</th>
-              <th scope="col" *ngIf="isTeamMemberAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team Member</th>
+            <tr>
+              <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team
+                Member</th>
+              <th scope="col" *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><i class="fa fa-building"
+                  aria-hidden="true"></i> Company Name</th>
+              <th scope="col" *ngIf="isTeamMemberAnalytics && !isVendorVersion"><i class="fa fa-user-circle"
+                  aria-hidden="true"></i> Vendor</th>
+              <th scope="col" *ngIf="isTeamMemberAnalytics && !isVendorVersion"><i class="fa fa-user-circle"
+                  aria-hidden="true"></i> Partner Company</th>
+              <th scope="col" *ngIf="isVendorVersion"><i class="fa fa-user-circle" aria-hidden="true"></i> Vendor Team
+                Member</th>
+              <th scope="col" *ngIf="isVendorVersion"><i class="fa fa-user-circle" aria-hidden="true"></i> Partner Team
+                Member</th>
               <th scope="col"><i class="fa fa-line-chart" aria-hidden="true"></i> Track</th>
               <th scope="col"><i class="fa fa-tasks" aria-hidden="true"></i> Avg. Progress</th>
-              <th></th>
             </tr>
           </thead>
-          <tbody>          
+          <tbody>
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td *ngIf="isDetailedAnalytics"> <app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+              <td *ngIf="isDetailedAnalytics"> <app-user-info [isPartnerEntityInfo]="true"
+                  [userInfo]="item"></app-user-info></td>
               <!-- <td *ngIf="!isDetailedAnalytics"><a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">{{item?.companyName}}</a></td>  -->
-              <td *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
-              <td *ngIf="isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button"><app-user-info [userInfo]="item"></app-user-info></a></td>
-              <td>{{item?.title}}</td>              
+              <td *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><a class="detailstext"
+                  data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info
+                    [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <td *ngIf="isTeamMemberAnalytics && !isVendorVersion">
+                <p><i class="fa fa-user-circle" aria-hidden="true"></i>
+                  <b>  Company Name: </b> <span>{{item?.vendorCompany | slice:0:15}}</span>
+                  <span *ngIf="item?.vendorCompany?.length>15">..</span>
+                  <span>
+                    <p class="pl20" data-toggle="tooltip" data-placement="top"
+                      title="{{item?.vendorTeamMemberEmailId}}">
+                      <b>EmailId : </b> <a>{{item?.vendorTeamMemberEmailId | slice:0:15}}</a><span
+                        *ngIf="item?.vendorTeamMemberEmailId?.length>15">..</span>
+                    </p>
+                  </span>
+                </p>
+              </td>
+              <td scope="row" *ngIf="isTeamMemberAnalytics && !isVendorVersion">
+                <a data-toggle="tooltip" data-placement="top" title="{{item?.emailId}}">
+                  {{item?.emailId | slice:0:15}}<span *ngIf="item?.emailId?.length>15">..</span>
+                </a>
+              </td>
+              <td scope="row" *ngIf="isVendorVersion">
+                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                <a class="pl10" data-toggle="tooltip" data-placement="top" title="{{item?.emailId}}">
+                  {{item?.emailId | slice:0:15}}<span *ngIf="item?.emailId?.length>15">..</span>
+                </a>
+              </td>
+              <td scope="row" *ngIf="isVendorVersion">
+                <span data-toggle="tooltip" data-placement="top" title="{{item?.partnerEmailId}}">
+                  {{item?.partnerEmailId | slice:0:15}}<span *ngIf="item?.emailId?.length>15">..</span>
+                </span>
+              </td>
+              <td *ngIf="!isVendorVersion">{{item?.title}}</td>
+              <td scope="row" *ngIf="isVendorVersion">
+                <span data-toggle="tooltip" data-placement="top" title="{{item?.title}}">
+                  {{item?.title | slice:0:15}}<span *ngIf="item?.emailId?.length>15">..</span>
+                </span>
+              </td>
               <!-- <td>{{item.progress}}%</td> -->
               <td>
-               
-                  <div class="progress heightabjustment">
-                      <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{item.progress}}%" [ngStyle]="{'width': item.progress + '%'}" style="border-radius:1px;" role="progressbar">
-                      </div>
+
+                <div class="progress heightabjustment">
+                  <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{item.progress}}%"
+                    [ngStyle]="{'width': item.progress + '%'}" style="border-radius:1px;" role="progressbar">
                   </div>
-                  <span *ngIf="item.progress != undefined">{{item.progress}}%</span>
-                  <span *ngIf="item.progress == undefined">0%</span>
-              
+                </div>
+                <span *ngIf="item.progress != undefined">{{item.progress}}%</span>
+                <span *ngIf="item.progress == undefined">0%</span>
+
 
               </td>
             </tr>
@@ -62,4 +107,3 @@
     </div>
   </div>
 </div>
-

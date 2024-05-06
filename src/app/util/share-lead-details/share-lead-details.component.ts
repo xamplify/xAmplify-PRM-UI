@@ -26,6 +26,7 @@ export class ShareLeadDetailsComponent implements OnInit {
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
   @Input() isVendorVersion : boolean = false;
+  headerText:string = 'Share Leads Details';
   
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -51,6 +52,11 @@ export class ShareLeadDetailsComponent implements OnInit {
     //   this.isDetailedAnalytics = false;
     // }
     this.getShareLeadDetails(this.pagination);
+    if(this.isTeamMemberAnalytics && !this.isVendorVersion){
+      this.headerText = 'Shared Leads Details';
+    }else{
+      this.headerText = 'Share Leads Details';
+    }
   }
 
   getShareLeadDetailsForPartnerJourney(pagination : Pagination) {

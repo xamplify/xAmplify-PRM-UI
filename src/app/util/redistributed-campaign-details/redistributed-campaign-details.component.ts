@@ -23,7 +23,7 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
   @Input()  isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
-  @Input() isTeamMemberAnalytics: boolean = true;
+  @Input() isTeamMemberAnalytics: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
   @Input() isVendorVersion : boolean = false;

@@ -112,7 +112,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   isVendorVersion : boolean = false;
   isOnlyPartner : boolean ;
   roleName: Roles = new Roles();
-  vendorRole : boolean;
+  isVendorRole : boolean;
   isOrgAdmin : boolean;
   isPrm : boolean;
   isMarketing : boolean;
@@ -182,7 +182,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         }
         /** User Guide* */
         if(roles.indexOf(this.roleName.vendorRole) > -1){
-          this.vendorRole = true;
+          this.isVendorRole = true;
         }
         /** User Guide */
         if (roles.indexOf(this.roleName.orgAdminRole) > -1) {

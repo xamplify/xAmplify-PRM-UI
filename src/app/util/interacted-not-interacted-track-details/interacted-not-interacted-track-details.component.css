@@ -62,3 +62,7 @@
 .table>tbody>tr>td {
     vertical-align: middle !important;
 }
+
+.scrolladjustment{
+	overflow-x: hidden;
+}

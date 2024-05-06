@@ -25,6 +25,7 @@ export class TeamMemberAnalyticsAllPartnersDetailsComponent implements OnInit {
   loggedInUserId: number = 0;
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
+  
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,

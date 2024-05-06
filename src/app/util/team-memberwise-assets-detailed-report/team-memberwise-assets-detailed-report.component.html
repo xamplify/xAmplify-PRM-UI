@@ -20,17 +20,17 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">TeamMember</th>
+              <th scope="col"><i class="fa fa-user-circle" aria-hidden="true"></i>TeamMember</th>
               <th scope="col">Asset Name</th>
               <th scope="col">Asset Type</th>
-              <th scope="col">Asset Created Time</th>
-              <th scope="col">Asset Published Time</th>
+              <th scope="col">Created Time</th>
+              <th scope="col">Published Time</th>
               <th></th>
             </tr>
           </thead>
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td><a class="detailstext" data-rel="fancybox-button"><app-user-info [userInfo]="item"></app-user-info></a></td>
+              <td scope="row"><i class="fa fa-user-circle" aria-hidden="true"></i><a class="detailstext pl10" data-rel="fancybox-button">{{item?.emailId}}</a></td>
               <td>{{item?.assetName | slice:0:10}}
                 <span *ngIf="item?.assetName?.length>10">...</span>
               </td>

@@ -6,7 +6,7 @@
         <div class="caption pjCardTitleCenterAlignment1 panel-bg">
           <span class="caption-subject font-red-sunglo uppercase" translate>{{headerText}}</span>
         </div>
-        <div [hidden]="(!hasLeadsAndDealsAccess || isTeamMemberAnalytics)">
+        <div [hidden]=" !(hasLeadsAndDealsAccess || authenticationService?.module?.opportunitiesAccessAsPartner) ">
           <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChart'">
             <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartDropDown"
               (change)="filterRedistributeCampaignsAndLeadsCountBarChart()">

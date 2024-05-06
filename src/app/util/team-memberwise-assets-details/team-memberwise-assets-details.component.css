@@ -39,7 +39,15 @@
 }
 
 
-
+  i.IconopenedCount {
+	border: 1px solid #3598dc;
+	color: #3598dc;
+  }
+  i.IconopenedCount:hover {
+	border: 1px solid #3598dc;
+	background: #3598dc;
+	color: #fff;
+  }
 /* table header bgcolor */
 .panel-bgMain > .panel-bg{
     background-color: #d9edf7b0;

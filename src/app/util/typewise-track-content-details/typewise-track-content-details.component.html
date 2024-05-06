@@ -21,7 +21,9 @@
             <tr> 
               <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team Member</th>       
               <th scope="col" *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><i class="fa fa-building" aria-hidden="true"></i> Company Name</th> 
-              <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team Member</th>   
+              <th scope="col" *ngIf="isTeamMemberAnalytics && isVendorVersion"><i class="fa fa-user-circle" aria-hidden="true"></i> Team Member</th> 
+              <th scope="col" *ngIf="isTeamMemberAnalytics && !isVendorVersion"><i class="fa fa-user-circle" aria-hidden="true"></i> Vendor</th>  
+              <th scope="col" *ngIf="isTeamMemberAnalytics && !isVendorVersion"><i class="fa fa-user-circle" aria-hidden="true"></i> Partner Company</th>  
               <th scope="col"> <i class="fa fa-cogs" aria-hidden="true"></i> Asset Details</th>           
               <th scope="col"><i class="fa fa-check-circle" aria-hidden="true"></i> Status</th>
               <th></th>
@@ -30,9 +32,27 @@
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
-              <td *ngIf="isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button"><app-user-info [userInfo]="item"></app-user-info></a></td>
+              <td *ngIf="isTeamMemberAnalytics && isVendorVersion"><a class="detailstext" data-rel="fancybox-button"><app-user-info [userInfo]="item"></app-user-info></a></td>
               <!-- <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">{{item.companyName}}</a></td> -->
               <td *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <td *ngIf="isTeamMemberAnalytics && !isVendorVersion">
+                <p><i class="fa fa-user-circle" aria-hidden="true"></i>
+                  <b>  Company Name: </b> <span>{{item?.vendorCompany | slice:0:15}}</span>
+                  <span *ngIf="item?.vendorCompany?.length>15">..</span>
+                  <span>
+                    <p class="pl20" data-toggle="tooltip" data-placement="top"
+                      title="{{item?.vendorTeamMemberEmailId}}">
+                      <b>EmailId : </b> <a>{{item?.vendorTeamMemberEmailId | slice:0:15}}</a><span
+                        *ngIf="item?.vendorTeamMemberEmailId?.length>15">..</span>
+                    </p>
+                  </span>
+                </p>
+              </td>
+              <td scope="row" *ngIf="isTeamMemberAnalytics && !isVendorVersion">
+                <a data-toggle="tooltip" data-placement="top" title="{{item?.emailId}}">
+                  {{item?.emailId | slice:0:15}}<span *ngIf="item?.emailId?.length>15">..</span>
+                </a>
+              </td>
               <td><p data-toggle="tooltip" data-placement="top" title="{{item?.assetName}}">{{item.assetName | slice:0:30}} 
                     <span *ngIf="item.assetName?.length>30">...</span>
                   </p>

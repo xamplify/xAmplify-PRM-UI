@@ -29,7 +29,7 @@
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <td><a class="detailstext" data-rel="fancybox-button"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
               <td>{{item?.fullName}}</td>
-              <td>{{item?.userStatus}}</td>
+              <td  [style.color]="(item?.userStatus === 'APPROVE') ? 'green' : 'red' " >{{item?.userStatus}}</td>
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.onboardTimeInUTCString">
               </app-timestamp></td>
             </tr>

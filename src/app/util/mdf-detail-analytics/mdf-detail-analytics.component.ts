@@ -122,7 +122,7 @@ export class MdfDetailAnalyticsComponent implements OnInit {
   getMdfDetailsForTeamMember(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
-    this.pagination.maxResults = 3;
+    this.pagination.maxResults = 6;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
     this.parterService.getMdfDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
@@ -131,11 +131,6 @@ export class MdfDetailAnalyticsComponent implements OnInit {
         if (response.statusCode == 200) {          
           this.sortOption.totalRecords = response.data.totalRecords;
 				  this.pagination.totalRecords = response.data.totalRecords;
-          if(pagination.totalRecords == 0){
-            this.scrollClass = 'noData'
-          } else {
-            this.scrollClass = 'tableHeightScroll'
-          }
 				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }        	
 			},

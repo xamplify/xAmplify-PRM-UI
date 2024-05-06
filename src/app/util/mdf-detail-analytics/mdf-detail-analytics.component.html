@@ -1,5 +1,5 @@
-<div class="col-sm-6 col-md-6 col-lg-6 col-xs-12 ml15m">
-  <div class="panel panel-info mdfBoxHeight panel-bgMain panel-card br-10">
+<div [class]=" !isTeamMemberAnalytics ? 'col-md-6 col-lg-6 col-xs-12 ml15m':'col-md-12 col-lg-12 col-xs-12 ml15m' ">
+  <div [class]="!isTeamMemberAnalytics ? 'panel panel-info mdfBoxHeight panel-bgMain panel-card br-10':'panel panel-info panel-bgMain panel-card br-10'">
     <div class="panel-heading panel-heading-custom panel-bg" id="pj-mdf-details-div">
       <h3 class="panel-title mt7">MDF Details
         <span class="pull-right mt25m">
@@ -22,12 +22,14 @@
             <tr>
               <th scope="col" *ngIf = "!isTeamMemberAnalytics">Company Name</th>
               <th scope="col" *ngIf = "isTeamMemberAnalytics">Team Member</th>
+              <th scope="col" *ngIf = "isTeamMemberAnalytics">Full Name</th>
               <th scope="col" *ngIf = "!isTeamMemberAnalytics || isVendorVersion">Total Balance</th>              
               <th scope="col" *ngIf = "!isTeamMemberAnalytics || isVendorVersion">Used Balance</th>
               <th scope="col" *ngIf = "!isTeamMemberAnalytics || isVendorVersion">Available Balance</th>
               <th scope="col" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">Total Requests</th>              
               <th scope="col" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">Average Request Size</th>
               <th scope="col" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">Total Value</th>
+              <th scope="col" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">Allocation Time</th>
             </tr>
           </thead>
           <tbody>          
@@ -35,12 +37,15 @@
               <!-- <td><a data-rel="fancybox-button" (click)="viewAnalytics(item?.companyId)">{{item?.companyName}}</a></td> -->
               <td *ngIf = "!isTeamMemberAnalytics"><a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
               <td *ngIf="isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button"><app-user-info [userInfo]="item"></app-user-info></a></td>
+              <td *ngIf = "isTeamMemberAnalytics">{{item?.fullName}}</td>
               <td *ngIf = "!isTeamMemberAnalytics || isVendorVersion">{{item?.totalBalanceInString}}</td>
               <td *ngIf = "!isTeamMemberAnalytics || isVendorVersion">{{item?.usedBalanceInString}}</td>              
               <td *ngIf = "!isTeamMemberAnalytics || isVendorVersion">{{item?.availableBalanceInString}}</td>
-              <td *ngIf = "isTeamMemberAnalytics && !isVendorVersion">{{item?.totalRequests}}</td>
-              <td *ngIf = "isTeamMemberAnalytics && !isVendorVersion">{{item?.averageRequestSize}}</td>              
-              <td *ngIf = "isTeamMemberAnalytics && !isVendorVersion">{{item?.totalValue}}</td>
+              <td class="text-center" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">{{item?.totalRequests}}</td>
+              <td class="text-center" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">{{item?.averageRequestSize}}</td>              
+              <td class="text-center" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">{{item?.totalValue}}</td>
+              <td *ngIf = "isTeamMemberAnalytics && !isVendorVersion"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.allocationTimeInUTC">
+              </app-timestamp></td>
             </tr>
           </tbody>
         </table>
