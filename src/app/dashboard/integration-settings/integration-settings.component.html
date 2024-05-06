@@ -92,7 +92,7 @@
               <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Required</th> -->
               <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Place Holder</th> -->
               <th
-                *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'">
+                *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA'">
                 Actions</th>
             </tr>
           </thead>
@@ -110,7 +110,7 @@
                   </span>
 
                   <ul
-                    *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'HALOPSA' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'"
+                    *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'HALOPSA' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA'"
                     class="textDecoration">
 
                     <li>{{sfCustomField.displayName}}</li>
@@ -150,7 +150,7 @@
                     [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
                 </td> -->
                 <td
-                  *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE'">
+                  *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA'">
                   <a *ngIf="sfCustomField.selected" class="custom-icon" (click)="toggleSettings(sfCustomField)">
                     <i *ngIf="sfCustomField.selected" class="fa fa-edit mr5 IconCustomization SingleIconCu"></i>
                     <div class="clickicons"></div>
@@ -158,7 +158,7 @@
                 </td>
               </tr>
               <tr
-                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA')"
                 [ngClass]="{'hidden': !sfCustomField.showSettings}">
                 <td colspan="4">
                   <div class="settings-table">
@@ -169,7 +169,7 @@
                           <tr>
                             <td class="p10" style="width:25%;">
                               <span
-                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA')"
                                 class="alignMiddle">Required
                                 <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip"
                                   data-placement="right"
@@ -189,19 +189,19 @@
                             </td>
                             <td class="p10" style="width:25%;">
                               <label
-                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA')"
                                 for="html" style="float: left;">Display Name</label>
                               <input
-                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA')"
                                 type="text" class="form-control" [(ngModel)]="sfCustomField.displayName"
                                 [ngModelOptions]="{standalone: true}" placeholder="Display Name">
                             </td>
                             <td class="p10" style="width:25%;">
                               <label
-                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA')"
                                 for="html" style="float: left;">PlaceHolder</label>
                               <input
-                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE')"
+                                *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA')"
                                 type="text" class="form-control" placeholder="PlaceHolder"
                                 [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
                             </td>

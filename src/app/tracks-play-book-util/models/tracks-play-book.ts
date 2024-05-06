@@ -40,4 +40,6 @@ export class TracksPlayBook {
     typeQuizId: boolean = false;
     companyProfileName = "";
     learningTrackContentMappingId = 0;
+    /***XNFR-523*****/
+    trackUpdatedEmailNotification = false;
 }

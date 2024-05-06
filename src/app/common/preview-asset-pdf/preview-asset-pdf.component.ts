@@ -20,7 +20,7 @@ export class PreviewAssetPdfComponent implements OnInit {
   isPdfPreviewByVendor = false;
   isPdfPreviewByPartner = false;
   isPdfPreviewByPartnerFromTracksOrPlayBooks = false;
-  id = 0;
+  id:any;
   statusCode = 404;
   pageNotFoundImagePath = "";
   badRequestImagePath = "";
@@ -42,8 +42,21 @@ export class PreviewAssetPdfComponent implements OnInit {
     this.badRequestImagePath = this.authenticationService.APP_URL+"assets/images/400.jpg";
     this.internalServerErrorImagePath = this.authenticationService.APP_URL+"assets/images/500.png";
     this.referenceService.clearHeadScriptFiles();
-    this.id = this.route.snapshot.params['id'];
+    this.decodeIdParameter();
     this.getHtmlBody();
+  }
+
+  private decodeIdParameter() {
+    try {
+      this.id = atob(this.route.snapshot.params['id']);
+    } catch (error) {
+       this.showPageNotFoundMessage();
+    }
+   }
+
+   private showPageNotFoundMessage() {
+    this.customResponse = new CustomResponse('ERROR', this.properties.pageNotFound, true);
+    this.processor.remove(this.processor);
   }
 
   getHtmlBody(){
