@@ -194,13 +194,13 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
      /** XNFR-424 **/
      rowInfos = [];
+     //rowInfosDuplicate = [];
      selectedRow: any;
      totalRows: number = 0;
      totalColumns: number = 0;
      isRowClicked: boolean = false;
      rowIndexForAdd: number;
      columnIndexForAdd: number;
-     showRowsDragula: boolean = true;
     /** XNFR-424 ENDS **/
 
     constructor(public regularExpressions: RegularExpressions, public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
@@ -213,9 +213,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         if (categoryId > 0) {
             this.routerLink += "/" + categoryId;
         }
-        this.dragulaService.setOptions('form-options', {
-            revertOnSpill: true,
-        });
+
         /** XNFR-424 **/
         this.dragulaService.setOptions('form-columns', {
             revertOnSpill: true,
@@ -239,7 +237,6 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
     private onDropModel(args) {
         /** XNFR-424 **/
-        console.log(this.rowInfos)
         this.checkAndRemoveEmptyRows();
     }
 
@@ -602,8 +599,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     highlightByLength(rowLength: number, columnLength: number) {
         if (rowLength > 0 && columnLength > 0) {
             this.selectedRow = this.rowInfos[rowLength - 1];
-            this.isRowClicked = true;
             this.selectedColumn = this.selectedRow.formLabelDTOs[columnLength - 1];
+            this.isRowClicked = true;
             this.isColumnClicked = true;
         }
     }
@@ -757,7 +754,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.checkAndRemoveEmptyRows();
         this.isColumnClicked = false;
         // this.highlightByLength(this.columnInfos.length);
-        this.checkForQuizFields();
+        this.checkForQuizFields(this.rowInfos);
     }
 
     /*********Add Radio Buttons*********/
@@ -1306,7 +1303,6 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.selectedDefaultFormId = 0;
         this.selectedForm = undefined;
-        this.dragulaService.destroy('form-options');
         this.dragulaService.destroy('form-columns');
         this.minimizeForm();
         $('#add-form-name-modal').modal('hide');
@@ -1951,9 +1947,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         column.descriptionCharacterleft = 500 - column.description.length;
     }
 
-    checkForQuizFields() {
+    checkForQuizFields(rowInfos: any) {
         let quizFieldsCount;
-        $.each(this.rowInfos, function(index, rowInfo) {
+        $.each(rowInfos, function(index, rowInfo) {
             const quizFieldsCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.labelType === 'quiz_radio' || item.labelType === 'quiz_checkbox' === true).length;
             quizFieldsCount = quizFieldsCount + quizFieldsCountRowWise;
         });
@@ -2028,13 +2024,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.openFormFields();
     }
 
-    updateDragulaValue() {
-        this.rowInfos = this.rowInfos;
-        this.showRowsDragula = !this.showRowsDragula;
-    }
-
     /** Move column to new row **/
-    moveToNextRow(columnInfo: ColumnInfo, rowIndex: number) {
+    moveColumnToLastRow(columnInfo: ColumnInfo, rowIndex: number) {
         /** Remove column for existing row **/
         let columnInfos = this.rowInfos[rowIndex].formLabelDTOs;
         this.rowInfos[rowIndex].formLabelDTOs = this.referenceService.removeObjectFromArrayList(columnInfos, columnInfo.divId, 'divId');
@@ -2046,5 +2037,27 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         const rowInfo = this.setRowInfo(rowInfoPerRow, this.totalRows);
         this.rowInfos.push(rowInfo);
         this.referenceService.scrollToBottomByDivId('create-from-div');
+    }
+
+    swapRows(rowInfo: any, rowIndex: number, newIndex: number) {
+        let temp = this.rowInfos[newIndex];
+        this.rowInfos[newIndex] = this.rowInfos[rowIndex];
+        this.rowInfos[rowIndex] = temp;
+        this.checkAndRemoveEmptyRows();
+    }
+
+    removeRow(rowInfo: any, rowIndex: number) {
+        let columnInfos:Array<ColumnInfo> =  rowInfo['formLabelDTOs'];
+        const defaultColumnsLength = columnInfos.filter((item) => item.isDefaultColumn === true).length;
+        if(defaultColumnsLength < 1) {
+            this.rowInfos = this.referenceService.removeObjectFromArrayList(this.rowInfos, rowInfo.divId, 'divId');
+            $('#' + rowInfo.divId).remove();
+            this.checkAndRemoveEmptyRows();
+            this.isRowClicked = false;
+            this.checkForQuizFields(this.rowInfos);   
+        } else {
+            this.customResponse = new CustomResponse('ERROR', 'Can not delete the row as it includes default feilds.', true);
+            this.referenceService.goToTop();
+        }
     }
 }

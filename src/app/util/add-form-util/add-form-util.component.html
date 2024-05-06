@@ -47,7 +47,7 @@
                             <div class="col-md-8" id="complete-form-div">
                                 <div class="portlet light">
                                     <div class="portlet-title tabbable-line">
-                                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-4 padding-none">
+                                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6 padding-none">
                                             <div class="caption caption-md" style="width: 100%;display: inline-flex;">
                                                 <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                                                 <h4 [attr.class]="formNameClass" style="padding-bottom: 6px;"><strong
@@ -61,17 +61,11 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 padding-none">
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 padding-none">
                                             <a class="close-circle" data-toggle="tooltip" [attr.data-original-title]="toolTip" id="full-screen"
                                                 (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
                                             <a class="close-circle" data-toggle="tooltip" title="Preview" id="preview-form" (click)="previewForm()"><i
                                                     class="fa fa-eye" aria-hidden="true" id="eye"></i></a>
-                                            <switch class="custom-switch" [status]="showRowsDragula" [onText]="callActionSwitch.rowTextValue"
-                                                [offText]="callActionSwitch.columnTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-                                                [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
-                                                (statusChange)="updateDragulaValue()">
-                                            </switch>
-                                            <h4 class="float-right"><strong>Re-Order </strong></h4>
                                         </div>
                                     </div>
                                     <div class="portlet-body clearfix" id="create-from-div"
@@ -95,30 +89,25 @@
                                                         {{form.name}}</div>
                                                 </div>
                                                 <div class="panel-body tab-content">
-                                                    <div class="form-name-wrap form-description"
-                                                        title="{{form.description}}"
-                                                        [style.color]="form.descriptionColor">{{form.description}}</div>
-                                                        <ng-template *ngIf="showRowsDragula === undefined || showRowsDragula" [ngTemplateOutlet]="orderRows"></ng-template>
-                                                        <ng-template *ngIf="!showRowsDragula" [ngTemplateOutlet]="orderColumns"></ng-template>
-                                                        <br>
-                                                        <!-- End of form-div -->
-                                                        <div *ngIf="form.showCaptcha">
-                                                            <re-captcha (resolved)="resolved($event)"
-                                                                [siteKey]="siteKey"></re-captcha>
-                                                        </div>
-                                                        <div *ngIf="form.buttonColor?.length>0;then show else dontShow">
-                                                        </div>
-                                                        <ng-template #show>
-                                                            <button type="submit" disabled="disabled"
-                                                                class="button-padding" id="bottom-right"
-                                                                [style.backgroundColor]="form.buttonColor"
-                                                                [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
-                                                        </ng-template>
-                                                        <ng-template #dontShow>
-                                                            <button type="submit" disabled="disabled"
-                                                                class="btn green-haze margin" id="bottom-right"
-                                                                [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
-                                                        </ng-template>
+                                                    <div class="form-name-wrap form-description" title="{{form.description}}" [style.color]="form.descriptionColor">
+                                                        {{form.description}}</div>
+                                                    <ng-template [ngTemplateOutlet]="FormRows"></ng-template>
+                                                    <br>
+                                                    <!-- End of form-div -->
+                                                    <div *ngIf="form.showCaptcha">
+                                                        <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
+                                                    </div>
+                                                    <div *ngIf="form.buttonColor?.length>0;then show else dontShow">
+                                                    </div>
+                                                    <ng-template #show>
+                                                        <button type="submit" disabled="disabled" class="button-padding" id="bottom-right"
+                                                            [style.backgroundColor]="form.buttonColor"
+                                                            [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                                                    </ng-template>
+                                                    <ng-template #dontShow>
+                                                        <button type="submit" disabled="disabled" class="btn green-haze margin" id="bottom-right"
+                                                            [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                                                    </ng-template>
                                                 </div>
                                                 <!-- End of tab pane active -->
                                             </div>
@@ -1252,7 +1241,7 @@
                 <div class="dropdown-toggle fa fa-ellipsis-v form-fields-margin" type="button" id="dropdownMenuButton"
                     data-mdb-toggle="dropdown" aria-expanded="false">
                 </div>
-                <ul class="dropdown-menu border-rd-5px padding-3px fiels-action-list" id="field-drop-down-options"
+                <ul class="dropdown-menu border-rd-5px padding-3px fiels-action-list point-cursor" id="field-drop-down-options"
                     aria-labelledby="dropdownMenuButton">
                     <li class="dropdown-item field-action-align padding-3px" *ngIf="columnIndex < 2 && rowFieldsCount !== 3"
                         (click)="$event.stopPropagation();setNewColumnIndex(rowIndex, columnIndex)"><button type="button"
@@ -1265,10 +1254,11 @@
                             <span class="glyphicon glyphicon-trash"></span>
                         </button><span id="form-label-drop-down-option-value" class="padding-3px">Delete</span></li>
                     <li class="dropdown-item field-action-align padding-3px" *ngIf="rowFieldsCount > 1"
-                        (click)="$event.stopPropagation();moveToNextRow(columnInfo, rowIndex, columnIndex)"><button
+                        (click)="$event.stopPropagation();moveColumnToLastRow(columnInfo, rowIndex, columnIndex)" 
+                        data-toggle="tooltip" data-placement="bottom" title="Move To Last Row" aria-hidden="true"><button
                             type="button" class="btn btn-success btn-xs">
                             <span class="glyphicon glyphicon-circle-arrow-down"></span>
-                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Move To New Row</span></li>
+                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Move</span></li>
                 </ul>
             </div>
         </span>
@@ -1445,54 +1435,45 @@
     </ng-container>
 </ng-template>
 
-<ng-template #orderRows>
-    <div [dragula]='"form-options"' [dragulaModel]='rowInfos'>
-        <ng-container *ngFor="let rowInfo of rowInfos;let rowIndex=index">
-            <div id="form-div" *ngIf="rowInfo.formLabelDTOs !== undefined && rowInfo.formLabelDTOs.length > 0"
-                (click)="highLightSelectedRow(rowInfo)">
-                <div id="{{rowInfo.divId}}">
-                    <div class="form-group form-custom label-box" [style.background]="form.backgroundColor"
-                        [style.borderColor]="form.borderColor"
-                        [class.selected-field-border-thickness]="rowInfo.divId==selectedRow.divId">
-                        <a id="drag-div" style="display: flex;">
-                            <ng-container *ngFor="let columnInfo of rowInfo.formLabelDTOs;let columnIndex=index">
-                                <div *ngIf="columnIndex<3" id="form-div-column" class="padding-5px"
-                                    (click)="highLightSelectedColumn(columnInfo, rowIndex, columnIndex)"
-                                    [ngClass]="{'col-lg-4 col-md-4 col-sm-4 col-xs-4 no-drag':  rowInfo.formLabelDTOs.length == 3, 'col-lg-6 col-md-6 col-sm-6 col-xs-6': rowInfo.formLabelDTOs.length == 2, 'col-lg-12 col-md-12 col-sm-12 col-xs-12': rowInfo.formLabelDTOs.length == 1}">
-                                    <div id="{{columnInfo.divId}}">
-                                        <div class="form-group form-custom label-box padding-10px"
-                                            [style.background]="form.backgroundColor"
-                                            [style.borderColor]="form.borderColor"
-                                            [class.selected-field-border-thickness]="columnInfo.divId==selectedColumn.divId">
-                                            <a id="drag-div-column">
-                                                <ng-template [ngTemplateOutlet]="formFields"
-                                                    [ngTemplateOutletContext]="{columnInfoData:columnInfo, columnIndexValue:columnIndex, rowIndexValue:rowIndex, rowFieldsCountValue:rowInfo.formLabelDTOs.length}">
-                                                </ng-template>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </ng-container>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </ng-container>
-    </div>
-</ng-template>
-
-<ng-template #orderColumns>
+<ng-template #FormRows>
     <ng-container *ngFor="let rowInfo of rowInfos;let rowIndex=index">
         <div id="form-div" *ngIf="rowInfo.formLabelDTOs !== undefined && rowInfo.formLabelDTOs.length > 0"
             (click)="highLightSelectedRow(rowInfo)">
             <div id="{{rowInfo.divId}}">
-                <div class="form-group form-custom label-box" [style.background]="form.backgroundColor"
+                <div class="form-group form-custom label-box padding-12px" [style.background]="form.backgroundColor"
                     [style.borderColor]="form.borderColor"
                     [class.selected-field-border-thickness]="rowInfo.divId==selectedRow.divId">
+                        <h4 class="row-options">
+                            <div class="dropdown">
+                                <div class="dropdown-toggle fa fa-ellipsis-v form-fields-margin" type="button" id="dropdownMenuButton"
+                                    data-mdb-toggle="dropdown" aria-expanded="false">
+                                </div>
+                                <ul class="dropdown-menu border-rd-5px padding-3px fiels-action-list point-cursor" id="field-drop-down-options"
+                                    aria-labelledby="dropdownMenuButton">
+                                    <li class="dropdown-item field-action-align padding-3px"
+                                        (click)="$event.stopPropagation();removeRow(rowInfo, rowIndex)"><button type="button"
+                                            class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Delete</span></li>
+                                    <li class="dropdown-item field-action-align padding-3px" [ngClass]="{'hide-row-action' : rowIndex === rowInfos?.length - 1 || rowInfos?.length < 2}" 
+                                        (click)="$event.stopPropagation();swapRows(rowInfo, rowIndex, rowIndex + 1)" 
+                                        data-toggle="tooltip" data-placement="bottom" title="Swap With Next Field"><button type="button"
+                                            class="btn btn-success btn-xs">
+                                            <span class="fa fa-arrow-down fa-2x"></span>
+                                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Swap</span></li>
+                                    <li class="dropdown-item field-action-align padding-3px" [ngClass]="{'hide-row-action' : rowIndex === 0 || rowInfos?.length < 2}"
+                                        (click)="$event.stopPropagation();swapRows(rowInfo, rowIndex, rowIndex - 1)" 
+                                        data-toggle="tooltip" data-placement="bottom" title="Swap With Previous Field"><button type="button"
+                                            class="btn btn-success btn-xs">
+                                            <span class="fa fa-arrow-up fa-2x"></span>
+                                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Swap</span></li>
+                                </ul>
+                            </div>
+                        </h4>
                     <a id="drag-div">
                         <div [dragula]='"form-columns"' [dragulaModel]='rowInfo.formLabelDTOs' style="display: flex;">
                             <ng-container *ngFor="let columnInfo of rowInfo.formLabelDTOs;let columnIndex=index">
-                                <div *ngIf="columnIndex<3" id="form-div-column" class="padding-5px"
+                                <div *ngIf="columnIndex<3" id="form-div-column" class="padding-12px"
                                     (click)="highLightSelectedColumn(columnInfo, rowIndex, columnIndex)"
                                     [ngClass]="{'col-lg-4 col-md-4 col-sm-4 col-xs-4 no-drag':  rowInfo.formLabelDTOs.length == 3, 'col-lg-6 col-md-6 col-sm-6 col-xs-6': rowInfo.formLabelDTOs.length == 2, 'col-lg-12 col-md-12 col-sm-12 col-xs-12': rowInfo.formLabelDTOs.length == 1}">
                                     <div id="{{columnInfo.divId}}">
@@ -1516,4 +1497,6 @@
         </div>
     </ng-container>
 </ng-template>
+
+
 <!-- XNFR-424 ENDS ----------->
