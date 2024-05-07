@@ -113,11 +113,11 @@
                   <div class="col-sm-6 col-xs-12">
                     <div *ngIf="showCreatedByPipelineAndStageOnTop">
                       <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px"
-                        *ngIf="!hasCampaignPipeline && !activeCRMDetails?.hasLeadPipeline">
+                        *ngIf="showCreatedByPipelineAndStage">
                         <label class="control-label">Pipeline<font> <b style="color: #f55d7a !important">*</b></font>
                         </label>
                         <select class="form-control" [(ngModel)]="lead.createdByPipelineId" [ngModelOptions]="{standalone: true}"
-                          placeholder="pipelineId" id="pipelineId" [disabled]="preview" (ngModelChange)="resetStages()">
+                          placeholder="pipelineId" id="pipelineId" [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline" (ngModelChange)="resetStages()">
                           <option [value]="0">Select Pipeline</option>
                           <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                         </select>
@@ -134,12 +134,11 @@
                         </select>
                       </div>
                     
-                      <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px"
-                        *ngIf="!hasCampaignPipeline && !activeCRMDetails?.hasLeadPipeline">
+                      <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px">
                         <label class="control-label">Vendor's xAmplify Pipeline<font> <b style="color: #f55d7a !important">*</b></font>
                         </label>
                         <select class="form-control" [(ngModel)]="lead.createdForPipelineId" [ngModelOptions]="{standalone: true}"
-                          placeholder="pipelineId" id="pipelineId" [disabled]="preview" (ngModelChange)="resetStages()">
+                          placeholder="pipelineId" id="pipelineId" [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline" (ngModelChange)="resetStages()">
                           <option [value]="0">Select Pipeline</option>
                           <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                         </select>
@@ -158,12 +157,11 @@
                     </div>
                     
                     <div *ngIf="!showCreatedByPipelineAndStageOnTop">
-                      <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px"
-                        *ngIf="!hasCampaignPipeline && !activeCRMDetails?.hasLeadPipeline">
+                      <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px">
                         <label class="control-label">Pipeline<font> <b style="color: #f55d7a !important">*</b></font>
                         </label>
                         <select class="form-control" [(ngModel)]="lead.createdForPipelineId" [ngModelOptions]="{standalone: true}"
-                          placeholder="pipelineId" id="pipelineId" [disabled]="preview" (ngModelChange)="resetStages()">
+                          placeholder="pipelineId" id="pipelineId" [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline" (ngModelChange)="resetStages()">
                           <option [value]="0">Select Pipeline</option>
                           <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                         </select>
@@ -181,11 +179,11 @@
                       </div>
                     
                       <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px"
-                        *ngIf="!hasCampaignPipeline && !activeCRMDetails?.hasLeadPipeline">
+                        *ngIf="showCreatedByPipelineAndStage">
                         <label class="control-label">Partner's xAmplify Pipeline<font> <b style="color: #f55d7a !important">*</b></font>
                         </label>
                         <select class="form-control" [(ngModel)]="lead.createdByPipelineId" [ngModelOptions]="{standalone: true}"
-                          placeholder="pipelineId" id="pipelineId" [disabled]="preview" (ngModelChange)="resetStages()">
+                          placeholder="pipelineId" id="pipelineId" [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline" (ngModelChange)="resetStages()">
                           <option [value]="0">Select Pipeline</option>
                           <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                         </select>

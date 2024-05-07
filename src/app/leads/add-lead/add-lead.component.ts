@@ -70,8 +70,8 @@ export class AddLeadComponent implements OnInit {
   disableCreatedFor: boolean = false;
   createdByActiveCRM: any;
   createdForActiveCRM: any;
-  showCreatedByPipelineAndStage: any;
-  showCreatedByPipelineAndStageOnTop: any;
+  showCreatedByPipelineAndStage: boolean = false;
+  showCreatedByPipelineAndStageOnTop: boolean = false;
   createdForStages: any[];
   createdByStages: any[];
   createdByPipelines: any;
