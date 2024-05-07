@@ -52,7 +52,7 @@ export class ManageDamComponent implements OnInit {
 		} else if(this.router.url.indexOf('/previewVideo')>-1){
 		 this.getVideo(this.videoId, this.damId, 'playVideo');
 		}
-        this.mergeTagForGuide = this.isPartnerView ? 'accessing_shared_assets': 'manage_assets';
+        this.getRoleByUserId();
 	}
 	
 	  getDefaultVideoSettings() {
@@ -127,6 +127,28 @@ export class ManageDamComponent implements OnInit {
         let categoryId = videoFileEventEmitter.categoryId;
         this.referenceService.navigateToManageAssetsByViewType(folderViewType,viewType,categoryId,this.isPartnerView);
     }
-    
+    /*** XNFR-512 ****/
+    getRoleByUserId() {
+        this.authenticationService.getRoleByUserId().subscribe(
+            (data) => {
+                const role = data.data;
+                const roleName = role.role == 'Team Member' ? role.superiorRole : role.role;
+                this.getMergeTagForGuide(roleName);
+            }, error => {
+                this.xtremandLogger.errorPage(error);
+            }
+        )
+    }
+    getMergeTagForGuide(roleName: any) {
+        const isMarketingCompany: boolean = roleName === 'Marketing' || roleName === 'Marketing & Partner';
+        if (isMarketingCompany && !this.isPartnerView) {
+            this.mergeTagForGuide = 'manage_assets_marketing';
+        } else if (this.isPartnerView) {
+            this.mergeTagForGuide = 'accessing_shared_assets';
+        } else {
+            this.mergeTagForGuide = 'manage_assets';
+        }
+    }
+    /*** XNFR-512 ****/
     
 }

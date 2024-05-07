@@ -621,3 +621,6 @@ button:hover {
   }
 
 }
+.word-wrap{
+  word-wrap: break-word;
+}

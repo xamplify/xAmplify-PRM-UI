@@ -5,7 +5,7 @@
   </a>
 </div>
 <app-landing-pages-list-and-grid-view *ngIf="!editVendorPage && !isViewAnalytics" [vendorJourney]='vendorJourney'
-  [isLandingPages] ='isLandingPages' [loggedInUserCompanyId]="loggedInUserCompanyId"
+  [isLandingPages] ='isLandingPages' [isMasterLandingPages] = 'isMasterLandingPages' [loggedInUserCompanyId]="loggedInUserCompanyId"
   (vendorLandingPage)='editVendorLandingPage($event)' (viewAnalytics) = "viewAnalytics($event)"></app-landing-pages-list-and-grid-view>
 <div class="row" *ngIf="editVendorPage">
   <div class="col-xs-12">

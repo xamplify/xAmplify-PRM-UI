@@ -12,7 +12,6 @@ import { ActivityType } from '../models/activity-type.enum';
 import { PreviewPopupComponent } from '../../forms/preview-popup/preview-popup.component'
 import { DamService } from '../../dam/services/dam.service';
 import { SafeResourceUrl, DomSanitizer } from "@angular/platform-browser";
-import { TracksPlayBookType } from '../models/tracks-play-book-type.enum';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
 declare var $, swal: any;
@@ -116,7 +115,6 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
 
   getBySlug() {
-    //this.referenceService.startLoader(this.httpRequestLoader);
     this.trackViewLoader = true;
     this.tracksPlayBookUtilService.getBySlug(this.createdUserCompanyId, this.slug, this.type).subscribe(
       (result: any) => {
@@ -127,7 +125,6 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
             this.tracksPlayBook.featuredImage = this.tracksPlayBook.featuredImage + "?" + Date.now();
             this.setTrackContentFinishedValue();
           }
-          //this.referenceService.stopLoader(this.httpRequestLoader);
           this.trackViewLoader = false;
         } else {
           this.router.navigate(['/home/error/', 403]);
@@ -238,7 +235,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
   assetPreview(assetDetails: any) {
     if (assetDetails.beeTemplate) {
-      this.previewBeeTemplate(assetDetails);
+        if(this.isCreatedUser){
+          this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
+        }else{
+          this.referenceService.previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
+        }
     }else if(assetDetails.assetType != 'mp4') {
       let assetType = assetDetails.assetType;
       this.filePath = assetDetails.assetPath;
@@ -357,7 +358,6 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     let self = this;
     if (this.tracksPlayBook.followAssetSequence) {
       $.each(this.tracksPlayBook.contents, function (index: number, content: any) {
-        console.log(index);
         let contentSubList = self.tracksPlayBook.contents.slice(0, index);
         if (contentSubList !== undefined && contentSubList.length > 0) {
           content.previousContentFinished = !(contentSubList.filter(x => !x.finished).findIndex(x => x) > -1);

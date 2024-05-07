@@ -18,6 +18,7 @@ export class VendorJourneyComponent implements OnInit {
   @Input()loggedInUserCompanyId = 0;
 	vendorJourney:boolean = false;
 	isLandingPages:boolean = false;
+  isMasterLandingPages:boolean = false;
   @Input() moduleType: string = "";
   @Output() goBackToMyProfile: EventEmitter<any> = new EventEmitter();
   @Output() vendorJourneyEditOrViewAnalytics: EventEmitter<any> = new EventEmitter();
@@ -29,7 +30,8 @@ export class VendorJourneyComponent implements OnInit {
   ngOnInit() {
     this.resetVendorJourney();
     this.vendorJourney = this.moduleType == "Vendor Journey";
-    this.isLandingPages = this.moduleType == "Landing Pages"
+    this.isLandingPages = this.moduleType == "Landing Pages";
+    this.isMasterLandingPages = this.moduleType == "Master Landing Pages";
   }
 
   editVendorLandingPage(event){
@@ -49,6 +51,7 @@ export class VendorJourneyComponent implements OnInit {
     this.vendorJourney = false;
     this.isLandingPages = false;
     this.isViewAnalytics = false;
+    this.isMasterLandingPages = false;
   }
   
   checkOrUncheckOpenLinksInNewTabOption(){

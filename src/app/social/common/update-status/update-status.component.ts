@@ -1675,6 +1675,12 @@ checkAliasAccess(socialCampaignAlias: string) {
 		this.isValidFromName = trimmedFromName!=undefined && trimmedFromName.length>0;
 	}
 
+	checkNameForCompanyList(name: any): boolean {
+        let position = name.search('Company List');
+        return position != -1 ? true: false;
+      }
+
+
 	filterContacts(filterType:string){
 		this.contactListsPagination.pageIndex = 1;
 		this.contactListsPagination.filterBy = filterType;

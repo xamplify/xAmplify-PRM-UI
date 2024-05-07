@@ -225,9 +225,30 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     connectWiseCurrentUser: string;
     connectWiseLoading: boolean = false;
     contactsCompanyListSync: boolean = false;
+
+    //XNFR-502 HaloPSA
+
+    haloPSAImageBlur: boolean = false;
+    haloPSAImageNormal: boolean = false;
+    haloPSASelectContactListOption: any;
+    haloPSAContactListName: string;
+    haloPSAServie: any;
+    showHaloPSAAuthenticationForm: boolean = false;
+    haloPSAClientID: string;
+    haloPSAClientIDClass: string;
+    haloPSAClientIDError: boolean;
+    haloPSAClientSecret: string;
+    haloPSAClientSecretClass: string;
+    haloPSAClientSecretError: boolean;
+    haloPSAInstanceURL: string;
+    haloPSAInstanceURLClass: string;
+    haloPSAInstanceURLError: boolean;
+    haloPSACurrentUser: string;
+    haloPSALoading: boolean = false;
+
     /**** user guide ****** */
     mergeTagForGuide: any;
-    socialContactsNames: string[] = ['HUBSPOT', 'MARKETO', 'microsoft', 'pipedrive', 'connectWise'];
+    socialContactsNames: string[] = ['HUBSPOT', 'MARKETO', 'microsoft', 'pipedrive', 'connectWise', 'haloPSA'];
     constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -387,6 +408,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             $('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
             $('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
             $('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+            $('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
             $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
             $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px; left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
             $('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -768,6 +790,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.contactType = "CONTACT";
             this.saveExternalContactsWithPermission('connectWise');
         } else if (this.contactOption == 'connectWiseSelectedContacts') {
+            this.saveExternalSelectedContactsWithPermission();
+        }else if (this.contactOption == 'haloPSAContacts') {
+            this.contactType = "CONTACT";
+            this.saveExternalContactsWithPermission('haloPSA');
+        } else if (this.contactOption == 'haloPSASelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
         }
     }
@@ -1349,6 +1376,14 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 }
             }
 
+            if (this.selectedAddContactsOption == 13) {
+                if (this.allselectedUsers.length == 0) {
+                    this.saveExternalContacts('haloPSA');
+                } else {
+                    this.saveExternalContactSelectedUsers('haloPSA');
+                }
+            }
+
             if (this.selectedAddContactsOption == 8) {
                 this.noOptionsClickError = true;
             }
@@ -1384,6 +1419,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         $('.microsoftImageClass').attr('style', 'opacity: 1;');
         $('.pipedriveImageClass').attr('style', 'opacity: 1;');
         $('.connectWiseImageClass').attr('style', 'opacity: 1;');
+        $('.haloPSAImageClass').attr('style', 'opacity: 1;');
         $('.mdImageClass').attr('style', 'opacity: 1;cursor:not-allowed;');
         $('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
         $('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
@@ -1451,6 +1487,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         $('.microsoftImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
         $('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
         $('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+        $('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
         $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
         $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
         $('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -1483,6 +1520,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         $('.microsoftImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
         $('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
         $('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+        $('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
         $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
         $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
         $('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -1654,6 +1692,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 $('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                                 $('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                                 $('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+                                $('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                                 $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                                 $('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                                 $('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -2562,6 +2601,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 $('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                                 $('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                                 $('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+                                $('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                                 $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                                 $('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                             }
@@ -2638,6 +2678,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 $('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                                 $('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                                 $('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+                                $('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                                 $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                                 $('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                                 $('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -2856,6 +2897,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                             this.connectWiseImageNormal = true;
                         } else {
                             this.connectWiseImageBlur = true;
+                        }
+                        if(this.storeLogin.HALOPSA == true){
+                            this.haloPSAImageNormal = true;
+                        } else{
+                            this.haloPSAImageBlur = true;
                         }
 
                     },
@@ -3655,6 +3701,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         $('.microsoftImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                         $('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                         $('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                        $('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                         $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                         $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                     }
@@ -4128,6 +4175,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 $('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                 $('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                 $('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+                $('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                 $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                 $('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                 $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -4671,10 +4719,16 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 user.emailId = contacts[i].email.trim();
                 user.firstName = contacts[i].firstName;
                 user.lastName = contacts[i].lastName;
-                user.contactCompany = contacts[i].contactCompany;
+                user.contactCompany = contacts[i].company;
+                user.city = contacts[i].city;
+                user.state = contacts[i].city;
+                user.country = contacts[i].country;
+                user.zipCode = String(contacts[i].postalCode);
+                user.mobileNumber = contacts[i].mobilePhone;
+                user.jobTitle = contacts[i].title;
+                user.address = contacts[i].address;
                 this.socialUsers.push(user);
             }
-
         }
     }
 
@@ -4792,6 +4846,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 $('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                 $('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                 $('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+                $('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                 $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                 $('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                 $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -4863,6 +4918,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 $('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                 $('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                 $('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+                $('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                 $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                 $('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                 $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -5029,6 +5085,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 $('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                 $('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                 $('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+                $('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
                 $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                 $('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
                 $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -5141,5 +5198,101 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 () => this.xtremandLogger.info("addcontactComponent saveacontact() finished")
             )
     }
+
+    checkingHaloPSAContactsAuthentication() {
+        if (this.selectedAddContactsOption == 13) {
+            this.integrationService.checkConfigurationByType('haloPSA').subscribe(data => {
+                let response = data;
+                if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                    this.xtremandLogger.info("isAuthorize true");
+                    this.getHaloPSAContacts();
+                }
+                else {
+                    this.showHaloPSAPreSettingsForm();
+                }
+            }, (error: any) => {
+                this.loading = false;
+                let errorMessage = this.referenceService.getApiErrorMessage(error);
+                this.customResponse = new CustomResponse('ERROR', errorMessage, true);
+                this.xtremandLogger.error(error, "Error in HaloPSA checkIntegrations()");
+            }, () =>
+                this.xtremandLogger.log("HaloPSA Configuration Checking done")
+            );
+        }
+    }
+
+    getHaloPSAContacts() {
+        this.loading = true;
+        this.integrationService.getContacts('HaloPSA').subscribe(data => {
+            this.loading = false;
+            if (data.statusCode == 401) {
+                this.customResponse = new CustomResponse('ERROR', data.message, true);
+            } else {
+                let response = data.data;
+                this.selectedAddContactsOption = 13;
+                this.disableOtherFuctionality = true;
+                this.haloPSAImageBlur = false;
+                this.haloPSAImageNormal = true;
+                this.frameHaloPSAPreview(response);
+            }
+        }, (error: any) => {
+            this.loading = false;
+            let errorMessage = this.referenceService.getApiErrorMessage(error);
+            this.customResponse = new CustomResponse('ERROR', errorMessage, true);
+        }, () =>
+            this.xtremandLogger.log("HaloPSA Configuration Checking done")
+        );
+    }
+
+    showHaloPSAPreSettingsForm() {
+        this.showHaloPSAAuthenticationForm = true;
+    }
+
+    closeHaloPSAForm(event: any) {
+        if (event === "0") {
+            this.showHaloPSAAuthenticationForm = false;
+        }
+    }
+
+    frameHaloPSAPreview(response: any) {
+        if (!response.contacts) {
+            this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+        } else {
+            this.socialContactUsers = [];
+            for (var i = 0; i < response.contacts.length; i++) {
+                this.xtremandLogger.log("Contact :" + response.contacts[i].firstName);
+                let socialContact = new SocialContact();
+                socialContact = response.contacts[i];
+                socialContact.id = i;
+                if (this.validateEmailAddress(response.contacts[i].email)) {
+                    this.socialContactUsers.push(socialContact);
+                }
+                $("button#sample_editable_1_new").prop('disabled', false);
+                //$( "#Gfile_preview" ).show();
+                this.showFilePreview();
+                $("button#cancel_button").prop('disabled', false);
+                $('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                $('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                $('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+                $('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                $('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+                $('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                $('.microsoftImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                $('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                $('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                $('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                $('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                $('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+                $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+                $('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+                $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+            }
+        }
+        this.setPage(1);
+        this.selectedAddContactsOption = 13;
+        this.disableOtherFuctionality = true;
+        this.socialContact.contacts = this.socialContactUsers;
+    }
+
 
 }

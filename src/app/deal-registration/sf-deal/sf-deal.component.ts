@@ -45,6 +45,8 @@ export class SfDealComponent implements OnInit {
   isConnectWiseEnabledAsActiveCRM: boolean = false;
   isValidRepValues = true;
   /*******XNFR-403****/
+  showConnectWiseProducts: boolean = false;
+
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
@@ -60,14 +62,26 @@ export class SfDealComponent implements OnInit {
 
   ngOnInit() {
     this.showSFFormError = false;
-    this.dropdownSettings = {
-      singleSelection: false,
-      text: "Please select",
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableSearchFilter: true,
-      classes: "myclass custom-class"
-    };
+    if (("HALOPSA" === this.activeCRM.createdByActiveCRMType || "HALOPSA" === this.activeCRM.createdForActiveCRMType )) {
+      this.dropdownSettings = {
+        singleSelection: false,
+        text: "Please select",
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        enableSearchFilter: true,
+        classes: "myclass custom-class",
+        limitSelection: 2
+      };
+    } else {
+      this.dropdownSettings = {
+        singleSelection: false,
+        text: "Please select",
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        enableSearchFilter: true,
+        classes: "myclass custom-class"
+      };
+    }
 
     if (this.createdForCompanyId != undefined && this.createdForCompanyId > 0) {
       if (this.dealId == undefined || this.dealId <= 0) {
@@ -85,6 +99,7 @@ export class SfDealComponent implements OnInit {
     if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType )) {
       this.isConnectWiseEnabledAsActiveCRM = true;
     }
+
   }
 
   getActiveCRMCustomForm() {
@@ -123,6 +138,7 @@ export class SfDealComponent implements OnInit {
         }
         this.searchableDropDownDto.data = result.data.connectWiseProducts;
         this.searchableDropDownDto.placeHolder = "Please Select Product";
+        this.showConnectWiseProducts = result.data.showConnectWiseProducts;
         /*********XNFR-403*********/
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") {
         this.showSFFormError = true;

@@ -1259,6 +1259,7 @@ ul.t-b-spacings {
   padding-left: 0px;
 }
 
+
 /*** XNFR-424 ***/
 .padding-10px-lt-rgt {
   padding-left: 10px;
@@ -1276,4 +1277,8 @@ ul.t-b-spacings {
   background: #fff;
 }
 /*** XNFR-424 ***/
+
+.mt--10px{
+  margin-top: -10px !important;
+}
 

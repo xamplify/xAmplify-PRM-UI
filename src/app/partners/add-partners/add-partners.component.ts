@@ -35,6 +35,8 @@ import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-
 import { UtilService } from 'app/core/services/util.service';
 import { UserUserListWrapper } from 'app/contacts/models/user-userlist-wrapper';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
+import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
+import { ContactList } from 'app/contacts/models/contact-list';
 declare var $:any, Papa:any, swal:any;
 
 @Component({
@@ -279,6 +281,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    @ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
    isLocalHost = false; 
    userUserListWrapper: UserUserListWrapper = new UserUserListWrapper();
+   contactListObj = new ContactList; 
+   userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -4751,8 +4755,13 @@ unsubscribeUser(selectedUserForUnsubscribed : any){
  }
 
  /***** XNFR-471 *****/
- downloadPartnerListCsv(pagination: Pagination) {
-	this.contactService.downloadPartnerListCsv(this.partnerListId, this.loggedInUserId, pagination)
+ downloadPartnerListCsv() {
+	this.userListPaginationWrapper.pagination = this.pagination;
+	this.contactListObj.id = this.partnerListId;
+	this.contactListObj.editList = true;
+	this.contactListObj.moduleName = "";
+	this.userListPaginationWrapper.userList = this.contactListObj;
+	this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
 	.subscribe(
 		data =>{
 			if(data.statusCode == 200){

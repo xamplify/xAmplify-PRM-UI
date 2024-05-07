@@ -138,7 +138,8 @@
     height:177px !important;
   }
   .tab-ribbon {
-    left: 10px;
+    left: 2px;
+    top: -4px;
   }
   .tab-bookmark-ribbon{
     right: 22px;

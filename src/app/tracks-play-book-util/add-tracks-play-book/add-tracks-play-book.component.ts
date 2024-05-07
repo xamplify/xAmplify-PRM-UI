@@ -31,13 +31,15 @@ import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/ad
 import { TracksPlayBookType } from '../models/tracks-play-book-type.enum';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
-
+import { Properties } from 'app/common/models/properties';
+Properties
 declare var $, swal, CKEDITOR: any;
 @Component({
   selector: 'app-add-tracks-play-book',
   templateUrl: './add-tracks-play-book.component.html',
   styleUrls: ['./add-tracks-play-book.component.css'],
-  providers: [HttpRequestLoader, Pagination, SortOption, FormService, RegularExpressions, DamService, ContactService]
+  providers: [HttpRequestLoader, Pagination, SortOption, FormService, RegularExpressions, DamService, 
+    ContactService,Properties]
 })
 export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
@@ -187,9 +189,14 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
  /****XNFR-326*****/
   /*****XNFR-423****/
   countryNames = [];
+  /**XNFR-523***/
+  isSendEmailNotificationOptionDisplayed = false;
+  sendEmailNotificationOptionToolTipMessage = "";
+  isSwitchOptionDisabled = false;
+  customSwitchToolTipMessage = "";
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
-    public xtremandLogger: XtremandLogger, public contactService: ContactService) {
+    public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties) {
     this.siteKey = this.envService.captchaSiteKey;
     this.loggedInUserId = this.authenticationService.getUserId();
     /****XNFR-170****/
@@ -203,6 +210,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value);
     });
+    
+    
   }
 
   ngOnInit() {
@@ -227,9 +236,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       this.stepTwoTabClass = this.disableTabClass;
       this.stepThreeTabClass = this.disableTabClass;
       this.stepFourTabClass = this.disableTabClass;
+       /****XNFR-326******/
+      this.findTrackOrPlaybookPublishEmailNotificationOption();
     }
-    /****XNFR-326******/
-    this.findTrackOrPlaybookPublishEmailNotificationOption();
+   
   }
    /****XNFR-326******/
   findTrackOrPlaybookPublishEmailNotificationOption() {
@@ -238,9 +248,18 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     .subscribe(
         response=>{
             this.isTrackOrPlaybookPublishedEmailNotification = response.data;
+            this.isSwitchOptionDisabled = !this.isTrackOrPlaybookPublishedEmailNotification;
+            if(this.isSwitchOptionDisabled){
+              this.tracksPlayBook.trackUpdatedEmailNotification = false;
+              this.customSwitchToolTipMessage = this.properties.TRACK_OR_PLAY_BOOK_EMAIL_NOTIFICATION_OPTION_DISABLED;
+            }else{
+              this.customSwitchToolTipMessage = "";
+            }
             this.trackOrPlaybookPublishEmailNotificationLoader = false;
+            this.ngxloading = false;
         },error=>{
             this.trackOrPlaybookPublishEmailNotificationLoader = false;
+            this.ngxloading = false;
         });
   }
 
@@ -340,7 +359,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
               this.folderName = this.tracksPlayBook.category.name;
             }
             this.validateLearningTrack();
-            this.ngxloading = false;
+            /**XNFR-523***/
+            this.isSendEmailNotificationOptionDisplayed = this.tracksPlayBook.published && !this.isAdd && this.authenticationService.isLocalHost();
+            this.sendEmailNotificationOptionToolTipMessage = this.properties.SEND_UPDATED_TRACK_EMAIL_NOTIFICATION_MESSAGE.replace("{{partnersMergeTag}}",this.authenticationService.getPartnerModuleCustomName());
+            /**XNFR-523***/
           } else {
             this.goToManageSectionWithError();
             this.ngxloading = false;
@@ -354,6 +376,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         this.logger.errorPage(error);
         this.referenceService.showServerError(this.httpRequestLoader);
         this.ngxloading = false;
+      },()=>{
+        /***XNFR-523***/
+        this.findTrackOrPlaybookPublishEmailNotificationOption();
       });
   }
 
@@ -1342,7 +1367,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   assetPreview(assetDetails: any, isFromPopup: boolean) {
     this.isPreviewFromAssetPopup = isFromPopup;
     if (assetDetails.beeTemplate) {
-      this.previewBeeTemplate(assetDetails);
+      this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
     } else {
       let assetType = assetDetails.assetType;
       this.filePath = assetDetails.assetPath;
@@ -1635,6 +1660,11 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     if (this.folderOrTagsCustomResponse.isVisible) {
       this.folderOrTagsCustomResponse = new CustomResponse();
     }
+  }
+
+  /*****XNFR-523****/
+  setTrackUpdatedEmailNotification(event:any){
+    this.tracksPlayBook.trackUpdatedEmailNotification = event;
   }
 
 }

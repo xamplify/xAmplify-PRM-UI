@@ -25,7 +25,8 @@ export class SelectLandingPageComponent implements OnInit, OnDestroy {
     searchKey = "";
     selectedLandingPageTypeIndex = 0;
     loggedInAsSuperAdmin = false;
-    mergeTagForGuide:any
+    mergeTagForGuide:any;
+    roleName:string = "";
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -37,9 +38,13 @@ export class SelectLandingPageComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.selectedLandingPageTypeIndex = 0;
-        this.mergeTagForGuide = 'designing_pages';
+        this.mergeTagForGuide = this.authenticationService.module.isMarketingCompany ? 'designing_pages_marketing' : 'designing_pages';
         this.pagination.filterKey = "All";
         this.listLandingPages(this.pagination);
+        /*** XNFR-512 *****/
+        this.getRoleByUserId();
+        /**** XNFR-512 ****/
+
     }
 
     showAllLandingPages(type: string, index: number) {
@@ -132,8 +137,24 @@ export class SelectLandingPageComponent implements OnInit, OnDestroy {
             }
         );
     }
-
-
+    /*** XNFR-512 ****/
+    getRoleByUserId() {
+        let roleName = "";
+        this.authenticationService.getRoleByUserId().subscribe(
+            (data) => {
+                const role = data.data;
+                roleName = role.role == 'Team Member' ? role.superiorRole : role.role;
+                this.getuserGuideMergeTag(roleName);
+            }, error => {
+                this.logger.errorPage(error);
+            }
+        )
+    }
+    getuserGuideMergeTag(roleName:any) {
+        const isMarketingCompany = roleName === 'Marketing' || roleName === 'Marketing & Partner';
+        this.mergeTagForGuide = isMarketingCompany ? 'designing_pages_marketing' : 'designing_pages';
+    }
+    /*** XNFR-512 ****/
     ngOnDestroy() {
     }
 }

@@ -10,18 +10,20 @@
       
     </ul>
   </div>
-  <!--Upgrade Account-->
+
+ <ng-container *ngIf="!isVanityUrlEnabled">
   <div class="page-bar">
     <ul class="page-breadcrumb float-right">
+      <!--Upgrade Partner Account-->
       <li class="topnav-button-css">
         <button class="btn btn-primary" (click)="openUpgradeAccountModal()"><span>Upgrade Partner Account</span><i class="fa fa-level-up" aria-hidden="true"></i></button>
       </li>
+      <!--Create An Account-->
       <li class="topnav-button-css">
           <button class="btn btn-primary" (click)="createNewAccount()"><span>Create An Account</span><i class="fa fa-user" aria-hidden="true"></i></button>
       </li>
     </ul>
   </div>
-
   <div>
     <!--List All Users-->
     <app-list-all-users></app-list-all-users> 
@@ -32,8 +34,8 @@
     <!--Top 10 Recent Registered / Loggedin Users-->
 	  <section>
       <div class="wrap-collabsible">
-        <input id="collapsible-recent-users" class="toggle" type="checkbox">
-        <label for="collapsible-recent-users" class="lbl-toggle">Top 10 recent registered/logged in users</label>
+        <input id="collapsible-recent-users" name="collapsibleCheckBox" class="toggle" type="checkbox" checked>
+        <label for="collapsible-recent-users" name="collapsibleCheckBox" class="lbl-toggle">Top 10 recent registered/logged in users</label>
         <div class="collapsible-content">
           <div>
              <!-- -Top 10 Recent Registered Users -->
@@ -57,10 +59,19 @@
     <!------Scheduled Campaigns-->
     <app-processing-campaigns [scheduledCampaigns]="true" ></app-processing-campaigns>
     <!------Active Queries-->
-    <app-active-queries ></app-active-queries>
+    <app-active-queries></app-active-queries>
     <!------Active Threads Info-->
-    <app-active-threads-info ></app-active-threads-info>
+    <app-active-threads-info></app-active-threads-info>
   </div>
+</ng-container>
+<!--Vanity Url Login-->
+  <div *ngIf="isVanityUrlEnabled">
+     <!--List All Users For Logged In Vendor Vanity-->
+     <app-list-all-users></app-list-all-users> 
+     <!--List All Partners For Logged In Vendor Vanity-->
+     <app-list-all-users [showPartners]="true"></app-list-all-users>
+  </div>
+
   <app-scroll-top></app-scroll-top>
    <section>
     <!-- ---Access Modal Pop Up -->
@@ -144,7 +155,7 @@
                    [ngModelOptions]="{standalone: true}" (keypress)="upgradeAccountOnKeyPress($event.keyCode)">
                   <span *ngIf="!validEmailId" class="required"><strong>Please Enter Email</strong></span>
                 </th>
-                  <th scope="row">
+                  <th scope="row" class="inline-flex">
                     <button [disabled]="upgradeAccountLoader" class="btn btn-primary" (click)="findCompanyInfo()">Search</button>
                     <button (click)="closeUpgradeAccountModal()" [disabled]="upgradeAccountLoader" class="btn btn-danger float-right">Close</button>
                   </th>
@@ -249,5 +260,8 @@
     </div>
   </div>
 </div>
+
+<!--Update Password-->
+<app-update-password #updatePasswordComponent></app-update-password>
 
 

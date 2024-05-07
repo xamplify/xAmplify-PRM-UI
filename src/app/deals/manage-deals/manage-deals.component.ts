@@ -122,13 +122,22 @@ export class ManageDealsComponent implements OnInit {
   }
   /** User GUide **/
   mergeTagForUserGuide(){
-    if(this.authenticationService.module.loggedInThroughVendorVanityUrl){
-      this.mergeTagForGuide = "manage_deals_partner";
-    }else if((this.vendorRole  || this.prm || this.authenticationService.isVendorTeamMember || this.authenticationService.module.isPrmTeamMember) && this.isVendorVersion){
-      this.mergeTagForGuide = "manage_deals";
-    } else {
-      this.mergeTagForGuide = "manage_deals_partner";
-    }
+      let roleName = "";
+      this.authenticationService.getRoleByUserId().subscribe(
+        (data) => {
+          const role = data.data;
+          roleName = role.role == 'Team Member' ? role.superiorRole : role.role;
+          if(roleName.includes('Marketing')){
+            this.mergeTagForGuide = "deal_registration_and_management_marketing";
+          }else if((this.vendorRole  || this.prm || this.authenticationService.isVendorTeamMember || this.authenticationService.module.isPrmTeamMember) && this.isVendorVersion){
+            this.mergeTagForGuide = "manage_deals";
+          } else {
+            this.mergeTagForGuide = "manage_deals_partner";
+          }
+        }, error => {
+          this.xtremandLogger.errorPage(error);
+        }
+      );
    }
   /** User Guide **/
   getUserRoles(url: any) {
@@ -1233,7 +1242,12 @@ export class ManageDealsComponent implements OnInit {
         error => {
           this.referenceService.loading(this.httpRequestLoader, false);
           let integrationType = (this.activeCRMDetails.type).charAt(0)+(this.activeCRMDetails.type).substring(1).toLocaleLowerCase();
-          this.dealsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid API Token",true);
+          if(integrationType == 'Salesforce'){
+            this.dealsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid credentials ",true);
+          } else {
+            this.dealsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid API Token",true);
+          }
+
 
         },
         () => {

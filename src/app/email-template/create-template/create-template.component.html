@@ -75,7 +75,7 @@
                         <button *ngIf="isAdd" type="button" class="button bgcolor-unset"
                             [disabled]="errorMessage?.length>0 || buttonClicked || invalidTemplateName"
                             id="save-and-redirect" (click)="saveTemplate(true);buttonClicked = true">
-                            <span class="btn btn-primary transition txt_pd-top3">Save & Redirect</span>
+                            <span class="btn btn-primary transition txt_pd-top3">{{properties?.SAVE_AND_CLOSE}}</span>
                         </button>
                         <ng-container *ngIf="!isAdd">
                             <button type="button" class="button bgcolor-unset"
@@ -91,11 +91,10 @@
                             <button type="button" class="button bgcolor-unset"
                                 [disabled]="errorMessage?.length>0 || buttonClicked" id="update-and-redirect"
                                 (click)="updateEmailTemplate(true);buttonClicked = true">
-                                <span class="btn btn-primary transition txt_pd-top3">Update & Redirect</span>
+                                <span class="btn btn-primary transition txt_pd-top3">{{properties?.UPDATE_AND_CLOSE}}</span>
                             </button>
                         </ng-container>
-                        <button class="btn Btn-Gray  neg_mrg_top4" (click)="closeModalPopup()"
-                            data-dismiss="modal">Cancel</button>
+                        <button class="btn Btn-Gray  neg_mrg_top4" (click)="closeModalPopup()" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>

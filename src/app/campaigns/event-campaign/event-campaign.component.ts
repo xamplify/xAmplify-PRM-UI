@@ -358,7 +358,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     ngOnInit() {
-        this.filterContacts('ALL');
         if (!this.reDistributeEvent && !this.isEventUpdate) {
             this.authenticationService.isShowForms = true;
         }
@@ -856,7 +855,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
 
 
-        this.contactListMethod(this.contactListsPagination);
+        // this.contactListMethod(this.contactListsPagination);
+        this.filterContacts('ALL');
     }
 
     /*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
@@ -1043,7 +1043,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 contactsPagination.parentCampaignId = this.eventCampaign.id;
             }
         }
-        contactsPagination.userId = this.loggedInUserId;
+        contactsPagination.userId = this.authenticationService.getUserId();
         contactsPagination.redistributingCampaign = true;
         if (this.vanityLoginDto.vanityUrlFilter) {
             contactsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
@@ -3158,8 +3158,15 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.loading = false;
     }
 
+    
+
+    checkNameForCompanyList(name: any): boolean {
+        let position = name.search('Company List');
+        return position != -1 ? true: false;
+      }
+
+
     filterContacts(filterType:string){
-		this.contactListsPagination.pageIndex = 1;
 		this.contactListsPagination.filterBy = filterType;
 		this.contactListMethod(this.contactListsPagination)
 	}

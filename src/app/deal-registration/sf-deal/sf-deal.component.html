@@ -38,7 +38,7 @@
   </div>
 </div>
 <!-- Add product start -->
-<div *ngIf="(this.activeCRM.createdByActiveCRMType === 'CONNECTWISE' || this.activeCRM.createdForActiveCRMType === 'CONNECTWISE' ) && selectOnChangeEvent" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+<div *ngIf="showConnectWiseProducts && selectOnChangeEvent" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
   <div class="panel panel-default deal-bgcolor">
     <div class="panel-heading deal-bgcolor">
       <h4 class="panel-title">
