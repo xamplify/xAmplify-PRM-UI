@@ -96,6 +96,10 @@ export class AddLeadComponent implements OnInit {
     this.lead.createdForCompanyId = 0;
     this.lead.pipelineId = 0;
     this.lead.pipelineStageId = 0;
+    this.lead.createdForPipelineId =0;
+    this.lead.createdByPipelineId = 0;
+    this.lead.createdForPipelineStageId = 0;
+    this.lead.createdByPipelineStageId = 0;
     if (this.actionType === "view") {
       this.preview = true;
       this.leadFormTitle = "View Lead";
@@ -348,10 +352,16 @@ export class AddLeadComponent implements OnInit {
 
   getStages() {
     let self = this;
-    if (this.lead.pipelineId > 0) {
-      this.pipelines.forEach(p => {
-        if (p.id == this.lead.pipelineId) {
-          self.stages = p.stages;
+    if (this.lead.createdForPipelineId > 0) {
+      this.createdForPipelines.forEach(p => {
+        if (p.id == this.lead.createdForPipelineId) {
+          self.createdForStages = p.stages;
+        }
+      });
+    } else if (this.lead.createdByPipelineId > 0) {
+      this.createdByPipelines.forEach(p => {
+        if (p.id == this.lead.createdByPipelineId) {
+          self.createdByStages = p.stages;
         }
       });
     } else {
@@ -423,31 +433,31 @@ export class AddLeadComponent implements OnInit {
 
   validateAndSubmit() {
     this.isValid = true;
-    if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
-      this.isValid = false;
-      this.errorMessage = "Please select Lead For";
-    } else if (this.lead.pipelineId == undefined || this.lead.pipelineId <= 0) {
-      this.isValid = false;
-      this.errorMessage = "Please select a Pipeline";
-    } else if (this.lead.pipelineStageId == undefined || this.lead.pipelineStageId <= 0) {
-      this.isValid = false;
-      this.errorMessage = "Please select a Pipeline Stage ";
-    } else if (this.lead.lastName == undefined || this.lead.lastName == "") {
-      this.isValid = false;
-      this.errorMessage = "Please fill Last Name field";
-    } else if (this.lead.company == undefined || this.lead.company == "") {
-      this.isValid = false;
-      this.errorMessage = "Please fill Company field";
-    } else if (this.lead.email == undefined || this.lead.email == "") {
-      this.isValid = false;
-      this.errorMessage = "Please fill email field";
-    } else if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.regularExpressions.EMAIL_ID_PATTERN.test(this.lead.email)) {
-      this.isValid = false;
-      this.errorMessage = "Please fill Valid Email Id";
-    } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)) {
-      this.isValid = false;
-      this.errorMessage = "Please fill Valid Website";
-    }
+    // if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
+    //   this.isValid = false;
+    //   this.errorMessage = "Please select Lead For";
+    // } else if (this.lead.pipelineId == undefined || this.lead.pipelineId <= 0) {
+    //   this.isValid = false;
+    //   this.errorMessage = "Please select a Pipeline";
+    // } else if (this.lead.pipelineStageId == undefined || this.lead.pipelineStageId <= 0) {
+    //   this.isValid = false;
+    //   this.errorMessage = "Please select a Pipeline Stage ";
+    // } else if (this.lead.lastName == undefined || this.lead.lastName == "") {
+    //   this.isValid = false;
+    //   this.errorMessage = "Please fill Last Name field";
+    // } else if (this.lead.company == undefined || this.lead.company == "") {
+    //   this.isValid = false;
+    //   this.errorMessage = "Please fill Company field";
+    // } else if (this.lead.email == undefined || this.lead.email == "") {
+    //   this.isValid = false;
+    //   this.errorMessage = "Please fill email field";
+    // } else if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.regularExpressions.EMAIL_ID_PATTERN.test(this.lead.email)) {
+    //   this.isValid = false;
+    //   this.errorMessage = "Please fill Valid Email Id";
+    // } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)) {
+    //   this.isValid = false;
+    //   this.errorMessage = "Please fill Valid Website";
+    // }
 
     if (this.isValid) {
       this.saveOrUpdateLead();
@@ -462,6 +472,14 @@ export class AddLeadComponent implements OnInit {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.errorMessage = "";
     this.lead.userId = this.loggedInUserId;
+    if(this.lead.createdForPipelineId > 0 && this.lead.createdForPipelineStageId > 0){
+      this.lead.pipelineId = this.lead.createdForPipelineId;
+      this.lead.pipelineStageId = this.lead.createdForPipelineStageId;
+    }
+    else if (this.lead.createdByPipelineId > 0 && this.lead.createdByPipelineStageId > 0) {
+      this.lead.pipelineId = this.lead.createdByPipelineId;
+      this.lead.pipelineStageId = this.lead.createdByPipelineStageId;
+    }
     this.leadsService.saveOrUpdateLead(this.lead)
       .subscribe(
         data => {
@@ -513,9 +531,9 @@ export class AddLeadComponent implements OnInit {
                 this.getCampaignLeadPipeline();
               } else {
                 this.getActiveCRMPipeline();
-                // this.getDealPipelines();
               }
             }
+            this.getLeadPipelines() ;
           }
         },
         error => {
@@ -572,7 +590,7 @@ export class AddLeadComponent implements OnInit {
       );
   }
 
-  getDealPipelines() {
+  getLeadPipelines() {
     let campaignId = 0;
     let self = this;
     self.ngxloading = true;
