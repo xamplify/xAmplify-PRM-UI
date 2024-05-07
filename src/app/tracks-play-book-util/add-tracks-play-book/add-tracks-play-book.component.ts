@@ -683,13 +683,14 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
               this.pageBackgroundColor = this.form.pageBackgroundColor;
               this.formBackgroundImage = "";
             }
-            $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
-              if (value.labelType == 'quiz_radio') {
-                value.choices = value.radioButtonChoices;
-
-              } else if (value.labelType == 'quiz_checkbox') {
-                value.choices = value.checkBoxChoices;
-              }
+            $.each(this.form.formLabelDTORows, function (index: number, formLabelDTORow: any) {
+              $.each(formLabelDTORow.formLabelDTOs, function (columnIndex: number, value: any) {
+                if (value.labelType == 'quiz_radio') {
+                  value.choices = value.radioButtonChoices;
+                } else if (value.labelType == 'quiz_checkbox') {
+                  value.choices = value.checkBoxChoices;
+                }
+              });
             });
             this.setCustomCssValues();
             this.formError = false;

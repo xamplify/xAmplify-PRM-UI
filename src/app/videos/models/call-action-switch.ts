@@ -22,4 +22,9 @@ export class CallActionSwitch {
     offTextValueView = 'LIST';
     isGridView = true;
     disabled = 'disabled';
+
+    /** XNFR-424 **/
+    rowTextValue = 'ROW';
+    columnTextValue = 'COLUMN'
+    /** XNFR-424 ENDS **/
 }
