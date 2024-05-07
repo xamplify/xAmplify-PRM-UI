@@ -553,6 +553,7 @@ export class AddDealComponent implements OnInit {
   resetStages() {
     if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
       this.deal.pipelineStageId = 0;
+      this.deal.createdForPipelineStageId = 0;
       this.getStages();
       this.pipelineStageId = "form-group has-error has-feedback";
       this.createdForPipelineStageId = "form-group has-error has-feedback";
@@ -560,7 +561,26 @@ export class AddDealComponent implements OnInit {
       this.createdForPipelineStageIdError = true;
       this.isDealRegistrationFormValid = false;
     }
+  }
 
+  resetCreatedByPipelineStages() {
+    if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
+      this.deal.pipelineStageId = 0;
+      this.getStages();
+      this.pipelineStageId = "form-group has-error has-feedback";
+      this.pipelineStageIdError = true;
+      this.isDealRegistrationFormValid = false;
+    }
+  }
+
+  resetCreatedForPipelineStages() {
+    if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
+      this.deal.createdForPipelineStageId = 0;
+      this.getStages();
+      this.createdForPipelineStageId = "form-group has-error has-feedback";
+      this.createdForPipelineStageIdError = true;
+      this.isDealRegistrationFormValid = false;
+    }
   }
 
   getStages() {
