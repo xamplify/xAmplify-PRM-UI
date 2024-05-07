@@ -44,4 +44,10 @@ export class ColumnInfo {
     skipped:boolean = false;
     submittedAnswerCorrect: boolean = false;
     formDefaultFieldType: any;
+
+    /** XNFR-424 **/
+    showOptions:boolean = false;
+    index:number;
+    /** XNFR-424 ENDS **/
+
 }

@@ -301,7 +301,8 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
                         this.pageBackgroundColor = this.formInput.pageBackgroundColor;
                         this.formBackgroundImage = "";
                     }
-                    $.each(this.formInput.formLabelDTOs, function (index: number, value: ColumnInfo) {
+                    $.each(this.formInput.formLabelDTORows, function (index: number, formLabelDTORow: any) {
+                      $.each(formLabelDTORow.formLabelDTOs, function (columnIndex: number, value: any) {
                         if (value.labelType == 'quiz_radio') {
                             value.choices = value.radioButtonChoices;
                         } else if (value.labelType == 'quiz_checkbox') {
@@ -321,6 +322,7 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
                             value.correctValues = correctValues; 
                         }
                     });
+                  });
                     this.formError = false;
                     this.formPreviewWithSubmittedAnswersComponent.showFormWithAnswers(this.selectedPartnerFormAnswers, id, this.formInput, this.formBackgroundImage, this.pageBackgroundColor);
                 } else {
