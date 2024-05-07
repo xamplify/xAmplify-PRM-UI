@@ -4,7 +4,6 @@ const http = require('http');
 const socketIO = require('socket.io');
 
 const app = express();
-console.log(process.env.PORT);
 const port = process.env.PORT || 4200;
 
 app.use(express.static(path.join(__dirname, '../xtremandApp')));
