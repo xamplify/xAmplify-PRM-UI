@@ -433,31 +433,37 @@ export class AddLeadComponent implements OnInit {
 
   validateAndSubmit() {
     this.isValid = true;
-    // if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
-    //   this.isValid = false;
-    //   this.errorMessage = "Please select Lead For";
-    // } else if (this.lead.pipelineId == undefined || this.lead.pipelineId <= 0) {
-    //   this.isValid = false;
-    //   this.errorMessage = "Please select a Pipeline";
-    // } else if (this.lead.pipelineStageId == undefined || this.lead.pipelineStageId <= 0) {
-    //   this.isValid = false;
-    //   this.errorMessage = "Please select a Pipeline Stage ";
-    // } else if (this.lead.lastName == undefined || this.lead.lastName == "") {
-    //   this.isValid = false;
-    //   this.errorMessage = "Please fill Last Name field";
-    // } else if (this.lead.company == undefined || this.lead.company == "") {
-    //   this.isValid = false;
-    //   this.errorMessage = "Please fill Company field";
-    // } else if (this.lead.email == undefined || this.lead.email == "") {
-    //   this.isValid = false;
-    //   this.errorMessage = "Please fill email field";
-    // } else if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.regularExpressions.EMAIL_ID_PATTERN.test(this.lead.email)) {
-    //   this.isValid = false;
-    //   this.errorMessage = "Please fill Valid Email Id";
-    // } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)) {
-    //   this.isValid = false;
-    //   this.errorMessage = "Please fill Valid Website";
-    // }
+    if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
+      this.isValid = false;
+      this.errorMessage = "Please select Lead For";
+    } else if (this.lead.createdForPipelineId == undefined || this.lead.createdForPipelineId <= 0) {
+      this.isValid = false;
+      this.errorMessage = "Please select a Pipeline";
+    } else if (this.lead.createdForPipelineStageId == undefined || this.lead.createdForPipelineStageId <= 0) {
+      this.isValid = false;
+      this.errorMessage = "Please select a Pipeline Stage ";
+    } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineId == undefined || this.lead.createdByPipelineId <= 0)) {
+      this.isValid = false;
+      this.errorMessage = "Please select a Pipeline";
+    } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineStageId == undefined || this.lead.createdByPipelineStageId <= 0)) {
+      this.isValid = false;
+      this.errorMessage = "Please select a Pipeline Stage ";
+    } else if (this.lead.lastName == undefined || this.lead.lastName == "") {
+      this.isValid = false;
+      this.errorMessage = "Please fill Last Name field";
+    } else if (this.lead.company == undefined || this.lead.company == "") {
+      this.isValid = false;
+      this.errorMessage = "Please fill Company field";
+    } else if (this.lead.email == undefined || this.lead.email == "") {
+      this.isValid = false;
+      this.errorMessage = "Please fill email field";
+    } else if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.regularExpressions.EMAIL_ID_PATTERN.test(this.lead.email)) {
+      this.isValid = false;
+      this.errorMessage = "Please fill Valid Email Id";
+    } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)) {
+      this.isValid = false;
+      this.errorMessage = "Please fill Valid Website";
+    }
 
     if (this.isValid) {
       this.saveOrUpdateLead();
