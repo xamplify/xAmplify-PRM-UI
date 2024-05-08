@@ -29,6 +29,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   loading = false;
   senderMergeTag:SenderMergeTag = new SenderMergeTag();
   @Input() vendorJourney:boolean = false;
+  @Input() isMasterLandingPages:boolean = false;
   @Input() landingPage:LandingPage;
   @Output() redirect = new EventEmitter();
 
@@ -56,13 +57,13 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   constructor(private vanityUrlService:VanityURLService,private authenticationService:AuthenticationService,private referenceService:ReferenceService, private properties: Properties,
     private landingPageService: LandingPageService) {
     this.loggedInUserId = this.authenticationService.getUserId();
-    if(landingPageService.vendorJourney){
+    if(landingPageService.vendorJourney || landingPageService.isMasterLandingPages){
       this.findPageDataAndLoadBeeContainer(landingPageService, authenticationService);
     }
    }
 
   ngOnInit() {
-    if(!this.vendorJourney){
+    if(!this.vendorJourney && !this.isMasterLandingPages){
       this.editTemplate();
     }
   }
@@ -105,10 +106,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         emailTemplate.jsonBody = jsonContent;
         emailTemplate.htmlBody = htmlContent;
         emailTemplate.userId = self.loggedInUserId;
-        if(self.vendorJourney){
-
-        }
-        else{
+        if(!self.vendorJourney && !self.isMasterLandingPages){
         if(!emailTemplate.subject){
           swal( "", "Whoops! We are unable to save this template because subject line is empty", "error" );
           return false;
@@ -445,7 +443,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                   this.landingPage.type = landingPage.type;
                   this.landingPage.categoryId = landingPage.categoryId;
                   this.landingPage.openLinksInNewTab = landingPage.openLinksInNewTab;
-                  if(landingPage.sourceInString == 'VENDOR_JOURNEY'){
+                  if(landingPage.sourceInString == 'VENDOR_JOURNEY' || landingPage.sourceInString == 'MASTER_PARTNER_PAGE'){
                     this.landingPage.sourceInString = landingPage.sourceInString;
                   }
                   $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", this.landingPage.openLinksInNewTab);
@@ -793,6 +791,7 @@ updateLandingPage(updateAndRedirectClicked: boolean) {
   this.landingPage.userId = this.loggedInUserId;
   this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
+  this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
   this.updateCompanyLogo(this.landingPage);
   this.landingPageService.update(this.landingPage).subscribe(
       data => {

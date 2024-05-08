@@ -3168,7 +3168,8 @@
                                         <!--Master Landing Pages -->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'masterLandingPages'}">
                                             <app-vendor-journey *ngIf="isMasterLandingPages" [loggedInUserCompanyId]="loggedInUserCompanyId"
-                                                 [moduleType]="properties.masterLandingPages"></app-vendor-journey>
+                                            (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                            (goBackToMyProfile)="goBackToMyProfile()" [moduleType]="properties.masterLandingPages"></app-vendor-journey>
                                         </div>
                                         <!-- Support Settings -->
                                         <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption"
