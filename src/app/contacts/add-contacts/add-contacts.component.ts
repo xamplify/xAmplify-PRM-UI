@@ -248,7 +248,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     /**** user guide ****** */
     mergeTagForGuide: any;
-    socialContactsNames: string[] = ['HUBSPOT', 'MARKETO', 'microsoft', 'pipedrive', 'connectWise', 'haloPSA'];
+    socialContactsNames: string[] = ['HUBSPOT', 'MARKETO', 'microsoft', 'pipedrive', 'connectWise', 'halopsa'];
     constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -791,10 +791,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.saveExternalContactsWithPermission('connectWise');
         } else if (this.contactOption == 'connectWiseSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
-        }else if (this.contactOption == 'haloPSAContacts') {
+        }else if (this.contactOption == 'halopsaContacts') {
             this.contactType = "CONTACT";
-            this.saveExternalContactsWithPermission('haloPSA');
-        } else if (this.contactOption == 'haloPSASelectedContacts') {
+            this.saveExternalContactsWithPermission('halopsa');
+        } else if (this.contactOption == 'halopsaSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
         }
     }
@@ -1378,9 +1378,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
             if (this.selectedAddContactsOption == 13) {
                 if (this.allselectedUsers.length == 0) {
-                    this.saveExternalContacts('haloPSA');
+                    this.saveExternalContacts('halopsa');
                 } else {
-                    this.saveExternalContactSelectedUsers('haloPSA');
+                    this.saveExternalContactSelectedUsers('halopsa');
                 }
             }
 
@@ -1925,7 +1925,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkAll(ev: any) {
-        if (this.selectedAddContactsOption != 6 && this.selectedAddContactsOption != 9 && this.selectedAddContactsOption != 10 && this.selectedAddContactsOption != 11 && this.selectedAddContactsOption != 12) {
+        if (this.selectedAddContactsOption != 6 && this.selectedAddContactsOption != 9 && this.selectedAddContactsOption != 10 && this.selectedAddContactsOption != 11 && this.selectedAddContactsOption != 12 && this.selectedAddContactsOption != 13) {
             if (ev.target.checked) {
                 $('[name="campaignContact[]"]').prop('checked', true);
                 let self = this;
@@ -3846,6 +3846,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         if (ev.target.checked) {
             $('[name="campaignContact[]"]').prop('checked', true);
             let self = this;
+            
             $('[name="campaignContact[]"]:checked').each(function () {
                 var id = $(this).val();
                 self.selectedContactListIds.push(parseInt(id));
@@ -5200,8 +5201,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingHaloPSAContactsAuthentication() {
-        if (this.selectedAddContactsOption == 13) {
-            this.integrationService.checkConfigurationByType('haloPSA').subscribe(data => {
+        this.showHaloPSAAuthenticationForm = true;
+        if (this.selectedAddContactsOption == 8) {
+            this.integrationService.checkConfigurationByType('halopsa').subscribe(data => {
                 let response = data;
                 if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
                     this.xtremandLogger.info("isAuthorize true");
@@ -5223,7 +5225,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     getHaloPSAContacts() {
         this.loading = true;
-        this.integrationService.getContacts('HaloPSA').subscribe(data => {
+        this.integrationService.getContacts('halopsa').subscribe(data => {
             this.loading = false;
             if (data.statusCode == 401) {
                 this.customResponse = new CustomResponse('ERROR', data.message, true);
@@ -5260,11 +5262,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else {
             this.socialContactUsers = [];
             for (var i = 0; i < response.contacts.length; i++) {
-                this.xtremandLogger.log("Contact :" + response.contacts[i].firstName);
+                this.xtremandLogger.log("Contact :" + response.contacts[i].firstname);
                 let socialContact = new SocialContact();
                 socialContact = response.contacts[i];
                 socialContact.id = i;
-                if (this.validateEmailAddress(response.contacts[i].email)) {
+                if (this.validateEmailAddress(response.contacts[i].emailId)) {
+                    socialContact.email = response.contacts[i].emailaddress;
+                    socialContact.firstName = response.contacts[i].firstname;
+                    socialContact.lastName = response.contacts[i].name;
+                    socialContact.mobileNumber = response.contacts[i].mobileNumber;
                     this.socialContactUsers.push(socialContact);
                 }
                 $("button#sample_editable_1_new").prop('disabled', false);
