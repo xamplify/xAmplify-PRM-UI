@@ -539,7 +539,12 @@ export class AddLeadComponent implements OnInit {
                 this.getActiveCRMPipeline();
               }
             }
-            this.getLeadPipelines() ;
+            if (this.actionType === "view") {
+              this.getLeadPipelinesForView();
+            }
+            else {
+              this.getLeadPipelines();
+            }
           }
         },
         error => {
@@ -621,6 +626,53 @@ export class AddLeadComponent implements OnInit {
             }
 
             let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
+            if (createdForPipelines !== undefined && createdForPipelines !== null) {
+              this.handleCreatedForPipelines(createdForPipelines);
+            }
+
+          } else if (data.statusCode == 404) {
+            this.lead.createdForPipelineId = 0;
+            this.lead.createdByPipelineId = 0;
+            this.createdForStages = [];
+            this.createdByStages = [];
+            this.getPipelines();
+            this.activeCRMDetails.hasCreatedForPipeline = false;
+            this.activeCRMDetails.hasCreatedByPipeline = false;
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
+  getLeadPipelinesForView() {
+    let campaignId = 0;
+    let self = this;
+    this.ngxloading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
+    if (this.lead.campaignId !== undefined && this.lead.campaignId > 0) {
+      campaignId = this.lead.campaignId;
+    }
+    this.leadsService.getLeadPipelinesForView(this.leadId, this.loggedInUserId)
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.ngxloading = false;
+          if (data.statusCode == 200) {
+            let activeCRMPipelinesResponse: any = data.data;
+            self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
+            self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
+            self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByPipelineAndStage;
+            self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByPipelineAndStageOnTop;
+            let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
+            let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
+
+            if (createdByPipelines !== undefined && createdByPipelines !== null) {
+              this.handleCreatedByPipelines(createdByPipelines);
+            }
+
             if (createdForPipelines !== undefined && createdForPipelines !== null) {
               this.handleCreatedForPipelines(createdForPipelines);
             }
