@@ -452,10 +452,13 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }
                         self.setPage(1);
                         self.isListLoader = false;
-
-                        if (self.contacts.length === 0) {
+                        if (allTextLines.length == 2) {
+                            self.customResponse = new CustomResponse('ERROR', "No records found.", true);
+                            self.cancelContacts();
+                        } else if (allTextLines.length > 2 && self.contacts.length === 0) {
                             self.isValidLegalOptions = true;
-                            self.customResponse = new CustomResponse('ERROR', "No contacts found.", true);
+                            self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
+                            self.cancelContacts();
                         }
 
 
