@@ -75,18 +75,18 @@
 								<div class="page-breadcrumb">
 									<span class="col-xs-6 col-md-6">
 										<span *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList
-							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList"
+							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && !isFormList"
 											data-toggle="tooltip" data-placement="top" title="Edit list Name"
-											style="cursor:pointer;font-size: 16px;" (click)="editListName()" [class.disabled]="isFormList">
+											style="cursor:pointer;font-size: 16px;" (click)="editListName()">
 											<span class="ellipsis">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
 											</span>
 										</span>
 										<span
-											*ngIf="isDefaultPartnerList  || isDefaultContactList || selectedContactListName==properties?.activeMasterPartnerList || selectedContactListName==properties?.inActiveMasterPartnerList || isTeamMemberPartnerList"
+											*ngIf="isDefaultPartnerList  || isDefaultContactList || selectedContactListName==properties?.activeMasterPartnerList || selectedContactListName==properties?.inActiveMasterPartnerList || isTeamMemberPartnerList || isFormList"
 											style="font-size: 16px;">{{selectedContactListName}}
 										</span>
-										<div *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList"
+										<div *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && !isFormList"
 											class="pencil-color">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</div>
