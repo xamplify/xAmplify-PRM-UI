@@ -9,7 +9,7 @@
   color: white !important;
 }
 body{
-  background: linear-gradient(326deg, rgba(147, 13, 224, 1) 0%, rgba(0, 159, 231, 1) 15%, rgba(0, 222, 223, 1) 50%, rgba(156, 0, 224, 1) 100%) !important;
+  background: linear-gradient(326deg, rgba(147, 13, 224, 1) 0%, rgba(156, 0, 224, 1) 15%,  rgba(0, 159, 231, 1) 50%,  rgba(0, 222, 223, 1) 100%) !important;
   color: white !important;
 }
 /*** MainContent ***/
@@ -19,8 +19,6 @@ body{
     background: rgba(16 18 27 / 40%) !important;
     border-radius: 8px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    /* backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px); */
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 .page-container-bg-solid .page-content,
@@ -37,8 +35,6 @@ body{
 .img-thumbnail {
     background: rgba(16 18 27 / 40%) !important;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-    /* backdrop-filter: blur(5px) !important;
-    -webkit-backdrop-filter: blur(5px) !important; */
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .div.thembgc,
@@ -47,35 +43,30 @@ body{
 .img-circle {
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
-.dashboard-stat.green-soft {
-  box-shadow: 3.7338130474090576px 3.7338130474090576px 6.223021507263184px 0px
-      #35928c inset,
-    -6.223021507263184px -6.223021507263184px 6.223021507263184px 0px #35928c
-      inset;
+.dashboard-stat.green-soft,
+.dashboard-stat.green {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
-.dashboard-stat.red-soft {
-  box-shadow: 3.7338130474090576px 3.7338130474090576px 6.223021507263184px 0px
-      #b44848 inset,
-    -6.223021507263184px -6.223021507263184px 6.223021507263184px 0px #b44848
-      inset;
+.dashboard-stat.red-soft,
+.dashboard-stat.red {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
-.dashboard-stat.purple-soft {
-  box-shadow: 3.7338130474090576px 3.7338130474090576px 6.223021507263184px 0px
-      #72648e inset,
-    -6.223021507263184px -6.223021507263184px 6.223021507263184px 0px #72648e
-      inset;
+.dashboard-stat.purple-soft,
+.dashboard-stat.purple {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
-.dashboard-stat.blue-sharp {
-  box-shadow: 3.7338130474090576px 3.7338130474090576px 6.223021507263184px 0px
-      #4a7eab inset,
-    -6.223021507263184px -6.223021507263184px 6.223021507263184px 0px #4a7eab
-      inset;
+.dashboard-stat.blue-sharp,
+.dashboard-stat.yellow-gold {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
-.dashboard-stat.blue-soft {
-  box-shadow: 3.7338130474090576px 3.7338130474090576px 6.223021507263184px 0px
-      #41739d inset,
-    -6.223021507263184px -6.223021507263184px 6.223021507263184px 0px #41739d
-      inset;
+.dashboard-stat.blue-soft,
+.dashboard-stat.blue {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
 .dashboard-stat,
 a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor.tiles_bradius,
@@ -249,7 +240,7 @@ ul.alt-row-style1 li a {
   color: white !important;
 }
 .div-background-color {
-  background-color: #2e3033 !important;
+  background-color: rgb(146 151 179 / 8%) !important;
   color: white !important;
 }
 .td-new-n {
@@ -445,7 +436,7 @@ tr {
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 .modal-content {
-  background-color: rgba(16 18 27 / 40%) !important;
+  background-color: rgb(0 0 0 / 75%) !important;
   color: white !important;
 }
 .upload-asset-div,
@@ -523,7 +514,13 @@ tr {
 .page-header.navbar .page-top {
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    background: rgba(16 18 27 / 40%) !important;
+     background: rgba(16 18 27 / 40%) !important; 
+     z-index: 1000;
+}
+div.scrolled{
+  background-color: rgb(16 18 27 / 68%) !important; /* Darker background color when scrolled */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .page-header.navbar
   .top-menu
@@ -691,7 +688,7 @@ legend {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 select {
-  background-color: #2b3c46 !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
 
 #text-color-my-profile {
@@ -700,7 +697,7 @@ select {
 
 .input-group .input-group-addon {
   color: white !important;
-  background-color: #2b3c46 !important;
+  background-color: rgba(16 18 27 / 40%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .input-group-addon {
@@ -881,7 +878,7 @@ span.ui-column-resize {
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:focus,
 .nav-tabs > li.active > a:hover {
-  background-color: #1e2124 !important;
+  background-color: rgb(146 151 179 / 8%) !important;
   /* background-color: #2c2f33 !important; */
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: white !important;
@@ -1184,7 +1181,7 @@ input#copy-link {
 }
 .mix-filter li {
   color: white !important;
-  background-color: rgb(146 151 179 / 8%);
+  background-color: rgba(255,255,255,0.15);
   border: 0px solid #191b1e !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   padding: 6px 6px !important;
@@ -1284,7 +1281,7 @@ input#copy-link {
 }
 
 div#box-dark-defalut-clr {
-  background: #2c2f33 !important;
+  background: rgba(16 18 27 / 40%) !important;
 }
 
 .border-cls,
@@ -1748,7 +1745,9 @@ p.layoutcontent {
 }
 .bg-color-for-footercard1 {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background: #2c2f33 !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background: rgb(146 151 179 / 8%) !important;
+  backdrop-filter: blur(5px);
 }
 .bg-color-for-secondcard {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -1804,7 +1803,9 @@ p.addhrtosvg {
 }
 .bg-color-for-footercard2 {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background: #2c2f33 !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background: rgb(146 151 179 / 8%) !important;
+  backdrop-filter: blur(5px);
 }
 .cardfotter-toggleon {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -1917,9 +1918,9 @@ i.singleIconCustomization {
   color: #fff !important;
 }
 #download-template-grid:hover {
-  background: #5bb2f5 !important;
+  background: rgba(16 18 27 / 40%) !important;
   color: #fff !important;
-  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* .gridIconCustomization a.delete {
@@ -2131,7 +2132,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   border: 0px solid #3575b5 !important;
 }
-.btn-group button {
+.btn-group button{
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   background: rgba(16 18 27 / 40%) !important;
   border: 1px solid rgba(255, 255, 255, 0.3 )!important;
@@ -2156,7 +2157,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
  
 }
 .form-control{
-  background-color: rgb(146 151 179 / 8%) !important;
+  background-color: rgb(146 151 179 / 22%) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   backdrop-filter: blur(5px);
 }
@@ -2167,10 +2168,15 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   backdrop-filter: blur(5px);
 }
-.mix-filter li:hover,
-.mix-filter li.active,
+.mix-filter li:hover{
+  background: rgba(255,255,255,0.15) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
+}
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected {
+.mix-filter li.emailtemplate-selected,
+.mix-filter li.active {
   background: rgba(16 18 27 / 40%) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -2514,8 +2520,7 @@ input {
   transform: scale(1.05);
 }
 .pricing_hover_effect:hover {
-  box-shadow: -7px -7px 30px 0px #262e32,
-    14px 14px 40px 0px rgba(16, 16, 18, 0.75);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 .campaign_card:hover {
   animation: shaking 0.5s ease-in-out;
@@ -2563,7 +2568,7 @@ input {
 }
 /* sudha sri (9-11-2023) */
 .mix-filter-li-selected {
-  background-color: rgba(16 18 27 / 40%) !important;
+  background-color: rgba(255,255,255,0.3) !important;
 }
 .portlet.light.cpad.hover-effect.pointer.card-radius,
 .portlet.light.cpad.hover-effect.pointer {
@@ -2665,9 +2670,7 @@ th {
 }
 .boxshadow-to-card:hover,
 .page-bar.page-bar-shadow.pb-m.card-shadow {
-  box-shadow: 6.223021507263184px 6.223021507263184px 18.669065475463867px 0px
-      #000,
-    -6.223021507263184px -6.223021507263184px 18.669065475463867px 0px #3b4451 !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
 }
 .page-bar.page-bar-shadow.pb-m {
   box-shadow: none !important;
@@ -2734,7 +2737,7 @@ button.glyphicon.glyphicon-remove.search-box-item-clear {
   color: rgba(255, 255, 255, 0.3) !important;
 }
 hr {
-  border-top: 0.5px solid #191b1e !important;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.3) !important;
 }
 .pagination .active > a {
     background: rgba(16 18 27 / 40%) !important;
@@ -3048,7 +3051,11 @@ i.fa.fa-reply:hover,
 i.fa.fa-inbox:hover,
 i.fa.fa-envelope-o:hover,
 i.fa.fa-hand-pointer-o:hover,
-i.fa.fa-rocket:hover{
+i.fa.fa-rocket:hover,
+i.fa.fa-share:hover,
+i.fa fa-clipboard:hover,
+i.fa fa-wpforms:hover,
+i.fa.fa-info:hover{
   z-index: 999;
   position: relative;
   color: #262626 !important;
@@ -3124,7 +3131,7 @@ justify-content: center!important;
     height: 3.5rem !important;
     /* padding: 0 2rem !important; */
     border-radius: 8px !important;
-    background: rgb(146 151 179 / 8%) !important;
+    background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
     /* background-size: 400% !important; */
     color: #fff !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -3380,7 +3387,7 @@ button.btn.custom {
 }
 .formSelectCustomization {
 border:   1px solid rgba(255, 255, 255, 0.1) !important;
-box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
 }
 input.field-border-customization {
   border:   1px solid rgba(255, 255, 255, 0.1) !important;
@@ -3712,6 +3719,7 @@ div b {
 .camp_card_removal{
   box-shadow: none !important;
   background: none !important;
+  border: none !important;
 }
 /* Manikanta (Vendor Activity card changes) 27-12-2023 */
 .camp-card1{
@@ -3737,10 +3745,14 @@ h3#notifications {
   border-radius: 10px !important;
 }
 .btn-group button:hover,
-button.btn.custom:hover{
-  background-color: rgb(146 151 179 / 8%) !important;
+button.btn.custom:hover,
+.button:hover,
+.button_blue:hover{
+  /* background-color: rgb(146 151 179 / 8%) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px); */
+  background-size: 250% !important;
+  background-position: right center !important;
 }
 .neg_mrg_top5{
   margin-top: -5px !important;
@@ -3967,12 +3979,17 @@ padding-top:7px!important;
   color: #ffff!important;
 }
 /*** Sudha Sri(14-2-2024) ***/
-.remove_table_bg, span.comment-color {
+.remove_table_bg {
   box-shadow: none!important;
+}
+span.comment-color{
+  box-shadow: none !important;
+  background: none !important;
 }
 tr.col-md-12.col-lg-12:hover {
   box-shadow: none!important;
   background: none!important;
+  backdrop-filter: none !important;
 }
 .actions-block .fa-trash-o{
   border: none !important;
@@ -4078,8 +4095,9 @@ table.table.table-bordered {
   margin-right: 5px !important;
 }
 .gridViewImgBg{
-  background: linear-gradient(358deg, #0c86cc, #06beb8) !important;
-  box-shadow: inset 2px 2px 5px #0c86cc,inset -3px -3px 7px #06beb8!important;
+  background: rgb(146 151 179 / 8%)!important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(5px);
   border-top-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
 }
@@ -4103,14 +4121,16 @@ img.email-template-preview{
   background: #34495a;
   text-align: center;
   border-radius: 10px 10px 0 0;
-  background-image:  linear-gradient(358deg, #0c86cc, #06beb8) !important;
+  background:  rgb(146 151 179 / 8%)!important;
   background-size: 1090px;
   background-repeat: no-repeat;
   background-position: 0;
   transition: background .3s ease-in-out;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(5px);
 }
 .img1:hover {
-  background: linear-gradient(358deg, #06beb8, #0c86cc) !important;
+  background: none !important;
 }
 /***** Sudha Sri(12-3-2024) *****/
 a i.fa.fa-trash-o.trashIconCustomization{
@@ -4146,6 +4166,7 @@ button.btn.btn-primary.activate-btn:hover {
 /***** Grid View Icon Changes *****/
 .bar.gridIconCustomization {
     box-shadow: none !important;
+    background: rgb(146 151 179 / 65%)!important;
 }
 /* a.Iconhover.custom-grid-icon{
   background-color: #22313a !important;
@@ -4175,8 +4196,9 @@ li.active-tab a.active-tab-anchor-text{
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   background-color: rgba(16 18 27 / 40%) !important;
 }
-button.group-name-cclass.btn-primary.default-btn-cursor{
-  background: linear-gradient(0deg, #0c86cc, #06beb8) !important;
+button.group-name-cclass.btn-primary.default-btn-cursor,
+.tm-group-preview-css{
+  background: rgb(146 151 179 / 8%)!important;
 }
 /***** Sudha Sri(21-3-2024) *****/
 .my-profile-header-text.neumorphismDark {
@@ -4224,6 +4246,7 @@ li.filter.selectedBox{
 .page-sidebar .page-sidebar-menu > li > a {
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    color: #f2f4f699 !important;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover {
     background: rgba(16 18 27 / 40%) !important;
@@ -4243,10 +4266,6 @@ li.filter.selectedBox{
   background: rgb(146 151 179 / 8%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)!important;
-}
-.button:hover,
-.button_blue:hover{
-  transform: scale(1.05);
 }
 .aspect_ratio{
   background-color: rgb(146 151 179 / 8%) !important;
@@ -4297,12 +4316,107 @@ a.title.padding_bottom.text-color.content-bg.row-space {
   border-bottom-left-radius: none !important;
   border-bottom-right-radius: none !important;
 }
+/***** Sudha Sri(01-05-2024) *****/
+.panel-default > .panel-heading{
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+.link button{
+  background: rgba(16 18 27 / 40%) !important;
+}
+.Btn-Green.btn:hover{
+  background-color: unset !important;
+}
+/* .button,
+.button_blue{
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 5px 45px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+  transition: 0.5s;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.button span::before,
+.button_blue span::before {
+  content: '';
+  position: absolute;
+  top: 0;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+  left: 0;
+  width: 15px;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  transform: skewX(45deg) translateX(150px);
+  transition: 1.5s ease;
+}
 
-
-
-
-
-
-
-
-
+.button span:hover::before,
+.button_blue span:hover::before {
+  transform: skewX(45deg) translateX(-150px);
+}
+.button,
+.button_blue {
+  position: relative;
+  background-color: transparent;
+}
+.content_padding{
+  padding: 7px 12px !important;
+}
+.manage_padding{
+  padding: 7px 10px !important;
+}
+.template_padding{
+  padding: 7px 8px !important;
+}
+.campaign_padding{
+  padding: 7px 6px !important;
+}
+.team_mbr_padding{
+  padding: 7px 4px !important;
+}
+button.button.p-rgt_p-top.bgcolor-unset span:hover::before{
+  background-color: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+button.button.p-rgt_p-top.bgcolor-unset span:hover::before{
+  transform: none !important;
+}
+button.button.p-rgt_p-top.bgcolor-unset span::before{
+  background: none !important;
+}
+.Btn-Gray:hover{
+  transform: translateY(-2px);
+}
+.share_camp_pdg{
+  padding: 7px 1px !important;
+  margin-top: -4px !important;
+}
+.pd_lft_rgt20{
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+} */
+/***** Sudha Sri(7-5-2024) *****/
+button.button.bgcolor-unset{
+  background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
+}
+button.button.bgcolor-unset:hover {
+  background-size: 250% !important;
+  background-position: right center !important;
+}
+.page-sidebar .page-sidebar-menu > li > a > i{
+  color: #a9b0b8 !important;
+}
+/* .page-sidebar .page-sidebar-menu > li > a > i:hover, */
+.page-sidebar .page-sidebar-menu > li.active > a > i{
+  color: #15c1df !important;
+}
+.dashboard-stat.green-soft .visual > i,
+.dashboard-stat.red-soft .visual > i,
+.dashboard-stat.purple-soft .visual > i,
+.dashboard-stat.blue-sharp .visual > i,
+.dashboard-stat.blue-soft .visual > i{
+  color: #15c1df !important;
+  opacity: 0.2 !important;
+}

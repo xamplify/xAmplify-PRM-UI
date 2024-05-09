@@ -6,7 +6,7 @@
        margin: 0px; padding: 0px; z-index: 10000; width: 100%;">
       </ng2-slim-loading-bar>
       <!-- BEGIN HEADER INNER -->
-      <div class="page-header-inner">
+      <div class="page-header-inner" [ngClass]="{'scrolled': isScrolled}">
          <div *ngIf="refService?.newVersionDeployed" class="alert alert-info">
             <strong>New Update Is Available.Please refresh your browser to see new changes</strong>
          </div>
@@ -176,7 +176,8 @@
                            </ng-container>
                         </ng-container>
                         <!-- Guides Help Icon-->
-                        <li *ngIf="!authenticationService.isOnlyUser() && authenticationService.user.hasCompany && userId!=1">
+                        <li
+                           *ngIf="!authenticationService.isOnlyUser() && authenticationService.user.hasCompany && userId!=1">
                            <a href="{{guideHomeUrl}}" target="_blank">
                               <i class="fa fa-question-circle-o" style="font-size: 15px;"
                                  aria-hidden="true"></i>&nbsp;Help

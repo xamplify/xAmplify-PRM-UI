@@ -114,7 +114,7 @@
 
 										</div>
 										<div class="col-md-12" style="text-align: center;padding-top:16px;">
-											<p style="color:#949090;"> upload 2:1 ratio logo only</p>
+											<p style="color:#949090;" class="txt_color"> upload 2:1 ratio logo only</p>
 										</div>
 										<!-- <hr class="divider" /> -->
 										<div class="clearfix"></div>
@@ -463,13 +463,14 @@
 											<label class="control-label">Email/Username
 												<span><strong style="color: #f55d7a !important">*</strong></span>
 											</label>
-												<input type="text" id="userEmailId" name="userEmailId"
+											<input type="text" id="userEmailId" name="userEmailId"
 												placeholder="Email/Username" maxlength="240" class="form-control"
 												[(ngModel)]="companyProfile.userEmailId"
 												(input)="validatePattern('userEmailId')"
 												(blur)="validatePattern('userEmailId')"
 												(keydown)="this.fetchResult.next($event)" autocomplete="off" />
-												<span *ngIf="userEmailIdError" style="color: #f55d7a">{{userEmailIdErrorMessage}}</span>
+											<span *ngIf="userEmailIdError"
+												style="color: #f55d7a">{{userEmailIdErrorMessage}}</span>
 										</div>
 									</div>
 									<div class="col-xs-2" id="check-user">
@@ -510,8 +511,8 @@
 														placeholder="Company Name" maxlength="25" class="form-control"
 														[(ngModel)]="companyProfile.companyName"
 														(input)="validateEmptySpace('companyName')"
-														(blur)="validateNames(companyProfile.companyName)" autocomplete="off" /> <span
-														*ngIf="companyNameError"
+														(blur)="validateNames(companyProfile.companyName)"
+														autocomplete="off" /> <span *ngIf="companyNameError"
 														style="color: #f55d7a">{{companyNameErrorMessage}}</span>
 												</div>
 											</div>
@@ -526,7 +527,8 @@
 															name="companyProfileName"
 															[(ngModel)]="companyProfile.companyProfileName"
 															(input)="validateEmptySpace('companyProfileName')"
-															(blur)="validateProfileNames(companyProfile.companyProfileName)" autocomplete="off" />
+															(blur)="validateProfileNames(companyProfile.companyProfileName)"
+															autocomplete="off" />
 														<span *ngIf="companyProfileNameError"
 															style="color: #f55d7a">{{companyProfileNameErrorMessage}}</span>
 													</ng-container>
@@ -572,8 +574,8 @@
 												<input type="text" maxlength="20" class="form-control"
 													[(ngModel)]="companyProfile.phone"
 													[ngModelOptions]="{standalone: true}"
-													(input)="validatePattern('phone')"
-													(blur)="validatePattern('phone')" autocomplete="off">
+													(input)="validatePattern('phone')" (blur)="validatePattern('phone')"
+													autocomplete="off">
 												<span *ngIf="phoneError"
 													style="color: #f55d7a">{{phoneErrorMessage}}</span>
 											</div>
@@ -608,8 +610,8 @@
 												<label class="control-label" translate>Privacy Policy</label>
 												<textarea class="form-control" rows="3" cols="5" maxlength="1000"
 													placeholder="Privacy Policy" name="privacyPolicy" id="privacyPolicy"
-													style="resize: none"
-													[(ngModel)]="companyProfile.privacyPolicy" autocomplete="off"></textarea>
+													style="resize: none" [(ngModel)]="companyProfile.privacyPolicy"
+													autocomplete="off"></textarea>
 											</div>
 										</div>
 										<div class="col-md-12 col-lg-12">
@@ -640,7 +642,8 @@
 															class="form-control" maxlength="240"
 															[(ngModel)]="companyProfile.city"
 															(input)="validatePattern('city')"
-															(blur)="validatePattern('city')" autocomplete="off" /> <span *ngIf="cityError"
+															(blur)="validatePattern('city')" autocomplete="off" /> <span
+															*ngIf="cityError"
 															style="color: #f55d7a">{{cityErrorMessage}}</span>
 													</div>
 													<div class="form-group" [attr.class]="stateDivClass">
@@ -658,14 +661,16 @@
 															type="text" id="zip" name="zip" maxlength="10"
 															placeholder="Zip"
 															onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-															class="form-control" [(ngModel)]="companyProfile.zip" autocomplete="off" />
+															class="form-control" [(ngModel)]="companyProfile.zip"
+															autocomplete="off" />
 														<span *ngIf="zipError"
 															style="color: #f55d7a">{{zipErrorMessage}}</span>
 													</div>
 													<div class="form-group" [attr.class]="countryDivClass">
 														<label class="control-label" translate>Country</label> <select
 															class="form-control" name="companyProfile.country"
-															[(ngModel)]="companyProfile.country" autocomplete="off" style="width: 100%">
+															[(ngModel)]="companyProfile.country" autocomplete="off"
+															style="width: 100%">
 															<option *ngFor="let country of countryNames.countries"
 																[ngValue]="country">{{country}}</option>
 														</select>
@@ -697,7 +702,8 @@
 														<label class="control-label" translate>Google</label> <input
 															type="text" id="googlePlusLink" name="googlePlusLink"
 															placeholder="Google" class="form-control"
-															[(ngModel)]="companyProfile.googlePlusLink" autocomplete="off"
+															[(ngModel)]="companyProfile.googlePlusLink"
+															autocomplete="off"
 															(input)="validatePattern('googlePlusLink')"
 															(blur)="validatePattern('googlePlusLink')" /> <span
 															*ngIf="googlePlusLinkError"
@@ -718,7 +724,8 @@
 														<label class="control-label" translate>Instagram</label> <input
 															type="text" id="instagramLink" name="instagramLink"
 															placeholder="Instagram" class="form-control"
-															[(ngModel)]="companyProfile.instagramLink" autocomplete="off"
+															[(ngModel)]="companyProfile.instagramLink"
+															autocomplete="off"
 															(input)="validatePattern('instagramLink')"
 															(blur)="validatePattern('instagramLink')" /> <span
 															*ngIf="instagramLinkError"
