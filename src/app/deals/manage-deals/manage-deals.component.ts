@@ -667,7 +667,6 @@ export class ManageDealsComponent implements OnInit {
       },
       error => {
           this.httpRequestLoader.isServerError = true;
-          this.dealsResponse=new CustomResponse('ERROR',"This Deal type cannot be deleted as it is used in deals",true);
           },
       () => { this.showFilterOption = false;}
   );
