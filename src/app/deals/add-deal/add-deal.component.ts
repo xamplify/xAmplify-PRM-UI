@@ -138,6 +138,9 @@ export class AddDealComponent implements OnInit {
   amountFields = ['amount','value','FOppValue'];
   closeDateFields = ['expected_close_date','expectedCloseDate','FOppTargetDate','CloseDate'];
   type = "DEAL";
+  showOpportunityTypes:boolean = false;
+  opportunityTypeId: any;
+  opportunityTypeIdError: any;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -832,6 +835,17 @@ export class AddDealComponent implements OnInit {
           this.createdForPipelineStageIdError = true;
         }
       }
+      if (this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
+        if (fieldId == "opportunityTypeId") {
+          if (fieldValue.length > 0 && fieldValue != "0") {
+            this.opportunityTypeIdError = successClass;
+            this.opportunityTypeIdError = false;
+          } else {
+            this.opportunityTypeIdError = errorClass;
+            this.opportunityTypeIdError = true;
+          }
+        }
+      }
     }
     this.submitButtonStatus();
   }
@@ -1103,6 +1117,37 @@ export class AddDealComponent implements OnInit {
                 || "HALOPSA" === this.activeCRMDetails.type)) {
               this.showCustomForm = true;
             }
+            if (this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
+              this.showOpportunityTypes = true;
+              if ("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType) {
+                this.getHaloPSATicketTypes(this.deal.createdForCompanyId);
+                this.createdForStages = [];
+                this.createdForPipelines = [];
+                if (this.actionType === "add") {
+                  this.deal.haloPSATickettypeId = 0;
+                  this.deal.createdForPipelineId = 0;
+                  this.deal.createdForPipelineStageId = 0;
+                }
+                this.activeCRMDetails.hasCreatedForPipeline = false;
+              } else if ("HALOPSA" === this.activeCRMDetails.createdByActiveCRMType) {
+                this.getHaloPSATicketTypes(this.deal.createdByCompanyId);
+                this.createdByStages = [];
+                this.createdByPipelines = [];
+                if (this.actionType === "add") {
+                  this.deal.haloPSATickettypeId = 0;
+                  this.deal.createdByPipelineId = 0;
+                  this.deal.createdByPipelineStageId = 0;
+                }
+                this.activeCRMDetails.hasCreatedByPipeline = false;
+              }
+            } else {
+              this.showOpportunityTypes = false;
+              this.typeId = 0;
+              this.types = null;
+              if (this.actionType === "add") {
+                this.deal.haloPSATickettypeId = 0;
+              }
+            }
           }
         },
         error => {
@@ -1131,7 +1176,9 @@ export class AddDealComponent implements OnInit {
             this.getDealPipelinesForView();
           }
           else {
-            this.getDealPipelines();
+            if (!this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown || this.actionType === "edit") {
+              this.getDealPipelines();
+            }
           }
         });
   }
@@ -1144,7 +1191,11 @@ export class AddDealComponent implements OnInit {
     if (this.deal.campaignId !== undefined && this.deal.campaignId > 0) {
       campaignId = this.deal.campaignId;
     }
-    this.dealsService.getActiveCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, campaignId, this.type)
+    let typeId = 0;
+    if (this.deal.haloPSATickettypeId != undefined) {
+      this.typeId = this.deal.haloPSATickettypeId;
+    }
+    this.dealsService.getActiveCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, campaignId, this.type, this.typeId)
       .subscribe(
         data => {
           self.referenceService.loading(this.httpRequestLoader, false);
@@ -1332,6 +1383,7 @@ export class AddDealComponent implements OnInit {
       self.pipelineIdError = false;
       self.createdForStages = createdForPipeline.stages;
       self.activeCRMDetails.hasCreatedForPipeline = true;
+      self.activeCRMDetails.hasDealPipeline = true;
     } else {
       let createdForPipelineExist = false;
       for (let p of createdForPipelines) {
@@ -1442,6 +1494,21 @@ export class AddDealComponent implements OnInit {
     if (this.actionType == 'edit' && this.lead.campaignId != null && this.lead.campaignId > 0) {
       this.hasCampaignPipeline = false;
     }
+  }
+
+  typeId:number = 0;
+  types = new Array<Pipeline>();
+  getHaloPSATicketTypes(loggedInUserId:number) {
+    this.integrationService.getHaloPSATicketTypes(loggedInUserId).subscribe(data => {
+      if (data.statusCode == 200) {
+        this.types = data.data;
+      }
+    })
+  }
+
+  onChangeOpportunityType() {
+    let self = this;
+    this.getDealPipelines();
   }
 
 }

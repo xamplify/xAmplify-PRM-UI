@@ -580,7 +580,7 @@ export class AddLeadComponent implements OnInit {
     if (this.lead.campaignId !== undefined && this.lead.campaignId > 0) {
       campaignId = this.lead.campaignId;
     }
-    this.dealsService.getActiveCRMPipelines(this.lead.createdForCompanyId, this.loggedInUserId, campaignId, this.type)
+    this.dealsService.getActiveCRMPipelines(this.lead.createdForCompanyId, this.loggedInUserId, campaignId, this.type, 0)
       .subscribe(
         data => {
           self.referenceService.loading(this.httpRequestLoader, false);

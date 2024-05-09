@@ -49,4 +49,5 @@ export class Deal {
     createdByPipelineStageId: number;
     createdForPipelineId: number;         
     createdForPipelineStageId: number;
+    haloPSATickettypeId: any;
 }
