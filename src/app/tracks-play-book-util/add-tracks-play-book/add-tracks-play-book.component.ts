@@ -360,7 +360,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
             }
             this.validateLearningTrack();
             /**XNFR-523***/
-            this.isSendEmailNotificationOptionDisplayed = this.tracksPlayBook.published && !this.isAdd && this.authenticationService.isLocalHost();
+            this.isSendEmailNotificationOptionDisplayed = this.tracksPlayBook.published && !this.isAdd;
             this.sendEmailNotificationOptionToolTipMessage = this.properties.SEND_UPDATED_TRACK_EMAIL_NOTIFICATION_MESSAGE.replace("{{partnersMergeTag}}",this.authenticationService.getPartnerModuleCustomName());
             /**XNFR-523***/
           } else {
