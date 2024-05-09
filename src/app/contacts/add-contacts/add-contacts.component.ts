@@ -4726,7 +4726,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 user.city = contacts[i].city;
                 user.state = contacts[i].city;
                 user.country = contacts[i].country;
-                user.zipCode = String(contacts[i].postalCode);
+                user.zipCode = contacts[i].postalCode === undefined ? "" : contacts[i].postalCode+"";
                 user.mobileNumber = contacts[i].mobilePhone;
                 user.jobTitle = contacts[i].title;
                 user.address = contacts[i].address;
