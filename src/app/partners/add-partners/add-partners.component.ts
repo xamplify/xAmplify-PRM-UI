@@ -1068,8 +1068,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								self.newPartnerUser.push(user);
 							}
 						}
-						if (self.newPartnerUser.length == 0) {
-							self.customResponse = new CustomResponse('ERROR', "No records found", true);
+						if(allTextLines.length == 2){
+							self.customResponse = new CustomResponse('ERROR', "No records found.", true);
+							self.cancelPartners();
+						}else if (allTextLines.length > 2 && self.newPartnerUser.length == 0) {
+							self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
 							self.cancelPartners();
 						} else {
 							self.setSocialPage(1);
