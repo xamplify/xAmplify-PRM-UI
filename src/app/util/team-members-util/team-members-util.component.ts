@@ -126,7 +126,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
     public utilService: UtilService, private vanityUrlService: VanityURLService, public properties: Properties, 
-    public regularExpressions: RegularExpressions,public route:ActivatedRoute) {
+    public regularExpressions: RegularExpressions,public route:ActivatedRoute,public partnerService : ParterService) {
 
     this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
     this.isSuperAdminAccessing = this.authenticationService.isSuperAdmin();
