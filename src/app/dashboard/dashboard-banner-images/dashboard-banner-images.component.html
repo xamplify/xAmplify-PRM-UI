@@ -53,7 +53,12 @@
                     -webkit-line-clamp: 2;
                     overflow: hidden;
                     text-overflow: ellipsis;" class="description-width description-custom-font" *ngIf="dashboardBanner?.description.length>0" title="{{dashboardBanner?.description}}">{{dashboardBanner?.description}}</p>
-                    <p><a class="btn btn-large btn-primary carousel-btn" style="position: fixed !important"  href="{{dashboardBanner?.link}}" target="{{dashboardBanner?.openLinkInNewTab ? '_blank' : '_self'}}">Learn More</a></p>
+                    <p *ngIf="!dashboardBanner?.link?.startsWith('http') && !dashboardBanner?.link?.startsWith('https')">
+                        <a class="btn btn-large btn-primary carousel-btn" style="position: fixed !important"  href="//{{dashboardBanner?.link}}" target="{{dashboardBanner?.openLinkInNewTab ? '_blank' : '_self'}}">Learn More</a>
+                    </p>
+                    <p *ngIf="dashboardBanner?.link?.startsWith('http') || dashboardBanner?.link?.startsWith('https')">
+                        <a class="btn btn-large btn-primary carousel-btn" style="position: fixed !important"  href="{{dashboardBanner?.link}}" target="{{dashboardBanner?.openLinkInNewTab ? '_blank' : '_self'}}">Learn More</a>
+                    </p>
                 </div>
             </div>
         </div>

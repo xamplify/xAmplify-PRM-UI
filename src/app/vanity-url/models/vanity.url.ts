@@ -25,4 +25,6 @@ export class VanityURL{
     /** XBI-2016 ***/
     loginFormDirectionStyleOne:string;
     /** XBI-2016**/
+
+    companyUrl = "";
 }

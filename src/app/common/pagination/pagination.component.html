@@ -6,7 +6,7 @@
 <div [hidden]="pagination.pagedItems.length == 0" class="scroll-top-abj">
    <div *ngIf="(pagination.pager.pages && pagination.pager.pages.length) && !isDropdown"
       style="float: right;font-size: 15px;">
-      <select class="form-control margin-top pointer" [(ngModel)]="pageNumber"
+      <select class="form-control margin-top pointer mt_10" [(ngModel)]="pageNumber"
          (ngModelChange)="selectedPageNumber($event.value)">
          <ng-container *ngIf="customDropDown">
             <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>

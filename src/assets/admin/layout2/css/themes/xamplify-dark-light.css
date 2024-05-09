@@ -2676,3 +2676,14 @@ a.Iconhover.custom-grid-icon.border-none i.fa.fa-trash-o.trashIconCustomization:
   margin-right: -20px !important;
   margin-left: -7px !important;
 }
+/* deals pipeline */
+.Synchronize_btn {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+.Synchronize_btn:hover {
+    color: #fff;
+    background-color: #286090;
+    border-color: #204d74;
+}

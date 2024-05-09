@@ -242,6 +242,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   notifyWorkflowToolTipMessage = "";
   isMultipleCrmsActivated = false;
   skipConfirmAlert = false;
+  hideConfigurePipelineCrms = ['SALESFORCE'];
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -748,6 +749,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     private findCampaignPipeLines() {
         if (this.activeCRMDetails.activeCRM) {
             if ("SALESFORCE" === this.activeCRMDetails.type) {
+                this.listCampaignPipelines();
                 this.integrationService
                     .checkSfCustomFields(this.authenticationService.getUserId())
                     .subscribe(
@@ -1037,6 +1039,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                                     this.campaign.dealPipelineId = this.dealPipelines[0].id;
                                 }
                                 
+                            }
+                            if(this.hideConfigurePipelineCrms.includes(this.activeCRMDetails.type)){
+                                this.showConfigurePipelines = false;
                             }
 
                         }

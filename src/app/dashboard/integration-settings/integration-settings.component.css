@@ -191,7 +191,7 @@ a.disabled {
   height: 27px;
   border-radius: 50%;
   text-align: center;
-  line-height: 26px!important;
+  line-height: 26px;
   vertical-align: middle;
   margin-right: 5px;
   margin-bottom: 2px;
@@ -235,6 +235,29 @@ margin-left:10px;
   .active-btns{
     width: 46%;
   }
+  .navtabs_flex{
+    display: flex;
+    white-space: nowrap;
+  }
+  .ml-auto{
+    margin-left: auto;
+  }
+  .scrollbar-x{
+    overflow-x: auto;
+  }
+  .width100{
+  width: 100px;
+  }
+  .justify-content-end{
+    justify-content: flex-start!important;
+  }
+  .ml_15{
+   margin-left: 15px;
+  }
+  .ml_10{
+    margin-left: 10px;
+  }
+  
 }
 .align-item-left{
   float: left;
@@ -242,4 +265,7 @@ margin-left:10px;
 
 .align-width {
   width: 160px;
+}
+.justify-content-end{
+  justify-content: end;
 }

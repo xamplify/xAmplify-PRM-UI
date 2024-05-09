@@ -42,8 +42,9 @@
                   },
                   "image": {
                     "alt": "Image",
-                    "href": "https://xamplify.io",
-                    "src": "https://xamp.io/vod/replace-company-logo.png"
+                    "href": "VENDOR_COMPANY_WEBSITE_URL",
+                    "src": "https://xamp.io/vod/replace-company-logo.png",
+                    "target": "_blank"
                   },
                   "style": {
                     "padding-bottom": "0px",
@@ -78,7 +79,8 @@
                   "image": {
                     "alt": "Image",
                     "src": "https://xamp.io/vod/images/co-branding.png",
-                    "href": "https://dummycobrandingurl.com"
+                    "href": "https://dummycobrandingurl.com",
+                    "target":"_blank"
                   },
                   "style": {
                     "width": "100%",

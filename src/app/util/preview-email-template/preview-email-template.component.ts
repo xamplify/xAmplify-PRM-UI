@@ -7,6 +7,7 @@ import { Processor } from '../../core/models/processor';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { EventCampaign } from 'app/campaigns/models/event-campaign';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-preview-email-template',
@@ -15,7 +16,7 @@ import { EventCampaign } from 'app/campaigns/models/event-campaign';
   providers:[Processor,Properties]
 })
 export class PreviewEmailTemplateComponent implements OnInit {
-  id:number = 0;
+  id:any;
   success = false;
   customResponse:CustomResponse = new CustomResponse();
   loggedInUserCompanyLogo="";
@@ -24,7 +25,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
   isVendorCompanyViewingWorkflowTemplate = false;
   isVendorCampaignAutoReplyEmailWorkflowId = false;
   vendorCampaignAutoReplyWebsiteLinkWorkflowId = false;
-  campaignId = 0;
+  campaignId:any;
   isCampaignAutoReplyEmailWorkflowId: boolean;
   campaignAutoReplyWebsiteLinkWorkflowId: boolean;
   isEventCampaignTemplatePreview: boolean;
@@ -49,14 +50,39 @@ export class PreviewEmailTemplateComponent implements OnInit {
     this.isEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/evt")>-1;
     this.isEditRedistributedEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/edevt")>-1;
     this.referenceService.clearHeadScriptFiles();
-    this.id = this.route.snapshot.params['id'];
-    this.campaignId = this.route.snapshot.params['campaignId'];
+    this.decodeIdParameter();
+    this.decodeCampaignIdParameter();
     let isValidId = this.id!=undefined && this.id>0;
     let isValidCampaignId = this.campaignId!=undefined && this.campaignId>0;
     if(isValidId ||isValidCampaignId){
       this.getHtmlBody();
+    }else{
+
     }
   }
+
+  private decodeIdParameter() {
+   try {
+     this.id = atob(this.route.snapshot.params['id']);
+   } catch (error) {
+      this.showPageNotFoundMessage();
+   }
+  }
+
+  private showPageNotFoundMessage() {
+    this.customResponse = new CustomResponse('ERROR', this.properties.pageNotFound, true);
+    this.processor.remove(this.processor);
+  }
+
+  private decodeCampaignIdParameter() {
+    try {
+      this.campaignId = atob(this.route.snapshot.params['campaignId']);
+    } catch (error) {
+      this.showPageNotFoundMessage();
+    }
+   }
+
+
 
   getHtmlBody(){
     this.loggedInUserCompanyLogo = this.authenticationService.APP_URL+"/assets/images/company-profile-logo.png";

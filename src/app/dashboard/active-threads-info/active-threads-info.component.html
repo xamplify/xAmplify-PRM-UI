@@ -1,55 +1,65 @@
-<div class="col-xs-12">
-  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <div class="portlet light">
-     <div class="portlet-title">
-        <div class="caption">Active Threads</div>
-        <div class="inputs">
-           <a *ngIf="activeThreads?.length>0" class="close-circle" (click)="exportexcel()" data-toggle="tooltip" data-placement="top" title="Export To Excel">
-           <i class="fa fa-download margin" aria-hidden="true"></i>
-           </a>
-           <a class="close-circle" (click)="findActiveThreads()" data-toggle="tooltip" data-placement="top" title="Refresh">
-           <i class="fa fa-refresh margin" aria-hidden="true"></i>
-           </a>
-        </div>
+<div class="wrap-collabsible">
+   <input id="collapsible-active-threads" name="collapsibleCheckBox" class="toggle" type="checkbox" checked>
+   <label for="collapsible-active-threads" class="lbl-toggle">Active Threads</label>
+   <div class="collapsible-content">
+     <div class="content-inner">
+      <!--Active Threads-->
+      <div>
+         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+         <div class="portlet light">
+            <div class="portlet-title">
+               <div class="caption">Active Threads</div>
+               <div class="inputs">
+                  <a *ngIf="activeThreads?.length>0" class="close-circle" (click)="exportexcel()" data-toggle="tooltip" data-placement="top" title="Export To Excel">
+                  <i class="fa fa-download margin" aria-hidden="true"></i>
+                  </a>
+                  <a class="close-circle" (click)="findActiveThreads()" data-toggle="tooltip" data-placement="top" title="Refresh">
+                  <i class="fa fa-refresh margin" aria-hidden="true"></i>
+                  </a>
+               </div>
+            </div>
+            <div class="alert alert-warning text-center">
+               <strong>Please Click On The Refresh Icon To See Active Threads</strong>
+            </div>
+            <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+            <p class="success"><strong>{{message}}</strong></p>
+            <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !apiError">
+               <div>
+                  <div class="table-responsive">
+                     <table class='table tgrid' aria-describedby="" id="active-threads-table">
+                        <thead>
+                           <tr>
+                              <th class="text-center" scope="row" translate>Thread Id</th>
+                              <th class="text-center" scope="row" translate>Priority</th>
+                              <th class="text-center" scope="row" translate>Thread Name</th>
+                              <th class="text-center" scope="row" translate>Thread Group Name</th>
+                              <th class="text-center" scope="row" translate>Active Threads Count</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <ng-container *ngFor="let activeThread of activeThreads;let i = index">
+                              <tr>
+                                 <td class="text-center">{{activeThread?.threadId}}</td>
+                                 <td class="text-center">{{activeThread?.priority}}</td>
+                                 <td class="text-center">{{activeThread?.threadName}}</td>
+                                 <td class="text-center">{{activeThread?.threadGroupName}}</td>
+                                 <td class="text-center">{{activeThread?.activeCount}}</td>
+                              </tr>
+                           </ng-container>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+               <div *ngIf="activeThreads?.length==0 && !httpRequestLoader.isLoading && !apiError" class="alert alert-info text-center">
+                  <strong>No Active Threads Found</strong>
+               </div>
+            </div>
+            <div *ngIf="apiError" class="alert alert-danger">
+               <strong>Oops!Something went wrong.Please try again after sometime</strong>
+            </div>
+         </div>
+      </div>
      </div>
-     <div class="alert alert-warning text-center">
-        <strong>Please Click On The Refresh Icon To See Active Threads</strong>
-     </div>
-     <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-     <p class="success"><strong>{{message}}</strong></p>
-     <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !apiError">
-        <div>
-           <div class="table-responsive">
-              <table class='table tgrid' aria-describedby="" id="active-threads-table">
-                 <thead>
-                    <tr>
-                       <th class="text-center" scope="row" translate>Thread Id</th>
-                       <th class="text-center" scope="row" translate>Priority</th>
-                       <th class="text-center" scope="row" translate>Thread Name</th>
-                       <th class="text-center" scope="row" translate>Thread Group Name</th>
-                       <th class="text-center" scope="row" translate>Active Threads Count</th>
-                    </tr>
-                 </thead>
-                 <tbody>
-                    <ng-container *ngFor="let activeThread of activeThreads;let i = index">
-                       <tr>
-                          <td class="text-center">{{activeThread?.threadId}}</td>
-                          <td class="text-center">{{activeThread?.priority}}</td>
-                          <td class="text-center">{{activeThread?.threadName}}</td>
-                          <td class="text-center">{{activeThread?.threadGroupName}}</td>
-                          <td class="text-center">{{activeThread?.activeCount}}</td>
-                       </tr>
-                    </ng-container>
-                 </tbody>
-              </table>
-           </div>
-        </div>
-        <div *ngIf="activeThreads?.length==0 && !httpRequestLoader.isLoading && !apiError" class="alert alert-info text-center">
-           <strong>No Active Threads Found</strong>
-        </div>
-     </div>
-     <div *ngIf="apiError" class="alert alert-danger">
-        <strong>Oops!Something went wrong.Please try again after sometime</strong>
-     </div>
-  </div>
-</div>
+   </div>
+ </div>
+

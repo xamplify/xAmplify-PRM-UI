@@ -32,6 +32,7 @@ export class EmailTemplatePreviewUtilComponent implements OnInit,OnDestroy {
     $(this.modalId).modal('show');
     $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
     htmlBody = htmlBody.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage );
+    htmlBody = htmlBody.replace("<Vanity_Company_Logo_Href>", this.referenceService.website);
     if(this.referenceService.hasMyMergeTagsExits(htmlBody)){
       this.referenceService.getSenderMergeTagsData().subscribe(
               response => {

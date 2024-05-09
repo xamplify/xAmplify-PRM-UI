@@ -57,8 +57,8 @@ export class IntegrationSettingsComponent implements OnInit {
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
-		{ 'name': 'List name (A-Z)', 'value': 'asc' },
-		{ 'name': 'List name (Z-A)', 'value': 'desc' },
+		{ 'name': 'Field name (A-Z)', 'value': 'asc' },
+		{ 'name': 'Field name (Z-A)', 'value': 'desc' },
 	];
 
 	public sortOption: any = this.sortOptions[0].value;

@@ -446,7 +446,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	loadAssignedLeadsLists(pagination: Pagination) {
 		try {
-			this.campaignLoader = false;
+			this.campaignLoader = true;
 			this.referenceService.loading(this.httpRequestLoader, true);
 			this.pagination.filterKey = 'isPartnerUserList';
 			this.pagination.filterValue = this.isPartner;
@@ -473,6 +473,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						this.campaignLoader = false;
 					},
 					(error: any) => {
+						this.campaignLoader = false;
 						this.xtremandLogger.error(error);
 						this.xtremandLogger.errorPage(error);
 					},
@@ -480,6 +481,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				)
 			this.sortOption = this.sortOptions[0];
 		} catch (error) {
+			this.campaignLoader = false;
 			this.xtremandLogger.error(error, "ManageContactsComponent", "loadAssignedLeadsLists()");
 		}
 	}
@@ -524,13 +526,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	deleteContactList(contactListId: number) {
 		try {
+			this.campaignLoader = true;
 			this.resetResponse();
-			this.xtremandLogger.info("MangeContacts deleteContactList : " + contactListId);
 			this.contactService.deleteContactList(contactListId)
 				.subscribe(
 					data => {
 						if (data.access) {
-							this.xtremandLogger.info("MangeContacts deleteContactList success : " + data);
 							this.contactsCount();
 							$('#contactListDiv_' + contactListId).remove();
 							this.loadContactLists(this.pagination);
@@ -547,18 +548,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 								this.loadContactLists(this.pagination);
 
 							}
+							this.campaignLoader = false;
 						} else {
+							this.campaignLoader = false;
 							this.authenticationService.forceToLogout();
 						}
 					},
 					(error: any) => {
+						this.campaignLoader = false;
 						if (error._body.includes('Please launch or delete those campaigns first')) {
-							// this.responseMessage = ['ERROR', error,'show'];
 							this.customResponse = new CustomResponse('ERROR', error._body, true);
 						} else {
 							this.xtremandLogger.errorPage(error);
 						}
-						console.log(error);
 					},
 					() => this.xtremandLogger.info("deleted completed")
 				);
@@ -2065,7 +2067,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.saveAsError = '';
 				this.validateLegalBasisOptions();
 				if (this.saveAsTypeList === 'manage-contacts') {
-					this.contactListObject.name = this.saveAsListName;
+					this.contactListObject.name = name;
 					this.saveAsNewLeadsList();
 				}
 				else if (this.saveAsTypeList === 'manage-all-contacts') {
@@ -2220,16 +2222,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	forceProcessList(contactListId: number) {
+		this.campaignLoader = true;
 		try {
 			this.contactService.forceProcessList(contactListId)
 				.subscribe(
 					data => {
+						this.campaignLoader = false;
 						if (data.message == "success") {
 							this.customResponse = new CustomResponse('SUCCESS', "We are processing your contact list, once done will send you an email.", true);
 							this.loadContactLists(this.pagination);
 						}
 					},
 					(error: any) => {
+						this.campaignLoader = false;
 						this.xtremandLogger.error(error);
 					},
 					() => this.xtremandLogger.log("Manage component forcce Process method successfull")
@@ -2835,22 +2840,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 	}
 
-
 	downloadUserListCsv() {
 		try {
-			this.contactsByType.contactPagination.filterKey = 'isPartnerUserList';
-			this.contactsByType.contactPagination.filterValue = this.isPartner;
-			this.contactsByType.contactPagination.criterias = this.criterias;
-			this.contactsByType.contactPagination.maxResults = this.contactsByType.pagination.totalRecords;
-
-			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
-			this.userListPaginationWrapper.pagination.searchKey = this.searchKey;
-			this.userListPaginationWrapper.userList.contactType = this.contactsByType.selectedCategory;
-			this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
-			this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
-			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-				this.userListPaginationWrapper.pagination.partnerTeamMemberGroupFilter = true;
-			}
 			this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
 				.subscribe(
 					data => {

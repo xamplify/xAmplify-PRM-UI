@@ -7,7 +7,6 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
-import { EmailTemplate } from 'app/email-template/models/email-template';
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 
@@ -131,9 +130,7 @@ export class SelectEmailTemplateComponent implements OnInit {
 }
 
 previewEmailTemplate(emailTemplate:any){
-    this.selectedEmailTemplateIdForPreview = emailTemplate.id;
-    this.selectedEmailTemplateNameForPreview = emailTemplate.name;
-    this.isPreviewEmailTemplateButtonClicked = true;
+    this.referenceService.previewEmailTemplateInNewTab(emailTemplate.id);
 
 }
 

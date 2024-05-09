@@ -49,7 +49,7 @@
             </thead>
             <tbody>
               <ng-container *ngFor="let user of pagination.pagedItems;let i = index">
-                <tr (click)="selectedVendorDetails(user)" class="highletedRow">
+                <tr (click)="navigateToDashboardStats(user)" class="highletedRow">
                   <td>
                     <app-user-info [userInfo]="user" [isCompanyInfo]="true"></app-user-info>
                   </td>

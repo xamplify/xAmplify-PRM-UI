@@ -16,7 +16,7 @@ declare var $:any, swal: any;
 @Component({
   selector: 'app-marketing-role-requests',
   templateUrl: './marketing-role-requests.component.html',
-  styleUrls: ['./marketing-role-requests.component.css'],
+  styleUrls: ['./marketing-role-requests.component.css','../admin-report/admin-report.component.css'],
   providers: [Pagination, HttpRequestLoader, Properties, SortOption]
 })
 export class MarketingRoleRequestsComponent implements OnInit {

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { FileUtil } from '../../core/models/file-util';
@@ -119,14 +119,23 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   filterActiveBg: string;
   vanityUrlFilter : boolean = false;
   vendorCompanyProfileName:string;
+  isSuperAdminAccessing = false;
+  isNavigatedFromSuperAdminScreen = false;
 
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
-    public utilService: UtilService, private vanityUrlService: VanityURLService, public properties: Properties, public regularExpressions: RegularExpressions,
-    public partnerService : ParterService) {
+    public utilService: UtilService, private vanityUrlService: VanityURLService, public properties: Properties, 
+    public regularExpressions: RegularExpressions,public route:ActivatedRoute) {
+
     this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
+    this.isSuperAdminAccessing = this.authenticationService.isSuperAdmin();
     this.loggedInUserId = this.authenticationService.getUserId();
+    this.isNavigatedFromSuperAdminScreen = this.referenceService.getCurrentRouteUrl().indexOf("superadmin-manage-team")>-1;
+    if(this.isNavigatedFromSuperAdminScreen){
+      this.loggedInUserId = this.route.snapshot.params['userId'];
+      this.pagination.userListId = this.loggedInUserId;
+    }
     this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -135,7 +144,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
     }
+
     this.init();
+
+   
+
   }
 
   ngOnInit() {
@@ -151,11 +164,18 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
   /** User Guide **/
   getGuideUrlByMergeTag(){
-    if(this.authenticationService.module.loggedInThroughVendorVanityUrl || this.authenticationService.module.isOnlyPartnerCompany){
-      this.mergeTagForGuide = 'adding_team_members_partner';
-    } else {
-      this.mergeTagForGuide = 'add_and_manage_team_members';
-    }
+    this.authenticationService.getRoleByUserId().subscribe(
+      (data: any) => {
+          const role = data.data;
+          const roleName = role.role == 'Team Member'? role.superiorRole : role.role;
+          if (roleName == 'Marketing' || roleName == 'Marketing & Partner') {
+              this.mergeTagForGuide = 'adding_team_members_marketing';
+          } else if(roleName == 'Partner'){
+              this.mergeTagForGuide = 'adding_team_members_partner';
+          } else {
+              this.mergeTagForGuide = 'add_and_manage_team_members';
+          }
+      });
   }
   /** User Guide **/
   findMaximumAdminsLimitDetails(){
@@ -656,7 +676,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   addTeamMember() {
     this.loading = true;
     let teamMemberDtos = new Array<any>();
-        let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName.trim(), 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin };
+    let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName.trim(), 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin };
     teamMemberDtos.push(teamMemberDto);
     let teamInput = {};
     this.setTeamInputData(teamMemberDtos, teamInput);
@@ -671,11 +691,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           } else {
             this.team.validEmailId = false;
             this.team.emailIdErrorMessage = data.message;
-              this.team.validFirstName=false;
-              this.team.lastNameErrorMessage=data.mesaage;
-              
             this.emaillIdDivClass = this.errorClass;
-            this.firstNameDivClass = this.errorClass;
             this.team.validForm = false;
           }
           this.referenceService.loading(this.addTeamMemberLoader, false);

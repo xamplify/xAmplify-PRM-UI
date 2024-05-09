@@ -46,6 +46,7 @@ import { MaintenanceComponent } from './authentication/maintenance/maintenance.c
 import { PreviewLoginComponent } from './common/preview-login/preview-login.component';
 import { PreviewEmailTemplateComponent } from './util/preview-email-template/preview-email-template.component';
 import { PreviewPageComponent } from './util/preview-page/preview-page.component';
+import { PreviewAssetPdfComponent } from './common/preview-asset-pdf/preview-asset-pdf.component';
 
 
 export const routes: Routes = [
@@ -148,6 +149,7 @@ export const routes: Routes = [
 	{ path: 'requestdemo', component: RequestDemoComponent },
 	{ path: 'axAa/:alias', component: AccessAccountComponent },
 	{ path: 'tSignUp/:companyProfileName', component: AccessAccountComponent },
+	{ path: 'pSignUp/:companyProfileName', component: AccessAccountComponent },
 	{ path: 'download/:type', component: DownloadTemplateComponent },
 	{ path: 'samlsecurity/:alias', component: SamlsecurityauthComponent },
 	{ path: 'au/:alias/:moduleToRedirect', component: SamlsecurityauthComponent },
@@ -168,6 +170,10 @@ export const routes: Routes = [
 	{ path: 'pv/p/:id', component: PreviewEmailTemplateComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/lp/:id', component: PreviewPageComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/plp/:id', component: PreviewPageComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/vjplp/:id', component: PreviewPageComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/v/pdf/:id', component: PreviewAssetPdfComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/p/pdf/:id', component: PreviewAssetPdfComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{ path: 'pv/ptp/pdf/:id', component: PreviewAssetPdfComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },
 	{ path: '**', component: PageNotFoundComponent },

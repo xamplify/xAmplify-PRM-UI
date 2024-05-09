@@ -75,7 +75,7 @@
 								<div class="page-breadcrumb">
 									<span class="col-xs-6 col-md-6">
 										<span *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList
-							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList"
+							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && !isFormList"
 											data-toggle="tooltip" data-placement="top" title="Edit list Name"
 											style="cursor:pointer;font-size: 16px;" (click)="editListName()">
 											<span class="ellipsis">{{selectedContactListName | slice:0:30}}
@@ -83,10 +83,10 @@
 											</span>
 										</span>
 										<span
-											*ngIf="isDefaultPartnerList  || isDefaultContactList || selectedContactListName==properties?.activeMasterPartnerList || selectedContactListName==properties?.inActiveMasterPartnerList || isTeamMemberPartnerList"
+											*ngIf="isDefaultPartnerList  || isDefaultContactList || selectedContactListName==properties?.activeMasterPartnerList || selectedContactListName==properties?.inActiveMasterPartnerList || isTeamMemberPartnerList || isFormList"
 											style="font-size: 16px;">{{selectedContactListName}}
 										</span>
-										<div *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList"
+										<div *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && !isFormList"
 											class="pencil-color">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</div>
@@ -435,6 +435,11 @@
 																</button>
 															</div>
 														</div>
+														<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+															[disabled]="pagination.totalRecords == 0" title="Click here to email the list"
+															(click)="downloadUserListCsv()" style="margin-left: 4px;">
+															<i aria-hidden="true" class="fas fa-file-export p10"></i>
+														</button>
 													</div>
 												</div>
 											</div>
@@ -1275,6 +1280,11 @@
 															aria-hidden="true"></i></button>
 												</div>
 											</div>
+											<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+												[disabled]="contactsByType.pagination.totalRecords == 0" title="Click here to email the list"
+												(click)="downloadUserListCsv()" style="margin: 0px -10px 0px 10px;">
+												<i aria-hidden="true" class="fas fa-file-export p10"></i>
+											</button>
 										</div>
 									</div>
 								</div>

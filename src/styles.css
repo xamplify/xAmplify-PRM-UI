@@ -3069,3 +3069,13 @@ span.icon-alignments {
   margin-right: -20px !important;
   margin-left: -7px !important;
 }
+@media screen and (max-width: 578px) {
+  .dashboard-stat .details{
+    padding-right: 10px!important;
+    width: 140px;
+}
+.mdf-cards{
+ padding-left: 15px !important;
+ padding-right: 15px !important;
+}
+}

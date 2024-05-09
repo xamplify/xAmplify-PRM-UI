@@ -195,17 +195,18 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
                             this.formBackgroundImage = "";
                             document.documentElement.style.setProperty('--form-bg-color', this.form.backgroundColor);
                         }
-                        $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
-                            if (value.labelType == 'quiz_radio') {
-                                //value.labelType = 'quiz'
-                                value.choices = value.radioButtonChoices;
-                                //value.choiceType = "radio";
-
-                            } else if (value.labelType == 'quiz_checkbox') {
-                                //value.labelType = 'quiz'
-                                value.choices = value.checkBoxChoices;
-                                //value.choiceType = "checkbox";
-                            }
+                        $.each(this.form.formLabelDTORows, function (index: number, formLabelDTORow: any) {
+                            $.each(formLabelDTORow.formLabelDTOs, function (columnIndex: number, column: any) {
+                                if (column.labelType == 'quiz_radio') {
+                                    //value.labelType = 'quiz'
+                                    column.choices = column.radioButtonChoices;
+                                    //value.choiceType = "radio";
+                                } else if (column.labelType == 'quiz_checkbox') {
+                                    //value.labelType = 'quiz'
+                                    column.choices = column.checkBoxChoices;
+                                    //value.choiceType = "checkbox";
+                                }
+                            });
                         });
                         this.setCustomCssValues();
                         this.formError = false;
@@ -223,13 +224,13 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
         $('#form-preview-modal').modal('show');
     }
 
-    formPreviewBeforeSave(columnInfos: Array<ColumnInfo>, form: Form) {
+    formPreviewBeforeSave(rowInfos: Array<ColumnInfo>, form: Form) {
         this.ngxloading = true;
         this.form = form;
         /**XBI-2063**/
         this.countryNames = this.authenticationService.addCountryNamesToList(this.form.countryNames,this.countryNames);
          /**XBI-2063**/
-        this.form.formLabelDTOs = columnInfos;
+        this.form.formLabelDTORows = rowInfos;
         this.formError = false;
         this.ngxloading = false;
         if(this.form.showBackgroundImage){

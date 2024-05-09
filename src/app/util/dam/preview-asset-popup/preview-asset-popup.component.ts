@@ -21,7 +21,11 @@ export class PreviewAssetPopupComponent implements OnInit,OnDestroy {
     public xtremandLogger:XtremandLogger,public damService:DamService) { }
 
   ngOnInit() {
-	this.preview(this.asset);
+	if(this.asset.beeTemplate){
+        this.referenceService.previewAssetPdfInNewTab(this.asset.id);
+      }else{
+        this.preview(this.asset);
+      }
   }
   ngOnDestroy(): void {
 	$("#asset-preview-modal").modal('hide');

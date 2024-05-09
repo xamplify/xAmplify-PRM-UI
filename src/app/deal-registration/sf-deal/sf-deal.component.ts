@@ -22,7 +22,7 @@ export class SfDealComponent implements OnInit {
   @Input() campaign: any;
   @Input() public isPreview = false;
   @Input() isVendor = false;
-  @Input() activeCRM: string;
+  @Input() activeCRM: any;
   form: Form = new Form();
   errorMessage: string;
   isDealRegistrationFormInvalid: boolean = true;
@@ -45,6 +45,8 @@ export class SfDealComponent implements OnInit {
   isConnectWiseEnabledAsActiveCRM: boolean = false;
   isValidRepValues = true;
   /*******XNFR-403****/
+  showConnectWiseProducts: boolean = false;
+
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
@@ -60,30 +62,44 @@ export class SfDealComponent implements OnInit {
 
   ngOnInit() {
     this.showSFFormError = false;
-    this.dropdownSettings = {
-      singleSelection: false,
-      text: "Please select",
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableSearchFilter: true,
-      classes: "myclass custom-class"
-    };
+    if (("HALOPSA" === this.activeCRM.createdByActiveCRMType || "HALOPSA" === this.activeCRM.createdForActiveCRMType )) {
+      this.dropdownSettings = {
+        singleSelection: false,
+        text: "Please select",
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        enableSearchFilter: true,
+        classes: "myclass custom-class",
+        limitSelection: 2
+      };
+    } else {
+      this.dropdownSettings = {
+        singleSelection: false,
+        text: "Please select",
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        enableSearchFilter: true,
+        classes: "myclass custom-class"
+      };
+    }
 
     if (this.createdForCompanyId != undefined && this.createdForCompanyId > 0) {
       if (this.dealId == undefined || this.dealId <= 0) {
         this.dealId = 0;
       }
       this.addLoader();
-      if ("SALESFORCE" === this.activeCRM) {
-        this.getSalesforceCustomForm();
-      } else {
-        this.getActiveCRMCustomForm();
-      }
+      this.getActiveCRMCustomForm();
+      // if ("SALESFORCE" === this.activeCRM) {
+      //   this.getSalesforceCustomForm();
+      // } else {
+      //   this.getActiveCRMCustomForm();
+      // }
     }
 
-    if ("CONNECTWISE" === this.activeCRM) {
+    if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType )) {
       this.isConnectWiseEnabledAsActiveCRM = true;
     }
+
   }
 
   getActiveCRMCustomForm() {
@@ -122,6 +138,7 @@ export class SfDealComponent implements OnInit {
         }
         this.searchableDropDownDto.data = result.data.connectWiseProducts;
         this.searchableDropDownDto.placeHolder = "Please Select Product";
+        this.showConnectWiseProducts = result.data.showConnectWiseProducts;
         /*********XNFR-403*********/
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") {
         this.showSFFormError = true;
@@ -190,13 +207,12 @@ export class SfDealComponent implements OnInit {
   }
 
   validateAllFields() {
-    let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === "" || column.value === null || (column.value !== null && column.value.length === 0)));
+    let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === "" || column.value === null || (column.value !== null && column.value.length === 0) || column.value === "false"));
     if (reqFieldsCheck.length === 0) {
       this.isDealRegistrationFormInvalid = false;
     } else {
       this.isDealRegistrationFormInvalid = true;
     }
-    if (!this.isDealRegistrationFormInvalid) {
       let allEmails = this.form.formLabelDTOs.filter(column => column.labelType === "email");
       for (let emailObj of allEmails) {
         this.validateEmailId(emailObj);
@@ -236,7 +252,6 @@ export class SfDealComponent implements OnInit {
       for (let amoObj of allAmount) {
         this.validateAmount(amoObj);
       }
-    }
     /*******XNFR-403*******/
     this.validateRepValues();
     /*******XNFR-403*******/
