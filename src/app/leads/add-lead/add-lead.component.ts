@@ -288,7 +288,9 @@ export class AddLeadComponent implements OnInit {
             if (data.statusCode == 200) {
               let campaignLeadPipeline = data.data;
               self.lead.pipelineId = campaignLeadPipeline.id;
+              self.lead.createdForPipelineId = campaignLeadPipeline.id;
               self.stages = campaignLeadPipeline.stages;
+              self.createdForStages = campaignLeadPipeline.stages;
               self.hasCampaignPipeline = true;
             } else if (data.statusCode == 404) {
               self.lead.pipelineId = 0;
@@ -618,8 +620,8 @@ export class AddLeadComponent implements OnInit {
             let activeCRMPipelinesResponse: any = data.data;
             self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
             self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
-            self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByPipelineAndStage;
-            self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByPipelineAndStageOnTop;
+            self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByLeadPipelineAndStage;
+            self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByLeadPipelineAndStageOnTop;
             let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
             if (createdByPipelines !== undefined && createdByPipelines !== null) {
               this.handleCreatedByPipelines(createdByPipelines);
@@ -664,8 +666,8 @@ export class AddLeadComponent implements OnInit {
             let activeCRMPipelinesResponse: any = data.data;
             self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
             self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
-            self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByPipelineAndStage;
-            self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByPipelineAndStageOnTop;
+            self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByLeadPipelineAndStage;
+            self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByLeadPipelineAndStageOnTop;
             let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
             let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
 
