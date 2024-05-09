@@ -37,7 +37,7 @@
               <td *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><a class="detailstext"
                   data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info
                     [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
-              <td *ngIf="isTeamMemberAnalytics && isVendorVersion"><a class="detailstext" data-rel="fancybox-button"><app-user-info [userInfo]="item"></app-user-info></a></td>
+              <td *ngIf="isTeamMemberAnalytics && isVendorVersion"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></td>
               <td *ngIf="isTeamMemberAnalytics && !isVendorVersion">
                 <p><i class="fa fa-user-circle" aria-hidden="true"></i>
                   <b> Company Name: </b> <span>{{item?.vendorCompany | slice:0:15}}</span>

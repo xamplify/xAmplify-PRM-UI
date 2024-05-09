@@ -5,7 +5,8 @@
 .ml15m {
 	margin-left: -15px !important;
 }
-@media (min-width: 200px) and (max-width: 767px)  { 
+
+@media (min-width: 200px) and (max-width: 767px) {
 	.ml15m {
 		padding-right: 0px !important;
 	}
@@ -13,17 +14,51 @@
 
 
 /* table header bgcolor */
-.panel-bgMain > .panel-bg{
-    background-color: #d9edf7b0;
-    border-bottom: 1px solid #ddd;
+.panel-bgMain>.panel-bg {
+	background-color: #d9edf7b0;
+	border-bottom: 1px solid #ddd;
 }
+
 .panel-bgMain {
 	border-color: #ddd;
 }
+
 /* table header bgcolor end */
 .panel-heading {
-    padding: 11px 15px !important;
+	padding: 11px 15px !important;
 }
+
 .table>tbody>tr>td {
 	vertical-align: middle !important;
+}
+
+.status-details {
+	white-space: nowrap;
+}
+
+.approve-class {
+	background-color: #26a69a;
+	padding: 6px 10px;
+	border-radius: 3px;
+	color: #fff;
+	line-height: 7;
+	font-size: 12px;
+}
+
+.unApprove-class {
+	background-color:#b30112;
+	padding: 6px 10px;
+	border-radius: 3px;
+	color: #fff;
+	line-height: 7;
+	font-size: 12px;
+}
+
+.declined-class{
+	background-color: #e46976;
+	padding: 6px 10px;
+	border-radius: 3px;
+	color: #fff;
+	line-height: 7;
+	font-size: 12px;
 }

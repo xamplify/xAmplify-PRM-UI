@@ -20,18 +20,20 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
   @Input() applyFilter: boolean;
   @Input() teamMemberId: any;
   @Input() campaignTypeFilter: any = "";
-  @Input()  isDetailedAnalytics: boolean;
+  @Input() isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Input() isTeamMemberAnalytics: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
-  @Input() isVendorVersion : boolean = false;
+  @Input() isVendorVersion: boolean = false;
+  @Input() vanityUrlFilter: boolean = false;
+  @Input() vendorCompanyProfileName: string = '';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
-	pagination: Pagination = new Pagination();
+  pagination: Pagination = new Pagination();
   colClass: any;
   scrollClass: any;
   headerText: string = 'Redistributed Campaign Details';
@@ -40,13 +42,13 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
     public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
-      this.loggedInUserId = this.authenticationService.getUserId();
-  }
- 
-  ngOnInit() {    
+    this.loggedInUserId = this.authenticationService.getUserId();
   }
 
-  ngOnChanges() {    
+  ngOnInit() {
+  }
+
+  ngOnChanges() {
     this.pagination.pageIndex = 1;
     if (this.isDetailedAnalytics) {
       this.colClass = "col-sm-12 col-md-12 col-lg-12 ml15m";
@@ -55,9 +57,9 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
       this.colClass = "col-xs-12 col-sm-6 col-md-8 col-lg-8 ml15m responsiveMargins"
       this.scrollClass = "tableHeightScroll";
     }
-    if(this.isVendorVersion){
+    if (this.isVendorVersion) {
       this.headerText = 'Launched Campaign Details';
-    }else{
+    } else {
       this.headerText = ' Redistributed Campaign Details';
     }
     this.getRedistributedCampaignDetails(this.pagination);
@@ -79,7 +81,7 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
         if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
           this.pagination.totalRecords = response.data.totalRecords;
-          if(pagination.totalRecords == 0){
+          if (pagination.totalRecords == 0) {
             this.scrollClass = 'noData'
           } else {
             this.scrollClass = 'tableHeightScroll'
@@ -94,15 +96,15 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
     );
   }
 
-  search() {		
+  search() {
     this.getAllFilteredResults(this.pagination);
-	}
+  }
 
   searchKeyPress(keyCode: any) {
-    if (keyCode === 13) { 
-      this.search(); 
-    } 
-  } 
+    if (keyCode === 13) {
+      this.search();
+    }
+  }
 
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
@@ -116,25 +118,25 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
     this.getRedistributedCampaignDetails(this.pagination);
   }
 
-  setPage(event:any) {
-		this.pagination.pageIndex = event.page;
-		this.getRedistributedCampaignDetails(this.pagination);
-	}  
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.getRedistributedCampaignDetails(this.pagination);
+  }
 
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
     this.getAllFilteredResults(this.pagination);
-  }  
+  }
 
   viewAnalytics(partnerCompanyId: any) {
     this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
-    this.referenseService.goToTop(); 
+    this.referenseService.goToTop();
   }
 
-  getRedistributedCampaignDetails(pagination: Pagination){
-    if(!this.isTeamMemberAnalytics){
+  getRedistributedCampaignDetails(pagination: Pagination) {
+    if (!this.isTeamMemberAnalytics) {
       this.getRedistributedCampaignDetailsForPartnerJourney(this.pagination);
-    }else{
+    } else {
       this.getRedistributedCampaignDetailsForTeamMember(this.pagination);
     }
   }
@@ -147,13 +149,17 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
     this.pagination.campaignTypeFilter = this.campaignTypeFilter;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.parterService.getRedistributedCampaignDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
+    if (!this.isVendorVersion) {
+      pagination.vanityUrlFilter = this.vanityUrlFilter;
+      pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    }
+    this.parterService.getRedistributedCampaignDetailsForTeamMember(this.pagination, this.isVendorVersion).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
           this.pagination.totalRecords = response.data.totalRecords;
-          if(pagination.totalRecords == 0){
+          if (pagination.totalRecords == 0) {
             this.scrollClass = 'noData'
           } else {
             this.scrollClass = 'tableHeightScroll'

@@ -20,36 +20,38 @@ export class UserwiseTrackCountsComponent implements OnInit {
   @Input() teamMemberId: any;
   @Input() type: any;
   @Input() applyFilter: boolean;
-  @Input()  isDetailedAnalytics: boolean;
+  @Input() isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
-  @Input() isTeamMemberAnalytics : boolean = false;
+  @Input() isTeamMemberAnalytics: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
-  @Input() isVendorVersion : boolean = false;
+  @Input() isVendorVersion: boolean = false;
+  @Input() vanityUrlFilter: boolean = false;
+  @Input() vendorCompanyProfileName: string = '';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
-	pagination: Pagination = new Pagination();
+  pagination: Pagination = new Pagination();
   scrollClass: any;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
     public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
-      this.loggedInUserId = this.authenticationService.getUserId();
+    this.loggedInUserId = this.authenticationService.getUserId();
   }
 
-  ngOnInit() {    
+  ngOnInit() {
   }
 
-  ngOnChanges() { 
+  ngOnChanges() {
     this.pagination.pageIndex = 1;
     this.getUserWiseTrackCounts(this.pagination);
   }
 
-  getUserWiseTrackCountsForPartnerJourney(pagination : Pagination) {
+  getUserWiseTrackCountsForPartnerJourney(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
@@ -60,41 +62,41 @@ export class UserwiseTrackCountsComponent implements OnInit {
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.pagination.teamMemberId = this.teamMemberId;
     this.parterService.getUserWiseTrackCounts(this.pagination).subscribe(
-			(response: any) => {	
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {          
+        if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
-				  this.pagination.totalRecords = response.data.totalRecords;
-          
-      if(pagination.totalRecords == 0){
-        this.scrollClass = 'noData'
-      } else {
-        this.scrollClass = 'tableHeightScroll'
-      }
-				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-        }        	
-			},
-			(_error: any) => {
+          this.pagination.totalRecords = response.data.totalRecords;
+
+          if (pagination.totalRecords == 0) {
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
+          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }
+      },
+      (_error: any) => {
         this.httpRequestLoader.isServerError = true;
         this.xtremandLogger.error(_error);
-			}
-		);
+      }
+    );
   }
 
-  search() {		
+  search() {
     this.getAllFilteredResults(this.pagination);
-	}
+  }
 
   searchKeyPress(keyCode: any) {
-    if (keyCode === 13) { 
-      this.search(); 
-    } 
-  } 
+    if (keyCode === 13) {
+      this.search();
+    }
+  }
 
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
     pagination.searchKey = this.sortOption.searchKey;
-    pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOption, pagination); 
+    pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOption, pagination);
     this.getUserWiseTrackCounts(this.pagination);
   }
 
@@ -103,30 +105,29 @@ export class UserwiseTrackCountsComponent implements OnInit {
     this.getUserWiseTrackCounts(this.pagination);
   }
 
-  setPage(event:any) {
-		this.pagination.pageIndex = event.page;
-		this.getUserWiseTrackCounts(this.pagination);
-	}  
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.getUserWiseTrackCounts(this.pagination);
+  }
 
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
     this.getAllFilteredResults(this.pagination);
-  } 
-  
-  viewAnalytics(partnerCompanyId: any) {
-    this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
-    this.referenseService.goToTop(); 
   }
 
-  getUserWiseTrackCounts(pagination : Pagination) {
-    if(!this.isTeamMemberAnalytics)
-      {
-        this.getUserWiseTrackCountsForPartnerJourney(this.pagination);
-      }else{
-        this.getUserWiseTrackCountsForTeamMember(this.pagination);
-      }
+  viewAnalytics(partnerCompanyId: any) {
+    this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
+    this.referenseService.goToTop();
   }
-  
+
+  getUserWiseTrackCounts(pagination: Pagination) {
+    if (!this.isTeamMemberAnalytics) {
+      this.getUserWiseTrackCountsForPartnerJourney(this.pagination);
+    } else {
+      this.getUserWiseTrackCountsForTeamMember(this.pagination);
+    }
+  }
+
   getUserWiseTrackCountsForTeamMember(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
@@ -134,25 +135,29 @@ export class UserwiseTrackCountsComponent implements OnInit {
     this.pagination.maxResults = 8;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.parterService.getUserWiseTrackCountsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
-			(response: any) => {	
+    if (!this.isVendorVersion) {
+      pagination.vanityUrlFilter = this.vanityUrlFilter;
+      pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    }
+    this.parterService.getUserWiseTrackCountsForTeamMember(this.pagination, this.isVendorVersion).subscribe(
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {          
+        if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
-				  this.pagination.totalRecords = response.data.totalRecords;
-          
-      if(pagination.totalRecords == 0){
-        this.scrollClass = 'noData'
-      } else {
-        this.scrollClass = 'tableHeightScroll'
-      }
-				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-        }        	
-			},
-			(_error: any) => {
+          this.pagination.totalRecords = response.data.totalRecords;
+
+          if (pagination.totalRecords == 0) {
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
+          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }
+      },
+      (_error: any) => {
         this.httpRequestLoader.isServerError = true;
         this.xtremandLogger.error(_error);
-			}
-		);
+      }
+    );
   }
 }

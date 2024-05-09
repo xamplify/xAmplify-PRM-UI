@@ -18,35 +18,37 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 export class MdfDetailAnalyticsComponent implements OnInit {
 
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
-  @Input()  isDetailedAnalytics: boolean;
+  @Input() isDetailedAnalytics: boolean;
   @Input() applyFilter: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
   @Input() isTeamMemberAnalytics: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
-  @Input() isVendorVersion : boolean = false;
-  
+  @Input() isVendorVersion: boolean = false;
+  @Input() vanityUrlFilter: boolean = false;
+  @Input() vendorCompanyProfileName: string = '';
+
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
-	pagination: Pagination = new Pagination();
-  scrollClass:any;
+  pagination: Pagination = new Pagination();
+  scrollClass: any;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
-    public xtremandLogger: XtremandLogger, public sortOption: SortOption) { 
+    public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
     this.loggedInUserId = this.authenticationService.getUserId();
-    }
+  }
   ngOnInit() {
 
-  } 
-   ngOnChanges(){
+  }
+  ngOnChanges() {
     this.pagination.pageIndex = 1;
     this.getMdfDetails(this.pagination);
-   }
+  }
 
-   getMdfDetailsForPartnerJourney(pagination : Pagination) {
+  getMdfDetailsForPartnerJourney(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.maxResults = 3;
@@ -54,35 +56,35 @@ export class MdfDetailAnalyticsComponent implements OnInit {
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.parterService.getMdfDetails(this.pagination).subscribe(
-			(response: any) => {	
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {          
+        if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
-				  this.pagination.totalRecords = response.data.totalRecords;
-          if(pagination.totalRecords == 0){
+          this.pagination.totalRecords = response.data.totalRecords;
+          if (pagination.totalRecords == 0) {
             this.scrollClass = 'noData'
           } else {
             this.scrollClass = 'tableHeightScroll'
           }
-				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-        }        	
-			},
-			(_error: any) => {
+          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }
+      },
+      (_error: any) => {
         this.httpRequestLoader.isServerError = true;
         this.xtremandLogger.error(_error);
-			}
-		);
+      }
+    );
   }
 
-  search() {		
+  search() {
     this.getAllFilteredResults(this.pagination);
-	}
+  }
 
   searchKeyPress(keyCode: any) {
-    if (keyCode === 13) { 
-      this.search(); 
-    } 
-  } 
+    if (keyCode === 13) {
+      this.search();
+    }
+  }
 
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
@@ -96,10 +98,10 @@ export class MdfDetailAnalyticsComponent implements OnInit {
     this.getMdfDetails(this.pagination);
   }
 
-  setPage(event:any) {
-		this.pagination.pageIndex = event.page;
-		this.getMdfDetails(this.pagination);
-	}  
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.getMdfDetails(this.pagination);
+  }
 
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
@@ -108,37 +110,41 @@ export class MdfDetailAnalyticsComponent implements OnInit {
 
   viewAnalytics(partnerCompanyId: any) {
     this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
-    this.referenseService.goToTop(); 
+    this.referenseService.goToTop();
   }
 
-  getMdfDetails(pagination : Pagination) {
-    if(!this.isTeamMemberAnalytics){
+  getMdfDetails(pagination: Pagination) {
+    if (!this.isTeamMemberAnalytics) {
       this.getMdfDetailsForPartnerJourney(this.pagination)
-    }else{
+    } else {
       this.getMdfDetailsForTeamMember(this.pagination)
     }
   }
-  
+
   getMdfDetailsForTeamMember(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.maxResults = 6;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.parterService.getMdfDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
-			(response: any) => {	
+    if (!this.isVendorVersion) {
+      pagination.vanityUrlFilter = this.vanityUrlFilter;
+      pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    }
+    this.parterService.getMdfDetailsForTeamMember(this.pagination).subscribe(
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {          
+        if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
-				  this.pagination.totalRecords = response.data.totalRecords;
-				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-        }        	
-			},
-			(_error: any) => {
+          this.pagination.totalRecords = response.data.totalRecords;
+          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }
+      },
+      (_error: any) => {
         this.httpRequestLoader.isServerError = true;
         this.xtremandLogger.error(_error);
-			}
-		);
+      }
+    );
   }
 
 }

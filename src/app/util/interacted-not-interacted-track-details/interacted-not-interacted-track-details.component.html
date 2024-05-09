@@ -75,7 +75,7 @@
               <td *ngIf="!isVendorVersion">{{item?.title}}</td>
               <td scope="row" *ngIf="isVendorVersion">
                 <span data-toggle="tooltip" data-placement="top" title="{{item?.title}}">
-                  {{item?.title | slice:0:15}}<span *ngIf="item?.emailId?.length>15">..</span>
+                  {{item?.title | slice:0:15}}<span *ngIf="item?.title?.length>15">..</span>
                 </span>
               </td>
               <!-- <td>{{item.progress}}%</td> -->

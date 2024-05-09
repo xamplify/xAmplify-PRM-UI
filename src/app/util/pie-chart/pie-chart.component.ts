@@ -25,6 +25,9 @@ export class PieChartComponent implements OnInit {
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
   @Input() isVendorVersion: boolean = false;
+  @Input() vanityUrlFilter: boolean = false;
+  @Input() vendorCompanyProfileName: string = '';
+
 
   headerText: string;
   loader = false;
@@ -127,9 +130,9 @@ export class PieChartComponent implements OnInit {
       } else {
         this.redistributedCampaignDetailsPieChartForTeamMember();
       }
-      if(this.isTeamMemberAnalytics && this.isVendorVersion){
+      if (this.isTeamMemberAnalytics && this.isVendorVersion) {
         this.headerText = 'Launched Campaigns';
-      }else{
+      } else {
         this.headerText = 'Redistributed Campaigns';
       }
     } else {
@@ -169,6 +172,10 @@ export class PieChartComponent implements OnInit {
     teamMemberAnalyticsRequest.loggedInUserId = this.authenticationService.getUserId();
     teamMemberAnalyticsRequest.selectedTeamMemberIds = this.selectedTeamMemberIds;
     teamMemberAnalyticsRequest.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    if (!this.isVendorVersion) {
+      teamMemberAnalyticsRequest.vanityUrlFilter = this.vanityUrlFilter;
+      teamMemberAnalyticsRequest.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    }
     this.parterService.redistributedCampaignDetailsPieChartForTeamMember(teamMemberAnalyticsRequest, this.isVendorVersion).subscribe(
       response => {
         this.processResponse(response);

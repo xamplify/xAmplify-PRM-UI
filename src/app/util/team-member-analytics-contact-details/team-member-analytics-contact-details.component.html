@@ -27,7 +27,7 @@
           </thead>
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td><a class="detailstext" data-rel="fancybox-button"><app-user-info [userInfo]="item"></app-user-info></a></td>
+              <td><app-user-info  [isPartnerAnalyticsCompany]="true"  [userInfo]="item"></app-user-info></td>
               <td>{{item?.userListName}}</td>
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.createdTimeInUTCString">
                 </app-timestamp></td>

@@ -23,6 +23,8 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
   @Input() selectedVendorCompanyIds: any[] = [];
 	@Input() selectedTeamMemberIds: any[] = [];
   @Input() isVendorVersion : boolean = false;
+  @Input() vanityUrlFilter : boolean = false;
+  @Input() vendorCompanyProfileName : string = '';
   shareLeadText : string = 'Share Leads';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -80,6 +82,10 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
     teamMemberAnalyticsRequest.loggedInUserId = this.loggedInUserId;
     teamMemberAnalyticsRequest.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
     teamMemberAnalyticsRequest.selectedTeamMemberIds = this.selectedTeamMemberIds;
+    if(!this.isVendorVersion){
+      teamMemberAnalyticsRequest.vanityUrlFilter = this.vanityUrlFilter;
+      teamMemberAnalyticsRequest.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    }
     this.parterService.getTeamMemberAnalyticsCounts(teamMemberAnalyticsRequest,this.isVendorVersion).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);

@@ -117,6 +117,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   isPrm : boolean;
   isMarketing : boolean;
   filterActiveBg: string;
+  vanityUrlFilter : boolean = false;
+  vendorCompanyProfileName:string;
+
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -129,6 +132,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.vanityLoginDto.userId = this.loggedInUserId;
       this.vanityLoginDto.vanityUrlFilter = true;
+      this.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.vendorCompanyProfileName = this.authenticationService.companyProfileName;
     }
     this.init();
   }

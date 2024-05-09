@@ -27,8 +27,8 @@
           </thead>
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td><a class="detailstext" data-rel="fancybox-button"><app-user-info [userInfo]="item"></app-user-info></a></td>
-              <td>{{item?.companyName}}</td>
+              <td><a class="detailstext" data-rel="fancybox-button"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <td>{{item?.company}}</td>
               <td>{{item?.userListName}}</td>
               <td>
                 <div class="custom-icon">

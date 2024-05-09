@@ -22,10 +22,13 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Input() isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
-  @Input() isTeamMemberAnalytics : boolean = false;
+  @Input() isTeamMemberAnalytics: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
-  @Input() isVendorVersion : boolean = false;
+  @Input() isVendorVersion: boolean = false;
+  @Input() vanityUrlFilter: boolean = false;
+  @Input() vendorCompanyProfileName: string = '';
+
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -40,10 +43,10 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
-  ngOnInit() {    
+  ngOnInit() {
   }
 
-  ngOnChanges() {    
+  ngOnChanges() {
     this.pagination.pageIndex = 1;
     // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
     //   this.isDetailedAnalytics = true;
@@ -112,13 +115,13 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
 
   viewAnalytics(partnerCompanyId: any) {
     this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
-    this.referenseService.goToTop(); 
+    this.referenseService.goToTop();
   }
 
-  getLeadDetails(pagination: Pagination){
-    if(!this.isTeamMemberAnalytics){
+  getLeadDetails(pagination: Pagination) {
+    if (!this.isTeamMemberAnalytics) {
       this.getLeadDetailsForPartnerJourney(this.pagination);
-    }else{
+    } else {
       this.getLeadDetailsForTeamMember(this.pagination);
     }
   }
@@ -129,7 +132,11 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
     this.pagination.maxResults = 6;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.parterService.getLeadDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
+    if (!this.isVendorVersion) {
+      pagination.vanityUrlFilter = this.vanityUrlFilter;
+      pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    }
+    this.parterService.getLeadDetailsForTeamMember(this.pagination, this.isVendorVersion).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {

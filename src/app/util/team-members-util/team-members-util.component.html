@@ -19,7 +19,7 @@
     </ul>
     <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     <div class="col-xs-12 col-sm-7 col-lg-8 p0"
-      *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember && authenticationService?.module?.isAdminAndPartnerCompany">
+      *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember && authenticationService?.module?.isAdminAndPartnerCompany && !authenticationService.module.loggedInThroughOwnVanityUrl">
       <ul class="mix-filter p0 m0" style="float: right">
         <li class="filter" style="float: right; margin-top: 5px;" (click)="showPartnerView()"
           [class.campaign-type-selected]="!isVendorVersion" translate>
@@ -126,7 +126,8 @@
         && !authenticationService?.module?.deletedPartner && !isCollapsed ">
                   <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                 </span>
-                <span *ngIf = "!authenticationService?.module?.isTeamMember || !authenticationService?.module?.isAdmin" class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}}" title="Filter">
+                <span *ngIf="!authenticationService?.module?.isTeamMember || !authenticationService?.module?.isAdmin"
+                  class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}}" title="Filter">
                   <div class="btn-group">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                       aria-expanded="false" (click)="clickFilter()">
@@ -139,7 +140,8 @@
                   </div>
                 </span>
                 <!-- End Download TeamMembers Csv-->
-                <a *ngIf = "!authenticationService?.module?.isTeamMember || !authenticationService?.module?.isAdmin" href="teamMemberTable" (click)="toggleCollapse($event)" style="float: right;"> <i
+                <a *ngIf="!authenticationService?.module?.isTeamMember || !authenticationService?.module?.isAdmin"
+                  href="teamMemberTable" (click)="toggleCollapse($event)" style="float: right;"> <i
                     [ngClass]="{'fa-chevron-up collapseOut ': !isCollapsed, 'fa-chevron-down collapseIn ': isCollapsed}"
                     class="arrowpositinon fa collapseIconColorCu p10 " aria-hidden="true"></i></a>
               </div>
@@ -403,12 +405,13 @@
           </div>
         </div>
       </div>
-      <span *ngIf = "!authenticationService?.module?.isTeamMember || !authenticationService?.module?.isAdmin">
+      <span *ngIf="!authenticationService?.module?.isTeamMember || !authenticationService?.module?.isAdmin">
         <!--******************COUNT TILES******************-->
         <div class="row rowPaddingCustomize2">
           <app-partner-journey-count-tiles [selectedTeamMemberIds]="selectedTeamMemberIds"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
-            [isTeamMemberAnalytics]="true"></app-partner-journey-count-tiles>
+            [isTeamMemberAnalytics]="true" [vanityUrlFilter]="vanityUrlFilter"
+            [vendorCompanyProfileName]="vendorCompanyProfileName"></app-partner-journey-count-tiles>
         </div>
         <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization">
           <div>
@@ -417,13 +420,15 @@
               <app-donut-pie-chart [chartId]="'interactedAndNotInteractedTracksDonut'" [isTeamMemberAnalytics]="true"
                 [applyFilter]="applyFilter" (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
                 [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-                [isVendorVersion]="isVendorVersion"
+                [isVendorVersion]="isVendorVersion" [vanityUrlFilter]="vanityUrlFilter"
+                [vendorCompanyProfileName]="vendorCompanyProfileName"
                 (notifyUnSelectSlice)="interactionTracksDonutSliceUnSelected($event)"></app-donut-pie-chart>
             </div>
           </div>
           <!--******************Interacted & Not Interacted Track Details*******************-->
           <app-interacted-not-interacted-track-details [trackType]="selectedTrackType" [isTeamMemberAnalytics]="true"
             [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
+            [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds" [applyFilter]="applyFilter">
           </app-interacted-not-interacted-track-details>
         </div>
@@ -433,13 +438,15 @@
             <!--******************Type wise Track Assets Donut Chart******************-->
             <app-donut-pie-chart [trackType]="selectedTrackType" [chartId]="'typewiseTrackContentDonut'"
               [isTeamMemberAnalytics]="true" [isVendorVersion]="isVendorVersion"
-              (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)"
-              [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+              (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)" [vanityUrlFilter]="vanityUrlFilter"
+              [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedTeamMemberIds]="selectedTeamMemberIds"
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds"
               (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"></app-donut-pie-chart>
 
             <!--******************Type wise Track Content Details*******************-->
             <app-typewise-track-content-details [trackType]="selectedTrackType" [assetType]="selectedAssetType"
               [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
+              [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
               [isVendorVersion]="isVendorVersion" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
               [applyFilter]="applyFilter">
             </app-typewise-track-content-details>
@@ -449,11 +456,13 @@
               <!--******************Team Member wise Track Counts******************-->
               <app-userwise-track-counts [type]="'TRACK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
                 [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
+                [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
                 [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
                 [applyFilter]="applyFilter"></app-userwise-track-counts>
 
               <!--******************Team Member wise Playbook Counts******************-->
-              <app-userwise-track-counts [type]="'PLAYBOOK'"
+              <app-userwise-track-counts [type]="'PLAYBOOK'" [vanityUrlFilter]="vanityUrlFilter"
+                [vendorCompanyProfileName]="vendorCompanyProfileName"
                 (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [isTeamMemberAnalytics]="true"
                 [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
                 [isVendorVersion]="isVendorVersion" [applyFilter]="applyFilter"></app-userwise-track-counts>
@@ -462,6 +471,7 @@
             <div class="row rowPaddingCustomize3">
               <app-userwise-track-details [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
                 [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
+                [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
                 [applyFilter]="applyFilter"></app-userwise-track-details>
             </div>
           </div>
@@ -470,11 +480,13 @@
             <div class="col-sm-12 col-md-12 col-lg-12">
               <!--******************Track Asset Details*******************-->
               <app-track-asset-details [type]="'TRACK'" [isTeamMemberAnalytics]="true"
+                [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
                 [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
                 [applyFilter]="applyFilter" [isVendorVersion]="isVendorVersion"></app-track-asset-details>
 
               <!--******************Playbook Asset Details*******************-->
               <app-track-asset-details [type]="'PLAYBOOK'" [isTeamMemberAnalytics]="true"
+                [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
                 [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
                 [applyFilter]="applyFilter" [isVendorVersion]="isVendorVersion"></app-track-asset-details>
             </div>
@@ -502,10 +514,12 @@
                 (notifySelectSlice)="redistributedCampaignDetailsPieChartSelected($event)"
                 (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)"
                 [isTeamMemberAnalytics]="true" [isVendorVersion]="isVendorVersion"
-                [selectedTeamMemberIds]="selectedTeamMemberIds"
+                [selectedTeamMemberIds]="selectedTeamMemberIds" [vanityUrlFilter]="vanityUrlFilter"
+                [vendorCompanyProfileName]="vendorCompanyProfileName"
                 [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-pie-chart>
               <app-redistributed-campaign-details [campaignTypeFilter]="selectedCampaignType"
                 [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
+                [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
                 [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion">
               </app-redistributed-campaign-details>
             </div>
@@ -514,6 +528,7 @@
           <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomize4">
             <app-share-lead-details [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
               [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
+              [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
               [applyFilter]="applyFilter"></app-share-lead-details>
           </div>
           <!--******************Graphs Details*******************-->
@@ -522,31 +537,37 @@
             <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true"
               [partnerCompanyId]="loggedInUserId" [selectedTeamMemberIds]="selectedTeamMemberIds"
               [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+              [vanityUrlFilter]="vanityUrlFilter"  [vendorCompanyProfileName]="vendorCompanyProfileName"
               [chartId]="'allRedistributeCampaignsAndLeadsCountBarChart'">
             </app-redistributed-campaigns-and-leads-bar-chart>
             <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true"
               [partnerCompanyId]="loggedInUserId" [selectedTeamMemberIds]="selectedTeamMemberIds"
+              [vanityUrlFilter]="vanityUrlFilter"  [vendorCompanyProfileName]="vendorCompanyProfileName"
               [selectedVendorCompanyIds]="selectedVendorCompanyIds" [chartId]="'allLeadsAndDealsBarChart'">
             </app-redistributed-campaigns-and-leads-bar-chart>
             <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true"
               [partnerCompanyId]="loggedInUserId" [selectedTeamMemberIds]="selectedTeamMemberIds"
               [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+              [vanityUrlFilter]="vanityUrlFilter"  [vendorCompanyProfileName]="vendorCompanyProfileName"
               [chartId]="'redistributeCampaignsAndLeadsCountBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
             <app-redistributed-campaigns-and-leads-bar-chart [isTeamMemberAnalytics]="true"
               [partnerCompanyId]="loggedInUserId" [selectedTeamMemberIds]="selectedTeamMemberIds"
               [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+              [vanityUrlFilter]="vanityUrlFilter"  [vendorCompanyProfileName]="vendorCompanyProfileName"
               [chartId]="'top10LeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
           </div>
           <!--******************Lead Details*******************-->
           <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
             <app-partner-journey-lead-details [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
               [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
+              [vanityUrlFilter]="vanityUrlFilter"  [vendorCompanyProfileName]="vendorCompanyProfileName"
               [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-partner-journey-lead-details>
           </div>
           <!--******************Deal Details*******************-->
           <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
             <app-partner-journey-deal-details [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
               [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
+              [vanityUrlFilter]="vanityUrlFilter"  [vendorCompanyProfileName]="vendorCompanyProfileName"
               [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-partner-journey-deal-details>
           </div>
           <!--******************Contact Details*******************-->
@@ -563,10 +584,11 @@
               [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion">
             </app-team-member-analytics-company-details>
           </div>
-          <div class="row rowPaddingCustomization2">
+          <div *ngIf="!isVendorVersion" class="row rowPaddingCustomization2">
             <!--******************MDF Details*******************-->
             <app-mdf-detail-analytics [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
               [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
+              [vanityUrlFilter]="vanityUrlFilter"  [vendorCompanyProfileName]="vendorCompanyProfileName"
               [applyFilter]="applyFilter"></app-mdf-detail-analytics>
           </div>
         </div>

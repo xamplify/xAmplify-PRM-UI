@@ -28,6 +28,8 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
   @Input() isVendorVersion : boolean = false;
+  @Input() vanityUrlFilter : boolean = false;
+  @Input() vendorCompanyProfileName : string = '';
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -62,7 +64,7 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     this.pagination.trackTypeFilter = this.trackType;
     this.pagination.assetTypeFilter = this.assetType;
     this.pagination.maxResults = 6;
-    this.pagination.teamMemberId = this.teamMemberId;   
+    this.pagination.teamMemberId = this.teamMemberId; 
     this.parterService.getTypeWiseTrackContentDetails(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -92,6 +94,10 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     this.pagination.maxResults = 6; 
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds; 
+    if(!this.isVendorVersion){
+      pagination.vanityUrlFilter = this.vanityUrlFilter;
+      pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    } 
     this.parterService.getTypeWiseTrackContentDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);

@@ -33,17 +33,19 @@ export class DonutPieChartComponent implements OnInit {
   @Input() trackType: any = "";
   @Output() notifySelectSlice = new EventEmitter();
   @Output() notifyUnSelectSlice = new EventEmitter();
-  @Input()  isDetailedAnalytics: boolean;
+  @Input() isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
-  @Input() isTeamMemberAnalytics : boolean = false;
+  @Input() isTeamMemberAnalytics: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
-  @Input() isVendorVersion : boolean = false;
-  
+  @Input() isVendorVersion: boolean = false;
+  @Input() vanityUrlFilter: boolean = false;
+  @Input() vendorCompanyProfileName: string = '';
+
   headerText: string;
   chartColors: string[];
-  colClass:string;
-  portletLightClass:string;
+  colClass: string;
+  portletLightClass: string;
   constructor(
     public authenticationService: AuthenticationService,
     public properties: Properties,
@@ -66,11 +68,11 @@ export class DonutPieChartComponent implements OnInit {
     //this.findDonutChart();
   }
 
-  ngOnChanges() {      
+  ngOnChanges() {
     this.vanityLoginDto.applyFilter = this.applyFilter;
     this.findDonutChart();
   }
- 
+
   findDonutChart() {
     this.loader = true;
     if (this.chartId == "interactedAndNotInteractedTracksDonut") {
@@ -79,9 +81,9 @@ export class DonutPieChartComponent implements OnInit {
       // this.colClass = "col-sm-5 col-lg-5";
       this.colClass = "col-sm-6 col-md-5 col-xs-12 col-lg-5";
       this.portletLightClass = "portlet light active-donut-pie-chart";
-      if(!this.isTeamMemberAnalytics){
+      if (!this.isTeamMemberAnalytics) {
         this.loadDonutChartForInteractedAndNotInteractedTracks();
-      }else{
+      } else {
         this.loadDonutChartForInteractedAndNotInteractedTracksForTeamMember();
       }
     } else if (this.chartId == "typewiseTrackContentDonut") {
@@ -89,15 +91,15 @@ export class DonutPieChartComponent implements OnInit {
       this.chartColors = ['#3598dc', '#3480b5', '#8e5fa2', '#e87e04', '#26a69a'];
       this.colClass = "col-sm-6 col-md-5 col-xs-12 col-lg-4";
       this.portletLightClass = "portlet light active-donut-pie-chart";
-      if(!this.isTeamMemberAnalytics){
-       this.loadDonutChartForTypewiseTrackContents();;
-      }else{
+      if (!this.isTeamMemberAnalytics) {
+        this.loadDonutChartForTypewiseTrackContents();;
+      } else {
         this.loadDonutChartForTypewiseTrackContentsForTeamMember();
       }
     } else {
       this.headerText = "";
       this.chartId = 'activeInActivePartnersDonut';
-      this.chartColors = ['#e87e04','#8a8282c4'];
+      this.chartColors = ['#e87e04', '#8a8282c4'];
       this.colClass = "col-sm-12 col-lg-12";
       this.portletLightClass = "";
       this.loadDonutChartForActiveAndInActivePartners();
@@ -151,12 +153,16 @@ export class DonutPieChartComponent implements OnInit {
       }
     );
   }
-  loadDonutChartForInteractedAndNotInteractedTracksForTeamMember(){
+  loadDonutChartForInteractedAndNotInteractedTracksForTeamMember() {
     let teamMemberAnalyticsRequest = new TeamMemberAnalyticsRequest();
     teamMemberAnalyticsRequest.loggedInUserId = this.loggedInUserId;
     teamMemberAnalyticsRequest.selectedTeamMemberIds = this.selectedTeamMemberIds;
     teamMemberAnalyticsRequest.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.partnerService.getTeamMemberAnalyticsInteractedAndNotInteractedCounts(teamMemberAnalyticsRequest,this.isVendorVersion).subscribe(
+    if (!this.isVendorVersion) {
+      teamMemberAnalyticsRequest.vanityUrlFilter = this.vanityUrlFilter;
+      teamMemberAnalyticsRequest.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    }
+    this.partnerService.getTeamMemberAnalyticsInteractedAndNotInteractedCounts(teamMemberAnalyticsRequest, this.isVendorVersion).subscribe(
       response => {
         this.processResponse(response);
       }, error => {
@@ -165,13 +171,17 @@ export class DonutPieChartComponent implements OnInit {
     );
   }
 
-  loadDonutChartForTypewiseTrackContentsForTeamMember(){
+  loadDonutChartForTypewiseTrackContentsForTeamMember() {
     let teamMemberAnalyticsRequest = new TeamMemberAnalyticsRequest();
     teamMemberAnalyticsRequest.loggedInUserId = this.loggedInUserId;
     teamMemberAnalyticsRequest.trackTypeFilter = this.trackType;
     teamMemberAnalyticsRequest.selectedTeamMemberIds = this.selectedTeamMemberIds;
     teamMemberAnalyticsRequest.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.partnerService.getTeamMemberTypewiseTrackCounts(teamMemberAnalyticsRequest,this.isVendorVersion).subscribe(
+    if (!this.isVendorVersion) {
+      teamMemberAnalyticsRequest.vanityUrlFilter = this.vanityUrlFilter;
+      teamMemberAnalyticsRequest.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    }
+    this.partnerService.getTeamMemberTypewiseTrackCounts(teamMemberAnalyticsRequest, this.isVendorVersion).subscribe(
       response => {
         this.processResponse(response);
       }, error => {
@@ -243,17 +253,17 @@ export class DonutPieChartComponent implements OnInit {
               }
             }
           },
-          point:{
-            events:{
-                select: function (event) {
-                  self.notifySelectSlice.emit(this.name);                   
-                },
+          point: {
+            events: {
+              select: function (event) {
+                self.notifySelectSlice.emit(this.name);
+              },
 
-                unselect: function (event) {
-                  self.notifyUnSelectSlice.emit(this.name);                   
-                }
+              unselect: function (event) {
+                self.notifyUnSelectSlice.emit(this.name);
+              }
             }
-          } 
+          }
         }
       },
       credits: {
@@ -263,7 +273,7 @@ export class DonutPieChartComponent implements OnInit {
       series: [
         {
           name: "Count",
-          data: this.donutData,          
+          data: this.donutData,
         },
       ],
     });

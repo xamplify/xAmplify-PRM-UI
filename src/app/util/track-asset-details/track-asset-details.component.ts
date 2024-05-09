@@ -1,4 +1,4 @@
-import { Component, OnInit , Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -18,36 +18,39 @@ export class TrackAssetDetailsComponent implements OnInit {
   @Input() partnerCompanyId: any;
   @Input() teamMemberId: any;
   @Input() type: any;
-  @Input()  isDetailedAnalytics: boolean;
+  @Input() isDetailedAnalytics: boolean;
   @Input() applyFilter: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
   @Input() isTeamMemberAnalytics: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
-  @Input() isVendorVersion : boolean =  false;
+  @Input() isVendorVersion: boolean = false;
+  @Input() vanityUrlFilter: boolean = false;
+  @Input() vendorCompanyProfileName: string = '';
+
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
-	pagination: Pagination = new Pagination();
-  scrollClass: any; 
+  pagination: Pagination = new Pagination();
+  scrollClass: any;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
     public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
-      this.loggedInUserId = this.authenticationService.getUserId();
+    this.loggedInUserId = this.authenticationService.getUserId();
   }
 
-  ngOnInit() {   
+  ngOnInit() {
   }
 
-  ngOnChanges() {    
+  ngOnChanges() {
     this.pagination.pageIndex = 1;
     this.getTrackAssetDetails(this.pagination);
   }
 
-  getTrackAssetDetailsForPartnerJourney(pagination : Pagination) {
+  getTrackAssetDetailsForPartnerJourney(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
@@ -58,36 +61,36 @@ export class TrackAssetDetailsComponent implements OnInit {
     this.pagination.lmsType = this.type;
     this.pagination.teamMemberId = this.teamMemberId;
     this.parterService.getTrackAssetDetails(this.pagination).subscribe(
-			(response: any) => {	
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {          
+        if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
-				  this.pagination.totalRecords = response.data.totalRecords;
-          if(pagination.totalRecords == 0){
+          this.pagination.totalRecords = response.data.totalRecords;
+          if (pagination.totalRecords == 0) {
             this.scrollClass = 'noData'
           } else {
             this.scrollClass = 'tableHeightScroll'
           }
 
-				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-        }        	
-			},
-			(_error: any) => {
+          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }
+      },
+      (_error: any) => {
         this.httpRequestLoader.isServerError = true;
         this.xtremandLogger.error(_error);
-			}
-		);
+      }
+    );
   }
 
-  search() {		
+  search() {
     this.getAllFilteredResults(this.pagination);
-	}
+  }
 
   searchKeyPress(keyCode: any) {
-    if (keyCode === 13) { 
-      this.search(); 
-    } 
-  } 
+    if (keyCode === 13) {
+      this.search();
+    }
+  }
 
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
@@ -101,20 +104,20 @@ export class TrackAssetDetailsComponent implements OnInit {
     this.getTrackAssetDetails(this.pagination);
   }
 
-  setPage(event:any) {
-		this.pagination.pageIndex = event.page;
-		this.getTrackAssetDetails(this.pagination);
-	}  
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.getTrackAssetDetails(this.pagination);
+  }
 
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
     this.getAllFilteredResults(this.pagination);
-  } 
-  
-  getTrackAssetDetails(pagination : Pagination){
-    if(!this.isTeamMemberAnalytics){
+  }
+
+  getTrackAssetDetails(pagination: Pagination) {
+    if (!this.isTeamMemberAnalytics) {
       this.getTrackAssetDetailsForPartnerJourney(this.pagination);
-    }else{
+    } else {
       this.getTrackAssetDetailsForTeamMember(this.pagination);
     }
   }
@@ -125,26 +128,30 @@ export class TrackAssetDetailsComponent implements OnInit {
     this.pagination.lmsType = this.type;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
-    this.parterService.getTrackAssetDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
-			(response: any) => {	
+    if (!this.isVendorVersion) {
+      pagination.vanityUrlFilter = this.vanityUrlFilter;
+      pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    }
+    this.parterService.getTrackAssetDetailsForTeamMember(this.pagination, this.isVendorVersion).subscribe(
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {          
+        if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
-				  this.pagination.totalRecords = response.data.totalRecords;
-          if(pagination.totalRecords == 0){
+          this.pagination.totalRecords = response.data.totalRecords;
+          if (pagination.totalRecords == 0) {
             this.scrollClass = 'noData'
           } else {
             this.scrollClass = 'tableHeightScroll'
           }
 
-				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-        }        	
-			},
-			(_error: any) => {
+          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }
+      },
+      (_error: any) => {
         this.httpRequestLoader.isServerError = true;
         this.xtremandLogger.error(_error);
-			}
-		);
+      }
+    );
   }
 
 }

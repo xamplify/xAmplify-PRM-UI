@@ -546,12 +546,8 @@ export class ParterService {
             .catch(this.handleError);
     }
 
-    getMdfDetailsForTeamMember(pagination: Pagination, isVendorVersion: boolean) {
-        let urlSuffix = "";
-        if (isVendorVersion) {
-            urlSuffix = "/v";
-        }
-        const url = this.URL + 'teamMemberAnalytics' + urlSuffix + '/mdf/details?access_token=' + this.authenticationService.access_token;
+    getMdfDetailsForTeamMember(pagination: Pagination) {
+        const url = this.URL + 'teamMemberAnalytics/mdf/details?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post(url, pagination)
             .catch(this.handleError);
     }

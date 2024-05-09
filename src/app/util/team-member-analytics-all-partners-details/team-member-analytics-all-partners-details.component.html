@@ -5,8 +5,7 @@
       <span class="pull-right mt25m mobilesearchdisplay">
         <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;top: -1px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
-            [ngModelOptions]="{standalone: true}" placeholder="Search"
-            (keypress)="searchKeyPress($event.keyCode)">
+            [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
             (click)="sortOption.searchKey='';search()"></button>
           <button type="submit" class="search-box-item-click" (click)="search()">
@@ -14,24 +13,43 @@
         </div>
       </span>
     </div>
-    <div class="panel-body">    
+    <div class="panel-body">
       <div class="scroll table-responsive">
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Company Name</th>
-              <th scope="col">Partner Name</th>
+              <th scope="col">EmailId</th>
+              <th scope="col">Partner Details</th>
               <th scope="col">Status</th>
               <th scope="col">Onboarded Time</th>
             </tr>
           </thead>
-          <tbody>          
+          <tbody>
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td><a class="detailstext" data-rel="fancybox-button"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
-              <td>{{item?.fullName}}</td>
-              <td  [style.color]="(item?.userStatus === 'APPROVE') ? 'green' : 'red' " >{{item?.userStatus}}</td>
+              <td><a class="detailstext" data-rel="fancybox-button"><app-user-info [isPartnerAnalyticsCompany]="true"
+                    [userInfo]="item"></app-user-info></a></td>
+              <td>
+                <p>
+                  <span *ngIf="item?.partnerCompany?.length>0"><b>Company Name: </b> {{item?.partnerCompany}}
+                  </span>
+                  <span *ngIf="item?.partnerName?.length>1">
+                    <p class="m0"> <b>Name : </b>{{item?.partnerName | slice:0:25 }} </p>
+                    <span *ngIf="item?.partnerName?.length>25">..</span>
+                  </span>
+                  <span>
+                    <p><b>EmailId : </b> <a>{{item?.partnerEmailId | slice:0:30 }}</a>
+                      <span *ngIf="item?.partnerEmailId?.length>30">..</span>
+                    </p>
+                  </span>
+                </p>
+              </td>
+              <td>
+                <span class="approve-class" *ngIf="item?.userStatus === 'APPROVE'">APPROVED</span>
+                <span class="unApprove-class" *ngIf="item?.userStatus === 'UnApproved'">UN APPROVED</span>
+                <span *ngIf="item?.userStatus === 'DECLINED' ">DECLINED</span>
+              </td>
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.onboardTimeInUTCString">
-              </app-timestamp></td>
+                </app-timestamp></td>
             </tr>
           </tbody>
         </table>
@@ -40,7 +58,8 @@
         <strong>No Data Found.</strong>
       </div>
       <!--Pagination-->
-      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin" [hidden]="httpRequestLoader.isLoading">
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin"
+        [hidden]="httpRequestLoader.isLoading">
         <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
           (notifyParentDropDown)="getallPartnersDetails($event)">
         </app-pagination>
@@ -48,4 +67,3 @@
     </div>
   </div>
 </div>
-

@@ -96,4 +96,5 @@ export class TeamMemberAnalyticsAllPartnersDetailsComponent implements OnInit {
     this.getAllFilteredResults(this.pagination);
   }
 
+
 }

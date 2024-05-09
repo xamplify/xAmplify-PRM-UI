@@ -22,27 +22,29 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Input() isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
-  @Input() isTeamMemberAnalytics : boolean = false;
+  @Input() isTeamMemberAnalytics: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
-  @Input() isVendorVersion : boolean = false;
+  @Input() isVendorVersion: boolean = false;
+  @Input() vanityUrlFilter: boolean = false;
+  @Input() vendorCompanyProfileName: string = '';
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
-	pagination: Pagination = new Pagination();
+  pagination: Pagination = new Pagination();
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
     public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
-      this.loggedInUserId = this.authenticationService.getUserId();
+    this.loggedInUserId = this.authenticationService.getUserId();
   }
 
-  ngOnInit() {    
+  ngOnInit() {
   }
 
-  ngOnChanges() {    
+  ngOnChanges() {
     this.pagination.pageIndex = 1;
     // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
     //   this.isDetailedAnalytics = true;
@@ -52,7 +54,7 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
     this.getDealDetails(this.pagination);
   }
 
-  getDealDetailsForPartnerJourney(pagination : Pagination) {
+  getDealDetailsForPartnerJourney(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
@@ -60,32 +62,32 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
     this.pagination.maxResults = 6;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
-    this.pagination.teamMemberId = this.teamMemberId;    
+    this.pagination.teamMemberId = this.teamMemberId;
     this.parterService.getDealDetails(this.pagination).subscribe(
-			(response: any) => {	
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {          
+        if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
-				  this.pagination.totalRecords = response.data.totalRecords;
-				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-        }        	
-			},
-			(_error: any) => {
+          this.pagination.totalRecords = response.data.totalRecords;
+          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }
+      },
+      (_error: any) => {
         this.httpRequestLoader.isServerError = true;
         this.xtremandLogger.error(_error);
-			}
-		);
+      }
+    );
   }
 
-  search() {		
+  search() {
     this.getAllFilteredResults(this.pagination);
-	}
+  }
 
   searchKeyPress(keyCode: any) {
-    if (keyCode === 13) { 
-      this.search(); 
-    } 
-  } 
+    if (keyCode === 13) {
+      this.search();
+    }
+  }
 
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
@@ -99,25 +101,25 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
     this.getDealDetails(this.pagination);
   }
 
-  setPage(event:any) {
-		this.pagination.pageIndex = event.page;
-		this.getDealDetails(this.pagination);
-	}  
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.getDealDetails(this.pagination);
+  }
 
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
     this.getAllFilteredResults(this.pagination);
   }
-  
+
   viewAnalytics(partnerCompanyId: any) {
     this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
-    this.referenseService.goToTop(); 
+    this.referenseService.goToTop();
   }
 
-  getDealDetails(pagination : Pagination){
-    if(!this.isTeamMemberAnalytics){
+  getDealDetails(pagination: Pagination) {
+    if (!this.isTeamMemberAnalytics) {
       this.getDealDetailsForPartnerJourney(this.pagination);
-    }else{
+    } else {
       this.getDealDetailsForTeamMember(this.pagination);
     }
   }
@@ -126,21 +128,25 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.maxResults = 6;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
-    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;  
-    this.parterService.getDealDetailsForTeamMember(this.pagination,this.isVendorVersion).subscribe(
-			(response: any) => {	
+    this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    if (!this.isVendorVersion) {
+      pagination.vanityUrlFilter = this.vanityUrlFilter;
+      pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    }
+    this.parterService.getDealDetailsForTeamMember(this.pagination, this.isVendorVersion).subscribe(
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {          
+        if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
-				  this.pagination.totalRecords = response.data.totalRecords;
-				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-        }        	
-			},
-			(_error: any) => {
+          this.pagination.totalRecords = response.data.totalRecords;
+          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }
+      },
+      (_error: any) => {
         this.httpRequestLoader.isServerError = true;
         this.xtremandLogger.error(_error);
-			}
-		);
+      }
+    );
   }
 
 }

@@ -19,6 +19,8 @@ export class UserInfoComponent implements OnInit {
     @Input() isPartnerAnalyticsCompany: boolean;
     @Input() hideJobTitle:boolean;
     @Input() hideCompanyName:boolean;
+    @Input() isTeamMemberAnalyticsInfo:boolean;
+    @Input() isTeamMemberAnalyticsPartnerCompany: boolean;
     backgroudColor: any;
     highlightLetter: string = "*";
     constructor() { }
@@ -39,6 +41,20 @@ export class UserInfoComponent implements OnInit {
                     this.userInfo.firstName = this.userInfo.partnerCompanyName;
                 }  else if (this.userInfo.createdByCompanyName != null) {
                     this.userInfo.firstName = this.userInfo.createdByCompanyName;
+                } else if(this.userInfo.fullName != null){
+                    this.userInfo.firstName = this.userInfo.fullName;
+                }
+            } else if(this.isTeamMemberAnalyticsPartnerCompany){
+                if(this.userInfo.partnerCompany != null){
+                    this.userInfo.companyName = this.userInfo.partnerCompany;
+                }
+
+                if(this.userInfo.partnerEmailId !=null){
+                    this.userInfo.emailId = this.userInfo.partnerEmailId;
+                }
+
+                if(this.userInfo.fullName != null && this.userInfo.fullName != ' '){
+                    this.userInfo.firstName = this.userInfo.fullName;
                 }
             }
             this.setBackgroundColor();

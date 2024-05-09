@@ -21,11 +21,11 @@
           <thead>
             <tr>
               <th scope="col" *ngIf = "!isTeamMemberAnalytics">Company Name</th>
-              <th scope="col" *ngIf = "isTeamMemberAnalytics">Team Member</th>
-              <th scope="col" *ngIf = "isTeamMemberAnalytics">Full Name</th>
-              <th scope="col" *ngIf = "!isTeamMemberAnalytics || isVendorVersion">Total Balance</th>              
-              <th scope="col" *ngIf = "!isTeamMemberAnalytics || isVendorVersion">Used Balance</th>
-              <th scope="col" *ngIf = "!isTeamMemberAnalytics || isVendorVersion">Available Balance</th>
+              <th scope="col" *ngIf = "isTeamMemberAnalytics">Vendor</th>
+              <th scope="col" *ngIf = "isTeamMemberAnalytics">Partner Company</th>
+              <th scope="col" *ngIf = "!isTeamMemberAnalytics">Total Balance</th>              
+              <th scope="col" *ngIf = "!isTeamMemberAnalytics">Used Balance</th>
+              <th scope="col" *ngIf = "!isTeamMemberAnalytics">Available Balance</th>
               <th scope="col" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">Total Requests</th>              
               <th scope="col" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">Average Request Size</th>
               <th scope="col" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">Total Value</th>
@@ -36,8 +36,8 @@
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <!-- <td><a data-rel="fancybox-button" (click)="viewAnalytics(item?.companyId)">{{item?.companyName}}</a></td> -->
               <td *ngIf = "!isTeamMemberAnalytics"><a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
-              <td *ngIf="isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button"><app-user-info [userInfo]="item"></app-user-info></a></td>
-              <td *ngIf = "isTeamMemberAnalytics">{{item?.fullName}}</td>
+              <td *ngIf="isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <td *ngIf="isTeamMemberAnalytics" >{{item?.partnerEmailId}}</td>
               <td *ngIf = "!isTeamMemberAnalytics || isVendorVersion">{{item?.totalBalanceInString}}</td>
               <td *ngIf = "!isTeamMemberAnalytics || isVendorVersion">{{item?.usedBalanceInString}}</td>              
               <td *ngIf = "!isTeamMemberAnalytics || isVendorVersion">{{item?.availableBalanceInString}}</td>

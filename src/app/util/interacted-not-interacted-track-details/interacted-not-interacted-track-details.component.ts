@@ -20,34 +20,36 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
   @Input() teamMemberId: any;
   @Input() trackType: any = "";
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
-  @Input()  isDetailedAnalytics: boolean;
+  @Input() isDetailedAnalytics: boolean;
   @Input() applyFilter: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
-  @Input() isTeamMemberAnalytics : boolean = false;
+  @Input() isTeamMemberAnalytics: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];
   @Input() selectedTeamMemberIds: any[] = [];
-  @Input() isVendorVersion : boolean = false;
+  @Input() isVendorVersion: boolean = false;
+  @Input() vanityUrlFilter: boolean = false;
+  @Input() vendorCompanyProfileName: string = '';
 
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
-	pagination: Pagination = new Pagination();
-  heading:any = "Interacted & Not Interacted Track Details";
+  pagination: Pagination = new Pagination();
+  heading: any = "Interacted & Not Interacted Track Details";
   scrollClass: any;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
     public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
-      this.loggedInUserId = this.authenticationService.getUserId();
+    this.loggedInUserId = this.authenticationService.getUserId();
   }
 
-  ngOnInit() {    
+  ngOnInit() {
   }
 
-  ngOnChanges() {    
+  ngOnChanges() {
     this.pagination.pageIndex = 1;
     this.setHeading();
     this.getInteractedNotInteractedTrackDetails(this.pagination);
@@ -61,7 +63,7 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
       }
     } else {
       this.heading = "Interacted & Not Interacted Track Details"
-    } 
+    }
 
     // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
     //   this.isDetailedAnalytics = true;
@@ -70,7 +72,7 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
     // }
   }
 
-  getInteractedNotInteractedTrackDetailsForPartnerJourney(pagination : Pagination) {
+  getInteractedNotInteractedTrackDetailsForPartnerJourney(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
@@ -81,35 +83,35 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
     this.pagination.maxResults = 6;
     this.pagination.teamMemberId = this.teamMemberId;
     this.parterService.getPartnerJourneyTrackDetailsByInteraction(this.pagination).subscribe(
-			(response: any) => {	
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {          
+        if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
-				  this.pagination.totalRecords = response.data.totalRecords;
-          if(pagination.totalRecords == 0){
+          this.pagination.totalRecords = response.data.totalRecords;
+          if (pagination.totalRecords == 0) {
             this.scrollClass = 'noData'
           } else {
             this.scrollClass = 'tableHeightScroll'
           }
-				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-        }        	
-			},
-			(_error: any) => {
+          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }
+      },
+      (_error: any) => {
         this.httpRequestLoader.isServerError = true;
         this.xtremandLogger.error(_error);
-			}
-		);
+      }
+    );
   }
 
-  search() {		
+  search() {
     this.getAllFilteredResults(this.pagination);
-	}
+  }
 
   searchKeyPress(keyCode: any) {
-    if (keyCode === 13) { 
-      this.search(); 
-    } 
-  } 
+    if (keyCode === 13) {
+      this.search();
+    }
+  }
 
   getAllFilteredResults(pagination: Pagination) {
     pagination.pageIndex = 1;
@@ -123,56 +125,59 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
     this.getInteractedNotInteractedTrackDetails(this.pagination);
   }
 
-  setPage(event:any) {
-		this.pagination.pageIndex = event.page;
-		this.getInteractedNotInteractedTrackDetails(this.pagination);
-	}  
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.getInteractedNotInteractedTrackDetails(this.pagination);
+  }
 
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
     this.getAllFilteredResults(this.pagination);
-  } 
-   
+  }
+
   viewAnalytics(partnerCompanyId: any) {
     this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
     this.referenseService.goToTop();
   }
 
-  getInteractedNotInteractedTrackDetailsForTeamMember(pagination : Pagination){
+  getInteractedNotInteractedTrackDetailsForTeamMember(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.trackTypeFilter = this.trackType;
     this.pagination.selectedTeamMemberIds = this.selectedTeamMemberIds;
     this.pagination.selectedVendorCompanyIds = this.selectedVendorCompanyIds;
+    if (!this.isVendorVersion) {
+      pagination.vanityUrlFilter = this.vanityUrlFilter;
+      pagination.vendorCompanyProfileName = this.vendorCompanyProfileName;
+    }
     this.pagination.maxResults = 6;
-    this.parterService.getTeamMemberTrackDetailsByInteraction(this.pagination,this.isVendorVersion).subscribe(
-			(response: any) => {	
+    this.parterService.getTeamMemberTrackDetailsByInteraction(this.pagination, this.isVendorVersion).subscribe(
+      (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {          
+        if (response.statusCode == 200) {
           this.sortOption.totalRecords = response.data.totalRecords;
-				  this.pagination.totalRecords = response.data.totalRecords;
-          if(pagination.totalRecords == 0){
+          this.pagination.totalRecords = response.data.totalRecords;
+          if (pagination.totalRecords == 0) {
             this.scrollClass = 'noData'
           } else {
             this.scrollClass = 'tableHeightScroll'
           }
-				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-        }        	
-			},
-			(_error: any) => {
+          this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+        }
+      },
+      (_error: any) => {
         this.httpRequestLoader.isServerError = true;
         this.xtremandLogger.error(_error);
-			}
-		);
+      }
+    );
   }
 
-  getInteractedNotInteractedTrackDetails(pagination : Pagination){
-    if(!this.isTeamMemberAnalytics)
-      {
-        this.getInteractedNotInteractedTrackDetailsForPartnerJourney(this.pagination);
-      }else{
-        this.getInteractedNotInteractedTrackDetailsForTeamMember(this.pagination);
-      }
+  getInteractedNotInteractedTrackDetails(pagination: Pagination) {
+    if (!this.isTeamMemberAnalytics) {
+      this.getInteractedNotInteractedTrackDetailsForPartnerJourney(this.pagination);
+    } else {
+      this.getInteractedNotInteractedTrackDetailsForTeamMember(this.pagination);
+    }
   }
 
 }
