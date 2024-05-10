@@ -3579,6 +3579,10 @@ previewAssetPdfInNewTab(id:number){
 previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(learningTrackContentMappingId:number){
   this.openWindowInNewTab("/pv/ptp/pdf/"+this.encodePathVariable(learningTrackContentMappingId));
 }
+/***XNFR-496***/
+previewVanityEmailTemplateInNewTab(id:any){
+  this.openWindowInNewTab("/pv/vt/"+this.encodePathVariable(id));
+}
 
 openWindowInNewTab(url:string){
   window.open(url,"_blank");
