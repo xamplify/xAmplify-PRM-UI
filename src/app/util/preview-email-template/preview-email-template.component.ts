@@ -33,6 +33,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
   isEditRedistributedEventCampaignTemplatePreview:boolean;
   statusCode = 404;
   eventCampaign:EventCampaign = new EventCampaign();
+  isVanityEmailTemplatePreview = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties) { }
 
@@ -49,6 +50,8 @@ export class PreviewEmailTemplateComponent implements OnInit {
     this.campaignAutoReplyWebsiteLinkWorkflowId = currentRouterUrl.indexOf("/pv/cwarwlt")>-1;
     this.isEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/evt")>-1;
     this.isEditRedistributedEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/edevt")>-1;
+    /***XNFR-496*****/
+    this.isVanityEmailTemplatePreview = currentRouterUrl.indexOf("/pv/vt")>-1;
     this.referenceService.clearHeadScriptFiles();
     this.decodeIdParameter();
     this.decodeCampaignIdParameter();
@@ -56,8 +59,6 @@ export class PreviewEmailTemplateComponent implements OnInit {
     let isValidCampaignId = this.campaignId!=undefined && this.campaignId>0;
     if(isValidId ||isValidCampaignId){
       this.getHtmlBody();
-    }else{
-
     }
   }
 
@@ -87,28 +88,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
   getHtmlBody(){
     this.loggedInUserCompanyLogo = this.authenticationService.APP_URL+"/assets/images/company-profile-logo.png";
     let URL_SUFFIX = "";
-    if(this.campaignId!=undefined){
-      let vendorCampaignIdOrCampaignIdParameter = this.isSharedCampaignTemplatePreview   ? "vendorCampaignId" : this.isSharedEventCampaignTemplatePreview ? "vendorEventCampaignId":"campaignId";
-      URL_SUFFIX = vendorCampaignIdOrCampaignIdParameter+"/"+this.campaignId;
-      if(this.isSharedEventCampaignTemplatePreview || this.isEditRedistributedEventCampaignTemplatePreview){
-        this.eventCampaign = this.authenticationService.getLocalStorageItemByKey(this.properties.eventCampaignTemplateLocalStorageKey);
-        if(this.eventCampaign!=undefined){
-          let hostedBy = this.eventCampaign.fromName;
-          let fromEmail = this.eventCampaign.email;
-          URL_SUFFIX = URL_SUFFIX+"/"+hostedBy+"/"+fromEmail;
-        }
-      }
-    }else if(this.isCampaignAutoReplyEmailWorkflowId){
-      URL_SUFFIX = "campaignAutoReplyEmailWorkflowId/"+this.id;
-    }else if(this.campaignAutoReplyWebsiteLinkWorkflowId){
-      URL_SUFFIX = "campaignAutoReplyWebsiteLinkWorkflowId/"+this.id;
-    }else if(this.isVendorCampaignAutoReplyEmailWorkflowId){
-      URL_SUFFIX = "vendorCampaignAutoReplyEmailWorkflowId/"+this.id;
-    }else if(this.vendorCampaignAutoReplyWebsiteLinkWorkflowId){
-      URL_SUFFIX = "vendorCampaignAutoReplyWebsiteLinkWorkflowId/"+this.id;
-    }else{
-      URL_SUFFIX = this.isVendorCompanyViewingWorkflowTemplate ? "workflowTemplateId/"+this.id:"id/"+this.id;
-    }
+    URL_SUFFIX = this.getUpdatedURL(URL_SUFFIX);
     this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(URL_SUFFIX).subscribe(
       response=>{
         this.statusCode = response.statusCode;
@@ -137,6 +117,34 @@ export class PreviewEmailTemplateComponent implements OnInit {
       });
   }
 
+
+  private getUpdatedURL(URL_SUFFIX: string) {
+    if (this.campaignId != undefined) {
+      let vendorCampaignIdOrCampaignIdParameter = this.isSharedCampaignTemplatePreview ? "vendorCampaignId" : this.isSharedEventCampaignTemplatePreview ? "vendorEventCampaignId" : "campaignId";
+      URL_SUFFIX = vendorCampaignIdOrCampaignIdParameter + "/" + this.campaignId;
+      if (this.isSharedEventCampaignTemplatePreview || this.isEditRedistributedEventCampaignTemplatePreview) {
+        this.eventCampaign = this.authenticationService.getLocalStorageItemByKey(this.properties.eventCampaignTemplateLocalStorageKey);
+        if (this.eventCampaign != undefined) {
+          let hostedBy = this.eventCampaign.fromName;
+          let fromEmail = this.eventCampaign.email;
+          URL_SUFFIX = URL_SUFFIX + "/" + hostedBy + "/" + fromEmail;
+        }
+      }
+    } else if (this.isCampaignAutoReplyEmailWorkflowId) {
+      URL_SUFFIX = "campaignAutoReplyEmailWorkflowId/" + this.id;
+    } else if (this.campaignAutoReplyWebsiteLinkWorkflowId) {
+      URL_SUFFIX = "campaignAutoReplyWebsiteLinkWorkflowId/" + this.id;
+    } else if (this.isVendorCampaignAutoReplyEmailWorkflowId) {
+      URL_SUFFIX = "vendorCampaignAutoReplyEmailWorkflowId/" + this.id;
+    } else if (this.vendorCampaignAutoReplyWebsiteLinkWorkflowId) {
+      URL_SUFFIX = "vendorCampaignAutoReplyWebsiteLinkWorkflowId/" + this.id;
+    }else if(this.isVanityEmailTemplatePreview){
+      URL_SUFFIX = "vanityEmailTemplateId/" + this.id;
+    } else {
+      URL_SUFFIX = this.isVendorCompanyViewingWorkflowTemplate ? "workflowTemplateId/" + this.id : "id/" + this.id;
+    }
+    return URL_SUFFIX;
+  }
 
   private replaceEventCampaignMergeTags(htmlBody: any) {
     this.eventCampaign = this.authenticationService.getLocalStorageItemByKey(this.properties.eventCampaignTemplateLocalStorageKey);
