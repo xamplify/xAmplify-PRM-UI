@@ -492,8 +492,8 @@
           <!--******************Team Member Wise Assets Details*******************-->
           <div *ngIf="isVendorVersion && ( isOrgAdmin || isVendorRole || isPrm ) " class="row rowPaddingCustomize6">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
-              <app-team-memberwise-assets-details [selectedTeamMemberIds]="selectedTeamMemberIds"
-                [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-memberwise-assets-details>
+              <app-team-member-asset-analytics [selectedTeamMemberIds]="selectedTeamMemberIds"
+                [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-member-asset-analytics>
               <app-team-memberwise-assets-detailed-report [selectedTeamMemberIds]="selectedTeamMemberIds"
                 [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-memberwise-assets-detailed-report>
             </div>

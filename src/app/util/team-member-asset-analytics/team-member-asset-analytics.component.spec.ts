@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TeamMemberwiseAssetsDetailsComponent } from './team-memberwise-assets-details.component';
+import { TeamMemberwiseAssetsDetailsComponent } from './team-member-asset-analytics';
 
 describe('TeamMemberwiseAssetsDetailsComponent', () => {
   let component: TeamMemberwiseAssetsDetailsComponent;
