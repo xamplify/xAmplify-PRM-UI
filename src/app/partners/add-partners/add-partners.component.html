@@ -356,6 +356,33 @@
                                                     height="86" width="90">
                                             </a>
                                         </div>
+
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8 image_effect"
+                                            style="margin-top: 10px;">
+                                            <a *ngIf="haloPSAImageBlur" id="haloPSAContact_button"
+                                                style="background-color: white"
+                                                (click)="checkingHaloPSAContactsAuthentication()"
+                                                [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 13">
+                                                <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :haloPSAImageBlur==true}"
+                                                    src="assets/images/crm/haloPSA.png" style="border-radius:8px;"
+                                                    class="haloPSAImageClass" data-toggle="tooltip"
+                                                    data-placement="right"
+                                                    title="Click here to access {{authenticationService?.partnerModule?.customName}} from your HaloPSA account"
+                                                    height="86" width="90"
+                                                    onmouseover="this.src='assets/images/crm/connecting.png';"
+                                                    onmouseout="this.src='assets/images/crm/haloPSA.png';">
+                                            </a> <a *ngIf="haloPSAImageNormal" id="haloPSA_buttonNormal"
+                                                style="background-color: white"
+                                                (click)="checkingHaloPSAContactsAuthentication()"
+                                                [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 13">
+                                                <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :haloPSAImageBlur==true}"
+                                                    src="assets/images/crm/haloPSA.png" style="border-radius:8px;"
+                                                    class="haloPSAImageClass" data-toggle="tooltip"
+                                                    data-placement="right"
+                                                    title="Click here to access {{authenticationService?.partnerModule?.customName}} from your HaloPSA account"
+                                                    height="86" width="90">
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
@@ -1444,6 +1471,11 @@
 <div *ngIf="showConnectWiseAuthenticationForm">
     <app-connectwise-authentication-popup
         (closeEvent)="closeConnectWiseForm($event)"></app-connectwise-authentication-popup>
+</div>
+
+<!-- XNFR-502--> 
+<div *ngIf="showHaloPSAAuthenticationForm">
+	<app-halopsaauthenticationpopup (closeEvent)="closeHaloPSAForm($event)"></app-halopsaauthenticationpopup>
 </div>
 
 <!-- T&C Modal -->

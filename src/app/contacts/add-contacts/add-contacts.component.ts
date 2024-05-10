@@ -5266,11 +5266,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 let socialContact = new SocialContact();
                 socialContact = response.contacts[i];
                 socialContact.id = i;
-                if (this.validateEmailAddress(response.contacts[i].emailId)) {
-                    socialContact.email = response.contacts[i].emailaddress;
-                    socialContact.firstName = response.contacts[i].firstname;
-                    socialContact.lastName = response.contacts[i].name;
-                    socialContact.mobileNumber = response.contacts[i].mobileNumber;
+                if (this.validateEmailAddress(response.contacts[i].email)) {
+                    socialContact.email = response.contacts[i].email;
+                    socialContact.firstName = response.contacts[i].firstName;
+                    socialContact.lastName = response.contacts[i].lastName;
                     this.socialContactUsers.push(socialContact);
                 }
                 $("button#sample_editable_1_new").prop('disabled', false);
