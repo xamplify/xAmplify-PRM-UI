@@ -3197,15 +3197,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	getPipeline(pipeline: Pipeline) {
-		let self = this;
+		this.ngxloading = true; 
 		this.dashBoardService.getPipeline(pipeline.id, this.loggedInUserId)
 			.subscribe(
-				data => {
-					this.ngxloading = false;
+				(data: any) => {
 					if (data.statusCode == 200) {
-						self.pipeline = data.data;
-						let orderedStages = new Array<PipelineStage>();
-						self.pipeline.stages.forEach(function (stage, index) {
+						this.pipeline = data.data;
+						this.pipeline.stages.forEach((stage: PipelineStage) => {
 							if (stage.won === true) {
 								stage.markAs = "won";
 							} else if (stage.lost === true) {
@@ -3213,28 +3211,27 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 							} else {
 								stage.markAs = "markAs"
 							}
-							orderedStages[stage.displayIndex - 1] = stage;
+						    this.pipeline.stages.sort((a, b) => a.displayIndex - b.displayIndex);	
 							if (stage.defaultStage === true) {
-								self.defaultStageIndex = stage.displayIndex - 1;
+								this.defaultStageIndex = stage.displayIndex - 1;
 							}
-						});
-						self.pipeline.stages = orderedStages;
-						self.pipeline.isValidStage = true;
-						self.pipeline.isValidName = true;
-						self.pipeline.isValid = true;
+						});		
+						this.pipeline.isValidStage = true;
+						this.pipeline.isValidName = true;
+						this.pipeline.isValid = true;
 					} else {
 						this.closePipelineModal();
 						this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
 					}
+					this.ngxloading = false; 
 					this.referenceService.stopLoader(this.addPipelineLoader);
 				},
-				error => {
-					this.ngxloading = false;
-				},
-				() => { }
+				(error: any) => {
+					console.error("Error fetching pipeline:", error);
+					this.ngxloading = false; 
+				}
 			);
 	}
-
 	closePipelineModal() {
 		$('#addPipelineModalPopup').modal('hide');
 		this.referenceService.stopLoader(this.addPipelineLoader);

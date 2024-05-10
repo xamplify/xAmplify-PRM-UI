@@ -1,0 +1,68 @@
+.mt25m {
+	margin-top: -25px !important;
+}
+
+.ml15m {
+	margin-left: -15px !important;
+}
+
+.mh480 {
+	min-height:480px;
+}
+.progress-bar {
+	background-color: #29d836 !important;
+}
+.progress.heightabjustment {
+    height: 6px!important;
+    background-color: #d0cfcf;
+    background-image: none;
+    box-shadow: none;
+    border-radius: 6px!important;
+}
+
+@media (min-width: 768px) and (max-width: 991px)  { 
+    .Responsivetitle{   
+         font-size: 13px;
+        width: 160px;}
+}
+
+@media (min-width: 200px) and (max-width: 767px)  { 
+    .ml15m {
+        margin-left: 0px !important;
+    }
+ 
+}
+.tableHeightScroll{   
+    height: 332px !important;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+.noData{
+    height: 0px;
+}
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+    height:7px;
+  }
+
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+    background-color: #d9edf7b0;
+    border-bottom: 1px solid #ddd;
+}
+.panel-bgMain {
+	border-color: #ddd;
+}
+/* table header bgcolor end */
+.panel-heading {
+    padding: 11px 15px !important;
+}
+
+.table>tbody>tr>td {
+    vertical-align: middle !important;
+}
+
+.scrolladjustment{
+	overflow-x: hidden;
+}
