@@ -10,12 +10,12 @@ import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from 'app/core/models/sort-option';
 
 @Component({
-  selector: 'app-team-memberwise-assets-details',
-  templateUrl: './team-memberwise-assets-details.component.html',
-  styleUrls: ['./team-memberwise-assets-details.component.css'],
+  selector: 'app-team-member-asset-analytics',
+  templateUrl: './team-member-asset-analytics.component.html',
+  styleUrls: ['./team-member-asset-analytics.component.css'],
   providers: [SortOption]
 })
-export class TeamMemberwiseAssetsDetailsComponent implements OnInit {
+export class TeamMemberwiseAssetAnalyticsComponent implements OnInit {
   
   @Input() isVendorVersion: boolean = false;
   @Input() selectedVendorCompanyIds: any[] = [];

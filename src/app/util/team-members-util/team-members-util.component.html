@@ -79,7 +79,7 @@
                       <div class="col-xs-6 col-sm-4 hidden-xs pull-right" style="padding:0px">
                         <button class="btn-xs btn-padding fileinput-button btn-block rounded-0 button bgcolor-unset"
                           style="position: relative;">
-                          <span class="btn Btn-Green transition secondary_btn_width team_green_btn_text">Upload a CSV</span>
+                          <span class="btn Btn-Green">Upload a CSV</span>
                           <input type="file" title="" class="file-upload" #fileImportInput name="File Upload"
                             id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
                         </button>
@@ -492,8 +492,8 @@
           <!--******************Team Member Wise Assets Details*******************-->
           <div *ngIf="isVendorVersion && ( isOrgAdmin || isVendorRole || isPrm ) " class="row rowPaddingCustomize6">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
-              <app-team-memberwise-assets-details [selectedTeamMemberIds]="selectedTeamMemberIds"
-                [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-memberwise-assets-details>
+              <app-team-member-asset-analytics [selectedTeamMemberIds]="selectedTeamMemberIds"
+                [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-member-asset-analytics>
               <app-team-memberwise-assets-detailed-report [selectedTeamMemberIds]="selectedTeamMemberIds"
                 [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-memberwise-assets-detailed-report>
             </div>

@@ -181,7 +181,7 @@ import { MdfDetailAnalyticsComponent } from 'app/util/mdf-detail-analytics/mdf-d
 import { RedistributedCampaignsAndLeadsBarChartComponent } from '../util/redistributed-campaigns-and-leads-bar-chart/redistributed-campaigns-and-leads-bar-chart.component';
 import { TeamMemberAnalyticsContactDetailsComponent } from 'app/util/team-member-analytics-contact-details/team-member-analytics-contact-details.component';
 import { TeamMemberAnalyticsAllPartnersDetailsComponent } from 'app/util/team-member-analytics-all-partners-details/team-member-analytics-all-partners-details.component';
-import { TeamMemberwiseAssetsDetailsComponent } from 'app/util/team-memberwise-assets-details/team-memberwise-assets-details.component';
+import { TeamMemberwiseAssetAnalyticsComponent } from 'app/util/team-member-asset-analytics/team-member-asset-analytics';
 import { TeamMemberwiseAssetsDetailedReportComponent } from 'app/util/team-memberwise-assets-detailed-report/team-memberwise-assets-detailed-report.component';
 import { TeamMemberAnalyticsCompanyDetailsComponent } from 'app/util/team-member-analytics-company-details/team-member-analytics-company-details.component';
 import { PreviewAssetPdfComponent } from './preview-asset-pdf/preview-asset-pdf.component';
@@ -222,7 +222,7 @@ import { PreviewAssetPdfComponent } from './preview-asset-pdf/preview-asset-pdf.
 		TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
-		TeamMemberwiseAssetsDetailsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent
+		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent
 	],
 
 
@@ -257,7 +257,7 @@ import { PreviewAssetPdfComponent } from './preview-asset-pdf/preview-asset-pdf.
 		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PreviewAssetPdfComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,
 		InteractedNotInteractedTrackDetailsComponent,TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
-		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetsDetailsComponent,
+		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent
 	]
 
