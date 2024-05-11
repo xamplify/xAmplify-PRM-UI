@@ -34,6 +34,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
   statusCode = 404;
   eventCampaign:EventCampaign = new EventCampaign();
   isVanityEmailTemplatePreview = false;
+  apiResponseFinished = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties) { }
 
@@ -106,12 +107,14 @@ export class PreviewEmailTemplateComponent implements OnInit {
           }
           this.customResponse = new CustomResponse('ERROR',this.properties.pageNotFound,true);
         }
+        this.apiResponseFinished = true;
         this.processor.remove(this.processor);
       },error=>{
         this.statusCode = JSON.parse(error["status"]);
         if(this.statusCode==403){
           this.statusCode = 404;
         }
+        this.apiResponseFinished = true;
         this.processor.remove(this.processor);
         this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
       });

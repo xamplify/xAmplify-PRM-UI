@@ -28,6 +28,7 @@ export class PreviewAssetPdfComponent implements OnInit {
   customResponse:CustomResponse = new CustomResponse();
   success = false;
   isTrackOrPlayBookPdfPreview = false;
+  apiResponseFinished = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties,
     public vanityUrlService:VanityURLService) { }
@@ -72,6 +73,7 @@ export class PreviewAssetPdfComponent implements OnInit {
         }else if(this.statusCode==400){
           this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
         }
+        this.apiResponseFinished = true;
         this.processor.remove(this.processor);
       },error=>{
         this.statusCode = JSON.parse(error["status"]);
@@ -82,6 +84,7 @@ export class PreviewAssetPdfComponent implements OnInit {
           message = errorResponse['message'];
         }
         this.customResponse = new CustomResponse('ERROR',message,true);
+        this.apiResponseFinished = true;
         this.processor.remove(this.processor);
       }
     );

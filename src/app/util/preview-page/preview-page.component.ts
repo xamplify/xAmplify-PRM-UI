@@ -23,6 +23,8 @@ export class PreviewPageComponent implements OnInit {
   statusCode = 404;
   customResponse:CustomResponse = new CustomResponse();
   success = false;
+  apiResponseFinished = false;
+
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties,
     public vanityUrlService:VanityURLService) { }
@@ -67,6 +69,7 @@ export class PreviewPageComponent implements OnInit {
         }else if(this.statusCode==400){
           this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
         }
+        this.apiResponseFinished = true;
         this.processor.remove(this.processor);
       },error=>{
         this.statusCode = JSON.parse(error["status"]);
@@ -77,6 +80,7 @@ export class PreviewPageComponent implements OnInit {
           message = errorResponse['message'];
         }
         this.customResponse = new CustomResponse('ERROR',message,true);
+        this.apiResponseFinished = true;
         this.processor.remove(this.processor);
       }
     );
