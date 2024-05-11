@@ -18,8 +18,8 @@
                         <h5 class="line-height m0 text-overflow"><span data-toggle="tooltip" data-placement="bottom"  title="{{item?.title}}">{{item?.title}}</span></h5>
                     </div>
                     <div class="col">
-                        <a href="{{item?.link}}" target="{{item?.openLinkInNewTab ? '_blank' : '_self'}}"
-                            class="read-text pull-right">Read More</a>
+                        <a *ngIf="!item?.link?.startsWith('http') && !item?.link?.startsWith('https')" href="//{{item?.link}}" target="{{item?.openLinkInNewTab ? '_blank' : '_self'}}" class="read-text pull-right">Read More</a>
+                        <a *ngIf="item?.link?.startsWith('http') || item?.link?.startsWith('https')" href="{{item?.link}}" target="{{item?.openLinkInNewTab ? '_blank' : '_self'}}" class="read-text pull-right">Read More</a>
                     </div>
                 </div>
                 <div class="alert alert-info text-center" *ngIf="customLinkDtos?.length==0">No Data Found</div>
