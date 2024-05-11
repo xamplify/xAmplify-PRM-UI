@@ -1,5 +1,5 @@
 <div [hidden]="processor.isProcessing">
-  <div id="html-preview"> {{statusCode}}
+  <div id="html-preview">
   </div>
   <ng-container *ngIf="!success && !processor.isProcessing && apiResponseFinished">
     <div *ngIf="statusCode==404">
