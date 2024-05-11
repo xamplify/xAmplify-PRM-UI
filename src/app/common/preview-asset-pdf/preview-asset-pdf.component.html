@@ -3,7 +3,7 @@
 <div [hidden]="processor.isProcessing">
   <div id="pdf-html-body">
   </div>
-  <ng-container *ngIf="!success && !processor.isProcessing">
+  <ng-container *ngIf="!success && !processor.isProcessing && apiResponseFinished">
     <div *ngIf="statusCode==404">
       <img src="{{pageNotFoundImagePath}}" alt="{{statusCode}}" style="position: absolute;left: 25%;height: 500px;">
     </div>
