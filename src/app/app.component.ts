@@ -233,8 +233,6 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
       idle.onTimeout.subscribe(() => {
         this.idleState = 'Timed out!';
         this.timedOut = true;
-        console.log(idle);
-        console.log(this.idleState);
         this.authenticationService.sessinExpriedMessage = this.sessionExpireMessage;
         this.authenticationService.logout();
       });
