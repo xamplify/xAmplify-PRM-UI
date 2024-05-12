@@ -1837,7 +1837,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			} else if (this.contactsByType.selectedCategory === 'non-active') {
 				this.logListName = 'All_Inactive_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'invalid') {
-				this.logListName = 'All_Invalid_' + csvNameSuffix + 's_list.csv';
+				this.logListName = 'All_Undeliverable_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'unsubscribed') {
 				this.logListName = 'All_Unsubscribed_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'valid') {
@@ -1876,6 +1876,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					if (this.contactsByType.selectedCategory === 'unsubscribed') {
 						object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
 					}
+					if (this.contactsByType.selectedCategory === 'invalid') {
+						object["Email Category"] = this.contactsByType.listOfAllContacts[i].emailCategory;
+					}
 					this.downloadDataList.push(object);
 				} else {
 					let object = {
@@ -1896,6 +1899,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 					}
 					if (this.contactsByType.selectedCategory === 'unsubscribed') {
 						object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+					}
+					if (this.contactsByType.selectedCategory === 'invalid') {
+						object["Email Category"] = this.contactsByType.listOfAllContacts[i].emailCategory;
 					}
 					this.downloadDataList.push(object);
 				}
