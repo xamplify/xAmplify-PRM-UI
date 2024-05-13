@@ -334,6 +334,13 @@
                                 <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
                               </a>
                             </li>
+                            <!--Download PNG-->
+                              <li *ngIf="campaign.campaignType != 'EVENT'">
+                                <a (click)="downloadFile(campaign,'png')" data-toggle="tooltip" data-placement="bottom" title="Download Image" data-rel="fancybox-button">
+                                  <i class="fa fa-picture-o IconCustomization download_file" style="width: 30px;" aria-hidden="true"></i>
+                                  Download Image
+                                </a>
+                              </li>
                           </ul>
                         </div>
                         <a class="Iconhover custom-grid-icon" *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top"
