@@ -443,32 +443,33 @@
 													<div class="btn-group downloadicon" id="download-template-grid"
 														*ngIf="(campaign.allowDownload && campaign.campaignType !== 'EVENT') || (campaign.allowDownload && campaign.campaignType === 'EVENT' && !campaign.eventStarted)"
 														data-toggle="dropdown" data-toggle="tooltip" title="Download">
-														<span
-															class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu downloadicon-align"
-															data-toggle="dropdown" id="download-drop"
-															title="Download"></span> <span data-toggle="dropdown"
-															data-toggle="tooltip" data-placement="bottom"
-															title="Download"></span>
+														<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu downloadicon-align" 
+															data-toggle="dropdown" id="download-drop" title="Download">
+														</span>
+														<span data-toggle="dropdown" data-toggle="tooltip" data-placement="bottom" title="Download"></span>
 														<ul class="dropdown-menu pull-right custome-dropdown-changs">
-															<li><a (click)="downloadFile(campaign,'html')"
-																	data-toggle="tooltip" data-placement="bottom"
-																	title="Download Html" data-rel="fancybox-button"
-																	target="_blank" translate>
-																	<i class="fa fa-file download_file"
-																		style="width: 30px;"></i>
-																	Download
-																	Html
+															<!--Download Html-->
+															<li class="Iconhover">
+																<a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="bottom" title="Download Html" data-rel="fancybox-button"
+																	target="_blank">
+																	<i class="fa fa-file download_file" style="width: 30px;"></i>
+																	Download Html
 																</a>
 															</li>
-															<li class="Iconhover"
-																*ngIf="campaign.campaignType != 'EVENT'"><a
-																	(click)="downloadFile(campaign,'pdf')"
-																	data-toggle="tooltip" data-placement="bottom"
-																	title="Download Pdf" data-rel="fancybox-button"
-																	target="_blank" translate>
-																	<i class="fa fa-file-pdf-o"
-																		style="width: 30px;"></i>
+															<!--Download Pdf-->
+															<li class="Iconhover" *ngIf="campaign.campaignType != 'EVENT'">
+																<a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="bottom"
+																	title="Download Pdf" data-rel="fancybox-button" target="_blank">
+																	<i class="fa fa-file-pdf-o" style="width: 30px;"></i>
 																	Download Pdf
+																</a>
+															</li>
+															<!--Download Image-->
+															<li class="Iconhover" *ngIf="campaign.campaignType != 'EVENT'">
+																<a (click)="downloadFile(campaign,'png')" data-toggle="tooltip" data-placement="bottom"
+																	title="Download Image" data-rel="fancybox-button" target="_blank">
+																	<i class="fa fa-picture-o" style="width: 30px;"></i>
+																	Download Image
 																</a>
 															</li>
 														</ul>
