@@ -752,6 +752,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.rowInfos[rowIndex].formLabelDTOs = this.referenceService.removeObjectFromArrayList(columnInfos, columnInfo.divId, 'divId');
         $('#' + columnInfo.divId).remove();
         this.checkAndRemoveEmptyRows();
+        this.isRowClicked = false;
         this.isColumnClicked = false;
         // this.highlightByLength(this.columnInfos.length);
         this.checkForQuizFields(this.rowInfos);
@@ -924,8 +925,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                     $.each(rowInfo.formLabelDTOs, function (index, columnInfo) {
                         $('#' + columnInfo.divId).removeClass(self.borderErrorClass);
                         $('#' + columnInfo.divId).addClass(self.borderSuccessClass);
-                        columnInfo.editFormChoiceDivClass = this.borderSuccessClass;
-                        columnInfo.editFormLabelDivClass = this.borderSuccessClass;
+                        columnInfo.editFormChoiceDivClass = self.borderSuccessClass;
+                        columnInfo.editFormLabelDivClass = self.borderSuccessClass;
                         const labelName = $.trim(columnInfo.labelName);
                         /*********Validate Empty Label Names********************/
                         self.validateEmptyLabelNames(columnInfo, labelName);
@@ -946,9 +947,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                 let invalidChoicesDivCount = 0;
                 let invalidQuizChoicesDivCount = 0;
                 $.each(this.rowInfos, function (index, rowInfo) {
-                    const invalidLabelDivCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.editFormLabelDivClass === this.borderErrorClass).length;
-                    const invalidChoicesDivCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.editFormChoiceDivClass === this.borderErrorClass).length;
-                    const invalidQuizChoicesDivCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.editQuizChoiceDivClass === this.borderErrorClass).length;
+                    const invalidLabelDivCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.editFormLabelDivClass === self.borderErrorClass).length;
+                    const invalidChoicesDivCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.editFormChoiceDivClass === self.borderErrorClass).length;
+                    const invalidQuizChoicesDivCountRowWise = rowInfo.formLabelDTOs.filter((item) => item.editQuizChoiceDivClass === self.borderErrorClass).length;
                     invalidLabelDivCount = invalidLabelDivCount + invalidLabelDivCountRowWise;
                     invalidChoicesDivCount = invalidChoicesDivCount + invalidChoicesDivCountRowWise;
                     invalidQuizChoicesDivCount = invalidQuizChoicesDivCount + invalidQuizChoicesDivCountRowWise;
@@ -2048,12 +2049,13 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
     removeRow(rowInfo: any, rowIndex: number) {
         let columnInfos:Array<ColumnInfo> =  rowInfo['formLabelDTOs'];
-        const defaultColumnsLength = columnInfos.filter((item) => item.isDefaultColumn === true).length;
+        const defaultColumnsLength = columnInfos.filter((item) => item.defaultColumn === true).length;
         if(defaultColumnsLength < 1) {
             this.rowInfos = this.referenceService.removeObjectFromArrayList(this.rowInfos, rowInfo.divId, 'divId');
             $('#' + rowInfo.divId).remove();
             this.checkAndRemoveEmptyRows();
             this.isRowClicked = false;
+            this.isColumnClicked = false;
             this.checkForQuizFields(this.rowInfos);   
         } else {
             this.customResponse = new CustomResponse('ERROR', 'Can not delete the row as it includes default feilds.', true);
