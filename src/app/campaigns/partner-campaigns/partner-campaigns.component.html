@@ -280,72 +280,60 @@
 														[ngTemplateOutlet]="disableIconsTemplate"
 														[ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
 													<ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO'
-										    || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) ||
-											 campaign.campaignType === 'LANDINGPAGE' || campaign.campaignType === 'SURVEY' ">
+															|| (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) ||
+															campaign.campaignType === 'LANDINGPAGE' || campaign.campaignType === 'SURVEY' ">
 														<div class="btn-group pull-right" id="download-template"
 															data-toggle="tooltip" data-placement="bottom"
 															title="Download"
 															*ngIf="(campaign.allowDownload && campaign.campaignType !== 'EVENT') || (campaign.allowDownload && campaign.campaignType === 'EVENT' && !campaign.eventStarted)">
-															<span
-																class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu downloadicon-align"
-																data-toggle="dropdown" id="download-drop"
-																data-toggle="dropdown" title="Download"></span> <span
-																data-placement="bottom" title="Download"></span>
+															<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu downloadicon-align"
+																data-toggle="dropdown" id="download-drop" data-toggle="dropdown" title="Download"></span>
+																<span data-placement="bottom" title="Download"></span>
 															<ul class="dropdown-menu pull-right">
-																<li *ngIf="campaign.campaignType != 'EVENT'"><a
-																		(click)="downloadFile(campaign,'html')"
-																		data-toggle="tooltip" data-placement="bottom"
-																		title="Download Html" data-rel="fancybox-button"
-																		translate> <i
-																			class="fa fa-file IconCustomization download_file"
-																			style="width: 30px;" aria-hidden="true"></i>
-																		Download
-																		Html
+																<!--Download HTML-->
+																<li *ngIf="campaign.campaignType != 'EVENT'">
+																	<a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="bottom" title="Download Html" data-rel="fancybox-button">
+																		<i class="fa fa-file IconCustomization download_file" style="width: 30px;" aria-hidden="true"></i>
+																		Download Html
 																	</a>
 																</li>
-																<li *ngIf="campaign.campaignType != 'EVENT'"><a
-																		(click)="downloadFile(campaign,'pdf')"
-																		data-toggle="tooltip" data-placement="bottom"
-																		title="Download Pdf" data-rel="fancybox-button"
-																		translate> <i
-																			class="fa fa-file-pdf-o IconCustomization download_file"
-																			style="width: 30px;" aria-hidden="true"></i>
-																		Download
-																		Pdf
+																<!--Download PDF-->
+																<li *ngIf="campaign.campaignType != 'EVENT'">
+																	<a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="bottom" title="Download Pdf" data-rel="fancybox-button">
+																		<i class="fa fa-file-pdf-o IconCustomization download_file"	style="width: 30px;" aria-hidden="true"></i>
+																		Download Pdf
 																	</a>
 																</li>
-																<li *ngIf="campaign.campaignType === 'EVENT'"><a
-																		(click)="downloadHTMLFile(campaign,'html')"
-																		data-toggle="tooltip" data-placement="bottom"
-																		title="Download Html" data-rel="fancybox-button"
-																		translate> <i
-																			class="fa fa-file IconCustomization download_file"
-																			style="width: 30px;" aria-hidden="true"></i>
-																		Download
-																		Html
+																<!--Download PNG-->
+																<li *ngIf="campaign.campaignType != 'EVENT'">
+																	<a (click)="downloadFile(campaign,'png')" data-toggle="tooltip" data-placement="bottom" title="Download Image" data-rel="fancybox-button">
+																		<i class="fa fa-picture-o IconCustomization download_file" style="width: 30px;" aria-hidden="true"></i>
+																		Download Image
+																	</a>
+																</li>
+																<!--Download Event Html-->
+																<li *ngIf="campaign.campaignType === 'EVENT'">
+																	<a (click)="downloadHTMLFile(campaign,'html')" data-toggle="tooltip" data-placement="bottom" title="Download Html" data-rel="fancybox-button">
+																		<i class="fa fa-file IconCustomization download_file" style="width: 30px;" aria-hidden="true"></i>
+																		Download Html
 																	</a>
 																</li>
 															</ul>
 														</div>
-														<a class="custom-icon" data-toggle="tooltip"
-															data-placement="bottom"
-															(click)="viewDownloadedHistory(campaign)"
-															title="View Download History" data-rel="fancybox-button">
-															<i class="fa fa-history IconCustomization"
-																aria-hidden="true"></i>
+														<!--Download History-->
+														<a class="custom-icon" data-toggle="tooltip" data-placement="bottom" (click)="viewDownloadedHistory(campaign)" title="View Download History" data-rel="fancybox-button">
+															<i class="fa fa-history IconCustomization" aria-hidden="true"></i>
 															<div class="clickicons"></div>
-														</a> <a class="custom-icon" *ngIf="!campaign.allowDownload"
-															data-toggle="tooltip" data-placement="top"
-															title="Please turn on GDPR settings to download"
-															data-rel="fancybox-button"> <i
-																class="fa fa-download cancelled-event IconCustomization"
-																aria-hidden="true"></i>
+														</a>
+														<!--Download GDPR-->
+														<a class="custom-icon" *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top" title="Please turn on GDPR settings to download"
+															data-rel="fancybox-button"><i class="fa fa-download cancelled-event IconCustomization" aria-hidden="true"></i>
 															<div class="clickicons"></div>
 														</a>
 													</ng-container>
 												</span>
-												<a class="hidden"> <i class="fa fa-trash trashIconCustomization"
-														aria-hidden="true"></i>
+												<a class="hidden">
+													<i class="fa fa-trash trashIconCustomization" aria-hidden="true"></i>
 												</a>
 											</div>
 										</td>
