@@ -140,7 +140,7 @@ export class AddDealComponent implements OnInit {
   type = "DEAL";
   showOpportunityTypes:boolean = false;
   opportunityTypeId: any;
-  opportunityTypeIdError: any;
+  opportunityTypeIdError: boolean = true;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -838,13 +838,16 @@ export class AddDealComponent implements OnInit {
       if (this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
         if (fieldId == "opportunityTypeId") {
           if (fieldValue.length > 0 && fieldValue != "0") {
-            this.opportunityTypeIdError = successClass;
+            this.opportunityTypeId = successClass;
             this.opportunityTypeIdError = false;
           } else {
-            this.opportunityTypeIdError = errorClass;
+            this.opportunityTypeId = errorClass;
             this.opportunityTypeIdError = true;
           }
         }
+      } else {
+        this.opportunityTypeId = successClass;
+        this.opportunityTypeIdError = false;
       }
     }
     this.submitButtonStatus();
@@ -1497,7 +1500,7 @@ export class AddDealComponent implements OnInit {
   }
 
   typeId:number = 0;
-  types = new Array<Pipeline>();
+  types: any;
   getHaloPSATicketTypes(loggedInUserId:number) {
     this.integrationService.getHaloPSATicketTypes(loggedInUserId).subscribe(data => {
       if (data.statusCode == 200) {
