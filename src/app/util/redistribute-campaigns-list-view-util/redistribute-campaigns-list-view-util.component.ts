@@ -85,12 +85,14 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   showSweetAlert = false;
   sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   oneClickLaunchParentCampaignId = 0;
+  isLocalHost = false;
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
       public referenceService: ReferenceService, private socialService: SocialService,
       public authenticationService: AuthenticationService,private emailTemplateService:EmailTemplateService,
       public renderer:Renderer,public properties:Properties) {
       this.referenceService.renderer = this.renderer;
+      this.isLocalHost = this.authenticationService.isLocalHost();
       let superiorId = parseInt(localStorage.getItem('superiorId'));
       if(isNaN(superiorId)){
           this.superiorId = this.authenticationService.getUserId();
