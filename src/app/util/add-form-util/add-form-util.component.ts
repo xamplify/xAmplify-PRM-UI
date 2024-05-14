@@ -919,8 +919,12 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                 requiredEmailFieldCount = requiredEmailFieldCount + requiredEmailFieldCountRowWise;
             });
             if (requiredFieldsLength >= 1 && (quizFieldsCount <= 0 || (quizFieldsCount > 0 && requiredQuizFieldsLength > 0 && requiredEmailFieldCount > 0))) {
-                const duplicateFieldLabels = this.referenceService.returnDuplicates(this.columnInfos.map(function (a) { return a.hiddenLabelId; }));
                 const self = this;
+                let columnInfosList: Array<ColumnInfo> = new Array<ColumnInfo>();
+                this.rowInfos.forEach((rowInfo) => {
+                    columnInfosList.push(...rowInfo.formLabelDTOs)
+                });
+                let duplicateFieldLabels = this.referenceService.returnDuplicates(columnInfosList.map(function (a) { return a.hiddenLabelId; }));
                 $.each(this.rowInfos, function(index, rowInfo) {
                     $.each(rowInfo.formLabelDTOs, function (index, columnInfo) {
                         $('#' + columnInfo.divId).removeClass(self.borderErrorClass);
