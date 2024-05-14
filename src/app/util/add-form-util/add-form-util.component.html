@@ -458,7 +458,7 @@
                     <div class="form-group col-md-6 col-lg-6" id="formNameDiv">
                         <label>Name <span class="invalid-form-name">*</span></label>
                         <input type="text" class="form-control" [(ngModel)]="form.name" id="formName"
-                            placeholder="Enter Form Name" maxlength="1000" (input)="validateFormNames(form.name)"
+                            placeholder="Please Enter Form Name" maxlength="1000" (input)="validateFormNames(form.name)"
                             (keydown)="sumbitOnEnter($event)">
                         <span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
                     </div>
@@ -1241,26 +1241,22 @@
                 <div class="dropdown-toggle fa fa-ellipsis-v form-fields-margin" type="button" id="dropdownMenuButton"
                     data-mdb-toggle="dropdown" aria-expanded="false">
                 </div>
-                <ul class="dropdown-menu border-rd-5px padding-3px fiels-action-list" id="field-drop-down-options"
+                <ul class="dropdown-menu border-rd-5px padding-3px fiels-action-list point-cursor" id="field-drop-down-options"
                     aria-labelledby="dropdownMenuButton">
-                    <li class="dropdown-item field-action-align padding-3px point-cursor" *ngIf="columnIndex < 2 && rowFieldsCount !== 3"
+                    <li class="dropdown-item field-action-align padding-3px" *ngIf="columnIndex < 2 && rowFieldsCount !== 3"
                         (click)="$event.stopPropagation();setNewColumnIndex(rowIndex, columnIndex)"><button type="button"
                             class="btn btn-success btn-xs">
                             <span class="glyphicon glyphicon-plus"></span>
                         </button><span id="form-label-drop-down-option-value" class="padding-3px">Add</span></li>
-                    <li class="dropdown-item field-action-align padding-3px" *ngIf="columnInfo.defaultColumn"><button type="button"
-                            class="btn btn-danger btn-xs disabled">
+                    <li class="dropdown-item field-action-align padding-3px"
+                        (click)="$event.stopPropagation();removeColumn(columnInfo, rowIndex, columnIndex)"><button
+                            type="button" class="btn btn-danger btn-xs" [ngClass]="{'disabled': columnInfo.defaultColumn}">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button><span id="form-label-drop-down-option-value" class="padding-3px">Delete</span></li>
-                    <li class="dropdown-item field-action-align padding-3px point-cursor" *ngIf="!columnInfo.defaultColumn"
-                        (click)="$event.stopPropagation();removeColumn(columnInfo, rowIndex, columnIndex)"><button type="button"
-                            class="btn btn-danger btn-xs">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Delete</span></li>
-                    <li class="dropdown-item field-action-align padding-3px point-cursor" *ngIf="rowFieldsCount > 1"
-                        (click)="$event.stopPropagation();moveColumnToLastRow(columnInfo, rowIndex, columnIndex)" data-toggle="tooltip"
-                        data-placement="bottom" title="Move To Last Row" aria-hidden="true"><button type="button"
-                            class="btn btn-success btn-xs">
+                    <li class="dropdown-item field-action-align padding-3px" *ngIf="rowFieldsCount > 1"
+                        (click)="$event.stopPropagation();moveColumnToLastRow(columnInfo, rowIndex, columnIndex)" 
+                        data-toggle="tooltip" data-placement="bottom" title="Move To Last Row" aria-hidden="true"><button
+                            type="button" class="btn btn-success btn-xs">
                             <span class="glyphicon glyphicon-circle-arrow-down"></span>
                         </button><span id="form-label-drop-down-option-value" class="padding-3px">Move</span></li>
                 </ul>
