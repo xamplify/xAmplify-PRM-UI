@@ -217,6 +217,13 @@
                                   <i class="fa fa-file-pdf-o download_file" style="width: 30px;"></i> Download Pdf
                                 </a>
                               </li>
+                              <!--Download PNG-->
+                              <li *ngIf="campaign.campaignType != 'EVENT' && isLocalHost">
+                                <a (click)="downloadFile(campaign,'png')" data-toggle="tooltip" data-placement="top" title="Download Image" data-rel="fancybox-button">
+                                  <i class="fa fa-picture-o download_file" style="width: 30px;" aria-hidden="true"></i>
+                                  Download Image
+                                </a>
+                              </li>
                             </ul>
                           </div>
                           <a class="custom-icon" *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top"
@@ -243,9 +250,7 @@
         <div class="tab-pane active" *ngIf="this.modulesDisplayType.isGridView">
           <div class="margin-top-10">
             <div class="row mix-grid p15">
-              <app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
-              <ng-container
-                *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+              <ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                 <div *ngFor="let campaign of pagination.pagedItems; let i= index"
                   class="col-xs-12 col-sm-4 col-lg-3 tab_mt_20 GridviewSidePaddings">
                   <div class="grid-box pcgrFolderidHeight">
@@ -321,7 +326,7 @@
                           <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu downloadicon-align"
                             data-toggle="dropdown" id="download-drop" title="Download"></span>
                           <span data-toggle="dropdown" title="Download"></span>
-                          <ul class="dropdown-menu pull-right custome-dropdown-changs">
+                          <ul class="dropdown-menu pull-right custome-dropdown-changs" style="margin: -10px !important;">
                             <li>
                               <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top"
                                 data-rel="fancybox-button" title="Download Html">
@@ -334,6 +339,13 @@
                                 <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
                               </a>
                             </li>
+                            <li *ngIf="campaign.campaignType != 'EVENT' && isLocalHost">
+                              <a (click)="downloadFile(campaign,'png')" data-toggle="tooltip" data-placement="top"
+                                data-rel="fancybox-button" title="Download Image">
+                                <i class="fa fa-picture-o" style="width: 30px;"></i> Download Image
+                              </a>
+                            </li>
+                            
                           </ul>
                         </div>
                         <a class="Iconhover custom-grid-icon" *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top"

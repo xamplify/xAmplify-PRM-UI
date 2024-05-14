@@ -85,12 +85,14 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   showSweetAlert = false;
   sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   oneClickLaunchParentCampaignId = 0;
+  isLocalHost = false;
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
       public referenceService: ReferenceService, private socialService: SocialService,
       public authenticationService: AuthenticationService,private emailTemplateService:EmailTemplateService,
       public renderer:Renderer,public properties:Properties) {
       this.referenceService.renderer = this.renderer;
+      this.isLocalHost = this.authenticationService.isLocalHost();
       let superiorId = parseInt(localStorage.getItem('superiorId'));
       if(isNaN(superiorId)){
           this.superiorId = this.authenticationService.getUserId();
@@ -459,11 +461,18 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
         .subscribe(
             data => {
                 let access = data.access;
-                this.ngxloading = false;
                 if(access){
-                    window.open(this.authenticationService.REST_URL+"campaign/download/"+campaign.campaignId+"/"+this.loggedInUserId+"/"+type+"?access_token="+this.authenticationService.access_token,"_blank");
+                    let param: any = {
+                        'campaignId': campaign.campaignId,
+                        'loggedInUserId': this.loggedInUserId,
+                        'downloadType': type
+                    };
+                    let completeUrl = this.authenticationService.REST_URL + "campaign/download?access_token=" + this.authenticationService.access_token;
+                    this.referenceService.post(param, completeUrl);
+                    this.ngxloading = false;
                 }else{
-                   this.authenticationService.forceToLogout();
+                    this.ngxloading = false;
+                    this.authenticationService.forceToLogout();
                 }
             },
             error => {
