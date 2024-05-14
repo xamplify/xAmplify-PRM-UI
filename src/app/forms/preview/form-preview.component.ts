@@ -315,7 +315,10 @@ export class FormPreviewComponent implements OnInit {
       let emailLabels: any = [];
       $.each(this.form.formLabelDTORows, function (index, rowInfo) {
         const emailLabelsRowWise = rowInfo.formLabelDTOs.filter((item) => (item.labelType === "email"));
-        emailLabels = emailLabels.push(emailLabelsRowWise);
+        emailLabels.push(...emailLabelsRowWise);
+      });
+      $.each(emailLabels, function (_index: number, field: ColumnInfo) {
+        field.value = self.emailId;
       });
     }
     
