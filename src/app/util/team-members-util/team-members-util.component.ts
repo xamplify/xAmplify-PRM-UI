@@ -1182,6 +1182,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   showPartnerView() {
     this.isVendorVersion = false;
     this.isCollapsed = true;
+    this.selectedCampaignType = "";
   }
 
   clearAnalytics(){
