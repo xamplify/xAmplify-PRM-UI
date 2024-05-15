@@ -13,7 +13,7 @@
             <div class="portlet-title tabbable-line ">
               <div class="caption caption-md">
                 <i class="icon-globe theme-font hide " aria-hidden="true "></i>
-                <span class="caption-subject font-blue-madison bold uppercase">Dashboard Banner<span class="required"> *</span></span>
+                <span class="caption-subject font-blue-madison bold uppercase">Dashboard Banner<span class="required">*</span></span>
               </div>
               <div class="inline" style="float: right; padding-bottom: 5px;" *ngIf="croppedImage">
                 <button type="button" class="button_blue bgcolor-unset" (click)="clearImage()"><span
@@ -59,6 +59,23 @@
           <input class="form-control" type="text" placeholder="Link" required formControlName="link" autocomplete="off" />
           <span *ngIf="formErrors.link" class="required">{{ formErrors.link }}</span>
         </div>
+        <!--XNFR-532-->
+        <ng-container *ngIf="moduleType==properties?.dashboardBanners">
+          <div class="form-group" >
+            <label>Display Title<span class="required"></span></label>
+            <label class="toggleOnOff">
+              <input formControlName="displayTitle" class="form-check-input checkBox_shadow pointer" type="checkbox" />
+              <span class="sliderOnOff"></span>
+              <span class="labels" data-on="ON" data-off="OFF"></span>
+            </label>
+          </div>
+          <div class="form-group" *ngIf="moduleType==properties?.dashboardBanners">
+            <label>Button Text<span class="required">*</span></label>
+            <input class="form-control" type="text" placeholder="Button Text" required formControlName="buttonText" autocomplete="off" />
+            <span *ngIf="formErrors.buttonText" class="required">{{ formErrors.buttonText }}</span>
+          </div>
+        </ng-container>
+        <!--XNFR-532-->
         <!--Open in new tab-->
         <div class="form-group">
           <div class="form-check">
@@ -89,8 +106,6 @@
               <option>{{customLinkDto.type}}</option>
             </select>
           </ng-container>
-          
-          
         </div>
         <!--Icon-->
         <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
@@ -103,7 +118,8 @@
               <span><i class="fa {{customLinkForm.get('icon').value}} ml10"></i></span>
           </div>
         </div>
-      
+
+        
       </div>
       <!--Description-->
       <div class="form-group col-md-12 col-xs-12">
@@ -111,6 +127,7 @@
       <textarea class="form-control" rows="3" placeholder="Description" formControlName="description" style="resize: none;"></textarea>
         <span *ngIf="formErrors.description" class="required">{{ formErrors.description }}</span>
       </div>
+      <!--Save/Update/Cancel-->
       <div class="form-row">
         <div class="form-group col-xs-12 col-md-12">
           <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
@@ -161,7 +178,7 @@
             </ng-container>
             <td>
               <div class="actions-block override-actions float-none">
-                <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit">
+                <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit/Preview">
                   <i class="fa fa-pencil-square-o"></i>
                   <div class="clickicons"></div>
                 </a>

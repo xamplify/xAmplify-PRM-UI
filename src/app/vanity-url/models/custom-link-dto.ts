@@ -17,6 +17,10 @@ export class CustomLinkDto {
     loggedInUserId = 0;
     openLinkInNewTab = false;
     bannerImagePath = "";
+    /***XNFR-532*****/
+    displayTitle = false;
+    buttonText = "Learn More";
+    /***XNFR-532*****/
 
 
 }
