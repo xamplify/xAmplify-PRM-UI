@@ -125,5 +125,7 @@ export class Pagination {
 	source:string;
 	defaultLandingPage:boolean;
 	showLeadsForAttachingLead:boolean = false; /*** XNFR-476 ***/
-
+	/*** XNFR-504 ***/
+	selectedVendorCompanyIds: any[] = [];
+	selectedTeamMemberIds: any[] = [];
 }

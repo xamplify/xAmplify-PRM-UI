@@ -9,7 +9,7 @@ import { Keepalive } from '@ng-idle/keepalive';
 import { RouteConfigLoadStart,GuardsCheckStart,GuardsCheckEnd,RouteConfigLoadEnd,Event as RouterEvent } from "@angular/router";
 import {VersionCheckService} from "app/version-check/version-check.service";
 import { UtilService } from './core/services/util.service';
-
+import * as io from 'socket.io-client';
 declare var $: any;
 
 @Component({
@@ -30,10 +30,13 @@ export class AppComponent implements OnInit, AfterViewInit {
   public loader:boolean;
   sessionExpireMessage = "Your session has timed out. Please login again.";
   xamplifygif = "assets/images/xamplify-icon.gif";
+  socket;
+  numberOfOnlineUsers: number;
    
 constructor(private versionCheckService:VersionCheckService,private idle: Idle, private keepalive: Keepalive,public userService: UserService,
   public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService,
    private router: Router,private utilService:UtilService) {
+    //this.socket = io();
       //this.checkIdleState(idle,keepalive);
     this.addLoaderForAuthGuardService();
 		this.addLoaderForLazyLoadingModules(router);
@@ -103,6 +106,9 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
     
     
     ngOnInit() {
+      // this.socket.on('numberOfOnlineUsers', (numberOfOnlineUsers) => {
+      //   this.numberOfOnlineUsers = numberOfOnlineUsers;
+      // });
         this.versionCheckService.initVersionCheck();
         this.router.routeReuseStrategy.shouldReuseRoute = function () {
             return false;
@@ -227,8 +233,6 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
       idle.onTimeout.subscribe(() => {
         this.idleState = 'Timed out!';
         this.timedOut = true;
-        console.log(idle);
-        console.log(this.idleState);
         this.authenticationService.sessinExpriedMessage = this.sessionExpireMessage;
         this.authenticationService.logout();
       });

@@ -25,6 +25,7 @@ export class LandingPageService {
     URL = this.authenticationService.REST_URL + "landing-page/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/"
     vendorJourney:boolean = false;
+    isMasterLandingPages:boolean = false;
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
          private router: Router,private utilService:UtilService,public referenceService:ReferenceService) { }
 
@@ -236,4 +237,9 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
+    getVendorLogoDetailsByPartnerDetails( userId: number, companyId: number ) {
+        return this.http.get( this.URL + "/getVendorLogoDetailsByPartner/" + userId +"/"+companyId+ "?access_token=" + this.authenticationService.access_token, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 }

@@ -33,7 +33,7 @@ export class ListAllUsersComponent implements OnInit {
 	companiesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
 	selectedCompanyId = 0;
 	dropdownDataLoading = true;
-  isSearchableDropdownHidden = false;
+    isSearchableDropdownHidden = false;
 	constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,
@@ -49,7 +49,7 @@ export class ListAllUsersComponent implements OnInit {
 		if(this.showPartners){
 			this.collpsableId = "collapsible-all-partners";
 			this.headerText = "Partner Company Users";
-      this.isSearchableDropdownHidden = false;
+      		this.isSearchableDropdownHidden = false;
 			this.findAllPartnerCompanies();
 		}else{
       if(this.isVanityUrlEnabled){

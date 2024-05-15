@@ -79,6 +79,12 @@ export class VanityEmailTemplatesComponent implements OnInit {
   }
 
   previewTemplate(emailTemplate:VanityEmailTempalte){
-    this.emailTemplatePreviewUtilComponent.previewEmailTemplate(emailTemplate);
+    if(this.authenticationService.isLocalHost()){
+      this.referenceService.previewVanityEmailTemplateInNewTab(emailTemplate.id);
+    }else{
+      this.emailTemplatePreviewUtilComponent.previewEmailTemplate(emailTemplate);
+
+    }
+    
   }
 }

@@ -36,4 +36,9 @@ export class Lead {
     /*** XNFR-505 ***/
     enableRegisterDealButton:boolean = false;
     associatedCampaignDeleted:boolean = false;
+    /***XNFR-521***/
+    createdByPipelineId: number;         
+    createdByPipelineStageId: number;
+    createdForPipelineId: number;         
+    createdForPipelineStageId: number;
 }

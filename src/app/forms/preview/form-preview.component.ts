@@ -154,16 +154,18 @@ export class FormPreviewComponent implements OnInit {
             if (!this.isSubmittedAgain) {
               this.saveLocationDetails(this.form);
             }
-            $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
-              if (value.labelType == 'quiz_radio') {
-                  value.choices = value.radioButtonChoices;
-              } else if (value.labelType == 'quiz_checkbox') {
-                  value.choices = value.checkBoxChoices;
-              } else if (value.labelType == 'email' && value.required && self.learningTrackId !== undefined && self.learningTrackId > 0 && !self.isTrackQuizSubmitted) {
-                value.value = self.loggedInUserEmail;
-              }
-          });
-          this.setCustomCssValues();
+            $.each(this.form.formLabelDTORows, function (index: number, formLabelDTORow: any) {
+              $.each(formLabelDTORow.formLabelDTOs, function (columnIndex: number, column: any) {
+                if (column.labelType == 'quiz_radio') {
+                  column.choices = column.radioButtonChoices;
+                } else if (column.labelType == 'quiz_checkbox') {
+                  column.choices = column.checkBoxChoices;
+                } else if (column.labelType == 'email' && column.required && self.learningTrackId !== undefined && self.learningTrackId > 0 && !self.isTrackQuizSubmitted) {
+                  column.value = self.loggedInUserEmail;
+                }
+              });
+            });
+            this.setCustomCssValues();
           } else if (response.statusCode === 409) {
             this.formSubmitted = true;
           }else {
@@ -173,7 +175,7 @@ export class FormPreviewComponent implements OnInit {
           this.processor.remove(this.processor);
 
           if (this.authenticationService.formValues.length > 0) {
-            this.form.formLabelDTOs = this.authenticationService.formValues;
+            this.form.formLabelDTORows = this.authenticationService.formValues;
           }
           if(this.learningTrackId !== undefined && this.learningTrackId > 0 && this.isTrackQuizSubmitted){
             this.getPartnerFormAnalytics();
@@ -252,7 +254,11 @@ export class FormPreviewComponent implements OnInit {
         columnInfo.divClass = "success";
       }
     }
-    const invalidEmailIdsFieldsCount = this.form.formLabelDTOs.filter((item) => (item.divClass == 'error')).length;
+    let invalidEmailIdsFieldsCount = 0;
+    $.each(this.form.formLabelDTORows, function (index, rowInfo) {
+        const invalidEmailIdsFieldsCountRowWise = rowInfo.formLabelDTOs.filter((item) => (item.divClass == 'error')).length;
+        invalidEmailIdsFieldsCount = invalidEmailIdsFieldsCount + invalidEmailIdsFieldsCountRowWise;
+    });
     if (invalidEmailIdsFieldsCount == 0) {
       this.isValidEmailIds = true;
     } else {
@@ -303,18 +309,30 @@ export class FormPreviewComponent implements OnInit {
     this.ngxLoading = true;
     this.referenceService.goToTop();
     this.validForm = true;
-    const formLabelDtos = this.form.formLabelDTOs;
+    const formLabelDtos = this.form.formLabelDTORows;
     let self = this.form;
     if (this.form.disableEmail) {
-      let emailLabels = formLabelDtos.filter((item) => (item.labelType === "email"));
+      let emailLabels: any = [];
+      $.each(this.form.formLabelDTORows, function (index, rowInfo) {
+        const emailLabelsRowWise = rowInfo.formLabelDTOs.filter((item) => (item.labelType === "email"));
+        emailLabels.push(...emailLabelsRowWise);
+      });
       $.each(emailLabels, function (_index: number, field: ColumnInfo) {
         field.value = self.emailId;
       });
     }
     
-    const requiredFormLabels = formLabelDtos.filter((item) => (item.required === true && $.trim(item.value).length === 0));
-    const invalidEmailIdsFieldsCount = formLabelDtos.filter((item) => (item.divClass == 'error')).length;
-    const invalidCountryNameCount =formLabelDtos.filter((item) => ( item.labelType=="country" && item.required === true && $.trim(item.value)=="Please Select Country")).length;
+    let requiredFormLabels:any = [];
+    let invalidEmailIdsFieldsCount = 0;
+    let invalidCountryNameCount = 0;
+    $.each(this.form.formLabelDTORows, function (index, rowInfo) {
+        const requiredFormLabelsRowWise = rowInfo.formLabelDTOs.filter((item) => (item.required === true && $.trim(item.value).length === 0));
+        const invalidEmailIdsFieldsCountRowWise = rowInfo.formLabelDTOs.filter((item) => (item.divClass == 'error')).length;
+        const invalidCountryNameCountRowWise = rowInfo.formLabelDTOs.filter((item) => ( item.labelType=="country" && item.required === true && $.trim(item.value)=="Please Select Country")).length;
+        requiredFormLabels = requiredFormLabels + requiredFormLabelsRowWise;
+        invalidEmailIdsFieldsCount = invalidEmailIdsFieldsCount + invalidEmailIdsFieldsCountRowWise;
+        invalidCountryNameCount = invalidCountryNameCount + invalidCountryNameCountRowWise;
+    });
     if (requiredFormLabels.length > 0 || invalidEmailIdsFieldsCount > 0 || invalidCountryNameCount>0) {
       this.validForm = false;
       this.addHeaderMessage('Please fill required fields', this.errorAlertClass);
@@ -323,22 +341,24 @@ export class FormPreviewComponent implements OnInit {
       const formSubmit = new FormSubmit();
       formSubmit.id = this.form.id;
       formSubmit.alias = this.alias;
-      $.each(formLabelDtos, function (_index: number, field: ColumnInfo) {
-        const formField = new FormSubmitField();
-        formField.id = field.id;
-        formField.value = $.trim(field.value);
-        if (field.labelType === "checkbox" || field.labelType === "quiz_checkbox") {
-          formField.dropdownIds = field.value;
-          formField.value = "";
-        }
-        /****XNFR-423****/
-        if(field.labelType=="country"){
-          if(!field.required && formField.value=="Please Select Country"){
-            formField.value = "";
-          }
-        }
-        /****XNFR-423****/
-        formSubmit.fields.push(formField);
+      $.each(this.form.formLabelDTORows, function (index: number, formLabelDTORow: any) {
+        $.each(formLabelDTORow.formLabelDTOs, function (columnIndex: number, field: any) {
+            const formField = new FormSubmitField();
+            formField.id = field.id;
+            formField.value = $.trim(field.value);
+            if (field.labelType === "checkbox" || field.labelType === "quiz_checkbox") {
+              formField.dropdownIds = field.value;
+              formField.value = "";
+            }
+            /****XNFR-423****/
+            if(field.labelType=="country"){
+              if(!field.required && formField.value=="Please Select Country"){
+                formField.value = "";
+              }
+            }
+            /****XNFR-423****/
+            formSubmit.fields.push(formField);
+        });
       });
       let formType:string = null
       if(this.learningTrackId != undefined && this.learningTrackId > 0){
@@ -501,42 +521,44 @@ export class FormPreviewComponent implements OnInit {
     this.quizScore = data.score;
     this.maxScore = data.maxScore;
     let answers = data.submittedData;
-    $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
-      if (answers !== undefined && answers[value.id] !== undefined) {
-        if (value.labelType === "select") {
-          value.value = answers[value.id].submittedAnswer[0];
-        } else {
-          value.value = answers[value.id].submittedAnswer;
-          if (value.labelType === "upload") {
-            let lastIndex = value.value.lastIndexOf("/");
-            let fileName = value.value.substring(lastIndex + 1);
-            value['fileName'] = fileName;
-          }
-        }
-        let choices: any;
-        if (value.labelType === "quiz_radio" || value.labelType === "quiz_checkbox") {
-          choices = value.choices;
-        } else if (value.labelType === "radio") {
-          choices = value.radioButtonChoices;
-        } else if (value.labelType === "checkbox") {
-          choices = value.checkBoxChoices;
-        }
-        $.each(choices, function (index: number, choice: any) {
-          if (value.value.indexOf(choice.id) > -1) {
-            choice.isSelected = true;
+
+    $.each(this.form.formLabelDTORows, function (index: number, formLabelDTORow: any) {
+      $.each(formLabelDTORow.formLabelDTOs, function (columnIndex: number, value: any) {
+        if (answers !== undefined && answers[value.id] !== undefined) {
+          if (value.labelType === "select") {
+            value.value = answers[value.id].submittedAnswer[0];
           } else {
-            choice.isSelected = false;
+            value.value = answers[value.id].submittedAnswer;
+            if (value.labelType === "upload") {
+              let lastIndex = value.value.lastIndexOf("/");
+              let fileName = value.value.substring(lastIndex + 1);
+              value['fileName'] = fileName;
+            }
           }
-        });
-        value.skipped = answers[value.id].skipped;
-        value.submittedAnswerCorrect = answers[value.id].submittedAnswerCorrect;
-      } else {
-        value.value = "";
-        value.skipped = true;
-      }
+          let choices: any;
+          if (value.labelType === "quiz_radio" || value.labelType === "quiz_checkbox") {
+            choices = value.choices;
+          } else if (value.labelType === "radio") {
+            choices = value.radioButtonChoices;
+          } else if (value.labelType === "checkbox") {
+            choices = value.checkBoxChoices;
+          }
+          $.each(choices, function (index: number, choice: any) {
+            if (value.value.indexOf(choice.id) > -1) {
+              choice.isSelected = true;
+            } else {
+              choice.isSelected = false;
+            }
+          });
+          value.skipped = answers[value.id].skipped;
+          value.submittedAnswerCorrect = answers[value.id].submittedAnswerCorrect;
+        } else {
+          value.value = "";
+          value.skipped = true;
+        }
+      });
     });
   }
-
   setCustomCssValues() {
     document.documentElement.style.setProperty('--form-page-bg-color', this.pageBackgroundColor);
     document.documentElement.style.setProperty('--form-border-color', this.form.borderColor);

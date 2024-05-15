@@ -10,6 +10,7 @@ import 'rxjs/add/observable/throw';
 import {Pagination} from '../../core/models/pagination';
 import {ReferenceService} from "../../core/services/reference.service";
 import { DeleteTeamMemberPartnerRequestDto } from 'app/util/models/delete-team-member-partner-request-dto';
+import { TeamMemberAnalyticsRequest } from '../models/team-member-analytics-request';
 
 @Injectable()
 export class TeamMemberService{
@@ -363,5 +364,5 @@ export class TeamMemberService{
         return Observable.throw(error);
         
     }
-    
+ 
 }

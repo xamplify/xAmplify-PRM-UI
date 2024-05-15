@@ -20,7 +20,7 @@ export class PreviewAssetPdfComponent implements OnInit {
   isPdfPreviewByVendor = false;
   isPdfPreviewByPartner = false;
   isPdfPreviewByPartnerFromTracksOrPlayBooks = false;
-  id = 0;
+  id:any;
   statusCode = 404;
   pageNotFoundImagePath = "";
   badRequestImagePath = "";
@@ -28,6 +28,7 @@ export class PreviewAssetPdfComponent implements OnInit {
   customResponse:CustomResponse = new CustomResponse();
   success = false;
   isTrackOrPlayBookPdfPreview = false;
+  apiResponseFinished = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties,
     public vanityUrlService:VanityURLService) { }
@@ -42,8 +43,21 @@ export class PreviewAssetPdfComponent implements OnInit {
     this.badRequestImagePath = this.authenticationService.APP_URL+"assets/images/400.jpg";
     this.internalServerErrorImagePath = this.authenticationService.APP_URL+"assets/images/500.png";
     this.referenceService.clearHeadScriptFiles();
-    this.id = this.route.snapshot.params['id'];
+    this.decodeIdParameter();
     this.getHtmlBody();
+  }
+
+  private decodeIdParameter() {
+    try {
+      this.id = atob(this.route.snapshot.params['id']);
+    } catch (error) {
+       this.showPageNotFoundMessage();
+    }
+   }
+
+   private showPageNotFoundMessage() {
+    this.customResponse = new CustomResponse('ERROR', this.properties.pageNotFound, true);
+    this.processor.remove(this.processor);
   }
 
   getHtmlBody(){
@@ -59,6 +73,7 @@ export class PreviewAssetPdfComponent implements OnInit {
         }else if(this.statusCode==400){
           this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
         }
+        this.apiResponseFinished = true;
         this.processor.remove(this.processor);
       },error=>{
         this.statusCode = JSON.parse(error["status"]);
@@ -69,6 +84,7 @@ export class PreviewAssetPdfComponent implements OnInit {
           message = errorResponse['message'];
         }
         this.customResponse = new CustomResponse('ERROR',message,true);
+        this.apiResponseFinished = true;
         this.processor.remove(this.processor);
       }
     );

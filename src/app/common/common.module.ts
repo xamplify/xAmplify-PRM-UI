@@ -14,7 +14,7 @@ import { PlatformComponent } from './platform/platform.component';
 import { ResponseMessageComponent } from './response-message/response-message.component';
 import { PreviewVideoComponent } from './preview-video/preview-video.component';
 import { ContactsCampaignsMailsComponent } from './contacts-campaigns-mails/contacts-campaigns-mails.component';
-import { PieChartComponent } from '../partners/pie-chart/pie-chart.component';
+import { PieChartComponent } from '../util/pie-chart/pie-chart.component';
 import { ListLoaderComponent } from './loader/list-loader/list-loader.component';
 import { PlayVideoLoaderComponent } from './loader/play-video-loader/play-video-loader.component';
 import { GridLoaderComponent } from './loader/grid-loader/grid-loader.component';
@@ -165,7 +165,27 @@ import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component
 import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-image-util.component';
 import { PreviewEmailTemplateComponent } from 'app/util/preview-email-template/preview-email-template.component';
 import { PreviewPageComponent } from 'app/util/preview-page/preview-page.component';
+
+import { PartnerJourneyCountTilesComponent } from 'app/util/partner-journey-count-tiles/partner-journey-count-tiles.component';
+import { BoxLoaderComponent } from '../box-loader/box-loader.component';
+import { InteractedNotInteractedTrackDetailsComponent } from 'app/util/interacted-not-interacted-track-details/interacted-not-interacted-track-details.component';
+import { TypewiseTrackContentDetailsComponent } from '../util/typewise-track-content-details/typewise-track-content-details.component';
+import { UserwiseTrackCountsComponent } from '../util/userwise-track-counts/userwise-track-counts.component';
+import { UserwiseTrackDetailsComponent } from '../util/userwise-track-details/userwise-track-details.component';
+import { TrackAssetDetailsComponent } from '../util/track-asset-details/track-asset-details.component';
+import { ShareLeadDetailsComponent } from '../util/share-lead-details/share-lead-details.component';
+import { RedistributedCampaignDetailsComponent } from '../util/redistributed-campaign-details/redistributed-campaign-details.component';
+import { PartnerJourneyLeadDetailsComponent } from '../util/partner-journey-lead-details/partner-journey-lead-details.component';
+import { PartnerJourneyDealDetailsComponent } from '../util/partner-journey-deal-details/partner-journey-deal-details.component';
+import { MdfDetailAnalyticsComponent } from 'app/util/mdf-detail-analytics/mdf-detail-analytics.component';
+import { RedistributedCampaignsAndLeadsBarChartComponent } from '../util/redistributed-campaigns-and-leads-bar-chart/redistributed-campaigns-and-leads-bar-chart.component';
+import { TeamMemberAnalyticsContactDetailsComponent } from 'app/util/team-member-analytics-contact-details/team-member-analytics-contact-details.component';
+import { TeamMemberAnalyticsAllPartnersDetailsComponent } from 'app/util/team-member-analytics-all-partners-details/team-member-analytics-all-partners-details.component';
+import { TeamMemberwiseAssetAnalyticsComponent } from 'app/util/team-member-asset-analytics/team-member-asset-analytics';
+import { TeamMemberwiseAssetsDetailedReportComponent } from 'app/util/team-memberwise-assets-detailed-report/team-memberwise-assets-detailed-report.component';
+import { TeamMemberAnalyticsCompanyDetailsComponent } from 'app/util/team-member-analytics-company-details/team-member-analytics-company-details.component';
 import { PreviewAssetPdfComponent } from './preview-asset-pdf/preview-asset-pdf.component';
+
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -198,7 +218,13 @@ import { PreviewAssetPdfComponent } from './preview-asset-pdf/preview-asset-pdf.
 		ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
 		LandingPagesListAndGridViewComponent,BrowseContentComponent,AddCompanyComponent, SelectLeadComponent,DealChatPopupComponent,
-		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent, PreviewAssetPdfComponent],
+		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PreviewAssetPdfComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,InteractedNotInteractedTrackDetailsComponent,
+		TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
+		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
+		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
+		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent
+	],
+
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
@@ -228,7 +254,13 @@ import { PreviewAssetPdfComponent } from './preview-asset-pdf/preview-asset-pdf.
 		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,AddCompanyComponent,
 		LandingPagesListAndGridViewComponent,BrowseContentComponent, SelectLeadComponent,DealChatPopupComponent,ChatComponent,
-		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PreviewAssetPdfComponent]
+		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PreviewAssetPdfComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,
+		InteractedNotInteractedTrackDetailsComponent,TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
+		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
+		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
+		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent
+	]
+
 
 
 

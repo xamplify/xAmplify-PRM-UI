@@ -221,7 +221,7 @@ LEGEND {
   cursor: move;
 }
 
-#drag-div {
+#drag-div, #drag-div-column {
   cursor: move;
 }
 
@@ -1764,3 +1764,58 @@ div.switch5 > input.switch:focus ~ label:before {
   border-top-left-radius: 0!important;
   border-bottom-left-radius: 0!important;
 }
+
+
+/*** XNFR-424 ***/
+.field-action-align {
+  display: flex;
+  align-items: center;
+}
+
+.padding-3px {
+  padding: 3px;
+}
+
+.border-rd-5px {
+  border-radius: 5px;
+}
+
+.fiels-action-list {
+  padding: 0px 6px 0px 5px;
+  margin: 3px 0px 0px -10px;
+  width: max-content;
+}
+
+.form-fields-margin {
+  margin: 5px 5px 0px 5px;
+}
+
+.selected-field-border-thickness {
+  border-width: 2px !important;
+}
+
+.dropdown:hover>.dropdown-menu, .show-field-options {
+  display: block;
+}
+
+.dropdown>.dropdown-toggle:active, .show-field-options {
+    pointer-events: none;
+}
+
+.row-options { 
+  float: right;
+}
+
+.padding-12px {
+  padding: 12px;
+}
+
+.point-cursor {
+  cursor: pointer;
+}
+
+.hide-row-action {
+  display: none;
+}
+
+/*** XNFR-424 ***/

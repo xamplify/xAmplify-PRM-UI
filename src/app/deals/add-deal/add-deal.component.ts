@@ -137,6 +137,7 @@ export class AddDealComponent implements OnInit {
   titleFields = ['title','name','symptom'];
   amountFields = ['amount','value','FOppValue'];
   closeDateFields = ['expected_close_date','expectedCloseDate','FOppTargetDate','CloseDate'];
+  type = "DEAL";
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -552,6 +553,7 @@ export class AddDealComponent implements OnInit {
   resetStages() {
     if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
       this.deal.pipelineStageId = 0;
+      this.deal.createdForPipelineStageId = 0;
       this.getStages();
       this.pipelineStageId = "form-group has-error has-feedback";
       this.createdForPipelineStageId = "form-group has-error has-feedback";
@@ -559,7 +561,26 @@ export class AddDealComponent implements OnInit {
       this.createdForPipelineStageIdError = true;
       this.isDealRegistrationFormValid = false;
     }
+  }
 
+  resetCreatedByPipelineStages() {
+    if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
+      this.deal.pipelineStageId = 0;
+      this.getStages();
+      this.pipelineStageId = "form-group has-error has-feedback";
+      this.pipelineStageIdError = true;
+      this.isDealRegistrationFormValid = false;
+    }
+  }
+
+  resetCreatedForPipelineStages() {
+    if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
+      this.deal.createdForPipelineStageId = 0;
+      this.getStages();
+      this.createdForPipelineStageId = "form-group has-error has-feedback";
+      this.createdForPipelineStageIdError = true;
+      this.isDealRegistrationFormValid = false;
+    }
   }
 
   getStages() {
@@ -1143,7 +1164,7 @@ export class AddDealComponent implements OnInit {
     if (this.deal.campaignId !== undefined && this.deal.campaignId > 0) {
       campaignId = this.deal.campaignId;
     }
-    this.dealsService.getActiveCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, campaignId)
+    this.dealsService.getActiveCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, campaignId, this.type)
       .subscribe(
         data => {
           self.referenceService.loading(this.httpRequestLoader, false);
