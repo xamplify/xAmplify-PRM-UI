@@ -228,18 +228,12 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             },
         });
         /** XNFR-424 ENDS **/
-        this.dragulaService.drop.subscribe((value) => {
-            this.onDropModel(value);
+        this.dragulaService.dragend.subscribe((el) => {
+            this.checkAndRemoveEmptyRows();
         });
         this.siteKey = this.envService.captchaSiteKey;
         this.customResponseForFormUpdate = new CustomResponse('INFO', 'The form cannot be updated because it has been associated to a track. Please remove the association, come back here and try again to update. However, the "Save As" button allows you to make a copy of the form.', true);
         this.customResponseForNewFeature = new CustomResponse('INFO', 'You can add a maximum of three fields in a row.', true);
-    }
-
-
-    private onDropModel(args) {
-        /** XNFR-424 **/
-        this.checkAndRemoveEmptyRows();
     }
 
     ngOnInit() {
