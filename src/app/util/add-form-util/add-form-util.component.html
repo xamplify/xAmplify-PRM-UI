@@ -35,8 +35,10 @@
 
 
                 <div class="portlet-body" id="add-form-parent-div">
-                    <app-response-message class="pg8" [customResponse]="customResponseForFormUpdate"
-                        *ngIf="form?.associatedWithTrack" [showCloseIcon]="false">
+                    <app-response-message class="pg8" [customResponse]="customResponseForFormUpdate" *ngIf="form?.associatedWithTrack"
+                        [showCloseIcon]="false">
+                    </app-response-message>
+                    <app-response-message class="pg8" [customResponse]="customResponseForNewFeature" [showCloseIcon]="false">
                     </app-response-message>
                     <app-response-message class="pg8" [customResponse]="customResponse"
                         *ngIf="customResponse.isVisible">
