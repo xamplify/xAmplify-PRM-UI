@@ -21,7 +21,8 @@
             <tr> 
               <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team Member</th>       
               <th scope="col" *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><i class="fa fa-building" aria-hidden="true"></i> Company Name</th> 
-              <th scope="col" *ngIf="isTeamMemberAnalytics && isVendorVersion"><i class="fa fa-user-circle" aria-hidden="true"></i> Team Member</th> 
+              <th scope="col" *ngIf="isTeamMemberAnalytics && isVendorVersion"><i class="fa fa-user-circle" aria-hidden="true"></i> Vendor Team Member</th>
+              <th scope="col" *ngIf="isTeamMemberAnalytics && isVendorVersion"><i class="fa fa-user-circle" aria-hidden="true"></i> Partner</th> 
               <th scope="col" *ngIf="isTeamMemberAnalytics && !isVendorVersion"><i class="fa fa-user-circle" aria-hidden="true"></i> Vendor</th>  
               <th scope="col" *ngIf="isTeamMemberAnalytics && !isVendorVersion"><i class="fa fa-user-circle" aria-hidden="true"></i> Partner Company</th>  
               <th scope="col"> <i class="fa fa-cogs" aria-hidden="true"></i> Asset Details</th>           
@@ -33,6 +34,11 @@
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
               <td *ngIf="isTeamMemberAnalytics && isVendorVersion"><a class="detailstext" data-rel="fancybox-button"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <td *ngIf="isTeamMemberAnalytics && isVendorVersion">
+                <a data-toggle="tooltip" data-placement="top" title="{{item?.partnerEmailId}}">
+                  {{item?.partnerEmailId | slice:0:15}}<span *ngIf="item?.partnerEmailId?.length>10">..</span>
+                </a>
+              </td>
               <!-- <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">{{item.companyName}}</a></td> -->
               <td *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
               <td *ngIf="isTeamMemberAnalytics && !isVendorVersion">

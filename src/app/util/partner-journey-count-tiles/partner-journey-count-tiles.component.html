@@ -122,8 +122,20 @@
       </div>
       <!-- card eight  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showAssetCount"
+         *ngIf="partnerJourneyAnalytics?.showAssetCount && !isVendorVersion"
          [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#pj-asset-details-div': ''" [scrollDuration]="1000"
+         [scrollOffset]="-100">
+         <div
+            [className]="partnerJourneyAnalytics?.assetCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardEight tiles-card' : 'disabled-event-pj pa-Card pa-CardEight tiles-card'">
+            <i class="fa fa-cogs pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextEight">{{partnerJourneyAnalytics?.assetCount}}</p>
+            <p class="pa-text pa-TextEight">Assets</p>
+         </div>
+      </div>
+      <!-- card eight  for team member analytics -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showAssetCount && isVendorVersion"
+         [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#ta-asset-details-div': ''" [scrollDuration]="1000"
          [scrollOffset]="-100">
          <div
             [className]="partnerJourneyAnalytics?.assetCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardEight tiles-card' : 'disabled-event-pj pa-Card pa-CardEight tiles-card'">
