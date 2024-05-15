@@ -24,7 +24,7 @@
               <th scope="col" *ngIf="isTeamMemberAnalytics">Created By</th>
               <th scope="col" *ngIf="isTeamMemberAnalytics && !isVendorVersion">Created For</th>
               <th scope="col">Deal Title</th>
-              <th scope="col">Deal Type</th>
+              <th *ngIf="!isTeamMemberAnalytics" scope="col">Deal Type</th>
               <th scope="col">Amount</th>
               <th scope="col">Created On</th>              
             </tr>
@@ -37,7 +37,7 @@
               <td *ngIf="!isDetailedAnalytics && !isTeamMemberAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.createdByCompanyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
               <td *ngIf="isTeamMemberAnalytics && !isVendorVersion">{{item?.createdForCompanyName}}</td>
               <td>{{item?.title}}</td>
-              <td>{{item?.dealType}}</td>
+              <td *ngIf="!isTeamMemberAnalytics" >{{item?.dealType}}</td>
               <td>
                 <i class="fa fa-usd" aria-hidden="true">&nbsp;{{item?.amount}}</i>
               </td>

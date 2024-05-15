@@ -46,7 +46,7 @@
         <div class="carousel-caption">
             <div class="row">
                 <div class="col-md-6">
-                    <h1 class="carousel-headings text-overflow title-width title-custom-font" title="{{dashboardBanner?.title}}">{{dashboardBanner?.title}}</h1>
+                    <h1 *ngIf="dashboardBanner?.displayTitle" class="carousel-headings text-overflow title-width title-custom-font" title="{{dashboardBanner?.title}}">{{dashboardBanner?.title}}</h1>
                     <p style="-webkit-box-orient: vertical;
                     display: block;
                     display: -webkit-box;
@@ -54,10 +54,10 @@
                     overflow: hidden;
                     text-overflow: ellipsis;" class="description-width description-custom-font" *ngIf="dashboardBanner?.description.length>0" title="{{dashboardBanner?.description}}">{{dashboardBanner?.description}}</p>
                     <p *ngIf="!dashboardBanner?.link?.startsWith('http') && !dashboardBanner?.link?.startsWith('https')">
-                        <a class="btn btn-large btn-primary carousel-btn" style="position: fixed !important"  href="//{{dashboardBanner?.link}}" target="{{dashboardBanner?.openLinkInNewTab ? '_blank' : '_self'}}">Learn More</a>
+                        <a class="btn btn-large btn-primary carousel-btn" style="position: fixed !important"  href="//{{dashboardBanner?.link}}" target="{{dashboardBanner?.openLinkInNewTab ? '_blank' : '_self'}}">{{dashboardBanner?.buttonText}}</a>
                     </p>
                     <p *ngIf="dashboardBanner?.link?.startsWith('http') || dashboardBanner?.link?.startsWith('https')">
-                        <a class="btn btn-large btn-primary carousel-btn" style="position: fixed !important"  href="{{dashboardBanner?.link}}" target="{{dashboardBanner?.openLinkInNewTab ? '_blank' : '_self'}}">Learn More</a>
+                        <a class="btn btn-large btn-primary carousel-btn" style="position: fixed !important"  href="{{dashboardBanner?.link}}" target="{{dashboardBanner?.openLinkInNewTab ? '_blank' : '_self'}}">{{dashboardBanner?.buttonText}}</a>
                     </p>
                 </div>
             </div>

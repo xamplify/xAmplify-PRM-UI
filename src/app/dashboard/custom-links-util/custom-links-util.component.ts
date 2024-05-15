@@ -56,7 +56,8 @@ export class CustomLinksUtilComponent implements OnInit {
     'link': '',
     'subtitle':'',
     'description':'',
-    'icon':''
+    'icon':'',
+    'buttonText':''
   };
 
   validationMessages = {
@@ -76,7 +77,13 @@ export class CustomLinksUtilComponent implements OnInit {
       'description': {
         'maxLimitReached': 'description cannot be more than 120 characters long.',
       
-      }
+      },
+      'buttonText': {
+        'required': 'Button Text is required.',
+        'whitespace': 'Empty spaces are not allowed.',
+        'maxLimitReached': 'Button Text cannot be more than 20 characters long.',
+    }
+      
   };
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
@@ -102,7 +109,9 @@ export class CustomLinksUtilComponent implements OnInit {
       icon: new FormControl(),
       description: new FormControl(),
       openLinksInNewTab: new FormControl(),
-      customLinkType:new FormControl()
+      customLinkType:new FormControl(),
+      buttonText:new FormControl(),
+      displayTitle:new FormControl()
     });
   }
 
@@ -116,6 +125,17 @@ export class CustomLinksUtilComponent implements OnInit {
         'description': [this.customLinkDto.buttonDescription, Validators.compose([max120CharactersLimitValidator])],
         'openLinksInNewTab': [this.customLinkDto.openInNewTab],
         'customLinkType':['']
+      });
+    }else if(this.moduleType==this.properties.dashboardBanners){
+      this.customLinkForm = this.formBuilder.group({
+        'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceValidatorWithOutLimit])],
+        'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.LINK_PATTERN)])],
+        'icon': [this.customLinkDto.buttonIcon],
+        'description': [this.customLinkDto.buttonDescription],
+        'openLinksInNewTab': [this.customLinkDto.openInNewTab],
+        'customLinkType':[this.customLinkDto.type,Validators.required],
+        'displayTitle': [this.customLinkDto.displayTitle],
+        'buttonText': [this.referenceService.getTrimmedData(this.customLinkDto.buttonText), Validators.compose([Validators.required, noWhiteSpaceOrMax20CharactersLimitValidator])],
       });
     }else{
       this.customLinkForm = this.formBuilder.group({
@@ -313,6 +333,10 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customLinkDto.icon = this.customLinkDto.buttonIcon;
     this.customLinkDto.loggedInUserId = this.authenticationService.getUserId();
     this.customLinkDto.openLinkInNewTab = this.customLinkDto.openInNewTab;
+    /****XNFR-532*****/
+    this.customLinkDto.buttonText = customFormDetails.buttonText;
+    this.customLinkDto.displayTitle = customFormDetails.displayTitle;
+    /****XNFR-532*****/
   }
 
   edit(id: number) {

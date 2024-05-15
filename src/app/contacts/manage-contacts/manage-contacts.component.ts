@@ -1468,6 +1468,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.contactsByType.pagination.maxResults = 12;
 		if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
 			this.contactsByType.pagination.partnerTeamMemberGroupFilter = true;
+			this.selectedFilterIndex = 1;
 			this.resetTMSelectedFilterIndex.next(true);
 		}
 		this.listContactsByType(contactType);

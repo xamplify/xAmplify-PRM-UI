@@ -97,7 +97,7 @@ export class PieChartComponent implements OnInit {
       },
       exporting: { enabled: false },
       credits: { enabled: false },
-      colors: ['#ffb600', '#ff3879', '#be72d3', '#357ebd', '#00ffc8'],
+      colors: this.isVendorVersion ? ['#ffb600', '#ff3879', '#be72d3', '#357ebd', '#00ffc8','#f5415f'] : ['#ffb600', '#ff3879', '#be72d3', '#357ebd', '#00ffc8'] ,
       series: [{
         name: 'Count',
         colorByPoint: true,
@@ -110,7 +110,11 @@ export class PieChartComponent implements OnInit {
     var pieChartData;
     this.parterService.launchedCampaignsCountGroupByCampaignType(this.partnerCompanyId, this.authenticationService.user.id).subscribe(
       (data: any) => {
-        pieChartData = [{ name: 'VIDEO', y: data.VIDEO }, { name: 'Email', y: data.REGULAR }, { name: 'SOCIAL', y: data.SOCIAL }, { name: 'EVENT', y: data.EVENT }, { name: 'SURVEY', y: data.SURVEY }];
+        if(this.isVendorVersion){
+          pieChartData = [{ name: 'VIDEO', y: data.VIDEO }, { name: 'Email', y: data.REGULAR }, { name: 'SOCIAL', y: data.SOCIAL }, { name: 'EVENT', y: data.EVENT }, { name: 'SURVEY', y: data.SURVEY },{ name: 'PAGE', y: data.PAGE }];
+        }else{
+          pieChartData = [{ name: 'VIDEO', y: data.VIDEO }, { name: 'Email', y: data.REGULAR }, { name: 'SOCIAL', y: data.SOCIAL }, { name: 'EVENT', y: data.EVENT }, { name: 'SURVEY', y: data.SURVEY }];
+        }
       },
       (error: any) => {
         this.xtremandLogger.error(error);
