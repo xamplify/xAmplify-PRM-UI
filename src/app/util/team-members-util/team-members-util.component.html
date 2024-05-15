@@ -935,7 +935,7 @@
           </app-team-member-analytics-contact-details>
         </div>
         <!--******************Company Details*******************-->
-        <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
+        <div *ngIf="(!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm ) || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
           <app-team-member-analytics-company-details [selectedTeamMemberIds]="selectedTeamMemberIds"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion">
           </app-team-member-analytics-company-details>
