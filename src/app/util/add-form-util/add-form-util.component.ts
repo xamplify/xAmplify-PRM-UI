@@ -201,6 +201,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
      isRowClicked: boolean = false;
      rowIndexForAdd: number;
      columnIndexForAdd: number;
+     customResponseForNewFeature: CustomResponse = new CustomResponse();
     /** XNFR-424 ENDS **/
 
     constructor(public regularExpressions: RegularExpressions, public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
@@ -232,6 +233,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         });
         this.siteKey = this.envService.captchaSiteKey;
         this.customResponseForFormUpdate = new CustomResponse('INFO', 'The form cannot be updated because it has been associated to a track. Please remove the association, come back here and try again to update. However, the "Save As" button allows you to make a copy of the form.', true);
+        this.customResponseForNewFeature = new CustomResponse('INFO', 'You can add a maximum of three fields in a row.', true);
     }
 
 
