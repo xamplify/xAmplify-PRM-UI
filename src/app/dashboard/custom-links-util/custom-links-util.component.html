@@ -159,6 +159,8 @@
           <tr>
             <th>Title</th>
             <th>Link</th>
+            <th class="text-center" *ngIf="moduleType==properties?.dashboardBanners">Display Title</th>
+            <th class="text-center" *ngIf="moduleType==properties?.dashboardBanners">Button Text</th>
             <th *ngIf="moduleType==properties?.newsAndAnnouncements">Type</th>
             <th class="text-center">Actions</th>
           </tr>
@@ -172,6 +174,12 @@
             <ng-container *ngIf="moduleType!=properties?.dashboardButtons">
               <td class="td-overflow-text"><span  data-toggle="tooltip" data-placement="bottom" title="{{item.title}}"><i class="fa mr5 {{item.icon}}" aria-hidden="true"></i>{{item.title}}</span></td>
               <td class="td-overflow-text"><span data-toggle="tooltip" data-placement="bottom" title="{{item.link}}">{{item.link}}</span></td> 
+              <ng-container *ngIf="moduleType==properties?.dashboardBanners">
+                  <td class="td-overflow-text text-center">
+                    <app-custom-ui-switch [customSwitch]="item?.displayTitle" [isSwitchOptionDisabled]="true"></app-custom-ui-switch>
+                  </td>
+                  <td class="td-overflow-text text-center">{{item?.buttonText}}</td>
+              </ng-container>
             </ng-container>
             <ng-container *ngIf="moduleType==properties?.newsAndAnnouncements">
               <td>{{item.type}}</td>
