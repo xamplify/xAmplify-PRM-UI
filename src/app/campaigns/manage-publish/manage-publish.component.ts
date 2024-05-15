@@ -129,6 +129,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     isValidCopyCampaignName = true;
     showAllAnalytics : boolean = false ;
     selectedIndex : number;
+    gearIconOptions : boolean = false;
     
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -1379,6 +1380,17 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }
     }
     
-    
+    showGearIconOptions(campaign: any) {
+        this.campaignService.getGearIconOptions(campaign, this.loggedInUserId)
+        .subscribe(
+            data => {
+                if (data.statusCode == 200) {
+                    this.gearIconOptions = true;
+                }
+            },
+            (error: any) => {
+                this.logger.errorPage(error);
+            });
+    } 
 
 }

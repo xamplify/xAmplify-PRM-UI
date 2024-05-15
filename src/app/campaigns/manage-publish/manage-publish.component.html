@@ -800,7 +800,7 @@
                                              <div class="btn-group pull-right setting-icon-cu">
                                                 <span [class.disablednew]="!campaign.hasAccess"
                                                    class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu gearicon-font-cu"
-                                                   data-toggle="dropdown" (click)="checkLastElement(i)"></span>
+                                                   data-toggle="dropdown" (click)="showGearIconOptions(campaign)"></span>
                                                 <!-- <span [class.disablednew]="!campaign.hasAccess" class="caret dropdown-toggle caretDropdownMenu dropdown-font-cu" data-toggle="dropdown"></span> -->
                                                 <ul class="dropdown-menu pull-right"
                                                    [ngClass]="{'mobile-css': isLastElement}">

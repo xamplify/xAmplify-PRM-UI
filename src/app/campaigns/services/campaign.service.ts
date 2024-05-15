@@ -1332,9 +1332,17 @@ export class CampaignService {
             .catch(this.handleError);
     }
     
-   getCampaignHighLevelAnalytics2(userId: number, campaign:any) {
+    getCampaignHighLevelAnalytics2(userId: number, campaign:any) {
         userId = this.authenticationService.checkLoggedInUserId(userId);       
         let url = this.URL + "campaign/campaignHighLevelAnaltyics/" + userId + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, campaign)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getGearIconOptions(campaign : any, userId : number){
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+        let url = this.URL + "campaign/showGearIconOptions/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, campaign)
             .map(this.extractData)
             .catch(this.handleError);
