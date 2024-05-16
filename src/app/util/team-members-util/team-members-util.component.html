@@ -271,7 +271,7 @@
                       </td>
                       <!---Actions-->
                       <td class="actions-row"
-                        [hidden]="(!authenticationService?.module?.loginAs && authenticationService?.module?.deletedPartner) || teamMember?.primaryAdmin">
+                        [hidden]="(!authenticationService?.module?.loginAs && authenticationService?.module?.deletedPartner) || teamMember?.primaryAdmin || teamMember?.teamMemberUserId==loggedInUserId">
                         <div class="actions-block override-actions custom-width-icon">
                           <!--Login As-->
                           <ng-container *ngIf="teamMember?.loginAs && !isLoggedInAsTeamMember">
@@ -342,7 +342,7 @@
                           </a>
                         </div>
                       </td>
-                      <td class="actions-row" *ngIf="teamMember?.primaryAdmin">
+                      <td class="actions-row" *ngIf="teamMember?.teamMemberUserId==loggedInUserId">
                         <div class="alert alert-info NaNAData">
                           <span><strong>N/A</strong></span>
                         </div>
