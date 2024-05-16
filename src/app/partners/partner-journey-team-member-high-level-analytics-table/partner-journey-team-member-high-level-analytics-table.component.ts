@@ -31,7 +31,7 @@ export class PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent implements
   loggedInUserId: number = 0;
   searchKey: string = "";
   pagination: Pagination = new Pagination();
-  customResponse: any;
+  customResponse: CustomResponse = new CustomResponse();
   isLoggedInAsTeamMember = false;
   loading: boolean;
   logger: any;
