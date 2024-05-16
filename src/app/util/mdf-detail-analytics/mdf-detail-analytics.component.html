@@ -29,6 +29,7 @@
               <th scope="col" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">Total Requests</th>              
               <th scope="col" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">Average Request Size</th>
               <th scope="col" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">Total Value</th>
+              <th scope="col" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">Created Time</th>
               <th scope="col" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">Allocation Time</th>
             </tr>
           </thead>
@@ -44,6 +45,7 @@
               <td class="text-center" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">{{item?.totalRequests}}</td>
               <td class="text-center" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">{{item?.averageRequestSize}}</td>              
               <td class="text-center" *ngIf = "isTeamMemberAnalytics && !isVendorVersion">{{item?.totalValue}}</td>
+              <td *ngIf = "isTeamMemberAnalytics && !isVendorVersion"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.createdTimeInUTC"></app-timestamp>
               <td *ngIf = "isTeamMemberAnalytics && !isVendorVersion"><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.allocationTimeInUTC">
               </app-timestamp></td>
             </tr>
