@@ -1,5 +1,10 @@
 {
-	"icon_names": [{
+	"icon_names": [
+		{
+			"name": "Amazon",
+			"id": "fa fa-amazon"
+		},
+		{
 			"name": "users",
 			"id": "fa-users"
 		},
