@@ -262,11 +262,14 @@ export class CustomLinksUtilComponent implements OnInit {
         let message = "";
         if(this.moduleType==this.properties.dashboardButtons){
           message = this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT;
+          this.isDropDownLoading = true;
+          this.isAddDashboardBannersDivHidden = true;
         }else{
           message = result.message;
         }
         this.customResponse = new CustomResponse('SUCCESS',message, true);
         this.callInitMethods();
+        this.stopDropDownLoader();
       } else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
       }else if(result.statusCode==400){
@@ -309,6 +312,13 @@ export class CustomLinksUtilComponent implements OnInit {
     });
   }
 
+
+  private stopDropDownLoader() {
+    setTimeout(() => {
+      this.isDropDownLoading = false;
+      this.isAddDashboardBannersDivHidden = false;
+    }, 500);
+  }
 
   private resetFormDataAndDtoProperties() {
     this.customLinkDto = new CustomLinkDto();
@@ -363,10 +373,7 @@ export class CustomLinksUtilComponent implements OnInit {
       this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
       this.selectedButtonIcon = this.customLinkDto.buttonIcon;
       this.buildCustomLinkForm();
-      setTimeout(() => {
-        this.isDropDownLoading = false;
-      }, 500);
-     
+      this.stopDropDownLoader(); 
     }else{
       this.ngxLoading = true;
       this.vanityURLService.getCustomLinkDetailsById(id).subscribe(
@@ -410,6 +417,7 @@ export class CustomLinksUtilComponent implements OnInit {
           if(statusCode==200){
             this.customResponse = new CustomResponse('SUCCESS',response.message,true);
             this.callInitMethods();
+          
           }else{
             this.removeTitleErrorClass();
             let data = response.data;
@@ -454,7 +462,14 @@ export class CustomLinksUtilComponent implements OnInit {
     this.vanityURLService.updateCustomLinkDetails(this.customLinkDto,this.moduleType,this.formData).subscribe(result => {
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT, true);
-        this.callInitMethods();
+        this.isDropDownLoading = true;
+        this.isAddDashboardBannersDivHidden = true;
+        setTimeout(() => {
+          this.callInitMethods();
+          this.isDropDownLoading = false;
+          this.isAddDashboardBannersDivHidden = false;
+        }, 500);
+        
       }
       else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
