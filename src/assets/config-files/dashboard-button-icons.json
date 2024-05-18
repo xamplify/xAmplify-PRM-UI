@@ -1,7 +1,11 @@
 {
 	"names": [
 		{
-			"name": "Amazon",
+			"name": "Please Select Icon",
+			"id": ""
+		},
+		{
+			"name": "amazon",
 			"id": "fa-amazon"
 		},
 		{

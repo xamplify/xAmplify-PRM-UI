@@ -23,19 +23,34 @@ export class SelectDropdownComponent implements OnInit {
 
   ngOnInit() {
     if(this.isDropDownSelectedValueIsText){
-      let names = this.referenceService.filterSelectedColumnsFromArrayList(this.dropDownItems,'name');
-      this.defaultOption = names[0];
+      this.setDefaultOptionOrSelectedOptionWithIcon();
     }else{
-      if(this.categoryId!=undefined && this.categoryId!=0){
-        let selectedCategoryName = this.dropDownItems.filter((category) => category.id === this.categoryId)[0];
-        this.defaultOption = selectedCategoryName['name'];
-       }else{
-         let names = this.referenceService.filterSelectedColumnsFromArrayList(this.dropDownItems,'name');
-         this.defaultOption = names[0];
-       }
+      this.setDefaultOptionOrSelectedOption();
     }
-  
     
+  }
+
+  private setDefaultOptionOrSelectedOptionWithIcon() {
+    if (this.categoryId != "") {
+      let selectedCategoryName = this.dropDownItems.filter((category) => category.id === this.categoryId)[0];
+      this.defaultOption = selectedCategoryName['name'];
+      this.selectedIcon = selectedCategoryName['id'];
+    } else {
+      let names = this.referenceService.filterSelectedColumnsFromArrayList(this.dropDownItems, 'name');
+      this.defaultOption = names[0];
+      let ids = this.referenceService.filterSelectedColumnsFromArrayList(this.dropDownItems, 'id');
+      this.selectedIcon = ids[0];
+    }
+  }
+
+  private setDefaultOptionOrSelectedOption() {
+    if (this.categoryId != undefined && this.categoryId != 0) {
+      let selectedCategoryName = this.dropDownItems.filter((category) => category.id === this.categoryId)[0];
+      this.defaultOption = selectedCategoryName['name'];
+    } else {
+      let names = this.referenceService.filterSelectedColumnsFromArrayList(this.dropDownItems, 'name');
+      this.defaultOption = names[0];
+    }
   }
 
   filterDropDownData(inputElement: any) {
@@ -51,8 +66,6 @@ export class SelectDropdownComponent implements OnInit {
       }
       
     }
-    $('#selected-dropdown-data').val(this.defaultOption);
-
   }
 
   setDropDownValue(input: any) {

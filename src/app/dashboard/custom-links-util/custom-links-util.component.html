@@ -112,7 +112,7 @@
         <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
             <label>Icon</label>
             <div>
-              <app-select-dropdown *ngIf="!isDropDownLoading" [showIcon]="true" [categoryId]="customLinkDto.buttonIcon" [isDropDownSelectedValueIsText]="true"
+              <app-select-dropdown *ngIf="!isDropDownLoading" [showIcon]="true" [categoryId]="selectedButtonIcon" [isDropDownSelectedValueIsText]="true"
               [dropDownItems]="iconsList" (selectDropdownComponentEmitter)="getSelectedIcon($event)"></app-select-dropdown>
           </div>
         </div>

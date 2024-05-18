@@ -51,6 +51,7 @@ export class CustomLinksUtilComponent implements OnInit {
   isAddDashboardBannersDivHidden = true;
   dashboardBannersInfoMessage:CustomResponse = new CustomResponse();
   isDropDownLoading = true;
+  selectedButtonIcon = "";
 
   formErrors = {
     'title': '',
@@ -332,7 +333,10 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customLinkDto.title = this.customLinkDto.buttonTitle;
     this.customLinkDto.link = this.customLinkDto.buttonLink;
     this.customLinkDto.description = this.customLinkDto.buttonDescription;
-    this.customLinkDto.icon = this.customLinkDto.buttonIcon;
+    if(this.moduleType==this.properties.dashboardButtons){
+      this.customLinkDto.icon = this.selectedButtonIcon;
+      this.customLinkDto.buttonIcon = this.selectedButtonIcon;
+    }
     this.customLinkDto.loggedInUserId = this.authenticationService.getUserId();
     this.customLinkDto.openLinkInNewTab = this.customLinkDto.openInNewTab;
     /****XNFR-532*****/
@@ -343,6 +347,7 @@ export class CustomLinksUtilComponent implements OnInit {
 
   edit(id: number) {
     this.isImageLoading = true;
+    this.isDropDownLoading = true;
     this.isAdd = false;
     this.isAddDashboardBannersDivHidden = false;
     this.customResponse = new CustomResponse();
@@ -355,7 +360,12 @@ export class CustomLinksUtilComponent implements OnInit {
     if(this.moduleType==this.properties.dashboardButtons){
       const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
       this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
+      this.selectedButtonIcon = this.customLinkDto.buttonIcon;
       this.buildCustomLinkForm();
+      setTimeout(() => {
+        this.isDropDownLoading = false;
+      }, 500);
+     
     }else{
       this.ngxLoading = true;
       this.vanityURLService.getCustomLinkDetailsById(id).subscribe(
@@ -368,8 +378,8 @@ export class CustomLinksUtilComponent implements OnInit {
             this.customLinkDto.openInNewTab = this.customLinkDto.openLinkInNewTab;
             this.buildCustomLinkForm();
             this.previouslySelectedImagePath = this.customLinkDto.bannerImagePath;
-            //$('.dashboard-banner-image').css('height', 'auto');
             this.ngxLoading = false;
+            this.isDropDownLoading = false;
         },error=>{
           this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
           this.buttonActionType = true;
@@ -378,6 +388,7 @@ export class CustomLinksUtilComponent implements OnInit {
           this.buildCustomLinkForm();
           this.customLinkForm.get('customLinkType').setValue(this.defaultType);
           this.ngxLoading = false;
+          this.isDropDownLoading = false;
         });
     }
     
@@ -554,7 +565,8 @@ export class CustomLinksUtilComponent implements OnInit {
     
   }
 
-  getSelectedIcon(event){
+  getSelectedIcon(event:any){
+    this.selectedButtonIcon = event;
   }
 
 
