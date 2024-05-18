@@ -1,7 +1,8 @@
 <form [formGroup]="customLinkForm" autocomplete="off" (keydown.enter)="$event.preventDefault()">
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <app-response-message [customResponse]="dashboardBannersInfoMessage" [showCloseIcon]="false" *ngIf="dashboardBannersInfoMessage.isVisible && isAddDashboardBannersDivHidden"></app-response-message>
-  <fieldset *ngIf="!isAddDashboardBannersDivHidden">
+  <app-modal-popup-loader *ngIf="isDropDownLoading || isAddDashboardBannersDivHidden"></app-modal-popup-loader>
+  <fieldset *ngIf="!isAddDashboardBannersDivHidden && !isDropDownLoading">
     <legend>{{headerText}}</legend>
       <div class="form-group col-xs-12 col-md-12">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -110,16 +111,11 @@
         <!--Icon-->
         <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
             <label>Icon</label>
-            <div class="flex">
-              <select formControlName="icon" class="form-control">
-                <option disabled value="null"> Please select icon </option>
-                <option [ngValue]="icon.id" *ngFor="let icon of iconsList">{{icon.name}}</option>
-              </select>
-              <span><i class="fa {{customLinkForm.get('icon').value}} ml10"></i></span>
+            <div>
+              <app-select-dropdown *ngIf="!isDropDownLoading" [showIcon]="true" [categoryId]="customLinkDto.buttonIcon" [isDropDownSelectedValueIsText]="true"
+              [dropDownItems]="iconsList" (selectDropdownComponentEmitter)="getSelectedIcon($event)"></app-select-dropdown>
           </div>
         </div>
-
-        
       </div>
       <!--Description-->
       <div class="form-group col-md-12 col-xs-12">

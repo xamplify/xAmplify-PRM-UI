@@ -1,8 +1,8 @@
 {
-	"icon_names": [
+	"names": [
 		{
 			"name": "Amazon",
-			"id": "fa fa-amazon"
+			"id": "fa-amazon"
 		},
 		{
 			"name": "users",

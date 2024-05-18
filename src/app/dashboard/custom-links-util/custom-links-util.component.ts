@@ -31,7 +31,7 @@ export class CustomLinksUtilComponent implements OnInit {
   customLinkDtos: Array<CustomLinkDto> = new Array<CustomLinkDto>();
   buttonActionType: boolean;
   iconNamesFilePath: string;
-  iconsList: any = [];
+  iconsList: Array<any> = new Array<any>();
   customLinkTypes :Array<any> = new Array<any>();
   selectedProtocol: string;
   saving = false;
@@ -48,8 +48,9 @@ export class CustomLinksUtilComponent implements OnInit {
   formData: any = new FormData();
   isImageLoading = false;
   isAdd = true;
-  isAddDashboardBannersDivHidden = false;
+  isAddDashboardBannersDivHidden = true;
   dashboardBannersInfoMessage:CustomResponse = new CustomResponse();
+  isDropDownLoading = true;
 
   formErrors = {
     'title': '',
@@ -90,8 +91,9 @@ export class CustomLinksUtilComponent implements OnInit {
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
     private regularExpressions:RegularExpressions,public utilService:UtilService) {
       this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
-     this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
-      this.iconsList = result.icon_names;
+      this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
+       this.iconsList = result.names;
+       this.isDropDownLoading = false;
     }, error => {
       console.log(error);
     });
@@ -550,6 +552,9 @@ export class CustomLinksUtilComponent implements OnInit {
     this.formData.append("dashboardBannerImage", fileObj, uploadedImageName);
     this.isDashboardBannerImageUploaded = true;
     
+  }
+
+  getSelectedIcon(event){
   }
 
 
