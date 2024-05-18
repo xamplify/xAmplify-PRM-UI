@@ -118,7 +118,7 @@
                        <th style="width: 20%;" scope="col">NAME</th>
                        <th class='text-center' scope="col">COMPANY</th>
                        <th class='text-center' scope="col">Role</th>
-                       <th class='text-center' scope="col">Vanity Link</th>
+                       <th *ngIf="!isVanityUrlEnabled" class='text-center' scope="col">Vanity Link</th>
                        <th class='text-center' scope="col">Created Time</th>
                         <th class='text-center' scope="col">Login</th>
                         <th class='text-center' scope="col" (click)="confirmLogoutForAll()">
@@ -133,12 +133,12 @@
                            <app-user-info [userInfo]="request" [isFromAdminList]="true">
                            </app-user-info>
                          </td>
-                         <td align="center" scope="col">{{request.companyName}}</td>
-                         <td align="center" scope="col">{{request.roleName}}</td>
-                         <td align="center">
+                         <td class="text-center"  scope="col">{{request.companyName}}</td>
+                         <td  class="text-center" scope="col">{{request.roleName}}</td>
+                         <td class="text-center" *ngIf="!isVanityUrlEnabled">
                             <a href="{{request?.vanityUrlLink}}" target="_blank">{{request?.vanityUrlLink}}</a>
                          </td>
-                         <td align="center" scope="col">{{request.createdTime | date:'mediumDate'}} {{request.createdTime | date:'shortTime'}}</td>
+                         <td class="text-center"  scope="col">{{request.createdTime | date:'mediumDate'}} {{request.createdTime | date:'shortTime'}}</td>
                          <td id="center" class="xAmpColor">
                            <a (click)="loginAs(request)">
                             <button class="btn btn-primary">Login as </button>
