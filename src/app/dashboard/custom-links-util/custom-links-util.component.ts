@@ -212,6 +212,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.previouslySelectedImagePath = "";
     this.isAddDashboardBannersDivHidden = false;
     this.dashboardBannersInfoMessage = new CustomResponse();
+    this.selectedButtonIcon = "";
   }
 
   findLinks(pagination: Pagination) {
