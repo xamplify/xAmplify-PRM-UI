@@ -566,7 +566,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			if(this.authenticationService.isLocalHost()){
 				this.referenceService.preivewAssetOnNewHost(asset.id);
 			}else{
-			if(this.asset.showPreviewIcon)	{
+			if(asset.showPreviewIcon)	{
 				this.isPreview = true;
 				this.asset = asset;
 			}else{
