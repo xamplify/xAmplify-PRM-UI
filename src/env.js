@@ -9,11 +9,13 @@
 	/*************Local*******************************/
 
 
+
 	window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
 	window.__env.SERVER_URL = 'http://localhost:8090/'; // xamplify backend production server
 	window.__env.imagesHost = "http://localhost:8000/images/";
 	window.__env.domainName = "demo";
 	window.__evnv.PREVIEW_HOST = "http://localhost:5000/";
+
 
 	
 	//USE BELOW URLS FOR CLIENT AND SERVER CONNECTIONS
@@ -24,10 +26,14 @@
 	//window.__evnv.PREVIEW_HOST = "http://localhost:5000/";
 
 	/*********************QA**********************/
+
 	// window.__env.CLIENT_URL = 'https://xamplify.co/';
 	// window.__env.SERVER_URL =  'https://aravindu.com/';
 	// window.__env.imagesHost = "https://aravindu.com/vod/images/";
 	//window.__evnv.PREVIEW_HOST = "http://localhost:5000/";
+
+	
+
 
 
 
