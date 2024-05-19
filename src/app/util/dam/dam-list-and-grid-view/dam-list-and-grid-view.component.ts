@@ -563,8 +563,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else if(asset.beeTemplate) {
 			this.referenceService.previewAssetPdfInNewTab(asset.id);
 		}else{
-			this.isPreview = true;
-			this.asset = asset;
+			this.referenceService.preivewAssetOnNewHost(asset.id);
+			//this.isPreview = true;
+			//this.asset = asset;
 		}
 	}
 
