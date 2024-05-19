@@ -52,7 +52,8 @@ export class CustomLinksUtilComponent implements OnInit {
   dashboardBannersInfoMessage:CustomResponse = new CustomResponse();
   isDropDownLoading = true;
   selectedButtonIcon = "";
-
+  isLoadingBanners = true;
+  isDeleteOptionClicked = false;
   formErrors = {
     'title': '',
     'link': '',
@@ -180,7 +181,10 @@ export class CustomLinksUtilComponent implements OnInit {
 
   callInitMethods(){
     this.initializeVariables();
-    this.findLinks(this.pagination);
+    setTimeout(() => {
+      this.findLinks(this.pagination);
+    }, 500);
+    
   }
 
   private initializeVariables() {
@@ -210,7 +214,6 @@ export class CustomLinksUtilComponent implements OnInit {
     this.buildCustomLinkForm();
     this.customLinkForm.get('customLinkType').setValue(this.defaultType);
     this.previouslySelectedImagePath = "";
-    this.isAddDashboardBannersDivHidden = false;
     this.dashboardBannersInfoMessage = new CustomResponse();
     this.selectedButtonIcon = "";
   }
@@ -235,11 +238,13 @@ export class CustomLinksUtilComponent implements OnInit {
           if(this.moduleType==this.properties.dashboardBanners){
             this.isAddDashboardBannersDivHidden = pagination.totalRecords==5;
             this.dashboardBannersInfoMessage = new CustomResponse('INFO',this.properties.maximumDashboardBannersLimitReached,true);
+            this.isDropDownLoading = false;
           }else{
             this.isAddDashboardBannersDivHidden = false;
             this.dashboardBannersInfoMessage = new CustomResponse();
           }
         }
+        this.isLoadingBanners = false;
         if(this.customLinkDto.id>0){
           this.buttonActionType = false;
         }else{
@@ -249,7 +254,7 @@ export class CustomLinksUtilComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
       });
     }
-    this.isDropDownLoading = false;
+    
   }
 
   save() {
@@ -264,7 +269,6 @@ export class CustomLinksUtilComponent implements OnInit {
         if(this.moduleType==this.properties.dashboardButtons){
           message = this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT;
           this.isDropDownLoading = true;
-          this.isAddDashboardBannersDivHidden = true;
         }else{
           message = result.message;
         }
@@ -483,6 +487,7 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   delete(item: any) {
+    this.isDeleteOptionClicked = true;
     this.customResponse = new CustomResponse();
     this.vanityURLService.deleteCustomLink(item.id,this.moduleType).subscribe(result => {
       if (result.statusCode === 200) {
@@ -496,9 +501,11 @@ export class CustomLinksUtilComponent implements OnInit {
         this.referenceService.goToTop();
         this.pagination.pageIndex = 1;
         this.isAdd = true;
+        this.isDeleteOptionClicked = false;
         this.callInitMethods();
       }
     }, error => {
+      this.isDeleteOptionClicked = false;
       let message = this.moduleType==this.properties.dashboardButtons ? 'Error while deleting dashboard button':this.properties.serverErrorMessage;
       if(this.moduleType==this.properties.dashboardBanners){
         message = this.referenceService.getApiErrorMessage(error);

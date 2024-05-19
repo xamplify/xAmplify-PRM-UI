@@ -1,7 +1,7 @@
 <form [formGroup]="customLinkForm" autocomplete="off" (keydown.enter)="$event.preventDefault()">
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <app-response-message [customResponse]="dashboardBannersInfoMessage" [showCloseIcon]="false" *ngIf="dashboardBannersInfoMessage.isVisible && isAddDashboardBannersDivHidden"></app-response-message>
-  <app-modal-popup-loader *ngIf="isDropDownLoading || isAddDashboardBannersDivHidden"></app-modal-popup-loader>
+  <app-modal-popup-loader *ngIf="isDropDownLoading || isLoadingBanners"></app-modal-popup-loader>
   <fieldset *ngIf="!isAddDashboardBannersDivHidden && !isDropDownLoading">
     <legend>{{headerText}}</legend>
       <div class="form-group col-xs-12 col-md-12">
@@ -143,8 +143,9 @@
 <!--List-->
 <fieldset style="margin: 20px 2px;">
   <legend>{{listHeaderText}}</legend>
-  <div class="alert alert-info text-center" *ngIf="pagination.totalRecords==0">No Data Found</div>
-  <ng-container *ngIf="pagination?.totalRecords>0">
+  <app-list-loader *ngIf="isLoadingBanners || isDeleteOptionClicked"></app-list-loader>
+  <div class="alert alert-info text-center" *ngIf="pagination.totalRecords==0 && !isLoadingBanners">No Data Found</div>
+  <ng-container *ngIf="pagination?.totalRecords>0 && !isLoadingBanners && !isDeleteOptionClicked">
     <ng-container *ngIf="moduleType==properties?.dashboardBanners">
       <div class="alert alert-info text-center" *ngIf="!isAddDashboardBannersDivHidden">{{properties?.maximumDashboardBannersLimitMessage}}</div>
        <span><strong>Dashboard banners : <span>{{pagination.totalRecords}}</span> / 5</strong></span>
