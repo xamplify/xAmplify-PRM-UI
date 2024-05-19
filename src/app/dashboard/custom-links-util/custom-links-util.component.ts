@@ -31,7 +31,7 @@ export class CustomLinksUtilComponent implements OnInit {
   customLinkDtos: Array<CustomLinkDto> = new Array<CustomLinkDto>();
   buttonActionType: boolean;
   iconNamesFilePath: string;
-  iconsList: any = [];
+  iconsList: Array<any> = new Array<any>();
   customLinkTypes :Array<any> = new Array<any>();
   selectedProtocol: string;
   saving = false;
@@ -48,8 +48,10 @@ export class CustomLinksUtilComponent implements OnInit {
   formData: any = new FormData();
   isImageLoading = false;
   isAdd = true;
-  isAddDashboardBannersDivHidden = false;
+  isAddDashboardBannersDivHidden = true;
   dashboardBannersInfoMessage:CustomResponse = new CustomResponse();
+  isDropDownLoading = true;
+  selectedButtonIcon = "";
 
   formErrors = {
     'title': '',
@@ -90,8 +92,9 @@ export class CustomLinksUtilComponent implements OnInit {
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
     private regularExpressions:RegularExpressions,public utilService:UtilService) {
       this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
-     this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
-      this.iconsList = result.icon_names;
+      this.vanityURLService.getCustomLinkIcons(this.iconNamesFilePath).subscribe(result => {
+       this.iconsList = result.names;
+       this.isDropDownLoading = false;
     }, error => {
       console.log(error);
     });
@@ -209,6 +212,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.previouslySelectedImagePath = "";
     this.isAddDashboardBannersDivHidden = false;
     this.dashboardBannersInfoMessage = new CustomResponse();
+    this.selectedButtonIcon = "";
   }
 
   findLinks(pagination: Pagination) {
@@ -258,11 +262,14 @@ export class CustomLinksUtilComponent implements OnInit {
         let message = "";
         if(this.moduleType==this.properties.dashboardButtons){
           message = this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT;
+          this.isDropDownLoading = true;
+          this.isAddDashboardBannersDivHidden = true;
         }else{
           message = result.message;
         }
         this.customResponse = new CustomResponse('SUCCESS',message, true);
         this.callInitMethods();
+        this.stopDropDownLoader();
       } else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
       }else if(result.statusCode==400){
@@ -306,6 +313,13 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
 
+  private stopDropDownLoader() {
+    setTimeout(() => {
+      this.isDropDownLoading = false;
+      this.isAddDashboardBannersDivHidden = false;
+    }, 500);
+  }
+
   private resetFormDataAndDtoProperties() {
     this.customLinkDto = new CustomLinkDto();
     this.formData.delete('dashboardBannerImage');
@@ -330,7 +344,10 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customLinkDto.title = this.customLinkDto.buttonTitle;
     this.customLinkDto.link = this.customLinkDto.buttonLink;
     this.customLinkDto.description = this.customLinkDto.buttonDescription;
-    this.customLinkDto.icon = this.customLinkDto.buttonIcon;
+    if(this.moduleType==this.properties.dashboardButtons){
+      this.customLinkDto.icon = this.selectedButtonIcon;
+      this.customLinkDto.buttonIcon = this.selectedButtonIcon;
+    }
     this.customLinkDto.loggedInUserId = this.authenticationService.getUserId();
     this.customLinkDto.openLinkInNewTab = this.customLinkDto.openInNewTab;
     /****XNFR-532*****/
@@ -341,6 +358,7 @@ export class CustomLinksUtilComponent implements OnInit {
 
   edit(id: number) {
     this.isImageLoading = true;
+    this.isDropDownLoading = true;
     this.isAdd = false;
     this.isAddDashboardBannersDivHidden = false;
     this.customResponse = new CustomResponse();
@@ -353,7 +371,9 @@ export class CustomLinksUtilComponent implements OnInit {
     if(this.moduleType==this.properties.dashboardButtons){
       const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
       this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
+      this.selectedButtonIcon = this.customLinkDto.buttonIcon;
       this.buildCustomLinkForm();
+      this.stopDropDownLoader(); 
     }else{
       this.ngxLoading = true;
       this.vanityURLService.getCustomLinkDetailsById(id).subscribe(
@@ -366,8 +386,8 @@ export class CustomLinksUtilComponent implements OnInit {
             this.customLinkDto.openInNewTab = this.customLinkDto.openLinkInNewTab;
             this.buildCustomLinkForm();
             this.previouslySelectedImagePath = this.customLinkDto.bannerImagePath;
-            //$('.dashboard-banner-image').css('height', 'auto');
             this.ngxLoading = false;
+            this.isDropDownLoading = false;
         },error=>{
           this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
           this.buttonActionType = true;
@@ -376,6 +396,7 @@ export class CustomLinksUtilComponent implements OnInit {
           this.buildCustomLinkForm();
           this.customLinkForm.get('customLinkType').setValue(this.defaultType);
           this.ngxLoading = false;
+          this.isDropDownLoading = false;
         });
     }
     
@@ -396,6 +417,7 @@ export class CustomLinksUtilComponent implements OnInit {
           if(statusCode==200){
             this.customResponse = new CustomResponse('SUCCESS',response.message,true);
             this.callInitMethods();
+          
           }else{
             this.removeTitleErrorClass();
             let data = response.data;
@@ -440,7 +462,14 @@ export class CustomLinksUtilComponent implements OnInit {
     this.vanityURLService.updateCustomLinkDetails(this.customLinkDto,this.moduleType,this.formData).subscribe(result => {
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT, true);
-        this.callInitMethods();
+        this.isDropDownLoading = true;
+        this.isAddDashboardBannersDivHidden = true;
+        setTimeout(() => {
+          this.callInitMethods();
+          this.isDropDownLoading = false;
+          this.isAddDashboardBannersDivHidden = false;
+        }, 500);
+        
       }
       else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
@@ -550,6 +579,10 @@ export class CustomLinksUtilComponent implements OnInit {
     this.formData.append("dashboardBannerImage", fileObj, uploadedImageName);
     this.isDashboardBannerImageUploaded = true;
     
+  }
+
+  getSelectedIcon(event:any){
+    this.selectedButtonIcon = event;
   }
 
 

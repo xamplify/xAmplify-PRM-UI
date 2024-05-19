@@ -29,7 +29,7 @@ declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
 @Injectable()
 export class ReferenceService {
-    
+	
   renderer: Renderer;
   swalConfirmButtonColor: "#54a7e9";
   swalCancelButtonColor: "#999";
@@ -3587,6 +3587,14 @@ previewVanityEmailTemplateInNewTab(id:any){
 openWindowInNewTab(url:string){
   window.open(url,"_blank");
 }
+
+preivewAssetOnNewHost(id: any) {
+  let encodedId = btoa(id);
+  let encodedAccessToken = btoa(this.authenticationService.access_token);
+  let url = this.envService.PREVIEW_HOST+"preview/"+encodedId+"/"+encodedAccessToken;
+  window.open(url,"_blank");
+}
+  
 
 
 

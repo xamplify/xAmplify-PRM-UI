@@ -860,7 +860,7 @@
                                                                 Contact List
                                                             </span>
                                                         </h6>
-                                                        <h6 *ngIf="contactList?.companyList || checkNameForCompanyList(contactList.name) && !bannerDisplayed"
+                                                        <h6 *ngIf="contactList?.companyList && !bannerDisplayed"
                                                             class="view-banner view-banner-green mt5 left-flt" translate>
                                                             <span class="" data-toggle="tooltip" data-placement="top"
                                                                 title="This list is associated with a company." translate>Company

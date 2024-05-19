@@ -3079,3 +3079,7 @@ span.icon-alignments {
  padding-right: 15px !important;
 }
 }
+
+.display-inline{
+  display: inline !important;
+}

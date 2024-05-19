@@ -1600,11 +1600,7 @@ appendValueToSubjectLine(event:any){
             this.referenceService.previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id);
         }
     }
-    checkCompanyList(name: any){
-        let position=  name.search('Company List');
-        return  position != -1 ? true: false;
-    }
-   
+
     filterContacts(filterType:string){
 		this.contactListPagination.pageIndex = 1;
 		this.contactListPagination.filterBy =filterType;
