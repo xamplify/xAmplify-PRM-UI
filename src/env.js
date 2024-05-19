@@ -5,7 +5,7 @@
 	/*  window.__env.apiUrl = 'https://xamplify.co/';*/
 
 	// Whether or not to enable debug mode
-	// Setting this to false will disable console output
+	// Setting this to false will disable the console output
 	/*************Local*******************************/
 
 
@@ -13,7 +13,7 @@
 	window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
 	window.__env.SERVER_URL = 'http://localhost:8090/'; // xamplify backend production server
 	window.__env.imagesHost = "http://localhost:8000/images/";
-	window.__env.domainName = "demo";
+	window.__env.domainName = "";
 	window.__evnv.PREVIEW_HOST = "http://localhost:5000/";
 
 
