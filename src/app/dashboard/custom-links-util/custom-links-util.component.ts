@@ -249,6 +249,7 @@ export class CustomLinksUtilComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
       });
     }
+    this.isDropDownLoading = false;
   }
 
   save() {
