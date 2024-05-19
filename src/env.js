@@ -21,10 +21,10 @@
 	//window.__evnv.PREVIEW_HOST = "http://localhost:5000/";
 
 	/*********************QA**********************/
-	//window.__env.CLIENT_URL = 'https://xamplify.co/';
-	//window.__env.SERVER_URL =  'https://aravindu.com/';
-	//window.__env.imagesHost = "https://aravindu.com/vod/images/";
-	//window.__evnv.PREVIEW_HOST = "http://localhost:5000/";
+	window.__env.CLIENT_URL = 'https://xamplify.co/';
+	window.__env.SERVER_URL =  'https://aravindu.com/';
+	window.__env.imagesHost = "https://aravindu.com/vod/images/";
+	window.__evnv.PREVIEW_HOST = "http://localhost:5000/";
 
 	/*********************Release**********************/
 	//window.__env.CLIENT_URL = 'https://xtremand.com/';
