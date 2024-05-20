@@ -300,7 +300,7 @@
 									<select class="form-control" [(ngModel)]="eventCampaign.dealPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="dealPipelineId"
 										id="dealPipelineId" (change)="validatePipeline();"
-										[disabled]="isPreviewEvent || || isEventUpdate">
+										[disabled]="isPreviewEvent || isEventUpdate">
 										<option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">
 											{{pipeline.name}}</option>
 									</select>
