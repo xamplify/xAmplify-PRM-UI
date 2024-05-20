@@ -275,13 +275,50 @@
 									</div>
 								</div>
 							</div>
+
+							 <!--Lead Ticket Type-->
+							 <div class="form-group" [attr.class]="leadTicketTypeClass"
+							 style="margin-bottom: 8px" *ngIf="eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
+							 <label class="control-label col-sm-3">Lead Ticket Type<span
+								 class="required"><strong>*</strong></span></label>
+								 <div class="col-sm-9">
+									 <select class="form-control" [(ngModel)]="eventCampaign.leadTicketTypeId" 
+										 [ngModelOptions]="{standalone: true}"
+										 placeholder="leadTicketTypeId" id="leadTicketTypeId" [disabled]="preview"
+										 (ngModelChange)="onChangeLeadTicketType()" (input)="validateField('leadTicketTypeId',false)">
+										 <option [value]="0">Select Lead TicketType</option>
+										 <option *ngFor="let leadTicketType of leadTicketTypes"     
+										 [value]="leadTicketType.id">{{leadTicketType.name}}</option>
+									 </select>
+								 </div>
+						 </div>
+
+						 <!--Deal Ticket Type-->
+						 <div class="form-group" [attr.class]="dealTicketTypeClass"
+							 style="margin-bottom: 8px" *ngIf="eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
+							 <label class="control-label col-sm-3">Deal Ticket Type<span
+								 class="required"><strong>*</strong></span></label>
+								 <div class="col-sm-9">
+									 <select class="form-control" [(ngModel)]="eventCampaign.dealTicketTypeId"
+										 [ngModelOptions]="{standalone: true}"
+										 placeholder="dealTicketTypeId" id="dealTicketTypeId" [disabled]="preview"
+										 (ngModelChange)="onChangeDealTicketType()" (input)="validateField('dealTicketTypeId',false)">
+										 <option [value]="0">Select Deal Ticket Type</option>
+										 <option *ngFor="let dealTicketType of dealTicketTypes"     
+										 [value]="dealTicketType.id">{{dealTicketType.name}}</option>
+									 </select>
+								 </div>
+						 </div>
+							 
+
+
 							<div class="form-group" *ngIf="eventCampaign.configurePipelines"
 								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 								<label class="control-label col-sm-3">Lead Pipeline<span>
 										<b style="color: #f55d7a !important">*</b>
 									</span></label>
 								<div class="col-sm-9">
-									<select class="form-control" [(ngModel)]="eventCampaign.leadPipelineId"
+									<select class="form-control" [ngClass]="activeCRMDetails?.type ==='HALOPSA'?'disabled':''" [(ngModel)]="eventCampaign.leadPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="leadPipelineId"
 										id="leadPipelineId" (change)="validatePipeline();"
 										[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">
@@ -296,7 +333,7 @@
 										<b style="color: #f55d7a !important">*</b>
 									</span></label>
 								<div class="col-sm-9">
-									<select class="form-control" [(ngModel)]="eventCampaign.dealPipelineId"
+									<select class="form-control" [ngClass]="activeCRMDetails?.type ==='HALOPSA'?'disabled':''" [(ngModel)]="eventCampaign.dealPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="dealPipelineId"
 										id="dealPipelineId" (change)="validatePipeline();"
 										[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">

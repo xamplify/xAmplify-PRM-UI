@@ -1331,4 +1331,16 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    getHalopsaPipelinesByTicketType(ticketTypeId: number, _userId: number) {
+        return this.http.get(this.URL + "/pipeline/ticket-type/"+ticketTypeId+ "/" +_userId+"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getHalopsaTicketTypes(_userId: number) {
+        return this.http.get(this.URL + "/halopsa/opportunity/types/" + _userId+ "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }
