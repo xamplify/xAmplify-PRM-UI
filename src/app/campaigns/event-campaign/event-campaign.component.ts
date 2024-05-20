@@ -253,6 +253,15 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     activeCRMDetails: any;
     campaignRecipientsLoader = false;
 
+    /** XNFR-530 **/
+    hideConfigurePipelineCrmsForCreating = ['SALESFORCE'];
+    hideConfigurePipelineCrmsForRedistributing = ['SALESFORCE', 'PIPEDRIVE', 'MARKETO', 'HUBSPOT', 'MICROSOFT', 'HALOPSA'];
+    hideLeadPipelinesForCreating = [];
+    hideLeadPipelinesForRedistributing = ['CONNECTWISE', 'PIPEDRIVE'];
+    hideDealPipelines = [];
+    showLeadPipelines: boolean = false;
+    showDealPipelines: boolean = false;
+
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
         public campaignService: CampaignService,
@@ -554,7 +563,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
         this.listEmailTemplatesFolders();
         this.listCategories();
-        this.listCampaignPipelines();
+        //this.listCampaignPipelines();
         this.eventCampaign.leadPipelineId = 0;
         this.eventCampaign.dealPipelineId = 0;
 
@@ -589,47 +598,52 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     // }
 
 
-    listCampaignPipelines() {
-        if (this.enableLeads) {
-            this.campaignService.listCampaignPipelines(this.loggedInUserId)
-                .subscribe(
-                    response => {
-                        if (response.statusCode == 200) {
-                            let data = response.data;
-                            this.leadPipelines = data.leadPipelines;
-                            this.dealPipelines = data.dealPipelines;
-                            if (!this.activeCRMDetails.activeCRM) {
-                                this.leadPipelines.forEach(pipeline => {
-                                    if (pipeline.default) {
-                                        this.defaultLeadPipelineId = pipeline.id;
-                                        this.eventCampaign.leadPipelineId = pipeline.id;
-                                    }
-                                });
-
-                                this.dealPipelines.forEach(pipeline => {
-                                    if (pipeline.default) {
-                                        this.defaultDealPipelineId = pipeline.id;
-                                        this.eventCampaign.dealPipelineId = pipeline.id;
-                                    }
-                                });
-                            } else {
-                                this.defaultLeadPipelineId = this.leadPipelines[0].id;
-                                this.eventCampaign.leadPipelineId = this.leadPipelines[0].id;
-                                this.defaultDealPipelineId = this.dealPipelines[0].id;                               
-                                if (this.eventCampaign.dealPipelineId == undefined || this.eventCampaign.dealPipelineId == null || this.eventCampaign.dealPipelineId === 0) {
-                                    this.eventCampaign.dealPipelineId = this.dealPipelines[0].id;
-                                }
-                            }
-
-                        }
-                    },
-                    error => {
-                        this.httpRequestLoader.isServerError = true;
-                    },
-                    () => { }
-                );
+    listCampaignPipelines() {        /**   XNFR-530   **/
+        if (!this.reDistributeEvent) {
+            this.showConfigurePipelines = !(this.hideConfigurePipelineCrmsForCreating.includes(this.activeCRMDetails.type) || !this.activeCRMDetails.activeCRM);
+            this.showLeadPipelines = !this.hideLeadPipelinesForCreating.includes(this.activeCRMDetails.type) && this.showConfigurePipelines;
+            this.showDealPipelines = !this.hideDealPipelines.includes(this.activeCRMDetails.type) && this.showConfigurePipelines;
         }
+        else {
+            this.showConfigurePipelines = !(this.hideConfigurePipelineCrmsForRedistributing.includes(this.activeCRMDetails.type) || !this.activeCRMDetails.activeCRM);
+            this.showLeadPipelines = !this.hideLeadPipelinesForRedistributing.includes(this.activeCRMDetails.type) && this.showConfigurePipelines;
+            this.showDealPipelines = !this.hideDealPipelines.includes(this.activeCRMDetails.type) && this.showConfigurePipelines;
+        }
+        this.campaignService.listCampaignPipelines(this.loggedInUserId)
+            .subscribe(
+                response => {
+                    if (response.statusCode == 200) {
+                        let data = response.data;
+                        this.leadPipelines = data.leadPipelines;
+                        this.dealPipelines = data.dealPipelines;
+                        if (!this.activeCRMDetails.activeCRM) {
+                            this.leadPipelines.forEach(pipeline => {
+                                if (pipeline.default) {
+                                    this.defaultLeadPipelineId = pipeline.id;
+                                    this.eventCampaign.leadPipelineId = pipeline.id;
+                                }
+                            });
 
+                            this.dealPipelines.forEach(pipeline => {
+                                if (pipeline.default) {
+                                    this.defaultDealPipelineId = pipeline.id;
+                                    this.eventCampaign.dealPipelineId = pipeline.id;
+                                }
+                            });
+                        } else {
+                            this.defaultLeadPipelineId = this.leadPipelines[0].id;
+                            this.eventCampaign.leadPipelineId = this.leadPipelines[0].id;
+                            this.defaultDealPipelineId = this.dealPipelines[0].id;
+                            this.eventCampaign.dealPipelineId = this.dealPipelines[0].id;
+                        }
+
+                    }
+                },
+                error => {
+                    this.httpRequestLoader.isServerError = true;
+                },
+                () => { }
+            );
     }
 
 
@@ -1545,7 +1559,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 'vanityUrlCampaign': vanityUrlCampaign,
                 'endDateString': eventCampaign.endDateString,
                 "clientTimeZone": eventCampaign.clientTimeZone,
-                'configurePipelines': eventCampaign.configurePipelines
+                'configurePipelines': eventCampaign.configurePipelines,
+                'leadPipelineId': eventCampaign.leadPipelineId,
+                'dealPipelineId': eventCampaign.dealPipelineId
             }
             eventCampaign = customEventCampaign;
         }
@@ -3121,15 +3137,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     getActiveCRMDetails(): any {
         this.referenceService.loading(this.httpRequestLoader, true);
         this.salesforceIntegrated = false;
-        if (this.enableLeads) {
             this.loading = true;
             this.integrationService.getActiveCRMDetailsByUserId(this.authenticationService.getUserId()).subscribe(data => {
                 this.activeCRMDetails = data.data;
-                if (this.activeCRMDetails.activeCRM) {
-                    if ("HUBSPOT" === this.activeCRMDetails.type) {
-                        this.showConfigurePipelines = true;
-                        this.listCampaignPipelines();
-                    } else if ("SALESFORCE" === this.activeCRMDetails.type) {
+                if (this.activeCRMDetails.activeCRM && "SALESFORCE" === this.activeCRMDetails.type) {
                         this.salesforceIntegrated = true;
                         this.listCampaignPipelines();
                         this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
@@ -3144,7 +3155,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         }, error => {
                             this.logger.error(error, "Error in salesforce checkIntegrations()");
                         }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
-                    }
                 } else {
                     this.showConfigurePipelines = true;
                     this.listCampaignPipelines();
@@ -3154,7 +3164,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 this.referenceService.loading(this.httpRequestLoader, false);
                 this.logger.error(error, "Error in salesforce checkIntegrations()");
             }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
-        }
         this.loading = false;
     }
 

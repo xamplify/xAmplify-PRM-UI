@@ -246,8 +246,9 @@
 									</span>
 								</div>
 							</div>
+							<!-- && ((!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember && enableLeads))-->
 							<div class="form-group"
-								*ngIf="showConfigurePipelines && ((!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads))">
+								*ngIf="showConfigurePipelines && ((eventCampaign.channelCampaign && !reDistributeEvent) || reDistributeEvent) ">
 								<label class="control-label col-sm-3 floatLeftText" translate>Configure
 									Pipelines</label>
 								<div class="col-sm-3">
@@ -275,8 +276,8 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group" *ngIf="eventCampaign.configurePipelines"
-								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
+							<div class="form-group" *ngIf="showLeadPipelines && showConfigurePipelines && eventCampaign.configurePipelines"
+								[class.disabled]="isPreviewEvent">
 								<label class="control-label col-sm-3">Lead Pipeline<span>
 										<b style="color: #f55d7a !important">*</b>
 									</span></label>
@@ -284,14 +285,14 @@
 									<select class="form-control" [(ngModel)]="eventCampaign.leadPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="leadPipelineId"
 										id="leadPipelineId" (change)="validatePipeline();"
-										[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">
+										[disabled]="isPreviewEvent || isEventUpdate">
 										<option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">
 											{{pipeline.name}}</option>
 									</select>
 								</div>
 							</div>
-							<div class="form-group" *ngIf="eventCampaign.configurePipelines"
-								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
+							<div class="form-group" *ngIf="showDealPipelines && showConfigurePipelines && eventCampaign.configurePipelines"
+								[class.disabled]="isPreviewEvent">
 								<label class="control-label col-sm-3">Deal Pipeline<span>
 										<b style="color: #f55d7a !important">*</b>
 									</span></label>
@@ -299,7 +300,7 @@
 									<select class="form-control" [(ngModel)]="eventCampaign.dealPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="dealPipelineId"
 										id="dealPipelineId" (change)="validatePipeline();"
-										[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">
+										[disabled]="isPreviewEvent || || isEventUpdate">
 										<option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">
 											{{pipeline.name}}</option>
 									</select>

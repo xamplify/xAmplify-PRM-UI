@@ -296,11 +296,12 @@ export class AddDealComponent implements OnInit {
                 self.pipelines.push(campaignDealPipeline);
                 self.createdForPipelines.push(campaignDealPipeline);
                 self.deal.pipelineId = campaignDealPipeline.id;
-                self.deal.createdForPipelineId = campaignDealPipeline.id;
+                self.deal.createdForPipelineId = campaignDealPipeline.createdForCampaignPipelines.id;
+                self.deal.createdByPipelineId = campaignDealPipeline.createdByCampaignPipelines.id;
                 self.pipelineIdError = false;
                 self.createdForPipelineIdError = false;
-                self.stages = campaignDealPipeline.stages;
-                self.createdForStages = campaignDealPipeline.stages;
+                self.createdByStages = campaignDealPipeline.createdByCampaignPipelines.stages;
+                self.createdForStages = campaignDealPipeline.createdForCampaignPipelines.stages;
                 if (this.actionType == 'add' || this.actionType == 'edit') {
                   self.resetStages();
                 }

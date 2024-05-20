@@ -288,9 +288,10 @@ export class AddLeadComponent implements OnInit {
             if (data.statusCode == 200) {
               let campaignLeadPipeline = data.data;
               self.lead.pipelineId = campaignLeadPipeline.id;
-              self.lead.createdForPipelineId = campaignLeadPipeline.id;
-              self.stages = campaignLeadPipeline.stages;
-              self.createdForStages = campaignLeadPipeline.stages;
+              self.lead.createdForPipelineId = campaignLeadPipeline.createdForCampaignPipelines.id;
+              self.lead.createdByPipelineId = campaignLeadPipeline.createdByCampaignPipelines.id;
+              self.createdByStages = campaignLeadPipeline.createdByCampaignPipelines.stages;
+              self.createdForStages = campaignLeadPipeline.createdForCampaignPipelines.stages;
               self.hasCampaignPipeline = true;
             } else if (data.statusCode == 404) {
               self.lead.pipelineId = 0;
