@@ -279,7 +279,10 @@
                                                         data-toggle="tooltip" data-placement="bottom" title="View"
                                                         (click)="$event.stopPropagation();viewContent(content, i)">
                                                         <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
-                                                        <i *ngIf="i==contentIndexInView" class="fa fa-check-circle-o success display-inline"></i>
+                                                        <div class="clickicons"></div>
+                                                    </a>
+                                                    <a class="custom-icon" *ngIf="i==contentIndexInView">
+                                                        <i class="fa fa-check-circle-o display-inline track-selected" aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
                                                     </a>
                                                 </div>
