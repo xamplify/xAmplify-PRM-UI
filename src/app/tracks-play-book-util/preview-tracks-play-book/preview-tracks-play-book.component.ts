@@ -194,7 +194,6 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.videoLoader = false;
     }
     this.assetViewLoader = false; 
-
    }, 300);
   }
 
