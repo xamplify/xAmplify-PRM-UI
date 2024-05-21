@@ -2584,3 +2584,6 @@ table tr:nth-child(odd).highlightRow, table tr:nth-child(odd).highlightRow:hover
   border: 1px solid var(--btn-primary-border-color) !important;
   opacity: 0.8;
 }
+.vendor-details-tiles {
+  border: 1px solid var(--border-color) !important;
+}

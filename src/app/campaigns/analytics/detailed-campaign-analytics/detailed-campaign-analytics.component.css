@@ -729,3 +729,7 @@ th.leftAlignTableth {
    flex-wrap: wrap;
   }
   }
+  .campaign_type{
+  position: relative;
+  z-index: 99;
+  }
