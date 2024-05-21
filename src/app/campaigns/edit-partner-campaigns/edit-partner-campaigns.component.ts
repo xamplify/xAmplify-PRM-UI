@@ -728,7 +728,7 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             vanityUrlCampaign = true;
         }
 
-        if (this.activeCRMDetails.type !== 'CONNECTWISE') {
+        if (this.activeCRMDetails.type !== 'CONNECTWISE' || !this.campaign.configurePipelines) {
             this.campaign.leadPipelineId = null;
             this.campaign.dealPipelineId = null;
         }
