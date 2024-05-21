@@ -12,6 +12,8 @@
 	window.__env.imagesHost = "http://localhost:8000/images/";
 	window.__env.domainName = "";
 	window.__env.PREVIEW_HOST = "http://localhost:5000/";
+
+
 	
 	//USE BELOW URLS FOR CLIENT AND SERVER CONNECTIONS
 	/********************Production************************/
@@ -21,10 +23,12 @@
 	//window.__env.PREVIEW_HOST = "http://localhost:5000/";
 
 	/*********************QA**********************/
+
 	//window.__env.CLIENT_URL = 'https://xamplify.co/';
 	//window.__env.SERVER_URL =  'https://aravindu.com/';
 	//window.__env.imagesHost = "https://aravindu.com/vod/images/";
 	//window.__env.PREVIEW_HOST = "http://localhost:5000/";
+
 
 	/*********************Release**********************/
 	//window.__env.CLIENT_URL = 'https://xtremand.com/';
