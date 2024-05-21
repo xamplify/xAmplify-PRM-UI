@@ -4727,12 +4727,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			case 'Neumorphism Dark(Beta)':
 				return 'assets/images/theme/Final/beta-neumorphism-dark.webp';
 			case 'Glassomorphism Light':
-				return 'assets/images/theme/Final/beta-neumorphism-light.webp';
+				return 'assets/images/theme/Final/glassomorphism-light.webp';
 			case 'Glassomorphism Dark':
-				return 'assets/images/theme/Final/beta-neumorphism-dark.webp'
+				return 'assets/images/theme/Final/glassomorphism-dark.webp';
 			default:
 				return '';
 		}
 	}
+	//   updateBackgroundImage(){
 
+	//   }
 }

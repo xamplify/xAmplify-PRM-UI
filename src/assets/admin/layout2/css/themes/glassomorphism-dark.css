@@ -438,7 +438,7 @@ tr {
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 .modal-content {
-  background-color: rgb(0 0 0 / 75%) !important;
+  background-color: rgb(0 0 0 / 94%) !important;
   color: white !important;
 }
 .upload-asset-div,
@@ -520,7 +520,7 @@ tr {
     z-index: 1000;
 }
 div.scrolled{
-  background-color: rgb(16 18 27 / 68%) !important; /* Darker background color when scrolled */
+  background-color: rgb(16 18 27 / 93%) !important; /* Darker background color when scrolled */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -545,8 +545,8 @@ div.scrolled{
 
 /**** dropdownmenu ***/
 .dropdown-menu {
-  background-color: rgba(16 18 27 / 40%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: rgb(16 18 27 / 93%) !important;
+  border: 1px solid #ffffff47 !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
 }
 .dropdown ul li a:hover {
@@ -805,8 +805,8 @@ select {
 }
 .custom {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-  background: rgba(16 18 27 / 40%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3 )!important;
+  background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
+  border: 1px solid #ffffff47 !important;
   backdrop-filter: blur(5px);
 }
 .item__preview.item__preview--image.custom {
@@ -2136,8 +2136,8 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .btn-group button{
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  background: rgba(16 18 27 / 40%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3 )!important;
+  background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
+  border: 1px solid #ffffff47 !important;
   backdrop-filter: blur(5px);
 }
 
@@ -2198,7 +2198,7 @@ tbody {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   border-radius: 0px 0px 10px 10px !important;
   backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid #ffffff47 !important;
 }
 /* table header border top remove */
 .table>thead:first-child>tr:first-child>th {
@@ -2508,7 +2508,7 @@ input {
   margin-left: 188px;
   margin-top: -78px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  background: rgba(16 18 27 / 40%) !important;
+  background: rgb(16 18 27 / 56%) !important;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   backdrop-filter: blur(5px);
@@ -3134,13 +3134,14 @@ justify-content: center!important;
     height: 3.5rem !important;
     /* padding: 0 2rem !important; */
     border-radius: 8px !important;
-    background: rgb(146 151 179 / 8%) !important;
+    background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
     /* background-size: 400% !important; */
     color: #fff !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)!important;
     margin-left: 4px;
   }
+  
   /* .button:hover::before,
   .button_blue:hover::before {
     transform: scaleX(1) !important;
@@ -3361,6 +3362,7 @@ border:0px!important;
 }
 button.btn.custom {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  background: linear-gradient(348deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
 }
 /* 30/11/2023 */
 .campaignViewIcon{
@@ -4437,7 +4439,7 @@ button.button.bgcolor-unset:hover {
   }
 }
 button.button.p-rgt_p-top.bgcolor-unset:hover {
-  background: rgba(16 18 27 / 40%) !important;
+  background: linear-gradient(348deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
 }
 button#addContacts:hover,
 button#copyFromClipBoard:hover,
