@@ -39,10 +39,10 @@ body.light-mode::before{
 .div.thembgc,
 .div.thembg-color,
 .img-thumbnail {
-    background: rgba(16 18 27 / 40%) !important;
+    background: rgb(255 255 255 / 64%) !important;
     /* background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.45) 100%); */
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgb(195 205 207) !important;
 }
 .div.thembgc,
 .div.thembg-color,
@@ -861,7 +861,7 @@ span.ui-column-resize {
 }
 .profile-usermenu ul li a:hover {
   background-color: rgb(255 255 255 / 20%) !important;
-  color: #ffffffb0 !important;
+  color: #000 !important;
 }
 .timeline > li > .timeline-panel {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -939,7 +939,7 @@ i.IconCustomization:hover ,
   /* box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
 }
 .profile-usermenu ul li a {
-  color: #ffffffb0 !important;
+  color: #000 !important;
 }
 .reload-btn {
   background-color: #22313a !important;
@@ -2194,13 +2194,13 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 thead > tr {
   background-color: rgba(255, 255, 255, 0.1)!important;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)!important;
+  box-shadow: none !important;
   border-radius: 10px 10px 0px 0px !important;
   backdrop-filter: blur(5px);
 }
 tbody {
   background: rgb(255 255 255 / 31%) !important;
-  box-shadow: -1px 3px 8px -1px rgba(0, 0, 0, 0.2);
+  /* box-shadow: -1px 3px 8px -1px rgba(0, 0, 0, 0.2); */
   border-radius: 0px 0px 10px 10px !important;
   backdrop-filter: blur(5px);
   border: 1px solid rgb(255 255 255 / 31%) !important;
@@ -4412,7 +4412,9 @@ button.button.p-rgt_p-top.bgcolor-unset span::before{
 } */
 /***** Sudha Sri(7-5-2024) *****/
 button.button.bgcolor-unset{
+  /* background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important; */
   background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
+
 }
 button.button.bgcolor-unset:hover {
   background-size: 250% !important;
@@ -4523,6 +4525,11 @@ div.scrolled{
 }
 .Btn-Green, .btn-primary {
   color: #fff !important;
+}
+.dashboard-stat .more {
+  opacity: 1;
+  font-weight: 600;
+  color: #000 !important;
 }
 
 /****** Mobile view ****/
