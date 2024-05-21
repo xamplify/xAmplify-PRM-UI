@@ -39,10 +39,10 @@ body.light-mode::before{
 .div.thembgc,
 .div.thembg-color,
 .img-thumbnail {
-    background: rgb(255 255 255 / 64%) !important;
+    background: rgba(16 18 27 / 40%) !important;
     /* background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.45) 100%); */
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-    border: 1px solid rgb(195 205 207) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .div.thembgc,
 .div.thembg-color,
@@ -545,8 +545,8 @@ tr {
 
 /**** dropdownmenu ***/
 .dropdown-menu {
-  background-color: rgb(255 255 255 / 31%) !important;
-  border: 1px solid rgb(255 255 255 / 35%) !important;
+  background-color: rgb(255 255 255 / 75%) !important;
+  border: 1px solid rgb(208 207 199) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
 }
 .dropdown ul li a:hover {
