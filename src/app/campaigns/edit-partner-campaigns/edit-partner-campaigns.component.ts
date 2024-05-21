@@ -728,6 +728,11 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             vanityUrlCampaign = true;
         }
 
+        if (this.activeCRMDetails.type !== 'CONNECTWISE') {
+            this.campaign.leadPipelineId = null;
+            this.campaign.dealPipelineId = null;
+        }
+
         const data = {
             'campaignName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
             'fromName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),

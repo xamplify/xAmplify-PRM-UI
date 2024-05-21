@@ -1515,6 +1515,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 vanityUrlCampaign = true;
             }
 
+            if (this.activeCRMDetails.type !== 'CONNECTWISE' && this.reDistributeEvent) {
+                this.eventCampaign.leadPipelineId = null;
+                this.eventCampaign.dealPipelineId = null;
+            }
+
             const customEventCampaign = {
                 'id': eventCampaign.id,
                 'campaign': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.eventCampaign.campaign),
