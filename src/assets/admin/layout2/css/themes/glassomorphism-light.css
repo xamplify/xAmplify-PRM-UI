@@ -9,17 +9,11 @@
   color: #000 !important;
 }
 body{
-  /* background: linear-gradient(326deg, rgba(147, 13, 224, 1) 0%, rgba(156, 0, 224, 1) 15%,  rgba(0, 159, 231, 1) 50%,  rgba(0, 222, 223, 1) 100%) !important; */
-  background-image: url(https://wallpapershome.com/images/wallpapers/macos-big-sur-1280x720-dark-wwdc-2020-22655.jpg);
-  /* color: #000 !important; */
+  background-image: url(/assets/images/glass-light.PNG);
+  color: white !important;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   background-size: cover;
- background-position: center;
- justify-content: center;
- align-items: center;
- flex-direction: column;
- padding: 2em;
- width: 100%;
- height: 100vh;
 }
 body.light-mode::before{
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.45) 100%);
@@ -1011,7 +1005,7 @@ input.cmn-toggle-round-flat + label:before {
   background-color: rgb(255 253 253 / 57%) !important;
 }
 .timeline-item {
-  background: #2f4857 !important ;
+  background: rgb(146 151 179 / 8%) !important;
   border-color: rgba(255, 255, 255, 0.1) !important ;
 }
 .social-border {
@@ -1024,14 +1018,14 @@ input.cmn-toggle-round-flat + label:before {
   border: 1px solid #2f4857 !important;
 }
 .dropdown-content-odd {
-  background-color: #22313a !important;
+  background-color: rgb(146 151 179 / 8%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .dropdown-option {
   color: white !important;
 }
 .dropdown-option:hover {
-  background-color: #2b3c46 !important;
+  background-color: rgb(146 151 179 / 8%) !important;
 }
 #myInput,
 .ogImage {
@@ -2389,16 +2383,15 @@ span.select-check-box {
   box-shadow: none !important;
 }
 ::-webkit-scrollbar-thumb {
-  background: #505050;
+  background: rgb(1 2 3 / 40%);
   border-radius: 16px;
-  box-shadow: inset 2px 2px 2px hsla(0, 0%, 100%, 0.25),
-    inset -2px -2px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: -1px 3px 8px -1px rgba(0, 0, 0, 0.2);
 }
 ::-webkit-scrollbar-track {
-  background: linear-gradient(90deg, #434343, #434343 1px, #111 0, #111);
+  background: rgb(255 255 255 / 31%);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2b3c46;
+  background: rgb(1 2 3 / 40%);
 }
 /** Tharak (17-10-2023) **/
 a.UserguideBtnCustomization {
@@ -2678,7 +2671,7 @@ i.IconodownloadedCount {
     backdrop-filter: blur(5px);
 }
 th {
-  color: #fff !important;
+  color: #000 !important;
 }
 .boxshadow-to-card,
 .mdf-request-header {
@@ -4519,4 +4512,9 @@ a:link{
 div.visual i.fa.fa-check-circle{
   color: #000 !important;
   opacity: 3 !important;
+}
+div.scrolled{
+  background-color: rgb(255 255 255 / 90%) !important; /* Darker background color when scrolled */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
