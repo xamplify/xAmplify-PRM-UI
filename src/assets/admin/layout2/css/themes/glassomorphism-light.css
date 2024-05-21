@@ -9,7 +9,7 @@
   color: #000 !important;
 }
 body{
-  background-image: url(/assets/images/glass-light.PNG);
+  background-image: url(/assets/images/glassmorphism-images/glassmorphism-light.avif);
   color: white !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -444,7 +444,7 @@ tr {
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 .modal-content {
-  background-color: rgb(211 209 209 / 100%) !important;
+  background-color: rgb(255, 255, 255) !important;
   color: #000 !important;
 }
 .upload-asset-div,
@@ -2512,8 +2512,9 @@ input {
 .page-sidebar-menu.page-sidebar-menu-hover-submenu > li:hover > .sub-menu {
   margin-left: 188px;
   margin-top: -78px;
-  /* box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); */
-  background: rgb(255 255 255 / 35%) !important;
+  box-shadow: none !important;
+  /* background: rgb(255 255 255 / 35%) !important; */
+  background: rgb(255 255 255) !important;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   /* backdrop-filter: blur(5px); */
@@ -3140,6 +3141,7 @@ justify-content: center!important;
     height: 3.5rem !important;
     /* padding: 0 2rem !important; */
     border-radius: 8px !important;
+    /* background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important; */
     background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
     /* background-size: 400% !important; */
     color: #fff !important;
@@ -4430,8 +4432,9 @@ button.button.bgcolor-unset:hover {
 .dashboard-stat.purple-soft .visual > i,
 .dashboard-stat.blue-sharp .visual > i,
 .dashboard-stat.blue-soft .visual > i{
-  color: #5a738e !important;
-  opacity: 0.2 !important;
+  color: #000 !important;
+  opacity: 0.9 !important;
+  font-size: 45px !important;
 }
 /***** Sudha Sri(8-5-2024) *****/
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-menu > li > a,
@@ -4517,4 +4520,14 @@ div.scrolled{
   background-color: rgb(255 255 255 / 90%) !important; /* Darker background color when scrolled */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.Btn-Green, .btn-primary {
+  color: #fff !important;
+}
+
+/****** Mobile view ****/
+@media (max-width: 991px) {
+  .page-container,.page-header.navbar .page-top {
+      background: none;
+  }
 }

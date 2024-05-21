@@ -34,7 +34,7 @@
          </a>
          <!-- END PAGE ACTIONS -->
          <!-- BEGIN PAGE TOP -->
-         <div class="page-top" [ngClass]="cskin.defaultSkin?'':'customskin-top'">
+         <div class="page-top" [ngClass]="cskin.defaultSkin?'':'customskin-top'" [class.active]="isNavbarBackgroundVisible">
             <!-- BEGIN HEADER SEARCH BOX -->
             <!-- SEARCH IS HIDDEN -->
             <form class="search-form search-form-expanded hidden" action="extra_search.html" method="GET">
