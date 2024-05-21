@@ -624,3 +624,7 @@ button:hover {
 .word-wrap{
   word-wrap: break-word;
 }
+.track-selected{
+  border: 1px solid green !important;
+  color: green;
+}

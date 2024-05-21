@@ -196,7 +196,7 @@
                                     </tr>
                                 </thead>
                                 <div></div>
-                                <tbody>
+                                <tbody class="pointer">
                                     <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
                                         <tr [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser, 'content-in-view' : (contentIndexInView == i)}"
                                             (click)="$event.stopPropagation();viewContent(content, i)">
@@ -204,9 +204,7 @@
                                                 <td style="width: 10%;">
                                                     <div class="list-image-container">
                                                         <div class="thumbnail-wrapper">
-                                                            <img class="custom-image-css"
-                                                                src="{{content?.dam?.thumbnailPath}}"
-                                                                alt="Image Not Found">
+                                                            <img class="custom-image-css" src="{{content?.dam?.thumbnailPath}}" alt="Image Not Found">
                                                         </div>
                                                         <div *ngIf="content?.dam?.assetType != undefined && (videoFormats.indexOf(content.dam.assetType?.toLowerCase())>-1)"
                                                             class="overlay-icon">
@@ -237,13 +235,8 @@
                                                     </h4>
                                                     <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
                                                         style="padding-top: 5px;">
-                                                        <h6 *ngIf="content.finished" style="background-color: #5cb85c;"
-                                                            class="banner" translate>
-                                                            Finished</h6>
-                                                        <h6 *ngIf="content.opened && !content.finished"
-                                                            style="background-color: #819081;" class="banner" translate>
-                                                            In
-                                                            Progress</h6>
+                                                        <h6 *ngIf="content.finished" style="background-color: #5cb85c;" class="banner">Finished</h6>
+                                                        <h6 *ngIf="content.opened && !content.finished" style="background-color: #819081;" class="banner">In Progress</h6>
                                                     </div>
                                                 </td>
                                                 <td class="text-center">{{content?.dam?.assetType}}</td>
@@ -286,6 +279,10 @@
                                                         data-toggle="tooltip" data-placement="bottom" title="View"
                                                         (click)="$event.stopPropagation();viewContent(content, i)">
                                                         <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                                                        <div class="clickicons"></div>
+                                                    </a>
+                                                    <a class="custom-icon" *ngIf="i==contentIndexInView">
+                                                        <i class="fa fa-check-circle-o display-inline track-selected" aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
                                                     </a>
                                                 </div>
