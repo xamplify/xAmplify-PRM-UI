@@ -578,7 +578,7 @@ div.scrolled{
 }
 /** alert **/
 .swal2-modal {
-  background-color: #2b3c46 !important;
+  background-color: rgb(16 18 27 / 93%) !important;;
 }
 .loader-container {
   background-color: #2b3c46 !important;
@@ -4448,4 +4448,10 @@ button#uploadCSV:hover{
 }
 .more{
   opacity: 0.9 !important;
+}
+button.swal2-confirm.styled{
+  background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
+}
+button.swal2-confirm.styled:hover{
+  background: linear-gradient(348deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
 }

@@ -578,7 +578,7 @@ tr {
 }
 /** alert **/
 .swal2-modal {
-  background-color: #2b3c46 !important;
+  background-color: rgb(255 255 255 / 92%) !important;
 }
 .loader-container {
   background-color: #2b3c46 !important;
@@ -608,7 +608,7 @@ tr {
 .exclusion-text-color,
 .swal2-content,
 .auto-resp {
-  color: white !important;
+  color: #000 !important;
 }
 .caption-color {
   color: white !important;
@@ -4537,4 +4537,16 @@ div.scrolled{
   .page-container,.page-header.navbar .page-top {
       background: none;
   }
+}
+button.swal2-confirm.styled {
+  background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
+  border: rgb(255 255 255 / 35%) !important;
+  outline-style: none;
+  color:#000;
+}
+button.swal2-cancel.styled{
+  color:#000;
+}
+button.swal2-confirm.styled:hover{
+  background: linear-gradient(348deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
 }
