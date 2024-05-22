@@ -4462,9 +4462,9 @@ button.button.bgcolor-unset:hover {
       font-size: 40px !important;
   }
 }
-button.button.p-rgt_p-top.bgcolor-unset:hover {
+/* button.button.p-rgt_p-top.bgcolor-unset:hover {
   background: linear-gradient(348deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
-}
+} */
 button#addContacts:hover,
 button#copyFromClipBoard:hover,
 button#uploadCSV:hover{

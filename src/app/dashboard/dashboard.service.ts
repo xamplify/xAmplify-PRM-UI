@@ -964,7 +964,7 @@ saveMultipleTheme(wrapper:any){
     .map(this.extractData)
     .catch(this.handleError);
 }
-multipleThemesShow(){
+findAllThemes(){
     let userId = this.authenticationService.getUserId();
     const url = this.authenticationService.REST_URL + 'custom/skin/theme/'+ userId +'/'+'?access_token=' + this.authenticationService.access_token;
     return this.http.get(url)

@@ -4366,7 +4366,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	showThemes() {
 		this.ngxloading = true;
-		this.dashBoardService.multipleThemesShow().subscribe(
+		this.dashBoardService.findAllThemes().subscribe(
 			(response) => {
 				this.ngxloading = false
 				this.themeDtoList = response.data;
