@@ -292,7 +292,7 @@
         padding-right: 12px;">
           <div *ngIf="isAdd || tracksPlayBook.description != undefined">
             <ckeditor [(ngModel)]="tracksPlayBook.description" #ckeditor [ngModelOptions]="{standalone: true}"
-              [config]="ckeConfig" (ready)="onReady($event)" debounce="500" maxlength="5000"
+              [config]="ckeConfig" (ready)="onReady($event)" debounce="500" 
               (change)="validateDescription();validateAllSteps()"
               (input)="setDescription();validateDescription();validateAllSteps()">
             </ckeditor>

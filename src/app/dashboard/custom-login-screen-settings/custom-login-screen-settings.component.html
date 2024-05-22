@@ -246,23 +246,27 @@
                   {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
                 </h4>
                 <div class="bar gridIconCustomization" *ngIf="emailTemplate.name != 'Create_Template'">
-                  <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Edit"
+                  <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
                     (click)="designTemplate(emailTemplate)">
                     <i class="fa fa-edit" aria-hidden="true"></i>
+                    <div class="clickicons"></div>
                   </a>
-                  <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview"
+                  <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Preview"
                     (click)="previewTemplate(emailTemplate)">
                     <i class="fa fa-eye" aria-hidden="true"></i>
+                    <div class="clickicons"></div>
                   </a>
-                  <a class="delete" data-toggle="tooltip" data-placement="top" title="delete"
+                  <a class="delete custom-icon" data-toggle="tooltip" data-placement="top" title="delete"
                     (click)="deleteOrDeleteAndUpdate(emailTemplate.id)" *ngIf="emailTemplate?.id != selectedTemplate">
                     <i class="fa fa-trash red" aria-hidden="true"></i>
+                    <div class="del-icon"></div>
                   </a>
                 </div>
                 <div class="bar gridIconCustomization" *ngIf="emailTemplate.name === 'Create_Template'">
-                  <a class="Iconhover" (click)="designTemplate(emailTemplate)" data-toggle="tooltip"
+                  <a class="Iconhover custom-icon" (click)="designTemplate(emailTemplate)" data-toggle="tooltip"
                     data-placement="top" title="Create Template">
                     <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    <div class="clickicons"></div>
                   </a>
                 </div>
               </div>

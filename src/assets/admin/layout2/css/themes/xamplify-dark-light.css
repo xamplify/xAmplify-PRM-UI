@@ -2687,3 +2687,7 @@ a.Iconhover.custom-grid-icon.border-none i.fa.fa-trash-o.trashIconCustomization:
     background-color: #286090;
     border-color: #204d74;
 }
+.vendor-details-tiles {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}

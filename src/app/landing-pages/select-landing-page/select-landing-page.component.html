@@ -55,7 +55,7 @@
                             *ngIf="httpRequestLoader.isLoading"></app-landing-page-loader>
                         <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
                         <ng-container *ngIf="!httpRequestLoader.isLoading">
-                            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20"
+                            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20 GridviewSidePaddings"
                                 *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                                 <div class="grid-box">
                                     <span class="ribbon1" *ngIf="landingPage.coBranded"><span
@@ -66,19 +66,22 @@
                                     <h4 title="{{landingPage.name}}">{{landingPage.name|slice:0:23}} <span
                                             *ngIf="landingPage.name?.length>23">....</span></h4>
                                     <div class="bar gridIconCustomization">
-                                        <a class="Iconhover" data-toggle="tooltip" data-placement="top"
+                                        <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top"
                                             title="Create  Page" (click)="showLandingPage(landingPage.id)">
                                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                            <div class="clickicons"></div>
                                         </a>
-                                        <a class="Iconhover" *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip"
+                                        <a class="Iconhover custom-grid-icon" *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip"
                                             data-placement="top" title="Save As Default Page"
                                             (click)="goToCreatePage(landingPage.id)">
                                             <i class="fa fa-save" aria-hidden="true"></i>
+                                            <div class="clickicons"></div>
                                         </a>
-                                        <a class="delete" *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip"
+                                        <a class="delete custom-icon" *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip"
                                             data-placement="top" title="Delete Default Page"
                                             (click)="confirmDeleteLandingPage(landingPage)">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
+                                            <div class="del-icon"></div>
                                         </a>
                                     </div>
                                 </div>

@@ -1096,9 +1096,13 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     description = description.substring(3,description.length-4).trim();
     if (description.length < 1) {
       this.addErrorMessage("description", "description can not be empty");
-    } else if (description.length > 5000) {
-      this.addErrorMessage("description", "description can not be more than 5000 characters");
-    } else {
+    } 
+    
+    // else if (description.length > 5000) {
+    //   this.addErrorMessage("description", "description can not be more than 5000 characters");
+    // } 
+    
+    else {
       this.removeErrorMessage("description")
     }
   }

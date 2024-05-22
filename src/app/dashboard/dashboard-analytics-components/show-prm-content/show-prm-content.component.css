@@ -76,3 +76,6 @@ h5 {
   background-color: #b8def1;
   transition-duration: 500ms;
 }
+.prm-dark-border >.text:last-child{
+border-bottom: unset!important;
+}
