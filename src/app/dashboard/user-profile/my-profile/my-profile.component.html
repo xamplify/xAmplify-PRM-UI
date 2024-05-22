@@ -545,36 +545,13 @@
                                         <div class="row">
                                             <div class="themePaddings col-lg-6 col-md-6 col-sm-6"
                                                 *ngFor="let dto of defaultThemes">
-                                                <div
-                                                    *ngIf="dto?.id == 1 || dto?.id == 2 || dto?.id == 4 || dto?.id == 3">
-                                                    <!-- <div class="img_padding">
-
-                                                        <img *ngIf="dto?.id == 1 " alt="" class="img-custome"
-                                                            src="assets/images/theme/1/Webp/01.webp">
-                                                        <img *ngIf="dto?.id == 2 " alt="" class="img-custome"
-                                                            src="assets/images/theme/1/Webp/02.webp">
-                                                        <img *ngIf="dto?.id == 4 " alt="" class="img-custome img-height"
-                                                            src="assets/images/theme/1/Webp/04.webp">
-                                                    </div> -->
+                                                <div>
                                                     <div class="img_padding">
                                                         <div class="lightTheme">
-                                                            <img *ngIf="dto?.id == 1 " alt="" class="img-custome"
-                                                                src="assets/images/theme/Final/light-theme.webp">
+                                                            <img alt="" class="img-custome"
+                                                                src="{{getThemeImage(dto?.name)}}">
                                                         </div>
-                                                        <div class="darkTheme">
-                                                            <img *ngIf="dto?.id == 2 " alt="" class="img-custome"
-                                                                src="assets/images/theme/Final/dark-theme.webp">
-                                                        </div>
-                                                        <div class="neumorphismDarkTheme">
-                                                            <img *ngIf="dto?.id == 4 " alt=""
-                                                                class="img-custome img-height"
-                                                                src="assets/images/theme/Final/beta-neumorphism-dark.webp">
-                                                        </div>
-                                                        <div class="neumorphismLightTheme">
-                                                            <img *ngIf="dto?.id == 3" alt=""
-                                                                class="img-custome img-height"
-                                                                src="assets/images/theme/Final/beta-neumorphism-light.webp">
-                                                        </div>
+
                                                     </div>
                                                     <div class="card-bg topcard-padding">
                                                         <div class="card-body centerAlignProperty">
@@ -590,7 +567,7 @@
                                                                 Neumorphism Light</h5>
                                                             <h5 class="card-title themefont"
                                                                 *ngIf="dto.name != 'Neumorphism Dark(Beta)' && dto.name != 'Neumorphism Light'">
-                                                                {{dto?.name}} Theme</h5>
+                                                                {{dto?.name}}</h5>
                                                             <!-- <h5 class="card-title themefont"
                                                                 *ngIf="dto.name != 'Neumorphism Light'">
                                                                 {{dto?.name}} Theme</h5> -->
@@ -621,7 +598,7 @@
                                                                             class="mMobileDisable custom-icon"
                                                                             title="Copy"
                                                                             (click)="goToCustomThemes();showDto(dto);saveTheme();"
-                                                                            *ngIf="dto?.id != 4 && dto?.id != 3"><i
+                                                                            *ngIf="dto?.id != 4 && dto?.id != 3 && dto.name != 'Glassomorphism Light' && dto.name != 'Glassomorphism Dark'"><i
                                                                                 aria-hidden="true"
                                                                                 class="fa fa-files-o mDisableColor IconCustomization"></i>
                                                                             <div class="clickicons"></div>
@@ -2357,6 +2334,12 @@
                                                             <img *ngIf="themeDto.id==3"
                                                                 src="assets/images/theme/Final/neumorphism-light-preview-laptop.webp"
                                                                 class="desktopimg-custome">
+                                                            <img *ngIf="themeDto.name== 'Glassomorphism Light'"
+                                                                src="assets/images/theme/Final/glassomorphism-light-preview-laptop.png"
+                                                                class="desktopimg-custome">
+                                                            <img *ngIf="themeDto.name== 'Glassomorphism Dark'"
+                                                                src="assets/images/theme/Final/glassomorphism-dark-preview-laptop.png"
+                                                                class="desktopimg-custome">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 mobileview">
@@ -2372,6 +2355,12 @@
                                                                 class="mobileimg-custome">
                                                             <img *ngIf="themeDto.id==3"
                                                                 src="assets/images/theme/Final/neumorphism-light-preview-mobile.webp"
+                                                                class="mobileimg-custome">
+                                                            <img *ngIf="themeDto.name== 'Glassomorphism Light'"
+                                                                src="assets/images/theme/Final/glassomorphism-light-preview-mobile.png"
+                                                                class="mobileimg-custome">
+                                                            <img *ngIf="themeDto.name== 'Glassomorphism Dark'"
+                                                                src="assets/images/theme/Final/glassomorphism-dark-preview-mobile.png"
                                                                 class="mobileimg-custome">
                                                         </div>
                                                     </div>
