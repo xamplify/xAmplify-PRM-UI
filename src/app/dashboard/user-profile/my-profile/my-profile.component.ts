@@ -1017,7 +1017,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
 			'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
 			'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(250)])],
-			'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]],
+			'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(this.regularExpressions.LINK_PATTERN)]],
 			'preferredLanguage': [this.userData.preferredLanguage],
 		});
 
