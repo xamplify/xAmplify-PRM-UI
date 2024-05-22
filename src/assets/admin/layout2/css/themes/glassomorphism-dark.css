@@ -50,26 +50,31 @@ body{
 .dashboard-stat.green {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   background-color: rgba(16 18 27 / 40%) !important;
+  border: 1px solid #ffffff47 !important;
 }
 .dashboard-stat.red-soft,
 .dashboard-stat.red {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   background-color: rgba(16 18 27 / 40%) !important;
+  border: 1px solid #ffffff47 !important;
 }
 .dashboard-stat.purple-soft,
 .dashboard-stat.purple {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   background-color: rgba(16 18 27 / 40%) !important;
+  border: 1px solid #ffffff47 !important;
 }
 .dashboard-stat.blue-sharp,
 .dashboard-stat.yellow-gold {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   background-color: rgba(16 18 27 / 40%) !important;
+  border: 1px solid #ffffff47 !important;
 }
 .dashboard-stat.blue-soft,
 .dashboard-stat.blue {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   background-color: rgba(16 18 27 / 40%) !important;
+  border: 1px solid #ffffff47 !important;
 }
 .dashboard-stat,
 a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor.tiles_bradius,
@@ -551,7 +556,7 @@ div.scrolled{
 }
 .dropdown ul li a:hover {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)!important;
-  background-color: rgba(16 18 27 / 40%) !important;
+  background-color: rgb(146 151 179 / 13%) !important;
 }
 .page-header.navbar
   .top-menu
@@ -2137,7 +2142,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .btn-group button{
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
-  border: 1px solid #ffffff47 !important;
+  /* border: 1px solid #ffffff47 !important; */
   backdrop-filter: blur(5px);
 }
 
@@ -2456,9 +2461,23 @@ a.UserguideBtnCustomization:hover {
   background-color: rgba(16 18 27 / 3%) !important;
   backdrop-filter: blur(5px);
 }
-.left-menu-color ul li a:hover,
+.left-menu-color ul li a:hover{
+  border-bottom-right-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
 .left-menu-color ul li.active > a {
-  border-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  /* border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important; */
+}
+.left-menu-color ul li a.sub_menu_margin:hover {
+  border-bottom-right-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
 }
 .left-menu-color {
   padding: 0px 0px !important;
@@ -4192,7 +4211,10 @@ a.delete.custom-icon {
 /***** Sudha Sri(20-3-2024) *****/
 /***** Left Menu Changes *****/
 .left-menu-color ul li.active>a{
-  border-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
 }
 .page-sidebar .page-sidebar-menu>li.active>a{
   border-bottom: 2px solid #ffffff47 !important;
@@ -4268,7 +4290,7 @@ li.filter.selectedBox{
 }
 .Btn-Green,
 .btn-primary{
-  background: rgb(146 151 179 / 8%) !important;
+  background: rgb(0 0 0 / 18%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)!important;
 }
