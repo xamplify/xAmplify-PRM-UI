@@ -61,6 +61,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     selectedFormSubmitId = 0;
     detailedResponse: boolean = false;
     mergeTagForGuide:any;
+    roleName:string = "";
     partnerView = false;
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
@@ -98,7 +99,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.selectedFormTypeIndex = 0;
-        this.mergeTagForGuide = 'manage_form'
+        this.getRoleByUserId();
         this.pagination.filterKey = "All";
         if (this.router.url.endsWith('manage/')) {
             this.onlyForms = this.router.url.indexOf('/lf')<0;
@@ -515,4 +516,21 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.formService.formId = id;
         this.router.navigate(["/home/forms/add"]);
     }
+    /*** XNFR-512 ****/
+    getRoleByUserId() {
+        this.authenticationService.getRoleByUserId().subscribe(
+          (data) => {
+            const role = data.data;
+            this.roleName = role.role == 'Team Member' ? role.superiorRole : role.role;
+            this.getUrlByMergeTagForUserGuide("All");
+          }, error => {
+            this.logger.errorPage(error);
+          }
+        )
+      }
+    getUrlByMergeTagForUserGuide(filterKey: string) {
+        let isMarketingCompany = this.roleName === 'Marketing' || this.roleName === 'Marketing & Partner';
+        this.mergeTagForGuide = isMarketingCompany ? 'manage_forms_marketing' : 'manage_form';
+    }
+    /*** XNFR-512 ****/
 }

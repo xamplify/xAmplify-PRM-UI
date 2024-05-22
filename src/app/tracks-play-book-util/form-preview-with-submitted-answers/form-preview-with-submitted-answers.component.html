@@ -19,156 +19,18 @@
                           <div *ngIf="form.showTitleHeader" class="panel-heading" id="form-panel-heading">
                               <div class="panel-title name-wrap" title="{{form.name}}" >{{form.name}}</div>
                           </div>
-                          <div class="panel-body border-fivepx" *ngIf="!formError">
+                          <div class="panel-body border-fivepx padding-20px" *ngIf="!formError">
                               <h5 class="name-wrap" title="{{form.description}}">{{form.description}}</h5>
-                              <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
-                                  <div class="form-group form-custom form-placeholder label-box" [ngClass]="{'emailorName' : !columnInfo.choices}">
-                                      <span
-                                        *ngIf="columnInfo.labelType.split('_')[0]=='quiz' && columnInfo.choices && columnInfo.choices.length > 0">
-                                        <i *ngIf="!columnInfo.skipped && !columnInfo.submittedAnswerCorrect" class="fas fa-times fa-lg label-value-incorrect"
-                                          aria-hidden="true"></i>
-                                        <i *ngIf="!columnInfo.skipped && columnInfo.submittedAnswerCorrect " class="fas fa-check fa-lg label-value-correct"
-                                          aria-hidden="true"></i>
-                                      </span>
-                                      <!--  No  Options -->
-                                      <ng-container *ngIf="!columnInfo.choices">
-                                        <label> <span class="label-name" *ngIf="form.quizForm">{{i+1}}. {{columnInfo.labelName}}</span>
-                                          <span class="required" *ngIf="columnInfo.required">*</span>
-                                        </label>
-                                      </ng-container>
-                                      <!--  Options -->
-                                      <ng-container *ngIf="columnInfo.choices && columnInfo.choices.length > 0">
-                                        <label class="questionclass"
-                                          [ngClass]="{'answer_correct': !columnInfo.skipped && columnInfo.submittedAnswerCorrect, 'answer_incorrect': !columnInfo.skipped && !columnInfo.submittedAnswerCorrect, 'question_skipped': columnInfo.skipped}">
-                                          <span *ngIf="columnInfo.labelType.split('_')[0]!='quiz'" class="label-name"> <span *ngIf="form.quizForm">{{i+1}}.
-                                            </span>{{columnInfo.labelName}}</span>
-                                          <span *ngIf="columnInfo.labelType.split('_')[0]=='quiz'"> <span *ngIf="form.quizForm">{{i+1}}.
-                                            </span>{{columnInfo.labelName}}</span>
-                                          <span class="required" *ngIf="columnInfo.required">*</span>
-                                        </label>
-                                      </ng-container>
-
-                                      <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email' || columnInfo.labelType=='number'">
-                                          <input type="{{columnInfo.labelType}}" class="form-control form-placeholder disable-click" [value]="columnInfo?.value" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000">
-                                      </ng-container>
-
-                                      <ng-container *ngIf="columnInfo.labelType=='textarea'">
-                                          <textarea rows="4" cols="4" [value]="columnInfo?.value" class="form-control form-placeholder disable-click" placeholder="{{columnInfo.placeHolder}}" maxlength="1000" disabled="disabled"></textarea>
-                                      </ng-container>
-                                      <!-- ---------------------------Date----------------------------- -->
-                                      <ng-container *ngIf="columnInfo.labelType=='date'">
-
-                                          <app-date-picker class="disable-click form-placeholder" [(dataField)]="columnInfo.value" [class.disabled]='true' [isFromForm]='true'  style="pointer-events: none;"></app-date-picker>
-
-                                      </ng-container>
-                                      <!-- ---------------------------Price----------------------------- -->
-                                      <ng-container *ngIf="columnInfo.labelType=='price'">
-                                        <div class="input-group prefix">
-                                          <span class="input-group-addon" style="pointer-events: none;background: #e5e5e5;min-width: 39px; ">
-                                            {{columnInfo.priceSymbol}}
-                                          </span>
-
-                                          <input id="formPriceField" type="number" min="0" [value]="columnInfo?.value" class="form-control form-placeholder disable-click" disabled="disabled" placeholder="{{columnInfo.placeHolder}}" style="padding-left: 10px !important;">
-
-                                        </div>
-                                      </ng-container>
-                                      <!-- ---------------------------Upload----------------------------- -->
-                                      <ng-container *ngIf="columnInfo.labelType=='upload'">
-                                        <div class="form-control form-placeholder">
-                                          <a *ngIf="columnInfo.value" [href]="columnInfo.value" target="_blank"
-                                            style="overflow-wrap: break-word;">{{columnInfo?.fileName}}</a>
-                                        </div>
-                                      </ng-container>
-                                      <!-- ---------------------------Radio Button----------------------------- -->
-                                      <ng-container *ngIf="columnInfo.labelType=='radio'">
-                                        <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
-                                          <div class="form-check">
-
-                                            <label class="form-check-label disable-click" style="border:0px !important;">
-
-                                              <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
-                                                disabled="disabled" [checked]="columnInfo?.value?.indexOf(radioButton.id) > -1">
-                                                <span class="label-name">{{radioButton.name}}</span>
-                                            </label>
-                                          </div>
-                                          <br>
-                                        </ng-container>
-                                      </ng-container>
-                                      <!-- ---------------------------Check Box----------------------------- -->
-                                      <ng-container *ngIf="columnInfo.labelType=='checkbox'">
-                                        <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
-                                          <div class="form-check">
-                                            <label class="form-check-label disable-click" style="border:0px !important;" >
-
-                                              <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
-                                                disabled="disabled" [checked]="columnInfo?.value?.indexOf(checkBox.id) > -1">
-                                                <span class="label-name">{{checkBox.name}}</span>
-                                            </label>
-                                          </div>
-                                          <br>
-                                        </ng-container>
-                                      </ng-container>
-                                      <!-- ---------------------------DropDown Menu----------------------------- -->
-                                      <ng-container *ngIf="columnInfo.labelType=='select'">
-                                        <select class="form-control form-placeholder disable-click" style="background-color: #eeeeee;" disabled="disabled" [value]="columnInfo.value">
-                                          <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [value]="columnInfo.value"
-                                            disabled>{{dropDownValue.name}}</option>
-
-                                        </select>
-                                      </ng-container>
-                                      <!-- ---------------------------Country XNFR-342----------------------------- -->
-                                      <ng-container *ngIf="columnInfo.labelType=='country'">
-                                        <select class="form-control form-placeholder disable-click" style="background-color: #eeeeee;" disabled="disabled">
-                                          <option value="columnInfo.value">{{columnInfo?.value}}</option>
-                                        </select>
-                                      </ng-container>
-                                      <!-- ---------------------------Quiz Choices----------------------------- -->
-                                      <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
-
-                                        <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
-                                          <div class="form-check optionTB" style="padding: 5px ; border-radius: 5px;border:0px !important;"
-                                            *ngIf="!(columnInfo.value =='')"
-                                            [style.background-color]="(choice.correct && choice.isSelected == true)  ? '#e6f4ea' : (!choice.correct && choice.isSelected) ? '#ffb6c1'  : choice.correct && choice.isSelected == false ? 'fcfcfc': ''"
-                                            [style.border-bottom]="(choice.correct && choice.isSelected == false) ? '3px solid #1e8e3e' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
-                                            [style.border-top]="(choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
-                                            [style.border-right]="(choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
-                                            [style.border-left]="(choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''">
-                                            <label class="form-check-label color disable-click" style="color :'#110202' !important;border:0px !important;"
-                                              [ngClass]="{'label-value-correct': choice.correct, 'label-value-incorrect': !choice.correct && choice.isSelected}">
-                                              <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
-                                                [checked]="choice.isChecked  || choice.isSelected" class="form-check-input">
-                                              <span class="quiz_optionname label-name">{{choice.name}} </span>
-                                            </label>
-                                            <span style="float:right"><i *ngIf="!choice.correct && choice.isSelected"
-                                                class="fas fa-times fa-lg label-value-incorrect" aria-hidden="true"></i>
-                                              <i *ngIf="choice.correct && choice.isSelected " class="fas fa-check fa-lg label-value-correct"
-                                                aria-hidden="true"></i></span>
-                                          </div>
-                                          <!-- for skipped> -->
-                                          <div class="form-check optionTB" style="padding: 5px ; border-radius: 5px;border:0px !important;"
-                                            *ngIf="(columnInfo.value =='')" [style.background-color]="(choice.correct) ? '#fcfcfc' :'' "
-                                            [style.border-bottom]="(choice.correct) ? '3px solid #1e8e3e' : ''"
-                                            [style.border-top]="(choice.correct)? '1px solid #bfdcc8' :''"
-                                            [style.border-right]="(choice.correct)? '1px solid #bfdcc8' :''"
-                                            [style.border-left]="(choice.correct)? '1px solid #bfdcc8' :''">
-                                            <label class="form-check-label color disable-click" style="color :'#110202' !important;border:0px !important;"
-                                              [ngClass]="{'label-value-correct': choice.correct, 'label-value-incorrect': !choice.correct && choice.isSelected}">
-                                              <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
-                                                class="form-check-input">
-                                              <span class="label-name quiz_optionname">{{choice.name}} </span>
-                                            </label>
-                                          </div>
-                                          <!-- <br> -->
-                                        </ng-container>
-                                        <ng-container *ngIf="columnInfo.description !== undefined && columnInfo.description.length > 0 ">
-                                          <div class="form-group">
-                                            <label class="control-label" id="formQuizExplanation">Explanation</label>
-                                            <div class="label-name" style="overflow-wrap: break-word;">{{columnInfo.description}}</div>
-                                          </div>
-
-                                        </ng-container>
-                                      </ng-container>
-                                  </div>
+                              <ng-container *ngFor="let rowInfo of form?.formLabelDTORows;let rowIndex=index">
+                                <div *ngIf="rowInfo.formLabelDTOs !== undefined && rowInfo.formLabelDTOs.length > 0" class="row">
+                                  <ng-container *ngFor="let columnInfo of rowInfo.formLabelDTOs;let columnIndex=index">
+                                    <div *ngIf="columnIndex<3" id="form-div" class="padding-10px-lt-rgt"
+                                      [ngClass]="{'col-lg-4 col-md-4 col-sm-4 col-xs-4':  rowInfo.formLabelDTOs.length == 3, 'col-lg-6 col-md-6 col-sm-6 col-xs-6': rowInfo.formLabelDTOs.length == 2, 'col-lg-12 col-md-12 col-sm-12 col-xs-12': rowInfo.formLabelDTOs.length == 1}">
+                                      <ng-template [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfoData:columnInfo}">
+                                      </ng-template>
+                                    </div>
+                                  </ng-container>
+                                </div>
                               </ng-container>
                               <div *ngIf="form.showCaptcha">
                                   <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
@@ -199,3 +61,154 @@
       </div>
   </div>
 </div>
+
+<!-- XNFR-424 ----------->
+<ng-template #formFields let-columnInfo="columnInfoData">
+  <div class="form-group form-custom form-placeholder label-box padding-10px-lt-rgt" [ngClass]="{'emailorName' : !columnInfo.choices}">
+    <span
+      *ngIf="columnInfo.labelType.split('_')[0]=='quiz' && columnInfo.choices && columnInfo.choices.length > 0">
+      <i *ngIf="!columnInfo.skipped && !columnInfo.submittedAnswerCorrect" class="fas fa-times fa-lg label-value-incorrect"
+        aria-hidden="true"></i>
+      <i *ngIf="!columnInfo.skipped && columnInfo.submittedAnswerCorrect " class="fas fa-check fa-lg label-value-correct"
+        aria-hidden="true"></i>
+    </span>
+    <!--  No  Options -->
+    <ng-container *ngIf="!columnInfo.choices">
+      <label> <span class="label-name" *ngIf="form.quizForm">{{columnInfo.index}}. {{columnInfo.labelName}}</span>
+        <span class="required" *ngIf="columnInfo.required">*</span>
+      </label>
+    </ng-container>
+    <!--  Options -->
+    <ng-container *ngIf="columnInfo.choices && columnInfo.choices.length > 0">
+      <label class="questionclass"
+        [ngClass]="{'answer_correct': !columnInfo.skipped && columnInfo.submittedAnswerCorrect, 'answer_incorrect': !columnInfo.skipped && !columnInfo.submittedAnswerCorrect, 'question_skipped': columnInfo.skipped}">
+        <span *ngIf="columnInfo.labelType.split('_')[0]!='quiz'" class="label-name"> <span *ngIf="form.quizForm">{{columnInfo.index}}.
+          </span>{{columnInfo.labelName}}</span>
+        <span *ngIf="columnInfo.labelType.split('_')[0]=='quiz'"> <span *ngIf="form.quizForm">{{columnInfo.index}}.
+          </span>{{columnInfo.labelName}}</span>
+        <span class="required" *ngIf="columnInfo.required">*</span>
+      </label>
+    </ng-container>
+
+    <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email' || columnInfo.labelType=='number'">
+        <input type="{{columnInfo.labelType}}" class="form-control form-placeholder disable-click" [value]="columnInfo?.value" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000">
+    </ng-container>
+
+    <ng-container *ngIf="columnInfo.labelType=='textarea'">
+        <textarea rows="4" cols="4" [value]="columnInfo?.value" class="form-control form-placeholder disable-click" placeholder="{{columnInfo.placeHolder}}" maxlength="1000" disabled="disabled"></textarea>
+    </ng-container>
+    <!-- ---------------------------Date----------------------------- -->
+    <ng-container *ngIf="columnInfo.labelType=='date'">
+
+        <app-date-picker class="disable-click form-placeholder" [(dataField)]="columnInfo.value" [class.disabled]='true' [isFromForm]='true'  style="pointer-events: none;"></app-date-picker>
+
+    </ng-container>
+    <!-- ---------------------------Price----------------------------- -->
+    <ng-container *ngIf="columnInfo.labelType=='price'">
+      <div class="input-group prefix">
+        <span class="input-group-addon" style="pointer-events: none;background: #e5e5e5;min-width: 39px; ">
+          {{columnInfo.priceSymbol}}
+        </span>
+
+        <input id="formPriceField" type="number" min="0" [value]="columnInfo?.value" class="form-control form-placeholder disable-click" disabled="disabled" placeholder="{{columnInfo.placeHolder}}" style="padding-left: 10px !important;">
+
+      </div>
+    </ng-container>
+    <!-- ---------------------------Upload----------------------------- -->
+    <ng-container *ngIf="columnInfo.labelType=='upload'">
+      <div class="form-control form-placeholder">
+        <a *ngIf="columnInfo.value" [href]="columnInfo.value" target="_blank"
+          style="overflow-wrap: break-word;">{{columnInfo?.fileName}}</a>
+      </div>
+    </ng-container>
+    <!-- ---------------------------Radio Button----------------------------- -->
+    <ng-container *ngIf="columnInfo.labelType=='radio'">
+      <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+        <div class="form-check">
+
+          <label class="form-check-label disable-click" style="border:0px !important;">
+
+            <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
+              disabled="disabled" [checked]="columnInfo?.value?.indexOf(radioButton.id) > -1">
+              <span class="label-name">{{radioButton.name}}</span>
+          </label>
+        </div>
+        <br>
+      </ng-container>
+    </ng-container>
+    <!-- ---------------------------Check Box----------------------------- -->
+    <ng-container *ngIf="columnInfo.labelType=='checkbox'">
+      <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
+        <div class="form-check">
+          <label class="form-check-label disable-click" style="border:0px !important;" >
+
+            <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
+              disabled="disabled" [checked]="columnInfo?.value?.indexOf(checkBox.id) > -1">
+              <span class="label-name">{{checkBox.name}}</span>
+          </label>
+        </div>
+        <br>
+      </ng-container>
+    </ng-container>
+    <!-- ---------------------------DropDown Menu----------------------------- -->
+    <ng-container *ngIf="columnInfo.labelType=='select'">
+      <select class="form-control form-placeholder disable-click" style="background-color: #eeeeee;" disabled="disabled" [value]="columnInfo.value">
+        <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [value]="columnInfo.value"
+          disabled>{{dropDownValue.name}}</option>
+
+      </select>
+    </ng-container>
+    <!-- ---------------------------Country XNFR-342----------------------------- -->
+    <ng-container *ngIf="columnInfo.labelType=='country'">
+      <select class="form-control form-placeholder disable-click" style="background-color: #eeeeee;" disabled="disabled">
+        <option value="columnInfo.value">{{columnInfo?.value}}</option>
+      </select>
+    </ng-container>
+    <!-- ---------------------------Quiz Choices----------------------------- -->
+    <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
+
+      <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
+        <div class="form-check optionTB" style="padding: 5px ; border-radius: 5px;border:0px !important;"
+          *ngIf="!(columnInfo.value =='')"
+          [style.background-color]="(choice.correct && choice.isSelected == true)  ? '#e6f4ea' : (!choice.correct && choice.isSelected) ? '#ffb6c1'  : choice.correct && choice.isSelected == false ? 'fcfcfc': ''"
+          [style.border-bottom]="(choice.correct && choice.isSelected == false) ? '3px solid #1e8e3e' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
+          [style.border-top]="(choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
+          [style.border-right]="(choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
+          [style.border-left]="(choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''">
+          <label class="form-check-label color disable-click" style="color :'#110202' !important;border:0px !important;"
+            [ngClass]="{'label-value-correct': choice.correct, 'label-value-incorrect': !choice.correct && choice.isSelected}">
+            <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
+              [checked]="choice.isChecked  || choice.isSelected" class="form-check-input">
+            <span class="quiz_optionname label-name">{{choice.name}} </span>
+          </label>
+          <span style="float:right"><i *ngIf="!choice.correct && choice.isSelected"
+              class="fas fa-times fa-lg label-value-incorrect" aria-hidden="true"></i>
+            <i *ngIf="choice.correct && choice.isSelected " class="fas fa-check fa-lg label-value-correct"
+              aria-hidden="true"></i></span>
+        </div>
+        <!-- for skipped> -->
+        <div class="form-check optionTB" style="padding: 5px ; border-radius: 5px;border:0px !important;"
+          *ngIf="(columnInfo.value =='')" [style.background-color]="(choice.correct) ? '#fcfcfc' :'' "
+          [style.border-bottom]="(choice.correct) ? '3px solid #1e8e3e' : ''"
+          [style.border-top]="(choice.correct)? '1px solid #bfdcc8' :''"
+          [style.border-right]="(choice.correct)? '1px solid #bfdcc8' :''"
+          [style.border-left]="(choice.correct)? '1px solid #bfdcc8' :''">
+          <label class="form-check-label color disable-click" style="color :'#110202' !important;border:0px !important;"
+            [ngClass]="{'label-value-correct': choice.correct, 'label-value-incorrect': !choice.correct && choice.isSelected}">
+            <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
+              class="form-check-input">
+            <span class="label-name quiz_optionname">{{choice.name}} </span>
+          </label>
+        </div>
+        <!-- <br> -->
+      </ng-container>
+      <ng-container *ngIf="columnInfo.description !== undefined && columnInfo.description.length > 0 ">
+        <div class="form-group">
+          <label class="control-label" id="formQuizExplanation">Explanation</label>
+          <div class="label-name" style="overflow-wrap: break-word;">{{columnInfo.description}}</div>
+        </div>
+
+      </ng-container>
+    </ng-container>
+</div>
+</ng-template>

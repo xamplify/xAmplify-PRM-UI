@@ -113,6 +113,7 @@ export class HomeComponent implements OnInit {
             this.referenceService.defaultPlayerSettings = response;
             this.referenceService.companyId = response.companyProfile.id;
             this.referenceService.companyProfileImage = response.companyProfile.companyLogoPath;
+            this.referenceService.website = this.videoUtilService.isStartsWith(response.companyProfile.website);
             if (!response.brandingLogoUri || !response.brandingLogoDescUri) {
               const logoLink = this.videoUtilService.isStartsWith(response.companyProfile.website);
               this.saveVideoBrandLog(response.companyProfile.companyLogoPath, logoLink);

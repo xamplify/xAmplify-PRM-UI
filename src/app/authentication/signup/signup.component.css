@@ -22,3 +22,27 @@
 .agree-link:hover {
   color: #5b9bd1;
 }
+/**** XBI-2362 ****/
+.bg_image {
+	background-image: var(--login-bg-image-style1);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	position: sticky;
+	top:0;
+	min-height: 100vh;
+	overflow: hidden;
+}
+.bg_color{
+	background: var(--login-bg-color-style1);
+	position: sticky;
+	top:0;
+	min-height: 100vh;
+	overflow: hidden;
+}
+.bg_image2 {
+    background-image: var(--login-bg-image);
+}
+.bg_color2 {
+	background: var(--login-bg-color);
+}

@@ -14,6 +14,15 @@
         </div>
       </span>
     </div>
+    <div *ngIf="customResponse.isVisible" class="m10">
+      <div style="padding: 7px 10px;"
+        [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success m0':'alert alert-danger m0'">
+        <button (click)="customResponse.isVisible=false" type="button" class="close of-this-component" aria-label="Close">
+          <span aria-hidden="true">x</span>
+        </button>
+        <strong [innerHTML]="customResponse.responseMessage"></strong>
+      </div>
+    </div>
     <div class="panel-body">    
       <div class="scroll table-responsive">
         <table class="table">

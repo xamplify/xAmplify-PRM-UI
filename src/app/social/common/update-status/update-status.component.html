@@ -727,7 +727,7 @@
                                         class="fa fa-search" aria-hidden="true"></i></button>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6 col-lg-8 pl0 pr0" style="margin-left: 14px;" *ngIf="!socialCampaign?.channelCampaign && (authenticationService?.module?.isMarketingCompany || authenticationService?.module?.isOrgAdminCompany  )">
+                        <div class="col-sm-6 col-md-6 col-lg-8 pl0 pr0" style="margin-left: 14px;" *ngIf="!socialCampaign?.channelCampaign && (authenticationService?.module?.isMarketingCompany || authenticationService?.module?.isOrgAdminCompany  || !authenticationService?.module?.loggedInThroughOwnVanityUrl)">
                             <ul class="mix-filter m0">
                                 <li class="filter" [class.active]="'ALL' == contactListsPagination.filterBy" (click)="filterContacts('ALL')">All</li>
                                 <li class="filter" [class.active]="'MY-CONTACTS' == contactListsPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
@@ -764,6 +764,8 @@
                                         <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
                                             List Info
                                         </th>
+                                        <th scope="row" class="text-center" translate>Type
+                                    </th>
                                         <th scope="row" class="text-center" translate>Created On</th>
                                         <th *ngIf="!showNavigationBreadCrumbToPartner" scope="row" class="text-center"
                                             translate>Count</th>
@@ -835,38 +837,43 @@
                                                     <span translate> Created By
                                                         <strong>{{contactList?.creatorName}}</strong></span>
                                                 </h6>
-                                                <ng-container *ngIf="!contactList?.partnerList">
-                                                    <div class="displayinline-flex">
-                                                        <h6 class="view-banner" translate>
-                                                            <span *ngIf="contactList?.publicList" data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title="{{actionsDescription?.contact_list_public}}"
-                                                                translate>Public
-                                                            </span>
-                                                            <span *ngIf="!contactList?.publicList" data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title="{{actionsDescription?.contact_list_private}}"
-                                                                translate>Private
+                                                <div style="display: none;">
+                                                    <ng-container  *ngIf="!contactList?.partnerList">
+                                                        <div class="displayinline-flex">
+                                                            <h6 class="view-banner" translate>
+                                                                <span *ngIf="contactList?.publicList" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="{{actionsDescription?.contact_list_public}}"
+                                                                    translate>Public
+                                                                </span>
+                                                                <span *ngIf="!contactList?.publicList" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="{{actionsDescription?.contact_list_private}}"
+                                                                    translate>Private
+                                                                </span>
+                                                            </h6>
+                                                        </div>
+                                                        <h6 *ngIf="contactList?.formList"
+                                                            class="view-banner view-banner-green mt5 left-flt" translate>
+                                                            <span class="" data-toggle="tooltip" data-placement="top"
+                                                                title="This list is associated with a form." translate>Form
+                                                                Contact List
                                                             </span>
                                                         </h6>
-                                                    </div>
-                                                    <h6 *ngIf="contactList?.formList"
-                                                        class="view-banner view-banner-green mt5 left-flt" translate>
-                                                        <span class="" data-toggle="tooltip" data-placement="top"
-                                                            title="This list is associated with a form." translate>Form
-                                                            Contact List
-                                                        </span>
-                                                    </h6>
-                                                    <h6 *ngIf="contactList?.companyList"
-                                                        class="view-banner view-banner-green mt5 left-flt" translate>
-                                                        <span class="" data-toggle="tooltip" data-placement="top"
-                                                            title="This list is associated with a company." translate>Company
-                                                            Contact List
-                                                        </span>
-                                                    </h6>
-                                                </ng-container>
+                                                        <h6 *ngIf="contactList?.companyList && !bannerDisplayed"
+                                                            class="view-banner view-banner-green mt5 left-flt" translate>
+                                                            <span class="" data-toggle="tooltip" data-placement="top"
+                                                                title="This list is associated with a company." translate>Company
+                                                                Contact List
+                                                            </span>
+                                                        </h6>
+                                                    </ng-container>
+                                                </div>
                                             </td>
-
+                                            <td style="text-align:center"
+                                            *ngIf="nurtureCampaign">
+                                            {{contactList.type}}
+                                        </td>
                                             <td class="text-center" *ngIf="!showNavigationBreadCrumbToPartner">
                                                 <app-display-date-and-time
                                                     [dateAndTimeUTCString]="contactList?.createdTimeInString"></app-display-date-and-time>

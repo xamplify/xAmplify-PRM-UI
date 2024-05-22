@@ -18,10 +18,13 @@ export class PreviewPageComponent implements OnInit {
 
   isLandingPagePreview = false;
   isPartnerLandingPagePreview = false;
-  id = 0;
+  isPartnerVendorLandingPage = false;
+  id:any;
   statusCode = 404;
   customResponse:CustomResponse = new CustomResponse();
   success = false;
+  apiResponseFinished = false;
+
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties,
     public vanityUrlService:VanityURLService) { }
@@ -31,15 +34,30 @@ export class PreviewPageComponent implements OnInit {
     let currentRouterUrl = this.referenceService.getCurrentRouteUrl();
     this.isLandingPagePreview = currentRouterUrl.indexOf("/pv/lp/")>-1;
     this.isPartnerLandingPagePreview = currentRouterUrl.indexOf("/pv/plp/")>-1;
+    this.isPartnerVendorLandingPage = currentRouterUrl.indexOf("/pv/vjplp/")>-1;
     this.referenceService.clearHeadScriptFiles();
-    this.id = this.route.snapshot.params['id'];
+    this.decodeIdParameter();
     this.getHtmlBody();
+  }
+
+  
+  private decodeIdParameter() {
+    try {
+      this.id = atob(this.route.snapshot.params['id']);
+    } catch (error) {
+       this.showPageNotFoundMessage();
+    }
+   }
+
+   private showPageNotFoundMessage() {
+    this.customResponse = new CustomResponse('ERROR', this.properties.pageNotFound, true);
+    this.processor.remove(this.processor);
   }
 
   getHtmlBody(){
     let isVanityURLEnabled = this.vanityUrlService.isVanityURLEnabled();
     let isSubDomain = isVanityURLEnabled!=undefined ? isVanityURLEnabled : false;
-    this.authenticationService.getLandingPageHtmlBody(this.id,isSubDomain,this.isPartnerLandingPagePreview).
+    this.authenticationService.getLandingPageHtmlBody(this.id,isSubDomain,this.isPartnerLandingPagePreview, this.isPartnerVendorLandingPage).
     subscribe(
       response=>{
         this.statusCode = response.statusCode;
@@ -51,6 +69,7 @@ export class PreviewPageComponent implements OnInit {
         }else if(this.statusCode==400){
           this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
         }
+        this.apiResponseFinished = true;
         this.processor.remove(this.processor);
       },error=>{
         this.statusCode = JSON.parse(error["status"]);
@@ -61,6 +80,7 @@ export class PreviewPageComponent implements OnInit {
           message = errorResponse['message'];
         }
         this.customResponse = new CustomResponse('ERROR',message,true);
+        this.apiResponseFinished = true;
         this.processor.remove(this.processor);
       }
     );

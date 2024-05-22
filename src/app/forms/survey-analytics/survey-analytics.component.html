@@ -38,20 +38,21 @@
                 data-mdb-toggle="tab" role="tab" (click)="showIndividualResponses()" aria-controls="ex1-tabs-2"
                 aria-selected="false">Individual Responses</a>
             </li>
-            <a class="close-circle download-customized"  *ngIf="showTab === 'question-summarries'"  data-toggle="tooltip" data-placement="top" data-rel="fancybox-button"(click)="downloadCsv()"
-            title="Download">
-            <i class="fa fa-download margin" aria-hidden="true"></i>
-            </a>
+            <div class="justify-end">
+              <span class="tr-count mb_mrg_unset" *ngIf="showTab === 'question-summarries'">
+                <a href="#" class="btn btn-default disabled panel-heading-info-box"> Total Respondents:
+                  {{surveyAnalytics.responseCount}}</a>
+              </span>
+              <a class="close-circle mr5" *ngIf="showTab === 'question-summarries'" (click)="getSurveyAnalytics()"
+                data-toggle="tooltip" data-placement="top" title="Refresh">
+                <i class="fa fa-refresh margin" aria-hidden="true"></i>
+              </a>
+              <a class="close-circle" *ngIf="showTab === 'question-summarries'" data-toggle="tooltip" data-placement="top"
+                data-rel="fancybox-button" (click)="downloadCsv()" title="Download">
+                <i class="fa fa-download margin" aria-hidden="true"></i>
+              </a>
+            </div>
           </ul>
-         <a class="close-circle mr80" *ngIf="showTab === 'question-summarries'" (click)="getSurveyAnalytics()" data-toggle="tooltip"
-            data-placement="top" title="Refresh">
-            <i class="fa fa-refresh margin" aria-hidden="true"></i>
-          </a>  
-
-          <span class="pull-right tr-count mb_mrg_unset mr200" *ngIf="showTab === 'question-summarries'">
-            <a href="#" class="btn btn-default disabled panel-heading-info-box"> Total Respondents:
-              {{surveyAnalytics.responseCount}}</a>
-          </span>
         </div>
       </div>
     </div>

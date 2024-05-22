@@ -1,7 +1,8 @@
 <form [formGroup]="customLinkForm" autocomplete="off" (keydown.enter)="$event.preventDefault()">
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <app-response-message [customResponse]="dashboardBannersInfoMessage" [showCloseIcon]="false" *ngIf="dashboardBannersInfoMessage.isVisible && isAddDashboardBannersDivHidden"></app-response-message>
-  <fieldset *ngIf="!isAddDashboardBannersDivHidden">
+  <app-modal-popup-loader *ngIf="isDropDownLoading || isLoadingBanners"></app-modal-popup-loader>
+  <fieldset *ngIf="!isAddDashboardBannersDivHidden && !isDropDownLoading">
     <legend>{{headerText}}</legend>
       <div class="form-group col-xs-12 col-md-12">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -13,7 +14,7 @@
             <div class="portlet-title tabbable-line ">
               <div class="caption caption-md">
                 <i class="icon-globe theme-font hide " aria-hidden="true "></i>
-                <span class="caption-subject font-blue-madison bold uppercase">Dashboard Banner<span class="required"> *</span></span>
+                <span class="caption-subject font-blue-madison bold uppercase">Dashboard Banner<span class="required">*</span></span>
               </div>
               <div class="inline" style="float: right; padding-bottom: 5px;" *ngIf="croppedImage">
                 <button type="button" class="button_blue bgcolor-unset" (click)="clearImage()"><span
@@ -59,6 +60,23 @@
           <input class="form-control" type="text" placeholder="Link" required formControlName="link" autocomplete="off" />
           <span *ngIf="formErrors.link" class="required">{{ formErrors.link }}</span>
         </div>
+        <!--XNFR-532-->
+        <ng-container *ngIf="moduleType==properties?.dashboardBanners">
+          <div class="form-group" >
+            <label>Display Title<span class="required"></span></label>
+            <label class="toggleOnOff">
+              <input formControlName="displayTitle" class="form-check-input checkBox_shadow pointer" type="checkbox" />
+              <span class="sliderOnOff"></span>
+              <span class="labels" data-on="ON" data-off="OFF"></span>
+            </label>
+          </div>
+          <div class="form-group" *ngIf="moduleType==properties?.dashboardBanners">
+            <label>Button Text<span class="required">*</span></label>
+            <input class="form-control" type="text" placeholder="Button Text" required formControlName="buttonText" autocomplete="off" />
+            <span *ngIf="formErrors.buttonText" class="required">{{ formErrors.buttonText }}</span>
+          </div>
+        </ng-container>
+        <!--XNFR-532-->
         <!--Open in new tab-->
         <div class="form-group">
           <div class="form-check">
@@ -89,21 +107,15 @@
               <option>{{customLinkDto.type}}</option>
             </select>
           </ng-container>
-          
-          
         </div>
         <!--Icon-->
         <div class="form-group" *ngIf="moduleType==properties?.dashboardButtons">
             <label>Icon</label>
-            <div class="flex">
-              <select formControlName="icon" class="form-control">
-                <option disabled value="null"> Please select icon </option>
-                <option [ngValue]="icon.id" *ngFor="let icon of iconsList">{{icon.name}}</option>
-              </select>
-              <span><i class="fa {{customLinkForm.get('icon').value}} ml10"></i></span>
+            <div>
+              <app-select-dropdown *ngIf="!isDropDownLoading" [showIcon]="true" [categoryId]="selectedButtonIcon" [isDropDownSelectedValueIsText]="true"
+              [dropDownItems]="iconsList" (selectDropdownComponentEmitter)="getSelectedIcon($event)"></app-select-dropdown>
           </div>
         </div>
-      
       </div>
       <!--Description-->
       <div class="form-group col-md-12 col-xs-12">
@@ -111,6 +123,7 @@
       <textarea class="form-control" rows="3" placeholder="Description" formControlName="description" style="resize: none;"></textarea>
         <span *ngIf="formErrors.description" class="required">{{ formErrors.description }}</span>
       </div>
+      <!--Save/Update/Cancel-->
       <div class="form-row">
         <div class="form-group col-xs-12 col-md-12">
           <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
@@ -130,8 +143,9 @@
 <!--List-->
 <fieldset style="margin: 20px 2px;">
   <legend>{{listHeaderText}}</legend>
-  <div class="alert alert-info text-center" *ngIf="pagination.totalRecords==0">No Data Found</div>
-  <ng-container *ngIf="pagination?.totalRecords>0">
+  <app-list-loader *ngIf="isLoadingBanners || isDeleteOptionClicked"></app-list-loader>
+  <div class="alert alert-info text-center" *ngIf="pagination.totalRecords==0 && !isLoadingBanners">No Data Found</div>
+  <ng-container *ngIf="pagination?.totalRecords>0 && !isLoadingBanners && !isDeleteOptionClicked">
     <ng-container *ngIf="moduleType==properties?.dashboardBanners">
       <div class="alert alert-info text-center" *ngIf="!isAddDashboardBannersDivHidden">{{properties?.maximumDashboardBannersLimitMessage}}</div>
        <span><strong>Dashboard banners : <span>{{pagination.totalRecords}}</span> / 5</strong></span>
@@ -142,6 +156,8 @@
           <tr>
             <th>Title</th>
             <th>Link</th>
+            <th class="text-center" *ngIf="moduleType==properties?.dashboardBanners">Display Title</th>
+            <th class="text-center" *ngIf="moduleType==properties?.dashboardBanners">Button Text</th>
             <th *ngIf="moduleType==properties?.newsAndAnnouncements">Type</th>
             <th class="text-center">Actions</th>
           </tr>
@@ -155,13 +171,19 @@
             <ng-container *ngIf="moduleType!=properties?.dashboardButtons">
               <td class="td-overflow-text"><span  data-toggle="tooltip" data-placement="bottom" title="{{item.title}}"><i class="fa mr5 {{item.icon}}" aria-hidden="true"></i>{{item.title}}</span></td>
               <td class="td-overflow-text"><span data-toggle="tooltip" data-placement="bottom" title="{{item.link}}">{{item.link}}</span></td> 
+              <ng-container *ngIf="moduleType==properties?.dashboardBanners">
+                  <td class="td-overflow-text text-center">
+                    <app-custom-ui-switch [customSwitch]="item?.displayTitle" [isSwitchOptionDisabled]="true"></app-custom-ui-switch>
+                  </td>
+                  <td class="td-overflow-text text-center">{{item?.buttonText}}</td>
+              </ng-container>
             </ng-container>
             <ng-container *ngIf="moduleType==properties?.newsAndAnnouncements">
               <td>{{item.type}}</td>
             </ng-container>
             <td>
               <div class="actions-block override-actions float-none">
-                <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit">
+                <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit/Preview">
                   <i class="fa fa-pencil-square-o"></i>
                   <div class="clickicons"></div>
                 </a>

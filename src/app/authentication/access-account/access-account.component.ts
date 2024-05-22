@@ -297,6 +297,8 @@ export class AccessAccountComponent implements OnInit {
         $("#teamMember-signup-emailId").removeClass('ng-invalid');
         $("#partner-company-name").removeClass('ng-valid');
         $("#partner-company-name").removeClass('ng-invalid');
+        this.formErrors.companyName = "";
+        this.formErrors.emailId = "";
     }
 
     /****XNFR-506******/

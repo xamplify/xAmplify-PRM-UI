@@ -26,7 +26,10 @@ export class LandingPage {
     /*XNFR-432*/
     vanityUrlFilter = false;
     copyPage = false;
-     /*XNFR-432*/
-     partnerLandingPageId = 0;
+    /*XNFR-432*/
+    partnerLandingPageId = 0;
     sourceInString:string;
+    /*XNFR-428*/
+    vendorJourneyId = 0;
+    hasVendorJourney:boolean = false;
 }

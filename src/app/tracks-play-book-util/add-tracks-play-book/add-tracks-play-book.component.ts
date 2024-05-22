@@ -31,13 +31,15 @@ import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/ad
 import { TracksPlayBookType } from '../models/tracks-play-book-type.enum';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
-
+import { Properties } from 'app/common/models/properties';
+Properties
 declare var $, swal, CKEDITOR: any;
 @Component({
   selector: 'app-add-tracks-play-book',
   templateUrl: './add-tracks-play-book.component.html',
   styleUrls: ['./add-tracks-play-book.component.css'],
-  providers: [HttpRequestLoader, Pagination, SortOption, FormService, RegularExpressions, DamService, ContactService]
+  providers: [HttpRequestLoader, Pagination, SortOption, FormService, RegularExpressions, DamService, 
+    ContactService,Properties]
 })
 export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
@@ -187,9 +189,14 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
  /****XNFR-326*****/
   /*****XNFR-423****/
   countryNames = [];
+  /**XNFR-523***/
+  isSendEmailNotificationOptionDisplayed = false;
+  sendEmailNotificationOptionToolTipMessage = "";
+  isSwitchOptionDisabled = false;
+  customSwitchToolTipMessage = "";
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
-    public xtremandLogger: XtremandLogger, public contactService: ContactService) {
+    public xtremandLogger: XtremandLogger, public contactService: ContactService,public properties:Properties) {
     this.siteKey = this.envService.captchaSiteKey;
     this.loggedInUserId = this.authenticationService.getUserId();
     /****XNFR-170****/
@@ -203,6 +210,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value);
     });
+    
+    
   }
 
   ngOnInit() {
@@ -227,9 +236,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       this.stepTwoTabClass = this.disableTabClass;
       this.stepThreeTabClass = this.disableTabClass;
       this.stepFourTabClass = this.disableTabClass;
+       /****XNFR-326******/
+      this.findTrackOrPlaybookPublishEmailNotificationOption();
     }
-    /****XNFR-326******/
-    this.findTrackOrPlaybookPublishEmailNotificationOption();
+   
   }
    /****XNFR-326******/
   findTrackOrPlaybookPublishEmailNotificationOption() {
@@ -238,9 +248,18 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     .subscribe(
         response=>{
             this.isTrackOrPlaybookPublishedEmailNotification = response.data;
+            this.isSwitchOptionDisabled = !this.isTrackOrPlaybookPublishedEmailNotification;
+            if(this.isSwitchOptionDisabled){
+              this.tracksPlayBook.trackUpdatedEmailNotification = false;
+              this.customSwitchToolTipMessage = this.properties.TRACK_OR_PLAY_BOOK_EMAIL_NOTIFICATION_OPTION_DISABLED;
+            }else{
+              this.customSwitchToolTipMessage = "";
+            }
             this.trackOrPlaybookPublishEmailNotificationLoader = false;
+            this.ngxloading = false;
         },error=>{
             this.trackOrPlaybookPublishEmailNotificationLoader = false;
+            this.ngxloading = false;
         });
   }
 
@@ -340,7 +359,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
               this.folderName = this.tracksPlayBook.category.name;
             }
             this.validateLearningTrack();
-            this.ngxloading = false;
+            /**XNFR-523***/
+            this.isSendEmailNotificationOptionDisplayed = this.tracksPlayBook.published && !this.isAdd;
+            this.sendEmailNotificationOptionToolTipMessage = this.properties.SEND_UPDATED_TRACK_EMAIL_NOTIFICATION_MESSAGE.replace("{{partnersMergeTag}}",this.authenticationService.getPartnerModuleCustomName());
+            /**XNFR-523***/
           } else {
             this.goToManageSectionWithError();
             this.ngxloading = false;
@@ -354,6 +376,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         this.logger.errorPage(error);
         this.referenceService.showServerError(this.httpRequestLoader);
         this.ngxloading = false;
+      },()=>{
+        /***XNFR-523***/
+        this.findTrackOrPlaybookPublishEmailNotificationOption();
       });
   }
 
@@ -658,13 +683,14 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
               this.pageBackgroundColor = this.form.pageBackgroundColor;
               this.formBackgroundImage = "";
             }
-            $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
-              if (value.labelType == 'quiz_radio') {
-                value.choices = value.radioButtonChoices;
-
-              } else if (value.labelType == 'quiz_checkbox') {
-                value.choices = value.checkBoxChoices;
-              }
+            $.each(this.form.formLabelDTORows, function (index: number, formLabelDTORow: any) {
+              $.each(formLabelDTORow.formLabelDTOs, function (columnIndex: number, value: any) {
+                if (value.labelType == 'quiz_radio') {
+                  value.choices = value.radioButtonChoices;
+                } else if (value.labelType == 'quiz_checkbox') {
+                  value.choices = value.checkBoxChoices;
+                }
+              });
             });
             this.setCustomCssValues();
             this.formError = false;
@@ -1070,9 +1096,13 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     description = description.substring(3,description.length-4).trim();
     if (description.length < 1) {
       this.addErrorMessage("description", "description can not be empty");
-    } else if (description.length > 5000) {
-      this.addErrorMessage("description", "description can not be more than 5000 characters");
-    } else {
+    } 
+    
+    // else if (description.length > 5000) {
+    //   this.addErrorMessage("description", "description can not be more than 5000 characters");
+    // } 
+    
+    else {
       this.removeErrorMessage("description")
     }
   }
@@ -1340,31 +1370,45 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
   assetPreview(assetDetails: any, isFromPopup: boolean) {
     this.isPreviewFromAssetPopup = isFromPopup;
-    if (assetDetails.beeTemplate) {
-      this.previewBeeTemplate(assetDetails);
-    } else {
-      let assetType = assetDetails.assetType;
-      this.filePath = assetDetails.assetPath;
-      if (assetType == 'mp3') {
-        this.showFilePreview = true;
-        this.fileType = "audio/mpeg";
-        this.isAudio = true;
-      } else if (assetType == 'mp4') {
-        this.showFilePreview = true;
-        this.fileType = "video/mp4";
-        this.isVideo = true;
-        this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
-      } else if (this.imageTypes.includes(assetType)) {
-        this.showFilePreview = true;
-        this.isImage = true;
-      } else if (this.fileTypes.includes(assetType)) {
-        this.showFilePreview = true;
-        this.isFile = true;
-        this.filePath = "https://view.officeapps.live.com/op/embed.aspx?src=" + assetDetails.assetPath + "&embedded=true";
-        this.transformUrl();
-      } else {
-        window.open(assetDetails.assetPath, '_blank');
+    let assetType = assetDetails.assetType;
+    let isBeeTemplate = assetDetails.beeTemplate;
+    let isMp3File = assetType=="mp3";
+    let isVideoFile = assetType=="mp4";
+    let isShowPreviewInApp = isBeeTemplate || isMp3File || isVideoFile;
+    if(isShowPreviewInApp){
+        this.previewContentInsideApp(isBeeTemplate, assetDetails, isMp3File, isVideoFile);
+    }else{
+      if(this.authenticationService.isLocalHost()){
+        this.referenceService.preivewAssetOnNewHost(assetDetails.id);
+      }else{
+        if(this.fileTypes.includes(assetType)){
+          this.showFilePreview = true;
+          this.isImage = true;
+        }else if (this.fileTypes.includes(assetType)) {
+          this.showFilePreview = true;
+          this.isFile = true;
+          this.filePath = "https://view.officeapps.live.com/op/embed.aspx?src=" + assetDetails.assetPath + "&embedded=true";
+          this.transformUrl();
+        } else {
+          window.open(assetDetails.assetPath, '_blank');
+        }
+        this.handleMediaAndOrdersPopup();
       }
+    }
+  }
+
+  private previewContentInsideApp(isBeeTemplate: any, assetDetails: any, isMp3File: boolean, isVideoFile: boolean) {
+    if (isBeeTemplate) {
+      this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
+    } else if (isMp3File) {
+      this.showFilePreview = true;
+      this.fileType = "audio/mpeg";
+      this.isAudio = true;
+    } else if (isVideoFile) {
+      this.showFilePreview = true;
+      this.fileType = "video/mp4";
+      this.isVideo = true;
+      this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
     }
     this.handleMediaAndOrdersPopup();
   }
@@ -1634,6 +1678,11 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     if (this.folderOrTagsCustomResponse.isVisible) {
       this.folderOrTagsCustomResponse = new CustomResponse();
     }
+  }
+
+  /*****XNFR-523****/
+  setTrackUpdatedEmailNotification(event:any){
+    this.tracksPlayBook.trackUpdatedEmailNotification = event;
   }
 
 }

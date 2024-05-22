@@ -39,8 +39,10 @@ export class UserInfoComponent implements OnInit {
                     this.userInfo.firstName = this.userInfo.partnerCompanyName;
                 }  else if (this.userInfo.createdByCompanyName != null) {
                     this.userInfo.firstName = this.userInfo.createdByCompanyName;
+                } else if(this.userInfo.fullName != null && this.userInfo.fullName != ' '){
+                    this.userInfo.firstName = this.userInfo.fullName;
                 }
-            }
+            } 
             this.setBackgroundColor();
             this.setHighlightLetter();
         }

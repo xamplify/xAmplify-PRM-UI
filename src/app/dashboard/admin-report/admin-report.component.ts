@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { Roles } from '../../core/models/roles';
 import { CampaignAccess } from '../../campaigns/models/campaign-access';
 import { DynamicEmailContentComponent } from '../dynamic-email-content/dynamic-email-content.component';
-
+import { UpdatePasswordComponent } from './../super-admin/update-password/update-password.component';
 declare var swal:any,$:any;
 
 @Component({
@@ -68,8 +68,12 @@ export class AdminReportComponent implements OnInit {
     upgradeAccountStatusCode = 0;
     adminsAndTeamMembers:Array<any>= new Array<any>();
     /***Upgrade Account */
+    isVanityUrlEnabled = false;
+    updatePasswordLoader = false;
+    @ViewChild('updatePasswordComponent') updatePasswordComponent: UpdatePasswordComponent;
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public router:Router) {
+        this.isVanityUrlEnabled = this.authenticationService.vanityURLEnabled;
   }
   
   listTop10RecentUsers(){
@@ -90,7 +94,9 @@ export class AdminReportComponent implements OnInit {
   
 
   ngOnInit() {
-      this.listTop10RecentUsers();
+    if(!this.isVanityUrlEnabled){
+        this.listTop10RecentUsers();
+    }
   }
 
 
@@ -206,5 +212,8 @@ export class AdminReportComponent implements OnInit {
         this.referenceService.goToRouter("home/dashboard/admin-company-profile");
     }
 
+    openUpdatePasswordModal(){
+        this.updatePasswordComponent.openModalPopup();
+    }
     
 }

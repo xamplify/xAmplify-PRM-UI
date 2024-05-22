@@ -723,3 +723,13 @@ th.leftAlignTableth {
       width: 64px!important;
     }
   }
+  @media only screen and (max-width: 578px) {
+  .flex-wrap{
+   display: flex;
+   flex-wrap: wrap;
+  }
+  }
+  .campaign_type{
+  position: relative;
+  z-index: 99;
+  }

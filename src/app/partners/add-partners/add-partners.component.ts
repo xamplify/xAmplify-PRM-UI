@@ -1068,8 +1068,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								self.newPartnerUser.push(user);
 							}
 						}
-						if (self.newPartnerUser.length == 0) {
-							self.customResponse = new CustomResponse('ERROR', "No records found", true);
+						if(allTextLines.length == 2){
+							self.customResponse = new CustomResponse('ERROR', "No records found.", true);
+							self.cancelPartners();
+						}else if (allTextLines.length > 2 && self.newPartnerUser.length == 0) {
+							self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
 							self.cancelPartners();
 						} else {
 							self.setSocialPage(1);
@@ -1759,6 +1762,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
+						this.socialPartners.contacts = this.socialPartnerUsers;
 						this.selectedAddPartnerOption = 6;
 						this.setSocialPage(1);
 					},
@@ -2096,6 +2100,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
+						this.socialPartners.contacts = this.socialPartnerUsers;
 						this.customResponse.isVisible = false;
 						this.setSocialPage(1);
 					},
@@ -2173,6 +2178,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
+						this.socialPartners.contacts = this.socialPartnerUsers;
 						this.customResponse.isVisible = false;
 						this.setSocialPage(1);
 					},
@@ -3064,6 +3070,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 				}
 				this.xtremandLogger.info(this.getMarketoConatacts);
+				this.socialPartners.contacts = this.socialPartnerUsers;
 				this.setSocialPage(1);
 			} else if (data.statusCode === 400) {
 				this.selectedAddPartnerOption = 5;
@@ -3509,6 +3516,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				}
 			}
 			this.setSocialPage(1);
+			this.socialPartners.contacts = this.socialPartnerUsers;
 			this.customResponse.isVisible = false;
 			this.selectedAddPartnerOption = 9;
 		}
@@ -4303,6 +4311,7 @@ getTeamMembersByGroupId(partner: any, index: number) {
 				$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			}
 			this.setSocialPage(1);
+			this.socialPartners.contacts = this.socialPartnerUsers;
 			this.customResponse.isVisible = false;
 			this.selectedAddPartnerOption = 10;
 			console.log("Social Contact Users for Microsoft::" + this.socialPartnerUsers);
@@ -4447,6 +4456,7 @@ framePipedrivePreview(response: any) {
 			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		}
 		this.setSocialPage(1);
+		this.socialPartners.contacts = this.socialPartnerUsers;
 		this.customResponse.isVisible = false;
 		this.selectedAddPartnerOption = 11;
 		console.log("Social Contact Users for Pipedrive::" + this.socialPartnerUsers);
@@ -4650,6 +4660,7 @@ frameConnectWisePreview(response: any) {
 			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		}
 		this.setSocialPage(1);
+		this.socialPartners.contacts = this.socialPartnerUsers;
 		this.customResponse.isVisible = false;
 		this.selectedAddPartnerOption = 12;
 		console.log("Social Contact Users for ConnectWise::" + this.socialPartnerUsers);

@@ -75,7 +75,7 @@
 								<div class="page-breadcrumb">
 									<span class="col-xs-6 col-md-6">
 										<span *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList
-							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList"
+							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && !isFormList"
 											data-toggle="tooltip" data-placement="top" title="Edit list Name"
 											style="cursor:pointer;font-size: 16px;" (click)="editListName()">
 											<span class="ellipsis">{{selectedContactListName | slice:0:30}}
@@ -83,10 +83,10 @@
 											</span>
 										</span>
 										<span
-											*ngIf="isDefaultPartnerList  || isDefaultContactList || selectedContactListName==properties?.activeMasterPartnerList || selectedContactListName==properties?.inActiveMasterPartnerList || isTeamMemberPartnerList"
+											*ngIf="isDefaultPartnerList  || isDefaultContactList || selectedContactListName==properties?.activeMasterPartnerList || selectedContactListName==properties?.inActiveMasterPartnerList || isTeamMemberPartnerList || isFormList"
 											style="font-size: 16px;">{{selectedContactListName}}
 										</span>
-										<div *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList"
+										<div *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && !isFormList"
 											class="pencil-color">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</div>
@@ -361,7 +361,7 @@
 														translate>Download CSV Template</a>
 												</li>
 												<li [ngClass]="{'disabled': (selectedInvalidContactIds?.length == 0 && selectedContactListIds?.length == 0)}"
-													*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList">
+													*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && (authenticationService?.module?.adminOrSuperVisor || loggedInUserId == uploadedUserId || hasAllAcces)">
 													<a id="delete_button"
 														*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) && !sharedLeads"
 														(click)="!isDefaultContactList ? showAlert(selectedContactListId) : confirmdelete(selectedContactListIds)"

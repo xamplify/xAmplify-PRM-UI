@@ -131,8 +131,13 @@ export class AddDealComponent implements OnInit {
   createdByActiveCRM: any;
   createdForActiveCRM: any;
   isMarketingCompany: boolean = false;
-  hidePipelineDetails: boolean = false;
-  isOnlyOrgAdminOrMarketing: boolean = false;
+  showCreatedByPipelineAndStage: boolean = false;
+  showCreatedByPipelineAndStageOnTop: boolean = false;
+
+  titleFields = ['title','name','symptom'];
+  amountFields = ['amount','value','FOppValue'];
+  closeDateFields = ['expected_close_date','expectedCloseDate','FOppTargetDate','CloseDate'];
+  type = "DEAL";
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -156,13 +161,6 @@ export class AddDealComponent implements OnInit {
     this.deal.createdByPipelineId = 0;
     this.deal.createdForPipelineStageId = 0;
     this.deal.createdByPipelineStageId = 0;
-    this.pipelineText = "Partner's xAmplify Pipeline";
-    this.pipelinestageText = "Partner's xAmplify Stage";
-    if (!this.isVendorVersion) {
-      this.pipelineText = "Vendor's xAmplify Pipeline";
-      this.pipelinestageText = "Vendor's xAmplify Stage";
-    }
-    this.isOnlyOrgAdminOrMarketing = (this.authenticationService.isOrgAdmin() && !this.authenticationService.isPartner()) || (this.authenticationService. module.isMarketing && !this.authenticationService.isPartner());  
     if (this.actionType === "add") {
       this.showCommentActions = true;
       this.showAttachLeadButton = true;
@@ -296,9 +294,13 @@ export class AddDealComponent implements OnInit {
               let campaignDealPipeline = data.data;
               if ((self.deal.pipelineId !== campaignDealPipeline.id && this.actionType == 'add') || (self.deal.pipelineId !== campaignDealPipeline.id && this.actionType == 'edit') || this.actionType == 'view') {
                 self.pipelines.push(campaignDealPipeline);
+                self.createdForPipelines.push(campaignDealPipeline);
                 self.deal.pipelineId = campaignDealPipeline.id;
+                self.deal.createdForPipelineId = campaignDealPipeline.id;
                 self.pipelineIdError = false;
+                self.createdForPipelineIdError = false;
                 self.stages = campaignDealPipeline.stages;
+                self.createdForStages = campaignDealPipeline.stages;
                 if (this.actionType == 'add' || this.actionType == 'edit') {
                   self.resetStages();
                 }
@@ -551,12 +553,34 @@ export class AddDealComponent implements OnInit {
   resetStages() {
     if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
       this.deal.pipelineStageId = 0;
+      this.deal.createdForPipelineStageId = 0;
+      this.getStages();
+      this.pipelineStageId = "form-group has-error has-feedback";
+      this.createdForPipelineStageId = "form-group has-error has-feedback";
+      this.pipelineStageIdError = true;
+      this.createdForPipelineStageIdError = true;
+      this.isDealRegistrationFormValid = false;
+    }
+  }
+
+  resetCreatedByPipelineStages() {
+    if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
+      this.deal.pipelineStageId = 0;
       this.getStages();
       this.pipelineStageId = "form-group has-error has-feedback";
       this.pipelineStageIdError = true;
       this.isDealRegistrationFormValid = false;
     }
+  }
 
+  resetCreatedForPipelineStages() {
+    if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
+      this.deal.createdForPipelineStageId = 0;
+      this.getStages();
+      this.createdForPipelineStageId = "form-group has-error has-feedback";
+      this.createdForPipelineStageIdError = true;
+      this.isDealRegistrationFormValid = false;
+    }
   }
 
   getStages() {
@@ -651,6 +675,10 @@ export class AddDealComponent implements OnInit {
 
     /********XNFR-403***********/
     //xnfr-461
+    // if((this.isOrgAdmin || this.isMarketingCompany) && this.deal.createdForPipelineId == 0 && this.deal.createdForPipelineStageId == 0){
+    //   this.deal.createdForPipelineId = this.deal.createdByPipelineId;
+    //   this.deal.createdForPipelineStageId = this.deal.createdByPipelineStageId;
+    // }
     if(this.deal.createdForPipelineId > 0 && this.deal.createdForPipelineStageId > 0){
       this.deal.pipelineId = this.deal.createdForPipelineId;
       this.deal.pipelineStageId = this.deal.createdForPipelineStageId;
@@ -778,7 +806,9 @@ export class AddDealComponent implements OnInit {
           this.pipelineIdError = true;
           this.pipelineStageId = errorClass;
           this.pipelineStageIdError = true;
+          this.createdForPipelineId = errorClass;
           this.createdForPipelineIdError = true;
+          this.createdForPipelineStageId = errorClass;
           this.createdForPipelineStageIdError = true;
         }
       }
@@ -795,12 +825,12 @@ export class AddDealComponent implements OnInit {
       }
       if (fieldId == "createdForPipelineId") {
         if (fieldValue.length > 0 && fieldValue != "0") {
-          this.pipelineId = successClass;
+          this.createdForPipelineId = successClass;
           this.createdForPipelineIdError = false;
         } else {
-          this.pipelineId = errorClass;
+          this.createdForPipelineId = errorClass;
           this.createdForPipelineIdError = true;
-          this.pipelineStageId = errorClass;
+          this.createdForPipelineStageId = errorClass;
           this.createdForPipelineStageIdError = true;
         }
       }
@@ -815,10 +845,10 @@ export class AddDealComponent implements OnInit {
       }
       if (fieldId == "createdForPipelineStageId") {
         if (fieldValue.length > 0 && fieldValue != "0") {
-          this.pipelineStageId = successClass;
+          this.createdForPipelineStageId = successClass;
           this.createdForPipelineStageIdError = false;
         } else {
-          this.pipelineStageId = errorClass;
+          this.createdForPipelineStageId = errorClass;
           this.createdForPipelineStageIdError = true;
         }
       }
@@ -828,6 +858,7 @@ export class AddDealComponent implements OnInit {
 
 
   submitButtonStatus() {
+    let self = this;
     if (this.showCustomForm) {
       this.opportunityAmountError = false;
       this.titleError = false;
@@ -837,8 +868,14 @@ export class AddDealComponent implements OnInit {
       this.propertiesQuestions.length = 0;
     }
 
+    if (!this.showCreatedByPipelineAndStage && !this.createdForPipelineStageIdError) {
+      this.pipelineIdError = false;
+      this.pipelineStageIdError = false;
+    }
+
     if (!this.opportunityAmountError && !this.estimatedCloseDateError
-      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError) {
+      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError 
+      && !this.pipelineStageIdError && !this.createdForPipelineStageIdError ) {
       let qCount = 0;
       let cCount = 0;
       this.propertiesQuestions.forEach(propery => {
@@ -964,11 +1001,11 @@ export class AddDealComponent implements OnInit {
               this.deal.closeDateString = formLabel.value;
             }
           }
-          if (formLabel.labelId === "title" || formLabel.labelId === "name") {
+          if (this.titleFields.includes(formLabel.labelId)) {
             this.deal.title = formLabel.value;
-          } else if ((formLabel.labelId === "amount" || formLabel.labelId === "value") && this.activeCRMDetails.type != "HUBSPOT") {
+          } else if (this.amountFields.includes(formLabel.labelId) && this.activeCRMDetails.type != "HUBSPOT") {
             this.deal.amount = formLabel.value;
-          } else if (formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate") {
+          } else if (this.closeDateFields.includes(formLabel.labelId)) {
             this.deal.closeDateString = formLabel.value;
           }
           let sfCfData = new SfCustomFieldsDataDTO();
@@ -1080,15 +1117,11 @@ export class AddDealComponent implements OnInit {
         response => {
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
-            //XNFR-461
-            if (this.activeCRMDetails.activeCRM && this.activeCRMDetails.hasCustomForm) {
+            if (this.activeCRMDetails.hasCustomForm
+              && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
+                || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type 
+                || "HALOPSA" === this.activeCRMDetails.type)) {
               this.showCustomForm = true;
-            }
-            if ( !this.activeCRMDetails.activeCRM || "CONNECTWISE" === this.activeCRMDetails.type) {
-              if (this.actionType !== 'view' && (this.actionType !== 'edit' || this.deal.associatedContact === undefined)) {
-                this.showAttachLeadButton = true;
-              }
-              
             }
           }
         },
@@ -1126,45 +1159,47 @@ export class AddDealComponent implements OnInit {
   getDealPipelines() {
     let campaignId = 0;
     let self = this;
-    this.isLoading = true;
-    this.referenceService.loading(this.httpRequestLoader, true);
+    self.isLoading = true;
+    self.referenceService.loading(this.httpRequestLoader, true);
     if (this.deal.campaignId !== undefined && this.deal.campaignId > 0) {
       campaignId = this.deal.campaignId;
     }
-    this.dealsService.getActiveCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, campaignId)
-    .subscribe(
-      data => {
-        this.referenceService.loading(this.httpRequestLoader, false);
-        this.isLoading = false;
-        if (data.statusCode == 200) {
-          let activeCRMPipelinesResponse: any = data.data;
-          self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
-          self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
-          let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
-          if (createdByPipelines !== undefined && createdByPipelines !== null) {
-            this.handleCreatedByPipelines(createdByPipelines);
+    this.dealsService.getActiveCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, campaignId, this.type)
+      .subscribe(
+        data => {
+          self.referenceService.loading(this.httpRequestLoader, false);
+          self.isLoading = false;
+          if (data.statusCode == 200) {
+            let activeCRMPipelinesResponse: any = data.data;
+            self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
+            self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
+            self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByPipelineAndStage;
+            self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByPipelineAndStageOnTop;
+            let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
+            if (createdByPipelines !== undefined && createdByPipelines !== null) {
+              this.handleCreatedByPipelines(createdByPipelines);
+            }
+
+            let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
+            if (createdForPipelines !== undefined && createdForPipelines !== null) {
+              this.handleCreatedForPipelines(createdForPipelines);
+            }
+
+          } else if (data.statusCode == 404) {
+            this.deal.createdForPipelineId = 0;
+            this.deal.createdByPipelineId = 0;
+            this.createdForStages = [];
+            this.createdByStages = [];
+            this.getPipelines();
+            this.activeCRMDetails.hasCreatedForPipeline = false;
+            this.activeCRMDetails.hasCreatedByPipeline = false;
           }
-          
-          let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
-          if (createdForPipelines !== undefined && createdForPipelines !== null) {
-            this.handleCreatedForPipelines(createdForPipelines);
-          }          
-          
-        } else if (data.statusCode == 404) {
-          this.deal.createdForPipelineId = 0;
-          this.deal.createdByPipelineId = 0;
-          this.createdForStages = [];
-          this.createdByStages = [];
-          this.getPipelines();
-          this.activeCRMDetails.hasCreatedForPipeline = false;
-          this.activeCRMDetails.hasCreatedByPipeline = false;
-        }
-      },
-      error => {
-        this.httpRequestLoader.isServerError = true;
-      },
-      () => { }
-    );
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
   }
 
   getDealPipelinesForView() {
@@ -1176,46 +1211,57 @@ export class AddDealComponent implements OnInit {
       campaignId = this.deal.campaignId;
     }
     this.dealsService.getDealPipelinesForView(this.dealId, this.loggedInUserId)
-    .subscribe(
-      data => {
-        this.referenceService.loading(this.httpRequestLoader, false);
-        this.isLoading = false;
-        if (data.statusCode == 200) {
-          let activeCRMPipelinesResponse: any = data.data;
-          self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
-          self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
-          let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
-          let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
-          if (this.isVendorVersion && !this.isOnlyOrgAdminOrMarketing) {
-            [self.createdByActiveCRM, self.createdForActiveCRM] = [self.createdForActiveCRM, self.createdByActiveCRM];
-            [createdByPipelines, createdForPipelines] = [createdForPipelines, createdByPipelines];
-            [this.deal.createdByPipelineId, this.deal.createdForPipelineId] = [this.deal.createdForPipelineId, this.deal.createdByPipelineId];
-            [this.deal.createdByPipelineStageId, this.deal.createdForPipelineStageId] = [this.deal.createdForPipelineStageId, this.deal.createdByPipelineStageId];
-          }
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.isLoading = false;
+          if (data.statusCode == 200) {
+            let activeCRMPipelinesResponse: any = data.data;
+            self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
+            self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
+            self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByPipelineAndStage;
+            self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByPipelineAndStageOnTop;
+            let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
+            let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
+            // if (this.isVendorVersion && !this.isOnlyOrgAdminOrMarketing) {
+            //   [self.createdByActiveCRM, self.createdForActiveCRM] = [self.createdForActiveCRM, self.createdByActiveCRM];
+            //   [createdByPipelines, createdForPipelines] = [createdForPipelines, createdByPipelines];
+            //   [this.deal.createdByPipelineId, this.deal.createdForPipelineId] = [this.deal.createdForPipelineId, this.deal.createdByPipelineId];
+            //   [this.deal.createdByPipelineStageId, this.deal.createdForPipelineStageId] = [this.deal.createdForPipelineStageId, this.deal.createdByPipelineStageId];
+            //   if (this.deal.createdForCompanyId == this.deal.createdByCompanyId) {
+            //     this.showCreatedByPipelineDetails = false;
+            //     this.pipelineText = "Pipeline";
+            //     this.pipelinestageText = "Stage";
+            //   }
+            //   if (this.showDefaultForm) {
+            //     this.showCreatedForPipelinesForDefaultForm = true;
+            //     this.showCreatedByPipelinesForDefaultForm = false;
+            //   }
+            // }
 
-          if (createdByPipelines !== undefined && createdByPipelines !== null) {
-            this.handleCreatedByPipelines(createdByPipelines);
+            if (createdByPipelines !== undefined && createdByPipelines !== null) {
+              this.handleCreatedByPipelines(createdByPipelines);
+            }
+
+            if (createdForPipelines !== undefined && createdForPipelines !== null) {
+              this.handleCreatedForPipelines(createdForPipelines);
+            }
+
+          } else if (data.statusCode == 404) {
+            this.deal.createdForPipelineId = 0;
+            this.deal.createdByPipelineId = 0;
+            this.createdForStages = [];
+            this.createdByStages = [];
+            this.getPipelines();
+            this.activeCRMDetails.hasCreatedForPipeline = false;
+            this.activeCRMDetails.hasCreatedByPipeline = false;
           }
-          
-          if (createdForPipelines !== undefined && createdForPipelines !== null) {
-            this.handleCreatedForPipelines(createdForPipelines);
-          }          
-          
-        } else if (data.statusCode == 404) {
-          this.deal.createdForPipelineId = 0;
-          this.deal.createdByPipelineId = 0;
-          this.createdForStages = [];
-          this.createdByStages = [];
-          this.getPipelines();
-          this.activeCRMDetails.hasCreatedForPipeline = false;
-          this.activeCRMDetails.hasCreatedByPipeline = false;
-        }
-      },
-      error => {
-        this.httpRequestLoader.isServerError = true;
-      },
-      () => { }
-    );
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
   }
 
   getActiveCRMPipelines() {
@@ -1300,9 +1346,6 @@ export class AddDealComponent implements OnInit {
   handleCreatedForPipelines(createdForPipelines: any) {
     let self = this;
     self.createdForPipelines = createdForPipelines;
-    if (createdForPipelines.length > 0 && !this.isOnlyOrgAdminOrMarketing){
-      this.hidePipelineDetails = true;
-    }
     if (createdForPipelines.length === 1) {
       let createdForPipeline = createdForPipelines[0];
       self.deal.createdForPipelineId = createdForPipeline.id;

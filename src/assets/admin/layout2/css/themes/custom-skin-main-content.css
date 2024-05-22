@@ -2572,3 +2572,18 @@ table tr:nth-child(odd).highlightRow, table tr:nth-child(odd).highlightRow:hover
   border-top-left-radius: 10px !important;
   border-top-right-radius: 10px !important;
 }
+/* deals pipeline */
+.Synchronize_btn {
+  background-color: var(--btn-primary-bg-color) !important;
+  color: var(--btn-primary-text-color) !important;
+  border: 1px solid var(--btn-primary-border-color) !important;
+}
+.Synchronize_btn:hover {
+  background-color: var(--btn-primary-bg-color) !important;
+  color: var(--btn-primary-text-color) !important;
+  border: 1px solid var(--btn-primary-border-color) !important;
+  opacity: 0.8;
+}
+.vendor-details-tiles {
+  border: 1px solid var(--border-color) !important;
+}

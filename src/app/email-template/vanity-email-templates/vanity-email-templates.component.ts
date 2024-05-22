@@ -79,6 +79,6 @@ export class VanityEmailTemplatesComponent implements OnInit {
   }
 
   previewTemplate(emailTemplate:VanityEmailTempalte){
-    this.emailTemplatePreviewUtilComponent.previewEmailTemplate(emailTemplate);
+    this.referenceService.previewVanityEmailTemplateInNewTab(emailTemplate.id);
   }
 }

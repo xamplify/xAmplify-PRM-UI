@@ -358,7 +358,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     ngOnInit() {
-        this.filterContacts('ALL');
         if (!this.reDistributeEvent && !this.isEventUpdate) {
             this.authenticationService.isShowForms = true;
         }
@@ -408,7 +407,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     }
 
 
-
+                    this.filterContacts('ALL');  
                     if (result.data.enableCoBrandingLogo) { this.eventCampaign.enableCoBrandingLogo = result.data.enableCoBrandingLogo; }
                     else { this.eventCampaign.enableCoBrandingLogo = false; }
                     if (result.data.parentCampaignId) { this.parentCampaignIdValue = result.data.parentCampaignId; this.parentCampaignId = true; this.isPartnerUserList = false; }
@@ -856,7 +855,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
 
 
-        this.contactListMethod(this.contactListsPagination);
+         this.contactListMethod(this.contactListsPagination);
     }
 
     /*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
@@ -1043,7 +1042,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 contactsPagination.parentCampaignId = this.eventCampaign.id;
             }
         }
-        contactsPagination.userId = this.loggedInUserId;
+        contactsPagination.userId = this.authenticationService.getUserId();
         contactsPagination.redistributingCampaign = true;
         if (this.vanityLoginDto.vanityUrlFilter) {
             contactsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
@@ -3158,8 +3157,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.loading = false;
     }
 
+
     filterContacts(filterType:string){
-		this.contactListsPagination.pageIndex = 1;
+        this.contactListsPagination.pageIndex = 1;
 		this.contactListsPagination.filterBy = filterType;
 		this.contactListMethod(this.contactListsPagination)
 	}

@@ -7,6 +7,7 @@ import { Processor } from '../../core/models/processor';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { EventCampaign } from 'app/campaigns/models/event-campaign';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-preview-email-template',
@@ -15,7 +16,7 @@ import { EventCampaign } from 'app/campaigns/models/event-campaign';
   providers:[Processor,Properties]
 })
 export class PreviewEmailTemplateComponent implements OnInit {
-  id:number = 0;
+  id:any;
   success = false;
   customResponse:CustomResponse = new CustomResponse();
   loggedInUserCompanyLogo="";
@@ -24,7 +25,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
   isVendorCompanyViewingWorkflowTemplate = false;
   isVendorCampaignAutoReplyEmailWorkflowId = false;
   vendorCampaignAutoReplyWebsiteLinkWorkflowId = false;
-  campaignId = 0;
+  campaignId:any;
   isCampaignAutoReplyEmailWorkflowId: boolean;
   campaignAutoReplyWebsiteLinkWorkflowId: boolean;
   isEventCampaignTemplatePreview: boolean;
@@ -32,6 +33,8 @@ export class PreviewEmailTemplateComponent implements OnInit {
   isEditRedistributedEventCampaignTemplatePreview:boolean;
   statusCode = 404;
   eventCampaign:EventCampaign = new EventCampaign();
+  isVanityEmailTemplatePreview = false;
+  apiResponseFinished = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties) { }
 
@@ -48,9 +51,11 @@ export class PreviewEmailTemplateComponent implements OnInit {
     this.campaignAutoReplyWebsiteLinkWorkflowId = currentRouterUrl.indexOf("/pv/cwarwlt")>-1;
     this.isEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/evt")>-1;
     this.isEditRedistributedEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/edevt")>-1;
+    /***XNFR-496*****/
+    this.isVanityEmailTemplatePreview = currentRouterUrl.indexOf("/pv/vt")>-1;
     this.referenceService.clearHeadScriptFiles();
-    this.id = this.route.snapshot.params['id'];
-    this.campaignId = this.route.snapshot.params['campaignId'];
+    this.decodeIdParameter();
+    this.decodeCampaignIdParameter();
     let isValidId = this.id!=undefined && this.id>0;
     let isValidCampaignId = this.campaignId!=undefined && this.campaignId>0;
     if(isValidId ||isValidCampaignId){
@@ -58,31 +63,33 @@ export class PreviewEmailTemplateComponent implements OnInit {
     }
   }
 
+  private decodeIdParameter() {
+   try {
+     this.id = atob(this.route.snapshot.params['id']);
+   } catch (error) {
+      this.showPageNotFoundMessage();
+   }
+  }
+
+  private showPageNotFoundMessage() {
+    this.customResponse = new CustomResponse('ERROR', this.properties.pageNotFound, true);
+    this.processor.remove(this.processor);
+  }
+
+  private decodeCampaignIdParameter() {
+    try {
+      this.campaignId = atob(this.route.snapshot.params['campaignId']);
+    } catch (error) {
+      this.showPageNotFoundMessage();
+    }
+   }
+
+
+
   getHtmlBody(){
     this.loggedInUserCompanyLogo = this.authenticationService.APP_URL+"/assets/images/company-profile-logo.png";
     let URL_SUFFIX = "";
-    if(this.campaignId!=undefined){
-      let vendorCampaignIdOrCampaignIdParameter = this.isSharedCampaignTemplatePreview   ? "vendorCampaignId" : this.isSharedEventCampaignTemplatePreview ? "vendorEventCampaignId":"campaignId";
-      URL_SUFFIX = vendorCampaignIdOrCampaignIdParameter+"/"+this.campaignId;
-      if(this.isSharedEventCampaignTemplatePreview || this.isEditRedistributedEventCampaignTemplatePreview){
-        this.eventCampaign = this.authenticationService.getLocalStorageItemByKey(this.properties.eventCampaignTemplateLocalStorageKey);
-        if(this.eventCampaign!=undefined){
-          let hostedBy = this.eventCampaign.fromName;
-          let fromEmail = this.eventCampaign.email;
-          URL_SUFFIX = URL_SUFFIX+"/"+hostedBy+"/"+fromEmail;
-        }
-      }
-    }else if(this.isCampaignAutoReplyEmailWorkflowId){
-      URL_SUFFIX = "campaignAutoReplyEmailWorkflowId/"+this.id;
-    }else if(this.campaignAutoReplyWebsiteLinkWorkflowId){
-      URL_SUFFIX = "campaignAutoReplyWebsiteLinkWorkflowId/"+this.id;
-    }else if(this.isVendorCampaignAutoReplyEmailWorkflowId){
-      URL_SUFFIX = "vendorCampaignAutoReplyEmailWorkflowId/"+this.id;
-    }else if(this.vendorCampaignAutoReplyWebsiteLinkWorkflowId){
-      URL_SUFFIX = "vendorCampaignAutoReplyWebsiteLinkWorkflowId/"+this.id;
-    }else{
-      URL_SUFFIX = this.isVendorCompanyViewingWorkflowTemplate ? "workflowTemplateId/"+this.id:"id/"+this.id;
-    }
+    URL_SUFFIX = this.getUpdatedURL(URL_SUFFIX);
     this.authenticationService.getEmailTemplateHtmlBodyAndMergeTagsInfo(URL_SUFFIX).subscribe(
       response=>{
         this.statusCode = response.statusCode;
@@ -100,17 +107,47 @@ export class PreviewEmailTemplateComponent implements OnInit {
           }
           this.customResponse = new CustomResponse('ERROR',this.properties.pageNotFound,true);
         }
+        this.apiResponseFinished = true;
         this.processor.remove(this.processor);
       },error=>{
         this.statusCode = JSON.parse(error["status"]);
         if(this.statusCode==403){
           this.statusCode = 404;
         }
+        this.apiResponseFinished = true;
         this.processor.remove(this.processor);
         this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
       });
   }
 
+
+  private getUpdatedURL(URL_SUFFIX: string) {
+    if (this.campaignId != undefined) {
+      let vendorCampaignIdOrCampaignIdParameter = this.isSharedCampaignTemplatePreview ? "vendorCampaignId" : this.isSharedEventCampaignTemplatePreview ? "vendorEventCampaignId" : "campaignId";
+      URL_SUFFIX = vendorCampaignIdOrCampaignIdParameter + "/" + this.campaignId;
+      if (this.isSharedEventCampaignTemplatePreview || this.isEditRedistributedEventCampaignTemplatePreview) {
+        this.eventCampaign = this.authenticationService.getLocalStorageItemByKey(this.properties.eventCampaignTemplateLocalStorageKey);
+        if (this.eventCampaign != undefined) {
+          let hostedBy = this.eventCampaign.fromName;
+          let fromEmail = this.eventCampaign.email;
+          URL_SUFFIX = URL_SUFFIX + "/" + hostedBy + "/" + fromEmail;
+        }
+      }
+    } else if (this.isCampaignAutoReplyEmailWorkflowId) {
+      URL_SUFFIX = "campaignAutoReplyEmailWorkflowId/" + this.id;
+    } else if (this.campaignAutoReplyWebsiteLinkWorkflowId) {
+      URL_SUFFIX = "campaignAutoReplyWebsiteLinkWorkflowId/" + this.id;
+    } else if (this.isVendorCampaignAutoReplyEmailWorkflowId) {
+      URL_SUFFIX = "vendorCampaignAutoReplyEmailWorkflowId/" + this.id;
+    } else if (this.vendorCampaignAutoReplyWebsiteLinkWorkflowId) {
+      URL_SUFFIX = "vendorCampaignAutoReplyWebsiteLinkWorkflowId/" + this.id;
+    }else if(this.isVanityEmailTemplatePreview){
+      URL_SUFFIX = "vanityEmailTemplateId/" + this.id;
+    } else {
+      URL_SUFFIX = this.isVendorCompanyViewingWorkflowTemplate ? "workflowTemplateId/" + this.id : "id/" + this.id;
+    }
+    return URL_SUFFIX;
+  }
 
   private replaceEventCampaignMergeTags(htmlBody: any) {
     this.eventCampaign = this.authenticationService.getLocalStorageItemByKey(this.properties.eventCampaignTemplateLocalStorageKey);
