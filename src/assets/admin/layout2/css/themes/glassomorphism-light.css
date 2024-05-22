@@ -2141,9 +2141,9 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .btn-group button{
   box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
-  background: rgb(255 255 255 / 31%) !important;
-  border: 1px solid rgb(255 255 255 / 35%) !important;
-  color: #3c3a3a !important;
+  background: linear-gradient(15deg, rgb(0 159 231) 50%, rgb(0 222 223) 100%, rgb(0 159 231) 50%) no-repeat !important;
+  /* border: 1px solid rgb(255 255 255 / 35%) !important; */
+  /* color: #3c3a3a !important; */
 }
 
 .refresh-icon:hover {
@@ -2459,10 +2459,6 @@ a.UserguideBtnCustomization:hover {
   color: #000 !important;
   background-color: rgba(16 18 27 / 3%) !important;
   backdrop-filter: blur(5px);
-}
-.left-menu-color ul li a:hover,
-.left-menu-color ul li.active > a {
-  border-radius: 10px !important;
 }
 .left-menu-color {
   padding: 0px 0px !important;
@@ -3142,7 +3138,7 @@ justify-content: center!important;
     /* padding: 0 2rem !important; */
     border-radius: 8px !important;
     /* background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important; */
-    background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
+    background: linear-gradient(15deg, rgb(0 159 231) 50%, rgb(0 222 223) 100%, rgb(0 159 231) 50%) no-repeat !important;
     /* background-size: 400% !important; */
     color: #fff !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -4202,6 +4198,7 @@ a.delete.custom-icon {
 }
 .page-sidebar .page-sidebar-menu>li.active>a{
   border-bottom: 2px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius:0px !important;
 }
 li.active-tab a.active-tab-anchor-text{
   /* box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important; */
@@ -4302,6 +4299,7 @@ li.filter.selectedBox{
 /***** Sudha Sri(25-4-2024) *****/
 .page-sidebar .page-sidebar-menu > li:hover > a{
   background: rgb(146 151 179 / 8%);
+  border-radius:0px !important;
 }
 .pd_btm_8{
   padding-bottom: 8px !important;
@@ -4413,7 +4411,7 @@ button.button.p-rgt_p-top.bgcolor-unset span::before{
 /***** Sudha Sri(7-5-2024) *****/
 button.button.bgcolor-unset{
   /* background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important; */
-  background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
+  background: linear-gradient(15deg, rgb(0 159 231) 50%, rgb(0 222 223) 100%, rgb(0 159 231) 50%) no-repeat !important;
 
 }
 button.button.bgcolor-unset:hover {
@@ -4559,4 +4557,27 @@ a.tabColorOne b, h1 b, h6 b, span b, h3 b, div b {
 }
 .page-header.navbar .page-top.active {
   background-color: rgb(255 255 255 / 88%) !important;
+}
+.left-menu-color ul li a:hover{
+  border-bottom-right-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+.left-menu-color ul li.active > a {
+  border-bottom-right-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+.left-menu-color ul li a.sub_menu_margin:hover {
+  border-bottom-right-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+}
+@media only screen and (min-width: 600px) {
+  .text-block{
+    color:#000;
+  }
 }

@@ -2141,7 +2141,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .btn-group button{
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
+  background: linear-gradient(15deg, rgb(0 159 231) 50%, rgb(0 222 223) 100%, rgb(0 159 231) 50%) no-repeat !important;
   /* border: 1px solid #ffffff47 !important; */
   backdrop-filter: blur(5px);
 }
@@ -3153,7 +3153,7 @@ justify-content: center!important;
     height: 3.5rem !important;
     /* padding: 0 2rem !important; */
     border-radius: 8px !important;
-    background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
+    background: linear-gradient(15deg, rgb(0 159 231) 50%, rgb(0 222 223) 100%, rgb(0 159 231) 50%) no-repeat !important;
     /* background-size: 400% !important; */
     color: #fff !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -4218,6 +4218,7 @@ a.delete.custom-icon {
 }
 .page-sidebar .page-sidebar-menu>li.active>a{
   border-bottom: 2px solid #ffffff47 !important;
+  border-radius: 0px !important;
 }
 li.active-tab a.active-tab-anchor-text{
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
@@ -4316,6 +4317,7 @@ li.filter.selectedBox{
 /***** Sudha Sri(25-4-2024) *****/
 .page-sidebar .page-sidebar-menu > li:hover > a{
   background: rgb(146 151 179 / 8%);
+  border-radius:0px !important;
 }
 .pd_btm_8{
   padding-bottom: 8px !important;
