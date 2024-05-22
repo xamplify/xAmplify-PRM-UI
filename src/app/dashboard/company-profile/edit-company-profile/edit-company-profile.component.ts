@@ -1344,7 +1344,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     validateWebSite() {
         if ($.trim(this.companyProfile.website).length > 0) {
-            if (!this.regularExpressions.URL_PATTERN.test(this.companyProfile.website)) {
+            if (!this.regularExpressions.LINK_PATTERN.test(this.companyProfile.website)) {
                 this.addWebSiteError();
                 this.websiteErrorMessage = "Please enter a valid company URL.";
             } else {

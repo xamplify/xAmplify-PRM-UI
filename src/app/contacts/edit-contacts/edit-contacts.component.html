@@ -361,7 +361,7 @@
 														translate>Download CSV Template</a>
 												</li>
 												<li [ngClass]="{'disabled': (selectedInvalidContactIds?.length == 0 && selectedContactListIds?.length == 0)}"
-													*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList">
+													*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && (authenticationService?.module?.adminOrSuperVisor || loggedInUserId == uploadedUserId || hasAllAcces)">
 													<a id="delete_button"
 														*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) && !sharedLeads"
 														(click)="!isDefaultContactList ? showAlert(selectedContactListId) : confirmdelete(selectedContactListIds)"

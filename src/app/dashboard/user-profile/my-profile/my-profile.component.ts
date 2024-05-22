@@ -1017,7 +1017,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
 			'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
 			'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(250)])],
-			'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]],
+			'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(this.regularExpressions.LINK_PATTERN)]],
 			'preferredLanguage': [this.userData.preferredLanguage],
 		});
 
@@ -4366,7 +4366,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	showThemes() {
 		this.ngxloading = true;
-		this.dashBoardService.multipleThemesShow().subscribe(
+		this.dashBoardService.findAllThemes().subscribe(
 			(response) => {
 				this.ngxloading = false
 				this.themeDtoList = response.data;
@@ -4692,4 +4692,23 @@ getCompanyId() {
   toggleClass(id:string){
 	$("i#"+id).toggleClass("fa-minus fa-plus"); 
   }
+
+  getThemeImage(name: string): string {
+	switch (name) {
+		case 'Light':
+			return 'assets/images/theme/Final/light-theme.webp';
+		case 'Dark':
+			return 'assets/images/theme/Final/dark-theme.webp';
+		case 'Neumorphism Light':
+			return 'assets/images/theme/Final/beta-neumorphism-light.webp';
+		case 'Neumorphism Dark(Beta)':
+			return 'assets/images/theme/Final/beta-neumorphism-dark.webp';
+		case 'Glassomorphism Light':
+			return 'assets/images/theme/Final/glassomorphism-light.webp';
+		case 'Glassomorphism Dark':
+			return 'assets/images/theme/Final/glassomorphism-dark.webp';
+		default:
+			return '';
+	}
+}
 }
