@@ -228,7 +228,7 @@ export class SaveAsComponent implements OnInit {
                 const inputName = $.trim(this.saveAsListName.toLowerCase().replace( /\s/g, '' ));
                 const activeMasterPartnerList = $.trim(this.properties.activeMasterPartnerList.toLowerCase().replace(/\s/g, ''));
 				const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
-                   if ( inputName!= $.trim(this.existingListName.toLowerCase().replace( /\s/g, '' ))  && $.inArray( inputName, names ) > -1 ) {
+                   if ( inputName!= $.trim(this.existingListName.toLowerCase().replace( /\s/g, '' )) && $.inArray( inputName, names ) > -1 ) {
                        this.saveAsError = 'This list name is already taken.';
                    }else if(inputName==activeMasterPartnerList ||inputName==inActiveMasterPartnerList ){
                         this.saveAsError = 'This list name cannot be added';
