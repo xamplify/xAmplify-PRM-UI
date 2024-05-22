@@ -98,11 +98,12 @@
 									</span>
 									<button *ngIf="isDefaultContactList"
 										class="btn button pull-right  pd_0 bgcolor-unset" data-toggle="tooltip"
-										data-placement="top" title="Synchronize" translate (click)="confirmsync()"
+										data-placement="top" title="Click here to synchronize all contacts" translate
+										(click)="confirmsync()"
 										[disabled]="masterContactListSync || contactsCompanyListSync">
 										<span class="btn btn-primary transition new_list_text ">
 											<i class="fa fa-refresh" aria-hidden="true"></i>
-											Synchronize All Contacts
+											Synchronize Master Contact List
 										</span>
 									</button>
 								</div>
@@ -110,8 +111,8 @@
 							<!-- END DASHBOARD STATS -->
 							<div class="clearfix"></div>
 							<div class="row mt5 mb5" [ngStyle]="(module =='partners') ? {'padding-right': '15px'} : ''">
-								<div  [class]="(module =='partners') ? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect' : 'col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect'"
-								[ngClass]="{'col-sm-5ths': checkingContactTypeName !== 'Partner' && (checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact')}">
+								<div [class]="(module =='partners') ? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect' : 'col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect'"
+									[ngClass]="{'col-sm-5ths': checkingContactTypeName !== 'Partner' && (checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact')}">
 									<button class="btn-block dashboard-stat blue"
 										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
 										(click)="backToEditContacts()">
@@ -159,7 +160,7 @@
 										</span>
 									</button>
 								</div>
-								<div  [class]="(module =='partners') ? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect' : 'col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect'"
+								<div [class]="(module =='partners') ? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect' : 'col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect'"
 									*ngIf="isPartner"
 									[ngClass]="{'col-sm-5ths': checkingContactTypeName !== 'Partner' && (checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact')}">
 									<button class="btn-block dashboard-stat green"
@@ -237,7 +238,8 @@
 										</span>
 									</button>
 								</div>
-								<div *ngIf="module!='partners'" class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect"
+								<div *ngIf="module!='partners'"
+									class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect"
 									[ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' || checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
 									<button class="btn-block dashboard-stat yellow-gold"
 										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
@@ -262,8 +264,8 @@
 										</span>
 									</button>
 								</div>
-								<div [class]="(module =='partners') ? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect' : 'col-xs-6 col-sm-2 col-lg-2 mt5  pr pr15 tiles_hover_effect'" 
-                                [ngClass]="{'col-sm-5ths': checkingContactTypeName !== 'Partner' && (checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact')}">
+								<div [class]="(module =='partners') ? 'col-sm-4 col-xs-6 col-lg-3 col-md-3 margin-top-10 pr0 pl tiles_hover_effect' : 'col-xs-6 col-sm-2 col-lg-2 mt5  pr pr15 tiles_hover_effect'"
+									[ngClass]="{'col-sm-5ths': checkingContactTypeName !== 'Partner' && (checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact')}">
 									<button class="btn-block dashboard-stat red"
 										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribed'"
 										(click)="showingContactDetails('unsubscribed')"
@@ -349,12 +351,10 @@
 														*ngIf=" ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads))"
 														(click)="saveAs(true)" translate>Create New List </a>
 												</li>
-												<li
-													[ngClass]="{'disabled': noContactsFound == true }">
+												<li [ngClass]="{'disabled': noContactsFound == true }">
 													<a id="exportToExcel" *ngIf=" selectedAddContactsOption== 8 && (assignLeads
 														||(contactService?.contactType!='ASSIGNED_LEADS_LIST' &&
-														!assignLeads)) && !sharedLeads" (click)="hasAccess()"
-														translate>Export To Excel</a>
+														!assignLeads)) && !sharedLeads" (click)="hasAccess()" translate>Export To Excel</a>
 												</li>
 												<li><a id="download_empy_csv" (click)="downloadEmptyCsv()"
 														*ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))"
@@ -435,8 +435,10 @@
 																</button>
 															</div>
 														</div>
-														<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
-															[disabled]="pagination.totalRecords == 0" title="Click here to email the list"
+														<button data-placement="bottom"
+															class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+															[disabled]="pagination.totalRecords == 0"
+															title="Click here to email the list"
 															(click)="downloadUserListCsv()" style="margin-left: 4px;">
 															<i aria-hidden="true" class="fas fa-file-export p10"></i>
 														</button>
@@ -1280,9 +1282,11 @@
 															aria-hidden="true"></i></button>
 												</div>
 											</div>
-											<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
-												[disabled]="contactsByType.pagination.totalRecords == 0" title="Click here to email the list"
-												(click)="downloadUserListCsv()" style="margin: 0px -10px 0px 10px;">
+											<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view"
+												data-toggle="tooltip"
+												[disabled]="contactsByType.pagination.totalRecords == 0"
+												title="Click here to email the list" (click)="downloadUserListCsv()"
+												style="margin: 0px -10px 0px 10px;">
 												<i aria-hidden="true" class="fas fa-file-export p10"></i>
 											</button>
 										</div>
