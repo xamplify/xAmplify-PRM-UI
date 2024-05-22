@@ -4452,7 +4452,9 @@ button.analytics_icon_radius:hover,
 button.invite_vendor_radius:hover{
   background: rgba(16 18 27 / 3%) !important;
 }
-h1, h2, h3, h4, h5, h6,
+h1, h2, h3, h4, h5, h6{
+  color: #000 !important;
+}
 .dashboard-stat.green-soft .details .number,
 .dashboard-stat.green-soft .details .desc,
 .dashboard-stat.red-soft .details .number,
@@ -4464,7 +4466,6 @@ h1, h2, h3, h4, h5, h6,
 .dashboard-stat.blue-soft .details .number,
 .dashboard-stat.blue-soft .details .desc,
 a.tabColorOne b, h1 b, h6 b, span b, h3 b, div b,
-.tgrid > tbody > tr > td, .tgrid > tbody > tr > th, .tgrid > thead > tr > td, .tgrid > thead > tr > th, .table thead > tr > th,
 .dashboard-stat.blue-soft .more,
 .dashboard-stat.green-soft .more,
 .dashboard-stat.purple-soft .more,
@@ -4492,6 +4493,9 @@ ul.page-breadcrumb,
 p.contentwrap-dr,
 .panel-title > a,
 a:link.txt_color{
+  color: #000;
+}
+.tgrid > tbody > tr > td, .tgrid > tbody > tr > th, .tgrid > thead > tr > td, .tgrid > thead > tr > th, .table thead > tr > th{
   color: #000 !important;
 }
 a{
@@ -4529,7 +4533,7 @@ div.scrolled{
 .dashboard-stat .more {
   opacity: 1;
   font-weight: 600;
-  color: #000 !important;
+  color: #fff !important;
 }
 
 /****** Mobile view ****/
@@ -4549,4 +4553,10 @@ button.swal2-cancel.styled{
 }
 button.swal2-confirm.styled:hover{
   background: linear-gradient(348deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
+}
+a.tabColorOne b, h1 b, h6 b, span b, h3 b, div b {
+  color: #000 !important;
+}
+.page-header.navbar .page-top.active {
+  background-color: rgb(255 255 255 / 88%) !important;
 }
