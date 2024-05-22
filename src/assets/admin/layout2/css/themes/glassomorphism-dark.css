@@ -3381,7 +3381,7 @@ border:0px!important;
 }
 button.btn.custom {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-  background: linear-gradient(348deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
+  background: linear-gradient(15deg, rgb(0 159 231) 50%, rgb(0 222 223) 100%, rgb(0 159 231) 50%) no-repeat !important;
 }
 /* 30/11/2023 */
 .campaignViewIcon{
