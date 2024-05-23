@@ -9,18 +9,20 @@
 	window.__env.imagesHost = "http://localhost:8000/images/";
 	window.__env.PREVIEW_HOST = "http://localhost:5000/";
 
-	/********************Production************************/
-	// window.__env.CLIENT_URL = 'https://xamplify.io/'; 
-	// window.__env.SERVER_URL = 'https://xamp.io/'; 
-	// window.__env.imagesHost = "https://xamp.io/vod/images/";
-	// window.__env.PREVIEW_HOST = "http://localhost:5000/";
-
 	/*********************QA**********************/
 	 window.__env.CLIENT_URL = 'https://xamplify.co/';
 	 window.__env.SERVER_URL =  'https://aravindu.com/';
 	 window.__env.imagesHost = "https://aravindu.com/vod/images/";
 	 window.__env.PREVIEW_HOST = "https://assets.xamplify.co/";
 
+
+	/********************Production************************/
+	// window.__env.CLIENT_URL = 'https://xamplify.io/'; 
+	// window.__env.SERVER_URL = 'https://xamp.io/'; 
+	// window.__env.imagesHost = "https://xamp.io/vod/images/";
+	// window.__env.PREVIEW_HOST = "http://localhost:5000/";
+
+	
 
 	/*********************Release**********************/
 	//window.__env.CLIENT_URL = 'https://xtremand.com/';
