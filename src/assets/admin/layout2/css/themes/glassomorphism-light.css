@@ -1631,15 +1631,16 @@ div#removeborder {
   border: none !important;
 }
 /* user guides hover icon */
-.help-iconbgadd:hover {
-  background: rgb(255 255 255 / 31%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+.help-iconbgadd:hover,
+button.button.bgcolor-unset:hover {
+  background-color: #2584b3 !important;
+  border: 1px solid #1ca6f3 !important;
 }
 .help-iconbgadd i:hover {
   color: #fff !important;
 } /* end */
 .help-iconbgadd {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid #1ca6f3 !important;
 }
 /* 18-07-2023 */
 td.bgc-lg {
@@ -1667,27 +1668,27 @@ select.form-control.same-bgcolor-for-select {
 
 /* 19-07-2023 Custom Theme Settings bg colors */
 .bg-color-for-card {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid #1ca6f3 !important;
   background: rgb(255 255 255 / 31%) !important;
 }
 .bg-color-for-card1 {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid #1ca6f3!important;
   background: rgb(255 255 255 / 31%) !important;
 }
 p.layoutcontent {
   color: #000 !important;
 }
 .bg-color-for-footercard {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid #1ca6f3 !important;
   background: rgb(255 255 255 / 31%) !important;
 }
 .bg-color-for-footercard1 {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid #1ca6f3 !important;
   background: rgb(146 151 179 / 8%) !important;
   backdrop-filter: blur(5px);
 }
 .bg-color-for-secondcard {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid #1ca6f3 !important;
   background: rgb(255 255 255 / 31%) !important;
 }
 .bg-color-for-secondcard1 {
@@ -1695,11 +1696,11 @@ p.layoutcontent {
   background: rgb(255 255 255 / 31%) !important;
 }
 .bg-color-for-thirdcard {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid #1ca6f3 !important;
   background: rgb(255 255 255 / 31%) !important;
 }
 .bg-color-for-thirdcard1 {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid #1ca6f3 !important;
   background: rgb(255 255 255 / 31%) !important;
 }
 .portlet-light-fields.custom-header-img-color,
@@ -1711,7 +1712,7 @@ p.layoutcontent {
   color: red !important;
 }
 .vendor-img-cu img {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid #1ca6f3 !important;
 }
 .template-height {
   margin-top: 9px !important;
@@ -1725,7 +1726,7 @@ input[type="file"]::file-selector-button {
   background: #22313a !important;
 }
 .brodercolorcu {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid #1ca6f3 !important;
 }
 span.center-itams a {
   color: #fff !important;
@@ -1992,7 +1993,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .btn-group button{
   background-color: #1091d9 !important;
-  border: 1px solid 1ca6f3 !important;
+  border: 1px solid #1ca6f3 !important;
 }
 
 .refresh-icon:hover {
@@ -2235,7 +2236,6 @@ a.UserguideBtnCustomization {
   color: #fff !important;
 }
 
-.Btn-Gray:hover,
 .campaign-box:hover,
 .dashboard-stat2:hover,
 .custom:hover,
@@ -2658,12 +2658,12 @@ button#cancel_button:active {
 	border-radius: 8px !important;
 	color: #000 !important;
 }
-.Btn-Gray:hover{
+/* .Btn-Gray:hover{
   color: #fff !important;
   background-color: rgba(16 18 27 / 3%) !important;
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
+} */
 .portlet.light.hover-effect.pointer.card-radius:hover {
   -webkit-transition: all 1s ease;
   transition: all 1s ease!important;
@@ -2791,7 +2791,7 @@ justify-content: center!important;
     overflow: hidden !important;
     height: 3.5rem !important;
     border-radius: 8px !important;
-    background: linear-gradient(15deg, rgb(0 159 231) 50%, rgb(0 222 223) 100%, rgb(0 159 231) 50%) no-repeat !important;
+    background: #1091d9 !important;
     color: #fff !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     margin-left: 4px;
@@ -3445,9 +3445,9 @@ a.Iconhover.custom-grid-icon.icon_margin{
   background: #2e3033 !important;
   border:   1px solid rgba(255, 255, 255, 0.1) !important;
 }
-.button.button.bgcolor-unset.btn_border{
+/* .button.button.bgcolor-unset.btn_border{
   border :none !important;
-}
+} */
 /*  */
 .px-9{
   padding: 5px 10px!important;
@@ -3876,23 +3876,19 @@ a.title.padding_bottom.text-color.content-bg.row-space {
 .link button{
   background: rgba(16 18 27 / 40%) !important;
 }
-.Btn-Green.btn:hover{
-  background-color: unset !important;
-}
 
 /***** Sudha Sri(7-5-2024) *****/
 button.button.bgcolor-unset{
-  background: linear-gradient(15deg, rgb(0 159 231) 50%, rgb(0 222 223) 100%, rgb(0 159 231) 50%) no-repeat !important;
+  background-color: #1091d9 !important;
 
 }
-button.button.bgcolor-unset:hover {
+/* button.button.bgcolor-unset:hover {
   background-size: 250% !important;
   background-position: right center !important;
-}
-.page-sidebar .page-sidebar-menu > li > a{
-  color: #000 !important;
-}
-.page-sidebar .page-sidebar-menu .sub-menu > li > a > i{
+} */
+.page-sidebar .page-sidebar-menu > li > a,
+.page-sidebar .page-sidebar-menu .sub-menu > li > a > i,
+h1, h2, h3, h4, h5, h6{
   color: #000 !important;
 }
 .page-container-bg-solid .page-sidebar .page-sidebar-menu > li.active > a > .selected{
@@ -3905,7 +3901,7 @@ button.button.bgcolor-unset:hover {
 .dashboard-stat.blue-soft .visual > i{
   color: #000 !important;
   opacity: 0.9 !important;
-  font-size: 45px !important;
+  font-size: 40px !important;
 }
 /***** Sudha Sri(8-5-2024) *****/
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-menu > li > a,
@@ -3918,9 +3914,6 @@ button.button.bgcolor-unset:hover {
   background-color: rgb(255 255 255 / 31%) !important;
 }
 
-h1, h2, h3, h4, h5, h6{
-  color: #000 !important;
-}
 .dashboard-stat.green-soft .details .number,
 .dashboard-stat.green-soft .details .desc,
 .dashboard-stat.red-soft .details .number,
@@ -3993,9 +3986,6 @@ div.scrolled{
   background-color: rgb(255 255 255 / 90%) !important; /* Darker background color when scrolled */
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
-.Btn-Green, .btn-primary {
-  color: #fff !important;
-}
 .dashboard-stat .more {
   opacity: 1;
   font-weight: 600;
@@ -4057,3 +4047,20 @@ a.tabColorOne b, h1 b, h6 b, span b, h3 b, div b {
   border: 1px solid rgb(255 255 255 / 35%) !important;
   background: rgba(16 18 27 / 40%) !important;
 } */
+.Btn-Gray, button#cancel_button:active {
+  background-color: #00000047 !important;
+  color: #fff !important;
+  border: 1px solid #ffffff !important;
+}
+.Btn-Gray:hover {
+  background-color: #999ca999 !important;
+  color: #fff !important;
+}
+.Btn-Green, .btn-primary {
+  background-color: #1091d9 !important;
+  color: #fff !important;
+  border: none !important;
+}
+.Btn-Green.btn:hover {
+  background-color: #2584b3 !important;
+}
