@@ -1279,6 +1279,7 @@ export class AddDealComponent implements OnInit {
           if (data.statusCode == 200) {
             let activeCRMPipelines: Array<any> = data.data;
             self.pipelines = activeCRMPipelines;
+            self.createdForPipelines = activeCRMPipelines;
             if (activeCRMPipelines.length === 1) {
               let activeCRMPipeline = activeCRMPipelines[0];
               self.deal.pipelineId = activeCRMPipeline.id;
