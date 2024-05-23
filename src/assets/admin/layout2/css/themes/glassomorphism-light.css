@@ -2142,7 +2142,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .btn-group button{
   box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
   background: linear-gradient(15deg, rgb(0 159 231) 50%, rgb(0 222 223) 100%, rgb(0 159 231) 50%) no-repeat !important;
-  /* border: 1px solid rgb(255 255 255 / 35%) !important; */
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
   /* color: #3c3a3a !important; */
 }
 
@@ -2506,7 +2506,7 @@ input {
 }
 
 .page-sidebar-menu.page-sidebar-menu-hover-submenu > li:hover > .sub-menu {
-  margin-left: 188px;
+  /* margin-left: 188px; */
   margin-top: -78px;
   box-shadow: none !important;
   /* background: rgb(255 255 255 / 35%) !important; */
@@ -2820,9 +2820,6 @@ ul.nav.neumorphismDark {
 .analytics_icon_radius {
   border-radius: 0px 7px 7px 0px !important;
 }
-button.btn.custom {
-  border-radius: 7px !important;
-}
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu {
   border-radius: 10px !important;
 }
@@ -2933,52 +2930,7 @@ a.Iconhover.custom-icon {
 hr.swal2-spacer {
   border-top: none !important;
 }
-/* manikanta */
-/* a.UserguideBtnCustomization:hover {
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
-  color: #fff !important;
-  text-decoration: none;
-  background-position: 100% 100%, 0% 0%!important;
-  border-color: transparent;
-  background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%)!important;
-}
 
-a.UserguideBtnCustomization {
-  background: #2c2f33 !important;
-  background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%)!important;
-  background-position: 0% 0%, 100% 100%!important;
-  background-size: 200% 200%!important;
-  background-clip: padding-box, border-box!important;
-  background-origin: padding-box, border-box!important;
-  transition: 0.5s ease-in-out;
-  box-shadow: 6.223021507263184px 6.223021507263184px 18.669065475463867px 0px
-      #000,
-    -6.223021507263184px -6.223021507263184px 18.669065475463867px 0px #3b4451 !important;
-  border: 0px solid #2f4857 !important;
-}
-.btn-primary:hover {
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
-  color: #fff !important;
-  text-decoration: none;
-  background-position: 100% 100%, 0% 0%!important;
-  border-color: transparent;
-  background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%)!important;
-  
-}
-
-.btn-primary {
-  background: #2c2f33 !important;
-  background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%)!important;
-  background-position: 0% 0%, 100% 100%!important;
-  background-size: 200% 200%!important;
-  background-clip: padding-box, border-box!important;
-  background-origin: padding-box, border-box!important;
-  transition: 0.5s ease-in-out;
-  box-shadow: 6.223021507263184px 6.223021507263184px 18.669065475463867px 0px
-      #000,
-    -6.223021507263184px -6.223021507263184px 18.669065475463867px 0px #3b4451 !important;
-  border: 0px solid #2f4857 !important;
-} */
 .pre-lang:hover{
  position: relative;
  z-index: 999;
@@ -3145,49 +3097,7 @@ justify-content: center!important;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)!important;
     margin-left: 4px;
   }
-  /* .button:hover::before,
-  .button_blue:hover::before {
-    transform: scaleX(1) !important;
-  } */
-  /* .Btn-Green,
-  .btn-primary {
-    position: relative !important;
-   
-    background: #2c2f33 !important;
-  } */
-  /* .button::before {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    transform: scaleX(0) !important;
-    transform-origin: 0 50% !important;
-    width: 100% !important;
-    height: inherit !important;
-    border-radius: inherit !important;
-    background-color: rgb(146 151 179 / 8%);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-    border-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
- 
-    
-    transition: all 0.475s !important;
-  } */
-  /* .button_blue::before {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    transform: scaleX(0) !important;
-    transform-origin: 0 50% !important;
-    width: 100% !important;
-    height: inherit !important;
-    border-radius: inherit !important;
-    background-color: #337ab7;
-    border-color: rgba(255, 255, 255, 0.1);
-    transition: all 0.475s !important;
-  } */
-
+  
   span.btn.Btn-Green.transition{
     background : none !important;
     box-shadow: none !important;
@@ -3365,6 +3275,9 @@ border:0px!important;
 }
 button.btn.custom {
   box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02) !important;
+  border-radius: 7px !important;
+  background: linear-gradient(15deg, rgb(0 159 231) 50%, rgb(0 222 223) 100%, rgb(0 159 231) 50%) no-repeat !important;
+  color: #fff !important
 }
 /* 30/11/2023 */
 .campaignViewIcon{
@@ -3755,8 +3668,8 @@ h3#notifications {
 button.btn.custom:hover,
 .button:hover,
 .button_blue:hover{
-  /* background-color: rgb(146 151 179 / 8%) !important;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+   background-color: rgb(146 151 179 / 8%) !important;
+  /*box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   backdrop-filter: blur(5px); */
   background-size: 250% !important;
   background-position: right center !important;
@@ -4337,77 +4250,7 @@ a.title.padding_bottom.text-color.content-bg.row-space {
 .Btn-Green.btn:hover{
   background-color: unset !important;
 }
-/* .button,
-.button_blue{
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 5px 45px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(2px);
-  transition: 0.5s;
-  overflow: hidden;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-.button span::before,
-.button_blue span::before {
-  content: '';
-  position: absolute;
-  top: 0;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-  left: 0;
-  width: 15px;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
-  transform: skewX(45deg) translateX(150px);
-  transition: 1.5s ease;
-}
 
-.button span:hover::before,
-.button_blue span:hover::before {
-  transform: skewX(45deg) translateX(-150px);
-}
-.button,
-.button_blue {
-  position: relative;
-  background-color: transparent;
-}
-.content_padding{
-  padding: 7px 12px !important;
-}
-.manage_padding{
-  padding: 7px 10px !important;
-}
-.template_padding{
-  padding: 7px 8px !important;
-}
-.campaign_padding{
-  padding: 7px 6px !important;
-}
-.team_mbr_padding{
-  padding: 7px 4px !important;
-}
-button.button.p-rgt_p-top.bgcolor-unset span:hover::before{
-  background-color: none !important;
-  transform: none !important;
-  transition: none !important;
-}
-button.button.p-rgt_p-top.bgcolor-unset span:hover::before{
-  transform: none !important;
-}
-button.button.p-rgt_p-top.bgcolor-unset span::before{
-  background: none !important;
-}
-.Btn-Gray:hover{
-  transform: translateY(-2px);
-}
-.share_camp_pdg{
-  padding: 7px 1px !important;
-  margin-top: -4px !important;
-}
-.pd_lft_rgt20{
-  padding-left: 20px !important;
-  padding-right: 20px !important;
-} */
 /***** Sudha Sri(7-5-2024) *****/
 button.button.bgcolor-unset{
   /* background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important; */
@@ -4446,10 +4289,7 @@ button.button.bgcolor-unset:hover {
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img{
   background-color: rgb(255 255 255 / 31%) !important;
 }
-button.analytics_icon_radius:hover,
-button.invite_vendor_radius:hover{
-  background: rgba(16 18 27 / 3%) !important;
-}
+
 h1, h2, h3, h4, h5, h6{
   color: #000 !important;
 }
@@ -4485,7 +4325,7 @@ textarea.textareaNumber,
 .dashboard-stat.purple .more,
 .dashboard-stat.red .more,
 ul.page-breadcrumb,
-[class*=" fa-"]:not(.fa-stack),
+[class*=" fa-"]:not(.fa-stack)
 [class*=" glyphicon-"],
 .view-banner-forms,
 p.contentwrap-dr,
@@ -4493,6 +4333,7 @@ p.contentwrap-dr,
 a:link.txt_color{
   color: #000;
 }
+
 .tgrid > tbody > tr > td, .tgrid > tbody > tr > th, .tgrid > thead > tr > td, .tgrid > thead > tr > th, .table thead > tr > th{
   color: #000 !important;
 }
