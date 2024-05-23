@@ -764,7 +764,7 @@
                                         <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
                                             List Info
                                         </th>
-                                        <th scope="row" class="text-center" translate>Type
+                                        <th scope="row" class="text-center" *ngIf="nurtureCampaign && socialCampaign" translate>Type
                                     </th>
                                         <th scope="row" class="text-center" translate>Created On</th>
                                         <th *ngIf="!showNavigationBreadCrumbToPartner" scope="row" class="text-center"
@@ -837,10 +837,10 @@
                                                     <span translate> Created By
                                                         <strong>{{contactList?.creatorName}}</strong></span>
                                                 </h6>
-                                                <div style="display: none;">
-                                                    <ng-container  *ngIf="!contactList?.partnerList">
+                                                <div>
+                                                    <ng-container>
                                                         <div class="displayinline-flex">
-                                                            <h6 class="view-banner" translate>
+                                                            <h6 class="view-banner left-flt mr5" translate>
                                                                 <span *ngIf="contactList?.publicList" data-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title="{{actionsDescription?.contact_list_public}}"
@@ -854,14 +854,14 @@
                                                             </h6>
                                                         </div>
                                                         <h6 *ngIf="contactList?.formList"
-                                                            class="view-banner view-banner-green mt5 left-flt" translate>
+                                                            class="view-banner left-flt bg-green" translate>
                                                             <span class="" data-toggle="tooltip" data-placement="top"
                                                                 title="This list is associated with a form." translate>Form
                                                                 Contact List
                                                             </span>
                                                         </h6>
-                                                        <h6 *ngIf="contactList?.companyList && !bannerDisplayed"
-                                                            class="view-banner view-banner-green mt5 left-flt" translate>
+                                                        <h6 *ngIf="contactList?.companyList"
+                                                            class="view-banner left-flt bg-green" translate>
                                                             <span class="" data-toggle="tooltip" data-placement="top"
                                                                 title="This list is associated with a company." translate>Company
                                                                 Contact List
