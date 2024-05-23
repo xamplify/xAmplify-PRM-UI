@@ -1993,7 +1993,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								if (response.statusCode == 200) {
 									this.showModal();
 									console.log("AddContactComponent salesforce() Authentication Success");
-									this.checkingPopupValues();
+									// this.checkingPopupValues();
 								} else {
 									localStorage.setItem("userAlias", data.userAlias)
 									localStorage.setItem("currentModule", data.module)
@@ -2014,8 +2014,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	checkingPopupValues() {
+		this.contactType = $("select.opts:visible option:selected ").val();
 		if (this.contactType != "") {
-			$("button#salesforce_save_button").prop('disabled', true);
+			$("button#salesforce_save_button").prop('disabled', false);
 			if (this.contactType == "contact_listviews" || this.contactType == "lead_listviews") {
 				this.getSalesforceListViewContacts(this.contactType);
 			} else {
@@ -4003,6 +4004,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 
+			$("button#cancel_button").prop('disabled', false);
 		} else {
 			this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
 			$("button#cancel_button").prop('disabled', false);
@@ -4011,6 +4013,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.selectedAddPartnerOption = 6;
 		this.setSocialPage(1);
 		this.customResponse.isVisible = false;
+		this.socialPartners.contacts = this.socialPartnerUsers;
 		swal.close();
 	}
 
@@ -4100,7 +4103,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					if (response.statusCode == 200) {
 						this.showModal();
 						console.log("AddContactComponent salesforce() Authentication Success");
-						this.checkingPopupValues();
+						// this.checkingPopupValues();
 					} else {
 						localStorage.setItem("userAlias", data.userAlias)
 						localStorage.setItem("currentModule", data.module)
