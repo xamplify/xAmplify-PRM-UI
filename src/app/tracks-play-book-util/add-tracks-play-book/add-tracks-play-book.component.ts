@@ -1378,22 +1378,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     if(isShowPreviewInApp){
         this.previewContentInsideApp(isBeeTemplate, assetDetails, isMp3File, isVideoFile);
     }else{
-      if(this.authenticationService.isLocalHost()){
-        this.referenceService.preivewAssetOnNewHost(assetDetails.id);
-      }else{
-        if(this.fileTypes.includes(assetType)){
-          this.showFilePreview = true;
-          this.isImage = true;
-        }else if (this.fileTypes.includes(assetType)) {
-          this.showFilePreview = true;
-          this.isFile = true;
-          this.filePath = "https://view.officeapps.live.com/op/embed.aspx?src=" + assetDetails.assetPath + "&embedded=true";
-          this.transformUrl();
-        } else {
-          window.open(assetDetails.assetPath, '_blank');
-        }
-        this.handleMediaAndOrdersPopup();
-      }
+      this.referenceService.preivewAssetOnNewHost(assetDetails.id);
     }
   }
 

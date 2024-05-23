@@ -2452,7 +2452,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 if (data.statusCode == 200) {
                                     this.showModal();
                                     console.log("AddContactComponent salesforce() Authentication Success");
-                                    this.checkingPopupValues();
+                                    // this.checkingPopupValues();
                                 } else {
                                     this.setLValuesToLocalStorageAndReditectToLoginPage(this.socialContact, data);
                                 }
@@ -2492,7 +2492,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         if (response.statusCode == 200) {
                             this.showModal();
                             console.log("AddContactComponent salesforce() Authentication Success");
-                            this.checkingPopupValues();
+                            // this.checkingPopupValues();
                         } else {
                             localStorage.setItem("userAlias", data.userAlias)
                             localStorage.setItem("currentModule", data.module)
@@ -2515,8 +2515,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingPopupValues() {
+        this.contactType = $("select.opts:visible option:selected ").val();
         if (this.contactType != "") {
-            $("button#salesforce_save_button").prop('disabled', true);
+			$("button#salesforce_save_button").prop('disabled', false);
             if (this.contactType == "contact_listviews" || this.contactType == "lead_listviews") {
                 this.getSalesforceListViewContacts(this.contactType);
             } else {
