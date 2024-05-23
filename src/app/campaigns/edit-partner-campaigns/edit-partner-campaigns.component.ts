@@ -1607,6 +1607,31 @@ appendValueToSubjectLine(event:any){
 		this.loadContactList(this.contactListPagination);
 	}
 
-
+/***XNFR-541****/
+downloadAsImage(campaign:any){
+    this.partnerTemplateLoader = true;
+    this.authenticationService.checkPartnerAccess(this.loggedInUserId)
+        .subscribe(
+            data => {
+                let access = data.access;
+                if(access){
+                    let param: any = {
+                        'campaignId': campaign.campaignId,
+                        'loggedInUserId': this.loggedInUserId,
+                        'downloadType': 'png'
+                    };
+                    let completeUrl = this.authenticationService.REST_URL + "campaign/download?access_token=" + this.authenticationService.access_token;
+                    this.referenceService.post(param, completeUrl);
+                    this.partnerTemplateLoader = false;
+                }else{
+                    this.partnerTemplateLoader = false;
+                    this.authenticationService.forceToLogout();
+                }
+            },
+            error => {
+                this.partnerTemplateLoader = false;
+                this.referenceService.showSweetAlertFailureMessage("Unable to download.Please try after sometime.");
+             });
+}
 
 }
