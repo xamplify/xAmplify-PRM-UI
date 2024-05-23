@@ -29,12 +29,6 @@ Page Header
   /* Language */
   /* Dark version */
 }
-/* .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle:hover {
-  background-color: #f9fafc;
-} */
-/* .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle > i {
-  color: #C0CDDC;
-} */
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle .badge.badge-default {
   background-color: #EF3F3F;
   color: #ffffff;
