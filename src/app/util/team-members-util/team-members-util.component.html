@@ -121,8 +121,8 @@
                 <!-- Download TeamMembers Csv -->
                 <span data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
                   title="Download TeamMembers Csv" (click)="downloadTeamMembersCsv()" *ngIf="isTeamMemberModule &&!isLoggedInAsTeamMember 
-        && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
-        && !authenticationService?.module?.deletedPartner && !isCollapsed ">
+                  && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
+                  && !authenticationService?.module?.deletedPartner && !isCollapsed ">
                   <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                 </span>
                 <span *ngIf="!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin"
@@ -189,22 +189,25 @@
                     <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}"
                       class="list-team-member-class">
                       <td class="pdl-15">
-                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember" [hideCompanyName]="true"
-                          [hideJobTitle]="true"></app-user-info>
-                        <span
-                          *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany 
-                        && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin"
-                          [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
-                          data-toggle="tooltip" data-placement="bottom"
-                          [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
-                          <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
-                            (click)="teamMember?.partnersCount>0 && !isLoggedInAsTeamMember && showPartners(teamMember)">
-                            <strong>Total {{authenticationService?.partnerModule?.customName}} :
-                              {{teamMember?.partnersCount}}</strong>
-                          </a>
-                        </span>
-                        <span class="active-status" *ngIf="teamMember?.primaryAdmin"><strong>Primary Admin:<i
-                              class="fa fa-check active-status"></i></strong></span>
+                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember" [hideCompanyName]="true" [hideJobTitle]="true"></app-user-info>
+                          <span class="active-status" *ngIf="teamMember?.teamMemberUserId==loggedInUserId">
+                            <strong>LoggedIn Account:<i class="fa fa-check active-status"></i></strong>
+                          </span>
+                          <br>
+                          <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany 
+                          && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin"
+                            [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
+                            data-toggle="tooltip" data-placement="bottom"
+                            [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
+                            <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
+                              (click)="teamMember?.partnersCount>0 && !isLoggedInAsTeamMember && showPartners(teamMember)">
+                              <strong>Total {{authenticationService?.partnerModule?.customName}} :
+                                {{teamMember?.partnersCount}}</strong>
+                            </a>
+                          </span>
+                          <span class="active-status" *ngIf="teamMember?.primaryAdmin">
+                            <strong>Primary Admin:<i class="fa fa-check active-status"></i></strong>
+                          </span>
                       </td>
                       <!---Assigned Group-->
                       <td *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner"
@@ -342,7 +345,7 @@
                           </a>
                         </div>
                       </td>
-                      <td class="actions-row" *ngIf="teamMember?.teamMemberUserId==loggedInUserId">
+                      <td class="actions-row" *ngIf="teamMember?.teamMemberUserId==loggedInUserId || teamMember?.primaryAdmin">
                         <div class="alert alert-info NaNAData">
                           <span><strong>N/A</strong></span>
                         </div>
@@ -709,8 +712,10 @@
                     <td>
                       <app-user-info [isPartnerEntityInfo]="true" [userInfo]="admin">
                       </app-user-info>
-                      <span class="active-status" *ngIf="admin?.primaryAdmin"><strong>Primary Admin:<i
-                            class="fa fa-check active-status"></i></strong></span>
+                      <span class="active-status" *ngIf="admin?.primaryAdmin">
+                        <strong>Primary Admin:<i class="fa fa-check active-status"></i></strong>
+                      </span>
+                     
                     </td>
                   </tr>
                 </ng-container>
