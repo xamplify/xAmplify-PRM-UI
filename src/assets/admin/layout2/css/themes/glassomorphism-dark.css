@@ -21,7 +21,7 @@ body{
 .tabbable-custom > .tab-content {
     background: rgb(0 0 0 / 18%) !important;
     border-radius: 8px;
-    border: 1px solid #ffffff47;
+    border: 1px solid #ffffff33;
 }
 .page-container-bg-solid .page-content,
 .page-header.navbar
@@ -47,27 +47,27 @@ body{
 .dashboard-stat.green-soft,
 .dashboard-stat.green {
   background-color: rgba(16 18 27 / 40%) !important;
-  border: 1px solid #ffffff47 !important;
+  border: 1px solid #ffffff33 !important;
 }
 .dashboard-stat.red-soft,
 .dashboard-stat.red {
   background-color: rgba(16 18 27 / 40%) !important;
-  border: 1px solid #ffffff47 !important;
+  border: 1px solid #ffffff33 !important;
 }
 .dashboard-stat.purple-soft,
 .dashboard-stat.purple {
   background-color: rgba(16 18 27 / 40%) !important;
-  border: 1px solid #ffffff47 !important;
+  border: 1px solid #ffffff33 !important;
 }
 .dashboard-stat.blue-sharp,
 .dashboard-stat.yellow-gold {
   background-color: rgba(16 18 27 / 40%) !important;
-  border: 1px solid #ffffff47 !important;
+  border: 1px solid #ffffff33 !important;
 }
 .dashboard-stat.blue-soft,
 .dashboard-stat.blue {
   background-color: rgba(16 18 27 / 40%) !important;
-  border: 1px solid #ffffff47 !important;
+  border: 1px solid #ffffff33 !important;
 }
 .dashboard-stat,
 a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor.tiles_bradius,
@@ -495,7 +495,7 @@ tr {
 }
 /*** TopNavBar ***/
 .page-header.navbar .page-top {
-    border-bottom: 1px solid #ffffff47 !important;
+    border-bottom: 1px solid #ffffff33 !important;
     background: rgba(16 18 27 / 40%) !important; 
     z-index: 1000;
 }
@@ -525,7 +525,7 @@ div.scrolled{
 /**** dropdownmenu ***/
 .dropdown-menu {
   background-color: rgb(16 18 27 / 93%) !important;
-  border: 1px solid #ffffff47 !important;
+  border: 1px solid #ffffff33 !important;
 }
 .dropdown ul li a:hover {
   background-color: rgb(146 151 179 / 13%) !important;
@@ -777,7 +777,7 @@ select {
 }
 .custom {
   background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
-  border: 1px solid #ffffff47 !important;
+  border: 1px solid #ffffff33 !important;
   backdrop-filter: blur(5px);
 }
 .item__preview.item__preview--image.custom {
@@ -1162,7 +1162,7 @@ input#copy-link {
 .feature-img {
     background: rgb(0 0 0 / 18%) !important;
     border-radius: 16px;
-    border: 1px solid #ffffff47 !important;
+    border: 1px solid #ffffff33 !important;
 }
 .feature-img-bg {
   background-color: #22313a !important;
@@ -1893,7 +1893,7 @@ i.singleIconCustomization {
   border: 0px solid #ddd;
 }
 i.IconCustomization{
-  border: none !important;
+  border: 1px solid #ffffff17 !important;
   color: #fff !important;
 }
 .setting-icon-cu {
@@ -1975,8 +1975,8 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   border: 0px solid #3575b5 !important;
 }
 .btn-group button{
-  background: linear-gradient(15deg, rgb(0 159 231) 50%, rgb(0 222 223) 100%, rgb(0 159 231) 50%) no-repeat !important;
-  backdrop-filter: blur(5px);
+  background-color: #1091d9 !important;
+  border: 1px solid #1ca6f3 !important;
 }
 
 .search-box-item-click {
@@ -2025,7 +2025,7 @@ tbody {
   background: rgba(16 18 27 / 40%) !important;
   border-radius: 0px 0px 10px 10px !important;
   backdrop-filter: blur(5px);
-  border: 1px solid #ffffff47 !important;
+  border: 1px solid #ffffff33 !important;
 }
 /* table header border top remove */
 .table>thead:first-child>tr:first-child>th {
@@ -2247,7 +2247,7 @@ a.UserguideBtnCustomization:hover {
 .left-menu-color {
   padding: 0px 0px !important;
   background: rgb(16 18 27 / 59%) !important;
-  border-right: 1px solid #ffffff47 !important;
+  border-right: 1px solid #ffffff33 !important;
 }
 .neumorphismDark li a:hover {
   outline: none !important;
@@ -2313,7 +2313,7 @@ input {
 }
 .panel {
   background-color: rgb(0 0 0 / 18%) !important;
-  border: 1px solid #ffffff47 !important;
+  border: 1px solid #ffffff33 !important;
 }
 .panel-success > .panel-heading {
   background: none !important;
@@ -2419,7 +2419,7 @@ ul.pagination.padding {
   background-color: rgba(16 18 27 / 40%) !important;
 }
 .border-bt {
-  border-bottom: 1px solid #ffffff47 !important;
+  border-bottom: 1px solid #ffffff33 !important;
   margin: 0px 7px;
 }
 .page-sidebar .page-sidebar-menu > li > a {
@@ -2527,6 +2527,9 @@ ul.nav.neumorphismDark {
 }
 button.btn.custom {
   border-radius: 7px !important;
+  background-color: #1091d9 !important;
+  color: #fff !important;
+  border:  1px solid #1ca6f3 !important
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu {
   border-radius: 10px !important;
@@ -2715,6 +2718,7 @@ i.fa.fa-info:hover{
   position: relative;
   color: #fff !important;
   transition: .5s;
+  border: 1px solid #ffffff17 !important;
 }
 .actions_width{
 width:inherit!important;
@@ -3225,7 +3229,7 @@ span.btn.btn-primary.transition.merge_tag_text{
   border: 0px solid #191b1e !important;
 }
 .panel.panel-success.mt10.notes_box{
-  border: 1px solid #ffffff47 !important;
+  border: 1px solid #ffffff33 !important;
 }
 .panel-heading.note_card_align {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
@@ -3285,6 +3289,7 @@ h3#notifications {
 button.btn.custom:hover,
 .button:hover,
 .button_blue:hover{
+  background-color: #2584b3 !important;
   background-size: 250% !important;
   background-position: right center !important;
 }
@@ -3686,7 +3691,7 @@ button.btn.btn-primary.activate-btn:hover {
   border-top-right-radius: 0px !important;
 }
 .page-sidebar .page-sidebar-menu>li.active>a{
-  border-bottom: 2px solid #ffffff47 !important;
+  border-bottom: 2px solid #ffffff33 !important;
   border-radius: 0px !important;
 }
 li.active-tab a.active-tab-anchor-text{
@@ -3736,7 +3741,7 @@ img.email-template-preview.image_effect.template_image_border {
 }
 
 .page-sidebar .page-sidebar-menu > li > a {
-    border-bottom: 1px solid #ffffff47;
+    border-bottom: 1px solid #ffffff33;
     color: #fff !important;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover {
@@ -3834,9 +3839,9 @@ button.button.bgcolor-unset:hover {
 }
 .alert-info {
     background-color: rgb(0 0 0 / 45%) !important;
-    border: 1px solid #ffffff47 !important;
+    border: 1px solid #ffffff33 !important;
     border-radius: 10px;
-    border-bottom: 2px solid #ffffff47 !important;
+    border-bottom: 2px solid #ffffff33 !important;
     color: #ffffffba !important;
 }
 @media (min-width: 1025px) and (max-width: 1300px) {
@@ -3861,3 +3866,13 @@ button.swal2-confirm.styled:hover{
 div#xamplify-bee-template-container__bee-plugin-loader{
   background: rgb(0 0 0 / 18%) !important;
 }
+@media (max-width: 767px) {
+  .page-header.navbar{
+    background: none !important;
+  }
+}
+@media (max-width: 991px) {
+  .page-container {
+     background: none !important;
+      }
+  }
