@@ -11,7 +11,6 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { SortOption } from '../../core/models/sort-option';
-import { ColumnInfo } from '../../forms/models/column-info';
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { EnvService } from 'app/env.service'
 import { UtilService } from '../../core/services/util.service';
@@ -1389,6 +1388,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       this.showFilePreview = true;
       this.fileType = "audio/mpeg";
       this.isAudio = true;
+      this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
     } else if (isVideoFile) {
       this.showFilePreview = true;
       this.fileType = "video/mp4";
