@@ -497,7 +497,7 @@ tr {
   color: #000 !important;
   font-weight: 400;
   border-radius: 10px;
-  background-color: #fff;
+  background-color: #ddd;
 }
 /*** TopNavBar ***/
 .page-header.navbar .page-top {
@@ -3897,7 +3897,7 @@ h1, h2, h3, h4, h5, h6{
 
 .page-sidebar .page-sidebar-menu .sub-menu>li:hover>a {
   /* background-color: #f3f2f2 !important; */
-  background-color: #ddd !important;
+  background-color: #fff !important;
 }
 .page-container-bg-solid .page-sidebar .page-sidebar-menu > li.active > a > .selected{
   border-color: transparent #5a738e transparent transparent;
