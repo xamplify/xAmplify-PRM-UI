@@ -237,11 +237,12 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     if(isNotVideoFile){
       let isBeeTemplate = assetDetails.beeTemplate;
       let isVendorView = this.isCreatedUser;
-      let assetType = assetDetails.assetType;
-      let isMp3File = assetType == 'mp3';
-      let isShowPreviewInApp = isBeeTemplate || isMp3File;
-      if(isShowPreviewInApp){
-        this.previewContentInsideApp(isBeeTemplate, isVendorView, assetDetails, isMp3File);
+      if(isBeeTemplate){
+        if (isVendorView) {
+          this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
+        } else {
+          this.referenceService.previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
+        }
       }else{
         this.referenceService.preivewAssetOnNewHost(assetDetails.id);
       }
@@ -249,22 +250,6 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED, false);
   }
 
-
-  private previewContentInsideApp(isBeeTemplate: any, isVendorView: boolean, assetDetails: any, isMp3File: boolean) {
-    if (isBeeTemplate) {
-      if (isVendorView) {
-        this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
-      } else {
-        this.referenceService.previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
-      }
-    } else {
-      if (isMp3File) {
-        this.showFilePreview = true;
-        this.fileType = "audio/mpeg";
-        this.isAudio = true;
-      }
-    }
-  }
 
   closeAssetPreview() {
     this.showFilePreview = false;

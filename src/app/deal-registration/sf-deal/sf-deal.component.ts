@@ -46,6 +46,17 @@ export class SfDealComponent implements OnInit {
   isValidRepValues = true;
   /*******XNFR-403****/
   showConnectWiseProducts: boolean = false;
+  isRequiredNotFilled: boolean;
+  isInvalidEmailId: boolean = false;
+  isInvalidAmount: boolean = false;
+  isInvalidRepValues: boolean = false;
+  isInvalidTextFields: boolean = false;
+  isInvalidTextAreaFields: boolean = false;
+  isInvalidPercentage: boolean = false;
+  isInvalidWebsiteURL: boolean = false;
+  isInvalidPhoneNumber: boolean = false;
+  isInvalidGeoLocation: boolean = false;
+
 
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
@@ -62,7 +73,7 @@ export class SfDealComponent implements OnInit {
 
   ngOnInit() {
     this.showSFFormError = false;
-    if (("HALOPSA" === this.activeCRM.createdByActiveCRMType || "HALOPSA" === this.activeCRM.createdForActiveCRMType )) {
+    if (("HALOPSA" === this.activeCRM.createdByActiveCRMType || "HALOPSA" === this.activeCRM.createdForActiveCRMType)) {
       this.dropdownSettings = {
         singleSelection: false,
         text: "Please select",
@@ -96,7 +107,7 @@ export class SfDealComponent implements OnInit {
       // }
     }
 
-    if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType )) {
+    if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType)) {
       this.isConnectWiseEnabledAsActiveCRM = true;
     }
 
@@ -209,62 +220,67 @@ export class SfDealComponent implements OnInit {
   validateAllFields() {
     let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === "" || column.value === null || (column.value !== null && column.value.length === 0) || column.value === "false"));
     if (reqFieldsCheck.length === 0) {
-      this.isDealRegistrationFormInvalid = false;
+      this.isRequiredNotFilled = false;
     } else {
-      this.isDealRegistrationFormInvalid = true;
+      this.isRequiredNotFilled = true;
     }
-      let allEmails = this.form.formLabelDTOs.filter(column => column.labelType === "email");
-      for (let emailObj of allEmails) {
-        this.validateEmailId(emailObj);
-      }
+    let allEmails = this.form.formLabelDTOs.filter(column => column.labelType === "email");
+    for (let emailObj of allEmails) {
+      this.validateEmailId(emailObj);
+    }
 
-      let allTexts = this.form.formLabelDTOs.filter(column => column.labelType === "text");
-      for (let textObj of allTexts) {
-        this.validateRequiredTextFields(textObj);
-      }
+    let allTexts = this.form.formLabelDTOs.filter(column => column.labelType === "text");
+    for (let textObj of allTexts) {
+      this.validateRequiredTextFields(textObj);
+    }
 
-      let allTextAreas = this.form.formLabelDTOs.filter(column => column.labelType === "textarea");
-      for (let textAreaObj of allTextAreas) {
-        this.validateRequiredTextAreaFields(textAreaObj);
-      }
+    let allTextAreas = this.form.formLabelDTOs.filter(column => column.labelType === "textarea");
+    for (let textAreaObj of allTextAreas) {
+      this.validateRequiredTextAreaFields(textAreaObj);
+    }
 
-      let allURLs = this.form.formLabelDTOs.filter(column => column.labelType === "url");
-      for (let urlObj of allURLs) {
-        this.validateWebsiteURL(urlObj);
-      }
+    let allURLs = this.form.formLabelDTOs.filter(column => column.labelType === "url");
+    for (let urlObj of allURLs) {
+      this.validateWebsiteURL(urlObj);
+    }
 
-      let allPhoneNumbers = this.form.formLabelDTOs.filter(column => column.labelType === "phone");
-      for (let phoneObj of allPhoneNumbers) {
-        this.validatePhoneNumber(phoneObj);
-      }
+    let allPhoneNumbers = this.form.formLabelDTOs.filter(column => column.labelType === "phone");
+    for (let phoneObj of allPhoneNumbers) {
+      this.validatePhoneNumber(phoneObj);
+    }
 
-      let allPercentages = this.form.formLabelDTOs.filter(column => column.labelType === "percent");
-      for (let percentObj of allPercentages) {
-        this.validatePercentageValue(percentObj);
-      }
+    let allPercentages = this.form.formLabelDTOs.filter(column => column.labelType === "percent");
+    for (let percentObj of allPercentages) {
+      this.validatePercentageValue(percentObj);
+    }
 
-      let allGeoLocations = this.form.formLabelDTOs.filter(column => column.labelType === "geolocation");
-      for (let geoObj of allGeoLocations) {
-        this.validateGeoLocation(geoObj);
-      }
+    let allGeoLocations = this.form.formLabelDTOs.filter(column => column.labelType === "geolocation");
+    for (let geoObj of allGeoLocations) {
+      this.validateGeoLocation(geoObj);
+    }
 
-      let allAmount = this.form.formLabelDTOs.filter(column => column.labelType === "number");
-      for (let amoObj of allAmount) {
-        this.validateAmount(amoObj);
-      }
+    let allAmount = this.form.formLabelDTOs.filter(column => column.labelType === "number");
+    for (let amoObj of allAmount) {
+      this.validateAmount(amoObj);
+    }
     /*******XNFR-403*******/
     this.validateRepValues();
     /*******XNFR-403*******/
 
+    this.isDealRegistrationFormInvalid = this.isRequiredNotFilled || this.isInvalidEmailId || this.isInvalidAmount || this.isInvalidGeoLocation ||
+      this.isInvalidPercentage || this.isInvalidPhoneNumber || this.isInvalidRepValues || this.isInvalidTextAreaFields ||
+      this.isInvalidTextFields || this.isInvalidWebsiteURL;
+      
   }
   validateAmount(columnInfo: ColumnInfo) {
     let amount = columnInfo.value;
     if (amount < 0) {
       columnInfo.errorMessage = "Please enter valid amount ";
       columnInfo.divClass = "error";
-      this.isDealRegistrationFormInvalid = true;
+      this.isInvalidAmount = true;
     } else {
       columnInfo.divClass = "success";
+      this.isInvalidAmount = false;
     }
   }
 
@@ -281,8 +297,11 @@ export class SfDealComponent implements OnInit {
       let isValidInsideRepValue = insideRepValue != undefined && insideRepValue != "";
 
       if (isValidSalesRepValue && isValidInsideRepValue) {
-        let isBothRepValuesSame = salesRepValue == insideRepValue;
-        this.isDealRegistrationFormInvalid = isBothRepValuesSame;
+        let isBothRepValuesSame = false;
+        if (salesRepValue == insideRepValue) {
+          isBothRepValuesSame = true;
+        }
+        this.isInvalidRepValues = isBothRepValuesSame;
         this.isValidRepValues = !isBothRepValuesSame;
         if (!this.isValidRepValues) {
           this.referenceService.goToDiv("dealStageDiv");
@@ -297,7 +316,9 @@ export class SfDealComponent implements OnInit {
       if (!this.referenceService.validateEmailId($.trim(columnInfo.value))) {
         columnInfo.errorMessage = "Please enter a valid email address";
         columnInfo.divClass = "error";
-        this.isDealRegistrationFormInvalid = true;
+        this.isInvalidEmailId = true;
+      } else {
+        this.isInvalidEmailId = false;
       }
     }
   }
@@ -308,7 +329,9 @@ export class SfDealComponent implements OnInit {
       if (!($.trim(columnInfo.value).length > 0) && columnInfo.required) {
         columnInfo.errorMessage = "Required";
         columnInfo.divClass = "error";
-        this.isDealRegistrationFormInvalid = true;
+        this.isInvalidTextFields = true;
+      } else {
+        this.isInvalidTextFields = false;
       }
     }
   }
@@ -319,7 +342,9 @@ export class SfDealComponent implements OnInit {
       if (!($.trim(columnInfo.value).length > 0) && columnInfo.required) {
         columnInfo.errorMessage = "Required";
         columnInfo.divClass = "error";
-        this.isDealRegistrationFormInvalid = true;
+        this.isInvalidTextAreaFields = true;
+      } else {
+        this.isInvalidTextAreaFields = false;
       }
     }
   }
@@ -336,9 +361,10 @@ export class SfDealComponent implements OnInit {
       if (isNaN(x) || x < 0 || x > 100) {
         columnInfo.errorMessage = "Please enter a value between 0 and 100";
         columnInfo.divClass = "error";
-        this.isDealRegistrationFormInvalid = true;
+        this.isInvalidPercentage = true;
       } else {
         columnInfo.divClass = "success";
+        this.isInvalidPercentage = false;
       }
     }
   }
@@ -349,7 +375,9 @@ export class SfDealComponent implements OnInit {
       if (!this.referenceService.validateWebsiteURL($.trim(columnInfo.value))) {
         columnInfo.errorMessage = "Please enter a valid URL";
         columnInfo.divClass = "error";
-        this.isDealRegistrationFormInvalid = true;
+        this.isInvalidWebsiteURL = true;
+      } else {
+        this.isInvalidWebsiteURL = false;
       }
     }
   }
@@ -359,9 +387,10 @@ export class SfDealComponent implements OnInit {
     if (phoneNumber.length < 8 || !this.referenceService.validatePhoneNumber($.trim(phoneNumber))) {
       columnInfo.errorMessage = "Please enter valid phone number";
       columnInfo.divClass = "error";
-      this.isDealRegistrationFormInvalid = true;
+      this.isInvalidPhoneNumber = true;
     } else {
       columnInfo.divClass = "success";
+      this.isInvalidPhoneNumber = false;
     }
   }
 
@@ -387,13 +416,14 @@ export class SfDealComponent implements OnInit {
       if ((columnInfo.labelName.includes('Latitude')) && (isNaN(x) || x < -90 || x > 90)) {
         columnInfo.errorMessage = "Please enter a value from -90 to 90";
         columnInfo.divClass = "error";
-        this.isDealRegistrationFormInvalid = true;
+        this.isInvalidGeoLocation = true;
       } else if ((columnInfo.labelName.includes('Longitude')) && (isNaN(x) || x < -180 || x > 180)) {
         columnInfo.errorMessage = "Please enter a value from -180 to 180";
         columnInfo.divClass = "error";
-        this.isDealRegistrationFormInvalid = true;
+        this.isInvalidGeoLocation = true;
       } else {
         columnInfo.divClass = "success";
+        this.isInvalidGeoLocation = false;
       }
     }
   }
