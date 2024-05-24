@@ -1369,34 +1369,14 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
   assetPreview(assetDetails: any, isFromPopup: boolean) {
     this.isPreviewFromAssetPopup = isFromPopup;
-    let assetType = assetDetails.assetType;
     let isBeeTemplate = assetDetails.beeTemplate;
-    let isMp3File = assetType=="mp3";
-    let isVideoFile = assetType=="mp4";
-    let isShowPreviewInApp = isBeeTemplate || isMp3File || isVideoFile;
-    if(isShowPreviewInApp){
-        this.previewContentInsideApp(isBeeTemplate, assetDetails, isMp3File, isVideoFile);
+    if(isBeeTemplate){
+      this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
     }else{
       this.referenceService.preivewAssetOnNewHost(assetDetails.id);
     }
   }
 
-  private previewContentInsideApp(isBeeTemplate: any, assetDetails: any, isMp3File: boolean, isVideoFile: boolean) {
-    if (isBeeTemplate) {
-      this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
-    } else if (isMp3File) {
-      this.showFilePreview = true;
-      this.fileType = "audio/mpeg";
-      this.isAudio = true;
-      this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
-    } else if (isVideoFile) {
-      this.showFilePreview = true;
-      this.fileType = "video/mp4";
-      this.isVideo = true;
-      this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
-    }
-    this.handleMediaAndOrdersPopup();
-  }
 
   handleMediaAndOrdersPopup() {
     if (this.activeTabName == "step-2") {
