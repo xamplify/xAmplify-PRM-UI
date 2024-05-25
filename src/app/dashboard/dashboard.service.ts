@@ -1343,7 +1343,7 @@ getDefaultThemes(){
             vanityUrlFilterQueryParameter = "&isVanityLogin=false";
         }
         let teamMemberOrPartnerDomain = selectedTab==1 ? '/' :'/partners/';
-        let signUpUrl = this.domainUrl+teamMemberOrPartnerDomain+'signUpUrl'+this.QUERY_PARAMETERS+"&loggedInUserId="+userId+vanityUrlFilterQueryParameter+domainNameQueryParameter;
+        let signUpUrl = this.domainUrl+teamMemberOrPartnerDomain+'signUpUrl'+"?loggedInUserId="+userId+vanityUrlFilterQueryParameter+domainNameQueryParameter+'&access_token=' + this.authenticationService.access_token;;
         return this.authenticationService.callGetMethod(signUpUrl);
     }
 
