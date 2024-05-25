@@ -149,7 +149,6 @@ setViewType(viewType: string) {
     this.referenceService.loading(this.httpRequestLoader, true);
     pagination.categoryId = this.categoryId;
     pagination.lmsType = this.type;
-
     /**********Vanity Url Filter**************** */
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -353,14 +352,15 @@ setViewType(viewType: string) {
     this.tracksPlayBookUtilService.changePublish(learningTrackId, isPublish).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
+          /****XBI-2589***/
           let trackOrPlayBook =  this.tracksModule ? "Track":"Play Book";
           let message = isPublish ? trackOrPlayBook+" Published Successsfully":trackOrPlayBook+" Unpublished Successfully";
           this.customResponse = new CustomResponse('SUCCESS',message,true);
           this.listLearningTracks(this.pagination);
         } else if(response.statusCode == 401) {
           this.referenceService.showSweetAlertErrorMessage(response.message);
+          this.referenceService.stopLoader(this.httpRequestLoader);
         }
-        this.referenceService.stopLoader(this.httpRequestLoader);
       },
       (error: string) => {
         this.logger.errorPage(error);

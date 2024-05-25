@@ -8,11 +8,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import {TracksPlayBookUtilService} from 'app/tracks-play-book-util/services/tracks-play-book-util.service';
 import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
 import { TracksPlayBook } from 'app/tracks-play-book-util/models/tracks-play-book';
-import { LearningTrack } from 'app/lms/models/learningTrack';
 import { CustomResponse } from 'app/common/models/custom-response';
-import { isObject } from 'util';
-import { ConfirmUnpublishTracksOrPlaybooksModelPopupComponent } from 'app/util/confirm-unpublish-tracks-or-playbooks-model-popup/confirm-unpublish-tracks-or-playbooks-model-popup.component';
-import { Output } from '@angular/core';
 declare var $:any, swal:any;
 @Component({
   selector: 'app-top-4-tracks-and-play-books',
@@ -280,14 +276,19 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
 
   changePublish(learningTrackId: number, isPublish: boolean) {
     this.loader = true;
+    this.customResponse = new CustomResponse();
     this.tracksPlayBookUtilService.changePublish(learningTrackId, isPublish).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
+          /****XBI-2589***/
+          let trackOrPlayBook =  this.tracks ? "Track":"Play Book";
+          let message = isPublish ? trackOrPlayBook+" Published Successsfully":trackOrPlayBook+" Unpublished Successfully";
+          this.customResponse = new CustomResponse('SUCCESS',message,true);
           this.listLearningTracks(this.pagination);
         } else if(response.statusCode == 401) {
           this.referenceService.showSweetAlertErrorMessage(response.message);
+          this.loader = false;
         }
-        this.loader = false;
       },
       (error: string) => {
         this.xtremandLogger.errorPage(error);
