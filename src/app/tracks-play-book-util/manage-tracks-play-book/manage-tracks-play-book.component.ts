@@ -149,6 +149,7 @@ setViewType(viewType: string) {
     this.referenceService.loading(this.httpRequestLoader, true);
     pagination.categoryId = this.categoryId;
     pagination.lmsType = this.type;
+    this.setDefaultSortParameter();
     /**********Vanity Url Filter**************** */
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -191,6 +192,18 @@ setViewType(viewType: string) {
         this.callFolderListViewEmitter();
       });
   }
+  /******XBI-2598****/
+  private setDefaultSortParameter() {
+    if (this.isPartnerView && this.pagination.sortcolumn == null) {
+      const sortedValue = this.sortOption.damSortOption.value;
+      if (sortedValue !== '') {
+        const options: string[] = sortedValue.split('-');
+        this.pagination.sortcolumn = options[0];
+        this.pagination.sortingOrder = options[1];
+      }
+    }
+  }
+
   /********************Pagaination&Search Code*****************/
 
   /*************************Sort********************** */
