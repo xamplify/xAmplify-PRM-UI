@@ -329,7 +329,6 @@ setViewType(viewType: string) {
 
   UnpublishedModalPopUp(id: number){
     this.UnPublishedId =id ;
-
     $('#unpublished-modal').modal('show');
   }
 
@@ -337,8 +336,6 @@ setViewType(viewType: string) {
     if(this.UnPublishedId != 0){
       this.ChangePublish(this.UnPublishedId, isPublish);
       this.selectedOption = false ;
-      this.closePopUp()
-      
     }
     this.closePopUp()
   }
@@ -351,10 +348,14 @@ setViewType(viewType: string) {
   }
 
   ChangePublish(learningTrackId: number, isPublish: boolean) {
+    this.customResponse = new CustomResponse();
     this.referenceService.startLoader(this.httpRequestLoader);
     this.tracksPlayBookUtilService.changePublish(learningTrackId, isPublish).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
+          let trackOrPlayBook =  this.tracksModule ? "Track":"Play Book";
+          let message = isPublish ? trackOrPlayBook+" Published Successsfully":trackOrPlayBook+" Unpublished Successfully";
+          this.customResponse = new CustomResponse('SUCCESS',message,true);
           this.listLearningTracks(this.pagination);
         } else if(response.statusCode == 401) {
           this.referenceService.showSweetAlertErrorMessage(response.message);
