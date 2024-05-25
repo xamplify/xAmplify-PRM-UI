@@ -66,7 +66,8 @@
                            <ul class="page-breadcrumb">
                               <li>
                                  <span title="{{selectedAssetName}}">
-                                    <strong class="bold-asset">Asset Name </strong>: {{selectedAssetName}}
+                                    <strong class="bold-asset">Asset Name </strong>: {{selectedAssetName | slice:0:1000}}
+                                    <strong *ngIf="selectedAssetName?.length>1000">...</strong>
                                  </span>
                               </li>
                            </ul>
