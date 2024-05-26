@@ -267,8 +267,8 @@ deleteAssetCancelEmitter(){
 }  
 
 viewAnalytics(asset: any) {
-    localStorage.setItem('assetName', asset.assetName);
     this.loading = true;
+    this.referenceService.setAssetLocalStorageValues(asset);
     let isVideo = this.isVideo(asset.assetType);
     if (isVideo) {
            if (this.isPartnerView) {

@@ -3647,6 +3647,11 @@ preivewAssetOnNewHost(id: any) {
     }
     return encodedCompanyName;
   }
+
+  setAssetLocalStorageValues(asset:any){
+    localStorage.setItem('assetName', asset.assetName);
+		localStorage.setItem('isAssetPublished', asset.published);
+  }
   
 }
 
