@@ -3632,7 +3632,7 @@ preivewAssetOnNewHost(id: any) {
     if (iconPath) {
       completeIconPath = this.authenticationService.MEDIA_URL + iconPath;
     } else {
-      completeIconPath += this.envService.PREVIEW_HOST + "favicon.ico";
+      completeIconPath += this.envService.PREVIEW_HOST + "loading.ico";
     }
     let encodedIcon = btoa(completeIconPath);
     return encodedIcon;
