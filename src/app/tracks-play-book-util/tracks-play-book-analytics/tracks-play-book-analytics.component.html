@@ -62,18 +62,18 @@
               </thead>
               <tbody>
                 <tr *ngFor="let company of pagination.pagedItems ;let i =index">
-                  <td class="hidden-xs text-cente" style="width: 10%;">
+                  <td class="hidden-xs text-center" style="width: 10%;">
                     <div class="thumbnail-wrapper image_effect">
                       <img class="img-company-list" [src]="authenticationService.MEDIA_URL + company.companyLogo"
                         onerror="this.src='assets/images/company-profile-logo.png';" alt="{{company.companyLogo}}">
                     </div>
                   </td>
                   <td>
-                    <h4 class="moreipsis mt5 mb5 f-w-600 analytics-tooltip" data-toggle="tooltip" data-placement="bottom" title="{{company.companyName}}" translate>
+                    <h4 class="mt5 mb5 f-w-600 analytics-tooltip" data-toggle="tooltip" data-placement="bottom" title="{{company.companyName}}">
                       <span><strong>{{company.companyName}}</strong></span>
                     </h4>
                   </td>
-                  <td class="text-center">{{company.count}}
+                  <td class="text-center">{{company.viewCount}} / {{company.count}}
                   </td>
                   <td class="mtext-center" id="actions-row">
                     <div class="actions-block override-actions custom-width-icon">

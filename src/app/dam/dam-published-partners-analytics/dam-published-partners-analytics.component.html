@@ -16,7 +16,7 @@
                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li><a translate (click)="goBack()">DAM</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
-            <li><a class="default-cursor" translate>Published {{authenticationService?.partnerModule?.customName}}</a>
+            <li><a class="default-cursor">Analytics</a>
             </li>
          </ul>
          <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
@@ -29,14 +29,17 @@
       <div class="row">
          <div class="portlet box">
             <div class="clearfix">
-               <div class="col-xs-12">
+               <div class="col-xs-12" *ngIf="!isAssetPublished">
+                  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" [showCloseIcon]="false"></app-response-message>
+               </div>
+               <div class="col-xs-12" *ngIf="isAssetPublished">
                   <!-- BEGIN EXAMPLE TABLE PORTLET-->
                   <div class="portlet light remove_cardBgcolor">
                      <div class="portlet-title" style="padding-bottom: 3px;border-bottom: none;">
                         <div class="caption" style="padding-top: 9px !important;padding-left: 4px !important;"
                            translate>
-                           <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
-                           Published {{authenticationService?.partnerModule?.customName}}
+                           <i class="fa fa-bar-chart" style="font-size: 19px;"></i>
+                           Analytics
                         </div>
                         <div class="inputs sort-published-partners d-flex">
                            <div class="" style="float: left; margin: 0 10px;">
@@ -66,7 +69,8 @@
                            <ul class="page-breadcrumb">
                               <li>
                                  <span title="{{selectedAssetName}}">
-                                    <strong class="bold-asset">Asset Name </strong>: {{selectedAssetName}}
+                                    <strong class="bold-asset">Asset Name </strong>: {{selectedAssetName | slice:0:1000}}
+                                    <strong *ngIf="selectedAssetName?.length>1000">...</strong>
                                  </span>
                               </li>
                            </ul>

@@ -9,7 +9,7 @@
   color: #000 !important;
 }
 body{
-  background-image: url(/assets/images/glassmorphism-images/glassmorphism-light.avif);
+  background-image: url(/assets/images/glassmorphism-images/glassmorphism-light1.avif);
   color: white !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -488,10 +488,16 @@ tr {
   .page-sidebar-menu
   .sub-menu
   > li
-  > a,
-.page-sidebar .page-sidebar-menu .sub-menu > li > a {
+  > a {
   background: rgba(16 18 27 / 40%) !important;
   color: #000 !important;
+}
+.page-sidebar .page-sidebar-menu .sub-menu > li > a {
+  border: 1px solid #a39da2!important;
+  color: #000 !important;
+  font-weight: 400;
+  border-radius: 10px;
+  background-color: #ddd;
 }
 /*** TopNavBar ***/
 .page-header.navbar .page-top {
@@ -1632,7 +1638,8 @@ div#removeborder {
 }
 /* user guides hover icon */
 .help-iconbgadd:hover,
-button.button.bgcolor-unset:hover {
+button.button.bgcolor-unset:hover,
+.btn.Btn-Green:hover {
   background-color: #2584b3 !important;
   border: 1px solid #1ca6f3 !important;
 }
@@ -2109,11 +2116,7 @@ tbody {
   background: rgba(255, 255, 255, 0.1) !important;
   backdrop-filter: blur(5px);
 }
-.page-sidebar .page-sidebar-menu .sub-menu > li > a {
-  border: 1px solid rgba(255, 255, 255, 0.3 )!important;
-  border-radius: 10px;
-  background: rgb(255 255 255 / 31%) !important;
-}
+
 #download-template {
   width: 32px !important;
   height: 32px !important;
@@ -2251,7 +2254,8 @@ a.UserguideBtnCustomization:hover {
 }
 .left-menu-color {
   padding: 0px 0px !important;
-  background: rgb(255 255 255 / 31%) !important;
+  /* background: rgb(255 255 255 / 31%) !important; */
+  background-color: #af9a9a59 !important;
   backdrop-filter: blur(5px);
 }
 .neumorphismDark li a:hover {
@@ -2288,9 +2292,10 @@ input {
 .page-sidebar-menu.page-sidebar-menu-hover-submenu > li:hover > .sub-menu {
   margin-top: -78px;
   box-shadow: none !important;
-  background: rgb(255 255 255) !important;
+  /* background: #ffffffcc !important; */
+  background-color: #ffffff63 !important;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid #ffffff59 !important;
 }
 .camp_card_effect:hover {
   transform: scale(1.05);
@@ -2316,9 +2321,12 @@ input {
   }
 }
 .panel {
-  background-color: rgb(146 151 179 / 8%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1)!important;
+  /* background-color: rgb(146 151 179 / 8%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1)!important; */
+  background: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%);
 }
+
 .panel-success > .panel-heading {
   background: none !important;
 }
@@ -2435,7 +2443,11 @@ ul.pagination.padding {
 .page-sidebar .page-sidebar-menu > li > a {
   border-bottom: unset !important;
   border-radius: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  color: #000 !important;
+  font-weight: 500;
 }
+
 li.divider-bottom,
 .page-header.navbar
   .top-menu
@@ -2538,12 +2550,6 @@ ul.nav.neumorphismDark {
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu {
   border-radius: 10px !important;
-}
-@media (max-width: 767px) {
-  .page-header.navbar {
-    background: #2b2f34 !important;
-    border: 0px solid #2f4857 !important;
-  }
 }
 .bell_icon {
   display: inline-block !important;
@@ -2793,10 +2799,12 @@ justify-content: center!important;
     border-radius: 8px !important;
     background: #1091d9 !important;
     color: #fff !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid #1ca6f3 !important;
     margin-left: 4px;
   }
-  
+  button.group-name-cclass.btn-primary.default-btn-cursor, .tm-group-preview-css {
+    background: #1091d9 !important;
+  }
   span.btn.Btn-Green.transition{
     background : none !important;
     box-shadow: none !important;
@@ -3258,13 +3266,13 @@ span.btn.btn-primary.transition.merge_tag_text{
 }
 .note_card_align{
   border-bottom: 1px solid#191b1e !important;
-  margin-left: 15px;
-  margin-right: 15px;
+  /* margin-left: 15px;
+  margin-right: 15px; */
 }
-.panel.panel-success.mt10.notes_box,
+/* .panel.panel-success.mt10.notes_box,
 .panel-heading.note_card_align {
   border: 0px solid #191b1e !important;
-}
+} */
 .panel-heading.note_card_align {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
@@ -3754,10 +3762,7 @@ li.active-tab a.active-tab-anchor-text{
   background-color: rgb(255 253 253 / 65%) !important;
   color: #000 !important;
 }
-button.group-name-cclass.btn-primary.default-btn-cursor,
-.tm-group-preview-css{
-  background: rgb(146 151 179 / 8%)!important;
-}
+
 /***** Sudha Sri(21-3-2024) *****/
 .my-profile-header-text.neumorphismDark {
   appearance: none;
@@ -3798,9 +3803,7 @@ li.filter.selectedBox{
   line-height: 32px !important;
 }
 
-.page-sidebar .page-sidebar-menu > li > a {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-}
+
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover {
     background: rgb(146 151 179 / 13%) !important;
 }
@@ -3886,10 +3889,15 @@ button.button.bgcolor-unset{
   background-size: 250% !important;
   background-position: right center !important;
 } */
-.page-sidebar .page-sidebar-menu > li > a,
+/* .page-sidebar .page-sidebar-menu > li > a, */
 .page-sidebar .page-sidebar-menu .sub-menu > li > a > i,
 h1, h2, h3, h4, h5, h6{
   color: #000 !important;
+}
+
+.page-sidebar .page-sidebar-menu .sub-menu>li:hover>a {
+  /* background-color: #f3f2f2 !important; */
+  background-color: #fff !important;
 }
 .page-container-bg-solid .page-sidebar .page-sidebar-menu > li.active > a > .selected{
   border-color: transparent #5a738e transparent transparent;
@@ -4061,6 +4069,22 @@ a.tabColorOne b, h1 b, h6 b, span b, h3 b, div b {
   color: #fff !important;
   border: none !important;
 }
-.Btn-Green.btn:hover {
+/* .Btn-Green.btn:hover {
   background-color: #2584b3 !important;
+} */
+
+#loading-bg-image {
+  background:transparent url(/assets/images/glassmorphism-images/tenor1-unscreen.gif) no-repeat center center !important;
 }
+
+@media (max-width: 767px) {
+  .page-header.navbar{
+    background: none;
+  }
+  }
+
+  .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover 
+  .page-sidebar-menu > li > a > i, 
+  .page-sidebar .page-sidebar-menu > li > a > i {
+    color: #000;
+  }
