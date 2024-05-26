@@ -139,6 +139,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		{ 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
 		{ 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
 		{ 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
+		{ 'name': 'Added(ASC)', 'value': 'id-ASC' },
+		{ 'name': 'Added(DESC)', 'value': 'id-DESC' },
 	];
 	public sortOption: any = this.sortOptions[0];
 	public searchKey: string;
@@ -950,7 +952,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					this.referenceService.loading(this.httpRequestLoader, false);
 					pagination.totalRecords = this.totalRecords;
 					pagination = this.pagerService.getPagedItems(pagination, this.partners);
-
 					var contactIds = this.pagination.pagedItems.map(function (a) { return a.id; });
 					var items = $.grep(this.editContactComponent.selectedContactListIds, function (element) {
 						return $.inArray(element, contactIds) !== -1;
@@ -960,16 +961,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					} else {
 						this.editContactComponent.isHeaderCheckBoxChecked = false;
 					}
-					/*if (!this.searchKey) {
-						this.loadAllPartnerInList(pagination.totalRecords);
-					} else {
-						this.pageLoader = false;
-
-					}*/
 					this.pageLoader = false;
-
 				},
-				error => this.xtremandLogger.error(error),
+				error => {
+					this.xtremandLogger.error(error);
+					this.xtremandLogger.errorPage(error);
+				},
 				() => this.xtremandLogger.info("MangePartnerComponent loadPartnerList() finished")
 			)
 		} catch (error) {
@@ -1370,7 +1367,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			confirmButtonText: 'Yes, delete it!'
 
 		}).then(function (myData: any) {
-			console.log("ManagePartner showAlert then()" + myData);
 			self.removeContactListUsers1(contactId);
 		}, function (dismiss: any) {
 			console.log("you clicked showAlert cancel" + dismiss);
@@ -1379,7 +1375,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	removeContactListUsers1(contactId: number) {
 		try {
+			this.referenceService.scrollSmoothToTop();
 		    this.pageLoader = true;
+			this.isLoadingList = true;
 			this.partnerId[0] = contactId;
 			this.contactService.removeContactListUsers(this.partnerListId, this.partnerId)
 				.subscribe(
@@ -1397,11 +1395,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						let body: string = error['_body'];
 						body = body.substring(1, body.length - 1);
 						if (error._body.includes('Please launch or delete those campaigns first')) {
+							this.pageLoader = false;
+							this.isListLoader = false;
 							this.customResponse = new CustomResponse('ERROR', error._body, true);
 						} else {
 							this.xtremandLogger.errorPage(error);
 						}
-						console.log(error);
 					},
 					() => this.xtremandLogger.info("deleted completed")
 				);

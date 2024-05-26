@@ -790,7 +790,6 @@
                             <!---XNFR-222-->
                             <app-team-member-filter-option *ngIf="showFilter"
                                 (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
-
                             <div style="float: left; margin: 3px 10px;">
                                 <select class="form-control SeclectBoxPaddingsAbj search_sort_shadows"
                                     [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
@@ -831,9 +830,9 @@
                                     <strong>Please wait while we process your request</strong>
                                 </div>
                                 <div *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList"
-                                    class="alert alert-info alert-dismissable text-center">No
-                                    {{authenticationService?.partnerModule?.customName}} found.</div>
-                                <div class="table-responsive">
+                                    class="alert alert-info alert-dismissable text-center">No {{authenticationService?.partnerModule?.customName}} found.</div>
+                                <app-list-loader *ngIf="isLoadingList"></app-list-loader>
+                                <div class="table-responsive" *ngIf="!isLoadingList">
                                     <table class='table tgrid' aria-describedby="">
                                         <thead *ngIf="pagination.pagedItems?.length != 0">
                                             <tr>
@@ -1068,7 +1067,7 @@
                             </div>
                         </div>
                     </div>
-                    <app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)"
+                    <app-pagination  *ngIf="!isLoadingList" [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)"
                         (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination>
                 </div>
                 <!-- END EXAMPLE TABLE PORTLET-->
