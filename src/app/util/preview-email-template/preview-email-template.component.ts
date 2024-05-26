@@ -39,7 +39,7 @@ export class PreviewEmailTemplateComponent implements OnInit,AfterViewInit {
     public route:ActivatedRoute,public processor:Processor,public properties:Properties,public vanityUrlService:VanityURLService) { }
   
     ngAfterViewInit(): void {
-      this.vanityUrlService.setAppIcon();
+      this.vanityUrlService.setTitleAndFavIcon();
     }
 
   ngOnInit() {
