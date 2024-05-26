@@ -300,7 +300,7 @@ export class ShowHistoryComponent implements OnInit {
 	
 	    viewAnalytics(asset: any) {
         this.loading = true;
-        localStorage.setItem('assetName', asset.assetName);
+        this.referenceService.setAssetLocalStorageValues(asset);
         let isVideo = this.isVideo(asset.assetType);
         if (isVideo) {
         	 if (this.isPartnerView) {
