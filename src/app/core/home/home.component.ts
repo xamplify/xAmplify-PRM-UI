@@ -293,8 +293,11 @@ export class HomeComponent implements OnInit {
       if (this.currentUser['logedInCustomerCompanyNeme'] != undefined) {
         if (this.authenticationService.vanityURLEnabled && this.authenticationService.v_companyName) {
           this.setTitle(this.authenticationService.v_companyName);
+          localStorage.setItem('companyName',this.authenticationService.v_companyName);
         } else {
           this.setTitle(this.currentUser['logedInCustomerCompanyNeme']);
+          localStorage.setItem('companyName',this.currentUser['logedInCustomerCompanyNeme']);
+
         }
       } else {
         this.setTitle('xAmplify');

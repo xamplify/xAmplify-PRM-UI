@@ -629,7 +629,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         this.authenticationService.v_companyFavIconPath = this.companyProfile.favIconLogoPath;
                         this.authenticationService.v_companyName = this.companyProfile.companyName;
                         localStorage.setItem('appIcon',this.companyProfile.favIconLogoPath);
-                        localStorage.setItem('companyName',this.companyProfile.companyName);
 						this.authenticationService.module.isContact = false;
                         this.vanityURLService.setVanityURLTitleAndFavIcon();                        
                         $('#info').hide();

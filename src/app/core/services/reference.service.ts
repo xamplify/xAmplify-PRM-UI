@@ -3515,14 +3515,28 @@ clearHeadScriptFiles(){
 }
 
   private setTitleAndFavIcon() {
+    this.setTitle();
+    this.setFavIcon();
+    
+  }
+
+  private setTitle() {
     let iconPath = localStorage.getItem("appIcon");
+    let completeIconPath = "";
     if (iconPath) {
-      let completePath = this.authenticationService.MEDIA_URL + iconPath;
-      $("#xamplify-index-head").append('<link rel="icon" type="image/x-icon" href="' + completePath + '" id="appFavicon">');
+      completeIconPath = this.authenticationService.MEDIA_URL + iconPath;
+    } else {
+      completeIconPath += this.authenticationService.APP_URL + "favicon.ico";
     }
+    $("#xamplify-index-head").append('<link rel="icon" type="image/x-icon" href="' + completeIconPath + '" id="appFavicon">');
+  }
+
+  private setFavIcon() {
     let companyName = localStorage.getItem("companyName");
     if (companyName) {
       $("#xamplify-index-head").append('<title>' + companyName + '</title>');
+    } else {
+      $("#xamplify-index-head").append('<title>xAmplify</title>');
     }
   }
 
@@ -3604,11 +3618,36 @@ openWindowInNewTab(url:string){
 preivewAssetOnNewHost(id: any) {
   let encodedId = btoa(id);
   let encodedAccessToken = btoa(this.authenticationService.access_token);
-  let url = this.envService.PREVIEW_HOST+"preview/"+encodedId+"/"+encodedAccessToken;
+  let encodedIcon = this.getEncodedIcon();
+  let companyName = localStorage.getItem("companyName");
+  let encodedCompanyName =this.getEncodedCompanyName(companyName);
+  let url = this.envService.PREVIEW_HOST+"preview/"+encodedId+"/"+encodedAccessToken+"/"+encodedIcon+"/"+encodedCompanyName;
   window.open(url,"_blank");
 }
+
+
+  private getEncodedIcon() {
+    let iconPath = localStorage.getItem("appIcon");
+    let completeIconPath = "";
+    if (iconPath) {
+      completeIconPath = this.authenticationService.MEDIA_URL + iconPath;
+    } else {
+      completeIconPath += this.envService.PREVIEW_HOST + "favicon.ico";
+    }
+    let encodedIcon = btoa(completeIconPath);
+    return encodedIcon;
+  }
+
+  private getEncodedCompanyName(companyName: string) {
+    let encodedCompanyName = "";
+    if (companyName) {
+      encodedCompanyName = btoa(companyName);
+    } else {
+      encodedCompanyName = btoa("xAmplify");
+    }
+    return encodedCompanyName;
+  }
   
-
-
-
 }
+
+

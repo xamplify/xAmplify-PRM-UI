@@ -346,7 +346,6 @@ bgIMage2:any;
             }
             this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
             localStorage.setItem('appIcon',result.companyFavIconPath);
-            localStorage.setItem('companyName',result.companyName);
             this.vanityURLService.setVanityURLTitleAndFavIcon();
             if (result.showMicrosoftSSO) {
               this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });
