@@ -285,6 +285,14 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
     }
   }
 
+  setAppIcon(){
+    let iconPath = localStorage.getItem("appIcon");
+    if(iconPath){
+      let completePath = this.authenticationService.MEDIA_URL + iconPath;
+      this._document.getElementById('appFavicon').setAttribute('href',completePath);
+    }
+  }
+
   extractData(res: Response) {
     let body = res.json();
     return body || {};

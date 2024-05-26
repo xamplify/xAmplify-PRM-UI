@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -7,7 +7,7 @@ import { Processor } from '../../core/models/processor';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { EventCampaign } from 'app/campaigns/models/event-campaign';
-import { catchError } from 'rxjs/operators';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 @Component({
   selector: 'app-preview-email-template',
@@ -15,7 +15,7 @@ import { catchError } from 'rxjs/operators';
   styleUrls: ['./preview-email-template.component.css'],
   providers:[Processor,Properties]
 })
-export class PreviewEmailTemplateComponent implements OnInit {
+export class PreviewEmailTemplateComponent implements OnInit,AfterViewInit {
   id:any;
   success = false;
   customResponse:CustomResponse = new CustomResponse();
@@ -36,7 +36,11 @@ export class PreviewEmailTemplateComponent implements OnInit {
   isVanityEmailTemplatePreview = false;
   apiResponseFinished = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
-    public route:ActivatedRoute,public processor:Processor,public properties:Properties) { }
+    public route:ActivatedRoute,public processor:Processor,public properties:Properties,public vanityUrlService:VanityURLService) { }
+  
+    ngAfterViewInit(): void {
+      this.vanityUrlService.setAppIcon();
+    }
 
   ngOnInit() {
     this.processor.set(this.processor);

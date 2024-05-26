@@ -3510,6 +3510,7 @@ removeCssStylesAndCssFiles(){
 clearHeadScriptFiles(){
   $('.loader-container').hide();
   $("#xamplify-index-head").html("");
+  $("#xamplify-index-head").append('	<link rel="icon" type="image/x-icon" href="favicon.ico" id="appFavicon">');
   $('#page-loader-index-html').css({'display':'block'});
 }
 
