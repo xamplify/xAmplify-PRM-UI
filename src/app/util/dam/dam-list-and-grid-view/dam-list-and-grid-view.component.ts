@@ -441,6 +441,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	viewAnalytics(asset: any) {
 		this.loading = true;
 		localStorage.setItem('assetName', asset.assetName);
+		localStorage.setItem('isAssetPublished', asset.published);
 		let isVideo = this.isVideo(asset.assetType);
 		if (isVideo) {
 			if (this.isPartnerView) {
