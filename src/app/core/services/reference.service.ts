@@ -3510,9 +3510,21 @@ removeCssStylesAndCssFiles(){
 clearHeadScriptFiles(){
   $('.loader-container').hide();
   $("#xamplify-index-head").html("");
-  $("#xamplify-index-head").append('	<link rel="icon" type="image/x-icon" href="favicon.ico" id="appFavicon">');
+  this.setTitleAndFavIcon();
   $('#page-loader-index-html').css({'display':'block'});
 }
+
+  private setTitleAndFavIcon() {
+    let iconPath = localStorage.getItem("appIcon");
+    if (iconPath) {
+      let completePath = this.authenticationService.MEDIA_URL + iconPath;
+      $("#xamplify-index-head").append('<link rel="icon" type="image/x-icon" href="' + completePath + '" id="appFavicon">');
+    }
+    let companyName = localStorage.getItem("companyName");
+    if (companyName) {
+      $("#xamplify-index-head").append('<title>' + companyName + '</title>');
+    }
+  }
 
 encodePathVariable(input:any){
   let encodedPathVariable = btoa(input);

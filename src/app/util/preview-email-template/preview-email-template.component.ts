@@ -1,4 +1,4 @@
-import { Component, OnInit,AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -15,7 +15,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
   styleUrls: ['./preview-email-template.component.css'],
   providers:[Processor,Properties]
 })
-export class PreviewEmailTemplateComponent implements OnInit,AfterViewInit {
+export class PreviewEmailTemplateComponent implements OnInit {
   id:any;
   success = false;
   customResponse:CustomResponse = new CustomResponse();
@@ -38,9 +38,6 @@ export class PreviewEmailTemplateComponent implements OnInit,AfterViewInit {
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties,public vanityUrlService:VanityURLService) { }
   
-    ngAfterViewInit(): void {
-      this.vanityUrlService.setTitleAndFavIcon();
-    }
 
   ngOnInit() {
     this.processor.set(this.processor);
