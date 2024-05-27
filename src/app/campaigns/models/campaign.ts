@@ -110,4 +110,6 @@ export class Campaign {
     description = "";
     /***XNFR-387****/
     notifyChannelCampaignWorkflows = false;
+    leadTicketTypeId: number = 0;
+    dealTicketTypeId: number = 0;
 }

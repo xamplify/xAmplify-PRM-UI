@@ -567,6 +567,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.listCampaignPipelines();
         this.eventCampaign.leadPipelineId = 0;
         this.eventCampaign.dealPipelineId = 0;
+        this.eventCampaign.configurePipelines = !this.eventCampaign.configurePipelines;
 
     }
 
@@ -932,10 +933,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.eventCampaign.enableCoBrandingLogo = false;
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             this.loadEmailTemplates(this.emailTemplatesPagination);
+            this.eventCampaign.configurePipelines = false;
             // this.isValidPipeline = true;
         } else {
             this.emailTemplatesPagination.throughPartner = true;
             this.eventCampaign.enableCoBrandingLogo = true;
+            this.eventCampaign.configurePipelines = true;
             // this.isValidPipeline = false;
             this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
             this.loadEmailTemplates(this.emailTemplatesPagination);
@@ -3234,27 +3237,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 }
     }
 
-    getHalopsaTicketTypes(){
+    getHalopsaTicketTypes() {
         let self = this;
-        this.loggedInUserId = this.authenticationService.getUserId();
-         this.campaignService.getHalopsaTicketTypes(this.loggedInUserId)
-         .subscribe(
-             response => {
-                 if (response.statusCode == 200) {
-                     let data = response.data;                            
-                     this.dealTicketTypes = data;
-                     this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
-                     this.leadTicketTypes = data;
-                     this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
-                 }
-                 this.referenceService.stopLoader(this.pipelineLoader);
-             },
-             error => {
-                 this.referenceService.stopLoader(this.pipelineLoader);
-                 this.logger.error(error);
-             });
-
-      }
+        this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+            (result: any) => {
+                self.getHalopsaTicketTypesByCompanyId(result);
+            });
+    }
 
       onChangeLeadTicketType() {
         let self = this;
@@ -3306,5 +3295,25 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                  this.logger.error(error);
              });
       }
+
+    getHalopsaTicketTypesByCompanyId(companyId: any) {
+        let self = this;
+        this.campaignService.getHalopsaTicketTypes(companyId)
+            .subscribe(
+                response => {
+                    if (response.statusCode == 200) {
+                        let data = response.data;
+                        this.dealTicketTypes = data;
+                        this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                        this.leadTicketTypes = data;
+                        this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                    }
+                    this.referenceService.stopLoader(this.pipelineLoader);
+                },
+                error => {
+                    this.referenceService.stopLoader(this.pipelineLoader);
+                    this.logger.error(error);
+                });
+    }
 
 }

@@ -167,12 +167,12 @@
                       *ngIf="showOpportunityTypes">
                       <label class="control-label">Opportunity Types<span class="required"><strong>*</strong></span></label>
                       <select class="form-control" [(ngModel)]="deal.haloPSATickettypeId" [ngModelOptions]="{standalone: true}"
-                        placeholder="opportunityTypeId" id="opportunityTypeId" [disabled]="preview"
-                        (ngModelChange)="onChangeOpportunityType()" (input)="validateField('opportunityTypeId',false)">
+                        placeholder="opportunityTypeId" id="opportunityTypeId" [disabled]="preview || isCampaignTicketTypeSelected"
+                        (ngModelChange)="onChangeTicketType()" (input)="validateField('opportunityTypeId',false)">
                         <option [value]="0">Select Opportunity Type</option>
                         <!-- <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">
                           {{deal.currentStageName}}</option> -->
-                        <option *ngFor="let type of types" [value]="type.id">{{type.name}}</option>
+                        <option *ngFor="let type of halopsaTicketTypes" [value]="type.id">{{type.name}}</option>
                       </select>
                     </div>
                   </div>
@@ -233,7 +233,7 @@
                           <label class="control-label">Vendor's xAmplify Stage<span class="required"><strong>*</strong></span></label>
                           <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
                             [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="createdForPipelineStageId"
-                            [disabled]="preview" (input)="validateField('createdForPipelineStageId',false)">
+                            [disabled]="preview || isCreatedForStageIdDisable" (input)="validateField('createdForPipelineStageId',false)">
                             <option [value]="0">Select Stage</option>
                             <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">
                               {{deal.currentStageName}}</option>
@@ -259,7 +259,7 @@
                          <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
                          <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
                            [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="createdForPipelineStageId"
-                           [disabled]="preview" (input)="validateField('createdForPipelineStageId',false)">
+                           [disabled]="preview || isCreatedForStageIdDisable" (input)="validateField('createdForPipelineStageId',false)">
                            <option [value]="0">Select Stage</option>
                            <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">
                              {{deal.currentStageName}}</option>
@@ -309,7 +309,7 @@
         </div>
         <div *ngIf="showCustomForm && deal.createdForCompanyId">
           <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [activeCRM]="activeCRMDetails"
-            [dealId]="deal.id" [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson"></app-sf-deal>
+            [dealId]="deal.id" [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson" [ticketTypeId]="deal.haloPSATickettypeId"></app-sf-deal>
         </div>
         <div *ngIf="!showCustomForm && showDefaultForm">
           <div class=" row portlet light deal-box">

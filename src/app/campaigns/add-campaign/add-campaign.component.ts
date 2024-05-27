@@ -250,6 +250,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   isMultipleCrmsActivated = false;
   skipConfirmAlert = false;
   hideConfigurePipelineCrms = ['SALESFORCE'];
+  loggedInUserCompanyId: number;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -1131,8 +1132,15 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         this.isValidCampaignDetailsTab = isValidCampaignName && isValidFromName && isValidSubjectLine && isValidPreHeader;
         /****Configure PipeLines**/
         if((this.campaign.channelCampaign && this.campaign.configurePipelines) || (this.showMarketingAutomationOption && this.campaign.configurePipelines)){
-            let isValidLeadTicketTypeSelected = this.campaign.leadTicketTypeId!=undefined && this.campaign.leadTicketTypeId>0;
-            let isValidDealTicketTypeSelected = this.campaign.dealTicketTypeId!=undefined && this.campaign.dealTicketTypeId>0;
+            let isValidLeadTicketTypeSelected: boolean;
+            let isValidDealTicketTypeSelected: boolean;
+            if ("HALOPSA" === this.activeCRMDetails.type) {
+                isValidLeadTicketTypeSelected = this.campaign.leadTicketTypeId!=undefined && this.campaign.leadTicketTypeId>0;
+                isValidDealTicketTypeSelected = this.campaign.dealTicketTypeId!=undefined && this.campaign.dealTicketTypeId>0;
+            } else {
+                isValidLeadTicketTypeSelected = true;
+                isValidDealTicketTypeSelected = true;
+            }
             let isValidLeadPipeLineSelected = this.campaign.leadPipelineId!=undefined && this.campaign.leadPipelineId>0;
             let isValidDealPipeLineSelected = this.campaign.dealPipelineId!=undefined && this.campaign.dealPipelineId>0;
             this.leadTicketTypeClass = isValidLeadTicketTypeSelected ? successClass : errorClass;
@@ -2523,24 +2531,28 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
 
       getHalopsaTicketTypes(){
         let self = this;
-        this.loggedInUserId = this.authenticationService.getUserId();
-         this.campaignService.getHalopsaTicketTypes(this.loggedInUserId)
-         .subscribe(
-             response => {
-                 if (response.statusCode == 200) {
-                     let data = response.data;                            
-                     this.dealTicketTypes = data;
-                     this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
-                     this.leadTicketTypes = data;
-                     this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
-                 }
-                 this.referenceService.stopLoader(this.pipelineLoader);
-             },
-             error => {
-                 this.referenceService.stopLoader(this.pipelineLoader);
-                 this.xtremandLogger.error(error);
-             });
+        this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+            (result: any) => {
+                self.getHalopsaTicketTypesByCompanyId(result);
+            });
+      }
 
+      getHalopsaTicketTypesByCompanyId(companyId: number) {
+        this.campaignService.getHalopsaTicketTypes(companyId).subscribe(
+            response => {
+                if (response.statusCode == 200) {
+                    let data = response.data;                            
+                    this.dealTicketTypes = data;
+                    this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                    this.leadTicketTypes = data;
+                    this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                }
+                this.referenceService.stopLoader(this.pipelineLoader);
+            },
+            error => {
+                this.referenceService.stopLoader(this.pipelineLoader);
+                this.xtremandLogger.error(error);
+            });
       }
 
 }
