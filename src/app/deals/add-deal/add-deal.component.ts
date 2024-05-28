@@ -312,7 +312,12 @@ export class AddDealComponent implements OnInit {
                   if ("HALOPSA" === this.activeCRMDetails.type) {
                     self.showCustomForm = true;
                     if (this.actionType == 'add') {
-                      self.deal.createdForPipelineStageId = self.stages[0].id;
+                      let createdForPipelineStage = null;
+                      let stages = self.stages;
+                      createdForPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
+                        mindisplayIndexStage.displayIndex < currentStage.displayIndex ? mindisplayIndexStage : currentStage
+                      );
+                      self.deal.createdForPipelineStageId = createdForPipelineStage.id;
                       self.createdForPipelineStageIdError = false;
                       self.isCreatedForStageIdDisable = true;
                       self.submitButtonStatus();
