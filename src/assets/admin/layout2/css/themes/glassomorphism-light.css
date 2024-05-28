@@ -185,7 +185,9 @@ border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background: rgb(255 255 255 / 31%) !important;
 }
 .form-control,.l-g-view,
-.col-item {
+.col-item,
+button.fa.fa-th-large.btn-xs.l-g-view,
+button.btn.btn-xs.l-g-view {
     color: #000 !important;
     background-color: rgb(255 255 255 / 31%) !important;
     border: 1px solid rgb(255 255 255 / 35%) !important;
@@ -229,10 +231,7 @@ ul.alt-row-style1 li a {
 }
 /**** buttons ****/
 
-.table tr.contact-list-selected td {
-  background-color: #22313a !important;
-  color: white !important;
-}
+
 .div-background-color {
   background-color: rgb(146 151 179 / 8%) !important;
   color: white !important;
@@ -420,8 +419,12 @@ tr {
     backdrop-filter: blur(5px);
 }
 .modal-content {
-  background-color: rgb(255, 255, 255) !important;
-  color: #000 !important;
+  /* background-color: rgb(255, 255, 255) !important;
+  color: #000 !important; */
+  background: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(13.5px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .upload-asset-div,
 .well,
@@ -925,8 +928,9 @@ i.IconCustomization:hover ,
 .bootstrap-switch .bootstrap-switch-container,
 .bootstrap-switch .bootstrap-switch-label {
   border-color: rgba(255, 255, 255, 0.1) !important;
-  background-color: rgb(255 255 255 / 31%)!important;
-  backdrop-filter: blur(5px);
+  /* background-color: rgb(255 255 255 / 31%)!important; */
+  background-color: #b5b0b000 !important;
+  /* backdrop-filter: blur(5px); */
 }
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info,
@@ -950,8 +954,7 @@ i.IconCustomization:hover ,
   background: #22313a !important;
 }
 .form-check-label,
-.gu-block,
-.modal-content {
+.gu-block {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .circled-number {
@@ -1238,7 +1241,7 @@ div#box-dark-defalut-clr {
 }
 
 .table tr.contact-list-selected td {
-  background-color: #22313a !important;
+  background-color: #00a6e847 !important;
   color: #fff !important;
 }
 
@@ -1670,7 +1673,7 @@ tag {
   background-color: transparent !important;
 }
 select.form-control.same-bgcolor-for-select {
-  background: #2e3033 !important;
+  /* background: #2e3033 !important; */
 }
 
 /* 19-07-2023 Custom Theme Settings bg colors */
@@ -1948,7 +1951,7 @@ i.IconCustomization :hover,
   background: rgb(146 151 179 / 8%) !important;
 }
 
-i.fa.fa-trash.trashIconCustomization, .gridIconCustomization a.delete {
+i.fa.fa-trash.trashIconCustomization {
   border: none;
   color: #cb5a5e !important;
 }
@@ -2025,14 +2028,15 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   backdrop-filter: blur(5px);
 }
 .mix-filter li:hover{
-  background: rgba(255,255,255,0.15) !important;
+  background: none !important;
   border: 1px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(5px);
 }
 .mix-filter li.campaign-type-selected,
 .mix-filter li.emailtemplate-selected,
 .mix-filter li.active {
-  background: rgba(16 18 27 / 40%) !important;
+  /* background: rgba(16 18 27 / 40%) !important; */
+  background-color: #fff !important;
   border: 1px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(5px);
 }
@@ -2338,14 +2342,14 @@ input {
   border-bottom: 1px solid #2f4857 !important;
 }
 .unsubscribingPopup {
-  background-color: rgb(255 255 255 / 31%) !important;
+  background-color: transparent !important;
+  color: #000;
 }
 fieldset {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 select.form-control.ng-untouched.ng-pristine.ng-valid,
 button.fa.fa-th-list.btn-xs.l-g-view,
-button.fa.fa-th-large.btn-xs.l-g-view,
 button.btn-xs.l-g-view.fa.fa-folder,
 button.btn-xs.l-g-view.fa.fa-th,
 button.fa.fa-th-list.btn.btn-xs.l-g-view,
@@ -3639,7 +3643,9 @@ table.table.table-bordered {
   border-top: none !important;
 }
 .inline-flex.border-end:nth-child(even) {
-  background-color: #202124 !important;
+  /* background-color: #202124 !important; */
+  background-color: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
 }
 .border-end {
   border-bottom:   1px solid rgba(255, 255, 255, 0.1) !important;
@@ -3732,16 +3738,17 @@ button.btn.btn-primary.activate-btn:hover {
 /***** Grid View Icon Changes *****/
 .bar.gridIconCustomization {
     box-shadow: none !important;
-    background: rgba(255 255 255 / 35%) !important;
+    /* background: rgba(255 255 255 / 35%) !important; */
+    background: #bcbfbf !important;
 }
 
 .gridViewImgpositioning {
   border-bottom: 1px solid #181b1e;
 }
-.img-grid-track {
-  border-bottom-left-radius: 15px !important;
-  border-bottom-right-radius: 15px !important;
-}
+/* .img-grid-track {
+  /* border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important; *
+} */
 .icons_align a{
   padding: 4px !important;
 }
@@ -3923,7 +3930,7 @@ h1, h2, h3, h4, h5, h6{
 .dashboard-stat.red-soft .details .number,
 .dashboard-stat.red-soft .details .desc,
 .dashboard-stat.purple-soft .details .number,
-.dashboard-stat.purple-soft .details .desc,select.form-control.ng-untouched.ng-pristine.ng-valid, button.fa.fa-th-list.btn-xs.l-g-view, button.fa.fa-th-large.btn-xs.l-g-view, button.btn-xs.l-g-view.fa.fa-folder, button.btn-xs.l-g-view.fa.fa-th, button.fa.fa-th-list.btn.btn-xs.l-g-view, button.fa.fa-th-large.btn.btn-xs.l-g-view, button.btn.btn-xs.l-g-view.folder-list-span-custom-width, button.btn.btn-xs.l-g-view, button.btn.btn-xs.l-g-view.disabled
+.dashboard-stat.purple-soft .details .desc,select.form-control.ng-untouched.ng-pristine.ng-valid, button.fa.fa-th-list.btn-xs.l-g-view, button.btn-xs.l-g-view.fa.fa-folder, button.btn-xs.l-g-view.fa.fa-th, button.fa.fa-th-list.btn.btn-xs.l-g-view, button.fa.fa-th-large.btn.btn-xs.l-g-view, button.btn.btn-xs.l-g-view.folder-list-span-custom-width, button.btn.btn-xs.l-g-view.disabled
 .dashboard-stat.blue-sharp .details .number,
 .dashboard-stat.blue-sharp .details .desc,
 .dashboard-stat.blue-soft .details .number,
@@ -3954,8 +3961,7 @@ ul.page-breadcrumb,
 [class*=" glyphicon-"],
 .view-banner-forms,
 p.contentwrap-dr,
-.panel-title > a,
-a:link.txt_color{
+.panel-title > a{
   color: #000;
 }
 
@@ -3973,7 +3979,8 @@ tbody.neo-border-radius10 {
   box-shadow: none !important;
   border: none !important;
 }
-a.partnerDomainsC {
+a.partnerDomainsC,
+a:link.txt_color {
   color: #fff !important;
 }
 a:link{
@@ -3990,7 +3997,8 @@ div.scrolled{
   background-color: rgb(255 255 255 / 90%) !important; /* Darker background color when scrolled */
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
-.dashboard-stat .more {
+.dashboard-stat .more,
+.dashboard-stat.yellow-gold {
   opacity: 1;
   font-weight: 600;
   color: #fff !important;
@@ -4084,6 +4092,13 @@ a.tabColorOne b, h1 b, h6 b, span b, h3 b, div b {
   .page-sidebar .page-sidebar-menu > li > a > i {
     color: #000;
   }
-  input::placeholder {
+  input::placeholder,
+  .info-color-xampc,
+  span.custom-font-weight.highletClass{
     color: #000 !important;
   }
+  .mrg-neo {
+    margin: 6px 0;
+}.beige {
+  background-color: transparent !important;
+}
