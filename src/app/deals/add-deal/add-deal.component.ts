@@ -1154,9 +1154,9 @@ export class AddDealComponent implements OnInit {
           if (this.actionType === "view") {
             this.getDealPipelinesForView();
           }
-          else {
-            this.getDealPipelines();
-          }
+          // else {
+          //   this.getDealPipelines();
+          // }
         });
   }
 
@@ -1227,21 +1227,6 @@ export class AddDealComponent implements OnInit {
             self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByPipelineAndStageOnTop;
             let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
             let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
-            // if (this.isVendorVersion && !this.isOnlyOrgAdminOrMarketing) {
-            //   [self.createdByActiveCRM, self.createdForActiveCRM] = [self.createdForActiveCRM, self.createdByActiveCRM];
-            //   [createdByPipelines, createdForPipelines] = [createdForPipelines, createdByPipelines];
-            //   [this.deal.createdByPipelineId, this.deal.createdForPipelineId] = [this.deal.createdForPipelineId, this.deal.createdByPipelineId];
-            //   [this.deal.createdByPipelineStageId, this.deal.createdForPipelineStageId] = [this.deal.createdForPipelineStageId, this.deal.createdByPipelineStageId];
-            //   if (this.deal.createdForCompanyId == this.deal.createdByCompanyId) {
-            //     this.showCreatedByPipelineDetails = false;
-            //     this.pipelineText = "Pipeline";
-            //     this.pipelinestageText = "Stage";
-            //   }
-            //   if (this.showDefaultForm) {
-            //     this.showCreatedForPipelinesForDefaultForm = true;
-            //     this.showCreatedByPipelinesForDefaultForm = false;
-            //   }
-            // }
 
             if (createdByPipelines !== undefined && createdByPipelines !== null) {
               this.handleCreatedByPipelines(createdByPipelines);

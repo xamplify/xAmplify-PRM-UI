@@ -289,7 +289,8 @@ export class AddLeadComponent implements OnInit {
             } else if (data.statusCode == 404) {
               self.lead.pipelineId = 0;
               self.stages = [];
-              self.getPipelines();
+              //self.getPipelines();
+              this.getActiveCRMPipeline();
               self.hasCampaignPipeline = false;
             }
           },
