@@ -558,22 +558,10 @@
                                                             <span class="label label-info  selectcolor"
                                                                 *ngIf="dto?.id === activeThemeDetails?.themeId">Active</span>
                                                             <br>
-                                                            <!-- <h5 class="card-title themefont">{{dto.name}} Theme</h5> -->
-                                                            <h5 class="card-title themefont"
-                                                                *ngIf="dto.name === 'Neumorphism Dark(Beta)'">
-                                                                Neumorphism Dark</h5>
-                                                            <h5 class="card-title themefont"
-                                                                *ngIf="dto.name === 'Neumorphism Light'">
-                                                                Neumorphism Light</h5>
-                                                            <h5 class="card-title themefont"
-                                                                *ngIf="dto.name != 'Neumorphism Dark(Beta)' && dto.name != 'Neumorphism Light'">
-                                                                {{dto?.name}}</h5>
-                                                            <!-- <h5 class="card-title themefont"
-                                                                *ngIf="dto.name != 'Neumorphism Light'">
-                                                                {{dto?.name}} Theme</h5> -->
-                                                            <!-- responsive-alignment -->
-                                                            <td
-                                                                class="mAlignView responsive-alignment centerAlignPropertyIcon">
+                                                            <h5 class="card-title themefont" *ngIf="dto.name === 'Neumorphism Dark(Beta)'">Neumorphism Dark</h5>
+                                                            <h5 class="card-title themefont" *ngIf="dto.name === 'Neumorphism Light'">Neumorphism Light</h5>
+                                                            <h5 class="card-title themefont" *ngIf="dto.name != 'Neumorphism Dark(Beta)' && dto.name != 'Neumorphism Light'">{{dto?.name}}</h5>
+                                                            <td class="mAlignView responsive-alignment centerAlignPropertyIcon">
                                                                 <div
                                                                     class="actions-block override-actions ActionAlign mb_whitespace">
                                                                     <div
