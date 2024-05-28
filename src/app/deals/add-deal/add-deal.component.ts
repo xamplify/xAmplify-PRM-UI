@@ -1412,7 +1412,11 @@ export class AddDealComponent implements OnInit {
       self.deal.createdForPipelineId = createdForPipeline.id;
       self.pipelineIdError = false;
       if ("HALOPSA" == this.activeCRMDetails.createdForActiveCRMType && self.actionType == 'add') {
-        let createdForPipelineStage = createdForPipeline.stages[0];
+        let createdForPipelineStage = null;
+        let stages = createdForPipeline.stages;
+        createdForPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
+          mindisplayIndexStage.displayIndex < currentStage.displayIndex ? mindisplayIndexStage : currentStage
+        );
         self.createdForStages = createdForPipeline.stages;
         self.deal.createdForPipelineStageId = createdForPipelineStage.id;
         self.isCreatedForStageIdDisable = true;

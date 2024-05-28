@@ -165,11 +165,11 @@
                   <div class="card-bgcolors h-260 pl0 pr0">
                     <div class="form-group" [attr.class]="opportunityTypeId" style="margin-bottom: 20px" id="dealStageDiv"
                       *ngIf="showOpportunityTypes">
-                      <label class="control-label">Opportunity Types<span class="required"><strong>*</strong></span></label>
+                      <label class="control-label">Ticket Types<span class="required"><strong>*</strong></span></label>
                       <select class="form-control" [(ngModel)]="deal.haloPSATickettypeId" [ngModelOptions]="{standalone: true}"
                         placeholder="opportunityTypeId" id="opportunityTypeId" [disabled]="preview || isCampaignTicketTypeSelected"
                         (ngModelChange)="onChangeTicketType()" (input)="validateField('opportunityTypeId',false)">
-                        <option [value]="0">Select Opportunity Type</option>
+                        <option [value]="0">Select Ticket Type</option>
                         <!-- <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">
                           {{deal.currentStageName}}</option> -->
                         <option *ngFor="let type of halopsaTicketTypes" [value]="type.id">{{type.name}}</option>
