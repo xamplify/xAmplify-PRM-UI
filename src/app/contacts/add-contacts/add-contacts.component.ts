@@ -3836,7 +3836,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             $('#row_' + user.id).removeClass('contact-list-selected');
             this.selectedContactListIds.splice($.inArray(user.id, this.selectedContactListIds), 1);
             this.paginatedSelectedIds.splice($.inArray(user.id, this.paginatedSelectedIds), 1);
-            this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
+            //this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
+            let indexToRemove = this.allselectedUsers.findIndex(item => item.id === user.id);
+            if (indexToRemove !== -1) {
+                this.allselectedUsers.splice(indexToRemove, 1);
+            }
         }
         if (this.paginatedSelectedIds.length == this.pagedItems.length) {
             this.isHeaderCheckBoxChecked = true;
