@@ -880,7 +880,27 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     
     openEventUrlModal(campaign:Campaign){
-        this.modalPopupLoader = true;
+        if(campaign.channelCampaign){
+          this.callOpenEventUrlModal(campaign);
+        }else{
+         this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+               .subscribe(
+                data => {
+                 campaign.hasAccess = data.data.hasAccess;
+                if(campaign.hasAccess){
+                   this.callOpenEventUrlModal(campaign);
+                }
+                 },
+                error => {
+                    this.showErrorResponse(error);
+                    });
+     }
+        
+        }
+        
+        
+       callOpenEventUrlModal(campaign:Campaign){
+               this.modalPopupLoader = true;
         this.publicEventAliasUrl = "";
         this.publicEventAlias = "";
         this.copiedLinkCustomResponse = new CustomResponse();
@@ -899,7 +919,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.modalPopupLoader = false;
                 this.copiedLinkCustomResponse = new CustomResponse('ERROR','Please try after sometime',true);
             });
-        }
+       }
+        
+        
+        
+        
+        
+        
     copyUrl(inputElement){
         this.copiedLinkCustomResponse = new CustomResponse();
         inputElement.select();
@@ -1470,7 +1496,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                        this.checkLastElement(index);
                        campaign.showGearIconOptions = data.data.showGearIconOptions ;
                     }else{
-                    this.customResponse = new CustomResponse('ERROR',"You don't have access for this campaign",true);
+                    this.customResponse = new CustomResponse('ERROR',"You don't have access for this campaign: "+campaign.campaignName,true);
                     }
                 }
             },
