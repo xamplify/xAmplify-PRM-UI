@@ -125,5 +125,6 @@ export class Pagination {
 	source:string;
 	defaultLandingPage:boolean;
 	showLeadsForAttachingLead:boolean = false; /*** XNFR-476 ***/
+	campaignViewType : string = "";
 
 }

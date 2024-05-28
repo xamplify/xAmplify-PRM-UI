@@ -130,6 +130,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     showAllAnalytics : boolean = false ;
     selectedIndex : number;
     gearIconOptions : boolean = false;
+    campaignViewType : string = "";
     
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -160,7 +161,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
         this.hasAllAccess = this.refService.hasAllAccess();
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
-        this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);       
+        this.refService.setDefaultDisplayType(this.modulesDisplayType); 
+        console.log( this.modulesDisplayType);      
     }
 
 
@@ -191,6 +193,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.pagination.vanityUrlFilter = true;
         }
         this.pagination.archived = this.archived;
+        this.pagination.campaignViewType = this.campaignViewType;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
             data => {
@@ -312,53 +315,60 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     getCampaignTypes(){
         this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
-        this.campaignService.getCampaignTypes().subscribe(
+        console.log(this.modulesDisplayType);
+        console.log(this.modulesDisplayType.isListView);
+        const self = this;
+        self.campaignService.getCampaignTypes().subscribe(
             response=>{
                 let campaignAccess = response.data;
-                this.campaignAccess.emailCampaign = campaignAccess.regular;
-                this.campaignAccess.videoCampaign = campaignAccess.video;
-                this.campaignAccess.socialCampaign = campaignAccess.social;
-                this.campaignAccess.eventCampaign = campaignAccess.event;
-                this.campaignAccess.landingPageCampaign = campaignAccess.page;
-                this.campaignAccess.formBuilder = campaignAccess.form;
-                this.campaignAccess.survey = campaignAccess.survey;
+                self.campaignAccess.emailCampaign = campaignAccess.regular;
+                self.campaignAccess.videoCampaign = campaignAccess.video;
+                self.campaignAccess.socialCampaign = campaignAccess.social;
+                self.campaignAccess.eventCampaign = campaignAccess.event;
+                self.campaignAccess.landingPageCampaign = campaignAccess.page;
+                self.campaignAccess.formBuilder = campaignAccess.form;
+                self.campaignAccess.survey = campaignAccess.survey;
             },_error=>{
-                this.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
-                this.isloading = false;
-                this.refService.loading(this.httpRequestLoader, false);
+                self.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
+                self.isloading = false;
+                self.refService.loading(self.httpRequestLoader, false);
             },()=>{
-                this.isloading = false;
-                this.refService.loading(this.httpRequestLoader, false);
-                this.teamMemberId = this.route.snapshot.params['teamMemberId'];
-                if(this.teamMemberId!=undefined){
-                    this.pagination.teamMemberAnalytics = true;
+                self.isloading = false;
+                self.refService.loading(self.httpRequestLoader, false);
+                self.teamMemberId = self.route.snapshot.params['teamMemberId'];
+                if(self.teamMemberId!=undefined){
+                    self.pagination.teamMemberAnalytics = true;
                 }else{
-                    this.pagination.teamMemberAnalytics = false;
+                    self.pagination.teamMemberAnalytics = false;
                 }
-                if(this.router.url.endsWith('/')){
-                    this.setViewType('Folder-Grid');
+                if(self.router.url.endsWith('/')){
+                    self.setViewType('Folder-Grid');
                 }else{
-                    this.refService.manageRouter = true;
-                    this.pagination.maxResults = 12;
-                    this.categoryId = this.route.snapshot.params['categoryId'];
-                    if(this.categoryId!=undefined ){
-                        this.pagination.categoryId = this.categoryId;
-                        this.pagination.categoryType = 'c';
+                    self.refService.manageRouter = true;
+                    self.pagination.maxResults = 12;
+                    self.categoryId = self.route.snapshot.params['categoryId'];
+                    if(self.categoryId!=undefined ){
+                        self.pagination.categoryId = self.categoryId;
+                        self.pagination.categoryType = 'c';
                     }
-                    let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
-                    let isTeamMemberFilter = this.router.url.indexOf("manage/tm")>-1;
+                    let showList = self.modulesDisplayType.isListView || self.modulesDisplayType.isGridView || self.categoryId!=undefined;
+                    let isTeamMemberFilter = self.router.url.indexOf("manage/tm")>-1;
+                    if(self.modulesDisplayType.isGridView){
+                       self.campaignViewType = "grid";
+                    }
                     if(showList || isTeamMemberFilter){
-                        if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
-                            this.modulesDisplayType.isListView = true;
-                            this.modulesDisplayType.isGridView = false;
+                        if(!self.modulesDisplayType.isListView && !self.modulesDisplayType.isGridView){
+                            self.modulesDisplayType.isListView = true;
+                            self.modulesDisplayType.isGridView = false;
+                            self.campaignViewType = "list";
                         }
-                        this.modulesDisplayType.isFolderListView = false;
-                        this.modulesDisplayType.isFolderGridView = false;
-                        this.listCampaign(this.pagination);
-                    }else if(this.modulesDisplayType.isFolderGridView){
-                        this.setViewType('Folder-Grid');
-                    }else if(this.modulesDisplayType.isFolderListView){
-                        this.setViewType('Folder-List');
+                        self.modulesDisplayType.isFolderListView = false;
+                        self.modulesDisplayType.isFolderGridView = false;
+                        self.listCampaign(self.pagination);
+                    }else if(self.modulesDisplayType.isFolderGridView){
+                        self.setViewType('Folder-Grid');
+                    }else if(self.modulesDisplayType.isFolderListView){
+                        self.setViewType('Folder-List');
                     }
                 }
             }
@@ -371,7 +381,25 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     editCampaign(campaign: any) {
-        this.isloading = true;
+        if(campaign.channelCampaign){
+          this.callEditCampaign(campaign);
+        }else{
+         this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+               .subscribe(
+                data => {
+                 campaign.hasAccess = data.data.hasAccess;
+                if(campaign.hasAccess){
+                   this.callEditCampaign(campaign);
+                }
+                 },
+                error => {
+                    this.showErrorResponse(error);
+                    });
+     }
+    }
+    
+    callEditCampaign(campaign: any) {
+     this.isloading = true;
         this.customResponse = new CustomResponse();
         if(campaign.launched){
             this.editButtonClicked = true;
@@ -693,8 +721,29 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.listCampaign(this.pagination);
     }
     campaginRouter(campaign: any) {
+    if(campaign.channelCampaign){
         this.refService.campaignType = campaign.campaignType;
         this.router.navigate(['/home/campaigns/' + campaign.campaignId + '/details']);
+    }else{
+        this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+        .subscribe(
+            data => {
+                if (data.statusCode == 200) {
+                    campaign.hasAccess = data.data.hasAccess;
+                    if(campaign.hasAccess){
+                       campaign.showGearIconOptions = data.data.showGearIconOptions ;
+                       this.refService.campaignType = campaign.campaignType;
+                       this.router.navigate(['/home/campaigns/' + campaign.campaignId + '/details']);
+                    }else{
+                    this.customResponse = new CustomResponse('ERROR',"You don't have access for this campaign",true);
+                    }
+                }
+            },
+            (error: any) => {
+                this.logger.errorPage(error);
+            });
+            
+        }
     }
     showCampaignPreview(campaign: any) {
         this.refService.loadingPreview = true;
@@ -707,8 +756,28 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }
     }
     goToRedistributedCampaigns(campaign: Campaign) {
-        this.isloading = true;
-        this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/re-distributed"]);
+       if(campaign.channelCampaign){
+              this.isloading = true;
+              this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/re-distributed"]);
+        }else{
+        this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+        .subscribe(
+            data => {
+                if (data.statusCode == 200) {
+                    campaign.hasAccess = data.data.hasAccess;
+                    if(campaign.hasAccess){
+                       campaign.showGearIconOptions = data.data.showGearIconOptions ;
+                       this.isloading = true;
+                      this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/re-distributed"]);
+                    }else{
+                    this.customResponse = new CustomResponse('ERROR',"You don't have access for this campaign",true);
+                    }
+                }
+            },
+            (error: any) => {
+                this.logger.errorPage(error);
+            });
+        }
     }
     goToPreviewPartners(campaign: Campaign) {
         this.isloading = true;
@@ -904,14 +973,17 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
+            this.campaignViewType = "list";
             this.navigateToManageSection(viewType);    
         }else if("Grid"==viewType){
+            this.campaignViewType = "grid";
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
-            this.navigateToManageSection(viewType);    
+            this.navigateToManageSection(viewType); 
         }else if("Folder-Grid"==viewType){
+            this.campaignViewType = "folder-grid";
             this.closeFilterOption();
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
@@ -931,6 +1003,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 
             }
         }else if("Folder-List"==viewType){
+            this.campaignViewType = "folder-list";
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
@@ -949,12 +1022,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
+            this.campaignViewType = "list";
             this.listCampaign(this.pagination);
         }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.modulesDisplayType.isListView = false;
+            this.campaignViewType = "grid";
             this.listCampaign(this.pagination);
         }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
                  &&  (this.categoryId==undefined || this.categoryId==0)){
@@ -963,9 +1038,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
            if("List"==viewType){
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isListView = true;
+            this.campaignViewType = "folder-list";
            }else{
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isListView = false;
+            this.campaignViewType = "folder-grid";
            }
            this.listCampaign(this.pagination);
         }else  if(this.router.url.endsWith('/')){
@@ -1380,17 +1457,28 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }
     }
     
-    showGearIconOptions(campaign: any) {
+    showGearIconOptions(campaign: any, index : number) {
+    if(campaign.channelCampaign){
+      this.checkLastElement(index);
+    }else{
         this.campaignService.getGearIconOptions(campaign, this.loggedInUserId)
         .subscribe(
             data => {
                 if (data.statusCode == 200) {
-                    this.gearIconOptions = true;
+                    campaign.hasAccess = data.data.hasAccess;
+                    if(campaign.hasAccess){
+                       this.checkLastElement(index);
+                       campaign.showGearIconOptions = data.data.showGearIconOptions ;
+                    }else{
+                    this.customResponse = new CustomResponse('ERROR',"You don't have access for this campaign",true);
+                    }
                 }
             },
             (error: any) => {
                 this.logger.errorPage(error);
             });
+            
+        }
     } 
 
 }

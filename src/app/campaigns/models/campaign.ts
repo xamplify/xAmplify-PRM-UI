@@ -110,4 +110,8 @@ export class Campaign {
     description = "";
     /***XNFR-387****/
     notifyChannelCampaignWorkflows = false;
+    
+    hasAccess : boolean;
+    showGearIconOptions : boolean;
+    
 }

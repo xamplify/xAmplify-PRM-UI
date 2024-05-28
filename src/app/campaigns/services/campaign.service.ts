@@ -1342,7 +1342,15 @@ export class CampaignService {
 
     getGearIconOptions(campaign : any, userId : number){
         userId = this.authenticationService.checkLoggedInUserId(userId);
-        let url = this.URL + "campaign/showGearIconOptions/" + userId + "?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "campaign/gearIconOptionsConditions/" + userId + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, campaign)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+        hasCampaignAccess(campaign : any, userId : number){
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+        let url = this.URL + "campaign/hasCampaignAccess/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, campaign)
             .map(this.extractData)
             .catch(this.handleError);

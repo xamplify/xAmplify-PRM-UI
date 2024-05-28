@@ -803,7 +803,7 @@
                                                    data-toggle="dropdown" (click)="showGearIconOptions(campaign)"></span>
                                                 <!-- <span [class.disablednew]="!campaign.hasAccess" class="caret dropdown-toggle caretDropdownMenu dropdown-font-cu" data-toggle="dropdown"></span> -->
                                                 <ul class="dropdown-menu pull-right"
-                                                   [ngClass]="{'mobile-css': isLastElement}">
+                                                   [ngClass]="{'mobile-css': isLastElement}" *ngIf="campaign.showGearIconOptions">
                                                    <li>
                                                       <a *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
                                                    || isOnlyPartner  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)"
