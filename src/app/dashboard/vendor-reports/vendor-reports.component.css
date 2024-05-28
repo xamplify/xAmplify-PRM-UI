@@ -179,3 +179,7 @@
   display: flex;
   flex-wrap: wrap;
 }
+.emailwidth{
+  word-wrap: break-word;
+  width: 153px;
+}

@@ -181,3 +181,8 @@ cursor: default;
 .gridCardBoxHeight{
   height: 385px !important;
 }
+@media only screen and (min-width: 768px) and (max-width: 991px){ 
+.tab_view_img{
+  margin-left:0px!important;
+}
+}

@@ -157,3 +157,8 @@ a.disabled {
 .portlet {
   border-radius: 5px !important;
 }
+@media only screen and (min-width: 768px) {
+      .overlaySet{
+          margin-top: -274px;
+      }
+  }

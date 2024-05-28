@@ -8,6 +8,7 @@ import { DamPublishedPartnersAnalyticsComponent } from './dam-published-partners
 import { SelectUploadTypeComponent } from './select-upload-type/select-upload-type.component';
 import { ShowHistoryComponent } from './show-history/show-history.component';
 import { ViewDamComponent } from './view-dam/view-dam.component';
+import { DamPartnerCompanyAnalyticsComponent } from './dam-partner-company-analytics/dam-partner-company-analytics.component';
 
 
 export const routes: Routes = [
@@ -64,6 +65,10 @@ export const routes: Routes = [
 	{ path: "sharedp/view/:assetId", component: ViewDamComponent },
 	{ path: "sharedp/view/:assetId/:viewType", component: ViewDamComponent },
 	{ path: "sharedp/view/:assetId/:viewType/:categoryId/:folderViewType", component: ViewDamComponent },
+	/************XNFR-543*********/
+	{ path: "partnerCompanyAnalytics/:damId", component: DamPartnerCompanyAnalyticsComponent },
+	{ path: "partnerCompanyAnalytics/:damId/:viewType", component: DamPartnerCompanyAnalyticsComponent },
+	{ path: "partnerCompanyAnalytics/:damId/:viewType/:categoryId/:folderViewType", component: DamPartnerCompanyAnalyticsComponent },
 ];
 
 @NgModule({

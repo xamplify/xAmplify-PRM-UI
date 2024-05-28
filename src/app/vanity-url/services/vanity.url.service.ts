@@ -285,6 +285,8 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
     }
   }
 
+
+
   extractData(res: Response) {
     let body = res.json();
     return body || {};

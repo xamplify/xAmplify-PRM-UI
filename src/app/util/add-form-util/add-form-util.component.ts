@@ -77,7 +77,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     borderErrorClass = "default-fieldset border-error";
     borderSuccessClass = "default-fieldset";
     duplicateOrEmptyLabelErrorMessage = "Empty/duplicate field lables are not allowed";
-    requiredMessage = "Required";
+    requiredMessage = "Please Enter the Form Name";
     duplicateLabelMessage = "Already exists";
     minimumOneColumn = "Your form should contain at least one required field";
     quizFieldRequiredErrorMessage = "Your form should contain atleast one quiz field as required"

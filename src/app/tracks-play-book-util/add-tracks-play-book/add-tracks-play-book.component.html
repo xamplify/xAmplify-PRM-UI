@@ -105,13 +105,14 @@
                       <i class="fa fa-angle-down dropdown-icon" aria-hidden="true"></i>
                       <div *ngIf="showFolderDropDown" id="folderDropDown"
                         class="dropdown-content dropdown-scroller video">
-                        <input type="text" placeholder="Search.." id="myInput"
+                        <input type="text" autocomplete="off" placeholder="Search.." id="myInput"
                           (input)="filterFolders(folderSearchValue)" #folderSearchValue>
                         <div class="dropdown-option" [ngClass]="{'dropdown-content-odd': 0 === i % 2}"
                           *ngFor="let category of filteredCategoryNames;let i=index"
                           (click)="updateFolderValue(category);validateAllSteps()">
                           <div>{{category.name | slice: 0: 50}}</div>
                         </div>
+                        <div *ngIf="filteredCategoryNames?.length==0" class="alert alert-info"><strong>No Data Found</strong></div>
                       </div>
                     </div>
                   </div>
@@ -291,7 +292,7 @@
         padding-right: 12px;">
           <div *ngIf="isAdd || tracksPlayBook.description != undefined">
             <ckeditor [(ngModel)]="tracksPlayBook.description" #ckeditor [ngModelOptions]="{standalone: true}"
-              [config]="ckeConfig" (ready)="onReady($event)" debounce="500" maxlength="5000"
+              [config]="ckeConfig" (ready)="onReady($event)" debounce="500" 
               (change)="validateDescription();validateAllSteps()"
               (input)="setDescription();validateDescription();validateAllSteps()">
             </ckeditor>

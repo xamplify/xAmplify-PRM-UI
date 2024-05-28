@@ -11,7 +11,6 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { SortOption } from '../../core/models/sort-option';
-import { ColumnInfo } from '../../forms/models/column-info';
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { EnvService } from 'app/env.service'
 import { UtilService } from '../../core/services/util.service';
@@ -1096,9 +1095,13 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     description = description.substring(3,description.length-4).trim();
     if (description.length < 1) {
       this.addErrorMessage("description", "description can not be empty");
-    } else if (description.length > 5000) {
-      this.addErrorMessage("description", "description can not be more than 5000 characters");
-    } else {
+    } 
+    
+    // else if (description.length > 5000) {
+    //   this.addErrorMessage("description", "description can not be more than 5000 characters");
+    // } 
+    
+    else {
       this.removeErrorMessage("description")
     }
   }
@@ -1366,34 +1369,14 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
   assetPreview(assetDetails: any, isFromPopup: boolean) {
     this.isPreviewFromAssetPopup = isFromPopup;
-    if (assetDetails.beeTemplate) {
+    let isBeeTemplate = assetDetails.beeTemplate;
+    if(isBeeTemplate){
       this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
-    } else {
-      let assetType = assetDetails.assetType;
-      this.filePath = assetDetails.assetPath;
-      if (assetType == 'mp3') {
-        this.showFilePreview = true;
-        this.fileType = "audio/mpeg";
-        this.isAudio = true;
-      } else if (assetType == 'mp4') {
-        this.showFilePreview = true;
-        this.fileType = "video/mp4";
-        this.isVideo = true;
-        this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
-      } else if (this.imageTypes.includes(assetType)) {
-        this.showFilePreview = true;
-        this.isImage = true;
-      } else if (this.fileTypes.includes(assetType)) {
-        this.showFilePreview = true;
-        this.isFile = true;
-        this.filePath = "https://view.officeapps.live.com/op/embed.aspx?src=" + assetDetails.assetPath + "&embedded=true";
-        this.transformUrl();
-      } else {
-        window.open(assetDetails.assetPath, '_blank');
-      }
+    }else{
+      this.referenceService.preivewAssetOnNewHost(assetDetails.id);
     }
-    this.handleMediaAndOrdersPopup();
   }
+
 
   handleMediaAndOrdersPopup() {
     if (this.activeTabName == "step-2") {

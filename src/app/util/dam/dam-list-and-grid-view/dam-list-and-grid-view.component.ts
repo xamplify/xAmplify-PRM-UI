@@ -440,7 +440,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	viewAnalytics(asset: any) {
 		this.loading = true;
-		localStorage.setItem('assetName', asset.assetName);
+		this.referenceService.setAssetLocalStorageValues(asset);
 		let isVideo = this.isVideo(asset.assetType);
 		if (isVideo) {
 			if (this.isPartnerView) {
@@ -563,8 +563,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else if(asset.beeTemplate) {
 			this.referenceService.previewAssetPdfInNewTab(asset.id);
 		}else{
-			this.isPreview = true;
-			this.asset = asset;
+			this.referenceService.preivewAssetOnNewHost(asset.id);
 		}
 	}
 

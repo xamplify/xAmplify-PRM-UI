@@ -563,7 +563,7 @@ export class ContactService {
             .catch(this.handleError);
     }
 
-    socialContactsCallback(queryParam: any): Observable<any> {
+    socialContactsCallback(queryParam: any, domain: any): Observable<any> {
         /*let queryParam: string;
         this.activatedRoute.queryParams.subscribe(
             ( param: any ) => {
@@ -573,14 +573,14 @@ export class ContactService {
             });*/
         let loggedInThroughVanityUrl = localStorage.getItem('vanityUrlFilter');
         if (loggedInThroughVanityUrl == 'true') {
-            this.logger.info(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('vanityUserAlias') + "&module=" + localStorage.getItem('vanityCurrentModule'));
-            return this._http.get(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('vanityUserAlias') + "&module=" + localStorage.getItem('vanityCurrentModule'))
+            this.logger.info(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('vanityUserAlias') + "&module=" + localStorage.getItem('vanityCurrentModule') + "&domain=" + domain);
+            return this._http.get(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('vanityUserAlias') + "&module=" + localStorage.getItem('vanityCurrentModule') + "&domain=" + domain)
                 .map(this.extractData)
                 .catch(this.handleError);
         }
         else {
-            this.logger.info(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('userAlias') + "&module=" + localStorage.getItem('currentModule'));
-            return this._http.get(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('userAlias') + "&module=" + localStorage.getItem('currentModule'))
+            this.logger.info(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('userAlias') + "&module=" + localStorage.getItem('currentModule') + "&domain=" + domain);
+            return this._http.get(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('userAlias') + "&module=" + localStorage.getItem('currentModule') + "&domain=" + domain)
                 .map(this.extractData)
                 .catch(this.handleError);
         }

@@ -121,11 +121,11 @@
                 <!-- Download TeamMembers Csv -->
                 <span data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
                   title="Download TeamMembers Csv" (click)="downloadTeamMembersCsv()" *ngIf="isTeamMemberModule &&!isLoggedInAsTeamMember 
-        && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
-        && !authenticationService?.module?.deletedPartner && !isCollapsed ">
+                  && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
+                  && !authenticationService?.module?.deletedPartner && !isCollapsed ">
                   <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                 </span>
-                <span *ngIf="!authenticationService?.module?.isTeamMember || !authenticationService?.module?.isAdmin"
+                <span *ngIf="!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin"
                   class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}}" title="Filter">
                   <div class="btn-group">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -139,7 +139,7 @@
                   </div>
                 </span>
                 <!-- End Download TeamMembers Csv-->
-                <a *ngIf="!authenticationService?.module?.isTeamMember || !authenticationService?.module?.isAdmin"
+                <a *ngIf="!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin"
                   href="teamMemberTable" (click)="toggleCollapse($event)" style="float: right;"> <i
                     [ngClass]="{'fa-chevron-up collapseOut ': !isCollapsed, 'fa-chevron-down collapseIn ': isCollapsed}"
                     class="arrowpositinon fa collapseIconColorCu p10 " aria-hidden="true"></i></a>
@@ -189,22 +189,25 @@
                     <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}"
                       class="list-team-member-class">
                       <td class="pdl-15">
-                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember" [hideCompanyName]="true"
-                          [hideJobTitle]="true"></app-user-info>
-                        <span
-                          *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany 
-                        && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin"
-                          [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
-                          data-toggle="tooltip" data-placement="bottom"
-                          [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
-                          <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
-                            (click)="teamMember?.partnersCount>0 && !isLoggedInAsTeamMember && showPartners(teamMember)">
-                            <strong>Total {{authenticationService?.partnerModule?.customName}} :
-                              {{teamMember?.partnersCount}}</strong>
-                          </a>
-                        </span>
-                        <span class="active-status" *ngIf="teamMember?.primaryAdmin"><strong>Primary Admin:<i
-                              class="fa fa-check active-status"></i></strong></span>
+                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember" [hideCompanyName]="true" [hideJobTitle]="true"></app-user-info>
+                          <span class="active-status" *ngIf="teamMember?.teamMemberUserId==loggedInUserId">
+                            <strong>LoggedIn Account:<i class="fa fa-check active-status"></i></strong>
+                          </span>
+                          <br>
+                          <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany 
+                          && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin"
+                            [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
+                            data-toggle="tooltip" data-placement="bottom"
+                            [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
+                            <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
+                              (click)="teamMember?.partnersCount>0 && !isLoggedInAsTeamMember && showPartners(teamMember)">
+                              <strong>Total {{authenticationService?.partnerModule?.customName}} :
+                                {{teamMember?.partnersCount}}</strong>
+                            </a>
+                          </span>
+                          <span class="active-status" *ngIf="teamMember?.primaryAdmin">
+                            <strong>Primary Admin:<i class="fa fa-check active-status"></i></strong>
+                          </span>
                       </td>
                       <!---Assigned Group-->
                       <td *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner"
@@ -271,7 +274,7 @@
                       </td>
                       <!---Actions-->
                       <td class="actions-row"
-                        [hidden]="(!authenticationService?.module?.loginAs && authenticationService?.module?.deletedPartner) || teamMember?.primaryAdmin">
+                        [hidden]="(!authenticationService?.module?.loginAs && authenticationService?.module?.deletedPartner) || teamMember?.primaryAdmin || teamMember?.teamMemberUserId==loggedInUserId">
                         <div class="actions-block override-actions custom-width-icon">
                           <!--Login As-->
                           <ng-container *ngIf="teamMember?.loginAs && !isLoggedInAsTeamMember">
@@ -342,7 +345,7 @@
                           </a>
                         </div>
                       </td>
-                      <td class="actions-row" *ngIf="teamMember?.primaryAdmin">
+                      <td class="actions-row" *ngIf="teamMember?.teamMemberUserId==loggedInUserId || teamMember?.primaryAdmin">
                         <div class="alert alert-info NaNAData">
                           <span><strong>N/A</strong></span>
                         </div>
@@ -709,8 +712,10 @@
                     <td>
                       <app-user-info [isPartnerEntityInfo]="true" [userInfo]="admin">
                       </app-user-info>
-                      <span class="active-status" *ngIf="admin?.primaryAdmin"><strong>Primary Admin:<i
-                            class="fa fa-check active-status"></i></strong></span>
+                      <span class="active-status" *ngIf="admin?.primaryAdmin">
+                        <strong>Primary Admin:<i class="fa fa-check active-status"></i></strong>
+                      </span>
+                     
                     </td>
                   </tr>
                 </ng-container>
@@ -734,7 +739,7 @@
         <div class="col-lg-5 col-md-5 col-xs-12 col-sm-4 pull-right mb_pl0"
           style="display: flex;justify-content: flex-end ;">
           <span
-            *ngIf="(!authenticationService?.module?.isTeamMember || !authenticationService?.module?.isAdmin) && !isVendorVersion"
+            *ngIf="(!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin) && !isVendorVersion"
             class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}} mr5" title="Filter">
             <div class="btn-group">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -761,7 +766,7 @@
   </ng-container>
 
   <ng-template #analyticsCode>
-    <span *ngIf="!authenticationService?.module?.isTeamMember || !authenticationService?.module?.isAdmin">
+    <span *ngIf="!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin">
       <!--******************COUNT TILES******************-->
       <div class="row rowPaddingCustomize2">
         <app-partner-journey-count-tiles [selectedTeamMemberIds]="selectedTeamMemberIds"

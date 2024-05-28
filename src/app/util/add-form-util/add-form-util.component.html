@@ -460,7 +460,7 @@
                     <div class="form-group col-md-6 col-lg-6" id="formNameDiv">
                         <label>Name <span class="invalid-form-name">*</span></label>
                         <input type="text" class="form-control" [(ngModel)]="form.name" id="formName"
-                            placeholder="Please Enter Form Name" maxlength="1000" (input)="validateFormNames(form.name)"
+                            placeholder="Please Enter Form Name" (input)="validateFormNames(form.name)"
                             (keydown)="sumbitOnEnter($event)">
                         <span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
                     </div>

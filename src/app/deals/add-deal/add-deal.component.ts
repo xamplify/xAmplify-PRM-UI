@@ -308,7 +308,9 @@ export class AddDealComponent implements OnInit {
               self.hasCampaignPipeline = true;
             } else if (data.statusCode == 404) {
               self.deal.pipelineId = 0;
+              self.deal.createdForPipelineId = 0;
               self.stages = [];
+              self.createdForStages = [];
               self.getActiveCRMPipelines();
               self.hasCampaignPipeline = false;
             }
@@ -537,9 +539,11 @@ export class AddDealComponent implements OnInit {
             this.referenceService.loading(this.httpRequestLoader, false);
             if (data.statusCode == 200) {
               self.pipelines = data.data;
+              self.createdForPipelines = data.data;
               self.getStages();
             } else {
               self.stages = [];
+              self.createdForStages = [];
             }
           },
           error => {
@@ -1279,9 +1283,12 @@ export class AddDealComponent implements OnInit {
           if (data.statusCode == 200) {
             let activeCRMPipelines: Array<any> = data.data;
             self.pipelines = activeCRMPipelines;
+            self.createdForPipelines = activeCRMPipelines;
             if (activeCRMPipelines.length === 1) {
               let activeCRMPipeline = activeCRMPipelines[0];
               self.deal.pipelineId = activeCRMPipeline.id;
+              self.deal.createdForPipelineId = activeCRMPipeline.id;
+              self.createdForStages = activeCRMPipeline.stages;
               self.pipelineIdError = false;
               self.stages = activeCRMPipeline.stages;
               self.activeCRMDetails.hasDealPipeline = true;
@@ -1297,7 +1304,9 @@ export class AddDealComponent implements OnInit {
               }
               if (!dealPipelineExist) {
                 self.deal.pipelineId = 0;
+                self.deal.createdForPipelineId = 0;
                 self.deal.pipelineStageId = 0;
+                self.deal.createdForPipelineStageId = 0;
                 this.setFieldErrorStates();
               }
               self.hasCampaignPipeline = false;
@@ -1305,7 +1314,9 @@ export class AddDealComponent implements OnInit {
             }
           } else if (data.statusCode == 404) {
             self.deal.pipelineId = 0;
+            self.deal.createdForPipelineId = 0;
             self.stages = [];
+            self.createdForStages = [];
             self.getPipelines();
             self.activeCRMDetails.hasDealPipeline = false;
           }
