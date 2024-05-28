@@ -319,17 +319,57 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     }
 
     updateEvent(campaign: any) {
+        if (campaign.channelCampaign) {
+            this.callUpdateEvent(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callUpdateEvent(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callUpdateEvent(campaign: any) {
         this.router.navigate(['/home/campaigns/event-update/' + campaign.campaignId])
     }
 
     editCampaign(campaign: any) {
+        if (campaign.channelCampaign) {
+            this.callEditCampaign(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callEditCampaign(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callEditCampaign(campaign: any) {
         this.isloading = true;
         this.customResponse = new CustomResponse();
-        if(campaign.launched){
+        if (campaign.launched) {
             this.editButtonClicked = true;
             this.selectedCampaignId = campaign.campaignId;
             this.isloading = false;
-        }else{
+        } else {
             this.editCampaignsWhichAreNotLaunched(campaign);
         }
     }
@@ -638,22 +678,64 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         this.refService.campaignType = campaign.campaignType;
         this.router.navigate(['/home/campaigns/' + campaign.campaignId + '/details']);
     }
+
     showCampaignPreview(campaign: any) {
+        if (campaign.channelCampaign) {
+            this.callShowCampaignPreview(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callShowCampaignPreview(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callShowCampaignPreview(campaign: any){
         this.refService.loadingPreview = true;
         if (campaign.campaignType.indexOf('EVENT') > -1) {
             this.campaignType = 'EVENT';
-            // this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
             this.previewCampaign = campaign.campaignId;
         } else {
             this.campaignType = campaign.campaignType.toLocaleString();
-            // this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
             this.previewCampaign = campaign.campaignId;
         }
     }
+
     goToRedistributedCampaigns(campaign: Campaign) {
         this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/re-distributed"]);
     }
+
     goToPreviewPartners(campaign: Campaign) {
+        if (campaign.channelCampaign) {
+            this.callGoToPreviewPartners(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callGoToPreviewPartners(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callGoToPreviewPartners(campaign: Campaign){
+        this.isloading = true;
         this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/plc"]);
     }
 
@@ -676,6 +758,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                 $('#cancelEventModal').modal('show');
             });
     }
+
     cancelEvent() {
         var cancelEventData = {
             "id": this.selectedCancelEventId,
@@ -750,6 +833,26 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     }
 
     openEventUrlModal(campaign: Campaign) {
+        if (campaign.channelCampaign) {
+            this.callOpenEventUrlModal(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callOpenEventUrlModal(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callOpenEventUrlModal(campaign: Campaign) {
         this.modalPopupLoader = true;
         this.publicEventAlias = "";
         this.copiedLinkCustomResponse = new CustomResponse();
@@ -768,6 +871,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                     this.copiedLinkCustomResponse = new CustomResponse('ERROR', 'Please try after sometime', true);
                 });
     }
+
     copyUrl(inputElement) {
         this.copiedLinkCustomResponse = new CustomResponse();
         inputElement.select();
@@ -775,10 +879,52 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         inputElement.setSelectionRange(0, 0);
         this.copiedLinkCustomResponse = new CustomResponse('SUCCESS', 'Copied to clipboard successfully.', true);
     }
+
     inviteMore(campaign: Campaign) {
+        if (campaign.channelCampaign) {
+            this.callInviteMore(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callInviteMore(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callInviteMore(campaign: Campaign) {
         this.adddMoreReceiversComponent.showPopup(campaign);
     }
+
     sendEventEmail(campaign: Campaign) {
+        if (campaign.channelCampaign) {
+            this.callSendEventEmail(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callSendEventEmail(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callSendEventEmail(campaign: Campaign) {
         this.publicEventEmailPopupComponent.showPopup(campaign);
     }
 
@@ -962,6 +1108,26 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     }
 
     archiveCampaign(campaign: any) {
+        if (campaign.channelCampaign) {
+            this.callArchiveCampaign(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callArchiveCampaign(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callArchiveCampaign(campaign: any) {
         var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
         this.campaignService.archiveCampaign(request)
             .subscribe(
@@ -982,6 +1148,26 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     }
 
     unarchiveCampaign(campaign: any) {
+        if (campaign.channelCampaign) {
+            this.callUnarchiveCampaign(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callUnarchiveCampaign(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callUnarchiveCampaign(campaign: any) {
         var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
         this.campaignService.unarchiveCampaign(request)
             .subscribe(

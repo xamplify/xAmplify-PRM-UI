@@ -872,6 +872,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 $('#cancelEventModal').modal('show');
             });
     }
+    
     cancelEvent() {
         var cancelEventData = {
             "id": this.selectedCancelEventId,
