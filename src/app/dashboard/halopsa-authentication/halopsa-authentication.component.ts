@@ -3,6 +3,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { DashboardService } from '../dashboard.service';
+import { IntegrationService } from 'app/core/services/integration.service';
 
 @Component({
   selector: 'app-halopsa-authentication',
@@ -24,14 +25,53 @@ export class HalopsaAuthenticationComponent implements OnInit {
   loadingHalopsa:boolean;
   templateErrorHalopsa:boolean;
   customResponse: CustomResponse = new CustomResponse();
+  loading: boolean = false;
   @Input() loggedInUserId: any;
   @Output() closeEvent = new EventEmitter<any>();
   constructor(public referenceService: ReferenceService,private authenticationService: AuthenticationService,
-    private dashBoardService:DashboardService) { }
+    private dashBoardService:DashboardService,private integrationService: IntegrationService) { }
 
   ngOnInit() {
+    this.checkAuthorization();
     this.referenceService.goToTop();
   }
+
+  checkAuthorization() {
+    this.loading = true;
+    this.integrationService.checkConfigurationByType("halopsa").subscribe(data => {
+      this.loading = false;
+			let response = data;      
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.getAuthCredentials();
+			}
+		}, error => {
+      this.loading = false;
+		}, () => {}
+    );
+  }
+
+  getAuthCredentials() {
+    this.loading = true;
+    this.dashBoardService.getAuthCredentialsForHalopsa(this.loggedInUserId)
+      .subscribe(
+        response => {
+          this.loading = false;
+          if (response.statusCode == 200) {
+            let data = response.data;
+            this.clientId = data.clientId;
+            this.secretId = data.clientSecret;
+            this.halopsaInstance = data.instanceUrl;            
+          } else {
+            this.customResponse = new CustomResponse('ERROR', response.message, true);
+          }
+        },
+        error => {
+          this.loading = false;
+        },
+        () => { }
+      );
+  }
+
   closeForm() {
     console.log("Closed halopsa Auth")
     this.closeEvent.emit("0");

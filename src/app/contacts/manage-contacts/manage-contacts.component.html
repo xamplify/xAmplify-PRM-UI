@@ -474,6 +474,10 @@
                                                    *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"
                                                    src="{{properties?.marketoImage}}" alt="manual"
                                                    style="height: 70px;">
+                                                <img class="neu-l-d"
+                                                   *ngIf="contactList.socialNetwork=='HALOPSA' && contactList.synchronisedList"
+                                                   src="{{properties?.halopsaImage}}" alt="manual"
+                                                   style="height: 70px;">
                                                 <!-- XNFR-211 -->
                                                 <img class="neu-l-d-spinner"
                                                    *ngIf="contactList.uploadInProgress || contactList.validationInProgress || ((!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd)))"

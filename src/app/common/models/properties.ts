@@ -223,6 +223,7 @@ export class Properties {
 	pipedriveImage: string = 'assets/admin/pages/media/works/pipedrive-contacts.png';
 	connectwiseImage: string = 'assets/admin/pages/media/works/connectwise-contacts.png';
 	companyListImage: string = 'assets/admin/pages/media/works/company.png';
+	halopsaImage: string = 'assets/admin/pages/media/works/halopsa-contacts.png';
 
 	connectwiseGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/connectwise-contacts.png';
 	pipedriveGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/pipedrive.png'

@@ -76,6 +76,8 @@ export class EventCampaign {
   eventCancellation: EventCancellation;
   leadPipelineId: number;
   dealPipelineId: number;
+  leadTicketTypeId: number;
+  dealTicketTypeId: number;
   endDateString: string;
   clientTimeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
   oneClickLaunch = false;

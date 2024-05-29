@@ -1378,7 +1378,11 @@ getDefaultThemes(){
         return this.authenticationService.callGetMethod(url);
     }
 
-
+    getAuthCredentialsForHalopsa(userId: any) {
+        return this.http.get(this.authenticationService.REST_URL + `halopsa/getAuth/${userId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     
 }

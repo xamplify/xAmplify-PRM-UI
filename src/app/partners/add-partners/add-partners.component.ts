@@ -270,6 +270,27 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    connectWiseCurrentUser: string;
    connectWiseLoading: boolean = false;
 
+   //XNFR-502 HaloPSA
+
+   haloPSAImageBlur: boolean = false;
+   haloPSAImageNormal: boolean = false;
+   haloPSASelectContactListOption: any;
+   haloPSAContactListName: string;
+   haloPSAServie: any;
+   showHaloPSAAuthenticationForm: boolean = false;
+   haloPSAClientID: string;
+   haloPSAClientIDClass: string;
+   haloPSAClientIDError: boolean;
+   haloPSAClientSecret: string;
+   haloPSAClientSecretClass: string;
+   haloPSAClientSecretError: boolean;
+   haloPSAInstanceURL: string;
+   haloPSAInstanceURLClass: string;
+   haloPSAInstanceURLError: boolean;
+   haloPSACurrentUser: string;
+   haloPSALoading: boolean = false;
+
+
    /****XNFR-278****/
    mergeOptionClicked = false;
    selectedUserIdsForMerging: any[];
@@ -604,7 +625,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					}
 				}
 				if (this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7
-					&& this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9 && this.selectedAddPartnerOption !=10 && this.selectedAddPartnerOption !=11 && this.selectedAddPartnerOption !=12) {
+					&& this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9 && this.selectedAddPartnerOption !=10  
+					&& this.selectedAddPartnerOption !=11 && this.selectedAddPartnerOption !=12 && this.selectedAddPartnerOption !=13) {
 					if (this.newPartnerUser[i].contactCompany.replace(/[^a-zA-Z0-9]/g,'').trim() != '') {
 						this.isCompanyDetails = true;
 					} else {
@@ -641,7 +663,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				                this.validatePartnersCompany(this.newPartnerUser, this.partnerListId);
 						}
 					if ( this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
-					     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12) {
+					     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11 ||
+						 this.selectedAddPartnerOption == 12 || this.selectedAddPartnerOption == 13) {
 								this.askForPermission();
 					   }
 					   
@@ -916,6 +939,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$('.microsoftDynamicsImageClass').attr('style', 'opacity: 1;');
 		$('.pipedriveImageClass').attr('style', 'opacity: 1;');
 		$('.connectWiseImageClass').attr('style', 'opacity: 1;');
+		$('.haloPSAImageClass').attr('style', 'opacity: 1;');
 		$('.mdImageClass').attr('style', 'opacity: 1;cursor:not-allowed;');
 		$('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
 		$('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
@@ -1026,6 +1050,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -86px; left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -1134,6 +1159,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+		$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -1501,6 +1527,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						} else {
 							this.connectWiseImageBlur = true;
 						}
+						if (this.storeLogin.HALOPSA == true) {
+							this.haloPSAImageNormal = true;
+						} else {
+							this.haloPSAImageBlur = true;
+						}
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
@@ -1640,6 +1671,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -2091,6 +2123,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 							}
@@ -2167,6 +2200,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -2219,10 +2253,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				this.savePartnerUsers();
 			}
 
-			
 			if ( this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
 			     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 
-          || this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12) {
+          || this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12 || this.selectedAddPartnerOption == 13) {
 				if (this.allselectedUsers.length != 0) {
 			        this.newPartnerUser = this.allselectedUsers;
 			   }else if (this.socialPartnerUsers.length > 0) {
@@ -2305,6 +2338,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				this.saveConnectWiseContacts();
 			} else {
 				this.saveConnectWiseContactSelectedUsers();
+			}
+		}
+
+		if (this.selectedAddPartnerOption == 13) {
+			if (this.allselectedUsers.length == 0) {
+				this.saveHaloPSAContacts();
+			} else {
+				this.saveHaloPSAContactSelectedUsers();
 			}
 		}
 
@@ -3056,6 +3097,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+						$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 						$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 						$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -3503,6 +3545,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+					$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 					$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');					
 					$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -3606,8 +3649,29 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	saveHaloPSAContacts() {
+		this.socialPartners.socialNetwork = "HALOPSA";
+		this.socialPartners.contactType = this.contactType;
+		this.socialPartners.contacts = this.socialPartnerUsers;
+		if (this.socialPartnerUsers.length > 0) {
+			this.newPartnerUser = this.socialPartners.contacts;
+			this.saveValidEmails();
+		} else
+			this.xtremandLogger.error("AddContactComponent saveHaloPSAContacts() Contacts Null Error");
 
+	}
 
+	saveHaloPSAContactSelectedUsers() {
+		this.newPartnerUser = this.allselectedUsers;
+		if (this.allselectedUsers.length != 0) {
+			this.newPartnerUser = this.allselectedUsers;
+			this.saveValidEmails();
+		}
+		else {
+			this.xtremandLogger.error("AddContactComponent saveHaloPSAContactSelectedUsers() ContactList Name Error");
+		}
+	}
+	
 	hideHuspotModal() {
 		$("#ContactHubSpotModal").hide();
 		this.cancelPartners();
@@ -4298,6 +4362,7 @@ getTeamMembersByGroupId(partner: any, index: number) {
 				$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+				$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 				$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 				$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -4441,6 +4506,7 @@ framePipedrivePreview(response: any) {
 			$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 			$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -4644,6 +4710,7 @@ frameConnectWisePreview(response: any) {
 			$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 			$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -4656,6 +4723,113 @@ frameConnectWisePreview(response: any) {
 	}
 }
 
+  //XNFR-230
+  checkingHaloPSAContactsAuthentication() {
+	if (this.selectedAddPartnerOption == 5) {
+		this.integrationService.checkConfigurationByType('halopsa').subscribe(data => {
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.xtremandLogger.info("isAuthorize true");
+				this.getHaloPSAContacts();
+			}
+			else {
+				this.showHaloPSAPreSettingsForm();
+			}
+		}, (error: any) => {
+			this.loading = false;
+			let errorMessage = this.referenceService.getApiErrorMessage(error);
+			this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+		this.xtremandLogger.error(error, "Error in HaloPSA checkIntegrations()");
+	}, () =>                 
+	this.xtremandLogger.log("HaloPSA Configuration Checking done")
+	);
+}
+}
+showHaloPSAPreSettingsForm() {               
+	this.showHaloPSAAuthenticationForm = true;
+ }
+ closeHaloPSAForm (event: any) {
+	if (event === "0") {
+		this.showHaloPSAAuthenticationForm = false;
+	}		
+}
+getHaloPSAContacts() {
+	this.loading = true;
+	this.integrationService.getContacts('halopsa').subscribe(data => {
+		this.loading = false;
+		if (data.statusCode == 401) {
+			this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+		} else {
+			let response = data.data;
+			this.selectedAddPartnerOption = 13;
+			this.disableOtherFuctionality = true;
+			this.haloPSAImageBlur = false;
+			this.haloPSAImageNormal = true;
+			this.frameHaloPSAPreview(response);
+		}
+	},(error: any) => {
+			this.loading = false;
+			let errorMessage = this.referenceService.getApiErrorMessage(error);
+			this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+	}, () =>                 
+	this.xtremandLogger.log("HaloPSA Configuration Checking done")
+	);
+}
+frameHaloPSAPreview(response: any) {
+	if (!response.contacts) {
+		this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+	} else {			
+		this.getGoogleConatacts = response.contacts.length;
+		if (response.contacts.length == 0) {
+			this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+		} else {
+			for (var i = 0; i < response.contacts.length; i++) {
+				let socialPartner = new SocialContact();
+				let user = new User();
+				socialPartner.id = i;
+				if (this.validateEmailAddress(response.contacts[i].email)) {
+					socialPartner.emailId = response.contacts[i].email;
+					socialPartner.firstName = response.contacts[i].firstName;
+					socialPartner.lastName = response.contacts[i].lastName;
+					socialPartner.country = response.contacts[i].country;
+					socialPartner.city = response.contacts[i].city;
+					socialPartner.state = response.contacts[i].state;
+					socialPartner.postalCode = response.contacts[i].postalCode;
+					socialPartner.address = response.contacts[i].address;
+					socialPartner.company = response.contacts[i].company;
+					socialPartner.title = response.contacts[i].title;
+					socialPartner.mobilePhone = response.contacts[i].mobilePhone;
+
+					this.socialPartnerUsers.push(socialPartner);
+				}
+			}
+
+			$("button#sample_editable_1_new").prop('disabled', false);
+			// $( "#Gfile_preview" ).show();
+			this.showFilePreview();
+			$("button#cancel_button").prop('disabled', false);
+			$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+			$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+			$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+			$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+			$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+		}
+		this.setSocialPage(1);
+		this.customResponse.isVisible = false;
+		this.selectedAddPartnerOption = 13;
+		console.log("Social Contact Users for HaloPSA::" + this.socialPartnerUsers);
+	}
+}
 
 
 /****XNFR-278****/
@@ -4702,7 +4876,8 @@ unsubscribeUser(selectedUserForUnsubscribed : any){
 							}
 			
 							if ( this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
-							     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12) {
+							     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || 
+								 this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12 || this.selectedAddPartnerOption == 13) {
 								this.openCloudPartnerPopUp();
 							}
 						}else{
