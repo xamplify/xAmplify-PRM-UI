@@ -13,6 +13,7 @@ import { LandingPage } from 'app/landing-pages/models/landing-page';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { ModulesDisplayType } from '../models/modules-display-type';
 import { Observable } from 'rxjs';
+import { VendorLogoDetails } from 'app/landing-pages/models/vendor-logo-details';
 
 declare var BeePlugin,swal,$:any;
 
@@ -25,6 +26,7 @@ declare var BeePlugin,swal,$:any;
 export class XamplifyDefaultTemplatesComponent implements OnInit {
   loggedInUserId:number = 0;
   @Input() xamplifyDefaultTemplate:VanityEmailTempalte;
+  @Input() 
   customResponse: CustomResponse = new CustomResponse();
   loading = false;
   senderMergeTag:SenderMergeTag = new SenderMergeTag();
@@ -32,7 +34,8 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   @Input() isMasterLandingPages:boolean = false;
   @Input() landingPage:LandingPage;
   @Output() redirect = new EventEmitter();
-
+  @Input() vendorLogoDetails:VendorLogoDetails[];
+  @Input() loggedInUserCompanyId:number;
   clickedButtonName = "";
   isAdd: boolean;
   name = "";
@@ -479,6 +482,13 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                   var save = function (jsonContent: string, htmlContent: string) {
                       self.landingPage.htmlBody = htmlContent;
                       self.landingPage.jsonBody = jsonContent;
+
+                      if(self.isMasterLandingPages){
+                        if(self.vendorLogoDetails != null && self.vendorLogoDetails.every(logo=>!logo.selected)){
+                          swal("", "Whoops! We're unable to save this page because you havn't selected the vendor detail. You'll need to select vendor detail by clicking the Vendor Logos button", "error");
+                          return false;
+                        }
+                      }
                       if (self.landingPage.coBranded) {
                           if (jsonContent.indexOf(self.coBraningImage) < 0) {
                               swal("", "Whoops! We're unable to save this page because you deleted the co-branding logo. You'll need to select a new page and start over.", "error");
@@ -726,6 +736,9 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
   this.landingPage.name = this.name;
   this.landingPage.userId = this.loggedInUserId;
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
+  this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
+  this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
+
   if (!this.loggedInAsSuperAdmin) {
       this.landingPage.type = $('#pageType option:selected').val();
       this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
@@ -792,6 +805,7 @@ updateLandingPage(updateAndRedirectClicked: boolean) {
   this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
   this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
+  this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
   this.updateCompanyLogo(this.landingPage);
   this.landingPageService.update(this.landingPage).subscribe(
       data => {
@@ -860,6 +874,5 @@ createButton(text:string, cb:any) {
         let isInvalidEditPage = this.landingPageService.id==undefined || this.landingPageService.id==0;
         return this.skipConfirmAlert ||  this.isSaveAndRedirectButtonClicked || this.updateAndRedirectClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked;
     }
-
 
 }
