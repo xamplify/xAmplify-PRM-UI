@@ -1154,9 +1154,9 @@ export class AddDealComponent implements OnInit {
           if (this.actionType === "view") {
             this.getDealPipelinesForView();
           }
-          // else {
-          //   this.getDealPipelines();
-          // }
+          else {
+            this.getDealPipelines();
+          }
         });
   }
 
