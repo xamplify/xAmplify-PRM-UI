@@ -335,7 +335,9 @@ export class AddDealComponent implements OnInit {
               self.hasCampaignPipeline = true;
             } else if (data.statusCode == 404) {
               self.deal.pipelineId = 0;
+              self.deal.createdForPipelineId = 0;
               self.stages = [];
+              self.createdForStages = [];
               self.getActiveCRMPipelines();
               self.hasCampaignPipeline = false;
             }
@@ -564,9 +566,11 @@ export class AddDealComponent implements OnInit {
             this.referenceService.loading(this.httpRequestLoader, false);
             if (data.statusCode == 200) {
               self.pipelines = data.data;
+              self.createdForPipelines = data.data;
               self.getStages();
             } else {
               self.stages = [];
+              self.createdForStages = [];
             }
           },
           error => {
@@ -580,6 +584,7 @@ export class AddDealComponent implements OnInit {
   resetStages() {
     if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
       this.deal.pipelineStageId = 0;
+      this.deal.createdForPipelineStageId = 0;
       this.getStages();
       this.pipelineStageId = "form-group has-error has-feedback";
       this.createdForPipelineStageId = "form-group has-error has-feedback";
@@ -587,7 +592,26 @@ export class AddDealComponent implements OnInit {
       this.createdForPipelineStageIdError = true;
       this.isDealRegistrationFormValid = false;
     }
+  }
 
+  resetCreatedByPipelineStages() {
+    if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
+      this.deal.pipelineStageId = 0;
+      this.getStages();
+      this.pipelineStageId = "form-group has-error has-feedback";
+      this.pipelineStageIdError = true;
+      this.isDealRegistrationFormValid = false;
+    }
+  }
+
+  resetCreatedForPipelineStages() {
+    if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
+      this.deal.createdForPipelineStageId = 0;
+      this.getStages();
+      this.createdForPipelineStageId = "form-group has-error has-feedback";
+      this.createdForPipelineStageIdError = true;
+      this.isDealRegistrationFormValid = false;
+    }
   }
 
   getStages() {
@@ -1291,21 +1315,6 @@ export class AddDealComponent implements OnInit {
             self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByPipelineAndStageOnTop;
             let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
             let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
-            // if (this.isVendorVersion && !this.isOnlyOrgAdminOrMarketing) {
-            //   [self.createdByActiveCRM, self.createdForActiveCRM] = [self.createdForActiveCRM, self.createdByActiveCRM];
-            //   [createdByPipelines, createdForPipelines] = [createdForPipelines, createdByPipelines];
-            //   [this.deal.createdByPipelineId, this.deal.createdForPipelineId] = [this.deal.createdForPipelineId, this.deal.createdByPipelineId];
-            //   [this.deal.createdByPipelineStageId, this.deal.createdForPipelineStageId] = [this.deal.createdForPipelineStageId, this.deal.createdByPipelineStageId];
-            //   if (this.deal.createdForCompanyId == this.deal.createdByCompanyId) {
-            //     this.showCreatedByPipelineDetails = false;
-            //     this.pipelineText = "Pipeline";
-            //     this.pipelinestageText = "Stage";
-            //   }
-            //   if (this.showDefaultForm) {
-            //     this.showCreatedForPipelinesForDefaultForm = true;
-            //     this.showCreatedByPipelinesForDefaultForm = false;
-            //   }
-            // }
 
             if (createdByPipelines !== undefined && createdByPipelines !== null) {
               this.handleCreatedByPipelines(createdByPipelines);
@@ -1347,9 +1356,12 @@ export class AddDealComponent implements OnInit {
           if (data.statusCode == 200) {
             let activeCRMPipelines: Array<any> = data.data;
             self.pipelines = activeCRMPipelines;
+            self.createdForPipelines = activeCRMPipelines;
             if (activeCRMPipelines.length === 1) {
               let activeCRMPipeline = activeCRMPipelines[0];
               self.deal.pipelineId = activeCRMPipeline.id;
+              self.deal.createdForPipelineId = activeCRMPipeline.id;
+              self.createdForStages = activeCRMPipeline.stages;
               self.pipelineIdError = false;
               self.stages = activeCRMPipeline.stages;
               self.activeCRMDetails.hasDealPipeline = true;
@@ -1365,7 +1377,9 @@ export class AddDealComponent implements OnInit {
               }
               if (!dealPipelineExist) {
                 self.deal.pipelineId = 0;
+                self.deal.createdForPipelineId = 0;
                 self.deal.pipelineStageId = 0;
+                self.deal.createdForPipelineStageId = 0;
                 this.setFieldErrorStates();
               }
               self.hasCampaignPipeline = false;
@@ -1373,7 +1387,9 @@ export class AddDealComponent implements OnInit {
             }
           } else if (data.statusCode == 404) {
             self.deal.pipelineId = 0;
+            self.deal.createdForPipelineId = 0;
             self.stages = [];
+            self.createdForStages = [];
             self.getPipelines();
             self.activeCRMDetails.hasDealPipeline = false;
           }

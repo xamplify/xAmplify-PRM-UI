@@ -7,7 +7,6 @@
         <i class="fa fa-home" aria-hidden="true"></i>
         <a (click)="detailsTielsView = false">Admin Report</a>
       </li>
-      
     </ul>
   </div>
 
@@ -62,8 +61,11 @@
     <app-active-queries></app-active-queries>
     <!------Active Threads Info-->
     <app-active-threads-info></app-active-threads-info>
+    <!--Support Account Users---->
+    <app-support-account-users></app-support-account-users>
   </div>
 </ng-container>
+
 <!--Vanity Url Login-->
   <div *ngIf="isVanityUrlEnabled">
      <!--List All Users For Logged In Vendor Vanity-->
@@ -252,9 +254,6 @@
               </tbody>
             </table>
           </div>
-
-          
-
         </div>
       </div>
     </div>

@@ -28,11 +28,8 @@ ul.page-custom-sidebar-menu {
   color: var(--left-icon-color) !important;
   border-color: var(--left-border-color) !important;
 }
-.page-custom-sidebar .page-custom-sidebar-menu > li:hover > a
-/* .page-custom-sidebar .page-custom-sidebar-menu .sub-menu > li:hover > a   */ {
+.page-custom-sidebar .page-custom-sidebar-menu > li:hover > a {
   background-color: var(--left-bg-color) !important;
   color: var(--left-text-color) !important;
 }
-/* .page-custom-sidebar-menu li:hover > .sub-menu {
-    background-color: var(--left-bg-color) !important;
-} */
+

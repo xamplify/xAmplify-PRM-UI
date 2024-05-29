@@ -3,7 +3,7 @@
 <div [hidden]="processor.isProcessing">
   <div id="page-html-body">
   </div>
-  <ng-container *ngIf="!success && !processor.isProcessing">
+  <ng-container *ngIf="!success && !processor.isProcessing && apiResponseFinished">
     <div *ngIf="statusCode==404">
       <img src="../../../assets/images/404.jpg" alt="No Image Found" style="position: absolute;left: 25%;height: 500px;">
     </div>

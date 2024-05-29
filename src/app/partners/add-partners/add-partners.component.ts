@@ -139,6 +139,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		{ 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
 		{ 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
 		{ 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
+		{ 'name': 'Added(ASC)', 'value': 'id-ASC' },
+		{ 'name': 'Added(DESC)', 'value': 'id-DESC' },
 	];
 	public sortOption: any = this.sortOptions[0];
 	public searchKey: string;
@@ -974,7 +976,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					this.referenceService.loading(this.httpRequestLoader, false);
 					pagination.totalRecords = this.totalRecords;
 					pagination = this.pagerService.getPagedItems(pagination, this.partners);
-
 					var contactIds = this.pagination.pagedItems.map(function (a) { return a.id; });
 					var items = $.grep(this.editContactComponent.selectedContactListIds, function (element) {
 						return $.inArray(element, contactIds) !== -1;
@@ -987,7 +988,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					/*if (!this.searchKey) {
 						this.loadAllPartnerInList(pagination.totalRecords);
 					} else {
-						this.pageLoader = false;
+					this.pageLoader = false;
 
 					}*/
 					this.pageLoader = false;
@@ -1093,8 +1094,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								self.newPartnerUser.push(user);
 							}
 						}
-						if (self.newPartnerUser.length == 0) {
-							self.customResponse = new CustomResponse('ERROR', "No records found", true);
+						if(allTextLines.length == 2){
+							self.customResponse = new CustomResponse('ERROR', "No records found.", true);
+							self.cancelPartners();
+						}else if (allTextLines.length > 2 && self.newPartnerUser.length == 0) {
+							self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
 							self.cancelPartners();
 						} else {
 							self.setSocialPage(1);
@@ -1393,7 +1397,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			confirmButtonText: 'Yes, delete it!'
 
 		}).then(function (myData: any) {
-			console.log("ManagePartner showAlert then()" + myData);
 			self.removeContactListUsers1(contactId);
 		}, function (dismiss: any) {
 			console.log("you clicked showAlert cancel" + dismiss);
@@ -1402,7 +1405,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	removeContactListUsers1(contactId: number) {
 		try {
+			this.referenceService.scrollSmoothToTop();
 		    this.pageLoader = true;
+			this.isLoadingList = true;
 			this.partnerId[0] = contactId;
 			this.contactService.removeContactListUsers(this.partnerListId, this.partnerId)
 				.subscribe(
@@ -1420,11 +1425,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						let body: string = error['_body'];
 						body = body.substring(1, body.length - 1);
 						if (error._body.includes('Please launch or delete those campaigns first')) {
+							this.pageLoader = false;
+							this.isListLoader = false;
 							this.customResponse = new CustomResponse('ERROR', error._body, true);
 						} else {
 							this.xtremandLogger.errorPage(error);
 						}
-						console.log(error);
 					},
 					() => this.xtremandLogger.info("deleted completed")
 				);
@@ -1791,6 +1797,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
+						this.socialPartners.contacts = this.socialPartnerUsers;
 						this.selectedAddPartnerOption = 6;
 						this.setSocialPage(1);
 					},
@@ -2021,7 +2028,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								if (response.statusCode == 200) {
 									this.showModal();
 									console.log("AddContactComponent salesforce() Authentication Success");
-									this.checkingPopupValues();
+									// this.checkingPopupValues();
 								} else {
 									localStorage.setItem("userAlias", data.userAlias)
 									localStorage.setItem("currentModule", data.module)
@@ -2042,8 +2049,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	checkingPopupValues() {
+		this.contactType = $("select.opts:visible option:selected ").val();
 		if (this.contactType != "") {
-			$("button#salesforce_save_button").prop('disabled', true);
+			$("button#salesforce_save_button").prop('disabled', false);
 			if (this.contactType == "contact_listviews" || this.contactType == "lead_listviews") {
 				this.getSalesforceListViewContacts(this.contactType);
 			} else {
@@ -2129,6 +2137,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
+						this.socialPartners.contacts = this.socialPartnerUsers;
 						this.customResponse.isVisible = false;
 						this.setSocialPage(1);
 					},
@@ -2207,6 +2216,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							}
 						}
 						this.xtremandLogger.info(this.getGoogleConatacts);
+						this.socialPartners.contacts = this.socialPartnerUsers;
 						this.customResponse.isVisible = false;
 						this.setSocialPage(1);
 					},
@@ -2253,6 +2263,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				this.savePartnerUsers();
 			}
 
+			
 			if ( this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
 			     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 
           || this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12 || this.selectedAddPartnerOption == 13) {
@@ -3106,6 +3117,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 				}
 				this.xtremandLogger.info(this.getMarketoConatacts);
+				this.socialPartners.contacts = this.socialPartnerUsers;
 				this.setSocialPage(1);
 			} else if (data.statusCode === 400) {
 				this.selectedAddPartnerOption = 5;
@@ -3552,6 +3564,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				}
 			}
 			this.setSocialPage(1);
+			this.socialPartners.contacts = this.socialPartnerUsers;
 			this.customResponse.isVisible = false;
 			this.selectedAddPartnerOption = 9;
 		}
@@ -3671,7 +3684,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.xtremandLogger.error("AddContactComponent saveHaloPSAContactSelectedUsers() ContactList Name Error");
 		}
 	}
-	
+
 	hideHuspotModal() {
 		$("#ContactHubSpotModal").hide();
 		this.cancelPartners();
@@ -4059,6 +4072,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 
+			$("button#cancel_button").prop('disabled', false);
 		} else {
 			this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
 			$("button#cancel_button").prop('disabled', false);
@@ -4067,6 +4081,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.selectedAddPartnerOption = 6;
 		this.setSocialPage(1);
 		this.customResponse.isVisible = false;
+		this.socialPartners.contacts = this.socialPartnerUsers;
 		swal.close();
 	}
 
@@ -4156,7 +4171,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					if (response.statusCode == 200) {
 						this.showModal();
 						console.log("AddContactComponent salesforce() Authentication Success");
-						this.checkingPopupValues();
+						// this.checkingPopupValues();
 					} else {
 						localStorage.setItem("userAlias", data.userAlias)
 						localStorage.setItem("currentModule", data.module)
@@ -4368,6 +4383,7 @@ getTeamMembersByGroupId(partner: any, index: number) {
 				$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			}
 			this.setSocialPage(1);
+			this.socialPartners.contacts = this.socialPartnerUsers;
 			this.customResponse.isVisible = false;
 			this.selectedAddPartnerOption = 10;
 			console.log("Social Contact Users for Microsoft::" + this.socialPartnerUsers);
@@ -4513,6 +4529,7 @@ framePipedrivePreview(response: any) {
 			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		}
 		this.setSocialPage(1);
+		this.socialPartners.contacts = this.socialPartnerUsers;
 		this.customResponse.isVisible = false;
 		this.selectedAddPartnerOption = 11;
 		console.log("Social Contact Users for Pipedrive::" + this.socialPartnerUsers);
@@ -4717,6 +4734,7 @@ frameConnectWisePreview(response: any) {
 			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		}
 		this.setSocialPage(1);
+		this.socialPartners.contacts = this.socialPartnerUsers;
 		this.customResponse.isVisible = false;
 		this.selectedAddPartnerOption = 12;
 		console.log("Social Contact Users for ConnectWise::" + this.socialPartnerUsers);

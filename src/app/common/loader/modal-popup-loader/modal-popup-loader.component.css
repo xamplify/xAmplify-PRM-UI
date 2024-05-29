@@ -20,3 +20,6 @@
     background-color: rgba(165, 165, 165, 0.1);
   }
 }
+#loading-bg-image{
+  background: transparent url(../../../../assets/images/loading-popup.gif) no-repeat center center;
+}

@@ -22,3 +22,6 @@ a.disabled {
   pointer-events: none;
   cursor: not-allowed;
 }
+.img-class{
+  border-radius:5px!important;
+}

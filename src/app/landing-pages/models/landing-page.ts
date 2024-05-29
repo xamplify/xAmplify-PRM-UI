@@ -31,4 +31,5 @@ export class LandingPage {
     sourceInString:string;
     /*XNFR-428*/
     vendorJourneyId = 0;
+    hasVendorJourney:boolean = false;
 }

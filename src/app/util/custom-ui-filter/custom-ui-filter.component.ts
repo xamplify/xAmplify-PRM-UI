@@ -48,7 +48,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 		if (type === "Assets") {
 			this.filterOptions.push(
 				// { 'name': '', 'value': 'Field Name*' },
-				{ 'name': 'assetsname', 'value': 'Assets Name' },
+				{ 'name': 'assetsname', 'value': 'Asset Name' },
 				{ 'name': 'folder', 'value': 'Folder' },
 				{ 'name': 'type', 'value': 'Type' },
 				{ 'name': 'tags', 'value': 'Tags' }
@@ -170,7 +170,7 @@ export class CustomUiFilterComponent implements OnInit, OnDestroy {
 				if (this.criterias[i].operation == "Contains") {
 					criteriaObject.operation = "like";
 				}
-				if (this.criterias[i].property == "Assets Name") {
+				if (this.criterias[i].property == "Asset Name") {
 					criteriaObject.property = "assetsname";
 				} else if (this.criterias[i].property == "Folder") {
 					criteriaObject.property = "folder";

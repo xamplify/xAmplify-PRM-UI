@@ -175,10 +175,10 @@ textarea.textareaNumber {
   padding: 0px;
 }
 .SideParddings3 {
-  padding-top: 0px;
-  padding-right: 15px;
+  padding-top: 10px!important;
+  padding-right: 10px!important;
   padding-bottom: 0px;
-  padding-left: 10px;
+  padding-left: 15px!important;
 }
 i.IconTopMargin {
   margin-top: 10px !important;
@@ -233,4 +233,20 @@ i.fa.fa-file-excel-o.cct.IconTopMargin {
 .my-icon:hover {
   overflow: hidden; 
   width: 1em; 
+}
+.mrg-right0{
+  margin: 0px -6px;
+}
+@media (min-width: 1200px) {
+  .image_effect{
+    width: 14.28%;
+  }
+}
+@media (max-width: 1024px) {
+.SideParddings3 {
+  padding-top: 0px!important;
+}
+}
+.cards_align{
+  padding: 5px 8px!important;
 }

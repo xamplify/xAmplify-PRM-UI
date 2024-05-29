@@ -389,7 +389,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 
 	fileChange(input: any) {
-		this.uploadCsvUsingFile = true;
 		this.customResponse.responseType = null;
 		this.fileTypeError = false;
 		this.noContactsFound = false;
@@ -412,7 +411,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.fileTypeError = false;
 				this.xtremandLogger.info("coontacts preview");
 				$("#sample_editable_1").hide();
-				this.filePrevew = true;
 				let reader = new FileReader();
 				reader.readAsText(files[0]);
 				this.xtremandLogger.info(files[0]);
@@ -431,7 +429,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							var csvResult = Papa.parse(contents);
 							var allTextLines = csvResult.data;
 							for (var i = 1; i < allTextLines.length; i++) {
-
 								if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
 									let user = new User();
 									user.emailId = allTextLines[i][4].trim();
@@ -452,10 +449,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								}
 
 							}
-							self.setCsvPage(1);
 
-							if (self.csvContacts.length == 0) {
-								self.customResponse = new CustomResponse('ERROR', "No results found.", true);
+							if (allTextLines.length == 2) {
+								self.customResponse = new CustomResponse('ERROR', "No records found.", true);
+								self.removeCsv();
+							} else if (allTextLines.length > 2 && self.csvContacts.length == 0) {
+								self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
+								self.removeCsv();
+							} else {
+								if (!self.uploadCsvUsingFile && ! self.filePrevew) {
+									self.uploadCsvUsingFile = true;
+									self.filePrevew = true;
+									self.setCsvPage(1);
+								} else {
+									self.customResponse = new CustomResponse('ERROR', "File Already Added.", true);
+									self.uploader.queue.length = 1;
+								}
 							}
 
 						} else {
@@ -489,14 +498,25 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 									user.legalBasis = self.selectedLegalBasisOptions;
 									self.users.push(user);
 									self.csvContacts.push(user);
-
 								}
 
 							}
-							self.setCsvPage(1);
 
-							if (self.csvContacts.length == 0) {
-								self.customResponse = new CustomResponse('ERROR', "No results found.", true);
+							if (allTextLines.length == 2) {
+								self.customResponse = new CustomResponse('ERROR', "No records found.", true);
+								self.removeCsv();
+							} else if (allTextLines.length > 2 && self.csvContacts.length == 0) {
+								self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
+								self.removeCsv();
+							} else {
+								if (!self.uploadCsvUsingFile && ! self.filePrevew) {
+									self.uploadCsvUsingFile = true;
+									self.filePrevew = true;
+									self.setCsvPage(1);
+								} else {
+									self.customResponse = new CustomResponse('ERROR', "File already added.", true);
+									self.uploader.queue.length = 1;
+								}
 							}
 
 						} else {
@@ -521,7 +541,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	validatePartnerCsvHeaders(headers) {
-		return (headers[0].trim() == "FIRSTNAME" && headers[1].trim() == "LASTNAME" && headers[2].trim() == "COMPANY" && headers[3].trim() == "JOBTITLE" && headers[4].trim() == "EMAILID" && headers[5].trim() == "VERTICAL" && headers[6].trim() == "REGION" && headers[7].trim() == "TYPE" && headers[8].trim() == "CATEGORY" && headers[9].trim() == "ADDRESS" && headers[10].trim() == "CITY" && headers[11].trim() == "STATE" && headers[12].trim() == "ZIP" && headers[13].trim() == "COUNTRY" && headers[14].trim() == "MOBILE NUMBER");
+		return (this.removeDoubleQuotes(headers[0]) == "FIRSTNAME" &&
+		this.removeDoubleQuotes(headers[1]) == "LASTNAME" &&
+		this.removeDoubleQuotes(headers[2]) == "COMPANY" &&
+		this.removeDoubleQuotes(headers[3]) == "JOBTITLE" &&
+		this.removeDoubleQuotes(headers[4]) == "EMAILID" &&
+		this.removeDoubleQuotes(headers[5]) == "VERTICAL" &&
+		this.removeDoubleQuotes(headers[6]) == "REGION" &&
+		this.removeDoubleQuotes(headers[7]) == "TYPE" &&
+		this.removeDoubleQuotes(headers[8]) == "CATEGORY" &&
+		this.removeDoubleQuotes(headers[9]) == "ADDRESS" &&
+		this.removeDoubleQuotes(headers[10]) == "CITY" &&
+		this.removeDoubleQuotes(headers[11]) == "STATE" &&
+		this.removeDoubleQuotes(headers[12]) == "ZIP" &&
+		this.removeDoubleQuotes(headers[13]) == "COUNTRY" &&
+		this.removeDoubleQuotes(headers[14]) == "MOBILE NUMBER");
+		// return (headers[0].trim() == "FIRSTNAME" && headers[1].trim() == "LASTNAME" && headers[2].trim() == "COMPANY" && headers[3].trim() == "JOBTITLE" && headers[4].trim() == "EMAILID" && headers[5].trim() == "VERTICAL" && headers[6].trim() == "REGION" && headers[7].trim() == "TYPE" && headers[8].trim() == "CATEGORY" && headers[9].trim() == "ADDRESS" && headers[10].trim() == "CITY" && headers[11].trim() == "STATE" && headers[12].trim() == "ZIP" && headers[13].trim() == "COUNTRY" && headers[14].trim() == "MOBILE NUMBER");
 	}
 
 	validateContactsCsvHeaders(headers) {
@@ -1192,6 +1227,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.users = [];
 		this.filePrevew = false;
 		this.isShowUsers = true;
+		this.csvContacts = [];
+		this.uploadCsvUsingFile = false;
 		$("#sample_editable_1").show();
 	}
 

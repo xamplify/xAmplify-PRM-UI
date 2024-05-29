@@ -71,5 +71,8 @@ export class Form {
     countryNames = [];
     showConnectWiseProducts: boolean = false;
 
+    /** XNFR-424 **/
+    formLabelDTORows = [];
+   /** XNFR-424 ENDS ***/
 
 }

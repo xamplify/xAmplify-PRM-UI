@@ -77,7 +77,7 @@
 																		*ngIf="vendorReport?.vendorDisplayName?.length>20">...</span>
 																</b>
 															</div>
-															<div class="text-size mb-0">{{ vendorReport?.vendorEmailId }}</div>
+															<div class="text-size mb-0 emailwidth">{{ vendorReport?.vendorEmailId }}</div>
 															<span *ngIf="vendorReport.vendorPhone" class="phone">
 																<i aria-hidden="true" class="fa fa-phone" style="padding-right: 4px;"></i><a href="tel:vendorReport?.vendorPhone">{{vendorReport?.vendorPhone |
 																slice:0:20}}</a><span *ngIf="vendorReport?.vendorPhone?.length>20">...</span>
@@ -101,7 +101,7 @@
 																		*ngIf="vendorReport?.vendorAdminDisplayName?.length>20">...</span></b>
 															</div>
 
-                                                         	<div class="text-size mb-0">{{vendorReport?.vendorAdminEmailId}}</div>
+                                                         	<div class="text-size mb-0 emailwidth">{{vendorReport?.vendorAdminEmailId}}</div>
 
 															<span *ngIf="vendorReport?.vendorAdminPhone" class="phone">
 																<i aria-hidden="true" class="fa fa-phone" style="padding-right: 4px;"></i>{{vendorReport?.vendorAdminPhone|
@@ -126,7 +126,7 @@
 																		*ngIf="vendorReport?.partnerDisplayName?.length>20">...</span>
 																</b>
 															</div>
-															<div class="text-size mb-0">{{vendorReport?.partnerEmailId}}
+															<div class="text-size mb-0 emailwidth">{{vendorReport?.partnerEmailId}}
 															</div>
 															<span *ngIf="vendorReport.partnerPhone" class="phone">
 																<i aria-hidden="true" class="fa fa-phone" style="padding-right: 4px;"></i>{{vendorReport?.partnerPhone |
@@ -151,7 +151,7 @@
 																<b>{{vendorReport?.partnerAdminDisplayName | slice:0:20}}<span
 																		*ngIf="vendorReport?.partnerAdminDisplayName?.length>20">...</span></b>
 															</div>
-															<div class="text-size mb-0">{{vendorReport?.partnerAdminEmailId}}
+															<div class="text-size mb-0 emailwidth">{{vendorReport?.partnerAdminEmailId}}
 															</div>
 															<span *ngIf="vendorReport?.partnerAdminPhone" class="phone">
 																<i aria-hidden="true" class="fa fa-phone" style="padding-right: 4px;"></i>{{vendorReport?.partnerAdminPhone|

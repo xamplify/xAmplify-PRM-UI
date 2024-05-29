@@ -30,7 +30,7 @@
     <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
       <div
         [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-md-11 col-xs-11 col-sm-11':'col-md-5 col-xs-5 col-sm-5'">
-        <h4 title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' | translate}}
+        <h4 data-toggle="tooltip" data-placement="bottom" title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' | translate}}
           {{logedInCustomerCompanyName}}</h4>
       </div>
       <div class="col-md-6 col-xs-6 col-sm-6"
@@ -59,9 +59,9 @@
     <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true"
       [applyFilter]="applyFilter"></app-module-analytics>
   </div>
-   <!---XNFR-459--->
-   <app-news-and-announcement-and-instant-navigation-dashboard-analytics></app-news-and-announcement-and-instant-navigation-dashboard-analytics>
-   <!---XNFR-459--->
+  <!---XNFR-459--->
+  <app-news-and-announcement-and-instant-navigation-dashboard-analytics></app-news-and-announcement-and-instant-navigation-dashboard-analytics>
+  <!---XNFR-459--->
   <!------------Dashbaord Button Carusel---------------------->
   <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
   <app-vendor-activity-analytics></app-vendor-activity-analytics>
@@ -117,8 +117,12 @@
               <div class="tab_Flex" style="text-align: left">
                 <button class="button_blue btn-xs bgcolor-unset" [routerLink]="['/home/select-modules']" translate>
                   <!--- XBI-2315 --->
-                  <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl" class="btn btn-primary transition">Upload Content</span>
-                  <span *ngIf="authenticationService?.module?.isOnlyPartnerCompany || authenticationService?.module?.loggedInThroughVendorVanityUrl" class="btn btn-primary transition">Manage Content</span>
+                  <span
+                    *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl"
+                    class="btn btn-primary transition">Upload Content</span>
+                  <span
+                    *ngIf="authenticationService?.module?.isOnlyPartnerCompany || authenticationService?.module?.loggedInThroughVendorVanityUrl"
+                    class="btn btn-primary transition">Manage Content</span>
                   <!---- XBI-2315 -->
                 </button>
                 <button type="button" class="button bgcolor-unset btn-xs Btn-transparent guides_btn" data-toggle="modal"
@@ -270,8 +274,7 @@
                   [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate><span
                     class="btn btn-primary transition">Connect</span></button>
                 <button type="button" class="button bgcolor-unset btn-xs Btn-Green guides_btn" data-toggle="modal"
-                  [disabled]="true" data-target="#myModal" translate><span
-                    class="btn Btn-Green transition">Tell
+                  [disabled]="true" data-target="#myModal" translate><span class="btn Btn-Green transition">Tell
                     me how</span></button>
               </div>
             </div>
@@ -299,8 +302,8 @@
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/dashboard')"
                   [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate><span
                     class="btn btn-primary transition">Analytics</span></button>
-                <button type="button" class="button bgcolor-unset btn-xs guides_btn" data-toggle="modal" [disabled]="true"
-                  data-target="#myModal" translate><span class="btn Btn-Green transition">Tell me
+                <button type="button" class="button bgcolor-unset btn-xs guides_btn" data-toggle="modal"
+                  [disabled]="true" data-target="#myModal" translate><span class="btn Btn-Green transition">Tell me
                     how</span></button>
               </div>
             </div>

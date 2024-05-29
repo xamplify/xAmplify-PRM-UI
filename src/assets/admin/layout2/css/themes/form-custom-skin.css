@@ -1,5 +1,5 @@
 .form-placeholder::placeholder, .form-custom .form-control, .input-group > .input-group-addon, 
-.input-group > .edit-field-prefix, .label-name, #formQuizExplanation, #formPriceField {
+.input-group > .edit-field-prefix, .label-name, #formQuizExplanation, #formPriceField, #dropdownMenuButton {
   color: var(--form-label-color) !important;
 }
 

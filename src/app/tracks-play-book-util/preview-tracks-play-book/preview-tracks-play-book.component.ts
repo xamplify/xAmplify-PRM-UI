@@ -194,7 +194,6 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.videoLoader = false;
     }
     this.assetViewLoader = false; 
-
    }, 300);
   }
 
@@ -234,33 +233,23 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   assetPreview(assetDetails: any) {
-    if (assetDetails.beeTemplate) {
-        if(this.isCreatedUser){
+    let isNotVideoFile = assetDetails.assetType != 'mp4';
+    if(isNotVideoFile){
+      let isBeeTemplate = assetDetails.beeTemplate;
+      let isVendorView = this.isCreatedUser;
+      if(isBeeTemplate){
+        if (isVendorView) {
           this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
-        }else{
-          this.referenceService.previewTrackOrPlayBOokAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
+        } else {
+          this.referenceService.previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(assetDetails.learningTrackContentMappingId);
         }
-    }else if(assetDetails.assetType != 'mp4') {
-      let assetType = assetDetails.assetType;
-      this.filePath = assetDetails.assetPath;
-      if (assetType == 'mp3') {
-        this.showFilePreview = true;
-        this.fileType = "audio/mpeg";
-        this.isAudio = true;
-      }  else if (this.imageTypes.includes(assetType)) {
-        this.showFilePreview = true;
-        this.isImage = true;
-      } else if (this.fileTypes.includes(assetType)) {
-        this.showFilePreview = true;
-        this.isFile = true;
-        this.filePath = "https://view.officeapps.live.com/op/embed.aspx?src=" + assetDetails.assetPath + "&embedded=true";
-        this.transformUrl();
-      } else {
-        window.open(assetDetails.assetPath, '_blank');
+      }else{
+        this.referenceService.preivewAssetOnNewHost(assetDetails.id);
       }
     }
     this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED, false);
   }
+
 
   closeAssetPreview() {
     this.showFilePreview = false;

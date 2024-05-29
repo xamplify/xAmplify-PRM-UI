@@ -317,30 +317,30 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	connectwiseRibbonText: string;
 	isLocalHost = false;
 
-	 /* -- XNFR-415 -- */
+	/* -- XNFR-415 -- */
 	DefaultDashBoardForPartnersEnum = DefaultDashBoardForPartners;
-	defaultLoading=false;
-	updateDashboardError=false;
+	defaultLoading = false;
+	updateDashboardError = false;
 	modulesDashboardForPartner: CustomResponse = new CustomResponse();
 	defaultSelectedDashboardTypeSetting = this.getSelectedDashboardForPartner();
-	checkSelectedDashboardType=[];
-	companyIdFromCompanyProfileNameForVanity:number;	
-	removeMarketingNonInteractiveBox:boolean = false;
+	checkSelectedDashboardType = [];
+	companyIdFromCompanyProfileNameForVanity: number;
+	removeMarketingNonInteractiveBox: boolean = false;
 	/** XNFR-426 **/
 	leadApprovalRejectionStatus: boolean = false;
-	leadApprovalStatus:boolean = false;
+	leadApprovalStatus: boolean = false;
 	leadApprovalCustomResponse: CustomResponse = new CustomResponse();
 	/**XNFR-454****/
 	isAddDomainsOptionClicked: boolean;
 	isDashboardButtonsOptionClicked: boolean;
 	/**XNFR-459****/
-	isNewsAndAnnouncementsOptionClicked:boolean;
-	isDashboardBannersOptionClicked:boolean;
-	vendorJourney:boolean = false;
+	isNewsAndAnnouncementsOptionClicked: boolean;
+	isDashboardBannersOptionClicked: boolean;
+	vendorJourney: boolean = false;
 	/**XNFR-428****/
-	isLandingPages:boolean = false;
-	isMasterLandingPages:boolean = false;
-	loggedInUserCompanyId:number = 0;
+	isLandingPages: boolean = false;
+	isMasterLandingPages: boolean = false;
+	loggedInUserCompanyId: number = 0;
 	/*** XNFR-483 ***/
 	isAggreedToDisableLeadApprovalFeature: boolean = false;
 	disableSaveChangesButtonForLeadApproval: boolean = false;
@@ -348,7 +348,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	// halo psa
 	halopsaRibbonText: string;
 	isProduction: boolean = false;
-	vendorJourneyEditOrViewAnalytics:boolean = false;
+	vendorJourneyEditOrViewAnalytics: boolean = false;
 	expandOrCollapseClass = "";
 	isHalopsaDisplayed = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
@@ -357,7 +357,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
 			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService,
-			public landingPageService: LandingPageService) {
+		public landingPageService: LandingPageService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isLocalHost = this.authenticationService.isLocalHost();
 		this.isProduction = this.authenticationService.isProductionDomain();
@@ -559,9 +559,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.userData = this.authenticationService.userProfile;
 			}
 			this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-			if(this.isProduction){
-				this.isHalopsaDisplayed = "spai@mobinar.com"==this.currentUser.userName;
-			}else{
+			if (this.isProduction) {
+				this.isHalopsaDisplayed = "spai@mobinar.com" == this.currentUser.userName;
+			} else {
 				this.isHalopsaDisplayed = true;
 			}
 			this.getUserByUserName(this.currentUser.userName);
@@ -606,7 +606,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnInit() {
 		try {
-			
+
 			this.searchWithModuleName = 19;
 			this.activeTabName = 'personalInfo';
 			this.activeTabHeader = this.properties.personalInfo;
@@ -1017,7 +1017,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
 			'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
 			'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(250)])],
-			'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]],
+			'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(this.regularExpressions.LINK_PATTERN)]],
 			'preferredLanguage': [this.userData.preferredLanguage],
 		});
 
@@ -1474,7 +1474,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 	}
-	remove(i:number) {
+	remove(i: number) {
 		var index = 1;
 		this.questions = this.questions.filter(question => question.divId !== 'question-' + i)
 			.map(question => {
@@ -1484,14 +1484,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.submitBUttonStateChange();
 
 	}
-	removeQuestion(i:number, question) {
+	removeQuestion(i: number, question) {
 		if (question.id) {
 			this.deleteQuestion(i, question);
 		} else {
 			this.remove(i);
 		}
 	}
-	deleteQuestion(i:number, question) {
+	deleteQuestion(i: number, question) {
 		try {
 			this.logger.info("Question in sweetAlert() " + question.id);
 			let self = this;
@@ -1553,7 +1553,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	}
 	saveForm() {
-		this.customResponse  = new CustomResponse();
+		this.customResponse = new CustomResponse();
 		this.ngxloading = true;
 		let self = this;
 		let data = []
@@ -1605,10 +1605,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.dealTypeButtonStateChange();
 	}
 
-	deleteDealType(i:number, dealType) {
+	deleteDealType(i: number, dealType) {
 		try {
 			this.logger.info("Deal Type in sweetAlert() " + dealType.id);
-			if(dealType!=undefined && dealType.id!=undefined){
+			if (dealType != undefined && dealType.id != undefined) {
 				let self = this;
 				swal({
 					title: 'Are you sure?',
@@ -1618,7 +1618,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 					confirmButtonColor: '#54a7e9',
 					cancelButtonColor: '#999',
 					confirmButtonText: 'Yes, delete it!'
-	
+
 				}).then(function (myData: any) {
 					self.customResponse = new CustomResponse();
 					self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
@@ -1634,7 +1634,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 						self.refService.scrollSmoothToTop();
 					}, (error) => {
 						self.ngxloading = false;
-	
+
 					}, () => {
 						self.dealRegSevice.listDealTypes(self.loggedInUserId).subscribe(dealTypes => {
 							self.dealtypes = dealTypes.data;
@@ -1643,15 +1643,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				}, function (dismiss: any) {
 					console.log('you clicked on option');
 				});
-			}else{
+			} else {
 				this.removeDealType(i);
 			}
-			
+
 		} catch (error) {
 			console.log(error);
 		}
 	}
-	removeDealType(i:number) {
+	removeDealType(i: number) {
 		var index = 1;
 		this.dealtypes = this.dealtypes.filter(dealtype => dealtype.divId !== 'dealtype-' + i)
 			.map(dealtype => {
@@ -1851,9 +1851,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	activateTab(activeTabName: any) {
 		this.activeTabName = activeTabName;
 		if (this.activeTabName != 'playerSettings') {
-		  if(this.videoJSplayer){
-		     this.videoJSplayer.pause();
-		   }
+			if (this.videoJSplayer) {
+				this.videoJSplayer.pause();
+			}
 		}
 		if (this.activeTabName == "personalInfo") {
 			this.activeTabHeader = this.properties.personalInfo;
@@ -1916,7 +1916,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.listAllPipelines(this.pipelinePagination);
 		}
 		/*****XNFR-426 ******/
-		else if(this.activeTabName == "leadDealApprove") {
+		else if (this.activeTabName == "leadDealApprove") {
 			this.activeTabHeader = this.properties.leadDealApprove;
 		}
 		else if (this.activeTabName == "tags") {
@@ -1925,7 +1925,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.customskin;
 			this.themeName = "";
 			this.showThemes();
-		this.themeResponse = new CustomResponse();
+			this.themeResponse = new CustomResponse();
 		} else if (this.activeTabName == "exclude") {
 			this.activeTabHeader = this.properties.exclude;
 			this.excludeUserPagination = new Pagination();
@@ -2006,7 +2006,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 
 		/****XNFR-454****/
-		else if(this.activeTabName==this.properties.addDomainsText){
+		else if (this.activeTabName == this.properties.addDomainsText) {
 			this.ngxloading = true;
 			this.isAddDomainsOptionClicked = false;
 			let self = this;
@@ -2018,7 +2018,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		}
 		/****XNFR-459****/
-		else if(this.activeTabName==this.properties.newsAndAnnouncements){
+		else if (this.activeTabName == this.properties.newsAndAnnouncements) {
 			this.ngxloading = true;
 			this.isNewsAndAnnouncementsOptionClicked = false;
 			let self = this;
@@ -2029,7 +2029,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.newsAndAnnouncements;
 
 		}/****XNFR-459****/
-		else if(this.activeTabName==this.properties.dashboardBanners){
+		else if (this.activeTabName == this.properties.dashboardBanners) {
 			this.ngxloading = true;
 			this.isDashboardBannersOptionClicked = false;
 			let self = this;
@@ -2038,7 +2038,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.dashboardBanners;
-    }/**XNFR-428****/
+		}/**XNFR-428****/
 		else if (this.activeTabName == "vendorJourney") {
 			this.ngxloading = true;
 			this.vendorJourney = false;
@@ -2059,7 +2059,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.landingPages;
-		}else if (this.activeTabName == "masterLandingPages") {
+		} else if (this.activeTabName == "masterLandingPages") {
 
 			this.ngxloading = true;
 			this.isMasterLandingPages = false;
@@ -2197,8 +2197,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
-	
-	
+
+
 
 	setAllGdprStatus() {
 		if (!this.gdprSetting.unsubscribeStatus && !this.gdprSetting.formStatus && !this.gdprSetting.termsAndConditionStatus
@@ -2628,11 +2628,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (count > 0 && item.previewAccess) {
 			this.ngxloading = true;
 			if ("Templates" == type) {
-				this.router.navigate(['/home/emailtemplates/manage/l/' + categoryId+'/fg']);
+				this.router.navigate(['/home/emailtemplates/manage/l/' + categoryId + '/fg']);
 			} else if ("Forms" == type) {
 				this.router.navigate(['/home/forms/manage/' + categoryId]);
 			} else if ("Pages" == type) {
-				this.router.navigate(['/home/pages/manage/l/' + categoryId+'/fg']);
+				this.router.navigate(['/home/pages/manage/l/' + categoryId + '/fg']);
 			} else if ("Campaigns" == type) {
 				this.router.navigate(['/home/campaigns/manage/' + categoryId]);
 			} else if ("Asset Library" == type) {
@@ -2695,22 +2695,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			);
 	}
 
-	 /* -- XNFR-415 -- */
-	setDashboardForPartner(){
-		this.defaultLoading = true;  
-		this.modulesDashboardForPartner = new CustomResponse();  
-		this.updateDashboardError = false; 
+	/* -- XNFR-415 -- */
+	setDashboardForPartner() {
+		this.defaultLoading = true;
+		this.modulesDashboardForPartner = new CustomResponse();
+		this.updateDashboardError = false;
 		let selectedOptionForDefaultDashboard = $("input[name=dashboardSelectedOption]:checked").val();
 		this.dashBoardService.updateDefaultDashboardForPartner(this.referenceService.companyId, selectedOptionForDefaultDashboard)
 			.subscribe(
-				data=>{
-					this.defaultLoading=true;
-					if(data.statusCode == 200 ){
+				data => {
+					this.defaultLoading = true;
+					if (data.statusCode == 200) {
 						this.referenceService.showSweetAlertSuccessMessage(data.message);
-						localStorage.setItem('selectedDashboard',selectedOptionForDefaultDashboard);
+						localStorage.setItem('selectedDashboard', selectedOptionForDefaultDashboard);
 					}
 					else {
-						this.updateDashboardError=true;
+						this.updateDashboardError = true;
 						this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
 					}
 				},
@@ -2723,60 +2723,60 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			);
 	}
 
-	 /* -- XNFR-415 -- */
+	/* -- XNFR-415 -- */
 	getSelectedDashboardForPartner() {
-		this.modulesDashboardForPartner = new CustomResponse();  
+		this.modulesDashboardForPartner = new CustomResponse();
 		this.updateDashboardError = false;
 		let companyProfileName = this.authenticationService.companyProfileName;
-		let isValidCompanyProfileName = companyProfileName!=undefined && companyProfileName!="";
-		if(isValidCompanyProfileName){
+		let isValidCompanyProfileName = companyProfileName != undefined && companyProfileName != "";
+		if (isValidCompanyProfileName) {
 			this.vanityUrlService.getVanityURLDetails(this.authenticationService.companyProfileName).
-			subscribe(result => {        
-			this.companyIdFromCompanyProfileNameForVanity = result.companyId
-			},error=>{
-				
-			},()=>{
-				if(this.companyIdFromCompanyProfileNameForVanity!=undefined && this.companyIdFromCompanyProfileNameForVanity>0){
-					this.dashBoardService.getDefaultDashboardForPartner(this.companyIdFromCompanyProfileNameForVanity)
-					.subscribe(
-						data => {
-							if (data.statusCode == 200) {
-								this.defaultSelectedDashboardTypeSetting = data.data;
-							} else {
-								this.updateDashboardError = true;
-								this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-							}
-						},
-						error => {
-							this.updateDashboardError = true;
-							this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-						},
-						() => { }
-					);
-				}
-			});
+				subscribe(result => {
+					this.companyIdFromCompanyProfileNameForVanity = result.companyId
+				}, error => {
+
+				}, () => {
+					if (this.companyIdFromCompanyProfileNameForVanity != undefined && this.companyIdFromCompanyProfileNameForVanity > 0) {
+						this.dashBoardService.getDefaultDashboardForPartner(this.companyIdFromCompanyProfileNameForVanity)
+							.subscribe(
+								data => {
+									if (data.statusCode == 200) {
+										this.defaultSelectedDashboardTypeSetting = data.data;
+									} else {
+										this.updateDashboardError = true;
+										this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+									}
+								},
+								error => {
+									this.updateDashboardError = true;
+									this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+								},
+								() => { }
+							);
+					}
+				});
 		}
 	}
 
-	checkDashboardTypes(){
-        this.userService.getDashboardType().
-        subscribe(
-          data=>{
-            this.checkSelectedDashboardType=data;
-          }
-        );
-    }
-    
-    get getDashboardForSelectedOption():string{
-        this.refService.filterArrayList(this.checkSelectedDashboardType,'Welcome');
-        if(this.checkSelectedDashboardType.includes('Advanced Dashboard')){
-            return 'Advanced Dashboard';
-        }
-        else if(this.checkSelectedDashboardType.includes('Detailed Dashboard')){
-            return 'Detailed Dashboard';
-        }
-        else return 'Dashboard';    
-    }
+	checkDashboardTypes() {
+		this.userService.getDashboardType().
+			subscribe(
+				data => {
+					this.checkSelectedDashboardType = data;
+				}
+			);
+	}
+
+	get getDashboardForSelectedOption(): string {
+		this.refService.filterArrayList(this.checkSelectedDashboardType, 'Welcome');
+		if (this.checkSelectedDashboardType.includes('Advanced Dashboard')) {
+			return 'Advanced Dashboard';
+		}
+		else if (this.checkSelectedDashboardType.includes('Detailed Dashboard')) {
+			return 'Detailed Dashboard';
+		}
+		else return 'Dashboard';
+	}
 
 	selectedLanguage(event: any) {
 		//this.translateService.use(this.selectedLanguageCode);        
@@ -2801,10 +2801,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.editXamplifyDefaultTemplate = false;
 	}
 
-	changeLoginTemplateNameEvent(event:any) {
+	changeLoginTemplateNameEvent(event: any) {
 		this.cutomLoginTemplate.name = event.replace(/\s/g, '')
 	}
-	saveOrUpdateCustomLogInTempalte(cutomLoginTemplate:CustomLoginTemplate){
+	saveOrUpdateCustomLogInTempalte(cutomLoginTemplate: CustomLoginTemplate) {
 		this.vanityUrlService.saveCustomLoginTemplate(cutomLoginTemplate).subscribe(result => {
 			if (result.statusCode === 200) {
 				// this.goBackToMyprofileForCustomLogin();
@@ -3168,7 +3168,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	addPipeline() {
 		this.pipelineModalTitle = "Add a Pipeline";
-		if(this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner'){
+		if (this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner') {
 			this.removeMarketingNonInteractiveBox = false;
 		}
 		$('#addPipelineModalPopup').modal('show');
@@ -3177,7 +3177,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	viewPipeline(pipelineToView: Pipeline) {
 		let self = this;
 		this.pipelineModalTitle = "View Pipeline";
-		if(this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner'){
+		if (this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner') {
 			this.removeMarketingNonInteractiveBox = false;
 		}
 		$('#addPipelineModalPopup').modal('show');
@@ -3188,7 +3188,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	editPipeline(pipeline: Pipeline) {
 		this.pipelineModalTitle = "Edit Pipeline";
-		if(this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner'){
+		if (this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner') {
 			this.removeMarketingNonInteractiveBox = true;
 		}
 		$('#addPipelineModalPopup').modal('show');
@@ -3197,15 +3197,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	getPipeline(pipeline: Pipeline) {
-		let self = this;
+		this.ngxloading = true;
 		this.dashBoardService.getPipeline(pipeline.id, this.loggedInUserId)
 			.subscribe(
-				data => {
-					this.ngxloading = false;
+				(data: any) => {
 					if (data.statusCode == 200) {
-						self.pipeline = data.data;
-						let orderedStages = new Array<PipelineStage>();
-						self.pipeline.stages.forEach(function (stage, index) {
+						this.pipeline = data.data;
+						this.pipeline.stages.forEach((stage: PipelineStage) => {
 							if (stage.won === true) {
 								stage.markAs = "won";
 							} else if (stage.lost === true) {
@@ -3213,28 +3211,27 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 							} else {
 								stage.markAs = "markAs"
 							}
-							orderedStages[stage.displayIndex - 1] = stage;
+							this.pipeline.stages.sort((a, b) => a.displayIndex - b.displayIndex);
 							if (stage.defaultStage === true) {
-								self.defaultStageIndex = stage.displayIndex - 1;
+								this.defaultStageIndex = stage.displayIndex - 1;
 							}
 						});
-						self.pipeline.stages = orderedStages;
-						self.pipeline.isValidStage = true;
-						self.pipeline.isValidName = true;
-						self.pipeline.isValid = true;
+						this.pipeline.isValidStage = true;
+						this.pipeline.isValidName = true;
+						this.pipeline.isValid = true;
 					} else {
 						this.closePipelineModal();
 						this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
 					}
+					this.ngxloading = false;
 					this.referenceService.stopLoader(this.addPipelineLoader);
 				},
-				error => {
+				(error: any) => {
+					console.error("Error fetching pipeline:", error);
 					this.ngxloading = false;
-				},
-				() => { }
+				}
 			);
 	}
-
 	closePipelineModal() {
 		$('#addPipelineModalPopup').modal('hide');
 		this.referenceService.stopLoader(this.addPipelineLoader);
@@ -3748,8 +3745,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	validateDomainName(domain: string) {
 		var DOMAIN_NAME_PATTERN = new RegExp(this.regularExpressions.DOMAIN_PATTERN);
-		var matchedPattrenString:string[] = domain.match(DOMAIN_NAME_PATTERN)
-		if(matchedPattrenString.length ==0)
+		var matchedPattrenString: string[] = domain.match(DOMAIN_NAME_PATTERN)
+		if (matchedPattrenString.length == 0)
 			return false;
 		else
 			return matchedPattrenString[0] == domain;
@@ -3976,7 +3973,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.customResponse = new CustomResponse();
 		for (var i = 1; i < allTextLines.length; i++) {
 			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0
-			&& !this.excludedUsers.some(user=>user.emailId === allTextLines[i][0].trim() )) {
+				&& !this.excludedUsers.some(user => user.emailId === allTextLines[i][0].trim())) {
 				let user = new User();
 				user.emailId = allTextLines[i][0].trim();
 				this.excludedUsers.push(user);
@@ -3991,8 +3988,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (this.excludedUsers.length === 0) {
 			this.customResponse = new CustomResponse('ERROR', "No users found.", true);
 			this.csvExcludeUsersFilePreview = false;
-		}else{
-		this.csvExcludeUsersFilePreview = true;
+		} else {
+			this.csvExcludeUsersFilePreview = true;
 		}
 	}
 
@@ -4000,7 +3997,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.excludeDomainCustomResponse = new CustomResponse
 		for (var i = 1; i < allTextLines.length; i++) {
 			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0
-			&& !this.excludedDomains.some(domain=>domain === allTextLines[i][0].trim())) {
+				&& !this.excludedDomains.some(domain => domain === allTextLines[i][0].trim())) {
 				let domain = allTextLines[i][0].trim();
 				this.excludedDomains.push(domain);
 			}
@@ -4014,7 +4011,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (this.excludedDomains.length === 0) {
 			this.excludeDomainCustomResponse = new CustomResponse('ERROR', "No domains found.", true);
 			this.csvExcludeDomainsFilePreview = false;
-		}else{
+		} else {
 			this.csvExcludeDomainsFilePreview = true;
 
 		}
@@ -4043,24 +4040,24 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
-	validateAndSaveExcludedUsers(excludedUsers:User[]){
+	validateAndSaveExcludedUsers(excludedUsers: User[]) {
 		let self = this;
 		this.userService.validateExcludedUsers(excludedUsers, this.loggedInUserId)
-		.subscribe(
-			data => {
-				this.customResponse = new CustomResponse()
-				if (data.statusCode == 200) {
-					self.saveExcludedUsers(excludedUsers);
-				} else if (data.statusCode == 400) {
-					this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
-				}
-			},
-			error => {
-				this.referenceService.stopLoader(this.excludeUserLoader);
-			},
-			() => { }
-		);
-	} 
+			.subscribe(
+				data => {
+					this.customResponse = new CustomResponse()
+					if (data.statusCode == 200) {
+						self.saveExcludedUsers(excludedUsers);
+					} else if (data.statusCode == 400) {
+						this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
+					}
+				},
+				error => {
+					this.referenceService.stopLoader(this.excludeUserLoader);
+				},
+				() => { }
+			);
+	}
 	saveExcludedUsers(excludedUsers: User[]) {
 		this.referenceService.startLoader(this.excludeUserLoader);
 		this.validEmailFormat = true;
@@ -4127,23 +4124,23 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
-	validateAndSaveExcludedDomains(excludedDomains:string[]){
+	validateAndSaveExcludedDomains(excludedDomains: string[]) {
 		let self = this;
 		this.userService.validateExcludedDomains(excludedDomains, this.loggedInUserId)
-		.subscribe(
-			data => {
-				this.customResponse = new CustomResponse()
-				if (data.statusCode == 200) {
-					self.saveExcludedDomains(excludedDomains);
-				} else if (data.statusCode == 400) {
-					this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
-				}
-			},
-			error => {
-				this.referenceService.stopLoader(this.excludeUserLoader);
-			},
-			() => { }
-		);
+			.subscribe(
+				data => {
+					this.customResponse = new CustomResponse()
+					if (data.statusCode == 200) {
+						self.saveExcludedDomains(excludedDomains);
+					} else if (data.statusCode == 400) {
+						this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
+					}
+				},
+				error => {
+					this.referenceService.stopLoader(this.excludeUserLoader);
+				},
+				() => { }
+			);
 	}
 
 	saveExcludedDomains(excludedDomains: string[]) {
@@ -4369,7 +4366,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	showThemes() {
 		this.ngxloading = true;
-		this.dashBoardService.multipleThemesShow().subscribe(
+		this.dashBoardService.findAllThemes().subscribe(
 			(response) => {
 				this.ngxloading = false
 				this.themeDtoList = response.data;
@@ -4387,9 +4384,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.ngxloading = true;
 		this.dashBoardService.getDefaultThemes().subscribe(
 			(response) => {
-				this.ngxloading = false
-				// this.defaultThemes = response.data;
-			this.defaultThemes = response.data.sort((a, b) => a.id - b.id);
+				this.ngxloading = false;
+				let isDemoAccount = "spai@mobinar.com" == this.currentUser.userName;
+				this.defaultThemes = response.data.sort((a, b) => a.id - b.id);
+				if(this.isProduction && !isDemoAccount){
+					this.defaultThemes = this.defaultThemes.filter((item) =>item.name != "Glassomorphism Light");
+					this.defaultThemes = this.defaultThemes.filter((item) =>item.name != "Glassomorphism Dark");
+				}
 			},
 			error => {
 				this.ngxloading = false;
@@ -4540,11 +4541,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (!this.pipeline || !this.pipeline.stages || index < 0 || index >= this.pipeline.stages.length || !this.pipeline.stages[index]) {
 			return false;
 		}
-	
+
 		const selectedCount = this.pipeline.stages.filter(item => item && item.private).length;
 		let remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
-		if(this.pipeline.integrationType === "PIPEDRIVE")
-		{
+		if (this.pipeline.integrationType === "PIPEDRIVE") {
 			remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 2;
 		}
 		if (remainingUnselectedCount === 0 && !this.pipeline.stages[index].private) {
@@ -4597,7 +4597,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	// halo psa
 	checkHaloPsaIntegration() {
-		   this.halopsaRibbonText = "configure";
+		this.halopsaRibbonText = "configure";
 		this.referenceService.loading(this.httpRequestLoader, true);
 		this.halopsaRibbonText = "configure";
 		this.integrationService.checkConfigurationByType("halopsa").subscribe(data => {
@@ -4628,9 +4628,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				data => {
 					this.leadApprovalStatus = data.data;
 					this.leadApprovalRejectionStatus = data.data;
-					if(this.leadApprovalStatus){
+					if (this.leadApprovalStatus) {
 						this.disableSaveChangesButtonForLeadApproval = false;
-					}else{
+					} else {
 						this.isAggreedToDisableLeadApprovalFeature = true;
 						this.disableSaveChangesButtonForLeadApproval = false;
 					}
@@ -4676,23 +4676,42 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			);
 	}
 
-getCompanyId() {
-	if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
-		this.referenceService.loading(this.httpRequestLoader, true);
-		this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
-			(result: any) => {
-				if (result !== "") {
-					this.loggedInUserCompanyId = result;
+	getCompanyId() {
+		if (this.loggedInUserId != undefined && this.loggedInUserId > 0) {
+			this.referenceService.loading(this.httpRequestLoader, true);
+			this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+				(result: any) => {
+					if (result !== "") {
+						this.loggedInUserCompanyId = result;
+						this.referenceService.loading(this.httpRequestLoader, false);
+					}
+				}, (error: any) => {
 					this.referenceService.loading(this.httpRequestLoader, false);
 				}
-			}, (error: any) => {
-				this.referenceService.loading(this.httpRequestLoader, false);
-			}
-		);
+			);
+		}
 	}
-  }
 
-  toggleClass(id:string){
-	$("i#"+id).toggleClass("fa-minus fa-plus"); 
-  }
+	toggleClass(id: string) {
+		$("i#" + id).toggleClass("fa-minus fa-plus");
+	}
+
+	getThemeImage(name: string): string {
+		switch (name) {
+			case 'Light':
+				return 'assets/images/theme/Final/light-theme.webp';
+			case 'Dark':
+				return 'assets/images/theme/Final/dark-theme.webp';
+			case 'Neumorphism Light':
+				return 'assets/images/theme/Final/light-neumorphism.webp';
+			case 'Neumorphism Dark(Beta)':
+				return 'assets/images/theme/Final/dark-neumorphism.webp';
+			case 'Glassomorphism Light':
+				return 'assets/images/theme/Final/beta-light-glassomorphism.webp';
+			case 'Glassomorphism Dark':
+				return 'assets/images/theme/Final/beta-dark-glassomorphism.webp';
+			default:
+				return '';
+		}
+	}
 }

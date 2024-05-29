@@ -99,6 +99,8 @@ import { HalopsaAuthenticationComponent } from './halopsa-authentication/halopsa
 import { VendorReportComponent } from './vendor-report/vendor-report.component';
 import { ProcessingUserListsComponent } from './processing-user-lists/processing-user-lists.component';
 import { UpdatePasswordComponent } from './super-admin/update-password/update-password.component';
+import { AddVendorLogosComponent } from 'app/util/add-vendor-logos/add-vendor-logos.component';
+import { SupportAccountUsersComponent } from './support-account-users/support-account-users.component';
 
 
 @NgModule({
@@ -171,8 +173,9 @@ import { UpdatePasswordComponent } from './super-admin/update-password/update-pa
         HalopsaAuthenticationComponent,
         VendorReportComponent,
         ProcessingUserListsComponent,
-        UpdatePasswordComponent
-
+        UpdatePasswordComponent,
+        AddVendorLogosComponent,
+        SupportAccountUsersComponent,
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

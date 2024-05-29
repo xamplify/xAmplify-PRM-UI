@@ -79,10 +79,14 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
   }
 
   navigate(instantNavigation:any){
+   
     let router = "";
     let viewType = "/"+this.referenceService.getListOrGridViewType();
     if(instantNavigation.type=="Asset"){
-      localStorage.setItem('assetName', instantNavigation.title);
+      let asset = {};
+      asset['assetName'] = instantNavigation.title;
+      asset['published'] = instantNavigation.published;
+      this.referenceService.setAssetLocalStorageValues(asset);
       if(this.isPartnerLoggedInThroughVanityUrl){
         router = "/home/dam/sharedp/view/"+instantNavigation.damPartnerId+viewType;
       }else{

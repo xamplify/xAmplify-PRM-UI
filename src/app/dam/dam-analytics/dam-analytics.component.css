@@ -76,3 +76,11 @@
     width: 100%;
   }
 }
+.vendor-details-tiles {
+  border: 1px solid #d3d3d3;
+  height: 102px;
+  align-items: center;
+  display: flex;
+  vertical-align: middle;
+  padding-left: 25px;
+}

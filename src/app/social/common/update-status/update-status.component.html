@@ -764,7 +764,7 @@
                                         <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
                                             List Info
                                         </th>
-                                        <th scope="row" style="text-align: center;display: none;"translate>Type
+                                        <th scope="row" class="text-center" *ngIf="nurtureCampaign && socialCampaign" translate>Type
                                     </th>
                                         <th scope="row" class="text-center" translate>Created On</th>
                                         <th *ngIf="!showNavigationBreadCrumbToPartner" scope="row" class="text-center"
@@ -823,7 +823,7 @@
                                                 <img *ngIf="contactList?.socialNetwork=='PIPEDRIVE'"
                                                     src="{{properties?.pipedriveImage}}" alt="Pipedrive"
                                                     class="img-class-list list-icons-sm image_effect">
-                                                <img *ngIf="contactList?.socialNetwork=='CONNECTWISE'"
+                                                    <img *ngIf="contactList?.socialNetwork=='CONNECTWISE'"
                                                     src="{{properties?.connectwiseImage}}" alt="ConnectWise"
                                                     class="img-class-list list-icons-sm image_effect">
                                                 <img *ngIf="contactList?.socialNetwork=='HALOPSA'"
@@ -843,7 +843,7 @@
                                                 <div style="display: none;">
                                                     <ng-container  *ngIf="!contactList?.partnerList">
                                                         <div class="displayinline-flex">
-                                                            <h6 class="view-banner" translate>
+                                                            <h6 class="view-banner left-flt mr5" translate>
                                                                 <span *ngIf="contactList?.publicList" data-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title="{{actionsDescription?.contact_list_public}}"

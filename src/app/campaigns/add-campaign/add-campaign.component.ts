@@ -1011,18 +1011,19 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         }
             this.campaign.dealPipelineId = this.defaultDealPipelineId;
             this.campaign.leadPipelineId = this.defaultLeadPipelineId;
-            this.campaign.configurePipelines = !this.campaign.configurePipelines;
-                if (!this.campaign.configurePipelines) {
-                    if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId === 0) {
-                    this.campaign.dealPipelineId = this.defaultDealPipelineId;
-                    } 
-                }
-    }
+         this.campaign.configurePipelines = !this.campaign.configurePipelines;
+         if (!this.campaign.configurePipelines) {
+             this.campaign.leadPipelineId = this.defaultLeadPipelineId;
+             if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId === 0) {
+                 this.campaign.dealPipelineId = this.defaultDealPipelineId;
+             } 
+         }
+     }
 
     listCampaignPipelines() {
         if (this.campaignAccess.enableLeads) {
             this.showConfigurePipelines = true;
-            this.referenceService.startLoader(this.pipelineLoader);            
+            this.referenceService.startLoader(this.pipelineLoader);
             this.campaignService.listCampaignPipelines(this.loggedInUserId)
                 .subscribe(
                     response => {
@@ -1032,7 +1033,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                             this.dealTicketTypes = data.dealTicketTypes;
                             this.leadPipelines = data.leadPipelines;
                             this.dealPipelines = data.dealPipelines;
-
                             if (!this.activeCRMDetails.activeCRM) {
 
                                 this.leadTicketTypes.forEach(leadTicketType => {
@@ -1070,6 +1070,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                                 this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
                                 this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
                                 this.defaultLeadPipelineId = this.leadPipelines[0].id;
+                                this.campaign.leadPipelineId = this.leadPipelines[0].id;
                                 this.defaultDealPipelineId = this.dealPipelines[0].id;
                                /* if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
                                     this.campaign.dealPipelineId = this.dealPipelines[0].id;
@@ -2194,6 +2195,12 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             vanityUrlDomainName = this.authenticationService.companyProfileName;
             vanityUrlCampaign = true;
         }
+        
+        // if (!this.campaign.configurePipelines && 'SALESFORCE' !== this.activeCRMDetails.type) {
+        //     this.campaign.leadPipelineId = null;
+        //     this.campaign.dealPipelineId = null;
+        // }
+
         var data = {
             'campaignName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
             'fromName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),

@@ -355,6 +355,9 @@ export class Properties {
 	PARTNERSHIP_ALREADY_ESTABLISHED_WITH_COMPANY_NAME = "The company partnership has been established. Please contact the company admin if you wish to continue as a team member.";
 	UPDATE_AND_CLOSE = "Update & Close";
 	SAVE_AND_CLOSE = "Save & Close";
+	/***XNFR-523****/
+	SEND_UPDATED_TRACK_EMAIL_NOTIFICATION_MESSAGE = "Send an email notification to {{partnersMergeTag}} who have made progress";
+	TRACK_OR_PLAY_BOOK_EMAIL_NOTIFICATION_OPTION_DISABLED = "To enable this option, please turn on 'Published Track Email Notifications' in your 'Email Notification Settings' located in your 'My Profile' section.";
 
 
 

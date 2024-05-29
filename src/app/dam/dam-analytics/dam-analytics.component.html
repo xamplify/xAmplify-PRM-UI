@@ -51,7 +51,7 @@
                   <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
                   <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                      <div class="row" style="margin-top: -14px;">
-                        <div id="" class="{{tileClass}} mPad mrg_b5"
+                        <div id="" class="{{tileClass}} mPad mrg_b5 vendor-details-tiles tiles_hover_effect"
                            style="border-radius: 5px !important;">
                            <div class="row">
                               <div class="flex margin-flex  mb_v_center" style="padding-left: 5px;">
@@ -66,7 +66,7 @@
                                        </p>
                                     </h6>
                                     <br>
-                                    <h5 *ngIf="damAnalyticsTilesDto?.fullName?.length>0" class='ellipsis user-name'
+                                    <h5 *ngIf="damAnalyticsTilesDto?.fullName?.length>0" class='ellipsis user-name p0'
                                        title="{{damAnalyticsTilesDto?.fullName}}">
                                        {{damAnalyticsTilesDto?.fullName | slice:0:50}}
                                        <span *ngIf="damAnalyticsTilesDto?.fullName?.length>50">..</span>

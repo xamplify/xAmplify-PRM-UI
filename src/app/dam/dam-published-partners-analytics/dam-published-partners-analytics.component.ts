@@ -40,6 +40,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   categoryId: number;
   folderViewType: string;
   folderListView = false;
+  isAssetPublished: boolean;
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService,
               private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, 
               public referenceService: ReferenceService,private router: Router, public properties: Properties, public videoFileService : VideoFileService) {
@@ -59,6 +60,10 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.damId = parseInt(this.route.snapshot.params['damId']);
     this.referenceService.loading(this.listLoader, true);
     this.selectedAssetName = localStorage.getItem('assetName');
+    this.isAssetPublished = localStorage.getItem('isAssetPublished')=='true';
+    if(!this.isAssetPublished){
+      this.customResponse = new CustomResponse('INFO','This asset has not been published yet. Please publish it to view the analytics.',true);
+    }
     this.getCompanyId();
     this.videoFileService.campaignReport = localStorage.getItem('campaignReport') === 'true';
     this.videoFileService.saveVideoFile = JSON.parse(localStorage.getItem('saveVideoFile'));

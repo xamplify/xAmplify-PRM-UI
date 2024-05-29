@@ -452,11 +452,18 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }
                         self.setPage(1);
                         self.isListLoader = false;
-
-                        if (self.contacts.length === 0) {
+                        if (allTextLines.length == 2) {
+                            self.customResponse = new CustomResponse('ERROR', "No records found.", true);
+                            self.cancelContacts();
+                        } else if (allTextLines.length > 2 && self.contacts.length === 0) {
+                            self.isValidLegalOptions = true;
+                            self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
+                            self.cancelContacts();
+                        }  else  if (self.contacts.length === 0) {
                             self.isValidLegalOptions = true;
                             self.customResponse = new CustomResponse('ERROR', "No contacts found.", true);
                         }
+
 
 
 
@@ -2449,7 +2456,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 if (data.statusCode == 200) {
                                     this.showModal();
                                     console.log("AddContactComponent salesforce() Authentication Success");
-                                    this.checkingPopupValues();
+                                    //this.checkingPopupValues();
                                 } else {
                                     this.setLValuesToLocalStorageAndReditectToLoginPage(this.socialContact, data);
                                 }
@@ -2489,7 +2496,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         if (response.statusCode == 200) {
                             this.showModal();
                             console.log("AddContactComponent salesforce() Authentication Success");
-                            this.checkingPopupValues();
+                            //this.checkingPopupValues();
                         } else {
                             localStorage.setItem("userAlias", data.userAlias)
                             localStorage.setItem("currentModule", data.module)
@@ -2512,8 +2519,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingPopupValues() {
+        this.contactType = $("select.opts:visible option:selected ").val();
         if (this.contactType != "") {
-            $("button#salesforce_save_button").prop('disabled', true);
+			$("button#salesforce_save_button").prop('disabled', false);
             if (this.contactType == "contact_listviews" || this.contactType == "lead_listviews") {
                 this.getSalesforceListViewContacts(this.contactType);
             } else {
@@ -3832,7 +3840,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             $('#row_' + user.id).removeClass('contact-list-selected');
             this.selectedContactListIds.splice($.inArray(user.id, this.selectedContactListIds), 1);
             this.paginatedSelectedIds.splice($.inArray(user.id, this.paginatedSelectedIds), 1);
-            this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
+            //this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
+            let indexToRemove = this.allselectedUsers.findIndex(item => item.id === user.id);
+            if (indexToRemove !== -1) {
+                this.allselectedUsers.splice(indexToRemove, 1);
+            }
         }
         if (this.paginatedSelectedIds.length == this.pagedItems.length) {
             this.isHeaderCheckBoxChecked = true;
@@ -3846,7 +3858,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         if (ev.target.checked) {
             $('[name="campaignContact[]"]').prop('checked', true);
             let self = this;
-            
             $('[name="campaignContact[]"]:checked').each(function () {
                 var id = $(this).val();
                 self.selectedContactListIds.push(parseInt(id));
@@ -4724,7 +4735,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 user.city = contacts[i].city;
                 user.state = contacts[i].city;
                 user.country = contacts[i].country;
-                user.zipCode = String(contacts[i].postalCode);
+                user.zipCode = contacts[i].postalCode === undefined ? "" : contacts[i].postalCode+"";
                 user.mobileNumber = contacts[i].mobilePhone;
                 user.jobTitle = contacts[i].title;
                 user.address = contacts[i].address;
@@ -5262,7 +5273,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else {
             this.socialContactUsers = [];
             for (var i = 0; i < response.contacts.length; i++) {
-                this.xtremandLogger.log("Contact :" + response.contacts[i].firstname);
+               
                 let socialContact = new SocialContact();
                 socialContact = response.contacts[i];
                 socialContact.id = i;

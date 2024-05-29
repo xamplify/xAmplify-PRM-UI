@@ -292,6 +292,11 @@
                                  <button type="button" class="pull-right btn-sm button_blue bgcolor-unset email-tempbtn" (click)="openEmailTemplateInNewTab(campaign)">
                                     <span class="btn btn-primary transition txt_pd-top3 prev-btn"><i class="fa fa-eye"></i> Preview</span> 
                                  </button>
+                                 <!--XNFR-541-->
+                                  <button type="button" class="pull-right btn-sm button_blue bgcolor-unset email-tempbtn" (click)="downloadAsImage(campaign)">
+                                    <span class="btn btn-primary transition txt_pd-top3 prev-btn"><i class="fa fa-picture-o"></i> Download</span> 
+                                 </button> 
+                                 <!--XNFR-541-->
                                  <button *ngIf="campaign?.emailTemplate?.editPartnerTemplate"  type="button" class="pull-right btn-sm button_blue ml-5 bgcolor-unset" style="margin-right: 6px"
                                     (click)="editPartnerTemplate()">
                                     <span  class="btn btn-primary transition txt_pd-top3 prev-btn"><i class="fa fa-edit"></i> Edit
@@ -473,12 +478,12 @@
                                                             <span>{{contacts.name}}</span>
                                                          </td>
                                                          <ng-container *ngIf="!campaign?.oneClickLaunch">
-                                                            <td class="text-center moreipsis">
+                                                            <td class="text-center">
                                                                <span>
                                                                   {{contacts.type}}
                                                                   <ng-template [ngIf]="contacts?.formList">, Form
                                                                      Contact List</ng-template>
-                                                                     <ng-template [ngIf]="checkCompanyList(contacts.name)">, Company
+                                                                     <ng-template [ngIf]="contacts?.companyList">, Company
                                                                         Contact List</ng-template>    
                                                                </span>
                                                             </td>

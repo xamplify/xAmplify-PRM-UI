@@ -63,13 +63,13 @@
         <div class="portlet-body">
             <form #f="ngForm">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 pr10">
                         <div class="portlet light add-options">
                             <div class="portlet-title" translate>How would you like to
                                 add your {{authenticationService?.partnerModule?.customName}}?</div>
                             <div class="portlet-body">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-4 col-md-4 SideParddings1">
+                                <div class="row mrg-right0">
+                                    <div class="col-xs-12 col-sm-4 col-md-6 SideParddings1 cards_align">
                                         <button class="color-flow-button btn-primary btn-block white-co"
                                             id="addContacts" (click)="addPartnerModalOpen()"
                                             [disabled]="selectedAddPartnerOption != 1 && selectedAddPartnerOption != 5 || disableOtherFuctionality">
@@ -78,7 +78,7 @@
                                                 </i>One at a Time</span></button>
                                     </div>
                                     <ng-container *ngIf="!referenceService.isMobileScreenSize()">
-                                        <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings2">
+                                        <div class="col-xs-12 col-sm-4 col-md-6 hidden-xs SideParddings2 cards_align">
                                             <button class="color-flow-button Btn-Green btn-block white-co"
                                                 id="copyFromClipBoard" (click)="copyFromClipboard()"
                                                 [disabled]="selectedAddPartnerOption != 5">
@@ -87,7 +87,7 @@
                                                     list from clipboard</span>
                                             </button>
                                         </div>
-                                        <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings3">
+                                        <div class="col-xs-12 col-sm-4 col-md-6 hidden-xs SideParddings3 cards_align">
                                             <button
                                                 class="color-flow-button btn-primary fileinput-button btn-block white-co"
                                                 id="uploadCSV"
@@ -120,17 +120,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
-                        <div class="portlet light cloud-services" style="padding-bottom: 33px !important;">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 pl10">
+                        <div class="portlet light cloud-services" style="padding-bottom: 42px !important;">
                             <div class="portlet-title" translate>Import
                                 {{authenticationService?.partnerModule?.customName}} from the
                                 cloud:
-                                <a href="#showCRM" data-toggle="collapse" style="float: right;"> <i
+                                <!-- <a href="#showCRM" data-toggle="collapse" style="float: right;"> <i
                                         class="fa fa-chevron-down" aria-hidden="true"
-                                        style="display: contents !important; font-size: 15px !important"></i></a>
+                                        style="display: contents !important; font-size: 15px !important"></i></a> -->
                             </div>
                             <div class="portlet-body">
-                                <div class="row cloud_platforms_paddings cloud_platforms_margins">
+                                <div class="row cloud_platforms_paddings">
 
                                     <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8 image_effect"
                                         style="margin-top: 10px;">
@@ -302,7 +302,7 @@
                                         </a>
                                     </div>
                                     <!-- XNFR-230 -->
-                                    <div id="showCRM" class="collapse">
+                                    <div id="showCRM">
                                         <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8 image_effect"
                                             style="margin-top: 10px;">
                                             <a *ngIf="pipedriveImageBlur" id="pipedriveContact_button"
@@ -312,7 +312,7 @@
                                                 <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
                                                     src="assets/images/crm/pipedrive.png" style="border-radius:8px;"
                                                     class="pipedriveImageClass" data-toggle="tooltip"
-                                                    data-placement="right"
+                                                    data-placement="top"
                                                     title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Pipedrive account"
                                                     height="86" width="90"
                                                     onmouseover="this.src='assets/images/crm/connecting.png';"
@@ -324,7 +324,7 @@
                                                 <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
                                                     src="assets/images/crm/pipedrive.png" style="border-radius:8px;"
                                                     class="pipedriveImageClass" data-toggle="tooltip"
-                                                    data-placement="right"
+                                                    data-placement="top"
                                                     title="Click here to access {{authenticationService?.partnerModule?.customName}} from your pipedrive account"
                                                     height="86" width="90">
                                             </a>
@@ -817,7 +817,6 @@
                             <!---XNFR-222-->
                             <app-team-member-filter-option *ngIf="showFilter"
                                 (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
-
                             <div style="float: left; margin: 3px 10px;">
                                 <select class="form-control SeclectBoxPaddingsAbj search_sort_shadows"
                                     [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
@@ -858,9 +857,9 @@
                                     <strong>Please wait while we process your request</strong>
                                 </div>
                                 <div *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList"
-                                    class="alert alert-info alert-dismissable text-center">No
-                                    {{authenticationService?.partnerModule?.customName}} found.</div>
-                                <div class="table-responsive">
+                                    class="alert alert-info alert-dismissable text-center">No {{authenticationService?.partnerModule?.customName}} found.</div>
+                                <app-list-loader *ngIf="isLoadingList"></app-list-loader>
+                                <div class="table-responsive" *ngIf="!isLoadingList">
                                     <table class='table tgrid' aria-describedby="">
                                         <thead *ngIf="pagination.pagedItems?.length != 0">
                                             <tr>
@@ -1095,7 +1094,7 @@
                             </div>
                         </div>
                     </div>
-                    <app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)"
+                    <app-pagination  *ngIf="!isLoadingList" [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)"
                         (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination>
                 </div>
                 <!-- END EXAMPLE TABLE PORTLET-->

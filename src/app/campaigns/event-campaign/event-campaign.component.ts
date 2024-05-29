@@ -219,8 +219,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     folderCustomResponse: CustomResponse = new CustomResponse();
     completeLoader = false;
     isOrgAdminOrOrgAdminTeamMember: boolean;
-    leadTicketTypes = new Array<OpportunityTypes>();
-    dealTicketTypes = new Array<OpportunityTypes>();
     leadPipelines = new Array<Pipeline>();
     dealPipelines = new Array<Pipeline>();
     isConfigurePipelines = false;

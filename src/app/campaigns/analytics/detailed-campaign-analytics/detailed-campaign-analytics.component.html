@@ -68,7 +68,7 @@
             </div>
             <ng-template #NOERROR>
                <app-analytics-loader *ngIf="mainLoader"></app-analytics-loader>
-               <div class="row" [hidden]="mainLoader || hasClientError">
+               <div class="row campaign_type" [hidden]="mainLoader || hasClientError">
                   <div class="alert alert-danger alert-dismissible" *ngIf="contactListDeleteError">
                      <a (click)="contactListDeleteError = false" class="close" data-dismiss="alert"
                         aria-label="close">&times;</a>

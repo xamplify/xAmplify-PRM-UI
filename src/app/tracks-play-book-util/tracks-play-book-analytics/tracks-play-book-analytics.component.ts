@@ -35,6 +35,7 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  isLocalHost = false;
   constructor(private route: ActivatedRoute, private utilService: UtilService,
     private pagerService: PagerService, public authenticationService: AuthenticationService,
     public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
@@ -45,6 +46,7 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
     this.viewType = this.route.snapshot.params["viewType"];
     this.categoryId = this.route.snapshot.params["categoryId"];
     this.folderViewType = this.route.snapshot.params["folderViewType"];
+    this.isLocalHost = this.authenticationService.isLocalHost();
   }
 
 

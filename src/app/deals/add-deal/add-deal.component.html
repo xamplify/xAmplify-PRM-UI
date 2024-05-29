@@ -20,8 +20,8 @@
   <div class="portlet-body clearfix">
     <div>
       <form role="form" id="deal-registration-form">
-        <div class="row ">
-          <div class="col-sm-6 col-xs-12 px-10 pl0">
+        <div class="row mr-3">
+          <div class="col-sm-6 col-xs-12 px-10 pl0 mb_pr0">
             <div class="panel-group" role="tablist" aria-multiselectable="true">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
@@ -197,7 +197,7 @@
                           <select class="form-control" [(ngModel)]="deal.createdByPipelineId" [ngModelOptions]="{standalone: true}"
                             placeholder="pipelineId" id="createdByPipelineId"
                             [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline"
-                            (ngModelChange)="resetStages()" (input)="validateField('createdByPipelineId',false)">
+                            (ngModelChange)="resetCreatedByPipelineStages()" (input)="validateField('createdByPipelineId',false)">
                             <option [value]="0">Select Pipeline</option>
                             <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                           </select>
@@ -221,7 +221,7 @@
                           <select class="form-control" [(ngModel)]="deal.createdForPipelineId" [ngModelOptions]="{standalone: true}"
                             placeholder="pipelineId" id="createdForPipelineId"
                             [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline"
-                            (ngModelChange)="resetStages()" (input)="validateField('createdForPipelineId',false)">
+                            (ngModelChange)="resetCreatedForPipelineStages()" (input)="validateField('createdForPipelineId',false)">
                             <option [value]="0">Select Pipeline</option>
                             <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                           </select>
@@ -248,7 +248,7 @@
                          <select class="form-control" [(ngModel)]="deal.createdForPipelineId" [ngModelOptions]="{standalone: true}"
                            placeholder="pipelineId" id="createdForPipelineId"
                            [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline"
-                           (ngModelChange)="resetStages()" (input)="validateField('createdForPipelineId',false)">
+                           (ngModelChange)="resetCreatedForPipelineStages()" (input)="validateField('createdForPipelineId',false)">
                            <option [value]="0">Select Pipeline</option>
                            <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                          </select>
@@ -271,7 +271,7 @@
                         <select class="form-control" [(ngModel)]="deal.createdByPipelineId" [ngModelOptions]="{standalone: true}"
                           placeholder="pipelineId" id="createdByPipelineId"
                           [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline"
-                          (ngModelChange)="resetStages()" (input)="validateField('createdByPipelineId',false)">
+                          (ngModelChange)="resetCreatedByPipelineStages()" (input)="validateField('createdByPipelineId',false)">
                           <option [value]="0">Select Pipeline</option>
                           <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                         </select>
