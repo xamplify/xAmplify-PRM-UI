@@ -260,7 +260,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     dealTicketTypeClass: string = this.formGroupClass;
     leadPipelineClass: string = this.formGroupClass;
     dealPipelineClass: string = this.formGroupClass;
-
+    pipelineLoader:HttpRequestLoader = new HttpRequestLoader();
+    dealTicketTypes: any;
+    leadTicketTypes: any;
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
         public campaignService: CampaignService,
