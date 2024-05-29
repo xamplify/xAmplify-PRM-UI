@@ -33,6 +33,8 @@ import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { HostListener } from '@angular/core';
 import { ComponentCanDeactivate } from 'app/component-can-deactivate';
 import { Observable } from 'rxjs/Observable';
+import { IntegrationService } from 'app/core/services/integration.service';
+import { Pipeline } from 'app/dashboard/models/pipeline';
 
 declare var  $,swal,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -203,6 +205,22 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
     selectedAutoResponseId = 0;  
     selectedAutoResponseCustomEmailTemplateId = 0;
     anyLaunchButtonClicked = false;
+    
+    /*** XNFR-530 ***/
+    showConfigurePipelines = false;
+    leadPipelines = new Array<Pipeline>();
+    dealPipelines = new Array<Pipeline>();
+    defaultDealPipelineId: number = 0;
+    defaultLeadPipelineId: number = 0;
+    hideConfigurePipelineCrms = ['SALESFORCE', 'PIPEDRIVE', 'MARKETO', 'HUBSPOT', 'MICROSOFT', 'HALOPSA'];
+    hideLeadPipelines = ['CONNECTWISE', 'PIPEDRIVE'];
+    hideDealPipelines = [];
+    activeCRMDetails: any;
+    isMultipleCrmsActivated: boolean = false;
+    isVendorCompany: any;
+    showLeadPipelines: boolean = false;
+    showDealPipelines: boolean = false;
+    pipelineLoader: HttpRequestLoader = new HttpRequestLoader();
 
     /*****XNFR-330****/             
     errorClass = "form-group has-error has-feedback";
@@ -218,6 +236,7 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             public callActionSwitch: CallActionSwitch,
             private formBuilder: FormBuilder,
             public properties:Properties,
+            public integrationService: IntegrationService,
             private xtremandLogger: XtremandLogger,private vanityUrlService:VanityURLService) {
             this.vanityUrlService.isVanityURLEnabled();                
 			this.referenceService.renderer = this.renderer;
@@ -258,6 +277,7 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
                 } );
                 this.isListView = !this.referenceService.isGridView;
                 this.listCategories();
+                this.findCampaignDetailsData(); 
             }
             
         }
@@ -708,6 +728,11 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             vanityUrlCampaign = true;
         }
 
+        if (this.activeCRMDetails.type !== 'CONNECTWISE' || !this.campaign.configurePipelines) {
+            this.campaign.leadPipelineId = null;
+            this.campaign.dealPipelineId = null;
+        }
+
         const data = {
             'campaignName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
             'fromName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
@@ -747,7 +772,9 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             'landingPageId':this.selectedLandingPageId,
             'vanityUrlDomainName':vanityUrlDomainName,
             'vanityUrlCampaign':vanityUrlCampaign,
-            'description':this.campaign.description
+            'description':this.campaign.description,
+            'leadPipelineId': this.campaign.leadPipelineId,
+            'dealPipelineId': this.campaign.dealPipelineId
         };
         return data;
     }
@@ -1608,5 +1635,143 @@ appendValueToSubjectLine(event:any){
 	}
 
 
+    /**   XNFR-530   **/
+    configurePipelines() {
+        this.campaign.configurePipelines = !this.campaign.configurePipelines;
+        if (!this.campaign.configurePipelines) {
+            this.campaign.leadPipelineId = this.defaultLeadPipelineId;
+            if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId === 0) {
+                this.campaign.dealPipelineId = this.defaultDealPipelineId;
+            }
+        }
+    }
 
+    findCampaignDetailsData() {
+        this.campaignService.findCampaignDetailsData().subscribe(
+            response => {
+                this.isMultipleCrmsActivated = false;
+                let data = response.data;
+                this.activeCRMDetails = data['activeCRMDetails'];
+                this.isVendorCompany = data['isVendorCompany'];
+                this.findCampaignPipeLines();
+            }, (error: any) => {
+                let errorMessage = this.referenceService.showHttpErrorMessage(error);
+                if ("Multiple CRM Accounts Activated For This Company." == errorMessage) {
+                    this.isMultipleCrmsActivated = true;
+                    this.referenceService.goToRouter('home/campaigns/select');
+                    this.referenceService.showSweetAlertErrorMessage(errorMessage + " Please Contact Admin.");
+                }
+            });
+    }
+
+    private findCampaignPipeLines() {
+        if (this.activeCRMDetails.activeCRM) {
+            if ("SALESFORCE" === this.activeCRMDetails.type) {
+                this.listCampaignPipelines();
+                this.integrationService
+                    .checkSfCustomFields(this.authenticationService.getUserId())
+                    .subscribe(
+                        (data) => {
+                            let cfResponse = data;
+                            if (cfResponse.statusCode === 400) {
+                                swal(
+                                    "Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.",
+                                    "",
+                                    "error"
+                                );
+                            } else if (cfResponse.statusCode === 401 &&
+                                cfResponse.message === "Expired Refresh Token") {
+                                swal(
+                                    "Your Salesforce Integration was expired. Please re-configure.",
+                                    "",
+                                    "error"
+                                );
+                            }
+                        },
+                        (error) => {
+                            this.xtremandLogger.error(
+                                error,
+                                "Error in salesforce checkIntegrations()"
+                            );
+                        }
+                    );
+            } else {
+                this.listCampaignPipelines();
+            }
+        } else {
+            this.listCampaignPipelines();
+        }
+    }
+
+/***XNFR-541****/
+downloadAsImage(campaign:any){
+    this.partnerTemplateLoader = true;
+    this.authenticationService.checkPartnerAccess(this.loggedInUserId)
+        .subscribe(
+            data => {
+                let access = data.access;
+                if(access){
+                    let param: any = {
+                        'campaignId': campaign.campaignId,
+                        'loggedInUserId': this.loggedInUserId,
+                        'downloadType': 'png'
+                    };
+                    let completeUrl = this.authenticationService.REST_URL + "campaign/download?access_token=" + this.authenticationService.access_token;
+                    this.referenceService.post(param, completeUrl);
+                    this.partnerTemplateLoader = false;
+                }else{
+                    this.partnerTemplateLoader = false;
+                    this.authenticationService.forceToLogout();
+                }
+            },
+            error => {
+                this.partnerTemplateLoader = false;
+                this.referenceService.showSweetAlertFailureMessage("Unable to download.Please try after sometime.");
+             });
+}
+
+
+    listCampaignPipelines() {
+        this.referenceService.startLoader(this.pipelineLoader);
+        this.showConfigurePipelines = !(this.hideConfigurePipelineCrms.includes(this.activeCRMDetails.type) || !this.activeCRMDetails.activeCRM);
+        this.showLeadPipelines = !this.hideLeadPipelines.includes(this.activeCRMDetails.type) && this.showConfigurePipelines;
+        this.showDealPipelines = !this.hideDealPipelines.includes(this.activeCRMDetails.type) && this.showConfigurePipelines;
+        this.campaignService.listCampaignPipelines(this.loggedInUserId)
+            .subscribe(
+                response => {
+                    if (response.statusCode == 200) {
+                        let data = response.data;
+                        this.leadPipelines = data.leadPipelines;
+                        this.dealPipelines = data.dealPipelines;
+                        if (!this.activeCRMDetails.activeCRM) {
+                            this.leadPipelines.forEach(pipeline => {
+                                if (pipeline.default) {
+                                    this.defaultLeadPipelineId = pipeline.id;
+                                    if (this.campaign.leadPipelineId == undefined || this.campaign.leadPipelineId == null || this.campaign.leadPipelineId === 0) {
+                                        this.campaign.leadPipelineId = pipeline.id;
+                                    }
+                                }
+                            });
+                            this.dealPipelines.forEach(pipeline => {
+                                if (pipeline.default) {
+                                    this.defaultDealPipelineId = pipeline.id;
+                                    if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
+                                        this.campaign.dealPipelineId = pipeline.id;
+                                    }
+                                }
+                            });
+                        } else {
+                            this.defaultLeadPipelineId = this.leadPipelines[0].id;
+                            this.campaign.leadPipelineId = this.leadPipelines[0].id;
+                            this.defaultDealPipelineId = this.dealPipelines[0].id;
+                            this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                        }
+                    }
+                    this.referenceService.stopLoader(this.pipelineLoader);
+                },
+                error => {
+                    this.referenceService.stopLoader(this.pipelineLoader);
+                    this.xtremandLogger.error(error);
+                });
+    }     /**   XNFR-530   **/
 }

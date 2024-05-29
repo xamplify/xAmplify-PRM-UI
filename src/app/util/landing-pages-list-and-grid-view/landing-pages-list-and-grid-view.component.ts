@@ -168,6 +168,8 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       }else if(this.isMasterLandingPages){
         this.pagination.source = "MASTER_PARTNER_PAGE";
         this.pagination.defaultLandingPage = false;
+        this.pagination.loginAsUserId = this.loggedInUserId;
+        this.pagination.companyId = this.loggedInUserCompanyId;
       }else{
         this.pagination.source = "MANUAL";
       }
@@ -246,8 +248,11 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
     if(this.isPartnerLandingPage){
         this.referenceService.previewPartnerPageInNewTab(landingPage.partnerLandingPageId);
     }else if(this.isLandingPages){
-        this.referenceService.previewVendorJourneyPartnerPageInNewTab(landingPage.vendorJourneyId)
-    }else{
+        this.referenceService.previewVendorJourneyPartnerPageInNewTab(landingPage.vendorJourneyId);
+    }else if(this.isMasterLandingPages){
+        this.referenceService.previewMasterPartnerPageInNewTab(landingPage.id);
+    }
+    else{
         this.referenceService.previewPageInNewTab(landingPage.id);
     }
   }

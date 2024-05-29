@@ -71,4 +71,10 @@
   .card-bgcolors{
    margin-bottom:14px;
   }
+  .mb_pr0{
+    padding-right: 0px;
+  }
+}
+.mr-3{
+margin-right: 3px;
 }

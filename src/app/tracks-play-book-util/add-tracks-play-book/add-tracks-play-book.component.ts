@@ -11,7 +11,6 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { SortOption } from '../../core/models/sort-option';
-import { ColumnInfo } from '../../forms/models/column-info';
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { EnvService } from 'app/env.service'
 import { UtilService } from '../../core/services/util.service';
@@ -1096,9 +1095,13 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     description = description.substring(3,description.length-4).trim();
     if (description.length < 1) {
       this.addErrorMessage("description", "description can not be empty");
-    } else if (description.length > 5000) {
-      this.addErrorMessage("description", "description can not be more than 5000 characters");
-    } else {
+    } 
+    
+    // else if (description.length > 5000) {
+    //   this.addErrorMessage("description", "description can not be more than 5000 characters");
+    // } 
+    
+    else {
       this.removeErrorMessage("description")
     }
   }
@@ -1366,48 +1369,14 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
   assetPreview(assetDetails: any, isFromPopup: boolean) {
     this.isPreviewFromAssetPopup = isFromPopup;
-    let assetType = assetDetails.assetType;
     let isBeeTemplate = assetDetails.beeTemplate;
-    let isMp3File = assetType=="mp3";
-    let isVideoFile = assetType=="mp4";
-    let isShowPreviewInApp = isBeeTemplate || isMp3File || isVideoFile;
-    if(isShowPreviewInApp){
-        this.previewContentInsideApp(isBeeTemplate, assetDetails, isMp3File, isVideoFile);
+    if(isBeeTemplate){
+      this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
     }else{
-      if(this.authenticationService.isLocalHost()){
-        this.referenceService.preivewAssetOnNewHost(assetDetails.id);
-      }else{
-        if(this.fileTypes.includes(assetType)){
-          this.showFilePreview = true;
-          this.isImage = true;
-        }else if (this.fileTypes.includes(assetType)) {
-          this.showFilePreview = true;
-          this.isFile = true;
-          this.filePath = "https://view.officeapps.live.com/op/embed.aspx?src=" + assetDetails.assetPath + "&embedded=true";
-          this.transformUrl();
-        } else {
-          window.open(assetDetails.assetPath, '_blank');
-        }
-        this.handleMediaAndOrdersPopup();
-      }
+      this.referenceService.preivewAssetOnNewHost(assetDetails.id);
     }
   }
 
-  private previewContentInsideApp(isBeeTemplate: any, assetDetails: any, isMp3File: boolean, isVideoFile: boolean) {
-    if (isBeeTemplate) {
-      this.referenceService.previewAssetPdfInNewTab(assetDetails.id);
-    } else if (isMp3File) {
-      this.showFilePreview = true;
-      this.fileType = "audio/mpeg";
-      this.isAudio = true;
-    } else if (isVideoFile) {
-      this.showFilePreview = true;
-      this.fileType = "video/mp4";
-      this.isVideo = true;
-      this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
-    }
-    this.handleMediaAndOrdersPopup();
-  }
 
   handleMediaAndOrdersPopup() {
     if (this.activeTabName == "step-2") {

@@ -196,3 +196,19 @@ i.fa.fa-file-excel-o.IconTopMargin {
   height: 35px;
   margin: -7px;
 }
+.mrg-right0{
+  margin: 0px -6px;
+}
+@media (min-width: 1200px) {
+  .image_effect{
+    width: 14.28%;
+  }
+}
+@media (max-width: 1024px) {
+.SideParddings3 {
+  padding-top: 0px!important;
+}
+}
+.cards_align{
+  padding: 5px 8px!important;
+}

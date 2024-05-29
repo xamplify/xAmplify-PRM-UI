@@ -20,8 +20,8 @@
   <div class="portlet-body clearfix">
     <div>
       <form role="form" id="deal-registration-form">
-        <div class="row ">
-          <div class="col-sm-6 col-xs-12 px-10 pl0">
+        <div class="row mr-3">
+          <div class="col-sm-6 col-xs-12 px-10 pl0 mb_pr0">
             <div class="panel-group" role="tablist" aria-multiselectable="true">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
@@ -160,7 +160,24 @@
           </div>
           <div class="col-sm-6 col-xs-12 px-10 pl0">
             <div class="row">
-  
+              <div class="panel panel-default deal-bgcolor" *ngIf="showOpportunityTypes">
+                <div class="panel-body br-unset pl0 pr0 pt0 pb0">
+                  <div class="card-bgcolors h-260 pl0 pr0">
+                    <div class="form-group" [attr.class]="opportunityTypeId" style="margin-bottom: 20px" id="dealStageDiv"
+                      *ngIf="showOpportunityTypes">
+                      <label class="control-label">Ticket Types<span class="required"><strong>*</strong></span></label>
+                      <select class="form-control" [(ngModel)]="deal.haloPSATickettypeId" [ngModelOptions]="{standalone: true}"
+                        placeholder="opportunityTypeId" id="opportunityTypeId" [disabled]="preview || isCampaignTicketTypeSelected"
+                        (ngModelChange)="onChangeTicketType()" (input)="validateField('opportunityTypeId',false)">
+                        <option [value]="0">Select Ticket Type</option>
+                        <!-- <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">
+                          {{deal.currentStageName}}</option> -->
+                        <option *ngFor="let type of halopsaTicketTypes" [value]="type.id">{{type.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="panel-group" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default deal-bgcolor">
                   <div class="panel-heading deal-bgcolor">
@@ -216,7 +233,7 @@
                           <label class="control-label">Vendor's xAmplify Stage<span class="required"><strong>*</strong></span></label>
                           <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
                             [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="createdForPipelineStageId"
-                            [disabled]="preview" (input)="validateField('createdForPipelineStageId',false)">
+                            [disabled]="preview || isCreatedForStageIdDisable" (input)="validateField('createdForPipelineStageId',false)">
                             <option [value]="0">Select Stage</option>
                             <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">
                               {{deal.currentStageName}}</option>
@@ -242,7 +259,7 @@
                          <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
                          <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
                            [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="createdForPipelineStageId"
-                           [disabled]="preview" (input)="validateField('createdForPipelineStageId',false)">
+                           [disabled]="preview || isCreatedForStageIdDisable" (input)="validateField('createdForPipelineStageId',false)">
                            <option [value]="0">Select Stage</option>
                            <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">
                              {{deal.currentStageName}}</option>
@@ -292,7 +309,7 @@
         </div>
         <div *ngIf="showCustomForm && deal.createdForCompanyId">
           <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [activeCRM]="activeCRMDetails"
-            [dealId]="deal.id" [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson"></app-sf-deal>
+            [dealId]="deal.id" [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson" [ticketTypeId]="deal.haloPSATickettypeId"></app-sf-deal>
         </div>
         <div *ngIf="!showCustomForm && showDefaultForm">
           <div class=" row portlet light deal-box">

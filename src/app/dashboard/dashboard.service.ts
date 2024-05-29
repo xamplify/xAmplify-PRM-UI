@@ -964,7 +964,7 @@ saveMultipleTheme(wrapper:any){
     .map(this.extractData)
     .catch(this.handleError);
 }
-multipleThemesShow(){
+findAllThemes(){
     let userId = this.authenticationService.getUserId();
     const url = this.authenticationService.REST_URL + 'custom/skin/theme/'+ userId +'/'+'?access_token=' + this.authenticationService.access_token;
     return this.http.get(url)
@@ -1343,7 +1343,7 @@ getDefaultThemes(){
             vanityUrlFilterQueryParameter = "&isVanityLogin=false";
         }
         let teamMemberOrPartnerDomain = selectedTab==1 ? '/' :'/partners/';
-        let signUpUrl = this.domainUrl+teamMemberOrPartnerDomain+'signUpUrl'+this.QUERY_PARAMETERS+"&loggedInUserId="+userId+vanityUrlFilterQueryParameter+domainNameQueryParameter;
+        let signUpUrl = this.domainUrl+teamMemberOrPartnerDomain+'signUpUrl'+"?loggedInUserId="+userId+vanityUrlFilterQueryParameter+domainNameQueryParameter+'&access_token=' + this.authenticationService.access_token;;
         return this.authenticationService.callGetMethod(signUpUrl);
     }
 
@@ -1378,7 +1378,11 @@ getDefaultThemes(){
         return this.authenticationService.callGetMethod(url);
     }
 
-
+    getAuthCredentialsForHalopsa(userId: any) {
+        return this.http.get(this.authenticationService.REST_URL + `halopsa/getAuth/${userId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     
 }

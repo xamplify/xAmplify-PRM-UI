@@ -4298,3 +4298,7 @@ i.fa.fa-trash-o.trashIconCustimization.trash_bgcolor:hover {
   height: 32px!important;
   line-height: 32px !important;
 }
+.vendor-details-tiles {
+  border: 1px solid #d0d5db !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff;
+}

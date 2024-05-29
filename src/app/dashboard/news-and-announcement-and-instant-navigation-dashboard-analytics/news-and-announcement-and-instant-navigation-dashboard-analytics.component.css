@@ -33,7 +33,7 @@
 .imgh {
   height: 235px !important;
   width: 100%;
-  object-fit: cover;
+  object-fit: fill;
 }
 .bi-arrow-right-short {
   float: right;

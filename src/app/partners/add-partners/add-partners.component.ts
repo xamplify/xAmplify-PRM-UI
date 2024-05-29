@@ -139,6 +139,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		{ 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
 		{ 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
 		{ 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
+		{ 'name': 'Added(ASC)', 'value': 'id-ASC' },
+		{ 'name': 'Added(DESC)', 'value': 'id-DESC' },
 	];
 	public sortOption: any = this.sortOptions[0];
 	public searchKey: string;
@@ -269,6 +271,27 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    connectWiseApiKeyError: boolean;
    connectWiseCurrentUser: string;
    connectWiseLoading: boolean = false;
+
+   //XNFR-502 HaloPSA
+
+   haloPSAImageBlur: boolean = false;
+   haloPSAImageNormal: boolean = false;
+   haloPSASelectContactListOption: any;
+   haloPSAContactListName: string;
+   haloPSAServie: any;
+   showHaloPSAAuthenticationForm: boolean = false;
+   haloPSAClientID: string;
+   haloPSAClientIDClass: string;
+   haloPSAClientIDError: boolean;
+   haloPSAClientSecret: string;
+   haloPSAClientSecretClass: string;
+   haloPSAClientSecretError: boolean;
+   haloPSAInstanceURL: string;
+   haloPSAInstanceURLClass: string;
+   haloPSAInstanceURLError: boolean;
+   haloPSACurrentUser: string;
+   haloPSALoading: boolean = false;
+
 
    /****XNFR-278****/
    mergeOptionClicked = false;
@@ -604,7 +627,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					}
 				}
 				if (this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7
-					&& this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9 && this.selectedAddPartnerOption !=10 && this.selectedAddPartnerOption !=11 && this.selectedAddPartnerOption !=12) {
+					&& this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9 && this.selectedAddPartnerOption !=10  
+					&& this.selectedAddPartnerOption !=11 && this.selectedAddPartnerOption !=12 && this.selectedAddPartnerOption !=13) {
 					if (this.newPartnerUser[i].contactCompany.replace(/[^a-zA-Z0-9]/g,'').trim() != '') {
 						this.isCompanyDetails = true;
 					} else {
@@ -641,7 +665,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				                this.validatePartnersCompany(this.newPartnerUser, this.partnerListId);
 						}
 					if ( this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
-					     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12) {
+					     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11 ||
+						 this.selectedAddPartnerOption == 12 || this.selectedAddPartnerOption == 13) {
 								this.askForPermission();
 					   }
 					   
@@ -916,6 +941,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$('.microsoftDynamicsImageClass').attr('style', 'opacity: 1;');
 		$('.pipedriveImageClass').attr('style', 'opacity: 1;');
 		$('.connectWiseImageClass').attr('style', 'opacity: 1;');
+		$('.haloPSAImageClass').attr('style', 'opacity: 1;');
 		$('.mdImageClass').attr('style', 'opacity: 1;cursor:not-allowed;');
 		$('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
 		$('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
@@ -950,7 +976,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					this.referenceService.loading(this.httpRequestLoader, false);
 					pagination.totalRecords = this.totalRecords;
 					pagination = this.pagerService.getPagedItems(pagination, this.partners);
-
 					var contactIds = this.pagination.pagedItems.map(function (a) { return a.id; });
 					var items = $.grep(this.editContactComponent.selectedContactListIds, function (element) {
 						return $.inArray(element, contactIds) !== -1;
@@ -963,7 +988,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					/*if (!this.searchKey) {
 						this.loadAllPartnerInList(pagination.totalRecords);
 					} else {
-						this.pageLoader = false;
+					this.pageLoader = false;
 
 					}*/
 					this.pageLoader = false;
@@ -1026,6 +1051,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -86px; left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -1137,6 +1163,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+		$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -1370,7 +1397,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			confirmButtonText: 'Yes, delete it!'
 
 		}).then(function (myData: any) {
-			console.log("ManagePartner showAlert then()" + myData);
 			self.removeContactListUsers1(contactId);
 		}, function (dismiss: any) {
 			console.log("you clicked showAlert cancel" + dismiss);
@@ -1379,7 +1405,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	removeContactListUsers1(contactId: number) {
 		try {
+			this.referenceService.scrollSmoothToTop();
 		    this.pageLoader = true;
+			this.isLoadingList = true;
 			this.partnerId[0] = contactId;
 			this.contactService.removeContactListUsers(this.partnerListId, this.partnerId)
 				.subscribe(
@@ -1397,11 +1425,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						let body: string = error['_body'];
 						body = body.substring(1, body.length - 1);
 						if (error._body.includes('Please launch or delete those campaigns first')) {
+							this.pageLoader = false;
+							this.isListLoader = false;
 							this.customResponse = new CustomResponse('ERROR', error._body, true);
 						} else {
 							this.xtremandLogger.errorPage(error);
 						}
-						console.log(error);
 					},
 					() => this.xtremandLogger.info("deleted completed")
 				);
@@ -1503,6 +1532,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							this.connectWiseImageNormal = true;
 						} else {
 							this.connectWiseImageBlur = true;
+						}
+						if (this.storeLogin.HALOPSA == true) {
+							this.haloPSAImageNormal = true;
+						} else {
+							this.haloPSAImageBlur = true;
 						}
 					},
 					(error: any) => {
@@ -1643,6 +1677,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -1993,7 +2028,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								if (response.statusCode == 200) {
 									this.showModal();
 									console.log("AddContactComponent salesforce() Authentication Success");
-									this.checkingPopupValues();
+									// this.checkingPopupValues();
 								} else {
 									localStorage.setItem("userAlias", data.userAlias)
 									localStorage.setItem("currentModule", data.module)
@@ -2014,8 +2049,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	checkingPopupValues() {
+		this.contactType = $("select.opts:visible option:selected ").val();
 		if (this.contactType != "") {
-			$("button#salesforce_save_button").prop('disabled', true);
+			$("button#salesforce_save_button").prop('disabled', false);
 			if (this.contactType == "contact_listviews" || this.contactType == "lead_listviews") {
 				this.getSalesforceListViewContacts(this.contactType);
 			} else {
@@ -2095,6 +2131,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 							}
@@ -2172,6 +2209,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -2228,7 +2266,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			
 			if ( this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
 			     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 
-          || this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12) {
+          || this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12 || this.selectedAddPartnerOption == 13) {
 				if (this.allselectedUsers.length != 0) {
 			        this.newPartnerUser = this.allselectedUsers;
 			   }else if (this.socialPartnerUsers.length > 0) {
@@ -2311,6 +2349,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				this.saveConnectWiseContacts();
 			} else {
 				this.saveConnectWiseContactSelectedUsers();
+			}
+		}
+
+		if (this.selectedAddPartnerOption == 13) {
+			if (this.allselectedUsers.length == 0) {
+				this.saveHaloPSAContacts();
+			} else {
+				this.saveHaloPSAContactSelectedUsers();
 			}
 		}
 
@@ -3062,6 +3108,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+						$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 						$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 						$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -3510,6 +3557,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+					$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 					$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');					
 					$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -3614,7 +3662,28 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	saveHaloPSAContacts() {
+		this.socialPartners.socialNetwork = "HALOPSA";
+		this.socialPartners.contactType = this.contactType;
+		this.socialPartners.contacts = this.socialPartnerUsers;
+		if (this.socialPartnerUsers.length > 0) {
+			this.newPartnerUser = this.socialPartners.contacts;
+			this.saveValidEmails();
+		} else
+			this.xtremandLogger.error("AddContactComponent saveHaloPSAContacts() Contacts Null Error");
 
+	}
+
+	saveHaloPSAContactSelectedUsers() {
+		this.newPartnerUser = this.allselectedUsers;
+		if (this.allselectedUsers.length != 0) {
+			this.newPartnerUser = this.allselectedUsers;
+			this.saveValidEmails();
+		}
+		else {
+			this.xtremandLogger.error("AddContactComponent saveHaloPSAContactSelectedUsers() ContactList Name Error");
+		}
+	}
 
 	hideHuspotModal() {
 		$("#ContactHubSpotModal").hide();
@@ -4003,6 +4072,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 
+			$("button#cancel_button").prop('disabled', false);
 		} else {
 			this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
 			$("button#cancel_button").prop('disabled', false);
@@ -4011,6 +4081,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.selectedAddPartnerOption = 6;
 		this.setSocialPage(1);
 		this.customResponse.isVisible = false;
+		this.socialPartners.contacts = this.socialPartnerUsers;
 		swal.close();
 	}
 
@@ -4100,7 +4171,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					if (response.statusCode == 200) {
 						this.showModal();
 						console.log("AddContactComponent salesforce() Authentication Success");
-						this.checkingPopupValues();
+						// this.checkingPopupValues();
 					} else {
 						localStorage.setItem("userAlias", data.userAlias)
 						localStorage.setItem("currentModule", data.module)
@@ -4306,6 +4377,7 @@ getTeamMembersByGroupId(partner: any, index: number) {
 				$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+				$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 				$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 				$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -4450,6 +4522,7 @@ framePipedrivePreview(response: any) {
 			$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 			$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -4654,6 +4727,7 @@ frameConnectWisePreview(response: any) {
 			$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 			$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.haloPSAImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -4667,6 +4741,113 @@ frameConnectWisePreview(response: any) {
 	}
 }
 
+  //XNFR-230
+  checkingHaloPSAContactsAuthentication() {
+	if (this.selectedAddPartnerOption == 5) {
+		this.integrationService.checkConfigurationByType('halopsa').subscribe(data => {
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.xtremandLogger.info("isAuthorize true");
+				this.getHaloPSAContacts();
+			}
+			else {
+				this.showHaloPSAPreSettingsForm();
+			}
+		}, (error: any) => {
+			this.loading = false;
+			let errorMessage = this.referenceService.getApiErrorMessage(error);
+			this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+		this.xtremandLogger.error(error, "Error in HaloPSA checkIntegrations()");
+	}, () =>                 
+	this.xtremandLogger.log("HaloPSA Configuration Checking done")
+	);
+}
+}
+showHaloPSAPreSettingsForm() {               
+	this.showHaloPSAAuthenticationForm = true;
+ }
+ closeHaloPSAForm (event: any) {
+	if (event === "0") {
+		this.showHaloPSAAuthenticationForm = false;
+	}		
+}
+getHaloPSAContacts() {
+	this.loading = true;
+	this.integrationService.getContacts('halopsa').subscribe(data => {
+		this.loading = false;
+		if (data.statusCode == 401) {
+			this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+		} else {
+			let response = data.data;
+			this.selectedAddPartnerOption = 13;
+			this.disableOtherFuctionality = true;
+			this.haloPSAImageBlur = false;
+			this.haloPSAImageNormal = true;
+			this.frameHaloPSAPreview(response);
+		}
+	},(error: any) => {
+			this.loading = false;
+			let errorMessage = this.referenceService.getApiErrorMessage(error);
+			this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+	}, () =>                 
+	this.xtremandLogger.log("HaloPSA Configuration Checking done")
+	);
+}
+frameHaloPSAPreview(response: any) {
+	if (!response.contacts) {
+		this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+	} else {			
+		this.getGoogleConatacts = response.contacts.length;
+		if (response.contacts.length == 0) {
+			this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+		} else {
+			for (var i = 0; i < response.contacts.length; i++) {
+				let socialPartner = new SocialContact();
+				let user = new User();
+				socialPartner.id = i;
+				if (this.validateEmailAddress(response.contacts[i].email)) {
+					socialPartner.emailId = response.contacts[i].email;
+					socialPartner.firstName = response.contacts[i].firstName;
+					socialPartner.lastName = response.contacts[i].lastName;
+					socialPartner.country = response.contacts[i].country;
+					socialPartner.city = response.contacts[i].city;
+					socialPartner.state = response.contacts[i].state;
+					socialPartner.postalCode = response.contacts[i].postalCode;
+					socialPartner.address = response.contacts[i].address;
+					socialPartner.company = response.contacts[i].company;
+					socialPartner.title = response.contacts[i].title;
+					socialPartner.mobilePhone = response.contacts[i].mobilePhone;
+
+					this.socialPartnerUsers.push(socialPartner);
+				}
+			}
+
+			$("button#sample_editable_1_new").prop('disabled', false);
+			// $( "#Gfile_preview" ).show();
+			this.showFilePreview();
+			$("button#cancel_button").prop('disabled', false);
+			$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+			$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+			$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+			$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+			$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.connectWiseImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+		}
+		this.setSocialPage(1);
+		this.customResponse.isVisible = false;
+		this.selectedAddPartnerOption = 13;
+		console.log("Social Contact Users for HaloPSA::" + this.socialPartnerUsers);
+	}
+}
 
 
 /****XNFR-278****/
@@ -4713,7 +4894,8 @@ unsubscribeUser(selectedUserForUnsubscribed : any){
 							}
 			
 							if ( this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
-							     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12) {
+							     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || 
+								 this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12 || this.selectedAddPartnerOption == 13) {
 								this.openCloudPartnerPopUp();
 							}
 						}else{

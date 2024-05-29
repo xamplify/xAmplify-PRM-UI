@@ -32,6 +32,10 @@ export class SelectDropdownComponent implements OnInit {
 
   private setDefaultOptionOrSelectedOptionWithIcon() {
     if (this.categoryId != "") {
+      let isStartsWithFa =  /^fa-/i.test(this.categoryId);
+      if(isStartsWithFa){
+        this.categoryId = "fa "+this.categoryId;
+      }
       let selectedCategoryName = this.dropDownItems.filter((category) => category.id === this.categoryId)[0];
       this.defaultOption = selectedCategoryName['name'];
       this.selectedIcon = selectedCategoryName['id'];

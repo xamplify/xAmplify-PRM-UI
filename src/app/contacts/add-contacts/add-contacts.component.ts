@@ -248,7 +248,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     /**** user guide ****** */
     mergeTagForGuide: any;
-    socialContactsNames: string[] = ['HUBSPOT', 'MARKETO', 'microsoft', 'pipedrive', 'connectWise', 'haloPSA'];
+    socialContactsNames: string[] = ['HUBSPOT', 'MARKETO', 'microsoft', 'pipedrive', 'connectWise', 'halopsa'];
     constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -459,7 +459,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                             self.isValidLegalOptions = true;
                             self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
                             self.cancelContacts();
+                        }  else  if (self.contacts.length === 0) {
+                            self.isValidLegalOptions = true;
+                            self.customResponse = new CustomResponse('ERROR', "No contacts found.", true);
                         }
+
 
 
 
@@ -794,10 +798,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.saveExternalContactsWithPermission('connectWise');
         } else if (this.contactOption == 'connectWiseSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
-        }else if (this.contactOption == 'haloPSAContacts') {
+        }else if (this.contactOption == 'halopsaContacts') {
             this.contactType = "CONTACT";
-            this.saveExternalContactsWithPermission('haloPSA');
-        } else if (this.contactOption == 'haloPSASelectedContacts') {
+            this.saveExternalContactsWithPermission('halopsa');
+        } else if (this.contactOption == 'halopsaSelectedContacts') {
             this.saveExternalSelectedContactsWithPermission();
         }
     }
@@ -1381,9 +1385,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
             if (this.selectedAddContactsOption == 13) {
                 if (this.allselectedUsers.length == 0) {
-                    this.saveExternalContacts('haloPSA');
+                    this.saveExternalContacts('halopsa');
                 } else {
-                    this.saveExternalContactSelectedUsers('haloPSA');
+                    this.saveExternalContactSelectedUsers('halopsa');
                 }
             }
 
@@ -1928,7 +1932,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkAll(ev: any) {
-        if (this.selectedAddContactsOption != 6 && this.selectedAddContactsOption != 9 && this.selectedAddContactsOption != 10 && this.selectedAddContactsOption != 11 && this.selectedAddContactsOption != 12) {
+        if (this.selectedAddContactsOption != 6 && this.selectedAddContactsOption != 9 && this.selectedAddContactsOption != 10 && this.selectedAddContactsOption != 11 && this.selectedAddContactsOption != 12 && this.selectedAddContactsOption != 13) {
             if (ev.target.checked) {
                 $('[name="campaignContact[]"]').prop('checked', true);
                 let self = this;
@@ -2452,7 +2456,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 if (data.statusCode == 200) {
                                     this.showModal();
                                     console.log("AddContactComponent salesforce() Authentication Success");
-                                    this.checkingPopupValues();
+                                    //this.checkingPopupValues();
                                 } else {
                                     this.setLValuesToLocalStorageAndReditectToLoginPage(this.socialContact, data);
                                 }
@@ -2492,7 +2496,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         if (response.statusCode == 200) {
                             this.showModal();
                             console.log("AddContactComponent salesforce() Authentication Success");
-                            this.checkingPopupValues();
+                            //this.checkingPopupValues();
                         } else {
                             localStorage.setItem("userAlias", data.userAlias)
                             localStorage.setItem("currentModule", data.module)
@@ -2515,8 +2519,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingPopupValues() {
+        this.contactType = $("select.opts:visible option:selected ").val();
         if (this.contactType != "") {
-            $("button#salesforce_save_button").prop('disabled', true);
+			$("button#salesforce_save_button").prop('disabled', false);
             if (this.contactType == "contact_listviews" || this.contactType == "lead_listviews") {
                 this.getSalesforceListViewContacts(this.contactType);
             } else {
@@ -3835,7 +3840,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             $('#row_' + user.id).removeClass('contact-list-selected');
             this.selectedContactListIds.splice($.inArray(user.id, this.selectedContactListIds), 1);
             this.paginatedSelectedIds.splice($.inArray(user.id, this.paginatedSelectedIds), 1);
-            this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
+            //this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
+            let indexToRemove = this.allselectedUsers.findIndex(item => item.id === user.id);
+            if (indexToRemove !== -1) {
+                this.allselectedUsers.splice(indexToRemove, 1);
+            }
         }
         if (this.paginatedSelectedIds.length == this.pagedItems.length) {
             this.isHeaderCheckBoxChecked = true;
@@ -5203,8 +5212,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingHaloPSAContactsAuthentication() {
-        if (this.selectedAddContactsOption == 13) {
-            this.integrationService.checkConfigurationByType('haloPSA').subscribe(data => {
+        this.showHaloPSAAuthenticationForm = true;
+        if (this.selectedAddContactsOption == 8) {
+            this.integrationService.checkConfigurationByType('halopsa').subscribe(data => {
                 let response = data;
                 if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
                     this.xtremandLogger.info("isAuthorize true");
@@ -5226,7 +5236,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     getHaloPSAContacts() {
         this.loading = true;
-        this.integrationService.getContacts('HaloPSA').subscribe(data => {
+        this.integrationService.getContacts('halopsa').subscribe(data => {
             this.loading = false;
             if (data.statusCode == 401) {
                 this.customResponse = new CustomResponse('ERROR', data.message, true);
@@ -5263,11 +5273,14 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else {
             this.socialContactUsers = [];
             for (var i = 0; i < response.contacts.length; i++) {
-                this.xtremandLogger.log("Contact :" + response.contacts[i].firstName);
+               
                 let socialContact = new SocialContact();
                 socialContact = response.contacts[i];
                 socialContact.id = i;
                 if (this.validateEmailAddress(response.contacts[i].email)) {
+                    socialContact.email = response.contacts[i].email;
+                    socialContact.firstName = response.contacts[i].firstName;
+                    socialContact.lastName = response.contacts[i].lastName;
                     this.socialContactUsers.push(socialContact);
                 }
                 $("button#sample_editable_1_new").prop('disabled', false);

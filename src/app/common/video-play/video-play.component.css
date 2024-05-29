@@ -30,3 +30,7 @@
  left: 50%!important;
  transform: translate(-30px, -30px)!important;
 }
+:host /deep/.video-js .vjs-big-play-button {
+  top: 50% !important;
+  left: 50% !important;
+}

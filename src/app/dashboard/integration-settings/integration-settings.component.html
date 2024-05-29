@@ -110,7 +110,7 @@
                   </span>
 
                   <ul
-                    *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'HALOPSA' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA'"
+                    *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA'"
                     class="textDecoration">
 
                     <li>{{sfCustomField.displayName}}</li>
@@ -129,6 +129,7 @@
                       Required
                     </li>
                   </ul>
+                  <span *ngIf="integrationType === 'HALOPSA'"><b>TicketType(s)</b>: {{sfCustomField.halopsaTicketTypeName}}</span>
                 </td>
                 <td><span>{{sfCustomField.type}}</span><span
                     *ngIf="sfCustomField.entryType">-{{sfCustomField.entryType}}</span>
@@ -263,7 +264,7 @@
       </div>
       <div class="text-center" *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
         <span *ngIf="integrationType =='SALESFORCE' && !isFilterApplied">Please Reconfigure {{ integrationType | titlecase }} as the token
-          is an expired</span>
+          has expired</span>
         <span *ngIf="integrationType !='SALESFORCE' && !isFilterApplied">There are no custom fields in your {{ integrationType | titlecase
           }} account.</span>
           <span *ngIf="isFilterApplied">No Custom fields found</span>

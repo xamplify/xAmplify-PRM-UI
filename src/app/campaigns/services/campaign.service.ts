@@ -1333,5 +1333,41 @@ export class CampaignService {
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
+    }			
+
+ getHalopsaPipelinesByTicketType(ticketTypeId: number, _userId: number) {
+        return this.http.get(this.URL + "/pipeline/ticket-type/"+ticketTypeId+ "/" +_userId+"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getHalopsaTicketTypes(_userId: number) {
+        return this.http.get(this.URL + "/halopsa/opportunity/types/" + _userId+ "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getCampaignHighLevelAnalytics2(userId: number, campaign:any) {
+        userId = this.authenticationService.checkLoggedInUserId(userId);       
+        let url = this.URL + "campaign/campaignHighLevelAnaltyics/" + userId + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, campaign)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getGearIconOptions(campaign : any, userId : number){
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+        let url = this.URL + "campaign/gearIconOptionsConditions/" + userId + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, campaign)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+        hasCampaignAccess(campaign : any, userId : number){
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+        let url = this.URL + "campaign/hasCampaignAccess/" + userId + "?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, campaign)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 }

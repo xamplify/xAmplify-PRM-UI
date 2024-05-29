@@ -7,7 +7,7 @@ import { Processor } from '../../core/models/processor';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { EventCampaign } from 'app/campaigns/models/event-campaign';
-import { catchError } from 'rxjs/operators';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 @Component({
   selector: 'app-preview-email-template',
@@ -36,7 +36,8 @@ export class PreviewEmailTemplateComponent implements OnInit {
   isVanityEmailTemplatePreview = false;
   apiResponseFinished = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
-    public route:ActivatedRoute,public processor:Processor,public properties:Properties) { }
+    public route:ActivatedRoute,public processor:Processor,public properties:Properties,public vanityUrlService:VanityURLService) { }
+  
 
   ngOnInit() {
     this.processor.set(this.processor);

@@ -108,11 +108,11 @@ export class FormPreviewComponent implements OnInit {
       this.alias = this.authenticationService.formAlias;
     } else {
       this.alias = this.route.snapshot.params['alias'];
-      if(this.router.url.includes("/vjf/")){
-        this.vendorJourney = true;
-      }
     }
-    let loggedInUser = localStorage.getItem('currentUser');
+    if(this.router.url.includes("/vjf/")){
+      this.vendorJourney = true;
+    }
+  let loggedInUser = localStorage.getItem('currentUser');
     if (loggedInUser !== undefined && loggedInUser !== null) {
       let userJSON = JSON.parse(loggedInUser);
       if(userJSON !== undefined && userJSON !== null){
