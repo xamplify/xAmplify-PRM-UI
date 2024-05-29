@@ -27,6 +27,7 @@ export class Deal {
     answers: DealAnswer[];
     associatedContact: User;
     createdByCompanyId: number;
+    createdByCompanyName: any;
     currentStagePrivate = false;
 
     // Sf Custom Form Fields
@@ -42,4 +43,11 @@ export class Deal {
    /****XNFR-403****/
    forecastItemsJson = "";
    dealComment:string; /****xnfr-426 */
+   
+    /***XNFR-461***/
+    createdByPipelineId: number;         
+    createdByPipelineStageId: number;
+    createdForPipelineId: number;         
+    createdForPipelineStageId: number;
+    haloPSATickettypeId: any;
 }

@@ -26,8 +26,9 @@
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-padding" style="padding-right: 0px;">
                     <div class="page-bar leftBar" style="padding: 0px;">
                         <div class="col-md-12 col-lg-12 border-line" style="border:0px !important">
-                            <div class="row">
-                                <div class="col-md-6 col-lg-6 track-title text-color content-bg">
+
+                            <div class="row track_title">
+                                <div class="col-md-6 col-lg-6 track-title text-color content-bg remove_unwanted_shadow">
                                     <div class="title-class">Title:</div>
                                     <a class="title padding_bottom text-color content-bg m0" data-toggle="tooltip"
                                         data-placement="bottom" title="{{tracksPlayBook.title}}"
@@ -41,7 +42,7 @@
                                     onerror="this.src='assets/images/content/image.png';"
                                     style="height: 123px;width: 100%;">
                             </div>
-                            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+                            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 word-wrap">
                                 <div class="center" style="padding-top: 10px;" data-toggle="tooltip"
                                     data-placement="bottom" title="{{tracksPlayBook.createdByName}}" translate>
                                     Created By <strong>{{tracksPlayBook.createdByName}}</strong>
@@ -172,7 +173,7 @@
                 </div>
             </section>
             <section class="col-xs-12 col-sm-6 col-md-6 col-lg-6" *ngIf="showAsset || showTracksPlayBook">
-                <div class=" col-md-12 col-lg-12 color-inline border-line">
+                <div class=" col-md-12 col-lg-12 color-inline border-line remove_unwanted_shadow">
                     <div style="display: inline;position: absolute;margin-top:7px !important;margin-left:3px;">
                         <a class="title padding_bottom text-color content-bg row-space"
                             style="font-size: 15px; padding-top: 10px;padding-bottom: 9px;border-bottom:none !important">Content</a>
@@ -189,15 +190,14 @@
                                 <thead>
                                     <tr>
                                         <th colspan="2" style="width: 70%" id="border-bottom">
-                                            <span class="gridHeader" translate>Asset
-                                                Details </span>
+                                            <span class="gridHeader" translate>Asset Details </span>
                                         </th>
                                         <th class="text-center" scope="row" translate id="border-bottom">Type</th>
                                         <th class="text-center" id="min-width" translate id="border-bottom">Actions</th>
                                     </tr>
                                 </thead>
                                 <div></div>
-                                <tbody>
+                                <tbody class="pointer">
                                     <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
                                         <tr [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser, 'content-in-view' : (contentIndexInView == i)}"
                                             (click)="$event.stopPropagation();viewContent(content, i)">
@@ -205,9 +205,7 @@
                                                 <td style="width: 10%;">
                                                     <div class="list-image-container">
                                                         <div class="thumbnail-wrapper">
-                                                            <img class="custom-image-css"
-                                                                src="{{content?.dam?.thumbnailPath}}"
-                                                                alt="Image Not Found">
+                                                            <img class="custom-image-css" src="{{content?.dam?.thumbnailPath}}" alt="Image Not Found">
                                                         </div>
                                                         <div *ngIf="content?.dam?.assetType != undefined && (videoFormats.indexOf(content.dam.assetType?.toLowerCase())>-1)"
                                                             class="overlay-icon">
@@ -238,13 +236,8 @@
                                                     </h4>
                                                     <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
                                                         style="padding-top: 5px;">
-                                                        <h6 *ngIf="content.finished" style="background-color: #5cb85c;"
-                                                            class="banner" translate>
-                                                            Finished</h6>
-                                                        <h6 *ngIf="content.opened && !content.finished"
-                                                            style="background-color: #819081;" class="banner" translate>
-                                                            In
-                                                            Progress</h6>
+                                                        <h6 *ngIf="content.finished" style="background-color: #5cb85c;" class="banner">Finished</h6>
+                                                        <h6 *ngIf="content.opened && !content.finished" style="background-color: #819081;" class="banner">In Progress</h6>
                                                     </div>
                                                 </td>
                                                 <td class="text-center">{{content?.dam?.assetType}}</td>
@@ -287,6 +280,10 @@
                                                         data-toggle="tooltip" data-placement="bottom" title="View"
                                                         (click)="$event.stopPropagation();viewContent(content, i)">
                                                         <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                                                        <div class="clickicons"></div>
+                                                    </a>
+                                                    <a class="custom-icon" *ngIf="i==contentIndexInView">
+                                                        <i class="fa fa-check-circle-o display-inline track-selected" aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
                                                     </a>
                                                 </div>

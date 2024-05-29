@@ -234,6 +234,12 @@ export class ContactService {
             .catch(this.handleErrorDelete);
     }
 
+    deleteContactListFromSuperAdminScreen(contactListId: number,userId:any) {
+        return this._http.post(this.contactsUrl + contactListId + "/remove?access_token=" + this.authenticationService.access_token + '&userId=' + userId, +"")
+            .map(this.extractData)
+            .catch(this.handleErrorDelete);
+    }
+
     saveContactList(userUserListWrapper: UserUserListWrapper): Observable<any> {
         var requestoptions = new RequestOptions({
             body: userUserListWrapper,
@@ -284,16 +290,16 @@ export class ContactService {
             .catch(this.handleError);
     }
 
-    updateContactList(contactListId: number, users: Array<User>): Observable<any> {
+    updateContactList(userUserListWrapper: UserUserListWrapper): Observable<any> {
         var requestoptions = new RequestOptions({
-            body: users,
+            body: userUserListWrapper,
         })
         var headers = new Headers();
         headers.append('Content-Type', 'application/json');
         var options = {
             headers: headers
         };
-        var url = this.contactsUrl + contactListId + "/update?" + 'userId=' + this.authenticationService.getUserId() + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
+        var url = this.contactsUrl + "/update?" + 'userId=' + this.authenticationService.getUserId() + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
         return this._http.post(url, options, requestoptions)
             .map(this.extractData)
             .catch(this.handleError);
@@ -557,7 +563,7 @@ export class ContactService {
             .catch(this.handleError);
     }
 
-    socialContactsCallback(queryParam: any): Observable<any> {
+    socialContactsCallback(queryParam: any, domain: any): Observable<any> {
         /*let queryParam: string;
         this.activatedRoute.queryParams.subscribe(
             ( param: any ) => {
@@ -567,14 +573,14 @@ export class ContactService {
             });*/
         let loggedInThroughVanityUrl = localStorage.getItem('vanityUrlFilter');
         if (loggedInThroughVanityUrl == 'true') {
-            this.logger.info(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('vanityUserAlias') + "&module=" + localStorage.getItem('vanityCurrentModule'));
-            return this._http.get(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('vanityUserAlias') + "&module=" + localStorage.getItem('vanityCurrentModule'))
+            this.logger.info(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('vanityUserAlias') + "&module=" + localStorage.getItem('vanityCurrentModule') + "&domain=" + domain);
+            return this._http.get(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('vanityUserAlias') + "&module=" + localStorage.getItem('vanityCurrentModule') + "&domain=" + domain)
                 .map(this.extractData)
                 .catch(this.handleError);
         }
         else {
-            this.logger.info(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('userAlias') + "&module=" + localStorage.getItem('currentModule'));
-            return this._http.get(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('userAlias') + "&module=" + localStorage.getItem('currentModule'))
+            this.logger.info(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('userAlias') + "&module=" + localStorage.getItem('currentModule') + "&domain=" + domain);
+            return this._http.get(this.authenticationService.REST_URL + this.socialCallbackName + "/callback" + queryParam + "&userAlias=" + localStorage.getItem('userAlias') + "&module=" + localStorage.getItem('currentModule') + "&domain=" + domain)
                 .map(this.extractData)
                 .catch(this.handleError);
         }
@@ -853,13 +859,6 @@ export class ContactService {
 
     excludedUserMakeAsValid(object: any) {
         return this._http.post(this.contactsUrl + "excluded-user-make-as-valid" + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, object)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-
-    downloadPartnerListCsv(contactListId: number, userId: number, pagination: Pagination) {
-        return this._http.post(this.contactsUrl + "download/" + contactListId + "/" + userId + "?access_token=" + this.authenticationService.access_token, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }

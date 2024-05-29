@@ -310,6 +310,13 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    updateCompanyProfileName(companyId:number,companyProfileName:string){
+        return this.http.get(this.authenticationService.REST_URL + `superadmin/updateCompanyProfileName/${companyId}/${companyProfileName}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
     changeAccess(campaignAccess: any) {
         return this.http.post(this.authenticationService.REST_URL + `module/updateAccess?access_token=${this.authenticationService.access_token}`, campaignAccess)
             .map(this.extractData)
@@ -957,7 +964,7 @@ saveMultipleTheme(wrapper:any){
     .map(this.extractData)
     .catch(this.handleError);
 }
-multipleThemesShow(){
+findAllThemes(){
     let userId = this.authenticationService.getUserId();
     const url = this.authenticationService.REST_URL + 'custom/skin/theme/'+ userId +'/'+'?access_token=' + this.authenticationService.access_token;
     return this.http.get(url)
@@ -1298,16 +1305,18 @@ getDefaultThemes(){
     }
 
     /***XNFR-454*****/
-    findDomains(pagination:Pagination){
+    findDomains(pagination:Pagination,selectedTab:number){
         let userId = this.authenticationService.getUserId();
         let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-        let findAllUrl = this.domainUrl+'/'+userId+this.QUERY_PARAMETERS+pageableUrl;
+        let teamMemberOrPartnerDomain = selectedTab==1 ? '/' :'/partners/';
+        let findAllUrl = this.domainUrl+teamMemberOrPartnerDomain+userId+this.QUERY_PARAMETERS+pageableUrl;
         return this.authenticationService.callGetMethod(findAllUrl);
       }
 
     /***XNFR-454*****/
-    saveDomains(domainRequestDto:DomainRequestDto){
-        const url = this.domainUrl + this.QUERY_PARAMETERS;
+    saveDomains(domainRequestDto:DomainRequestDto,selectedTab:number){
+        let teamMemberOrPartnerDomain = selectedTab==1 ? '' :'/partners';
+        const url = this.domainUrl +teamMemberOrPartnerDomain+ this.QUERY_PARAMETERS;
         domainRequestDto.createdUserId = this.authenticationService.getUserId();
         return this.authenticationService.callPostMethod(url,domainRequestDto);
     }
@@ -1319,7 +1328,7 @@ getDefaultThemes(){
         return this.authenticationService.callDeleteMethod(deleteDomainUrl);
     }
     /***XNFR-454*****/
-    findCompanySignUpUrl(){
+    findCompanySignUpUrl(selectedTab:number){
         let vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
         let domainName = this.authenticationService.companyProfileName;
         let userId = this.authenticationService.getUserId();
@@ -1333,12 +1342,44 @@ getDefaultThemes(){
         }else{
             vanityUrlFilterQueryParameter = "&isVanityLogin=false";
         }
-        let signUpUrl = this.domainUrl+'/signUpUrl'+this.QUERY_PARAMETERS+"&loggedInUserId="+userId+vanityUrlFilterQueryParameter+domainNameQueryParameter;
+        let teamMemberOrPartnerDomain = selectedTab==1 ? '/' :'/partners/';
+        let signUpUrl = this.domainUrl+teamMemberOrPartnerDomain+'signUpUrl'+"?loggedInUserId="+userId+vanityUrlFilterQueryParameter+domainNameQueryParameter+'&access_token=' + this.authenticationService.access_token;;
         return this.authenticationService.callGetMethod(signUpUrl);
     }
 
     findInstantNavigationLinks(vanityLoginDto: VanityLoginDto) {
         return this.http.post(this.dashboardAnalytics + `getInstantNavigationLinks?access_token=${this.authenticationService.access_token}`, vanityLoginDto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
+    /*****XNFR-502*****/
+    saveHalopsaCredentials(formData: any) {
+        return this.http.post(this.authenticationService.REST_URL + `/halopsa/saveCredentials?access_token=${this.authenticationService.access_token}`, formData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
+    findProcessingUserLists(pagination: Pagination) {
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        let url = this.superAdminUrl+"/processingUserLists?access_token=" + this.authenticationService.access_token+pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    findAllCompanyNames() {
+        const url = this.superAdminUrl + 'findAllCompanyNames?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    findAllPartnerCompanyNames(vendorCompanyProfileName:string) {
+        const url = this.superAdminUrl + 'findAllPartnerCompanyNames/'+vendorCompanyProfileName+'?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    getAuthCredentialsForHalopsa(userId: any) {
+        return this.http.get(this.authenticationService.REST_URL + `halopsa/getAuth/${userId}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);
     }

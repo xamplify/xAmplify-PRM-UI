@@ -73,7 +73,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   selectedLandingPageId:any;
   landingPageSharedDetails:LandingPageShareDto = new LandingPageShareDto();
   @Output() viewAnalytics = new EventEmitter();
-
+  @Input() isMasterLandingPages =  false;
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -107,7 +107,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 
 
   private sefDefaultViewType() {
-    if(this.vendorJourney || this.isLandingPages){
+    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages){
         this.viewType = 'g';
     }else if (this.folderListViewCategoryId != undefined) {
         this.categoryId = this.folderListViewCategoryId;
@@ -165,6 +165,11 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       if(this.vendorJourney){
         this.pagination.source = "VENDOR_JOURNEY";
         this.pagination.defaultLandingPage = false;
+      }else if(this.isMasterLandingPages){
+        this.pagination.source = "MASTER_PARTNER_PAGE";
+        this.pagination.defaultLandingPage = false;
+        this.pagination.loginAsUserId = this.loggedInUserId;
+        this.pagination.companyId = this.loggedInUserCompanyId;
       }else{
         this.pagination.source = "MANUAL";
       }
@@ -242,7 +247,12 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   showPreview(landingPage: LandingPage) {
     if(this.isPartnerLandingPage){
         this.referenceService.previewPartnerPageInNewTab(landingPage.partnerLandingPageId);
-    }else{
+    }else if(this.isLandingPages){
+        this.referenceService.previewVendorJourneyPartnerPageInNewTab(landingPage.vendorJourneyId);
+    }else if(this.isMasterLandingPages){
+        this.referenceService.previewMasterPartnerPageInNewTab(landingPage.id);
+    }
+    else{
         this.referenceService.previewPageInNewTab(landingPage.id);
     }
   }
@@ -274,7 +284,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 
 
   editLandingPage(id: number) {
-    if(this.vendorJourney || this.isLandingPages){
+    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages){
         this.landingPageService.getById(id).subscribe(
             (data: any) => {
                 this.vendorLandingPage.emit(data.data);

@@ -70,18 +70,17 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         private logger: XtremandLogger, public refService: ReferenceService, private hubSpotService: HubSpotService,private utilService:UtilService) {
         this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
         this.emailTemplateService.isTemplateSaved = false;
+        this.emailTemplateService.isEditingDefaultTemplate = false;
 
     }
     ngOnInit() {
         try {
-           this.mergeTagForGuide = 'design_email_template'
-            this.listDefaultTemplates();
+           this.listDefaultTemplates();
         }
         catch (error) {
             this.logger.error(this.refService.errorPrepender + " ngOnInit():", error);
         }
     }
-
     listDefaultTemplates() {
         this.refService.loading(this.httpRequestLoader, true);
         this.emailTemplateService.listDefaultTemplates(this.authenticationService.user.id)
@@ -100,7 +99,10 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                     this.logger.error(this.refService.errorPrepender + " listDefaultTemplates():" + error);
                     this.refService.showServerError(this.httpRequestLoader);
                 },
-                () => this.logger.info("Finished listDefaultTemplates()")
+                () => {
+                    this.getUserGuideMergeTag(2);
+                    this.logger.info("Finished listDefaultTemplates()")
+                }
             );
     }
 
@@ -111,14 +113,14 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        //  this.emailTemplateService.emailTemplate = new EmailTemplate();
+        
     }
 
     showAllTemplates(index: number) {
         this.filteredEmailTemplates = new Array<EmailTemplate>();
         this.filteredEmailTemplates = this.allEmailTemplates;
         this.selectedTemplateTypeIndex = index;
-        this.mergeTagForGuide = 'design_email_template';
+        this.getUserGuideMergeTag(this.selectedTemplateTypeIndex);
     }
 
 
@@ -141,7 +143,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     showEventTemplates(index: number) {
         try {
             this.selectedTemplateTypeIndex = index;
-            this.mergeTagForGuide = 'design_event_template';
+            this.getUserGuideMergeTag(this.selectedTemplateTypeIndex);
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             for (var i = 0; i < this.allEmailTemplates.length; i++) {
                 var isBeeEventTemplate = this.allEmailTemplates[i].beeEventTemplate;
@@ -159,7 +161,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     showEventCoBrandingTemplates(index: number) {
         try {
             this.selectedTemplateTypeIndex = index;
-            this.mergeTagForGuide = 'design_event_template';
+            this.getUserGuideMergeTag(this.selectedTemplateTypeIndex);
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             for (var i = 0; i < this.allEmailTemplates.length; i++) {
                 var beeEventCoBrandingTemplate = this.allEmailTemplates[i].beeEventCoBrandingTemplate;
@@ -230,10 +232,9 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
 
     showRichTemplates(index: number) {
         try {
-            //this.getUserGuideMergeTags();
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            this.mergeTagForGuide = 'design_email_template';
+            this.getUserGuideMergeTag(this.selectedTemplateTypeIndex);
             for (var i = 0; i < this.allEmailTemplates.length; i++) {
                 var isBeeRegularTemplate = this.allEmailTemplates[i].beeRegularTemplate;
                 if (isBeeRegularTemplate) {
@@ -272,7 +273,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         try {
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            this.mergeTagForGuide = 'design_video_template';
+            this.getUserGuideMergeTag(this.selectedTemplateTypeIndex);
             for (var i = 0; i < this.allEmailTemplates.length; i++) {
                 var isBeeVideoTemplate = this.allEmailTemplates[i].beeVideoTemplate;
                 if (isBeeVideoTemplate) {
@@ -292,7 +293,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         try {
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            this.mergeTagForGuide = 'design_email_template'
+            this.getUserGuideMergeTag(this.selectedTemplateTypeIndex);
             console.log(this.allEmailTemplates);
             for (var i = 0; i < this.allEmailTemplates.length; i++) {
                 var isRegularCoBrandingTemplate = this.allEmailTemplates[i].regularCoBrandingTemplate;
@@ -311,7 +312,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         try {
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            this.mergeTagForGuide = 'design_video_template';
+            this.getUserGuideMergeTag(this.selectedTemplateTypeIndex);
             for (var i = 0; i < this.allEmailTemplates.length; i++) {
                 var isVideoCoBrandingTemplate = this.allEmailTemplates[i].videoCoBrandingTemplate;
                 if (isVideoCoBrandingTemplate) {
@@ -343,22 +344,25 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     }
 
 
-    showTemplateById(template: any) {
+    showTemplateById(template: any,isAdd:boolean) {
         if (template.id != undefined) {
             this.emailTemplateService.getById(template.id)
                 .subscribe(
                     (data: any) => {
-                        if(this.authenticationService.module.isAgencyCompany){
-                            data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.v_companyLogoImagePath);
-                        }else{
-                            if (this.refService.companyProfileImage != undefined) {
-                                data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                        if(isAdd){
+                            this.emailTemplateService.isEditingDefaultTemplate = false;
+                            if(this.authenticationService.module.isAgencyCompany){
+                                data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.v_companyLogoImagePath);
+                            }else{
+                                if (this.refService.companyProfileImage != undefined) {
+                                    data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                                }
                             }
+                            this.emailTemplateService.isNewTemplate = true;
+                        }else{
+                            this.emailTemplateService.isEditingDefaultTemplate = true;
                         }
-
-                        
                         this.emailTemplateService.emailTemplate = data;
-                        this.emailTemplateService.isNewTemplate = true;
                         this.router.navigate(["/home/emailtemplates/create"]);
                     },
                     (error: string) => {
@@ -875,7 +879,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
           
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            this.mergeTagForGuide = 'design_survey_template';
+            this.getUserGuideMergeTag(this.selectedTemplateTypeIndex);
             console.log(this.allEmailTemplates);
             for (var i = 0; i < this.allEmailTemplates.length; i++) {
                 var isSurveyTemplate = false;
@@ -893,5 +897,24 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             var cause = "Error in showSurveyTemplates() in selectTemplatesComponent";
             this.logger.error(cause + ":" + error);
         }
-    }   
+    }  
+    /**** XNFR-512 ******/
+    getUserGuideMergeTag(index: number) {
+        let templateType = 'email_template'; // Default template type
+        if (index == 2 || index == 6) {
+            templateType = 'email_template';
+        } else if (index == 4 || index == 7) {
+            templateType = 'video_template';
+        } else if (index == 9 || index == 10) {
+            templateType = 'event_template';
+        } else if (index == 13 || index == 14) {
+            templateType = 'survey_template';
+        } else {
+            templateType = 'email_template'; // Default case if none of the above
+        }
+        this.mergeTagForGuide = this.isMarketingCompany
+            ? `designing_${templateType}_marketing`
+            : `design_${templateType}`;
+    }
+    /**** XNFR-512 ******/
 }

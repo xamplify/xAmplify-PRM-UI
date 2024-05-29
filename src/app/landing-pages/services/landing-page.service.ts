@@ -25,11 +25,13 @@ export class LandingPageService {
     URL = this.authenticationService.REST_URL + "landing-page/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/"
     vendorJourney:boolean = false;
+    isMasterLandingPages:boolean = false;
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
          private router: Router,private utilService:UtilService,public referenceService:ReferenceService) { }
 
     listDefault( pagination: Pagination ): Observable<any> {
-        return this.http.post( this.URL + "default?access_token=" + this.authenticationService.access_token, pagination )
+        let encodedUrl = this.referenceService.getEncodedUri(pagination.searchKey);
+        return this.http.post( this.URL + "default?searchKey="+encodedUrl+"&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -108,12 +110,17 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
-    getHtmlContentByAlias( landingPageHtmlDto:any,isPartnerLandingPage:boolean ) {
+    getHtmlContentByAlias( landingPageHtmlDto:any,isPartnerLandingPage:boolean, isMasterLandingPage:boolean) {
         landingPageHtmlDto['vanityUrlFilter']  = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
         if(isPartnerLandingPage){
             return this.http.post( this.authenticationService.REST_URL + "/getPartnerHtmlBodyByAlias",landingPageHtmlDto)
             .map( this.extractData )
             .catch( this.handleError );
+        }else if(isMasterLandingPage){
+            return this.http.post( this.authenticationService.REST_URL + "/getMasterLandingPageHtmlBodyByAlias",landingPageHtmlDto)
+            .map( this.extractData )
+            .catch( this.handleError );
+
         }else{
             return this.http.post( this.authenticationService.REST_URL + "/getHtmlBodyByAlias" , landingPageHtmlDto )
             .map( this.extractData )
@@ -235,4 +242,9 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
+    getVendorLogoDetailsByPartnerDetails( userId: number, companyId: number, landingPageId:number ) {
+        return this.http.get( this.URL + "/getVendorLogoDetailsByPartner/" + userId +"/"+companyId+"/"+landingPageId+"?access_token=" + this.authenticationService.access_token, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 }

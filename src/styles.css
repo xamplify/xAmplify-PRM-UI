@@ -3044,10 +3044,6 @@ span.icon-alignments {
   border-bottom-right-radius: 15px !important;
   border-bottom-left-radius: 15px !important;
 }
-.img-grid-track {
-  border-bottom-left-radius: 15px !important;
-  border-bottom-right-radius: 15px !important;
-}
 .tab_alignments{
   padding-top: 2px;
   padding-bottom: 10px;
@@ -3064,4 +3060,22 @@ span.icon-alignments {
 .color1,
 .color1-invert:hover {
   border-radius: 3px!important;
+}
+.cloud_platforms_margins{
+  margin-right: -20px !important;
+  margin-left: -7px !important;
+}
+@media screen and (max-width: 578px) {
+  .dashboard-stat .details{
+    padding-right: 10px!important;
+    width: 140px;
+}
+.mdf-cards{
+ padding-left: 15px !important;
+ padding-right: 15px !important;
+}
+}
+
+.display-inline{
+  display: inline !important;
 }

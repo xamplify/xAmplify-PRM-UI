@@ -68,6 +68,15 @@ export class AddLeadComponent implements OnInit {
   editTextArea:boolean = false;
 
   disableCreatedFor: boolean = false;
+  createdByActiveCRM: any;
+  createdForActiveCRM: any;
+  showCreatedByPipelineAndStage: boolean = false;
+  showCreatedByPipelineAndStageOnTop: boolean = false;
+  createdForStages: any[];
+  createdByStages: any[];
+  createdByPipelines: any;
+  createdForPipelines: any;
+  type = "LEAD";
 
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, private leadsService: LeadsService,
@@ -87,6 +96,10 @@ export class AddLeadComponent implements OnInit {
     this.lead.createdForCompanyId = 0;
     this.lead.pipelineId = 0;
     this.lead.pipelineStageId = 0;
+    this.lead.createdForPipelineId =0;
+    this.lead.createdByPipelineId = 0;
+    this.lead.createdForPipelineStageId = 0;
+    this.lead.createdByPipelineStageId = 0;
     if (this.actionType === "view") {
       this.preview = true;
       this.leadFormTitle = "View Lead";
@@ -275,12 +288,16 @@ export class AddLeadComponent implements OnInit {
             if (data.statusCode == 200) {
               let campaignLeadPipeline = data.data;
               self.lead.pipelineId = campaignLeadPipeline.id;
-              self.stages = campaignLeadPipeline.stages;
+              self.lead.createdForPipelineId = campaignLeadPipeline.createdForCampaignPipelines.id;
+              self.lead.createdByPipelineId = campaignLeadPipeline.createdByCampaignPipelines.id;
+              self.createdByStages = campaignLeadPipeline.createdByCampaignPipelines.stages;
+              self.createdForStages = campaignLeadPipeline.createdForCampaignPipelines.stages;
               self.hasCampaignPipeline = true;
             } else if (data.statusCode == 404) {
               self.lead.pipelineId = 0;
               self.stages = [];
               self.getPipelines();
+              // this.getActiveCRMPipeline();
               self.hasCampaignPipeline = false;
             }
           },
@@ -339,10 +356,16 @@ export class AddLeadComponent implements OnInit {
 
   getStages() {
     let self = this;
-    if (this.lead.pipelineId > 0) {
-      this.pipelines.forEach(p => {
-        if (p.id == this.lead.pipelineId) {
-          self.stages = p.stages;
+    if (this.lead.createdForPipelineId > 0) {
+      this.createdForPipelines.forEach(p => {
+        if (p.id == this.lead.createdForPipelineId) {
+          self.createdForStages = p.stages;
+        }
+      });
+    } else if (this.lead.createdByPipelineId > 0) {
+      this.createdByPipelines.forEach(p => {
+        if (p.id == this.lead.createdByPipelineId) {
+          self.createdByStages = p.stages;
         }
       });
     } else {
@@ -417,10 +440,16 @@ export class AddLeadComponent implements OnInit {
     if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
       this.isValid = false;
       this.errorMessage = "Please select Lead For";
-    } else if (this.lead.pipelineId == undefined || this.lead.pipelineId <= 0) {
+    } else if (this.lead.createdForPipelineId == undefined || this.lead.createdForPipelineId <= 0) {
       this.isValid = false;
       this.errorMessage = "Please select a Pipeline";
-    } else if (this.lead.pipelineStageId == undefined || this.lead.pipelineStageId <= 0) {
+    } else if (this.lead.createdForPipelineStageId == undefined || this.lead.createdForPipelineStageId <= 0) {
+      this.isValid = false;
+      this.errorMessage = "Please select a Pipeline Stage ";
+    } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineId == undefined || this.lead.createdByPipelineId <= 0)) {
+      this.isValid = false;
+      this.errorMessage = "Please select a Pipeline";
+    } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineStageId == undefined || this.lead.createdByPipelineStageId <= 0)) {
       this.isValid = false;
       this.errorMessage = "Please select a Pipeline Stage ";
     } else if (this.lead.lastName == undefined || this.lead.lastName == "") {
@@ -453,6 +482,14 @@ export class AddLeadComponent implements OnInit {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.errorMessage = "";
     this.lead.userId = this.loggedInUserId;
+    if(this.lead.createdForPipelineId > 0 && this.lead.createdForPipelineStageId > 0){
+      this.lead.pipelineId = this.lead.createdForPipelineId;
+      this.lead.pipelineStageId = this.lead.createdForPipelineStageId;
+    }
+    else if (this.lead.createdByPipelineId > 0 && this.lead.createdByPipelineStageId > 0) {
+      this.lead.pipelineId = this.lead.createdByPipelineId;
+      this.lead.pipelineStageId = this.lead.createdByPipelineStageId;
+    }
     this.leadsService.saveOrUpdateLead(this.lead)
       .subscribe(
         data => {
@@ -505,6 +542,12 @@ export class AddLeadComponent implements OnInit {
               } else {
                 this.getActiveCRMPipeline();
               }
+            }
+            if (this.actionType === "view") {
+              this.getLeadPipelinesForView();
+            }
+            else {
+              this.getLeadPipelines();
             }
           }
         },
@@ -561,6 +604,150 @@ export class AddLeadComponent implements OnInit {
         () => { }
       );
   }
+
+  getLeadPipelines() {
+    let campaignId = 0;
+    let self = this;
+    self.ngxloading = true;
+    self.referenceService.loading(this.httpRequestLoader, true);
+    if (this.lead.campaignId !== undefined && this.lead.campaignId > 0) {
+      campaignId = this.lead.campaignId;
+    }
+    this.dealsService.getActiveCRMPipelines(this.lead.createdForCompanyId, this.loggedInUserId, campaignId, this.type, 0)
+      .subscribe(
+        data => {
+          self.referenceService.loading(this.httpRequestLoader, false);
+          self.ngxloading = false;
+          if (data.statusCode == 200) {
+            let activeCRMPipelinesResponse: any = data.data;
+            self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
+            self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
+            self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByLeadPipelineAndStage;
+            self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByLeadPipelineAndStageOnTop;
+            let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
+            if (createdByPipelines !== undefined && createdByPipelines !== null) {
+              this.handleCreatedByPipelines(createdByPipelines);
+            }
+
+            let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
+            if (createdForPipelines !== undefined && createdForPipelines !== null) {
+              this.handleCreatedForPipelines(createdForPipelines);
+            }
+
+          } else if (data.statusCode == 404) {
+            this.lead.createdForPipelineId = 0;
+            this.lead.createdByPipelineId = 0;
+            this.createdForStages = [];
+            this.createdByStages = [];
+            this.getPipelines();
+            this.activeCRMDetails.hasCreatedForPipeline = false;
+            this.activeCRMDetails.hasCreatedByPipeline = false;
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
+  getLeadPipelinesForView() {
+    let campaignId = 0;
+    let self = this;
+    this.ngxloading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
+    if (this.lead.campaignId !== undefined && this.lead.campaignId > 0) {
+      campaignId = this.lead.campaignId;
+    }
+    this.leadsService.getLeadPipelinesForView(this.leadId, this.loggedInUserId)
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.ngxloading = false;
+          if (data.statusCode == 200) {
+            let activeCRMPipelinesResponse: any = data.data;
+            self.createdByActiveCRM = activeCRMPipelinesResponse.createdByActiveCRM;
+            self.createdForActiveCRM = activeCRMPipelinesResponse.createdForActiveCRM;
+            self.showCreatedByPipelineAndStage = activeCRMPipelinesResponse.showCreatedByLeadPipelineAndStage;
+            self.showCreatedByPipelineAndStageOnTop = activeCRMPipelinesResponse.showCreatedByLeadPipelineAndStageOnTop;
+            let createdByPipelines: Array<any> = activeCRMPipelinesResponse.createdByCompanyPipelines;
+            let createdForPipelines: Array<any> = activeCRMPipelinesResponse.createdForCompanyPipelines;
+
+            if (createdByPipelines !== undefined && createdByPipelines !== null) {
+              this.handleCreatedByPipelines(createdByPipelines);
+            }
+
+            if (createdForPipelines !== undefined && createdForPipelines !== null) {
+              this.handleCreatedForPipelines(createdForPipelines);
+            }
+
+          } else if (data.statusCode == 404) {
+            this.lead.createdForPipelineId = 0;
+            this.lead.createdByPipelineId = 0;
+            this.createdForStages = [];
+            this.createdByStages = [];
+            this.getPipelines();
+            this.activeCRMDetails.hasCreatedForPipeline = false;
+            this.activeCRMDetails.hasCreatedByPipeline = false;
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
+
+  handleCreatedByPipelines(createdByPipelines: any) {
+    let self = this;
+    self.createdByPipelines = createdByPipelines;
+    if (createdByPipelines.length === 1) {
+      let createdByPipeline = createdByPipelines[0];
+      self.lead.createdByPipelineId = createdByPipeline.id;
+      self.createdByStages = createdByPipeline.stages;
+      self.activeCRMDetails.hasCreatedByPipeline = true;
+    } else {
+      let createdByPipelineExist = false;
+      for (let p of createdByPipelines) {
+        if (p.id == this.lead.createdByPipelineId) {
+          createdByPipelineExist = true;
+          self.createdByStages = p.stages;
+          break;
+        }
+      }
+      if (!createdByPipelineExist) {
+        self.lead.createdByPipelineId = 0;
+        self.lead.createdByPipelineStageId = 0;
+      }
+      self.activeCRMDetails.hasCreatedByPipeline = false;
+    }
+  }
+
+  handleCreatedForPipelines(createdForPipelines: any) {
+    let self = this;
+    self.createdForPipelines = createdForPipelines;
+    if (createdForPipelines.length === 1) {
+      let createdForPipeline = createdForPipelines[0];
+      self.lead.createdForPipelineId = createdForPipeline.id;
+      self.createdForStages = createdForPipeline.stages;
+      self.activeCRMDetails.hasCreatedForPipeline = true;
+    } else {
+      let createdForPipelineExist = false;
+      for (let p of createdForPipelines) {
+        if (p.id == this.lead.createdForPipelineId) {
+          createdForPipelineExist = true;
+          self.createdForStages = p.stages;
+          break;
+        }
+      }
+      if (!createdForPipelineExist) {
+        self.lead.createdForPipelineId = 0;
+        self.lead.createdForPipelineStageId = 0;
+      }
+      self.activeCRMDetails.hasCreatedForPipeline = false;
+    }
+  }
+
 
   /********XNFR-426********/
   showComments(lead: any) {

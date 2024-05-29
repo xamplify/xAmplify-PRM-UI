@@ -378,8 +378,9 @@ export class DealRegistrationService
             .catch(this.handleError);
     }
     deleteDealType(dealType: DealType)
-    {
+    {   
         var url = this.URL + "deal-type/delete/?access_token=" + this.authenticationService.access_token;
+        dealType.createdBy = this.authenticationService.getUserId();
         return this.http.post(url, dealType)
             .map(this.extractData)
             .catch(this.handleError);

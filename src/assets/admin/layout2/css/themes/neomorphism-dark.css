@@ -2121,6 +2121,9 @@ tbody {
 .table>thead:first-child>tr:first-child>th {
   border-top: none!important;
 }
+.table>thead:first-child>tr:first-child>td{        
+  border-top: none!important;
+}
 /* End */
 .setting-icon-cu .gearDropdownMenu {
   color: #fff !important;
@@ -2624,6 +2627,7 @@ span.input-group-btn {
 }
 button.glyphicon.glyphicon-remove.search-box-item-clear {
   box-shadow: none !important;
+  background: none !important;
 }
 .angle-down {
   color: #191b1e !important;
@@ -3916,7 +3920,7 @@ button.btn.btn-primary {
 .btn-file input[type="file"]{
   position: absolute !important;
 }
-table.table.table-bordered > tbody {
+table>.table>.table-bordered > tbody {
   background: none !important;
   box-shadow: none !important;
   border: none !important;
@@ -4039,10 +4043,10 @@ a.delete.custom-icon {
 .gridViewImgpositioning {
   border-bottom: 1px solid #181b1e;
 }
-.img-grid-track {
+/* .img-grid-track {
   border-bottom-left-radius: 15px !important;
   border-bottom-right-radius: 15px !important;
-}
+} */
 .icons_align a{
   padding: 4px !important;
 }
@@ -4086,4 +4090,42 @@ li.filter.selectedBox{
 .color1,
 .color1-invert:hover {
   border-radius: 10px!important;
+}
+/***** Sudha Sri(02-04-2024) *****/
+.panel-default > .panel-heading + .panel-collapse .panel-body{
+  border-top-color: #191b1e;
+}
+.neg_mrg_left1{
+  margin-left: -1px !important;
+}
+.cloud_platforms_margins{
+  margin-right: -20px !important;
+  margin-left: -6px !important;
+}
+.SingleIconCu{
+  width: 32px!important;
+  height: 32px!important;
+  line-height: 32px !important;
+}
+.track_title{
+  padding: 6px 12px;
+
+}
+/* deal pipelines btn */
+button.btn.btn-white {
+  color: #ffffff !important;
+}
+.Synchronize_btn{
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  box-shadow: none !important;
+  border-radius: 7px !important;
+}
+.Synchronize_btn:hover{
+    background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+    box-shadow: none !important;
+    color: #fff;
+}
+.vendor-details-tiles {
+border: 1px solid #191b1e !important;
+box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }

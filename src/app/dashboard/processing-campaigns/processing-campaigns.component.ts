@@ -14,7 +14,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 @Component({
   selector: 'app-processing-campaigns',
   templateUrl: './processing-campaigns.component.html',
-  styleUrls: ['./processing-campaigns.component.css'],
+  styleUrls: ['./processing-campaigns.component.css','../admin-report/admin-report.component.css'],
   providers: [Pagination, HttpRequestLoader, Properties, SortOption]
 })
 export class ProcessingCampaignsComponent implements OnInit {
@@ -24,6 +24,7 @@ export class ProcessingCampaignsComponent implements OnInit {
   apiError: boolean;
   customResponse:CustomResponse = new CustomResponse();
   header = "";
+  collapsableDivId = "";
   constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,
@@ -37,8 +38,10 @@ export class ProcessingCampaignsComponent implements OnInit {
   ngOnInit() {
     if(this.scheduledCampaigns){
       this.pagination.archived = false;
+      this.collapsableDivId = "collapsible-schedule-campaigns";
       this.header = "Scheduled Campaigns";
     }else{
+      this.collapsableDivId = "collapsible-processing-campaigns";
       this.pagination.archived = true;
       this.header = "Processing Campaigns";
     }

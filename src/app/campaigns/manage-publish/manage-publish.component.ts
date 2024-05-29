@@ -298,19 +298,30 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     this.isloading = false;
                     this.logger.errorPage(error);
                 });
-                 /******* user guide  ********/
-            if (this.authenticationService.isOnlyPartner() || this.authenticationService.module.loggedInThroughVendorVanityUrl) {
-                this.mergeTagForGuide = 'manage_campaigns_partner';
-            } else {
-                this.mergeTagForGuide = 'manage_campaigns_vendor';
-            }
+            /******* user guide  ********/
+            this.getuserGuideMergeTag()
             /******* user guide  ********/
             
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
         }
     }
-
+    /*** XNFR-512 ***/
+    getuserGuideMergeTag() {
+        this.authenticationService.getRoleByUserId().subscribe(
+            (data: any) => {
+                const role = data.data;
+                const roleName = role.role == 'Team Member'? role.superiorRole : role.role;
+                if (roleName == 'Marketing' || roleName == 'Marketing & Partner') {
+                    this.mergeTagForGuide = 'manage_campaigns_marketing';
+                }else if(roleName == 'Partner'){
+                    this.mergeTagForGuide = 'manage_campaigns_partner';
+                } else {
+                    this.mergeTagForGuide = 'manage_campaigns_vendor';
+                }
+            });
+    }
+    /*** XNFR-512 ***/
     getCampaignTypes(){
         this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);

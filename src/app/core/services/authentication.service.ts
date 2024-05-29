@@ -157,6 +157,7 @@ export class AuthenticationService {
   isstyleTWoBgColor: boolean;
   /*** XNFR-416 ****/
   properties = new Properties();
+  companyUrl = "";
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -258,6 +259,10 @@ export class AuthenticationService {
 
           if (this.vanityURLEnabled && this.companyProfileName && this.vanityURLUserRoles) {
             userToken['roles'] = this.vanityURLUserRoles;
+          }
+
+          if(this.vanityURLEnabled && this.companyProfileName && userName=="admin@xamplify.io"){
+            userToken['roles'] = res.json().roles;
           }
 
           this.translateService.use(res.json().preferredLanguage);
@@ -795,6 +800,21 @@ export class AuthenticationService {
       .catch((error: any) => { return error; });
   }
 
+  getVanityURLUserRolesForLoginAs(userName: string, userId:number) {
+    let dashboardAnalyticsDto = new DashboardAnalyticsDto();
+    let companyProfileName = this.companyProfileName;
+    dashboardAnalyticsDto.userId = userId;
+    if (companyProfileName != undefined && companyProfileName != "") {
+      dashboardAnalyticsDto.vanityUrlFilter = true;
+      dashboardAnalyticsDto.vendorCompanyProfileName = companyProfileName;
+    } else {
+      dashboardAnalyticsDto.vanityUrlFilter = false;
+    }
+    return this.http.post(this.REST_URL + 'v_url/userRoles?userName=' + userName + '&access_token=' + this.access_token, dashboardAnalyticsDto)
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+  }
+
   extractData(res: Response) {
     let body = res.json();
     return body || {};
@@ -1109,6 +1129,9 @@ export class AuthenticationService {
   /****XNFR-317****/
   findAllTeamMembers(pagination: Pagination) {
     pagination.userId = this.getUserId();
+    if(pagination.userId==1){
+      pagination.userId = pagination.userListId;
+    }
     let url = this.REST_URL + "teamMember/findAll?access_token=" + this.access_token;
     return this.callPostMethod(url, pagination);
   }
@@ -1179,7 +1202,12 @@ export class AuthenticationService {
 
   /***XNFR-326***/
   getPartnerModuleCustomName() {
-    return localStorage.getItem("partnerModuleCustomName");
+    let name = "Partner";
+    let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
+    if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
+      name = partnerModuleCustomName;
+    }
+    return name;
   }
 
   getDefaultM3U8FileForLocal(videoUrl: string) {
@@ -1267,6 +1295,13 @@ signUpAsTeamMember(data: any) {
   let url = this.REST_URL + "signUpAsTeamMember";
   return this.callPostMethod(url,data)
 }
+
+signUpAsPartner(data: any) {
+  let url = this.REST_URL + "signUpAsPartner";
+  return this.callPostMethod(url,data)
+}
+
+
 unpublishLearingTracks(learningTrackIds:any){
   let url = this.REST_URL + "lms/unpublishLearingTracks?access_token="+this.access_token;
   let data = {};
@@ -1279,15 +1314,34 @@ getEmailTemplateHtmlBodyAndMergeTagsInfo(suffixUrl:string){
   return this.callGetMethod(URL);
 }
 
-getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:boolean){
+getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:boolean, vendorJourney:boolean, isMasterLandingPages:boolean){
   let userId = this.getUserId();
   let URL_PREFIX = "";
-  if(isPartnerLandingPagePreview){
+  if(isPartnerLandingPagePreview || vendorJourney){
     URL_PREFIX = this.REST_URL+"landing-page/partner/";
+  }else if(isMasterLandingPages){
+    URL_PREFIX = this.REST_URL+"landing-page/master/";
   }else{
     URL_PREFIX = this.REST_URL+"landing-page/";
   }
-  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&access_token="+this.access_token;
+  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&vendorJourney="+vendorJourney+"&access_token="+this.access_token;
+  return this.callGetMethod(URL);
+}
+
+getAssetPdfHtmlBody(id:number,isPartnerView:boolean,isTrackOrPlayBookPdfPreview:boolean){
+  let userId = this.getUserId();
+  let URL = "";
+  let URL_PREFIX = "";
+  if(isPartnerView){
+    URL_PREFIX = this.REST_URL+"dam/partner/";
+    URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&access_token="+this.access_token;
+  }else if(isTrackOrPlayBookPdfPreview){
+    URL_PREFIX = this.REST_URL+"dam/";
+    URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&trackOrPlayBookPdfPreview=true&access_token="+this.access_token;
+  } else{
+    URL_PREFIX = this.REST_URL+"dam/";
+    URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&access_token="+this.access_token;
+  }
   return this.callGetMethod(URL);
 }
 
@@ -1302,7 +1356,14 @@ removeLocalStorageItemByKey(key:string){
 getLocalStorageItemByKey(key:string){
   return JSON.parse(localStorage.getItem(key));
 }
-
+/*** XNFR-512 ****/
+getRoleByUserId() {
+  var url = this.REST_URL + "admin/getRolesByUserId/" + this.getUserId() + "?access_token=" + this.access_token;
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+/*** XNFR-512 ****/
 
 
 

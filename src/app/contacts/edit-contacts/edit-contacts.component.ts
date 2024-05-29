@@ -34,6 +34,7 @@ import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { Subject } from 'rxjs';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
+import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -259,6 +260,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() showEdit: boolean;
 	/*****XNFR-342*****/
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
+	contactListObj = new ContactList;
+	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -386,7 +389,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 
 	fileChange(input: any) {
-		this.uploadCsvUsingFile = true;
 		this.customResponse.responseType = null;
 		this.fileTypeError = false;
 		this.noContactsFound = false;
@@ -409,7 +411,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.fileTypeError = false;
 				this.xtremandLogger.info("coontacts preview");
 				$("#sample_editable_1").hide();
-				this.filePrevew = true;
 				let reader = new FileReader();
 				reader.readAsText(files[0]);
 				this.xtremandLogger.info(files[0]);
@@ -428,7 +429,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							var csvResult = Papa.parse(contents);
 							var allTextLines = csvResult.data;
 							for (var i = 1; i < allTextLines.length; i++) {
-
 								if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
 									let user = new User();
 									user.emailId = allTextLines[i][4].trim();
@@ -449,10 +449,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								}
 
 							}
-							self.setCsvPage(1);
 
-							if (self.csvContacts.length == 0) {
-								self.customResponse = new CustomResponse('ERROR', "No results found.", true);
+							if (allTextLines.length == 2) {
+								self.customResponse = new CustomResponse('ERROR', "No records found.", true);
+								self.removeCsv();
+							} else if (allTextLines.length > 2 && self.csvContacts.length == 0) {
+								self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
+								self.removeCsv();
+							} else {
+								if (!self.uploadCsvUsingFile && ! self.filePrevew) {
+									self.uploadCsvUsingFile = true;
+									self.filePrevew = true;
+									self.setCsvPage(1);
+								} else {
+									self.customResponse = new CustomResponse('ERROR', "File Already Added.", true);
+									self.uploader.queue.length = 1;
+								}
 							}
 
 						} else {
@@ -486,14 +498,25 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 									user.legalBasis = self.selectedLegalBasisOptions;
 									self.users.push(user);
 									self.csvContacts.push(user);
-
 								}
 
 							}
-							self.setCsvPage(1);
 
-							if (self.csvContacts.length == 0) {
-								self.customResponse = new CustomResponse('ERROR', "No results found.", true);
+							if (allTextLines.length == 2) {
+								self.customResponse = new CustomResponse('ERROR', "No records found.", true);
+								self.removeCsv();
+							} else if (allTextLines.length > 2 && self.csvContacts.length == 0) {
+								self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
+								self.removeCsv();
+							} else {
+								if (!self.uploadCsvUsingFile && ! self.filePrevew) {
+									self.uploadCsvUsingFile = true;
+									self.filePrevew = true;
+									self.setCsvPage(1);
+								} else {
+									self.customResponse = new CustomResponse('ERROR', "File already added.", true);
+									self.uploader.queue.length = 1;
+								}
 							}
 
 						} else {
@@ -518,7 +541,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	validatePartnerCsvHeaders(headers) {
-		return (headers[0].trim() == "FIRSTNAME" && headers[1].trim() == "LASTNAME" && headers[2].trim() == "COMPANY" && headers[3].trim() == "JOBTITLE" && headers[4].trim() == "EMAILID" && headers[5].trim() == "VERTICAL" && headers[6].trim() == "REGION" && headers[7].trim() == "TYPE" && headers[8].trim() == "CATEGORY" && headers[9].trim() == "ADDRESS" && headers[10].trim() == "CITY" && headers[11].trim() == "STATE" && headers[12].trim() == "ZIP" && headers[13].trim() == "COUNTRY" && headers[14].trim() == "MOBILE NUMBER");
+		return (this.removeDoubleQuotes(headers[0]) == "FIRSTNAME" &&
+		this.removeDoubleQuotes(headers[1]) == "LASTNAME" &&
+		this.removeDoubleQuotes(headers[2]) == "COMPANY" &&
+		this.removeDoubleQuotes(headers[3]) == "JOBTITLE" &&
+		this.removeDoubleQuotes(headers[4]) == "EMAILID" &&
+		this.removeDoubleQuotes(headers[5]) == "VERTICAL" &&
+		this.removeDoubleQuotes(headers[6]) == "REGION" &&
+		this.removeDoubleQuotes(headers[7]) == "TYPE" &&
+		this.removeDoubleQuotes(headers[8]) == "CATEGORY" &&
+		this.removeDoubleQuotes(headers[9]) == "ADDRESS" &&
+		this.removeDoubleQuotes(headers[10]) == "CITY" &&
+		this.removeDoubleQuotes(headers[11]) == "STATE" &&
+		this.removeDoubleQuotes(headers[12]) == "ZIP" &&
+		this.removeDoubleQuotes(headers[13]) == "COUNTRY" &&
+		this.removeDoubleQuotes(headers[14]) == "MOBILE NUMBER");
+		// return (headers[0].trim() == "FIRSTNAME" && headers[1].trim() == "LASTNAME" && headers[2].trim() == "COMPANY" && headers[3].trim() == "JOBTITLE" && headers[4].trim() == "EMAILID" && headers[5].trim() == "VERTICAL" && headers[6].trim() == "REGION" && headers[7].trim() == "TYPE" && headers[8].trim() == "CATEGORY" && headers[9].trim() == "ADDRESS" && headers[10].trim() == "CITY" && headers[11].trim() == "STATE" && headers[12].trim() == "ZIP" && headers[13].trim() == "COUNTRY" && headers[14].trim() == "MOBILE NUMBER");
 	}
 
 	validateContactsCsvHeaders(headers) {
@@ -721,7 +759,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	updateListFromOneAtTimeWithPermission() {
 		this.loading = true;
 		this.xtremandLogger.info("update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify(this.users));
-		this.contactService.updateContactList(this.contactListId, this.users)
+		this.setLegalBasisOptions(this.users);
+		this.userUserListWrapper = this.manageContact.getUserUserListWrapperObj(this.users, this.contactListName, this.isPartner, true,
+			"CONTACT", "MANUAL", null, false);
+		this.userUserListWrapper.userList.id = this.contactListId;
+		this.contactService.updateContactList(this.userUserListWrapper)
 			.subscribe(
 				(data: any) => {
 					if (data.access) {
@@ -745,6 +787,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 						if (data.statusCode == 417) {
 							this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
+						}
+						if(data.statusCode == 401){
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
+						}
+						if(data.statusCode == 402){
+							this.emailNotificationCustomResponse = new CustomResponse('ERROR', data.message, true);
 						}
 						this.checkingLoadContactsCount = true;
 						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
@@ -842,7 +890,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.users[i].country = null;
 					}
 
-					this.validateEmail(this.users[i].emailId);
+					// this.validateEmail(this.users[i].emailId);
 
 
 
@@ -943,7 +991,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.setLegalBasisOptions(this.users);
 		}
 		this.xtremandLogger.info("update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify(this.users));
-		this.contactService.updateContactList(this.contactListId, this.users)
+		this.userUserListWrapper = this.manageContact.getUserUserListWrapperObj(this.users, this.contactListName, this.isPartner, true,
+			"CONTACT", "MANUAL", null, false);
+		this.userUserListWrapper.userList.id = this.contactListId;
+		this.contactService.updateContactList(this.userUserListWrapper)
 			.subscribe(
 				data => {
 					if (data.access) {
@@ -977,11 +1028,16 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						if (data.statusCode == 417) {
 							this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
 						}
+						if (data.statusCode == 401) {
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
+						}
+						if (data.statusCode == 402) {
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
+						}
 
 						this.checkingLoadContactsCount = true;
 						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 						this.contactsCount(this.selectedContactListId);
-
 
 						if (data.statusCode == 200) {
 							//this.getContactsAssocialteCampaigns();
@@ -1171,6 +1227,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.users = [];
 		this.filePrevew = false;
 		this.isShowUsers = true;
+		this.csvContacts = [];
+		this.uploadCsvUsingFile = false;
 		$("#sample_editable_1").show();
 	}
 
@@ -1639,7 +1697,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	updateListFromClipBoardWithPermission() {
 		this.loading = true;
 		this.setLegalBasisOptions(this.users);
-		this.contactService.updateContactList(this.contactListId, this.users)
+		this.userUserListWrapper = this.manageContact.getUserUserListWrapperObj(this.users, this.contactListName, this.isPartner, true,
+			"CONTACT", "MANUAL", null, false);
+		this.userUserListWrapper.userList.id = this.contactListId;
+		this.contactService.updateContactList(this.userUserListWrapper)
 			.subscribe(
 				data => {
 					if (data.access) {
@@ -1671,6 +1732,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 						if (data.statusCode == 417) {
 							this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
+						}
+						if(data.statusCode == 401){
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
+						}
+						if(data.statusCode == 402){
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
 						}
 
 						this.checkingLoadContactsCount = true;
@@ -3460,6 +3527,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.id = id;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.moduleName = this.module;
+			this.contactListObject.isPartnerUserList = this.isPartnerUserList;
 
 			this.contactService.loadContactsCount(this.contactListObject)
 				.subscribe(
@@ -3870,6 +3938,38 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 	closeDuplicateEmailErrorMessage() {
 		this.dublicateEmailId = false;
+	}
+	
+	downloadUserListCsv() {
+		try {
+			this.userListPaginationWrapper.pagination = this.pagination;
+			this.userListPaginationWrapper.pagination.searchKey = this.searchKey;
+			this.contactListObj.id = this.selectedContactListId;
+			this.contactListObj.moduleName = this.checkingContactTypeName+'s';
+			this.contactListObj.name = this.contactListName;
+			this.contactListObj.sharedLeads = this.sharedLeads;
+			this.contactListObj.isPartnerUserList = this.isPartner;
+			this.contactListObj.assignedLeadsList = this.assignLeads;
+			this.contactListObj.contactType = this.contactsByType.selectedCategory;
+			this.contactListObj.editList = true;
+			this.userListPaginationWrapper.userList = this.contactListObj;
+			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+				this.refService.setTeamMemberFilterForPagination(this.userListPaginationWrapper.pagination, this.selectedFilterIndex);
+			}
+			this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
+				.subscribe(data => {
+					if (data.statusCode == 200) {
+						this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+					}
+					if (data.statusCode == 401) {
+						this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+					}
+				},
+					error => this.xtremandLogger.error(error),
+					() => this.xtremandLogger.info("editContactsComponent downloadListUserListCsv() finished"));
+		} catch (error) {
+			this.xtremandLogger.error(error, "editContactComponent", "downloadListUserListCsv()");
+		}
 	}
 
 }

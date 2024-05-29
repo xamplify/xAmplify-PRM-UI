@@ -58,9 +58,9 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 		}
 	}
 
-	socialContactsCallback(queryParam: any) {
+	socialContactsCallback(queryParam: any, domain: any) {
 		try {
-			this.contactService.socialContactsCallback(queryParam)
+			this.contactService.socialContactsCallback(queryParam, domain)
 				.subscribe(
 					result => {
 						if(result.statusCode == 402){
@@ -210,11 +210,13 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 		try {
 			let queryParam: string = "";
 			let code: string;
+			let domain: string;
 			this.route.queryParams.subscribe(
 				(param: any) => {
 					code = param['code'];
 					let denied = param['denied'];
 					queryParam = "?code=" + code;
+					domain = param['accounts-server'];
 				});
 			this.xtremandLogger.info("Router URL :: " + this.router.url);
 			if (this.router.url.includes("hubspot-callback")) {
@@ -222,10 +224,9 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 			} else if (this.router.url.includes("isalesforce-callback")) {
 				this.integrationCallback(code, "isalesforce");
 			} else if (this.router.url.includes("microsoft-callback")) {
-				this.integrationCallback(code, "microsoft");
-				
+				this.integrationCallback(code, "microsoft");	
 			} else {
-				this.socialContactsCallback(queryParam);
+				this.socialContactsCallback(queryParam, domain);
 			}
 		}
 		catch (err) {

@@ -113,6 +113,7 @@ export class HomeComponent implements OnInit {
             this.referenceService.defaultPlayerSettings = response;
             this.referenceService.companyId = response.companyProfile.id;
             this.referenceService.companyProfileImage = response.companyProfile.companyLogoPath;
+            this.referenceService.website = this.videoUtilService.isStartsWith(response.companyProfile.website);
             if (!response.brandingLogoUri || !response.brandingLogoDescUri) {
               const logoLink = this.videoUtilService.isStartsWith(response.companyProfile.website);
               this.saveVideoBrandLog(response.companyProfile.companyLogoPath, logoLink);
@@ -292,8 +293,11 @@ export class HomeComponent implements OnInit {
       if (this.currentUser['logedInCustomerCompanyNeme'] != undefined) {
         if (this.authenticationService.vanityURLEnabled && this.authenticationService.v_companyName) {
           this.setTitle(this.authenticationService.v_companyName);
+          localStorage.setItem('companyName',this.authenticationService.v_companyName);
         } else {
           this.setTitle(this.currentUser['logedInCustomerCompanyNeme']);
+          localStorage.setItem('companyName',this.currentUser['logedInCustomerCompanyNeme']);
+
         }
       } else {
         this.setTitle('xAmplify');
@@ -412,6 +416,16 @@ export class HomeComponent implements OnInit {
             this.authenticationService.isDarkForCharts = false;
             require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-light.css");
             // require("style-loader!../../../assets/admin/layout2/css/themes/neumorphism-light-dark-buttons.css")
+          }
+          else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
+            && activeThemeDto.name === "Glassomorphism Light" && !this.router.url.includes('home/help')) {
+            this.authenticationService.isDarkForCharts = false;
+            require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-light.css");
+          }
+          else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
+            && activeThemeDto.name === "Glassomorphism Dark" && !this.router.url.includes('home/help')) {
+            this.authenticationService.isDarkForCharts = true;
+            require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-dark.css");
           }
           else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && !this.router.url.includes('home/help')) {
             document.documentElement.style.setProperty('--top-bg-color', this.topCustom.backgroundColor);

@@ -110,14 +110,15 @@
                           data-toggle="tooltip" data-placement="bottom" title="Grid View"><i class="fa fa-th-large p10"
                             aria-hidden="true"></i></span>
                       </ng-container> -->
-                      <button class="button bgcolor-unset p0 btn-transitions" translate (click)="confirmsync()"
-                        [disabled]=" masterContactListSync || contactsCompanyListSync">
+                      <button class="button bgcolor-unset p0 btn-transitions" data-toggle="tooltip" data-placement="top"
+                        title="Click here to synchronize all existing Company Contact List" translate
+                        (click)="confirmsync()" [disabled]=" masterContactListSync || contactsCompanyListSync" [hidden] = "authenticationService.isOnlyUser()">
                         <span class="btn btn-primary transition d-inline"> Synchronize Companies
                           <i class="fa fa-refresh" aria-hidden="true"></i>
                         </span>
                       </button>
                       <button class="button bgcolor-unset p0 btn-transitions" (click)="addCompanyModalOpen()"
-                        [disabled]=" masterContactListSync || contactsCompanyListSync" translate>
+                        [disabled]=" masterContactListSync || contactsCompanyListSync " [hidden] = "authenticationService.isOnlyUser()" translate>
                         <span class="btn Btn-Green transition d-inline"> Add a Company
                           <i class="fa fa-plus" aria-hidden="true"></i></span>
                       </button>
@@ -169,7 +170,8 @@
                                   </span>
                                 </h4>
                                 <h4 *ngIf="company?.email?.length>0">
-                                  <span data-toggle="tooltip" data-placement="right" title="{{company?.email}}" class="ListFontCu">
+                                  <span data-toggle="tooltip" data-placement="right" title="{{company?.email}}"
+                                    class="ListFontCu">
                                     <b>Email :</b> {{company?.email}}
                                   </span>
                                 </h4>

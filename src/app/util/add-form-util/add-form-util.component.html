@@ -35,8 +35,10 @@
 
 
                 <div class="portlet-body" id="add-form-parent-div">
-                    <app-response-message class="pg8" [customResponse]="customResponseForFormUpdate"
-                        *ngIf="form?.associatedWithTrack" [showCloseIcon]="false">
+                    <app-response-message class="pg8" [customResponse]="customResponseForFormUpdate" *ngIf="form?.associatedWithTrack"
+                        [showCloseIcon]="false">
+                    </app-response-message>
+                    <app-response-message class="pg8" [customResponse]="customResponseForNewFeature" [showCloseIcon]="false">
                     </app-response-message>
                     <app-response-message class="pg8" [customResponse]="customResponse"
                         *ngIf="customResponse.isVisible">
@@ -61,14 +63,11 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 padding-none">
-                                            <a class="close-circle" data-toggle="tooltip"
-                                                [attr.data-original-title]="toolTip" id="full-screen"
-                                                (click)="expandForm()"><i class="fa fa-expand"
-                                                    aria-hidden="true"></i></a>
-                                            <a class="close-circle" data-toggle="tooltip" title="Preview"
-                                                id="preview-form" (click)="previewForm()"><i class="fa fa-eye"
-                                                    aria-hidden="true" id="eye"></i></a>
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4 padding-none">
+                                            <a class="close-circle" data-toggle="tooltip" [attr.data-original-title]="toolTip" id="full-screen"
+                                                (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
+                                            <a class="close-circle" data-toggle="tooltip" title="Preview" id="preview-form" (click)="previewForm()"><i
+                                                    class="fa fa-eye" aria-hidden="true" id="eye"></i></a>
                                         </div>
                                     </div>
                                     <div class="portlet-body clearfix" id="create-from-div"
@@ -92,247 +91,25 @@
                                                         {{form.name}}</div>
                                                 </div>
                                                 <div class="panel-body tab-content">
-                                                    <div class="form-name-wrap form-description"
-                                                        title="{{form.description}}"
-                                                        [style.color]="form.descriptionColor">{{form.description}}</div>
-                                                    <div [dragula]='"form-options"' [dragulaModel]='columnInfos'>
-                                                        <ng-container
-                                                            *ngFor="let columnInfo of columnInfos;let i=index">
-                                                            <div id="form-div"
-                                                                (click)="highLightSelectedColumn(columnInfo)">
-                                                                <div id="{{columnInfo.divId}}">
-                                                                    <div class="form-group form-custom label-box"
-                                                                        [style.background]="form.backgroundColor"
-                                                                        [style.borderColor]="form.borderColor"
-                                                                        [class.selected]="columnInfo.divId==selectedColumn.divId">
-                                                                        <a id="drag-div">
-                                                                            <h4 class="dflex">
-                                                                                <span class="label-text">
-                                                                                    <label class="control-label">
-                                                                                        <span
-                                                                                            class="label-name">{{columnInfo.labelName}}</span>
-                                                                                        <span class="required"
-                                                                                            *ngIf="columnInfo.required">*</span>
-                                                                                    </label>
-                                                                                </span>
-
-                                                                                <span>
-                                                                                    <ng-container
-                                                                                        *ngIf="columnInfo.defaultColumn">
-                                                                                        <button
-                                                                                            title="Default label cannot be deleted"
-                                                                                            class="btn btn-danger btn-xs disabled">
-                                                                                            <span
-                                                                                                class="glyphicon glyphicon-trash"></span>
-                                                                                        </button>
-                                                                                    </ng-container>
-                                                                                    <ng-container
-                                                                                        *ngIf="!columnInfo.defaultColumn">
-                                                                                        <button type="button"
-                                                                                            class="btn btn-danger btn-xs"
-                                                                                            (click)="$event.stopPropagation();removeColumn(columnInfo,i)">
-                                                                                            <span
-                                                                                                class="glyphicon glyphicon-trash"></span>
-                                                                                        </button>
-                                                                                    </ng-container>
-                                                                                </span>
-
-                                                                            </h4>
-                                                                            <!-- ---------------------------Text/Email----------------------------- -->
-                                                                            <ng-container
-                                                                                *ngIf="columnInfo.labelType=='text' ||columnInfo.labelType=='email' ">
-                                                                                <input type="{{columnInfo.labelType}}"
-                                                                                    autoComplete="off" maxlength="1000"
-                                                                                    id="{{columnInfo.labelId}}"
-                                                                                    placeholder="{{columnInfo.placeHolder}}"
-                                                                                    class="form-control form-placeholder disabled"
-                                                                                    [style.backgroundColor]="pageBackgroundColor"
-                                                                                    [style.borderColor]="form.borderColor"
-                                                                                    [style.color]="form.labelColor" />
-                                                                            </ng-container>
-                                                                            <!-- ---------------------------TextArea----------------------------- -->
-                                                                            <ng-container
-                                                                                *ngIf="columnInfo.labelType=='textarea'">
-                                                                                <textarea rows="4" cols="4"
-                                                                                    autoComplete="off" maxlength="1000"
-                                                                                    placeholder="{{columnInfo.placeHolder}}"
-                                                                                    class="form-control form-placeholder disabled"
-                                                                                    id="{{columnInfo.labelId}}"
-                                                                                    [style.backgroundColor]="pageBackgroundColor"
-                                                                                    [style.borderColor]="form.borderColor"
-                                                                                    [style.color]="form.labelColor"></textarea>
-                                                                            </ng-container>
-                                                                            <!-- ---------------------------Date----------------------------- -->
-                                                                            <ng-container
-                                                                                *ngIf="columnInfo.labelType=='date'">
-                                                                                <app-date-picker
-                                                                                    class="form-placeholder"
-                                                                                    [isFromForm]='true'
-                                                                                    [style.backgroundColor]="pageBackgroundColor"
-                                                                                    [style.borderColor]="form.borderColor"
-                                                                                    [style.color]="form.labelColor">
-                                                                                </app-date-picker>
-                                                                            </ng-container>
-                                                                            <!-- ---------------------------Price----------------------------- -->
-                                                                            <ng-container
-                                                                                *ngIf="columnInfo.labelType=='price'">
-                                                                                <div class="input-group">
-                                                                                    <span
-                                                                                        class="edit-field-prefix form-placeholder"
-                                                                                        [style.backgroundColor]="pageBackgroundColor"
-                                                                                        [style.borderColor]="form.borderColor"
-                                                                                        [style.color]="form.labelColor">
-                                                                                        {{columnInfo.priceSymbol}}
-                                                                                    </span>
-                                                                                    <input type="number" min="0"
-                                                                                        placeholder="{{columnInfo.placeHolder}}"
-                                                                                        class="form-control form-placeholder disabled"
-                                                                                        [style.backgroundColor]="pageBackgroundColor"
-                                                                                        [style.borderColor]="form.borderColor"
-                                                                                        [style.color]="form.labelColor"
-                                                                                        id="{{columnInfo.labelId}}" />
-                                                                                </div>
-                                                                            </ng-container>
-                                                                            <!-- ---------------------------Number----------------------------- -->
-                                                                            <ng-container
-                                                                                *ngIf="columnInfo.labelType=='number'">
-                                                                                <div class="input-group">
-                                                                                    <input type="number" min="0"
-                                                                                        placeholder="{{columnInfo.placeHolder}}"
-                                                                                        class="form-control form-placeholder disabled form-padding-left"
-                                                                                        [style.backgroundColor]="pageBackgroundColor"
-                                                                                        [style.borderColor]="form.borderColor"
-                                                                                        [style.color]="form.labelColor"
-                                                                                        id="{{columnInfo.labelId}}" />
-                                                                                </div>
-                                                                            </ng-container>
-                                                                            <!-- ---------------------------Upload----------------------------- -->
-                                                                            <ng-container
-                                                                                *ngIf="columnInfo.labelType=='upload'">
-                                                                                <input type="file"
-                                                                                    class="form-control form-placeholder disabled"
-                                                                                    [style.backgroundColor]="pageBackgroundColor"
-                                                                                    [style.borderColor]="form.borderColor"
-                                                                                    [style.color]="form.labelColor"
-                                                                                    id="{{columnInfo.labelId}}" />
-                                                                            </ng-container>
-                                                                            <!-- ---------------------------Radio Button----------------------------- -->
-                                                                            <ng-container
-                                                                                *ngIf="columnInfo.labelType=='radio'">
-                                                                                <ng-container
-                                                                                    *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
-                                                                                    <div class="form-check">
-                                                                                        <label class="form-check-label"
-                                                                                            style="border:0px !important;">
-
-                                                                                            <input
-                                                                                                type="{{columnInfo.labelType}}"
-                                                                                                name="{{columnInfo.labelId}}"
-                                                                                                class="form-check-input">
-                                                                                            <span
-                                                                                                [style.color]="form.labelColor">{{radioButton.name}}</span>
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <br>
-                                                                                </ng-container>
-                                                                            </ng-container>
-                                                                            <!-- ---------------------------Check Box----------------------------- -->
-                                                                            <ng-container
-                                                                                *ngIf="columnInfo.labelType=='checkbox'">
-                                                                                <ng-container
-                                                                                    *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
-                                                                                    <div class="form-check">
-
-                                                                                        <label class="form-check-label"
-                                                                                            style="border:0px !important;">
-
-                                                                                            <input
-                                                                                                type="{{columnInfo.labelType}}"
-                                                                                                name="{{columnInfo.labelId}}"
-                                                                                                class="form-check-input">
-                                                                                            <span
-                                                                                                [style.color]="form.labelColor">{{checkBox.name}}</span>
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <br>
-                                                                                </ng-container>
-                                                                            </ng-container>
-                                                                            <!-- ---------------------------DropDown Menu----------------------------- -->
-                                                                            <ng-container
-                                                                                *ngIf="columnInfo.labelType=='select'">
-                                                                                <select
-                                                                                    class="form-control form-placeholder"
-                                                                                    [style.backgroundColor]="pageBackgroundColor"
-                                                                                    [style.borderColor]="form.borderColor"
-                                                                                    [style.color]="form.labelColor">
-                                                                                    <option
-                                                                                        *ngFor="let dropDownValue of columnInfo.dropDownChoices">
-                                                                                        {{dropDownValue.name}}
-                                                                                    </option>
-                                                                                </select>
-                                                                            </ng-container>
-                                                                            <!-- ---------------------------DropDown Menu(XNFR-423)----------------------------- -->
-                                                                            <ng-container
-                                                                                *ngIf="columnInfo.labelType=='country'">
-                                                                                <select
-                                                                                    class="form-control form-placeholder"
-                                                                                    [style.backgroundColor]="pageBackgroundColor"
-                                                                                    [style.borderColor]="form.borderColor"
-                                                                                    [style.color]="form.labelColor">
-                                                                                    <option
-                                                                                        *ngFor="let countryName of countryNames">
-                                                                                        {{countryName}}
-                                                                                    </option>
-                                                                                </select>
-                                                                            </ng-container>
-                                                                            <!-- ---------------------------Quiz----------------------------- -->
-                                                                            <ng-container
-                                                                                *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
-                                                                                <ng-container
-                                                                                    *ngFor="let choice of columnInfo.choices;let i=index">
-                                                                                    <div class="form-check">
-
-                                                                                        <label class=""
-                                                                                            style="border:0px !important;">
-
-                                                                                            <input
-                                                                                                type="{{columnInfo.labelType.split('_')[1]}}"
-                                                                                                name="{{columnInfo.labelId}}"
-                                                                                                class="form-check-input"
-                                                                                                [checked]="choice.correct"
-                                                                                                disabled="true">
-                                                                                            <span
-                                                                                                [style.color]="form.labelColor">{{choice.name}}</span>
-                                                                                        </label>
-                                                                                    </div>
-                                                                                    <br>
-                                                                                </ng-container>
-                                                                            </ng-container>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </ng-container>
-                                                        <br>
-                                                        <!-- End of form-div -->
-                                                        <div *ngIf="form.showCaptcha">
-                                                            <re-captcha (resolved)="resolved($event)"
-                                                                [siteKey]="siteKey"></re-captcha>
-                                                        </div>
-                                                        <div *ngIf="form.buttonColor?.length>0;then show else dontShow">
-                                                        </div>
-                                                        <ng-template #show>
-                                                            <button type="submit" disabled="disabled"
-                                                                class="button-padding" id="bottom-right"
-                                                                [style.backgroundColor]="form.buttonColor"
-                                                                [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
-                                                        </ng-template>
-                                                        <ng-template #dontShow>
-                                                            <button type="submit" disabled="disabled"
-                                                                class="btn green-haze margin" id="bottom-right"
-                                                                [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
-                                                        </ng-template>
+                                                    <div class="form-name-wrap form-description" title="{{form.description}}" [style.color]="form.descriptionColor">
+                                                        {{form.description}}</div>
+                                                    <ng-template [ngTemplateOutlet]="FormRows"></ng-template>
+                                                    <br>
+                                                    <!-- End of form-div -->
+                                                    <div *ngIf="form.showCaptcha">
+                                                        <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
                                                     </div>
+                                                    <div *ngIf="form.buttonColor?.length>0;then show else dontShow">
+                                                    </div>
+                                                    <ng-template #show>
+                                                        <button type="submit" disabled="disabled" class="button-padding" id="bottom-right"
+                                                            [style.backgroundColor]="form.buttonColor"
+                                                            [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                                                    </ng-template>
+                                                    <ng-template #dontShow>
+                                                        <button type="submit" disabled="disabled" class="btn green-haze margin" id="bottom-right"
+                                                            [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                                                    </ng-template>
                                                 </div>
                                                 <!-- End of tab pane active -->
                                             </div>
@@ -683,7 +460,7 @@
                     <div class="form-group col-md-6 col-lg-6" id="formNameDiv">
                         <label>Name <span class="invalid-form-name">*</span></label>
                         <input type="text" class="form-control" [(ngModel)]="form.name" id="formName"
-                            placeholder="Enter Form Name" maxlength="1000" (input)="validateFormNames(form.name)"
+                            placeholder="Please Enter Form Name" (input)="validateFormNames(form.name)"
                             (keydown)="sumbitOnEnter($event)">
                         <span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
                     </div>
@@ -1451,3 +1228,277 @@
         </div>
     </div>
 </div>
+
+<!-- XNFR-424 ----------->
+<ng-template #formFields let-columnInfo="columnInfoData" let-rowIndex="rowIndexValue" let-columnIndex="columnIndexValue" let-rowFieldsCount="rowFieldsCountValue">
+    <h4 class="dflex">
+        <span class="label-text">
+            <label class="control-label">
+                <span class="label-name">{{columnInfo.labelName}}</span>
+                <span class="required" *ngIf="columnInfo.required">*</span>
+            </label>
+        </span>
+        <span>
+            <div class="dropdown">
+                <div class="dropdown-toggle fa fa-ellipsis-v form-fields-margin" type="button" id="dropdownMenuButton"
+                    data-mdb-toggle="dropdown" aria-expanded="false">
+                </div>
+                <ul class="dropdown-menu border-rd-5px padding-3px fiels-action-list point-cursor" id="field-drop-down-options"
+                    aria-labelledby="dropdownMenuButton">
+                    <li class="dropdown-item field-action-align padding-3px" *ngIf="columnIndex < 2 && rowFieldsCount !== 3"
+                        (click)="$event.stopPropagation();setNewColumnIndex(rowIndex, columnIndex)"><button type="button"
+                            class="btn btn-success btn-xs">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Add</span></li>
+                    <li class="dropdown-item field-action-align padding-3px"
+                        (click)="$event.stopPropagation();removeColumn(columnInfo, rowIndex, columnIndex)"><button
+                            type="button" class="btn btn-danger btn-xs" [ngClass]="{'disabled': columnInfo.defaultColumn}">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Delete</span></li>
+                    <li class="dropdown-item field-action-align padding-3px" *ngIf="rowFieldsCount > 1"
+                        (click)="$event.stopPropagation();moveColumnToLastRow(columnInfo, rowIndex, columnIndex)" 
+                        data-toggle="tooltip" data-placement="bottom" title="Move To Last Row" aria-hidden="true"><button
+                            type="button" class="btn btn-success btn-xs">
+                            <span class="glyphicon glyphicon-circle-arrow-down"></span>
+                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Move</span></li>
+                </ul>
+            </div>
+        </span>
+    </h4>
+    <!-- ---------------------------Text/Email----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='text' ||columnInfo.labelType=='email' ">
+        <input type="{{columnInfo.labelType}}"
+            autoComplete="off" maxlength="1000"
+            id="{{columnInfo.labelId}}"
+            placeholder="{{columnInfo.placeHolder}}"
+            class="form-control form-placeholder disabled"
+            [style.backgroundColor]="pageBackgroundColor"
+            [style.borderColor]="form.borderColor"
+            [style.color]="form.labelColor" />
+    </ng-container>
+    <!-- ---------------------------TextArea----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='textarea'">
+        <textarea rows="4" cols="4"
+            autoComplete="off" maxlength="1000"
+            placeholder="{{columnInfo.placeHolder}}"
+            class="form-control form-placeholder disabled"
+            id="{{columnInfo.labelId}}"
+            [style.backgroundColor]="pageBackgroundColor"
+            [style.borderColor]="form.borderColor"
+            [style.color]="form.labelColor"></textarea>
+    </ng-container>
+    <!-- ---------------------------Date----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='date'">
+        <app-date-picker
+            class="form-placeholder"
+            [isFromForm]='true'
+            [style.backgroundColor]="pageBackgroundColor"
+            [style.borderColor]="form.borderColor"
+            [style.color]="form.labelColor">
+        </app-date-picker>
+    </ng-container>
+    <!-- ---------------------------Price----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='price'">
+        <div class="input-group">
+            <span
+                class="edit-field-prefix form-placeholder"
+                [style.backgroundColor]="pageBackgroundColor"
+                [style.borderColor]="form.borderColor"
+                [style.color]="form.labelColor">
+                {{columnInfo.priceSymbol}}
+            </span>
+            <input type="number" min="0"
+                placeholder="{{columnInfo.placeHolder}}"
+                class="form-control form-placeholder disabled"
+                [style.backgroundColor]="pageBackgroundColor"
+                [style.borderColor]="form.borderColor"
+                [style.color]="form.labelColor"
+                id="{{columnInfo.labelId}}" />
+        </div>
+    </ng-container>
+    <!-- ---------------------------Number----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='number'">
+        <div class="input-group">
+            <input type="number" min="0"
+                placeholder="{{columnInfo.placeHolder}}"
+                class="form-control form-placeholder disabled form-padding-left"
+                [style.backgroundColor]="pageBackgroundColor"
+                [style.borderColor]="form.borderColor"
+                [style.color]="form.labelColor"
+                id="{{columnInfo.labelId}}" />
+        </div>
+    </ng-container>
+    <!-- ---------------------------Upload----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='upload'">
+        <input type="file"
+            class="form-control form-placeholder disabled"
+            [style.backgroundColor]="pageBackgroundColor"
+            [style.borderColor]="form.borderColor"
+            [style.color]="form.labelColor"
+            id="{{columnInfo.labelId}}" />
+    </ng-container>
+    <!-- ---------------------------Radio Button----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='radio'">
+        <ng-container
+            *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+            <div class="form-check">
+                <label class="form-check-label"
+                    style="border:0px !important;">
+
+                    <input
+                        type="{{columnInfo.labelType}}"
+                        name="{{columnInfo.labelId}}"
+                        class="form-check-input">
+                    <span
+                        [style.color]="form.labelColor">{{radioButton.name}}</span>
+                </label>
+            </div>
+            <br>
+        </ng-container>
+    </ng-container>
+    <!-- ---------------------------Check Box----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='checkbox'">
+        <ng-container
+            *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
+            <div class="form-check">
+
+                <label class="form-check-label"
+                    style="border:0px !important;">
+
+                    <input
+                        type="{{columnInfo.labelType}}"
+                        name="{{columnInfo.labelId}}"
+                        class="form-check-input">
+                    <span
+                        [style.color]="form.labelColor">{{checkBox.name}}</span>
+                </label>
+            </div>
+            <br>
+        </ng-container>
+    </ng-container>
+    <!-- ---------------------------DropDown Menu----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='select'">
+        <select
+            class="form-control form-placeholder"
+            [style.backgroundColor]="pageBackgroundColor"
+            [style.borderColor]="form.borderColor"
+            [style.color]="form.labelColor">
+            <option
+                *ngFor="let dropDownValue of columnInfo.dropDownChoices">
+                {{dropDownValue.name}}
+            </option>
+        </select>
+    </ng-container>
+    <!-- ---------------------------DropDown Menu(XNFR-423)----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType=='country'">
+        <select
+            class="form-control form-placeholder"
+            [style.backgroundColor]="pageBackgroundColor"
+            [style.borderColor]="form.borderColor"
+            [style.color]="form.labelColor">
+            <option
+                *ngFor="let countryName of countryNames">
+                {{countryName}}
+            </option>
+        </select>
+    </ng-container>
+    <!-- ---------------------------Quiz----------------------------- -->
+    <ng-container
+        *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
+        <ng-container
+            *ngFor="let choice of columnInfo.choices;let i=index">
+            <div class="form-check">
+
+                <label class=""
+                    style="border:0px !important;">
+
+                    <input
+                        type="{{columnInfo.labelType.split('_')[1]}}"
+                        name="{{columnInfo.labelId}}"
+                        class="form-check-input"
+                        [checked]="choice.correct"
+                        disabled="true">
+                    <span
+                        [style.color]="form.labelColor">{{choice.name}}</span>
+                </label>
+            </div>
+            <br>
+        </ng-container>
+    </ng-container>
+</ng-template>
+
+<ng-template #FormRows>
+    <ng-container *ngFor="let rowInfo of rowInfos;let rowIndex=index">
+        <div id="form-div" *ngIf="rowInfo.formLabelDTOs !== undefined && rowInfo.formLabelDTOs.length > 0"
+            (click)="highLightSelectedRow(rowInfo)">
+            <div id="{{rowInfo.divId}}">
+                <div class="form-group form-custom label-box padding-12px" [style.background]="form.backgroundColor"
+                    [style.borderColor]="form.borderColor"
+                    [class.selected-field-border-thickness]="rowInfo.divId==selectedRow.divId">
+                        <h4 class="row-options">
+                            <div class="dropdown">
+                                <div class="dropdown-toggle fa fa-ellipsis-v form-fields-margin" type="button" id="dropdownMenuButton"
+                                    data-mdb-toggle="dropdown" aria-expanded="false">
+                                </div>
+                                <ul class="dropdown-menu border-rd-5px padding-3px fiels-action-list point-cursor" id="field-drop-down-options"
+                                    aria-labelledby="dropdownMenuButton">
+                                    <li class="dropdown-item field-action-align padding-3px"
+                                        (click)="$event.stopPropagation();removeRow(rowInfo, rowIndex)"><button type="button"
+                                            class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Delete</span></li>
+                                    <li class="dropdown-item field-action-align padding-3px" [ngClass]="{'hide-row-action' : rowIndex === rowInfos?.length - 1 || rowInfos?.length < 2}" 
+                                        (click)="$event.stopPropagation();swapRows(rowInfo, rowIndex, rowIndex + 1)" 
+                                        data-toggle="tooltip" data-placement="bottom" title="Swap With Next Field"><button type="button"
+                                            class="btn btn-success btn-xs">
+                                            <span class="fa fa-arrow-down fa-2x"></span>
+                                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Swap</span></li>
+                                    <li class="dropdown-item field-action-align padding-3px" [ngClass]="{'hide-row-action' : rowIndex === 0 || rowInfos?.length < 2}"
+                                        (click)="$event.stopPropagation();swapRows(rowInfo, rowIndex, rowIndex - 1)" 
+                                        data-toggle="tooltip" data-placement="bottom" title="Swap With Previous Field"><button type="button"
+                                            class="btn btn-success btn-xs">
+                                            <span class="fa fa-arrow-up fa-2x"></span>
+                                        </button><span id="form-label-drop-down-option-value" class="padding-3px">Swap</span></li>
+                                </ul>
+                            </div>
+                        </h4>
+                    <a id="drag-div">
+                        <div [dragula]='"form-columns"' [dragulaModel]='rowInfo.formLabelDTOs' style="display: flex;">
+                            <ng-container *ngFor="let columnInfo of rowInfo.formLabelDTOs;let columnIndex=index">
+                                <div *ngIf="columnIndex<3" id="form-div-column" class="padding-12px"
+                                    (click)="highLightSelectedColumn(columnInfo, rowIndex, columnIndex)"
+                                    [ngClass]="{'col-lg-4 col-md-4 col-sm-4 col-xs-4 no-drag':  rowInfo.formLabelDTOs.length == 3, 'col-lg-6 col-md-6 col-sm-6 col-xs-6': rowInfo.formLabelDTOs.length == 2, 'col-lg-12 col-md-12 col-sm-12 col-xs-12': rowInfo.formLabelDTOs.length == 1}">
+                                    <div id="{{columnInfo.divId}}">
+                                        <div class="form-group form-custom label-box padding-10px"
+                                            [style.background]="form.backgroundColor"
+                                            [style.borderColor]="form.borderColor"
+                                            [class.selected-field-border-thickness]="columnInfo.divId==selectedColumn.divId">
+                                            <a id="drag-div-column">
+                                                <ng-template [ngTemplateOutlet]="formFields"
+                                                    [ngTemplateOutletContext]="{columnInfoData:columnInfo, columnIndexValue:columnIndex, rowIndexValue:rowIndex, rowFieldsCountValue:rowInfo.formLabelDTOs.length}">
+                                                </ng-template>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-template>
+
+
+<!-- XNFR-424 ENDS ----------->

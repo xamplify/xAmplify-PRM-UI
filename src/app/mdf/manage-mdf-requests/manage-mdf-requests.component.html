@@ -66,14 +66,14 @@
                            </span>
                         </a>
                      </div>
-                     <div id="vendor-details-tile" class="{{tileClass}}" *ngIf="showMdfFormAnalyticsForParnterView"
+                     <div id="vendor-details-tile" class="{{tileClass}} mb_10" *ngIf="showMdfFormAnalyticsForParnterView"
                         style="border-radius: 5px;border: 1px solid lightgrey;">
                         <div class="row">
-                           <div class="col-md-2 col-lg-2 text-right">
+                           <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-right">
                               <img class="img-circle" src="{{mdfRequestVendorDto?.companyLogoPath}}"
                                  alt="No Image Found" onerror="this.src='assets/images/default-company.png';">
                            </div>
-                           <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                           <div class="col-xs-9 col-sm-9 col-md-10 col-lg-10 vendor_companyName" style="padding-left: 34px;">
                               <label data-toggle="tooltip" data-placement="top"
                                  title="{{mdfRequestVendorDto?.companyName}}" style="font-size: 15px;font-weight: 600;">
                                  {{mdfRequestVendorDto?.companyName | slice:0:20}}
@@ -88,7 +88,7 @@
                            </div>
                         </div>
                      </div>
-                     <div class="{{tileClass}}" id="pb-pr">
+                     <div class="{{tileClass}} mb_10" id="pb-pr">
                         <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
@@ -202,8 +202,8 @@
                                  <thead>
                                     <tr>
                                        <th scope="row" style="width: 50%;" translate>Vendor Info</th>
-                                       <th scope="row" class="hidden-xs center-align" translate>Number Of Requests</th>
-                                       <th scope="row" class="hidden-xs center-align" translate>Actions</th>
+                                       <th scope="row" class="center-align" translate>Number Of Requests</th>
+                                       <th scope="row" class="center-align" translate>Actions</th>
                                     </tr>
                                  </thead>
                                  <tbody>
@@ -211,15 +211,15 @@
                                     <ng-container *ngFor="let vendor of pagination.pagedItems;let i=index">
                                        <tr>
                                           <td>
-                                             <div class="col-md-12 col-lg-12">
+                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 <div class="row">
-                                                   <div class="col-md-2 col-lg-2 text-right">
+                                                   <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 text-right">
                                                       <img class="img-circle float-left"
                                                          src="{{vendor?.companyLogoPath}}" alt="No Image Found"
                                                          onerror="this.src='assets/images/default-company.png';">
                                                    </div>
-                                                   <div class="col-md-10 col-lg-10 "
-                                                      style="padding-left: 34px!important;">
+                                                   <div class="col-xs-9 col-sm-9 col-md-10 col-lg-10 vendor_companyName"
+                                                      style="padding-left: 34px">
                                                       <label class="xamplify-ellipsis" data-toggle="tooltip"
                                                          data-placement="top" title="{{vendor?.companyName}}"
                                                          style="overflow: initial;">

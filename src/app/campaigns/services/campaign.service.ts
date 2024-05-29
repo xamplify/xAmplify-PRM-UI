@@ -14,6 +14,8 @@ import { CampaignWorkflowPostDto } from '../models/campaign-workflow-post-dto';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { UtilService } from 'app/core/services/util.service';
+import { ReferenceService } from 'app/core/services/reference.service';
+
 
 declare var swal:any, $:any, Promise: any;
 @Injectable()
@@ -30,7 +32,7 @@ export class CampaignService {
     loading = false;
     archived:boolean = false;
     constructor(private http: Http, private authenticationService: AuthenticationService, 
-        private logger: XtremandLogger,private utilService:UtilService) { }
+        private logger: XtremandLogger,private utilService:UtilService,public referenceService:ReferenceService) { }
 
     saveCampaignDetails(data: any) {
         return this.http.post(this.URL + "admin/saveCampaignDetails?access_token=" + this.authenticationService.access_token, data)
@@ -74,7 +76,7 @@ export class CampaignService {
             pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
         }
         /****XNFR-252*****/
-        let url = this.URL + "campaign/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "admin/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -1290,7 +1292,8 @@ export class CampaignService {
      /********XNFR-318********/
     findCampaignEmailTemplates(emailTemplatesPagination:Pagination){
         emailTemplatesPagination.userId = this.authenticationService.getUserId();
-        let url = this.URL + "campaign/findCampaignEmailTemplates?searchKey="+emailTemplatesPagination.searchKey+"&access_token=" + this.authenticationService.access_token;
+        let encodedUrl = this.referenceService.getEncodedUri(emailTemplatesPagination.searchKey);
+        let url = this.URL + "campaign/findCampaignEmailTemplates?searchKey="+encodedUrl+"&access_token=" + this.authenticationService.access_token;
         return this.http.post(url, emailTemplatesPagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -1330,29 +1333,17 @@ export class CampaignService {
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
-    }
-    
-    getCampaignHighLevelAnalytics2(userId: number, campaign:any) {
-        userId = this.authenticationService.checkLoggedInUserId(userId);       
-        let url = this.URL + "campaign/campaignHighLevelAnaltyics/" + userId + "?access_token=" + this.authenticationService.access_token;
-        return this.http.post(url, campaign)
-            .map(this.extractData)
-            .catch(this.handleError);
+    }			
+
+ getHalopsaPipelinesByTicketType(ticketTypeId: number, _userId: number) {
+        return this.http.get(this.URL + "/pipeline/ticket-type/"+ticketTypeId+ "/" +_userId+"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 
-    getGearIconOptions(campaign : any, userId : number){
-        userId = this.authenticationService.checkLoggedInUserId(userId);
-        let url = this.URL + "campaign/gearIconOptionsConditions/" + userId + "?access_token=" + this.authenticationService.access_token;
-        return this.http.post(url, campaign)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    
-        hasCampaignAccess(campaign : any, userId : number){
-        userId = this.authenticationService.checkLoggedInUserId(userId);
-        let url = this.URL + "campaign/hasCampaignAccess/" + userId + "?access_token=" + this.authenticationService.access_token;
-        return this.http.post(url, campaign)
-            .map(this.extractData)
-            .catch(this.handleError);
+    getHalopsaTicketTypes(_userId: number) {
+        return this.http.get(this.URL + "/halopsa/opportunity/types/" + _userId+ "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 }

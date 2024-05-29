@@ -192,6 +192,10 @@
                                                       src="{{properties?.marketoImage}}" alt="manual"
                                                       class="list-icons-sm">
                                                    <img
+                                                      *ngIf="shareLead.socialNetwork=='HALOPSA' && shareLead.synchronisedList"
+                                                      src="{{properties?.halopsaImage}}" alt="manual"
+                                                      class="list-icons-sm">
+                                                   <img
                                                       *ngIf="(!shareLead.marketoMasterList && !shareLead.emailValidationInd) || (shareLead.marketoMasterList && (!shareLead.marketoSyncComplete || !shareLead.emailValidationInd))"
                                                       src="assets/images/Spinner.gif"
                                                       style="width: 55px; margin-top: -88px; margin-left: 17px;" alt="">

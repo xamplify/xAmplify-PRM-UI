@@ -1,0 +1,53 @@
+
+
+<div [hidden]="processor.isProcessing">
+  <div id="pdf-html-body">
+  </div>
+  <ng-container *ngIf="!success && !processor.isProcessing && apiResponseFinished">
+    <div *ngIf="statusCode==404">
+      <img src="{{pageNotFoundImagePath}}" alt="{{statusCode}}" style="position: absolute;left: 25%;height: 500px;">
+    </div>
+    <div *ngIf="statusCode==400">
+      <img src="{{badRequestImagePath}}" alt="{{statusCode}}" style="position: absolute;left: 25%;height: 500px;">
+    </div>
+    <div *ngIf="statusCode==500">
+      <img src="{{internalServerErrorImagePath}}" alt="{{statusCode}}" style="position: absolute;left: 25%;height: 500px;">
+    </div>
+  </ng-container>
+  </div>
+
+  
+<div [hidden]="!processor.isProcessing">
+  <div style="display: flex;
+        width: 100vw;
+        height: 100vh;
+        background: black;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background: white;">
+    <img src="../../../assets/images/xamplify-icon.gif"  alt="No Image Found">
+    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'L'}"></ng-template>
+    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'O'}"></ng-template>
+    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'A'}"></ng-template>
+    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'D'}"></ng-template>
+    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'I'}"></ng-template>
+    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'N'}"></ng-template>
+    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'G'}"></ng-template>
+    </div>
+    
+
+    <ng-template #textTemplate let-text="text">
+      <p style=" display: inline-block;
+      text-transform: uppercase;
+      text-align: center;
+      font-size: 4em;
+      font-family: arial;
+      font-weight: 600;
+      transform: scale(.5);
+      color: #121212;
+      -webkit-text-stroke: 2px gray;">{{text}}</p>
+    </ng-template>
+  
+</div>
+

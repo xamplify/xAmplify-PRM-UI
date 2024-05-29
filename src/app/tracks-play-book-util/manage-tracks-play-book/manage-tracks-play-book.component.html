@@ -199,11 +199,6 @@
                                             <!---XNFR-327-->
                                             <h6 *ngIf="learningTrack?.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList"
                                                 class="green-banner inline-flex">Published</h6>
-                                            <h6 *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList"
-                                                class="view-banner inline-flex">
-                                                <span><img src="assets/images/loading.gif" alt="Processing"></span>
-                                                Processing
-                                            </h6>
                                             <!---XNFR-327-->
                                         </td>
                                         <td>
@@ -270,9 +265,11 @@
                                                 class="actions-block override-actions custom-width-icon mb_whitespace">
                                                 <a data-toggle="tooltip" data-placement="top" title="Refresh"
                                                     (click)="listLearningTracks(pagination)">
-                                                    <i class="fa fa-refresh IconCustomization remove_border"
-                                                        aria-hidden="true"></i>
+                                                    <i class="fa fa-refresh IconCustomization remove_border" aria-hidden="true"></i>
                                                 </a>
+                                                <p class="success mt5" *ngIf="learningTrack?.publishingToPartnerList || learningTrack?.publishingOrWhiteLabelingInProgress">
+                                                    <strong><img src="assets/images/loading.gif"alt="Publishing is in progress"style="height:15px">Publishing in progress</strong>
+                                                </p>
                                             </div>
                                             <!--XNFR-327-->
                                         </td>
@@ -328,12 +325,7 @@
                             </div>
                             <!---XNFR-327--->
                             <div class="ribbon tab-ribbon">
-                                <span
-                                    *ngIf="learningTrack.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress">Published</span>
-                                <span *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress && !isPartnerView">
-                                    <img src="assets/images/loading.gif" class="margin-0-ht5px"
-                                        alt="Processing">Processing
-                                </span>
+                                <span *ngIf="learningTrack.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress">Published</span>
                             </div>
                             <!---XNFR-327--->
                             <div *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList"
@@ -394,12 +386,15 @@
                             <!--Refresh Icon-->
                             <!--XNFR-327-->
                             <div *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList"
-                                class="bar gridIconCustomization p0-p10">
+                                class="bar auto-height gridIconCustomization iconAligntCu icons_align">
                                 <a class="custom-grid-icon" data-toggle="tooltip" data-placement="top" title="Refresh"
                                     (click)="listLearningTracks(pagination)">
                                     <i class="fa fa-refresh remove_border" aria-hidden="true"></i>
                                     <div class="clickicons"></div>
                                 </a>
+                                <p class="success mt5" *ngIf="learningTrack?.publishingToPartnerList || learningTrack?.publishingOrWhiteLabelingInProgress">
+                                    <strong><img src="assets/images/loading.gif"alt="Publishing is in progress"style="height:15px">Publishing in progress</strong>
+                                </p>
                             </div>
                             <!--XNFR-327-->
                         </div>

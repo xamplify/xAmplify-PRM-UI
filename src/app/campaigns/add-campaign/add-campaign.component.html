@@ -468,17 +468,55 @@
                                                 </div>
                                             </div>
 
+                                            
+                                                
+                                            <!--Lead Ticket Type-->
+                                            <div class="form-group" [attr.class]="leadTicketTypeClass"
+                                                style="margin-bottom: 20px" *ngIf="campaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
+                                                <label class="control-label col-sm-4">Lead Ticket Type
+                                                    <span class="required"><strong>*</strong></span>
+                                                </label>
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control" [(ngModel)]="campaign.leadTicketTypeId" 
+                                                            [ngModelOptions]="{standalone: true}"
+                                                            placeholder="leadTicketTypeId" id="leadTicketTypeId" [disabled]="preview"
+                                                            (ngModelChange)="onChangeLeadTicketType()" (input)="validateField('leadTicketTypeId',false)">
+                                                            <option [value]="0">Select Lead Ticket Type</option>
+                                                            <option *ngFor="let leadTicketType of leadTicketTypes"     
+                                                            [value]="leadTicketType.id">{{leadTicketType.name}}</option>
+                                                        </select>
+                                                    </div>
+                                            </div>
+
+                                            <!--Deal Ticket Type-->
+                                            <div class="form-group" [attr.class]="dealTicketTypeClass"
+                                                style="margin-bottom: 20px" *ngIf="campaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
+                                                <label class="control-label col-sm-4">Deal Ticket Type
+                                                    <span class="required"><strong>*</strong></span></label>
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control" [(ngModel)]="campaign.dealTicketTypeId"
+                                                            [ngModelOptions]="{standalone: true}"
+                                                            placeholder="dealTicketTypeId" id="dealTicketTypeId" [disabled]="preview"
+                                                            (ngModelChange)="onChangeDealTicketType()" (input)="validateField('dealTicketTypeId',false)">
+                                                            <option [value]="0">Select Deal Ticket Type</option>
+                                                            <option *ngFor="let dealTicketType of dealTicketTypes"     
+                                                            [value]="dealTicketType.id">{{dealTicketType.name}}</option>
+                                                        </select>
+                                                    </div>
+                                            </div>
+                                                
                                             <!--Lead Pipeline-->
                                             <div class="form-group" [attr.class]="leadPipelineClass"
                                                 style="margin-bottom: 20px" *ngIf="campaign?.configurePipelines">
-                                                <label class="control-label col-sm-4">Lead Pipeline<span
-                                                        class="required"><b>*</b></span></label>
+                                                <label class="control-label col-sm-4">Lead Pipeline
+                                                    <span class="required"><strong>*</strong></span></label>
                                                 <div class="col-sm-8">
-                                                    <select class="form-control" [(ngModel)]="campaign.leadPipelineId"
+                                                    <select class="form-control" [ngClass]="activeCRMDetails?.type ==='HALOPSA'?'disabled':''" [(ngModel)]="campaign.leadPipelineId" 
                                                         [ngModelOptions]="{standalone: true}"
                                                         placeholder="leadPipelineId" id="leadPipelineId"
+                                                        [disabled]="preview"
                                                         (change)="validateForm();">
-                                                        <option [value]="0">Select Pipeline</option>
+                                                        <option [value]="0">Select Lead Pipeline</option>
                                                         <option *ngFor="let pipeline of leadPipelines"
                                                             [value]="pipeline.id">{{pipeline.name}}</option>
                                                     </select>
@@ -489,14 +527,15 @@
                                             <!--Deal Pipeline-->
                                             <div class="form-group" [attr.class]="dealPipelineClass"
                                                 style="margin-bottom: 20px" *ngIf="campaign.configurePipelines">
-                                                <label class="control-label col-sm-4">Deal Pipeline<span
-                                                        class="required"><b>*</b></span></label>
+                                                <label class="control-label col-sm-4">Deal Pipeline
+                                                    <span class="required"><strong>*</strong></span></label>
                                                 <div class="col-sm-8">
-                                                    <select class="form-control" [(ngModel)]="campaign.dealPipelineId"
+                                                    <select class="form-control" [ngClass]="activeCRMDetails?.type ==='HALOPSA'?'disabled':''" [(ngModel)]="campaign.dealPipelineId"
                                                         [ngModelOptions]="{standalone: true}"
                                                         placeholder="dealPipelineId" id="dealPipelineId"
+                                                        [disabled]="preview"
                                                         (change)="validateForm();">
-                                                        <option [value]="0">Select Pipeline</option>
+                                                        <option [value]="0">Select Deal Pipeline</option>
                                                         <option *ngFor="let pipeline of dealPipelines"
                                                             [value]="pipeline.id">{{pipeline.name}}</option>
                                                     </select>
@@ -1105,7 +1144,7 @@
                                                         *ngIf="!emailReceiversCountError && !campaign?.oneClickLaunch">
                                                         <span *ngIf="campaign?.emailNotification"
                                                             class="success float-right">Email will be sent to
-                                                            {{validUsersCount}}({{allUsersCount}}) users.</span>
+                                                            {{validUsersCount}}({{allUsersCount}}) valid recipients.</span>
                                                         <span *ngIf="!campaign?.emailNotification"
                                                             class="required float-right">No emails will be sent.</span>
                                                     </ng-container>

@@ -17,10 +17,15 @@
         <h4 class="modal-title" *ngIf="deal != undefined" style="font-weight: 600;" translate>Update Deal</h4>
         <h4 class="modal-title" *ngIf="lead != undefined" style="font-weight: 600;" translate>Add Comments<span class="required"> *</span></h4>
       </div>
-      <div  class="textareaStyles">
+      <div class="textareaStyles">
         <span *ngIf="deal != undefined">
           <h4> You can update the deal stage and add comments</h4>
-          <h4>Stage <span class="required"> *</span></h4>
+          <h4>Stage <span class="required"> *</span>
+            <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
+              *ngIf="isPartnerVersion && deal?.onNonInteractiveStage"
+              title="You can not edit this deal as it is on a non interactive deal stage.">
+            </span>
+          </h4>
           <select
             [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)"
             class="form-control" [(ngModel)]="deal.pipelineStageId">
@@ -30,18 +35,15 @@
             <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">
               {{stage.stageName}}</option>
           </select>
-          <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
-            *ngIf="isPartnerVersion && deal?.onNonInteractiveStage"
-            title="You can not edit this deal as it is on a non interactive deal stage.">
-          </span>
         </span>
         <br>
         <div class="form-group">
           <h4 *ngIf="deal != undefined" class="modal-title" translate>Comments</h4>
-          <textarea class="form-control" placeholder="Write your comment here" name="comment" rows="5"
-            [(ngModel)]="comment" maxlength="250" (input)="validateComment(comment)"></textarea>
-            <span>{{remainingCharsLeft}} characters left...</span>
-            <span style="margin-left: 75px;" *ngIf="isDescriptionValid && lead != undefined" class="required text-center"> Please enter valid comments</span>
+          <textarea class="form-control" placeholder="Write your comment here" name="comment" rows="5" [(ngModel)]="comment"
+            maxlength="250" (input)="validateComment(comment)"></textarea>
+          <span>{{remainingCharsLeft}} characters left...</span>
+          <span style="margin-left: 75px;" *ngIf="isDescriptionValid && lead != undefined" class="required text-center">
+            Please enter valid comments</span>
         </div>
       </div>
       <div  class="modal-footer">

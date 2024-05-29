@@ -3,5 +3,7 @@ export class LandingPageShareDto{
     partnerIds = [];
     partnershipIds = [];
     partnerGroupSelected = false;
+    partnerIdAndPartnerStatus = [];
+    partnerGroupPartnerIdAndPartnerStatus = [];
 
 }

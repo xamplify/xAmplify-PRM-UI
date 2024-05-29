@@ -70,6 +70,8 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	@Input() vendorJourney:boolean = false;
 	@Output() closePopup = new EventEmitter();
 	companyAndPartnerMap = new Map<number, number[]>();
+	@Input() selectedPartnerIdAndPartnerStatus:any[] = [];
+	@Input() selectedPartnerGroupPartnerIdAndPartnerStatus:any[] = [];
 
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public landingPageService: LandingPageService,
@@ -604,4 +606,14 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			this.closePopup.emit();
 			this.resetFields();
 		}
+
+		getUserStatus(userId: number) {
+			 let status = "N/A";
+			if (this.selectedPartnerIdAndPartnerStatus.some(e => e.partnerId ===  userId)) {
+				status = this.selectedPartnerIdAndPartnerStatus.filter(e => e.partnerId === userId)[0].status;
+			} 
+			return status;
+		}
+		
+		
 }

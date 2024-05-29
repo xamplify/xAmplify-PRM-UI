@@ -32,6 +32,7 @@ export class ShowLandingPageComponent implements OnInit {
     message: string;
     isPartnerLandingPage:boolean=false;
     isVendorJourney:boolean = false;
+    isMasterLandingPage: boolean = false;
   constructor(private route: ActivatedRoute,private landingPageService:LandingPageService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
           public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService,private vanityURLService:VanityURLService) {
           }
@@ -55,6 +56,9 @@ export class ShowLandingPageComponent implements OnInit {
       }else if(this.router.url.includes("/vjpl/")){
         this.isPartnerLandingPage = true;
         this.isVendorJourney = true;
+        this.getHtmlBodyAlias(this.alias);
+      }else if(this.router.url.includes("/mlpl/")){
+        this.isMasterLandingPage = true;
         this.getHtmlBodyAlias(this.alias);
       }else{
           this.getHtmlBodyAlias(this.alias);
@@ -169,7 +173,7 @@ export class ShowLandingPageComponent implements OnInit {
         "alias":alias,
         "vendorJourney":this.isVendorJourney
       }
-      this.landingPageService.getHtmlContentByAlias(landingPageHtmlDto,this.isPartnerLandingPage)
+      this.landingPageService.getHtmlContentByAlias(landingPageHtmlDto,this.isPartnerLandingPage, this.isMasterLandingPage)
       .subscribe(
         (response: any) => {
           if (response.statusCode === 200) {

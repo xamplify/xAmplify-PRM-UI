@@ -52,7 +52,7 @@
                <div class="alert alert-danger error-div" *ngIf="invalidScheduleTime" id="invalidScheduleTimeDiv">
                   <strong>{{invalidScheduleTimeError}}</strong>
                </div>
-               <form role="form" [formGroup]="campaignLaunchForm" (ngSubmit)="launchCampaign();">
+               <form role="form" [formGroup]="campaignLaunchForm">
                   <!-- ----------Campaign details---------- -->
                   <div class="col-xs-12">
                      <fieldset class="scheduler-border">
@@ -64,7 +64,7 @@
                                  <span class="required"><strong> * </strong></span>
                                  <span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0"
                                     class="required">Already Exists</span>
-                                 <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control"
+                                 <input type="text" id="campaignName" autocomplete="off" placeholder="Campaign Name" class="form-control"
                                     [(ngModel)]="campaign.campaignName" name="campaignName"
                                     (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');"
                                     maxlength="200" />
@@ -83,7 +83,7 @@
                                  <label for="exampleInputPassword1">Subject line</label>
                                  <span class="required"><strong> * </strong></span>
                                  <div class="input-group merge-tag-input-border">
-                                    <input type="text" id="subjectLine" placeholder="{merge tag} + Subject line"
+                                    <input type="text"  autocomplete="off"  id="subjectLine" placeholder="{merge tag} + Subject line"
                                        class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine"
                                        (input)="validateForm();validateField('subjectLine');" maxlength="1000" />
                                     <span class="input-group-btn">
@@ -98,7 +98,7 @@
                               <div class="form-group col-xs-6 p0" [attr.class]="fromNameDivClass">
                                  <label for="exampleInputPassword1">From name</label>
                                  <span class="required"><strong> * </strong></span>
-                                 <input type="text" id="fromName" placeholder="From Name" class="form-control"
+                                 <input type="text"  autocomplete="off"  id="fromName" placeholder="From Name" class="form-control"
                                     [(ngModel)]="campaign.fromName" name="fromName"
                                     (input)="validateForm();validateField('fromName');" maxlength="200" />
                               </div>
@@ -129,7 +129,7 @@
                               <div class="form-group" [attr.class]="preHeaderDivClass">
                                  <label for="exampleInputPassword1">Pre header</label>
                                  <span class="required"><strong> * </strong></span>
-                                 <input type="text" id="preHeader" placeholder="Preheader" class="form-control"
+                                 <input type="text"  autocomplete="off"  id="preHeader" placeholder="Preheader" class="form-control"
                                     [(ngModel)]="campaign.preHeader" name="preHeader"
                                     (input)="validateForm();validateField('preHeader');" maxlength="200" />
                               </div>
@@ -204,6 +204,47 @@
                                  </div>
                               </div>
                               <br><br *ngIf="!dataShare">
+
+                              <!--Configure Pipelines-->  <!--  XNFR-530 -->
+                              <div class="form-group" *ngIf="showConfigurePipelines && !isPageCampaign">
+                                 <label class="control-label col-sm-4 p0" translate>Configure
+                                    Pipelines</label>
+                                 <div class="col-sm-8">
+                                    <switch class="pull-left" [status]="campaign.configurePipelines" [onText]="callActionSwitch.onTextValue"
+                                       [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+                                       [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                       (statusChange)="configurePipelines()">
+                                    </switch>
+                                    <span class="info-color-xampc" style="margin-left: 10px">
+                                       <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
+                                          aria-hidden="true" title="Configure Pipelines for this Campaign"></i>
+                                    </span>
+                                 </div>
+                              </div>
+                              <!--Lead Pipeline-->
+                              <div class="form-group" [attr.class]="leadPipelineClass" style="margin-bottom: 20px"
+                                 *ngIf="showLeadPipelines && campaign?.configurePipelines && !isPageCampaign">
+                                 <label class="control-label col-sm-4 p0">Lead Pipeline<span class="required"><b>*</b></span></label>
+                                 <div class="col-sm-8">
+                                    <select class="form-control" [(ngModel)]="campaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
+                                       placeholder="leadPipelineId" id="leadPipelineId" (change)="validateForm();">
+                                       <option [value]="0">Select Pipeline</option>
+                                       <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                    </select>
+                                 </div>
+                              </div>
+                              <!--Deal Pipeline-->
+                              <div class="form-group" [attr.class]="dealPipelineClass" style="margin-bottom: 20px;margin-top: 45px;"
+                                 *ngIf="showDealPipelines && campaign?.configurePipelines && !isPageCampaign">
+                                 <label class="control-label col-sm-4 p0">Deal Pipeline<span class="required"><b>*</b></span></label>
+                                 <div class="col-sm-8">
+                                    <select class="form-control" [(ngModel)]="campaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
+                                       placeholder="dealPipelineId" id="dealPipelineId" (change)="validateForm();">
+                                       <option [value]="0">Select Pipeline</option>
+                                       <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                    </select>
+                                 </div>
+                              </div>
                            </div>
                         </form>
                      </fieldset>
@@ -251,6 +292,11 @@
                                  <button type="button" class="pull-right btn-sm button_blue bgcolor-unset email-tempbtn" (click)="openEmailTemplateInNewTab(campaign)">
                                     <span class="btn btn-primary transition txt_pd-top3 prev-btn"><i class="fa fa-eye"></i> Preview</span> 
                                  </button>
+                                 <!--XNFR-541-->
+                                  <button type="button" class="pull-right btn-sm button_blue bgcolor-unset email-tempbtn" (click)="downloadAsImage(campaign)">
+                                    <span class="btn btn-primary transition txt_pd-top3 prev-btn"><i class="fa fa-picture-o"></i> Download</span> 
+                                 </button> 
+                                 <!--XNFR-541-->
                                  <button *ngIf="campaign?.emailTemplate?.editPartnerTemplate"  type="button" class="pull-right btn-sm button_blue ml-5 bgcolor-unset" style="margin-right: 6px"
                                     (click)="editPartnerTemplate()">
                                     <span  class="btn btn-primary transition txt_pd-top3 prev-btn"><i class="fa fa-edit"></i> Edit
@@ -308,12 +354,12 @@
                                  </button>
                                  <br>
                               </div>
-                              <span *ngIf="selectedUserlistIds.length>0" class="valid-users-count-span">This email will
-                                 be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
+                              <span *ngIf="selectedUserlistIds.length>0" class="valid-users-count-span success">This email will
+                                 be sent to {{validUsersCount}}({{allUsersCount}}) valid recipients.</span>
                            </div>
                            <div id="campaign-contact-list" style="display: none;">
                               <div>
-                                 <div class="row pb10" id="user_list_table_view">
+                                 <div class="row pb10 m0" id="user_list_table_view">
                                     <app-loader [model]="campaignContact.httpRequestLoader.isHorizontalCss"
                                        *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader>
                                     <app-error-pages
@@ -322,7 +368,7 @@
                                        *ngIf="!campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
                                        <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
                                           <div class="row m0 pt10">    
-                                          <div class="col-sm-6 col-md-6 col-lg-9 pl0 pr0" *ngIf="(authenticationService.module.isOrgAdmin || authenticationService.module.isOnlyPartner || authenticationService.module.isPrmAndPartner || authenticationService.isVendorPartner() || authenticationService.module.isMarketing )">
+                                          <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9 pl0 pr0" *ngIf="(authenticationService.module.isOrgAdmin || authenticationService.module.isOnlyPartner || authenticationService.module.isPrmAndPartner || authenticationService.isVendorPartner() || authenticationService.module.isMarketing || authenticationService?.isTeamMember() || authenticationService.vanityURLEnabled)">
                                              <ul class="mix-filter m0">
                                                 <li class="filter" [class.active]="'ALL' == contactListPagination.filterBy" (click)="filterContacts('ALL')">All</li>
                                                 <li class="filter" [class.active]="'MY-CONTACTS' == contactListPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
@@ -335,7 +381,7 @@
                                                    Contacts</li>
                                              </ul>
                                           </div>
-                                          <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                          <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 pl0 pr0">
                                           <div class="inputs" align="right"
                                              style="float:right;padding: 5px 5px 12px 0px;">
                                              <div class="portlet-input input-inline input-large"
@@ -367,6 +413,7 @@
                                                    </td>
                                                 </tr>
                                              </table>
+                                             <div class="table-responsive">
                                              <table class="table table-bordered no-more-tables dataTable no-footer"
                                                 id="user_list_tb" role="grid" aria-describedby="user_list_tb_info"
                                                 *ngIf="contactListPagination.totalRecords > 0">
@@ -386,7 +433,7 @@
                                                          <span class="gridHeader">List Name</span>
                                                       </th>
                                                       <ng-container *ngIf="!campaign?.oneClickLaunch">
-                                                         <th scope="row" class="text-center inc-width">Type </th>
+                                                         <th scope="row" class="text-center">Type </th>
                                                          <th scope="row" class="text-center">Date Uploaded </th>
                                                       </ng-container>
                                                       <th scope="row" class="text-center">Preview</th>
@@ -431,12 +478,12 @@
                                                             <span>{{contacts.name}}</span>
                                                          </td>
                                                          <ng-container *ngIf="!campaign?.oneClickLaunch">
-                                                            <td class="text-center moreipsis">
+                                                            <td class="text-center">
                                                                <span>
                                                                   {{contacts.type}}
                                                                   <ng-template [ngIf]="contacts?.formList">, Form
                                                                      Contact List</ng-template>
-                                                                     <ng-template [ngIf]="checkCompanyList(contacts.name)">, Company
+                                                                     <ng-template [ngIf]="contacts?.companyList">, Company
                                                                         Contact List</ng-template>    
                                                                </span>
                                                             </td>
@@ -448,7 +495,7 @@
                                                          <td class="text-center">
                                                             <div
                                                                [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block float-none'">
-                                                               <a title="Preview" class="custom-icon"data-toggle="tooltip" data-placement="right"
+                                                               <a title="Preview" class="custom-icon"data-toggle="tooltip" data-placement="bottom"
                                                                   (click)="$event.stopPropagation();previewUsers(contacts)">
                                                                   <i class="fa fa-eye IconCustomization"
                                                                      aria-hidden="true"></i>
@@ -467,6 +514,7 @@
                                                    </ng-container>
                                                 </tbody>
                                              </table>
+                                          </div>
                                           </div>
                                        </div>
                                     </ng-container>
@@ -1000,10 +1048,10 @@
                                     (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)"
                                     style="width:10em"><span class="btn Btn-Green transition txt_pd-top3 prev-btn ">Send Test
                                        Email</span></button>
-                                 <button type="submit" class="button mar-lft-40 bgcolor-unset mrgn_lft0"
+                                 <button type="button" class="button mar-lft-40 bgcolor-unset mrgn_lft0"
                                     [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid"
-                                    style="width:10em"><span
-                                       class="btn Btn-Green transition txt_pd-top3 mrg-left25">{{buttonName}}</span></button>
+                                    style="width:10em" (click)="campaignLaunchForm.valid && isCampaignDetailsFormValid && launchCampaign()">
+                                    <span class="btn Btn-Green transition txt_pd-top3 mrg-left25">{{buttonName}}</span></button>
                               </div>
                            </div>
                         </div>

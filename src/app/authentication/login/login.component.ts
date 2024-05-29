@@ -36,11 +36,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   { "name": "twitter", "iconName": "twitter", "value": "twitter" },
   { "name": "google", "iconName": "googleplus", "value": "googleplus" },
   { "name": "Linkedin", "iconName": "linkedin", "value": "linkedin" }];
-  
+
   roles: Array<Role>;
   vanityURLEnabled: boolean;
   isNotVanityURL: boolean;
-  isLoggedInVanityUrl = false;  
+  isLoggedInVanityUrl = false;
   signInText = "Sign In";
 
   //xnfr-256
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.isPleaseWaitButtonDisplayed = false;
     if(this.referenceService.teamMemberSignedUpSuccessfullyMessage!=""){
       this.teamMemberSignedUpResponse = new CustomResponse('SUCCESS',this.referenceService.teamMemberSignedUpSuccessfullyMessage,true);
-    }  
+    }
     if (this.referenceService.userProviderMessage !== "") {
       this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
     }
@@ -125,6 +125,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.resendActiveMail = false;
     this.resendAccountSignUpMail = false;
     if(userName!=undefined && userName!="undefined"){
+      if(userName=="superadmin@xamplify.io" && this.isLoggedInVanityUrl){
+        userName = "admin@xamplify.io";
+      }
       const authorization = 'Basic ' + btoa('my-trusted-client:');
       const body = new URLSearchParams();
       body.set('username', userName);
@@ -183,7 +186,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           }
         });
     }else{
-      this.isPleaseWaitButtonDisplayed = false; 
+      this.isPleaseWaitButtonDisplayed = false;
       this.loading = false;
     }
     return false;
@@ -201,7 +204,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
-  
+
   eventHandler(keyCode: any) { if (keyCode === 13) { this.login(); } }
   setCustomeResponse(responseType: string, responseMessage: string) {
     this.customResponse = new CustomResponse(responseType, responseMessage, true);
@@ -285,11 +288,12 @@ bgIMage2:any;
       }else{
         if (this.vanityURLService.isVanityURLEnabled()) {
           this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
-          this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {         
-            this.vanityURLEnabled = result.enableVanityURL;  
-            this.authenticationService.vendorCompanyId = result.companyId;     
+          this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
+            this.vanityURLEnabled = result.enableVanityURL;
+            this.authenticationService.vendorCompanyId = result.companyId;
             this.authenticationService.v_companyName = result.companyName;
             this.authenticationService.vanityURLink = result.vanityURLink;
+            this.authenticationService.companyUrl = result.companyUrl;
             this.authenticationService.loginType = result.loginType;
             this.authenticationService.isstyleTWoBgColor = result.styleTwoBgColor;
             this.isBgColor = result.styleOneBgColor;
@@ -341,6 +345,7 @@ bgIMage2:any;
               this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
             }
             this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
+            localStorage.setItem('appIcon',result.companyFavIconPath);
             this.vanityURLService.setVanityURLTitleAndFavIcon();
             if (result.showMicrosoftSSO) {
               this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });
@@ -353,13 +358,13 @@ bgIMage2:any;
             self.loginAfterSSOCallbackInVanity(e.data);
           }, false);
         } else {
-          this.isNotVanityURL = true;        
+          this.isNotVanityURL = true;
         }
         this.cleaningLeftSidebar();
         this.authenticationService.navigateToDashboardIfUserExists();
         setTimeout(() => { this.mainLoader = false; }, 900);
       }
-      
+
     } catch (error) { this.xtremandLogger.error('error' + error) }
   }
   ngOnDestroy() {
@@ -392,7 +397,7 @@ bgIMage2:any;
     }
   }
 
-  redirectToXamplify(){    
+  redirectToXamplify(){
     window.open("https://xamplify.co/login");
   }
 
@@ -419,7 +424,7 @@ bgIMage2:any;
       client_secret = "bfdJ4u0j6izlWSyd";
     } else if (providerName === "microsoftsso") {
       if(this.SERVER_URL=="https://xamp.io/" && this.APP_URL=="https://xamplify.io/"){
-        this.xtremandLogger.info("production keys are used");        
+        this.xtremandLogger.info("production keys are used");
         client_id = this.envService.microsoftProdClientId;
         client_secret = this.envService.microsoftProdClientSecret;
       }else if(this.SERVER_URL=="https://aravindu.com/" && this.APP_URL=="https://xamplify.co/"){
@@ -448,14 +453,14 @@ bgIMage2:any;
     }
     else {
       this.loginSSOUser(this.referenceService.userName, client_id, client_secret);
-    }    
+    }
   }
 
   loginSSOUser(userName: string, client_id: string, client_secret: string) {
    if(userName!=undefined && userName!="undefined"){
     const authorization = 'Basic' + btoa(client_id + ':');
     const body = 'client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials';
-    
+
     this.authenticationService.login(authorization, body, userName)
       .subscribe(result => {
         if (this.authenticationService.user) {
@@ -487,7 +492,7 @@ bgIMage2:any;
   }
 
 
-  
+
   createdUserId:any;
   getActiveLoginTemplate(companyProfileName:any){
       this.vanityURLService.getActiveLoginTemplate(companyProfileName)
@@ -499,7 +504,7 @@ bgIMage2:any;
             this.createdUserId = data.data.createdBy;
             this.previewTemplate(this.loginStyleId,this.createdUserId);
           }
-        })  
+        })
   }
   htmlContent:any;
   htmlString:any;

@@ -149,7 +149,7 @@ setViewType(viewType: string) {
     this.referenceService.loading(this.httpRequestLoader, true);
     pagination.categoryId = this.categoryId;
     pagination.lmsType = this.type;
-
+    this.setDefaultSortParameter();
     /**********Vanity Url Filter**************** */
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -192,6 +192,18 @@ setViewType(viewType: string) {
         this.callFolderListViewEmitter();
       });
   }
+  /******XBI-2598****/
+  private setDefaultSortParameter() {
+    if (this.isPartnerView && this.pagination.sortcolumn == null) {
+      const sortedValue = this.sortOption.damSortOption.value;
+      if (sortedValue !== '') {
+        const options: string[] = sortedValue.split('-');
+        this.pagination.sortcolumn = options[0];
+        this.pagination.sortingOrder = options[1];
+      }
+    }
+  }
+
   /********************Pagaination&Search Code*****************/
 
   /*************************Sort********************** */
@@ -329,7 +341,6 @@ setViewType(viewType: string) {
 
   UnpublishedModalPopUp(id: number){
     this.UnPublishedId =id ;
-
     $('#unpublished-modal').modal('show');
   }
 
@@ -337,8 +348,6 @@ setViewType(viewType: string) {
     if(this.UnPublishedId != 0){
       this.ChangePublish(this.UnPublishedId, isPublish);
       this.selectedOption = false ;
-      this.closePopUp()
-      
     }
     this.closePopUp()
   }
@@ -351,15 +360,20 @@ setViewType(viewType: string) {
   }
 
   ChangePublish(learningTrackId: number, isPublish: boolean) {
+    this.customResponse = new CustomResponse();
     this.referenceService.startLoader(this.httpRequestLoader);
     this.tracksPlayBookUtilService.changePublish(learningTrackId, isPublish).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
+          /****XBI-2589***/
+          let trackOrPlayBook =  this.tracksModule ? "Track":"Play Book";
+          let message = isPublish ? trackOrPlayBook+" Published Successsfully":trackOrPlayBook+" Unpublished Successfully";
+          this.customResponse = new CustomResponse('SUCCESS',message,true);
           this.listLearningTracks(this.pagination);
         } else if(response.statusCode == 401) {
           this.referenceService.showSweetAlertErrorMessage(response.message);
+          this.referenceService.stopLoader(this.httpRequestLoader);
         }
-        this.referenceService.stopLoader(this.httpRequestLoader);
       },
       (error: string) => {
         this.logger.errorPage(error);

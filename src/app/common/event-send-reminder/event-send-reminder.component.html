@@ -14,20 +14,20 @@
 				<div class="col-xs-12 col-sm-12">
 				   <form class="form-horizontal">
 					  <div class="form-group">
-						 <label for="eventTitle" class="col-sm-3 labal-css color-css">Event
+						 <label for="eventTitle" class="col-sm-6 col-lg-3 labal-css color-css">Event
 						 Title <span class=text-danger>*</span>
 						 </label>
-						 <div class="col-sm-9">
+						 <div class="col-sm-12 col-lg-9">
 							<input type="text" [attr.disabled]="true" class="form-control" id="eventTitle"
 							placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
 							[ngModelOptions]="{standalone: true}">
 						 </div>
 					  </div>
 					  <div class="form-group">
-						 <label for="hostedBy" class="col-sm-3 labal-css color-css">Hosted
+						 <label for="hostedBy" class="col-sm-6 col-lg-3 labal-css color-css">Hosted
 						 By <span class=text-danger>*</span>
 						 </label>
-						 <div class="col-sm-9">
+						 <div class="col-sm-12 col-lg-9">
 							<input type="text"
 							[attr.disabled]="true"
 							class="form-control pull-left" placeholder="Hosted By"
@@ -36,11 +36,11 @@
 						 </div>
 					  </div>
 					  <div class="form-group">
-						 <label for="eventDateTime" class="col-sm-3 labal-css color-css">Event
+						 <label for="eventDateTime" class="col-sm-6 col-lg-3 labal-css color-css">Event
 						 Date/Time <span class="text-danger" style="margin-left: -3px;">*</span>
 						 </label>
-						 <div class="col-sm-9 p0">
-							<div class="col-sm-6">
+						 <div class="col-sm-12 col-lg-9 p0">
+							<div class="col-xs-6 col-sm-6">
 							   <input
 							   [attr.disabled]="true"
 							   type="text" id="startDatePicker"
@@ -48,7 +48,7 @@
 							   [(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString"
 							   [ngModelOptions]="{standalone: true}">
 							</div>
-							<div class="col-sm-6">
+							<div class="col-xs-6 col-sm-6">
 							   <input type="text" id="enDatePicker"
 							   [attr.disabled]="true"
 							   [disabled]="true"
@@ -66,10 +66,10 @@
 					  </div>
 					  <section *ngIf="!eventCampaign.onlineMeeting">
 						 <div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css color-css">Location
+							<label for="hostedBy" class="col-sm-6 col-lg-3 labal-css color-css">Location
 							Name <span class="text-danger" style="position: absolute;">*</span>
 							</label>
-							<div class="col-sm-9">
+							<div class="col-sm-12 col-lg-9">
 							   <input type="text"
 							   [attr.disabled]="true"
 							   class="form-control" id="eventDateTime"
@@ -79,8 +79,8 @@
 							</div>
 						 </div>
 						 <div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css color-css">Address</label>
-							<div class="col-sm-9">
+							<label for="hostedBy" class="col-sm-6 col-lg-3 labal-css color-css">Address</label>
+							<div class="col-sm-12 col-lg-9">
 							   <input type="text"
 							   [attr.disabled]="true"
 							   class="form-control" id="address1"
@@ -131,11 +131,11 @@
 				   </form>
 				</div>
 				<div class="form-group">
-				   <label class="col-sm-3 labal-css color-css">Email subject<font
+				   <label class="col-sm-6 col-lg-3 labal-css color-css">Email subject<font
 					  style="color: red"> <b>*</b>
 				   </font>
 				   </label>
-				   <div class="col-sm-9">
+				   <div class="col-sm-12 col-lg-9">
 					  <input type="text" id="subjectLine" placeholder="Reminder Subject Line"
 					  class="form-control" [(ngModel)]="reminderEventSubject" (input)="validateReminderButton()"
 					  name="subjectLine"
@@ -143,19 +143,19 @@
 				   </div>
 				</div>
 				<div class="form-group">
-				   <label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Message<font
+				   <label class="col-sm-6 col-lg-3 labal-css color-css mb-pt0" style="padding-top: 25px;">Message<font
 					  style="color: red"> <b>*</b>
 				   </font>
 				   </label>
-				   <div class="col-sm-9" style="padding-top: 10px;">
-					  <textarea [(ngModel)]="reminderEventMessage" [ngModelOptions]="{standalone: true}" (input)="validateReminderButton()" placeholder="Add a comment..."></textarea>
+				   <div class="col-sm-12 col-lg-9" style="padding-top: 10px;">
+					  <textarea class="form-control" [(ngModel)]="reminderEventMessage" [ngModelOptions]="{standalone: true}" (input)="validateReminderButton()" placeholder="Add a comment..."></textarea>
 				   </div>
 				</div>
 			 </section>
 		  </div>
 		  <div class="pull-right" style="margin: 0px 29px 0px 0px;">
 			 <div class="right-css">
-				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeReminder()">Close</button>
+				<button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="closeReminder()">Close</button>
 				<button type="button" class="btn btn-primary" [disabled]="!isDisableReminderButton"(click)="sendEmailNotOpenReminder()">Send Reminder</button>
 			 </div>
 		  </div>

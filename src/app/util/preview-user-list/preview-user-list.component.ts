@@ -28,6 +28,8 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
   pagination:Pagination = new Pagination();
   customResponse:CustomResponse = new CustomResponse();
   publishedPartnerIds:Array<Number> = new Array<Number>();
+  @Input() vendorJourney:boolean = false;
+  @Input() selectedPartnerGroupPartnerIdAndPartnerStatus:any[] = [];
   constructor(public referenceService:ReferenceService,public contactService:ContactService,public properties:Properties,
     public pagerService:PagerService,private authenticationService:AuthenticationService) { }
 
@@ -94,4 +96,11 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
     this.notifyParentComponent.emit();
   }
   
+  getUserStatus(userId: number) {
+    let status = "N/A";
+   if (this.selectedPartnerGroupPartnerIdAndPartnerStatus.some(e => e.partnerId ===  userId)) {
+     status = this.selectedPartnerGroupPartnerIdAndPartnerStatus.filter(e => e.partnerId === userId)[0].status;
+   } 
+   return status;
+ }
 }
