@@ -230,7 +230,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     defaultDealTicketTypeId = 0;
     salesforceIntegrated = false;
     showConfigurePipelines = false;
-    pipelineLoader: HttpRequestLoader = new HttpRequestLoader();
+
     isValidPipeline = true;
     mergeTagsInput: any = {};
     editTemplateMergeTagsInput: any = {};
@@ -417,7 +417,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     }
 
 
-
+                    this.filterContacts('ALL');  
                     if (result.data.enableCoBrandingLogo) { this.eventCampaign.enableCoBrandingLogo = result.data.enableCoBrandingLogo; }
                     else { this.eventCampaign.enableCoBrandingLogo = false; }
                     if (result.data.parentCampaignId) { this.parentCampaignIdValue = result.data.parentCampaignId; this.parentCampaignId = true; this.isPartnerUserList = false; }
@@ -3177,7 +3177,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.loading = false;
     }
 
-    
+
 
     checkNameForCompanyList(name: any): boolean {
         let position = name.search('Company List');
@@ -3186,6 +3186,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
 
     filterContacts(filterType:string){
+        this.contactListsPagination.pageIndex = 1;
 		this.contactListsPagination.filterBy = filterType;
 		this.contactListMethod(this.contactListsPagination)
 	}
