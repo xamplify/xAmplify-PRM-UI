@@ -127,6 +127,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     /******** user guide *************/
     mergeTagForGuide:any;
     isValidCopyCampaignName = true;
+    showAllAnalytics : boolean = false ;
+    selectedIndex : number;
+    gearIconOptions : boolean = false;
+    campaignViewType : string = "";
+    
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -156,7 +161,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
         this.hasAllAccess = this.refService.hasAllAccess();
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
-        this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);       
+        this.refService.setDefaultDisplayType(this.modulesDisplayType); 
     }
 
 
@@ -187,6 +192,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.pagination.vanityUrlFilter = true;
         }
         this.pagination.archived = this.archived;
+        this.pagination.campaignViewType = this.campaignViewType;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
             data => {
@@ -201,6 +207,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     this.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                    pagination.pagedItems.forEach(item=>item['isExpand'] = false);
                     this.refService.loading(this.httpRequestLoader, false);
                 }else{
                     this.authenticationService.forceToLogout();
@@ -318,53 +325,60 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     getCampaignTypes(){
         this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
-        this.campaignService.getCampaignTypes().subscribe(
+        const self = this;
+        self.campaignService.getCampaignTypes().subscribe(
             response=>{
                 let campaignAccess = response.data;
-                this.campaignAccess.emailCampaign = campaignAccess.regular;
-                this.campaignAccess.videoCampaign = campaignAccess.video;
-                this.campaignAccess.socialCampaign = campaignAccess.social;
-                this.campaignAccess.eventCampaign = campaignAccess.event;
-                this.campaignAccess.landingPageCampaign = campaignAccess.page;
-                this.campaignAccess.formBuilder = campaignAccess.form;
-                this.campaignAccess.survey = campaignAccess.survey;
+                self.campaignAccess.emailCampaign = campaignAccess.regular;
+                self.campaignAccess.videoCampaign = campaignAccess.video;
+                self.campaignAccess.socialCampaign = campaignAccess.social;
+                self.campaignAccess.eventCampaign = campaignAccess.event;
+                self.campaignAccess.landingPageCampaign = campaignAccess.page;
+                self.campaignAccess.formBuilder = campaignAccess.form;
+                self.campaignAccess.survey = campaignAccess.survey;
             },_error=>{
-                this.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
-                this.isloading = false;
-                this.refService.loading(this.httpRequestLoader, false);
+                self.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
+                self.isloading = false;
+                self.refService.loading(self.httpRequestLoader, false);
             },()=>{
-                this.isloading = false;
-                this.refService.loading(this.httpRequestLoader, false);
-                this.teamMemberId = this.route.snapshot.params['teamMemberId'];
-                if(this.teamMemberId!=undefined){
-                    this.pagination.teamMemberAnalytics = true;
+                self.isloading = false;
+                self.refService.loading(self.httpRequestLoader, false);
+                self.teamMemberId = self.route.snapshot.params['teamMemberId'];
+                if(self.teamMemberId!=undefined){
+                    self.pagination.teamMemberAnalytics = true;
                 }else{
-                    this.pagination.teamMemberAnalytics = false;
+                    self.pagination.teamMemberAnalytics = false;
                 }
-                if(this.router.url.endsWith('/')){
-                    this.setViewType('Folder-Grid');
+                if(self.router.url.endsWith('/')){
+                    self.setViewType('Folder-Grid');
                 }else{
-                    this.refService.manageRouter = true;
-                    this.pagination.maxResults = 12;
-                    this.categoryId = this.route.snapshot.params['categoryId'];
-                    if(this.categoryId!=undefined ){
-                        this.pagination.categoryId = this.categoryId;
-                        this.pagination.categoryType = 'c';
+                    self.refService.manageRouter = true;
+                    self.pagination.maxResults = 12;
+                    self.categoryId = self.route.snapshot.params['categoryId'];
+                    if(self.categoryId!=undefined ){
+                        self.pagination.categoryId = self.categoryId;
+                        self.pagination.categoryType = 'c';
                     }
-                    let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
-                    let isTeamMemberFilter = this.router.url.indexOf("manage/tm")>-1;
+                    let showList = self.modulesDisplayType.isListView || self.modulesDisplayType.isGridView || self.categoryId != undefined;
+                    let isTeamMemberFilter = self.router.url.indexOf("manage/tm") > -1;
+                    if (self.modulesDisplayType.isGridView) {
+                        self.campaignViewType = "grid";
+                    } else if (self.modulesDisplayType.isListView) {
+                        self.campaignViewType = "list";
+                    }
                     if(showList || isTeamMemberFilter){
-                        if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
-                            this.modulesDisplayType.isListView = true;
-                            this.modulesDisplayType.isGridView = false;
+                        if(!self.modulesDisplayType.isListView && !self.modulesDisplayType.isGridView){
+                            self.modulesDisplayType.isListView = true;
+                            self.modulesDisplayType.isGridView = false;
+                            self.campaignViewType = "list";
                         }
-                        this.modulesDisplayType.isFolderListView = false;
-                        this.modulesDisplayType.isFolderGridView = false;
-                        this.listCampaign(this.pagination);
-                    }else if(this.modulesDisplayType.isFolderGridView){
-                        this.setViewType('Folder-Grid');
-                    }else if(this.modulesDisplayType.isFolderListView){
-                        this.setViewType('Folder-List');
+                        self.modulesDisplayType.isFolderListView = false;
+                        self.modulesDisplayType.isFolderGridView = false;
+                        self.listCampaign(self.pagination);
+                    }else if(self.modulesDisplayType.isFolderGridView){
+                        self.setViewType('Folder-Grid');
+                    }else if(self.modulesDisplayType.isFolderListView){
+                        self.setViewType('Folder-List');
                     }
                 }
             }
@@ -373,11 +387,51 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
 
     updateEvent(campaign: any) {
+        if (campaign.channelCampaign) {
+            this.callUpdateEvent(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callUpdateEvent(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callUpdateEvent(campaign: any) {
         this.router.navigate(['/home/campaigns/event-update/' + campaign.campaignId])
     }
 
     editCampaign(campaign: any) {
-        this.isloading = true;
+        if (campaign.channelCampaign) {
+            this.callEditCampaign(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callEditCampaign(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+    
+    callEditCampaign(campaign: any) {
+     this.isloading = true;
         this.customResponse = new CustomResponse();
         if(campaign.launched){
             this.editButtonClicked = true;
@@ -698,11 +752,53 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.pagination.campaignType = type;
         this.listCampaign(this.pagination);
     }
+
     campaginRouter(campaign: any) {
-        this.refService.campaignType = campaign.campaignType;
-        this.router.navigate(['/home/campaigns/' + campaign.campaignId + '/details']);
+        if (campaign.channelCampaign) {
+            this.refService.campaignType = campaign.campaignType;
+            this.router.navigate(['/home/campaigns/' + campaign.campaignId + '/details']);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        if (data.statusCode == 200) {
+                            campaign.hasAccess = data.data.hasAccess;
+                            if (campaign.hasAccess) {
+                                campaign.showGearIconOptions = data.data.showGearIconOptions;
+                                this.refService.campaignType = campaign.campaignType;
+                                this.router.navigate(['/home/campaigns/' + campaign.campaignId + '/details']);
+                            } else {
+                                this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign", true);
+                            }
+                        }
+                    },
+                    (error: any) => {
+                        this.logger.errorPage(error);
+                    });
+        }
     }
+
     showCampaignPreview(campaign: any) {
+        if (campaign.channelCampaign) {
+            this.callShowCampaignPreview(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callShowCampaignPreview(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callShowCampaignPreview(campaign: any){
         this.refService.loadingPreview = true;
         if (campaign.campaignType.indexOf('EVENT') > -1) {
             this.campaignType = 'EVENT';
@@ -712,11 +808,53 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.previewCampaign = campaign.campaignId;
         }
     }
+
     goToRedistributedCampaigns(campaign: Campaign) {
-        this.isloading = true;
-        this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/re-distributed"]);
+        if (campaign.channelCampaign) {
+            this.isloading = true;
+            this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/re-distributed"]);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        if (data.statusCode == 200) {
+                            campaign.hasAccess = data.data.hasAccess;
+                            if (campaign.hasAccess) {
+                                campaign.showGearIconOptions = data.data.showGearIconOptions;
+                                this.isloading = true;
+                                this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/re-distributed"]);
+                            } else {
+                                this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign", true);
+                            }
+                        }
+                    },
+                    (error: any) => {
+                        this.logger.errorPage(error);
+                    });
+        }
     }
+
     goToPreviewPartners(campaign: Campaign) {
+        if (campaign.channelCampaign) {
+            this.callGoToPreviewPartners(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callGoToPreviewPartners(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callGoToPreviewPartners(campaign: Campaign){
         this.isloading = true;
         this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/plc"]);
     }
@@ -742,6 +880,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 $('#cancelEventModal').modal('show');
             });
     }
+    
     cancelEvent() {
         var cancelEventData = {
             "id": this.selectedCancelEventId,
@@ -816,38 +955,101 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home/forms/cf/'+id]);
     }
     
-    openEventUrlModal(campaign:Campaign){
+    openEventUrlModal(campaign: Campaign) {
+        if (campaign.channelCampaign) {
+            this.callOpenEventUrlModal(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callOpenEventUrlModal(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callOpenEventUrlModal(campaign: Campaign) {
         this.modalPopupLoader = true;
         this.publicEventAliasUrl = "";
         this.publicEventAlias = "";
         this.copiedLinkCustomResponse = new CustomResponse();
         $('#public-event-url-modal').modal('show');
         this.campaignService.getPublicEventCampaignAlias(campaign.campaignId).
-        subscribe(
-            data =>{
-                this.publicEventAlias = data;
-                if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {           
-                    this.publicEventAliasUrl = this.authenticationService.vanityURLink + "rsvp/" + this.publicEventAlias +"?type=YES&utm_source=public";
-                  }else{              
-                    this.publicEventAliasUrl = this.authenticationService.APP_URL + "rsvp/" + this.publicEventAlias +"?type=YES&utm_source=public";
-                  }
-                  this.modalPopupLoader = false;
-            },_error =>{
-                this.modalPopupLoader = false;
-                this.copiedLinkCustomResponse = new CustomResponse('ERROR','Please try after sometime',true);
-            });
-        }
-    copyUrl(inputElement){
+            subscribe(
+                data => {
+                    this.publicEventAlias = data;
+                    if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {
+                        this.publicEventAliasUrl = this.authenticationService.vanityURLink + "rsvp/" + this.publicEventAlias + "?type=YES&utm_source=public";
+                    } else {
+                        this.publicEventAliasUrl = this.authenticationService.APP_URL + "rsvp/" + this.publicEventAlias + "?type=YES&utm_source=public";
+                    }
+                    this.modalPopupLoader = false;
+                }, _error => {
+                    this.modalPopupLoader = false;
+                    this.copiedLinkCustomResponse = new CustomResponse('ERROR', 'Please try after sometime', true);
+                });
+    }
+
+    copyUrl(inputElement) {
         this.copiedLinkCustomResponse = new CustomResponse();
         inputElement.select();
         document.execCommand('copy');
         inputElement.setSelectionRange(0, 0);
-        this.copiedLinkCustomResponse = new CustomResponse('SUCCESS','Copied to clipboard successfully.',true );  
+        this.copiedLinkCustomResponse = new CustomResponse('SUCCESS', 'Copied to clipboard successfully.', true);
     }
-    inviteMore(campaign:Campaign){
+
+    inviteMore(campaign: Campaign) {
+        if (campaign.channelCampaign) {
+            this.callInviteMore(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callInviteMore(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callInviteMore(campaign: Campaign) {
         this.adddMoreReceiversComponent.showPopup(campaign);
     }
-    sendEventEmail(campaign:Campaign){
+
+    sendEventEmail(campaign: Campaign) {
+        if (campaign.channelCampaign) {
+            this.callSendEventEmail(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callSendEventEmail(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callSendEventEmail(campaign: Campaign) {
         this.publicEventEmailPopupComponent.showPopup(campaign);
     }
     
@@ -910,14 +1112,17 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
+            this.campaignViewType = "list";
             this.navigateToManageSection(viewType);    
         }else if("Grid"==viewType){
+            this.campaignViewType = "grid";
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
-            this.navigateToManageSection(viewType);    
+            this.navigateToManageSection(viewType); 
         }else if("Folder-Grid"==viewType){
+            this.campaignViewType = "folder-grid";
             this.closeFilterOption();
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
@@ -937,6 +1142,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 
             }
         }else if("Folder-List"==viewType){
+            this.campaignViewType = "folder-list";
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
@@ -955,12 +1161,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
+            this.campaignViewType = "list";
             this.listCampaign(this.pagination);
         }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.modulesDisplayType.isListView = false;
+            this.campaignViewType = "grid";
             this.listCampaign(this.pagination);
         }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
                  &&  (this.categoryId==undefined || this.categoryId==0)){
@@ -969,9 +1177,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
            if("List"==viewType){
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isListView = true;
+            this.campaignViewType = "folder-list";
            }else{
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isListView = false;
+            this.campaignViewType = "folder-grid";
            }
            this.listCampaign(this.pagination);
         }else  if(this.router.url.endsWith('/')){
@@ -1171,6 +1381,26 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     archiveCampaign(campaign: any) {
+        if (campaign.channelCampaign) {
+            this.callArchiveCampaign(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callArchiveCampaign(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callArchiveCampaign(campaign: any) {
         var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
         this.campaignService.archiveCampaign(request)
             .subscribe(
@@ -1191,6 +1421,26 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     unarchiveCampaign(campaign: any) {
+        if (campaign.channelCampaign) {
+            this.callUnarchiveCampaign(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callUnarchiveCampaign(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callUnarchiveCampaign(campaign: any) {
         var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
         this.campaignService.unarchiveCampaign(request)
             .subscribe(
@@ -1215,16 +1465,36 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     showEndDateModal(campaign: any) {
+        if (campaign.channelCampaign) {
+            this.callShowEndDateModal(campaign);
+        } else {
+            this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
+                .subscribe(
+                    data => {
+                        campaign.hasAccess = data.data.hasAccess;
+                        if (campaign.hasAccess) {
+                            this.callShowEndDateModal(campaign);
+                        } else {
+                            this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign: " + campaign.campaignName, true);
+                        }
+                    },
+                    error => {
+                        this.showErrorResponse(error);
+                    });
+        }
+    }
+
+    callShowEndDateModal(campaign: any) {
         this.showEditEndDateForm = true;
         $('#endDateModal').modal('show');
         this.selectedCampaign = campaign;
 
         if (campaign.endDate != undefined && campaign.endDate != null) {
             this.selectedEndDate = utc(campaign.endDate).local().format("YYYY-MM-DD HH:mm");
-            let selectedDate = new Date(this.selectedEndDate);            
+            let selectedDate = new Date(this.selectedEndDate);
             if (Array.isArray(this.endDatePickr)) {
-                $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
-                    endDatePickrObj.setDate(selectedDate);                        
+                $.each(this.endDatePickr, function (_index: number, endDatePickrObj) {
+                    endDatePickrObj.setDate(selectedDate);
                 });
             } else {
                 this.endDatePickr.setDate(selectedDate);
@@ -1234,13 +1504,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         }
 
         if (Array.isArray(this.endDatePickr)) {
-            $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
-                endDatePickrObj.set("minDate", new Date());                        
+            $.each(this.endDatePickr, function (_index: number, endDatePickrObj) {
+                endDatePickrObj.set("minDate", new Date());
             });
         } else {
             this.endDatePickr.set("minDate", new Date());
         }
-        
     }
 
     closeEndDateModal() {       
@@ -1331,5 +1600,83 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         let trimmedData = this.refService.getTrimmedData(this.saveAsCampaignName);
         this.isValidCopyCampaignName = trimmedData.length>0;
     }
+    
+    getCampaignHighLevelAnalytics2(campaign : any, index:number){
+     this.isloading = true;
+        try{
+        
+        if(this.selectedIndex!=undefined && this.selectedIndex != index){
+           this.showAllAnalytics = false;
+           this.pagination.pagedItems[this.selectedIndex]['isExpand']=false;
+        } 
+        
+         if(!campaign['isExpand'] && !campaign.openRate){
+        
+         this.campaignService.getCampaignHighLevelAnalytics2(this.loggedInUserId, campaign)
+        .subscribe(
+            data => {    
+                if(data.statusCode==200){
+                this.isloading = false;
+                    this.selectedIndex = index;
+                    this.showAllAnalytics = true;
+                    campaign['isExpand']=true;
+                    campaign.openRate = data.data.openRate;
+                    campaign.emailClicked = data.data.emailClicked;
+                    campaign.clickthroughRate = data.data.clickthroughRate;
+                    campaign.views = data.data.views;
+                    campaign.hardBounce  = data.data.hardBounce;
+                    campaign.softBounce  = data.data.softBounce;
+                    campaign.delivered   = data.data.delivered;
+                    campaign.leadCount   = data.data.leadCount;
+                    campaign.dealCount   = data.data.dealCount;
+                    campaign.redistributedCount  = data.data.redistributedCount;
+                    campaign.totalAttendeesCount  = data.data.totalAttendeesCount;
+                    campaign.attendeesCount        = data.data.attendeesCount;
+                }
+            },
+            (error: any) => {
+                this.logger.errorPage(error);
+            },
+            ()=> this.logger.info("download completed")
+            );//subscribe
+          }else if(!campaign['isExpand'] && campaign.openRate){
+                this.isloading = false;
+                this.selectedIndex = index;
+                this.showAllAnalytics = true;
+                campaign['isExpand']=true;
+                }else if(campaign['isExpand']){
+                this.isloading = false;
+                this.showAllAnalytics = false;
+                campaign['isExpand']=false;
+                }
+            
+        }catch(error){
+            this.logger.error(error, "ManagePublishComponent", "downloadCampaignsData()");
+        }
+    }
+    
+    showGearIconOptions(campaign: any, index : number) {
+    if(campaign.channelCampaign){
+      this.checkLastElement(index);
+    }else{
+        this.campaignService.getGearIconOptions(campaign, this.loggedInUserId)
+        .subscribe(
+            data => {
+                if (data.statusCode == 200) {
+                    campaign.hasAccess = data.data.hasAccess;
+                    if(campaign.hasAccess){
+                       this.checkLastElement(index);
+                       campaign.showGearIconOptions = data.data.showGearIconOptions ;
+                    }else{
+                    this.customResponse = new CustomResponse('ERROR',"You don't have access for this campaign",true);
+                    }
+                }
+            },
+            (error: any) => {
+                this.logger.errorPage(error);
+            });
+            
+        }
+    } 
 
 }

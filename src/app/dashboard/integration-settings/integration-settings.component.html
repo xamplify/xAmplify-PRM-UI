@@ -110,7 +110,7 @@
                   </span>
 
                   <ul
-                    *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'HALOPSA' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA'"
+                    *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA'"
                     class="textDecoration">
 
                     <li>{{sfCustomField.displayName}}</li>
@@ -129,6 +129,7 @@
                       Required
                     </li>
                   </ul>
+                  <span *ngIf="integrationType === 'HALOPSA'"><b>TicketType(s)</b>: {{sfCustomField.halopsaTicketTypeName}}</span>
                 </td>
                 <td><span>{{sfCustomField.type}}</span><span
                     *ngIf="sfCustomField.entryType">-{{sfCustomField.entryType}}</span>

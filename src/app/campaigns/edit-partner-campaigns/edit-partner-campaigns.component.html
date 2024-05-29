@@ -204,6 +204,47 @@
                                  </div>
                               </div>
                               <br><br *ngIf="!dataShare">
+
+                              <!--Configure Pipelines-->  <!--  XNFR-530 -->
+                              <div class="form-group" *ngIf="showConfigurePipelines && !isPageCampaign">
+                                 <label class="control-label col-sm-4 p0" translate>Configure
+                                    Pipelines</label>
+                                 <div class="col-sm-8">
+                                    <switch class="pull-left" [status]="campaign.configurePipelines" [onText]="callActionSwitch.onTextValue"
+                                       [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+                                       [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                       (statusChange)="configurePipelines()">
+                                    </switch>
+                                    <span class="info-color-xampc" style="margin-left: 10px">
+                                       <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
+                                          aria-hidden="true" title="Configure Pipelines for this Campaign"></i>
+                                    </span>
+                                 </div>
+                              </div>
+                              <!--Lead Pipeline-->
+                              <div class="form-group" [attr.class]="leadPipelineClass" style="margin-bottom: 20px"
+                                 *ngIf="showLeadPipelines && campaign?.configurePipelines && !isPageCampaign">
+                                 <label class="control-label col-sm-4 p0">Lead Pipeline<span class="required"><b>*</b></span></label>
+                                 <div class="col-sm-8">
+                                    <select class="form-control" [(ngModel)]="campaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
+                                       placeholder="leadPipelineId" id="leadPipelineId" (change)="validateForm();">
+                                       <option [value]="0">Select Pipeline</option>
+                                       <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                    </select>
+                                 </div>
+                              </div>
+                              <!--Deal Pipeline-->
+                              <div class="form-group" [attr.class]="dealPipelineClass" style="margin-bottom: 20px;margin-top: 45px;"
+                                 *ngIf="showDealPipelines && campaign?.configurePipelines && !isPageCampaign">
+                                 <label class="control-label col-sm-4 p0">Deal Pipeline<span class="required"><b>*</b></span></label>
+                                 <div class="col-sm-8">
+                                    <select class="form-control" [(ngModel)]="campaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
+                                       placeholder="dealPipelineId" id="dealPipelineId" (change)="validateForm();">
+                                       <option [value]="0">Select Pipeline</option>
+                                       <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                    </select>
+                                 </div>
+                              </div>
                            </div>
                         </form>
                      </fieldset>

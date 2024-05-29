@@ -3599,6 +3599,11 @@ previewPartnerPageInNewTab(id:number){
 previewVendorJourneyPartnerPageInNewTab(id:number){
   this.openWindowInNewTab("/pv/vjplp/"+this.encodePathVariable(id));
 }
+
+previewMasterPartnerPageInNewTab(id:number){
+  this.openWindowInNewTab("/pv/mplp/"+this.encodePathVariable(id));
+}
+
 previewAssetPdfInNewTab(id:number){
   this.openWindowInNewTab("/pv/v/pdf/"+this.encodePathVariable(id));
 }

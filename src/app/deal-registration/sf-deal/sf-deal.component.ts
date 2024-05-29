@@ -23,6 +23,7 @@ export class SfDealComponent implements OnInit {
   @Input() public isPreview = false;
   @Input() isVendor = false;
   @Input() activeCRM: any;
+  @Input() public ticketTypeId: any;
   form: Form = new Form();
   errorMessage: string;
   isDealRegistrationFormInvalid: boolean = true;
@@ -113,8 +114,18 @@ export class SfDealComponent implements OnInit {
 
   }
 
+  ngOnChanges(){
+    if (this.createdForCompanyId != undefined && this.createdForCompanyId > 0) {
+      if (this.dealId == undefined || this.dealId <= 0) {
+        this.dealId = 0;
+      }
+      this.addLoader();
+      this.getActiveCRMCustomForm();
+    }
+  }
+
   getActiveCRMCustomForm() {
-    this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId).subscribe(result => {
+    this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId, this.ticketTypeId).subscribe(result => {
       this.showSFFormError = false;
       this.removeLoader();
       if (result.statusCode == 200) {

@@ -1,6 +1,6 @@
 <div>
 	<button class="button_blue float-right btn-select-templates mb_10 btn-mb bgcolor-unset px-0"
-		style="padding-top: 2px;" *ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate><span
+		style="padding-top: 6px;" *ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate><span
 			class="btn btn-primary transition">Add Vendor Logos</span></button>
 </div>
 <div class="modal fade right" id="add-vendor-logo-popup" tabindex="-1" role="dialog" data-backdrop="static"
@@ -17,25 +17,27 @@
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
 						<tr>
-							<th scope="row" class="text-center" translate>Company Name</th>
 							<th scope="row" translate>Logo</th>
+							<th scope="row" class="text-center" translate>Company Name</th>
 							<th scope="row" class="text-center" translate>Action</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr *ngFor="let vendorLogo of vendorLogoDetails;let i = index">
+							<td class="hidden-xs text-center" style="width: 10%;">
+								<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
+									<img class="custom-image-css" src="{{vendorLogo?.companyLogo}}"
+										onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found"
+										style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
+								</div>
+							</td>
 							<td class="text-center">{{vendorLogo.companyName}}</td>
-							<td  class="hidden-xs text-center" style="width: 10%;">
-												<div class="thumbnail-wrapper dam_image_effect"
-													style="width: 180px; height: 100px; border:1px solid #ccc;">
-													<img class="custom-image-css" src="{{vendorLogo?.companyLogo}}"
-														onerror="this.src='assets/images/no-preview.jpg';"
-														alt="Image Not Found"
-														style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
-												</div>
-											</td>
 							<td class="text-center">
-                toggle button
+								<label class="toggleOnOff">
+									<input class="checkBox_shadow" type="checkbox" [(ngModel)]="vendorLogo.selected" name="Select">
+									<span class="sliderOnOff"></span>
+									<span class="labels" data-on="Selected" data-off=""></span>
+								</label>
 							</td>
 						</tr>
 					</tbody>

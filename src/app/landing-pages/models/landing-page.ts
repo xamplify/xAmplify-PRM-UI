@@ -1,4 +1,5 @@
 import{LandingPageType} from './landing-page-type.enum';
+import { VendorLogoDetails } from './vendor-logo-details';
 export class LandingPage {
     id:number;
     name:string;
@@ -32,4 +33,5 @@ export class LandingPage {
     /*XNFR-428*/
     vendorJourneyId = 0;
     hasVendorJourney:boolean = false;
+    vendorLogoDetails :VendorLogoDetails[];
 }
