@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, AfterViewChecked, Renderer, ViewChild, Self } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterViewChecked, Renderer, ViewChild } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { Criteria } from '../models/criteria';
