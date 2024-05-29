@@ -112,13 +112,13 @@
                       </ng-container> -->
                       <button class="button bgcolor-unset p0 btn-transitions" data-toggle="tooltip" data-placement="top"
                         title="Click here to synchronize all existing Company Contact List" translate
-                        (click)="confirmsync()" [disabled]=" masterContactListSync || contactsCompanyListSync">
+                        (click)="confirmsync()" [disabled]=" masterContactListSync || contactsCompanyListSync" [hidden] = "authenticationService.isOnlyUser()">
                         <span class="btn btn-primary transition d-inline"> Synchronize Companies
                           <i class="fa fa-refresh" aria-hidden="true"></i>
                         </span>
                       </button>
                       <button class="button bgcolor-unset p0 btn-transitions" (click)="addCompanyModalOpen()"
-                        [disabled]=" masterContactListSync || contactsCompanyListSync" translate>
+                        [disabled]=" masterContactListSync || contactsCompanyListSync " [hidden] = "authenticationService.isOnlyUser()" translate>
                         <span class="btn Btn-Green transition d-inline"> Add a Company
                           <i class="fa fa-plus" aria-hidden="true"></i></span>
                       </button>
