@@ -162,7 +162,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.hasAllAccess = this.refService.hasAllAccess();
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         this.refService.setDefaultDisplayType(this.modulesDisplayType); 
-        console.log( this.modulesDisplayType);      
     }
 
 
@@ -315,8 +314,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     getCampaignTypes(){
         this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
-        console.log(this.modulesDisplayType);
-        console.log(this.modulesDisplayType.isListView);
         const self = this;
         self.campaignService.getCampaignTypes().subscribe(
             response=>{
