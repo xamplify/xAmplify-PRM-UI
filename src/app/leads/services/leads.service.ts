@@ -278,7 +278,13 @@ export class LeadsService {
         .map(this.extractData)
         .catch(this.handleError);
     }
-    
+
+    /*** XNFR-521 ***/
+    getLeadPipelinesForView(leadId: number, loggedInUserId: number) {
+      return this.http.get(this.authenticationService.REST_URL + `/lead/view/pipelines/${leadId}/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+    }
 
 
 }
