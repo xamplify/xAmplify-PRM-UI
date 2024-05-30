@@ -224,7 +224,7 @@
                               <!--Lead Pipeline-->
                               <div class="form-group" [attr.class]="leadPipelineClass" style="margin-bottom: 20px"
                                  *ngIf="showLeadPipelines && campaign?.configurePipelines && !isPageCampaign">
-                                 <label class="control-label col-sm-4 p0">Lead Pipeline<span class="required"><b>*</b></span></label>
+                                 <label class="control-label col-sm-4 p0">Lead Pipeline<span><b class="required">*</b></span></label>
                                  <div class="col-sm-8">
                                     <select class="form-control" [(ngModel)]="campaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
                                        placeholder="leadPipelineId" id="leadPipelineId" (change)="validateForm();">
@@ -236,7 +236,7 @@
                               <!--Deal Pipeline-->
                               <div class="form-group" [attr.class]="dealPipelineClass" style="margin-bottom: 20px;margin-top: 45px;"
                                  *ngIf="showDealPipelines && campaign?.configurePipelines && !isPageCampaign">
-                                 <label class="control-label col-sm-4 p0">Deal Pipeline<span class="required"><b>*</b></span></label>
+                                 <label class="control-label col-sm-4 p0">Deal Pipeline<span><b class="required">*</b></span></label>
                                  <div class="col-sm-8">
                                     <select class="form-control" [(ngModel)]="campaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
                                        placeholder="dealPipelineId" id="dealPipelineId" (change)="validateForm();">

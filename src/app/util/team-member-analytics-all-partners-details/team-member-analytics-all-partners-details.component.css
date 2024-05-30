@@ -52,6 +52,7 @@
 	color: #fff;
 	line-height: 7;
 	font-size: 12px;
+	white-space: nowrap;
 }
 
 .declined-class{
