@@ -567,7 +567,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.listCampaignPipelines();
         this.eventCampaign.leadPipelineId = 0;
         this.eventCampaign.dealPipelineId = 0;
-        this.eventCampaign.configurePipelines = !this.eventCampaign.configurePipelines;
+        //this.eventCampaign.configurePipelines = !this.eventCampaign.configurePipelines;
 
     }
 
@@ -3146,11 +3146,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         this.showConfigurePipelines = true;
                         this.getConfigureHalopsaTicketTypes();
                     }
-
-                    if ("HUBSPOT" === this.activeCRMDetails.type) {
-                        this.showConfigurePipelines = true;
-                        this.listCampaignPipelines();
-                    } else if ("SALESFORCE" === this.activeCRMDetails.type) {
+                    else if ("SALESFORCE" === this.activeCRMDetails.type) {
                         this.salesforceIntegrated = true;
                         this.listCampaignPipelines();
                         this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
@@ -3165,6 +3161,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         }, error => {
                             this.logger.error(error, "Error in salesforce checkIntegrations()");
                         }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+                    } else {
+                        this.showConfigurePipelines = true;
+                        this.listCampaignPipelines();
                     }
                 } else {
                     this.showConfigurePipelines = true;

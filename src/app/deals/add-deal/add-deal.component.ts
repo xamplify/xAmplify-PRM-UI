@@ -310,11 +310,11 @@ export class AddDealComponent implements OnInit {
                 if (campaignDealPipeline.createdByCampaignPipelines != undefined) {
                   self.deal.createdByPipelineId = campaignDealPipeline.createdByCampaignPipelines.id;
                   self.createdByStages = campaignDealPipeline.createdByCampaignPipelines.stages;
-                }
-                self.deal.haloPSATickettypeId = ticketTypeIdMap.halopsaTicketTypeId;        
+                }     
                 self.pipelineIdError = false;
                 if (this.actionType == 'add' || this.actionType == 'edit') {
                   if ("HALOPSA" === this.activeCRMDetails.type) {
+                    self.deal.haloPSATickettypeId = ticketTypeIdMap.halopsaTicketTypeId;   
                     self.showCustomForm = true;
                     if (this.actionType == 'add') {
                       let createdForPipelineStage = null;

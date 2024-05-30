@@ -312,7 +312,7 @@
 							 
 
 
-							<div class="form-group" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines"
+							<div class="form-group" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines && !reDistributeEvent"
 								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 								<label class="control-label col-sm-3">Lead Pipeline<span>
 										<b style="color: #f55d7a !important">*</b>
@@ -327,7 +327,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="form-group" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines"
+							<div class="form-group" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines  && !reDistributeEvent"
 								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 								<label class="control-label col-sm-3">Deal Pipeline<span>
 										<b style="color: #f55d7a !important">*</b>

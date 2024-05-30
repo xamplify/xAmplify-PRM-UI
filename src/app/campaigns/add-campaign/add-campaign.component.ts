@@ -2200,11 +2200,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             vanityUrlDomainName = this.authenticationService.companyProfileName;
             vanityUrlCampaign = true;
         }
-        
-        // if (!this.campaign.configurePipelines && 'SALESFORCE' !== this.activeCRMDetails.type) {
-        //     this.campaign.leadPipelineId = null;
-        //     this.campaign.dealPipelineId = null;
-        // }
 
         var data = {
             'campaignName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
