@@ -1,3 +1,75 @@
-<p>
-  dam-partner-company-analytics works!
-</p>
+<div class="col-xs-12 col-sm-12 col-lg-12 col-md-12 row-fluid p0">
+  <app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
+  <!---Search & Sort-->
+  <div class="dataTables_wrapper form-inline no-footer pt10" *ngIf="!httpRequestLoader?.isLoading">
+    <div class="inputs pull-right">
+      <div class="input-icon right" id="icon-right">
+        <input type="text" id="search-text" class="form-control" [(ngModel)]="pagination.searchKey"
+            [ngModelOptions]="{standalone: true}" placeholder="Search..." (keypress)="searchPartnerCompaniesOnEnter($event.keyCode)"
+            autocomplete="off">
+        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
+            (click)="pagination.searchKey='';searchPartnerCompanies()"></button>
+        <button type="submit" class="search-box-item-click" (click)="searchPartnerCompanies()">
+            <i class="fa fa-search" aria-hidden="true"></i></button>
+      </div>
+  </div>
+
+
+   <!--List-->
+   <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0 mt5">
+    <div class="table-responsive">
+       <table class="table tgrid table-hover table-sm"  role="grid"
+          aria-describedby="" *ngIf="pagination?.totalRecords > 0">
+          <thead>
+             <tr>
+                <th scope="col">Company Logo</th>
+                <th scope="col" class="text-center">Company Name</th>
+                <th scope="col">View Count</th>
+                <th scope="col" class="text-center">Download Count</th>
+             </tr>
+          </thead>
+          <tbody>
+             <ng-container *ngFor="let partner of pagination?.pagedItems ;let i =index">
+                <tr>
+                   <td class="wtpc" title="{{partner?.companyName}}">
+                      <div class="thumbnail-wrapper">
+                         <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';"
+                            [src]="authenticationService.MEDIA_URL+partner.companyLogo">
+                      </div>
+                   </td>
+                   <td class="text-center">
+                      <span title="{{partner?.companyName}}">{{partner?.companyName | slice:0:50}}</span>
+                      <span *ngIf="partner?.companyName.length>50">...</span>
+                      <h5>
+                         <strong>
+                            Company Name By Vendor :
+                            <span title="{{partner?.companyNameAddedByVendor}}">{{partner?.companyNameAddedByVendor
+                               | slice:0:50}}</span>
+                            <span *ngIf="partner?.companyNameAddedByVendor.length>50">...</span>
+                         </strong>
+                      </h5>
+                   </td>
+                   <td>
+                     {{partner?.viewCount}}
+                   </td>
+                   <td class="text-center">
+                    {{partner?.downloaCount}}
+                   </td>
+                </tr>
+             </ng-container>
+          </tbody>
+       </table>
+       <!--Pagination-->
+       <div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading" class="pg8">
+          <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)"
+             (notifyParentDropDown)="findPartnerCompanies($event)">
+          </app-pagination>
+       </div>
+       <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
+          <strong>No Data Found</strong>
+       </div>
+    </div>
+ </div>
+
+ </div>
+</div>
