@@ -1344,11 +1344,15 @@ export class AddDealComponent implements OnInit {
   getActiveCRMPipelines() {
     let self = this;
     this.isLoading = true;
+    let haloPSATickettypeId = 0;
     let type = "XAMPLIFY";
     if (this.activeCRMDetails != undefined && this.activeCRMDetails.type != undefined) {
       type = this.activeCRMDetails.type;
     }
-    this.dealsService.getCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, type)
+    if (this.deal.haloPSATickettypeId != undefined && this.deal.haloPSATickettypeId > 0) {
+      haloPSATickettypeId = this.deal.haloPSATickettypeId;
+    }
+    this.dealsService.getCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, type, haloPSATickettypeId)
       .subscribe(
         data => {
           this.referenceService.loading(this.httpRequestLoader, false);
