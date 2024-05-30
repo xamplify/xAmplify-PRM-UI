@@ -409,6 +409,15 @@ export class SortOption {
 		{ 'name': 'Uploaded On(ASC)', 'value': 'updatedTime-ASC' },
 		{ 'name': 'Uploaded On(DESC)', 'value': 'updatedTime-DESC' }
 	];
+
+	damPartnerCompaniesDropDown = [
+		{ 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+		{ 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
+		{ 'name': 'View Count (ASC)', 'value': 'viewCount-ASC' },
+		{ 'name': 'View Count (DESC)', 'value': 'viewCount-DESC' },
+		{ 'name': 'Download Count (ASC)', 'value': 'downloadCount-ASC' },
+		{ 'name': 'Download Count (DESC)', 'value': 'downloadCount-DESC' }
+	];
 	
 
 
@@ -466,5 +475,7 @@ export class SortOption {
 
 	selectedProcessingUserListsDropDownOption = this.processingUserListsDropDownOptions[this.processingUserListsDropDownOptions.length-1];
 
+	/*****XNFR-543*****/
+	selectedDamPartnerCompaniesDropDownOption = this.damPartnerCompaniesDropDown[0];
 
 }

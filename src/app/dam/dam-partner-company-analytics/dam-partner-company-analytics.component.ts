@@ -63,13 +63,13 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
 
 
   /*************************Search********************** */
-  searchPartners() {
+  searchPartnerCompanies() {
     this.getAllFilteredResults();
   }
 
 
   /************Page************** */
-  setPage(event: any) {
+  navigateToNextPage(event: any) {
     this.pagination.pageIndex = event.page;
     this.findPartnerCompanies(this.pagination);
   }
@@ -80,7 +80,7 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     this.pagination = this.utilService.sortOptionValues(this.partnerCompaniesSortOption.publishedPartnerAnalyticsSortOption, this.pagination);
     this.findPartnerCompanies(this.pagination);
   }
-  eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
+  searchPartnerCompaniesOnEnter(keyCode: any) { if (keyCode === 13) { this.searchPartnerCompanies(); } }
   /********************Pagaination&Search Code*****************/
 
   stopLoaders() {

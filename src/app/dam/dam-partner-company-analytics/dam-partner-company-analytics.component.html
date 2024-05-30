@@ -37,7 +37,7 @@
                        <div class="input-icon right" style="position: relative;right: -11px;">
                          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="partnerCompaniesSortOption.searchKey"
                            [ngModelOptions]="{standalone: true}" placeholder="search..."
-                           (keypress)="eventHandler($event.keyCode)">
+                           (keypress)="searchPartnerCompaniesOnEnter($event.keyCode)">
                          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="partnerCompaniesSortOption.searchKey"
                            (click)="partnerCompaniesSortOption.searchKey='';search();"></button>
                          <button type="submit" class="search-box-item-click" (click)="searchPartnerCompanies()">
