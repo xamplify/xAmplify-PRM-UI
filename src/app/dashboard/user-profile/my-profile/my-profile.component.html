@@ -367,7 +367,7 @@
                                         <!--Vendor Journey-->
                                         <ng-container *ngIf="isLocalHost">
                                             <ng-container
-                                                *ngIf="(authenticationService?.module?.adminOrSuperVisor || authenticationService?.isVendor())">
+                                                *ngIf="(authenticationService?.isVendorTeamMember && authenticationService?.module?.adminOrSuperVisor || authenticationService?.isVendor())">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'vendorJourney'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorJourney'}"
                                                         (click)="activateTab('vendorJourney');clearCustomResponse()">
