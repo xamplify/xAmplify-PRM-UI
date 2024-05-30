@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PreviewPopupComponent } from 'app/forms/preview-popup/preview-popup.component';
 import { LandingPage } from 'app/landing-pages/models/landing-page';
+import { VendorLogoDetails } from 'app/landing-pages/models/vendor-logo-details';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 declare var swal, $, videojs: any, Papa: any;
 
@@ -16,7 +17,7 @@ export class VendorJourneyComponent implements OnInit {
 	openLinksInNewTabCheckBoxId = "openLinksInNewTab-page-links";
   @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
   mergeTagsInput: any = {};
-  vendorLogoDetails:any[]=[];
+  vendorLogoDetails:VendorLogoDetails[]=[];
   @Input()loggedInUserCompanyId = 0;
 	vendorJourney:boolean = false;
 	isLandingPages:boolean = false;
@@ -34,9 +35,6 @@ export class VendorJourneyComponent implements OnInit {
     this.vendorJourney = this.moduleType == "Vendor Journey";
     this.isLandingPages = this.moduleType == "Landing Pages";
     this.isMasterLandingPages = this.moduleType == "Master Landing Pages";
-    if(this.isMasterLandingPages){
-      this.getVendorLogoDetailsByPartnerDetails();
-    }
   }
 
   editVendorLandingPage(event){
@@ -46,6 +44,7 @@ export class VendorJourneyComponent implements OnInit {
     this.landingPageService.id = this.vendorDefaultTemplate.id;
     this.mergeTagsInput['page'] = true;
     this.editVendorPage = true;
+    this.getVendorLogoDetailsByPartnerDetails();
     this.vendorJourneyEditOrViewAnalytics.emit();
   }
   resetVendorJourney(){
@@ -58,6 +57,7 @@ export class VendorJourneyComponent implements OnInit {
     this.isLandingPages = false;
     this.isViewAnalytics = false;
     this.isMasterLandingPages = false;
+    this.goBack();
   }
   
   checkOrUncheckOpenLinksInNewTabOption(){
@@ -85,7 +85,8 @@ export class VendorJourneyComponent implements OnInit {
 
   getVendorLogoDetailsByPartnerDetails() {
     let userId = this.authenticationService.getUserId();
-    this.landingPageService.getVendorLogoDetailsByPartnerDetails(userId, this.loggedInUserCompanyId).subscribe(
+    let landingPageId = this.landingPageService.id;
+    this.landingPageService.getVendorLogoDetailsByPartnerDetails(userId, this.loggedInUserCompanyId, landingPageId).subscribe(
     (data: any) => {
              if(data.statusCode==200){
               this.vendorLogoDetails = data.data;

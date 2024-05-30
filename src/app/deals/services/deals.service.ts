@@ -208,8 +208,8 @@ getStageNamesForCampaign(campaignId:number, userId:number){
     .catch(this.handleError);
   }
   
-  getCRMPipelines(createdForCompanyId: number, loggedInUserId: number, type: any) {
-    return this.http.get(this.authenticationService.REST_URL + `/pipeline/DEAL/${type}/${createdForCompanyId}/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+  getCRMPipelines(createdForCompanyId: number, loggedInUserId: number, type: any, halopsaTicketTypeId: any) {
+    return this.http.get(this.authenticationService.REST_URL + `/pipeline/DEAL/${type}/${createdForCompanyId}/${loggedInUserId}/${halopsaTicketTypeId}?access_token=${this.authenticationService.access_token}`)
     .map(this.extractData)
     .catch(this.handleError);
   }
@@ -221,8 +221,8 @@ getStageNamesForCampaign(campaignId:number, userId:number){
             .catch(this.handleError);
   }
 
-  getActiveCRMPipelines(createdForCompanyId: number, loggedInUserId: number, campaignId: number, type: any) {
-    return this.http.get(this.authenticationService.REST_URL + `/crm/active/pipelines/${createdForCompanyId}/${loggedInUserId}/${campaignId}/${type}?access_token=${this.authenticationService.access_token}`)
+  getActiveCRMPipelines(createdForCompanyId: number, loggedInUserId: number, campaignId: number, type: any, halopsaTicketTypeId: number) {
+    return this.http.get(this.authenticationService.REST_URL + `/crm/active/pipelines/${createdForCompanyId}/${loggedInUserId}/${campaignId}/${type}/${halopsaTicketTypeId}?access_token=${this.authenticationService.access_token}`)
     .map(this.extractData)
     .catch(this.handleError);
   }

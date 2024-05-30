@@ -826,6 +826,9 @@
                                                     <img *ngIf="contactList?.socialNetwork=='CONNECTWISE'"
                                                     src="{{properties?.connectwiseImage}}" alt="ConnectWise"
                                                     class="img-class-list list-icons-sm image_effect">
+                                                <img *ngIf="contactList?.socialNetwork=='HALOPSA'"
+                                                    src="{{properties?.halopsaImage}}" alt="HaloPSA"
+                                                    class="img-class-list list-icons-sm image_effect">
                                             </td>
                                             <td>
                                                 <h4 class="mt5 mb5 f-w-600">
@@ -837,8 +840,8 @@
                                                     <span translate> Created By
                                                         <strong>{{contactList?.creatorName}}</strong></span>
                                                 </h6>
-                                                <div>
-                                                    <ng-container>
+                                                <div style="display: none;">
+                                                    <ng-container  *ngIf="!contactList?.partnerList">
                                                         <div class="displayinline-flex">
                                                             <h6 class="view-banner left-flt mr5" translate>
                                                                 <span *ngIf="contactList?.publicList" data-toggle="tooltip"
@@ -854,14 +857,14 @@
                                                             </h6>
                                                         </div>
                                                         <h6 *ngIf="contactList?.formList"
-                                                            class="view-banner left-flt bg-green" translate>
+                                                            class="view-banner view-banner-green mt5 left-flt" translate>
                                                             <span class="" data-toggle="tooltip" data-placement="top"
                                                                 title="This list is associated with a form." translate>Form
                                                                 Contact List
                                                             </span>
                                                         </h6>
-                                                        <h6 *ngIf="contactList?.companyList"
-                                                            class="view-banner left-flt bg-green" translate>
+                                                        <h6 *ngIf="contactList?.companyList || checkNameForCompanyList(contactList.name) && !bannerDisplayed"
+                                                            class="view-banner view-banner-green mt5 left-flt" translate>
                                                             <span class="" data-toggle="tooltip" data-placement="top"
                                                                 title="This list is associated with a company." translate>Company
                                                                 Contact List

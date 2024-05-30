@@ -500,18 +500,7 @@
                                                    </div>
                                                 </button>
                                              </div>
-                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                                                <button
-                                                   class="btn btn-default btn-xs re-distributed-high-level tk-blue-c TableDataBtn">
-                                                   <div class="portlet-body text-center">
-                                                      <h6 class="custom-font-size">
-                                                         <strong
-                                                            class="custom-font-weight">{{campaign?.delivered}}</strong>
-                                                      </h6>
-                                                      <span class="custom-font-weight">Deliverability</span>
-                                                   </div>
-                                                </button>
-                                             </div>
+                                             
                                              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                                                 <button
                                                    class="btn btn-default btn-xs re-distributed-high-level vlt-blue-c TableDataBtn">
@@ -528,8 +517,50 @@
                                                    </div>
                                                 </button>
                                              </div>
+                                             
+                                               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
+                                                <button
+                                                   class="btn btn-default btn-xs re-distributed-high-level r-r-c TableDataBtn">
+                                                   <div class="portlet-body text-center">
+                                                      <h6 class="custom-font-size">
+                                                         <strong
+                                                            class="custom-font-weight">{{campaign?.unsubscribed}}</strong>
+                                                      </h6>
+                                                      <span class="custom-font-weight">Unsubscribe</span>
+                                                   </div>
+                                                </button>
+                                             </div>
+                                             
+                                                  <div>
+                                       <span data-toggle="tooltip" data-placement="left" title="View History"
+                                          style="text-align: center; position: absolute" class="actions-block">
+                                          <a (click)="
+                                         getCampaignHighLevelAnalytics2(
+                                         pagination.pagedItems[i],i
+                                         )
+                                         ">
+                                             <i class="fa" [ngClass]="{
+                                         'fa-plus': !pagination.pagedItems[i].isExpand,
+                                         'fa-minus': pagination.pagedItems[i].isExpand
+                                         }"></i>
+                                          </a>
+                                       </span>
+                                    </div>
                                           </div>
-                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+                                          
+                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="showAllAnalytics && selectedIndex==i" >
+                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
+                                                <button
+                                                   class="btn btn-default btn-xs re-distributed-high-level tk-blue-c TableDataBtn">
+                                                   <div class="portlet-body text-center">
+                                                      <h6 class="custom-font-size">
+                                                         <strong
+                                                            class="custom-font-weight">{{campaign?.delivered}}</strong>
+                                                      </h6>
+                                                      <span class="custom-font-weight">Deliverability</span>
+                                                   </div>
+                                                </button>
+                                             </div>
                                              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                                                 <button
                                                    class="btn btn-default btn-xs re-distributed-high-level pure-blue-c TableDataBtn">
@@ -640,18 +671,6 @@
                                                             class="custom-font-weight">{{campaign?.softBounce}}</strong>
                                                       </h6>
                                                       <span class="custom-font-weight">Soft Bounce</span>
-                                                   </div>
-                                                </button>
-                                             </div>
-                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                                                <button
-                                                   class="btn btn-default btn-xs re-distributed-high-level r-r-c TableDataBtn">
-                                                   <div class="portlet-body text-center">
-                                                      <h6 class="custom-font-size">
-                                                         <strong
-                                                            class="custom-font-weight">{{campaign?.unsubscribed}}</strong>
-                                                      </h6>
-                                                      <span class="custom-font-weight">Unsubscribe</span>
                                                    </div>
                                                 </button>
                                              </div>
@@ -778,10 +797,10 @@
                                              <div class="btn-group pull-right setting-icon-cu">
                                                 <span [class.disablednew]="!campaign.hasAccess"
                                                    class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu gearicon-font-cu"
-                                                   data-toggle="dropdown" (click)="checkLastElement(i)"></span>
+                                                   data-toggle="dropdown" (click)="showGearIconOptions(campaign)"></span>
                                                 <!-- <span [class.disablednew]="!campaign.hasAccess" class="caret dropdown-toggle caretDropdownMenu dropdown-font-cu" data-toggle="dropdown"></span> -->
                                                 <ul class="dropdown-menu pull-right"
-                                                   [ngClass]="{'mobile-css': isLastElement}">
+                                                   [ngClass]="{'mobile-css': isLastElement}" *ngIf="campaign.showGearIconOptions">
                                                    <li>
                                                       <a *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
                                                    || isOnlyPartner  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)"

@@ -125,7 +125,7 @@
                   && !authenticationService?.module?.deletedPartner && !isCollapsed ">
                   <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                 </span>
-                <span *ngIf="!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin"
+                <span *ngIf="isTeamMemberModule && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)"
                   class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}}" title="Filter">
                   <div class="btn-group">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -139,7 +139,7 @@
                   </div>
                 </span>
                 <!-- End Download TeamMembers Csv-->
-                <a *ngIf="!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin"
+                <a *ngIf="isTeamMemberModule && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)"
                   href="teamMemberTable" (click)="toggleCollapse($event)" style="float: right;"> <i
                     [ngClass]="{'fa-chevron-up collapseOut ': !isCollapsed, 'fa-chevron-down collapseIn ': isCollapsed}"
                     class="arrowpositinon fa collapseIconColorCu p10 " aria-hidden="true"></i></a>
@@ -766,7 +766,7 @@
   </ng-container>
 
   <ng-template #analyticsCode>
-    <span *ngIf="!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin">
+    <span *ngIf="isTeamMemberModule && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin) ">
       <!--******************COUNT TILES******************-->
       <div class="row rowPaddingCustomize2">
         <app-partner-journey-count-tiles [selectedTeamMemberIds]="selectedTeamMemberIds"
