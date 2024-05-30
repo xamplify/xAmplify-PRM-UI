@@ -45,6 +45,7 @@ export class DashboardButtonsCarouselComponent implements OnInit {
   frameDataForCarouselView() {
     let index = 0;
     let items;
+    let emptySpaces = 0;
     if (this.dashboardButtonList.length < 5) {
       items = { enable: "active", dbButtonsList: this.dashboardButtonList };
       this.totalItemsData.push(items);
@@ -56,6 +57,11 @@ export class DashboardButtonsCarouselComponent implements OnInit {
         for (let dbButtonDataLoop = index; dbButtonDataLoop < totalCardsInRow; dbButtonDataLoop++) {
           if (this.dashboardButtonList[dbButtonDataLoop]) {
             dbButtonsDataList.push(this.dashboardButtonList[dbButtonDataLoop]);
+            index++;
+          }else {
+            let length = totalCardsInRow - dbButtonDataLoop;
+            dbButtonsDataList.push(this.dashboardButtonList[emptySpaces]);
+            emptySpaces++;
             index++;
           }
         }

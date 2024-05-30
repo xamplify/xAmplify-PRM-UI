@@ -120,7 +120,7 @@
                                                 <ng-template *ngIf="vendorJourney" [ngTemplateOutlet]="shareIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                 <!--Copy Icon-->
-                                                <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="copyIcon"
+                                                <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' ) || (isMasterLandingPages && !landingPage?.defaultLandingPage )" [ngTemplateOutlet]="copyIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                 <!--Edit Icon-->
                                                 <ng-template *ngIf="!isLandingPages" [ngTemplateOutlet]="editIcon"
@@ -135,12 +135,12 @@
                                                 <ng-template  *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="formIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                 <!--Analytics Icon-->
-                                                <ng-template [ngTemplateOutlet]="analyticsIcon"
+                                                <ng-template *ngIf = "vendorJourney || isLandingPages || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="analyticsIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                             </div>
                                             <div class="mActionDiv whitespace_nowrap">
                                                 <!--Delete Icon-->
-                                                <ng-template [ngTemplateOutlet]="deleteIcon"
+                                                <ng-template *ngIf = "(isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="deleteIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                             </div>
                                         </div>
@@ -228,13 +228,13 @@
                                     <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="copyOrEmbedLinkIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Form Icon-->
-                                    <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="formIcon"
+                                    <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' ) || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="formIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Analytics Icon-->
-                                    <ng-template [ngTemplateOutlet]="analyticsIcon"
+                                    <ng-template *ngIf = " vendorJourney || isLandingPages || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="analyticsIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Delete Icon-->
-                                    <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="deleteIcon"
+                                    <ng-template *ngIf="vendorJourney  || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="deleteIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                 </div>
                             </div>

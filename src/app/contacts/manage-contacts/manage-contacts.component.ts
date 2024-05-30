@@ -1614,7 +1614,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			if (searchType == 'contactList') {
 				if (this.searchKey != undefined && this.searchKey != null && this.searchKey != "") {
 					this.showExpandButton = true;
-					this.isListView = true;
+					this.isListView = "LIST" == localStorage.getItem('defaultDisplayType');
 				} else {
 					this.showExpandButton = false;
 				}
@@ -1920,7 +1920,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.contactPagination.filterValue = this.isPartner;
 			this.contactsByType.contactPagination.criterias = this.criterias;
 			this.contactsByType.contactPagination.maxResults = totalRecords;
-
+			this.contactsByType.contactPagination.searchKey = this.searchKey;
+			this.contactsByType.contactPagination.sortcolumn = this.sortcolumn;
+			this.contactsByType.contactPagination.sortingOrder = this.sortingOrder;
 
 			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
 			this.userListPaginationWrapper.userList.contactType = contactType;
