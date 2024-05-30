@@ -41,6 +41,7 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     this.findPartnerCompanies(this.pagination);
   }
   findPartnerCompanies(pagination: Pagination) {
+    this.referenceService.loading(this.httpRequestLoader, true);
 		this.damService.findPartnerCompanies(pagination,this.damId).
     	subscribe((result: any) => {
 			let data = result.data;
@@ -94,7 +95,7 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   }
 
   refreshList() {
-    this.referenceService.loading(this.httpRequestLoader, true);
+  
     this.findPartnerCompanies(this.pagination);
   }
 
