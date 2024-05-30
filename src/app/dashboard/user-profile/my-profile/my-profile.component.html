@@ -82,7 +82,9 @@
                                 <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
                                     [ngClass]="[activeTabName =='personalInfo' ? 'show':'', activeTabName == 'password' ? 'show':'']">
                                     Account Details
-                                    <a data-toggle="collapse" style="float: right;" href="javascript:;#accountDetailsDropdown" (click)="toggleClass('account-details-icon')">
+                                    <a data-toggle="collapse" style="float: right;"
+                                        href="javascript:;#accountDetailsDropdown"
+                                        (click)="toggleClass('account-details-icon')">
                                         <i id="account-details-icon" class="fa fa-minus" aria-hidden="true"></i>
                                     </a>
                                 </div>
@@ -92,7 +94,8 @@
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'personalInfo'}"
                                             (click)="activateTab('personalInfo');clearCustomResponse()">
                                             {{properties.personalInfo}}
-                                            <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'personalInfo'}"></ng-template>
+                                            <ng-template [ngTemplateOutlet]="activeIcon"
+                                                [ngTemplateOutletContext]="{'moduleName':'personalInfo'}"></ng-template>
                                         </a>
                                     </li>
                                     <!---Password--->
@@ -100,12 +103,13 @@
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'password'}"
                                             (click)="activateTab('password');clearCustomResponse()">
                                             {{properties.changePassword}}
-                                            <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'password'}"></ng-template>
+                                            <ng-template [ngTemplateOutlet]="activeIcon"
+                                                [ngTemplateOutletContext]="{'moduleName':'password'}"></ng-template>
                                         </a>
                                     </li>
                                 </ul>
                                 <ng-container *ngIf="!isUser">
-                                <!--------------Settings----------------------->
+                                    <!--------------Settings----------------------->
                                     <div class="my-profile-header-text neumorphismDark tab_alignments neg_mrg_left1"
                                         [ngClass]="[activeTabName == 'playerSettings' ? 'show':'', 
                                             activeTabName == 'settings' ? 'show': '',
@@ -113,9 +117,10 @@
                                             activeTabName == 'customizeleftmenu' ? 'show':'',
                                             activeTabName == 'customskin' ? 'show':'',
                                             activeTabName == properties?.customLoginScreen ? 'show':'']">Settings
-                                            <a data-toggle="collapse" style="float: right;" href="javascript:;#settingsDropdown" (click)="toggleClass('settings-icon')">
-                                                <i id="settings-icon" class="fa fa-minus" aria-hidden="true"></i>
-                                            </a>
+                                        <a data-toggle="collapse" style="float: right;"
+                                            href="javascript:;#settingsDropdown" (click)="toggleClass('settings-icon')">
+                                            <i id="settings-icon" class="fa fa-minus" aria-hidden="true"></i>
+                                        </a>
                                     </div>
                                     <!---Default Player Settings-->
                                     <ul id="settingsDropdown" class="nav collapse in">
@@ -124,11 +129,13 @@
                                             *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
                                             authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
                                             !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && !authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
-                                            &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember" (click)="videojsCall()">
-                                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'playerSettings'}"
+                                            &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember"
+                                            (click)="videojsCall()">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'playerSettings'}"
                                                 (click)="activateTab('playerSettings');">
                                                 <span>{{properties.defaultPlayerSettings}}</span>
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'playerSettings'}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'playerSettings'}"></ng-template>
                                             </a>
                                         </li>
                                         <!---View Type-->
@@ -137,9 +144,10 @@
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}"
                                                 (click)="activateTab('settings');clearCustomResponse();getSelectedDashboardForPartner();checkDashboardTypes()">
                                                 {{properties.viewType}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'settings'}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'settings'}"></ng-template>
                                             </a>
-                                            
+
                                         </li>
                                         <!---Tags-->
                                         <li *ngIf="authenticationService.lmsAccess || authenticationService?.module?.playbookAccess"
@@ -147,7 +155,8 @@
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'tags'}"
                                                 (click)="activateTab('tags');clearCustomResponse()" translate>
                                                 {{properties.tags}}
-                                            <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'tags'}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'tags'}"></ng-template>
                                             </a>
                                         </li>
 
@@ -157,9 +166,10 @@
                                             *ngIf="authenticationService.module.isAnyAdminOrSupervisor">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customizeleftmenu'}"
                                                 (click)="activateTab('customizeleftmenu');clearCustomResponse()">{{properties.customizeleftmenu}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'customizeleftmenu'}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'customizeleftmenu'}"></ng-template>
                                             </a>
-                                           
+
                                         </li>
 
                                         <!---Themes-->
@@ -167,10 +177,11 @@
                                             [ngClass]="{'active-tab': activeTabName == 'customskin'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"
                                                 (click)="activateTab('customskin');clearCustomResponse()" translate>
-                                                {{properties.customskin}} 
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'customskin'}"></ng-template>
+                                                {{properties.customskin}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'customskin'}"></ng-template>
                                             </a>
-                                            
+
                                         </li>
                                         <!--XNFR-386--->
                                         <!--Custom Login Screen Settings-->
@@ -180,9 +191,10 @@
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.customLoginScreen}"
                                                 (click)="activateTab(properties?.customLoginScreen);clearCustomResponse()"
                                                 translate>{{properties?.customLoginScreen}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':properties?.customLoginScreen}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':properties?.customLoginScreen}"></ng-template>
                                             </a>
-                                            
+
                                         </li>
                                     </ul>
                                     <!--------------Lead/Deal Configuration----------------------->
@@ -190,25 +202,31 @@
                                         *ngIf="(authenticationService?.leadsAndDeals || authenticationService?.module?.opportunitiesAccessAsPartner) && 
                                             authenticationService?.module?.isAnyAdminOrSupervisor">
                                         Lead/Deal Configuration
-                                        <a data-toggle="collapse" style="float: right;" href="javascript:;#leadAndDealDropdown" (click)="toggleClass('lead-or-deal-config-icon')">
+                                        <a data-toggle="collapse" style="float: right;"
+                                            href="javascript:;#leadAndDealDropdown"
+                                            (click)="toggleClass('lead-or-deal-config-icon')">
                                             <i id="lead-or-deal-config-icon" class="fa fa-minus" aria-hidden="true"></i>
                                         </a>
                                     </div>
                                     <ul id="leadAndDealDropdown" class="nav collapse in">
                                         <!---Deal Registration--->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" *ngIf="authenticationService?.leadsAndDeals && authenticationService?.module?.isAnyAdminOrSupervisor">
+                                        <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}"
+                                            *ngIf="authenticationService?.leadsAndDeals && authenticationService?.module?.isAnyAdminOrSupervisor">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"
                                                 (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'dealTypes'}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'dealTypes'}"></ng-template>
                                             </a>
                                         </li>
-                                        <ng-container *ngIf="(authenticationService?.leadsAndDeals || authenticationService?.module?.opportunitiesAccessAsPartner) && authenticationService?.module?.isAnyAdminOrSupervisor">
+                                        <ng-container
+                                            *ngIf="(authenticationService?.leadsAndDeals || authenticationService?.module?.opportunitiesAccessAsPartner) && authenticationService?.module?.isAnyAdminOrSupervisor">
                                             <!---Lead Pipelines--->
                                             <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadPipelines'}"
                                                     (click)="activateTab('leadPipelines');clearCustomResponse()">
                                                     {{properties.leadPipelines}}
-                                                    <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'leadPipelines'}"></ng-template>
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':'leadPipelines'}"></ng-template>
                                                 </a>
                                             </li>
                                             <!---Deal Pipelines--->
@@ -216,7 +234,8 @@
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealPipelines'}"
                                                     (click)="activateTab('dealPipelines');clearCustomResponse()">
                                                     {{properties.dealPipelines}}
-                                                    <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'dealPipelines'}"></ng-template>
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':'dealPipelines'}"></ng-template>
                                                 </a>
                                             </li>
 
@@ -226,7 +245,8 @@
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadDealApprove'}"
                                                     (click)="activateTab('leadDealApprove');getLeadApprovalstatus();">
                                                     {{properties.leadDealApprove}}
-                                                    <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'leadDealApprove'}"></ng-template>
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':'leadDealApprove'}"></ng-template>
                                                 </a>
                                             </li>
 
@@ -240,8 +260,10 @@
                                         activeTabName == 'samlSettings' ? 'show':'',
                                         activeTabName == 'support' ? 'show':'']">
                                         Developers
-                                        <a data-toggle="collapse" style="float: right;" href="javascript:;#developersDropdown" (click)="toggleClass('developers-icon')">
-                                             <i id="developers-icon" class="fa fa-minus" aria-hidden="true"></i>
+                                        <a data-toggle="collapse" style="float: right;"
+                                            href="javascript:;#developersDropdown"
+                                            (click)="toggleClass('developers-icon')">
+                                            <i id="developers-icon" class="fa fa-minus" aria-hidden="true"></i>
                                         </a>
                                     </div>
                                     <ul id="developersDropdown" class="nav collapse in">
@@ -249,7 +271,8 @@
                                         <li [ngClass]="{'active-tab': activeTabName == 'spf'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'spf'}"
                                                 (click)="activateTab('spf');clearCustomResponse()">{{properties.spf}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'spf'}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'spf'}"></ng-template>
                                             </a>
                                         </li>
                                         <!--GDPR Settings-->
@@ -258,10 +281,11 @@
                                             authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || 
                                             authenticationService.isOnlyPartner() || roleNames=='Partner') || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
                                             || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember">
-                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"
-                                                    (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings}}
-                                                    <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'gdpr'}"></ng-template>
-                                                </a>
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"
+                                                (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'gdpr'}"></ng-template>
+                                            </a>
                                         </li>
                                         <!--Integrations-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
@@ -270,7 +294,8 @@
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}"
                                                 (click)="activateTab('integrations');clearCustomResponse()">
                                                 {{properties.integrations}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'integrations'}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'integrations'}"></ng-template>
                                             </a>
                                         </li>
                                         <!--Saml Settings-->
@@ -278,14 +303,16 @@
                                             *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}"
                                                 (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'samlSettings'}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'samlSettings'}"></ng-template>
                                             </a>
                                         </li>
                                         <li *ngIf="authenticationService?.vanityURLEnabled && authenticationService?.module?.showSupportSettingOption && !isLoggedInAsPartner"
                                             [ngClass]="{'active-tab': activeTabName == 'support'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'support'}"
                                                 (click)="activateTab('support');clearCustomResponse()">{{properties.supportText}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'support'}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'support'}"></ng-template>
                                             </a>
                                         </li>
                                     </ul>
@@ -304,18 +331,21 @@
                                             activeTabName == 'team-group' ? 'show':'',
                                             activeTabName == properties?.emailNotificationSettings ? 'show':'',
                                             activeTabName == properties?.addDomainsText ? 'show':'']">
-                                            Admin
-                                            <a data-toggle="collapse" style="float: right;" href="javascript:;#adminDropdown" (click)="toggleClass('admin-icon')" >
-                                                <i id="admin-icon" class="fa fa-minus" aria-hidden="true"></i>
-                                            </a>
+                                        Admin
+                                        <a data-toggle="collapse" style="float: right;"
+                                            href="javascript:;#adminDropdown" (click)="toggleClass('admin-icon')">
+                                            <i id="admin-icon" class="fa fa-minus" aria-hidden="true"></i>
+                                        </a>
                                     </div>
                                     <ul id="adminDropdown" class="nav collapse in">
-                                        <ng-container *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService.module.loggedInThroughOwnVanityUrl">
+                                        <ng-container
+                                            *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor && authenticationService.module.loggedInThroughOwnVanityUrl">
                                             <!--Dashboard Buttons-->
                                             <li [ngClass]="{'active': activeTabName == properties?.dashboardButtons}">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName ==  properties?.dashboardButtons}"
                                                     (click)="activateTab(properties?.dashboardButtons);clearCustomResponse()">{{properties.dashboardButtons}}
-                                                    <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':properties?.dashboardButtons}"></ng-template>
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':properties?.dashboardButtons}"></ng-template>
                                                 </a>
                                             </li>
                                             <!--XNFR-459-->
@@ -324,14 +354,16 @@
                                                 [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.newsAndAnnouncements}"
                                                     (click)="activateTab(properties?.newsAndAnnouncements);clearCustomResponse()">{{properties?.newsAndAnnouncements}}
-                                                    <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':properties?.newsAndAnnouncements}"></ng-template>
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':properties?.newsAndAnnouncements}"></ng-template>
                                                 </a>
                                             </li>
                                             <!--Dashboard Banners-->
                                             <li [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.dashboardBanners}"
                                                     (click)="activateTab(properties?.dashboardBanners);clearCustomResponse()">{{properties?.dashboardBanners}}
-                                                    <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':properties?.dashboardBanners}"></ng-template>
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':properties?.dashboardBanners}"></ng-template>
                                                 </a>
                                             </li>
                                         </ng-container>
@@ -341,8 +373,9 @@
                                             [ngClass]="{'active': activeTabName == 'templates'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'templates'}"
                                                 (click)="activateTab('templates');clearCustomResponse()">
-                                                Your Templates 
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'templates'}"></ng-template>
+                                                Your Templates
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'templates'}"></ng-template>
                                             </a>
                                         </li>
                                         <!--Unsubscribe Reasons-->
@@ -350,7 +383,8 @@
                                             [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'unsubscribeReasons'}"
                                                 (click)="activateTab('unsubscribeReasons');clearCustomResponse()">{{properties.unsubscribeReasons}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'unsubscribeReasons'}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'unsubscribeReasons'}"></ng-template>
                                             </a>
                                         </li>
                                         <!--Exclusion-->
@@ -360,7 +394,8 @@
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'exclude'}"
                                                     (click)="activateTab('exclude');clearCustomResponse()">
                                                     {{properties.exclude}}
-                                                    <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'exclude'}"></ng-template>
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':'exclude'}"></ng-template>
                                                 </a>
                                             </li>
                                         </ng-container>
@@ -372,7 +407,8 @@
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorJourney'}"
                                                         (click)="activateTab('vendorJourney');clearCustomResponse()">
                                                         {{properties.vendorJourney}}
-                                                        <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'vendorJourney'}"></ng-template>
+                                                        <ng-template [ngTemplateOutlet]="activeIcon"
+                                                            [ngTemplateOutletContext]="{'moduleName':'vendorJourney'}"></ng-template>
                                                     </a>
                                                 </li>
                                             </ng-container>
@@ -383,18 +419,21 @@
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'landingPages'}"
                                                         (click)="activateTab('landingPages');clearCustomResponse()">
                                                         {{properties.landingPages}}
-                                                    <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'landingPages'}"></ng-template>
+                                                        <ng-template [ngTemplateOutlet]="activeIcon"
+                                                            [ngTemplateOutletContext]="{'moduleName':'landingPages'}"></ng-template>
                                                     </a>
                                                 </li>
                                             </ng-container>
-                                            
+
                                             <!--Master Landing Pages-->
-                                            <ng-container *ngIf="(authenticationService?.isPartner() || authenticationService?.isTeamMember())">
+                                            <ng-container
+                                                *ngIf="(authenticationService?.isPartner() || authenticationService?.isTeamMember())">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPages'}"
                                                         (click)="activateTab('masterLandingPages');clearCustomResponse()">
                                                         {{properties.masterLandingPages}}
-                                                        <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'masterLandingPages'}"></ng-template>
+                                                        <ng-template [ngTemplateOutlet]="activeIcon"
+                                                            [ngTemplateOutletContext]="{'moduleName':'masterLandingPages'}"></ng-template>
                                                     </a>
                                                 </li>
                                             </ng-container>
@@ -404,7 +443,8 @@
                                             [ngClass]="{'active-tab': activeTabName == 'categories'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'categories'}"
                                                 (click)="activateTab('categories');clearCustomResponse()">{{properties.folders}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'categories'}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'categories'}"></ng-template>
                                             </a>
                                         </li>
                                         <!--Team Member Groups-->
@@ -412,7 +452,8 @@
                                             *ngIf="authenticationService?.user?.hasCompany &&  authenticationService?.module?.isAnyAdminOrSupervisor">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}"
                                                 (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'team-group'}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'team-group'}"></ng-template>
                                             </a>
                                         </li>
                                         <!---XNFR-326---->
@@ -421,7 +462,8 @@
                                             [ngClass]="{'active-tab': activeTabName == properties?.emailNotificationSettings}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.emailNotificationSettings}"
                                                 (click)="activateTab(properties?.emailNotificationSettings);clearCustomResponse()">{{properties?.emailNotificationSettings}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':properties?.emailNotificationSettings}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':properties?.emailNotificationSettings}"></ng-template>
                                             </a>
                                         </li>
                                         <!--Adding Domains XNFR-454-->
@@ -430,7 +472,8 @@
                                             style="border-bottom: none !important;">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.addDomainsText}"
                                                 (click)="activateTab(properties?.addDomainsText);clearCustomResponse()">{{properties?.addDomainsText}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':properties?.addDomainsText}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':properties?.addDomainsText}"></ng-template>
                                             </a>
                                         </li>
                                     </ul>
@@ -558,10 +601,17 @@
                                                             <span class="label label-info  selectcolor"
                                                                 *ngIf="dto?.id === activeThemeDetails?.themeId">Active</span>
                                                             <br>
-                                                            <h5 class="card-title themefont" *ngIf="dto.name === 'Neumorphism Dark(Beta)'">Neumorphism Dark</h5>
-                                                            <h5 class="card-title themefont" *ngIf="dto.name === 'Neumorphism Light'">Neumorphism Light</h5>
-                                                            <h5 class="card-title themefont" *ngIf="dto.name != 'Neumorphism Dark(Beta)' && dto.name != 'Neumorphism Light'">{{dto?.name}}</h5>
-                                                            <td class="mAlignView responsive-alignment centerAlignPropertyIcon">
+                                                            <h5 class="card-title themefont"
+                                                                *ngIf="dto.name === 'Neumorphism Dark(Beta)'">
+                                                                Neumorphism Dark</h5>
+                                                            <h5 class="card-title themefont"
+                                                                *ngIf="dto.name === 'Neumorphism Light'">Neumorphism
+                                                                Light</h5>
+                                                            <h5 class="card-title themefont"
+                                                                *ngIf="dto.name != 'Neumorphism Dark(Beta)' && dto.name != 'Neumorphism Light'">
+                                                                {{dto?.name}}</h5>
+                                                            <td
+                                                                class="mAlignView responsive-alignment centerAlignPropertyIcon">
                                                                 <div
                                                                     class="actions-block override-actions ActionAlign mb_whitespace">
                                                                     <div
@@ -586,7 +636,7 @@
                                                                             class="mMobileDisable custom-icon"
                                                                             title="Copy"
                                                                             (click)="goToCustomThemes();showDto(dto);saveTheme();"
-                                                                            *ngIf="dto?.id != 4 && dto?.id != 3 && dto.name != 'Glassomorphism Light' && dto.name != 'Glassomorphism Dark'"><i
+                                                                            *ngIf="dto?.id != 3 && dto.name != 'Glassomorphism Light' && dto.name != 'Glassomorphism Dark'"><i
                                                                                 aria-hidden="true"
                                                                                 class="fa fa-files-o mDisableColor IconCustomization"></i>
                                                                             <div class="clickicons"></div>
@@ -837,9 +887,11 @@
                                                                             <div class="col-xs-10" style="padding:0">
                                                                                 <div class="form-group"
                                                                                     [attr.class]="question.class">
-                                                                                    <label class="control-label">Question
+                                                                                    <label
+                                                                                        class="control-label">Question
                                                                                         <span>
-                                                                                            <strong class="required">*</strong>
+                                                                                            <strong
+                                                                                                class="required">*</strong>
                                                                                         </span>
                                                                                     </label>
                                                                                     <input type="text" maxlength="300"
@@ -912,7 +964,8 @@
                                                                                     <label class="control-label"
                                                                                         translate>DealType
                                                                                         <span>
-                                                                                            <strong class="required">*</strong>
+                                                                                            <strong
+                                                                                                class="required">*</strong>
                                                                                         </span>
                                                                                     </label>
                                                                                     <input type="text" maxlength="300"
@@ -1310,11 +1363,10 @@
                                                             <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="halopsaRibbonText == 'configured'"
                                                                     class="integration-cards">
-                                                                    <a (click)="halopsaSettings()"
-                                                                    data-toggle="tooltip" data-placement="top"
-                                                                    title="HALOPSA Settings"><i
-                                                                        class="fa fa-cog"
-                                                                        style="font-size: 20px !important;"></i></a>
+                                                                    <a (click)="halopsaSettings()" data-toggle="tooltip"
+                                                                        data-placement="top" title="HALOPSA Settings"><i
+                                                                            class="fa fa-cog"
+                                                                            style="font-size: 20px !important;"></i></a>
                                                                 </span>
                                                                 <h5 class="card-title  text-uppercase text-center"
                                                                     style="padding-top: 4%;">HALOPSA</h5>
@@ -1636,7 +1688,8 @@
                                                                     <div class="btn-group pull-right">
                                                                         <a *ngIf="activeCRMDetails?.activeCRM && (activeCRMDetails?.type == 'HUBSPOT' || activeCRMDetails?.type == 'PIPEDRIVE') && activeTabName == 'dealPipelines'"
                                                                             (click)="syncPipelines()">
-                                                                            <button class="btn btn-white Synchronize_btn"
+                                                                            <button
+                                                                                class="btn btn-white Synchronize_btn"
                                                                                 data-toggle="tooltip"
                                                                                 data-placement="bottom"
                                                                                 title="Synchronize" translate>
@@ -3196,10 +3249,13 @@
                                                 [moduleType]="properties.landingPages"></app-vendor-journey>
                                         </div>
                                         <!--Master Landing Pages -->
-                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'masterLandingPages'}">
-                                            <app-vendor-journey *ngIf="isMasterLandingPages" [loggedInUserCompanyId]="loggedInUserCompanyId"
-                                            (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
-                                            (goBackToMyProfile)="goBackToMyProfile()" [moduleType]="properties.masterLandingPages"></app-vendor-journey>
+                                        <div class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'masterLandingPages'}">
+                                            <app-vendor-journey *ngIf="isMasterLandingPages"
+                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                                (goBackToMyProfile)="goBackToMyProfile()"
+                                                [moduleType]="properties.masterLandingPages"></app-vendor-journey>
                                         </div>
                                         <!-- Support Settings -->
                                         <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption"
@@ -3746,7 +3802,6 @@
 <app-confirm-sweet-alert-util *ngIf="isUpgrading" [parameterDto]="sweetAlertParameterDto"
     (notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
 
-    <ng-template #activeIcon let-moduleName="moduleName">
-        <i *ngIf="activeTabName == moduleName" class="fa fa-check-circle-o success display-inline"></i>
-    </ng-template>
-   
+<ng-template #activeIcon let-moduleName="moduleName">
+    <i *ngIf="activeTabName == moduleName" class="fa fa-check-circle-o success display-inline"></i>
+</ng-template>

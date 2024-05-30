@@ -1,94 +1,61 @@
-.button,
-.button_blue,
-.aspect_ratio {
-    position: relative !important;
-    overflow: hidden !important;
-    height: 3.5rem !important;
-    border-radius: 8px !important;
-    background:  #3EB2FD !important;
-    color: #fff !important;
-    border: 1px solid #0d74c9 !important;
-    margin-left: 4px;
-    background-image: linear-gradient(1deg, #4F58FD, #149BF3 99%) !important;
-    background-size: calc(100% + 20px) calc(100% + 20px) !important;
-    padding: 5px 10px;
-  }
-  .btn.btn-secondary,
-  .btn-primary-dark,
-  .btn-primary-dark:hover {
-    background-color: #3EB2FD !important;
-    background-image: linear-gradient(1deg, #4F58FD, #149BF3 99%) !important;
-    background-size: calc(100% + 20px) calc(100% + 20px) !important;
-    border: 1px solid #0d74c9 !important;
-    padding: 5px 10px;
-    color: white !important;
-  }
-  .btn-group button{
-    background-color: #3EB2FD !important;
-    background-image: linear-gradient(1deg, #4F58FD, #149BF3 99%) !important;
-    background-size: calc(100% + 20px) calc(100% + 20px) !important;
-    border: 1px solid #0d74c9 !important;
-    padding: 5px 10px;
+.button:hover::before, .button_blue:hover::before{
+  transform: scale(0) !important;
 }
-button.btn.custom {
+button#copyFromClipBoard {
+  box-shadow: none !important;
+}
+button.btn.custom, .btn-group button, .selectRecord, button#save\&delete_button,
+.btn-success, .btn-primary, .color-flow-button, .button_blue, button.button_blue:disabled, button.button:disabled,
+button.btn.btn-primary, .mix-filter li:hover, .mix-filter li.active, .mix-filter li.campaign-type-selected, .mix-filter li.emailtemplate-selected,
+button.group-name-cclass.btn-primary.default-btn-cursor {
+    background-color: #3EB2FD !important;
+    background-image: linear-gradient(1deg, #4F58FD, #149BF3 99%) !important;
+    background-size: calc(100% + 20px) calc(100% + 20px) !important;
+    border: 1px solid #0d74c9 !important;
+    color: #fff !important;
+    border-radius: 7px;
+    box-shadow: none !important;
+}
+button.button.bgcolor-unset{ 
   border-radius: 7px !important;
   background-color: #3EB2FD !important;
   background-image: linear-gradient(1deg, #4F58FD, #149BF3 99%) !important;
   background-size: calc(100% + 20px) calc(100% + 20px) !important;
   border: 1px solid #0d74c9 !important;
-  padding: 5px 10px;
+  color: #fff !important;
+  box-shadow: none !important;
 }
-span.btn.Btn-Green.transition{
-  background : none !important;
-  border:none !important;
-}
-span.btn.btn-primary.transition{
-  background : none !important;   
-  border:none !important;
-}
-.Btn-Green,
-.btn-primary{
-  background: #3EB2FD !important;
-  border: 1px solid #0d74c9 !important;
-  background-image: linear-gradient(1deg, #4F58FD, #149BF3 99%) !important;
+button.button.bgcolor-unset:hover, button.btn.custom:hover, .btn-group button:hover, .selectRecord:hover,
+.btn-success:hover, .btn-primary:hover, .color-flow-button:hover, div > button.btn-primary:hover,
+.btn-primary:active:hover, .button_blue:hover, .mix-filter li:hover, button.group-name-cclass.btn-primary.default-btn-cursor:hover{
+  background-color: #3EB2FD !important;
+  background-image: linear-gradient(1deg, #149BF3, #4F58FD 99%) !important;
   background-size: calc(100% + 20px) calc(100% + 20px) !important;
-  padding: 5px 10px;
+  border: 1px solid #0d74c9 !important;
+  color: #fff !important;
+  box-shadow: none !important;
 }
-span.btn.Btn-Green {
+span.btn.btn-primary.transition.txt_pd-top3, span.btn.btn-primary.transition {
   border: none !important;
 }
-button.group-name-cclass.btn-primary.default-btn-cursor,
-.tm-group-preview-css{
-  background: #3EB2FD !important;
-  border: 1px solid #0d74c9 !important;
-  background-image: linear-gradient(1deg, #4F58FD, #149BF3 99%) !important;
-  background-size: calc(100% + 20px) calc(100% + 20px) !important;
-}
-button.button.bgcolor-unset:hover,
-button.btn.custom:hover,
-.btn-group button:hover,
-.selectRecord:hover,
-.btn-success:hover,
-.btn-primary:hover,
-.color-flow-button:hover,
-div > button.btn-primary:hover,
-.btn-primary:active:hover,
-.button_blue:hover,
-.mix-filter li:hover{
-  background-color: #3EB2FD !important;
-  background-image: linear-gradient(1deg, #149BF3, #4F58FD 99%) !important;
-  background-size: calc(100% + 20px) calc(100% + 20px) !important;
-  border: 1px solid #0d74c9 !important;
+/* .Btn-Green {
+  background: none !important;
+} */
+
+/***** Icons *****/
+.custom-icon {
+  display: inline-block !important;
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  border: none !important;
   color: #fff !important;
-  box-shadow: none !important;
-}
-.mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected,
-.mix-filter li.active {
-  background-color: #3EB2FD !important;
-  background-image: linear-gradient(1deg, #149BF3, #4F58FD 99%) !important;
-  background-size: calc(100% + 20px) calc(100% + 20px) !important;
-  border: 1px solid #0d74c9 !important;
-  color: #fff !important;
-  box-shadow: none !important;
+  border-radius: 50%;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  cursor: pointer;
+  margin-right: 8px;
 }
