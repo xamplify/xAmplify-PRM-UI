@@ -1029,8 +1029,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     response => {
                         if (response.statusCode == 200) {
                             let data = response.data;
-                            this.leadTicketTypes = data.leadTicketTypes;
-                            this.dealTicketTypes = data.dealTicketTypes;
+                            if ("HALOPSA" === this.activeCRMDetails.type) {
+                                this.leadTicketTypes = data.leadTicketTypes;
+                                this.dealTicketTypes = data.dealTicketTypes;
+                            }
                             this.leadPipelines = data.leadPipelines;
                             this.dealPipelines = data.dealPipelines;
                             if (!this.activeCRMDetails.activeCRM) {
@@ -1067,14 +1069,17 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                                         }                                     }
                                 });
                             } else {
-                                this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
-                                this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
                                 this.defaultLeadPipelineId = this.leadPipelines[0].id;
                                 this.campaign.leadPipelineId = this.leadPipelines[0].id;
                                 this.defaultDealPipelineId = this.dealPipelines[0].id;
-                               /* if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
+                                if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
                                     this.campaign.dealPipelineId = this.dealPipelines[0].id;
-                                }*/
+                                }
+                                if ("HALOPSA" === this.activeCRMDetails.type) {
+                                    this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                                    this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                                }
+                                
                             }
                             if(this.hideConfigurePipelineCrms.includes(this.activeCRMDetails.type)){
                                 this.showConfigurePipelines = false;

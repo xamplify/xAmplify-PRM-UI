@@ -302,14 +302,17 @@ export class AddDealComponent implements OnInit {
                 self.pipelines.push(campaignDealPipeline);
                 self.createdForPipelines.push(campaignDealPipeline);
                 self.deal.pipelineId = campaignDealPipeline.id;
-                self.deal.createdForPipelineId = campaignDealPipeline.createdForCampaignPipelines.id;
-                self.deal.createdByPipelineId = campaignDealPipeline.createdByCampaignPipelines.id;
-               // self.deal.haloPSATickettypeId = ticketTypeIdMap.halopsaTicketTypeId;
-                              
+                if (campaignDealPipeline.createdForCampaignPipelines.id != undefined) {
+                  self.deal.createdForPipelineId = campaignDealPipeline.createdForCampaignPipelines.id;
+                  self.createdForStages = campaignDealPipeline.createdForCampaignPipelines.stages;
+                  self.createdForPipelineIdError = false;
+                }
+                if (campaignDealPipeline.createdByCampaignPipelines.id != undefined) {
+                  self.deal.createdByPipelineId = campaignDealPipeline.createdByCampaignPipelines.id;
+                  self.createdByStages = campaignDealPipeline.createdByCampaignPipelines.stages;
+                }
+                self.deal.haloPSATickettypeId = ticketTypeIdMap.halopsaTicketTypeId;        
                 self.pipelineIdError = false;
-                self.createdForPipelineIdError = false;
-                self.createdByStages = campaignDealPipeline.createdByCampaignPipelines.stages;
-                self.createdForStages = campaignDealPipeline.createdForCampaignPipelines.stages;
                 if (this.actionType == 'add' || this.actionType == 'edit') {
                   if ("HALOPSA" === this.activeCRMDetails.type) {
                     self.showCustomForm = true;
@@ -1217,7 +1220,7 @@ export class AddDealComponent implements OnInit {
         },
         () => {
           this.setFieldErrorStates();
-          if (!this.showCustomForm && !"HALOPSA" === this.activeCRMDetails.type) {
+          if (!this.showCustomForm && !(this.activeCRMDetails.type !== undefined && "HALOPSA" === this.activeCRMDetails.type)) {
             this.showDefaultForm = true;
             this.activeCRMDetails.hasDealPipeline = false;
             if (this.edit || this.preview) {
