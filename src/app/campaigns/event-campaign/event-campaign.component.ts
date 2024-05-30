@@ -626,10 +626,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                                 });
                             } else {
                                 this.defaultLeadPipelineId = this.leadPipelines[0].id;
-                                this.eventCampaign.leadPipelineId = this.leadPipelines[0].id;
-                                this.defaultDealPipelineId = this.dealPipelines[0].id;                               
+                                this.defaultDealPipelineId = this.dealPipelines[0].id;                                  
                                 if (this.eventCampaign.dealPipelineId == undefined || this.eventCampaign.dealPipelineId == null || this.eventCampaign.dealPipelineId === 0) {
                                     this.eventCampaign.dealPipelineId = this.dealPipelines[0].id;
+                                }
+                                if (this.eventCampaign.leadPipelineId == undefined || this.eventCampaign.leadPipelineId == null || this.eventCampaign.leadPipelineId === 0) {
+                                    this.eventCampaign.leadPipelineId = this.leadPipelines[0].id;
                                 }
                             }
 
