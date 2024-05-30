@@ -32,17 +32,29 @@
              <div class="row">
                <div class="page-toolbar col-xs-12">
                  <div class="btn-group pull-right">
-                   <div class="inputs" style="float: right">
-                     <div class="portlet-input input-inline" style="margin-right: 15px;">
-                       <div class="input-icon right" style="position: relative;right: -11px;">
-                         <input type="text" style="height:34px;" class="form-control" [(ngModel)]="partnerCompaniesSortOption.searchKey"
-                           [ngModelOptions]="{standalone: true}" placeholder="search..."
-                           (keypress)="searchPartnerCompaniesOnEnter($event.keyCode)">
-                         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="partnerCompaniesSortOption.searchKey"
-                           (click)="partnerCompaniesSortOption.searchKey='';search();"></button>
-                         <button type="submit" class="search-box-item-click" (click)="searchPartnerCompanies()">
-                           <i class="fa fa-search" aria-hidden="true"></i></button>
-                       </div>
+                   <div class="d-flex">
+                     <div class="inputs mDamTop alignline-m-flex float-right">
+                        <!--Refresh-->
+                        <a class="close-circle ref-mar"  (click)="refreshList()" data-toggle="tooltip" data-placement="bottom" title="Refresh">
+                           <i class="fa fa-refresh" aria-hidden="true"></i>
+                        </a>
+                        <!--Sort Option-->
+                        <div class="pb3 float-left">
+                           <select class="form-control mDamSort"  [(ngModel)]="partnerCompaniesSortOption.selectedDamPartnerCompaniesDropDownOption"
+                                 (ngModelChange)="sortPartnerCompanies($event)" style="position: relative; right: -3px;">
+                                 <option *ngFor="let option of partnerCompaniesSortOption.damPartnerCompaniesDropDown"
+                                    [ngValue]="option">{{option.name}}</option>
+                              </select>
+                        </div>
+                        <!--Search-->
+                        <div class="portlet-input input-inline mr10">
+                           <div class="input-icon right mDamSearch rSearch"  style="position: relative; right: -6px;">
+                              <input type="text" class="form-control" [(ngModel)]="partnerCompaniesSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                                 placeholder="Search..." (keypress)="searchPartnerCompaniesOnEnter($event.keyCode)">
+                              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="partnerCompaniesSortOption.searchKey" (click)="partnerCompaniesSortOption.searchKey='';searchPartnerCompanies();"></button>
+                              <button type="submit" class="search-box-item-click" (click)="searchPartnerCompanies()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                           </div>
+                        </div>
                      </div>
                    </div>
                  </div>

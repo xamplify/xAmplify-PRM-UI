@@ -56,8 +56,8 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   /********************Pagaination&Search Code*****************/
 
   /*************************Sort********************** */
-  sortBy(text: any) {
-    this.partnerCompaniesSortOption.publishedPartnerAnalyticsSortOption = text;
+  sortPartnerCompanies(text: any) {
+    this.partnerCompaniesSortOption.selectedDamPartnerCompaniesDropDownOption = text;
     this.getAllFilteredResults();
   }
 
@@ -77,7 +77,7 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   getAllFilteredResults() {
     this.pagination.pageIndex = 1;
     this.pagination.searchKey = this.partnerCompaniesSortOption.searchKey;
-    this.pagination = this.utilService.sortOptionValues(this.partnerCompaniesSortOption.publishedPartnerAnalyticsSortOption, this.pagination);
+    this.pagination = this.utilService.sortOptionValues(this.partnerCompaniesSortOption.selectedDamPartnerCompaniesDropDownOption, this.pagination);
     this.findPartnerCompanies(this.pagination);
   }
   searchPartnerCompaniesOnEnter(keyCode: any) { if (keyCode === 13) { this.searchPartnerCompanies(); } }
@@ -93,7 +93,8 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
   }
 
-  refreshPage() {
+  refreshList() {
+    this.referenceService.loading(this.httpRequestLoader, true);
     this.findPartnerCompanies(this.pagination);
   }
 
