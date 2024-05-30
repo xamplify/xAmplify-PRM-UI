@@ -278,7 +278,7 @@
 
 							 <!--Lead Ticket Type-->
 							 <div class="form-group" [attr.class]="leadTicketTypeClass"
-							 style="margin-bottom: 8px" *ngIf="eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
+							 style="margin-bottom: 8px" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
 							 <label class="control-label col-sm-3">Lead Ticket Type<span
 								 class="required"><strong>*</strong></span></label>
 								 <div class="col-sm-9">
@@ -295,7 +295,7 @@
 
 						 <!--Deal Ticket Type-->
 						 <div class="form-group" [attr.class]="dealTicketTypeClass"
-							 style="margin-bottom: 8px" *ngIf="eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
+							 style="margin-bottom: 8px" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
 							 <label class="control-label col-sm-3">Deal Ticket Type<span
 								 class="required"><strong>*</strong></span></label>
 								 <div class="col-sm-9">
