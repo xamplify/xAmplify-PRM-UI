@@ -298,10 +298,11 @@ export class AddDealComponent implements OnInit {
             if (data.statusCode == 200) {
               let campaignDealPipeline = data.data;
               let ticketTypeIdMap = data.map;
-              if ((self.deal.pipelineId !== campaignDealPipeline.id && this.actionType == 'add') || (self.deal.pipelineId !== campaignDealPipeline.id && this.actionType == 'edit') || this.actionType == 'view') {
-                self.pipelines.push(campaignDealPipeline);
-                self.createdForPipelines.push(campaignDealPipeline);
-                self.deal.pipelineId = campaignDealPipeline.id;
+              if ((self.deal.createdForPipelineId !== campaignDealPipeline.createdForCampaignPipelines.id && this.actionType == 'add')
+                 || (self.deal.createdForPipelineId !== campaignDealPipeline.createdForCampaignPipelines.id && this.actionType == 'edit')
+                 || this.actionType == 'view') {
+                self.pipelines.push(campaignDealPipeline.createdForCampaignPipelines);
+                self.createdForPipelines.push(campaignDealPipeline.createdForCampaignPipelines);
                 if (campaignDealPipeline.createdForCampaignPipelines != undefined) {
                   self.deal.createdForPipelineId = campaignDealPipeline.createdForCampaignPipelines.id;
                   self.createdForStages = campaignDealPipeline.createdForCampaignPipelines.stages;
