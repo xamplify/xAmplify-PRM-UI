@@ -293,10 +293,10 @@ export class HomeComponent implements OnInit {
       if (this.currentUser['logedInCustomerCompanyNeme'] != undefined) {
         if (this.authenticationService.vanityURLEnabled && this.authenticationService.v_companyName) {
           this.setTitle(this.authenticationService.v_companyName);
-          localStorage.setItem('companyName',this.authenticationService.v_companyName);
+          localStorage.setItem('companyName', this.authenticationService.v_companyName);
         } else {
           this.setTitle(this.currentUser['logedInCustomerCompanyNeme']);
-          localStorage.setItem('companyName',this.currentUser['logedInCustomerCompanyNeme']);
+          localStorage.setItem('companyName', this.currentUser['logedInCustomerCompanyNeme']);
 
         }
       } else {
@@ -394,10 +394,6 @@ export class HomeComponent implements OnInit {
           this.authenticationService.isTop = !activeThemeDto.defaultTheme;
           this.authenticationService.isFoter = !activeThemeDto.defaultTheme;
           this.authenticationService.isMain = !activeThemeDto.defaultTheme;
-          //  this.authenticationService.customMap.set("top",skinMap.TOP_NAVIGATION_BAR);
-          //  this.authenticationService.customMap.set("left",skinMap.LEFT_SIDE_MENU);
-          //  this.authenticationService.customMap.set("footer",skinMap.FOOTER);
-          //  this.authenticationService.customMap.set("main",skinMap.MAIN_CONTENT);
           if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Light") {
             require("style-loader!../../../assets/admin/layout2/css/layout.css");
@@ -426,6 +422,10 @@ export class HomeComponent implements OnInit {
             && activeThemeDto.name === "Glassomorphism Dark" && !this.router.url.includes('home/help')) {
             this.authenticationService.isDarkForCharts = true;
             require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-dark.css");
+          } else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && activeThemeDto.parentId === 4 && !this.router.url.includes('home/help')) {
+            //NeumorphismDark(Beta) customisazation
+            require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-dark.css");
+            require("style-loader!../../../assets/admin/layout2/css/themes/buttons-icons-customization.css");
           }
           else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && !this.router.url.includes('home/help')) {
             document.documentElement.style.setProperty('--top-bg-color', this.topCustom.backgroundColor);
