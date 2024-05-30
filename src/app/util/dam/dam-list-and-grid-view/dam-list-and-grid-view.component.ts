@@ -25,6 +25,8 @@ import { Roles } from 'app/core/models/roles';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { Criteria } from 'app/contacts/models/criteria';
 import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/white-labeled-content-shared-by-vendor-companies-dto';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+
 declare var $: any, swal: any, flatpickr;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
@@ -487,7 +489,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	/*****XNFR-169***/
 	navigateToPartnerAnalytics(id: number) {
-		let url = "/home/dam/partnerAnalytics/" + id;
+		let url = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.referenceService.encodePathVariable(id);
 		this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 	}
 

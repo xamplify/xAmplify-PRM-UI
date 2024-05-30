@@ -324,7 +324,7 @@ export class DamService {
    /**** XNFR-543 ****/
   findPartnerCompanies(pagination: Pagination,damId:number) {
     let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-    let findAllUrl = this.DAM_PREFIX_URL+'/findAllPartners/damId'+damId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+    let findAllUrl = this.DAM_PREFIX_URL+'/findAllPartners/damId/'+damId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
     return this.authenticationService.callGetMethod(findAllUrl);
   }
 

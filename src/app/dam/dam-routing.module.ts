@@ -9,8 +9,9 @@ import { SelectUploadTypeComponent } from './select-upload-type/select-upload-ty
 import { ShowHistoryComponent } from './show-history/show-history.component';
 import { ViewDamComponent } from './view-dam/view-dam.component';
 import { DamPartnerCompanyAnalyticsComponent } from './dam-partner-company-analytics/dam-partner-company-analytics.component';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
-
+const damPartnerCompanyAnalyticsRouterUrl = RouterUrlConstants['damPartnerCompanyAnalytics'];
 export const routes: Routes = [
 	{ path: "manage", component: ManageDamComponent },
 	{ path: "manage/:viewType", component: ManageDamComponent },
@@ -66,9 +67,9 @@ export const routes: Routes = [
 	{ path: "sharedp/view/:assetId/:viewType", component: ViewDamComponent },
 	{ path: "sharedp/view/:assetId/:viewType/:categoryId/:folderViewType", component: ViewDamComponent },
 	/************XNFR-543*********/
-	{ path: "partnerCompanyAnalytics/:damId", component: DamPartnerCompanyAnalyticsComponent },
-	{ path: "partnerCompanyAnalytics/:damId/:viewType", component: DamPartnerCompanyAnalyticsComponent },
-	{ path: "partnerCompanyAnalytics/:damId/:viewType/:categoryId/:folderViewType", component: DamPartnerCompanyAnalyticsComponent },
+	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId", component: DamPartnerCompanyAnalyticsComponent },
+	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId/:viewType", component: DamPartnerCompanyAnalyticsComponent },
+	{ path: damPartnerCompanyAnalyticsRouterUrl+":damId/:viewType/:categoryId/:folderViewType", component: DamPartnerCompanyAnalyticsComponent },
 ];
 
 @NgModule({

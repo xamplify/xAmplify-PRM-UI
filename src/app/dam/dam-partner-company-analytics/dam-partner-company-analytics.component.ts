@@ -10,6 +10,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { DamService } from '../services/dam.service';
 import { ActivatedRoute } from '@angular/router';
+import { UtilService } from 'app/core/services/util.service';
 
 @Component({
   selector: 'app-dam-partner-company-analytics',
@@ -24,13 +25,19 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   pagination:Pagination = new Pagination();
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   partnerCompaniesSortOption: SortOption = new SortOption();
+  initLoader = true;
   damId:any;
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
+  folderListView = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
-    public xtremandLogger:XtremandLogger,public pagerService:PagerService,public damService:DamService,public route:ActivatedRoute) { }
+    public xtremandLogger:XtremandLogger,public pagerService:PagerService,public damService:DamService,
+    public route:ActivatedRoute,private utilService:UtilService) { }
 
   ngOnInit() {
     this.referenceService.startLoader(this.httpRequestLoader);
-    this.damId = atob(this.route.snapshot.params['id']);
+    this.damId = atob(this.route.snapshot.params['damId']);
     this.findPartnerCompanies(this.pagination);
   }
   findPartnerCompanies(pagination: Pagination) {
@@ -39,11 +46,59 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
 			let data = result.data;
 			pagination.totalRecords = data.totalRecords;
 			pagination = this.pagerService.getPagedItems(pagination, data.list);
-			this.referenceService.stopLoader(this.httpRequestLoader);
+      this.stopLoaders();
 		}, error => {
 			this.xtremandLogger.error(error);
 			this.xtremandLogger.errorPage(error);
 		});
+  }
+
+  /********************Pagaination&Search Code*****************/
+
+  /*************************Sort********************** */
+  sortBy(text: any) {
+    this.partnerCompaniesSortOption.publishedPartnerAnalyticsSortOption = text;
+    this.getAllFilteredResults();
+  }
+
+
+  /*************************Search********************** */
+  searchPartners() {
+    this.getAllFilteredResults();
+  }
+
+
+  /************Page************** */
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.findPartnerCompanies(this.pagination);
+  }
+
+  getAllFilteredResults() {
+    this.pagination.pageIndex = 1;
+    this.pagination.searchKey = this.partnerCompaniesSortOption.searchKey;
+    this.pagination = this.utilService.sortOptionValues(this.partnerCompaniesSortOption.publishedPartnerAnalyticsSortOption, this.pagination);
+    this.findPartnerCompanies(this.pagination);
+  }
+  eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
+  /********************Pagaination&Search Code*****************/
+
+  stopLoaders() {
+    this.referenceService.loading(this.httpRequestLoader, false);
+    this.initLoader = false;
+  }
+
+
+  goBack() {
+    this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+  }
+
+  refreshPage() {
+    this.findPartnerCompanies(this.pagination);
+  }
+
+  viewDetailedAnalytics(partner: any) {
+    this.referenceService.navigateToRouterByViewTypes("/home/dam/vda/" + this.damId + "/" + partner.damPartnerId + "/" + partner.userId,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
   }
 
 }
