@@ -16,7 +16,8 @@ button.group-name-cclass.btn-primary.default-btn-cursor {
     border-radius: 7px;
     box-shadow: none !important;
 }
-button.button.bgcolor-unset{ 
+button.button.bgcolor-unset,
+button.button_blue.bgcolor-unset{ 
   border-radius: 7px !important;
   background-color: #3EB2FD !important;
   background-image: linear-gradient(1deg, #4F58FD, #149BF3 99%) !important;
@@ -38,9 +39,9 @@ button.button.bgcolor-unset:hover, button.btn.custom:hover, .btn-group button:ho
 span.btn.btn-primary.transition.txt_pd-top3, span.btn.btn-primary.transition {
   border: none !important;
 }
-/* .Btn-Green {
+.Btn-Green {
   background: none !important;
-} */
+}
 
 /***** Icons *****/
 .custom-icon {
