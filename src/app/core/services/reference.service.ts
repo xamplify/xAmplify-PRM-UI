@@ -3021,7 +3021,8 @@ export class ReferenceService {
     let sort = sortColumn.length>0 && sortOrder.length>0 ? sortColumn+","+sortOrder:"";
     let sortParam = sort.length>0 ? "&sort="+sort:"";
     let searchParam = searchKey.length>0 ? "&search="+searchKey:"";
-    return $.trim("&page="+page+"&size="+size+sortParam+searchParam);
+    let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&filterPartners=true":"";
+    return $.trim("&page="+page+"&size="+size+sortParam+searchParam+teamMemberPartnerFilter);
   }
   
   downloadCsvTemplate(url:string){

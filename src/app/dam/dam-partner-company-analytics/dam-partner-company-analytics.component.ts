@@ -45,10 +45,7 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     this.damId = atob(this.route.snapshot.params['damId']);
     this.videoFileService.campaignReport = localStorage.getItem('campaignReport') === 'true';
     this.videoFileService.saveVideoFile = JSON.parse(localStorage.getItem('saveVideoFile'));
-    if (this.videoFileService.campaignReport) {
-    	this.campaignReport = true;
-      this.selectedVideo = this.videoFileService.saveVideoFile;
-    }
+    this.pagination.partnerTeamMemberGroupFilter = true;
     this.findPartnerCompanies(this.pagination);
   }
   findPartnerCompanies(pagination: Pagination) {
