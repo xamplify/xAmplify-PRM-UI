@@ -245,8 +245,8 @@ export class LeadsService {
    .catch(this.handleError);
   }
 
-  getCRMPipelines(createdForCompanyId: number, loggedInUserId: number, type: any) {
-    return this.http.get(this.authenticationService.REST_URL + `/pipeline/LEAD/${type}/${createdForCompanyId}/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+  getCRMPipelines(createdForCompanyId: number, loggedInUserId: number, type: any, halopsaTicketTypeId: any) {
+    return this.http.get(this.authenticationService.REST_URL + `/pipeline/LEAD/${type}/${createdForCompanyId}/${loggedInUserId}/${halopsaTicketTypeId}?access_token=${this.authenticationService.access_token}`)
     .map(this.extractData)
     .catch(this.handleError);
   }
