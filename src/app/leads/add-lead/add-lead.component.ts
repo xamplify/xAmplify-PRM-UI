@@ -292,9 +292,9 @@ export class AddLeadComponent implements OnInit {
             if (data.statusCode == 200) {
               let campaignLeadPipeline = data.data;
               let ticketTypeIdMap = data.map;
-              self.lead.pipelineId = campaignLeadPipeline.id;
               self.lead.halopsaTicketTypeId = ticketTypeIdMap.halopsaTicketTypeId;
               if (campaignLeadPipeline.createdForCampaignPipelines != undefined) {
+                self.lead.pipelineId = campaignLeadPipeline.createdForCampaignPipelines.id;
                 self.lead.createdForPipelineId = campaignLeadPipeline.createdForCampaignPipelines.id;
                 self.createdForStages = campaignLeadPipeline.createdForCampaignPipelines.stages;
               }
