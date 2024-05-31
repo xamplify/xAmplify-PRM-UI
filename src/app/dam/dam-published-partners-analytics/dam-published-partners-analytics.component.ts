@@ -62,7 +62,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.selectedAssetName = localStorage.getItem('assetName');
     this.isAssetPublished = localStorage.getItem('isAssetPublished')=='true';
     if(!this.isAssetPublished){
-      this.customResponse = new CustomResponse('INFO','This asset has not been published yet. Please publish it to view the analytics.',true);
+      this.customResponse = new CustomResponse('INFO','This asset has not been published yet. Please publish it to view the  analytics.',true);
     }
     this.getCompanyId();
     this.videoFileService.campaignReport = localStorage.getItem('campaignReport') === 'true';

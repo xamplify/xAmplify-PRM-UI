@@ -11,6 +11,8 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { DamService } from '../services/dam.service';
 import { ActivatedRoute } from '@angular/router';
 import { UtilService } from 'app/core/services/util.service';
+import { SaveVideoFile } from 'app/videos/models/save-video-file';
+import { VideoFileService } from 'app/videos/services/video-file.service';
 
 @Component({
   selector: 'app-dam-partner-company-analytics',
@@ -31,13 +33,22 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   categoryId: number;
   folderViewType: string;
   folderListView = false;
+  selectedVideo: SaveVideoFile;
+  campaignReport : boolean = false;
+  isPublished = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public pagerService:PagerService,public damService:DamService,
-    public route:ActivatedRoute,private utilService:UtilService) { }
+    public route:ActivatedRoute,private utilService:UtilService,private videoFileService:VideoFileService) { }
 
   ngOnInit() {
     this.referenceService.startLoader(this.httpRequestLoader);
     this.damId = atob(this.route.snapshot.params['damId']);
+    this.videoFileService.campaignReport = localStorage.getItem('campaignReport') === 'true';
+    this.videoFileService.saveVideoFile = JSON.parse(localStorage.getItem('saveVideoFile'));
+    if (this.videoFileService.campaignReport) {
+    	this.campaignReport = true;
+      this.selectedVideo = this.videoFileService.saveVideoFile;
+    }
     this.findPartnerCompanies(this.pagination);
   }
   findPartnerCompanies(pagination: Pagination) {
@@ -47,6 +58,11 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
 			let data = result.data;
 			pagination.totalRecords = data.totalRecords;
 			pagination = this.pagerService.getPagedItems(pagination, data.list);
+      let map = result.map;
+      this.isPublished = map['isPublished'];
+      if(!this.isPublished){
+        this.customResponse = new CustomResponse('INFO','This asset has not been published yet. Please publish it to view the analytics.',true);
+      }
       this.stopLoaders();
 		}, error => {
 			this.xtremandLogger.error(error);
@@ -89,18 +105,21 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
     this.initLoader = false;
   }
 
-
   goBack() {
     this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
   }
 
   refreshList() {
-  
     this.findPartnerCompanies(this.pagination);
   }
 
   viewDetailedAnalytics(partner: any) {
     this.referenceService.navigateToRouterByViewTypes("/home/dam/vda/" + this.damId + "/" + partner.damPartnerId + "/" + partner.userId,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+  }
+
+  getSelectedIndex(index: any) {
+    this.pagination.partnerTeamMemberGroupFilter = index == 1;
+    this.findPartnerCompanies(this.pagination);
   }
 
 }
