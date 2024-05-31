@@ -16,4 +16,6 @@
     float: right;
     padding: 4px;
   }
-  
+.pb-3px{
+  padding-bottom: 3px !important;
+}  
