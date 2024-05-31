@@ -1,6 +1,7 @@
 export const RouterUrlConstants = {
     home : '/home/',
     dam  : 'dam/',
-    damPartnerCompanyAnalytics: 'pcal/'
+    damPartnerCompanyAnalytics: 'partner-companies/',
+    damPartnerAnalytics:'partner-analytics/'
    
 }
