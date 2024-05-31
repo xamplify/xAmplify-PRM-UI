@@ -643,7 +643,8 @@
                                                                         </a>
                                                                         <a data-toggle="tooltip" data-placement="bottom"
                                                                             class="mMobileDisable custom-icon"
-                                                                            title="Copy" (click)="goToButtonCustom();"
+                                                                            title="Copy"
+                                                                            (click)="goToCustomThemes();showDto(dto);saveTheme();"
                                                                             *ngIf="dto?.id == 4"><i aria-hidden="true"
                                                                                 class="fa fa-files-o mDisableColor IconCustomization"></i>
                                                                             <div class="clickicons"></div>
@@ -2443,9 +2444,9 @@
                                             (closeEvent)="showThemeAlert($event)">
                                         </app-custom-skin>
 
-                                        <app-button-customization class="tab-pane"
+                                        <!-- <app-button-customization class="tab-pane"
                                             [ngClass]="{'active': activeTabName == 'buttonCustom'}"
-                                            *ngIf="activeTabName == 'buttonCustom'"></app-button-customization>
+                                            *ngIf="activeTabName == 'buttonCustom'"></app-button-customization> -->
 
                                         <app-tags class="tab-pane"
                                             [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>

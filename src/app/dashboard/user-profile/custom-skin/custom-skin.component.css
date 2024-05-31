@@ -1965,3 +1965,6 @@ p.layoutcontent {
   margin-bottom: 10px !important;
   margin-left: -15px !important;
 }
+.hide{
+  display: none !important;
+}

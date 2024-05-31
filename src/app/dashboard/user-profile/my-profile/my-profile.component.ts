@@ -1926,9 +1926,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.themeName = "";
 			this.showThemes();
 			this.themeResponse = new CustomResponse();
-		} else if (this.activeTabName == "buttonCustom") {
-			this.activeTabHeader = this.properties.buttonCustom;
-			this.themeResponse = new CustomResponse();
 		} else if (this.activeTabName == "exclude") {
 			this.activeTabHeader = this.properties.exclude;
 			this.excludeUserPagination = new Pagination();
@@ -4529,10 +4526,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.activeTabHeader = "Custom Theme Settings";
 		//this.themeResponse.isVisible = false;
 	}
-	goToButtonCustom() {
-		this.activeTabName = 'buttonCustom';
-		this.activeTabHeader = this.properties.buttonCustom;
-	}
+
 	viewTheme() {
 		this.activeTabName = 'lightTheme';
 		this.activeTabHeader = "Theme View";
