@@ -1,13 +1,14 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="tg-filter" *ngIf="showPartners">
   <ul class="mix-filter" *ngIf="!filterIcon">
-    <li class="filter" (click)="applyFilter(0)" [class.filter-box-selected]="0 == selectedFilterIndex" translate>All
+    <li class="filter" (click)="applyFilter(0)" [class.filter-box-selected]="0 == selectedFilterIndex">
+      All <i *ngIf="0==selectedFilterIndex" class="fa fa-check-circle-o success"></i>
     </li>
-    <li class="filter" (click)="applyFilter(1)" [class.filter-box-selected]="1 == selectedFilterIndex" style="margin-top:3px;" translate>My
-      {{authenticationService?.partnerModule?.customName}}</li>
+    <li class="filter mt3px" (click)="applyFilter(1)" [class.filter-box-selected]="1 == selectedFilterIndex">
+      My {{authenticationService?.partnerModule?.customName}} <i *ngIf="1==selectedFilterIndex" class="fa fa-check-circle-o success"></i>
+    </li>
   </ul>
-  <a *ngIf="filterIcon" class="close-circle ref-mar mrfpximp" (click)="openFilterPopup()" data-toggle="tooltip"
-   data-placement="bottom" title="Apply Filter">
+  <a *ngIf="filterIcon" class="close-circle ref-mar mrfpximp" (click)="openFilterPopup()" data-toggle="tooltip" data-placement="bottom" title="Apply Filter">
     <i class="fa fa-filter" aria-hidden="true"></i>
   </a>
 </div>

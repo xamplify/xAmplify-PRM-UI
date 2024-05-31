@@ -8,3 +8,12 @@
 .mix-filter{
 	margin: 0px 0 -4px 0;
 }
+.mt3px{
+    margin-top: 3px;
+}
+.w-50px{
+    width: 50px !important;
+}
+.mw-100px{
+    width: 100px;
+}
