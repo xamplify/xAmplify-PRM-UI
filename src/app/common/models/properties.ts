@@ -178,6 +178,7 @@ export class Properties {
 	tags = "Tags";
 	customskin = "Themes";
 	customizeleftmenu = "Customize Left Menu";
+	buttonCustom = "Custom Theme Settings";
 
 	exclude = "Exclusion"
 	exclude_add = "User(s) added successfully";

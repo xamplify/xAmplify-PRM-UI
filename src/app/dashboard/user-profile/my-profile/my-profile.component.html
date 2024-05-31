@@ -636,11 +636,19 @@
                                                                             class="mMobileDisable custom-icon"
                                                                             title="Copy"
                                                                             (click)="goToCustomThemes();showDto(dto);saveTheme();"
-                                                                            *ngIf="dto?.id != 3 && dto.name != 'Glassomorphism Light' && dto.name != 'Glassomorphism Dark'"><i
+                                                                            *ngIf="dto?.id != 3 && dto?.id != 4 && dto.name != 'Glassomorphism Light' && dto.name != 'Glassomorphism Dark'"><i
                                                                                 aria-hidden="true"
                                                                                 class="fa fa-files-o mDisableColor IconCustomization"></i>
                                                                             <div class="clickicons"></div>
                                                                         </a>
+                                                                        <a data-toggle="tooltip" data-placement="bottom"
+                                                                            class="mMobileDisable custom-icon"
+                                                                            title="Copy" (click)="goToButtonCustom();"
+                                                                            *ngIf="dto?.id == 4"><i aria-hidden="true"
+                                                                                class="fa fa-files-o mDisableColor IconCustomization"></i>
+                                                                            <div class="clickicons"></div>
+                                                                        </a>
+
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -2434,6 +2442,11 @@
                                             *ngIf="activeTabName == 'customTheme'"
                                             (closeEvent)="showThemeAlert($event)">
                                         </app-custom-skin>
+
+                                        <app-button-customization class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'buttonCustom'}"
+                                            *ngIf="activeTabName == 'buttonCustom'"></app-button-customization>
+
                                         <app-tags class="tab-pane"
                                             [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
                                         <app-spf class="tab-pane" *ngIf="showSpfConfigurationDiv"
