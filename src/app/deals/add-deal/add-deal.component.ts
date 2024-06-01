@@ -319,12 +319,14 @@ export class AddDealComponent implements OnInit {
                     self.showCustomForm = true;
                     if (this.actionType == 'add') {
                       let createdForPipelineStage = null;
-                      let stages = self.stages;
+                      let stages = self.createdForStages;
                       createdForPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
                         mindisplayIndexStage.displayIndex < currentStage.displayIndex ? mindisplayIndexStage : currentStage
                       );
                       self.deal.createdForPipelineStageId = createdForPipelineStage.id;
-                      self.createdForPipelineStageIdError = false;
+                      if (self.deal.createdForPipelineStageId != undefined && self.deal.createdForPipelineStageId > 0) {
+                        self.createdForPipelineStageIdError = false;
+                      }
                       self.isCreatedForStageIdDisable = true;
                       self.submitButtonStatus();
                     }
@@ -927,8 +929,10 @@ export class AddDealComponent implements OnInit {
     }
     if (this.deal.haloPSATickettypeId > 0 && this.activeCRMDetails.createdForActiveCRMType == 'HALOPSA') {
       this.opportunityTypeIdError = false;
-      this.pipelineStageIdError = false;
-      this.createdForPipelineStageIdError = false;
+      if (this.actionType == 'add') {
+        this.pipelineStageIdError = false;
+        this.createdForPipelineStageIdError = false;
+      }
     }
 
     if (!this.opportunityAmountError && !this.estimatedCloseDateError
@@ -1190,6 +1194,7 @@ export class AddDealComponent implements OnInit {
                 this.createdForStages = [];
                 this.createdForPipelines = [];
                 if (this.actionType === "add") {
+                  this.showCustomForm = true;
                   this.deal.haloPSATickettypeId = 0;
                   this.deal.createdForPipelineId = 0;
                   this.deal.createdForPipelineStageId = 0;
@@ -1582,7 +1587,7 @@ export class AddDealComponent implements OnInit {
   }
 
   onChangeTicketType() {
-    this.showCustomForm = true;
+    // this.showCustomForm = true;
     this.getDealPipelines();
   }
 

@@ -450,7 +450,11 @@ export class AddLeadComponent implements OnInit {
 
   validateAndSubmit() {
     this.isValid = true;
-    if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
+    if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType && (this.lead.halopsaTicketTypeId == undefined ||
+      this.lead.halopsaTicketTypeId <= 0)) {
+        this.isValid = false;
+        this.errorMessage = "Please select Ticket Type";
+    } else if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
       this.isValid = false;
       this.errorMessage = "Please select Lead For";
     } else if (this.lead.createdForPipelineId == undefined || this.lead.createdForPipelineId <= 0) {
@@ -794,6 +798,7 @@ export class AddLeadComponent implements OnInit {
         self.lead.createdForPipelineStageId = 0;
       }
       self.activeCRMDetails.hasCreatedForPipeline = false;
+      self.isCreatedForStageIdDisable = false;
     }
   }
 
