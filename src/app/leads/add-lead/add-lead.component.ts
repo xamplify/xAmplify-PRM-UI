@@ -830,6 +830,9 @@ export class AddLeadComponent implements OnInit {
   }
 
   onChangeTicketType(){
+    if (this.actionType === 'edit') {
+      this.lead.createdForPipelineStageId = 0;
+    }
     this.getLeadPipelines();
   }
 
