@@ -529,13 +529,15 @@
                                         <th translate>FIRST NAME</th>
                                         <th translate>LAST NAME</th>
                                         <th *ngIf="selectedAddPartnerOption === 6" translate>COMPANY</th>
-                                        <th *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9"></th>
+                                        <th
+                                            *ngIf="selectedAddPartnerOption == 7 || selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9">
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <ng-container *ngFor="let user of pagedItems;let i = index">
                                         <tr class='row_{{i}}'>
-                                            <td *ngIf="selectedAddPartnerOption != 8 && selectedAddPartnerOption != 9"
+                                            <td *ngIf="selectedAddPartnerOption != 8 && selectedAddPartnerOption != 9 && selectedAddPartnerOption != 7"
                                                 align="center"><input type="checkbox"
                                                     [checked]="selectedContactListIds.indexOf(user.id)>-1"
                                                     class="chk checkBox_shadow"
@@ -544,7 +546,7 @@
                                                     id="{{user.id}}"
                                                     (click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,user.company,user.contactCompany,user,$event)" />
                                             </td>
-                                            <td *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9"
+                                            <td *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 7"
                                                 align="center"><input type="checkbox"
                                                     [checked]="selectedContactListIds.indexOf(user.id)>-1"
                                                     class="chk checkBox_shadow"
@@ -557,7 +559,7 @@
                                             <td>{{user.lastName}}</td>
                                             <td *ngIf="selectedAddPartnerOption === 6">{{user.contactCompany}}</td>
                                             <td
-                                                *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 11 || selectedAddPartnerOption == 12">
+                                                *ngIf="selectedAddPartnerOption == 7 || selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 11 || selectedAddPartnerOption == 12">
                                                 <button class="lightgray-btn" id='more_less_button_{{i}}'
                                                     (click)="user.isShowDetails = ! user.isShowDetails">
                                                     <span *ngIf="!user.isShowDetails" translate>More</span> <span
@@ -570,10 +572,27 @@
                                             <td colspan="12">
                                                 <table cellpadding="5" cellspacing="0" class="border border-none">
                                                     <tbody>
+                                                        <tr *ngIf="user?.accountName">
+                                                            <td class='pt10 pb10 bold' translate>Account Name:</td>
+                                                            <td class='pt10 pb10'>{{user.accountName}}</td>
+                                                        </tr>
+                                                        <tr *ngIf="user?.accountSubType">
+                                                            <td class='pt10 pb10 bold' translate>Account Sub Type: </td>
+                                                            <td class='pt10 pb10'>{{user.accountSubType}}</td>
+                                                        </tr>
+                                                        <tr *ngIf="user?.accountOwner">
+                                                            <td class='pt10 pb10 bold' translate>Account Owner: </td>
+                                                            <td class='pt10 pb10'>{{user.accountOwner}}</td>
+                                                        </tr>
                                                         <tr *ngIf="user?.company">
-                                                            <td class='pt10 pb10 bold' translate>Company:</td>
+                                                            <td class='pt10 pb10 bold' translate>Company: </td>
                                                             <td class='pt10 pb10' style="padding-left: 20px;">
                                                                 {{user.company}}</td>
+                                                        </tr>
+                                                        <tr *ngIf="user?.companyDomain">
+                                                            <td class='pt10 pb10 bold' translate>Company Domain:</td>
+                                                            <td class='pt10 pb10' style="padding-left: 20px;">
+                                                                {{user.companyDomain}}</td>
                                                         </tr>
                                                         <tr *ngIf="user?.title">
                                                             <td class='pt10 pb10 bold' translate>Job Title:</td>
@@ -597,6 +616,10 @@
                                                                 <h5 class='m0' *ngIf="user?.city">
                                                                     {{user.city}}<span
                                                                         *ngIf="user.city && user.state">,&nbsp;</span>{{user.state}}
+                                                                </h5>
+                                                                <h5 class='m0' *ngIf="user?.region">
+                                                                    {{user.region}}<span
+                                                                        *ngIf="user.territory">,&nbsp;</span>{{user.territory}}
                                                                 </h5>
                                                                 <h5 *ngIf="user?.postalCode || user?.country"
                                                                     class='mt0'>
@@ -672,7 +695,7 @@
                                 <textarea id="copyFromclipTextArea" class="textareaNumber copy_text_area_border"
                                     title="Calendar View" [(ngModel)]="clipboardTextareaText"
                                     title="please fill out this field"
-                                    placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
+                                    placeholder="FirstName,LastName,Account Name,Account Sub Type,Account Owner,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Account Name,Account Sub Type,Account Owner,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Account Name,Account Sub Type,Account Owner,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
                                     [ngModelOptions]="{standalone: true}"
                                     style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
                                     required="required">
@@ -857,7 +880,8 @@
                                     <strong>Please wait while we process your request</strong>
                                 </div>
                                 <div *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList"
-                                    class="alert alert-info alert-dismissable text-center">No {{authenticationService?.partnerModule?.customName}} found.</div>
+                                    class="alert alert-info alert-dismissable text-center">No
+                                    {{authenticationService?.partnerModule?.customName}} found.</div>
                                 <app-list-loader *ngIf="isLoadingList"></app-list-loader>
                                 <div class="table-responsive" *ngIf="!isLoadingList">
                                     <table class='table tgrid' aria-describedby="">
@@ -1094,7 +1118,8 @@
                             </div>
                         </div>
                     </div>
-                    <app-pagination  *ngIf="!isLoadingList" [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)"
+                    <app-pagination *ngIf="!isLoadingList" [pagination]="pagination" [type]="'contacts'"
+                        (notifyParent)="setPage($event)"
                         (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination>
                 </div>
                 <!-- END EXAMPLE TABLE PORTLET-->
@@ -1472,9 +1497,9 @@
         (closeEvent)="closeConnectWiseForm($event)"></app-connectwise-authentication-popup>
 </div>
 
-<!-- XNFR-502--> 
+<!-- XNFR-502-->
 <div *ngIf="showHaloPSAAuthenticationForm">
-	<app-halopsaauthenticationpopup (closeEvent)="closeHaloPSAForm($event)"></app-halopsaauthenticationpopup>
+    <app-halopsaauthenticationpopup (closeEvent)="closeHaloPSAForm($event)"></app-halopsaauthenticationpopup>
 </div>
 
 <!-- T&C Modal -->

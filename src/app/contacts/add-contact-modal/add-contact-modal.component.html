@@ -78,6 +78,42 @@
                 <div class="textCss"></div>
               </div>
             </div>
+            <div class="form-group mrg0 " *ngIf="isPartner">
+              <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue">
+              </label>
+              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                <input type="accountName" style="border: none !important"
+                  class="form-control padding-mobile placeholder-bg-color" id="accountName"
+                  [(ngModel)]="addContactuser.accountName" [ngModelOptions]="{standalone: true}" placeholder="Account Name"
+                  maxlength="250">
+                <div class="textCss"></div>
+              </div>
+              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                <input type="accountSubType" style="border: none !important"
+                  class="form-control padding-mobile placeholder-bg-color" id="accountSubType"
+                  [(ngModel)]="addContactuser.accountSubType" [ngModelOptions]="{standalone: true}" placeholder="Account Sub Type"
+                  maxlength="250">
+                <div class="textCss"></div>
+              </div>
+            </div>
+            <div class="form-group mrg0 " *ngIf="isPartner">
+              <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue">
+              </label>
+              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                <input type="name" style="border: none !important"
+                  class="form-control padding-mobile placeholder-bg-color" id="accountOwner"
+                  [(ngModel)]="addContactuser.accountOwner" [ngModelOptions]="{standalone: true}" placeholder="Account Owner"
+                  maxlength="250">
+                <div class="textCss"></div>
+              </div>
+              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                <input type="name" style="border: none !important"
+                  class="form-control padding-mobile placeholder-bg-color" id="companyDomain"
+                  [(ngModel)]="addContactuser.companyDomain" [ngModelOptions]="{standalone: true}" placeholder="Company Domain"
+                  maxlength="250">
+                <div class="textCss"></div>
+              </div>
+            </div>
             <div class="form-group mrg0" *ngIf="!isPartner">
               <label class="control-label col-xs-2 col-sm-2" for="company"
                 style="color: #00bcd4; right: 11px !important">
@@ -188,7 +224,24 @@
               </div>
             </div>
 
-
+            <div class="form-group mrg0" *ngIf="isPartner">
+              <div>
+                <label class="control-label col-xs-2 col-sm-2" for="website" style="color: #53affe;">
+                </label>
+                <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
+                  <input type="website" style="border: none !important" class="form-control placeholder-bg-color"
+                    id="website" [(ngModel)]="addContactuser.website" [ngModelOptions]="{standalone: true}"
+                    placeholder="Website" maxlength="55">
+                  <div class="textCss"></div>
+                </div>
+                <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                  <input type="territory" style="border: none !important" class="form-control placeholder-bg-color"
+                    id="territory" [(ngModel)]="addContactuser.territory" [ngModelOptions]="{standalone: true}"
+                    placeholder="Territory" maxlength="55">
+                  <div class="textCss"></div>
+                </div>
+              </div>
+            </div>
 
             <div class="form-group mrg0" *ngIf="isPartner">
               <div>

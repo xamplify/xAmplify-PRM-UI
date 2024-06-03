@@ -282,6 +282,12 @@ contactCompanyChecking( event:any ) {
             this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
             this.addContactuser.legalBasis = this.contactDetails.legalBasis;
             this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;
+            this.addContactuser.accountName = this.contactDetails.accountName;
+            this.addContactuser.accountSubType = this.contactDetails.accountSubType;
+            this.addContactuser.accountOwner = this.contactDetails.accountOwner;
+            this.addContactuser.companyDomain = this.contactDetails.companyDomain;
+            this.addContactuser.territory = this.contactDetails.territory;
+            this.addContactuser.website = this.contactDetails.website;
             this.validLimit = this.contactDetails.contactsLimit>0;
             this.addContactuser.mdfAmount = this.contactDetails.mdfAmount;
             if ( this.isPartner){
