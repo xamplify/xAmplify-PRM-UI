@@ -12,6 +12,8 @@ import { DamPartnerCompanyAnalyticsComponent } from './dam-partner-company-analy
 import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 const damPartnerCompanyAnalyticsRouterUrl = RouterUrlConstants['damPartnerCompanyAnalytics'];
+const damPartnerAnalyticsRouterUrl = RouterUrlConstants['damPartnerAnalytics'];
+
 export const routes: Routes = [
 	{ path: "manage", component: ManageDamComponent },
 	{ path: "manage/:viewType", component: ManageDamComponent },
@@ -49,9 +51,9 @@ export const routes: Routes = [
 	{ path: "pda/:damPartnerId/:viewType", component: DamAnalyticsComponent },
 	{ path: "pda/:damPartnerId/:viewType/:categoryId/:folderViewType", component: DamAnalyticsComponent },
 	/************XNFR-169*********/
-	{ path: "partnerAnalytics/:damId", component: DamPublishedPartnersAnalyticsComponent },
-	{ path: "partnerAnalytics/:damId/:viewType", component: DamPublishedPartnersAnalyticsComponent },
-	{ path: "partnerAnalytics/:damId/:viewType/:categoryId/:folderViewType", component: DamPublishedPartnersAnalyticsComponent },
+	{ path: damPartnerAnalyticsRouterUrl+":damId/:damPartnerId", component: DamPublishedPartnersAnalyticsComponent },
+	{ path: damPartnerAnalyticsRouterUrl+":damId/:damPartnerId/:viewType", component: DamPublishedPartnersAnalyticsComponent },
+	{ path: damPartnerAnalyticsRouterUrl+":damId/:damPartnerId/:viewType/:categoryId/:folderViewType", component: DamPublishedPartnersAnalyticsComponent },
 	/*****************************/
 	/************XNFR-169*********/
 	{ path: "vda/:damId/:damPartnerId/:partnerId", component: DamAnalyticsComponent },

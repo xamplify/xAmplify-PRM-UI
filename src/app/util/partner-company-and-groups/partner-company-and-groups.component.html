@@ -17,12 +17,16 @@
         <li id="partners-li">
           <a class="partnersC" title="Click to see {{authenticationService?.partnerModule?.customName}} companies"
             href="#partners" data-toggle="tab"
-            (click)="findPartnerCompanies(pagination)">{{authenticationService?.partnerModule?.customName}}</a>
+            (click)="isPartnerCompanyGroupSelected = true;findPartnerCompanies(pagination)">{{authenticationService?.partnerModule?.customName}}
+            <i *ngIf="isPartnerCompanyGroupSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
+          </a>
         </li>
         <li id="partnerGroups-li">
           <a class="partnerGroupsC" title="Click to see list of {{authenticationService?.partnerModule?.customName}}"
-            href="#partnerGroups" data-toggle="tab" (click)="findPartnerGroups(partnerGroupsPagination)">List Of
-            {{authenticationService?.partnerModule?.customName}}</a>
+            href="#partnerGroups" data-toggle="tab" (click)="isPartnerCompanyGroupSelected=false;findPartnerGroups(partnerGroupsPagination)">
+            List Of {{authenticationService?.partnerModule?.customName}}
+            <i *ngIf="!isPartnerCompanyGroupSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
+          </a>
         </li>
       </ul>
     </div>
@@ -217,7 +221,7 @@
                           <div class="input-icon right" id="icon">
                             <input type="text" id="sort-text" class="form-control"
                               [(ngModel)]="partnerGroupsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                              placeholder="search..." (keypress)="partnerGroupsSearchOnKeyEvent($event.keyCode)"
+                              placeholder="Search..." (keypress)="partnerGroupsSearchOnKeyEvent($event.keyCode)"
                               autocomplete="off">
                             <button class="glyphicon glyphicon-remove search-box-item-clear"
                               *ngIf="partnerGroupsSortOption.searchKey"

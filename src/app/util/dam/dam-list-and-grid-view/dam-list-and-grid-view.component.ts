@@ -442,59 +442,21 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	viewAnalytics(asset: any) {
 		this.loading = true;
-		this.referenceService.setAssetLocalStorageValues(asset);
-		let isVideo = this.isVideo(asset.assetType);
-		if (isVideo) {
-			if (this.isPartnerView) {
-				this.navigateToDamAnalyticsForPartnerLogin(asset.id);
-			} else {
-				try {
-					this.videoFileService.getVideo(asset.alias, 'DRAFT')
-						.subscribe((editVideoFile: SaveVideoFile) => {
-							if (editVideoFile.access) {
-								if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
-									editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
-								}
-								editVideoFile.damId = asset.id;
-								this.videoFileService.saveVideoFile = editVideoFile;
-								this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
-								this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
-								this.videoFileService.campaignReport = true;
-								localStorage.setItem('campaignReport', 'true');
-								localStorage.setItem('saveVideoFile', JSON.stringify(editVideoFile));
-								/*****XNFR-169***/
-								this.navigateToPartnerAnalytics(asset.id);
-							} else {
-								this.authenticationService.forceToLogout();
-							}
-						},
-							(error: any) => {
-								this.xtremandLogger.error('Error In: show edit videos ():' + error);
-								this.xtremandLogger.errorPage(error);
-							}
-						);
-				} catch (error) {
-					this.xtremandLogger.error('error' + error);
-				}
-			}
+		/*****XNFR-169***/
+		if (this.isPartnerView) {
+			this.navigateToDamAnalyticsForPartnerLogin(asset.id);
 		} else {
-			/*****XNFR-169***/
-			if (this.isPartnerView) {
-				this.navigateToDamAnalyticsForPartnerLogin(asset.id);
-			} else {
-				this.navigateToPartnerAnalytics(asset.id);
-			}
+			this.navigateToPartnerAnalytics(asset.id);
 		}
 	}
 
 	/*****XNFR-169***/
 	navigateToPartnerAnalytics(id: number) {
-		let url = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.referenceService.encodePathVariable(id);
-		this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+		this.referenceService.navigateToDamPartnerCompaniesAnalytics(id, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 	}
 
-	navigateToDamAnalyticsForPartnerLogin(id: number) {
-		let url = "/home/dam/pda/" + id;
+	navigateToDamAnalyticsForPartnerLogin(id: any) {
+		let url = "/home/dam/pda/" + this.referenceService.encodePathVariable(id);
 		this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 	}
 

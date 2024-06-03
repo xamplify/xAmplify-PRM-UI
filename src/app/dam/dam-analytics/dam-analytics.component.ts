@@ -13,6 +13,7 @@ import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { DamAnalyticsTilesDto } from '../models/dam-analytics-tiles-dto';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 declare var $, swal: any;
 
 @Component({
@@ -45,12 +46,14 @@ export class DamAnalyticsComponent implements OnInit {
   categoryId: number;
   folderViewType: string;
   folderListView = false;
+  partnerModuleCustomName = "";
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
     /****XNFR-169****/
     this.viewType = this.route.snapshot.params['viewType'];
 		this.categoryId = this.route.snapshot.params['categoryId'];
 		this.folderViewType = this.route.snapshot.params['folderViewType'];
+    this.partnerModuleCustomName = this.authenticationService.getPartnerModuleCustomName();
     if(this.folderViewType=="fl"){
 			this.folderListView = true;
 		}
@@ -64,11 +67,14 @@ export class DamAnalyticsComponent implements OnInit {
   callApis(){
     this.startLoaders();
     this.vendorView = this.router.url.indexOf('vda')>-1;
-    this.pagination.campaignId = parseInt(this.route.snapshot.params['damPartnerId']);
-    this.damId = parseInt(this.route.snapshot.params['damId']);
-    this.partnerId = parseInt(this.route.snapshot.params['partnerId']);
+    let decodedDamPartnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['damPartnerId']);
+    this.pagination.campaignId = parseInt(decodedDamPartnerId);
+    let encodedDamId =  this.referenceService.decodePathVariable(this.route.snapshot.params['damId']);
+    this.damId = parseInt(encodedDamId);
+    let encodedPartnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
+    this.partnerId = parseInt(encodedPartnerId);
     if(this.vendorView){
-      this.checkDamAndPartnerId();
+      this.getTilesInfo();
     }else{
       this.checkDamPartnerId();
     }
@@ -223,7 +229,8 @@ export class DamAnalyticsComponent implements OnInit {
   goBack(){
     this.loading = true;
     if(this.router.url.indexOf("vda")>-1){
-      this.referenceService.navigateToRouterByViewTypes("/home/dam/partnerAnalytics/"+this.damId,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+      let url = "/home/dam/partner-analytics/"+this.referenceService.encodePathVariable(this.damId)+"/"+this.referenceService.encodePathVariable(this.pagination.campaignId);
+      this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
     }else{
       this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,!this.vendorView);
     }
@@ -234,6 +241,12 @@ export class DamAnalyticsComponent implements OnInit {
   goToDam(){
     this.loading = true;
     this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,!this.vendorView);
+  }
+
+  goBackToPartnerCompanies(){
+    let prefixUrl = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics'];
+    let url = prefixUrl+this.referenceService.encodePathVariable(this.damId);
+    this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
   }
 
 }

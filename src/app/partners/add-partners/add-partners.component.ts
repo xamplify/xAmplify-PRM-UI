@@ -4275,6 +4275,7 @@ getTeamMembersByGroupId(partner: any, index: number) {
 	}
 
 	getSelectedIndex(index: number) {
+		this.isLoadingList = true;
 		this.selectedFilterIndex = index;
 		this.referenceService.setTeamMemberFilterForPagination(this.pagination, index);
 		this.defaultPartnerList(this.loggedInUserId);

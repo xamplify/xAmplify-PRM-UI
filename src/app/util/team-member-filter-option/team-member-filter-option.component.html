@@ -1,10 +1,10 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="tg-filter" *ngIf="showPartners">
   <ul class="mix-filter" *ngIf="!filterIcon">
-    <li class="filter" (click)="applyFilter(0)" [class.filter-box-selected]="0 == selectedFilterIndex">
-      All <i *ngIf="0==selectedFilterIndex" class="fa fa-check-circle-o success"></i>
+    <li class="filter mw-50px left-align" (click)="applyFilter(0)" [class.filter-box-selected]="0 == selectedFilterIndex">
+      <span class="pl-5px">All</span><i *ngIf="0==selectedFilterIndex" class="fa fa-check-circle-o success"></i>
     </li>
-    <li class="filter mt3px" (click)="applyFilter(1)" [class.filter-box-selected]="1 == selectedFilterIndex">
+    <li class="filter mt3px mw-100px left-align" (click)="applyFilter(1)" [class.filter-box-selected]="1 == selectedFilterIndex">
       My {{authenticationService?.partnerModule?.customName}} <i *ngIf="1==selectedFilterIndex" class="fa fa-check-circle-o success"></i>
     </li>
   </ul>

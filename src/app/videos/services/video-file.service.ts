@@ -346,6 +346,13 @@ export class VideoFileService {
             .catch(this.handleError);
     }
 
+    findVideoById(damId:number){
+        const url = this.URL + 'findVideoById/' + damId +"/" + this.authenticationService.user.id  + '?access_token=' + this.authenticationService.access_token;;
+        return this.http.get(url, '')
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
   
     
 }

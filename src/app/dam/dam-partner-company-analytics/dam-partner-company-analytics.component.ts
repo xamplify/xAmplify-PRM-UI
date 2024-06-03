@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UtilService } from 'app/core/services/util.service';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { VideoFileService } from 'app/videos/services/video-file.service';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 @Component({
   selector: 'app-dam-partner-company-analytics',
@@ -36,21 +37,60 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   selectedVideo: SaveVideoFile;
   campaignReport : boolean = false;
   isPublished = false;
+  partnerModuleCustomName = "";
+  breadCrumb  = "Analytics";
+  isVideoAnalyticsLoaded = false;
+  isVideoFile = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public pagerService:PagerService,public damService:DamService,
     public route:ActivatedRoute,private utilService:UtilService,private videoFileService:VideoFileService) { }
 
   ngOnInit() {
     this.referenceService.startLoader(this.httpRequestLoader);
+     /****XNFR-169****/
+     this.viewType = this.route.snapshot.params['viewType'];
+     this.categoryId = this.route.snapshot.params['categoryId'];
+     this.folderViewType = this.route.snapshot.params['folderViewType'];
+     if(this.folderViewType=="fl"){
+       this.folderListView = true;
+     }
+    this.partnerModuleCustomName = this.authenticationService.getPartnerModuleCustomName();
     this.damId = atob(this.route.snapshot.params['damId']);
-    this.videoFileService.campaignReport = localStorage.getItem('campaignReport') === 'true';
-    this.videoFileService.saveVideoFile = JSON.parse(localStorage.getItem('saveVideoFile'));
-    if (this.videoFileService.campaignReport) {
-    	this.campaignReport = true;
-      this.selectedVideo = this.videoFileService.saveVideoFile;
-    }
+    this.breadCrumb = this.partnerModuleCustomName+" Companies";
     this.pagination.partnerTeamMemberGroupFilter = true;
     this.findPartnerCompanies(this.pagination);
+    this.findVideoDetails();
+  }
+
+  findVideoDetails() {
+    this.isVideoAnalyticsLoaded = false;
+    this.videoFileService.findVideoById(this.damId).subscribe(
+      (response: any)=>{
+        let statusCode = response.statusCode;
+        if(statusCode==200){
+          this.isVideoFile = true;
+          let videoFile = response.data;
+          let access = response.access;
+          if (access) {
+            if (videoFile.imageFiles == null || videoFile.gifFiles == null) {
+              videoFile.gifFiles = []; videoFile.imageFiles = [];
+            }
+            videoFile.damId = this.damId;
+            this.videoFileService.saveVideoFile = videoFile;
+            this.referenceService.selectedVideoLogo = videoFile.brandingLogoUri;
+            this.referenceService.selectedVideoLogodesc = videoFile.brandingLogoDescUri;
+            this.videoFileService.campaignReport = true;
+            this.selectedVideo = videoFile;
+            this.breadCrumb = this.partnerModuleCustomName+" Companies & Video Analytics";
+          } else {
+            this.authenticationService.forceToLogout();
+          }
+        }
+        this.isVideoAnalyticsLoaded = true;
+        
+      },error=>{
+        this.xtremandLogger.errorPage(error);
+      });
   }
   findPartnerCompanies(pagination: Pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
@@ -115,12 +155,22 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   }
 
   viewDetailedAnalytics(partner: any) {
-    this.referenceService.navigateToRouterByViewTypes("/home/dam/vda/" + this.damId + "/" + partner.damPartnerId + "/" + partner.userId,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+    let encodedDamId = this.referenceService.encodePathVariable(this.damId);
+    let encodedDamPartnerId = this.referenceService.encodePathVariable(partner.damPartnerId);
+    let encodedUserId = this.referenceService.encodePathVariable(partner.userId);
+    this.referenceService.navigateToRouterByViewTypes("/home/dam/vda/" + encodedDamId + "/" + encodedDamPartnerId + "/" + encodedUserId,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
   }
 
   getSelectedIndex(index: any) {
     this.pagination.partnerTeamMemberGroupFilter = index == 1;
     this.findPartnerCompanies(this.pagination);
+  }
+
+  viewAnalytics(company:any){
+    let damPartnerId = company.damPartnerId;
+    let prefixUrl = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerAnalytics'];
+    let url = prefixUrl+'/'+this.referenceService.encodePathVariable(this.damId)+'/'+this.referenceService.encodePathVariable(damPartnerId);
+		this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
   }
 
 }

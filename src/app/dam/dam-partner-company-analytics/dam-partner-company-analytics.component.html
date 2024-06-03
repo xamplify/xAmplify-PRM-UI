@@ -10,8 +10,8 @@
             <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
-         <li><a translate (click)="goBack()">DAM</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
-         <li><a class="default-cursor">Analytics</a>
+         <li><a translate (click)="goBack()">{{properties?.MANAGE_ASSETS}}</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
+         <li><a class="default-cursor">{{breadCrumb}}</a>
          </li>
       </ul>
       <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
@@ -86,8 +86,7 @@
                       <td class="text-center">{{company?.downloadCount}}</td>
                       <td class="mtext-center" id="actions-row">
                         <div class="actions-block override-actions custom-width-icon float-none">
-                          <a class="custom-icon"  data-toggle="tooltip" data-placement="top"
-                            title="View Analytics" (click)="viewAnalytics(company)">
+                          <a class="custom-icon"  data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(company)">
                             <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                             <div class="clickicons"></div>
                           </a>
@@ -116,7 +115,8 @@
      </div>
    </div>
    <!--Video Analytics-->
-   <app-video-based-report *ngIf="campaignReport" [selectedVideo]="selectedVideo"  [damId]="damId"></app-video-based-report>
+   <app-modal-popup-loader *ngIf="!isVideoAnalyticsLoaded"></app-modal-popup-loader>
+   <app-video-based-report *ngIf="isVideoFile && isVideoAnalyticsLoaded"  [selectedVideo]="selectedVideo"  [damId]="damId"></app-video-based-report>
 </div>
 
 <ng-template #partnerCompanyTable>
