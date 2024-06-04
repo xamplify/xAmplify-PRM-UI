@@ -21,8 +21,9 @@ declare var $: any, Papa: any, swal: any;
   providers: [HttpRequestLoader, Properties, SortOption]
 })
 export class DomainWhitelistingComponent implements OnInit, OnDestroy {
-  @Input() isPartnerDomains: string;
-  @Input() isTeamMemberDomains: string;
+  @Input() isPartnerDomains: boolean;
+  @Input() isTeamMemberDomains: boolean;
+  @Input() isMyProfileAndDomainWhitelisting: boolean;
   customResponse: CustomResponse = new CustomResponse();
   headerText = "";
   domain = "";
@@ -38,6 +39,8 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   isDeleteOptionClicked: boolean;
   selectedDomainId = 0;
   signUpUrl = "";
+  isTeamMemberDomainsTabSelected = false;
+  isPartnerDomainsTabSelected = false;
   domainWhitelistingDescription = "";
   domainWhitelistingUrlDescription = "";
   selectedTab = 1;
@@ -50,15 +53,19 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     public xtremandLogger: XtremandLogger) { }
 
   ngOnInit() {
+    this.referenceService.loading(this.httpRequestLoader, true);
     let isPartnerLoggedInThroughVendorVanityUrl = this.authenticationService.module.loggedInThroughVendorVanityUrl;
     let isMarketingCompany = this.authenticationService.module.isMarketingCompany;
     let isPartnerCompany = this.authenticationService.module.isOnlyPartnerCompany;
     this.isTabDisplayed = !isPartnerLoggedInThroughVendorVanityUrl && !isMarketingCompany && !isPartnerCompany;
-    this.isCollapsed = true;
     if (this.isPartnerDomains) {
       this.moduleName = "Partner";
-    } else {
+      this.activatePartnersDomainsTab();
+    } else if (this.isTeamMemberDomains) {
       this.moduleName = "Team Member";
+      this.activateTeamMemberDomainsTab();
+    } else if (this.isMyProfileAndDomainWhitelisting) {
+      this.activateTeamMemberDomainsTab();
     }
   }
 
@@ -78,6 +85,8 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     this.isDeleteOptionClicked = false;
     this.selectedDomainId = 0;
     this.signUpUrl = "";
+    this.isTeamMemberDomainsTabSelected = false;
+    this.isPartnerDomainsTabSelected = false;
     this.domainWhitelistingDescription = "";
     this.domainWhitelistingUrlDescription = "";
   }
@@ -89,6 +98,8 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     $('#team-member-domains-li').addClass('active');
     $('#partner-domains-li').removeClass('active');
     $('#teamMemberDomains').addClass('tab-pane fade in active');
+    this.isTeamMemberDomainsTabSelected = true;
+    this.isPartnerDomainsTabSelected = false;
     this.pagination.filterKey = "teamMember";
     this.descriptionText = "Added domain users will be allowed to sign up as team members.";
     this.domainWhitelistingDescription = this.properties.domainWhitelistingDescription.replace("{{moduleName}}", "team members");
@@ -104,6 +115,8 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
     $('#partner-domains-li').addClass('active');
     $('#team-member-domains-li').removeClass('active');
     $('#partnerDomains').addClass('tab-pane fade in active');
+    this.isPartnerDomainsTabSelected = true;
+    this.isTeamMemberDomainsTabSelected = false;
     let partnerModuleCustomName = this.authenticationService.getPartnerModuleCustomName();
     this.descriptionText = "Added domain users will be allowed to sign up as " + partnerModuleCustomName + ".";
     this.domainWhitelistingDescription = this.properties.domainWhitelistingDescription.replace("{{moduleName}}", partnerModuleCustomName);
@@ -118,18 +131,6 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
         this.signUpUrl = response.data;
       }, error => {
         this.xtremandLogger.error(error);
-      });
-  }
-
-  findTeamMemberOrPartnerDomains(pagination: Pagination) {
-    this.referenceService.scrollSmoothToTop();
-    this.referenceService.loading(this.httpRequestLoader, true);
-    this.dashboardService.findDomains(pagination, this.selectedTab).subscribe(
-      response => {
-        pagination = this.utilService.setPaginatedRows(response, pagination);
-        this.referenceService.loading(this.httpRequestLoader, false);
-      }, error => {
-        this.xtremandLogger.errorPage(error);
       });
   }
 
@@ -170,6 +171,18 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   getAllFilteredResults(pagination: Pagination) {
     pagination = this.utilService.sortOptionValues(this.sortOption.selectedDomainDropDownOption, pagination);
     this.findTeamMemberOrPartnerDomains(pagination);
+  }
+
+  findTeamMemberOrPartnerDomains(pagination: Pagination) {
+    this.referenceService.scrollSmoothToTop();
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.dashboardService.findDomains(pagination, this.selectedTab).subscribe(
+      response => {
+        pagination = this.utilService.setPaginatedRows(response, pagination);
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }, error => {
+        this.xtremandLogger.errorPage(error);
+      });
   }
 
   validateDomain(domain: string) {
@@ -278,13 +291,6 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   toggleCollapse(event: Event) {
     event.preventDefault();
     this.isCollapsed = !this.isCollapsed;
-    if (!this.isCollapsed) {
-      if (this.isPartnerDomains) {
-        this.activatePartnersDomainsTab();
-      } else {
-        this.activateTeamMemberDomainsTab();
-      }
-    }
   }
 
 }
