@@ -1,17 +1,17 @@
 <app-response-message [customResponse]="customResponse" *ngIf="isMyProfileAndDomainWhitelisting"></app-response-message>
-<app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
+<app-list-loader *ngIf="httpRequestLoader?.isLoading && isMyProfileAndDomainWhitelisting"></app-list-loader>
 <div [hidden]="httpRequestLoader?.isLoading" *ngIf="isMyProfileAndDomainWhitelisting">
   <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;" [hidden]="!isTabDisplayed">
-    <li id="team-member-domains-li">
+    <li id="team-member-domains-li" [ngClass]="{'active': isTeamMemberDomainsTabSelected}">
       <a class="teamMemberDomainC" id="width-205px"
         (click)="!isTeamMemberDomainsTabSelected && activateTeamMemberDomainsTab()" data-toggle="tab"
-        href="#teamMemberDomains">Team Member Domains
+        href="#">Team Member Domains
         <i *ngIf="isTeamMemberDomainsTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
       </a>
     </li>
-    <li id="partner-domains-li">
+    <li id="partner-domains-li" [ngClass]="{'active': isPartnerDomainsTabSelected}">
       <a class="partnerDomainsC" id="width-205px" (click)="!isPartnerDomainsTabSelected && activatePartnersDomainsTab()"
-        data-toggle="tab" href="#partnerDomains">{{authenticationService.partnerModule.customName}} Domains
+        data-toggle="tab" href="#">{{authenticationService.partnerModule.customName}} Domains
         <i *ngIf="isPartnerDomainsTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
       </a>
     </li>
@@ -43,7 +43,7 @@
       </div>
     </div>
   </div>
-  
+  <app-list-loader *ngIf="httpRequestLoader?.isLoading && (isTeamMemberDomains || isPartnerDomains)"></app-list-loader>
   <div class="portlet-body clearfix neg_mrg_top14" style="padding: 0px;">
     <div [ngClass]="{'': isCollapsed, 'collapse': !isCollapsed}" id="domainTemplate">
       <div class="panel-body" style="padding: 0px;">
