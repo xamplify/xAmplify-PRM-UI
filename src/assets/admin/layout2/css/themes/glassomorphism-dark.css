@@ -9,11 +9,13 @@
   color: white !important;
 }
 body{
-  background-image: url(/assets/images/glass-dark2.jpg);
+  /* background-image: url(/assets/images/glass-dark2.jpg); */
+  background-image: url(/assets/images/glassmorphism-images/glassmorphism.png);
   color: white !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+  background-position: initial;
 }
 /*** MainContent ***/
 .page-bar,
