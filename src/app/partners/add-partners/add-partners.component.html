@@ -58,6 +58,7 @@
         </div>
         <app-user-guide-help-button [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
     </div>
+    <app-domain-whitelisting *ngIf="isPartner" [isPartnerDomains]="true"></app-domain-whitelisting>
     <div class="">
         <!----XNFR-222-->
         <div class="portlet-body">
