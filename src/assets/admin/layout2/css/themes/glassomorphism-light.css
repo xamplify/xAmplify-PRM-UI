@@ -9,11 +9,12 @@
   color: #000 !important;
 }
 body{
-  background-image: url(/assets/images/glassmorphism-images/glassmorphism-light1.avif);
+  background-image: url(/assets/images/glassmorphism-images/glassmorphism.png);
   color: white !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+  background-position: initial;
 }
 body.light-mode::before{
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.45) 100%);
