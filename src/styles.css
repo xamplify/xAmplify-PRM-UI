@@ -3079,3 +3079,9 @@ span.icon-alignments {
 .display-inline{
   display: inline !important;
 }
+.txt_colors{
+color:#fff!important;
+}
+.text-danger {
+  color: red !important;
+}

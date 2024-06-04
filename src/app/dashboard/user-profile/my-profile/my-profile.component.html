@@ -365,7 +365,7 @@
                                             </li>
                                         </ng-container>
                                         <!--Vendor Journey-->
-                                        <ng-container *ngIf="isLocalHost">
+                                        <ng-container>
                                             <ng-container
                                                 *ngIf="(authenticationService?.isVendorTeamMember && authenticationService?.module?.adminOrSuperVisor || authenticationService?.isVendor())">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'vendorJourney'}">

@@ -247,7 +247,7 @@
 								</div>
 							</div>
 							<div class="form-group"
-								*ngIf="showConfigurePipelines && ((!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads))">
+								*ngIf="eventCampaign.channelCampaign && showConfigurePipelines && ((!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads))">
 								<label class="control-label col-sm-3 floatLeftText" translate>Configure
 									Pipelines</label>
 								<div class="col-sm-3">
@@ -278,7 +278,7 @@
 
 							 <!--Lead Ticket Type-->
 							 <div class="form-group" [attr.class]="leadTicketTypeClass"
-							 style="margin-bottom: 8px" *ngIf="eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
+							 style="margin-bottom: 8px" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
 							 <label class="control-label col-sm-3">Lead Ticket Type<span
 								 class="required"><strong>*</strong></span></label>
 								 <div class="col-sm-9">
@@ -295,7 +295,7 @@
 
 						 <!--Deal Ticket Type-->
 						 <div class="form-group" [attr.class]="dealTicketTypeClass"
-							 style="margin-bottom: 8px" *ngIf="eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
+							 style="margin-bottom: 8px" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
 							 <label class="control-label col-sm-3">Deal Ticket Type<span
 								 class="required"><strong>*</strong></span></label>
 								 <div class="col-sm-9">
@@ -312,7 +312,7 @@
 							 
 
 
-							<div class="form-group" *ngIf="eventCampaign.configurePipelines"
+							<div class="form-group" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines && !reDistributeEvent"
 								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 								<label class="control-label col-sm-3">Lead Pipeline<span>
 										<b style="color: #f55d7a !important">*</b>
@@ -327,7 +327,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="form-group" *ngIf="eventCampaign.configurePipelines"
+							<div class="form-group" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines  && !reDistributeEvent"
 								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 								<label class="control-label col-sm-3">Deal Pipeline<span>
 										<b style="color: #f55d7a !important">*</b>
@@ -568,7 +568,7 @@
 							</div>
 							<div class="form-group" *ngIf="isEventUpdate">
 								<label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Message<font
-										style="color: red"> <b>*</b>
+										> <b style="color: red!important">*</b>
 									</font>
 								</label>
 								<div class="col-sm-9" style="padding-top: 10px;">

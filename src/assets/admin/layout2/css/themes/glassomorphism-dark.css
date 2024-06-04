@@ -3579,7 +3579,8 @@ table.table.table-bordered {
   border-top: none !important;
 }
 .inline-flex.border-end:nth-child(even) {
-  background-color: #202124 !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .border-end {
   border-bottom:   1px solid rgba(255, 255, 255, 0.1) !important;
@@ -3876,3 +3877,6 @@ div#xamplify-bee-template-container__bee-plugin-loader{
      background: none !important;
       }
   }
+  .mrg-neo {
+    margin: 6px 0;
+}
