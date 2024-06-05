@@ -318,7 +318,7 @@
 										<b style="color: #f55d7a !important">*</b>
 									</span></label>
 								<div class="col-sm-9">
-									<select class="form-control" [ngClass]="activeCRMDetails?.type ==='HALOPSA'?'disabled':''" [(ngModel)]="eventCampaign.leadPipelineId"
+									<select class="form-control" [attr.disabled]="(activeCRMDetails?.type === 'HALOPSA') ? '' : null" [(ngModel)]="eventCampaign.leadPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="leadPipelineId"
 										id="leadPipelineId" (change)="validatePipeline();"
 										[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">
@@ -333,7 +333,7 @@
 										<b style="color: #f55d7a !important">*</b>
 									</span></label>
 								<div class="col-sm-9">
-									<select class="form-control" [ngClass]="activeCRMDetails?.type ==='HALOPSA'?'disabled':''" [(ngModel)]="eventCampaign.dealPipelineId"
+									<select class="form-control" [attr.disabled]="(activeCRMDetails?.type === 'HALOPSA') ? '' : null" [(ngModel)]="eventCampaign.dealPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="dealPipelineId"
 										id="dealPipelineId" (change)="validatePipeline();"
 										[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">
