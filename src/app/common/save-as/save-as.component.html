@@ -3,7 +3,8 @@
    <div class="modal-dialog modal-css" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h4 class="modal-title f-w-600" id="saveAsModal">{{listName}} List Name</h4>
+            <h4 class="modal-title f-w-600" *ngIf="!isPartner" id="saveAsModal">{{listName}} List Name</h4>
+            <h4 class="modal-title f-w-600" *ngIf="isPartner" id="saveAsModal">{{listName}} Group Name</h4>
             <button (click)="closeModal()" type="button" class="close-circle" data-dismiss="modal"
                style=" position: relative;top: -24px;">
                <i class="fa fa-times" aria-hidden="true"></i>

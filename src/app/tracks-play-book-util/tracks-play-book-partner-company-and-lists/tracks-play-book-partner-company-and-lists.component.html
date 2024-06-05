@@ -10,7 +10,7 @@
       <li id="partnerGroups-li">
         <a class="partnerGroupsC" data-placement="bottom"
           title="Click to see list of {{authenticationService?.partnerModule?.customName}}" href="#partnerGroups"
-          data-toggle="tab" (click)="findPartnerGroups(partnerGroupsPagination)">List Of
+          data-toggle="tab" (click)="findPartnerGroups(partnerGroupsPagination)">Group Of
           {{authenticationService?.partnerModule?.customName}}</a>
       </li>
     </ul>
@@ -235,10 +235,10 @@
                 <div class="alert alert-success alert-cu-for-consistency" *ngIf="selectedPartnerGroupIds?.length>0">
                   <strong>
                     <ng-container *ngIf="selectedPartnerGroupIds?.length==1">
-                      {{selectedPartnerGroupIds?.length}} list is selected
+                      {{selectedPartnerGroupIds?.length}} group is selected
                     </ng-container>
                     <ng-container *ngIf="selectedPartnerGroupIds?.length>1">
-                      {{selectedPartnerGroupIds?.length}} lists are selected
+                      {{selectedPartnerGroupIds?.length}} groups are selected
                     </ng-container>
                   </strong>
                   <!---XNFR-326-->
@@ -263,7 +263,7 @@
                       (change)="selectOrUnselectAllPartnerGroupsOfTheCurrentPage($event)">
                   </th>
                   <th *ngIf="showExpandButton"></th>
-                  <th scope="col" class="text-center">List Name</th>
+                  <th scope="col" class="text-center">Group Name</th>
                   <th scope="col" class="text-center">Count</th>
                   <th scope="col" class="text-center">Created Time</th>
                   <th scope="col" class="text-center">Preview</th>

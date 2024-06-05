@@ -322,7 +322,8 @@
 				((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads)) ? '-9px !important' : '2px !important'}">
 								<div class="portlet-title" style="padding-bottom: 6px !important;">
 									<div class="caption" translate style="font-size: 2;padding-top: 8px !important;">
-										<i class="fa fa-edit" aria-hidden="true" style="font-size: 20px;"></i>List of
+										<i class="fa fa-edit" aria-hidden="true"
+											style="font-size: 20px;"></i>{{isPartner ? 'Group of' : 'List of'}}
 										<span
 											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 										<span
@@ -348,9 +349,13 @@
 													</a>
 												</li>
 												<li><a id="saveAs_button"
-														*ngIf=" ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads))"
-														(click)="saveAs(true)" translate>Create New List </a>
+														*ngIf=" isPartner && ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads))"
+														(click)="saveAs(true)" translate>Create New Group </a>
 												</li>
+												<li><a id="saveAs_button"
+													*ngIf=" !isPartner && ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads))"
+													(click)="saveAs(true)" translate>Create New List </a>
+											</li>
 												<li [ngClass]="{'disabled': noContactsFound == true }">
 													<a id="exportToExcel" *ngIf=" selectedAddContactsOption== 8 && (assignLeads
 														||(contactService?.contactType!='ASSIGNED_LEADS_LIST' &&
@@ -370,7 +375,7 @@
 												<!---XNFR-278-->
 												<li
 													*ngIf="isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">
-													<a (click)="openMergePopup()" translate> Add To Lists</a>
+													<a (click)="openMergePopup()" translate> Add To Groups</a>
 												</li>
 												<!---XNFR-278-->
 											</ul>
@@ -437,8 +442,15 @@
 														</div>
 														<button data-placement="bottom"
 															class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
-															[disabled]="pagination.totalRecords == 0"
+															[disabled]="pagination.totalRecords == 0" *ngIf="!isPartner"
 															title="Click here to email the list"
+															(click)="downloadUserListCsv()" style="margin-left: 4px;">
+															<i aria-hidden="true" class="fas fa-file-export p10"></i>
+														</button>
+														<button data-placement="bottom"
+															class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+															[disabled]="pagination.totalRecords == 0" *ngIf="isPartner"
+															title="Click here to email the group"
 															(click)="downloadUserListCsv()" style="margin-left: 4px;">
 															<i aria-hidden="true" class="fas fa-file-export p10"></i>
 														</button>
@@ -1189,7 +1201,7 @@
 											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 										<span
 											*ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span>
-										List
+										Group
 									</span>
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'"
 										translate>
@@ -1198,7 +1210,7 @@
 											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 										<span
 											*ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span>
-										List
+										Group
 									</span>
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'"
 										translate>
@@ -1207,7 +1219,7 @@
 											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 										<span
 											*ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span>
-										List
+										Group
 									</span>
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'"
 										translate>
@@ -1284,8 +1296,15 @@
 											</div>
 											<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view"
 												data-toggle="tooltip"
-												[disabled]="contactsByType.pagination.totalRecords == 0"
+												[disabled]="contactsByType.pagination.totalRecords == 0" *ngIf="!isPartner"
 												title="Click here to email the list" (click)="downloadUserListCsv()"
+												style="margin: 0px -10px 0px 10px;">
+												<i aria-hidden="true" class="fas fa-file-export p10"></i>
+											</button>
+											<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view"
+												data-toggle="tooltip"
+												[disabled]="contactsByType.pagination.totalRecords == 0" *ngIf="isPartner"
+												title="Click here to email the group" (click)="downloadUserListCsv()"
 												style="margin: 0px -10px 0px 10px;">
 												<i aria-hidden="true" class="fas fa-file-export p10"></i>
 											</button>
@@ -1854,7 +1873,7 @@
 	(notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
 <!---XNFR-278-->
 <ng-container *ngIf="mergeOptionClicked">
-	<app-copy-group-users-modal-popup [userListId]="selectedContactListId" [selectedUserIds]="selectedUserIdsForMerging"
+	<app-copy-group-users-modal-popup [userListId]="selectedContactListId" [selectedUserIds]="selectedUserIdsForMerging" [moduleName]="module"
 		(copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>
 </ng-container>
 

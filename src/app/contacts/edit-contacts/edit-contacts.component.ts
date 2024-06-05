@@ -2607,9 +2607,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		return this.saveAsListName;
 	}
 	saveAs(showGDPR: boolean) {
-		if (this.selectedContactForSave.length === 0) {
+		if (this.selectedContactForSave.length === 0 && this.isPartner) {
+			this.customResponse = new CustomResponse('ERROR', "Please select atleast one " + (this.checkingContactTypeName).toLowerCase() + " to create the group", true);
+		} else if (this.selectedContactForSave.length === 0) {
 			this.customResponse = new CustomResponse('ERROR', "Please select atleast one " + (this.checkingContactTypeName).toLowerCase() + " to create the list", true);
-		} else {
+		}else{
 			try {
 				this.showGDPR = showGDPR;
 				if (this.showGDPR) {
@@ -2622,6 +2624,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 		}
 	}
+	
 	editListName() {
 		this.saveAsListName = this.selectedContactListName;
 	}

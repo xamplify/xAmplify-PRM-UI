@@ -2520,7 +2520,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			} else {
 				let a = document.createElement('a');
 				a.href = url;
-				a.download = this.contactService.partnerListName + '.csv';
+				//a.download = this.contactService.partnerListName + '.csv';
+				//a.download = this.contactService.partner
+				a.download = this.contactService.partnerListName.replace("List", "Group") + '.csv';
 				document.body.appendChild(a);
 				a.click();
 				document.body.removeChild(a);
@@ -2674,7 +2676,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	saveAsChange(showGDPR: boolean) {
 
 		if (this.editContactComponent.selectedContactForSave.length === 0) {
-			this.customResponse = new CustomResponse('ERROR', "Please select atleast one " + this.authenticationService.partnerModule.customName + " to create the list", true);
+			this.customResponse = new CustomResponse('ERROR', "Please select atleast one " + this.authenticationService.partnerModule.customName + " to create the Group", true);
 
 		} else {
 			this.hasAccess().subscribe(
@@ -4952,7 +4954,7 @@ unsubscribeUser(selectedUserForUnsubscribed : any){
 	this.userListPaginationWrapper.pagination = this.pagination;
 	this.contactListObj.id = this.partnerListId;
 	this.contactListObj.editList = true;
-	this.contactListObj.moduleName = "";
+	this.contactListObj.moduleName = "partners";
 	this.userListPaginationWrapper.userList = this.contactListObj;
 	this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
 	.subscribe(

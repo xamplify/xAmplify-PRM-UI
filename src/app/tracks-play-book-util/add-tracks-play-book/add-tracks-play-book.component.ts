@@ -1117,7 +1117,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   validateGroupOrCompany() {
     if (this.tracksPlayBook.groupIds.length < 1 && this.tracksPlayBook.userIds.length < 1) {
       let name = this.authenticationService.partnerModule.customName;
-      this.addErrorMessage("groupOrCompany", "Select either a "+name+" or a "+name+" list");
+      this.addErrorMessage("groupOrCompany", "Select either a "+name+" or a "+name+" group");
     } else {
       this.removeErrorMessage("groupOrCompany");
     }

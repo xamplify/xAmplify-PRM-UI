@@ -1182,7 +1182,7 @@
                                                                     style="width: 35%">
                                                                     <span class="ui-column-resizer"
                                                                         (mousedown)="referenceService?.onMouseDown($event,'campaignRecipientsTable',2)"></span>
-                                                                    <span class="gridHeader" translate>List Name</span>
+                                                                    <span class="gridHeader" translate>{{campaignRecipientsPagination.filterBy == 'MY-PARTNERS' ? 'Group Name' : 'List Name'}}</span>
                                                                 </th>
                                                                 <th class="visible-xs" scope="row" colspan="1"
                                                                     style="width: 35%" translate>

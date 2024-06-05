@@ -6,7 +6,7 @@
                 <button type="button" class="close-circle" (click)="closePopup()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 *ngIf="!copySuccess" class="modal-title text-center">Select Lists</h4>
+                <h4 *ngIf="!copySuccess" class="modal-title text-center">Select Groups</h4>
             </div>
             <div class="modal-body">
                 <div class="thank-you-pop" *ngIf="copySuccess">
@@ -70,7 +70,8 @@
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
                         <div *ngIf="selectedPartnerGroupIds?.length>0  && pagination?.totalRecords>0"
                             class="alert alert-success text-center">
-                            <strong>Selected Lists: {{selectedPartnerGroupIds?.length}}</strong>
+                            <strong *ngIf="moduleName !== 'partners'">Selected Lists: {{selectedPartnerGroupIds?.length}}</strong>
+                            <strong *ngIf="moduleName == 'partners'">Selected Groups: {{selectedPartnerGroupIds?.length}}</strong>
                         </div>
                         <div class="table-responsive">
                             <table class='table tgrid table-condensed table-bordered'
