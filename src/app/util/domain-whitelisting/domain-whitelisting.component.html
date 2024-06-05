@@ -1,35 +1,63 @@
-<div class="portlet light remove_cardBgcolor">
-  <ng-container *ngIf="isTeamMemberDomains || isPartnerDomains">
-    <div class="portlet-title">
-      <div class="row">
-        <div class="col-md-6">
-          <!-- Left side content -->
-          <div class="caption">{{moduleName}}s signup url</div>
-        </div>
-        <div class="col-md-6 text-right">
-          <!-- Right side content -->
-          <a href="domainsNgTemplate" (click)="toggleCollapse($event)">
-            <i [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed, 'fa-chevron-down collapseIn': isCollapsed}"
-              class="arrowpositinon fa collapseIconColorCu p10" aria-hidden="true"></i>
-          </a>
-        </div>
+<app-response-message [customResponse]="customResponse" *ngIf="isMyProfileAndDomainWhitelisting"></app-response-message>
+<app-list-loader *ngIf="httpRequestLoader?.isLoading && isMyProfileAndDomainWhitelisting"></app-list-loader>
+<div [hidden]="httpRequestLoader?.isLoading" *ngIf="isMyProfileAndDomainWhitelisting">
+  <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;" [hidden]="!isTabDisplayed">
+    <li id="team-member-domains-li" [ngClass]="{'active': isTeamMemberDomainsTabSelected}">
+      <a class="teamMemberDomainC" id="width-205px"
+        (click)="!isTeamMemberDomainsTabSelected && activateTeamMemberDomainsTab()" data-toggle="tab"
+        href="#">Team Member Domains
+        <i *ngIf="isTeamMemberDomainsTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
+      </a>
+    </li>
+    <li id="partner-domains-li" [ngClass]="{'active': isPartnerDomainsTabSelected}">
+      <a class="partnerDomainsC" id="width-205px" (click)="!isPartnerDomainsTabSelected && activatePartnersDomainsTab()"
+        data-toggle="tab" href="#">{{authenticationService.partnerModule.customName}} Domains
+        <i *ngIf="isPartnerDomainsTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
+      </a>
+    </li>
+  </ul>
+
+  <div class="panel-body">
+    <div class="tab-content">
+      <!--Team Member Domains-->
+      <ng-template *ngIf="isTeamMemberDomainsTabSelected" [ngTemplateOutlet]="domainsNgTemplate"></ng-template>
+      <!--Partner Domains-->
+      <ng-template *ngIf="isPartnerDomainsTabSelected" [ngTemplateOutlet]="domainsNgTemplate"></ng-template>
+    </div>
+  </div>
+</div>
+
+<div class="portlet light remove_cardBgcolor" *ngIf="isTeamMemberDomains || isPartnerDomains">
+  <div class="portlet-title">
+    <div class="row">
+      <div class="col-md-6">
+        <!-- Left side content -->
+        <div class="caption">{{moduleName}} Domain Whitelisting</div>
+      </div>
+      <div class="col-md-6 text-right">
+        <!-- Right side content -->
+        <a href="#domainTemplate" (click)="toggleCollapse($event)">
+          <i [ngClass]="{'fa-chevron-up collapseOut': isCollapsed, 'fa-chevron-down collapseIn': !isCollapsed}"
+            class="arrowpositinon fa collapseIconColorCu p10" aria-hidden="true"></i>
+        </a>
       </div>
     </div>
-    <div class="portlet-body clearfix neg_mrg_top14" style="padding: 0px;">
-      <div class="panel-body"  style="padding: 0px;">
+  </div>
+  <app-list-loader *ngIf="httpRequestLoader?.isLoading && (isTeamMemberDomains || isPartnerDomains)"></app-list-loader>
+  <div class="portlet-body clearfix neg_mrg_top14" style="padding: 0px;">
+    <div [ngClass]="{'': isCollapsed, 'collapse': !isCollapsed}" id="domainTemplate">
+      <div class="panel-body" style="padding: 0px;">
         <!--Team Member Domains-->
         <ng-template *ngIf="isTeamMemberDomains" [ngTemplateOutlet]="domainsNgTemplate"></ng-template>
         <!--Partner Domains-->
         <ng-template *ngIf="isPartnerDomains" [ngTemplateOutlet]="domainsNgTemplate"></ng-template>
       </div>
     </div>
-  </ng-container>
+  </div>
 </div>
 
 <ng-template #domainsNgTemplate>
-  <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <table class="table table-light" style="border: 0px; background-color: transparent;"
-    [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}"
+  <table class="table table-light" style="border: 0px !important; background-color: transparent !important;"
     *ngIf="!httpRequestLoader?.isLoading && !httpRequestLoader?.isServerError">
     <tbody class="neo-border-radius10">
       <fieldset class="fild-custome-borders-none">
@@ -41,7 +69,7 @@
             <input type="text" [ngModel]="signUpUrl" class="form-control" readonly="readonly" #signUpUrlInput><br>
             <div>
               <a class="button_blue" id="right" (click)="copySignUpUrl(signUpUrlInput)">
-                <span class="btn btn-primary transition primary_btn_width team_blue_btn_text copy_link">Copy Url</span>
+                <span class="btn btn-primary transition copy_link">Copy Url</span>
               </a>
             </div>
           </div>
@@ -50,9 +78,7 @@
               <strong>Url copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
             </span>
           </div>
-
-          <div><app-response-message [customResponse]="customResponse"></app-response-message></div>
-          
+          <app-response-message *ngIf="isTeamMemberDomains || isPartnerDomains" [customResponse]="customResponse"></app-response-message>
           <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align mt10">
             <!--Add a Domain-->
             <button id="add_domain" class="button bgcolor-unset mrgn_lft0 p0 px-9" (click)="addDomainModalOpen()">
@@ -65,7 +91,7 @@
           <div
             class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6 TotalSearchBoxWidth mt10 float-right"
             [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-            <div class="input-icon right" style="margin-right: -15px;">
+            <div class="input-icon right">
               <input type="text" [(ngModel)]="pagination.searchKey" (keypress)="searchDomainsOnKeyPress($event.keyCode)"
                 [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a domain">
               <button *ngIf="pagination?.searchKey" class="glyphicon glyphicon-remove search-box-item-clear"
@@ -75,7 +101,6 @@
             </div>
           </div>
         </div>
-        
         <div class="clearfix">
           <div class="col-xs-12 p0 mt10">
             <div class="table-responsive">
@@ -88,7 +113,6 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
                   <ng-container *ngFor="let domain of pagination.pagedItems ;let i =index">
                     <tr class='row_{{i}}' style="background-color: #FFFFFF;">
                       <td>
@@ -128,48 +152,53 @@
   </table>
 </ng-template>
 
+
+
 <!--Domain Modal Popup-->
-<div id="domainModal" class="modal fade right" role="dialog" aria-labelledby="myModalLabel"
-    data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-css" role="document">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAddDomainModal()">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-                <h4 class="modal-title size-font" translate>Add Domain</h4>
-            </div>
-            <div class="modal-body">
-                <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                <div class="alert alert-info">
-                    <p>
-                        {{descriptionText}} <br><br>
-                        <strong>Example:</strong> example.com
-                    </p>
-                </div>
-                <br>
-                <form class="form-horizontal" autocomplete="off">
-                    <div class="form-group">
-                        <label class="control-label col-xs-1 col-sm-1 required-mark-padding" for="domain">
-                            <span class="mb-star star">*</span>
-                        </label>
-                        <div class="form-group col-xs-10 col-sm-10 domain-or-email-padding">
-                            <input type="text" style="border: none" class="form-control padding-mobile" id="domain"
-                                (input)="validateDomain(domain)" [(ngModel)]="domain" [ngModelOptions]="{standalone: true}" placeholder="Enter Domain Name *" autocomplete="off">
-                            <div class="textCss"></div>
-                            <span class="danger" *ngIf="isDomainExist">This domain name has already been added</span>
-                            <span class="danger" *ngIf="!validDomainFormat">This domain name is not formatted properly</span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer" style="border:none">
-                <button class="btn Btn-Gray" (click)="closeAddDomainModal()">Cancel</button>
-                      <button type="button" class="button bgcolor-unset btn-top3" (click)="confirmAndsaveExcludedDomain(domain)"
-                    [disabled]="!validDomainPattern" translate><span class="btn Btn-Green transition txt_pd-top3">Add</span></button>
-            </div>
+<div id="domainModal" class="modal fade right" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
+  data-backdrop="static" style="padding-right: 0 !important;">
+  <div class="modal-dialog modal-css" role="document">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAddDomainModal()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title size-font" translate>Add Domain</h4>
+      </div>
+      <div class="modal-body">
+        <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <div class="alert alert-info">
+          <p>
+            {{descriptionText}} <br><br>
+            <strong>Example:</strong> example.com
+          </p>
         </div>
+        <br>
+        <form class="form-horizontal" autocomplete="off">
+          <div class="form-group">
+            <label class="control-label col-xs-1 col-sm-1 required-mark-padding" for="domain">
+              <span class="mb-star star">*</span>
+            </label>
+            <div class="form-group col-xs-10 col-sm-10 domain-or-email-padding">
+              <input type="text" style="border: none" class="form-control padding-mobile" id="domain"
+                (input)="validateDomain(domain)" [(ngModel)]="domain" [ngModelOptions]="{standalone: true}"
+                placeholder="Enter Domain Name *" autocomplete="off">
+              <div class="textCss"></div>
+              <span class="danger" *ngIf="isDomainExist">This domain name has already been added</span>
+              <span class="danger" *ngIf="!validDomainFormat">This domain name is not formatted properly</span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" style="border:none">
+        <button class="btn Btn-Gray" (click)="closeAddDomainModal()">Cancel</button>
+        <button type="button" class="button bgcolor-unset btn-top3" (click)="confirmAndsaveExcludedDomain(domain)"
+          [disabled]="!validDomainPattern" translate><span
+            class="btn Btn-Green transition txt_pd-top3">Add</span></button>
+      </div>
     </div>
+  </div>
 </div>
-<app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" (notifyComponent)="deleteDomain($event)"></app-confirm-sweet-alert-util>
+<app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked"
+  (notifyComponent)="deleteDomain($event)"></app-confirm-sweet-alert-util>
