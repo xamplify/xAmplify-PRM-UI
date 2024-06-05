@@ -76,6 +76,7 @@
                     <th scope="col">Company Logo</th>
                     <th scope="col" class="text-center">Company Name</th>
                     <th scope="col">Created Time</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -106,9 +107,12 @@
                         <app-timestamp [dateAndTime]="partner?.displayTime">
                         </app-timestamp>
                       </td>
+                      <td>
+                        <i *ngIf="selectedPartnershipIds?.indexOf(partner?.partnershipId)>-1" class="fa fa-check-circle-o success i-20px"></i>
+                      </td>
                     </tr>
                     <tr *ngIf="partner?.expand">
-                      <td colspan="4">
+                      <td colspan="5">
                         <div class="table-responsive x-hidden">
                           <div class="portlet-input input-inline float-right mb10p" id="search-div">
                             <div class="input-icon right" id="icon">
