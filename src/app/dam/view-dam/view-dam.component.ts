@@ -110,6 +110,10 @@ export class ViewDamComponent implements OnInit {
 								this.saveAnalytics(damAnalyticsPostDto);
 							}, (_error: any) => {
 								this.xtremandLogger.error("Error In Fetching Location Details");
+								let damAnalyticsPostDto = new DamAnalyticsPostDto();
+								damAnalyticsPostDto.damPartnerId = id;
+								this.saveAnalytics(damAnalyticsPostDto);
+								this.assetViewLoader = false;
 							}
 						);
 					}

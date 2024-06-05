@@ -389,15 +389,12 @@
                                        <tr>
                                           <th scope="col" class="hidden-xs" *ngIf="showExpandButton" id="border-bottom">
                                           </th>
-                                          <th scope="col" class="hidden-xs" colspan="2" style="width: 35%"
-                                             id="border-bottom">
-                                             <span class="ui-column-resizer"
-                                                (mousedown)="referenceService.onMouseDown($event,'partner_contact_list',2)">
+                                          <th scope="col" class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
+                                             <span class="ui-column-resizer" (mousedown)="referenceService.onMouseDown($event,'partner_contact_list',2)">
                                              </span>
                                              <span class="gridHeader" translate>List Name</span>
                                           </th>
-                                          <th scope="col" class="visible-xs" colspan="1" style="width: 35%" translate
-                                             id="border-bottom">
+                                          <th scope="col" class="visible-xs" colspan="1" style="width: 35%"  id="border-bottom">
                                              List Info
                                           </th>
                                           <th scope="col" class="hidden-xs" [hidden]="!assignLeads" translate
@@ -486,8 +483,7 @@
                                              </td>
                                              <td>
                                                 <h4 class="m0 moreipsis ListFontCu">
-                                                   <span data-toggle="tooltip" data-placement="top"
-                                                      title="{{contactList.name}}" class="ListFontCu">
+                                                   <span data-toggle="tooltip" data-placement="top" title="{{contactList.name}}" class="ListFontCu">
                                                       <b> List Name:</b> {{contactList?.name}}
                                                    </span>
                                                 </h4>

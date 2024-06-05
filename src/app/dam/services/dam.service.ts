@@ -16,6 +16,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 
 @Injectable()
 export class DamService {
+ 
   URL = this.authenticationService.REST_URL + "dam/";
   playbooksUrl = this.authenticationService.REST_URL+"playbooks/";
   ACCESS_TOKEN_SUFFIX_URL = "?access_token=";
@@ -319,6 +320,22 @@ export class DamService {
     .map(this.extractData)
     .catch(this.handleError);
   }
+
+   /**** XNFR-543 ****/
+  findPartnerCompanies(pagination: Pagination,damId:number) {
+    let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+    let userId = this.authenticationService.getUserId();
+    let findAllUrl = this.DAM_PREFIX_URL+'/findAllPartners/damId/'+damId+'/userId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+    return this.authenticationService.callGetMethod(findAllUrl);
+  }
+
+   /**** XNFR-543 ****/
+   findPartnerCompanyUsers(pagination: Pagination) {
+    let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+    let findAllUrl = this.DAM_PREFIX_URL+'/findAllPartnerCompanyUsers/id/'+pagination.id+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+    return this.authenticationService.callGetMethod(findAllUrl);
+  }
+
 
 
 

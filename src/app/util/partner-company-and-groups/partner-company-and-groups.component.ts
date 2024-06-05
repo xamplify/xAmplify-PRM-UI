@@ -72,7 +72,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	companyAndPartnerMap = new Map<number, number[]>();
 	@Input() selectedPartnerIdAndPartnerStatus:any[] = [];
 	@Input() selectedPartnerGroupPartnerIdAndPartnerStatus:any[] = [];
-
+	isPartnerCompanyGroupSelected = true;
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public landingPageService: LandingPageService,
 		 public utilService: UtilService, public userService: UserService,public callActionSwitch:CallActionSwitch) {

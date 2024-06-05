@@ -129,11 +129,14 @@ export class Top4AssetsComponent implements OnInit {
   goToAnalytics(asset:any){
     this.assetsLoader = true;
     if(this.isPartnerView){
-      this.referenceService.goToRouter("/home/dam/pda/"+asset.id);
+      this.navigateToAnalytics(asset);
     }else{
-      this.referenceService.goToRouter("/home/dam/partnerAnalytics/"+asset.id);
-
+      this.navigateToPartnerCompaniesAnalytics(asset);
     }
+  }
+
+  navigateToPartnerCompaniesAnalytics(asset){
+    this.referenceService.navigateToDamPartnerCompaniesAnalytics(asset.id,0,undefined,false,false);
   }
 
   openSettingsPopup(){
@@ -268,11 +271,10 @@ deleteAssetCancelEmitter(){
 
 viewAnalytics(asset: any) {
     this.loading = true;
-    this.referenceService.setAssetLocalStorageValues(asset);
     let isVideo = this.isVideo(asset.assetType);
     if (isVideo) {
            if (this.isPartnerView) {
-            this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
+            this.navigateToAnalytics(asset);
         } else {
             try {
                 this.videoFileService.getVideo(asset.alias, 'DRAFT')
@@ -288,7 +290,7 @@ viewAnalytics(asset: any) {
                             this.videoFileService.campaignReport = true;
                             localStorage.setItem('campaignReport', 'true');
                             localStorage.setItem('saveVideoFile', JSON.stringify(editVideoFile));
-                            this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
+                            this.navigateToPartnerCompaniesAnalytics(asset);
                         } else {
                             this.authenticationService.forceToLogout();
                         }
@@ -304,12 +306,16 @@ viewAnalytics(asset: any) {
         }
     } else {
         if (this.isPartnerView) {
-            this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
-
+           this.navigateToAnalytics(asset);
         } else {
-            this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
+          this.navigateToPartnerCompaniesAnalytics(asset);
         }
     }
+}
+
+navigateToAnalytics(asset:any){
+  let url = "/home/dam/pda/" + this.referenceService.encodePathVariable(asset.id);
+  this.referenceService.goToRouter(url);
 }
 
 campaignRouter(alias:string, viewBy:string) {
