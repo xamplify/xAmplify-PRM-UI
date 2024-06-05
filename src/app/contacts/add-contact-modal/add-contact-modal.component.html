@@ -229,10 +229,12 @@
                 <label class="control-label col-xs-2 col-sm-2" for="website" style="color: #53affe;">
                 </label>
                 <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
-                  <input type="website" style="border: none !important" class="form-control placeholder-bg-color"
+                  <input type="url" style="border: none !important" class="form-control placeholder-bg-color"
                     id="website" [(ngModel)]="addContactuser.website" [ngModelOptions]="{standalone: true}"
+                    (input) = contactWebsiteChecking()
                     placeholder="Website" maxlength="55">
                   <div class="textCss"></div>
+                  <span class="required" *ngIf="isWebsiteNotValid">Please enter a valid URL</span>
                 </div>
                 <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
                   <input type="territory" style="border: none !important" class="form-control placeholder-bg-color"
@@ -364,16 +366,16 @@
         <button class="btn Btn-Gray neg_mrg_top4 pos_mar_rgt3" (click)="addContactModalClose()"
           translate>Cancel</button>
         <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset pos_pd_top2"
-          [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
+          [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
           ||addContactuser.contactCompany == ''"
           (click)="addRow()" translate><span class="btn Btn-Green transition pos_pd_top6">Proceed</span></button>
         <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset pos_pd_top2"
-          [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
+          [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
           ||addContactuser.contactCompany == ''"
           (click)="addEditContactRow()" translate><span
             class="btn Btn-Green transition pos_pd_top6">Proceed</span></button>
         <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset"
-          [disabled]="!checkingForEmail || !isCompanyDetails || !validLimit  || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
+          [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid ||  !validLimit  || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
           ||addContactuser.contactCompany == ''"
           (click)="updateUser()" translate><span class="btn Btn-Green transition txt_pd-top3">Update</span></button>
       </div>

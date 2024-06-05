@@ -528,16 +528,15 @@
                                         <th translate>EMAIL</th>
                                         <th translate>FIRST NAME</th>
                                         <th translate>LAST NAME</th>
-                                        <th *ngIf="selectedAddPartnerOption === 6" translate>COMPANY</th>
                                         <th
-                                            *ngIf="selectedAddPartnerOption == 7 || selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9">
+                                            *ngIf="selectedAddPartnerOption == 7 || selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 6 ">
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <ng-container *ngFor="let user of pagedItems;let i = index">
                                         <tr class='row_{{i}}'>
-                                            <td *ngIf="selectedAddPartnerOption != 8 && selectedAddPartnerOption != 9 && selectedAddPartnerOption != 7"
+                                            <td *ngIf="selectedAddPartnerOption != 8 && selectedAddPartnerOption != 9 && selectedAddPartnerOption != 7 && selectedAddPartnerOption != 6"
                                                 align="center"><input type="checkbox"
                                                     [checked]="selectedContactListIds.indexOf(user.id)>-1"
                                                     class="chk checkBox_shadow"
@@ -546,7 +545,7 @@
                                                     id="{{user.id}}"
                                                     (click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,user.company,user.contactCompany,user,$event)" />
                                             </td>
-                                            <td *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 7"
+                                            <td *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 7 || selectedAddPartnerOption == 6"
                                                 align="center"><input type="checkbox"
                                                     [checked]="selectedContactListIds.indexOf(user.id)>-1"
                                                     class="chk checkBox_shadow"
@@ -557,9 +556,8 @@
                                             <td>{{user.emailId}}</td>
                                             <td>{{user.firstName}}</td>
                                             <td>{{user.lastName}}</td>
-                                            <td *ngIf="selectedAddPartnerOption === 6">{{user.contactCompany}}</td>
                                             <td
-                                                *ngIf="selectedAddPartnerOption == 7 || selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 11 || selectedAddPartnerOption == 12">
+                                                *ngIf="selectedAddPartnerOption == 7 || selectedAddPartnerOption == 6 || selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 11 || selectedAddPartnerOption == 12">
                                                 <button class="lightgray-btn" id='more_less_button_{{i}}'
                                                     (click)="user.isShowDetails = ! user.isShowDetails">
                                                     <span *ngIf="!user.isShowDetails" translate>More</span> <span
@@ -573,11 +571,11 @@
                                                 <table cellpadding="5" cellspacing="0" class="border border-none">
                                                     <tbody>
                                                         <tr *ngIf="user?.accountName">
-                                                            <td class='pt10 pb10 bold' translate>Account Name:</td>
+                                                            <td class='pt10 pb10 pr10 bold' translate>Account Name:  </td>
                                                             <td class='pt10 pb10'>{{user.accountName}}</td>
                                                         </tr>
                                                         <tr *ngIf="user?.accountSubType">
-                                                            <td class='pt10 pb10 bold' translate>Account Sub Type: </td>
+                                                            <td class='pt10 pb10 pr10 bold' translate>Account Sub Type:  </td>
                                                             <td class='pt10 pb10'>{{user.accountSubType}}</td>
                                                         </tr>
                                                         <tr *ngIf="user?.accountOwner">
@@ -585,17 +583,17 @@
                                                             <td class='pt10 pb10'>{{user.accountOwner}}</td>
                                                         </tr>
                                                         <tr *ngIf="user?.company">
-                                                            <td class='pt10 pb10 bold' translate>Company: </td>
+                                                            <td class='pt10 pb10 bold' translate>Company:  </td>
                                                             <td class='pt10 pb10' style="padding-left: 20px;">
                                                                 {{user.company}}</td>
                                                         </tr>
                                                         <tr *ngIf="user?.companyDomain">
-                                                            <td class='pt10 pb10 bold' translate>Company Domain:</td>
+                                                            <td class='pt10 pb10 bold' translate>Company Domain: </td>
                                                             <td class='pt10 pb10' style="padding-left: 20px;">
                                                                 {{user.companyDomain}}</td>
                                                         </tr>
                                                         <tr *ngIf="user?.title">
-                                                            <td class='pt10 pb10 bold' translate>Job Title:</td>
+                                                            <td class='pt10 pb10 bold' translate>Job Title: </td>
                                                             <td class='pt10 pb10' style="padding-left: 20px;">
                                                                 {{user.title}}</td>
                                                         </tr>
@@ -697,7 +695,7 @@
                                     title="please fill out this field"
                                     placeholder="FirstName,LastName,Account Name,Account Sub Type,Account Owner,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Account Name,Account Sub Type,Account Owner,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Account Name,Account Sub Type,Account Owner,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
                                     [ngModelOptions]="{standalone: true}"
-                                    style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
+                                    style="height: 150px;font-size: 11px;line-height: 1.4;min-width: 100%;max-width: 200%;width: 140%;"
                                     required="required">
                                         </textarea>
                             </div>
