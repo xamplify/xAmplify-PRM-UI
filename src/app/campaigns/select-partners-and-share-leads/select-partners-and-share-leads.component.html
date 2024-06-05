@@ -33,19 +33,20 @@
                </thead>
                <tbody>
                   <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
-                     <tr [class.xamp-tr-selected]="selectedPartnershipId==partner.partnershipId">
+                     <tr [class.xamp-tr-selected]="selectedPartnershipId==partner?.partnershipId">
                         <td class="cw">
-                           <input class="form-control remove_checkbox_shadow pointer radioButton_shadow"
-                              value="{{partner.partnershipId}}" id="one-launch-campaign-radio-{{partner.partnershipId}}"
+                           <input *ngIf="selectedPartnershipId!=partner?.partnershipId" class="form-control remove_checkbox_shadow pointer radioButton_shadow"
+                              value="{{partner?.partnershipId}}" id="one-launch-campaign-radio-{{partner?.partnershipId}}"
                               type="radio" name="one-launch-campaign-partner-company"
-                              [checked]="selectedPartnershipId==partner.partnershipId"
-                              [disabled]="selectedPartnershipId==partner.partnershipId"
+                              [checked]="selectedPartnershipId==partner?.partnershipId"
+                              [disabled]="selectedPartnershipId==partner?.partnershipId"
                               (click)="selectPartnerCompanyAndExpandShareLeadsList(partner)">
+                         <i *ngIf="selectedPartnershipId==partner?.partnershipId" class="fa fa-check-circle-o success"></i>
                         </td>
                         <td class="wtpc" title="{{partner?.companyName}}">
                            <div class="thumbnail-wrapper">
                               <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';"
-                                 [src]="authenticationService.MEDIA_URL+partner.companyLogo">
+                                 [src]="authenticationService.MEDIA_URL+partner?.companyLogo">
                            </div>
                         </td>
                         <td class="text-center">
@@ -61,16 +62,13 @@
                            </h5>
                         </td>
                         <td>
-                           <app-display-date-and-time [dateAndTimeUTCString]="partner?.createdTimeInString">
-                           </app-display-date-and-time>
+                           <app-display-date-and-time [dateAndTimeUTCString]="partner?.createdTimeInString"></app-display-date-and-time>
                         </td>
                         <td class="text-center">
                            <div
                               [ngClass]="{'actions-block float-none': selectedPartnershipId!=partner.partnershipId, 'actions-block-selected': selectedPartnershipId==partner.partnershipId}">
                               <a (click)="viewShareLeads(partner)" title="Select Share Leads" class="custom-icon">
-                                 <i class="fa IconCustomization"
-                                    [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}"
-                                    aria-hidden="true"></i>
+                                 <i class="fa IconCustomization"[ngClass]="{'fa-plus': !partner?.expand, 'fa-minus': partner?.expand}" aria-hidden="true"></i>
                                  <div class="clickicons"></div>
                               </a>
                            </div>
@@ -114,19 +112,14 @@
                                        aria-describedby="" id="one-click-share-leads-{{partner?.partnershipId}}">
                                        <thead>
                                           <tr>
-                                             <th *ngIf="selectedPartnershipId==partner.partnershipId" scope="row"
-                                                class="text-center pointer"
+                                             <th *ngIf="selectedPartnershipId==partner.partnershipId" scope="row" class="text-center pointer"
                                                 [hidden]="shareLeadsPagination.totalRecords==0">
-                                                <input class="pointer checkBox_shadow" type="checkbox"
-                                                   [(ngModel)]="isHeaderCheckBoxChecked"
-                                                   id="one-click-share-leads-header-checkbox-id"
-                                                   (change)="selectOrUnselectAllRowsOfTheCurrentPage($event,partner.partnershipId)">
+                                                <input class="pointer checkBox_shadow" type="checkbox"[(ngModel)]="isHeaderCheckBoxChecked"
+                                                   id="one-click-share-leads-header-checkbox-id" (change)="selectOrUnselectAllRowsOfTheCurrentPage($event,partner.partnershipId)">
                                              </th>
-                                             <th *ngIf="selectedPartnershipId!=partner.partnershipId" scope="row"
-                                                class="text-center pointer"
+                                             <th *ngIf="selectedPartnershipId!=partner.partnershipId" scope="row" class="text-center pointer"
                                                 [hidden]="shareLeadsPagination.totalRecords==0">
-                                                <input class="checkBox_shadow" type="checkbox"
-                                                   title="Please select the company" disabled>
+                                                <input class="checkBox_shadow" type="checkbox" title="Please select the company" disabled>
                                              </th>
                                              <th scope="row" [attr.colspan]="colspanValue">List Name</th>
                                              <th class="text-center" translate>Total Leads</th>
@@ -205,17 +198,21 @@
                                                       class="list-icons-sm">
                                                 </td>
                                                 <td>
-                                                   <h4 class="moreipsis" title="{{shareLead.name}}">
-                                                      <span> {{shareLead.name}}</span>
+                                                   <h4 class="m0 ellipsis ListFontCu">
+                                                      <span data-toggle="tooltip" data-placement="top" title="{{shareLead?.name}}" class="ListFontCu">
+                                                         <strong>List Name:</strong> {{shareLead?.name}}
+                                                      </span>
                                                    </h4>
-                                                   <h5 class='m0 ellipsis' title="{{shareLead.uploadedBy}}" translate>
-                                                      By <span class='f-w-400'>{{shareLead.uploadedBy| slice:0:50}}
-                                                         <span *ngIf="shareLead.uploadedBy?.length>50">...</span>
+                                                   <h5 class='mb0 ellipsis'>
+                                                      <span class='f-w-400' data-toggle="tooltip" data-placement="top"  title="{{shareLead?.uploadedBy}}">
+                                                         <b>By: </b> {{shareLead?.uploadedBy}}
                                                       </span>
                                                    </h5>
-                                                   <h5 class="mb0 ellipsis" title="{{shareLead.companyName}}">
-                                                      <strong>{{shareLead.companyName | slice:0:50}}</strong>
-                                                      <span *ngIf="shareLead.companyName?.length>50">...</span>
+                                                   <h5 class="mb0 ellipsis" title="{{shareLead?.companyName}}">
+                                                      <span class='f-w-400' data-toggle="tooltip" data-placement="top"  title="{{shareLead?.companyName}}">
+                                                         <strong>Company Name: </strong> {{shareLead?.companyName | slice:0:50 }}
+                                                      </span>
+                                                      <span *ngIf="shareLead?.companyName?.length>50">...</span>
                                                    </h5>
                                                    <span class="green-banner ellipsis mt5"
                                                       *ngIf="shareLead?.assignedToPartner">Assigned</span>

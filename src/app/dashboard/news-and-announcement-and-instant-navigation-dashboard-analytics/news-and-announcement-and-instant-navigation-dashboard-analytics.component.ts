@@ -8,6 +8,7 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { CustomLinkDto } from 'app/vanity-url/models/custom-link-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { DashboardService } from '../dashboard.service';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 @Component({
   selector: 'app-news-and-announcement-and-instant-navigation-dashboard-analytics',
@@ -83,14 +84,10 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
     let router = "";
     let viewType = "/"+this.referenceService.getListOrGridViewType();
     if(instantNavigation.type=="Asset"){
-      let asset = {};
-      asset['assetName'] = instantNavigation.title;
-      asset['published'] = instantNavigation.published;
-      this.referenceService.setAssetLocalStorageValues(asset);
       if(this.isPartnerLoggedInThroughVanityUrl){
         router = "/home/dam/sharedp/view/"+instantNavigation.damPartnerId+viewType;
       }else{
-        router = "/home/dam/partnerAnalytics/"+instantNavigation.id+viewType;
+        router = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.referenceService.encodePathVariable(instantNavigation.id)+viewType;
       }
     }else if(instantNavigation.type=="Track"){
       if(this.isPartnerLoggedInThroughVanityUrl){

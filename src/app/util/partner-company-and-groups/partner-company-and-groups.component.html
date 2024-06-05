@@ -17,12 +17,16 @@
         <li id="partners-li">
           <a class="partnersC" title="Click to see {{authenticationService?.partnerModule?.customName}} companies"
             href="#partners" data-toggle="tab"
-            (click)="findPartnerCompanies(pagination)">{{authenticationService?.partnerModule?.customName}}</a>
+            (click)="isPartnerCompanyGroupSelected = true;findPartnerCompanies(pagination)">{{authenticationService?.partnerModule?.customName}}
+            <i *ngIf="isPartnerCompanyGroupSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
+          </a>
         </li>
         <li id="partnerGroups-li">
           <a class="partnerGroupsC" title="Click to see list of {{authenticationService?.partnerModule?.customName}}"
-            href="#partnerGroups" data-toggle="tab" (click)="findPartnerGroups(partnerGroupsPagination)">List Of
-            {{authenticationService?.partnerModule?.customName}}</a>
+            href="#partnerGroups" data-toggle="tab" (click)="isPartnerCompanyGroupSelected=false;findPartnerGroups(partnerGroupsPagination)">
+            List Of {{authenticationService?.partnerModule?.customName}}
+            <i *ngIf="!isPartnerCompanyGroupSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
+          </a>
         </li>
       </ul>
     </div>
@@ -82,6 +86,7 @@
                       <th scope="col">Company Logo</th>
                       <th scope="col" class="text-center">Company Name</th>
                       <th scope="col">Created Time</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -90,9 +95,7 @@
                         <td class="cw">
                           <div class="actions-block left-float">
                             <a (click)="viewTeamMembers(partner)" title="View/Hide Team Members">
-                              <i class="fa IconCustomization"
-                                [ngClass]="{'fa-angle-right': !partner.expand, 'fa-angle-down': partner.expand}"
-                                aria-hidden="true"></i>
+                              <i class="fa IconCustomization" [ngClass]="{'fa-angle-right': !partner.expand, 'fa-angle-down': partner.expand}" aria-hidden="true"></i>
                             </a>
                           </div>
                         </td>
@@ -110,6 +113,9 @@
                         <td>
                           <app-timestamp [dateAndTime]="partner?.displayTime">
                           </app-timestamp>
+                        </td>
+                        <td>
+                          <i *ngIf="selectedPartnershipIds?.indexOf(partner.partnershipId)>-1" class="fa fa-check-circle-o success"></i>
                         </td>
                       </tr>
                       <tr *ngIf="partner?.expand">
@@ -217,7 +223,7 @@
                           <div class="input-icon right" id="icon">
                             <input type="text" id="sort-text" class="form-control"
                               [(ngModel)]="partnerGroupsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                              placeholder="search..." (keypress)="partnerGroupsSearchOnKeyEvent($event.keyCode)"
+                              placeholder="Search..." (keypress)="partnerGroupsSearchOnKeyEvent($event.keyCode)"
                               autocomplete="off">
                             <button class="glyphicon glyphicon-remove search-box-item-clear"
                               *ngIf="partnerGroupsSortOption.searchKey"
