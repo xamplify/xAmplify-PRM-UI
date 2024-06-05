@@ -72,7 +72,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	companyAndPartnerMap = new Map<number, number[]>();
 	@Input() selectedPartnerIdAndPartnerStatus:any[] = [];
 	@Input() selectedPartnerGroupPartnerIdAndPartnerStatus:any[] = [];
-	isPartnerCompanyGroupSelected = true;
+	isPartnerCompaniesTabSelected = true;
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public landingPageService: LandingPageService,
 		 public utilService: UtilService, public userService: UserService,public callActionSwitch:CallActionSwitch) {
@@ -409,7 +409,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 
 	clearTabs(){
 		let selectedTabName = this.vendorJourney? (this.selectedTab == 1? "partners": "partnerGroups"): this.selectedTabName();
-
 		if ("partners" == selectedTabName) {
 			this.selectedTeamMemberIds = [];
 			this.selectedPartnershipIds = [];
@@ -614,6 +613,5 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			} 
 			return status;
 		}
-		
-		
+	
 }
