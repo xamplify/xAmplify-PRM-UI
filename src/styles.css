@@ -3089,3 +3089,7 @@ color:#fff!important;
 .i-20px{
   font-size: 20px !important;
 }
+
+.selected-check-mark-circle{
+  border: 1px solid #0cf01ca6 !important;
+}
