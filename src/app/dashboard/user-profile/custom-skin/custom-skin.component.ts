@@ -658,6 +658,7 @@ export class CustomSkinComponent implements OnInit {
     this.saveThemeDto.defaultTheme = false;
     this.saveThemeDto.createdBy = this.loggedInUserId;
     this.saveThemeDto.parentId = this.themeId;
+    this.saveThemeDto.parentThemeName = this.themeDTO.parentThemeName;
     console.log(this.saveThemeDto.parentId, "sudha");
     //this.ngxloading = false;
   }
@@ -842,7 +843,7 @@ export class CustomSkinComponent implements OnInit {
       (data: any) => {
         this.themeDto = data.data;
         if (this.themeDto.name === "Light" || this.themeDto.name === "Dark" ||
-          this.themeDto.name === "Neumorphism Light" || this.themeDto.name === "Neumorphism Dark"
+          this.themeDto.name === "Neumorphism Light" || this.themeDto.name === "Neumorphism Dark(Beta)"
           || this.isSaveTheme) {
           this.sname = this.themeDto.name + '_copy';
         }
