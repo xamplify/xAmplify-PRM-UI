@@ -321,7 +321,7 @@
                         <li class="filter" (click)="showAllLandingPages('All',0)"
                             [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All
                         </li>
-                        <ng-container *ngIf="!isPartnerLandingPage">
+                        <ng-container *ngIf="!isPartnerLandingPage && !isMasterLandingPages && !vendorJourney">
                             <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)"
                                 [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular (Public)</li>
                             <li class="filter" (click)="showAllLandingPages('Regular&PRIVATE',2)"
@@ -333,7 +333,7 @@
                                 [class.landing-page-selected]="4 == selectedLandingPageTypeIndex">Co-Branded (Private)
                             </li>
                         </ng-container>
-                        <ng-container *ngIf="isPartnerLandingPage">
+                        <ng-container *ngIf="isPartnerLandingPage || isMasterLandingPages || vendorJourney">
                             <li class="filter" (click)="showAllLandingPages('PUBLIC',5)"
                                 [class.landing-page-selected]="5 == selectedLandingPageTypeIndex">Public</li>
                             <li class="filter" (click)="showAllLandingPages('PRIVATE',6)"
@@ -347,7 +347,7 @@
                 *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView"
                 style="padding-right: 22px;padding-left: 5px;">
                 <div class="btn-group pull-right" style="display: flex;">
-                    <div class="ml_10">
+                    <div class="ml_10" *ngIf = "!(vendorJourney || isMasterLandingPages || isLandingPages)">
                         <div class="group-dropdown">
                             <button
                                 [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
@@ -438,7 +438,8 @@
 <!--Edit-->
 <ng-template #editIcon let-landingPage="landingPage">
     <a class="mMobileDisable Iconhover custom-grid-icon"
-        *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)"
+        *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId ||
+        this.authenticationService.isVendor || this.authenticationService.module?.isAnyAdminOrSupervisor)"
         data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
         <i class="fa fa-pencil-square-o mDisableColor" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
             aria-hidden="true"></i>
