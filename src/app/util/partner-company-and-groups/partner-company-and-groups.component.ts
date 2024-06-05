@@ -409,7 +409,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 
 	clearTabs(){
 		let selectedTabName = this.vendorJourney? (this.selectedTab == 1? "partners": "partnerGroups"): this.selectedTabName();
-
 		if ("partners" == selectedTabName) {
 			this.selectedTeamMemberIds = [];
 			this.selectedPartnershipIds = [];
@@ -614,6 +613,5 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			} 
 			return status;
 		}
-		
-		
+	
 }
