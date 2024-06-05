@@ -86,6 +86,7 @@
                       <th scope="col">Company Logo</th>
                       <th scope="col" class="text-center">Company Name</th>
                       <th scope="col">Created Time</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -94,9 +95,7 @@
                         <td class="cw">
                           <div class="actions-block left-float">
                             <a (click)="viewTeamMembers(partner)" title="View/Hide Team Members">
-                              <i class="fa IconCustomization"
-                                [ngClass]="{'fa-angle-right': !partner.expand, 'fa-angle-down': partner.expand}"
-                                aria-hidden="true"></i>
+                              <i class="fa IconCustomization" [ngClass]="{'fa-angle-right': !partner.expand, 'fa-angle-down': partner.expand}" aria-hidden="true"></i>
                             </a>
                           </div>
                         </td>
@@ -114,6 +113,9 @@
                         <td>
                           <app-timestamp [dateAndTime]="partner?.displayTime">
                           </app-timestamp>
+                        </td>
+                        <td>
+                          <i *ngIf="selectedPartnershipIds?.indexOf(partner.partnershipId)>-1" class="fa fa-check-circle-o success"></i>
                         </td>
                       </tr>
                       <tr *ngIf="partner?.expand">
