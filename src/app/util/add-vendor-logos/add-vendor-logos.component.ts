@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter,OnDestroy } from '@angular/core';
-import { ReferenceService } from 'app/core/services/reference.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { VendorLogoDetails } from 'app/landing-pages/models/vendor-logo-details';
 declare var $: any;
 @Component({
@@ -16,7 +16,9 @@ export class AddVendorLogosComponent implements OnInit {
 	successMessagePrefix = "Copied";
 	modalPopupId = "add-vendor-logo-popup";
 	@Input()  vendorLogoDetails:VendorLogoDetails[];
-	constructor() { }
+
+	@Input() sharedVendorLogoDetails:VendorLogoDetails[]=[];
+	constructor(public authenticationService: AuthenticationService) { }
 
 	ngOnInit() {
 		this.hideButton = this.input['hideButton'];
@@ -42,5 +44,31 @@ export class AddVendorLogosComponent implements OnInit {
 		$('#' + this.modalPopupId).modal('hide');
 	}
 
-	
+	viewTeamMembers(item: any) {
+		this.sharedVendorLogoDetails.forEach((element) => {
+			let partnerCompanyId = element.companyId
+			let clickedCompanyId = item.companyId;
+			if (clickedCompanyId == partnerCompanyId) {
+				element.expand = !element.expand;
+			}else{
+				element.expand= false;
+			}
+		});
+	}	
+
+	selctectLandingPageForCompany(companyId:number, partnerId:number){
+
+		for (let company of this.sharedVendorLogoDetails) {
+			if (company.companyId == companyId) {
+				for (let member of company.teamMembers) {
+					if (member.partnerId != partnerId) {
+						member.selected = false;
+					}
+				}
+			}
+		}
+		console.log(this.sharedVendorLogoDetails)
+	}
+
+
 }
