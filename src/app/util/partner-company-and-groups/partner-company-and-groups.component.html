@@ -17,15 +17,15 @@
         <li id="partners-li">
           <a class="partnersC" title="Click to see {{authenticationService?.partnerModule?.customName}} companies"
             href="#partners" data-toggle="tab"
-            (click)="isPartnerCompanyGroupSelected = true;findPartnerCompanies(pagination)">{{authenticationService?.partnerModule?.customName}}
-            <i *ngIf="isPartnerCompanyGroupSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
+            (click)="isPartnerCompaniesTabSelected = true;findPartnerCompanies(pagination)">{{authenticationService?.partnerModule?.customName}}
+            <i *ngIf="isPartnerCompaniesTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
           </a>
         </li>
         <li id="partnerGroups-li">
           <a class="partnerGroupsC" title="Click to see list of {{authenticationService?.partnerModule?.customName}}"
-            href="#partnerGroups" data-toggle="tab" (click)="isPartnerCompanyGroupSelected=false;findPartnerGroups(partnerGroupsPagination)">
+            href="#partnerGroups" data-toggle="tab" (click)="isPartnerCompaniesTabSelected=false;findPartnerGroups(partnerGroupsPagination)">
             List Of {{authenticationService?.partnerModule?.customName}}
-            <i *ngIf="!isPartnerCompanyGroupSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
+            <i *ngIf="!isPartnerCompaniesTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
           </a>
         </li>
       </ul>
@@ -115,11 +115,11 @@
                           </app-timestamp>
                         </td>
                         <td>
-                          <i *ngIf="selectedPartnershipIds?.indexOf(partner.partnershipId)>-1" class="fa fa-check-circle-o success"></i>
+                          <i *ngIf="selectedPartnershipIds?.indexOf(partner.partnershipId)>-1" class="fa fa-check-circle-o success i-20px"></i>
                         </td>
                       </tr>
                       <tr *ngIf="partner?.expand">
-                        <td colspan="4">
+                        <td colspan="5">
                           <div class="table-responsive x-hidden">
                             <div class="portlet-input input-inline float-right mb10p" id="search-div">
                               <div class="input-icon right" id="icon">
