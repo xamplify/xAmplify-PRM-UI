@@ -75,8 +75,16 @@
 								<div class="page-breadcrumb">
 									<span class="col-xs-6 col-md-6 pl0">
 										<span *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList
-							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && !isFormList"
+							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && !isFormList && !isPartner"
 											data-toggle="tooltip" data-placement="top" title="Edit list Name"
+											style="cursor:pointer;font-size: 16px;" (click)="editListName()">
+											<span class="ellipsis">{{selectedContactListName | slice:0:30}}
+												<span *ngIf="selectedContactListName?.length>30">...</span>
+											</span>
+										</span>
+										<span *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList
+							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && !isFormList && isPartner"
+											data-toggle="tooltip" data-placement="top" title="Edit group Name"
 											style="cursor:pointer;font-size: 16px;" (click)="editListName()">
 											<span class="ellipsis">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
@@ -381,10 +389,16 @@
 											</ul>
 										</div>
 										<button id="cancel_button" class="btn pull-right button_blue pd_0 bgcolor-unset"
-											*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) "
-											(click)="saveAs(true)" style="margin-right: 5px;" translate><span
+											*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) && !isPartner "
+											(click)="saveAs(true)" style="margin-right: -7px;" translate><span
 												class="btn btn-primary transition new_list_text">Create New
 												List</span>
+										</button>
+										<button id="cancel_button" class="btn pull-right button_blue pd_0 bgcolor-unset"
+											*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) && isPartner "
+											(click)="saveAs(true)" style="margin-right: -7px;" translate><span
+												class="btn btn-primary transition new_list_text">Create New
+												Group</span>
 										</button>
 									</div>
 									<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt mt_9"
