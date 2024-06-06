@@ -19,6 +19,7 @@ import { Lead } from '../models/lead';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
+import { CustomAnimation } from 'app/core/models/custom-animation';
 
 declare var swal:any, $:any, videojs: any;
 
@@ -27,6 +28,7 @@ declare var swal:any, $:any, videojs: any;
   templateUrl: './manage-leads.component.html',
   styleUrls: ['./manage-leads.component.css'],
   providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue],
+  animations: [CustomAnimation]
 })
 export class ManageLeadsComponent implements OnInit {
   readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
