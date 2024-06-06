@@ -69,11 +69,11 @@ export class DamAnalyticsComponent implements OnInit {
     this.vendorView = this.router.url.indexOf('vda')>-1;
     let decodedDamPartnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['damPartnerId']);
     this.pagination.campaignId = parseInt(decodedDamPartnerId);
-    let encodedDamId =  this.referenceService.decodePathVariable(this.route.snapshot.params['damId']);
-    this.damId = parseInt(encodedDamId);
-    let encodedPartnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
-    this.partnerId = parseInt(encodedPartnerId);
     if(this.vendorView){
+      let encodedDamId =  this.referenceService.decodePathVariable(this.route.snapshot.params['damId']);
+      this.damId = parseInt(encodedDamId);
+      let encodedPartnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
+      this.partnerId = parseInt(encodedPartnerId);
       this.getTilesInfo();
     }else{
       this.checkDamPartnerId();
