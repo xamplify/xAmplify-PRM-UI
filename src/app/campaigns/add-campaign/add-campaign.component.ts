@@ -2570,4 +2570,11 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             });
       }
 
+      showContactsAlert(count:number){
+        this.emptyContactsMessage = "";
+        if(count==0){
+            this.emptyContactsMessage = "No Records Found For This Contact List";
+        }
+    }
+
 }
