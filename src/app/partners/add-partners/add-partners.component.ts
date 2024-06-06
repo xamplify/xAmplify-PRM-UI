@@ -1073,34 +1073,33 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				let headersRow = self.fileUtil
 					.getHeaderArray(csvRecordsArray);
 				let headers = headersRow[0].split(',');
-				if ((headers.length == 21)) {
+				if ((headers.length == 20)) {
 					if (self.validateHeaders(headers)) {
 						var csvResult = Papa.parse(contents);
 						var allTextLines = csvResult.data;
 						for (var i = 1; i < allTextLines.length; i++) {
-							if (allTextLines[i][8] && allTextLines[i][8].trim().length > 0) {
+							if (allTextLines[i][7] && allTextLines[i][7].trim().length > 0) {
 								let user = new User();
-								user.emailId = allTextLines[i][8].trim();
+								user.emailId = allTextLines[i][7].trim();
 								user.firstName = allTextLines[i][0].trim();
 								user.lastName = allTextLines[i][1].trim();
-								user.contactCompany = allTextLines[i][5].trim();
-								user.jobTitle = allTextLines[i][7].trim();
-								user.vertical = allTextLines[i][10].trim();
-								user.region = allTextLines[i][11].trim();
-								user.partnerType = allTextLines[i][13].trim();
-								user.category = allTextLines[i][14].trim();
-								user.address = allTextLines[i][15].trim();
-								user.city = allTextLines[i][16].trim();
-								user.state = allTextLines[i][17].trim();
-								user.zipCode = allTextLines[i][18].trim();
-								user.country = allTextLines[i][19].trim();
-								user.mobileNumber = allTextLines[i][20].trim();
-								user.accountName = allTextLines[i][2].trim();
-								user.accountSubType = allTextLines[i][3].trim();
-								user.accountOwner = allTextLines[i][4].trim();
-								user.companyDomain = allTextLines[i][6].trim();
-								user.territory = allTextLines[i][12].trim();
-								user.website = allTextLines[i][9].trim();
+								user.contactCompany = allTextLines[i][4].trim();
+								user.jobTitle = allTextLines[i][6].trim();
+								user.vertical = allTextLines[i][9].trim();
+								user.region = allTextLines[i][10].trim();
+								user.partnerType = allTextLines[i][12].trim();
+								user.category = allTextLines[i][13].trim();
+								user.address = allTextLines[i][14].trim();
+								user.city = allTextLines[i][15].trim();
+								user.state = allTextLines[i][16].trim();
+								user.zipCode = allTextLines[i][19].trim();
+								user.country = allTextLines[i][18].trim();
+								user.mobileNumber = allTextLines[i][19].trim();
+								user.accountSubType = allTextLines[i][2].trim();
+								user.accountOwner = allTextLines[i][3].trim();
+								user.companyDomain = allTextLines[i][5].trim();
+								user.territory = allTextLines[i][11].trim();
+								user.website = allTextLines[i][8].trim();
 								/* user.description = allTextLines[i][9];*/
 								self.newPartnerUser.push(user);
 							}
@@ -1137,29 +1136,28 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	validateHeaders(headers) {
 		let isFirstNameMatched = headers[0].trim() == "FIRSTNAME" || headers[0].trim() == "\"FIRSTNAME\"";
 		let isLastNameMatched = headers[1].trim() == "LASTNAME" || headers[1].trim() == "\"LASTNAME\"";
-		let isCompanyMatched = headers[5].trim() == "COMPANY" || headers[5].trim() == "\"COMPANY\"";
-		let isJobTitleMatched = headers[7].trim() == "JOBTITLE" || headers[7].trim() == "\"JOBTITLE\"";
-		let isEmailIdMatched = headers[8].trim() == "EMAILID" || headers[8].trim() == "\"EMAILID\"";
-		let isVerticalMatched = headers[10].trim() == "VERTICAL" || headers[10].trim() == "\"VERTICAL\"";
-		let isRegionMatched = headers[11].trim() == "REGION" || headers[11].trim() == "\"REGION\"";
-		let isTypeMatched = headers[13].trim() == "TYPE" || headers[13].trim() == "\"TYPE\"";
-		let isCategoryMatched = headers[14].trim() == "CATEGORY" || headers[14].trim() == "\"CATEGORY\"";
-		let isAddressMatched = headers[15].trim() == "ADDRESS" || headers[15].trim() == "\"ADDRESS\"";
-		let isCityMatched = headers[16].trim() == "CITY" || headers[16].trim() == "\"CITY\"";
-		let isStateMatched = headers[17].trim() == "STATE" || headers[17].trim() == "\"STATE\"";
-		let isZipMatched = headers[18].trim() == "ZIP" || headers[18].trim() == "\"ZIP\"";
-		let isCountryMatched = headers[19].trim() == "COUNTRY" || headers[19].trim() == "\"COUNTRY\"";
-		let isMobileNumberMatched = headers[20].trim() == "MOBILE NUMBER" || headers[20].trim() == "\"MOBILE NUMBER\"";
-		let isAccountNameMatched = headers[2].trim() == "ACCOUNT NAME" || headers[2].trim() == "\"ACCOUNT NAME\"";
-		let isAccountSubTypeMatched = headers[3].trim() == "ACCOUNT SUB TYPE" || headers[3].trim() == "\"ACCOUNT SUB TYPE\"";
-		let isAccountOwnerMatched = headers[4].trim() == "ACCOUNT OWNER" || headers[4].trim() == "\"ACCOUNT OWNER\"";
-		let isCompanyDomainMatched = headers[6].trim() == "COMPANY DOMAIN" || headers[6].trim() == "\"COMPANY DOMAIN\"";
-		let isTerritoryMatched = headers[12].trim() == "TERRITORY" || headers[12].trim() == "\"TERRITORY\"";
-		let isWebsiteMatched = headers[9].trim() == "WEBSITE" || headers[9].trim() == "\"WEBSITE\"";
+		let isCompanyMatched = headers[4].trim() == "COMPANY" || headers[4].trim() == "\"COMPANY\"";
+		let isJobTitleMatched = headers[6].trim() == "JOBTITLE" || headers[6].trim() == "\"JOBTITLE\"";
+		let isEmailIdMatched = headers[7].trim() == "EMAILID" || headers[7].trim() == "\"EMAILID\"";
+		let isVerticalMatched = headers[9].trim() == "VERTICAL" || headers[9].trim() == "\"VERTICAL\"";
+		let isRegionMatched = headers[10].trim() == "REGION" || headers[10].trim() == "\"REGION\"";
+		let isTypeMatched = headers[12].trim() == "TYPE" || headers[12].trim() == "\"TYPE\"";
+		let isCategoryMatched = headers[13].trim() == "CATEGORY" || headers[13].trim() == "\"CATEGORY\"";
+		let isAddressMatched = headers[14].trim() == "ADDRESS" || headers[14].trim() == "\"ADDRESS\"";
+		let isCityMatched = headers[15].trim() == "CITY" || headers[15].trim() == "\"CITY\"";
+		let isStateMatched = headers[16].trim() == "STATE" || headers[16].trim() == "\"STATE\"";
+		let isZipMatched = headers[17].trim() == "ZIP" || headers[17].trim() == "\"ZIP\"";
+		let isCountryMatched = headers[18].trim() == "COUNTRY" || headers[18].trim() == "\"COUNTRY\"";
+		let isMobileNumberMatched = headers[19].trim() == "MOBILE NUMBER" || headers[19].trim() == "\"MOBILE NUMBER\"";
+		let isAccountSubTypeMatched = headers[2].trim() == "ACCOUNT SUB TYPE" || headers[2].trim() == "\"ACCOUNT SUB TYPE\"";
+		let isAccountOwnerMatched = headers[3].trim() == "ACCOUNT OWNER" || headers[3].trim() == "\"ACCOUNT OWNER\"";
+		let isCompanyDomainMatched = headers[5].trim() == "COMPANY DOMAIN" || headers[5].trim() == "\"COMPANY DOMAIN\"";
+		let isTerritoryMatched = headers[11].trim() == "TERRITORY" || headers[11].trim() == "\"TERRITORY\"";
+		let isWebsiteMatched = headers[8].trim() == "WEBSITE" || headers[8].trim() == "\"WEBSITE\"";
 		return (isFirstNameMatched && isLastNameMatched && isCompanyMatched && isJobTitleMatched
 			&& isEmailIdMatched && isVerticalMatched && isRegionMatched && isTypeMatched &&
 			isCategoryMatched && isAddressMatched && isCityMatched && isStateMatched && isZipMatched && isCountryMatched
-			&& isMobileNumberMatched && isAccountNameMatched && isAccountSubTypeMatched && isAccountOwnerMatched
+			&& isMobileNumberMatched && isAccountSubTypeMatched && isAccountOwnerMatched
 			&& isCompanyDomainMatched && isTerritoryMatched && isWebsiteMatched);
 	}
 
@@ -1228,16 +1226,16 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			let websiteError = ''
 			for (var i = 0; i < allTextLines.length; i++) {
 				var data = allTextLines[i].split(splitValue);
-				if (!this.validateEmailAddress(data[8])) {
+				if (!this.validateEmailAddress(data[7])) {
 					isEmailError = true;
 					//$("#clipBoardValidationMessage").append("<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[4] + "</h4>");
-					emailError = emailError + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[8] + "\n";
+					emailError = emailError + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[7] + "\n";
 					isValidData = false;
 				}
-				if (data[9] != undefined) {
-					if (!this.validateWebsite(data[9]) && data[9].length > 0) {
+				if (data[8] != undefined) {
+					if (!this.validateWebsite(data[8]) && data[8].length > 0) {
 						isWebsiteError = true;
-						websiteError = websiteError + "Website URL is not valid for Row:" + (i + 1) + " -- Entered Website URL : " + data[9] + "\n";
+						websiteError = websiteError + "Website URL is not valid for Row:" + (i + 1) + " -- Entered Website URL : " + data[8] + "\n";
 						isValidData = false;
 					}
 				}
@@ -1266,272 +1264,248 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 3:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
+						user.accountSubType = data[2];
 						break;
 					case 4:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
 						break;
 					case 5:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
 						break;
 					case 6:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
 						break;
 					case 7:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
 						break;
 					case 8:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6];
-						user.jobTitle = data[7];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
+						user.emailId = data[7];
 						break;
 					case 9:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6]
-						user.jobTitle = data[7];
-						user.emailId = data[8];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
+						user.emailId = data[7];
+						user.website = data[8];
 						break;
 					case 10:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6]
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
+						user.emailId = data[7];
+						user.website = data[8];
+						user.territory = data[9];
 						break;
 					case 11:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6]
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
+						user.emailId = data[7];
+						user.website = data[8];
+						user.territory = data[9];
+						user.vertical = data[10];
 						break;
 					case 12:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6]
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
+						user.emailId = data[7];
+						user.website = data[8];
+						user.territory = data[9];
+						user.vertical = data[10];
+						user.region = data[11];
 						break;
 					case 13:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6]
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12]
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
+						user.emailId = data[7];
+						user.website = data[8];
+						user.territory = data[9];
+						user.vertical = data[10];
+						user.region = data[11];
+						user.partnerType = data[12];
 						break;
 					case 14:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6]
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
+						user.emailId = data[7];
+						user.website = data[8];
+						user.territory = data[9];
+						user.vertical = data[10];
+						user.region = data[11];
+						user.partnerType = data[12];
+						user.category = data[13];
 						break;
 					case 15:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6]
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14].trim()
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
+						user.emailId = data[7];
+						user.website = data[8];
+						user.territory = data[9];
+						user.vertical = data[10];
+						user.region = data[11];
+						user.partnerType = data[12];
+						user.category = data[13];
+						user.address = data[14].trim();
 						break;
 
 					case 16:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6]
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
+						user.emailId = data[7];
+						user.website = data[8];
+						user.territory = data[9];
+						user.vertical = data[10];
+						user.region = data[11];
+						user.partnerType = data[12];
+						user.category = data[13];
+						user.address = data[14].trim();
+						user.city = data[15];
 						break;
 
 					case 17:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6]
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15];
-						user.city = data[16];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
+						user.emailId = data[7];
+						user.website = data[8];
+						user.territory = data[9];
+						user.vertical = data[10];
+						user.region = data[11];
+						user.partnerType = data[12];
+						user.category = data[13];
+						user.address = data[14].trim();
+						user.city = data[15];
+						user.state = data[16];
 						break;
 					case 18:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6]
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15];
-						user.city = data[16];
-						user.state = data[17];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
+						user.emailId = data[7];
+						user.website = data[8];
+						user.territory = data[9];
+						user.vertical = data[10];
+						user.region = data[11];
+						user.partnerType = data[12];
+						user.category = data[13];
+						user.address = data[14].trim();
+						user.city = data[15];
+						user.state = data[16];
+						user.zipCode = data[17];
 						break;
 					case 19:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6]
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15];
-						user.city = data[16];
-						user.state = data[17];
-						user.zipCode = data[18];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
+						user.emailId = data[7];
+						user.website = data[8];
+						user.territory = data[9];
+						user.vertical = data[10];
+						user.region = data[11];
+						user.partnerType = data[12];
+						user.category = data[13];
+						user.address = data[14].trim();
+						user.city = data[15];
+						user.state = data[16];
+						user.zipCode = data[17];
+						user.country = data[18];
 						break;
 
 					case 20:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6]
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15];
-						user.city = data[16];
-						user.state = data[17];
-						user.zipCode = data[18];
-						user.country = data[19];
-						break;
-
-					case 21:
-						user.firstName = data[0];
-						user.lastName = data[1];
-						user.accountName = data[2];
-						user.accountSubType = data[3];
-						user.accountOwner = data[4];
-						user.contactCompany = data[5];
-						user.companyDomain = data[6]
-						user.jobTitle = data[7];
-						user.emailId = data[8];
-						user.website = data[9];
-						user.territory = data[10];
-						user.vertical = data[11];
-						user.region = data[12];
-						user.partnerType = data[13];
-						user.category = data[14];
-						user.address = data[15];
-						user.city = data[16];
-						user.state = data[17];
-						user.zipCode = data[18];
-						user.country = data[19];
-						user.mobileNumber = data[20];
+						user.accountSubType = data[2];
+						user.accountOwner = data[3];
+						user.contactCompany = data[4];
+						user.companyDomain = data[5];
+						user.jobTitle = data[6];
+						user.emailId = data[7];
+						user.website = data[8];
+						user.territory = data[9];
+						user.vertical = data[10];
+						user.region = data[11];
+						user.partnerType = data[12];
+						user.category = data[13];
+						user.address = data[14].trim();
+						user.city = data[15];
+						user.state = data[16];
+						user.zipCode = data[17];
+						user.country = data[18];
+						user.mobileNumber = data[19];
 						break;
 				}
 				this.xtremandLogger.info(user);
@@ -2234,7 +2208,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.socialPartners.firstName = '';
 			this.socialPartners.lastName = '';
 			this.socialPartners.emailId = '';
-			this.socialPartners.accountName = '';
 			this.socialPartners.accountSubType = '';
 			this.socialPartners.territory = '';
 			this.socialPartners.companyDomain = '';
@@ -2301,7 +2274,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 										socialContact.postalCode = this.getGoogleConatacts.contacts[i].postalCode;
 										socialContact.address = this.getGoogleConatacts.contacts[i].address;
 										socialContact.mobilePhone = this.getGoogleConatacts.contacts[i].mobilePhone;
-										socialContact.accountName = this.getGoogleConatacts.contacts[i].accountName;
 										socialContact.accountSubType = this.getGoogleConatacts.contacts[i].accountSubType;
 										socialContact.territory = this.getGoogleConatacts.contacts[i].territory;
 										socialContact.website = this.getGoogleConatacts.contacts[i].website;
@@ -2357,7 +2329,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.socialPartners.firstName = '';
 			this.socialPartners.lastName = '';
 			this.socialPartners.emailId = '';
-			this.socialPartners.accountName = '';
 			this.socialPartners.contactName = '';
 			this.socialPartners.showLogin = true;
 			this.socialPartners.jsonData = '';
@@ -2398,7 +2369,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 									socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
 									socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
 									socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
-									socialContact.accountName = this.getGoogleConatacts.contacts[i].accountName;
 									socialContact.title = this.getGoogleConatacts.contacts[i].title;
 									socialContact.mobilePhone = this.getGoogleConatacts.contacts[i].mobilePhone;
 									socialContact.company = this.getGoogleConatacts.contacts[i].company;
@@ -3445,7 +3415,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				"jobTitle": user.title,
 				"mobilePhone": user.mobilePhone,
 				"mobileNumber": user.mobilePhone,
-				"accountName": user.accountName,
 				"accountSubType": user.accountSubType,
 				"territory": user.territory,
 				"companyDomain": user.companyDomain,
@@ -3498,7 +3467,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						"jobTitle": self.pagedItems[i].title,
 						"mobilePhone": self.pagedItems[i].mobilePhone,
 						"mobileNumber": self.pagedItems[i].mobilePhone,
-						"accountName": self.pagedItems[i].accountName,
 						"accountSubType": self.pagedItems[i].accountSubType,
 						"territory": self.pagedItems[i].territory,
 						"companyDomain": self.pagedItems[i].companyDomain,
@@ -4276,7 +4244,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
 					socialContact.company = this.getGoogleConatacts.contacts[i].company;
 					socialContact.contactCompany = this.getGoogleConatacts.contacts[i].contactCompany;
-					socialContact.accountName = this.getGoogleConatacts.contacts[i].accountName;
 					socialContact.mobilePhone = this.getGoogleConatacts.contacts[i].mobilePhone;
 					socialContact.title = this.getGoogleConatacts.contacts[i].title;
 					socialContact.address = this.getGoogleConatacts.contacts[i].address;

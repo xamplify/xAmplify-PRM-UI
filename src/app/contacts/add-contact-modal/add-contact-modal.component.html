@@ -82,35 +82,28 @@
               <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue">
               </label>
               <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
-                <input type="accountName" style="border: none !important"
-                  class="form-control padding-mobile placeholder-bg-color" id="accountName"
-                  [(ngModel)]="addContactuser.accountName" [ngModelOptions]="{standalone: true}" placeholder="Account Name"
-                  maxlength="250">
+                <input type="accountOwner" style="border: none !important"
+                  class="form-control padding-mobile placeholder-bg-color" id="accountOwner"
+                  [(ngModel)]="addContactuser.accountOwner" [ngModelOptions]="{standalone: true}"
+                  placeholder="Account Owner" maxlength="250">
                 <div class="textCss"></div>
               </div>
               <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
                 <input type="accountSubType" style="border: none !important"
                   class="form-control padding-mobile placeholder-bg-color" id="accountSubType"
-                  [(ngModel)]="addContactuser.accountSubType" [ngModelOptions]="{standalone: true}" placeholder="Account Sub Type"
-                  maxlength="250">
+                  [(ngModel)]="addContactuser.accountSubType" [ngModelOptions]="{standalone: true}"
+                  placeholder="Account Sub Type" maxlength="250">
                 <div class="textCss"></div>
               </div>
             </div>
             <div class="form-group mrg0 " *ngIf="isPartner">
               <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue">
               </label>
-              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
-                <input type="name" style="border: none !important"
-                  class="form-control padding-mobile placeholder-bg-color" id="accountOwner"
-                  [(ngModel)]="addContactuser.accountOwner" [ngModelOptions]="{standalone: true}" placeholder="Account Owner"
-                  maxlength="250">
-                <div class="textCss"></div>
-              </div>
-              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+              <div class="form-group col-xs-10 col-sm-10 mrg0 field-width">
                 <input type="name" style="border: none !important"
                   class="form-control padding-mobile placeholder-bg-color" id="companyDomain"
-                  [(ngModel)]="addContactuser.companyDomain" [ngModelOptions]="{standalone: true}" placeholder="Company Domain"
-                  maxlength="250">
+                  [(ngModel)]="addContactuser.companyDomain" [ngModelOptions]="{standalone: true}"
+                  placeholder="Company Domain" maxlength="250">
                 <div class="textCss"></div>
               </div>
             </div>
@@ -231,8 +224,7 @@
                 <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
                   <input type="url" style="border: none !important" class="form-control placeholder-bg-color"
                     id="website" [(ngModel)]="addContactuser.website" [ngModelOptions]="{standalone: true}"
-                    (input) = contactWebsiteChecking()
-                    placeholder="Website" maxlength="55">
+                    (input)=contactWebsiteChecking() placeholder="Website" maxlength="55">
                   <div class="textCss"></div>
                   <span class="required" *ngIf="isWebsiteNotValid">Please enter a valid URL</span>
                 </div>
@@ -367,17 +359,15 @@
           translate>Cancel</button>
         <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset pos_pd_top2"
           [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
-          ||addContactuser.contactCompany == ''"
-          (click)="addRow()" translate><span class="btn Btn-Green transition pos_pd_top6">Proceed</span></button>
+          ||addContactuser.contactCompany == ''" (click)="addRow()" translate><span
+            class="btn Btn-Green transition pos_pd_top6">Proceed</span></button>
         <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset pos_pd_top2"
           [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
-          ||addContactuser.contactCompany == ''"
-          (click)="addEditContactRow()" translate><span
+          ||addContactuser.contactCompany == ''" (click)="addEditContactRow()" translate><span
             class="btn Btn-Green transition pos_pd_top6">Proceed</span></button>
-        <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset"
-          [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid ||  !validLimit  || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
-          ||addContactuser.contactCompany == ''"
-          (click)="updateUser()" translate><span class="btn Btn-Green transition txt_pd-top3">Update</span></button>
+        <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset" [disabled]="!checkingForEmail || !isCompanyDetails || isWebsiteNotValid ||  !validLimit  || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)
+          ||addContactuser.contactCompany == ''" (click)="updateUser()" translate><span
+            class="btn Btn-Green transition txt_pd-top3">Update</span></button>
       </div>
     </div>
   </div>
