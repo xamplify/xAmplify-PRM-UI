@@ -716,9 +716,9 @@ select {
 .wrap-asset-name {
   color: white !important;
 }
-.custom {
+/* .custom {
   border: 1px solid #2f4857 !important;
-}
+} */
 .item__preview.item__preview--image.custom {
   background-color: #2b3c46 !important;
 }
@@ -2532,4 +2532,7 @@ a.Iconhover.custom-grid-icon.border-none i.fa.fa-trash-o.trashIconCustomization:
 .vendor-details-tiles {
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
+}
+.button{
+  border-color: #1ca6f3 !important;
 }

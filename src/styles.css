@@ -792,11 +792,11 @@ legend {
 }
 
 .btn-primary {
-  background-color: #008fd5;
+  background-color: #0276FF;
 }
 
 .btn-primary:hover {
-  background-color: #4db1e2;
+  background-color: #1C84FF;
 }
 
 .text-primary {
@@ -2061,12 +2061,14 @@ button.glyphicon.glyphicon-remove.search-box-item-clear:before {
 
 /* btn-primary */
 .btn-primary {
-  background-color: #008fd5;
+  background-color: #0276FF !important;
+  border-color: #1ca6f3 !important;
   border-radius: 4px;
   padding: 7px 14px;
 }
 .btn-primary:hover {
-  background-color: #4db1e2;
+  background-color: #1C84FF;
+  border-color: #1ca6f3;
 }
 
 /* btn-danger */
@@ -2104,15 +2106,15 @@ fieldset[disabled] .btn-danger.active {
 
 /* Site green button "success message" */
 .Btn-Green {
-  background-color: #26a69a;
-  border-color: #26a69a;
+  background-color: #0276FF !important;
+  border-color: #1ca6f3 !important;
   color: #ffffff;
   border-radius: 4px;
   padding: 7px 14px;
 }
 .Btn-Green:hover {
-  background-color: #1f897f;
-  border-color: #1f897f;
+  background-color: #1C84FF;
+  border-color: #1ca6f3;
 }
 .Btn-Green.btn:hover {
   color: #fff;
@@ -3078,4 +3080,9 @@ span.icon-alignments {
 
 .display-inline{
   display: inline !important;
+}
+.btn-group button,
+.custom{
+  background-color: #0276FF !important;
+  border-color: #1ca6f3 !important;
 }

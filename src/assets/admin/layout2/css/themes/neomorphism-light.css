@@ -1953,8 +1953,8 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   border: 1px solid #ddd !important;
 }
 .btn-group button {
-  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
-  border: 0px solid #0104ff !important;
+  background: #0276FF  !important;
+  border: 1px solid #266dc1 !important;
   padding: 7px 14px !important;
 }
 .refresh-icon:hover {
@@ -2808,27 +2808,29 @@ justify-content: center!important;
     overflow: hidden !important;
     height: 3.5rem !important;
     border-radius: 7px !important;
-    background: linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
+    background: #0276FF !important;
     color: #000 !important;
+    border: 1px solid #266dc1 !important;
   }
   .button:hover::before,
   .button_blue:hover::before {
-    transform: scaleX(1) !important;
+    transform: scaleX(0) !important;
   }
   /* dont use this classes for button tranistion */
   .Btn-Green,     
-  .Btn-Green:hover   
   .btn-primary,
-  .btn-primary:hover,.btn.Btn-Green:hover,
   .btn-primary[disabled],
   .Btn-Green[disabled]{
     position: relative !important;
-    background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+    background: #0276FF !important;
     color: #fff !important;
-    border: 0px solid #d0d5db !important;
+    border: 1px solid #266dc1 !important;
+  }
+.btn-primary:hover,.btn.Btn-Green:hover, .Btn-Green:hover{
+    background-color: #1C84FF !important;
   }
    /* dont use this classes for button tranistion */
-  .button::before {
+  /* .button::before {
     content: '' !important;
     position: absolute !important;
     top: 0 !important;
@@ -2842,8 +2844,8 @@ justify-content: center!important;
     border-color: #26a69a;
 
     transition: all 0.475s !important;
-  }
-  .button_blue::before {
+  } */
+  /* .button_blue::before {
     content: '' !important;
     position: absolute !important;
     top: 0 !important;
@@ -2856,7 +2858,7 @@ justify-content: center!important;
     background: linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
     border-color: #337ab7;
     transition: all 0.475s !important;
-  }
+  } */
   span.btn.Btn-Green.transition{
     background : none !important;
     box-shadow: none !important;
@@ -3211,7 +3213,7 @@ top:-3px;
 /* 13-12-2023(sudha sri) */
 button.button_blue:disabled,
 button.button:disabled {
-  background: linear-gradient(225deg, #d8dde1, #ffffff);
+  background: #0276FF;
   /* opacity: 0.5; */
 }
 .tags-table tr:nth-child(odd){
@@ -3486,16 +3488,17 @@ input.form-control.remove_checkbox_shadow{
   background: none !important;
 }
 button.btn.custom {
-  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #0276FF !important;
   padding: 7px 14px !important;
+  border: 1px solid #266dc1 !important;
   }
 .portlet.light.card-height {
   box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff;
   background: linear-gradient(225deg, #d8dde1, #ffffff);
 }
 /* Sudha Sri (11-1-2024) */
-.btn-group.refer-vendor-button.btnVendor:hover,
-button.btn.custom:hover,
+/* .btn-group.refer-vendor-button.btnVendor:hover,
+button.btn.custom:hover, */
 .portlet.light.block.box_shadow.checked:hover {
   transform: scale(1.05);
   transition: all 0.1s ease;
@@ -3582,14 +3585,15 @@ button#copyFrom_clipboard,
 button.button.bgcolor-unset,
 a.btn.btn-primary.btn-block
 {
-  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  background-color: #0276FF !important;
+  border: 1px solid #266dc1 !important;
 }
 button.button_blue.bgcolor-unset,
 .btn-success,.btn-primary{
-  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  background-color: #0276FF !important;
+  border: 1px solid #266dc1 !important;
 }
 button#save\&delete_button {
-  border: none !important;
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
 .btn-default:hover{
@@ -3735,7 +3739,7 @@ label.ng-tns-c10-7.btn.btn-primary.button-border:hover,
 label.ng-tns-c10-7.btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow:hover,
 .aspect_ratio:hover,
 a button.btn.btn-white:hover {
-  background: linear-gradient(89deg,#06beb8 0, #0c86cc 100%) !important;
+  background: #1C84FF !important;
 }
 div > h4.p01{
   color:#fff !important
@@ -3822,13 +3826,13 @@ a button.btn.btn-white {
   font-size: 16px;
   border: none;
   cursor: pointer;
-  overflow: hidden;
-  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  overflow: hidden;      
+  background:#0276FF !important;
   transform-origin: 0 50% !important;
   transition: all 0.475s;
   border-radius: 7px !important;
 }
-.color-flow-button:before {
+/* .color-flow-button:before {
   content: '';
   position: absolute;
   top: 0;
@@ -3837,9 +3841,9 @@ a button.btn.btn-white {
   height: 100%;
   background: inherit;
   transition: all 0.475s;
-}
+} */
 .color-flow-button:hover {
-  background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important; /* Updated gradient color on hover */
+  background: #1C84FF !important; /* Updated gradient color on hover */
 }
 
 .color-flow-button:hover:before {
@@ -4301,4 +4305,15 @@ i.fa.fa-trash-o.trashIconCustimization.trash_bgcolor:hover {
 .vendor-details-tiles {
   border: 1px solid #d0d5db !important;
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff;
+}
+.btn-group button:hover,
+button.btn.custom:hover,
+.button:hover,
+.button_blue:hover{
+  background-color: #1C84FF !important;
+  background-size: 250% !important;
+  background-position: right center !important;
+}
+button#addContacts:hover, button#copyFromClipBoard:hover, button#uploadCSV:hover {
+  transform: scale(1.02);
 }
