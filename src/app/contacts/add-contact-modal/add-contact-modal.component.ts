@@ -296,7 +296,9 @@ contactCompanyChecking( event:any ) {
             this.addContactuser.city = this.contactDetails.city;
             this.addContactuser.state = this.contactDetails.state;
             this.addContactuser.zipCode = this.contactDetails.zipCode;
-            this.addContactuser.country = this.contactDetails.country;
+            if(this.countryNames.countries.indexOf(this.contactDetails.country) !== -1){
+                this.addContactuser.country = this.contactDetails.country;
+            }
             this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
             this.addContactuser.legalBasis = this.contactDetails.legalBasis;
             this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;

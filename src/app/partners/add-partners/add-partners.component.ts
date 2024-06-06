@@ -432,6 +432,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		return EMAIL_ID_PATTERN.test(emailId);
 	}
 
+	validateWebsite(website: string) {
+		var LINK_PATTERN = this.regularExpressions.LINK_PATTERN;
+		return LINK_PATTERN.test(website);
+	}
+
 	validateEmail(emailId: string) {
 		const lowerCaseEmail = emailId.toLowerCase();
 		if (this.validateEmailAddress(emailId)) {
@@ -1218,7 +1223,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 		if (this.clipboardTextareaText != "") {
 			let isEmailError = false;
+			let isWebsiteError = false;
 			let emailError = ''
+			let websiteError = ''
 			for (var i = 0; i < allTextLines.length; i++) {
 				var data = allTextLines[i].split(splitValue);
 				if (!this.validateEmailAddress(data[8])) {
@@ -1227,8 +1234,18 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					emailError = emailError + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[8] + "\n";
 					isValidData = false;
 				}
+				if (data[9] != undefined) {
+					if (!this.validateWebsite(data[9]) && data[9].length > 0) {
+						isWebsiteError = true;
+						websiteError = websiteError + "Website URL is not valid for Row:" + (i + 1) + " -- Entered Website URL : " + data[9] + "\n";
+						isValidData = false;
+					}
+				}
 				if (isEmailError) {
 					self.customResponse = new CustomResponse('ERROR', emailError, true);
+				}
+				if (isWebsiteError) {
+					self.customResponse = new CustomResponse('ERROR', websiteError, true);
 				}
 				this.newPartnerUser.length = 0;
 			}
@@ -2234,6 +2251,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.socialPartners.contactType = '';
 			this.socialPartners.alias = '';
 			this.socialPartners.company = '';
+			this.socialPartners.title = '';
 			this.socialNetwork = "salesforce";
 			var self = this;
 			var selectedDropDown = $("select.opts:visible option:selected ").val();
@@ -2290,6 +2308,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 										socialContact.companyDomain = this.getGoogleConatacts.contacts[i].companyDomain;
 										socialContact.accountOwner = this.getGoogleConatacts.contacts[i].accountOwner;
 										socialContact.company = this.getGoogleConatacts.contacts[i].company;
+										socialContact.title = this.getGoogleConatacts.contacts[i].title;
 									}
 									this.socialPartnerUsers.push(socialContact);
 								}
@@ -2338,12 +2357,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.socialPartners.firstName = '';
 			this.socialPartners.lastName = '';
 			this.socialPartners.emailId = '';
+			this.socialPartners.accountName = '';
 			this.socialPartners.contactName = '';
 			this.socialPartners.showLogin = true;
 			this.socialPartners.jsonData = '';
 			this.socialPartners.statusCode = 0;
 			this.socialPartners.contactType = '';
 			this.socialPartners.alias = '';
+			this.socialPartners.company = '';
+			this.socialPartners.title = '';
 			this.socialNetwork = "salesforce";
 			var self = this;
 			var selectedDropDown = $("select.opts:visible option:selected ").val();
@@ -2376,6 +2398,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 									socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
 									socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
 									socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
+									socialContact.accountName = this.getGoogleConatacts.contacts[i].accountName;
+									socialContact.title = this.getGoogleConatacts.contacts[i].title;
+									socialContact.mobilePhone = this.getGoogleConatacts.contacts[i].mobilePhone;
+									socialContact.company = this.getGoogleConatacts.contacts[i].company;
 									this.socialPartnerUsers.push(socialContact);
 								}
 								this.hideModal();
@@ -3425,7 +3451,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				"companyDomain": user.companyDomain,
 				"accountOwner": user.accountOwner,
 				"website": user.website,
-				"region" :  user.region
+				"region": user.region
 			}
 			this.allselectedUsers.push(object);
 		} else {
