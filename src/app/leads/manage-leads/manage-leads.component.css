@@ -151,3 +151,9 @@ select.form-control.select-width.FilerFormWidth {
 .override-actions {
   float: inherit;
 }
+.pr-25px{
+  padding-right: 25px;
+}
+.h-200px{
+  height: 200px;
+}

@@ -28,7 +28,7 @@ export class VendorJourneyComponent implements OnInit {
   @Output() vendorJourneyEditOrViewAnalytics: EventEmitter<any> = new EventEmitter();
   selectedLandingPageId:any;
   isViewAnalytics:boolean = false;
-  
+  openInNewTabChecked: boolean = false;
   constructor(public landingPageService: LandingPageService, public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
@@ -36,11 +36,6 @@ export class VendorJourneyComponent implements OnInit {
     this.vendorJourney = this.moduleType == "Vendor Journey";
     this.isLandingPages = this.moduleType == "Landing Pages";
     this.isMasterLandingPages = this.moduleType == "Master Landing Pages";
-  }
-
-  ngOnChanges(){
-    console.log(this.sharedVendorLogoDetails)
-    console.log(this.vendorLogoDetails)
   }
 
   editVendorLandingPage(event){
@@ -75,9 +70,11 @@ export class VendorJourneyComponent implements OnInit {
     if(isChecked){
       $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", false);
       this.vendorDefaultTemplate.openLinksInNewTab = false;
+      this.openInNewTabChecked = false
     }else{
       $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", true);
       this.vendorDefaultTemplate.openLinksInNewTab = true;
+      this.openInNewTabChecked = true;
     }
   }
 
@@ -135,5 +132,8 @@ populateSharedVendorDetails(data:VendorLogoDetails[]){
   if(details != null ){
     this.sharedVendorLogoDetails.push(details);
   }
+}
+landingPageOpenInNewTabChecked(){
+  $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", this.openInNewTabChecked);
 }
 }

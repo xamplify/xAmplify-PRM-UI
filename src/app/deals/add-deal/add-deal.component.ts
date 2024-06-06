@@ -29,6 +29,7 @@ import { ConnectwiseCatalogItemDto } from '../models/connectwise-catalog-item-dt
 import { ConnectwiseOpportunityDto } from '../models/connectwise-opportunity-dto';
 import { ConnectwiseStatusDto } from '../models/connectwise-status-dto';
 import { DealComments } from 'app/deal-registration/models/deal-comments';
+import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
 declare var flatpickr: any, $: any, swal: any;
 
 
@@ -172,7 +173,7 @@ export class AddDealComponent implements OnInit {
       if(this.hideAttachLeadButton){
         this.showAttachLeadButton = false;
       }
-      this.dealFormTitle = "Add a Deal";
+      this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
       if (this.leadId > 0) {
         this.getLead(this.leadId);
       } else {

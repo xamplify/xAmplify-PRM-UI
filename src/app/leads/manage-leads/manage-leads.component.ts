@@ -18,17 +18,20 @@ import { LeadsService } from '../services/leads.service';
 import { Lead } from '../models/lead';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { DealComments } from 'app/deal-registration/models/deal-comments';
-declare var swal, $, videojs: any;
+import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
+import { CustomAnimation } from 'app/core/models/custom-animation';
+
+declare var swal:any, $:any, videojs: any;
 
 @Component({
   selector: 'app-manage-leads',
   templateUrl: './manage-leads.component.html',
   styleUrls: ['./manage-leads.component.css'],
   providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue],
+  animations: [CustomAnimation]
 })
 export class ManageLeadsComponent implements OnInit {
+  readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
   loggedInUserId: number = 0;
   superiorId: number = 0;
   isOnlyPartner: any;
@@ -588,8 +591,6 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   addLead() {
-    // this.leadFormTitle = "Add a Lead"; 
-    // $('#leadFormModel').modal('show');
     this.showLeadForm = true;
     this.actionType = "add";
     this.leadId = 0;

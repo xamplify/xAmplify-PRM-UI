@@ -37,6 +37,8 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   @Input() vendorLogoDetails:VendorLogoDetails[];
   @Input() sharedVendorLogoDetails:VendorLogoDetails[];
   @Input() loggedInUserCompanyId:number;
+  @Input() openInNewTabChecked: boolean = false;
+  @Output() landingPageOpenInNewTabChecked = new EventEmitter();
   clickedButtonName = "";
   isAdd: boolean;
   name = "";
@@ -450,6 +452,8 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                   if(landingPage.sourceInString == 'VENDOR_JOURNEY' || landingPage.sourceInString == 'MASTER_PARTNER_PAGE'){
                     this.landingPage.sourceInString = landingPage.sourceInString;
                   }
+                  this.openInNewTabChecked = this.landingPage.openLinksInNewTab;
+                  this.landingPageOpenInNewTabChecked.emit()
                   $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", this.landingPage.openLinksInNewTab);
                   var request = function (method, url, data, type, callback) {
                       var req = new XMLHttpRequest();
@@ -747,7 +751,9 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
   this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
 
   this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
- 
+  if(this.landingPage.hasVendorJourney){
+    this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
+  }
   if (!this.loggedInAsSuperAdmin) {
       this.landingPage.type = $('#pageType option:selected').val();
       this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
@@ -814,6 +820,9 @@ updateLandingPage(updateAndRedirectClicked: boolean) {
   this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
   this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
+  if(this.landingPage.hasVendorJourney){
+    this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
+  }
   this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
   this.updateCompanyLogo(this.landingPage);
   this.landingPageService.update(this.landingPage).subscribe(

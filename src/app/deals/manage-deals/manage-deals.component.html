@@ -159,15 +159,11 @@
                         (click)="addDeal()" style="padding-left: 11px;">
                         <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
                           <span class="btn btn-primary transition d-inline"><i class="fa fa-plus"
-                              aria-hidden="true"></i> Add a
-                            Deal</span>
+                              aria-hidden="true"></i>{{DEAL_CONSTANTS?.registerADeal}}</span>
                         </button>
                       </a>
-
-
                       <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO') || (isPartnerVersion && activeCRMDetails?.type == 'CONNECTWISE')"
                         (click)="syncLeadsWithActiveCRM()">
-
                         <!-- <button class="btn btn-white salesforce-btn button neg-mar-top bgcolor-unset" -->
                         <button class="btn salesforce-btn button bgcolor-unset p0 btn-transitions mrgt-2 mrgt1-2"
                           data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
@@ -248,7 +244,7 @@
                               <div class="row" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
                                 <div class="form-group col-lg-5 col-md-5 col-sm-6 col-xs-12 ml0-mr0"
                                   style="margin-top: 13px;padding-left: 30px;display: flex;">
-                                  <label class="control-label" style="padding-right: 5px;">Added For &nbsp;</label>
+                                  <label class="control-label" style="padding-right: 5px;">Registered For &nbsp;</label>
                                   <select class="form-control select-width FilerFormWidth"
                                     [(ngModel)]="vendorCompanyIdFilter" (ngModelChange)="onChangeVendorCompany()"
                                     [ngModelOptions]="{standalone: true}">
@@ -289,7 +285,7 @@
                       <thead>
                         <tr>
                           <th class="center-aligned" translate>Deal Details</th>
-                          <th class="center" translate>Added By</th>
+                          <th class="center" translate>Registered By</th>
                           <th class="center" translate>Status</th>
                           <th style="width: 18%; text-align:right" translate>Actions</th>
                         </tr>
@@ -306,7 +302,7 @@
 
                               </div>
                               <div>
-                                <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
+                                <h5 *ngIf="isPartnerVersion"><b>Registered For:</b>
                                   <span style="color: #5b9bd1;">{{deal.createdForCompanyName | slice:0:30}}
                                     <span *ngIf="deal.createdForCompanyName?.length>30">...</span>
                                   </span>
