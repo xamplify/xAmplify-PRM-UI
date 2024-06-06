@@ -897,6 +897,7 @@ export class AddDealComponent implements OnInit {
             this.opportunityTypeIdError = false;
             this.createdForPipelineStageIdError = false;
             this.pipelineStageIdError = false;
+            this.createdForPipelineIdError = false;
           } else {
             this.opportunityTypeId = errorClass;
             this.opportunityTypeIdError = true;
@@ -934,10 +935,12 @@ export class AddDealComponent implements OnInit {
         this.pipelineStageIdError = false;
         this.createdForPipelineStageIdError = false;
       }
+    } else {
+      this.opportunityTypeIdError = false;
     }
 
     if (!this.opportunityAmountError && !this.estimatedCloseDateError
-      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError 
+      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError && !this.createdForPipelineIdError 
       && !this.pipelineStageIdError && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError) {
       let qCount = 0;
       let cCount = 0;
