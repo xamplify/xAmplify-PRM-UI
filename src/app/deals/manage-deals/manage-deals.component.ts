@@ -19,8 +19,9 @@ import { LeadsService } from '../../leads/services/leads.service';
 import { Deal } from '../models/deal';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { IntegrationService } from 'app/core/services/integration.service';
-import { DealComments } from 'app/deal-registration/models/deal-comments';
+import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
 declare var swal, $, videojs: any;
+
 
 @Component({
   selector: 'app-manage-deals',
@@ -29,6 +30,7 @@ declare var swal, $, videojs: any;
   providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue, LeadsService],
 })
 export class ManageDealsComponent implements OnInit {
+  readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
   loggedInUserId: number = 0;
   superiorId: number = 0;
   isOnlyPartner: any;

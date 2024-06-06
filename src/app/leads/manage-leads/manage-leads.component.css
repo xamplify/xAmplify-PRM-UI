@@ -151,3 +151,9 @@ select.form-control.select-width.FilerFormWidth {
 .override-actions {
   float: inherit;
 }
+.xamplify-status{
+  padding-right: 27px;
+}
+.vanity-status{
+  padding-right: 57px;
+}

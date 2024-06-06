@@ -3093,3 +3093,6 @@ color:#fff!important;
 .selected-check-mark-circle{
   border: 1px solid #0cf01ca6 !important;
 }
+.underline{
+  text-decoration: underline;
+}

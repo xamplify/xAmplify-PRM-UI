@@ -1,3 +1,4 @@
+import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Lead } from '../models/lead';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -117,7 +118,7 @@ export class AddLeadComponent implements OnInit {
         this.getLead(this.leadId);
       }
     } else if (this.actionType === "add") {
-      this.leadFormTitle = "Add a Lead";
+      this.leadFormTitle = LEAD_CONSTANTS.registerALead;
       if (this.vanityLoginDto.vanityUrlFilter) {
         this.setCreatedForCompanyId();
       } else if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
