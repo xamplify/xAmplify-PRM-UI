@@ -262,8 +262,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.referenceService.renderer = render;
 		let currentUrl = this.router.url;
 		this.model.isPublic = true;
-
-
+		
 		if (currentUrl.includes('home/sharedleads')) {
 			this.module = 'sharedleads';
 			this.isPartner = false;
@@ -285,6 +284,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.isPartner = true;
 			this.module = 'partners';
 			this.checkingContactTypeName = "Partner";
+			this.actionsDescription.contact_list_edit = 'Preview or edit group';
 			this.sortOptions = [
 				{ 'name': 'Sort by', 'value': '', 'for': '' },
 				{ 'name': 'Group name (A-Z)', 'value': 'name-ASC', 'for': 'contactList' },

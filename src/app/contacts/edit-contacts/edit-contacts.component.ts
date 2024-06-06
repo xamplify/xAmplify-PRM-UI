@@ -2377,7 +2377,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		} else if (this.isPartner && this.isDefaultPartnerList) {
 			message = 'The ' + partnerModuleCustomName + '(s) will be deleted from this and all other ' + partnerModuleCustomName + ' lists.';
 		} else if (this.isPartner && !this.isDefaultPartnerList) {
-			message = 'This will only delete the ' + partnerModuleCustomName + '(s) from this list. To remove the ' + partnerModuleCustomName + '(s) completely from your account, please delete the record(s) from the Master List.';
+			message = 'This will only delete the ' + partnerModuleCustomName + '(s) from this group. To remove the ' + partnerModuleCustomName + '(s) completely from your account, please delete the record(s) from the Master Group.';
 		} else {
 			message = "This will only delete the Contact(s) from this list. To remove the Contact(s) completely from your account, please delete the record(s) from the Master Contact List.";
 		}
@@ -3074,7 +3074,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		} else {
 			let a = document.createElement('a');
 			a.href = url;
-			a.download = this.contactListName.substr(0, 26) + '_' + this.checkingContactTypeName + '_List.csv';
+			a.download = this.contactListName.substr(0, 26) + '_' + this.checkingContactTypeName + '_Group.csv';
 			document.body.appendChild(a);
 			a.click();
 			document.body.removeChild(a);
