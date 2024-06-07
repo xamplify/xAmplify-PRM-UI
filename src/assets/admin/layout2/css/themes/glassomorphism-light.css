@@ -1948,7 +1948,7 @@ i.fa.fa-trash-o.dropdown-deleteicon:hover{
 i.IconCustomization :hover,
 .setting-icon-cu:hover,
 .IconCustomizationcondition a i:hover {
-  border:1px solid #fff!important; 
+  border:  0px solid rgba(255, 255, 255, 0.1) !important; 
   background: rgb(146 151 179 / 8%) !important;
 }
 
@@ -2071,6 +2071,7 @@ tbody {
   width: 32px !important;
   height: 32px !important;
   line-height: 28px !important;
+  border: 0px solid rgba(255, 255, 255, 0.1) !important;
 }
 .re-distributed-high-level {
   background-color: rgba(255, 255, 255, 0.2) !important;
@@ -2181,7 +2182,8 @@ i.fa.fa-expand.fa-fa-consistency.IconCustomization {
   background-color: #2c2f33 !important;
   border-bottom: 0px solid #2f4857 !important;
 }
-button.btn.Btn-Gray.btn-hvr-text {
+button.btn.Btn-Gray.btn-hvr-text,
+.setting-icon-cu .gearDropdownMenu:hover {
   color: #000 !important;
 }
 button.btn.btn-white {
@@ -4104,7 +4106,8 @@ a.tabColorOne b, h1 b, h6 b, span b, h3 b, div b {
 }.beige {
   background-color: transparent !important;
 }
-thead>tr {
+thead>tr,
+.tgrid > thead {
   background-color: hsla(0, 0%, 100%, .1) !important;
   box-shadow: none !important;
   border-radius: 10px 10px 0 0 !important;
