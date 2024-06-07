@@ -690,7 +690,7 @@
                                 <textarea id="copyFromclipTextArea" class="textareaNumber copy_text_area_border"
                                     title="Calendar View" [(ngModel)]="clipboardTextareaText"
                                     title="please fill out this field"
-                                    placeholder="FirstName,LastName,Account Name,Account Sub Type,Account Owner,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Account Name,Account Sub Type,Account Owner,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Account Name,Account Sub Type,Account Owner,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
+                                    placeholder="FirstName,LastName,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
                                     [ngModelOptions]="{standalone: true}"
                                     style="height: 150px;font-size: 11px;line-height: 1.4;min-width: 100%;max-width: 200%;width: 140%;"
                                     required="required">
@@ -831,6 +831,18 @@
                                                                 <tr *ngIf="newContact?.website">
                                                                     <td class='pt10 pb10 bold' translate>Website:</td>
                                                                     <td class='pt10 pb10'>{{newContact.website}}</td>
+                                                                </tr>
+                                                                <tr *ngIf="newContact?.vertical">
+                                                                    <td class='pt10 pb10 bold' translate>Vertical:</td>
+                                                                    <td class='pt10 pb10'>{{newContact.vertical}}</td>
+                                                                </tr>
+                                                                <tr *ngIf="newContact?.partnerType">
+                                                                    <td class='pt10 pb10 bold' translate>Type: </td>
+                                                                    <td class='pt10 pb10'>{{newContact.partnerType}}</td>
+                                                                </tr>
+                                                                <tr *ngIf="newContact?.category">
+                                                                    <td class='pt10 pb10 bold' translate>Category: </td>
+                                                                    <td class='pt10 pb10'>{{newContact.category}}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>

@@ -1095,8 +1095,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								user.zipCode = allTextLines[i][19].trim();
 								user.country = allTextLines[i][18].trim();
 								user.mobileNumber = allTextLines[i][19].trim();
-								user.accountSubType = allTextLines[i][2].trim();
-								user.accountOwner = allTextLines[i][3].trim();
+								user.accountSubType = allTextLines[i][3].trim();
+								user.accountOwner = allTextLines[i][2].trim();
 								user.companyDomain = allTextLines[i][5].trim();
 								user.territory = allTextLines[i][11].trim();
 								user.website = allTextLines[i][8].trim();
@@ -1149,8 +1149,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		let isZipMatched = headers[17].trim() == "ZIP" || headers[17].trim() == "\"ZIP\"";
 		let isCountryMatched = headers[18].trim() == "COUNTRY" || headers[18].trim() == "\"COUNTRY\"";
 		let isMobileNumberMatched = headers[19].trim() == "MOBILE NUMBER" || headers[19].trim() == "\"MOBILE NUMBER\"";
-		let isAccountSubTypeMatched = headers[2].trim() == "ACCOUNT SUB TYPE" || headers[2].trim() == "\"ACCOUNT SUB TYPE\"";
-		let isAccountOwnerMatched = headers[3].trim() == "ACCOUNT OWNER" || headers[3].trim() == "\"ACCOUNT OWNER\"";
+		let isAccountSubTypeMatched = headers[3].trim() == "ACCOUNT SUB TYPE" || headers[3].trim() == "\"ACCOUNT SUB TYPE\"";
+		let isAccountOwnerMatched = headers[2].trim() == "ACCOUNT OWNER" || headers[2].trim() == "\"ACCOUNT OWNER\"";
 		let isCompanyDomainMatched = headers[5].trim() == "COMPANY DOMAIN" || headers[5].trim() == "\"COMPANY DOMAIN\"";
 		let isTerritoryMatched = headers[11].trim() == "TERRITORY" || headers[11].trim() == "\"TERRITORY\"";
 		let isWebsiteMatched = headers[8].trim() == "WEBSITE" || headers[8].trim() == "\"WEBSITE\"";
@@ -1264,34 +1264,34 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 3:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
+						user.accountOwner = data[2];
 						break;
 					case 4:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						break;
 					case 5:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						break;
 					case 6:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						break;
 					case 7:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
@@ -1299,8 +1299,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 8:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
@@ -1309,8 +1309,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 9:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
@@ -1320,8 +1320,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 10:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
@@ -1332,8 +1332,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 11:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
@@ -1345,8 +1345,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 12:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
@@ -1359,8 +1359,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 13:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
@@ -1374,8 +1374,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 14:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
@@ -1390,8 +1390,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 15:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
@@ -1408,8 +1408,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 16:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
@@ -1427,8 +1427,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 17:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
@@ -1446,8 +1446,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 18:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
@@ -1466,8 +1466,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 19:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
@@ -1488,8 +1488,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					case 20:
 						user.firstName = data[0];
 						user.lastName = data[1];
-						user.accountSubType = data[2];
-						user.accountOwner = data[3];
+						user.accountOwner = data[2];
+						user.accountSubType = data[3];
 						user.contactCompany = data[4];
 						user.companyDomain = data[5];
 						user.jobTitle = data[6];
