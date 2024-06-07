@@ -940,7 +940,7 @@ export class AddDealComponent implements OnInit {
     }
 
     if (!this.opportunityAmountError && !this.estimatedCloseDateError
-      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError && !this.createdForPipelineIdError 
+      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError 
       && !this.pipelineStageIdError && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError) {
       let qCount = 0;
       let cCount = 0;
