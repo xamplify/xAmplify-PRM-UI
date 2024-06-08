@@ -296,8 +296,9 @@ export class ManageLeadsComponent implements OnInit {
           this.referenceService.loading(this.countsRequestLoader, false);
           if (response.statusCode == 200) {
             this.counts = response.data.vendorCounts;
-            this.countsLoader = false;
+            
           }
+          this.countsLoader = false;
         },
         error => {
           this.countsRequestLoader.isServerError = true;
@@ -312,9 +313,9 @@ export class ManageLeadsComponent implements OnInit {
       .subscribe(
         response => {
           if (response.statusCode == 200) {
-            this.countsLoader = false;
             this.counts = response.data.partnerCounts;
           }
+          this.countsLoader = false;
         },
         error => {
           this.httpRequestLoader.isServerError = true;
@@ -551,7 +552,6 @@ export class ManageLeadsComponent implements OnInit {
     this.campaignPagination.pageIndex = 1;
     this.campaignPagination.searchKey = this.leadsSortOption.searchKey;
     this.listCampaigns(this.campaignPagination);
-    //this.stageNamesForFilterDropDown();
   }
   leadEventHandler(keyCode: any) { if (keyCode === 13) { this.searchLeads(); } }
 
@@ -1209,7 +1209,6 @@ export class ManageLeadsComponent implements OnInit {
       response =>{
         this.referenceService.loading(this.httpRequestLoader, false);
         this.stageNamesForFilterDropDown = response;
-
       },
       error=>{
         this.httpRequestLoader.isServerError = true;

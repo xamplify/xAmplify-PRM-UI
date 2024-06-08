@@ -30,10 +30,8 @@
       </div>
       <div class="row">
         <div class="col-xs-12  p5">
-          <app-list-loader *ngIf="countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
-          </app-list-loader>
-          <div class="page-bar" style="padding: 15px 0px 15px 15px;"
-            *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
+          <app-box-loader [countLoader]="4" *ngIf="countsLoader"></app-box-loader>
+          <div class="page-bar" style="padding: 15px 0px 15px 15px;"*ngIf="!countsLoader">
             <!-- -------Total Leads------- -->
             <div class="col-xs-6 col-sm-3 col-md-3 tiles_hover_effect" style="padding-left: 0px!important;"
               *ngIf="!countsLoader" [style.pointer-events]="counts.totalLeads != 0 ? 'auto' : 'none' ">
@@ -135,7 +133,6 @@
               <div *ngIf="!showCampaignLeads">
                 <!-- XNFR-148 -->
                 <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
-                  <!-- <h4 class="text-primary pull-left" style="margin-top: 3px;">{{titleHeading}} Leads</h4> -->
                   <div class="col-xs-6 col-sm-6 col-lg-5 p0 mleads">
                     <h4 class="text-primary pull-left" style="margin: 8px 6px 0px 0px;">{{titleHeading}} Leads</h4>
                     <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex"
