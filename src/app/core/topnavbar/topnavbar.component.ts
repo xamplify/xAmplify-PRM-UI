@@ -22,6 +22,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
+import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
 
 @Component({
   selector: 'app-topnavbar',
@@ -30,6 +32,8 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
   providers: [Properties, VendorInvitation]
 })
 export class TopnavbarComponent implements OnInit, OnDestroy {
+  readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
+  readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
   currentUrl: string;
   roleName: Roles = new Roles();
   vendoorInvitation: VendorInvitation = new VendorInvitation();

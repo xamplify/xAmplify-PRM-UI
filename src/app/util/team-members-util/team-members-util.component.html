@@ -18,8 +18,7 @@
       </li>
     </ul>
     <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
-    <div class="col-xs-12 col-sm-7 col-lg-8 p0"
-      *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember && authenticationService?.module?.isAdminAndPartnerCompany && !authenticationService.module.loggedInThroughOwnVanityUrl">
+    <div *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember && authenticationService?.module?.isAdminAndPartnerCompany && !authenticationService.module.loggedInThroughOwnVanityUrl">
       <ul class="mix-filter p0 m0" style="float: right">
         <li class="filter" style="float: right; margin-top: 5px;" (click)="showPartnerView()"
           [class.campaign-type-selected]="!isVendorVersion" translate>

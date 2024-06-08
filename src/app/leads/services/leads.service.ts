@@ -12,6 +12,7 @@ import { UtilService } from 'app/core/services/util.service';
 @Injectable()
 export class LeadsService {
   
+  
   URL = this.authenticationService.REST_URL + "lead/";
   constructor(private http: Http, private authenticationService: AuthenticationService,
      private logger: XtremandLogger,private utilService:UtilService) { }
@@ -285,6 +286,34 @@ export class LeadsService {
       .map(this.extractData)
       .catch(this.handleError);
     }
+
+    findAllRegisteredByCompanies() {
+      let loggedInUserId = this.authenticationService.getUserId();
+      return this.http.get(this.authenticationService.REST_URL + `/lead/findRegisteredByCompanies/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+    }
+
+    findAllRegisteredByUsers() {
+      let loggedInUserId = this.authenticationService.getUserId();
+      return this.http.get(this.authenticationService.REST_URL + `/lead/findRegisteredByUsers/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+    }
+
+    findAllRegisteredByUsersForPartnerView() {
+      let loggedInUserId = this.authenticationService.getUserId();
+      return this.http.get(this.authenticationService.REST_URL + `/lead/findRegisteredByUsersForPartnerView/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+    }
+    findAllRegisteredByCompaniesForPartnerView() {
+      let loggedInUserId = this.authenticationService.getUserId();
+      return this.http.get(this.authenticationService.REST_URL + `/lead/findRegisteredByCompaniesForPartnerView/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+    }
+   
 
 
 }
