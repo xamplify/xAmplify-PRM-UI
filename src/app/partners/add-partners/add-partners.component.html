@@ -59,7 +59,7 @@
         <app-user-guide-help-button [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
     </div>
     <!-- Partner Domain Whitelisting #XNFR-549 -->
-    <app-domain-whitelisting *ngIf="isPartner" [isPartnerDomains]="true"></app-domain-whitelisting>
+    <app-domain-whitelisting *ngIf="isPartner && authenticationService?.module?.adminOrSuperVisor" [isPartnerDomains]="true"></app-domain-whitelisting>
     <div class="">
         <!----XNFR-222-->
         <div class="portlet-body">
