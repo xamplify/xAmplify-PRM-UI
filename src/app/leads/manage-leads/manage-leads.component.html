@@ -307,10 +307,9 @@
                               <div class="form-group" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
                                 <label class="control-label col-sm-5">Registered For</label>
                                 <div class="col-sm-7">
-                                  <select class="form-control" [(ngModel)]="vendorCompanyIdFilter" [ngModelOptions]="{standalone: true}">
-                                    <option value="">---Select Company---</option>
-                                    <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">{{vendor.companyName}}</option>
-                                  </select>
+                                  <app-searchable-dropdown *ngIf="!registeredForCompaniesLoader" [searchableDropDownDto]="registeredForCompaniesSearchableDropDownDto" [id]="vendorCompanyIdFilter"
+                                    [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredForCompanyId($event)">
+                                  </app-searchable-dropdown>
                                 </div>
                               </div>
                             </div>

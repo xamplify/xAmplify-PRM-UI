@@ -92,7 +92,7 @@ export class ManageLeadsComponent implements OnInit {
   mergeTagForGuide:any;
   vendorRole:boolean;
   vendorList:any ;
-  vendorCompanyIdFilter:any;
+  vendorCompanyIdFilter=0;
   /*******XNFR-426*******/
   leadApprovalStatusType:any;
   updateCurrentStage:boolean = false;
@@ -105,6 +105,9 @@ export class ManageLeadsComponent implements OnInit {
   isRegisteredByUsersLoadedSuccessfully = true;
   selectedRegisteredByUserId = 0;
   registeredByCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  selectedRegisteredForCompanyId = 0;
+  registeredForCompaniesLoader = true;
+  registeredForCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
@@ -1030,7 +1033,7 @@ export class ManageLeadsComponent implements OnInit {
     this.fromDateFilter = "";
     this.toDateFilter = "";
     this.statusFilter = "";
-    this.vendorCompanyIdFilter = "";
+    this.vendorCompanyIdFilter = 0;
     this.selectedRegisteredByCompanyId = 0;
     this.selectedRegisteredByUserId = 0;
     if (!this.showFilterOption) {
@@ -1055,7 +1058,7 @@ export class ManageLeadsComponent implements OnInit {
     this.fromDateFilter = "";
     this.toDateFilter = ""; 
     this.statusFilter = "";
-    this.vendorCompanyIdFilter = "";
+    this.vendorCompanyIdFilter = 0;
     this.leadsPagination.fromDateFilterString = "";
     this.leadsPagination.toDateFilterString = "";
     this.leadsPagination.stageFilter = "";
@@ -1077,8 +1080,8 @@ export class ManageLeadsComponent implements OnInit {
     let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
     let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
     let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
-    let isInvalidCompanyIdFilter = this.vendorCompanyIdFilter == undefined || this.vendorCompanyIdFilter == "";
-    let isValidCompanyIdFilter = this.vendorCompanyIdFilter != undefined && this.vendorCompanyIdFilter != "";
+    let isInvalidCompanyIdFilter = this.vendorCompanyIdFilter == undefined || this.vendorCompanyIdFilter == 0;
+    let isValidCompanyIdFilter = this.vendorCompanyIdFilter != undefined && this.vendorCompanyIdFilter>0;
     let isInValidRegisteredByCompanyFilter = this.selectedRegisteredByCompanyId==undefined || this.selectedRegisteredByCompanyId==0;
     let isValidRegisteredByCompanyFilter = this.selectedRegisteredByCompanyId!=undefined && this.selectedRegisteredByCompanyId>0;
     let isInValidRegisteredByUserFilter = this.selectedRegisteredByUserId==undefined || this.selectedRegisteredByUserId==0;
@@ -1276,9 +1279,22 @@ export class ManageLeadsComponent implements OnInit {
       response =>{
         this.referenceService.loading(this.httpRequestLoader, false);
         this.vendorList = response.data;
+        let dtos = [];
+        $.each(this.vendorList,function(index:number,vendor:any){
+          let id = vendor.companyId;
+          let name = vendor.companyName;
+          let dto = {};
+          dto['id'] = id;
+          dto['name'] = name;
+          dtos.push(dto);
+        });
+        this.registeredForCompaniesSearchableDropDownDto.data = dtos;
+        this.registeredForCompaniesSearchableDropDownDto.placeHolder = "Select Registered For";
+        this.registeredForCompaniesLoader = false;
       },
       error=>{
         this.httpRequestLoader.isServerError = true;
+        this.registeredForCompaniesLoader = false;
       },
       ()=> { }
     );
@@ -1344,7 +1360,7 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsService.findAllRegisteredByCompanies().subscribe(
       response=>{
         this.registeredByCompaniesSearchableDropDownDto.data = response.data;
-		    this.registeredByCompaniesSearchableDropDownDto.placeHolder = "Please Select Registered By Company";
+		    this.registeredByCompaniesSearchableDropDownDto.placeHolder = "Select Registered By Company";
         this.isRegisteredByCompaniesLoadedSuccessfully = true;
         this.registeredByCompanyLoader = false;
       },error=>{
@@ -1366,7 +1382,7 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsService.findAllRegisteredByUsers().subscribe(
       response=>{
         this.registeredByUsersSearchableDropDownDto.data = response.data;
-        this.registeredByUsersSearchableDropDownDto.placeHolder = "Please Select Registered By";
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select Registered By";
         this.isRegisteredByUsersLoadedSuccessfully = true;
         this.registeredByUsersLoader = false;
       },error=>{
@@ -1394,6 +1410,13 @@ export class ManageLeadsComponent implements OnInit {
 			this.selectedRegisteredByUserId = event['id'];
 		}else{
 			this.selectedRegisteredByUserId = 0;
+		}
+  }
+  getSelectedRegisteredForCompanyId(event:any){
+    if(event!=null){
+			this.vendorCompanyIdFilter = event['id'];
+		}else{
+			this.vendorCompanyIdFilter = 0;
 		}
   }
 
