@@ -100,7 +100,6 @@ export class ManageCampaignLeadsComponent implements OnInit {
             this.leadsSortOption.totalRecords = response.data.totalRecords;            
             pagination = this.pagerService.getPagedItems(pagination, response.data.data);
             this.getStageNamesForCampaign();
-            
         },
         error => {
             this.httpRequestLoader.isServerError = true;
@@ -318,9 +317,6 @@ toggleFilterOption() {
   this.fromDateFilter = "";
   this.toDateFilter = "";
   this.statusFilter = "";
-  // this.leadsPagination.fromDateFilterString = "";
-  // this.leadsPagination.toDateFilterString = "";
-  // this.leadsPagination.stageFilter = "";
   if (!this.showFilterOption) {
     this.leadsPagination.fromDateFilterString = "";
     this.leadsPagination.toDateFilterString = "";
@@ -329,7 +325,6 @@ toggleFilterOption() {
     if (this.filterMode) {
       this.leadsPagination.pageIndex = 1;
       this.listCampaignLeads(this.leadsPagination);
-    //  this.getStageNames();
       this.filterMode = false;
     }      
   } else {
@@ -372,15 +367,12 @@ validateDateFilters() {
     } else {
       var toDate = Date.parse(this.toDateFilter);
       var fromDate = Date.parse(this.fromDateFilter);
-
       if (fromDate <= toDate) {
         validDates = true;
         this.leadsPagination.pageIndex = 1;
         this.leadsPagination.maxResults = 12;
         this.leadsPagination.fromDateFilterString = this.fromDateFilter;
         this.leadsPagination.toDateFilterString = this.toDateFilter;
-        // this.listCampaignLeads(this.leadsPagination);
-       
       } else {
         this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
       }        
@@ -389,16 +381,14 @@ validateDateFilters() {
     if (validDates) {
       if (this.statusFilter != undefined && this.statusFilter != "") {
         this.leadsPagination.stageFilter = this.statusFilter;
-        // this.listCampaignLeads(this.leadsPagination);
-      }
-      else {
+      } else {
         this.leadsPagination.stageFilter = "";
       }
       this.leadsPagination.pageIndex = 1;
       this.leadsPagination.maxResults = 12;
       this.filterMode = true;
-        this.filterResponse.isVisible = false;
-        this.listCampaignLeads(this.leadsPagination);
+      this.filterResponse.isVisible = false;
+      this.listCampaignLeads(this.leadsPagination);
     }
     
   }
@@ -421,11 +411,12 @@ getStageNamesForCampaign(){
   this.leadsService.getStageNamesForCampaign(this.campaignId, this.loggedInUserId)
   .subscribe(
     response =>{
-      this.referenceService.loading(this.httpRequestLoader, false);
       this.stageNamesForFilterDropDown = response;
+      this.referenceService.loading(this.httpRequestLoader, false);
     },
     error=>{
       this.httpRequestLoader.isServerError = true;
+      this.referenceService.loading(this.httpRequestLoader, false);
     },
     ()=> { }
   );  
