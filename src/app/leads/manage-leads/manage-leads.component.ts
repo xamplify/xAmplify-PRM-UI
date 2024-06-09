@@ -11,8 +11,6 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
 import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { CustomResponse } from '../../common/models/custom-response';
-import { UserService } from 'app/core/services/user.service';
-import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
 import { Roles } from '../../core/models/roles';
 import { LeadsService } from '../services/leads.service';
 import { Lead } from '../models/lead';
@@ -299,7 +297,6 @@ export class ManageLeadsComponent implements OnInit {
           this.referenceService.loading(this.countsRequestLoader, false);
           if (response.statusCode == 200) {
             this.counts = response.data.vendorCounts;
-            
           }
           this.countsLoader = false;
         },
@@ -905,7 +902,6 @@ export class ManageLeadsComponent implements OnInit {
 
   addCommentModalClose(event: any) {
     this.selectedLead.unReadChatCount = 0;
-    // console.log(this.selectedLead.unReadChatCount)
     this.isCommentSection = !this.isCommentSection;
   }
 
