@@ -316,12 +316,20 @@ export class LeadsService {
       .catch(this.handleError);
     }
 
-    findAllRegisteredByUsersByCampaignId(campaignId: any) {
-       let loggedInUserId = this.authenticationService.getUserId();
-      return this.http.get(this.authenticationService.REST_URL + `/lead/findRegisteredByUsersByCampaignId/${loggedInUserId}/${campaignId}?access_token=${this.authenticationService.access_token}`)
-      .map(this.extractData)
-      .catch(this.handleError);
+
+    findAllRegisteredByUsersByCampaignIdAndPartnerCompanyId(campaignId: any,partnerCompanyId:number) {
+    let isValidPartnerCompanyId = partnerCompanyId!=undefined && partnerCompanyId>0;
+    let loggedInUserId = this.authenticationService.getUserId();
+    let url = "";
+    if(isValidPartnerCompanyId){
+      url = this.authenticationService.REST_URL + `/lead/findRegisteredByUsersByPartnerCompanyId/${partnerCompanyId}/${campaignId}?access_token=${this.authenticationService.access_token}`;
+    }else{
+      url = url = this.authenticationService.REST_URL + `/lead/findRegisteredByUsersByCampaignId/${loggedInUserId}/${campaignId}?access_token=${this.authenticationService.access_token}`;
     }
+     return this.http.get(url)
+     .map(this.extractData)
+     .catch(this.handleError);
+   }
    
 
 

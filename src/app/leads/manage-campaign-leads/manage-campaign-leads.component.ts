@@ -79,8 +79,9 @@ export class ManageCampaignLeadsComponent implements OnInit {
           this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
         }  
         this.listCampaignLeads(this.leadsPagination);   
-        /*****Registered By Users*****/     
+        /*****Registered By Users*****/   
         this.findAllRegisteredByUsers();
+       
     }
     this.refreshCampaignLeadsSubject.subscribe(response => {
       if (response) {
@@ -91,7 +92,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   /*****Registered By Users*****/     
   findAllRegisteredByUsers(){
     this.registeredByUsersLoader = true;
-    this.leadsService.findAllRegisteredByUsersByCampaignId(this.campaignId).subscribe(
+    this.leadsService.findAllRegisteredByUsersByCampaignIdAndPartnerCompanyId(this.campaignId,this.partnerCompanyId).subscribe(
       response=>{
         this.registeredByUsersSearchableDropDownDto.data = response.data;
         this.registeredByUsersSearchableDropDownDto.placeHolder = "Select Registered By";

@@ -17,7 +17,7 @@ export class VersionCheckService {
      * @param {number} frequency - in milliseconds, defaults to 30 minutes
      */
 	public initVersionCheck(frequency: number = this.envService.reloadIntervalInMilliSeconds) {
-		if(this.envService.CLIENT_URL.indexOf('https://xamplify.co/')>-1 || this.envService.CLIENT_URL.indexOf('https://xtremand.com/')>-1){
+		if(this.envService.CLIENT_URL.indexOf('http://localhost:4200/')>-1 || this.envService.CLIENT_URL.indexOf('https://xtremand.com/')>-1){
 			setInterval(() => {
 				this.checkVersion();
 			}, frequency);
