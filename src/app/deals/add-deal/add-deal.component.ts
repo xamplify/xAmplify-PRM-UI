@@ -264,7 +264,6 @@ export class AddDealComponent implements OnInit {
             self.contact.emailId = self.lead.email;
             self.deal.associatedLeadId = self.lead.id;
             self.deal.associatedUserId = self.lead.associatedUserId;
-            //this.isSalesForceEnabled();
             if (this.deal.createdForCompanyId == 0 && this.deal.createdForCompanyId != undefined) {
               self.deal.createdForCompanyId = self.lead.createdForCompanyId;
               self.createdForCompanyIdError = false;

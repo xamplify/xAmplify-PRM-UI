@@ -145,8 +145,9 @@ th.leadTablewidth2{width: 20%;}
 th.leadTablewidth3{width: 20%;}
 
 select.form-control.select-width.FilerFormWidth {
-  width: 184px;
+  width: 188px;
   height: 32px;
+  margin-left: 23px;
 }
 .override-actions {
   float: inherit;
@@ -156,4 +157,21 @@ select.form-control.select-width.FilerFormWidth {
 }
 .h-200px{
   height: 200px;
+}
+.custom_fiter-asset {
+  background-color: #f1f5f9;
+  padding: 10px 5px 10px 5px !important;
+}
+
+select .e-input::placeholder {
+  font-size: 15px;
+  color: grey;
+}
+select .e-input::-webkit-input-placeholder  {
+  font-size: 15px;
+  color: grey;
+}
+select .e-input::-ms-input-placeholder {
+  font-size: 15px;
+  color: grey;
 }

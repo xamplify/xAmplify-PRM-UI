@@ -11,6 +11,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { Lead } from '../models/lead';
 import { EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -52,7 +53,12 @@ export class ManageCampaignLeadsComponent implements OnInit {
   leadApprovalStatusType: string;
   selectedLead: Lead;
   updateCurrentStage: boolean;
-  // lead: any;
+  
+  /***09/06/2024****/
+  registeredByUsersLoader = true;;
+  registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  isRegisteredByUsersLoadedSuccessfully = true;
+  selectedRegisteredByUserId = 0;
 
   constructor(public authenticationService: AuthenticationService,
     private leadsService: LeadsService, public referenceService: ReferenceService, public pagerService: PagerService) {
@@ -72,15 +78,29 @@ export class ManageCampaignLeadsComponent implements OnInit {
         } else {
           this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
         }  
-        this.listCampaignLeads(this.leadsPagination);        
+        this.listCampaignLeads(this.leadsPagination);   
+        /*****Registered By Users*****/     
+        this.findAllRegisteredByUsers();
     }
-
     this.refreshCampaignLeadsSubject.subscribe(response => {
       if (response) {
         this.listCampaignLeads(this.leadsPagination);
       }
     });
-    
+  }
+  /*****Registered By Users*****/     
+  findAllRegisteredByUsers(){
+    this.registeredByUsersLoader = true;
+    this.leadsService.findAllRegisteredByUsersByCampaignId(this.campaignId).subscribe(
+      response=>{
+        this.registeredByUsersSearchableDropDownDto.data = response.data;
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select Registered By";
+        this.isRegisteredByUsersLoadedSuccessfully = true;
+        this.registeredByUsersLoader = false;
+      },error=>{
+        this.registeredByUsersLoader = false;
+        this.isRegisteredByUsersLoadedSuccessfully = false;
+      });
   }
 
   listCampaignLeads(pagination: Pagination) { 
@@ -100,7 +120,6 @@ export class ManageCampaignLeadsComponent implements OnInit {
             this.leadsSortOption.totalRecords = response.data.totalRecords;            
             pagination = this.pagerService.getPagedItems(pagination, response.data.data);
             this.getStageNamesForCampaign();
-            
         },
         error => {
             this.httpRequestLoader.isServerError = true;
@@ -120,8 +139,6 @@ export class ManageCampaignLeadsComponent implements OnInit {
 
   /************Page************** */
   setLeadsPage(event: any) {
-   // this.pipelineResponse = new CustomResponse();
-   // this.customResponse = new CustomResponse();
     this.leadsPagination.pageIndex = event.page;
     this.listCampaignLeads(this.leadsPagination);
   }
@@ -176,7 +193,6 @@ export class ManageCampaignLeadsComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           if(response.statusCode==200){
             this.leadsResponse = new CustomResponse('SUCCESS', "Lead Deleted Successfully", true);
-            //this.getCounts();  
             this.listCampaignLeads(this.leadsPagination);  
             this.refreshCounts.emit();                       
         } else if (response.statusCode==500) {
@@ -318,9 +334,6 @@ toggleFilterOption() {
   this.fromDateFilter = "";
   this.toDateFilter = "";
   this.statusFilter = "";
-  // this.leadsPagination.fromDateFilterString = "";
-  // this.leadsPagination.toDateFilterString = "";
-  // this.leadsPagination.stageFilter = "";
   if (!this.showFilterOption) {
     this.leadsPagination.fromDateFilterString = "";
     this.leadsPagination.toDateFilterString = "";
@@ -329,7 +342,6 @@ toggleFilterOption() {
     if (this.filterMode) {
       this.leadsPagination.pageIndex = 1;
       this.listCampaignLeads(this.leadsPagination);
-    //  this.getStageNames();
       this.filterMode = false;
     }      
   } else {
@@ -345,6 +357,7 @@ closeFilterOption() {
   this.leadsPagination.fromDateFilterString = "";
   this.leadsPagination.toDateFilterString = "";
   this.leadsPagination.stageFilter = "";
+  this.leadsPagination.registeredByUserId = 0;
   this.filterResponse.isVisible = false;
   if (this.filterMode) {
     this.leadsPagination.pageIndex = 1;
@@ -354,55 +367,64 @@ closeFilterOption() {
 }
 
 validateDateFilters() {
-  if ((this.statusFilter == undefined || this.statusFilter == "") && 
-    (this.fromDateFilter == undefined || this.fromDateFilter == "") &&
-      (this.toDateFilter == undefined || this.toDateFilter == "")) {
-        this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
-  } else { 
-    let validDates = false;   
-    if ((this.fromDateFilter == undefined || this.fromDateFilter == "") 
-      && (this.toDateFilter == undefined || this.toDateFilter == "")) {
-        validDates = true;
-    } else if (this.fromDateFilter != undefined && this.fromDateFilter != "" && 
-      (this.toDateFilter == undefined || this.toDateFilter == "")) {
-        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
-    } else if (this.toDateFilter != undefined && this.toDateFilter != "" && 
-      (this.fromDateFilter == undefined || this.fromDateFilter == "")) {
-        this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-    } else {
-      var toDate = Date.parse(this.toDateFilter);
-      var fromDate = Date.parse(this.fromDateFilter);
+    let isInvalidStatusFilter = this.statusFilter == undefined || this.statusFilter == "";
+    let isValidStatusFilter = this.statusFilter != undefined && this.statusFilter != "";
+    let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
+    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
+    let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
+    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
+    let isInValidRegisteredByUserFilter = this.selectedRegisteredByUserId==undefined || this.selectedRegisteredByUserId==0;
+    let isValidRegisteredByUserFilter = this.selectedRegisteredByUserId!=undefined && this.selectedRegisteredByUserId>0;
+    if (isInvalidStatusFilter && isEmptyFromDateFilter && isEmptyToDateFilter  && isInValidRegisteredByUserFilter) {
+          this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+    } else { 
+      let validDates = false;   
+        if (isEmptyFromDateFilter && isEmptyToDateFilter ) {
+            validDates = true;
+        } else if (isValidFromDateFilter && isEmptyToDateFilter ) {
+            this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+        } else if (isValidToDateFilter && isEmptyFromDateFilter) {
+            this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+        } else {
+          var toDate = Date.parse(this.toDateFilter);
+          var fromDate = Date.parse(this.fromDateFilter);
+          if (fromDate <= toDate) {
+            validDates = true;
+            this.leadsPagination.pageIndex = 1;
+            this.leadsPagination.maxResults = 12;
+            this.leadsPagination.fromDateFilterString = this.fromDateFilter;
+            this.leadsPagination.toDateFilterString = this.toDateFilter;
+          } else {
+            this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+          }        
+      }
 
-      if (fromDate <= toDate) {
-        validDates = true;
+      if (validDates) {
+        this.filterStatus(isValidStatusFilter);
+        this.filterRegisteredByUserId(isValidRegisteredByUserFilter);
         this.leadsPagination.pageIndex = 1;
         this.leadsPagination.maxResults = 12;
-        this.leadsPagination.fromDateFilterString = this.fromDateFilter;
-        this.leadsPagination.toDateFilterString = this.toDateFilter;
-        // this.listCampaignLeads(this.leadsPagination);
-       
-      } else {
-        this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
-      }        
-    }
-
-    if (validDates) {
-      if (this.statusFilter != undefined && this.statusFilter != "") {
-        this.leadsPagination.stageFilter = this.statusFilter;
-        // this.listCampaignLeads(this.leadsPagination);
-      }
-      else {
-        this.leadsPagination.stageFilter = "";
-      }
-      this.leadsPagination.pageIndex = 1;
-      this.leadsPagination.maxResults = 12;
-      this.filterMode = true;
+        this.filterMode = true;
         this.filterResponse.isVisible = false;
         this.listCampaignLeads(this.leadsPagination);
+      }
     }
+}
     
+private filterRegisteredByUserId(isValidRegisteredByUserFilter: boolean) {
+  this.leadsPagination.registeredByUserId = 0;
+  if (isValidRegisteredByUserFilter) {
+    this.leadsPagination.registeredByUserId = this.selectedRegisteredByUserId;
   }
 }
+
+  private filterStatus(isValidStatusFilter) {
+    if (isValidStatusFilter) {
+      this.leadsPagination.stageFilter = this.statusFilter;
+    } else {
+      this.leadsPagination.stageFilter = "";
+    }
+  }
 
 clearSearch() {
   this.leadsSortOption.searchKey='';
@@ -421,11 +443,12 @@ getStageNamesForCampaign(){
   this.leadsService.getStageNamesForCampaign(this.campaignId, this.loggedInUserId)
   .subscribe(
     response =>{
-      this.referenceService.loading(this.httpRequestLoader, false);
       this.stageNamesForFilterDropDown = response;
+      this.referenceService.loading(this.httpRequestLoader, false);
     },
     error=>{
       this.httpRequestLoader.isServerError = true;
+      this.referenceService.loading(this.httpRequestLoader, false);
     },
     ()=> { }
   );  
@@ -477,6 +500,13 @@ downloadLeads(pagination: Pagination){
         );
 }
 
+getSelectedRegisteredByUserId(event:any){
+  if(event!=null){
+    this.selectedRegisteredByUserId = event['id'];
+  }else{
+    this.selectedRegisteredByUserId = 0;
+  }
+}
 
 
 }

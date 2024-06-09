@@ -32,11 +32,10 @@
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <app-list-loader *ngIf="countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
-          </app-list-loader>
-          <div class="row" *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
+          <div class="row">
+            <app-box-loader [countLoader]="4" *ngIf="countsLoader"></app-box-loader>
             <!--  Start Tiles-->
-            <div class="col-xs-12 col-md-12 col-sm-12">
+            <div *ngIf="!countsLoader" class="col-xs-12 col-md-12 col-sm-12">
               <div class="page-bar" style="padding: 15px 15px 15px 0px">
                 <!-- -------Total Deals------- -->
                 <div class="col-xs-12 col-sm-4 col-md-4 pr0 pb15 tiles_hover_effect" *ngIf="!countsLoader"
@@ -127,8 +126,8 @@
             <div class="portlet-title">
               <div *ngIf="!showCampaignDeals">
                 <!-- XNFR-148 -->
-                <div class="" *ngIf="!httpRequestLoader.isLoading">
-                  <h4 class="text-primary pull-left">{{titleHeading}} Deals</h4>
+                <div  *ngIf="!httpRequestLoader.isLoading">
+                  <h4 class="text-primary pull-left ml0">{{titleHeading}} Deals</h4>
                   <div class="col-xs-12 col-sm-5 col-lg-5" *ngIf="isVendorVersion">
                     <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"
                       [customSelectedIndex]="selectedFilterIndex"

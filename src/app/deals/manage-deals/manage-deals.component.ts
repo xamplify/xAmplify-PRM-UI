@@ -281,8 +281,8 @@ export class ManageDealsComponent implements OnInit {
           this.referenceService.loading(this.countsRequestLoader, false);
             if(response.statusCode==200){
               this.counts = response.data.vendorCounts;
-              this.countsLoader = false;
-            }            
+            }  
+            this.countsLoader = false;          
         },
         error => {
             this.countsRequestLoader.isServerError = true;
@@ -297,9 +297,9 @@ export class ManageDealsComponent implements OnInit {
     .subscribe(
         response => {
             if(response.statusCode==200){
-              this.countsLoader = false;
               this.counts = response.data.partnerCounts;
-            }            
+            }     
+            this.countsLoader = false;       
         },
         error => {
             this.httpRequestLoader.isServerError = true;
