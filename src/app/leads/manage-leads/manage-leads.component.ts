@@ -96,18 +96,21 @@ export class ManageLeadsComponent implements OnInit {
   /*******XNFR-426*******/
   leadApprovalStatusType:any;
   updateCurrentStage:boolean = false;
+
   registeredByCompanyLoader = true;
-  registeredByCompanies:Array<any> = new Array<any>();
   isRegisteredByCompaniesLoadedSuccessfully = true;
+  registeredByCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   selectedRegisteredByCompanyId = 0;
+
   registeredByUsersLoader = true;;
   registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   isRegisteredByUsersLoadedSuccessfully = true;
   selectedRegisteredByUserId = 0;
-  registeredByCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+
   selectedRegisteredForCompanyId = 0;
   registeredForCompaniesLoader = true;
   registeredForCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
