@@ -80,12 +80,8 @@ export class ManageCampaignLeadsComponent implements OnInit {
         }  
         this.listCampaignLeads(this.leadsPagination);   
         /*****Registered By Users*****/   
-        if(this.isPartnerVersion){
-          this.findAllRegisteredByUsers();
-        } else{
-          alert("VEndor Version");
-        } 
-        
+        this.findAllRegisteredByUsers();
+       
     }
     this.refreshCampaignLeadsSubject.subscribe(response => {
       if (response) {
@@ -96,7 +92,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   /*****Registered By Users*****/     
   findAllRegisteredByUsers(){
     this.registeredByUsersLoader = true;
-    this.leadsService.findAllRegisteredByUsersByCampaignId(this.campaignId).subscribe(
+    this.leadsService.findAllRegisteredByUsersByCampaignIdAndPartnerCompanyId(this.campaignId,this.partnerCompanyId).subscribe(
       response=>{
         this.registeredByUsersSearchableDropDownDto.data = response.data;
         this.registeredByUsersSearchableDropDownDto.placeHolder = "Select Registered By";
