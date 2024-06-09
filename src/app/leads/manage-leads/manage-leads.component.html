@@ -11,7 +11,7 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
               </li>
               <li>
-                <a translate>Leads</a>
+                <a>Leads</a>
               </li>
             </ul>
           </div>
@@ -29,9 +29,9 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12  p5">
-          <app-box-loader [countLoader]="4" *ngIf="countsLoader"></app-box-loader>
-          <div class="page-bar" style="padding: 15px 0px 15px 15px;"*ngIf="!countsLoader">
+        <app-box-loader [countLoader]="4" *ngIf="countsLoader"></app-box-loader>
+        <div class="col-xs-12  p5" *ngIf="!countsLoader">
+          <div class="page-bar" style="padding: 15px 0px 15px 15px;">
             <!-- -------Total Leads------- -->
             <div class="col-xs-6 col-sm-3 col-md-3 tiles_hover_effect" style="padding-left: 0px!important;"
               *ngIf="!countsLoader" [style.pointer-events]="counts.totalLeads != 0 ? 'auto' : 'none' ">
@@ -501,9 +501,9 @@
                 </div>
 
                 <!-- -------------------- Campaign Level View for Leads-------------------- -->
+                 <app-list-loader *ngIf="!listView && campaignRequestLoader?.isLoading"></app-list-loader>
                 <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
                   [hidden]="listView || campaignSortOption.totalRecords == 0 || campaignRequestLoader.isLoading || campaignRequestLoader.isServerError">
-
                   <div class="table-responsive pos_pd_top6" [hidden]="campaignRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                       <thead>
