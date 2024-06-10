@@ -248,12 +248,12 @@
                                 </div>
                               </div>
 
-                              <!--Registered By User-->
+                              <!--Added By User-->
                               <div class="form-group">
-                                <label class="control-label col-sm-5">Registered By</label>
+                                <label class="control-label col-sm-5">{{XAMPLIFY_CONSTANTS?.addedBy}}</label>
                                 <div class="col-sm-7">
                                   <p class="mt--10px" *ngIf="registeredByUsersLoader">
-                                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Registered By...</strong>
+                                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading {{XAMPLIFY_CONSTANTS?.addedBy}}...</strong>
                                   </p>
                                   <app-searchable-dropdown *ngIf="!registeredByUsersLoader && isRegisteredByUsersLoadedSuccessfully" [searchableDropDownDto]="registeredByUsersSearchableDropDownDto" [id]="selectedRegisteredByUserId"
                                     [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredByUserId($event)">
@@ -285,9 +285,9 @@
                                   <app-date-picker  [(dataField)]="toDateFilter" [isFromFilter]='true'></app-date-picker>
                                 </div>
                               </div>
-                              <!--Registered By Company-->
+                              <!--Added By Company-->
                               <div class="form-group" *ngIf="isVendorVersion">
-                                <label class="control-label col-sm-5">Registered By Company</label>
+                                <label class="control-label col-sm-5">{{XAMPLIFY_CONSTANTS?.addedBy}} Company</label>
                                 <div class="col-sm-7">
                                   <p class="mt--10px" *ngIf="registeredByCompanyLoader">
                                     <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Companies...</strong>
@@ -326,7 +326,7 @@
                       <thead>
                         <tr>
                           <th class="center-aligned leadTablewidth0" translate>Lead Details</th>
-                          <th class="center leadTablewidth1" translate>Registered By</th>
+                          <th class="center leadTablewidth1" translate>Added By</th>
                           <th class="center leadTablewidth2 text-center" translate>Status</th>
                           <th class="leadTablewidth3" style="text-align:center" translate>Actions</th>
                         </tr>

@@ -86,12 +86,12 @@
                   <app-date-picker  [(dataField)]="toDateFilter" [isFromFilter]='true'></app-date-picker>
                 </div>
               </div>
-               <!--Registered By User-->
+               <!--Added By User-->
                <div class="form-group">
-                <label class="control-label col-sm-5">Registered By</label>
+                <label class="control-label col-sm-5">{{XAMPLIFY_CONSTANTS?.addedBy}}</label>
                 <div class="col-sm-7">
                   <p class="mt--10px" *ngIf="registeredByUsersLoader">
-                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Registered By...</strong>
+                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading {{XAMPLIFY_CONSTANTS?.addedBy}}...</strong>
                   </p>
                   <app-searchable-dropdown *ngIf="!registeredByUsersLoader && isRegisteredByUsersLoadedSuccessfully" [searchableDropDownDto]="registeredByUsersSearchableDropDownDto" [id]="selectedRegisteredByUserId"
                     [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredByUserId($event)">
@@ -118,7 +118,7 @@
       <thead>
         <tr>
           <th class="center-aligned" translate>Lead Details</th>
-          <th class="center" translate>Registered By</th>
+          <th class="center" translate>{{XAMPLIFY_CONSTANTS?.addedBy}}</th>
           <th class="center" style="text-align:center" translate>Status</th>
           <th style="width: 18%; text-align:center" translate>Actions</th>
         </tr>

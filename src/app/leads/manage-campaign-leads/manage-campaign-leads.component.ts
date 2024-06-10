@@ -12,6 +12,8 @@ import { Lead } from '../models/lead';
 import { EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-constants';
+
 declare var swal, $, videojs: any;
 
 @Component({
@@ -35,6 +37,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   @Output() refreshCounts = new EventEmitter<any>();
   @Output() showCommentsPopUp = new EventEmitter<any>();
 
+  readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
   loggedInUserId : number;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
   leadsPagination: Pagination = new Pagination();
