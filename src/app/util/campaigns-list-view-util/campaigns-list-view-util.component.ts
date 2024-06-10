@@ -1020,12 +1020,14 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.campaignViewType = "list";
+            this.navigateToManageSection(viewType);
         } else if ("Grid" == viewType) {
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.campaignViewType = "grid";
+            this.navigateToManageSection(viewType); 
         }
     }
 
@@ -1428,5 +1430,30 @@ validateCopyCampaignName(){
             
         }
     } 
+    
+    navigateToManageSection(viewType:string){
+        if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.campaignViewType = "list";
+            this.listCampaign(this.pagination);
+        }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.modulesDisplayType.isListView = false;
+            this.campaignViewType = "grid";
+            this.listCampaign(this.pagination);
+        }else  if(this.router.url.endsWith('/')){
+            if(this.teamMemberId!=undefined){
+                this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId);
+            }else{
+                this.router.navigateByUrl('/home/campaigns/manage');
+            }
+            
+        }
+    }
 
 }
