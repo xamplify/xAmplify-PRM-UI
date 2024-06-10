@@ -16,15 +16,17 @@
             </ul>
           </div>
           <div class="col-xs-12 col-sm-7 col-lg-6 p0">
-            <ul class="mix-filter p0 m0" style="float: right"
-              *ngIf="!authenticationService.vanityURLEnabled && authenticationService?.module?.isAdminAndPartnerCompany">
-              <li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
-            						margin-top: 5px;" translate>{{authenticationService?.partnerModule?.customName}} View </li>
-              <li *ngIf="authenticationService?.enableLeads" class="filter" (click)="showVendor()"
-                [class.campaign-type-selected]="isVendorVersion" style="float: right;
-            						margin-top: 5px;" translate>Vendor View</li>
-              <p class="filter" style="float: right;
-            						margin: 10px;" translate>Opportunities as: </p>
+            <ul class="mix-filter p0 m0" style="float: right" *ngIf="!authenticationService.vanityURLEnabled && authenticationService?.module?.isAdminAndPartnerCompany">
+              <!--Partner View-->
+              <li class="filter float-right mt5" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion">
+                {{authenticationService?.partnerModule?.customName}} View 
+                <i *ngIf="isPartnerVersion" class="fa fa-check-circle-o success"></i>
+              </li>
+              <!--Vendor View-->
+              <li *ngIf="authenticationService?.enableLeads" class="filter float-right mt5" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion">
+                Vendor View<i *ngIf="!isPartnerVersion" class="fa fa-check-circle-o success"></i>
+              </li>
+              <p class="filter float-right m10">Opportunities as: </p>
             </ul>
             <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
           </div>

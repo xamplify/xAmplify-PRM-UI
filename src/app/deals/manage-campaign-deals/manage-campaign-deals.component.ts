@@ -49,7 +49,6 @@ export class ManageCampaignDealsComponent implements OnInit {
   filterMode: boolean = false;
   selectedFilterIndex: number = 1;
   stageNamesForFilterDropDown :any;
-  statusFilter: any = "";
 
   /** XNFR-426 **/
   //deal = new Deal();
@@ -63,6 +62,11 @@ export class ManageCampaignDealsComponent implements OnInit {
   registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   isRegisteredByUsersLoadedSuccessfully = true;
   selectedRegisteredByUserId = 0;
+
+  statusFilter: any;
+  statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  statusLoader = true;
+  isStatusLoadedSuccessfully = true;
 
   constructor(public authenticationService: AuthenticationService,
     private dealsService: DealsService, public referenceService: ReferenceService, public pagerService: PagerService) {
@@ -444,44 +448,31 @@ setDealStatus(deal: Deal,deletedPartner:boolean) {
     this.referenceService.showSweetAlert("This Option Is Not Available","","info");
   }
 }
-stageNamesOfV(){
-  this.referenceService.loading(this.httpRequestLoader, true);
-  this.dealsService.getStageNamesOfV(this.loggedInUserId)
-  .subscribe(
-    response =>{
-      this.referenceService.loading(this.httpRequestLoader, false);
-      this.stageNamesForFilterDropDown = response;
 
-    },
-    error=>{
-      this.httpRequestLoader.isServerError = true;
-    },
-    ()=> { }
-  ); 
-}
-getStageNamesOfCampaign(){
-  this.referenceService.loading(this.httpRequestLoader, true);
-  this.dealsService.getStageNamesOfCampaign(this.loggedInUserId)
-  .subscribe(
-    response =>{
-      this.referenceService.loading(this.httpRequestLoader, false);
-      this.stageNamesForFilterDropDown = response;
+  private addSearchableStatus(response: any) {
+    this.stageNamesForFilterDropDown = response;
+    let dtos = [];
+    $.each(this.stageNamesForFilterDropDown, function (index: number, value: any) {
+      let id = value;
+      let name = value;
+      let dto = {};
+      dto['id'] = id;
+      dto['name'] = name;
+      dtos.push(dto);
+    });
+    this.statusSearchableDropDownDto.data = dtos;
+    this.statusSearchableDropDownDto.placeHolder = "Select Status";
+    this.statusLoader = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
+  }
 
-    },
-    error=>{
-      this.httpRequestLoader.isServerError = true;
-    },
-    ()=> { }
-  ); 
-}
+
 
 getStageNamesForCampaign(){
-  this.referenceService.loading(this.httpRequestLoader, true);  
   this.dealsService.getStageNamesForCampaign(this.campaignId, this.loggedInUserId)
   .subscribe(
     response =>{
-      this.referenceService.loading(this.httpRequestLoader, false);
-      this.stageNamesForFilterDropDown = response;
+      this.addSearchableStatus(response);
     },
     error=>{
       this.httpRequestLoader.isServerError = true;
@@ -561,5 +552,12 @@ downloadDeals(pagination: Pagination){
     });
 }
 
+getSelectedStatus(event:any){
+  if(event!=null){
+    this.statusFilter = event['id'];
+  }else{
+    this.statusFilter = "";
+  }
+}
 
 }
