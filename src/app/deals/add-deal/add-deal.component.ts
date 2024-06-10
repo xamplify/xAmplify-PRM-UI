@@ -1181,7 +1181,7 @@ export class AddDealComponent implements OnInit {
             this.activeCRMDetails = response.data;
             if (this.activeCRMDetails.hasCustomForm
               && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
-                || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type)) {
+                || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type || "ZOHO" === this.activeCRMDetails.type)) {
               this.showCustomForm = true;
             } else if ("HALOPSA" === this.activeCRMDetails.type 
             && (this.actionType === "edit" || this.actionType === "view")) {
