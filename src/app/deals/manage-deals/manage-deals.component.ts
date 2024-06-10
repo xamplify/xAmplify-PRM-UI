@@ -20,6 +20,7 @@ import { Deal } from '../models/deal';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 declare var swal, $, videojs: any;
 
 
@@ -97,6 +98,20 @@ export class ManageDealsComponent implements OnInit {
   updateCurrentStage:boolean=false;
   currentDealToUpdateStage:Deal;
   textAreaDisable:boolean=false;
+
+  registeredByCompanyLoader = true;
+  isRegisteredByCompaniesLoadedSuccessfully = true;
+  registeredByCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  selectedRegisteredByCompanyId = 0;
+
+  registeredByUsersLoader = true;;
+  registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  isRegisteredByUsersLoadedSuccessfully = true;
+  selectedRegisteredByUserId = 0;
+
+  selectedRegisteredForCompanyId = 0;
+  registeredForCompaniesLoader = true;
+  registeredForCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -252,13 +267,13 @@ export class ManageDealsComponent implements OnInit {
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
-      //this.getVendorCounts();
-      //this.checkMicrosoftIntegration();  
       this.getActiveCRMDetails();
       this.showDeals();
       if (this.prm) {
         this.listView = true;
       }
+      this.findAllRegisteredByCompanies();
+      this.findAllRegisteredByUsers();
     } else {
       this.showPartner();
     }
@@ -266,9 +281,9 @@ export class ManageDealsComponent implements OnInit {
   showPartner() {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
-    //this.getPartnerCounts();
     this.showDeals();
     this.getActiveCRMDetails();
+    this.findAllRegisteredByUsersForPartnerView();
   }
 
   getVendorCounts() {
@@ -1311,6 +1326,72 @@ export class ManageDealsComponent implements OnInit {
   stageUpdateResponse(event:any){
     this.dealsResponse = (event === 200) ? new CustomResponse('SUCCESS', "Status Updated Successfully", true) : new CustomResponse('ERROR', "Invalid Input", true);
 
+  }
+
+  
+  findAllRegisteredByCompanies(){
+    this.registeredByCompanyLoader = true;
+    this.dealsService.findAllRegisteredByCompanies().subscribe(
+      response=>{
+        this.registeredByCompaniesSearchableDropDownDto.data = response.data;
+		    this.registeredByCompaniesSearchableDropDownDto.placeHolder = "Select "+DEAL_CONSTANTS.addedBy+" Company";
+        this.isRegisteredByCompaniesLoadedSuccessfully = true;
+        this.registeredByCompanyLoader = false;
+      },error=>{
+        this.registeredByCompanyLoader = false;
+        this.isRegisteredByCompaniesLoadedSuccessfully = false;
+      });
+  }
+
+  getSelectedRegisteredByCompanyId(event:any){
+    if(event!=null){
+			this.selectedRegisteredByCompanyId = event['id'];
+		}else{
+			this.selectedRegisteredByCompanyId = 0;
+		}
+  }
+
+  findAllRegisteredByUsers(){
+    this.registeredByUsersLoader = true;
+    this.dealsService.findAllRegisteredByUsers().subscribe(
+      response=>{
+        this.registeredByUsersSearchableDropDownDto.data = response.data;
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+DEAL_CONSTANTS.addedBy;
+        this.isRegisteredByUsersLoadedSuccessfully = true;
+        this.registeredByUsersLoader = false;
+      },error=>{
+        this.registeredByUsersLoader = false;
+        this.isRegisteredByUsersLoadedSuccessfully = false;
+      });
+  }
+
+  findAllRegisteredByUsersForPartnerView() {
+    this.registeredByUsersLoader = true;
+    this.dealsService.findAllRegisteredByUsersForPartnerView().subscribe(
+      response=>{
+        this.registeredByUsersSearchableDropDownDto.data = response.data;
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+DEAL_CONSTANTS.addedBy;
+        this.isRegisteredByUsersLoadedSuccessfully = true;
+        this.registeredByUsersLoader = false;
+      },error=>{
+        this.registeredByUsersLoader = false;
+        this.isRegisteredByUsersLoadedSuccessfully = false;
+      });
+  }
+
+  getSelectedRegisteredByUserId(event:any){
+    if(event!=null){
+			this.selectedRegisteredByUserId = event['id'];
+		}else{
+			this.selectedRegisteredByUserId = 0;
+		}
+  }
+  getSelectedRegisteredForCompanyId(event:any){
+    if(event!=null){
+			this.vendorCompanyIdFilter = event['id'];
+		}else{
+			this.vendorCompanyIdFilter = 0;
+		}
   }
 
 }
