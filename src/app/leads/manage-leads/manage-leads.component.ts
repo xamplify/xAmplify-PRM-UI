@@ -1298,7 +1298,6 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsService.getVendorList(this.loggedInUserId)
     .subscribe(
       response =>{
-        this.referenceService.loading(this.httpRequestLoader, false);
         this.vendorList = response.data;
         let dtos = [];
         $.each(this.vendorList,function(index:number,vendor:any){
@@ -1312,6 +1311,7 @@ export class ManageLeadsComponent implements OnInit {
         this.registeredForCompaniesSearchableDropDownDto.data = dtos;
         this.registeredForCompaniesSearchableDropDownDto.placeHolder = "Select Registered For";
         this.registeredForCompaniesLoader = false;
+        this.referenceService.loading(this.httpRequestLoader, false);
       },
       error=>{
         this.httpRequestLoader.isServerError = true;

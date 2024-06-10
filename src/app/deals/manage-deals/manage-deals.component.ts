@@ -474,15 +474,27 @@ export class ManageDealsComponent implements OnInit {
   }
 
   getVendorCompanies(){
-    this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.getVendorList(this.loggedInUserId)
     .subscribe(
       response =>{
-        this.referenceService.loading(this.httpRequestLoader, false);
         this.vendorList = response.data;
+        let dtos = [];
+        $.each(this.vendorList,function(index:number,vendor:any){
+          let id = vendor.companyId;
+          let name = vendor.companyName;
+          let dto = {};
+          dto['id'] = id;
+          dto['name'] = name;
+          dtos.push(dto);
+        });
+        this.registeredForCompaniesSearchableDropDownDto.data = dtos;
+        this.registeredForCompaniesSearchableDropDownDto.placeHolder = "Select Registered For";
+        this.registeredForCompaniesLoader = false;
+        this.referenceService.loading(this.httpRequestLoader, false);
       },
       error=>{
         this.httpRequestLoader.isServerError = true;
+        this.registeredForCompaniesLoader = false;
       },
       ()=> { }
     ); 
