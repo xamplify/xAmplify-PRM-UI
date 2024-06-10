@@ -33,10 +33,10 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="row">
-            <app-box-loader [countLoader]="4" *ngIf="countsLoader"></app-box-loader>
             <!--  Start Tiles-->
-            <div *ngIf="!countsLoader" class="col-xs-12 col-md-12 col-sm-12">
+            <div  class="col-xs-12 col-md-12 col-sm-12">
               <div class="page-bar" style="padding: 15px 15px 15px 0px">
+                <app-box-loader [countLoader]="3" *ngIf="countsLoader"></app-box-loader>
                 <!-- -------Total Deals------- -->
                 <div class="col-xs-12 col-sm-4 col-md-4 pr0 pb15 tiles_hover_effect" *ngIf="!countsLoader"
                   [style.pointer-events]="counts.totalDeals != 0 ? 'auto' : 'none' ">
@@ -436,6 +436,7 @@
                 </div>
 
                 <!-- -------------------- Campaign Level View -------------------- -->
+                <app-list-loader *ngIf="!listView && campaignRequestLoader?.isLoading"></app-list-loader>
                 <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0'
                   [hidden]="listView || campaignSortOption.totalRecords == 0 || campaignRequestLoader.isLoading || campaignRequestLoader.isServerError">
                   <div class="table-responsive pt_12" [hidden]="campaignRequestLoader.isLoading">

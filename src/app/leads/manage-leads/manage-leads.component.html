@@ -316,11 +316,9 @@
                   </div>
                 </div>  
 
-
                 <!-- -------------------- List View for Leads-------------------- -->
                 <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
                   [hidden]="!listView || leadsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
-
                   <div class="table-responsive pos_pd_top6" [hidden]="httpRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                       <thead>
