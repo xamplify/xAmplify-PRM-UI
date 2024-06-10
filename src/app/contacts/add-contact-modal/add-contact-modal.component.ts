@@ -302,6 +302,7 @@ contactCompanyChecking( event:any ) {
             this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
             this.addContactuser.legalBasis = this.contactDetails.legalBasis;
             this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;
+            this.addContactuser.accountName = this.contactDetails.accountName;
             this.addContactuser.accountSubType = this.contactDetails.accountSubType;
             this.addContactuser.accountOwner = this.contactDetails.accountOwner;
             this.addContactuser.companyDomain = this.contactDetails.companyDomain;

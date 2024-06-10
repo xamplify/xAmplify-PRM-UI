@@ -82,12 +82,23 @@
               <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue">
               </label>
               <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                <input type="accountName" style="border: none !important"
+                  class="form-control padding-mobile placeholder-bg-color" id="accountName"
+                  [(ngModel)]="addContactuser.accountName" [ngModelOptions]="{standalone: true}"
+                  placeholder="Account Name" maxlength="250">
+                <div class="textCss"></div>
+              </div>
+              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
                 <input type="accountOwner" style="border: none !important"
                   class="form-control padding-mobile placeholder-bg-color" id="accountOwner"
                   [(ngModel)]="addContactuser.accountOwner" [ngModelOptions]="{standalone: true}"
                   placeholder="Account Owner" maxlength="250">
                 <div class="textCss"></div>
               </div>
+            </div>
+            <div class="form-group mrg0 " *ngIf="isPartner">
+              <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue">
+              </label>
               <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
                 <input type="accountSubType" style="border: none !important"
                   class="form-control padding-mobile placeholder-bg-color" id="accountSubType"
@@ -95,12 +106,8 @@
                   placeholder="Account Sub Type" maxlength="250">
                 <div class="textCss"></div>
               </div>
-            </div>
-            <div class="form-group mrg0 " *ngIf="isPartner">
-              <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue">
-              </label>
-              <div class="form-group col-xs-10 col-sm-10 mrg0 field-width">
-                <input type="name" style="border: none !important"
+              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                <input type="companyDomain" style="border: none !important"
                   class="form-control padding-mobile placeholder-bg-color" id="companyDomain"
                   [(ngModel)]="addContactuser.companyDomain" [ngModelOptions]="{standalone: true}"
                   placeholder="Company Domain" maxlength="250">
