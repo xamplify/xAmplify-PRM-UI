@@ -99,7 +99,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
     this.leadsService.findAllRegisteredByUsersByCampaignIdAndPartnerCompanyId(this.campaignId,this.partnerCompanyId).subscribe(
       response=>{
         this.registeredByUsersSearchableDropDownDto.data = response.data;
-        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select Registered By";
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+LEAD_CONSTANTS.addedBy;
         this.isRegisteredByUsersLoadedSuccessfully = true;
         this.registeredByUsersLoader = false;
       },error=>{
