@@ -492,7 +492,6 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   stageNamesForVendor() {
-    this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.getStageNamesForVendor(this.loggedInUserId)
       .subscribe(
         response => {
@@ -501,7 +500,7 @@ export class ManageLeadsComponent implements OnInit {
         },
         error => {
           this.httpRequestLoader.isServerError = true;
-          this.referenceService.loading(this.httpRequestLoader, false);
+          this.isStatusLoadedSuccessfully = false;
         },
         () => { }
       );
@@ -1225,7 +1224,6 @@ export class ManageLeadsComponent implements OnInit {
       );
   }
   stageNamesForPartner(){
-    this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.getStageNamesForPartner(this.vanityLoginDto)
     .subscribe(
       response =>{
@@ -1450,8 +1448,6 @@ export class ManageLeadsComponent implements OnInit {
 			this.statusFilter = "";
 		}
   }
-
-
 
 
 }

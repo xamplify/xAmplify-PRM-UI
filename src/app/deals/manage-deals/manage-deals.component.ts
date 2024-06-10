@@ -78,7 +78,6 @@ export class ManageDealsComponent implements OnInit {
   filterMode: any = false;
   selectedFilterIndex: number = 1;
   stageNamesForFilterDropDown: any;
-  statusFilter: any;
   prm: boolean;
   vendorList = new Array();
   vendorCompanyIdFilter: any;
@@ -112,6 +111,11 @@ export class ManageDealsComponent implements OnInit {
   selectedRegisteredForCompanyId = 0;
   registeredForCompaniesLoader = true;
   registeredForCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+
+  statusFilter: any;
+  statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  statusLoader = true;
+  isStatusLoadedSuccessfully = true;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -418,20 +422,33 @@ export class ManageDealsComponent implements OnInit {
   }
 
   stageNamesForVendor() {
-    this.referenceService.loading(this.httpRequestLoader, true);
     this.dealsService.getStageNamesForVendor(this.loggedInUserId)
       .subscribe(
         response => {
-          this.referenceService.loading(this.httpRequestLoader, false);
-          this.stageNamesForFilterDropDown = response;
-
           this.fromDateFilter;
+          this.addSearchableStatus(response);
         },
         error => {
           this.httpRequestLoader.isServerError = true;
         },
         () => { }
       );
+  }
+
+  private addSearchableStatus(response: any) {
+    this.stageNamesForFilterDropDown = response;
+    let dtos = [];
+    $.each(this.stageNamesForFilterDropDown, function (index: number, value: any) {
+      let id = value;
+      let name = value;
+      let dto = {};
+      dto['id'] = id;
+      dto['name'] = name;
+      dtos.push(dto);
+    });
+    this.statusSearchableDropDownDto.data = dtos;
+    this.statusSearchableDropDownDto.placeHolder = "Select Status";
+    this.statusLoader = false;
   }
 
   listDealsForPartner(pagination: Pagination) {
@@ -498,10 +515,11 @@ export class ManageDealsComponent implements OnInit {
     this.dealsService.getStageNamesForPartnerByVendorCompanyId(this.loggedInUserId, vendorCompanyId)
       .subscribe(
         response => {
-          this.stageNamesForFilterDropDown = response;
+          this.addSearchableStatus(response);
         },
         error => {
           this.httpRequestLoader.isServerError = true;
+          this.isStatusLoadedSuccessfully = false;
         },
         () => { }
       );
@@ -1425,6 +1443,14 @@ export class ManageDealsComponent implements OnInit {
 			this.vendorCompanyIdFilter = event['id'];
 		}else{
 			this.vendorCompanyIdFilter = 0;
+		}
+  }
+
+  getSelectedStatus(event:any){
+    if(event!=null){
+			this.statusFilter = event['id'];
+		}else{
+			this.statusFilter = "";
 		}
   }
 
