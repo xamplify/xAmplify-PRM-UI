@@ -205,74 +205,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                  <div class="col-xs-12 col-sm-12">
-                    <div class="portlet light m10">
-                      <div class="portlet-title">
-                        <div class="caption" translate>Apply Filter</div>
-                        <button type="button" class="close-circle" style="margin-left: 10px;"
-                          (click)="closeFilterOption()">
-                          <i class="fa fa-times" aria-hidden="true"></i>
-                        </button>
-                        <div class="form-group" style="text-align: -webkit-right;">
-                          <button class="button bgcolor-unset neg_mrgn_top4 mrgn_top0" translate="" type="button"
-                            ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()"><span
-                              class="btn Btn-Green transition txt_pd-top3">Filter</span></button>
-                        </div>
-                      </div>
-                      <div class="portlet box">
-                        <app-response-message class="pg8" [customResponse]="filterResponse"
-                          *ngIf="filterResponse.isVisible">
-                        </app-response-message>
-                        <form role="form" class="form-horizontal form-bordered form-label-stripped">
-                          <div class="form-group">
-                            <div class="form-inline col-sm-12 ">
-                              <div class="form-group col-lg-5 col-md-5 col-sm-6 col-xs-12">
-                                <label class="control-label">From Date &nbsp;
-                                </label>
-                                <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
-                                </app-date-picker>
-                              </div>
-                              <div class="form-group col-lg-5 col-md-5 col-sm-6 col-xs-12 form-group-mr">
-                                <label class="control-label">To Date &nbsp;
-                                </label>
-                                <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
-                                </app-date-picker>
-                              </div>
-                              <div class="row" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
-                                <div class="form-group col-lg-5 col-md-5 col-sm-6 col-xs-12 ml0-mr0"
-                                  style="margin-top: 13px;padding-left: 30px;display: flex;">
-                                  <label class="control-label" style="padding-right: 5px;">Registered For &nbsp;</label>
-                                  <select class="form-control select-width FilerFormWidth"
-                                    [(ngModel)]="vendorCompanyIdFilter" (ngModelChange)="onChangeVendorCompany()"
-                                    [ngModelOptions]="{standalone: true}">
-                                    <option value="">---Select Company---</option>
-                                    <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">
-                                      {{vendor.companyName}}
-                                    </option>
-                                  </select>
-                                </div>
-                              </div>
-
-                              <div class="row">
-                                <div class="form-group col-lg-5 col-md-5 col-sm-6 col-xs-12 ml0-mr0"
-                                  style="margin-top: 13px;padding-left: 54px;;display: flex;">
-                                  <label class="control-label" style="padding-right: 5px;">Status &nbsp; </label>
-                                  <select class="form-control select-width FilerFormWidth" [(ngModel)]="statusFilter"
-                                    [ngModelOptions]="{standalone: true}">
-                                    <option value="">---Select Status---</option>
-                                    <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
-                                    </option>
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
                 <!-- -------------------- Apply Filters Box-------------------- -->
                 <div  class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -498,15 +431,13 @@
                   </div>
 
                 </section>
-                <div *ngIf="listView && !httpRequestLoader.isLoading && dealsSortOption.totalRecords==0"
-                  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-info">
-                  <strong translate>No Deals Found.</strong>
+                <div *ngIf="listView && !httpRequestLoader.isLoading && dealsSortOption.totalRecords==0" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-info">
+                  <strong>No Deals Found.</strong>
                 </div>
 
                 <!-- -------------------- Campaign Level View -------------------- -->
                 <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0'
                   [hidden]="listView || campaignSortOption.totalRecords == 0 || campaignRequestLoader.isLoading || campaignRequestLoader.isServerError">
-
                   <div class="table-responsive pt_12" [hidden]="campaignRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                       <thead>

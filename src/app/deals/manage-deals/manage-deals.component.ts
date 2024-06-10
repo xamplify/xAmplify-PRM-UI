@@ -1005,6 +1005,9 @@ export class ManageDealsComponent implements OnInit {
     this.dealsPagination.toDateFilterString = "";
     this.dealsPagination.stageFilter = "";
     this.dealsPagination.vendorCompanyId = undefined;
+    this.dealsPagination.vendorCompanyId = 0;
+    this.dealsPagination.registeredByCompanyId = 0;
+    this.dealsPagination.registeredByUserId = 0;
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.dealsPagination.pageIndex = 1;
@@ -1014,57 +1017,88 @@ export class ManageDealsComponent implements OnInit {
   }
 
   validateDateFilters() {
-    if ((this.statusFilter == undefined || this.statusFilter == "") && 
-    (this.fromDateFilter == undefined || this.fromDateFilter == "") &&
-      (this.toDateFilter == undefined || this.toDateFilter == "") && 
-      (this.vendorCompanyIdFilter == undefined || this.vendorCompanyIdFilter == "")) {
+    let isInvalidStatusFilter = this.statusFilter == undefined || this.statusFilter == "";
+    let isValidStatusFilter = this.statusFilter != undefined && this.statusFilter != "";
+    let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
+    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
+    let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
+    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
+    let isInvalidCompanyIdFilter = this.vendorCompanyIdFilter == undefined || this.vendorCompanyIdFilter == 0;
+    let isValidCompanyIdFilter = this.vendorCompanyIdFilter != undefined && this.vendorCompanyIdFilter>0;
+    let isInValidRegisteredByCompanyFilter = this.selectedRegisteredByCompanyId==undefined || this.selectedRegisteredByCompanyId==0;
+    let isValidRegisteredByCompanyFilter = this.selectedRegisteredByCompanyId!=undefined && this.selectedRegisteredByCompanyId>0;
+    let isInValidRegisteredByUserFilter = this.selectedRegisteredByUserId==undefined || this.selectedRegisteredByUserId==0;
+    let isValidRegisteredByUserFilter = this.selectedRegisteredByUserId!=undefined && this.selectedRegisteredByUserId>0;
+    if (isInvalidStatusFilter && isEmptyFromDateFilter && isEmptyToDateFilter && isInvalidCompanyIdFilter
+       && isInValidRegisteredByCompanyFilter && isInValidRegisteredByUserFilter) {
         this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
-  } else { 
-    let validDates = false;   
-    if ((this.fromDateFilter == undefined || this.fromDateFilter == "") 
-      && (this.toDateFilter == undefined || this.toDateFilter == "")) {
-        validDates = true;
-    } else if (this.fromDateFilter != undefined && this.fromDateFilter != "" && 
-      (this.toDateFilter == undefined || this.toDateFilter == "")) {
-        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
-    } else if (this.toDateFilter != undefined && this.toDateFilter != "" && 
-      (this.fromDateFilter == undefined || this.fromDateFilter == "")) {
-        this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-    } else {
-      var toDate = Date.parse(this.toDateFilter);
-      var fromDate = Date.parse(this.fromDateFilter);
-      if (fromDate <= toDate) {
-        validDates = true;
+    } else { 
+      let validDates = false;   
+      if (isEmptyFromDateFilter && isEmptyToDateFilter ) {
+          validDates = true;
+      } else if (isValidFromDateFilter && isEmptyToDateFilter ) {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      } else if (isValidToDateFilter && isEmptyFromDateFilter) {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+      } else {
+        var toDate = Date.parse(this.toDateFilter);
+        var fromDate = Date.parse(this.fromDateFilter);
+        if (fromDate <= toDate) {
+          validDates = true;
+          this.dealsPagination.pageIndex = 1;
+          this.dealsPagination.maxResults = 12;
+          this.dealsPagination.fromDateFilterString = this.fromDateFilter;
+          this.dealsPagination.toDateFilterString = this.toDateFilter;
+        } else {
+          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+        }        
+      }
+
+      if (validDates) {
+        this.filterStatus(isValidStatusFilter);
+        this.filterVendorCompanyId(isValidCompanyIdFilter);
+        this.filterRegisteredByCompanyId(isValidRegisteredByCompanyFilter);
+        this.filterRegisteredByUserId(isValidRegisteredByUserFilter);
         this.dealsPagination.pageIndex = 1;
         this.dealsPagination.maxResults = 12;
-        this.dealsPagination.fromDateFilterString = this.fromDateFilter;
-        this.dealsPagination.toDateFilterString = this.toDateFilter;
-      } else {
-        this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
-      }        
-    }
-
-    if (validDates) {
-      if (this.vendorCompanyIdFilter != undefined && this.vendorCompanyIdFilter != "") {
-        this.dealsPagination.vendorCompanyId = this.vendorCompanyIdFilter;
-      }
-
-      if (this.statusFilter != undefined && this.statusFilter != "") {
-        this.dealsPagination.stageFilter = this.statusFilter;
-      }
-      else {
-        this.dealsPagination.stageFilter = "";
-      }
-      this.dealsPagination.pageIndex = 1;
-      this.dealsPagination.maxResults = 12;
-      this.filterMode = true;
+        this.filterMode = true;
         this.filterResponse.isVisible = false;
         this.listDeals(this.dealsPagination);
+      }
+      
     }
-    
-  }
-  }
+}
   
+
+  private filterRegisteredByUserId(isValidRegisteredByUserFilter: boolean) {
+    this.dealsPagination.registeredByUserId = 0;
+    if (isValidRegisteredByUserFilter) {
+      this.dealsPagination.registeredByUserId = this.selectedRegisteredByUserId;
+    }
+  }
+
+  private filterRegisteredByCompanyId(isValidRegisteredByCompanyFilter: boolean) {
+    this.dealsPagination.registeredByCompanyId = 0;
+    if (isValidRegisteredByCompanyFilter) {
+      this.dealsPagination.registeredByCompanyId = this.selectedRegisteredByCompanyId;
+    }
+  }
+
+  private filterStatus(isValidStatusFilter:boolean) {
+    if (isValidStatusFilter) {
+      this.dealsPagination.stageFilter = this.statusFilter;
+    }else {
+      this.dealsPagination.stageFilter = "";
+    }
+  }
+
+  private filterVendorCompanyId(isValidCompanyIdFilter) {
+    if (isValidCompanyIdFilter) {
+      this.dealsPagination.vendorCompanyId = this.vendorCompanyIdFilter;
+    }else {
+      this.dealsPagination.vendorCompanyId = 0;
+    }
+  }
   setListView() {
     this.listView = true;
     this.closeFilterOption();
