@@ -29,11 +29,11 @@
         </div>
       </div>
       <div class="row">
-        <app-box-loader [countLoader]="4" *ngIf="countsLoader"></app-box-loader>
-        <div class="col-xs-12  p5" *ngIf="!countsLoader">
+        <div class="col-xs-12  p5">
           <div class="page-bar" style="padding: 15px 0px 15px 15px;">
-            <!-- -------Total Leads------- -->
-            <div class="col-xs-6 col-sm-3 col-md-3 tiles_hover_effect" style="padding-left: 0px!important;"
+            <app-box-loader [countLoader]="4" *ngIf="countsLoader"></app-box-loader>
+            <ng-container *ngIf="!countsLoader">
+              <div class="col-xs-6 col-sm-3 col-md-3 tiles_hover_effect" style="padding-left: 0px!important;"
               *ngIf="!countsLoader" [style.pointer-events]="counts.totalLeads != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important;"
                 [class.greay]="1!=selectedTabIndex" (click)="showLeads()">
@@ -118,7 +118,7 @@
                 </span>
               </a>
             </div>
-
+            </ng-container>
           </div>
         </div>
       </div>
