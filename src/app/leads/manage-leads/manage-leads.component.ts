@@ -81,7 +81,7 @@ export class ManageLeadsComponent implements OnInit {
   selectedFilterIndex: number = 1;
   lead:any;
   stageNamesForFilterDropDown: any;
-  statusFilter: any;
+  
   prm: boolean;
   syncMicrosoft: boolean = false;
   activeCRMDetails: any;
@@ -100,7 +100,7 @@ export class ManageLeadsComponent implements OnInit {
   registeredByCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   selectedRegisteredByCompanyId = 0;
 
-  registeredByUsersLoader = true;;
+  registeredByUsersLoader = true;
   registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   isRegisteredByUsersLoadedSuccessfully = true;
   selectedRegisteredByUserId = 0;
@@ -108,6 +108,13 @@ export class ManageLeadsComponent implements OnInit {
   selectedRegisteredForCompanyId = 0;
   registeredForCompaniesLoader = true;
   registeredForCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+
+  statusFilter: any;
+  statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  statusLoader = true;
+  isStatusLoadedSuccessfully = true;
+
+
   
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -489,9 +496,8 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsService.getStageNamesForVendor(this.loggedInUserId)
       .subscribe(
         response => {
-          this.stageNamesForFilterDropDown = response;
           this.fromDateFilter;
-          this.referenceService.loading(this.httpRequestLoader, false);
+          this.addSearchableStatus(response);
         },
         error => {
           this.httpRequestLoader.isServerError = true;
@@ -499,6 +505,23 @@ export class ManageLeadsComponent implements OnInit {
         },
         () => { }
       );
+  }
+
+  private addSearchableStatus(response: any) {
+    this.stageNamesForFilterDropDown = response;
+    let dtos = [];
+    $.each(this.stageNamesForFilterDropDown, function (index: number, value: any) {
+      let id = value;
+      let name = value;
+      let dto = {};
+      dto['id'] = id;
+      dto['name'] = name;
+      dtos.push(dto);
+    });
+    this.statusSearchableDropDownDto.data = dtos;
+    this.statusSearchableDropDownDto.placeHolder = "Select Status";
+    this.statusLoader = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
   }
 
   listLeadsForPartner(pagination: Pagination) {
@@ -1206,11 +1229,13 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsService.getStageNamesForPartner(this.vanityLoginDto)
     .subscribe(
       response =>{
-        this.referenceService.loading(this.httpRequestLoader, false);
         this.stageNamesForFilterDropDown = response;
+        this.addSearchableStatus(response);
       },
       error=>{
         this.httpRequestLoader.isServerError = true;
+        this.isStatusLoadedSuccessfully = false;
+
       },
       ()=> { }
     ); 
@@ -1415,6 +1440,14 @@ export class ManageLeadsComponent implements OnInit {
 			this.vendorCompanyIdFilter = event['id'];
 		}else{
 			this.vendorCompanyIdFilter = 0;
+		}
+  }
+
+  getSelectedStatus(event:any){
+    if(event!=null){
+			this.statusFilter = event['id'];
+		}else{
+			this.statusFilter = "";
 		}
   }
 
