@@ -65,17 +65,22 @@
                   <app-date-picker  [(dataField)]="fromDateFilter" [isFromFilter]='true'></app-date-picker>
                 </div>
               </div>
-              
-              <!--Status-->
-              <div class="form-group">
+               <!--Status-->
+               <div class="form-group">
                 <label class="control-label col-sm-5">Status</label>
                 <div class="col-sm-7">
-                  <select class="form-control" [(ngModel)]="statusFilter"[ngModelOptions]="{standalone: true}">
-                    <option value="">---Select Status---</option>
-                    <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}} </option>
-                  </select>
+                  <p class="mt--10px" *ngIf="statusLoader">
+                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading {{LEAD_CONSTANTS.addedBy}}...</strong>
+                  </p>
+                  <app-searchable-dropdown *ngIf="!statusLoader && isStatusLoadedSuccessfully" [searchableDropDownDto]="statusSearchableDropDownDto" [id]="statusFilter"
+                    [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedStatus($event)">
+                  </app-searchable-dropdown>
+                  <p class="required" *ngIf="!statusLoader && !isStatusLoadedSuccessfully">
+                    <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
+                  </p>
                 </div>
               </div>
+
             </div>
             
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -101,16 +106,12 @@
                   </p>
                 </div>
               </div>
-
             </div>
         </form>
       </div>
     </div>
   </div>
 </div>  
-
-
-
 
 <section class='m10' *ngIf="leadsSortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
   <div class="table-responsive">
