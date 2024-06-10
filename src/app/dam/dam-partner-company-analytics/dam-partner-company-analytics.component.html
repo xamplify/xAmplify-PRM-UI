@@ -81,6 +81,12 @@
                         <h4 class="mt5 mb5 f-w-600 analytics-tooltip" data-toggle="tooltip" data-placement="bottom" title="{{company?.companyName}}">
                           <span><strong>{{company?.companyName}}</strong></span>
                         </h4>
+                        <h5>
+                          <strong> Company Name By Vendor :
+                             <span title="{{company?.contactCompany}}">{{company?.contactCompany | slice:0:50}}</span>
+                             <span *ngIf="company?.contactCompany.length>50">...</span>
+                          </strong>
+                       </h5>
                       </td>
                       <td class="text-center">{{company?.viewCount}}</td>
                       <td class="text-center">{{company?.downloadCount}}</td>
@@ -122,7 +128,7 @@
 <ng-template #partnerCompanyTable>
   <thead>
     <tr>
-      <th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
+      <th class="hidden-xs" colspan="2" style="width: 45%" id="border-bottom">
         <span *ngIf="isPublished" class="ui-column-resizer gray" (mousedown)="referenceService?.onMouseDown($event,'dam-partner-companies',2)">
         </span>
         <span class="gridHeader">Company</span>

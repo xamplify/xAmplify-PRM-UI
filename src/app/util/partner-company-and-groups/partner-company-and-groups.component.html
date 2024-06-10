@@ -114,6 +114,14 @@
                         <td class="text-center">
                           <span>{{partner?.companyName | slice:0:20}}</span>
                           <span *ngIf="partner?.companyName.length>20">...</span>
+                          <h5>
+                            <strong>
+                               Company Name By Vendor :
+                               <span title="{{partner?.companyNameAddedByVendor}}">{{partner?.companyNameAddedByVendor
+                                  | slice:0:50}}</span>
+                               <span *ngIf="partner?.companyNameAddedByVendor.length>50">...</span>
+                            </strong>
+                         </h5>
                         </td>
                         <td>
                           <app-timestamp [dateAndTime]="partner?.displayTime">
