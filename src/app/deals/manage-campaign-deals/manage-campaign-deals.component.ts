@@ -11,6 +11,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { Deal } from '../models/deal';
 import { EventEmitter } from '@angular/core';
 import { LEAD_CONSTANTS } from './../../constants/lead.constants';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 
 declare var swal, $, videojs: any;
 
@@ -56,6 +57,13 @@ export class ManageCampaignDealsComponent implements OnInit {
   currentDealToUpdateStage:Deal;
   textAreaDisable:boolean = false;
   readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
+
+  /***09/06/2024****/
+  registeredByUsersLoader = true;;
+  registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  isRegisteredByUsersLoadedSuccessfully = true;
+  selectedRegisteredByUserId = 0;
+
   constructor(public authenticationService: AuthenticationService,
     private dealsService: DealsService, public referenceService: ReferenceService, public pagerService: PagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -75,6 +83,8 @@ export class ManageCampaignDealsComponent implements OnInit {
         this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
       }      
       this.listCampaignDeals(this.dealsPagination);
+      /*****Registered By Users*****/   
+      this.findAllRegisteredByUsers();
     }
   }
 
@@ -535,6 +545,21 @@ downloadDeals(pagination: Pagination){
         );
 }
 
+ /*****Registered By Users*****/     
+ findAllRegisteredByUsers(){
+  this.registeredByUsersLoader = true;
+  this.dealsService.findAllRegisteredByUsersByCampaignIdAndPartnerCompanyId(this.campaignId,this.partnerCompanyId)
+  .subscribe(
+    response=>{
+      this.registeredByUsersSearchableDropDownDto.data = response.data;
+      this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+LEAD_CONSTANTS.addedBy;
+      this.isRegisteredByUsersLoadedSuccessfully = true;
+      this.registeredByUsersLoader = false;
+    },error=>{
+      this.registeredByUsersLoader = false;
+      this.isRegisteredByUsersLoadedSuccessfully = false;
+    });
+}
 
 
 }
