@@ -33,8 +33,8 @@
                     </h5>
                   </div>
                 <!--Registered Details-->
-                  <div class="underline mt5"><strong>Registered By:</strong></div>
-                  <h5 class="mt10 mb0" *ngIf="createdByName " [title]="createdByName">
+                  <div class="underline mt5"><strong>{{DEAL_CONSTANTS?.addedBy}}:</strong></div>
+                  <h5 class="mt10 mb0" *ngIf="createdByName" [title]="createdByName">
                     <span><strong>Name</strong></span>: {{createdByName | slice:0:25}}
                     <span *ngIf="createdByName.length>25">..</span>
                   </h5>
