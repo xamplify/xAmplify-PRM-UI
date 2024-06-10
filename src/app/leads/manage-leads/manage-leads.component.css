@@ -175,3 +175,7 @@ select .e-input::-ms-input-placeholder {
   font-size: 15px;
   color: grey;
 }
+.view-type-css{
+  float: right;
+  margin-top: 5px;
+}
