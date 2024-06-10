@@ -1968,3 +1968,17 @@ p.layoutcontent {
 .hide{
   display: none !important;
 }
+.profile-pic {
+  position: absolute;
+  margin-top: 15px;
+  left: 10px;
+  border: none;
+}
+.upload-imgheight {
+  height: 115px;
+}
+.dotted-image-border {
+  cursor: pointer;
+  text-align: center;
+  color: #fff;
+}

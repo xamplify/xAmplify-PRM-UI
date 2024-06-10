@@ -353,6 +353,8 @@ export class HomeComponent implements OnInit {
 
   maincontentCustom: ThemePropertiesDto = new ThemePropertiesDto();
 
+  buttonCustomizationForm: ThemePropertiesDto = new ThemePropertiesDto();
+
   activeThemeDto: ThemeDto = new ThemeDto();
   getThemeDtoByID(id: number) {
     this.loader = true;
@@ -390,6 +392,7 @@ export class HomeComponent implements OnInit {
           this.footerCustom = skinMap.FOOTER;
           this.footerSkin = skinMap.FOOTER;
           this.maincontentCustom = skinMap.MAIN_CONTENT;
+          this.buttonCustomizationForm = skinMap.BUTTON_CUSTOMIZE;
           this.authenticationService.isLeft = !activeThemeDto.defaultTheme;
           this.authenticationService.isTop = !activeThemeDto.defaultTheme;
           this.authenticationService.isFoter = !activeThemeDto.defaultTheme;
@@ -422,55 +425,64 @@ export class HomeComponent implements OnInit {
             && activeThemeDto.name === "Glassomorphism Dark" && !this.router.url.includes('home/help')) {
             this.authenticationService.isDarkForCharts = true;
             require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-dark.css");
-          } else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && activeThemeDto.parentId === 4 && !this.router.url.includes('home/help')) {
-            //NeumorphismDark(Beta) customisazation
-            require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-dark.css");
-            require("style-loader!../../../assets/admin/layout2/css/themes/buttons-icons-customization.css");
-          }
+          } 
           else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && !this.router.url.includes('home/help')) {
-            document.documentElement.style.setProperty('--top-bg-color', this.topCustom.backgroundColor);
-            document.documentElement.style.setProperty('--top-buton-color', this.topCustom.buttonColor);
-            document.documentElement.style.setProperty('--top-button-border-color', this.topCustom.buttonBorderColor);
-            document.documentElement.style.setProperty('--top-button-value-color', this.topCustom.buttonValueColor);
-            document.documentElement.style.setProperty('--top-button-icon-color', this.topCustom.iconColor);
-            require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-header.css");
-            document.documentElement.style.setProperty('--left-bg-color', this.leftCustom.backgroundColor);
-            document.documentElement.style.setProperty('--left-text-color', this.leftCustom.textColor);
-            document.documentElement.style.setProperty('--left-border-color', this.leftCustom.buttonBorderColor);
-            document.documentElement.style.setProperty('--left-icon-color', this.leftCustom.iconColor);
-            require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-left-side-bar.css");
+            if (activeThemeDto.parentThemeName == 'LIGHT' || activeThemeDto.parentThemeName == 'DARK') {
+              document.documentElement.style.setProperty('--top-bg-color', this.topCustom.backgroundColor);
+              document.documentElement.style.setProperty('--top-buton-color', this.topCustom.buttonColor);
+              document.documentElement.style.setProperty('--top-button-border-color', this.topCustom.buttonBorderColor);
+              document.documentElement.style.setProperty('--top-button-value-color', this.topCustom.buttonValueColor);
+              document.documentElement.style.setProperty('--top-button-icon-color', this.topCustom.iconColor);
+              require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-header.css");
+              document.documentElement.style.setProperty('--left-bg-color', this.leftCustom.backgroundColor);
+              document.documentElement.style.setProperty('--left-text-color', this.leftCustom.textColor);
+              document.documentElement.style.setProperty('--left-border-color', this.leftCustom.buttonBorderColor);
+              document.documentElement.style.setProperty('--left-icon-color', this.leftCustom.iconColor);
+              require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-left-side-bar.css");
 
-            document.documentElement.style.setProperty('--footer-bg-color', this.footerSkin.backgroundColor);
-            document.documentElement.style.setProperty('--footer-text-color', this.footerSkin.textColor);
-            document.documentElement.style.setProperty('--footer-border-color', this.footerSkin.buttonBorderColor);
-            require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-footer.css");
-            document.documentElement.style.setProperty('--page-content', this.maincontentCustom.backgroundColor);
-            document.documentElement.style.setProperty('--div-bg-color', this.maincontentCustom.divBgColor);
-            document.documentElement.style.setProperty('--title-heading--text', this.maincontentCustom.textColor);
-            document.documentElement.style.setProperty('--border-color', this.maincontentCustom.buttonBorderColor);
-            document.documentElement.style.setProperty('---text-color', this.maincontentCustom.textColor);
-            document.documentElement.style.setProperty('--btn-primary-bg-color', this.maincontentCustom.buttonColor);
-            document.documentElement.style.setProperty('--btn-primary-border-color', this.maincontentCustom.buttonPrimaryBorderColor);
-            document.documentElement.style.setProperty('--btn-primary-text-color', this.maincontentCustom.buttonValueColor);
-            document.documentElement.style.setProperty('--btn-secondary-text-color', this.maincontentCustom.buttonSecondaryTextColor);
-            document.documentElement.style.setProperty('--btn-secondary-border-color', this.maincontentCustom.buttonSecondaryBorderColor);
-            document.documentElement.style.setProperty('--btn-secondary-bg-color', this.maincontentCustom.buttonSecondaryColor);
-            document.documentElement.style.setProperty('--button-primary-bg-color', this.maincontentCustom.buttonColor);
-            document.documentElement.style.setProperty('--button-primary-border-color', this.maincontentCustom.buttonPrimaryBorderColor);
-            document.documentElement.style.setProperty('--button-primary-text-color', this.maincontentCustom.buttonValueColor);
-            document.documentElement.style.setProperty('--button-secondary-bg-color', this.maincontentCustom.buttonSecondaryColor);
-            document.documentElement.style.setProperty('--button-secondary-border-color', this.maincontentCustom.buttonSecondaryBorderColor);
-            document.documentElement.style.setProperty('--button-secondary-text-color', this.maincontentCustom.buttonSecondaryTextColor);
-            document.documentElement.style.setProperty('--icon-color', this.maincontentCustom.iconColor);
-            document.documentElement.style.setProperty('--icon-border-color', this.maincontentCustom.iconBorderColor);
-            document.documentElement.style.setProperty('--icon-hover-color', this.maincontentCustom.iconHoverColor);
-            require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-main-content.css");
-
+              document.documentElement.style.setProperty('--footer-bg-color', this.footerSkin.backgroundColor);
+              document.documentElement.style.setProperty('--footer-text-color', this.footerSkin.textColor);
+              document.documentElement.style.setProperty('--footer-border-color', this.footerSkin.buttonBorderColor);
+              require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-footer.css");
+              document.documentElement.style.setProperty('--page-content', this.maincontentCustom.backgroundColor);
+              document.documentElement.style.setProperty('--div-bg-color', this.maincontentCustom.divBgColor);
+              document.documentElement.style.setProperty('--title-heading--text', this.maincontentCustom.textColor);
+              document.documentElement.style.setProperty('--border-color', this.maincontentCustom.buttonBorderColor);
+              document.documentElement.style.setProperty('---text-color', this.maincontentCustom.textColor);
+              document.documentElement.style.setProperty('--btn-primary-bg-color', this.maincontentCustom.buttonColor);
+              document.documentElement.style.setProperty('--btn-primary-border-color', this.maincontentCustom.buttonPrimaryBorderColor);
+              document.documentElement.style.setProperty('--btn-primary-text-color', this.maincontentCustom.buttonValueColor);
+              document.documentElement.style.setProperty('--btn-secondary-text-color', this.maincontentCustom.buttonSecondaryTextColor);
+              document.documentElement.style.setProperty('--btn-secondary-border-color', this.maincontentCustom.buttonSecondaryBorderColor);
+              document.documentElement.style.setProperty('--btn-secondary-bg-color', this.maincontentCustom.buttonSecondaryColor);
+              document.documentElement.style.setProperty('--button-primary-bg-color', this.maincontentCustom.buttonColor);
+              document.documentElement.style.setProperty('--button-primary-border-color', this.maincontentCustom.buttonPrimaryBorderColor);
+              document.documentElement.style.setProperty('--button-primary-text-color', this.maincontentCustom.buttonValueColor);
+              document.documentElement.style.setProperty('--button-secondary-bg-color', this.maincontentCustom.buttonSecondaryColor);
+              document.documentElement.style.setProperty('--button-secondary-border-color', this.maincontentCustom.buttonSecondaryBorderColor);
+              document.documentElement.style.setProperty('--button-secondary-text-color', this.maincontentCustom.buttonSecondaryTextColor);
+              document.documentElement.style.setProperty('--icon-color', this.maincontentCustom.iconColor);
+              document.documentElement.style.setProperty('--icon-border-color', this.maincontentCustom.iconBorderColor);
+              document.documentElement.style.setProperty('--icon-hover-color', this.maincontentCustom.iconHoverColor);
+              require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-main-content.css");
+            } else {
+              if (activeThemeDto.parentThemeName === 'NEUMORPHISMDARK') {
+                require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-dark.css");
+              } else if (activeThemeDto.parentThemeName === 'NEUMORPHISMLIGHT') {
+                require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-light.css");
+              } else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMDARK') {
+                require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-dark.css");
+              } else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMLIGHT') {
+                require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-light.css");
+              }
+              document.documentElement.style.setProperty('--custom-buttonbg-color', this.buttonCustomizationForm.buttonColor);
+              document.documentElement.style.setProperty('--custom-text-color', this.buttonCustomizationForm.buttonValueColor);
+              document.documentElement.style.setProperty('--custom-border-color', this.buttonCustomizationForm.buttonBorderColor);
+              document.documentElement.style.setProperty('--custom-gradient-one-color', this.buttonCustomizationForm.gradiantColorOne);
+              document.documentElement.style.setProperty('--custom-gradient-two-color', this.buttonCustomizationForm.gradiantColorTwo);
+              require("style-loader!../../../assets/admin/layout2/css/themes/buttons-icons-customization.css");
+            }
           }
-
-
-
-
         }, error => {
           this.loader = false;
         });

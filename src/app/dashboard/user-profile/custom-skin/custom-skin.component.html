@@ -23,7 +23,7 @@
 			style="float: right;">
 			<button class="button_blue padding align bgcolor-unset" [ngClass]="(isValid  || isValidContactName || headerBg.hasError('required')|| footerText.hasError('required') || footerBg.hasError('required') || name.hasError('required')) ||
 		mainText.hasError('required') || mainCardBg.hasError('required') || mainBg.hasError('required') || btnColor.hasError('required') || btnBorderColor.hasError('required') || btnName.hasError('required')
-		|| leftBg.hasError('required') || leftBorder.hasError('required') || btnBgColor.hasError('required') || btnPrimaryBorderColor.hasError('required') || btnValueColor.hasError('required') || btnSecondaryBgColor.hasError('required') || btnSecondaryBorderColor.hasError('required') || btnSecondaryTextColor.hasError('required') || leftIcon.hasError('required') || mainBorder.hasError('required') || iconColors.hasError('required') || iconBorder.hasError('required') || leftText.hasError('required')
+		|| leftBg.hasError('required') || leftBorder.hasError('required') || btnBgColor.hasError('required') || btnPrimaryBorderColor.hasError('required') || btnValueColor.hasError('required') || btnSecondaryBgColor.hasError('required') || btnSecondaryBorderColor.hasError('required') || btnSecondaryTextColor.hasError('required') || leftIcon.hasError('required') || mainBorder.hasError('required') || iconColors.hasError('required') || iconBorder.hasError('required') || leftText.hasError('required') || gradientOne.hasError('required') || gradientTwo.hasError('required') || customBgColor.hasError('required') || customBorderColor.hasError('required') || customBtnNameName.hasError('required')
 		?'disabled':''" [disabled]="isValid || isValidContactName || name.hasError('required') " id="sample_editable_1_new"
 				style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme"
 				(click)="getThemePropertiesWrapperObj(form)"><span
@@ -31,7 +31,19 @@
 			<button class="button_blue padding align bgcolor-unset" [ngClass]="isValid ?'disabled':''"
 				[disabled]="isValid || isValidContactName || headerBg.hasError('required')|| footerText.hasError('required') || footerBg.hasError('required') || name.hasError('required') || 
 		mainText.hasError('required') || mainCardBg.hasError('required') || mainBg.hasError('required') || btnColor.hasError('required') || btnBorderColor.hasError('required') || btnName.hasError('required')
-		|| leftBg.hasError('required') || leftBorder.hasError('required') || btnBgColor.hasError('required') ||btnPrimaryBorderColor.hasError('required') || btnValueColor.hasError('required') || btnSecondaryBgColor.hasError('required') || btnSecondaryBorderColor.hasError('required') || btnSecondaryTextColor.hasError('required') || leftIcon.hasError('required') || mainBorder.hasError('required') || iconColors.hasError('required') || iconBorder.hasError('required') || leftText.hasError('required')"
+		|| leftBg.hasError('required') || leftBorder.hasError('required') || btnBgColor.hasError('required') || btnPrimaryBorderColor.hasError('required') || btnValueColor.hasError('required') || btnSecondaryBgColor.hasError('required') || btnSecondaryBorderColor.hasError('required') || btnSecondaryTextColor.hasError('required') || leftIcon.hasError('required') || mainBorder.hasError('required') || iconColors.hasError('required') || iconBorder.hasError('required') || leftText.hasError('required') "
+				style="border-radius: 3px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme" (click)="update()"><span
+					class="btn btn-primary transition text_pd-top1">Update</span></button>
+		</div>
+		<div class="btn-group" [ngClass]="isValidContactName || name.hasError('required') ? 'm-top-70':'m-top-50'" *ngIf="themeDTO?.parentThemeName != 'LIGHT' && themeDTO?.parentThemeName != 'DARK'" style="float: right;">
+			<button class="button_blue padding align bgcolor-unset" [ngClass]="(isValid  || isValidContactName ||name.hasError('required')) || gradientOne.hasError('required') || gradientTwo.hasError('required') || customBgColor.hasError('required') || customBorderColor.hasError('required') || customBtnNameName.hasError('required')?'disabled':'' "
+			[disabled]="isValid || isValidContactName || name.hasError('required') " id="sample_editable_1_new"
+				style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme"
+				(click)="getThemePropertiesWrapperObj(form)">
+				<span class="btn btn-primary transition text_pd-top1">Save</span>
+			</button>
+			<button class="button_blue padding align bgcolor-unset" [ngClass]="isValid ?'disabled':''"
+				[disabled]="isValid || isValidContactName || gradientOne.hasError('required') || gradientTwo.hasError('required') || customBgColor.hasError('required') || customBorderColor.hasError('required') || customBtnNameName.hasError('required')"
 				style="border-radius: 3px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme" (click)="update()"><span
 					class="btn btn-primary transition text_pd-top1">Update</span></button>
 		</div>
@@ -39,7 +51,7 @@
 
 
 </div>
-<div [ngClass]="themeDTO.id == 4 ? 'hide':''">
+<div>
 	<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="alert alert-danger" *ngIf="statusCode==500" role="alert">
 		{{message}}
@@ -68,11 +80,34 @@
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
-
-	<div class="page-breadcrumb">
+	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 p10"
+		*ngIf="themeDTO?.parentThemeName == 'GLASSMORPHISMLIGHT' || themeDTO?.parentThemeName == 'GLASSMORPHISMDARK'">
+		<div style="text-align: center;">
+			<label class="control-label">Upload Background Image</label>
+			<div class="profile-image-wrapper dotted-image-border upload-imgheight" (click)="uploadImage()">
+				<span *ngIf="(squareDataForBgImage | json) === '{}'">
+					<img *ngIf="!bgImagePath" src="assets/images/company-profile-logo.png"
+						class="profile-image img-grid" alt="" style="object-fit: cover; width: 100%;">
+				</span>
+				<span *ngIf="bgImagePath; else showBgImage"> <img class="img-grid"
+						style="width: 100%;height: 110px;border-radius: 3px; object-fit: cover;"
+						[src]="authenticationService.MEDIA_URL + themeDTO?.backgroundImagePath" alt="">
+				</span>
+				<ng-template #showBgImage> <img class="img-grid" *ngIf="bgImagePath"
+						style="width: 100%;height: 110px;border-radius: 3px;"
+						[src]="authenticationService.MEDIA_URL + bgImagePath" (error)="errorHandler($event)" alt="">
+				</ng-template>
+				<a class="btn btn-primary1 profile-pic" (click)="uploadImage()" data-toggle="tooltip"
+					data-placement="bottom" title="upload 16:9 ratio image!">
+					<i class="fa fa-camera icon" aria-hidden="true"
+						style="font-size:25px;padding-top:10px;left: 0px !important;bottom: -60px !important;"></i></a>
+			</div>
+		</div>
+	</div>
+	<div class="page-breadcrumb" *ngIf="themeDTO?.parentThemeName == 'LIGHT' || themeDTO?.parentThemeName == 'DARK'">
 		<ul class="nav nav-pills" style="border-bottom: 2px solid #2b5ec4;">
-			<li [ngClass]="{'active theme_activation_bg': activeTabName == 'header'}"><a class="text-white"
-					[ngClass]="{'active-tab-anchor-text': activeTabName == 'header'}"
+			<li [ngClass]="{'active theme_activation_bg': activeTabName == 'header' || activeTabName == '' }"><a class="text-white"
+					[ngClass]="{'active-tab-anchor-text': activeTabName == 'header' || activeTabName == ''}"
 					(click)="activeTabNav('header');clearCustomResponse()" selected="true">Header</a></li>
 			<li [ngClass]="{'active theme_activation_bg': activeTabName == 'leftmenu'}"><a class="text-white"
 					[ngClass]="{'active-tab-anchor-text': activeTabName == 'leftmenu'}"
@@ -87,8 +122,8 @@
 					Content</a></li>
 		</ul>
 	</div>
-	<div class="">
 
+	<div class="">
 		<div class="portlet-body clearfix">
 			<div class="tab-content">
 				<!-- Header customization -->
@@ -203,7 +238,6 @@
 					</div>
 				</div>
 				<!-- Header customization End-->
-
 				<!-- Page Content customization -->
 				<div class="tab-pane" [ngClass]="{'active': activeTabName == 'pagecontent'}">
 					<div class="col-xs-12">
@@ -558,7 +592,6 @@
 					</div>
 				</div>
 				<!-- Page Content customization End -->
-
 				<!-- LeftMenu customization -->
 				<div class="tab-pane" [ngClass]="{'active': activeTabName == 'leftmenu'}">
 					<div class="col-xs-12">
@@ -770,7 +803,125 @@
 					</div>
 				</div>
 				<!-- footer customization end-->
+				<div class="tab-pane" [ngClass]="{'active': activeTabName == 'buttonCustomization'}">
+					<div class="col-md-12 col-lg-12">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 bg-color-for-secondcard">
+							<div class="col-md-12 col-lg-12">
+								<div class="form-group">
+									<label>Button Background Color</label> <input class="form-control"
+										[value]="customButtonBgColor" [(ngModel)]="customButtonBgColor"
+										style="margin-bottom: 10px; padding-left: 40px;"
+										(input)="checkValidColorCode(customButtonBgColor,'customButtonBgColor')"
+										maxlength="7" customBgColor="customBgColor" #customBgColor="ngModel"
+										id="customBgColor" required /> <span class="input-group-addon color-pick"
+										[(colorPicker)]="buttonCustomizationForm.buttonColor"
+										[style.background]="buttonCustomizationForm.buttonColor" [cpWidth]="'200px'"
+										[cpHeight]="'265px'"
+										(colorPickerChange)="changeControllerColor($event,buttonCustomizationForm,'customButtonBgColor')"
+										[cpPosition]="'top'" readonly> </span>
+								</div>
+							</div>
+							<div *ngIf="customBgColor.hasError('required')" style="padding-left: 13px;">
+								<p class="danger" translate>Color is Required.</p>
+							</div>
+							<div class="col-md-12 col-lg-12">
+								<div class="form-group">
+									<label>Button Border Color</label> <input class="form-control"
+										[value]="customButtonBorderColor" [(ngModel)]="customButtonBorderColor"
+										style="margin-bottom: 10px; padding-left: 40px;"
+										(input)="checkValidColorCode(customButtonBorderColor,'customButtonBorderColor')"
+										maxlength="7" customBorderColor="customBorderColor" #customBorderColor="ngModel"
+										id="customBorderColor" required />
+									<span class="input-group-addon color-pick"
+										[(colorPicker)]="buttonCustomizationForm.buttonBorderColor"
+										[style.background]="buttonCustomizationForm.buttonBorderColor"
+										[cpWidth]="'200px'" [cpHeight]="'265px'"
+										(colorPickerChange)="changeControllerColor($event,buttonCustomizationForm,'customButtonBorderColor')"
+										[cpPosition]="'top'" readonly> </span>
+								</div>
+							</div>
+							<div *ngIf="customBorderColor.hasError('required')" style="padding-left: 13px;">
+								<p class="danger" translate>Color is Required.</p>
+							</div>
+							<div class="col-md-12 col-lg-12">
+								<div class="form-group">
+									<label>Button Text Color</label> <input class="form-control"
+										[value]="customButtonValueColor" [(ngModel)]="customButtonValueColor"
+										style="margin-bottom: 10px; padding-left: 40px;"
+										(input)="checkValidColorCode(customButtonValueColor,'customButtonValueColor')"
+										maxlength="7" customBtnNameName="customBtnNameName" #customBtnNameName="ngModel"
+										id="customBtnNameName" required />
+									<span class="input-group-addon color-pick"
+										[(colorPicker)]="buttonCustomizationForm.buttonValueColor"
+										[style.background]="buttonCustomizationForm.buttonValueColor"
+										[cpWidth]="'200px'" [cpHeight]="'265px'"
+										(colorPickerChange)="changeControllerColor($event,buttonCustomizationForm,'customButtonValueColor')"
+										[cpPosition]="'top'" readonly> </span>
+								</div>
+							</div>
+							<div *ngIf="customBtnNameName.hasError('required')" style="padding-left: 13px;">
+								<p class="danger" translate>Color is Required.</p>
+							</div>
+							<div class="col-md-12 col-lg-12">
+								<div class="form-group">
+									<label>Button Gradient Color One</label> <input class="form-control"
+										[value]="customGradientColorOne" [(ngModel)]="customGradientColorOne"
+										style="margin-bottom: 10px; padding-left: 40px;"
+										(input)="checkValidColorCode(customGradientColorOne,'customGradientColorOne')"
+										maxlength="7" gradientOne="gradientOne" #gradientOne="ngModel" id="gradientOne"
+										required /> <span class="input-group-addon color-pick"
+										[(colorPicker)]="buttonCustomizationForm.gradiantColorOne"
+										[style.background]="buttonCustomizationForm.gradiantColorOne"
+										[cpWidth]="'200px'" [cpHeight]="'265px'"
+										(colorPickerChange)="changeControllerColor($event,buttonCustomizationForm,'customGradientColorOne')"
+										[cpPosition]="'top'" readonly> </span>
+								</div>
+							</div>
+							<div *ngIf="gradientOne.hasError('required')" style="padding-left: 13px;">
+								<p class="danger" translate>Color is Required.</p>
+							</div>
+							<div class="col-md-12 col-lg-12">
+								<div class="form-group">
+									<label>Button Gradient Color Two</label> <input class="form-control"
+										[value]="customGradientColorTwo" [(ngModel)]="customGradientColorTwo"
+										style="margin-bottom: 10px; padding-left: 40px;"
+										(input)="checkValidColorCode(customGradientColorTwo,'customGradientColorTwo')"
+										maxlength="7" gradientTwo="gradientTwo" #gradientTwo="ngModel" id="gradientTwo"
+										required /> <span class="input-group-addon color-pick"
+										[(colorPicker)]="buttonCustomizationForm.gradiantColorTwo"
+										[style.background]="buttonCustomizationForm.gradiantColorTwo"
+										[cpWidth]="'200px'" [cpHeight]="'265px'"
+										(colorPickerChange)="changeControllerColor($event,buttonCustomizationForm,'customGradientColorTwo')"
+										[cpPosition]="'top'" readonly> </span>
+								</div>
+							</div>
+							<div *ngIf="gradientTwo.hasError('required')" style="padding-left: 13px;">
+								<p class="danger" translate>Color is Required.</p>
+							</div>
+
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-7 layout-cu-paddings cardleft-paddingzero">
+							<div class="">
+								<button class="custom-btn-ref btn-alignment-theme pull-right alignmiddlebtn"
+									[style.background]="buttonCustomizationForm.buttonColor"
+									[style.border]="'1px solid' + buttonCustomizationForm.buttonPrimaryBorderColor"
+									[style.color]="buttonCustomizationForm.buttonValueColor">Primary Button</button>
+							</div>
+							<div class="bg-color-for-secondcard1">
+								<img alt="Button Primary" class="gif-img-cu"
+									*ngIf="!authenticationService.isDarkForCharts"
+									src="/assets/images/Light-btn-primary.gif">
+								<img alt="Button Primary" class="gif-img-cu"
+									*ngIf="authenticationService.isDarkForCharts"
+									src="/assets/images/Dark-btn-primary.gif">
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
+<app-image-upload-cropper [aspectRatio]="aspectRatio" [resizeToWidth]="resizeToWidth" *ngIf="isShowUploadScreen"
+	(bgImage)="backgroundImage($event)"></app-image-upload-cropper>

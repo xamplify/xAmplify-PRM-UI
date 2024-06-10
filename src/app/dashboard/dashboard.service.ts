@@ -3,7 +3,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, RequestOptions, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { SaveVideoFile } from '../videos/models/save-video-file';
 import { Pagination } from '../core/models/pagination';
@@ -1030,6 +1030,17 @@ getDefaultThemes(){
     return this.http.get(url)
     .map(this.extractData)
     .catch(this.handleError);
+}
+
+uploadBgImageFile(file: any) {
+    let formData: FormData = new FormData();
+    formData.append('bgImageFile', file, file.name);
+    let headers = new Headers();
+    let options = new RequestOptions({ headers: headers });
+    const url = this.authenticationService.REST_URL  + "custom/skin/backgroundImage/saveBgImage/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+    return this.http.post(url, formData, options)
+        .map(this.extractData)
+        .catch(this.handleError);
 }
 /*************XNFR-238****************/
     getVendors(pagination: Pagination) {

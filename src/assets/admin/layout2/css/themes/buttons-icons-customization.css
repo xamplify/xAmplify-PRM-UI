@@ -8,32 +8,32 @@ button.btn.custom, .btn-group button, .selectRecord, button#save\&delete_button,
 .btn-success, .btn-primary, .color-flow-button, .button_blue, button.button_blue:disabled, button.button:disabled,
 button.btn.btn-primary, .mix-filter li:hover, .mix-filter li.active, .mix-filter li.campaign-type-selected, .mix-filter li.emailtemplate-selected,
 button.group-name-cclass.btn-primary.default-btn-cursor {
-    background-color: #3EB2FD !important;
-    background-image: linear-gradient(1deg, #4F58FD, #149BF3 99%) !important;
+    background-color: var(--custom-buttonbg-color) !important;
+    background-image: linear-gradient(1deg, var(--custom-gradient-one-color), var(--custom-gradient-two-color) 99%) !important;
     background-size: calc(100% + 20px) calc(100% + 20px) !important;
-    border: 1px solid #0d74c9 !important;
-    color: #fff !important;
+    border: 1px solid var(--custom-border-color) !important;
+    color: var(--custom-text-color) !important;
     border-radius: 7px;
     box-shadow: none !important;
 }
 button.button.bgcolor-unset,
 button.button_blue.bgcolor-unset{ 
   border-radius: 7px !important;
-  background-color: #3EB2FD !important;
-  background-image: linear-gradient(1deg, #4F58FD, #149BF3 99%) !important;
+  background-color: var(--custom-buttonbg-color) !important;
+  background-image: linear-gradient(1deg, var(--custom-gradient-one-color), var(--custom-gradient-two-color) 99%) !important;
   background-size: calc(100% + 20px) calc(100% + 20px) !important;
-  border: 1px solid #0d74c9 !important;
-  color: #fff !important;
+  border: 1px solid var(--custom-border-color) !important;
+  color: var(--custom-text-color)  !important;
   box-shadow: none !important;
 }
 button.button.bgcolor-unset:hover, button.btn.custom:hover, .btn-group button:hover, .selectRecord:hover,
 .btn-success:hover, .btn-primary:hover, .color-flow-button:hover, div > button.btn-primary:hover,
 .btn-primary:active:hover, .button_blue:hover, .mix-filter li:hover, button.group-name-cclass.btn-primary.default-btn-cursor:hover{
-  background-color: #3EB2FD !important;
-  background-image: linear-gradient(1deg, #149BF3, #4F58FD 99%) !important;
+  background-color: var(--custom-buttonbg-color) !important;
+  background-image: linear-gradient(1deg, var(--custom-gradient-two-color), var(--custom-gradient-one-color) 99%) !important;
   background-size: calc(100% + 20px) calc(100% + 20px) !important;
-  border: 1px solid #0d74c9 !important;
-  color: #fff !important;
+  border: 1px solid var(--custom-border-color) !important;
+  color:  var(--custom-text-color) !important;
   box-shadow: none !important;
 }
 span.btn.btn-primary.transition.txt_pd-top3, span.btn.btn-primary.transition {
