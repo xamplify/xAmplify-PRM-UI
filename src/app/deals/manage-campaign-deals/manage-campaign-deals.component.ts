@@ -10,6 +10,8 @@ import { PagerService } from 'app/core/services/pager.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Deal } from '../models/deal';
 import { EventEmitter } from '@angular/core';
+import { LEAD_CONSTANTS } from './../../constants/lead.constants';
+
 declare var swal, $, videojs: any;
 
 @Component({
@@ -53,7 +55,7 @@ export class ManageCampaignDealsComponent implements OnInit {
   updateCurrentStage:boolean = false;
   currentDealToUpdateStage:Deal;
   textAreaDisable:boolean = false;
-
+  readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
   constructor(public authenticationService: AuthenticationService,
     private dealsService: DealsService, public referenceService: ReferenceService, public pagerService: PagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();

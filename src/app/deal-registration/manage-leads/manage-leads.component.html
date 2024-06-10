@@ -60,7 +60,7 @@
             <th class="center-aligned" translate>Lead</th>
             <th class="center-aligned" *ngIf="pageText != 'TOTAL LEADS'" translate>Deal Title</th>
             <th class="center" translate>Campaign Name</th>
-            <th class="center"  translate>Registered By</th>
+            <th class="center"  translate>{{LEAD_CONSTANTS.addedBy}}</th>
             <th class="center" *ngIf ="!isPartner && pageText != 'TOTAL LEADS'" translate>Status</th>
             <th class="center" style="width: 18%" translate>Actions</th>
             <!--  <th class="center">Details</th> -->
