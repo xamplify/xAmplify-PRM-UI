@@ -20,7 +20,6 @@ import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
 import { CustomAnimation } from 'app/core/models/custom-animation';
 import { Properties } from 'app/common/models/properties';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
-import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-constants';
 
 declare var swal:any, $:any, videojs: any;
 
@@ -33,7 +32,6 @@ declare var swal:any, $:any, videojs: any;
 })
 export class ManageLeadsComponent implements OnInit {
   readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
-  readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
   loggedInUserId: number = 0;
   superiorId: number = 0;
   isOnlyPartner: any;
@@ -1360,7 +1358,7 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsService.findAllRegisteredByCompanies().subscribe(
       response=>{
         this.registeredByCompaniesSearchableDropDownDto.data = response.data;
-		    this.registeredByCompaniesSearchableDropDownDto.placeHolder = "Select "+XAMPLIFY_CONSTANTS.addedBy+" Company";
+		    this.registeredByCompaniesSearchableDropDownDto.placeHolder = "Select "+LEAD_CONSTANTS.addedBy+" Company";
         this.isRegisteredByCompaniesLoadedSuccessfully = true;
         this.registeredByCompanyLoader = false;
       },error=>{
@@ -1382,7 +1380,7 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsService.findAllRegisteredByUsers().subscribe(
       response=>{
         this.registeredByUsersSearchableDropDownDto.data = response.data;
-        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+XAMPLIFY_CONSTANTS.addedBy;
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+LEAD_CONSTANTS.addedBy;
         this.isRegisteredByUsersLoadedSuccessfully = true;
         this.registeredByUsersLoader = false;
       },error=>{
@@ -1396,7 +1394,7 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsService.findAllRegisteredByUsersForPartnerView().subscribe(
       response=>{
         this.registeredByUsersSearchableDropDownDto.data = response.data;
-        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+XAMPLIFY_CONSTANTS.addedBy;
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+LEAD_CONSTANTS.addedBy;
         this.isRegisteredByUsersLoadedSuccessfully = true;
         this.registeredByUsersLoader = false;
       },error=>{

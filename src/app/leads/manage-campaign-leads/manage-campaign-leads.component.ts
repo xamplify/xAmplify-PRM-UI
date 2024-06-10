@@ -1,3 +1,4 @@
+import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -37,7 +38,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   @Output() refreshCounts = new EventEmitter<any>();
   @Output() showCommentsPopUp = new EventEmitter<any>();
 
-  readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
+  readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
   loggedInUserId : number;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
   leadsPagination: Pagination = new Pagination();

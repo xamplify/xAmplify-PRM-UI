@@ -162,8 +162,8 @@
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
                         (click)="addLead()" style="padding-left: 4px;">
                         <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
-                          <span class="btn btn-primary transition d-inline"><i class="fa fa-plus  mb-btns"
-                              aria-hidden="true"></i> {{LEAD_CONSTANTS?.registerALead}}</span>
+                          <span class="btn btn-primary transition d-inline">
+                            <i class="fa fa-plus  mb-btns" aria-hidden="true"></i> {{LEAD_CONSTANTS?.registerALead}}</span>
                         </button>
                       </a>
                       <!-- XNFR-215 -->
@@ -250,10 +250,10 @@
 
                               <!--Added By User-->
                               <div class="form-group">
-                                <label class="control-label col-sm-5">{{XAMPLIFY_CONSTANTS?.addedBy}}</label>
+                                <label class="control-label col-sm-5">{{LEAD_CONSTANTS.addedBy}}</label>
                                 <div class="col-sm-7">
                                   <p class="mt--10px" *ngIf="registeredByUsersLoader">
-                                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading {{XAMPLIFY_CONSTANTS?.addedBy}}...</strong>
+                                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading {{LEAD_CONSTANTS.addedBy}}...</strong>
                                   </p>
                                   <app-searchable-dropdown *ngIf="!registeredByUsersLoader && isRegisteredByUsersLoadedSuccessfully" [searchableDropDownDto]="registeredByUsersSearchableDropDownDto" [id]="selectedRegisteredByUserId"
                                     [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredByUserId($event)">
@@ -287,7 +287,7 @@
                               </div>
                               <!--Added By Company-->
                               <div class="form-group" *ngIf="isVendorVersion">
-                                <label class="control-label col-sm-5">{{XAMPLIFY_CONSTANTS?.addedBy}} Company</label>
+                                <label class="control-label col-sm-5">{{LEAD_CONSTANTS?.addedBy}} Company</label>
                                 <div class="col-sm-7">
                                   <p class="mt--10px" *ngIf="registeredByCompanyLoader">
                                     <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Companies...</strong>
