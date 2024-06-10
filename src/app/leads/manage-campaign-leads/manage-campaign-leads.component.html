@@ -65,19 +65,22 @@
                   <app-date-picker  [(dataField)]="fromDateFilter" [isFromFilter]='true'></app-date-picker>
                 </div>
               </div>
-              
-              <!--Status-->
-              <div class="form-group">
+               <!--Status-->
+               <div class="form-group">
                 <label class="control-label col-sm-5">Status</label>
                 <div class="col-sm-7">
-                  <select class="form-control" [(ngModel)]="statusFilter"[ngModelOptions]="{standalone: true}">
-                    <option value="">---Select Status---</option>
-                    <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}} </option>
-                  </select>
+                  <p class="mt--10px" *ngIf="statusLoader">
+                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading {{LEAD_CONSTANTS.addedBy}}...</strong>
+                  </p>
+                  <app-searchable-dropdown *ngIf="!statusLoader && isStatusLoadedSuccessfully" [searchableDropDownDto]="statusSearchableDropDownDto" [id]="statusFilter"
+                    [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedStatus($event)">
+                  </app-searchable-dropdown>
+                  <p class="required" *ngIf="!statusLoader && !isStatusLoadedSuccessfully">
+                    <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
+                  </p>
                 </div>
               </div>
             </div>
-            
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
               <!--To Date-->
               <div class="form-group">
@@ -86,12 +89,12 @@
                   <app-date-picker  [(dataField)]="toDateFilter" [isFromFilter]='true'></app-date-picker>
                 </div>
               </div>
-               <!--Registered By User-->
+               <!--Added By User-->
                <div class="form-group">
-                <label class="control-label col-sm-5">Registered By</label>
+                <label class="control-label col-sm-5">{{LEAD_CONSTANTS?.addedBy}}</label>
                 <div class="col-sm-7">
                   <p class="mt--10px" *ngIf="registeredByUsersLoader">
-                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Registered By...</strong>
+                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading {{LEAD_CONSTANTS?.addedBy}}...</strong>
                   </p>
                   <app-searchable-dropdown *ngIf="!registeredByUsersLoader && isRegisteredByUsersLoadedSuccessfully" [searchableDropDownDto]="registeredByUsersSearchableDropDownDto" [id]="selectedRegisteredByUserId"
                     [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredByUserId($event)">
@@ -101,7 +104,6 @@
                   </p>
                 </div>
               </div>
-
             </div>
         </form>
       </div>
@@ -109,16 +111,13 @@
   </div>
 </div>  
 
-
-
-
 <section class='m10' *ngIf="leadsSortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
   <div class="table-responsive">
     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
       <thead>
         <tr>
           <th class="center-aligned" translate>Lead Details</th>
-          <th class="center" translate>Registered By</th>
+          <th class="center" translate>{{LEAD_CONSTANTS?.addedBy}}</th>
           <th class="center" style="text-align:center" translate>Status</th>
           <th style="width: 18%; text-align:center" translate>Actions</th>
         </tr>

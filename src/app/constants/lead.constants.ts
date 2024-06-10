@@ -1,5 +1,6 @@
 export const LEAD_CONSTANTS = {
-    registerALead : 'Register a Lead',
-    registerLeads:'Register Leads'
+    registerALead : 'Add a Lead',
+    registerLeads:'Add Leads',
+    addedBy:'Added By',
    
 }

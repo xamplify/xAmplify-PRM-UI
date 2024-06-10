@@ -20,6 +20,7 @@ import { Deal } from '../models/deal';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 declare var swal, $, videojs: any;
 
 
@@ -77,7 +78,6 @@ export class ManageDealsComponent implements OnInit {
   filterMode: any = false;
   selectedFilterIndex: number = 1;
   stageNamesForFilterDropDown: any;
-  statusFilter: any;
   prm: boolean;
   vendorList = new Array();
   vendorCompanyIdFilter: any;
@@ -97,6 +97,25 @@ export class ManageDealsComponent implements OnInit {
   updateCurrentStage:boolean=false;
   currentDealToUpdateStage:Deal;
   textAreaDisable:boolean=false;
+
+  registeredByCompanyLoader = true;
+  isRegisteredByCompaniesLoadedSuccessfully = true;
+  registeredByCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  selectedRegisteredByCompanyId = 0;
+
+  registeredByUsersLoader = true;;
+  registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  isRegisteredByUsersLoadedSuccessfully = true;
+  selectedRegisteredByUserId = 0;
+
+  selectedRegisteredForCompanyId = 0;
+  registeredForCompaniesLoader = true;
+  registeredForCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+
+  statusFilter: any;
+  statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  statusLoader = true;
+  isStatusLoadedSuccessfully = true;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -252,13 +271,13 @@ export class ManageDealsComponent implements OnInit {
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
-      //this.getVendorCounts();
-      //this.checkMicrosoftIntegration();  
       this.getActiveCRMDetails();
       this.showDeals();
       if (this.prm) {
         this.listView = true;
       }
+      this.findAllRegisteredByCompanies();
+      this.findAllRegisteredByUsers();
     } else {
       this.showPartner();
     }
@@ -266,9 +285,9 @@ export class ManageDealsComponent implements OnInit {
   showPartner() {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
-    //this.getPartnerCounts();
     this.showDeals();
     this.getActiveCRMDetails();
+    this.findAllRegisteredByUsersForPartnerView();
   }
 
   getVendorCounts() {
@@ -403,20 +422,33 @@ export class ManageDealsComponent implements OnInit {
   }
 
   stageNamesForVendor() {
-    this.referenceService.loading(this.httpRequestLoader, true);
     this.dealsService.getStageNamesForVendor(this.loggedInUserId)
       .subscribe(
         response => {
-          this.referenceService.loading(this.httpRequestLoader, false);
-          this.stageNamesForFilterDropDown = response;
-
           this.fromDateFilter;
+          this.addSearchableStatus(response);
         },
         error => {
           this.httpRequestLoader.isServerError = true;
         },
         () => { }
       );
+  }
+
+  private addSearchableStatus(response: any) {
+    this.stageNamesForFilterDropDown = response;
+    let dtos = [];
+    $.each(this.stageNamesForFilterDropDown, function (index: number, value: any) {
+      let id = value;
+      let name = value;
+      let dto = {};
+      dto['id'] = id;
+      dto['name'] = name;
+      dtos.push(dto);
+    });
+    this.statusSearchableDropDownDto.data = dtos;
+    this.statusSearchableDropDownDto.placeHolder = "Select Status";
+    this.statusLoader = false;
   }
 
   listDealsForPartner(pagination: Pagination) {
@@ -442,15 +474,27 @@ export class ManageDealsComponent implements OnInit {
   }
 
   getVendorCompanies(){
-    this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.getVendorList(this.loggedInUserId)
     .subscribe(
       response =>{
-        this.referenceService.loading(this.httpRequestLoader, false);
         this.vendorList = response.data;
+        let dtos = [];
+        $.each(this.vendorList,function(index:number,vendor:any){
+          let id = vendor.companyId;
+          let name = vendor.companyName;
+          let dto = {};
+          dto['id'] = id;
+          dto['name'] = name;
+          dtos.push(dto);
+        });
+        this.registeredForCompaniesSearchableDropDownDto.data = dtos;
+        this.registeredForCompaniesSearchableDropDownDto.placeHolder = "Select Registered For";
+        this.registeredForCompaniesLoader = false;
+        this.referenceService.loading(this.httpRequestLoader, false);
       },
       error=>{
         this.httpRequestLoader.isServerError = true;
+        this.registeredForCompaniesLoader = false;
       },
       ()=> { }
     ); 
@@ -483,10 +527,11 @@ export class ManageDealsComponent implements OnInit {
     this.dealsService.getStageNamesForPartnerByVendorCompanyId(this.loggedInUserId, vendorCompanyId)
       .subscribe(
         response => {
-          this.stageNamesForFilterDropDown = response;
+          this.addSearchableStatus(response);
         },
         error => {
           this.httpRequestLoader.isServerError = true;
+          this.isStatusLoadedSuccessfully = false;
         },
         () => { }
       );
@@ -990,6 +1035,9 @@ export class ManageDealsComponent implements OnInit {
     this.dealsPagination.toDateFilterString = "";
     this.dealsPagination.stageFilter = "";
     this.dealsPagination.vendorCompanyId = undefined;
+    this.dealsPagination.vendorCompanyId = 0;
+    this.dealsPagination.registeredByCompanyId = 0;
+    this.dealsPagination.registeredByUserId = 0;
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.dealsPagination.pageIndex = 1;
@@ -999,57 +1047,88 @@ export class ManageDealsComponent implements OnInit {
   }
 
   validateDateFilters() {
-    if ((this.statusFilter == undefined || this.statusFilter == "") && 
-    (this.fromDateFilter == undefined || this.fromDateFilter == "") &&
-      (this.toDateFilter == undefined || this.toDateFilter == "") && 
-      (this.vendorCompanyIdFilter == undefined || this.vendorCompanyIdFilter == "")) {
+    let isInvalidStatusFilter = this.statusFilter == undefined || this.statusFilter == "";
+    let isValidStatusFilter = this.statusFilter != undefined && this.statusFilter != "";
+    let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
+    let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
+    let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
+    let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
+    let isInvalidCompanyIdFilter = this.vendorCompanyIdFilter == undefined || this.vendorCompanyIdFilter == 0;
+    let isValidCompanyIdFilter = this.vendorCompanyIdFilter != undefined && this.vendorCompanyIdFilter>0;
+    let isInValidRegisteredByCompanyFilter = this.selectedRegisteredByCompanyId==undefined || this.selectedRegisteredByCompanyId==0;
+    let isValidRegisteredByCompanyFilter = this.selectedRegisteredByCompanyId!=undefined && this.selectedRegisteredByCompanyId>0;
+    let isInValidRegisteredByUserFilter = this.selectedRegisteredByUserId==undefined || this.selectedRegisteredByUserId==0;
+    let isValidRegisteredByUserFilter = this.selectedRegisteredByUserId!=undefined && this.selectedRegisteredByUserId>0;
+    if (isInvalidStatusFilter && isEmptyFromDateFilter && isEmptyToDateFilter && isInvalidCompanyIdFilter
+       && isInValidRegisteredByCompanyFilter && isInValidRegisteredByUserFilter) {
         this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
-  } else { 
-    let validDates = false;   
-    if ((this.fromDateFilter == undefined || this.fromDateFilter == "") 
-      && (this.toDateFilter == undefined || this.toDateFilter == "")) {
-        validDates = true;
-    } else if (this.fromDateFilter != undefined && this.fromDateFilter != "" && 
-      (this.toDateFilter == undefined || this.toDateFilter == "")) {
-        this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
-    } else if (this.toDateFilter != undefined && this.toDateFilter != "" && 
-      (this.fromDateFilter == undefined || this.fromDateFilter == "")) {
-        this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
-    } else {
-      var toDate = Date.parse(this.toDateFilter);
-      var fromDate = Date.parse(this.fromDateFilter);
-      if (fromDate <= toDate) {
-        validDates = true;
+    } else { 
+      let validDates = false;   
+      if (isEmptyFromDateFilter && isEmptyToDateFilter ) {
+          validDates = true;
+      } else if (isValidFromDateFilter && isEmptyToDateFilter ) {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      } else if (isValidToDateFilter && isEmptyFromDateFilter) {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+      } else {
+        var toDate = Date.parse(this.toDateFilter);
+        var fromDate = Date.parse(this.fromDateFilter);
+        if (fromDate <= toDate) {
+          validDates = true;
+          this.dealsPagination.pageIndex = 1;
+          this.dealsPagination.maxResults = 12;
+          this.dealsPagination.fromDateFilterString = this.fromDateFilter;
+          this.dealsPagination.toDateFilterString = this.toDateFilter;
+        } else {
+          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+        }        
+      }
+
+      if (validDates) {
+        this.filterStatus(isValidStatusFilter);
+        this.filterVendorCompanyId(isValidCompanyIdFilter);
+        this.filterRegisteredByCompanyId(isValidRegisteredByCompanyFilter);
+        this.filterRegisteredByUserId(isValidRegisteredByUserFilter);
         this.dealsPagination.pageIndex = 1;
         this.dealsPagination.maxResults = 12;
-        this.dealsPagination.fromDateFilterString = this.fromDateFilter;
-        this.dealsPagination.toDateFilterString = this.toDateFilter;
-      } else {
-        this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
-      }        
-    }
-
-    if (validDates) {
-      if (this.vendorCompanyIdFilter != undefined && this.vendorCompanyIdFilter != "") {
-        this.dealsPagination.vendorCompanyId = this.vendorCompanyIdFilter;
-      }
-
-      if (this.statusFilter != undefined && this.statusFilter != "") {
-        this.dealsPagination.stageFilter = this.statusFilter;
-      }
-      else {
-        this.dealsPagination.stageFilter = "";
-      }
-      this.dealsPagination.pageIndex = 1;
-      this.dealsPagination.maxResults = 12;
-      this.filterMode = true;
+        this.filterMode = true;
         this.filterResponse.isVisible = false;
         this.listDeals(this.dealsPagination);
+      }
+      
     }
-    
-  }
-  }
+}
   
+
+  private filterRegisteredByUserId(isValidRegisteredByUserFilter: boolean) {
+    this.dealsPagination.registeredByUserId = 0;
+    if (isValidRegisteredByUserFilter) {
+      this.dealsPagination.registeredByUserId = this.selectedRegisteredByUserId;
+    }
+  }
+
+  private filterRegisteredByCompanyId(isValidRegisteredByCompanyFilter: boolean) {
+    this.dealsPagination.registeredByCompanyId = 0;
+    if (isValidRegisteredByCompanyFilter) {
+      this.dealsPagination.registeredByCompanyId = this.selectedRegisteredByCompanyId;
+    }
+  }
+
+  private filterStatus(isValidStatusFilter:boolean) {
+    if (isValidStatusFilter) {
+      this.dealsPagination.stageFilter = this.statusFilter;
+    }else {
+      this.dealsPagination.stageFilter = "";
+    }
+  }
+
+  private filterVendorCompanyId(isValidCompanyIdFilter) {
+    if (isValidCompanyIdFilter) {
+      this.dealsPagination.vendorCompanyId = this.vendorCompanyIdFilter;
+    }else {
+      this.dealsPagination.vendorCompanyId = 0;
+    }
+  }
   setListView() {
     this.listView = true;
     this.closeFilterOption();
@@ -1311,6 +1390,80 @@ export class ManageDealsComponent implements OnInit {
   stageUpdateResponse(event:any){
     this.dealsResponse = (event === 200) ? new CustomResponse('SUCCESS', "Status Updated Successfully", true) : new CustomResponse('ERROR', "Invalid Input", true);
 
+  }
+
+  
+  findAllRegisteredByCompanies(){
+    this.registeredByCompanyLoader = true;
+    this.dealsService.findAllRegisteredByCompanies().subscribe(
+      response=>{
+        this.registeredByCompaniesSearchableDropDownDto.data = response.data;
+		    this.registeredByCompaniesSearchableDropDownDto.placeHolder = "Select "+DEAL_CONSTANTS.addedBy+" Company";
+        this.isRegisteredByCompaniesLoadedSuccessfully = true;
+        this.registeredByCompanyLoader = false;
+      },error=>{
+        this.registeredByCompanyLoader = false;
+        this.isRegisteredByCompaniesLoadedSuccessfully = false;
+      });
+  }
+
+  getSelectedRegisteredByCompanyId(event:any){
+    if(event!=null){
+			this.selectedRegisteredByCompanyId = event['id'];
+		}else{
+			this.selectedRegisteredByCompanyId = 0;
+		}
+  }
+
+  findAllRegisteredByUsers(){
+    this.registeredByUsersLoader = true;
+    this.dealsService.findAllRegisteredByUsers().subscribe(
+      response=>{
+        this.registeredByUsersSearchableDropDownDto.data = response.data;
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+DEAL_CONSTANTS.addedBy;
+        this.isRegisteredByUsersLoadedSuccessfully = true;
+        this.registeredByUsersLoader = false;
+      },error=>{
+        this.registeredByUsersLoader = false;
+        this.isRegisteredByUsersLoadedSuccessfully = false;
+      });
+  }
+
+  findAllRegisteredByUsersForPartnerView() {
+    this.registeredByUsersLoader = true;
+    this.dealsService.findAllRegisteredByUsersForPartnerView().subscribe(
+      response=>{
+        this.registeredByUsersSearchableDropDownDto.data = response.data;
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+DEAL_CONSTANTS.addedBy;
+        this.isRegisteredByUsersLoadedSuccessfully = true;
+        this.registeredByUsersLoader = false;
+      },error=>{
+        this.registeredByUsersLoader = false;
+        this.isRegisteredByUsersLoadedSuccessfully = false;
+      });
+  }
+
+  getSelectedRegisteredByUserId(event:any){
+    if(event!=null){
+			this.selectedRegisteredByUserId = event['id'];
+		}else{
+			this.selectedRegisteredByUserId = 0;
+		}
+  }
+  getSelectedRegisteredForCompanyId(event:any){
+    if(event!=null){
+			this.vendorCompanyIdFilter = event['id'];
+		}else{
+			this.vendorCompanyIdFilter = 0;
+		}
+  }
+
+  getSelectedStatus(event:any){
+    if(event!=null){
+			this.statusFilter = event['id'];
+		}else{
+			this.statusFilter = "";
+		}
   }
 
 }

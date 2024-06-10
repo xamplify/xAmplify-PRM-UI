@@ -12,6 +12,8 @@ import { Lead } from '../models/lead';
 import { EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
+
 declare var swal, $, videojs: any;
 
 @Component({
@@ -35,6 +37,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   @Output() refreshCounts = new EventEmitter<any>();
   @Output() showCommentsPopUp = new EventEmitter<any>();
 
+  readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
   loggedInUserId : number;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
   leadsPagination: Pagination = new Pagination();
@@ -48,7 +51,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
   filterMode: boolean = false;
   selectedFilterIndex: number = 1;
   stageNamesForFilterDropDown :any;
-  statusFilter: any;
+  
   /******XNFR-426******/
   leadApprovalStatusType: string;
   selectedLead: Lead;
@@ -59,6 +62,11 @@ export class ManageCampaignLeadsComponent implements OnInit {
   registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   isRegisteredByUsersLoadedSuccessfully = true;
   selectedRegisteredByUserId = 0;
+
+  statusFilter: any;
+  statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  statusLoader = true;
+  isStatusLoadedSuccessfully = true;
 
   constructor(public authenticationService: AuthenticationService,
     private leadsService: LeadsService, public referenceService: ReferenceService, public pagerService: PagerService) {
@@ -95,7 +103,7 @@ export class ManageCampaignLeadsComponent implements OnInit {
     this.leadsService.findAllRegisteredByUsersByCampaignIdAndPartnerCompanyId(this.campaignId,this.partnerCompanyId).subscribe(
       response=>{
         this.registeredByUsersSearchableDropDownDto.data = response.data;
-        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select Registered By";
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+LEAD_CONSTANTS.addedBy;
         this.isRegisteredByUsersLoadedSuccessfully = true;
         this.registeredByUsersLoader = false;
       },error=>{
@@ -440,16 +448,28 @@ getSelectedIndex(index:number){
 }
 
 getStageNamesForCampaign(){
-  this.referenceService.loading(this.httpRequestLoader, true);  
   this.leadsService.getStageNamesForCampaign(this.campaignId, this.loggedInUserId)
   .subscribe(
     response =>{
       this.stageNamesForFilterDropDown = response;
+      let dtos = [];
+      $.each(this.stageNamesForFilterDropDown, function (index: number, value: any) {
+        let id = value;
+        let name = value;
+        let dto = {};
+        dto['id'] = id;
+        dto['name'] = name;
+        dtos.push(dto);
+      });
+      this.statusSearchableDropDownDto.data = dtos;
+      this.statusSearchableDropDownDto.placeHolder = "Select Status";
+      this.statusLoader = false;
       this.referenceService.loading(this.httpRequestLoader, false);
     },
     error=>{
       this.httpRequestLoader.isServerError = true;
       this.referenceService.loading(this.httpRequestLoader, false);
+      this.isStatusLoadedSuccessfully = false;
     },
     ()=> { }
   );  
@@ -509,5 +529,12 @@ getSelectedRegisteredByUserId(event:any){
   }
 }
 
+getSelectedStatus(event:any){
+  if(event!=null){
+    this.statusFilter = event['id'];
+  }else{
+    this.statusFilter = "";
+  }
+}
 
 }

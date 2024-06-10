@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
+
 declare var swal, $, videojs: any;
 
 @Component({
@@ -10,6 +12,7 @@ declare var swal, $, videojs: any;
 })
 export class DealChatPopupComponent implements OnInit {
 
+  readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
   @Input() deal: any;
   @Input() lead: any;
   @Output() isCommentSection = new EventEmitter<any>();

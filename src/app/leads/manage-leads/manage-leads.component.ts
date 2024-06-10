@@ -81,7 +81,7 @@ export class ManageLeadsComponent implements OnInit {
   selectedFilterIndex: number = 1;
   lead:any;
   stageNamesForFilterDropDown: any;
-  statusFilter: any;
+  
   prm: boolean;
   syncMicrosoft: boolean = false;
   activeCRMDetails: any;
@@ -100,7 +100,7 @@ export class ManageLeadsComponent implements OnInit {
   registeredByCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   selectedRegisteredByCompanyId = 0;
 
-  registeredByUsersLoader = true;;
+  registeredByUsersLoader = true;
   registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   isRegisteredByUsersLoadedSuccessfully = true;
   selectedRegisteredByUserId = 0;
@@ -108,6 +108,13 @@ export class ManageLeadsComponent implements OnInit {
   selectedRegisteredForCompanyId = 0;
   registeredForCompaniesLoader = true;
   registeredForCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+
+  statusFilter: any;
+  statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  statusLoader = true;
+  isStatusLoadedSuccessfully = true;
+
+
   
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -485,20 +492,35 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   stageNamesForVendor() {
-    this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.getStageNamesForVendor(this.loggedInUserId)
       .subscribe(
         response => {
-          this.stageNamesForFilterDropDown = response;
           this.fromDateFilter;
-          this.referenceService.loading(this.httpRequestLoader, false);
+          this.addSearchableStatus(response);
         },
         error => {
           this.httpRequestLoader.isServerError = true;
-          this.referenceService.loading(this.httpRequestLoader, false);
+          this.isStatusLoadedSuccessfully = false;
         },
         () => { }
       );
+  }
+
+  private addSearchableStatus(response: any) {
+    this.stageNamesForFilterDropDown = response;
+    let dtos = [];
+    $.each(this.stageNamesForFilterDropDown, function (index: number, value: any) {
+      let id = value;
+      let name = value;
+      let dto = {};
+      dto['id'] = id;
+      dto['name'] = name;
+      dtos.push(dto);
+    });
+    this.statusSearchableDropDownDto.data = dtos;
+    this.statusSearchableDropDownDto.placeHolder = "Select Status";
+    this.statusLoader = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
   }
 
   listLeadsForPartner(pagination: Pagination) {
@@ -1202,15 +1224,16 @@ export class ManageLeadsComponent implements OnInit {
       );
   }
   stageNamesForPartner(){
-    this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.getStageNamesForPartner(this.vanityLoginDto)
     .subscribe(
       response =>{
-        this.referenceService.loading(this.httpRequestLoader, false);
         this.stageNamesForFilterDropDown = response;
+        this.addSearchableStatus(response);
       },
       error=>{
         this.httpRequestLoader.isServerError = true;
+        this.isStatusLoadedSuccessfully = false;
+
       },
       ()=> { }
     ); 
@@ -1275,7 +1298,6 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsService.getVendorList(this.loggedInUserId)
     .subscribe(
       response =>{
-        this.referenceService.loading(this.httpRequestLoader, false);
         this.vendorList = response.data;
         let dtos = [];
         $.each(this.vendorList,function(index:number,vendor:any){
@@ -1289,6 +1311,7 @@ export class ManageLeadsComponent implements OnInit {
         this.registeredForCompaniesSearchableDropDownDto.data = dtos;
         this.registeredForCompaniesSearchableDropDownDto.placeHolder = "Select Registered For";
         this.registeredForCompaniesLoader = false;
+        this.referenceService.loading(this.httpRequestLoader, false);
       },
       error=>{
         this.httpRequestLoader.isServerError = true;
@@ -1358,7 +1381,7 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsService.findAllRegisteredByCompanies().subscribe(
       response=>{
         this.registeredByCompaniesSearchableDropDownDto.data = response.data;
-		    this.registeredByCompaniesSearchableDropDownDto.placeHolder = "Select Registered By Company";
+		    this.registeredByCompaniesSearchableDropDownDto.placeHolder = "Select "+LEAD_CONSTANTS.addedBy+" Company";
         this.isRegisteredByCompaniesLoadedSuccessfully = true;
         this.registeredByCompanyLoader = false;
       },error=>{
@@ -1380,7 +1403,7 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsService.findAllRegisteredByUsers().subscribe(
       response=>{
         this.registeredByUsersSearchableDropDownDto.data = response.data;
-        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select Registered By";
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+LEAD_CONSTANTS.addedBy;
         this.isRegisteredByUsersLoadedSuccessfully = true;
         this.registeredByUsersLoader = false;
       },error=>{
@@ -1394,7 +1417,7 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsService.findAllRegisteredByUsersForPartnerView().subscribe(
       response=>{
         this.registeredByUsersSearchableDropDownDto.data = response.data;
-        this.registeredByUsersSearchableDropDownDto.placeHolder = "Please Select Registered By";
+        this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+LEAD_CONSTANTS.addedBy;
         this.isRegisteredByUsersLoadedSuccessfully = true;
         this.registeredByUsersLoader = false;
       },error=>{
@@ -1418,7 +1441,13 @@ export class ManageLeadsComponent implements OnInit {
 		}
   }
 
-
+  getSelectedStatus(event:any){
+    if(event!=null){
+			this.statusFilter = event['id'];
+		}else{
+			this.statusFilter = "";
+		}
+  }
 
 
 }

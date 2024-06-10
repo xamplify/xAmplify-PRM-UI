@@ -190,7 +190,7 @@
                                        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                                     </span>
                                     <div class="pr5 pd_left5" style="display: flex;">
-                                       <a data-placement="bottom" (click)="listCampaign(pagination)"
+                                       <a data-placement="bottom" (click)=" showAllAnalytics=false;listCampaign(pagination)"
                                           class="btn btn-xs  l-g-view" data-toggle="tooltip" title="Refresh">
                                           <i _ngcontent-c17="" class="fa fa-refresh p10" aria-hidden="true"></i>
                                        </a>
@@ -472,10 +472,10 @@
                                     <ng-container
                                        *ngIf="campaign?.campaignType!='LANDINGPAGE' && campaign?.campaignType!='SOCIAL' && !campaign?.oneClickLaunchCondition">
                                        <td *ngIf="campaign?.emailNotification || campaign?.nurtrueCampaign">
-                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 plusicon">
                                              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                                                 <button
-                                                   class="btn btn-default btn-xs re-distributed-high-level lt-blue-c TableDataBtn">
+                                                   class="btn btn-default btn-xs re-distributed-high-level lt-blue-c TableDataBtn buttonwidth">
                                                    <div class="portlet-body text-center">
                                                       <h6 class="custom-font-size">
                                                          <strong
@@ -548,7 +548,7 @@
                                     </div>
                                           </div>
                                           
-                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="showAllAnalytics && selectedIndex==i" >
+                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 plusicon" *ngIf="showAllAnalytics && selectedIndex==i" >
                                              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                                                 <button
                                                    class="btn btn-default btn-xs re-distributed-high-level tk-blue-c TableDataBtn">
@@ -675,7 +675,7 @@
                                                 </button>
                                              </div>
                                              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0"
-                                                *ngIf="campaign.showLeadAndDealCounts">
+                                                *ngIf="campaign.showLeadAndDealCounts >-1">
                                                 <button
                                                    class="btn btn-default btn-xs re-distributed-high-level vlt-b-c TableDataBtn">
                                                    <div class="portlet-body text-center">
@@ -688,7 +688,7 @@
                                                 </button>
                                              </div>
                                              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0"
-                                                *ngIf="campaign.showLeadAndDealCounts">
+                                                *ngIf="campaign.showLeadAndDealCounts >-1">
                                                 <button
                                                    class="btn btn-default btn-xs re-distributed-high-level lt-g-b-c TableDataBtn">
                                                    <div class="portlet-body text-center">
