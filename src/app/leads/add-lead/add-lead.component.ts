@@ -538,7 +538,7 @@ export class AddLeadComponent implements OnInit {
           this.ngxloading = false;
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
-            if (this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
+            if ("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType) {
               this.showTicketTypesDropdown = true;
               this.getHaloPSATicketTypes(this.lead.createdForCompanyId);
               if (this.actionType === 'add') {
@@ -548,9 +548,19 @@ export class AddLeadComponent implements OnInit {
                 this.lead.createdByPipelineStageId = 0;
                 this.lead.halopsaTicketTypeId = 0;
               }
-            } else {
-              this.lead.halopsaTicketTypeId = 0;
-              this.showTicketTypesDropdown = false;
+            } else if ("HALOPSA" === this.activeCRMDetails.createdByActiveCRMType) {
+              this.showTicketTypesDropdown = true;
+              this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+                (result: any) => {
+                  this.getHaloPSATicketTypes(result);
+                });
+                if (this.actionType === 'add') {
+                  this.lead.createdForPipelineId =0;
+                  this.lead.createdByPipelineId = 0;
+                  this.lead.createdForPipelineStageId = 0;
+                  this.lead.createdByPipelineStageId = 0;
+                  this.lead.halopsaTicketTypeId = 0;
+                }
             }
             if (!this.activeCRMDetails.activeCRM) {
               if (this.edit || this.preview) {
@@ -745,6 +755,15 @@ export class AddLeadComponent implements OnInit {
     if (createdByPipelines.length === 1) {
       let createdByPipeline = createdByPipelines[0];
       self.lead.createdByPipelineId = createdByPipeline.id;
+      if ('HALOPSA' === this.activeCRMDetails.createdByActiveCRMType && this.actionType === 'add') {
+        let createdByPipelineStage = null;
+        let stages = createdByPipeline.stages;
+        createdByPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
+          mindisplayIndexStage.displayIndex < currentStage.displayIndex ? mindisplayIndexStage : currentStage
+        );
+        self.createdByStages = createdByPipeline.stages;
+        self.lead.createdByPipelineStageId = createdByPipelineStage.id;
+      } 
       self.createdByStages = createdByPipeline.stages;
       self.activeCRMDetails.hasCreatedByPipeline = true;
     } else {
