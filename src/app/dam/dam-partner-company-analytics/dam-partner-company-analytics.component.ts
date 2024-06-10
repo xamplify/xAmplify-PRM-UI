@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Renderer } from '@angular/core';
 import { Properties } from 'app/common/models/properties';
 import { HttpRequestLoader } from './../../core/models/http-request-loader';
 import { SortOption } from 'app/core/models/sort-option';
@@ -43,7 +43,9 @@ export class DamPartnerCompanyAnalyticsComponent implements OnInit {
   isVideoFile = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public pagerService:PagerService,public damService:DamService,
-    public route:ActivatedRoute,private utilService:UtilService,private videoFileService:VideoFileService) { }
+    public route:ActivatedRoute,private utilService:UtilService,private videoFileService:VideoFileService,public renderer:Renderer) { 
+      this.referenceService.renderer = this.renderer;
+    }
 
   ngOnInit() {
     this.referenceService.startLoader(this.httpRequestLoader);
