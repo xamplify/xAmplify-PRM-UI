@@ -1403,9 +1403,7 @@ export class AddDealComponent implements OnInit {
             }
           } else if (data.statusCode == 404) {
             self.deal.pipelineId = 0;
-            self.deal.createdForPipelineId = 0;
             self.stages = [];
-            self.createdForStages = [];
             self.getPipelines();
             self.activeCRMDetails.hasDealPipeline = false;
           }
