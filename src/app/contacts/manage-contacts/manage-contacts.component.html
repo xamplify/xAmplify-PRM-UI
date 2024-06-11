@@ -501,7 +501,7 @@
                                              </td>
                                              <td>
                                                 <h4 class="m0 moreipsis ListFontCu">
-                                                   <span data-toggle="tooltip" data-placement="top" title="{{contactList.name}}" class="ListFontCu">
+                                                   <span  *ngIf="!isPartner" data-toggle="tooltip" data-placement="top" title="{{contactList.name}}" class="ListFontCu">
                                                       <b> List Name:</b> {{contactList?.name}}
                                                    </span>
                                                    <span *ngIf="isPartner" data-toggle="tooltip" data-placement="top"
