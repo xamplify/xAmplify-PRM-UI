@@ -132,4 +132,7 @@ export class Pagination {
 	id = 0;
 	registeredByCompanyId = 0;
 	registeredByUserId = 0;
+	/*** XNFR-522 ***/
+	vendorJourneyOnly:boolean = false;
+
 }

@@ -120,7 +120,7 @@
                                                 <ng-template *ngIf="vendorJourney" [ngTemplateOutlet]="shareIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                 <!--Copy Icon-->
-                                                <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' ) || (isMasterLandingPages && !landingPage?.defaultLandingPage )" [ngTemplateOutlet]="copyIcon"
+                                                <ng-template *ngIf="!isLandingPages  || (isMasterLandingPages && !landingPage?.defaultLandingPage )" [ngTemplateOutlet]="copyIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                 <!--Edit Icon-->
                                                 <ng-template *ngIf="!isLandingPages" [ngTemplateOutlet]="editIcon"
@@ -228,7 +228,7 @@
                                     <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="copyOrEmbedLinkIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Form Icon-->
-                                    <ng-template *ngIf="!isLandingPages||  vendorJourney  || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="formIcon"
+                                    <ng-template *ngIf="isLandingPages||  vendorJourney  || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="formIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Analytics Icon-->
                                     <ng-template *ngIf = " vendorJourney || isLandingPages || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="analyticsIcon"

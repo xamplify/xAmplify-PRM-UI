@@ -251,6 +251,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	customSkinSettingOption = false;
 	modalpopuploader = false;
 	isUpdateUser = false;
+	vendorJourneyAccess = false
 	/*******************VANITY******************* */
 	loggedInThroughVanityUrl = false;
 	public hubSpotCurrentUser: any;
@@ -677,6 +678,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.dashBoardService.getModulesAccessByUserId().subscribe(result => {
 			this.excludeUsersOrDomains = result.excludeUsersOrDomains;
 			this.customSkinSettingOption = result.customSkinSettings;
+			this.vendorJourneyAccess = result.vendorJourney;
 			this.ngxloading = false;
 		}, _error => {
 			this.ngxloading = false;

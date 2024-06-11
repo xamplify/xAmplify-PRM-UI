@@ -173,6 +173,9 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       }else{
         this.pagination.source = "MANUAL";
       }
+      if(this.vendorJourney && !this.isLandingPages){
+        this.pagination.vendorJourneyOnly = true;
+      }
       this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
           (response: any) => {
               if(response.access){
