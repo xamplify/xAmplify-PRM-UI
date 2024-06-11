@@ -285,6 +285,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.module = 'partners';
 			this.checkingContactTypeName = "Partner";
 			this.actionsDescription.contact_list_edit = 'Preview or edit group';
+			this.actionsDescription.contact_list_info = 'Group Info';
 			this.sortOptions = [
 				{ 'name': 'Sort by', 'value': '', 'for': '' },
 				{ 'name': 'Group name (A-Z)', 'value': 'name-ASC', 'for': 'contactList' },
@@ -323,7 +324,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.xtremandLogger.info("successmessageLoad" + this.contactService.successMessage)
 		if (this.contactService.saveAsSuccessMessage === "add" || this.contactService.successMessage === true || this.contactService.saveAsSuccessMessage === "SUCCESS") {
 			if (currentUrl.includes('home/partners')) {
-				let message = "Your " + this.authenticationService.partnerModule.customName + " List has been created successfully.";
+				let message = "Your " + this.authenticationService.partnerModule.customName + " Group has been created successfully.";
 				this.customResponse = new CustomResponse('SUCCESS', message, true);
 			} else if (currentUrl.includes('home/contacts')) {
 				this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);
@@ -2064,7 +2065,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						}
 					}
 				}
-				else if (name == "") { this.saveAsError = 'List Name is Required.'; }
+				else if (name == "") { this.saveAsError = this.isPartner ? 'Group Name is Required.' : 'List Name is Required.';
+				}
 				else { this.saveAsError = 'You have exceeded 250 characters!'; }
 			}
 		} catch (error) {
@@ -2161,10 +2163,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							this.saveAsError = data.message;
 						} else if (data.statusCode == 200) {
 							if (this.isPartner) {
-								let message = "Your " + this.authenticationService.partnerModule.customName + " list has been saved successfully";
+								let message = "Your " + this.authenticationService.partnerModule.customName + " group has been saved successfully";
 								this.customResponse = new CustomResponse('SUCCESS', message, true);
 							} else {
 								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SAVE_SUCCESS, true);
+								let message = "Your " + this.authenticationService.partnerModule.customName + " list has been saved successfully";
+
 							}
 							this.loadContactLists(this.pagination);
 						}

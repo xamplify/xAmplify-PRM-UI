@@ -3636,6 +3636,19 @@ preivewAssetOnNewHost(id: any) {
   window.open(url,"_blank");
 }
 
+preivewAssetForPartnerOnNewHost(id: any) {
+  let encodedId = btoa(id);
+  let encodedAccessToken = btoa(this.authenticationService.access_token);
+  let encodedIcon = this.getEncodedIcon();
+  let companyName = localStorage.getItem("companyName");
+  let encodedCompanyName =this.getEncodedCompanyName(companyName);
+  let userId = this.authenticationService.getUserId();
+  let userIdAsString: string = String(userId);
+  let encodedUserId =  btoa(userIdAsString);
+  let url = this.envService.PREVIEW_HOST+"p/preview/"+encodedId+"/"+encodedAccessToken+"/"+encodedIcon+"/"+encodedCompanyName+"/"+encodedUserId;
+  window.open(url,"_blank");
+}
+
 
   private getEncodedIcon() {
     let iconPath = localStorage.getItem("appIcon");

@@ -234,6 +234,7 @@ export class Properties {
 	zohoGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/ZOHO.png';
 	salesforceGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Salesforce.png';
 	microsoftGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Microsoft.png';
+	halopsaGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/halopsa-contacts.png'
 
 
 	teamMemberGroups = 'Team Member Groups';

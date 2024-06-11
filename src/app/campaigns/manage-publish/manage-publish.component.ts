@@ -22,6 +22,7 @@ import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { utc } from 'moment';
 import { Properties } from 'app/common/models/properties';
 import { access } from 'fs';
+import { CustomAnimation } from 'app/core/models/custom-animation';
 
 declare var swal, $: any, flatpickr;
 
@@ -29,9 +30,11 @@ declare var swal, $: any, flatpickr;
     selector: 'app-manage-publish',
     templateUrl: './manage-publish.component.html',
     styleUrls: ['./manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties],
+    animations:[CustomAnimation]
 })
 export class ManagePublishComponent implements OnInit, OnDestroy {
+    collpsableId = "campaignBoxAnalytics";
     campaigns: Campaign[];
     isCampaignDeleted = false;
     hasCampaignRole = false;

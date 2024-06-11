@@ -54,10 +54,9 @@ export class ViewDamComponent implements OnInit {
   }
 
   viewContent(){
-	
+	this.saveGeoLocationAnalytics(this.assetId);
+	this.referenceService.preivewAssetForPartnerOnNewHost(this.assetId);
   }
-
-  
 
   closeAssetDetails(){
 	this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,true);
@@ -76,6 +75,9 @@ export class ViewDamComponent implements OnInit {
 							this.selectedAsset = this.assetDetailsViewDto;
 							this.assetDetailsViewDto.displayTime = new Date(this.assetDetailsViewDto.publishedTimeInUTCString);
 							this.loadVideoPlayer = this.selectedAsset.videoId!=null && this.selectedAsset.videoId>0;
+							if(!this.loadVideoPlayer){
+								this.assetViewLoader = false;
+							}
 						} else if (response.statusCode == 404) {
 							this.referenceService.goToPageNotFound();
 						}
@@ -87,42 +89,47 @@ export class ViewDamComponent implements OnInit {
 					this.xtremandLogger.errorPage(error);
 				},
 				() => {
-					if (this.damViewStatusCode == 200) {
-						this.utilService.getJSONLocation().subscribe(
-							(response: any) => {
-								let damAnalyticsPostDto = new DamAnalyticsPostDto();
-								let geoLocationDetails = new GeoLocationAnalytics();
-								let deviceInfo = this.deviceService.getDeviceInfo();
-								if (deviceInfo.device === 'unknown') {
-									deviceInfo.device = 'computer';
-								}
-								geoLocationDetails.openedTime = new Date();
-								geoLocationDetails.deviceType = deviceInfo.device;
-								geoLocationDetails.os = deviceInfo.os;
-								geoLocationDetails.city = response.city;
-								geoLocationDetails.country = response.country;
-								geoLocationDetails.isp = response.isp;
-								geoLocationDetails.ipAddress = response.query;
-								geoLocationDetails.state = response.regionName;
-								geoLocationDetails.zip = response.zip;
-								geoLocationDetails.latitude = response.lat;
-								geoLocationDetails.longitude = response.lon;
-								geoLocationDetails.countryCode = response.countryCode;
-								geoLocationDetails.timezone = response.timezone;
-								damAnalyticsPostDto.geoLocationDetails = geoLocationDetails;
-								damAnalyticsPostDto.damPartnerId = id;
-								this.saveAnalytics(damAnalyticsPostDto);
-							}, (_error: any) => {
-								this.xtremandLogger.error("Error In Fetching Location Details");
-								let damAnalyticsPostDto = new DamAnalyticsPostDto();
-								damAnalyticsPostDto.damPartnerId = id;
-								this.saveAnalytics(damAnalyticsPostDto);
-								this.assetViewLoader = false;
-							}
-						);
+					if(this.loadVideoPlayer && this.damViewStatusCode==200){
+						this.saveGeoLocationAnalytics(id);
 					}
+					
 				}
 			);
+	}
+
+	private saveGeoLocationAnalytics(id: any) {
+		this.utilService.getJSONLocation().subscribe(
+			(response: any) => {
+				let damAnalyticsPostDto = new DamAnalyticsPostDto();
+				let geoLocationDetails = new GeoLocationAnalytics();
+				let deviceInfo = this.deviceService.getDeviceInfo();
+				if (deviceInfo.device === 'unknown') {
+					deviceInfo.device = 'computer';
+				}
+				geoLocationDetails.openedTime = new Date();
+				geoLocationDetails.deviceType = deviceInfo.device;
+				geoLocationDetails.os = deviceInfo.os;
+				geoLocationDetails.city = response.city;
+				geoLocationDetails.country = response.country;
+				geoLocationDetails.isp = response.isp;
+				geoLocationDetails.ipAddress = response.query;
+				geoLocationDetails.state = response.regionName;
+				geoLocationDetails.zip = response.zip;
+				geoLocationDetails.latitude = response.lat;
+				geoLocationDetails.longitude = response.lon;
+				geoLocationDetails.countryCode = response.countryCode;
+				geoLocationDetails.timezone = response.timezone;
+				damAnalyticsPostDto.geoLocationDetails = geoLocationDetails;
+				damAnalyticsPostDto.damPartnerId = id;
+				this.saveAnalytics(damAnalyticsPostDto);
+			}, (_error: any) => {
+				this.xtremandLogger.error("Error In Fetching Location Details");
+				let damAnalyticsPostDto = new DamAnalyticsPostDto();
+				damAnalyticsPostDto.damPartnerId = id;
+				this.saveAnalytics(damAnalyticsPostDto);
+				this.assetViewLoader = false;
+			}
+		);
 	}
 
 	saveAnalytics(damAnalyticsPostDto: DamAnalyticsPostDto) {
