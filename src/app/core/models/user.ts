@@ -70,4 +70,11 @@ export class User {
     displayContactCompany : string;
     companyNameStatus : string;
 
+    accountName : string;
+    accountSubType : string;
+    territory : string;
+    companyDomain : string;
+    accountOwner : string;
+    website: string;
+
 }
