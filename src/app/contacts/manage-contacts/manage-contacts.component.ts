@@ -323,7 +323,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.xtremandLogger.info("successmessageLoad" + this.contactService.successMessage)
 		if (this.contactService.saveAsSuccessMessage === "add" || this.contactService.successMessage === true || this.contactService.saveAsSuccessMessage === "SUCCESS") {
 			if (currentUrl.includes('home/partners')) {
-				let message = "Your " + this.authenticationService.partnerModule.customName + " List has been created successfully.";
+				let message = "Your " + this.authenticationService.partnerModule.customName + " Group has been created successfully.";
 				this.customResponse = new CustomResponse('SUCCESS', message, true);
 			} else if (currentUrl.includes('home/contacts')) {
 				this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_CREATE_SUCCESS, true);

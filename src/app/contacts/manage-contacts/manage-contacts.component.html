@@ -326,10 +326,14 @@
                                  [className]="checkingContactTypeName=='Contact' ? 'col-xs-12 col-sm-6 col-lg-6 pb6':'col-xs-12 col-sm-6 col-lg-6 p0 pull-right'">
                                  <div class="btn-group pull-right">
                                     <ng-container class='m10'>
-                                       <span class="btn btn-xs l-g-view" data-toggle="tooltip" ng
+                                       <span class="btn btn-xs l-g-view" *ngIf="!isPartner" data-toggle="tooltip" ng
                                           data-placement="bottom" style="margin-right: 10px;" title="List View"
                                           [class.disabled]="isListView" (click)="isListView = true"><i
                                              class="fa fa-th-list p10" aria-hidden="true"></i></span>
+                                             <span class="btn btn-xs l-g-view" *ngIf="isPartner" data-toggle="tooltip" ng
+                                             data-placement="bottom" style="margin-right: 10px;" title="Group View"
+                                             [class.disabled]="isListView" (click)="isListView = true"><i
+                                                class="fa fa-th-list p10" aria-hidden="true"></i></span>
                                        <span class="btn btn-xs l-g-view mr_4" data-toggle="tooltip"
                                           data-placement="bottom" title="Grid View"
                                           [class.disabled]="!isListView || showExpandButton"
@@ -492,7 +496,7 @@
                                                 <img class="neu-l-d"
                                                    *ngIf="contactList.socialNetwork=='HALOPSA' && contactList.synchronisedList"
                                                    src="{{properties?.halopsaImage}}" alt="manual"
-                                                   style="height: 54px;">
+                                                   style="height: 70px;">
                                                 <!-- XNFR-211 -->
                                                 <img class="neu-l-d-spinner"
                                                    *ngIf="contactList.uploadInProgress || contactList.validationInProgress || ((!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd)))"
@@ -822,9 +826,6 @@
                                        <img class="imageClassCss image_effect"
                                           *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"
                                           src="{{properties?.marketoGridImage}}" alt="manual">
-                                       <img class="imageClassCss image_effect"
-                                          *ngIf="contactList.socialNetwork=='HALOPSA' && contactList.synchronisedList"
-                                          src="{{properties?.halopsaGridImage}}" alt="manual">
                                     </div>
                                     <div id="container"
                                        *ngIf="contactList.uploadInProgress || contactList.validationInProgress || (!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
@@ -844,7 +845,7 @@
                                     <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent"
                                        data-toggle="tooltip" data-placement="top" title="{{contactList.name}}"
                                        style="float:none !important">
-                                       <b translate> List Name:</b> {{contactList.name}}
+                                       <b translate>{{ isPartner ? 'Group Name: ' : 'List Name: ' }}</b>{{ contactList.name }}
                                     </h4>
                                     <div class="aligntowbtns">
                                        <span class="view-banner Assigned-lable LableSpaceings"
