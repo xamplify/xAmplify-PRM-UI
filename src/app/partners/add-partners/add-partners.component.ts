@@ -5203,34 +5203,5 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			);
 	}
 
- /******XNFR-342***/
- openUnPublishedContentModalPopUp(contact:any){
-	this.shareUnPublishedComponent.openPopUp(this.partnerListId, contact, "Partner",contact.name);
- }
-
- /***** XNFR-471 *****/
- downloadPartnerListCsv() {
-	this.userListPaginationWrapper.pagination = this.pagination;
-	this.contactListObj.id = this.partnerListId;
-	this.contactListObj.editList = true;
-	this.contactListObj.moduleName = "partners";
-	this.userListPaginationWrapper.userList = this.contactListObj;
-	this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
-	.subscribe(
-		data =>{
-			if(data.statusCode == 200){
-				this.customResponse = new CustomResponse('SUCCESS', data.message, true);
-			}
-			if(data.statusCode == 401){
-				this.customResponse = new CustomResponse('SUCCESS', data.message, true);
-			}
-		},(error: any) => {
-			this.xtremandLogger.error(error);
-			this.xtremandLogger.errorPage(error);
-		},
-		() => this.xtremandLogger.info("download partner List completed")
-	);
- }
-
 
 }
