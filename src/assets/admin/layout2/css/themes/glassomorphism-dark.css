@@ -9,7 +9,7 @@
   color: white !important;
 }
 body{
-  background-image: url(/assets/images/glass-dark2.jpg);
+  background-image: url(/assets/images/glassmorphism-images/glassmorphism-dark.jpg);
   color: white !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -35,7 +35,7 @@ body{
 .div.thembgc,
 .div.thembg-color,
 .img-thumbnail {
-    background: rgba(16 18 27 / 40%) !important;
+    background: rgba(16 18 27 / 20%) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .div.thembgc,
@@ -495,9 +495,10 @@ tr {
 }
 /*** TopNavBar ***/
 .page-header.navbar .page-top {
-    border-bottom: 1px solid #ffffff33 !important;
-    background: rgba(16 18 27 / 40%) !important; 
+    border-bottom: 1px solid rgb(255 255 255 / 35%) !important;
+    background: #af9a9a59 !important; 
     z-index: 1000;
+    box-shadow: none !important;
 }
 div.scrolled{
   background-color: rgb(16 18 27 / 93%) !important; /* Darker background color when scrolled */
@@ -1679,19 +1680,19 @@ p.layoutcontent {
 }
 .bg-color-for-secondcard {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background: #2c2f33 !important;
+  background: rgb(0 0 0 / 18%) !important;
 }
 .bg-color-for-secondcard1 {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background: #2c2f33 !important;
+  background: rgb(0 0 0 / 18%) !important;
 }
 .bg-color-for-thirdcard {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background: #2c2f33 !important;
+  background: rgb(0 0 0 / 18%) !important;
 }
 .bg-color-for-thirdcard1 {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background: #2c2f33 !important;
+  background: rgb(0 0 0 / 18%) !important;  
 }
 .portlet-light-fields.custom-header-img-color,
 .portlet-light-fields.custom-left-img-color.left-left.box-center,
@@ -1975,8 +1976,8 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   border: 0px solid #3575b5 !important;
 }
 .btn-group button{
-  background-color: #1091d9 !important;
-  border: 1px solid #1ca6f3 !important;
+  background-color: #0276FF !important;
+  border: 1px solid #1ca6f369 !important;
 }
 
 .search-box-item-click {
@@ -2247,7 +2248,7 @@ a.UserguideBtnCustomization:hover {
 .left-menu-color {
   padding: 0px 0px !important;
   background: rgb(16 18 27 / 59%) !important;
-  border-right: 1px solid #ffffff33 !important;
+  border-right: 1px solid rgb(255 255 255 / 35%) !important;
 }
 .neumorphismDark li a:hover {
   outline: none !important;
@@ -2527,9 +2528,9 @@ ul.nav.neumorphismDark {
 }
 button.btn.custom {
   border-radius: 7px !important;
-  background-color: #1091d9 !important;
+  background-color: #0276FF !important;
   color: #fff !important;
-  border:  1px solid #1ca6f3 !important
+  /* border:  1px solid #1ca6f3 !important */
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu {
   border-radius: 10px !important;
@@ -2781,9 +2782,9 @@ justify-content: center!important;
     overflow: hidden !important;
     height: 3.5rem !important;
     border-radius: 8px !important;
-    background: linear-gradient(15deg, rgb(0 159 231) 50%, rgb(0 222 223) 100%, rgb(0 159 231) 50%) no-repeat !important;
+    background: #0276FF !important;
     color: #fff !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    /* border: 1px solid rgba(255, 255, 255, 0.1) !important; */
     margin-left: 4px;
   }
 span.btn.Btn-Green.transition{
@@ -3289,7 +3290,7 @@ h3#notifications {
 button.btn.custom:hover,
 .button:hover,
 .button_blue:hover{
-  background-color: #2584b3 !important;
+  background-color: #1C84FF !important;
   background-size: 250% !important;
   background-position: right center !important;
 }
@@ -3633,7 +3634,7 @@ img.email-template-preview{
   background: #34495a;
   text-align: center;
   border-radius: 10px 10px 0 0;
-  background:  rgb(146 151 179 / 8%)!important;
+  background: rgb(35 36 44 / 23%) !important;
   background-size: 1090px;
   background-repeat: no-repeat;
   background-position: 0;
@@ -3641,7 +3642,7 @@ img.email-template-preview{
   backdrop-filter: blur(5px);
 }
 .img1:hover {
-  background: none !important;
+  background: rgb(35 36 44 / 23%) !important;
 }
 /***** Sudha Sri(12-3-2024) *****/
 button.btn.btn-primary.activate-btn:hover {
@@ -3759,8 +3760,8 @@ img.email-template-preview.image_effect.template_image_border {
 }
 .Btn-Green,
 .btn-primary{
-  background: rgb(0 0 0 / 18%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: #0276FF !important;
+  /* border: 1px solid rgba(255, 255, 255, 0.1) !important; */
 }
 .aspect_ratio{
   background-color: rgb(146 151 179 / 8%) !important;
@@ -3773,9 +3774,9 @@ img.email-template-preview.image_effect.template_image_border {
   background-color: rgb(146 151 179 / 8%) !important;
   backdrop-filter: blur(5px);
 }
-.page-header-inner {
+/* .page-header-inner {
   background: rgba(16 18 27 / 40%) !important;
-}
+} */
 .add-options button{
   border-radius: 7px !important; 
 }
@@ -3876,3 +3877,10 @@ div#xamplify-bee-template-container__bee-plugin-loader{
      background: none !important;
       }
   }
+  .help-iconbgadd:hover, button.button.bgcolor-unset:hover, .btn.Btn-Green:hover {
+    background-color: #1C84FF !important;
+}
+button.button.bgcolor-unset{
+  background-color: #0276FF !important;
+
+}

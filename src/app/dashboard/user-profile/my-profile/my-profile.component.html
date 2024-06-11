@@ -365,9 +365,9 @@
                                             </li>
                                         </ng-container>
                                         <!--Vendor Journey-->
-                                        <ng-container *ngIf="isLocalHost">
+                                        <ng-container>
                                             <ng-container
-                                                *ngIf="(authenticationService?.isVendorTeamMember && authenticationService?.module?.adminOrSuperVisor || authenticationService?.isVendor())">
+                                                *ngIf="(authenticationService?.isVendorTeamMember && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor)">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'vendorJourney'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorJourney'}"
                                                         (click)="activateTab('vendorJourney');clearCustomResponse()">
@@ -2402,9 +2402,9 @@
                                         </app-email-notification-settings>
 
                                         <!--XNFR-454 Domain Configuration-->
-                                        <app-add-or-manage-domains *ngIf="isAddDomainsOptionClicked" class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == properties?.addDomainsText}">
-                                        </app-add-or-manage-domains>
+                                        <app-domain-whitelisting *ngIf="isAddDomainsOptionClicked" class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == properties?.addDomainsText}" [isMyProfileAndDomainWhitelisting]='true'>
+                                        </app-domain-whitelisting>
 
                                         <!--XNFR-459 News & Announcements-->
                                         <div class="tab-pane" *ngIf="isNewsAndAnnouncementsOptionClicked"

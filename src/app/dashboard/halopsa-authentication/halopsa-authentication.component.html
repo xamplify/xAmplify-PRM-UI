@@ -35,6 +35,6 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-warning" (click)="closeForm()">CANCEL</button>
-  <button type="button" class="btn btn-primary" [class.disabled]="!isModelFormValid || !clientId || !secretId || !halopsaInstance" 
+  <button type="button" class="btn btn-primary" [class.disabled]="!clientId || !secretId || !halopsaInstance" 
   (click)="submitHalopsaCredentials()">AUTHORIZE</button>
 </div>

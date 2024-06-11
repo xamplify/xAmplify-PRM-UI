@@ -12,7 +12,8 @@
     <div class="page-bar mWidth" style="border:none !important;">
       <app-preview-popup #previewPopUpComponent></app-preview-popup>
       <app-merge-tags [input]="mergeTagsInput"></app-merge-tags>
-      <app-add-vendor-logos *ngIf = "isMasterLandingPages" [vendorLogoDetails] = "vendorLogoDetails" [input]="mergeTagsInput"></app-add-vendor-logos>
+      <app-add-vendor-logos *ngIf = "isMasterLandingPages" [vendorLogoDetails] = "vendorLogoDetails"
+      [sharedVendorLogoDetails] = "sharedVendorLogoDetails" [input]="mergeTagsInput"></app-add-vendor-logos>
       <div>
         <button class="button_blue bgcolor-unset" (click)="checkOrUncheckOpenLinksInNewTabOption()"
           style="float:right;padding-right:5px;">
@@ -25,7 +26,8 @@
     </div>
     <div class="tile mScroll" id="CardBgforSection" style="border-radius: 5px;">
       <app-xamplify-default-templates *ngIf="editVendorPage" [vendorJourney]='vendorJourney' [isMasterLandingPages] = 'isMasterLandingPages'
-        [landingPage]='vendorDefaultTemplate' [loggedInUserCompanyId]= 'loggedInUserCompanyId' [vendorLogoDetails]="vendorLogoDetails" (redirect)="resetVendorJourney()"></app-xamplify-default-templates>
+        [landingPage]='vendorDefaultTemplate' [openInNewTabChecked] = "openInNewTabChecked"  [loggedInUserCompanyId]= 'loggedInUserCompanyId' [vendorLogoDetails]="vendorLogoDetails" [sharedVendorLogoDetails] = "sharedVendorLogoDetails" (redirect)="resetVendorJourney()"
+        (landingPageOpenInNewTabChecked)="landingPageOpenInNewTabChecked()" ></app-xamplify-default-templates>
     </div>
   </div>
 </div>

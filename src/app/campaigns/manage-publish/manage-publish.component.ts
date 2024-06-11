@@ -376,8 +376,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         self.modulesDisplayType.isFolderGridView = false;
                         self.listCampaign(self.pagination);
                     }else if(self.modulesDisplayType.isFolderGridView){
+                        self.campaignViewType = "Folder-Grid";
                         self.setViewType('Folder-Grid');
                     }else if(self.modulesDisplayType.isFolderListView){
+                        self.campaignViewType = "Folder-List";
                         self.setViewType('Folder-List');
                     }
                 }
@@ -1122,7 +1124,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isFolderListView = false;
             this.navigateToManageSection(viewType); 
         }else if("Folder-Grid"==viewType){
-            this.campaignViewType = "folder-grid";
+            this.campaignViewType = "Folder-Grid";
             this.closeFilterOption();
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
@@ -1142,7 +1144,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 
             }
         }else if("Folder-List"==viewType){
-            this.campaignViewType = "folder-list";
+            this.campaignViewType = "Folder-List";
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
@@ -1177,11 +1179,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
            if("List"==viewType){
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isListView = true;
-            this.campaignViewType = "folder-list";
+            this.campaignViewType = "list";
            }else{
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isListView = false;
-            this.campaignViewType = "folder-grid";
+            this.campaignViewType = "grid";
            }
            this.listCampaign(this.pagination);
         }else  if(this.router.url.endsWith('/')){
@@ -1359,6 +1361,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.modulesDisplayType.isGridView = false;
         this.modulesDisplayType.isFolderGridView = false;
         this.modulesDisplayType.isFolderListView = false;
+        this.campaignViewType = "list";
 
         this.showFilterOption = false;
         this.fromDateFilter = "";

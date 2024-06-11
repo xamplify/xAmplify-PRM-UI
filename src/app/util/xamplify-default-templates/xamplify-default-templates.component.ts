@@ -35,7 +35,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   @Input() landingPage:LandingPage;
   @Output() redirect = new EventEmitter();
   @Input() vendorLogoDetails:VendorLogoDetails[];
+  @Input() sharedVendorLogoDetails:VendorLogoDetails[];
   @Input() loggedInUserCompanyId:number;
+  @Input() openInNewTabChecked: boolean = false;
+  @Output() landingPageOpenInNewTabChecked = new EventEmitter();
   clickedButtonName = "";
   isAdd: boolean;
   name = "";
@@ -449,6 +452,8 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                   if(landingPage.sourceInString == 'VENDOR_JOURNEY' || landingPage.sourceInString == 'MASTER_PARTNER_PAGE'){
                     this.landingPage.sourceInString = landingPage.sourceInString;
                   }
+                  this.openInNewTabChecked = this.landingPage.openLinksInNewTab;
+                  this.landingPageOpenInNewTabChecked.emit()
                   $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", this.landingPage.openLinksInNewTab);
                   var request = function (method, url, data, type, callback) {
                       var req = new XMLHttpRequest();
@@ -484,7 +489,14 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                       self.landingPage.jsonBody = jsonContent;
 
                       if(self.isMasterLandingPages){
-                        if(self.vendorLogoDetails != null && self.vendorLogoDetails.every(logo=>!logo.selected)){
+                        if(self.authenticationService.module.isAnyAdminOrSupervisor){
+                          for(let logoDetails of self.vendorLogoDetails){
+                            logoDetails.selected = self.sharedVendorLogoDetails
+                            .filter(company=> company.companyId == logoDetails.companyId)[0].teamMembers
+                            .filter(member=>member.partnerId == logoDetails.partnerId)[0].selected;
+                          }
+                        }
+                        if((self.vendorLogoDetails.length == 0 || self.vendorLogoDetails == null  ||(self.vendorLogoDetails != null && self.vendorLogoDetails.length != 0 && self.vendorLogoDetails.every(logo=>!logo.selected)))){
                           swal("", "Whoops! We're unable to save this page because you havn't selected the vendor detail. You'll need to select vendor detail by clicking the Vendor Logos button", "error");
                           return false;
                         }
@@ -737,8 +749,11 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
   this.landingPage.userId = this.loggedInUserId;
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
   this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
-  this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
 
+  this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
+  if(this.landingPage.hasVendorJourney){
+    this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
+  }
   if (!this.loggedInAsSuperAdmin) {
       this.landingPage.type = $('#pageType option:selected').val();
       this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
@@ -777,7 +792,7 @@ goToManageAfterSave(data:any, isSaveAndRedirectButtonClicked:boolean) {
   if (data.access) {
       if (isSaveAndRedirectButtonClicked) {
           this.referenceService.addCreateOrUpdateSuccessMessage("Page created successfully");
-          this.navigateToManageSection();
+            this.navigateToManageSection();
       } else {
           //this.ngxloading = true;
           this.customResponse = new CustomResponse('SUCCESS',"Page created successfully",true);
@@ -805,6 +820,9 @@ updateLandingPage(updateAndRedirectClicked: boolean) {
   this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
   this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
+  if(this.landingPage.hasVendorJourney){
+    this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
+  }
   this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
   this.updateCompanyLogo(this.landingPage);
   this.landingPageService.update(this.landingPage).subscribe(

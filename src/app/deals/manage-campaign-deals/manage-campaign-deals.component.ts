@@ -10,6 +10,9 @@ import { PagerService } from 'app/core/services/pager.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Deal } from '../models/deal';
 import { EventEmitter } from '@angular/core';
+import { LEAD_CONSTANTS } from './../../constants/lead.constants';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+
 declare var swal, $, videojs: any;
 
 @Component({
@@ -46,13 +49,24 @@ export class ManageCampaignDealsComponent implements OnInit {
   filterMode: boolean = false;
   selectedFilterIndex: number = 1;
   stageNamesForFilterDropDown :any;
-  statusFilter: any = "";
 
   /** XNFR-426 **/
   //deal = new Deal();
   updateCurrentStage:boolean = false;
   currentDealToUpdateStage:Deal;
   textAreaDisable:boolean = false;
+  readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
+
+  /***09/06/2024****/
+  registeredByUsersLoader = true;;
+  registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  isRegisteredByUsersLoadedSuccessfully = true;
+  selectedRegisteredByUserId = 0;
+
+  statusFilter: any;
+  statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  statusLoader = true;
+  isStatusLoadedSuccessfully = true;
 
   constructor(public authenticationService: AuthenticationService,
     private dealsService: DealsService, public referenceService: ReferenceService, public pagerService: PagerService) {
@@ -73,6 +87,8 @@ export class ManageCampaignDealsComponent implements OnInit {
         this.dealsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
       }      
       this.listCampaignDeals(this.dealsPagination);
+      /*****Registered By Users*****/   
+      this.findAllRegisteredByUsers();
     }
   }
 
@@ -432,44 +448,31 @@ setDealStatus(deal: Deal,deletedPartner:boolean) {
     this.referenceService.showSweetAlert("This Option Is Not Available","","info");
   }
 }
-stageNamesOfV(){
-  this.referenceService.loading(this.httpRequestLoader, true);
-  this.dealsService.getStageNamesOfV(this.loggedInUserId)
-  .subscribe(
-    response =>{
-      this.referenceService.loading(this.httpRequestLoader, false);
-      this.stageNamesForFilterDropDown = response;
 
-    },
-    error=>{
-      this.httpRequestLoader.isServerError = true;
-    },
-    ()=> { }
-  ); 
-}
-getStageNamesOfCampaign(){
-  this.referenceService.loading(this.httpRequestLoader, true);
-  this.dealsService.getStageNamesOfCampaign(this.loggedInUserId)
-  .subscribe(
-    response =>{
-      this.referenceService.loading(this.httpRequestLoader, false);
-      this.stageNamesForFilterDropDown = response;
+  private addSearchableStatus(response: any) {
+    this.stageNamesForFilterDropDown = response;
+    let dtos = [];
+    $.each(this.stageNamesForFilterDropDown, function (index: number, value: any) {
+      let id = value;
+      let name = value;
+      let dto = {};
+      dto['id'] = id;
+      dto['name'] = name;
+      dtos.push(dto);
+    });
+    this.statusSearchableDropDownDto.data = dtos;
+    this.statusSearchableDropDownDto.placeHolder = "Select Status";
+    this.statusLoader = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
+  }
 
-    },
-    error=>{
-      this.httpRequestLoader.isServerError = true;
-    },
-    ()=> { }
-  ); 
-}
+
 
 getStageNamesForCampaign(){
-  this.referenceService.loading(this.httpRequestLoader, true);  
   this.dealsService.getStageNamesForCampaign(this.campaignId, this.loggedInUserId)
   .subscribe(
     response =>{
-      this.referenceService.loading(this.httpRequestLoader, false);
-      this.stageNamesForFilterDropDown = response;
+      this.addSearchableStatus(response);
     },
     error=>{
       this.httpRequestLoader.isServerError = true;
@@ -533,6 +536,28 @@ downloadDeals(pagination: Pagination){
         );
 }
 
+ /*****Registered By Users*****/     
+ findAllRegisteredByUsers(){
+  this.registeredByUsersLoader = true;
+  this.dealsService.findAllRegisteredByUsersByCampaignIdAndPartnerCompanyId(this.campaignId,this.partnerCompanyId)
+  .subscribe(
+    response=>{
+      this.registeredByUsersSearchableDropDownDto.data = response.data;
+      this.registeredByUsersSearchableDropDownDto.placeHolder = "Select "+LEAD_CONSTANTS.addedBy;
+      this.isRegisteredByUsersLoadedSuccessfully = true;
+      this.registeredByUsersLoader = false;
+    },error=>{
+      this.registeredByUsersLoader = false;
+      this.isRegisteredByUsersLoadedSuccessfully = false;
+    });
+}
 
+getSelectedStatus(event:any){
+  if(event!=null){
+    this.statusFilter = event['id'];
+  }else{
+    this.statusFilter = "";
+  }
+}
 
 }

@@ -2247,7 +2247,7 @@ a.UserguideBtnCustomization:hover {
 }
 .left-menu-color ul li a:hover,
 .left-menu-color ul li.active > a {
-  border-radius: 10px !important;
+  border-radius: 0px !important;
 }
 .left-menu-color {
   padding: 0px 0px !important;
@@ -2440,7 +2440,7 @@ ul.pagination.padding {
 }
 .page-sidebar .page-sidebar-menu > li > a {
   border-bottom: unset !important;
-  border-radius: 10px;
+  border-radius:0px;
 }
 li.divider-bottom,
 .page-header.navbar

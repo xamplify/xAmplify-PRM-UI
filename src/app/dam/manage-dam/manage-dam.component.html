@@ -11,7 +11,7 @@
             <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
          <li>
-            <a (click)="goToDam()" translate>DAM</a>
+            <a (click)="goToDam()" translate>{{properties?.MANAGE_ASSETS}}</a>
          </li>
          <li *ngIf="editVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Edit Video Asset</a></li>
          <li *ngIf="playVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Play Video Asset</a></li>
