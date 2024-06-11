@@ -129,4 +129,7 @@ export class Pagination {
 	/*** XNFR-504 ***/
 	selectedVendorCompanyIds: any[] = [];
 	selectedTeamMemberIds: any[] = [];
+	id = 0;
+	registeredByCompanyId = 0;
+	registeredByUserId = 0;
 }

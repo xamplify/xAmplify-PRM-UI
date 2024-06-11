@@ -563,7 +563,7 @@
 												*ngIf="!disablePlayerSettingnew" class="form-group"
 												[class.disabledCss]="!enableVideoLogo">
 												<label class="col-xs-5 control-label" translate>Video Logo:<font
-														*ngIf="!brandLogoUrl" style="color: red"><b>*</b></font></label>
+														*ngIf="!brandLogoUrl"><b style="color: red!important;">*</b></font></label>
 												<div class="col-xs-7">
 													<span class="btn btn-css btn-file" *ngIf="!brandLogoUrl"
 														translate>Select Logo
@@ -590,7 +590,7 @@
 												[class.disabledCss]="!enableVideoLogo">
 												<label class="col-xs-5 control-label"
 													style="position: relative;top:-7px;" translate>Video Logo URL:<font
-														*ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font>
+														*ngIf="!logoDescriptionUrl"><b style="color: red!important;">*</b></font>
 												</label>
 												<div class="col-xs-7">
 													<input type="text" style="width: 90%;"
@@ -987,8 +987,8 @@
 									<label class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label"
 										style="margin-top:-6px" translate>Upper Text:
 										<font *ngIf="upperTextValid == false"
-											style="color: red; font-size: 19px;position: absolute;">
-											<b>*</b>
+											style="font-size: 19px;position: absolute;">
+											<b style="color: red!important;">*</b>
 										</font>
 									</label>
 									<div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
@@ -1008,8 +1008,8 @@
 									<label class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label"
 										style="margin-top:-6px" translate>Lower Text:
 										<font *ngIf="lowerTextValid == false"
-											style="color: red; font-size: 19px;position: absolute;">
-											<b>*</b>
+											style="font-size: 19px;position: absolute;">
+											<b style="color: red!important;">*</b>
 										</font>
 									</label>
 									<div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">

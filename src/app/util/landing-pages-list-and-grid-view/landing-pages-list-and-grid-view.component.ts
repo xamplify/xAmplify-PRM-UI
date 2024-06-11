@@ -205,13 +205,21 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   /*************************Sort********************** */
   sortBy(text: any) {
       this.sortOption.formsSortOption = text;
-      this.getAllFilteredResults(this.pagination);
+      if(this.isLandingPages){
+        this.findPartnerVendorJourneyLandingPages(this.pagination)
+      }else{
+        this.getAllFilteredResults(this.pagination);
+      }
   }
 
 
   /*************************Search********************** */
   searchLandingPages() {
-      this.getAllFilteredResults(this.pagination);
+    if(this.isLandingPages){
+        this.findPartnerVendorJourneyLandingPages(this.pagination);
+    }else{
+        this.getAllFilteredResults(this.pagination);
+    }
   }
 
   paginationDropdown(items: any) {
@@ -306,7 +314,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       this.customResponse = new CustomResponse();
       this.referenceService.loading(this.httpRequestLoader, true);
       this.referenceService.goToTop();
-      this.landingPageService.deletebById(landingPage.id)
+      this.landingPageService.deletebById(landingPage.id,(this.vendorJourney || this.isMasterLandingPages))
           .subscribe(
               (response: any) => {
                   if(response.access){

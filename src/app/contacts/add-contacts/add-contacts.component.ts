@@ -5212,7 +5212,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkingHaloPSAContactsAuthentication() {
-        this.showHaloPSAAuthenticationForm = true;
         if (this.selectedAddContactsOption == 8) {
             this.integrationService.checkConfigurationByType('halopsa').subscribe(data => {
                 let response = data;

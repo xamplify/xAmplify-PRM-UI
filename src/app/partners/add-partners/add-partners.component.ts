@@ -2728,7 +2728,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			} else {
 				let a = document.createElement('a');
 				a.href = url;
-				a.download = this.contactService.partnerListName + '.csv';
+				//a.download = this.contactService.partnerListName + '.csv';
+				//a.download = this.contactService.partner
+				a.download = this.contactService.partnerListName.replace("List", "Group") + '.csv';
 				document.body.appendChild(a);
 				a.click();
 				document.body.removeChild(a);
@@ -2882,7 +2884,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	saveAsChange(showGDPR: boolean) {
 
 		if (this.editContactComponent.selectedContactForSave.length === 0) {
-			this.customResponse = new CustomResponse('ERROR', "Please select atleast one " + this.authenticationService.partnerModule.customName + " to create the list", true);
+			this.customResponse = new CustomResponse('ERROR', "Please select atleast one " + this.authenticationService.partnerModule.customName + " to create the Group", true);
 
 		} else {
 			this.hasAccess().subscribe(
@@ -4503,6 +4505,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 
 	getSelectedIndex(index: number) {
+		this.isLoadingList = true;
 		this.selectedFilterIndex = index;
 		this.referenceService.setTeamMemberFilterForPagination(this.pagination, index);
 		this.defaultPartnerList(this.loggedInUserId);
@@ -5170,6 +5173,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 	}
 
+
 	/******XNFR-342***/
 	openUnPublishedContentModalPopUp(contact: any) {
 		this.shareUnPublishedComponent.openPopUp(this.partnerListId, contact, "Partner", contact.name);
@@ -5198,5 +5202,35 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				() => this.xtremandLogger.info("download partner List completed")
 			);
 	}
+
+ /******XNFR-342***/
+ openUnPublishedContentModalPopUp(contact:any){
+	this.shareUnPublishedComponent.openPopUp(this.partnerListId, contact, "Partner",contact.name);
+ }
+
+ /***** XNFR-471 *****/
+ downloadPartnerListCsv() {
+	this.userListPaginationWrapper.pagination = this.pagination;
+	this.contactListObj.id = this.partnerListId;
+	this.contactListObj.editList = true;
+	this.contactListObj.moduleName = "partners";
+	this.userListPaginationWrapper.userList = this.contactListObj;
+	this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
+	.subscribe(
+		data =>{
+			if(data.statusCode == 200){
+				this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+			}
+			if(data.statusCode == 401){
+				this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+			}
+		},(error: any) => {
+			this.xtremandLogger.error(error);
+			this.xtremandLogger.errorPage(error);
+		},
+		() => this.xtremandLogger.info("download partner List completed")
+	);
+ }
+
 
 }

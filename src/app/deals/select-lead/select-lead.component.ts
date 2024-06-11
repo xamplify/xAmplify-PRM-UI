@@ -10,6 +10,7 @@ import { SortOption } from 'app/core/models/sort-option';
 import { PagerService } from 'app/core/services/pager.service';
 import { UtilService } from 'app/core/services/util.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
 
 declare var swal, $, videojs: any;
 
@@ -35,7 +36,7 @@ export class SelectLeadComponent implements OnInit {
   disableCreatedForVendor: boolean = false;
   enableAddLeadButton: boolean = false;
   showSelectedLead: number = 0;
-
+  readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
   constructor(public properties: Properties, public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     private leadsService: LeadsService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService) {
     this.loggedInUserId = this.authenticationService.getUserId();
