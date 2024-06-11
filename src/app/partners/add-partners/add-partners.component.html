@@ -421,7 +421,7 @@
                     <li><a id="saveAs_button" [class.disabled]="isSaveAsList"
                             *ngIf="selectedAddPartnerOption == 5 && !clipBoard"
                             (click)="saveAsChange(true); editContactComponent.addPartnerSave = true" translate>Create
-                            New List </a></li>
+                            New Group </a></li>
                     <li><a id="exportToExcel"
                             *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard"
                             (click)="downloadPartnerList()" translate>Export To Excel </a></li>
@@ -432,7 +432,7 @@
                     <!---XNFR-278-->
                     <li
                         *ngIf="isPartner && selectedAddPartnerOption == 5 && pagination?.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0">
-                        <a (click)="openMergePopup()" translate> Add To Lists</a>
+                        <a (click)="openMergePopup()" translate> Add To Groups</a>
                     </li>
                     <!---XNFR-278-->
                 </ul>
@@ -812,7 +812,7 @@
                     <div class="portlet-title" style="border-bottom: none !important;">
                         <div class="caption" style="padding-top: 11px !important;" translate>
                             <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>
-                            List of {{authenticationService?.partnerModule?.customName}}
+                            Group of {{authenticationService?.partnerModule?.customName}}
                         </div>
                         <div class="inputs" align="right" style="float: right; padding: 4px;display:flex;"
                             *ngIf="!referenceService.isMobileScreenSize()">
@@ -840,7 +840,7 @@
                                 </div>
                             </div>
                             <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
-                                [disabled]="pagination.totalRecords == 0" title="Click here to email the list"
+                                [disabled]="pagination.totalRecords == 0" title="Click here to email the group"
                                 (click)="downloadPartnerListCsv()" style="margin: 3px -5px 0px 3px;">
                                 <i aria-hidden="true" class="fas fa-file-export p10"></i>
                             </button>
@@ -1808,7 +1808,7 @@
 
 <!---XNFR-278-->
 <ng-container *ngIf="mergeOptionClicked">
-    <app-copy-group-users-modal-popup [userListId]="partnerListId" [selectedUserIds]="selectedUserIdsForMerging"
+    <app-copy-group-users-modal-popup [userListId]="partnerListId" [selectedUserIds]="selectedUserIdsForMerging" [moduleName] = module
         (copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>
 </ng-container>
 

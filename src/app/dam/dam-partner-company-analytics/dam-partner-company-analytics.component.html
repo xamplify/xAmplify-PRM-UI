@@ -71,7 +71,7 @@
                  <tbody>
                   <ng-container *ngIf="isPublished">
                     <tr *ngFor="let company of pagination?.pagedItems ;let i =index">
-                      <td class="hidden-xs text-center" style="width: 10%;">
+                      <td class="text-center" style="width: 10%;">
                         <div class="thumbnail-wrapper image_effect">
                           <img class="img-company-list" [src]="authenticationService.MEDIA_URL + company?.companyLogo"
                             onerror="this.src='assets/images/company-profile-logo.png';" alt="{{company?.companyLogo}}">
@@ -128,9 +128,8 @@
 <ng-template #partnerCompanyTable>
   <thead>
     <tr>
-      <th class="hidden-xs" colspan="2" style="width: 45%" id="border-bottom">
-        <span *ngIf="isPublished" class="ui-column-resizer gray" (mousedown)="referenceService?.onMouseDown($event,'dam-partner-companies',2)">
-        </span>
+      <th  colspan="2" style="width: 45%" id="border-bottom">
+        <span *ngIf="isPublished" class="ui-column-resizer gray" (mousedown)="referenceService?.onMouseDown($event,'dam-partner-companies',2)"></span>
         <span class="gridHeader">Company</span>
       </th>
       <th class="text-center">View Count</th>

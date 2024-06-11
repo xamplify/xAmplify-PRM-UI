@@ -234,7 +234,7 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
       }, () => {
         this.selectedPartnerListIds = this.workflowDto.selectedPartnerListIds.sort();
         let selectedListSortOption = {
-          'name': 'Selected List', 'value': 'selectedList'
+          'name': 'Selected Group', 'value': 'selectedList'
         };
         this.partnerListsSortOption.campaignRecipientsDropDownOptions.push(selectedListSortOption);
         this.partnerListsSortOption.selectedCampaignRecipientsDropDownOption = this.partnerListsSortOption.campaignRecipientsDropDownOptions[this.partnerListsSortOption.campaignRecipientsDropDownOptions.length - 1];
