@@ -196,7 +196,7 @@
                           <label class="control-label">Pipeline<span class="required"><strong>*</strong></span></label>
                           <select class="form-control" [(ngModel)]="deal.createdByPipelineId" [ngModelOptions]="{standalone: true}"
                             placeholder="pipelineId" id="createdByPipelineId"
-                            [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline"
+                            [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasCreatedByPipeline"
                             (ngModelChange)="resetCreatedByPipelineStages()" (input)="validateField('createdByPipelineId',false)">
                             <option [value]="0">Select Pipeline</option>
                             <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
@@ -270,7 +270,7 @@
                         <label class="control-label">Partner's xAmplify Pipeline<span class="required"><strong>*</strong></span></label>
                         <select class="form-control" [(ngModel)]="deal.createdByPipelineId" [ngModelOptions]="{standalone: true}"
                           placeholder="pipelineId" id="createdByPipelineId"
-                          [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline"
+                          [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasCreatedByPipeline"
                           (ngModelChange)="resetCreatedByPipelineStages()" (input)="validateField('createdByPipelineId',false)">
                           <option [value]="0">Select Pipeline</option>
                           <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
