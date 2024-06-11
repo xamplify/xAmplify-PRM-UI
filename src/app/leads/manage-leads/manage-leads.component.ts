@@ -233,6 +233,7 @@ export class ManageLeadsComponent implements OnInit {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
     this.showLeads();
+    this.getActiveCRMDetails();
     this.mergeTagForUserGuide();
   }
 

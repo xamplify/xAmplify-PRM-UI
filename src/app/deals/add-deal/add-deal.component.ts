@@ -933,6 +933,8 @@ export class AddDealComponent implements OnInit {
         this.pipelineStageIdError = false;
         this.createdForPipelineStageIdError = false;
       }
+    } else{
+      this.opportunityTypeIdError = false;
     }
 
     if (!this.opportunityAmountError && !this.estimatedCloseDateError
@@ -1431,7 +1433,9 @@ export class AddDealComponent implements OnInit {
         );
         self.createdByStages = createdByPipeline.stages;
         self.deal.createdByPipelineStageId = createdByPipelineStage.id;
-      } 
+      }  else {
+        self.createdByStages = createdByPipeline.stages;
+      }
     } else {
       let createdByPipelineExist = false;
       for (let p of createdByPipelines) {

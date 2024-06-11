@@ -174,7 +174,7 @@
                       </a>
 
                       <!-- XNFR-215 -->
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT' && activeCRMDetails?.type != 'CONNECTWISE'"
+                      <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT' && activeCRMDetails?.type != 'CONNECTWISE') || (isPartnerVersion && (activeCRMDetails?.type == 'HALOPSA'))"
                         (click)="syncLeadsWithActiveCRM()">
                         <button class="btn salesforce-btn button  bgcolor-unset p0 btn-transitions mrgt1-2"
                           style="margin-left: 3px;" data-toggle="tooltip" data-placement="bottom" title="Synchronize"
