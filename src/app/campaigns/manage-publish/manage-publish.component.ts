@@ -1659,14 +1659,16 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     
     showGearIconOptions(campaign: any, index : number) {
-    if(campaign.channelCampaign){
-      this.checkLastElement(index);
-    }else{
+
         this.campaignService.getGearIconOptions(campaign, this.loggedInUserId)
         .subscribe(
             data => {
                 if (data.statusCode == 200) {
                     campaign.hasAccess = data.data.hasAccess;
+                    campaign.canArchive = data.data.canArchive;
+                    campaign.formsCount = data.data.formsCount;
+                   campaign.parentCampaignLaunchedByVendorTierCompany = data.data.parentCampaignLaunchedByVendorTierCompany;
+                   campaign.isEventStarted = data.data.isEventStarted;
                     if(campaign.hasAccess){
                        this.checkLastElement(index);
                        campaign.showGearIconOptions = data.data.showGearIconOptions ;
@@ -1679,7 +1681,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.logger.errorPage(error);
             });
             
-        }
     } 
 
 }
