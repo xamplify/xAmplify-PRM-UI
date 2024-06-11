@@ -315,7 +315,7 @@
                                  <ul class="page-breadcrumb" style="padding-left: 0px;"
                                     *ngIf="checkingContactTypeName!='Contact'">
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName=='Partner'">
-                                       Your {{authenticationService?.partnerModule?.customName}} Lists
+                                       Your {{authenticationService?.partnerModule?.customName}} Groups
                                     </li>
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName!='Partner'">
                                        Your {{checkingContactTypeName}} Lists
@@ -353,10 +353,26 @@
                                        <div class="portlet-input input-inline search-class"
                                           [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
                                           <div class="input-icon right">
-                                             <input type="text" [(ngModel)]="searchKey"
+                                             <input  *ngIf="!isPartner" type="text" [(ngModel)]="searchKey"
                                                 [ngModelOptions]="{standalone: true}"
-                                                (input)="searchKeyValue('contactList')" class="form-control"
+                                                (input)="searchKeyValue('contactList')" class="form-control" 
                                                 placeholder="Search for a list"
+                                                (keypress)="eventHandler($event.keyCode, 'contactList')">
+                                             <!-- <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                                *ngIf="searchKey" (click)="searchKey='';search('contactList')"></button> -->
+                                             <!-- <button type="submit" class="search-box-item-click"
+                                                (click)="search('contactList')">
+                                                <i class="fa fa-search" aria-hidden="true"></i>
+                                             </button> -->
+                                          </div>
+                                       </div>
+                                       <div class="portlet-input input-inline search-class"
+                                          [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+                                          <div class="input-icon right">
+                                             <input *ngIf="isPartner" type="text" [(ngModel)]="searchKey"
+                                                [ngModelOptions]="{standalone: true}"
+                                                (input)="searchKeyValue('contactList')" class="form-control" 
+                                                placeholder="Search for a group"
                                                 (keypress)="eventHandler($event.keyCode, 'contactList')">
                                              <button class="glyphicon glyphicon-remove search-box-item-clear"
                                                 *ngIf="searchKey" (click)="searchKey='';search('contactList')"></button>
@@ -392,7 +408,9 @@
                                           <th scope="col" class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
                                              <span class="ui-column-resizer" (mousedown)="referenceService.onMouseDown($event,'partner_contact_list',2)">
                                              </span>
-                                             <span class="gridHeader" translate>List Name</span>
+                                             <span class="gridHeader" *ngIf="!isPartner"  translate>List Name</span>
+                                             <span class="gridHeader" *ngIf="isPartner"  translate>Group Name</span>
+
                                           </th>
                                           <th scope="col" class="visible-xs" colspan="1" style="width: 35%"  id="border-bottom">
                                              List Info
@@ -485,6 +503,10 @@
                                                 <h4 class="m0 moreipsis ListFontCu">
                                                    <span data-toggle="tooltip" data-placement="top" title="{{contactList.name}}" class="ListFontCu">
                                                       <b> List Name:</b> {{contactList?.name}}
+                                                   </span>
+                                                   <span *ngIf="isPartner" data-toggle="tooltip" data-placement="top"
+                                                      title="{{contactList.name}}" class="ListFontCu">
+                                                      <b> Group Name:</b> {{contactList?.name}}
                                                    </span>
                                                 </h4>
 
@@ -636,7 +658,7 @@
                                                       <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
                                                       <div class="clickicons"></div>
                                                    </a>
-                                                   <a class="custom-icon"
+                                                   <a class="custom-icon" 
                                                       [class.disabled]="contactList.noOfContacts == 0 && contactList.formList"
                                                       *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
                                     (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
@@ -647,6 +669,7 @@
                                                          aria-hidden="true"></i>
                                                       <div class="clickicons"></div>
                                                    </a>
+
                                                    <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                                       <a class="custom-icon"
                                                          *ngIf="!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember  || authenticationService.module.isVendorTier ||
@@ -694,12 +717,24 @@
                                                    <ng-container
                                                       *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList  && !contactList?.teamMemberPartnerList">
                                                       <a class="custom-icon"
-                                                         *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
-                                                         || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
+                                                         *ngIf="!isPartner && ((hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
+                                                         || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId)))
                                                           && !contactList.defaultPartnerList && !contactList.isDefaultContactList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList && !contactList.companyList)"
                                                          (click)="showAlert(contactList.id)" data-toggle="tooltip"
                                                          data-placement="top"
                                                          title="{{actionsDescription.contact_list_delete}}">
+                                                         <i class="fa fa-trash-o trashIconCustomization"
+                                                            aria-hidden="true"></i>
+                                                         <div class="del-icon"></div>
+                                                      </a>
+
+                                                      <a class="custom-icon"
+                                                         *ngIf="isPartner && ((hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
+                                                         || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId)))
+                                                          && !contactList.defaultPartnerList && !contactList.isDefaultContactList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList && !contactList.companyList)"
+                                                         (click)="showAlert(contactList.id)" data-toggle="tooltip"
+                                                         data-placement="top"
+                                                         title="{{actionsDescription.contact_list_delete_group}}">
                                                          <i class="fa fa-trash-o trashIconCustomization"
                                                             aria-hidden="true"></i>
                                                          <div class="del-icon"></div>
@@ -1123,7 +1158,7 @@
                                        *ngIf="contactsByType.selectedCategory === 'valid'">Valid</ng-container>
                                     <span
                                        *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}
-                                       List</span>
+                                       Group</span>
                                     <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s
                                        List</span>
                                  </span>
@@ -1132,7 +1167,7 @@
                                     Unregistered
                                     <span
                                        *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}
-                                       List</span>
+                                       Group</span>
                                     <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s
                                        List</span>
                                  </span>
@@ -1140,9 +1175,9 @@
                                     Registered
                                     <span
                                        *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}
-                                       List</span>
+                                       Group</span>
                                     <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s
-                                       List</span>
+                                       Group</span>
                                  </span>
                                  <span class="capitalize" *ngIf="contactsByType.selectedCategory =='invalid'" translate>
                                     Undeliverable
@@ -1165,13 +1200,22 @@
                                           style="font-size: 14px; float: right" aria-hidden="true"></i>
                                     </span>
                                     <span data-placement="bottom" class="btn btn-xs l-g-view"
-                                       data-toggle="tooltip" title="Click here to email the list"
+                                       data-toggle="tooltip" *ngIf="!isPartner" title="Click here to email the list"
+                                       (click)="downloadUserListCsv()" style="margin-right: 10px;">
+                                       <i aria-hidden="true" class="fas fa-file-export p10"></i>
+                                    </span>
+                                    <span data-placement="bottom" class="btn btn-xs l-g-view"
+                                       data-toggle="tooltip" *ngIf=isPartner title="Click here to email the group"
                                        (click)="downloadUserListCsv()" style="margin-right: 10px;">
                                        <i aria-hidden="true" class="fas fa-file-export p10"></i>
                                     </span>
                                     <ul class="dropdown-menu pull-right">
-                                       <li *ngIf="contactsByType.selectedCategory == 'all' && !sharedLeads "><a
-                                             (click)="saveAs()" translate> Create New List </a></li>
+                                       <li *ngIf="contactsByType.selectedCategory == 'all' && !sharedLeads && !isPartner">
+                                          <a (click)="saveAs()" translate> Create New List </a>
+                                      </li>
+                                      <li *ngIf="contactsByType.selectedCategory == 'all' && !sharedLeads && isPartner">
+                                          <a (click)="saveAs()" translate> Create New Group </a>
+                                      </li>
                                        <li [ngClass]="{'disabled': (selectedInvalidContactIds.length == 0 && selectedContactListIds.length == 0)}"
                                           *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">
                                           <a id="delete_button" (click)="invalidContactsShowAlert()" translate>
@@ -1652,9 +1696,8 @@
          <div class="modal-header">
             <h4 class="modal-title f-w-600" id="saveAsModalLabel">
                <span
-                  *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-               <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span>
-               List Name
+                  *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}} Group Name</span>
+               <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}} List Name</span>
             </h4>
             <button type="button" class="close-circle" data-dismiss="modal" style="position: relative; top: -24px;">
                <i class="fa fa-times" aria-hidden="true"></i>

@@ -262,8 +262,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.referenceService.renderer = render;
 		let currentUrl = this.router.url;
 		this.model.isPublic = true;
-
-
+		
 		if (currentUrl.includes('home/sharedleads')) {
 			this.module = 'sharedleads';
 			this.isPartner = false;
@@ -285,6 +284,22 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.isPartner = true;
 			this.module = 'partners';
 			this.checkingContactTypeName = "Partner";
+			this.actionsDescription.contact_list_edit = 'Preview or edit group';
+			this.sortOptions = [
+				{ 'name': 'Sort by', 'value': '', 'for': '' },
+				{ 'name': 'Group name (A-Z)', 'value': 'name-ASC', 'for': 'contactList' },
+				{ 'name': 'Group name (Z-A)', 'value': 'name-DESC', 'for': 'contactList' },
+				{ 'name': 'Creation date (ASC)', 'value': 'createdTime-ASC', 'for': 'contactList' },
+				{ 'name': 'Creation date (DESC)', 'value': 'createdTime-DESC', 'for': 'contactList' },
+		
+				{ 'name': 'Email (A-Z)', 'value': 'emailId-ASC', 'for': 'contacts' },
+				{ 'name': 'Email (Z-A)', 'value': 'emailId-DESC', 'for': 'contacts' },
+				{ 'name': 'First name (ASC)', 'value': 'firstName-ASC', 'for': 'contacts' },
+				{ 'name': 'First name (DESC)', 'value': 'firstName-DESC', 'for': 'contacts' },
+				{ 'name': 'Last name (ASC)', 'value': 'lastName-ASC', 'for': 'contacts' },
+				{ 'name': 'Last name (DESC)', 'value': 'lastName-DESC', 'for': 'contacts' },
+		
+			];
 			this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC', 'for': 'contacts' });
 			this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC', 'for': 'contacts' });
 			this.sortOptions.push({ 'name': 'Vertical (ASC)', 'value': 'vertical-ASC', 'for': 'contacts' });
@@ -328,7 +343,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 		if (this.contactService.deleteUserSucessMessage === true) {
 			if (this.isPartner) {
-				let message = "Your " + this.authenticationService.partnerModule.customName + " list has been deleted successfully.";
+				let message = "Your " + this.authenticationService.partnerModule.customName + " group has been deleted successfully.";
 				this.customResponse = new CustomResponse('SUCCESS', message, true);
 			} else {
 				this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
@@ -538,7 +553,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							if (this.assignLeads) {
 								this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_DELETE_SUCCESS, true);
 							} else if (this.isPartner) {
-								let message = "Your " + this.authenticationService.partnerModule.customName + " list has been deleted successfully.";
+								let message = "Your " + this.authenticationService.partnerModule.customName + " group has been deleted successfully.";
 								this.customResponse = new CustomResponse('SUCCESS', message, true);
 							} else {
 								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
@@ -915,7 +930,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			if (this.assignLeads) {
 				this.customResponse = new CustomResponse('SUCCESS', this.properties.LEAD_LIST_DELETE_SUCCESS, true);
 			} else if (this.isPartner) {
-				let message = "Your " + this.authenticationService.partnerModule.customName + " list has been deleted successfully.";
+				let message = "Your " + this.authenticationService.partnerModule.customName + " group has been deleted successfully.";
 				this.customResponse = new CustomResponse('SUCCESS', message, true);
 			} else {
 				if (this.contactService.isEmptyFormList === true) {
@@ -1829,22 +1844,23 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	downloadContactTypeList() {
 		try {
 			let csvNameSuffix = this.checkingContactTypeName == "Partner" ? this.authenticationService.partnerModule.customName : this.checkingContactTypeName;
+			let suffix = this.checkingContactTypeName == "Partner" ?  's_group' : 's_list';
 			if (this.contactsByType.selectedCategory === 'all') {
-				this.logListName = 'All_' + csvNameSuffix + 's_list.csv';
+				this.logListName = 'All_' + csvNameSuffix + suffix + '.csv';
 			}
 			else if (this.contactsByType.selectedCategory === 'active') {
-				this.logListName = 'All_Active_' + csvNameSuffix + 's_list.csv';
+				this.logListName = 'All_Active_' + csvNameSuffix + suffix + '.csv';
 				//this.logListName = 'All_Registered_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'non-active') {
-				this.logListName = 'All_Inactive_' + csvNameSuffix + 's_list.csv';
+				this.logListName = 'All_Inactive_' + csvNameSuffix + suffix + '.csv';
 			} else if (this.contactsByType.selectedCategory === 'invalid') {
-				this.logListName = 'All_Undeliverable_' + csvNameSuffix + 's_list.csv';
+				this.logListName = 'All_Undeliverable_' + csvNameSuffix + suffix + '.csv';
 			} else if (this.contactsByType.selectedCategory === 'unsubscribed') {
-				this.logListName = 'All_Unsubscribed_' + csvNameSuffix + 's_list.csv';
+				this.logListName = 'All_Unsubscribed_' + csvNameSuffix + suffix + '.csv';
 			} else if (this.contactsByType.selectedCategory === 'valid') {
-				this.logListName = 'All_Valid_' + csvNameSuffix + 's_list.csv';
+				this.logListName = 'All_Valid_' + csvNameSuffix + suffix + '.csv';
 			} else if (this.contactsByType.selectedCategory === 'excluded') {
-				this.logListName = 'All_Excluded_' + csvNameSuffix + 's_list.csv';
+				this.logListName = 'All_Excluded_' + csvNameSuffix + suffix + '.csv';
 			}
 			this.downloadDataList.length = 0;
 			for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {

@@ -1,5 +1,5 @@
 <span [hidden]="authenticationService?.module?.isMarketingCompany">
-  <label>Select {{authenticationService?.partnerModule?.customName}} / List Of
+  <label>Select {{authenticationService?.partnerModule?.customName}} / Group Of
     {{authenticationService?.partnerModule?.customName}} For Publishing (Optional) </label>
 	<div class="thank-you-pop" *ngIf="sendSuccess">
     <ng-container *ngIf="statusCode==200">
@@ -24,7 +24,7 @@
         <li id="partnerGroups-li">
           <a class="partnerGroupsC" title="Click to see list of {{authenticationService?.partnerModule?.customName}}"
             href="#partnerGroups" data-toggle="tab" (click)="isPartnerCompaniesTabSelected=false;findPartnerGroups(partnerGroupsPagination)">
-            List Of {{authenticationService?.partnerModule?.customName}}
+            Group Of {{authenticationService?.partnerModule?.customName}}
             <i *ngIf="!isPartnerCompaniesTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
           </a>
         </li>
@@ -261,7 +261,7 @@
           <br>
           <div class="alert alert-success" *ngIf="selectedPartnerGroupIds?.length>0">
             <strong>
-              Selected Lists : {{selectedPartnerGroupIds?.length}}
+              Selected Groups : {{selectedPartnerGroupIds?.length}}
             </strong>
             <ng-template [ngTemplateOutlet]="clearAllSelectedRowsTemplate"></ng-template>
           </div>
@@ -279,7 +279,7 @@
                         (change)="selectOrUnselectAllPartnerGroupsOfTheCurrentPage($event)">
                     </th>
                     <th *ngIf="showExpandButton"></th>
-                    <th scope="col" class="text-center">List Name</th>
+                    <th scope="col" class="text-center">Group Name</th>
                     <th scope="col" class="text-center">Count</th>
                     <th scope="col" class="text-center">Created Time</th>
                     <th scope="col" class="text-center">Preview</th>
