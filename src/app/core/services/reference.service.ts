@@ -3642,7 +3642,10 @@ preivewAssetForPartnerOnNewHost(id: any) {
   let encodedIcon = this.getEncodedIcon();
   let companyName = localStorage.getItem("companyName");
   let encodedCompanyName =this.getEncodedCompanyName(companyName);
-  let url = this.envService.PREVIEW_HOST+"p/preview/"+encodedId+"/"+encodedAccessToken+"/"+encodedIcon+"/"+encodedCompanyName;
+  let userId = this.authenticationService.getUserId();
+  let userIdAsString: string = String(userId);
+  let encodedUserId =  btoa(userIdAsString);
+  let url = this.envService.PREVIEW_HOST+"p/preview/"+encodedId+"/"+encodedAccessToken+"/"+encodedIcon+"/"+encodedCompanyName+"/"+encodedUserId;
   window.open(url,"_blank");
 }
 
