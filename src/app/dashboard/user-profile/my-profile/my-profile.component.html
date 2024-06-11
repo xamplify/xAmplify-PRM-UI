@@ -367,7 +367,7 @@
                                         <!--Vendor Journey-->
                                         <ng-container>
                                             <ng-container
-                                                *ngIf="(authenticationService?.isVendorTeamMember && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor)">
+                                                *ngIf="vendorJourneyAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin())">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'vendorJourney'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorJourney'}"
                                                         (click)="activateTab('vendorJourney');clearCustomResponse()">
@@ -378,7 +378,7 @@
                                             </ng-container>
                                             <!--Landing Pages-->
                                             <ng-container
-                                                *ngIf="(authenticationService?.isPartner() || authenticationService?.isTeamMember())">
+                                                *ngIf="(authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'landingPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'landingPages'}"
                                                         (click)="activateTab('landingPages');clearCustomResponse()">
@@ -389,7 +389,7 @@
                                             </ng-container>
                                             
                                             <!--Master Landing Pages-->
-                                            <ng-container *ngIf="(authenticationService?.isPartner() || authenticationService?.isTeamMember())">
+                                            <ng-container *ngIf="(authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPages'}"
                                                         (click)="activateTab('masterLandingPages');clearCustomResponse()">

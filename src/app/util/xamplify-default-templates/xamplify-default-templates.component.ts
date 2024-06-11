@@ -14,6 +14,7 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
 import { ModulesDisplayType } from '../models/modules-display-type';
 import { Observable } from 'rxjs';
 import { VendorLogoDetails } from 'app/landing-pages/models/vendor-logo-details';
+import { LandingPageType } from 'app/landing-pages/models/landing-page-type.enum';
 
 declare var BeePlugin,swal,$:any;
 
@@ -513,7 +514,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                           var buttons = $('<div><div id="bee-save-buton-loader"></div>')
                               .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200" autocomplete="off"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                           let dropDown = '';
-                          if (!self.authenticationService.module.isMarketingCompany) {
+                          if (!self.authenticationService.module.isMarketingCompany && !self.vendorJourney && !self.isMasterLandingPages) {
                               /**********Public/Private************** */
                               dropDown += '<div class="form-group">';
                               dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
@@ -583,7 +584,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                                   '<span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                           if (!self.loggedInAsSuperAdmin) {
                               let dropDown = '';
-                              if (!self.authenticationService.module.isMarketingCompany) {
+                              if (!self.authenticationService.module.isMarketingCompany && !self.vendorJourney && !self.isMasterLandingPages) {
                                   dropDown += '<div class="form-group">';
                                   dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
                                   dropDown += '<select class="form-control" id="pageType">';
@@ -753,12 +754,16 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
   this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
   if(this.landingPage.hasVendorJourney){
     this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
+    this.landingPage.type = LandingPageType.PUBLIC;
+
+    this.updateCompanyLogo(this.landingPage);
   }
   if (!this.loggedInAsSuperAdmin) {
-      this.landingPage.type = $('#pageType option:selected').val();
+      if(!this.vendorJourney && !this.isMasterLandingPages){
+        this.landingPage.type = $('#pageType option:selected').val();
+      }
       this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
-      this.updateCompanyLogo(this.landingPage);
-  }
+    }
   this.landingPageService.save(this.landingPage, this.loggedInAsSuperAdmin,this.id).subscribe(
       data => {
           swal.close();
