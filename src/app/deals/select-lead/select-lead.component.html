@@ -81,7 +81,7 @@
                                 <td (click)="selectLead(lead.id)">
                                   <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
                                   <div class="mrg_lft66" style="margin-left: 60px;">
-                                    <h5 class="m0"><strong>Registered For:</strong>
+                                    <h5 class="m0"><strong>Added For:</strong>
                                       <span style="color: #5b9bd1;">{{lead.createdForCompanyName | slice:0:30}}
                                         <span *ngIf="lead.createdForCompanyName?.length>20">...</span>
                                       </span>

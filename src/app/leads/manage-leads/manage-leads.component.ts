@@ -1309,7 +1309,7 @@ export class ManageLeadsComponent implements OnInit {
           dtos.push(dto);
         });
         this.registeredForCompaniesSearchableDropDownDto.data = dtos;
-        this.registeredForCompaniesSearchableDropDownDto.placeHolder = "Select Registered For";
+        this.registeredForCompaniesSearchableDropDownDto.placeHolder = "Select Added For";
         this.registeredForCompaniesLoader = false;
         this.referenceService.loading(this.httpRequestLoader, false);
       },

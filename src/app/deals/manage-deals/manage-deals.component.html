@@ -24,7 +24,7 @@
               </li>
               <!--Vendor View-->
               <li *ngIf="authenticationService?.enableLeads" class="filter float-right mt5" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion">
-                Vendor View<i *ngIf="!isPartnerVersion" class="fa fa-check-circle-o success"></i>
+                Vendor View<i *ngIf="isVendorVersion" class="fa fa-check-circle-o success"></i>
               </li>
               <p class="filter float-right m10">Opportunities as: </p>
             </ul>
@@ -256,7 +256,7 @@
                                 <label class="control-label col-sm-5">Status</label>
                                 <div class="col-sm-7">
                                   <p class="mt--10px" *ngIf="statusLoader">
-                                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading {{LEAD_CONSTANTS.addedBy}}...</strong>
+                                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Status...</strong>
                                   </p>
                                   <app-searchable-dropdown *ngIf="!statusLoader && isStatusLoadedSuccessfully" [searchableDropDownDto]="statusSearchableDropDownDto" [id]="statusFilter"
                                     [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedStatus($event)">
@@ -291,9 +291,9 @@
                                   </p>
                                 </div>
                               </div>
-                              <!--Registered For-->
+                              <!--Added For-->
                               <div class="form-group" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
-                                <label class="control-label col-sm-5">Registered For</label>
+                                <label class="control-label col-sm-5">Added For</label>
                                 <div class="col-sm-7">
                                   <app-searchable-dropdown *ngIf="!registeredForCompaniesLoader" [searchableDropDownDto]="registeredForCompaniesSearchableDropDownDto" [id]="vendorCompanyIdFilter"
                                     [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredForCompanyId($event)">
@@ -329,7 +329,7 @@
                                   <span *ngIf="deal.title?.length>30">...</span></span>
                               </div>
                               <div>
-                                <h5 *ngIf="isPartnerVersion"><b>Registered For:</b>
+                                <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
                                   <span style="color: #5b9bd1;">{{deal.createdForCompanyName | slice:0:30}}
                                     <span *ngIf="deal.createdForCompanyName?.length>30">...</span>
                                   </span>
@@ -703,7 +703,7 @@
 <app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="currentDealToUpdateStage"
   [isPartnerVersion]="isPartnerVersion" [isCommentSection]="isCommentSection" [loggedInUserId]="loggedInUserId"
   [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments(deal)" (closePopupEmitter)="resetModalPopup()"
-  (stageUpdateStatusCode)="stageUpdateResponse($event)">
+  (stageUpdateStatusStatusCode)="stageUpdateResponse($event)">
 </app-opportunities-chat-modal-popup>
 
 <app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"

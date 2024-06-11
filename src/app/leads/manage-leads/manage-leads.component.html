@@ -25,7 +25,7 @@
               <!--Vendor View-->
               <li *ngIf="authenticationService?.enableLeads" class="filter view-type-css" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion">
                 Vendor View
-                <i *ngIf="!isPartnerVersion" class="fa fa-check-circle-o success"></i>
+                <i *ngIf="isVendorVersion" class="fa fa-check-circle-o success"></i>
               </li>
               <p class="filter float-right m10">Opportunities as: </p>
             </ul>
@@ -306,9 +306,9 @@
                                   </p>
                                 </div>
                               </div>
-                              <!--Registered For-->
+                              <!--Added For-->
                               <div class="form-group" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
-                                <label class="control-label col-sm-5">Registered For</label>
+                                <label class="control-label col-sm-5">Added For</label>
                                 <div class="col-sm-7">
                                   <app-searchable-dropdown *ngIf="!registeredForCompaniesLoader" [searchableDropDownDto]="registeredForCompaniesSearchableDropDownDto" [id]="vendorCompanyIdFilter"
                                     [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredForCompanyId($event)">
@@ -342,7 +342,7 @@
                             <td>
                               <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
                               <div style="margin-left: 60px;">
-                                <h5 class="m0" *ngIf="isPartnerVersion"><strong>Registered For:</strong>
+                                <h5 class="m0" *ngIf="isPartnerVersion"><strong>Added For:</strong>
                                   <span style="color: #5b9bd1;">{{lead.createdForCompanyName | slice:0:30}}
                                     <span *ngIf="lead.createdForCompanyName?.length>20">...</span>
                                   </span>

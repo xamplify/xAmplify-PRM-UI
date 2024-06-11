@@ -114,7 +114,7 @@ export class ManageDealsComponent implements OnInit {
 
   statusFilter: any;
   statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
-  statusLoader = true;
+  statusLoader = false;
   isStatusLoadedSuccessfully = true;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
@@ -124,6 +124,7 @@ export class ManageDealsComponent implements OnInit {
     private dealRegistrationService: DealRegistrationService, private dealsService: DealsService,public leadsService:LeadsService,
     public integrationService: IntegrationService ) {
       this.loggedInUserId = this.authenticationService.getUserId();
+      this.statusSearchableDropDownDto.placeHolder = "Select Status";
       if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
         this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
         this.vanityLoginDto.userId = this.loggedInUserId;
@@ -422,6 +423,8 @@ export class ManageDealsComponent implements OnInit {
   }
 
   stageNamesForVendor() {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.statusLoader = true;
     this.dealsService.getStageNamesForVendor(this.loggedInUserId)
       .subscribe(
         response => {
@@ -430,6 +433,8 @@ export class ManageDealsComponent implements OnInit {
         },
         error => {
           this.httpRequestLoader.isServerError = true;
+          this.statusLoader = false;
+          this.isStatusLoadedSuccessfully = false;
         },
         () => { }
       );
@@ -447,7 +452,6 @@ export class ManageDealsComponent implements OnInit {
       dtos.push(dto);
     });
     this.statusSearchableDropDownDto.data = dtos;
-    this.statusSearchableDropDownDto.placeHolder = "Select Status";
     this.statusLoader = false;
   }
 
@@ -488,7 +492,7 @@ export class ManageDealsComponent implements OnInit {
           dtos.push(dto);
         });
         this.registeredForCompaniesSearchableDropDownDto.data = dtos;
-        this.registeredForCompaniesSearchableDropDownDto.placeHolder = "Select Registered For";
+        this.registeredForCompaniesSearchableDropDownDto.placeHolder = "Select Added For";
         this.registeredForCompaniesLoader = false;
         this.referenceService.loading(this.httpRequestLoader, false);
       },
@@ -519,6 +523,8 @@ export class ManageDealsComponent implements OnInit {
   onChangeVendorCompany() {
     this.statusFilter = "";
     if (this.vendorCompanyIdFilter !== undefined && this.vendorCompanyIdFilter !== "") {
+      this.statusLoader = true;
+      this.statusSearchableDropDownDto.data = [];
       this.getStageNamesForPartnerByVendorCompanyId(this.vendorCompanyIdFilter);
     }
   }
@@ -997,9 +1003,6 @@ export class ManageDealsComponent implements OnInit {
     this.fromDateFilter = "";
     this.toDateFilter = "";
     this.statusFilter = "";
-    // this.dealsPagination.fromDateFilterString = "";
-    // this.dealsPagination.toDateFilterString = "";
-    // this.dealsPagination.stageFilter = "";
     this.vendorCompanyIdFilter = "";
     if (this.isPartnerVersion && !this.vanityLoginDto.vanityUrlFilter) {
       this.stageNamesForFilterDropDown = "";
@@ -1456,6 +1459,7 @@ export class ManageDealsComponent implements OnInit {
 		}else{
 			this.vendorCompanyIdFilter = 0;
 		}
+    this.onChangeVendorCompany();
   }
 
   getSelectedStatus(event:any){
@@ -1464,6 +1468,7 @@ export class ManageDealsComponent implements OnInit {
 		}else{
 			this.statusFilter = "";
 		}
+   
   }
 
 }
