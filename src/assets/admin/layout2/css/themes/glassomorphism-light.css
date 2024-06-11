@@ -4115,3 +4115,20 @@ thead>tr,
 button#addContacts:hover, button#copyFromClipBoard:hover, button#uploadCSV:hover {
   transform: scale(1.02);
 }
+.dashboard-stat.blue-sharp .details .number{
+color: #000 !important;
+}
+button.button.bgcolor-unset, button#copyFrom_clipboard, button#add_contact,
+button.group-name-cclass.btn-primary.default-btn-cursor.white-co{
+  background-color: #0276FF !important;
+}
+span.btn.Btn-Green{
+  border:none !important;
+}
+button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4, button.search-box-item-click, button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4{
+  color: #000 !important;
+    background-color: rgb(255 255 255 / 31%) !important;
+    border: 1px solid rgb(255 255 255 / 35%) !important;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+}

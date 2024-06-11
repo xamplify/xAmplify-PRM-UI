@@ -3513,6 +3513,7 @@ button.btn.custom:hover, */
 button.search-box-item-click {
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
   padding-top: 5px !important;
+  border:none !important;
 }
 .selectRecord {
   padding: 6px 8px !important;
@@ -4316,4 +4317,11 @@ button.btn.custom:hover,
 }
 button#addContacts:hover, button#copyFromClipBoard:hover, button#uploadCSV:hover {
   transform: scale(1.02);
+}
+button#save\&delete_button,
+button.group-name-cclass.btn-primary.default-btn-cursor.white-co{
+  background: #0276FF !important;
+}
+span.btn.Btn-Green{
+  border: none !important;
 }

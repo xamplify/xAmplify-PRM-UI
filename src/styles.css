@@ -3086,3 +3086,15 @@ span.icon-alignments {
   background-color: #0276FF !important;
   border-color: #1ca6f3 !important;
 }
+/***** Sudha Sri(11-06-204) *****/
+button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4,
+button.search-box-item-click,
+button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4 {
+  background: #f1f3fa !important;
+  border-color: #e0e0e0 !important;
+}
+button.button.bgcolor-unset,
+button#copyFrom_clipboard,
+button#add_contact {
+  background: none !important;
+}

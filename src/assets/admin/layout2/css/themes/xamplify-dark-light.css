@@ -2537,3 +2537,11 @@ a.Iconhover.custom-grid-icon.border-none i.fa.fa-trash-o.trashIconCustomization:
 .button_blue{
   border-color: #1ca6f3 !important;
 }
+/***** Sudha Sri(11-06-204) *****/
+button.fa.fa-th-list.btn-xs.l-g-view.mr_4,
+button.search-box-item-click,
+button.fa.fa-th-large.btn-xs.l-g-view.mr_4,
+button.btn.btn-xs.hidden-xs.l-g-view {
+  background: #22313a !important;
+  border-color: #2f4857 !important;
+}

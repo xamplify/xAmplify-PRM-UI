@@ -33,7 +33,7 @@ button.button.bgcolor-unset
 .button_blue:hover,
 .Btn-Green:hover,
 .btn-primary:hover{
-  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  background:#1C84FF !important;
   box-shadow: none !important;
   /* border: 1px solid #266dc1 !important; */
 }

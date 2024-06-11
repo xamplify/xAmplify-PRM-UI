@@ -3891,3 +3891,18 @@ thead>tr {
   box-shadow: none !important;
   border-radius: 10px 10px 0 0 !important;
 }
+button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4,
+button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4{
+  color: white !important;
+    background-color: rgb(146 151 179 / 13%) !important;
+    border: 1px solid rgba(113 119 144 / 25%) !important;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+}
+button.button.bgcolor-unset, button#copyFrom_clipboard, button#add_contact,
+button.group-name-cclass.btn-primary.default-btn-cursor.white-co{
+  background-color: #0276FF !important;
+}
+span.btn.Btn-Green{
+  border:none !important;
+}
