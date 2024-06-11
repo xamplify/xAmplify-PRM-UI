@@ -1982,3 +1982,15 @@ p.layoutcontent {
   text-align: center;
   color: #fff;
 }
+
+.custom-primary-button {
+  background-color: var(--change-button-color) !important;
+  background-image: linear-gradient(1deg, var(--change-button-gradient-one-color), var(--change-button-gradient-two-color) 99%) !important;
+  background-size: calc(100% + 20px) calc(100% + 20px) !important;
+  border: 1px solid var(--change-button-border-color) !important;
+  color:  var(--change-button-value-color) !important;
+  box-shadow: none !important;
+}
+.custom-primary-button:hover {
+  background-image: linear-gradient(1deg, var(--change-button-gradient-two-color), var(--change-button-gradient-one-color) 99%) !important;
+}

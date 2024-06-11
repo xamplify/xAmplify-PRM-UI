@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Renderer } from "@angular/core";
 import { Router } from "@angular/router";
 import { ReferenceService } from "../services/reference.service";
 import { UserService } from "../services/user.service";
@@ -48,7 +48,8 @@ export class HomeComponent implements OnInit {
     public authenticationService: AuthenticationService,
     public videoUtilService: VideoUtilService,
     private vanityURLService: VanityURLService,
-    public dashBoardService: DashboardService
+    public dashBoardService: DashboardService,
+    private renderer: Renderer
   ) {
     this.loggedInThroughVanityUrl = this.vanityURLService.isVanityURLEnabled();
     this.isAuthorized();
@@ -466,13 +467,21 @@ export class HomeComponent implements OnInit {
               document.documentElement.style.setProperty('--icon-hover-color', this.maincontentCustom.iconHoverColor);
               require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-main-content.css");
             } else {
+              let imageHost:any;
+              if(activeThemeDto.backgroundImagePath.includes('/assets')) {
+                imageHost = "";
+              } else {
+                imageHost = this.authenticationService.MEDIA_URL;
+              }
               if (activeThemeDto.parentThemeName === 'NEUMORPHISMDARK') {
                 require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-dark.css");
               } else if (activeThemeDto.parentThemeName === 'NEUMORPHISMLIGHT') {
                 require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-light.css");
               } else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMDARK') {
+                this.renderer.setElementStyle(document.body, 'background-image', 'url(' + imageHost + activeThemeDto.backgroundImagePath + ')');
                 require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-dark.css");
               } else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMLIGHT') {
+                this.renderer.setElementStyle(document.body, 'background-image', 'url(' + imageHost + activeThemeDto.backgroundImagePath + ')');
                 require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-light.css");
               }
               document.documentElement.style.setProperty('--custom-buttonbg-color', this.buttonCustomizationForm.buttonColor);
@@ -480,6 +489,10 @@ export class HomeComponent implements OnInit {
               document.documentElement.style.setProperty('--custom-border-color', this.buttonCustomizationForm.buttonBorderColor);
               document.documentElement.style.setProperty('--custom-gradient-one-color', this.buttonCustomizationForm.gradiantColorOne);
               document.documentElement.style.setProperty('--custom-gradient-two-color', this.buttonCustomizationForm.gradiantColorTwo);
+              document.documentElement.style.setProperty('--custom-icon-color', this.buttonCustomizationForm.iconColor);
+              document.documentElement.style.setProperty('--custom-icon-border-two-color', this.buttonCustomizationForm.iconBorderColor);
+              document.documentElement.style.setProperty('--custom-icon-hover-color', this.buttonCustomizationForm.iconHoverColor);
+
               require("style-loader!../../../assets/admin/layout2/css/themes/buttons-icons-customization.css");
             }
           }

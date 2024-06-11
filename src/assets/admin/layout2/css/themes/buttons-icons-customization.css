@@ -50,7 +50,7 @@ span.btn.btn-primary.transition.txt_pd-top3, span.btn.btn-primary.transition {
   height: 32px !important;
   line-height: 32px !important;
   border: none !important;
-  color: #fff !important;
+  color: var(--custom-icon-color) !important;
   border-radius: 50%;
   overflow: hidden;
   -webkit-backface-visibility: hidden;

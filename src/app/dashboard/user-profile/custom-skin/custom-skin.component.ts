@@ -16,6 +16,7 @@ import { ThemePropertiesDto } from 'app/dashboard/models/theme-properties-dto';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { ImageCroppedEvent } from 'app/common/image-cropper/interfaces';
 
 declare var $: any, CKEDITOR: any, swal: any;
 @Component({
@@ -91,6 +92,9 @@ export class CustomSkinComponent implements OnInit {
   customButtonValueColor: string;
   customGradientColorOne: string;
   customGradientColorTwo: string;
+  customIconColor:string;
+  customIconBorderColor:string;
+  customIconHoverColor:string;
   /** Button customization  */
   buttonColor: string;
   textContent: string;
@@ -175,6 +179,14 @@ export class CustomSkinComponent implements OnInit {
 
   ngOnInit() {
     this.squareDataForBgImage = {};
+    this.bgImagePath = this.themeDTO.backgroundImagePath;
+    if(this.themeDTO.parentThemeName == 'GLASSMORPHISMLIGHT' && this.bgImagePath == undefined) {
+      this.bgImagePath = '/assets/images/glassmorphism-images/glassmorphism-light1.png';
+      this.uploadImagePath = this.bgImagePath;
+    } else if(this.themeDTO.parentThemeName == 'GLASSMORPHISMDARK' && this.bgImagePath == undefined) {
+    this.bgImagePath = 'https://wallpapercave.com/wp/wp3274878.jpg'
+    this.uploadImagePath = this.bgImagePath;
+    }
     this.activeTabNav(this.activeTabName);
     this.loadNames();
     this.showWithCopy(this.themeId);
@@ -324,6 +336,12 @@ export class CustomSkinComponent implements OnInit {
       this.buttonCustomizationForm.gradiantColorOne = colorCode; this.isValidTextColor = true;
     } else if (type == 'customGradientColorTwo') {
       this.buttonCustomizationForm.gradiantColorTwo = colorCode; this.isValidTextColor = true;
+    } else if(type === 'customIconColor') {
+      this.buttonCustomizationForm.iconColor = colorCode; this.isValidIconColor = true;
+    } else if(type === 'customIconBorderColor') {
+      this.buttonCustomizationForm.iconBorderColor = colorCode; this.isValidTextColor = true;
+    } else if (type === 'customIconHoverColor') {
+      this.buttonCustomizationForm.iconHoverColor = colorCode; this.isValidTextColor = true;
     }
     /*** Button customization */
 
@@ -374,6 +392,8 @@ export class CustomSkinComponent implements OnInit {
       }
     } else {
       if (this.customButtonBgColor === this.customButtonValueColor) {
+        this.isValid = true;
+      } else if(this.customIconColor === this.customIconHoverColor){
         this.isValid = true;
       } else {
         this.isValid = false;
@@ -465,6 +485,12 @@ export class CustomSkinComponent implements OnInit {
       this.buttonCustomizationForm.gradiantColorOne = ""; this.isValidTextColor = true;
     } else if (type === 'customGradientColorTwo') {
       this.buttonCustomizationForm.gradiantColorTwo = ""; this.isValidTextColor = true;
+    }else if(type === 'customIconColor') {
+      this.buttonCustomizationForm.iconColor = ""; this.isValidIconColor = true;
+    } else if(type === 'customIconBorderColor') {
+      this.buttonCustomizationForm.iconBorderColor = ""; this.isValidTextColor = true;
+    } else if (type === 'customIconHoverColor') {
+      this.buttonCustomizationForm.iconHoverColor = ""; this.isValidTextColor = true;
     }
     /*** Button customization */
   }
@@ -571,18 +597,32 @@ export class CustomSkinComponent implements OnInit {
       else if (type === 'customButtonBgColor') {
         this.customButtonBgColor = event;
         this.buttonCustomizationForm.buttonColor = event; this.isValidButtonColor = true;
+        document.documentElement.style.setProperty('--change-button-color', this.buttonCustomizationForm.buttonColor);
       } else if (type === 'customButtonBorderColor') {
         this.customButtonBorderColor = event;
         this.buttonCustomizationForm.buttonBorderColor = event; this.isValidButtonBorderColor = true;
+        document.documentElement.style.setProperty('--change-button-border-color', this.buttonCustomizationForm.buttonBorderColor);
       } else if (type === 'customButtonValueColor') {
         this.customButtonValueColor = event;
         this.buttonCustomizationForm.buttonValueColor = event; this.isValidButtonValueColor = true;
+        document.documentElement.style.setProperty('--change-button-value-color', this.buttonCustomizationForm.buttonValueColor);
       } else if (type === 'customGradientColorOne') {
         this.customGradientColorOne = event;
         this.buttonCustomizationForm.gradiantColorOne = event; this.isValidTextColor = true;
+        document.documentElement.style.setProperty('--change-button-gradient-one-color', this.buttonCustomizationForm.gradiantColorOne);
       } else if (type === 'customGradientColorTwo') {
         this.customGradientColorTwo = event;
         this.buttonCustomizationForm.gradiantColorTwo = event; this.isValidTextColor = true;
+        document.documentElement.style.setProperty('--change-button-gradient-two-color', this.buttonCustomizationForm.gradiantColorTwo);
+      }else if(type === 'customIconColor') {
+        this.customIconColor = event;
+        this.buttonCustomizationForm.iconColor = event; this.isValidIconColor = true;
+      } else if(type === 'customIconBorderColor') {
+        this.customIconBorderColor = event;
+        this.buttonCustomizationForm.iconBorderColor = event; this.isValidTextColor = true;
+      } else if (type === 'customIconHoverColor') {
+        this.customIconHoverColor = event;
+        this.buttonCustomizationForm.iconHoverColor = event; this.isValidTextColor = true;
       }
       /*** Button customization */
     } catch (error) { console.log(error); }
@@ -658,6 +698,14 @@ export class CustomSkinComponent implements OnInit {
           this.customButtonValueColor = this.buttonCustomizationForm.buttonValueColor;
           this.customGradientColorOne = this.buttonCustomizationForm.gradiantColorOne;
           this.customGradientColorTwo = this.buttonCustomizationForm.gradiantColorTwo;
+          this.customIconColor = this.buttonCustomizationForm.iconColor;
+          this.customIconBorderColor = this.buttonCustomizationForm.iconBorderColor;
+          this.customIconHoverColor = this.buttonCustomizationForm.iconHoverColor;
+          document.documentElement.style.setProperty('--change-button-color', this.buttonCustomizationForm.buttonColor);
+          document.documentElement.style.setProperty('--change-button-border-color', this.buttonCustomizationForm.buttonBorderColor);
+          document.documentElement.style.setProperty('--change-button-value-color', this.buttonCustomizationForm.buttonValueColor);
+          document.documentElement.style.setProperty('--change-button-gradient-one-color', this.buttonCustomizationForm.gradiantColorOne);
+          document.documentElement.style.setProperty('--change-button-gradient-two-color', this.buttonCustomizationForm.gradiantColorTwo);
           this.ngxloading = false;
           this.divLoader = false;
         }, error => {
@@ -810,7 +858,7 @@ export class CustomSkinComponent implements OnInit {
     this.updateThemedto.defaultTheme = false;
     this.updateThemedto.createdBy = this.loggedInUserId;
     this.updateThemedto.parentThemeName = this.themeDTO.parentThemeName;
-    // this.updateThemedto.backgroundImagePath = this.bgImagePath;
+    this.updateThemedto.backgroundImagePath = this.bgImagePath;
 
     if (CKEDITOR != undefined) {
       for (var instanceName in CKEDITOR.instances) {
@@ -925,10 +973,12 @@ export class CustomSkinComponent implements OnInit {
       this.showCropper = false;
     }
   }
+  uploadImagePath:any;
   processBgImageFile(fileObj: File) {
     this.dashboardService.uploadBgImageFile(fileObj).subscribe(result => {
       if (result.statusCode === 200) {
         this.bgImagePath = result.data;
+        this.uploadImagePath = this.authenticationService.MEDIA_URL + this.bgImagePath;
         this.logoError = false;
         this.logoErrorMessage = "";
         $('#cropBgImage').modal('hide');
