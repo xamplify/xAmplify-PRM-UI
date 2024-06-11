@@ -1407,15 +1407,17 @@ validateCopyCampaignName(){
         }
     }
     
-    showGearIconOptions(campaign: any, index : number) {
-    if(campaign.channelCampaign){
-      this.checkLastElement(index);
-    }else{
+   showGearIconOptions(campaign: any, index : number) {
+
         this.campaignService.getGearIconOptions(campaign, this.loggedInUserId)
         .subscribe(
             data => {
                 if (data.statusCode == 200) {
                     campaign.hasAccess = data.data.hasAccess;
+                    campaign.canArchive = data.data.canArchive;
+                    campaign.formsCount = data.data.formsCount;
+                   campaign.parentCampaignLaunchedByVendorTierCompany = data.data.parentCampaignLaunchedByVendorTierCompany;
+                   campaign.isEventStarted = data.data.isEventStarted;
                     if(campaign.hasAccess){
                        this.checkLastElement(index);
                        campaign.showGearIconOptions = data.data.showGearIconOptions ;
@@ -1428,8 +1430,8 @@ validateCopyCampaignName(){
                 this.logger.errorPage(error);
             });
             
-        }
     } 
+
     
     navigateToManageSection(viewType:string){
         if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
@@ -1456,4 +1458,4 @@ validateCopyCampaignName(){
         }
     }
 
-}
+ }
