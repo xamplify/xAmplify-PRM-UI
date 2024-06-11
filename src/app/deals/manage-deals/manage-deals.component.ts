@@ -453,6 +453,7 @@ export class ManageDealsComponent implements OnInit {
     });
     this.statusSearchableDropDownDto.data = dtos;
     this.statusLoader = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
   }
 
   listDealsForPartner(pagination: Pagination) {
@@ -1191,7 +1192,6 @@ export class ManageDealsComponent implements OnInit {
     ); 
   }
   stageNamesForPartnerCompanyId(event : any){
-    // console.log(event);
     this.referenceService.loading(this.httpRequestLoader, true);
     this.dealsService.getStagenamesForPartnerCompanyId(event)
     .subscribe(
