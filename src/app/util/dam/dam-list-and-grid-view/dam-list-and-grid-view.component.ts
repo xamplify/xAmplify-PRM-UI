@@ -25,8 +25,7 @@ import { Roles } from 'app/core/models/roles';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { Criteria } from 'app/contacts/models/criteria';
 import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/white-labeled-content-shared-by-vendor-companies-dto';
-import { RouterUrlConstants } from 'app/constants/router-url.contstants';
-
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $: any, swal: any, flatpickr;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
@@ -35,6 +34,7 @@ declare var $: any, swal: any, flatpickr;
 	providers: [HttpRequestLoader, SortOption, Properties, ActionsDescription]
 })
 export class DamListAndGridViewComponent implements OnInit, OnDestroy {
+	readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
 	loading = false;
 	loggedInUserId: number = 0;
 	pagination: Pagination = new Pagination();

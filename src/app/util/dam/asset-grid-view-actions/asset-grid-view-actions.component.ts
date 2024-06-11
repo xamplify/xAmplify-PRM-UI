@@ -4,6 +4,7 @@ import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
 import { ActionsDescription } from '../../../common/models/actions-description';
 import { ActivatedRoute } from '@angular/router';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $:any,swal:any;
 @Component({
@@ -13,7 +14,7 @@ declare var $:any,swal:any;
   providers: [ActionsDescription]
 })
 export class AssetGridViewActionsComponent implements OnInit {
-
+  readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
   @Input() isPartnerView:boolean = false;
   @Input() asset:any;
   @Output() assetGridViewActionsEmitter = new EventEmitter();
