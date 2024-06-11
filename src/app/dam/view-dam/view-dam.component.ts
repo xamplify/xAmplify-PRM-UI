@@ -10,7 +10,7 @@ import { Ng2DeviceService } from 'ng2-device-detector';
 import { GeoLocationAnalytics } from "app/util/geo-location-analytics";
 import { UtilService } from '../../core/services/util.service';
 import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
-import { SafeResourceUrl, DomSanitizer } from "@angular/platform-browser";
+import { DomSanitizer } from "@angular/platform-browser";
 
 declare var $: any;
 
@@ -51,6 +51,10 @@ export class ViewDamComponent implements OnInit {
     }else{
       this.referenceService.goToPageNotFound();
     }
+  }
+
+  viewContent(){
+	
   }
 
   
