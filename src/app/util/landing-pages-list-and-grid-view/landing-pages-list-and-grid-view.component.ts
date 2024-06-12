@@ -379,9 +379,9 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   }
 
   goToFormAnalytics(id: number) {
-    /*if(this.isMasterLandingPages || this.vendorJourney){
+    if(this.isMasterLandingPages || this.vendorJourney){
         this.isFormAnalytics.emit(id);
-    }else*/{
+    }else{
       if(this.categoryId>0){
           this.router.navigate(['/home/forms/category/'+this.categoryId+'/lf/' + id]);
       }else{
@@ -394,14 +394,14 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       this.router.navigate(['/home/forms/partner/lf/' + alias]);
   }
   goToLandingPageAnalytics(id: number) {
-    /* if(this.vendorJourney || this.isMasterLandingPages){
+    if(this.vendorJourney || this.isMasterLandingPages){
         this.isFormAnalytics.emit(id);
-    }else{ */
+    }else{
       if(this.categoryId>0){
           this.router.navigate(['/home/pages/' + id + '/category/'+this.categoryId+'/analytics']);
       }else{
       this.router.navigate(['/home/pages/' + id + '/analytics']);
-      //}
+      }
   }
      
   }
