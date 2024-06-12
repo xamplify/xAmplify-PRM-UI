@@ -110,7 +110,7 @@ h4.header-text-css,
 .copyright-css,
 .video,
 .hash-table-color {
-  background-color: #2e3033 !important;
+  background: rgb(255 255 255 / 31%) !important;
 }
 .page-bar .page-breadcrumb > li > a,
 .page-bar .page-breadcrumb > li > span {
@@ -377,7 +377,7 @@ ul.alt-row-style1 li:hover,
 }
 .table tbody tr.active td,
 .table tbody tr.active th {
-  background-color: #22313a !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
 .tgrid > tbody > tr > td,
 .tgrid > tbody > tr > th,
@@ -609,7 +609,7 @@ tr {
   background: rgba(16 18 27 / 40%) !important;
 }
 .search-bgcolor {
-  background-color: #2b3c46 !important;
+  background-color: linear-gradient(45deg, #cdcdcd, transparent);
 }
 .profile-image-wrapper {
   background-color: rgb(146 151 179 / 8%) !important;
@@ -622,7 +622,7 @@ tr {
   border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .text-dropdown {
-  background-color: #2b3c46 !important;
+  background-color: rgb(255 255 255 / 31%) !important;
 }
 .write-new textarea,
 .card-bg {
@@ -776,7 +776,7 @@ select {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .xamplify-dropdown-content {
-  background-color: #2b3c46 !important;
+  background-color: rgb(255 255 255 / 31%) !important;
 }
 .preview-edit-color,
 .wrap-asset-name {
@@ -877,7 +877,7 @@ span.ui-column-resize {
 .circled-number:hover,
 .circled-number:hover,
 .xamplify-dropdown-option:hover {
-  background-color: #22313a !important;
+  background-color: rgba(16 18 27 / 12%) !important;
 }
 .actions-block i,
 .circled-number,
@@ -2029,7 +2029,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   backdrop-filter: blur(5px);
 }
 .mix-filter li:hover{
-  background: none !important;
+  background: #fff !important;
   border: 1px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(5px);
 }
@@ -2363,7 +2363,7 @@ button.btn.btn-xs.l-g-view,
 button.btn.btn-xs.l-g-view.disabled {
   box-shadow : 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  /* background: rgb(146 151 179 / 13%) !important; */
+  background: rgb(255 255 255 / 31%) !important;
 }
 button.search-box-item-click{
   background: rgba(255, 255, 255, 0.2) !important;
@@ -3148,7 +3148,7 @@ button.button:disabled {
   background: #14162b63 !important;
   opacity: 0.5;
   height: 37px !important;
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #14162b69 !important;
 }
 .tags-table tr:nth-child(odd){
   background-color: #2c2f33;
@@ -4125,10 +4125,28 @@ button.group-name-cclass.btn-primary.default-btn-cursor.white-co{
 span.btn.Btn-Green{
   border:none !important;
 }
-button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4, button.search-box-item-click, button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4{
+button.fa.fa-th-list.btn-xs.l-g-view.mr_4,
+button.search-box-item-click,
+button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4{
   color: #000 !important;
     background-color: rgb(255 255 255 / 31%) !important;
     border: 1px solid rgb(255 255 255 / 35%) !important;
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
+}
+/***** Sudha Sri(12-06-2024) *****/
+.dashboard-stat.blue .details .number,
+.dashboard-stat.green .details .number,
+.dashboard-stat.purple .details .number,
+.dashboard-stat.red .details .number{
+  color: #000 !important;
+}
+button.btn.btn-primary.shareVideoButton,
+button.btn.btn-primary.embedVideoButton{
+  background-color: #0276FF !important;
+  border: 1px solid #266dc1 !important;
+}
+button.btn.btn-primary.embedVideoButton:hover,
+button.btn.btn-primary.shareVideoButton:hover{
+  background-color: #1C84FF !important;
 }
