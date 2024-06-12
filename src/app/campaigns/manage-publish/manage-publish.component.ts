@@ -202,6 +202,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.isloading = false;
                 if(data.access){
                     this.campaigns = data.campaigns;
+                    this.showAllAnalytics = false;
                     this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
                     $.each(this.campaigns, function (_index:number, campaign) {
                         campaign.displayTime = new Date(campaign.utcTimeInString);

@@ -99,8 +99,10 @@ export class SfDealComponent implements OnInit {
       if (this.dealId == undefined || this.dealId <= 0) {
         this.dealId = 0;
       }
-      this.addLoader();
-      this.getActiveCRMCustomForm();
+      if ("HALOPSA" !== this.activeCRM.createdByActiveCRMType && "HALOPSA" !== this.activeCRM.createdForActiveCRMType) {
+        this.addLoader();
+        this.getActiveCRMCustomForm();
+      }
       // if ("SALESFORCE" === this.activeCRM) {
       //   this.getSalesforceCustomForm();
       // } else {
@@ -119,8 +121,11 @@ export class SfDealComponent implements OnInit {
       if (this.dealId == undefined || this.dealId <= 0) {
         this.dealId = 0;
       }
-      this.addLoader();
-      this.getActiveCRMCustomForm();
+      if (this.ticketTypeId != undefined && this.ticketTypeId > 0) {
+        this.isDealRegistrationFormInvalid = true;
+        this.addLoader();
+        this.getActiveCRMCustomForm();
+      }
     }
   }
 

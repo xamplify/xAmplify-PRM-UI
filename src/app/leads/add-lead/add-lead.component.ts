@@ -81,6 +81,7 @@ export class AddLeadComponent implements OnInit {
   showTicketTypesDropdown: boolean = false;
   isCreatedForStageIdDisable: boolean = false;
   isCampaignTicketTypeSelected: boolean = false;
+  existingHalopsaLeadTicketTypeId: any;
 
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, private leadsService: LeadsService,
@@ -428,6 +429,7 @@ export class AddLeadComponent implements OnInit {
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
             self.lead = data.data;
+            self.existingHalopsaLeadTicketTypeId = self.lead.halopsaTicketTypeId;
             if (self.lead.createdForCompanyId > 0) {
             }
 
@@ -771,7 +773,8 @@ export class AddLeadComponent implements OnInit {
     if (createdForPipelines.length === 1) {
       let createdForPipeline = createdForPipelines[0];
       self.lead.createdForPipelineId = createdForPipeline.id;
-      if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType && this.actionType === 'add') {
+      if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType && this.actionType === 'add'
+        || (self.existingHalopsaLeadTicketTypeId != undefined && self.existingHalopsaLeadTicketTypeId != self.lead.halopsaTicketTypeId) ) {
         let createdForPipelineStage = null;
         let stages = createdForPipeline.stages;
         createdForPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
