@@ -223,15 +223,18 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     setPage(event) {
+        this.showAllAnalytics = false;
         this.pagination.pageIndex = event.page;
         this.listCampaign(this.pagination);
     }
 
     searchCampaigns() {
+        this.showAllAnalytics = false;
         this.getAllFilteredResults(this.pagination);
     }
 
     getSortedResult(text: any) {
+        this.showAllAnalytics = false;
         this.selectedSortedOption = text;
         this.getAllFilteredResults(this.pagination);
     }
