@@ -429,7 +429,7 @@
                             <button [disabled]="!form.isValid || (!isAdd && form.associatedWithTrack)" type="submit"
                                 class="button mar-rgt-9 bgcolor-unset" (click)="addOrUpdate()"><span
                                     class="btn Btn-Green transition txt_pd-top3">{{buttonName}}</span></button>
-                            <button *ngIf="!isAdd && !isMdfForm" [disabled]="!form.isValid" type="submit"
+                            <button *ngIf="!isAdd && !isMdfForm && !isVendorOrMasterLandingPage" [disabled]="!form.isValid" type="submit"
                                 style="    padding-right: 4px;" class="button bgcolor-unset" (click)="saveAs()"><span
                                     class="btn Btn-Green transition txt_pd-top3">Save As</span></button>
                             <button type="button" class="btn Btn-Gray" (click)="navigateBack()"
@@ -440,7 +440,7 @@
             </div>
         </div>
     </div>
-    <app-preview-popup #previewPopUpComponent></app-preview-popup>
+    <app-preview-popup *ngIf="!isVendorOrMasterLandingPage" #previewPopUpComponent></app-preview-popup>
 </div>
 <!-- -End Of page-content -->
 
