@@ -245,9 +245,15 @@ export class SaveAsComponent implements OnInit {
                        if ( this.saveAsListName !== "" && this.saveAsListName.length < 250 ) {
                             this.updateContactListNameType(this.saveAsListName, this.model.isPublic );
                        }
-                       else if(this.saveAsListName === ""){  
-                           this.saveAsError = 'List Name is Required.'; 
-                         }
+                       else if(this.saveAsListName === "")
+                        { 
+                            if (this.module === 'Partner') {
+                                this.saveAsError = 'Group Name is Required.';
+                            } else{
+                                this.saveAsError = 'List Name is Required.';
+        
+                            }
+                }
                        else{
                             this.saveAsError = 'You have exceeded 250 characters!'; 
                         }
@@ -282,10 +288,12 @@ export class SaveAsComponent implements OnInit {
                       if (this.assignLeads) {
                           this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', this.editContactsComponent.properties.LEAD_LIST_NAME_UPDATE_SUCCESS, true);
                       } else if (this.isPartner) {
-                          let message = "Your "+this.authenticationService.partnerModule.customName+" list name has been updated successfully";
+                          let message = "Your "+this.authenticationService.partnerModule.customName+" group name has been updated successfully";
                           this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', message, true);
                       } else {
                           this.editContactsComponent.customResponse = new CustomResponse('SUCCESS', this.editContactsComponent.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true);
+                          let message = "Your "+this.authenticationService.partnerModule.customName+" list name has been updated successfully";
+
                       }
                       this.notifyParentSaveAs.emit('success');
                   } else if (data.statusCode == 1001) {
