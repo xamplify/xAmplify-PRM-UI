@@ -286,6 +286,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.checkingContactTypeName = "Partner";
 			this.actionsDescription.contact_list_edit = 'Preview or edit group';
 			this.actionsDescription.contact_list_info = 'Group Info';
+			actionsDescription.contact_list_delete = 'Delete group';
 			this.sortOptions = [
 				{ 'name': 'Sort by', 'value': '', 'for': '' },
 				{ 'name': 'Group name (A-Z)', 'value': 'name-ASC', 'for': 'contactList' },

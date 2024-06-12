@@ -496,7 +496,7 @@
                                                 <img class="neu-l-d"
                                                    *ngIf="contactList.socialNetwork=='HALOPSA' && contactList.synchronisedList"
                                                    src="{{properties?.halopsaImage}}" alt="manual"
-                                                   style="height: 70px;">
+                                                   style="height: 54px;">
                                                 <!-- XNFR-211 -->
                                                 <img class="neu-l-d-spinner"
                                                    *ngIf="contactList.uploadInProgress || contactList.validationInProgress || ((!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd)))"
@@ -826,6 +826,9 @@
                                        <img class="imageClassCss image_effect"
                                           *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"
                                           src="{{properties?.marketoGridImage}}" alt="manual">
+                                          <img class="imageClassCss image_effect"
+                                          *ngIf="contactList.socialNetwork=='HALOPSA' && contactList.synchronisedList"
+                                          src="{{properties?.halopsaGridImage}}" alt="manual">
                                     </div>
                                     <div id="container"
                                        *ngIf="contactList.uploadInProgress || contactList.validationInProgress || (!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
