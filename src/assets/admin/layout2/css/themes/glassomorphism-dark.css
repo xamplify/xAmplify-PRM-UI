@@ -3400,7 +3400,7 @@ a.Iconhover.custom-grid-icon.icon_margin{
   margin: 2px 2px !important;
 }
 .trash_bgcolor{
-  background: #2e3033 !important;
+  background: rgb(146 151 179 / 8%) !important;
   border:   1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .button.button.bgcolor-unset.btn_border{
@@ -3694,7 +3694,6 @@ button.btn.btn-primary.activate-btn:hover {
 li.active-tab a.active-tab-anchor-text{
   background-color: rgba(16 18 27 / 40%) !important;
 }
-button.group-name-cclass.btn-primary.default-btn-cursor,
 .tm-group-preview-css{
   background: rgb(146 151 179 / 8%)!important;
 }
@@ -3881,7 +3880,7 @@ button.button.bgcolor-unset{
 
 }
 .dashboard-stat.blue-sharp .details .number{
-  color: #000 !important;
+  color: #000;
 }
 .page-sidebar .page-sidebar-menu>li>a{
   border-bottom: 1px solid hsla(0, 0%, 100%, .3) !important;
@@ -3910,4 +3909,16 @@ span.btn.Btn-Green{
 button.btn.btn-primary.embedVideoButton:hover,
 button.btn.btn-primary.shareVideoButton:hover{
   background-color: #1C84FF !important;
+}
+.number.NumberFontDecrease {
+  color:#fff !important;
+}
+.page-bar{border:1px solid rgba(255, 255, 255, 0.1) !important}
+button.btn.btn-xs.hidden-xs.l-g-view{
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: rgb(146 151 179 / 13%) !important;
+}
+button.group-name-cclass.btn-primary.default-btn-cursor{
+  background-color: #0276FF !important;
+  border: 1px solid #266dc1 !important;
 }
