@@ -106,7 +106,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.selectedFormTypeIndex = 0;
         this.getRoleByUserId();
         this.pagination.filterKey = "All";
-        if(this.isVendorOrMasterLandingPage){
+        /* if(this.isVendorOrMasterLandingPage){
             this.landingPageId = this.vendorLandingPageId;
             this.pagination.landingPageId = this.landingPageId;
             this.pagination.landingPageForm = true;
@@ -118,7 +118,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isFolderGridView = false;
             this.listForms(this.pagination);
 
-        }else{}
+        }else{ */
         if (this.router.url.endsWith('manage/')) {
             this.onlyForms = this.router.url.indexOf('/lf')<0;
             this.setViewType('Folder-Grid');
@@ -171,7 +171,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             }
             
         }
-
+    
 
 
     }
