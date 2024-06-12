@@ -16,6 +16,8 @@ import { UtilService } from '../../core/services/util.service';
 import { TracksPlayBook } from '../models/tracks-play-book'
 import { TracksPlayBookType } from '../models/tracks-play-book-type.enum'
 import { Roles } from 'app/core/models/roles';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+
 
 declare var swal:any, $: any;
 
@@ -26,7 +28,7 @@ declare var swal:any, $: any;
   providers: [Pagination, HttpRequestLoader, SortOption],
 })
 export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
-
+  readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
   pagination: Pagination = new Pagination();
   loggedInUserId = 0;
   UnPublishedId =0 ;

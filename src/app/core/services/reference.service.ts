@@ -23,6 +23,7 @@ import { ModulesDisplayType } from "app/util/models/modules-display-type";
 import { RegularExpressions } from "app/common/models/regular-expressions";
 import { Pagination } from "app/core/models/pagination";
 import { EnvService } from "app/env.service";
+import { RouterUrlConstants } from "app/constants/router-url.contstants";
 
 
 declare var $:any, swal:any, require:any;
@@ -3021,7 +3022,8 @@ export class ReferenceService {
     let sort = sortColumn.length>0 && sortOrder.length>0 ? sortColumn+","+sortOrder:"";
     let sortParam = sort.length>0 ? "&sort="+sort:"";
     let searchParam = searchKey.length>0 ? "&search="+searchKey:"";
-    return $.trim("&page="+page+"&size="+size+sortParam+searchParam);
+    let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&filterPartners=true":"";
+    return $.trim("&page="+page+"&size="+size+sortParam+searchParam+teamMemberPartnerFilter);
   }
   
   downloadCsvTemplate(url:string){
@@ -3545,6 +3547,10 @@ encodePathVariable(input:any){
   return encodedPathVariable;
 }
 
+decodePathVariable(value:any){
+  return atob(value);
+}
+
 previewEmailTemplateInNewTab(id:any){
   this.openWindowInNewTab("/pv/t/"+this.encodePathVariable(id));
 }
@@ -3630,6 +3636,19 @@ preivewAssetOnNewHost(id: any) {
   window.open(url,"_blank");
 }
 
+preivewAssetForPartnerOnNewHost(id: any) {
+  let encodedId = btoa(id);
+  let encodedAccessToken = btoa(this.authenticationService.access_token);
+  let encodedIcon = this.getEncodedIcon();
+  let companyName = localStorage.getItem("companyName");
+  let encodedCompanyName =this.getEncodedCompanyName(companyName);
+  let userId = this.authenticationService.getUserId();
+  let userIdAsString: string = String(userId);
+  let encodedUserId =  btoa(userIdAsString);
+  let url = this.envService.PREVIEW_HOST+"p/preview/"+encodedId+"/"+encodedAccessToken+"/"+encodedIcon+"/"+encodedCompanyName+"/"+encodedUserId;
+  window.open(url,"_blank");
+}
+
 
   private getEncodedIcon() {
     let iconPath = localStorage.getItem("appIcon");
@@ -3653,9 +3672,11 @@ preivewAssetOnNewHost(id: any) {
     return encodedCompanyName;
   }
 
-  setAssetLocalStorageValues(asset:any){
-    localStorage.setItem('assetName', asset.assetName);
-		localStorage.setItem('isAssetPublished', asset.published);
+
+
+  navigateToDamPartnerCompaniesAnalytics(damId:number,categoryId:any,viewType:any,folderViewType:any,folderListView:any){
+    let url = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.encodePathVariable(damId);
+		this.navigateToRouterByViewTypes(url, categoryId, viewType, folderViewType, folderListView);
   }
   
 }

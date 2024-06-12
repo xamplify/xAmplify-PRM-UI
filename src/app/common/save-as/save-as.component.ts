@@ -81,7 +81,7 @@ export class SaveAsComponent implements OnInit {
 				const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
                 this.validateLegalBasisOptions();
                 if ($.inArray(inputName, names) > -1) {
-                    this.saveAsError = 'This list name is already taken.';
+                    this.saveAsError = 'This group name is already taken.';
                 }else if(inputName==activeMasterPartnerList || inputName==inActiveMasterPartnerList){
 					this.saveAsError = 'This list name cannot be added';
 				} else {
@@ -92,7 +92,15 @@ export class SaveAsComponent implements OnInit {
                             this.notifyParentSaveAs.emit('success');
                         }
                     }
-                    else if (this.saveAsListName === "") { this.saveAsError = 'List Name is Required.'; }
+                    else if (this.saveAsListName === "") 
+                        { 
+                            if (this.module === 'Partner') {
+                                this.saveAsError = 'Group Name is Required.';
+                            } else{
+                                this.saveAsError = 'List Name is Required.';
+
+                            }
+                }
                     else { this.saveAsError = 'You have exceeded 250 characters!'; }
                 }
               }else{

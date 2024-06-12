@@ -1,0 +1,21 @@
+.no-float {
+    float: none !important;
+  }
+  @media screen and (max-width: 600px) {
+    .mSort {
+      margin: 5px 0px !important;
+    }
+    .mAlert {
+      text-align: center;
+    }
+    .d-flex{
+      display:flex!important;
+     }
+  }
+  .sort-published-partners {
+    float: right;
+    padding: 4px;
+  }
+.pb-3px{
+  padding-bottom: 3px !important;
+}  

@@ -234,6 +234,7 @@ export class Properties {
 	zohoGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/ZOHO.png';
 	salesforceGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Salesforce.png';
 	microsoftGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/Microsoft.png';
+	halopsaGridImage: string = 'assets/admin/pages/media/works/Grid_View_Icons/halopsa-contacts.png'
 
 
 	teamMemberGroups = 'Team Member Groups';
@@ -358,8 +359,6 @@ export class Properties {
 	/***XNFR-523****/
 	SEND_UPDATED_TRACK_EMAIL_NOTIFICATION_MESSAGE = "Send an email notification to {{partnersMergeTag}} who have made progress";
 	TRACK_OR_PLAY_BOOK_EMAIL_NOTIFICATION_OPTION_DISABLED = "To enable this option, please turn on 'Published Track Email Notifications' in your 'Email Notification Settings' located in your 'My Profile' section.";
-
-
-
+	MANAGE_ASSETS = "Manage Assets";
 }
 

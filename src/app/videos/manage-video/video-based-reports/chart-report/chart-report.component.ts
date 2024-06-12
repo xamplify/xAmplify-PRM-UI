@@ -226,7 +226,7 @@ export class ChartReportComponent implements OnInit, OnDestroy {
 
   goBack() {
       this.loading = true;
-      this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + this.damId);
+      this.referenceService.navigateToDamPartnerCompaniesAnalytics(this.damId,0,undefined,false,false);
 	}
   
 }

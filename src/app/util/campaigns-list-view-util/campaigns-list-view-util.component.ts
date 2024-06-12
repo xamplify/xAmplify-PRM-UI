@@ -1020,12 +1020,14 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.campaignViewType = "list";
+            this.navigateToManageSection(viewType);
         } else if ("Grid" == viewType) {
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.campaignViewType = "grid";
+            this.navigateToManageSection(viewType); 
         }
     }
 
@@ -1405,15 +1407,17 @@ validateCopyCampaignName(){
         }
     }
     
-    showGearIconOptions(campaign: any, index : number) {
-    if(campaign.channelCampaign){
-      this.checkLastElement(index);
-    }else{
+   showGearIconOptions(campaign: any, index : number) {
+
         this.campaignService.getGearIconOptions(campaign, this.loggedInUserId)
         .subscribe(
             data => {
                 if (data.statusCode == 200) {
                     campaign.hasAccess = data.data.hasAccess;
+                    campaign.canArchive = data.data.canArchive;
+                    campaign.formsCount = data.data.formsCount;
+                   campaign.parentCampaignLaunchedByVendorTierCompany = data.data.parentCampaignLaunchedByVendorTierCompany;
+                   campaign.isEventStarted = data.data.isEventStarted;
                     if(campaign.hasAccess){
                        this.checkLastElement(index);
                        campaign.showGearIconOptions = data.data.showGearIconOptions ;
@@ -1426,7 +1430,32 @@ validateCopyCampaignName(){
                 this.logger.errorPage(error);
             });
             
-        }
     } 
 
-}
+    
+    navigateToManageSection(viewType:string){
+        if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.campaignViewType = "list";
+            this.listCampaign(this.pagination);
+        }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.modulesDisplayType.isListView = false;
+            this.campaignViewType = "grid";
+            this.listCampaign(this.pagination);
+        }else  if(this.router.url.endsWith('/')){
+            if(this.teamMemberId!=undefined){
+                this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId);
+            }else{
+                this.router.navigateByUrl('/home/campaigns/manage');
+            }
+            
+        }
+    }
+
+ }

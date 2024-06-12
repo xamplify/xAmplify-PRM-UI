@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
+
 declare var swal, $, videojs: any;
 
 @Component({
@@ -10,6 +12,7 @@ declare var swal, $, videojs: any;
 })
 export class DealChatPopupComponent implements OnInit {
 
+  readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
   @Input() deal: any;
   @Input() lead: any;
   @Output() isCommentSection = new EventEmitter<any>();
@@ -24,7 +27,7 @@ export class DealChatPopupComponent implements OnInit {
   createdTime: String;
   moduleType: String;
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-
+  showLeadInfo = false;
   constructor() { }
 
   ngOnInit() {     
@@ -36,11 +39,16 @@ export class DealChatPopupComponent implements OnInit {
       this.createdByEmail = this.deal.createdByEmail;
       this.createdByName = this.deal.createdByName;
       this.createdTime = this.deal.createdTime;
+      let leadDetails = this.deal['associatedContact'];
+      if(leadDetails!=undefined){
+       this.lead = leadDetails;
+       this.lead.company = leadDetails.contactCompany;
+       this.showLeadInfo = true;
+      }
     } else if (this.lead != undefined) {
       this.moduleType = "lead";
       this.campaignName = this.lead.campaignName;
       this.dealTitle = null;
-      //this.leadName = this.lead.title;
       this.createdByEmail = this.lead.createdByEmail;
       this.createdByName = this.lead.createdByName;
       this.createdTime = this.lead.createdTime;
