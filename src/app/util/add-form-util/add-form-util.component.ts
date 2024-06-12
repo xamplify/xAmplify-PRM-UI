@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CustomResponse } from '../../common/models/custom-response';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -203,7 +203,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
      columnIndexForAdd: number;
      customResponseForNewFeature: CustomResponse = new CustomResponse();
     /** XNFR-424 ENDS **/
-
+    /** XNFR-522 **/
+    @Input() isVendorOrMasterLandingPage:boolean = false;
+    @Output() goBack:EventEmitter<any> = new EventEmitter();
     constructor(public regularExpressions: RegularExpressions, public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
         private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute,
@@ -1252,6 +1254,11 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                             this.customResponse = new CustomResponse('ERROR', result.message, true);
                         } else {
                             this.referenceService.isUpdated = true;
+                            if(this.isVendorOrMasterLandingPage){
+                                this.goBack.emit()
+                                this.ngxloading = false;
+                                return;
+                            }
                             this.navigateToManageSection();
                         }
                     } else {
@@ -1316,7 +1323,10 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
 
     navigateBack() {
-        if (this.isMdfForm) {
+        if(this.isVendorOrMasterLandingPage){
+            this.goBack.emit();
+        }
+        else if (this.isMdfForm) {
             this.referenceService.goToRouter("/home/mdf/details");
         } else {
             if (this.isAdd && !this.isCopyForm) {
