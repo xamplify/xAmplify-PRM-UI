@@ -33,8 +33,7 @@ export class VendorJourneyComponent implements OnInit {
   isFormAnalytics:boolean = false;
   isEditVendorOrMasterForm:boolean = false;
   selectedFrom:any;
-  constructor(public landingPageService: LandingPageService, public authenticationService:AuthenticationService,
-    public formService: FormService) { }
+  constructor(public landingPageService: LandingPageService, public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
     this.resetVendorJourney();
