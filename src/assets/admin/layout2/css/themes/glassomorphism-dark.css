@@ -2003,7 +2003,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   backdrop-filter: blur(5px);
 }
 .mix-filter li:hover{
-  background: rgba(255,255,255,0.15) !important;
+  background: rgba(16 18 27 / 40%) !important;
   border: 1px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(5px);
 }
@@ -3905,4 +3905,9 @@ button.group-name-cclass.btn-primary.default-btn-cursor.white-co{
 }
 span.btn.Btn-Green{
   border:none !important;
+}
+/***** Sudha Sri(12-06-2024) *****/
+button.btn.btn-primary.embedVideoButton:hover,
+button.btn.btn-primary.shareVideoButton:hover{
+  background-color: #1C84FF !important;
 }
