@@ -980,7 +980,6 @@ input.cmn-toggle-round-flat + label,
 input.cmn-toggle-round-flat:checked + label,
 button.btn.btn-primary.add-btn,
 .redistibute_edit_icon:hover,
-a.btn.btn-primary.btn-block:hover,
 a.left.fa.fa-chevron-left.btn.btn-success.dashboard_carasol_bg,
 a.right.fa.fa-chevron-right.btn.btn-success.dashboard_carasol_bg {
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
@@ -1636,7 +1635,8 @@ div#removeborder {
   transition: all 0.1s ease;
 }
 .help-iconbgadd i:hover,
-button.group-name-cclass.btn-primary.default-btn-cursor.white-co {
+button.group-name-cclass.btn-primary.default-btn-cursor.white-co,
+h4.txt_color {
   color: #fff !important;
 } /* end */
 .help-iconbgadd {
@@ -3782,7 +3782,7 @@ button.btn.btn-primary.button-blue.add_icon_bg:hover{
   color: #000 !important;
   box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
 }
-a.btn.btn-primary.btn-block:hover,
+
 button.btn.btn-primary.dropdown-toggle {
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
@@ -4324,4 +4324,9 @@ button.group-name-cclass.btn-primary.default-btn-cursor.white-co{
 }
 span.btn.Btn-Green{
   border: none !important;
+}
+a.btn.btn-primary.btn-block:hover,
+button.button.bgcolor-unset:hover,
+button.button_blue.bgcolor-unset:hover{
+  background-color: #1C84FF !important;
 }

@@ -2357,7 +2357,6 @@ left-menu-color ul li a,
 .Btn-Gray:hover,
 .btn-primary:hover,
 .campaign-box:hover,
-.dashboard-stat2:hover,
 .custom:hover,
 .btnND:hover,
 .shadow-inset:hover,
@@ -2368,6 +2367,10 @@ a.UserguideBtnCustomization:hover {
   /* box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
   color: #fff !important;
   background-color: #1C84FF !important;
+}
+.dashboard-stat2:hover{
+  color: #fff !important;
+  background: none !important;
 }
 .btn-group button:hover,
 button.btn.custom:hover,

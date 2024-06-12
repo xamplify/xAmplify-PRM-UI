@@ -9,7 +9,7 @@
   color: white !important;
 }
 body{
-  background-image: url(https://wallpapercave.com/wp/wp3274878.jpg);
+  background-image: url(/assets/images/glassmorphism-images/glassmorphism-dark.jpg);
   color: white !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -377,7 +377,7 @@ ul.alt-row-style1 li:hover,
 }
 .table tbody tr.active td,
 .table tbody tr.active th {
-  background-color: #22313a !important;
+  background-color: rgb(0 0 0 / 18%) !important;
 }
 .tgrid > tbody > tr > td,
 .tgrid > tbody > tr > th,
