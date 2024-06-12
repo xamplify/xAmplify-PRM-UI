@@ -3219,7 +3219,7 @@
 
                             <!--  XNFR-415 -->
                             <div
-                                *ngIf="  (((( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany) &&  !authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin )  && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing))">
+                                *ngIf="  (((( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany) &&  !authenticationService?.module?.isTeamMember || authenticationService?.module?.adminOrSuperVisor )  && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing))">
                                 <div *ngIf="activeTabName === 'settings'"
                                     [ngClass]="{'active-tab': activeTabName === 'settings'}">
                                     <div class="portlet light">

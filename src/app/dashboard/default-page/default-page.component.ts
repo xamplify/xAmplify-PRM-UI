@@ -124,10 +124,11 @@ export class DefaultPageComponent implements OnInit {
                 data => {
                     if (data.statusCode == 200 && data.data !== undefined) {
                         this.getAssignedDashboardTypeForPartner = data.data;
-                        if (this.getAssignedDashboardTypeForPartner === 'WELCOME') {
+                        if (this.getAssignedDashboardTypeForPartner === 'WELCOME' || this.getAssignedDashboardTypeForPartner === 'welcome') {
                             this.goToWelcomePage();
                         }
-                        else if (this.getAssignedDashboardTypeForPartner === 'ASSIGNED_DASHBOARD') {
+                        else if (this.getAssignedDashboardTypeForPartner === 'ASSIGNED_DASHBOARD' || this.getAssignedDashboardTypeForPartner === 'DASHBOARD'
+                            || this.getAssignedDashboardTypeForPartner === 'dashboard') {
                             this.goToDashBoard();
                         }
                         else {

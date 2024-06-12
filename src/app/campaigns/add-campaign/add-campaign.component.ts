@@ -1142,7 +1142,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         if((this.campaign.channelCampaign && this.campaign.configurePipelines) || (this.showMarketingAutomationOption && this.campaign.configurePipelines)){
             let isValidLeadTicketTypeSelected: boolean;
             let isValidDealTicketTypeSelected: boolean;
-            if ("HALOPSA" === this.activeCRMDetails.type) {
+            if (this.activeCRMDetails != undefined && this.activeCRMDetails.type !=undefined && "HALOPSA" === this.activeCRMDetails.type) {
                 isValidLeadTicketTypeSelected = this.campaign.leadTicketTypeId!=undefined && this.campaign.leadTicketTypeId>0;
                 isValidDealTicketTypeSelected = this.campaign.dealTicketTypeId!=undefined && this.campaign.dealTicketTypeId>0;
             } else {
