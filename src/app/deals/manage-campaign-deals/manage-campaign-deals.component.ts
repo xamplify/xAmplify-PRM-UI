@@ -326,9 +326,7 @@ toggleFilterOption() {
   this.fromDateFilter = "";
   this.toDateFilter = "";
   this.statusFilter = "";
-  // this.dealsPagination.fromDateFilterString = "";
-  // this.dealsPagination.toDateFilterString = "";
-  // this.dealsPagination.stageFilter = "";
+  this.selectedRegisteredByUserId = 0;
   if (!this.showFilterOption) {
     this.dealsPagination.fromDateFilterString = "";
     this.dealsPagination.toDateFilterString = "";
@@ -612,6 +610,14 @@ downloadDeals(pagination: Pagination){
       this.registeredByUsersLoader = false;
       this.isRegisteredByUsersLoadedSuccessfully = false;
     });
+}
+
+getSelectedRegisteredByUserId(event:any){
+  if(event!=null){
+    this.selectedRegisteredByUserId = event['id'];
+  }else{
+    this.selectedRegisteredByUserId = 0;
+  }
 }
 
 getSelectedStatus(event:any){
