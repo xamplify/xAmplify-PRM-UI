@@ -156,6 +156,10 @@
                     <i *ngIf="sfCustomField.selected" class="fa fa-edit mr5 IconCustomization SingleIconCu"></i>
                     <div class="clickicons"></div>
                   </a>
+                  <a *ngIf="sfCustomField.selected && integrationType === 'SALESFORCE' && sfCustomField.type === 'string'" class="custom-icon">
+                    <i *ngIf="sfCustomField.selected" (click)="addCustomFielsdModalOpen(sfCustomField)" class="fa fa-gear mr5 IconCustomization SingleIconCu"></i>
+                    <div class="clickicons"></div>
+                  </a>
                 </td>
               </tr>
               <tr
@@ -278,5 +282,8 @@
             class="btn btn-primary transition txt_pd-top3">Submit</span></button>
       </div>
     </ng-container>
+    <div *ngIf="isCustomFieldsModelPopUp">
+      <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" (customField)="getCustomFields($event)" [customFields]="customField"></app-integration-settings-popup>
+    </div>
   </div>
 </div>

@@ -101,6 +101,7 @@ import { ProcessingUserListsComponent } from './processing-user-lists/processing
 import { UpdatePasswordComponent } from './super-admin/update-password/update-password.component';
 import { AddVendorLogosComponent } from 'app/util/add-vendor-logos/add-vendor-logos.component';
 import { SupportAccountUsersComponent } from './support-account-users/support-account-users.component';
+import { IntegrationSettingsPopupComponent } from './integration-settings-popup/integration-settings-popup.component';
 
 
 @NgModule({
@@ -176,6 +177,7 @@ import { SupportAccountUsersComponent } from './support-account-users/support-ac
         UpdatePasswordComponent,
         AddVendorLogosComponent,
         SupportAccountUsersComponent,
+        IntegrationSettingsPopupComponent,
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
