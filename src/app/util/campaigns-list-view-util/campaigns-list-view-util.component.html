@@ -54,7 +54,7 @@
                     </div>
 
                     <div class="page-toolbar col-xs-12 col-sm-12 col-md-9 col-lg-7 mltpx mb_gridfolder pl0">
-                        <div class="btn-group pull-right">
+                        <div class="btn-group pull-right d-flex">
                             <ng-container class='m10'>
                                 <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
                                     data-placement="bottom" title="List View"
@@ -420,11 +420,11 @@
                                                 </div>
                                                 
                                                 <div class="row">
-                                                    <div class="col-md-12">
-                                                       <button class="btn btn view-more-css full-width-modal-popup"><strong>{{pagination.pagedItems[i].isExpand ? 'View Less' : 'View More'}}</strong>
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                       <button class="btn btn view-more-css full-width-modal-popup"><strong class="fs-13">{{pagination.pagedItems[i].isExpand ? 'View Less' : 'View More'}}</strong>
                                                           <span data-toggle="tooltip"   class="actions-block float-none">
                                                              <a (click)="getCampaignHighLevelAnalytics2(pagination.pagedItems[i],i)">
-                                                                <i class="fa" [ngClass]="{'fa-angle-right': !pagination.pagedItems[i].isExpand,'fa-angle-down': pagination.pagedItems[i].isExpand}"></i>
+                                                                <i class="down-arrow fa" [ngClass]="{'fa-angle-down': !pagination.pagedItems[i].isExpand,'fa-angle-up': pagination.pagedItems[i].isExpand}"></i>
                                                              </a>
                                                           </span>
                                                        </button>

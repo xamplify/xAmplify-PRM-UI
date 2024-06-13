@@ -300,9 +300,9 @@ h3 {
     width: 100% !important;
   }
 }
-.success {
+/* .success {
   margin-top: -6px !important;
-}
+} */
 .pt5 {
   padding-top: 5px;
 }
@@ -333,7 +333,7 @@ h6 {
     height: 28px;
     border-radius: 50%;
     text-align: center;
-    line-height: 26px !important;
+    line-height: 26px;
     vertical-align: middle;
     margin-right: 7px;
     font-size: 14px !important;

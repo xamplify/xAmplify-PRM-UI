@@ -55,9 +55,24 @@
 	white-space: break-spaces;
 	line-height: 2.5;
 }
-
 .view-more-css {
 	background-color: #d9edf7 !important;
 	border-color: #bce8f1 !important;
 	color: #31708f !important;
+	padding: 5px 14px;
+	cursor:default;
+	width: 99%!important;
 }
+.down-arrow {
+	width: 21px!important;
+	height: 21px!important;
+	line-height: unset !important;
+	font-weight: 600;
+	margin-left: 2px;
+  }
+  .fs-13{
+	font-size: 13px;
+  }
+  .d-flex{
+	display: flex!important;
+  }

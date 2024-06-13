@@ -281,8 +281,8 @@ span.gearicon-font-cu {
   width: 99%!important;
 }
 .down-arrow {
-  width: 21px;
-  height: 21px;
+  width: 21px!important;
+  height: 21px!important;
   line-height: unset !important;
   font-weight: 600;
   margin-left: 2px;
