@@ -3678,6 +3678,8 @@ preivewAssetForPartnerOnNewHost(id: any) {
     let url = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.encodePathVariable(damId);
 		this.navigateToRouterByViewTypes(url, categoryId, viewType, folderViewType, folderListView);
   }
+
+
   
 }
 
