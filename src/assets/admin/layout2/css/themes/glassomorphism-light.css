@@ -2154,8 +2154,8 @@ a.title.padding_bottom.text-color.content-bg{
 .search-box-item-clear {
   background: #2c2f33 !important;
 }
-i.IconCustomization:hover {
-  border:0px solid #22313a!important;
+i.IconCustomization {
+  border: 1px solid rgb(255 255 255 / 35%) !important;
 }
 i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
 i.fa.fa-plus.fa-fa-consistency.IconCustomization,
@@ -4149,4 +4149,21 @@ button.btn.btn-primary.embedVideoButton{
 button.btn.btn-primary.embedVideoButton:hover,
 button.btn.btn-primary.shareVideoButton:hover{
   background-color: #1C84FF !important;
+}
+/***** Sudha Sri(13-06-2024) *****/
+.lt-blue-c:hover, .lt-green-c:hover,
+.vlt-blue-c:hover, .r-r-c:hover{border:1px solid rgba(255, 255, 255, 0.1) !important}
+button.search-box-item-click:hover{background: rgba(255, 255, 255, 0.2) !important;}
+button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4,
+button.search-box-item-click,
+button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4,
+button.fa.fa-th-list.btn-xs.l-g-view.mr_4,
+button.fa.fa-th-large.btn-xs.l-g-view.mr_4,
+button.fa.fa-th-list.btn-xs.l-g-view,
+button.fa.fa-th-large.btn-xs.l-g-view,
+button.btn-xs.l-g-view.fa.fa-folder,
+button.btn-xs.l-g-view.fa.fa-th,
+button.btn.btn-xs.hidden-xs.l-g-view {
+  background-color: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
 }

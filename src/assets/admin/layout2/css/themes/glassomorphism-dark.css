@@ -231,7 +231,7 @@ ul.alt-row-style1 li a {
 /**** buttons ****/
 
 .table tr.contact-list-selected td {
-  background-color: #22313a !important;
+  background: rgb(0 0 0 / 18%) !important;
   color: white !important;
 }
 .div-background-color {
@@ -1229,10 +1229,7 @@ div#box-dark-defalut-clr {
   border: none !important;
 }
 
-.table tr.contact-list-selected td {
-  background-color: #22313a !important;
-  color: #fff !important;
-}
+
 
 /* 29/05/2023 */
 .has-error,
@@ -2130,9 +2127,9 @@ a.title.padding_bottom.text-color.content-bg{
 .search-box-item-clear {
   background: #2c2f33 !important;
 }
-i.IconCustomization:hover {
+/* i.IconCustomization:hover {
   border:0px solid #22313a!important;
-}
+} */
 i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
 i.fa.fa-plus.fa-fa-consistency.IconCustomization,
 i.fa.fa-history.fa-fa-consistency.IconCustomization,
@@ -3921,4 +3918,21 @@ button.btn.btn-xs.hidden-xs.l-g-view{
 button.group-name-cclass.btn-primary.default-btn-cursor{
   background-color: #0276FF !important;
   border: 1px solid #266dc1 !important;
+}
+/***** Sudha Sri(13-06-2024) *****/
+.lt-blue-c:hover, .lt-green-c:hover,
+.vlt-blue-c:hover, .r-r-c:hover{border:1px solid rgba(255, 255, 255, 0.1) !important}
+button.search-box-item-click:hover{background: rgba(255, 255, 255, 0.2) !important;}
+button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4,
+button.search-box-item-click,
+button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4,
+button.fa.fa-th-list.btn-xs.l-g-view.mr_4,
+button.fa.fa-th-large.btn-xs.l-g-view.mr_4,
+button.fa.fa-th-list.btn-xs.l-g-view,
+button.fa.fa-th-large.btn-xs.l-g-view,
+button.btn-xs.l-g-view.fa.fa-folder,
+button.btn-xs.l-g-view.fa.fa-th,
+button.btn.btn-xs.hidden-xs.l-g-view {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: rgb(146 151 179 / 13%) !important;
 }
