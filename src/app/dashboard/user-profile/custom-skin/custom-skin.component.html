@@ -39,7 +39,7 @@
 			*ngIf="themeDTO?.parentThemeName != 'LIGHT' && themeDTO?.parentThemeName != 'DARK'" style="float: right;">
 			<button class="button_blue padding align bgcolor-unset" [ngClass]="isValid ?'disabled':''"
 				[disabled]="isValid || isValidContactName || name.hasError('required') || customBgColor.hasError('required') || gradientOne.hasError('required') || gradientTwo.hasError('required') || customBorderColor.hasError('required') || customBtnName.hasError('required') ||  customIcon.hasError('required') || customIconBorder.hasError('required') || customIconHover.hasError('required')"
-				 style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme"
+				style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme"
 				(click)="getThemePropertiesWrapperObj(form)">
 				<span class="btn btn-primary transition text_pd-top1">Save</span>
 			</button>
@@ -81,27 +81,22 @@
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
-	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 p10"
+	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"
 		*ngIf="themeDTO?.parentThemeName == 'GLASSMORPHISMLIGHT' || themeDTO?.parentThemeName == 'GLASSMORPHISMDARK'">
 		<div style="text-align: center;">
 			<label class="control-label">Upload Background Image</label>
 			<div class="profile-image-wrapper dotted-image-border upload-imgheight" (click)="uploadImage()">
 				<span *ngIf="(squareDataForBgImage | json) === '{}'">
-					<img *ngIf="!bgImagePath" [src]="uploadImagePath"
-						class="profile-image img-grid" alt="" style="object-fit: cover; width: 100%;">
+					<img [src]="uploadImagePath + bgImagePath" class="profile-image img-grid" alt=""
+						style="object-fit: cover; width: 100%;">
 				</span>
-				<span *ngIf="bgImagePath; else showBgImage"> <img class="img-grid"
-						style="width: 100%;height: 110px;border-radius: 3px; object-fit: cover;"
-						[src]="uploadImagePath" alt="">
-				</span>
-				<ng-template #showBgImage> <img class="img-grid" *ngIf="bgImagePath"
-						style="width: 100%;height: 110px;border-radius: 3px;"
-						[src]="uploadImagePath" (error)="errorHandler($event)" alt="">
-				</ng-template>
-				<a class="btn btn-primary1 profile-pic" (click)="uploadImage()" data-toggle="tooltip"
-					data-placement="bottom" title="upload 16:9 ratio image!">
-					<i class="fa fa-camera icon" aria-hidden="true"
-						style="font-size:25px;padding-top:10px;left: 0px !important;bottom: -60px !important;"></i></a>
+				<a class="" (click)="uploadImage()">
+					<i class="fa fa-camera icon" aria-hidden="true" data-toggle="tooltip" data-placement="right"
+						title="upload 16:9 ratio image!"
+						style="font-size:25px;padding-top:10px;left: 10px !important;bottom: 10px !important;"></i></a>
+			</div>
+			<div class="p10">
+				<span class="conectColor" (click)="resetPreviewImage()">Reset Preview Image</span>
 			</div>
 		</div>
 	</div>
@@ -149,8 +144,7 @@
 											[cpPosition]="'bottom'" readonly></span>
 									</div>
 								</div>
-								<div *ngIf="headerBg.hasError('required')"
-									style="padding-left: 13px;">
+								<div *ngIf="headerBg.hasError('required')" style="padding-left: 13px;">
 									<p class="danger" translate>Color is Required.</p>
 								</div>
 

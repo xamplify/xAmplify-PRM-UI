@@ -158,6 +158,9 @@ export class AuthenticationService {
   /*** XNFR-416 ****/
   properties = new Properties();
   companyUrl = "";
+  /*** XNFR-570 ****/
+  themeBackgroundImagePath = "";
+  /****XNFR-570 */
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;

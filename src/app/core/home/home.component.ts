@@ -357,6 +357,7 @@ export class HomeComponent implements OnInit {
   buttonCustomizationForm: ThemePropertiesDto = new ThemePropertiesDto();
 
   activeThemeDto: ThemeDto = new ThemeDto();
+  imageHost:any;
   getThemeDtoByID(id: number) {
     this.loader = true;
     this.dashBoardService.getThemeDTOById(id).subscribe(
@@ -364,6 +365,14 @@ export class HomeComponent implements OnInit {
         this.loader = false;
         this.activeThemeDto = response.data;
         this.authenticationService.themeDto = this.activeThemeDto;
+        let path = this.activeThemeDto.backgroundImagePath;
+        if((this.activeThemeDto.parentThemeName == 'GLASSMORPHISMLIGHT' || this.activeThemeDto.parentThemeName == 'GLASSMORPHISMDARK') && (path && path.includes('/assets') || this.activeThemeDto.backgroundImagePath == undefined || this.activeThemeDto.backgroundImagePath == "" || this.activeThemeDto.backgroundImagePath == null ) ) {
+          this.getDefaultImagePath(this.activeThemeDto.parentThemeName);
+          this.imageHost = "";
+        } else if(this.activeThemeDto.backgroundImagePath != null || this.activeThemeDto.backgroundImagePath != "") {
+          this.activeThemeDto.backgroundImagePath= this.activeThemeDto.backgroundImagePath;
+          this.imageHost = this.authenticationService.MEDIA_URL;
+        }
         this.getDefaultSkin(this.activeThemeDto);
         /******** For Charts *******/
         if (id == 2) {
@@ -386,8 +395,7 @@ export class HomeComponent implements OnInit {
           //this.ngxloading = false;
           this.loader = false;
           let skinMap = response.data;
-
-          // this.authenticationService.customMap = data.data;
+        // this.authenticationService.customMap = data.data;
           this.topCustom = skinMap.TOP_NAVIGATION_BAR;
           this.leftCustom = skinMap.LEFT_SIDE_MENU;
           this.footerCustom = skinMap.FOOTER;
@@ -467,21 +475,15 @@ export class HomeComponent implements OnInit {
               document.documentElement.style.setProperty('--icon-hover-color', this.maincontentCustom.iconHoverColor);
               require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-main-content.css");
             } else {
-              let imageHost:any;
-              if(activeThemeDto.backgroundImagePath.includes('/assets')) {
-                imageHost = "";
-              } else {
-                imageHost = this.authenticationService.MEDIA_URL;
-              }
               if (activeThemeDto.parentThemeName === 'NEUMORPHISMDARK') {
                 require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-dark.css");
               } else if (activeThemeDto.parentThemeName === 'NEUMORPHISMLIGHT') {
                 require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-light.css");
               } else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMDARK') {
-                this.renderer.setElementStyle(document.body, 'background-image', 'url(' + imageHost + activeThemeDto.backgroundImagePath + ')');
+                document.documentElement.style.setProperty('--body-background-image', 'url(' + this.imageHost + activeThemeDto.backgroundImagePath + ')');
                 require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-dark.css");
               } else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMLIGHT') {
-                this.renderer.setElementStyle(document.body, 'background-image', 'url(' + imageHost + activeThemeDto.backgroundImagePath + ')');
+                document.documentElement.style.setProperty('--body-background-image', 'url(' + this.imageHost + activeThemeDto.backgroundImagePath + ')');
                 require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-light.css");
               }
               document.documentElement.style.setProperty('--custom-buttonbg-color', this.buttonCustomizationForm.buttonColor);
@@ -490,7 +492,7 @@ export class HomeComponent implements OnInit {
               document.documentElement.style.setProperty('--custom-gradient-one-color', this.buttonCustomizationForm.gradiantColorOne);
               document.documentElement.style.setProperty('--custom-gradient-two-color', this.buttonCustomizationForm.gradiantColorTwo);
               document.documentElement.style.setProperty('--custom-icon-color', this.buttonCustomizationForm.iconColor);
-              document.documentElement.style.setProperty('--custom-icon-border-two-color', this.buttonCustomizationForm.iconBorderColor);
+              document.documentElement.style.setProperty('--custom-icon-border-color', this.buttonCustomizationForm.iconBorderColor);
               document.documentElement.style.setProperty('--custom-icon-hover-color', this.buttonCustomizationForm.iconHoverColor);
 
               require("style-loader!../../../assets/admin/layout2/css/themes/buttons-icons-customization.css");
@@ -506,5 +508,18 @@ export class HomeComponent implements OnInit {
   showLeftMenu: boolean;
   showLeftSideMenu() {
     this.showLeftMenu = this.referenceService.hideLeftSideMenu();
+  }
+  bgImagePath:any;
+  getDefaultImagePath(name:any) {
+    this.dashBoardService.getDefaultImagePath(name).subscribe(
+      (data: any) => {
+        this.bgImagePath = data.data;
+      }, error =>{
+        this.bgImagePath = "";
+      }, () => {
+        this.activeThemeDto.backgroundImagePath = this.bgImagePath;
+        this.authenticationService.themeBackgroundImagePath =this.bgImagePath;
+      }
+    )
   }
 }

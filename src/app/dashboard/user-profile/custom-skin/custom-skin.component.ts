@@ -92,9 +92,9 @@ export class CustomSkinComponent implements OnInit {
   customButtonValueColor: string;
   customGradientColorOne: string;
   customGradientColorTwo: string;
-  customIconColor:string;
-  customIconBorderColor:string;
-  customIconHoverColor:string;
+  customIconColor: string;
+  customIconBorderColor: string;
+  customIconHoverColor: string;
   /** Button customization  */
   buttonColor: string;
   textContent: string;
@@ -179,17 +179,16 @@ export class CustomSkinComponent implements OnInit {
 
   ngOnInit() {
     this.squareDataForBgImage = {};
-    this.bgImagePath = this.themeDTO.backgroundImagePath;
-    if(this.themeDTO.parentThemeName == 'GLASSMORPHISMLIGHT' && this.bgImagePath == undefined) {
-      this.bgImagePath = '/assets/images/glassmorphism-images/glassmorphism-light1.png';
-      this.uploadImagePath = this.bgImagePath;
-    } else if(this.themeDTO.parentThemeName == 'GLASSMORPHISMDARK' && this.bgImagePath == undefined) {
-    this.bgImagePath = 'https://wallpapercave.com/wp/wp3274878.jpg'
-    this.uploadImagePath = this.bgImagePath;
-    }
     this.activeTabNav(this.activeTabName);
     this.loadNames();
     this.showWithCopy(this.themeId);
+    if((this.themeDTO.parentThemeName == 'GLASSMORPHISMLIGHT' || this.themeDTO.parentThemeName == 'GLASSMORPHISMDARK') && (this.authenticationService.themeBackgroundImagePath.includes("/assets") || this.themeDTO.backgroundImagePath == "" || this.themeDTO.backgroundImagePath == undefined || this.themeDTO.backgroundImagePath == 'null') ) {
+      this.bgImagePath = this.getDefaultImagePath();
+      this.uploadImagePath = "";
+    } else if(this.themeDTO.backgroundImagePath != null || this.themeDTO.backgroundImagePath != "") {
+      this.bgImagePath = this.themeDTO.backgroundImagePath;
+      this.uploadImagePath = this.authenticationService.MEDIA_URL;
+    }
     this.getDefaultSkin(this.themeId);
     try {
       this.ckeConfig = {
@@ -336,9 +335,9 @@ export class CustomSkinComponent implements OnInit {
       this.buttonCustomizationForm.gradiantColorOne = colorCode; this.isValidTextColor = true;
     } else if (type == 'customGradientColorTwo') {
       this.buttonCustomizationForm.gradiantColorTwo = colorCode; this.isValidTextColor = true;
-    } else if(type === 'customIconColor') {
+    } else if (type === 'customIconColor') {
       this.buttonCustomizationForm.iconColor = colorCode; this.isValidIconColor = true;
-    } else if(type === 'customIconBorderColor') {
+    } else if (type === 'customIconBorderColor') {
       this.buttonCustomizationForm.iconBorderColor = colorCode; this.isValidTextColor = true;
     } else if (type === 'customIconHoverColor') {
       this.buttonCustomizationForm.iconHoverColor = colorCode; this.isValidTextColor = true;
@@ -393,7 +392,7 @@ export class CustomSkinComponent implements OnInit {
     } else {
       if (this.customButtonBgColor === this.customButtonValueColor) {
         this.isValid = true;
-      } else if(this.customIconColor === this.customIconHoverColor){
+      } else if (this.customIconColor === this.customIconHoverColor) {
         this.isValid = true;
       } else {
         this.isValid = false;
@@ -485,9 +484,9 @@ export class CustomSkinComponent implements OnInit {
       this.buttonCustomizationForm.gradiantColorOne = ""; this.isValidTextColor = true;
     } else if (type === 'customGradientColorTwo') {
       this.buttonCustomizationForm.gradiantColorTwo = ""; this.isValidTextColor = true;
-    }else if(type === 'customIconColor') {
+    } else if (type === 'customIconColor') {
       this.buttonCustomizationForm.iconColor = ""; this.isValidIconColor = true;
-    } else if(type === 'customIconBorderColor') {
+    } else if (type === 'customIconBorderColor') {
       this.buttonCustomizationForm.iconBorderColor = ""; this.isValidTextColor = true;
     } else if (type === 'customIconHoverColor') {
       this.buttonCustomizationForm.iconHoverColor = ""; this.isValidTextColor = true;
@@ -614,10 +613,10 @@ export class CustomSkinComponent implements OnInit {
         this.customGradientColorTwo = event;
         this.buttonCustomizationForm.gradiantColorTwo = event; this.isValidTextColor = true;
         document.documentElement.style.setProperty('--change-button-gradient-two-color', this.buttonCustomizationForm.gradiantColorTwo);
-      }else if(type === 'customIconColor') {
+      } else if (type === 'customIconColor') {
         this.customIconColor = event;
         this.buttonCustomizationForm.iconColor = event; this.isValidIconColor = true;
-      } else if(type === 'customIconBorderColor') {
+      } else if (type === 'customIconBorderColor') {
         this.customIconBorderColor = event;
         this.buttonCustomizationForm.iconBorderColor = event; this.isValidTextColor = true;
       } else if (type === 'customIconHoverColor') {
@@ -638,7 +637,7 @@ export class CustomSkinComponent implements OnInit {
     this.saveThemeDto.createdBy = this.loggedInUserId;
     this.saveThemeDto.parentId = this.themeId;
     this.saveThemeDto.parentThemeName = this.themeDTO.parentThemeName;
-    this.saveThemeDto.backgroundImagePath = this.bgImagePath;
+    //this.saveThemeDto.backgroundImagePath = this.bgImagePath;
     console.log(this.saveThemeDto.parentId, "sudha");
     //this.ngxloading = false;
   }
@@ -648,6 +647,11 @@ export class CustomSkinComponent implements OnInit {
   getDefaultSkin(id: number) {
     this.ngxloading = true;
     this.divLoader = true;
+    // if(this.themeDTO.backgroundImagePath.includes('/assets')) {
+    //   this.uploadImagePath = "";
+    // } else {
+    //   this.uploadImagePath = this.authenticationService.MEDIA_URL;
+    // }
     this.dashboardService.getPropertiesById(id)
       .subscribe(
         (data: any) => {
@@ -858,7 +862,7 @@ export class CustomSkinComponent implements OnInit {
     this.updateThemedto.defaultTheme = false;
     this.updateThemedto.createdBy = this.loggedInUserId;
     this.updateThemedto.parentThemeName = this.themeDTO.parentThemeName;
-    this.updateThemedto.backgroundImagePath = this.bgImagePath;
+    //this.updateThemedto.backgroundImagePath = this.bgImagePath;
 
     if (CKEDITOR != undefined) {
       for (var instanceName in CKEDITOR.instances) {
@@ -973,12 +977,14 @@ export class CustomSkinComponent implements OnInit {
       this.showCropper = false;
     }
   }
-  uploadImagePath:any;
+  uploadImagePath: any;
   processBgImageFile(fileObj: File) {
     this.dashboardService.uploadBgImageFile(fileObj).subscribe(result => {
       if (result.statusCode === 200) {
         this.bgImagePath = result.data;
-        this.uploadImagePath = this.authenticationService.MEDIA_URL + this.bgImagePath;
+        this.uploadBgImage = result.data;
+
+        this.uploadImagePath = this.authenticationService.MEDIA_URL;
         this.logoError = false;
         this.logoErrorMessage = "";
         $('#cropBgImage').modal('hide');
@@ -1000,5 +1006,24 @@ export class CustomSkinComponent implements OnInit {
     this.circleData = {};
     this.imageChangedEvent = null;
     this.croppedImage = '';
+  }
+  resetPreviewImage() {
+    document.body.style.removeProperty('background-image');
+  }
+  uploadBgImage:any
+  getDefaultImagePath():string {
+    this.ngxloading = true;
+    this.dashboardService.getDefaultImagePath(this.themeDTO.parentThemeName).subscribe(
+      (data: any) => {
+        this.ngxloading = false;
+        this.bgImagePath = data.data;
+      }, error =>{
+        this.ngxloading = false;
+        this.bgImagePath = "";
+      }, () => {
+        //this.bgImagePath = data.data;
+      }
+    )
+    return this.bgImagePath;
   }
 }

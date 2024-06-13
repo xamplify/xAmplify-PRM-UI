@@ -1042,6 +1042,12 @@ uploadBgImageFile(file: any) {
         .map(this.extractData)
         .catch(this.handleError);
 }
+getDefaultImagePath(parentThemeName:any) {
+    let url = this.authenticationService.REST_URL +"custom/skin/getDefaultImagePath/"+parentThemeName+"?access_token=" + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
 /*************XNFR-238****************/
     getVendors(pagination: Pagination) {
          /****XNFR-252*****/
