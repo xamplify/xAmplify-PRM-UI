@@ -1254,11 +1254,11 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                             this.customResponse = new CustomResponse('ERROR', result.message, true);
                         } else {
                             this.referenceService.isUpdated = true;
-                            /* if(this.isVendorOrMasterLandingPage){
+                            if(this.isVendorOrMasterLandingPage){
                                 this.goBack.emit()
                                 this.ngxloading = false;
                                 return;
-                            } */
+                            }
                             this.navigateToManageSection();
                         }
                     } else {
@@ -1323,10 +1323,10 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
 
     navigateBack() {
-        /* if(this.isVendorOrMasterLandingPage){
+        if(this.isVendorOrMasterLandingPage){
             this.goBack.emit();
-        } 
-        else*/ if (this.isMdfForm) {
+        }
+        else if (this.isMdfForm) {
             this.referenceService.goToRouter("/home/mdf/details");
         } else {
             if (this.isAdd && !this.isCopyForm) {

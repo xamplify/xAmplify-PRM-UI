@@ -144,6 +144,7 @@ export class AddDealComponent implements OnInit {
   opportunityTypeIdError: boolean = true;
   isCreatedForStageIdDisable: boolean = false;
   isCampaignTicketTypeSelected: boolean = false;
+  existingHalopsaDealTicketTypeId: any;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -386,6 +387,7 @@ export class AddDealComponent implements OnInit {
             if (self.deal.createdForCompanyId > 0) {
               this.getActiveCRMDetails();
             }
+            self.existingHalopsaDealTicketTypeId = self.deal.haloPSATickettypeId;
           }
         },
         error => {
@@ -894,8 +896,13 @@ export class AddDealComponent implements OnInit {
           if (fieldValue.length > 0 && fieldValue != "0") {
             this.opportunityTypeId = successClass;
             this.opportunityTypeIdError = false;
-            this.createdForPipelineStageIdError = false;
-            this.pipelineStageIdError = false;
+            if (this.actionType == 'add') {
+              this.createdForPipelineStageIdError = false;
+              this.pipelineStageIdError = false;
+            } else {
+              this.createdForPipelineStageIdError = true;
+              this.pipelineStageIdError = true;
+            }
             this.createdForPipelineIdError = false;
           } else {
             this.opportunityTypeId = errorClass;
@@ -1448,7 +1455,8 @@ export class AddDealComponent implements OnInit {
       let createdForPipeline = createdForPipelines[0];
       self.deal.createdForPipelineId = createdForPipeline.id;
       self.pipelineIdError = false;
-      if ("HALOPSA" == this.activeCRMDetails.createdForActiveCRMType && self.actionType == 'add') {
+      if ("HALOPSA" == this.activeCRMDetails.createdForActiveCRMType && (self.actionType == 'add'
+        || self.existingHalopsaDealTicketTypeId != undefined && self.existingHalopsaDealTicketTypeId != self.deal.haloPSATickettypeId)) {
         let createdForPipelineStage = null;
         let stages = createdForPipeline.stages;
         createdForPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
