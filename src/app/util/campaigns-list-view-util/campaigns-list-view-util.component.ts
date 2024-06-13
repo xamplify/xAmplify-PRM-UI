@@ -19,9 +19,9 @@ import { AddMoreReceiversComponent } from 'app/campaigns/add-more-receivers/add-
 import { PublicEventEmailPopupComponent } from 'app/campaigns/public-event-email-popup/public-event-email-popup.component';
 import { UserService } from '../../core/services/user.service';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
-import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { utc } from 'moment';
 import { Properties } from 'app/common/models/properties';
+import { CustomAnimation } from 'app/core/models/custom-animation';
 
 declare var swal, $: any, flatpickr;
 
@@ -29,7 +29,8 @@ declare var swal, $: any, flatpickr;
     selector: 'app-campaigns-list-view-util',
     templateUrl: './campaigns-list-view-util.component.html',
     styleUrls: ['./campaigns-list-view-util.component.css', '../../campaigns/manage-publish/manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties],
+    animations:[CustomAnimation]
 })
 export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
@@ -176,7 +177,8 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
                 data => {
-                    this.isloading = false;
+                    this.isloading = false;                    
+                    this.showAllAnalytics = false;
                     if (data.access) {
                         this.campaigns = data.campaigns;
                         this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
@@ -201,15 +203,18 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     }
 
     setPage(event) {
+        this.showAllAnalytics = false;
         this.pagination.pageIndex = event.page;
         this.listCampaign(this.pagination);
     }
 
     searchCampaigns() {
+        this.showAllAnalytics = false;
         this.getAllFilteredResults(this.pagination);
     }
 
     getSortedResult(text: any) {
+        this.showAllAnalytics = false;
         this.selectedSortedOption = text;
         this.getAllFilteredResults(this.pagination);
     }
