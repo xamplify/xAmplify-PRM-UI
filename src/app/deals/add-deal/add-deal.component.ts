@@ -318,7 +318,7 @@ export class AddDealComponent implements OnInit {
                   if ("HALOPSA" === this.activeCRMDetails.type) {
                     self.deal.haloPSATickettypeId = ticketTypeIdMap.halopsaTicketTypeId;   
                     self.showCustomForm = true;
-                    if (this.actionType == 'add') {
+                    if (this.actionType == 'add' || self.existingHalopsaDealTicketTypeId != undefined && self.existingHalopsaDealTicketTypeId != self.deal.haloPSATickettypeId) {
                       let createdForPipelineStage = null;
                       let stages = self.createdForStages;
                       createdForPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
@@ -896,7 +896,7 @@ export class AddDealComponent implements OnInit {
           if (fieldValue.length > 0 && fieldValue != "0") {
             this.opportunityTypeId = successClass;
             this.opportunityTypeIdError = false;
-            if (this.actionType == 'add') {
+            if (this.actionType == 'add' || this.existingHalopsaDealTicketTypeId == this.deal.haloPSATickettypeId) {
               this.createdForPipelineStageIdError = false;
               this.pipelineStageIdError = false;
             } else {
