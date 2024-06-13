@@ -1031,6 +1031,9 @@ export class ManageDealsComponent implements OnInit {
     this.toDateFilter = ""; 
     this.statusFilter = "";
     this.vendorCompanyIdFilter = "";
+    this.selectedRegisteredByCompanyId = 0;
+    this.vendorCompanyIdFilter = 0;
+    this.selectedRegisteredByUserId = 0;
     if (this.isPartnerVersion && !this.vanityLoginDto.vanityUrlFilter) {
       this.stageNamesForFilterDropDown = "";
     }
