@@ -286,6 +286,7 @@ export class ManageDealsComponent implements OnInit {
   showPartner() {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
+    this.statusSearchableDropDownDto = new SearchableDropdownDto();
     this.showDeals();
     this.getActiveCRMDetails();
     this.findAllRegisteredByUsersForPartnerView();
