@@ -1328,7 +1328,7 @@ export class ManageDealsComponent implements OnInit {
         error => {
           this.referenceService.loading(this.httpRequestLoader, false);
           let integrationType = (this.activeCRMDetails.type).charAt(0)+(this.activeCRMDetails.type).substring(1).toLocaleLowerCase();
-          if(integrationType == 'Salesforce'){
+          if(integrationType == 'Salesforce' || integrationType == 'Halopsa'){
             this.dealsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid credentials ",true);
           } else {
             this.dealsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid API Token",true);
