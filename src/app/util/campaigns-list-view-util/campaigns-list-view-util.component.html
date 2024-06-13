@@ -574,7 +574,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <ng-template *ngIf="!pagination?.pagedItems[i]?.isExpand" [ngTemplateOutlet]="viewMoreOrLessButtonIcon" [ngTemplateOutletContext]="{pagination:pagination, i:i}"></ng-template>
+                                            <ng-template *ngIf="pagination?.pagedItems[i]?.isExpand" [ngTemplateOutlet]="viewMoreOrLessButtonIcon" [ngTemplateOutletContext]="{pagination:pagination, i:i}"></ng-template>
                                         </td>
                                         <td *ngIf="!campaign?.emailNotification && !campaign?.nurtureCampaign">
                                             <div class="alert alert-info center-align">
