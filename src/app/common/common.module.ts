@@ -187,6 +187,7 @@ import { TeamMemberAnalyticsCompanyDetailsComponent } from 'app/util/team-member
 import { PreviewAssetPdfComponent } from './preview-asset-pdf/preview-asset-pdf.component';
 import { FilePreviewComponent } from 'app/util/file-preview/file-preview.component';
 import { DomainWhitelistingComponent } from 'app/util/domain-whitelisting/domain-whitelisting.component';
+import { SamlSsoLoginComponent } from 'app/dashboard/saml-sso-login/saml-sso-login.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -223,7 +224,7 @@ import { DomainWhitelistingComponent } from 'app/util/domain-whitelisting/domain
 		TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
-		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent
+		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent, SamlSsoLoginComponent
 	],
 
 
@@ -259,7 +260,7 @@ import { DomainWhitelistingComponent } from 'app/util/domain-whitelisting/domain
 		InteractedNotInteractedTrackDetailsComponent,TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
-		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent
+		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent, SamlSsoLoginComponent
 	]
 
 

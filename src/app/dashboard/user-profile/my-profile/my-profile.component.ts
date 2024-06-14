@@ -1879,7 +1879,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.integrations;
 		} else if (this.activeTabName == "samlSettings") {
 			this.activeTabHeader = this.properties.samlSettings;
-		} else if (this.activeTabName == "gdpr") {
+		} else if (this.activeTabName == "saml2SSOsettings") {
+			this.activeTabHeader = this.properties.saml2SSOsettings;
+		} 
+		else if (this.activeTabName == "gdpr") {
 			this.activeTabHeader = this.properties.gdprSettings;
 			this.getGdprSettings();
 		} else if (this.activeTabName == "categories") {

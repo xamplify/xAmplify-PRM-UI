@@ -1,0 +1,97 @@
+<div style="display: flex;padding: 1em;">
+
+  <!-- <div class="col-block" [class.col-block-active]="tabName === 'tab1'" id="step2"
+      (click)="tabClicked($event, 0, 'tab1');"
+      style="width:33.33%;border: 1px solid #bfbdbd;background: #fffdfd; border-radius: 3px;">
+      <div class="cenetered-block">
+          <span>
+              <i class="fa fa-envelope-o"></i>
+          </span>
+          <h5 class="hidden-xs">Check Email</h5>
+      </div>
+  </div> -->
+
+  <div class="col-block" [class.col-block-active]="tabName === 'tab2'" (click)="tabClicked($event, 40, 'tab2');"
+      style="width:50%;border: 1px solid #bfbdbd;background: #fffdfd; border-radius: 3px;">
+      <div class="cenetered-block">
+          <span>
+              <i class="fa fa-clipboard"></i>
+          </span>
+          <h5 class="hidden-xs">ACS URL</h5>
+      </div>
+  </div>
+
+  <div id="step3" [class.col-block-active]="tabName === 'tab3'" (click)="tabClicked($event, 40, 'tab3');"
+      style="width:50%;border: 1px solid #bfbdbd;background: #fffdfd; border-radius: 3px;">
+      <div class="cenetered-block">
+          <span>
+              <i class="fa fa-cloud-upload"></i>
+          </span>
+          <h5 class="hidden-xs">Upload Metadata</h5>
+      </div>
+  </div>
+
+</div>
+
+<!-- <div class="portlet-border" *ngIf="tabName == 'tab1'">
+  <div class="portlet box"> -->
+      <!-- <div style="padding:10px">
+          <label class="control-label color-black">{{properties.EMAIL_TEXT1}}</label><br>
+          <label>{{properties.EMAIL_TEXT2}}</label>
+      </div>
+      <div style="padding:10px">
+          <div>
+              <label class="control-label color-black">Email:</label>
+          </div>
+          <label>{{emailId}}</label>
+      </div> -->
+      <!-- 1111111111111111111111 -->
+  <!-- </div> -->
+  <!-- <button class="btn green" style="float: right" (click)="tabClicked($event, 40, 'tab2')">Next</button> -->
+<!-- </div> -->
+
+<div class="portlet-border" *ngIf="tabName == 'tab2'">
+  <div class="portlet box">
+      <div style="padding:10px">
+          <label>{{properties.ACS_URL_TEXT1}}</label><br>
+      </div>
+      <div class="row" style="padding:10px">
+          <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+              <label class="control-label color-black">ACS URL:</label>
+          </div>
+          <div class="col-sm-12 col-xs-12 col-md-5 col-lg-5">
+              <input class="form-control" type="text" value="{{samlSecurityObj?.acsURL}}" #acsURL readonly> <!--value="{{samlSecurityObj.acsURL}}" #acsURL readonly-->
+          </div>
+          <div class="col-sm-12 col-xs-12 col-md-5 col-lg-5">
+              <button class="btn btn-primary" (click)="copyToClipboard(acsURL)">Copy URL</button>
+          </div>
+      </div>
+  </div>
+  <!-- <button class="btn green" style="float: left" (click)="tabClicked($event, 40, 'tab1')">Prev</button> -->
+  <button class="btn green" style="float: right" (click)="tabClicked($event, 40, 'tab3')">Next</button>
+</div>
+
+<div class="portlet-border" *ngIf="tabName == 'tab3'">
+  <div class="portlet box">
+      <div style="padding:10px">
+          <label>{{properties.UPLOAD_METADATA_TEXT1}}</label><br>
+      </div>
+      <div style="padding:10px">
+          <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 0px 0px 10px 0px;">
+              <label class="custom-file-upload btn btn-primary"><input type="file" (change)="onChange($event)"
+                      accept="text/xml" required name="{{samlSecurityObj?.metadataFileName}}" id="attach_file">
+                  Browse Metadata</label>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 0px 0px 10px 0px;">
+              <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+              </app-response-message>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 0px 0px 10px 0px;">
+              <textarea id="metadata" rows="5" placeholder="Metadata" class="form-control"
+                  [(ngModel)]="samlSecurityObj.metadata" name="metadata" readonly></textarea> 
+          </div>
+      </div>
+  </div>
+  <button class="btn green" style="float: left" (click)="tabClicked($event, 40, 'tab2')">Prev</button>
+ 
+</div>

@@ -172,6 +172,7 @@ export class Properties {
 	samlSettings = "Allbound SAML Settings";
 	leadPipelines = "Lead Pipelines";
 	dealPipelines = "Deal Pipelines";
+	saml2SSOsettings = "SAML 2.0 SSO Settings";
 
 	/************XNFR-426**********/
 	leadDealApprove = "Lead Approval/Rejection";
