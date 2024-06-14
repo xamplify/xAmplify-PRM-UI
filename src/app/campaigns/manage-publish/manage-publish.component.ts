@@ -1688,7 +1688,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             (error: any) => {
                 this.logger.errorPage(error);
             });
-            
     } 
 
 }
