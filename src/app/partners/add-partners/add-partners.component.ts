@@ -1150,11 +1150,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		let isZipMatched = headers[18].trim() == "ZIP" || headers[18].trim() == "\"ZIP\"";
 		let isCountryMatched = headers[19].trim() == "COUNTRY" || headers[19].trim() == "\"COUNTRY\"";
 		let isMobileNumberMatched = headers[20].trim() == "MOBILE NUMBER" || headers[20].trim() == "\"MOBILE NUMBER\"";
-		let isAccountSubTypeMatched = headers[4].trim() == "ACCOUNT SUB TYPE" || headers[3].trim() == "\"ACCOUNT SUB TYPE\"";
-		let isAccountOwnerMatched = headers[3].trim() == "ACCOUNT OWNER" || headers[2].trim() == "\"ACCOUNT OWNER\"";
+		let isAccountSubTypeMatched = headers[4].trim() == "ACCOUNT SUB TYPE" || headers[4].trim() == "\"ACCOUNT SUB TYPE\"";
+		let isAccountOwnerMatched = headers[3].trim() == "ACCOUNT OWNER" || headers[3].trim() == "\"ACCOUNT OWNER\"";
 		let isCompanyDomainMatched = headers[6].trim() == "COMPANY DOMAIN" || headers[6].trim() == "\"COMPANY DOMAIN\"";
 		let isTerritoryMatched = headers[12].trim() == "TERRITORY" || headers[12].trim() == "\"TERRITORY\"";
-		let isAccountNameMatched = headers[2].trim() == "ACCOUNT NAME" || headers[11].trim() == "\"ACCOUNT NAME\"";
+		let isAccountNameMatched = headers[2].trim() == "ACCOUNT NAME" || headers[2].trim() == "\"ACCOUNT NAME\"";
 		let isWebsiteMatched = headers[9].trim() == "WEBSITE" || headers[9].trim() == "\"WEBSITE\"";
 		return (isFirstNameMatched && isLastNameMatched && isCompanyMatched && isJobTitleMatched
 			&& isEmailIdMatched && isVerticalMatched && isRegionMatched && isTypeMatched &&
@@ -1234,7 +1234,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					emailError = emailError + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[8] + "\n";
 					isValidData = false;
 				}
-				if (data[8] != undefined) {
+
+				if (data[9] != undefined) {
 					if (!this.validateWebsite(data[9]) && data[9].length > 0) {
 						isWebsiteError = true;
 						websiteError = websiteError + "Website URL is not valid for Row:" + (i + 1) + " -- Entered Website URL : " + data[9] + "\n";
