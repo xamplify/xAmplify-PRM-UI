@@ -1,0 +1,35 @@
+.profile-image-wrapper {
+    display: block;
+    width: 100% !important;
+    height: auto;
+    background: #fff;
+    padding: 1px;
+    margin: 0 auto;
+    border: 2px dotted #0000008f !important;
+    position: relative;
+  }
+  .dotted-image-border {
+    cursor: pointer;
+    text-align: center;
+    color: #fff;
+  }
+  .upload-imgheight {
+    height: 125px;
+  }
+  .profile-image {
+    width: auto;
+    height: 93%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .img-grid {
+    max-width: 218px !important;
+    height: 118px !important;
+  }
+  .icon {
+    font-size: 23px !important;
+    padding-top: 8px !important;
+    position: absolute !important;
+    left: 16px !important;
+    bottom: 45px !important;
+  }

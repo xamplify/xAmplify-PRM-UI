@@ -1042,9 +1042,15 @@ uploadBgImageFile(file: any) {
         .map(this.extractData)
         .catch(this.handleError);
 }
-getDefaultImagePath(parentThemeName:any) {
-    let url = this.authenticationService.REST_URL +"custom/skin/getDefaultImagePath/"+parentThemeName+"?access_token=" + this.authenticationService.access_token;
+getDefaultImagePath(parentThemeName:any,themeId:any) {
+    let url = this.authenticationService.REST_URL +"custom/skin/getDefaultImagePath/"+parentThemeName+"/"+themeId+"?access_token=" + this.authenticationService.access_token;
     return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+saveOrUpdateDefaultImages(themeDto:ThemeDto) {
+    const url = this.authenticationService.REST_URL + 'custom/skin/updateBgImagePath/?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,themeDto)
     .map(this.extractData)
     .catch(this.handleError);
 }

@@ -182,13 +182,7 @@ export class CustomSkinComponent implements OnInit {
     this.activeTabNav(this.activeTabName);
     this.loadNames();
     this.showWithCopy(this.themeId);
-    if((this.themeDTO.parentThemeName == 'GLASSMORPHISMLIGHT' || this.themeDTO.parentThemeName == 'GLASSMORPHISMDARK') && (this.authenticationService.themeBackgroundImagePath.includes("/assets") || this.themeDTO.backgroundImagePath == "" || this.themeDTO.backgroundImagePath == undefined || this.themeDTO.backgroundImagePath == 'null') ) {
-      this.bgImagePath = this.getDefaultImagePath();
-      this.uploadImagePath = "";
-    } else if(this.themeDTO.backgroundImagePath != null || this.themeDTO.backgroundImagePath != "") {
-      this.bgImagePath = this.themeDTO.backgroundImagePath;
-      this.uploadImagePath = this.authenticationService.MEDIA_URL;
-    }
+    this.getDefaultImagePath();
     this.getDefaultSkin(this.themeId);
     try {
       this.ckeConfig = {
@@ -637,7 +631,7 @@ export class CustomSkinComponent implements OnInit {
     this.saveThemeDto.createdBy = this.loggedInUserId;
     this.saveThemeDto.parentId = this.themeId;
     this.saveThemeDto.parentThemeName = this.themeDTO.parentThemeName;
-    //this.saveThemeDto.backgroundImagePath = this.bgImagePath;
+    this.saveThemeDto.backgroundImagePath = this.uploadBgImage;
     console.log(this.saveThemeDto.parentId, "sudha");
     //this.ngxloading = false;
   }
@@ -647,11 +641,6 @@ export class CustomSkinComponent implements OnInit {
   getDefaultSkin(id: number) {
     this.ngxloading = true;
     this.divLoader = true;
-    // if(this.themeDTO.backgroundImagePath.includes('/assets')) {
-    //   this.uploadImagePath = "";
-    // } else {
-    //   this.uploadImagePath = this.authenticationService.MEDIA_URL;
-    // }
     this.dashboardService.getPropertiesById(id)
       .subscribe(
         (data: any) => {
@@ -862,7 +851,7 @@ export class CustomSkinComponent implements OnInit {
     this.updateThemedto.defaultTheme = false;
     this.updateThemedto.createdBy = this.loggedInUserId;
     this.updateThemedto.parentThemeName = this.themeDTO.parentThemeName;
-    //this.updateThemedto.backgroundImagePath = this.bgImagePath;
+    this.updateThemedto.backgroundImagePath = this.uploadBgImage;
 
     if (CKEDITOR != undefined) {
       for (var instanceName in CKEDITOR.instances) {
@@ -977,13 +966,13 @@ export class CustomSkinComponent implements OnInit {
       this.showCropper = false;
     }
   }
-  uploadImagePath: any;
+  uploadImagePath: any = "";
+  uploadBgImage:any = "";
   processBgImageFile(fileObj: File) {
     this.dashboardService.uploadBgImageFile(fileObj).subscribe(result => {
       if (result.statusCode === 200) {
         this.bgImagePath = result.data;
         this.uploadBgImage = result.data;
-
         this.uploadImagePath = this.authenticationService.MEDIA_URL;
         this.logoError = false;
         this.logoErrorMessage = "";
@@ -997,6 +986,7 @@ export class CustomSkinComponent implements OnInit {
     },
       () => {
         this.loadingcrop = false;
+        this.themeDTO.backgroundImagePath = this.bgImagePath;
         $('#cropBgImage').modal('hide');
         this.closeModal();
       });
@@ -1010,20 +1000,24 @@ export class CustomSkinComponent implements OnInit {
   resetPreviewImage() {
     document.body.style.removeProperty('background-image');
   }
-  uploadBgImage:any
-  getDefaultImagePath():string {
+
+  getDefaultImagePath() {
     this.ngxloading = true;
-    this.dashboardService.getDefaultImagePath(this.themeDTO.parentThemeName).subscribe(
+    this.dashboardService.getDefaultImagePath(this.themeDTO.parentThemeName, this.themeDTO.id).subscribe(
       (data: any) => {
         this.ngxloading = false;
         this.bgImagePath = data.data;
-      }, error =>{
+      }, error => {
         this.ngxloading = false;
         this.bgImagePath = "";
       }, () => {
-        //this.bgImagePath = data.data;
+        this.themeDTO.backgroundImagePath = this.bgImagePath;
+        if(this.themeDTO.backgroundImagePath.includes('/assets')) {
+          this.uploadImagePath ="";
+        } else {
+          this.uploadImagePath = this.authenticationService.MEDIA_URL;
+        }
       }
     )
-    return this.bgImagePath;
   }
 }

@@ -87,7 +87,7 @@
 			<label class="control-label">Upload Background Image</label>
 			<div class="profile-image-wrapper dotted-image-border upload-imgheight" (click)="uploadImage()">
 				<span *ngIf="(squareDataForBgImage | json) === '{}'">
-					<img [src]="uploadImagePath + bgImagePath" class="profile-image img-grid" alt=""
+					<img [src]="uploadImagePath + themeDTO?.backgroundImagePath" class="profile-image img-grid" alt=""
 						style="object-fit: cover; width: 100%;">
 				</span>
 				<a class="" (click)="uploadImage()">

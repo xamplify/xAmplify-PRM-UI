@@ -367,7 +367,7 @@ export class HomeComponent implements OnInit {
         this.authenticationService.themeDto = this.activeThemeDto;
         let path = this.activeThemeDto.backgroundImagePath;
         if((this.activeThemeDto.parentThemeName == 'GLASSMORPHISMLIGHT' || this.activeThemeDto.parentThemeName == 'GLASSMORPHISMDARK') && (path && path.includes('/assets') || this.activeThemeDto.backgroundImagePath == undefined || this.activeThemeDto.backgroundImagePath == "" || this.activeThemeDto.backgroundImagePath == null ) ) {
-          this.getDefaultImagePath(this.activeThemeDto.parentThemeName);
+          this.getDefaultImagePath(this.activeThemeDto.parentThemeName,this.activeThemeDto.id);
           this.imageHost = "";
         } else if(this.activeThemeDto.backgroundImagePath != null || this.activeThemeDto.backgroundImagePath != "") {
           this.activeThemeDto.backgroundImagePath= this.activeThemeDto.backgroundImagePath;
@@ -428,12 +428,15 @@ export class HomeComponent implements OnInit {
           else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Glassomorphism Light" && !this.router.url.includes('home/help')) {
             this.authenticationService.isDarkForCharts = false;
+            document.documentElement.style.setProperty('--body-background-image', 'url(' + this.imageHost + activeThemeDto.backgroundImagePath + ')');
             require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-light.css");
           }
           else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Glassomorphism Dark" && !this.router.url.includes('home/help')) {
             this.authenticationService.isDarkForCharts = true;
+            document.documentElement.style.setProperty('--body-background-image', 'url(' + this.imageHost + activeThemeDto.backgroundImagePath + ')');
             require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-dark.css");
+
           } 
           else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && !this.router.url.includes('home/help')) {
             if (activeThemeDto.parentThemeName == 'LIGHT' || activeThemeDto.parentThemeName == 'DARK') {
@@ -510,15 +513,15 @@ export class HomeComponent implements OnInit {
     this.showLeftMenu = this.referenceService.hideLeftSideMenu();
   }
   bgImagePath:any;
-  getDefaultImagePath(name:any) {
-    this.dashBoardService.getDefaultImagePath(name).subscribe(
+  getDefaultImagePath(name:any,themeId:any) {
+    this.dashBoardService.getDefaultImagePath(name,themeId).subscribe(
       (data: any) => {
         this.bgImagePath = data.data;
       }, error =>{
         this.bgImagePath = "";
       }, () => {
         this.activeThemeDto.backgroundImagePath = this.bgImagePath;
-        this.authenticationService.themeBackgroundImagePath =this.bgImagePath;
+        // this.authenticationService.themeBackgroundImagePath =this.bgImagePath;
       }
     )
   }

@@ -9,7 +9,7 @@
   color: white !important;
 }
 body{
-  background-image: url(/assets/images/glassmorphism-images/glassmorphism-dark.jpg);
+  background-image: var(--body-background-image);
   color: white !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
