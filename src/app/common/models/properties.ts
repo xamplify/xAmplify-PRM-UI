@@ -347,7 +347,7 @@ export class Properties {
 	noDataFound = "No Data Found";
 	maximumDashboardBannersLimitReached = "You have reached the limit of displaying up to 5 dashboard banners. You cannot add any more banners.";
 	maximumDashboardBannersLimitMessage = "You can upload maximum 5 dashboard banners"
-	instantNavigation = "Instant Navigation";
+	instantNavigation = "Quick Links";
 	pageNotFound = "Oops, the page you're looking for does not exist.";
 
 	eventCampaignTemplateLocalStorageKey = "eventCampaignTemplatePreviewData";

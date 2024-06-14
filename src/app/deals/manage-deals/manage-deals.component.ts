@@ -286,6 +286,7 @@ export class ManageDealsComponent implements OnInit {
   showPartner() {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
+    this.statusSearchableDropDownDto = new SearchableDropdownDto();
     this.showDeals();
     this.getActiveCRMDetails();
     this.findAllRegisteredByUsersForPartnerView();
@@ -1031,6 +1032,9 @@ export class ManageDealsComponent implements OnInit {
     this.toDateFilter = ""; 
     this.statusFilter = "";
     this.vendorCompanyIdFilter = "";
+    this.selectedRegisteredByCompanyId = 0;
+    this.vendorCompanyIdFilter = 0;
+    this.selectedRegisteredByUserId = 0;
     if (this.isPartnerVersion && !this.vanityLoginDto.vanityUrlFilter) {
       this.stageNamesForFilterDropDown = "";
     }
@@ -1325,7 +1329,7 @@ export class ManageDealsComponent implements OnInit {
         error => {
           this.referenceService.loading(this.httpRequestLoader, false);
           let integrationType = (this.activeCRMDetails.type).charAt(0)+(this.activeCRMDetails.type).substring(1).toLocaleLowerCase();
-          if(integrationType == 'Salesforce'){
+          if(integrationType == 'Salesforce' || integrationType == 'Halopsa'){
             this.dealsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid credentials ",true);
           } else {
             this.dealsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid API Token",true);

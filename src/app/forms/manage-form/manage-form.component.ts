@@ -118,7 +118,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isFolderGridView = false;
             this.listForms(this.pagination);
 
-        }else{}
+        }else{
         if (this.router.url.endsWith('manage/')) {
             this.onlyForms = this.router.url.indexOf('/lf')<0;
             this.setViewType('Folder-Grid');
@@ -171,7 +171,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             }
             
         }
-
+    }
 
 
     }

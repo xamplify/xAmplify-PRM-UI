@@ -27,6 +27,9 @@ import { DealChatPopupComponent } from 'app/deals/deal-chat-popup/deal-chat-popu
 import { EditVideoComponent } from 'app/videos/manage-video/edit-video/edit-video.component';
 import { PlayVideoComponent } from 'app/videos/manage-video/play-video/play-video.component';
 import { LandingPageAnalyticsComponent } from 'app/landing-pages/landing-page-analytics/landing-page-analytics.component';
+import { ManageFormComponent } from 'app/forms/manage-form/manage-form.component';
+import { FormDetailResponseComponent } from 'app/forms/form-detail-response/form-detail-response.component';
+import { FormService } from 'app/forms/services/form.service';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
@@ -35,7 +38,7 @@ import { LandingPageAnalyticsComponent } from 'app/landing-pages/landing-page-an
                   CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule],
 
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
-                LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent],
+                LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent ],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -43,8 +46,8 @@ import { LandingPageAnalyticsComponent } from 'app/landing-pages/landing-page-an
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
-                EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent],
-        providers: [],
+                EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent],
+        providers: [FormService],
 })
 
 export class SharedModule { }
