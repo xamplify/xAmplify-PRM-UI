@@ -160,16 +160,15 @@
                               <app-auto-response-loader *ngIf="teamMembersLoader.isLoading">
                               </app-auto-response-loader>
                               <ng-container *ngIf="!teamMembersLoader.isLoading">
-                                <table class="table tgrid table-condensed table-bordered child-table-xamp"
-                                  aria-describedby="team-members-info"
+                                <table  class="table tgrid table-condensed table-bordered child-table-xamp" aria-describedby="team-members-info"
                                   id="admin-and-team-members-{{partner?.partnershipId}}">
-                                  <thead>
+                                  <thead *ngIf="teamMembersPagination?.totalRecords>0">
                                     <tr>
                                       <th scope="row" class="text-center">
                                         <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked" (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId,partner.partnerCompanyId)">
                                       </th>
                                       <th scope="row">Entity Info</th>
-                                      <th scope="row" *ngIf= "vendorJourney">Status</th>
+                                      <th scope="row" *ngIf="vendorJourney">Status</th>
                                     </tr>
                                   </thead>
                                   <tbody>

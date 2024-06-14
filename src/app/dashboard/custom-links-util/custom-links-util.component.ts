@@ -592,5 +592,8 @@ export class CustomLinksUtilComponent implements OnInit {
     this.selectedButtonIcon = event;
   }
 
+  receivePartnerCompanyAndGroupsEventEmitterData(event:any){
+    
+  }
 
 }

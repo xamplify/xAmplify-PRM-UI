@@ -119,12 +119,20 @@
       </div>
       <!--Description-->
       <div class="form-group col-md-12 col-xs-12">
-      <label>Description</label>
-      <textarea class="form-control" rows="3" placeholder="Description" formControlName="description" style="resize: none;"></textarea>
+        <label>Description</label>
+        <textarea class="form-control" rows="3" placeholder="Description" formControlName="description" style="resize: none;"></textarea>
         <span *ngIf="formErrors.description" class="required">{{ formErrors.description }}</span>
       </div>
+      <!--XNFR-571 Publish To Partner Groups / Partner Companies -->
+      <div class="form-group col-md-12 col-xs-12">
+        <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany"
+         [moduleName]="properties?.dashboardButtons" (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)">
+        </app-partner-company-and-groups>
+      </div>
+      
+      
       <!--Save/Update/Cancel-->
-      <div class="form-row float-right">
+      <div class="form-row">
         <div class="form-group col-xs-12 col-md-12">
           <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
             [disabled]="!customLinkForm.valid || saving || !isDashboardBannerImageUploaded" (click)="saving=true;save();">

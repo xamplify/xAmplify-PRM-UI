@@ -493,8 +493,7 @@
                                                 </td>
                                                 <td class="desc">
                                                    <div class="mDesc overflowtable-control">
-                                                      <app-list-loader
-                                                         *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
+                                                      <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
                                                       <app-partner-company-and-groups
                                                          *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany"
                                                          [moduleName]="'dam'" [inputId]="id"
