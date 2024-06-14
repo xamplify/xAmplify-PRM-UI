@@ -5,13 +5,16 @@ import { ContactService } from 'app/contacts/services/contact.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { HubSpotService } from '../../../core/services/hubspot.service';
+import { SamlSecurityService } from 'app/dashboard/samlsecurity/samlsecurity.service';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 //import { AddContactsComponent } from 'app/contacts/add-contacts/add-contacts.component';
 
 
 @Component({
 	selector: 'app-social-login',
 	templateUrl: './social-login.component.html',
-	styleUrls: ['./social-login.component.css']
+	styleUrls: ['./social-login.component.css'],
+	providers: [SamlSecurityService]
 })
 export class SocialLoginComponent implements OnInit {
 	error: string;
@@ -23,8 +26,9 @@ export class SocialLoginComponent implements OnInit {
 	isLoggedInVanityUrl: any;
 
 	constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService, private hubSpotService: HubSpotService,
-		public contactService: ContactService, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService) {
-		this.isLoggedInVanityUrl = localStorage.getItem('vanityUrlFilter');
+		public contactService: ContactService, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService, 
+		public samlSecurityService: SamlSecurityService, private vanityURLService: VanityURLService) {
+		this.isLoggedInVanityUrl = localStorage.getItem('vanityUrlFilter');		
 	}
 	login(providerName: string) {
 
@@ -111,6 +115,15 @@ export class SocialLoginComponent implements OnInit {
 				this.xtremandLogger.error(error);
 			}, () => this.xtremandLogger.log("Microsoft Configuration Checking done"));
 
+		} else if (providerName == 'samlsso' && this.vanityURLService.isVanityURLEnabled()) {
+			this.samlSecurityService.login(this.authenticationService.companyProfileName).subscribe(data => {
+				let response = data;
+				if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+					window.location.href = "" + response.data.redirectUrl;
+				}				
+			}, (error: any) => {
+				this.xtremandLogger.error(error);
+			}, () => this.xtremandLogger.log("SAML2 SSO Done"));
 		} else {
 			this.socialService.login(providerName)
 				.subscribe(

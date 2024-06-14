@@ -47,6 +47,11 @@ export class SamlSecurityService {
         }
     }
 
+    login(companyProfileName: any) {
+        const url = this.authenticationService.REST_URL+ `/saml/sso/login/${companyProfileName}`;
+        return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
+
     extractData(res: Response) {
         let body = res.json();
         console.log(body);

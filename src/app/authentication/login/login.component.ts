@@ -350,6 +350,11 @@ bgIMage2:any;
             if (result.showMicrosoftSSO) {
               this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });
             }
+
+            if (result.showSAML2SSO) {
+              this.vanitySocialProviders.push({ "name": "SAML SSO", "iconName": "microsoft", "value": "samlsso" });
+            }
+            
           }, error => {
             console.log(error);
           });
@@ -385,10 +390,15 @@ bgIMage2:any;
       }
       let loginUrl = "/" + socialProviderName + "/login";
       if (this.isLoggedInVanityUrl) {
-        let loginUrl = this.authenticationService.APP_URL+"v/"+socialProviderName+"/"+window.location.hostname;
-        let x = screen.width / 2 - 700 / 2;
-        let y = screen.height / 2 - 450 / 2;
-        window.open(loginUrl, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
+        if (socialProvider.value === "samlsso") {
+          loginUrl = "/" + socialProvider.value + "/login";
+          this.router.navigate([loginUrl]);
+        } else {
+          let loginUrl = this.authenticationService.APP_URL+"v/"+socialProviderName+"/"+window.location.hostname;
+          let x = screen.width / 2 - 700 / 2;
+          let y = screen.height / 2 - 450 / 2;
+          window.open(loginUrl, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
+        }        
       } else {
         this.router.navigate([loginUrl]);
       }

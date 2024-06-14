@@ -275,7 +275,7 @@
                                         </li>
                                         <!--Saml Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"
-                                            *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
+                                            >
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}"
                                                 (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'samlSettings'}"></ng-template>

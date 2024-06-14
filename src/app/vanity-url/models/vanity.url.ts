@@ -27,4 +27,7 @@ export class VanityURL{
     /** XBI-2016**/
 
     companyUrl = "";
+
+    /**** XNFR-534 ******/
+    showSAML2SSO:boolean = false;   
 }
