@@ -825,10 +825,10 @@
                                                                                 *ngIf="newContact.city && newContact.state">,&nbsp;</span>{{newContact.state}}
                                                                         </h5>
 
-                                                                        <h5 *ngIf="newContact?.postalCode || newContact?.country"
+                                                                        <h5 *ngIf="newContact?.zipCode || newContact?.country"
                                                                             class='mt0'>
-                                                                            {{newContact.postalCode}}<span
-                                                                                *ngIf="newContact?.postalCode || newContact.country">,&nbsp;</span>{{newContact.country}}
+                                                                            {{newContact.zipCode}}<span
+                                                                                *ngIf="newContact?.zipCode && newContact.country">,&nbsp;</span>{{newContact.country}}
                                                                         </h5>
                                                                     </td>
                                                                 </tr>
