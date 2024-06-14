@@ -1,6 +1,7 @@
 <span [hidden]="authenticationService?.module?.isMarketingCompany">
   <label>Select {{authenticationService?.partnerModule?.customName}} / Group Of
-    {{authenticationService?.partnerModule?.customName}} For Publishing (Optional) </label>
+    {{authenticationService?.partnerModule?.customName}} For Publishing  </label>
+  <!--Success Message-->  
 	<div class="thank-you-pop" *ngIf="sendSuccess">
     <ng-container *ngIf="statusCode==200">
        <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
@@ -10,13 +11,12 @@
        <i class="fa fa-info-circle" id="font-size-info" aria-hidden="true"></i>
        <h4 class="event-info">{{responseMessage}}</h4>
     </ng-container>
- </div>
-  <div class="panel with-nav-tabs panel-default" *ngIf = "(!vendorJourney || (vendorJourney && !sendSuccess))">
+  </div>
+  <div class="panel with-nav-tabs panel-default" *ngIf = "!sendSuccess">
     <div class="panel-heading" id="company-and-group-tabs">
       <ul class="nav nav-tabs">
         <li id="partners-li">
-          <a class="partnersC" title="Click to see {{authenticationService?.partnerModule?.customName}} companies"
-            href="#partners" data-toggle="tab"
+          <a class="partnersC" title="Click to see {{authenticationService?.partnerModule?.customName}} companies" href="#partners" data-toggle="tab"
             (click)="isPartnerCompaniesTabSelected = true;findPartnerCompanies(pagination)">{{authenticationService?.partnerModule?.customName}}
             <i *ngIf="isPartnerCompaniesTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
           </a>
@@ -65,7 +65,7 @@
             </div>
           </div>
           <ng-container>
-            <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
+            <div [@fadeInOut] class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
               <div class="row">
                 <div>
                   <div class="col-xs-12" style="padding-top: 5px;">
@@ -166,25 +166,19 @@
                                   <thead>
                                     <tr>
                                       <th scope="row" class="text-center">
-                                        <input class="pointer checkBox_shadow" type="checkbox"
-                                          [(ngModel)]="isHeaderCheckBoxChecked"
-                                          (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId,partner.partnerCompanyId)">
+                                        <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked" (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId,partner.partnerCompanyId)">
                                       </th>
                                       <th scope="row">Entity Info</th>
-                                      <th scope="row" *ngIf = "vendorJourney">Status</th>
-
+                                      <th scope="row" *ngIf= "vendorJourney">Status</th>
                                     </tr>
                                   </thead>
                                   <tbody>
                                     <tr class="pointer"
-                                      *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;"
-                                      id="publishToPartners-{{adminAndTeamMember.userId}}"
+                                      *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;" id="publishToPartners-{{adminAndTeamMember.userId}}"
                                       [class.row-selected]="selectedTeamMemberIds?.indexOf(adminAndTeamMember.userId)>-1"
                                       (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,partner.partnerCompanyId,$event)">
                                       <td class="text-center">
-                                        <input class="pointer checkBox_shadow" type="checkbox"
-                                          id="{{adminAndTeamMember.userId}}"
-                                          [checked]="selectedTeamMemberIds?.indexOf(adminAndTeamMember.userId)>-1"
+                                        <input class="pointer checkBox_shadow" type="checkbox" id="{{adminAndTeamMember.userId}}" [checked]="selectedTeamMemberIds?.indexOf(adminAndTeamMember.userId)>-1"
                                           name="adminOrTeamMemberCheckBox[]" value="{{adminAndTeamMember.userId}}"
                                           (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,partner.partnerCompanyId,$event)">
                                       </td>
@@ -233,7 +227,6 @@
                     <!--Clear All-->
                     <div class="left-float clear-all-prop">
                       <button class="btn btn-danger" *ngIf="(selectedPartnerGroupIds.length>0)" (click)="clearAll()">Clear All</button>
-                        
                     </div>
                     <div class="btn-group pull-right">
                       <div class="inputs float-right" style="display: inline-flex;">
@@ -259,7 +252,8 @@
             </div>
           </div>
           <br>
-          <div class="alert alert-success" *ngIf="selectedPartnerGroupIds?.length>0">
+                        
+          <div [@fadeInOut] class="alert alert-success" *ngIf="selectedPartnerGroupIds?.length>0">
             <strong>
               Selected Groups : {{selectedPartnerGroupIds?.length}}
             </strong>

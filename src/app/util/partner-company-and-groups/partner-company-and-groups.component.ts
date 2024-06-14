@@ -15,13 +15,15 @@ import { ParterService } from "app/partners/services/parter.service";
 import { UserService } from "app/core/services/user.service";
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
+import { CustomAnimation } from 'app/core/models/custom-animation';
 declare var $: any, swal: any;
 
 @Component({
   selector: 'app-partner-company-and-groups',
   templateUrl: './partner-company-and-groups.component.html',
   styleUrls: ['./partner-company-and-groups.component.css'],
-  providers: [HttpRequestLoader, SortOption, Properties, DamService,CallActionSwitch]
+  providers: [HttpRequestLoader, SortOption, Properties, DamService,CallActionSwitch],
+  animations: [CustomAnimation]
 
 })
 export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
@@ -84,24 +86,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			this.pagination.partnerTeamMemberGroupFilter = true;
 			this.showFilter = true;
 			if(this.inputId!=undefined && this.inputId>0){
-				this.referenceService.startLoader(this.httpRequestLoader);
-				if (this.isPublishedToPartnerGroups) {
-					this.isEdit = this.selectedPartnerGroupIds!=undefined && this.selectedPartnerGroupIds.length>0;
-					$('#partnerGroups-li').addClass('active');
-					$('#partnerGroups').addClass('tab-pane fade in active');
-					this.showFilter = false;
-					this.selectedTab = 2;
-					this.findPartnerGroups(this.partnerGroupsPagination);
-					this.disableOrEnablePartnerCompaniesTab();
-				}else {
-					this.isEdit = this.selectedTeamMemberIds != undefined &&this.selectedTeamMemberIds.length > 0;
-					$('#partners-li').addClass('active');
-					$('#partners').addClass('tab-pane fade in active');
-					this.showFilter = true;
-					this.selectedTab = 1;
-					this.findPartnerCompanies(this.pagination);
-					this.disableOrEnablePartnerListsTab();
-				}
+				this.selectTabsByGroupIdOrCompanyId();
 			}else{
 				$('#partners-li').addClass('active');
 				$('#partners').addClass('tab-pane fade in active');
@@ -111,6 +96,27 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		} else {
 			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
 			this.resetFields();
+		}
+	}
+
+	private selectTabsByGroupIdOrCompanyId() {
+		this.referenceService.startLoader(this.httpRequestLoader);
+		if (this.isPublishedToPartnerGroups) {
+			this.isEdit = this.selectedPartnerGroupIds != undefined && this.selectedPartnerGroupIds.length > 0;
+			$('#partnerGroups-li').addClass('active');
+			$('#partnerGroups').addClass('tab-pane fade in active');
+			this.showFilter = false;
+			this.selectedTab = 2;
+			this.findPartnerGroups(this.partnerGroupsPagination);
+			this.disableOrEnablePartnerCompaniesTab();
+		} else {
+			this.isEdit = this.selectedTeamMemberIds != undefined && this.selectedTeamMemberIds.length > 0;
+			$('#partners-li').addClass('active');
+			$('#partners').addClass('tab-pane fade in active');
+			this.showFilter = true;
+			this.selectedTab = 1;
+			this.findPartnerCompanies(this.pagination);
+			this.disableOrEnablePartnerListsTab();
 		}
 	}
 
@@ -341,15 +347,19 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	}
 
 	disableOrEnablePartnerListsTab() {
-		if (this.selectedTeamMemberIds.length > 0) {
-			$('#partnerGroups-li').css({ 'cursor': 'not-allowed' });
-			$('.partnerGroupsC').css({ 'pointer-events': 'none' });
-			let tooltipMessage = "You can choose either company / list";
-			$('#partnerGroups-li').attr('title', tooltipMessage);
-		} else {
-			$('#partnerGroups-li').css({ 'cursor': 'auto' });
-			$('.partnerGroupsC').css({ 'pointer-events': 'auto' });
-			$('#partnerGroups-li').attr('title', 'Click to see lists');
+		if(this.properties.dashboardButtons==this.moduleName){
+
+		}else{
+			if (this.selectedTeamMemberIds.length > 0) {
+				$('#partnerGroups-li').css({ 'cursor': 'not-allowed' });
+				$('.partnerGroupsC').css({ 'pointer-events': 'none' });
+				let tooltipMessage = "You can choose either company / list";
+				$('#partnerGroups-li').attr('title', tooltipMessage);
+			} else {
+				$('#partnerGroups-li').css({ 'cursor': 'auto' });
+				$('.partnerGroupsC').css({ 'pointer-events': 'auto' });
+				$('#partnerGroups-li').attr('title', 'Click to see lists');
+			}
 		}
 		this.sendEmitterValues();
 

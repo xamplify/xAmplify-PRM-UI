@@ -15,7 +15,6 @@ import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CustomLinkType } from '../models/custom-link-type.enum';
 import { ErrorResponse } from 'app/util/models/error-response';
 import { UtilService } from 'app/core/services/util.service';
-import { ThrowStmt } from '@angular/compiler';
 declare var swal: any, $:any;
 @Component({
   selector: 'app-custom-links-util',

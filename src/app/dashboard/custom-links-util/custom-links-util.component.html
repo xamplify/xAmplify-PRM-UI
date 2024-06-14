@@ -124,7 +124,7 @@
         <span *ngIf="formErrors.description" class="required">{{ formErrors.description }}</span>
       </div>
       <!--Save/Update/Cancel-->
-      <div class="form-row">
+      <div class="form-row float-right">
         <div class="form-group col-xs-12 col-md-12">
           <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
             [disabled]="!customLinkForm.valid || saving || !isDashboardBannerImageUploaded" (click)="saving=true;save();">
