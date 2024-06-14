@@ -1677,8 +1677,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                    campaign.parentCampaignLaunchedByVendorTierCompany = data.data.parentCampaignLaunchedByVendorTierCompany;
                    campaign.isEventStarted = data.data.isEventStarted;
                     if(campaign.hasAccess){
-                       this.checkLastElement(index);
                        campaign.showGearIconOptions = data.data.showGearIconOptions ;
+                       campaign.showCancelButton = data.data.showCancelButton;
+                       this.checkLastElement(index);
                     }else{
                     this.customResponse = new CustomResponse('ERROR',"You don't have access for this campaign",true);
                     }
@@ -1687,7 +1688,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             (error: any) => {
                 this.logger.errorPage(error);
             });
-            
     } 
 
 }
