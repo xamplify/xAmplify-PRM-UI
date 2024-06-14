@@ -1412,8 +1412,7 @@ validateCopyCampaignName(){
         }
     }
     
-   showGearIconOptions(campaign: any, index : number) {
-
+  showGearIconOptions(campaign: any, index : number) {
         this.campaignService.getGearIconOptions(campaign, this.loggedInUserId)
         .subscribe(
             data => {
@@ -1424,8 +1423,9 @@ validateCopyCampaignName(){
                    campaign.parentCampaignLaunchedByVendorTierCompany = data.data.parentCampaignLaunchedByVendorTierCompany;
                    campaign.isEventStarted = data.data.isEventStarted;
                     if(campaign.hasAccess){
-                       this.checkLastElement(index);
                        campaign.showGearIconOptions = data.data.showGearIconOptions ;
+                       campaign.showCancelButton = data.data.showCancelButton;
+                       this.checkLastElement(index);
                     }else{
                     this.customResponse = new CustomResponse('ERROR',"You don't have access for this campaign",true);
                     }
@@ -1434,9 +1434,7 @@ validateCopyCampaignName(){
             (error: any) => {
                 this.logger.errorPage(error);
             });
-            
-    } 
-
+    }  
     
     navigateToManageSection(viewType:string){
         if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){

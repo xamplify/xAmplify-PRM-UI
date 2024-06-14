@@ -114,7 +114,7 @@ export class Campaign {
     
     hasAccess : boolean;
     showGearIconOptions : boolean;
-    
+    showCancelButton : boolean = false;
 
     leadTicketTypeId: number = 0;
     dealTicketTypeId: number = 0;

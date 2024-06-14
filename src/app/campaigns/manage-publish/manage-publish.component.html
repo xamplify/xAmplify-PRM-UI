@@ -1460,7 +1460,7 @@
                                              </a>
                                           </span>
                                           <span [class.disablednew]="!campaign.hasAccess"
-                                             *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
+                                             *ngIf="campaign.launched && campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
                                              <a class="Iconhover custom-grid-icon"
                                                 *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier"
                                                 data-toggle="tooltip" data-placement="top" title="Cancel Event"
