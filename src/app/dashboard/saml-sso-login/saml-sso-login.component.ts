@@ -17,7 +17,7 @@ export class SamlSsoLoginComponent implements OnInit {
   tabName: string;
   samlSecurityObj: SamlSecurity;
   customResponse: CustomResponse = new CustomResponse();
-
+  loggedInUserId: any;
 
   constructor(private authenticationService: AuthenticationService, private samlSecurityService: SamlSecurityService, 
    public properties: Properties) { }
@@ -25,9 +25,10 @@ export class SamlSsoLoginComponent implements OnInit {
   ngOnInit() {
     this.tabName = "tab2";
     this.emailId = this.authenticationService.user.emailId;
+    this.loggedInUserId = this.authenticationService.getUserId();
     this.samlSecurityService.getSamlDetailsByUserName(this.emailId).subscribe(result => {
       this.samlSecurityObj = result;
-      this. goToTabOne();
+      this. saveSaml2Security();
     });
    
 
@@ -36,18 +37,19 @@ export class SamlSsoLoginComponent implements OnInit {
   tabClicked(event: any, percent: number, selectedTab: string) {
     this.tabName = selectedTab;
     if (this.tabName === "tab2") {
-      this. goToTabOne();
+      this. saveSaml2Security();
     } 
   }
 
-  goToTabOne(){
+  saveSaml2Security(){
     let self = this;
     if (self.samlSecurityObj.id === undefined || self.samlSecurityObj.id === null) {
       let samlObj = {
         emailId: self.emailId,
-        companyId: self.authenticationService.user.campaignAccessDto.companyId
+        companyId: self.authenticationService.user.campaignAccessDto.companyId,
+        createdByUserId: self.loggedInUserId
       }
-      self.samlSecurityService.saveSamlSecurity(samlObj).subscribe(response => {
+      self.samlSecurityService.saveSaml2Security(samlObj).subscribe(response => {
         self.samlSecurityObj = response;
       });
     } else if ((self.samlSecurityObj.id) && (self.samlSecurityObj.acsURL === undefined || self.samlSecurityObj.acsURL === null)) {
@@ -57,7 +59,7 @@ export class SamlSsoLoginComponent implements OnInit {
 
 
   onChange(event: any) {
-    this.samlSecurityService.uploadMetadataFile(event, this.samlSecurityObj.id).subscribe(response => {
+    this.samlSecurityService.uploadSaml2MetadataFile(event, this.samlSecurityObj.id, this.loggedInUserId).subscribe(response => {
       this.samlSecurityObj = response;
       this.customResponse = new CustomResponse('SUCCESS', this.properties.UPLOAD_METADATA_TEXT2, true);
     }, error => {
