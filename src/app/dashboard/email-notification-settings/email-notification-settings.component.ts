@@ -98,7 +98,7 @@ export class EmailNotificationSettingsComponent implements OnInit {
 
   /****XNFR-571****/
   private setDashboardButtonsNotificationText() {
-    let headerText = this.properties.dashboardButtons;
+    let headerText = this.properties.dashboardButton;
     let text2Suffix = "dashboard buttons";
     let text3Suffix = "a dashboard button";
     this.dashboardButtonsPublishedTextDto.headerText = this.getHeaderText(headerText);
