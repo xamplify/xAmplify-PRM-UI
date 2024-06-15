@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { DamService } from 'app/dam/services/dam.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -349,18 +349,20 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	}
 
 	disableOrEnablePartnerListsTab() {
-		if (this.selectedTeamMemberIds.length > 0) {
-			$('#partnerGroups-li').css({ 'cursor': 'not-allowed' });
-			$('.partnerGroupsC').css({ 'pointer-events': 'none' });
-			let tooltipMessage = "You can choose either company / list";
-			$('#partnerGroups-li').attr('title', tooltipMessage);
-		} else {
-			$('#partnerGroups-li').css({ 'cursor': 'auto' });
-			$('.partnerGroupsC').css({ 'pointer-events': 'auto' });
-			$('#partnerGroups-li').attr('title', 'Click to see lists');
+		let isEnableBothTabs = this.moduleName!=this.properties.dashboardButtons;
+		if(isEnableBothTabs){
+			if (this.selectedTeamMemberIds.length > 0) {
+				$('#partnerGroups-li').css({ 'cursor': 'not-allowed' });
+				$('.partnerGroupsC').css({ 'pointer-events': 'none' });
+				let tooltipMessage = "You can choose either company / list";
+				$('#partnerGroups-li').attr('title', tooltipMessage);
+			} else {
+				$('#partnerGroups-li').css({ 'cursor': 'auto' });
+				$('.partnerGroupsC').css({ 'pointer-events': 'auto' });
+				$('#partnerGroups-li').attr('title', 'Click to see lists');
+			}
 		}
 		this.sendEmitterValues();
-
 	}
 
 	selectAllTeamMembersOfTheCurrentPage(ev: any, partnershipId: number, companyId:number) {
@@ -450,32 +452,30 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	/******************Partner Group related code starts here*********************/
 	findPartnerGroups(pagination: Pagination) {
 		this.selectedTab = 2
-		if (this.selectedTeamMemberIds.length == 0) {
-			this.customResponse = new CustomResponse();
-			this.referenceService.startLoader(this.httpRequestLoader);
-			pagination.campaignId = this.inputId;
-			pagination.userId = this.loggedInUserId;
-			this.partnerService.findPartnerGroups(pagination).subscribe((result: any) => {
-				let data = result.data;
-				pagination.totalRecords = data.totalRecords;
-				this.partnerGroupsSortOption.totalRecords = data.totalRecords;
-				$.each(data.list, function (_index: number, list: any) {
-					list.displayTime = new Date(list.createdTimeInString);
-				});
-				pagination = this.pagerService.getPagedItems(pagination, data.list);
-				/*******Header checkbox will be chcked when navigating through page numbers*****/
-				let partnerGroupIds = pagination.pagedItems.map(function (a) { return a.id; });
-				let items = $.grep(this.selectedPartnerGroupIds, function (element: any) {
-					return $.inArray(element, partnerGroupIds) !== -1;
-				});
-				this.isParnterGroupHeaderCheckBoxChecked = (items.length == partnerGroupIds.length && partnerGroupIds.length > 0);
-				this.referenceService.stopLoader(this.httpRequestLoader);
-			}, _error => {
-				this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-			}, () => {
-
+		this.customResponse = new CustomResponse();
+		this.referenceService.startLoader(this.httpRequestLoader);
+		pagination.campaignId = this.inputId;
+		pagination.userId = this.loggedInUserId;
+		this.partnerService.findPartnerGroups(pagination).subscribe((result: any) => {
+			let data = result.data;
+			pagination.totalRecords = data.totalRecords;
+			this.partnerGroupsSortOption.totalRecords = data.totalRecords;
+			$.each(data.list, function (_index: number, list: any) {
+				list.displayTime = new Date(list.createdTimeInString);
 			});
-		}
+			pagination = this.pagerService.getPagedItems(pagination, data.list);
+			/*******Header checkbox will be chcked when navigating through page numbers*****/
+			let partnerGroupIds = pagination.pagedItems.map(function (a) { return a.id; });
+			let items = $.grep(this.selectedPartnerGroupIds, function (element: any) {
+				return $.inArray(element, partnerGroupIds) !== -1;
+			});
+			this.isParnterGroupHeaderCheckBoxChecked = (items.length == partnerGroupIds.length && partnerGroupIds.length > 0);
+			this.referenceService.stopLoader(this.httpRequestLoader);
+		}, _error => {
+			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+		}, () => {
+
+		});
 	}
 
 	partnerGroupsSearchOnKeyEvent(keyCode: any) { if (keyCode === 13) { this.searchPartnerGroups(); } }
@@ -505,15 +505,18 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	}
 
 	disableOrEnablePartnerCompaniesTab() {
-		if (this.selectedPartnerGroupIds.length > 0) {
-			$('#partner-companies-li').css({ 'cursor': 'not-allowed' });
-			$('.partnerCompaniesC').css({ 'pointer-events': 'none' });
-			let tooltipMessage = "You can choose either company / list";
-			$('#partner-companies-li').attr('title', tooltipMessage);
-		} else {
-			$('#partner-companies-li').css({ 'cursor': 'auto' });
-			$('.partnerCompaniesC').css({ 'pointer-events': 'auto' });
-			$('#partner-companies-li').attr('title', 'Click to see companies');
+		let isEnableBothTabs = this.moduleName!=this.properties.dashboardButtons;
+		if(isEnableBothTabs){
+			if (this.selectedPartnerGroupIds.length > 0) {
+				$('#partner-companies-li').css({ 'cursor': 'not-allowed' });
+				$('.partnerCompaniesC').css({ 'pointer-events': 'none' });
+				let tooltipMessage = "You can choose either company / list";
+				$('#partner-companies-li').attr('title', tooltipMessage);
+			} else {
+				$('#partner-companies-li').css({ 'cursor': 'auto' });
+				$('.partnerCompaniesC').css({ 'pointer-events': 'auto' });
+				$('#partner-companies-li').attr('title', 'Click to see companies');
+			}
 		}
 		this.sendEmitterValues();
 	}

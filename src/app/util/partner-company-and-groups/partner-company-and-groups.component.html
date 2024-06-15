@@ -1,6 +1,6 @@
 <span [hidden]="authenticationService?.module?.isMarketingCompany">
   <label>Select {{authenticationService?.partnerModule?.customName}} / Group Of
-    {{authenticationService?.partnerModule?.customName}} For Publishing  </label>
+    {{authenticationService?.partnerModule?.customName}} For Publishing </label>
   <!--Success Message-->  
 	<div class="thank-you-pop" *ngIf="sendSuccess">
     <ng-container *ngIf="statusCode==200">
@@ -79,7 +79,7 @@
   </div>
   <br>
   <!--Banner Message-->
-  <div [@fadeInOut] class="alert alert-success" *ngIf="selectedPartnershipIds?.length>0">
+  <div  class="alert alert-success" *ngIf="selectedPartnershipIds?.length>0">
     <strong>
       Selected Companies : {{selectedPartnershipIds?.length}}
     </strong>
@@ -233,7 +233,7 @@
           <div class="page-toolbar">
             <!--Clear All-->
             <div class="left-float clear-all-prop">
-              <button class="btn btn-danger" *ngIf="(selectedPartnerGroupIds.length>0)" (click)="clearAll()">Clear All</button>
+              <button class="btn btn-danger" *ngIf="selectedPartnerGroupIds.length>0" (click)="clearAll()">Clear All</button>
             </div>
             <div class="btn-group pull-right">
               <div class="inputs float-right" style="display: inline-flex;">
@@ -243,8 +243,7 @@
                       [(ngModel)]="partnerGroupsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
                       placeholder="Search..." (keypress)="partnerGroupsSearchOnKeyEvent($event.keyCode)"
                       autocomplete="off">
-                    <button class="glyphicon glyphicon-remove search-box-item-clear"
-                      *ngIf="partnerGroupsSortOption.searchKey"
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="partnerGroupsSortOption.searchKey"
                       (click)="partnerGroupsSortOption.searchKey='';searchPartnerGroups();"></button>
                     <button type="submit" class="search-box-item-click" (click)="searchPartnerGroups()">
                       <i class="fa fa-search" aria-hidden="true"></i>
@@ -259,7 +258,7 @@
     </div>
   </div>
   <br>
-  <div [@fadeInOut] class="alert alert-success" *ngIf="selectedPartnerGroupIds?.length>0">
+  <div  class="alert alert-success" *ngIf="selectedPartnerGroupIds?.length>0">
     <strong>
       Selected Groups : {{selectedPartnerGroupIds?.length}}
     </strong>
@@ -344,15 +343,12 @@
       <strong>No Data Found.</strong>
     </div>
   </ng-container>
-  <div *ngIf="partnerGroupsPagination.pagedItems.length !== 0" class="pg8"
-    [hidden]="httpRequestLoader.isLoading">
+  <div *ngIf="partnerGroupsPagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
     <app-pagination [pagination]="partnerGroupsPagination" (notifyParent)="navigatePartnerGroups($event)"
       (notifyParentDropDown)="findPartnerGroups($event)">
     </app-pagination>
   </div>
-
 </ng-template>
-
 
 
 <ng-container *ngIf="showUsersPreview">
