@@ -356,7 +356,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			$('#partnerGroups-li').attr('title', tooltipMessage);
 		} else {
 			$('#partnerGroups-li').css({ 'cursor': 'auto' });
-			$('.partnerGroupsC').css({ 'pointer-events': 'none' });
+			$('.partnerGroupsC').css({ 'pointer-events': 'auto' });
 			$('#partnerGroups-li').attr('title', 'Click to see lists');
 		}
 		this.sendEmitterValues();
@@ -416,7 +416,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	}
 
 	clearTabs(){
-		let selectedTabName = this.vendorJourney? (this.selectedTab == 1? "partners": "partnerGroups"): this.selectedTabName();
+		let selectedTabName = this.selectedTabName();
 		if ("partners" == selectedTabName) {
 			this.selectedTeamMemberIds = [];
 			this.selectedPartnershipIds = [];
@@ -434,7 +434,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 
 	/************Partner Company Checkbox related code ends here****************/
 	selectedTabName() {
-		return $('.tab-pane.active').attr("id");
+		return this.selectedTab == 1? "partners": "partnerGroups";
 	}
 
 	startLoaders() {
