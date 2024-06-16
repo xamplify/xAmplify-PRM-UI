@@ -34,6 +34,7 @@ import { Properties } from 'app/common/models/properties';
 
 @Injectable()
 export class AuthenticationService {
+  
 
 
   access_token: string;
@@ -1365,6 +1366,18 @@ getRoleByUserId() {
 }
 /*** XNFR-512 ****/
 
+/****XNFR-571****/
+findDashboardButtonPublishEmailNotificationOption() {
+  let companyProfileName = this.getSubDomain();
+  let url = this.REST_URL + "admin/dashboardButtonPublishedEmailNotification/";
+  if (companyProfileName != "") {
+    url += "companyProfileName/" + companyProfileName;
+  } else {
+    url += "loggedInUserId/" + this.getUserId();
+  }
+  let apiUrl = url + "?access_token=" + this.access_token;
+  return this.callGetMethod(apiUrl);
+}
 
 
 }

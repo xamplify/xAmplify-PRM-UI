@@ -124,9 +124,11 @@
         <span *ngIf="formErrors.description" class="required">{{ formErrors.description }}</span>
       </div>
       <!--XNFR-571 Publish To Partner Groups / Partner Companies -->
-      <div class="form-group col-md-12 col-xs-12">
-        <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany"
-         [moduleName]="properties?.dashboardButtons" (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)">
+      <div class="form-group col-md-12 col-xs-12" *ngIf="isDashboardButtonsModule">
+        <app-partner-company-and-groups *ngIf="!emailNotificationSettingsLoader && !this.authenticationService.module.isMarketingCompany"
+         [moduleName]="properties?.dashboardButtons"
+         [isDashboardButtonPublishedEmailNotification]="isDashboardButtonPublishedEmailNotification"
+          (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)">
         </app-partner-company-and-groups>
       </div>
       

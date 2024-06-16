@@ -87,6 +87,15 @@ export class CustomLinksUtilComponent implements OnInit {
     }
       
   };
+
+  /***XNFR-571****/
+  emailNotificationSettingsLoader = true;
+  isDashboardButtonPublishedEmailNotification = false;
+  isDashboardBannerPublishedEmailNotification = false;
+  isNewsAndAnnouncementsPublishedEmailNotification = false;
+  isDashboardButtonsModule = false;
+  isDashboardBannersModule = false;
+  isNewsAndAnnouncementsModule = false;
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
@@ -102,6 +111,7 @@ export class CustomLinksUtilComponent implements OnInit {
     let announcements = {'id':CustomLinkType[CustomLinkType.ANNOUNCEMENTS],'value':"Announcements"};
     this.customLinkTypes.push(news);
     this.customLinkTypes.push(announcements);
+    this.isDashboardButtonsModule = this.moduleType==this.properties.dashboardButtons;
   }
   
   private setDefaultValuesForForm() {
@@ -182,8 +192,24 @@ export class CustomLinksUtilComponent implements OnInit {
     this.initializeVariables();
     setTimeout(() => {
       this.findLinks(this.pagination);
+      /***XNFR-571*****/
+      if(this.isDashboardButtonsModule){
+        this.findDashboardButtonPublishEmailNotificationOption();
+      }
     }, 500);
-    
+  }
+  /****XNFR-571****/
+  findDashboardButtonPublishEmailNotificationOption() {
+    this.emailNotificationSettingsLoader = true;
+    this.authenticationService.findDashboardButtonPublishEmailNotificationOption()
+    .subscribe(
+      response=>{
+          this.isDashboardButtonPublishedEmailNotification = response.data;
+          this.emailNotificationSettingsLoader = false;
+          alert(this.isDashboardButtonPublishedEmailNotification);
+      },error=>{
+          this.emailNotificationSettingsLoader = false;
+      });
   }
 
   private initializeVariables() {
