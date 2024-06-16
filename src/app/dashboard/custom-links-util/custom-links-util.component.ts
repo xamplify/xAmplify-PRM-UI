@@ -15,6 +15,7 @@ import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CustomLinkType } from '../models/custom-link-type.enum';
 import { ErrorResponse } from 'app/util/models/error-response';
 import { UtilService } from 'app/core/services/util.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var swal: any, $:any;
 @Component({
   selector: 'app-custom-links-util',
@@ -23,6 +24,7 @@ declare var swal: any, $:any;
   providers: [Properties, HttpRequestLoader,RegularExpressions]
 })
 export class CustomLinksUtilComponent implements OnInit {
+  readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
   @Input() moduleType:string="";
   customResponse: CustomResponse = new CustomResponse();
   customLinkDto: CustomLinkDto = new CustomLinkDto();
