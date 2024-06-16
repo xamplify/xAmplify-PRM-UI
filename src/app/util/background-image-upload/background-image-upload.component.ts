@@ -36,12 +36,19 @@ export class BackgroundImageUploadComponent implements OnInit {
   constructor(public utilService: UtilService, public properties: Properties, private dashboardService: DashboardService, public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
+    let themeType:any;
+    // if(this.type == 'GLASSMORPHISMLIGHT') {
+    //   themeType = 'GLASSMORPHISMLIGHT';
+    // } else {
+    //   themeType = 'GLASSMORPHISMDARK';
+    // }
+    this.getDefaultImagePath(this.type)
   }
   uploadImage(type: any) {
     this.isShowUploadScreenForLight = false;
     this.isShowUploadScreenForDark = false;
     this.cropRounded = false;
-    if (type == 'LIGHT') {
+    if (type == 'GLASSMORPHISMLIGHT') {
       this.isShowUploadScreenForLight = true;
     } else {
       this.isShowUploadScreenForDark = true;
@@ -98,7 +105,7 @@ export class BackgroundImageUploadComponent implements OnInit {
   }
 
   updateImage(type: any) {
-    if (type == 'LIGHT') {
+    if (type == 'GLASSMORPHISMLIGHT') {
       this.themeDto.parentThemeName = 'GLASSMORPHISMLIGHT';
       this.themeDto.backgroundImagePath = this.bgImagePathForLight;
     } else {
@@ -114,6 +121,28 @@ export class BackgroundImageUploadComponent implements OnInit {
         this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true)
       }, () => {
       });
+  }
+
+  getDefaultImagePath(type:any) {
+    this.dashboardService.getDefaultImagePath(type,0).subscribe(
+      response => {
+        if(response.statusCode == 200) {
+          let imageHost:any;
+          if(response.data.includes('/assets')) {
+            imageHost = "";
+          } else {
+            imageHost = this.authenticationService.MEDIA_URL;
+          }
+         if(type === 'GLASSMORPHISMLIGHT') {
+          this.uploadLightImagePath = imageHost + response.data;
+         } else {
+          this.uploadDarkImagePath = imageHost + response.data;
+         }
+        }
+      }, error => {
+
+      }
+    )
   }
 
 }

@@ -1,7 +1,7 @@
 <div class="col-sm-6 col-xs-12">
 	<div class="portlet light">
 		<div class="portlet-title">
-			<div class="caption">UPLOAD GLASSMORPHISM {{type}}</div>
+			<div class="caption">UPLOAD {{type}}</div>
 		</div>
 
 		<div class="portlet-body clearfix">
@@ -12,9 +12,9 @@
 					<label class="control-label">Upload Background Image</label>
 					<div class="profile-image-wrapper dotted-image-border upload-imgheight" (click)="uploadImage(type)">
 						<span>
-							<img *ngIf="type === 'LIGHT'" [src]="uploadLightImagePath" class="profile-image img-grid"
+							<img *ngIf="type === 'GLASSMORPHISMLIGHT'" [src]="uploadLightImagePath" class="profile-image img-grid"
 								alt="" style="object-fit: cover; width: 100%;">
-							<img *ngIf="type === 'DARK'" [src]="uploadDarkImagePath" class="profile-image img-grid"
+							<img *ngIf="type === 'GLASSMORPHISMDARK'" [src]="uploadDarkImagePath" class="profile-image img-grid"
 								alt="" style="object-fit: cover; width: 100%;">
 						</span>
 						<a class="" (click)="uploadImage(type)">

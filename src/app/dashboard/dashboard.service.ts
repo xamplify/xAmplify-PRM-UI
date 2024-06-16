@@ -1031,7 +1031,7 @@ getDefaultThemes(){
     .map(this.extractData)
     .catch(this.handleError);
 }
-
+/**** XNFR-554 ****/
 uploadBgImageFile(file: any) {
     let formData: FormData = new FormData();
     formData.append('bgImageFile', file, file.name);
@@ -1054,6 +1054,7 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
     .map(this.extractData)
     .catch(this.handleError);
 }
+/*** XNFR-554 ****/
 /*************XNFR-238****************/
     getVendors(pagination: Pagination) {
          /****XNFR-252*****/
