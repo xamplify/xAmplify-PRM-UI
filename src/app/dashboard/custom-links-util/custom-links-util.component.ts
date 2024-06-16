@@ -411,35 +411,40 @@ export class CustomLinksUtilComponent implements OnInit {
     if(this.moduleType==this.properties.dashboardButtons){
       const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
       this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
+      console.log(this.customLinkDto);
       this.selectedButtonIcon = this.customLinkDto.buttonIcon;
       this.buildCustomLinkForm();
       this.stopDropDownLoader(); 
     }else{
-      this.ngxLoading = true;
-      this.vanityURLService.getCustomLinkDetailsById(id).subscribe(
-        response=>{
-            this.customLinkDto = response.data;
-            this.customLinkDto.buttonTitle = this.customLinkDto.title;
-            this.customLinkDto.buttonIcon = this.customLinkDto.icon;
-            this.customLinkDto.buttonLink = this.customLinkDto.link;
-            this.customLinkDto.buttonDescription = this.customLinkDto.description;
-            this.customLinkDto.openInNewTab = this.customLinkDto.openLinkInNewTab;
-            this.buildCustomLinkForm();
-            this.previouslySelectedImagePath = this.customLinkDto.bannerImagePath;
-            this.ngxLoading = false;
-            this.isDropDownLoading = false;
-        },error=>{
-          this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-          this.buttonActionType = true;
-          this.customLinkDto = new CustomLinkDto();
-          this.setDefaultValuesForForm();
-          this.buildCustomLinkForm();
-          this.customLinkForm.get('customLinkType').setValue(this.defaultType);
-          this.ngxLoading = false;
-          this.isDropDownLoading = false;
-        });
+      this.getCustomLinksById(id);
     }
     
+  }
+
+  private getCustomLinksById(id: number) {
+    this.ngxLoading = true;
+    this.vanityURLService.getCustomLinkDetailsById(id).subscribe(
+      response => {
+        this.customLinkDto = response.data;
+        this.customLinkDto.buttonTitle = this.customLinkDto.title;
+        this.customLinkDto.buttonIcon = this.customLinkDto.icon;
+        this.customLinkDto.buttonLink = this.customLinkDto.link;
+        this.customLinkDto.buttonDescription = this.customLinkDto.description;
+        this.customLinkDto.openInNewTab = this.customLinkDto.openLinkInNewTab;
+        this.buildCustomLinkForm();
+        this.previouslySelectedImagePath = this.customLinkDto.bannerImagePath;
+        this.ngxLoading = false;
+        this.isDropDownLoading = false;
+      }, error => {
+        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        this.buttonActionType = true;
+        this.customLinkDto = new CustomLinkDto();
+        this.setDefaultValuesForForm();
+        this.buildCustomLinkForm();
+        this.customLinkForm.get('customLinkType').setValue(this.defaultType);
+        this.ngxLoading = false;
+        this.isDropDownLoading = false;
+      });
   }
 
   update() {
@@ -457,7 +462,6 @@ export class CustomLinksUtilComponent implements OnInit {
           if(statusCode==200){
             this.customResponse = new CustomResponse('SUCCESS',response.message,true);
             this.callInitMethods();
-          
           }else{
             this.removeTitleErrorClass();
             let data = response.data;

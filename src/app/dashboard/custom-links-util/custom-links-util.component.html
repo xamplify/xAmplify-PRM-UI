@@ -127,7 +127,11 @@
       <div class="form-group col-md-12 col-xs-12" *ngIf="isDashboardButtonsModule">
         <app-partner-company-and-groups *ngIf="!emailNotificationSettingsLoader && !this.authenticationService.module.isMarketingCompany"
          [moduleName]="properties?.dashboardButtons"
-         [isDashboardButtonPublishedEmailNotification]="isDashboardButtonPublishedEmailNotification"
+          [inputId]="customLinkDto?.id"
+          [isPublishedToPartnerGroups]="customLinkDto?.partnerGroupSelected"
+          [selectedPartnerGroupIds]="customLinkDto?.partnerGroupIds"
+          [selectedPartnershipIds]="customLinkDto?.partnershipIds"
+          [isDashboardButtonPublishedEmailNotification]="isDashboardButtonPublishedEmailNotification"
           (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)">
         </app-partner-company-and-groups>
       </div>

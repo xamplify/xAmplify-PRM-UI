@@ -115,8 +115,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		}
 	}
 
-	
-
 	private selectTabsByGroupIdOrCompanyId() {
 		this.referenceService.startLoader(this.httpRequestLoader);
 		if (this.isPublishedToPartnerGroups) {
@@ -409,25 +407,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		ev.stopPropagation();
 	}
 	clearAll() {
-	 if(this.isEdit){
-		let self = this;
-		swal({
-			title: 'Are you sure?',
-			text: "Existing data will be deleted",
-			type: 'warning',
-			showCancelButton: true,
-			swalConfirmButtonColor: '#54a7e9',
-			swalCancelButtonColor: '#999',
-			allowOutsideClick: false,
-			confirmButtonText: 'Yes, delete it!'
-		}).then(function () {
-			self.clearTabs();
-		}, function (dismiss: any) {
-		});
-	 }else{
 		this.clearTabs();
-	 }
-		
 	}
 
 	clearTabs(){
@@ -469,6 +449,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		this.referenceService.startLoader(this.httpRequestLoader);
 		pagination.campaignId = this.inputId;
 		pagination.userId = this.loggedInUserId;
+		pagination.type = this.moduleName;
 		this.partnerService.findPartnerGroups(pagination).subscribe((result: any) => {
 			let data = result.data;
 			pagination.totalRecords = data.totalRecords;
