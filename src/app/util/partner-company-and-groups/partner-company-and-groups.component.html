@@ -23,7 +23,7 @@
             <i *ngIf="isPartnerCompaniesTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
           </a>
         </li>
-        <li id="partner-domains-li" [ngClass]="{'active': isPartnerGroupsTabSelected}">
+        <li id="partnerGroups-li" [ngClass]="{'active': isPartnerGroupsTabSelected}">
           <a class="partnerGroupsC" id="width-205px" (click)="!isPartnerGroupsTabSelected && activatePartnerGroupsTab()"
             data-toggle="tab" href="#">Group Of {{authenticationService?.partnerModule?.customName}}
             <i *ngIf="isPartnerGroupsTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
@@ -362,7 +362,7 @@
     class="btn btn-danger btn-xs margin-left-one-per float-right">
     <i class="fa fa-times-circle-o"></i>
   </button>
-  <span *ngIf="!isAssetPublishedEmailNotification" class="required float-right">No emails will be sent.</span>
+  <span *ngIf="isEmailNotSentNotificationDisplayed" class="required float-right">No emails will be sent.</span>
 </ng-template>
 <ng-container *ngIf="vendorJourney">
   <button type="submit" class="button bgcolor-unset" *ngIf = "!sendSuccess" (click)="publish()">

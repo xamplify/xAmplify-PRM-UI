@@ -80,14 +80,24 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 
 	/****XNFR-571****/
 	@Input() isDashboardButtonPublishedEmailNotification =false;
+	isDamModule = false;
+	isDashboardButtonsModule = false;
+	isEmailNotSentNotificationDisplayed = false;
+	/****XNFR-571****/
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public landingPageService: LandingPageService,
 		 public utilService: UtilService, public userService: UserService,public callActionSwitch:CallActionSwitch) {
-		this.loggedInUserId = this.authenticationService.getUserId();
+		 this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
 	ngOnInit() {
-		
+		this.isDamModule = this.moduleName=="dam";
+		this.isDashboardButtonsModule = this.moduleName==this.properties.dashboardButtons;
+		if(this.isDamModule){
+			this.isEmailNotSentNotificationDisplayed = !this.isAssetPublishedEmailNotification;
+		}else if(this.isDashboardButtonsModule){
+			this.isEmailNotSentNotificationDisplayed = !this.isDashboardButtonPublishedEmailNotification;
+		}
 	}
 
 	private initializeTabs() {
