@@ -96,6 +96,10 @@ export class CustomLinksUtilComponent implements OnInit {
   isDashboardButtonsModule = false;
   isDashboardBannersModule = false;
   isNewsAndAnnouncementsModule = false;
+  partnerGroupIds = [];
+  partnerIds = [];
+  partnerGroupSelected = false;
+  /***XNFR-571****/
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
@@ -111,7 +115,7 @@ export class CustomLinksUtilComponent implements OnInit {
     let announcements = {'id':CustomLinkType[CustomLinkType.ANNOUNCEMENTS],'value':"Announcements"};
     this.customLinkTypes.push(news);
     this.customLinkTypes.push(announcements);
-    this.isDashboardButtonsModule = this.moduleType==this.properties.dashboardButtons;
+    
   }
   
   private setDefaultValuesForForm() {
@@ -189,6 +193,7 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   callInitMethods(){
+    this.isDashboardButtonsModule = this.moduleType==this.properties.dashboardButtons;
     this.initializeVariables();
     setTimeout(() => {
       this.findLinks(this.pagination);
@@ -206,7 +211,6 @@ export class CustomLinksUtilComponent implements OnInit {
       response=>{
           this.isDashboardButtonPublishedEmailNotification = response.data;
           this.emailNotificationSettingsLoader = false;
-          alert(this.isDashboardButtonPublishedEmailNotification);
       },error=>{
           this.emailNotificationSettingsLoader = false;
       });
@@ -384,6 +388,10 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customLinkDto.buttonText = customFormDetails.buttonText;
     this.customLinkDto.displayTitle = customFormDetails.displayTitle;
     /****XNFR-532*****/
+    /***XNFR-571***/
+    this.customLinkDto.partnerGroupIds = this.partnerGroupIds;
+    this.customLinkDto.partnerIds = this.partnerIds;
+    this.customLinkDto.partnerGroupSelected = this.partnerGroupSelected;
   }
 
   edit(id: number) {
@@ -618,8 +626,11 @@ export class CustomLinksUtilComponent implements OnInit {
     this.selectedButtonIcon = event;
   }
 
+  /***XNFR-571****/
   receivePartnerCompanyAndGroupsEventEmitterData(event:any){
-    
+    this.partnerGroupIds = event['partnerGroupIds'];
+    this.partnerIds = event['partnerIds'];
+    this.partnerGroupSelected = event['partnerGroupSelected'];
   }
 
 }
