@@ -117,12 +117,13 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 
 	private selectTabsByGroupIdOrCompanyId() {
 		this.referenceService.startLoader(this.httpRequestLoader);
-		if (this.isPublishedToPartnerGroups) {
+		let isPartnerCompaniesSelected = this.selectedTeamMemberIds != undefined && this.selectedTeamMemberIds.length > 0;
+		if (this.isPublishedToPartnerGroups && !isPartnerCompaniesSelected) {
 			this.isEdit = this.selectedPartnerGroupIds != undefined && this.selectedPartnerGroupIds.length > 0;
 			this.activatePartnerGroupsTab();
 			this.disableOrEnablePartnerCompaniesTab();
 		} else {
-			this.isEdit = this.selectedTeamMemberIds != undefined && this.selectedTeamMemberIds.length > 0;
+			this.isEdit = isPartnerCompaniesSelected;
 			this.activatePartnerCompaniesTab();
 			this.disableOrEnablePartnerListsTab();
 		}
@@ -157,6 +158,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		this.referenceService.startLoader(this.httpRequestLoader);
 		pagination.campaignId = this.inputId;//This is asset id
 		pagination.userId = this.loggedInUserId;
+		pagination.type = this.moduleName;
 		this.partnerService.findPartnerCompanies(pagination).subscribe((result: any) => {
 			let data = result.data;
 			pagination.totalRecords = data.totalRecords;

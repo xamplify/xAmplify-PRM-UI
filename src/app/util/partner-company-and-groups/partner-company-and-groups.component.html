@@ -42,7 +42,7 @@
 
 <!--Partner Companies-->
 <ng-template #partnerCompaniesTemplate>
-  <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
+  <div class="portlet-title"  [hidden]="httpRequestLoader.isLoading">
     <div class="row">
       <div>
         <div class="col-xs-12">
@@ -79,7 +79,7 @@
   </div>
   <br>
   <!--Banner Message-->
-  <div  class="alert alert-success" *ngIf="selectedPartnershipIds?.length>0">
+  <div  class="alert alert-success" *ngIf="selectedPartnershipIds?.length>0 && !httpRequestLoader.isLoading">
     <strong>
       Selected Companies : {{selectedPartnershipIds?.length}}
     </strong>
@@ -258,7 +258,7 @@
     </div>
   </div>
   <br>
-  <div  class="alert alert-success" *ngIf="selectedPartnerGroupIds?.length>0">
+  <div  class="alert alert-success" *ngIf="selectedPartnerGroupIds?.length>0 && !httpRequestLoader.isLoading">
     <strong>
       Selected Groups : {{selectedPartnerGroupIds?.length}}
     </strong>

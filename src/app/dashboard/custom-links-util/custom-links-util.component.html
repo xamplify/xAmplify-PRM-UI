@@ -40,9 +40,9 @@
                   alt="No image" (load)="isImageLoading=false" (error)="isImageLoading=false">
                 </ng-container>
               </ng-template>
-              <a class="btn btn-primary1 profile-pic" data-toggle="tooltip" data-placement="bottom"
-                title="Upload 5:1 ratio logo"><i class="fa fa-camera icon" aria-hidden="true"
-                  style="font-size:25px;padding-top:4px;margin-right: -5px;"></i></a>
+              <a class="btn btn-primary1 profile-pic" data-toggle="tooltip" data-placement="bottom" title="Upload 5:1 ratio logo">
+                <i class="fa fa-camera icon camera-icon" aria-hidden="true"></i>
+              </a>
             </div>
           </div>
         </div>
@@ -131,6 +131,7 @@
           [isPublishedToPartnerGroups]="customLinkDto?.partnerGroupSelected"
           [selectedPartnerGroupIds]="customLinkDto?.partnerGroupIds"
           [selectedPartnershipIds]="customLinkDto?.partnershipIds"
+          [selectedTeamMemberIds]="customLinkDto?.partnerIds"
           [isDashboardButtonPublishedEmailNotification]="isDashboardButtonPublishedEmailNotification"
           (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)">
         </app-partner-company-and-groups>

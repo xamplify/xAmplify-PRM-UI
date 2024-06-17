@@ -198,6 +198,7 @@ export class CustomLinksUtilComponent implements OnInit {
     this.isDashboardButtonsModule = this.moduleType==this.properties.dashboardButtons;
     this.initializeVariables();
     setTimeout(() => {
+      this.referenceService.scrollSmoothToTop();
       this.findLinks(this.pagination);
       /***XNFR-571*****/
       if(this.isDashboardButtonsModule){
@@ -250,7 +251,6 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   findLinks(pagination: Pagination) {
-    this.referenceService.scrollSmoothToTop();
     if (this.authenticationService.vanityURLEnabled) {
       this.referenceService.loading(this.httpRequestLoader, true);
       pagination.userId = this.authenticationService.getUserId();
@@ -409,9 +409,9 @@ export class CustomLinksUtilComponent implements OnInit {
     this.saving = false;
     this.referenceService.goToTop();
     if(this.moduleType==this.properties.dashboardButtons){
+      this.headerText = "Edit Button";
       const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
       this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
-      console.log(this.customLinkDto);
       this.selectedButtonIcon = this.customLinkDto.buttonIcon;
       this.buildCustomLinkForm();
       this.stopDropDownLoader(); 
