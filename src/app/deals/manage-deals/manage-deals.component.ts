@@ -1017,6 +1017,9 @@ export class ManageDealsComponent implements OnInit {
       this.dealsPagination.toDateFilterString = "";
       this.dealsPagination.stageFilter = "";
       this.dealsPagination.vendorCompanyId = undefined;
+      this.dealsPagination.vendorCompanyId = 0;
+      this.dealsPagination.registeredByUserId = 0;
+      this.dealsPagination.registeredByCompanyId = 0;
       this.filterResponse.isVisible = false;
       if (this.filterMode) {
         this.dealsPagination.pageIndex = 1;
