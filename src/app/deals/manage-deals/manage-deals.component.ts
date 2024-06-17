@@ -1006,10 +1006,12 @@ export class ManageDealsComponent implements OnInit {
     this.toDateFilter = "";
     this.statusFilter = "";
     this.vendorCompanyIdFilter = "";
+    this.vendorCompanyIdFilter = 0;
+    this.selectedRegisteredByCompanyId = 0;
+    this.selectedRegisteredByUserId = 0;
     if (this.isPartnerVersion && !this.vanityLoginDto.vanityUrlFilter) {
       this.stageNamesForFilterDropDown = "";
     }
-    
     if (!this.showFilterOption) {
       this.dealsPagination.fromDateFilterString = "";
       this.dealsPagination.toDateFilterString = "";
