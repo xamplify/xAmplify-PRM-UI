@@ -157,9 +157,9 @@
 <!--List-->
 <fieldset style="margin: 20px 2px;">
   <legend>{{listHeaderText}}</legend>
-  <app-list-loader *ngIf="isLoadingBanners || isDeleteOptionClicked"></app-list-loader>
+  <app-list-loader *ngIf="isLoadingBanners || isDeleteOptionClicked || httpRequestLoader?.isLoading"></app-list-loader>
   <div class="alert alert-info text-center" *ngIf="pagination.totalRecords==0 && !isLoadingBanners">No Data Found</div>
-  <ng-container *ngIf="pagination?.totalRecords>0 && !isLoadingBanners && !isDeleteOptionClicked">
+  <ng-container *ngIf="pagination?.totalRecords>0 && !isLoadingBanners && !isDeleteOptionClicked && !httpRequestLoader?.isLoading">
     <ng-container *ngIf="moduleType==properties?.dashboardBanners">
       <div class="alert alert-info text-center" *ngIf="!isAddDashboardBannersDivHidden">{{properties?.maximumDashboardBannersLimitMessage}}</div>
        <span><strong>Dashboard banners : <span>{{pagination.totalRecords}}</span> / 5</strong></span>
