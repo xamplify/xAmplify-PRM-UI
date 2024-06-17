@@ -351,6 +351,7 @@ toggleFilterOption() {
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.leadsPagination.pageIndex = 1;
+      this.leadsPagination.registeredByUserId = 0;
       this.listCampaignLeads(this.leadsPagination);
       this.filterMode = false;
     }      

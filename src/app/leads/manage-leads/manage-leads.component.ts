@@ -1062,6 +1062,7 @@ export class ManageLeadsComponent implements OnInit {
       this.leadsPagination.toDateFilterString = "";
       this.leadsPagination.stageFilter = "";
       this.leadsPagination.registeredByCompanyId = 0;
+      this.leadsPagination.vendorCompanyId = 0;
       this.leadsPagination.registeredByUserId = 0;
       this.filterResponse.isVisible = false;
       if (this.filterMode) {
