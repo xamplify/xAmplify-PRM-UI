@@ -145,6 +145,7 @@ export class AddDealComponent implements OnInit {
   isCreatedForStageIdDisable: boolean = false;
   isCampaignTicketTypeSelected: boolean = false;
   existingHalopsaDealTicketTypeId: any;
+  isCopiedToClipboard : boolean = false;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -1600,4 +1601,15 @@ export class AddDealComponent implements OnInit {
     this.getDealPipelines();
   }
 
+  copyReferenceId(inputElement: any) {
+    inputElement.select();
+    $('#copy-reference-id').hide();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copy-reference-id').show(500);
+    this.isCopiedToClipboard = true;
+  }
+
 }
+
+

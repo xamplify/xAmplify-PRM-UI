@@ -1,5 +1,6 @@
 <div class="m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError">
-  <app-response-message class="pg8 col-lg-12 col-md-12 col-sm-12 col-xs-12 p0" [customResponse]="dealsResponse" *ngIf="dealsResponse.isVisible">
+  <app-response-message class="pg8 col-lg-12 col-md-12 col-sm-12 col-xs-12 p0" [customResponse]="dealsResponse"
+    *ngIf="dealsResponse.isVisible">
   </app-response-message>
   <div class="col-xs-12 col-sm-5 col-lg-5" *ngIf="fromAnalytics && showTeamMemberFilter">
     <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"
@@ -26,8 +27,9 @@
           (click)="toggleFilterOption()">
           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
         </span>
-        <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Click here to email the report"
-          [disabled]="dealsSortOption.totalRecords == 0" (click)="downloadDeals(dealsPagination)">
+        <button data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+          title="Click here to email the report" [disabled]="dealsSortOption.totalRecords == 0"
+          (click)="downloadDeals(dealsPagination)">
           <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
         </button>
       </div>
@@ -40,7 +42,7 @@
 <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 </app-list-loader>
 <!-- -------------------- Apply Filters Box-------------------- -->
-<div  class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+<div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="portlet light m10">
       <div class="portlet-title">
@@ -49,70 +51,75 @@
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
         <div class="form-group" style="text-align: -webkit-right;">
-          <button class="button bgcolor-unset neg_mrgn_top4 mrgn_top0" type="button"  (click)="validateDateFilters()">
+          <button class="button bgcolor-unset neg_mrgn_top4 mrgn_top0" type="button" (click)="validateDateFilters()">
             <span class="btn Btn-Green transition txt_pd-top3">Filter</span>
           </button>
         </div>
       </div>
       <!--Filter Options-->
       <div class="portlet-body clearfix">
-        <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible"></app-response-message>
+        <app-response-message class="pg8" [customResponse]="filterResponse"
+          *ngIf="filterResponse.isVisible"></app-response-message>
         <form class="form-horizontal form-bordered form-label-stripped">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-              <!--From Date-->
-              <div class="form-group">
-                <label class="control-label col-sm-5">From Date</label>
-                <div class="col-sm-7">
-                  <app-date-picker  [(dataField)]="fromDateFilter" [isFromFilter]='true'></app-date-picker>
-                </div>
-              </div>
-               <!--Status-->
-               <div class="form-group">
-                <label class="control-label col-sm-5">Status</label>
-                <div class="col-sm-7">
-                  <p class="mt--10px" *ngIf="statusLoader">
-                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Status...</strong>
-                  </p>
-                  <app-searchable-dropdown *ngIf="!statusLoader && isStatusLoadedSuccessfully" [searchableDropDownDto]="statusSearchableDropDownDto" [id]="statusFilter"
-                    [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedStatus($event)">
-                  </app-searchable-dropdown>
-                  <p class="required" *ngIf="!statusLoader && !isStatusLoadedSuccessfully">
-                    <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
-                  </p>
-                </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <!--From Date-->
+            <div class="form-group">
+              <label class="control-label col-sm-5">From Date</label>
+              <div class="col-sm-7">
+                <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'></app-date-picker>
               </div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-              <!--To Date-->
-              <div class="form-group">
-                <label class="control-label col-sm-5">To Date</label>
-                <div class="col-sm-7">
-                  <app-date-picker  [(dataField)]="toDateFilter" [isFromFilter]='true'></app-date-picker>
-                </div>
-              </div>
-               <!--Added By User-->
-               <div class="form-group">
-                <label class="control-label col-sm-5">{{LEAD_CONSTANTS?.addedBy}}</label>
-                <div class="col-sm-7">
-                  <p class="mt--10px" *ngIf="registeredByUsersLoader">
-                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading {{LEAD_CONSTANTS?.addedBy}}...</strong>
-                  </p>
-                  <app-searchable-dropdown *ngIf="!registeredByUsersLoader && isRegisteredByUsersLoadedSuccessfully" [searchableDropDownDto]="registeredByUsersSearchableDropDownDto" [id]="selectedRegisteredByUserId"
-                    [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredByUserId($event)">
-                  </app-searchable-dropdown>
-                  <p class="required" *ngIf="!registeredByUsersLoader && !isRegisteredByUsersLoadedSuccessfully">
-                    <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
-                  </p>
-                </div>
+            <!--Status-->
+            <div class="form-group">
+              <label class="control-label col-sm-5">Status</label>
+              <div class="col-sm-7">
+                <p class="mt--10px" *ngIf="statusLoader">
+                  <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Status...</strong>
+                </p>
+                <app-searchable-dropdown *ngIf="!statusLoader && isStatusLoadedSuccessfully"
+                  [searchableDropDownDto]="statusSearchableDropDownDto" [id]="statusFilter" [disableDropDown]="false"
+                  (searchableDropdownEventEmitter)="getSelectedStatus($event)">
+                </app-searchable-dropdown>
+                <p class="required" *ngIf="!statusLoader && !isStatusLoadedSuccessfully">
+                  <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
+                </p>
               </div>
             </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <!--To Date-->
+            <div class="form-group">
+              <label class="control-label col-sm-5">To Date</label>
+              <div class="col-sm-7">
+                <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'></app-date-picker>
+              </div>
+            </div>
+            <!--Added By User-->
+            <div class="form-group">
+              <label class="control-label col-sm-5">{{LEAD_CONSTANTS?.addedBy}}</label>
+              <div class="col-sm-7">
+                <p class="mt--10px" *ngIf="registeredByUsersLoader">
+                  <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading
+                    {{LEAD_CONSTANTS?.addedBy}}...</strong>
+                </p>
+                <app-searchable-dropdown *ngIf="!registeredByUsersLoader && isRegisteredByUsersLoadedSuccessfully"
+                  [searchableDropDownDto]="registeredByUsersSearchableDropDownDto" [id]="selectedRegisteredByUserId"
+                  [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredByUserId($event)">
+                </app-searchable-dropdown>
+                <p class="required" *ngIf="!registeredByUsersLoader && !isRegisteredByUsersLoadedSuccessfully">
+                  <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
+                </p>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     </div>
   </div>
-</div>  
+</div>
 
-<section class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="dealsSortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+<section class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0"
+  *ngIf="dealsSortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
   <div class="table-responsive">
     <table class='table tgrid table-hover table-sm' aria-describedby="dealTable">
       <thead>
@@ -127,9 +134,12 @@
         <ng-container *ngFor='let deal of dealsPagination.pagedItems; let i=index'>
           <tr>
             <td style="width: 40%;">
-              <div> 
-                <span><b>Deal Name:</b>{{deal.title | slice:0:30}}</span> 
+              <div>
+                <span><b>Deal Name:</b>{{deal.title | slice:0:30}}</span>
                 <span *ngIf="deal.title?.length>30">...</span>
+              </div>
+              <div>
+                <span *ngIf="isVendorVersion"><b>Deal Id:</b> {{deal.referenceId}}</span>
               </div>
               <div>
                 <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
@@ -175,8 +185,9 @@
               <!-- xnfr-426-->
               <span class="comment-color" translate>
                 {{deal.currentStageName}}</span>
-              <a data-rel="fancybox-button" (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
-                data-toggle="tooltip" data-placement="bottom" title="Edit Deal Stage">
+              <a data-rel="fancybox-button"
+                (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)" data-toggle="tooltip"
+                data-placement="bottom" title="Edit Deal Stage">
                 <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
               </a>
             </td>
@@ -236,7 +247,8 @@
 
 
 <!--XNFR-426-->
-<app-opportunities-chat-modal-popup  *ngIf="updateCurrentStage" [deal]="currentDealToUpdateStage"
-[isPartnerVersion]="isPartnerVersion"  [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable"
-(showCommentsEmitter)="showComments(deal)" (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusCode)="stageUpdateResponse($event)">
+<app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="currentDealToUpdateStage"
+  [isVendorVersion]="isVendorVersion" [isPartnerVersion]="isPartnerVersion" [loggedInUserId]="loggedInUserId"
+  [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments(deal)" (closePopupEmitter)="resetModalPopup()"
+  (stageUpdateStatusCode)="stageUpdateResponse($event)">
 </app-opportunities-chat-modal-popup>
