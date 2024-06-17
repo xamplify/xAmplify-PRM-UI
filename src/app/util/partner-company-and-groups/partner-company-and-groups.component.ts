@@ -119,7 +119,10 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		this.referenceService.startLoader(this.httpRequestLoader);
 		let isPartnerCompaniesSelected = this.selectedTeamMemberIds != undefined && this.selectedTeamMemberIds.length > 0;
 		if (this.isPublishedToPartnerGroups) {
-			if(!isPartnerCompaniesSelected){
+			if(isPartnerCompaniesSelected){
+				this.activatePartnerCompaniesTab();
+			    this.disableOrEnablePartnerListsTab();
+			}else{
 				this.isEdit = this.selectedPartnerGroupIds != undefined && this.selectedPartnerGroupIds.length > 0;
 				this.activatePartnerGroupsTab();
 				this.disableOrEnablePartnerCompaniesTab();
