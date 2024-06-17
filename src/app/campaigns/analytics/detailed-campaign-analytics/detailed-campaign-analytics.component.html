@@ -355,13 +355,21 @@
                            <div class="camp-title" *ngIf="campaign?.oneClickLaunch">
                               Shared List Info
                            </div>
-                           <div class="camp-title" *ngIf="!campaign?.oneClickLaunch">
-                              List Info
-                           </div>
+                          <div>
+                             <span  class="camp-title" *ngIf= "((authenticationService.isOrgAdmin() && campaign?.channelCampaign )|| authenticationService.isVendorPartner()) ">
+                                 {{ 'Group Info' }}
+                           </span>
+                             <span class="camp-title" *ngIf="((!authenticationService.isVendorPartner() && !campaign?.channelCampaign && !campaign?.oneClickLaunch)  && authenticationService.isOrgAdmin())">
+                                 {{ 'List Info' }}
+                           </span>
+                          </div>    
                            <div class="camp-number">
-                              <strong class="m0 StongTextdc" *ngIf="!campaign?.oneClickLaunch">{{
+                              <strong class="m0 StongTextdc" *ngIf= "((!authenticationService.isVendorPartner() && !campaign?.channelCampaign && !campaign?.oneClickLaunch)  && authenticationService.isOrgAdmin())">{{
                                  campaingContactLists?.length }}
                                  List(s)</strong>
+                                 <strong class="m0 StongTextdc" *ngIf="((authenticationService.isOrgAdmin() && campaign?.channelCampaign )|| authenticationService.isVendorPartner()) ">{{
+                                    campaingContactLists?.length }}
+                                    Group(s)</strong>
                               <strong class="m0" *ngIf="campaign?.oneClickLaunch">{{ campaingContactLists?.length }}
                                  Shared List(s)</strong>
                            </div>
@@ -3473,7 +3481,12 @@
             </button>
             <h4 class="modal-title" id="show_contact-list-info">
                <span *ngIf="campaign?.oneClickLaunch">Shared List Info</span>
-               <span *ngIf="!campaign?.oneClickLaunch">List Info</span>
+               <span *ngIf= "((authenticationService.isOrgAdmin() && campaign?.channelCampaign )|| authenticationService.isVendorPartner()) ">
+                  {{ 'Group Info' }}
+            </span>
+            <span  *ngIf="((!authenticationService.isVendorPartner() && !campaign?.channelCampaign && !campaign?.oneClickLaunch)  && authenticationService.isOrgAdmin())">
+               {{ 'List Info' }}
+         </span>
             </h4>
          </div>
          <div class="modal-body">
@@ -3483,7 +3496,14 @@
                      <table class="table tgrid">
                         <thead>
                            <tr>
-                           <th class="center">List name</th>
+                           <th class="center">
+                              <span class="camp-title" *ngIf="((authenticationService.isOrgAdmin() && campaign?.channelCampaign) || authenticationService.isVendorPartner())">
+                                 Group Name
+                             </span>
+                             <span class="camp-title" *ngIf="((!authenticationService.isVendorPartner() && !campaign?.channelCampaign && !campaign?.oneClickLaunch) && authenticationService.isOrgAdmin())">
+                                 List Name
+                             </span>
+                           </th>
                         </tr>
                         </thead>
                         <tbody>
