@@ -202,19 +202,27 @@
               </td>
             </ng-container>
             <td>
-              <div *ngIf="!item?.publishingInProgress" class="actions-block override-actions float-none">
-                <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit/Preview">
-                  <i class="fa fa-pencil-square-o"></i>
-                  <div class="clickicons"></div>
-                </a>
-                <a class="custom-icon" (click)="showAlert(item)" data-toggle="tooltip" data-placement="top" title="Delete">
-                  <i class="fa fa-trash-o"></i>
-                  <div class="del-icon"></div>
-                </a>
+              <div class="actions-block override-actions float-none">
+                <ng-container *ngIf="!item?.publishingInProgress">
+                  <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit/Preview">
+                    <i class="fa fa-pencil-square-o"></i>
+                    <div class="clickicons"></div>
+                  </a>
+                  <a class="custom-icon" (click)="showAlert(item)" data-toggle="tooltip" data-placement="top" title="Delete">
+                    <i class="fa fa-trash-o"></i>
+                    <div class="del-icon"></div>
+                  </a>
+                </ng-container>
+                <ng-container *ngIf="item?.publishingInProgress">
+                  <p class="success mt5 text-align-center" *ngIf="item?.publishingInProgress">
+                    <strong><img src="assets/images/loading.gif" alt="Please Wait..."style="height:15px">{{XAMPLIFY_CONSTANTS?.pleaseWait}}</strong>
+                  </p>
+                  <a class="custom-icon" (click)="refresh()" data-toggle="tooltip" data-placement="top" title="Refresh">
+                    <i class="fa fa-refresh"></i>
+                    <div class="clickicons"></div>
+                  </a>
+                </ng-container>
               </div>
-              <p class="success mt5 text-align-center" *ngIf="item?.publishingInProgress">
-                <strong><img src="assets/images/loading.gif" alt="Please Wait..."style="height:15px">{{XAMPLIFY_CONSTANTS?.pleaseWait}}</strong>
-              </p>
             </td>
           </tr>
         </tbody>

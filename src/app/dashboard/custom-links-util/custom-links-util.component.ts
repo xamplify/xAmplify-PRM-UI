@@ -639,4 +639,8 @@ export class CustomLinksUtilComponent implements OnInit {
     this.partnerGroupSelected = event['partnerGroupSelected'];
   }
 
+  refresh(){
+    this.findLinks(this.pagination);
+  }
+
 }
