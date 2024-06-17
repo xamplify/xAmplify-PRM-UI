@@ -118,10 +118,12 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	private selectTabsByGroupIdOrCompanyId() {
 		this.referenceService.startLoader(this.httpRequestLoader);
 		let isPartnerCompaniesSelected = this.selectedTeamMemberIds != undefined && this.selectedTeamMemberIds.length > 0;
-		if (this.isPublishedToPartnerGroups && !isPartnerCompaniesSelected) {
-			this.isEdit = this.selectedPartnerGroupIds != undefined && this.selectedPartnerGroupIds.length > 0;
-			this.activatePartnerGroupsTab();
-			this.disableOrEnablePartnerCompaniesTab();
+		if (this.isPublishedToPartnerGroups) {
+			if(!isPartnerCompaniesSelected){
+				this.isEdit = this.selectedPartnerGroupIds != undefined && this.selectedPartnerGroupIds.length > 0;
+				this.activatePartnerGroupsTab();
+				this.disableOrEnablePartnerCompaniesTab();
+			}
 		} else {
 			this.isEdit = isPartnerCompaniesSelected;
 			this.activatePartnerCompaniesTab();
@@ -462,6 +464,9 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			pagination = this.pagerService.getPagedItems(pagination, data.list);
 			/*******Header checkbox will be chcked when navigating through page numbers*****/
 			let partnerGroupIds = pagination.pagedItems.map(function (a) { return a.id; });
+			if(this.selectedPartnerGroupIds==null){
+				this.selectedPartnerGroupIds = [];
+			}
 			let items = $.grep(this.selectedPartnerGroupIds, function (element: any) {
 				return $.inArray(element, partnerGroupIds) !== -1;
 			});
