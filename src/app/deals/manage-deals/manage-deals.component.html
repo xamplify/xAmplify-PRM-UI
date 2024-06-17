@@ -730,10 +730,10 @@
 </section>
 
 <app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="currentDealToUpdateStage"
-  [isPartnerVersion]="isPartnerVersion" [isCommentSection]="isCommentSection" [loggedInUserId]="loggedInUserId"
-  [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments(deal)" (closePopupEmitter)="resetModalPopup()"
-  (stageUpdateStatusStatusCode)="stageUpdateResponse($event)">
+  [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [isCommentSection]="isCommentSection"
+  [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments(deal)"
+  (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusStatusCode)="stageUpdateResponse($event)">
 </app-opportunities-chat-modal-popup>
 
-<app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable" 
-[isVendorVersion] ="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
+<app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"
+  [isVendorVersion]="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
