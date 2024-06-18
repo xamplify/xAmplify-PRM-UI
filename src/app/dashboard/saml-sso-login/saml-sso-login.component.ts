@@ -20,8 +20,8 @@ export class SamlSsoLoginComponent implements OnInit {
   loggedInUserId: any;
   metaDataFile:any;
   identityServiceProviderNames = [
-    { value: 'microsoft_azure', label: 'Microsoft Azure' },
-    { value: 'versa', label: 'Versa' }
+    { value: 'MICROSOFT_AZURE', label: 'Microsoft Azure' },
+    { value: 'VERSA', label: 'Versa' }
   ];
   
 
@@ -76,9 +76,13 @@ export class SamlSsoLoginComponent implements OnInit {
   }
 
   submitMetaData() {
-    this.samlSecurityService.uploadSaml2MetadataFile(this.metaDataFile, this.samlSecurityObj.id, this.loggedInUserId,this.samlSecurityObj.emailAttributeName, this.samlSecurityObj.identityProviderName)
+    var fileList: FileList = this.metaDataFile.target.files;
+      if (fileList.length > 0) {
+        var file: File = fileList[0];
+      }
+      this.samlSecurityObj.loggedInUserId = this.loggedInUserId;
+    this.samlSecurityService.uploadSaml2MetadataFile(file, this.samlSecurityObj)
     .subscribe(response => {
-        //this.samlSecurityObj = response;
         this.customResponse = new CustomResponse('SUCCESS', this.properties.UPLOAD_METADATA_TEXT2, true);
     }, error => {
       this.customResponse = new CustomResponse('ERROR', "Error in uploading file", true);

@@ -72,20 +72,19 @@ export class SamlSecurityService {
             .catch(this.handleError);
     }
 
-    uploadSaml2MetadataFile(event: any, sId: any, loggedInUserId: any, emailAttributeName: string, idpName : string):Observable<SamlSecurity> {
-        let fileList: FileList = event.target.files;
-        if (fileList.length > 0) {
-            let file: File = fileList[0];
-            let formData: FormData = new FormData();
-            formData.append('sId', sId);
+    uploadSaml2MetadataFile(file: File, samlSecurityObj: SamlSecurity): Observable<any> {
+        let url = this.authenticationService.REST_URL;
+        url = url + "upload"
+        if (samlSecurityObj.id > 0) {
+            const formData: FormData = new FormData();
             formData.append('file', file, file.name);
-            let headers = new Headers();
-            headers.append('Accept', 'application/json');
-            let options = new RequestOptions({ headers: headers });
-            const url = this.authenticationService.REST_URL + "saml2/sso/update?loggedInUserId=" + loggedInUserId + "&emailAttributeName=" + emailAttributeName + "&identityProviderName="+ idpName + "&access_token=" + this.authenticationService.access_token;
-            return this.http.post(url, formData, options)
+            formData.append('samlSecurityObj', new Blob([JSON.stringify(samlSecurityObj)],
+                {
+                    type: "application/json"
+                }));
+            return this.http.post(url + "?access_token=" + this.authenticationService.access_token, formData)
                 .map(this.extractData)
-                .catch(this.handleError);                
+                .catch(this.handleError);
         }
     }
 }

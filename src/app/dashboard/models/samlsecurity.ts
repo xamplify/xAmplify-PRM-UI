@@ -9,4 +9,5 @@ export class SamlSecurity {
     emailAttributeName: string;
     acsId: string;
     identityProviderName: string;
+    loggedInUserId: number;
 }
