@@ -18,7 +18,10 @@ button.group-name-cclass.btn-primary.default-btn-cursor,
     box-shadow: none !important;
 }
 button.button.bgcolor-unset,
-button.button_blue.bgcolor-unset{ 
+button.button_blue.bgcolor-unset,
+button#copyFrom_clipboard,
+button#add_contact, .btn.Btn-Green.fileinput-button-css, .btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow,
+label.btn.Btn-Green.mBtnAlign.button-border{ 
   border-radius: 7px !important;
   background-color: var(--custom-buttonbg-color) !important;
   background-image: linear-gradient(1deg, var(--custom-gradient-one-color), var(--custom-gradient-two-color) 99%) !important;
@@ -29,7 +32,9 @@ button.button_blue.bgcolor-unset{
 }
 button.button.bgcolor-unset:hover, button.btn.custom:hover, .btn-group button:hover, .selectRecord:hover,
 .btn-success:hover, .btn-primary:hover, .color-flow-button:hover, div > button.btn-primary:hover,
-.btn-primary:active:hover, .button_blue:hover, .mix-filter li:hover, button.group-name-cclass.btn-primary.default-btn-cursor:hover{
+.btn-primary:active:hover, .button_blue:hover, .mix-filter li:hover, button.group-name-cclass.btn-primary.default-btn-cursor:hover,
+button#copyFrom_clipboard:hover, button#add_contact:hover, .btn.Btn-Green.fileinput-button-css:hover, .btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow:hover,
+button.button_blue.bgcolor-unset:hover, label.btn.Btn-Green.mBtnAlign.button-border:hover{
   background-color: var(--custom-buttonbg-color) !important;
   background-image: linear-gradient(1deg, var(--custom-gradient-two-color), var(--custom-gradient-one-color) 99%) !important;
   background-size: calc(100% + 20px) calc(100% + 20px) !important;
@@ -72,7 +77,8 @@ button.search-box-item-click:hover {
   margin-right: 8px;
 } */
 i.IconCustomization, 
-.gridIconCustomization a {
+.gridIconCustomization a,
+.actions-block i {
   color : var(--custom-icon-color) !important;
   border: 1px solid var(--custom-icon-border-color) !important;
   background-color: var(--custom-icon-hover-color) !important;
@@ -86,4 +92,7 @@ color : var(--custom-icon-color) !important;
 }
 body {
   background-image: var(--body-background-image);
+}
+label.btn.Btn-Green.mBtnAlign.button-border, .btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow{
+  border-radius: 0px !important;
 }

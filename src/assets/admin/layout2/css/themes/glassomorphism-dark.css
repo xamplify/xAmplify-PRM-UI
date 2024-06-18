@@ -3751,7 +3751,8 @@ img.email-template-preview.image_effect.template_image_border {
   padding-left: 1px !important;
 }
 .Btn-Green,
-.btn-primary{
+.btn-primary,
+.btn.Btn-Green.fileinput-button-css{
   background: #0276FF !important;
   border: 1px solid #266dc1 !important;
 }
