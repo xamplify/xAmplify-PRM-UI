@@ -851,7 +851,11 @@ export class CustomSkinComponent implements OnInit {
     this.updateThemedto.defaultTheme = false;
     this.updateThemedto.createdBy = this.loggedInUserId;
     this.updateThemedto.parentThemeName = this.themeDTO.parentThemeName;
+    if(this.uploadBgImage != "") {
     this.updateThemedto.backgroundImagePath = this.uploadBgImage;
+    } else {
+      this.updateThemedto.backgroundImagePath = this.themeDTO.backgroundImagePath;
+    }
 
     if (CKEDITOR != undefined) {
       for (var instanceName in CKEDITOR.instances) {
@@ -1015,6 +1019,7 @@ export class CustomSkinComponent implements OnInit {
         if(this.themeDTO.backgroundImagePath.includes('/assets')) {
           this.uploadImagePath ="";
         } else {
+          this.uploadBgImage = this.bgImagePath;
           this.uploadImagePath = this.authenticationService.MEDIA_URL;
         }
       }

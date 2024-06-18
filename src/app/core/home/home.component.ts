@@ -516,7 +516,7 @@ export class HomeComponent implements OnInit {
         if((name == 'GLASSMORPHISMLIGHT' || name == 'GLASSMORPHISMDARK') && (path && path.includes('/assets') || this.bgImagePath == undefined || this.bgImagePath == "" || this.bgImagePath == null ) ) {
           //this.getDefaultImagePath(this.activeThemeDto.parentThemeName,this.activeThemeDto.id);
           this.imageHost = "";
-        } else if(this.activeThemeDto.backgroundImagePath != null || this.activeThemeDto.backgroundImagePath != "") {
+        } else if(this.bgImagePath != null || this.bgImagePath != "") {
           this.imageHost = this.authenticationService.MEDIA_URL;
         }
         this.activeThemeDto.backgroundImagePath= this.bgImagePath;

@@ -2011,3 +2011,6 @@ p.layoutcontent {
   margin: 10px 0px 0px 0px;
   font-size: large;
 }
+.text_alligns{
+  text-align: left;
+}
