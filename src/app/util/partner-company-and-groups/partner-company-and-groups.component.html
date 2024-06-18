@@ -22,7 +22,7 @@
           </a>
         </li>
         <li id="partnerGroups-li">
-          <a class="partnerGroupsC" title="Click to see list of {{authenticationService?.partnerModule?.customName}}"
+          <a class="partnerGroupsC" title="Click to see group of {{authenticationService?.partnerModule?.customName}}"
             href="#partnerGroups" data-toggle="tab" (click)="isPartnerCompaniesTabSelected=false;findPartnerGroups(partnerGroupsPagination)">
             Group Of {{authenticationService?.partnerModule?.customName}}
             <i *ngIf="!isPartnerCompaniesTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
