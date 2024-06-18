@@ -72,7 +72,7 @@ export class SamlSecurityService {
             .catch(this.handleError);
     }
 
-    uploadSaml2MetadataFile(event: any, sId: any, loggedInUserId: any):Observable<SamlSecurity> {
+    uploadSaml2MetadataFile(event: any, sId: any, loggedInUserId: any, emailAttributeName: string, idpName : string):Observable<SamlSecurity> {
         let fileList: FileList = event.target.files;
         if (fileList.length > 0) {
             let file: File = fileList[0];
@@ -82,7 +82,7 @@ export class SamlSecurityService {
             let headers = new Headers();
             headers.append('Accept', 'application/json');
             let options = new RequestOptions({ headers: headers });
-            const url = this.authenticationService.REST_URL + "saml2/sso/update?loggedInUserId=" + loggedInUserId + "&access_token=" + this.authenticationService.access_token;
+            const url = this.authenticationService.REST_URL + "saml2/sso/update?loggedInUserId=" + loggedInUserId + "&emailAttributeName=" + emailAttributeName + "&identityProviderName="+ idpName + "&access_token=" + this.authenticationService.access_token;
             return this.http.post(url, formData, options)
                 .map(this.extractData)
                 .catch(this.handleError);                

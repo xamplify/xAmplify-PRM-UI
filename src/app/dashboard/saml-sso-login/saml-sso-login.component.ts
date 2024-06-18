@@ -18,6 +18,12 @@ export class SamlSsoLoginComponent implements OnInit {
   samlSecurityObj: SamlSecurity;
   customResponse: CustomResponse = new CustomResponse();
   loggedInUserId: any;
+  metaDataFile:any;
+  identityServiceProviderNames = [
+    { value: 'microsoft_azure', label: 'Microsoft Azure' },
+    { value: 'versa', label: 'Versa' }
+  ];
+  
 
   constructor(private authenticationService: AuthenticationService, private samlSecurityService: SamlSecurityService, 
    public properties: Properties) { }
@@ -53,15 +59,27 @@ export class SamlSsoLoginComponent implements OnInit {
         self.samlSecurityObj = response;
       });
     } else if ((self.samlSecurityObj.id) && (self.samlSecurityObj.acsURL === undefined || self.samlSecurityObj.acsURL === null)) {
-      self.samlSecurityObj.acsURL = self.authenticationService.REST_URL + "saml/sso/" + self.samlSecurityObj.id;
+      self.samlSecurityObj.acsURL = self.authenticationService.REST_URL + "saml2/sso/" + self.samlSecurityObj.acsId;
     }
   }
 
 
-  onChange(event: any) {
-    this.samlSecurityService.uploadSaml2MetadataFile(event, this.samlSecurityObj.id, this.loggedInUserId).subscribe(response => {
-      this.samlSecurityObj = response;
-      this.customResponse = new CustomResponse('SUCCESS', this.properties.UPLOAD_METADATA_TEXT2, true);
+  onFileChange(event: Event) {
+    this.metaDataFile = event;
+    const input = event.target as HTMLInputElement;
+    const file: File = (input.files as FileList)[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.samlSecurityObj.metadata = reader.result as string; 
+    };
+    reader.readAsText(file);
+  }
+
+  submitMetaData() {
+    this.samlSecurityService.uploadSaml2MetadataFile(this.metaDataFile, this.samlSecurityObj.id, this.loggedInUserId,this.samlSecurityObj.emailAttributeName, this.samlSecurityObj.identityProviderName)
+    .subscribe(response => {
+        //this.samlSecurityObj = response;
+        this.customResponse = new CustomResponse('SUCCESS', this.properties.UPLOAD_METADATA_TEXT2, true);
     }, error => {
       this.customResponse = new CustomResponse('ERROR', "Error in uploading file", true);
     });
@@ -71,5 +89,7 @@ export class SamlSsoLoginComponent implements OnInit {
     element.select();
     document.execCommand('copy');
   }
-
+  selectIdentityProviderName(idpName: any){
+    this.samlSecurityObj.identityProviderName = idpName;
+  }
 }

@@ -155,8 +155,8 @@ export class Properties {
 	/****************** SAML Security *********************/
 	EMAIL_TEXT1 = 'You are about to initiate the SSO configuration with Allbound.'
 	EMAIL_TEXT2 = 'Begin by verifying that the email address listed below is associated with your Allbound instance.'
-	ACS_URL_TEXT1 = 'Copy and paste the ACS URL into Login and Assertion URL text fields at the time of IDP configuration with Allbound and save the entire settings to download the Metadata.'
-	UPLOAD_METADATA_TEXT1 = 'Upload the metadata which is downloaded from Allbound after the IDP configuration, we process the content and will save the same into the system.'
+	ACS_URL_TEXT1 = 'Copy and paste the ACS URL into Login and Assertion URL text fields at the time of IDP configuration and save the entire settings to download the Metadata.'
+	UPLOAD_METADATA_TEXT1 = 'Upload the metadata which is downloaded after the IDP configuration, we process the content and will save the same into the system.'
 	UPLOAD_METADATA_TEXT2 = 'Success! Processed the metadata and saved into the system.';
 
 	/*************My Profile Tab Names*******************************/
