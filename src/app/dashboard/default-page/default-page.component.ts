@@ -106,7 +106,7 @@ export class DefaultPageComponent implements OnInit {
     }
     /* -- XNFR-415 -- */
     loadDashboard(){   
-        if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '' ) {
+        if (this.authenticationService.vanityURLEnabled  && this.authenticationService.module.loggedInThroughVendorVanityUrl) {
             this.getDefaultDashboardForPartner();
         } else {
             this.getDefaultPage(this.loggedInUserId);
