@@ -74,14 +74,13 @@
                           </option>
                         </select>
                       </div>
-                      <div *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
+                      <div [ngStyle]="{ 'margin-bottom': isCopiedToClipboard ? '2px' : '20px' }"
+                        *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
                         <div> <label class="control-label">Deal ID</label></div>
-                        <div>
-                          <div class="col-md-11 pl0 pr0">
-                            <input type="text" maxlength="100" name="referenceId" class="form-control"
-                              [(ngModel)]="deal.referenceId" [ngModelOptions]="{standalone: true}" readonly="readonly"
-                              #referenceIdInput>
-                          </div>
+                        <div style="display:flex; height:35px;">
+                          <input type="text" maxlength="100" name="referenceId" class="form-control"
+                            [(ngModel)]="deal.referenceId" [ngModelOptions]="{standalone: true}" readonly="readonly"
+                            #referenceIdInput>
                           <div>
                             <a class="button_blue" (click)="copyReferenceId(referenceIdInput)">
                               <span class="btn btn-primary transition copy_link" data-toggle="tooltip"
@@ -89,9 +88,11 @@
                             </a>
                           </div>
                         </div>
-                        <div class="success" [ngStyle]="{ 'margin-bottom': isCopiedToClipboard ? '3px' : '20px' }">
-                          <strong id="copy-reference-id" *ngIf="isCopiedToClipboard">Deal Id copied successfully<i
-                              class="fa fa-check" aria-hidden="true"></i></strong>
+                        <div>
+                          <span class="success">
+                            <strong id="copy-reference-id" *ngIf="isCopiedToClipboard">Deal Id copied successfully<i
+                                class="fa fa-check" aria-hidden="true"></i></strong>
+                          </span>
                         </div>
                       </div>
                     </div>
