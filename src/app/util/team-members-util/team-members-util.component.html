@@ -59,7 +59,7 @@
   </div>
 
   <!-- Team Member Domain Whitelisting #XNFR-549 -->
-  <app-domain-whitelisting *ngIf="isTeamMemberModule && authenticationService?.module?.adminOrSuperVisor" [isTeamMemberDomains]="true"></app-domain-whitelisting>
+  <app-domain-whitelisting *ngIf="isTeamMemberModule && (authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isPartnerSuperVisor || authenticationService?.module?.isPartnerAdmin)" [isTeamMemberDomains]="true"></app-domain-whitelisting>
 
   <div class="row neg_mrg_top18">
     <!---Team Members---->
