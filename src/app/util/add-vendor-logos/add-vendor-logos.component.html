@@ -1,6 +1,6 @@
 <div>
 	<button class="button_blue float-right btn-select-templates mb_10 btn-mb bgcolor-unset px-0"
-		style="padding-top: 2px;" *ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate><span
+		style="padding-top: 6px;" *ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate><span
 			class="btn btn-primary transition">Add Vendor Logos</span></button>
 </div>
 <div class="modal fade right" id="add-vendor-logo-popup" tabindex="-1" role="dialog" data-backdrop="static"
@@ -13,31 +13,114 @@
 				</button>
 				<h4 class="modal-title text-center" translate>Vendor Logos</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" *ngIf = "!(authenticationService?.module?.isAnyAdminOrSupervisor) && authenticationService?.module?.isTeamMember">
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
 						<tr>
-							<th scope="row" class="text-center" translate>Company Name</th>
 							<th scope="row" translate>Logo</th>
+							<th scope="row" class="text-center" translate>Company Name</th>
 							<th scope="row" class="text-center" translate>Action</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr *ngFor="let vendorLogo of vendorLogoDetails;let i = index">
+							<td class="hidden-xs text-center" style="width: 10%;">
+								<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
+									<img class="custom-image-css" src="{{vendorLogo?.companyLogo}}"
+										onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found"
+										style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
+								</div>
+							</td>
 							<td class="text-center">{{vendorLogo.companyName}}</td>
-							<td  class="hidden-xs text-center" style="width: 10%;">
-												<div class="thumbnail-wrapper dam_image_effect"
-													style="width: 180px; height: 100px; border:1px solid #ccc;">
-													<img class="custom-image-css" src="{{vendorLogo?.companyLogo}}"
-														onerror="this.src='assets/images/no-preview.jpg';"
-														alt="Image Not Found"
-														style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
-												</div>
-											</td>
 							<td class="text-center">
-                toggle button
+								<label class="toggleOnOff">
+									<input class="checkBox_shadow" type="checkbox" [(ngModel)]="vendorLogo.selected" name="Select">
+									<span class="sliderOnOff"></span>
+									<span class="labels" data-on="Selected" data-off=""></span>
+								</label>
 							</td>
 						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-body" *ngIf = "authenticationService?.module?.isAnyAdminOrSupervisor">
+				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
+					<thead>
+						<tr>
+							<th scope="row" translate>Logo</th>
+							<th scope="row" class="text-center" translate>Company Name</th>
+							<th scope="row" class="text-center" translate>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container *ngFor="let vendorLogo of sharedVendorLogoDetails;let i = index">
+						<tr >
+							<td class="hidden-xs text-center" style="width: 10%;">
+								<div class="thumbnail-wrapper dam_image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
+									<img class="custom-image-css" src="{{vendorLogo?.companyLogo}}"
+										onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found"
+										style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
+								</div>
+							</td>
+							<td class="text-center">{{vendorLogo.companyName}}</td>
+							<td class="text-center">
+								<div class="actions-block ">
+									<a (click)="viewTeamMembers(vendorLogo)" title="View/Hide Team Members">
+									  <i class="fa IconCustomization"
+										[ngClass]="{'fa-angle-right': !vendorLogo.expand, 'fa-angle-down': vendorLogo.expand}"
+										aria-hidden="true"></i>
+									</a>
+								  </div>
+							</td>
+						</tr>
+						<tr *ngIf="vendorLogo?.expand">
+							<td colspan="4">
+							  <div class="table-responsive x-hidden">
+								
+								<div>
+
+								  <ng-container>
+									<table class="table tgrid table-condensed table-bordered child-table-xamp"
+									  aria-describedby="team-members-info"
+									  id="admin-and-team-members-{{vendorLogo?.companyId}}">
+									  <thead>
+										<tr>
+										  <th scope="row">Entity Info</th>
+										  <th scope="row" class="text-center">Select</th>
+										</tr>
+									  </thead>
+									  <tbody>
+										<tr class="pointer"
+										  *ngFor="let adminAndTeamMember of vendorLogo.teamMembers;let i = index;"
+										  id="publishToPartners-{{vendorLogo.partnerId}}">
+										  <td>
+											<app-user-info [isPartnerEntityInfo]="false" [userInfo]="adminAndTeamMember">
+											</app-user-info>
+										  </td>
+										  <td class="text-center">
+											<label class="toggleOnOff">
+												<input class="checkBox_shadow" type="checkbox" [(ngModel)]="adminAndTeamMember.selected" name="Select"
+												(click) = "selctectLandingPageForCompany(vendorLogo.companyId,adminAndTeamMember.partnerId)">
+												<span class="sliderOnOff"></span>
+												<span class="labels" data-on="Selected" data-off=""></span>
+											</label>
+			
+										  </td>
+										</tr>
+									  </tbody>
+									</table>
+								  </ng-container>
+								  <!---Pagination-->
+								</div>
+							  </div>
+							</td>
+						  </tr>
+						</ng-container>
+	
+
+
+
+
 					</tbody>
 				</table>
 			</div>

@@ -11,21 +11,23 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
               </li>
               <li>
-                <a translate>Leads</a>
+                <a>Leads</a>
               </li>
             </ul>
           </div>
           <div class="col-xs-12 col-sm-7 col-lg-6 p0">
-            <ul class="mix-filter p0 m0" style="float: right"
-              *ngIf="!authenticationService.vanityURLEnabled && authenticationService?.module?.isAdminAndPartnerCompany">
-              <li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
-            						margin-top: 5px;" translate>
-                {{authenticationService?.partnerModule?.customName}} View </li>
-              <li *ngIf="authenticationService?.enableLeads" class="filter" (click)="showVendor()"
-                [class.campaign-type-selected]="isVendorVersion" style="float: right;
-            						margin-top: 5px;" translate>Vendor View</li>
-              <p class="filter" style="float: right;
-            						margin: 10px;" translate>Opportunities as: </p>
+            <ul class="mix-filter p0 m0 float-right"  *ngIf="!authenticationService.vanityURLEnabled && authenticationService?.module?.isAdminAndPartnerCompany">
+              <!--Partner View-->
+              <li class="filter view-type-css" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion">
+                {{authenticationService?.partnerModule?.customName}} View
+                <i *ngIf="isPartnerVersion" class="fa fa-check-circle-o success"></i>
+               </li>
+              <!--Vendor View-->
+              <li *ngIf="authenticationService?.enableLeads" class="filter view-type-css" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion">
+                Vendor View
+                <i *ngIf="isVendorVersion" class="fa fa-check-circle-o success"></i>
+              </li>
+              <p class="filter float-right m10">Opportunities as: </p>
             </ul>
             <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
           </div>
@@ -33,12 +35,10 @@
       </div>
       <div class="row">
         <div class="col-xs-12  p5">
-          <app-list-loader *ngIf="countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
-          </app-list-loader>
-          <div class="page-bar" style="padding: 15px 0px 15px 15px;"
-            *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
-            <!-- -------Total Leads------- -->
-            <div class="col-xs-6 col-sm-3 col-md-3 tiles_hover_effect" style="padding-left: 0px!important;"
+          <div class="page-bar" style="padding: 15px 0px 15px 15px;">
+            <app-box-loader [countLoader]="4" *ngIf="countsLoader"></app-box-loader>
+            <ng-container *ngIf="!countsLoader">
+              <div class="col-xs-6 col-sm-3 col-md-3 tiles_hover_effect" style="padding-left: 0px!important;"
               *ngIf="!countsLoader" [style.pointer-events]="counts.totalLeads != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important;"
                 [class.greay]="1!=selectedTabIndex" (click)="showLeads()">
@@ -123,7 +123,7 @@
                 </span>
               </a>
             </div>
-
+            </ng-container>
           </div>
         </div>
       </div>
@@ -138,7 +138,6 @@
               <div *ngIf="!showCampaignLeads">
                 <!-- XNFR-148 -->
                 <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
-                  <!-- <h4 class="text-primary pull-left" style="margin-top: 3px;">{{titleHeading}} Leads</h4> -->
                   <div class="col-xs-6 col-sm-6 col-lg-5 p0 mleads">
                     <h4 class="text-primary pull-left" style="margin: 8px 6px 0px 0px;">{{titleHeading}} Leads</h4>
                     <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex"
@@ -168,11 +167,10 @@
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
                         (click)="addLead()" style="padding-left: 4px;">
                         <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
-                          <span class="btn btn-primary transition d-inline"><i class="fa fa-plus  mb-btns"
-                              aria-hidden="true"></i> Add a Lead</span>
+                          <span class="btn btn-primary transition d-inline">
+                            <i class="fa fa-plus  mb-btns" aria-hidden="true"></i> {{LEAD_CONSTANTS?.registerALead}}</span>
                         </button>
                       </a>
-
                       <!-- XNFR-215 -->
                       <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT' && activeCRMDetails?.type != 'CONNECTWISE'"
                         (click)="syncLeadsWithActiveCRM()">
@@ -220,7 +218,7 @@
                         <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
                           style="margin-left: 5px !important;" title="Filter" *ngIf="listView"
                           (click)="toggleFilterOption()">
-                          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+                          <i  aria-hidden="true" class="fa fa-filter p10"></i>
                         </span>
                       </div>
 
@@ -228,86 +226,112 @@
                   </div>
                 </div>
                 <!-- -------------------- Apply Filters Box-------------------- -->
-                <div class="row"
-                  *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                  <div class="col-xs-12 col-sm-12">
-                    <div class="portlet light m10">
+                <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="portlet light">
                       <div class="portlet-title">
                         <div class="caption" translate>Apply Filters</div>
-                        <button type="button" class="close-circle" style="margin-left: 10px;"
-                          (click)="closeFilterOption()">
+                        <button type="button" class="close-circle" style="margin-left: 10px;" (click)="closeFilterOption()">
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                         <div class="form-group" style="text-align: -webkit-right;">
-                          <button class="button bgcolor-unset neg_mrgn_top4 mrgn_top0" translate="" type="button"
-                            ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()"><span
-                              class="btn Btn-Green transition txt_pd-top3">Filter</span></button>
+                          <button class="button bgcolor-unset neg_mrgn_top4 mrgn_top0" type="button"  (click)="validateDateFilters()">
+                            <span class="btn Btn-Green transition txt_pd-top3">Filter</span>
+                          </button>
                         </div>
                       </div>
-                      <div class="portlet box">
-                        <app-response-message class="pg8" [customResponse]="filterResponse"
-                          *ngIf="filterResponse.isVisible">
-                        </app-response-message>
-                        <form role="form" class="form-horizontal form-bordered form-label-stripped">
-                          <div class="form-group">
-                            <div class="form-inline col-sm-12">
-                              <div class="form-group col-lg-5 col-md-5 col-sm-4">
-                                <label class="control-label">From Date &nbsp;
-                                </label>
-                                <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
-                                </app-date-picker>
-                              </div>
-                              <div class="form-group col-lg-5 col-md-5 col-sm-4 form-group-mr">
-                                <label class="control-label">To Date &nbsp;
-                                </label>
-                                <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
-                                </app-date-picker>
-                              </div>
-
-                              <div class="row" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
-                                <div class="form-group col-lg-5 col-md-5 col-sm-6 col-xs-12 ml0-mr0"
-                                  style="margin-top: 13px;padding-left: 30px;display: flex;">
-                                  <label class="control-label" style="padding-right: 5px;">Added For &nbsp;</label>
-                                  <select class="form-control select-width FilerFormWidth"
-                                    [(ngModel)]="vendorCompanyIdFilter" [ngModelOptions]="{standalone: true}">
-                                    <option value="">---Select Company---</option>
-                                    <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">
-                                      {{vendor.companyName}}
-                                    </option>
-                                  </select>
+                      <!--Filter Options-->
+                      <div class="portlet-body clearfix">
+                        <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible"></app-response-message>
+                        <form class="form-horizontal form-bordered form-label-stripped">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                              <!--From Date-->
+                              <div class="form-group">
+                                <label class="control-label col-sm-5">From Date</label>
+                                <div class="col-sm-7">
+                                  <app-date-picker  [(dataField)]="fromDateFilter" [isFromFilter]='true'></app-date-picker>
                                 </div>
                               </div>
-
-                              <div class="row">
-                                <div class="form-group col-sm-6 ml0-mr0"
-                                  style="margin-top: 13px;padding-left: 54px;;display: flex;">
-                                  <label class="control-label" style="padding-right: 5px;">Status &nbsp; </label>
-                                  <select class="form-control select-width FilerFormWidth " [(ngModel)]="statusFilter"
-                                    [ngModelOptions]="{standalone: true}">
-                                    <option value="">---Select Status---</option>
-                                    <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
-                                    </option>
-                                  </select>
+                              <!--Added By User-->
+                              <div class="form-group">
+                                <label class="control-label col-sm-5">{{LEAD_CONSTANTS.addedBy}}</label>
+                                <div class="col-sm-7">
+                                  <p class="mt--10px" *ngIf="registeredByUsersLoader">
+                                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading {{LEAD_CONSTANTS.addedBy}}...</strong>
+                                  </p>
+                                  <app-searchable-dropdown *ngIf="!registeredByUsersLoader && isRegisteredByUsersLoadedSuccessfully" [searchableDropDownDto]="registeredByUsersSearchableDropDownDto" [id]="selectedRegisteredByUserId"
+                                    [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredByUserId($event)">
+                                  </app-searchable-dropdown>
+                                  <p class="required" *ngIf="!registeredByUsersLoader && !isRegisteredByUsersLoadedSuccessfully">
+                                    <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
+                                  </p>
+                                </div>
+                              </div>
+                              <!--Status-->
+                              <div class="form-group">
+                                <label class="control-label col-sm-5">Status</label>
+                                <div class="col-sm-7">
+                                  <p class="mt--10px" *ngIf="statusLoader">
+                                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading {{LEAD_CONSTANTS.addedBy}}...</strong>
+                                  </p>
+                                  <app-searchable-dropdown *ngIf="!statusLoader && isStatusLoadedSuccessfully" [searchableDropDownDto]="statusSearchableDropDownDto" [id]="statusFilter"
+                                    [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedStatus($event)">
+                                  </app-searchable-dropdown>
+                                  <p class="required" *ngIf="!statusLoader && !isStatusLoadedSuccessfully">
+                                    <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
+                                  </p>
                                 </div>
                               </div>
                             </div>
-                          </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                              <!--To Date-->
+                              <div class="form-group">
+                                <label class="control-label col-sm-5">To Date</label>
+                                <div class="col-sm-7">
+                                  <app-date-picker  [(dataField)]="toDateFilter" [isFromFilter]='true'></app-date-picker>
+                                </div>
+                              </div>
+                              <!--Added By Company-->
+                              <div class="form-group" *ngIf="isVendorVersion">
+                                <label class="control-label col-sm-5">{{LEAD_CONSTANTS?.addedBy}} Company</label>
+                                <div class="col-sm-7">
+                                  <p class="mt--10px" *ngIf="registeredByCompanyLoader">
+                                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Companies...</strong>
+                                  </p>
+                                  <app-searchable-dropdown *ngIf="!registeredByCompanyLoader && isRegisteredByCompaniesLoadedSuccessfully" [searchableDropDownDto]="registeredByCompaniesSearchableDropDownDto" [id]="selectedRegisteredByCompanyId"
+                                    [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredByCompanyId($event)">
+                                  </app-searchable-dropdown>
+                                  <p class="required" *ngIf="!registeredByCompanyLoader && !isRegisteredByCompaniesLoadedSuccessfully">
+                                    <strong>{{properties?.SOMTHING_WENT_WRONG}}</strong>
+                                  </p>
+                                </div>
+                              </div>
+                              <!--Added For-->
+                              <div class="form-group" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
+                                <label class="control-label col-sm-5">Added For</label>
+                                <div class="col-sm-7">
+                                  <app-searchable-dropdown *ngIf="!registeredForCompaniesLoader" [searchableDropDownDto]="registeredForCompaniesSearchableDropDownDto" [id]="vendorCompanyIdFilter"
+                                    [disableDropDown]="false" (searchableDropdownEventEmitter)="getSelectedRegisteredForCompanyId($event)">
+                                  </app-searchable-dropdown>
+                                </div>
+                              </div>
+                            </div>
                         </form>
                       </div>
                     </div>
                   </div>
-                </div>
+                </div>  
+
                 <!-- -------------------- List View for Leads-------------------- -->
                 <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
                   [hidden]="!listView || leadsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
-
                   <div class="table-responsive pos_pd_top6" [hidden]="httpRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                       <thead>
                         <tr>
                           <th class="center-aligned leadTablewidth0" translate>Lead Details</th>
                           <th class="center leadTablewidth1" translate>Added By</th>
-                          <th class="center leadTablewidth2" translate>Status</th>
+                          <th class="center leadTablewidth2 text-center" translate>Status</th>
                           <th class="leadTablewidth3" style="text-align:center" translate>Actions</th>
                         </tr>
                       </thead>
@@ -368,7 +392,7 @@
                                 </app-timestamp>
                               </h5>
                             </td>
-                            <td>
+                            <td class="text-center">
                               <!---xnfr-426---->
                               {{lead.currentStageName | slice:0:30}}
                               <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
@@ -481,9 +505,9 @@
                 </div>
 
                 <!-- -------------------- Campaign Level View for Leads-------------------- -->
+                 <app-list-loader *ngIf="!listView && campaignRequestLoader?.isLoading"></app-list-loader>
                 <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
                   [hidden]="listView || campaignSortOption.totalRecords == 0 || campaignRequestLoader.isLoading || campaignRequestLoader.isServerError">
-
                   <div class="table-responsive pos_pd_top6" [hidden]="campaignRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                       <thead>

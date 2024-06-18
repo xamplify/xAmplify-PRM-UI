@@ -247,7 +247,7 @@
 								</div>
 							</div>
 							<div class="form-group"
-								*ngIf="showConfigurePipelines && ((!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads))">
+								*ngIf="eventCampaign.channelCampaign && showConfigurePipelines && ((!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads))">
 								<label class="control-label col-sm-3 floatLeftText" translate>Configure
 									Pipelines</label>
 								<div class="col-sm-3">
@@ -275,13 +275,50 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group" *ngIf="eventCampaign.configurePipelines"
+
+							 <!--Lead Ticket Type-->
+							 <div class="form-group" [attr.class]="leadTicketTypeClass"
+							 style="margin-bottom: 8px" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
+							 <label class="control-label col-sm-3">Lead Ticket Type<span
+								 class="required"><strong>*</strong></span></label>
+								 <div class="col-sm-9">
+									 <select class="form-control" [(ngModel)]="eventCampaign.leadTicketTypeId" 
+										 [ngModelOptions]="{standalone: true}"
+										 placeholder="leadTicketTypeId" id="leadTicketTypeId" [disabled]="preview"
+										 (ngModelChange)="onChangeLeadTicketType()" (input)="validateField('leadTicketTypeId',false)">
+										 <option [value]="0">Select Lead TicketType</option>
+										 <option *ngFor="let leadTicketType of leadTicketTypes"     
+										 [value]="leadTicketType.id">{{leadTicketType.name}}</option>
+									 </select>
+								 </div>
+						 </div>
+
+						 <!--Deal Ticket Type-->
+						 <div class="form-group" [attr.class]="dealTicketTypeClass"
+							 style="margin-bottom: 8px" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
+							 <label class="control-label col-sm-3">Deal Ticket Type<span
+								 class="required"><strong>*</strong></span></label>
+								 <div class="col-sm-9">
+									 <select class="form-control" [(ngModel)]="eventCampaign.dealTicketTypeId"
+										 [ngModelOptions]="{standalone: true}"
+										 placeholder="dealTicketTypeId" id="dealTicketTypeId" [disabled]="preview"
+										 (ngModelChange)="onChangeDealTicketType()" (input)="validateField('dealTicketTypeId',false)">
+										 <option [value]="0">Select Deal Ticket Type</option>
+										 <option *ngFor="let dealTicketType of dealTicketTypes"     
+										 [value]="dealTicketType.id">{{dealTicketType.name}}</option>
+									 </select>
+								 </div>
+						 </div>
+							 
+
+
+							<div class="form-group" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines && !reDistributeEvent"
 								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 								<label class="control-label col-sm-3">Lead Pipeline<span>
 										<b style="color: #f55d7a !important">*</b>
 									</span></label>
 								<div class="col-sm-9">
-									<select class="form-control" [(ngModel)]="eventCampaign.leadPipelineId"
+									<select class="form-control" [attr.disabled]="(activeCRMDetails?.type === 'HALOPSA') ? '' : null" [(ngModel)]="eventCampaign.leadPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="leadPipelineId"
 										id="leadPipelineId" (change)="validatePipeline();"
 										[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">
@@ -290,13 +327,13 @@
 									</select>
 								</div>
 							</div>
-							<div class="form-group" *ngIf="eventCampaign.configurePipelines"
+							<div class="form-group" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines  && !reDistributeEvent"
 								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 								<label class="control-label col-sm-3">Deal Pipeline<span>
 										<b style="color: #f55d7a !important">*</b>
 									</span></label>
 								<div class="col-sm-9">
-									<select class="form-control" [(ngModel)]="eventCampaign.dealPipelineId"
+									<select class="form-control" [attr.disabled]="(activeCRMDetails?.type === 'HALOPSA') ? '' : null" [(ngModel)]="eventCampaign.dealPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="dealPipelineId"
 										id="dealPipelineId" (change)="validatePipeline();"
 										[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">
@@ -531,7 +568,7 @@
 							</div>
 							<div class="form-group" *ngIf="isEventUpdate">
 								<label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Message<font
-										style="color: red"> <b>*</b>
+										> <b style="color: red!important">*</b>
 									</font>
 								</label>
 								<div class="col-sm-9" style="padding-top: 10px;">
@@ -800,7 +837,7 @@
 				<div class="row setup-content" id="step-4" *ngIf="recipientsTab ">
 					<div class="col-xs-12">
 						<fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
-							<legend class="scheduler-border">Selected {{reDistributeEvent?'Contact(s)':'Partner(s)'}} list</legend>
+							<legend class="scheduler-border">Selected {{reDistributeEvent?'Contact(s) list':'Partner(s) group' }} </legend>
 								
 							<div class="row d-flex align-items-center">
 								<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -915,8 +952,7 @@
 																		style="width: 35%">
 																		<span class="ui-column-resizer"
 																			(mousedown)="referenceService.onMouseDown($event, 'user_list_tb',2)"></span>
-																		<span class="gridHeader" translate>List
-																			Name</span>
+																		<span class="gridHeader" translate>{{this.contactListsPagination.filterBy == 'MY-PARTNERS' ? 'Group Name' : 'List Name'}}</span>
 																	</th>
 																	<th class="visible-xs" scope="row" colspan="1"
 																		style="width: 35%" translate>
@@ -927,7 +963,7 @@
 																	</th>
 																	<th scope="row" style="text-align: center;"
 																		translate>
-																		Uploaded Date</th>
+																		Uploaded on</th>
 																	<th *ngIf="!this.reDistributeEvent && !this.reDistributeEventManage"
 																		scope="row" style="text-align: center;"
 																		translate>Count
@@ -1075,7 +1111,7 @@
 																					translate>Form Contact List
 																				</span>
 																			</h6>
-																			<h6 *ngIf="contactList?.companyList"
+																			<h6 *ngIf="checkNameForCompanyList(contactList.name)"
 																				class="view-banner view-banner-green mt10"
 																				translate>
 																				<span data-toggle="tooltip"

@@ -117,10 +117,10 @@
                                             class="actions-block override-actions flex mPadAction IconCustomizationcondition">
                                             <div class="mActionDiv whitespace_nowrap display-inlineflex">
                                                 <!--Share Icon-->
-                                                <ng-template *ngIf="vendorJourney" [ngTemplateOutlet]="shareIcon"
+                                                <ng-template *ngIf="vendorJourney && !landingPage?.defaultLandingPage" [ngTemplateOutlet]="shareIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                 <!--Copy Icon-->
-                                                <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="copyIcon"
+                                                <ng-template *ngIf="!isLandingPages  || (isMasterLandingPages && !landingPage?.defaultLandingPage )" [ngTemplateOutlet]="copyIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                 <!--Edit Icon-->
                                                 <ng-template *ngIf="!isLandingPages" [ngTemplateOutlet]="editIcon"
@@ -135,12 +135,12 @@
                                                 <ng-template  *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="formIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                 <!--Analytics Icon-->
-                                                <ng-template [ngTemplateOutlet]="analyticsIcon"
+                                                <ng-template *ngIf = "vendorJourney || isLandingPages || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="analyticsIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                             </div>
                                             <div class="mActionDiv whitespace_nowrap">
                                                 <!--Delete Icon-->
-                                                <ng-template [ngTemplateOutlet]="deleteIcon"
+                                                <ng-template  [ngTemplateOutlet]="deleteIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                             </div>
                                         </div>
@@ -228,13 +228,13 @@
                                     <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="copyOrEmbedLinkIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Form Icon-->
-                                    <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="formIcon"
+                                    <ng-template *ngIf="isLandingPages||  (vendorJourney && !landingPage?.defaultLandingPage)  || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="formIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Analytics Icon-->
-                                    <ng-template [ngTemplateOutlet]="analyticsIcon"
+                                    <ng-template *ngIf = " (vendorJourney &&  !landingPage?.defaultLandingPage) || isLandingPages || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="analyticsIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Delete Icon-->
-                                    <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="deleteIcon"
+                                    <ng-template *ngIf="(!isLandingPages && !landingPage?.defaultLandingPage) || (vendorJourney && !landingPage?.defaultLandingPage)  || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="deleteIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                 </div>
                             </div>
@@ -321,7 +321,7 @@
                         <li class="filter" (click)="showAllLandingPages('All',0)"
                             [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All
                         </li>
-                        <ng-container *ngIf="!isPartnerLandingPage">
+                        <ng-container *ngIf="!isPartnerLandingPage && !isMasterLandingPages && !vendorJourney && !isLandingPages">
                             <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)"
                                 [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular (Public)</li>
                             <li class="filter" (click)="showAllLandingPages('Regular&PRIVATE',2)"
@@ -333,7 +333,7 @@
                                 [class.landing-page-selected]="4 == selectedLandingPageTypeIndex">Co-Branded (Private)
                             </li>
                         </ng-container>
-                        <ng-container *ngIf="isPartnerLandingPage">
+                        <ng-container *ngIf="isPartnerLandingPage || isMasterLandingPages || vendorJourney">
                             <li class="filter" (click)="showAllLandingPages('PUBLIC',5)"
                                 [class.landing-page-selected]="5 == selectedLandingPageTypeIndex">Public</li>
                             <li class="filter" (click)="showAllLandingPages('PRIVATE',6)"
@@ -347,7 +347,7 @@
                 *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView"
                 style="padding-right: 22px;padding-left: 5px;">
                 <div class="btn-group pull-right" style="display: flex;">
-                    <div class="ml_10">
+                    <div class="ml_10" *ngIf = "!(vendorJourney || isMasterLandingPages || isLandingPages)">
                         <div class="group-dropdown">
                             <button
                                 [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
@@ -438,7 +438,8 @@
 <!--Edit-->
 <ng-template #editIcon let-landingPage="landingPage">
     <a class="mMobileDisable Iconhover custom-grid-icon"
-        *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)"
+        *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId ||
+        this.authenticationService.isVendor || this.authenticationService.module?.isAnyAdminOrSupervisor)"
         data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
         <i class="fa fa-pencil-square-o mDisableColor" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
             aria-hidden="true"></i>

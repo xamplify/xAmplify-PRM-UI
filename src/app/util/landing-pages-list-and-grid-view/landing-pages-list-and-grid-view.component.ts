@@ -74,6 +74,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   landingPageSharedDetails:LandingPageShareDto = new LandingPageShareDto();
   @Output() viewAnalytics = new EventEmitter();
   @Input() isMasterLandingPages =  false;
+  @Output() isFormAnalytics = new EventEmitter();
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -168,8 +169,13 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       }else if(this.isMasterLandingPages){
         this.pagination.source = "MASTER_PARTNER_PAGE";
         this.pagination.defaultLandingPage = false;
+        this.pagination.loginAsUserId = this.loggedInUserId;
+        this.pagination.companyId = this.loggedInUserCompanyId;
       }else{
         this.pagination.source = "MANUAL";
+      }
+      if(this.vendorJourney && !this.isLandingPages){
+        this.pagination.vendorJourneyOnly = true;
       }
       this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
           (response: any) => {
@@ -203,13 +209,21 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   /*************************Sort********************** */
   sortBy(text: any) {
       this.sortOption.formsSortOption = text;
-      this.getAllFilteredResults(this.pagination);
+      if(this.isLandingPages){
+        this.findPartnerVendorJourneyLandingPages(this.pagination)
+      }else{
+        this.getAllFilteredResults(this.pagination);
+      }
   }
 
 
   /*************************Search********************** */
   searchLandingPages() {
-      this.getAllFilteredResults(this.pagination);
+    if(this.isLandingPages){
+        this.findPartnerVendorJourneyLandingPages(this.pagination);
+    }else{
+        this.getAllFilteredResults(this.pagination);
+    }
   }
 
   paginationDropdown(items: any) {
@@ -246,8 +260,11 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
     if(this.isPartnerLandingPage){
         this.referenceService.previewPartnerPageInNewTab(landingPage.partnerLandingPageId);
     }else if(this.isLandingPages){
-        this.referenceService.previewVendorJourneyPartnerPageInNewTab(landingPage.vendorJourneyId)
-    }else{
+        this.referenceService.previewVendorJourneyPartnerPageInNewTab(landingPage.vendorJourneyId);
+    }else if(this.isMasterLandingPages){
+        this.referenceService.previewMasterPartnerPageInNewTab(landingPage.id);
+    }
+    else{
         this.referenceService.previewPageInNewTab(landingPage.id);
     }
   }
@@ -301,7 +318,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       this.customResponse = new CustomResponse();
       this.referenceService.loading(this.httpRequestLoader, true);
       this.referenceService.goToTop();
-      this.landingPageService.deletebById(landingPage.id)
+      this.landingPageService.deletebById(landingPage.id,(this.vendorJourney || this.isMasterLandingPages))
           .subscribe(
               (response: any) => {
                   if(response.access){
@@ -362,19 +379,23 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   }
 
   goToFormAnalytics(id: number) {
+    if(this.isMasterLandingPages || this.vendorJourney){
+        this.isFormAnalytics.emit(id);
+    }else{
       if(this.categoryId>0){
           this.router.navigate(['/home/forms/category/'+this.categoryId+'/lf/' + id]);
       }else{
       this.router.navigate(['/home/forms/lf/' + id]);
 
       }
+    }
   }
   goToPartnerLandingPageFormAnalytics(alias: string) {
       this.router.navigate(['/home/forms/partner/lf/' + alias]);
   }
   goToLandingPageAnalytics(id: number) {
-    if(this.vendorJourney){
-        this.viewAnalytics.emit(id);
+    if(this.vendorJourney || this.isMasterLandingPages){
+        this.isFormAnalytics.emit(id);
     }else{
       if(this.categoryId>0){
           this.router.navigate(['/home/pages/' + id + '/category/'+this.categoryId+'/analytics']);
@@ -507,6 +528,7 @@ copy(landingPage:any){
           this.pagination.source = "VENDOR_JOURNEY";
           this.pagination.defaultLandingPage = false;
           this.pagination.companyId = this.loggedInUserCompanyId;
+          this.pagination.searchKey = this.sortOption.searchKey;
           let self = this;
 
         this.landingPageService.findPartnerVendorJourneyLandingPages(pagination).subscribe(

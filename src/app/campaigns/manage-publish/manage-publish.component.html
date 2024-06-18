@@ -190,7 +190,7 @@
                                        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                                     </span>
                                     <div class="pr5 pd_left5" style="display: flex;">
-                                       <a data-placement="bottom" (click)="listCampaign(pagination)"
+                                       <a data-placement="bottom" (click)=" showAllAnalytics=false;listCampaign(pagination)"
                                           class="btn btn-xs  l-g-view" data-toggle="tooltip" title="Refresh">
                                           <i _ngcontent-c17="" class="fa fa-refresh p10" aria-hidden="true"></i>
                                        </a>
@@ -234,7 +234,7 @@
                                           </div>
                                           <div class="form-group col-sm-4">
                                              <button type="button" class="btn button bgcolor-unset" [disabled]=""
-                                                (click)="validateDateFilters()" translate><span
+                                                (click)=" showAllAnalytics=false;validateDateFilters()" translate><span
                                                    class="btn Btn-Green transition txt_pd-top3">Filter</span></button>
                                           </div>
                                        </div>
@@ -500,18 +500,7 @@
                                                    </div>
                                                 </button>
                                              </div>
-                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                                                <button
-                                                   class="btn btn-default btn-xs re-distributed-high-level tk-blue-c TableDataBtn">
-                                                   <div class="portlet-body text-center">
-                                                      <h6 class="custom-font-size">
-                                                         <strong
-                                                            class="custom-font-weight">{{campaign?.delivered}}</strong>
-                                                      </h6>
-                                                      <span class="custom-font-weight">Deliverability</span>
-                                                   </div>
-                                                </button>
-                                             </div>
+                                             
                                              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                                                 <button
                                                    class="btn btn-default btn-xs re-distributed-high-level vlt-blue-c TableDataBtn">
@@ -528,8 +517,33 @@
                                                    </div>
                                                 </button>
                                              </div>
+                                               <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
+                                                <button
+                                                   class="btn btn-default btn-xs re-distributed-high-level r-r-c TableDataBtn">
+                                                   <div class="portlet-body text-center">
+                                                      <h6 class="custom-font-size">
+                                                         <strong
+                                                            class="custom-font-weight">{{campaign?.unsubscribed}}</strong>
+                                                      </h6>
+                                                      <span class="custom-font-weight">Unsubscribe</span>
+                                                   </div>
+                                                </button>
+                                               </div>
                                           </div>
-                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+                                          <ng-template *ngIf="!pagination?.pagedItems[i]?.isExpand" [ngTemplateOutlet]="viewMoreOrLessButtonIcon" [ngTemplateOutletContext]="{pagination:pagination, i:i}"></ng-template>
+                                          <div [@fadeInOut] class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 plusicon mt10" *ngIf="showAllAnalytics && selectedIndex==i" >
+                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
+                                                <button
+                                                   class="btn btn-default btn-xs re-distributed-high-level tk-blue-c TableDataBtn">
+                                                   <div class="portlet-body text-center">
+                                                      <h6 class="custom-font-size">
+                                                         <strong
+                                                            class="custom-font-weight">{{campaign?.delivered}}</strong>
+                                                      </h6>
+                                                      <span class="custom-font-weight">Deliverability</span>
+                                                   </div>
+                                                </button>
+                                             </div>
                                              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
                                                 <button
                                                    class="btn btn-default btn-xs re-distributed-high-level pure-blue-c TableDataBtn">
@@ -643,18 +657,6 @@
                                                    </div>
                                                 </button>
                                              </div>
-                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0">
-                                                <button
-                                                   class="btn btn-default btn-xs re-distributed-high-level r-r-c TableDataBtn">
-                                                   <div class="portlet-body text-center">
-                                                      <h6 class="custom-font-size">
-                                                         <strong
-                                                            class="custom-font-weight">{{campaign?.unsubscribed}}</strong>
-                                                      </h6>
-                                                      <span class="custom-font-weight">Unsubscribe</span>
-                                                   </div>
-                                                </button>
-                                             </div>
                                              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0"
                                                 *ngIf="campaign.showLeadAndDealCounts">
                                                 <button
@@ -682,6 +684,7 @@
                                                 </button>
                                              </div>
                                           </div>
+                                          <ng-template *ngIf="pagination?.pagedItems[i]?.isExpand" [ngTemplateOutlet]="viewMoreOrLessButtonIcon" [ngTemplateOutletContext]="{pagination:pagination, i:i}"></ng-template>
                                        </td>
                                        <td *ngIf="!campaign?.emailNotification && !campaign?.nurtureCampaign">
                                           <div class="alert alert-info center-align">
@@ -778,10 +781,10 @@
                                              <div class="btn-group pull-right setting-icon-cu">
                                                 <span [class.disablednew]="!campaign.hasAccess"
                                                    class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu gearicon-font-cu"
-                                                   data-toggle="dropdown" (click)="checkLastElement(i)"></span>
+                                                   data-toggle="dropdown" (click)="showGearIconOptions(campaign)"></span>
                                                 <!-- <span [class.disablednew]="!campaign.hasAccess" class="caret dropdown-toggle caretDropdownMenu dropdown-font-cu" data-toggle="dropdown"></span> -->
                                                 <ul class="dropdown-menu pull-right"
-                                                   [ngClass]="{'mobile-css': isLastElement}">
+                                                   [ngClass]="{'mobile-css': isLastElement}" *ngIf="campaign.showGearIconOptions">
                                                    <li>
                                                       <a *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
                                                    || isOnlyPartner  || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)"
@@ -1457,7 +1460,7 @@
                                              </a>
                                           </span>
                                           <span [class.disablednew]="!campaign.hasAccess"
-                                             *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
+                                             *ngIf="campaign.launched && campaign.showCancelButton && !campaign.vendorCampaignDeleted && !campaign.eventStarted">
                                              <a class="Iconhover custom-grid-icon"
                                                 *ngIf="campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier"
                                                 data-toggle="tooltip" data-placement="top" title="Cancel Event"
@@ -1825,4 +1828,18 @@
          {{authenticationService?.partnerModule?.customName}}
       </a>
    </li>
+</ng-template>
+
+<ng-template #viewMoreOrLessButtonIcon let-pagination="pagination" let-i="i">
+   <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+         <button class="btn btn view-more-css full-width-modal-popup"><strong class="fs-13">{{pagination?.pagedItems[i]?.isExpand ? 'View Less' : 'View More'}}</strong>
+            <span data-toggle="tooltip"   class="actions-block float-none">
+               <a (click)="getCampaignHighLevelAnalytics2(pagination.pagedItems[i],i)">
+                  <i class="down-arrow fa" [ngClass]="{'fa-angle-down': !pagination.pagedItems[i].isExpand,'fa-angle-up': pagination.pagedItems[i].isExpand}"></i>
+               </a>
+            </span>
+         </button>
+      </div>
+   </div>
 </ng-template>

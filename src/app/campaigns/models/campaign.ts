@@ -110,4 +110,13 @@ export class Campaign {
     description = "";
     /***XNFR-387****/
     notifyChannelCampaignWorkflows = false;
+
+    
+    hasAccess : boolean;
+    showGearIconOptions : boolean;
+    showCancelButton : boolean = false;
+
+    leadTicketTypeId: number = 0;
+    dealTicketTypeId: number = 0;
+
 }

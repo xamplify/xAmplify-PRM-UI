@@ -34,7 +34,7 @@ import { LandingPage } from 'app/landing-pages/models/landing-page';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { CustomAnimation } from 'app/core/models/custom-animation';
 import { ComponentCanDeactivate } from 'app/component-can-deactivate';
-
+import { OpportunityTypes } from 'app/dashboard/models/opportunity-types';
 
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
 var moment = require('moment-timezone');
@@ -97,10 +97,14 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   campaignDetailsLoader = false;
   campaignAccess:any;
   activeCRMDetails: any;
+  leadTicketTypes = new Array<OpportunityTypes>();
+  dealTicketTypes = new Array<OpportunityTypes>();
   leadPipelines = new Array<Pipeline>();
   dealPipelines = new Array<Pipeline>();
   defaultLeadPipelineId = 0;
   defaultDealPipelineId = 0;
+  defaultLeadTicketTypeId = 0;
+  defaultDealTicketTypeId = 0;
   showConfigurePipelines = false;
   pipelineLoader: HttpRequestLoader = new HttpRequestLoader();
   isGdprEnabled = false;
@@ -117,6 +121,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   mergeTagsInput: any = {};
   teamMemberEmailIds: any[] = [];
   showMarketingAutomationOption = false;
+  leadTicketTypeClass: string = this.formGroupClass;
+  dealTicketTypeClass: string = this.formGroupClass;
   leadPipelineClass: string = this.formGroupClass;
   dealPipelineClass: string = this.formGroupClass;
   endDateDivClass: string = this.formGroupClass;
@@ -126,6 +132,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   endDatePickr: any;
   notifyPartnersLabelText  = "";
   notifyPartnersToolTipMessage = "";
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();  
 
   /****Video***/
   videosLoader = false;
@@ -243,6 +250,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   isMultipleCrmsActivated = false;
   skipConfirmAlert = false;
   hideConfigurePipelineCrms = ['SALESFORCE'];
+  loggedInUserCompanyId: number;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -931,17 +939,17 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             if (this.isOrgAdminCompany) {
                 if(this.campaign.channelCampaign){
                     this.launchTabText = "Select "+this.partnerModuleCustomName +" & Launch";
-                    this.contactsOrPartnersSelectionText = "Select List of " + this.partnerModuleCustomName + " to be used in this campaign";
+                    this.contactsOrPartnersSelectionText = "Select Group of " + this.partnerModuleCustomName + " to be used in this campaign";
                 }else{
                     this.launchTabText = "Select "+this.partnerModuleCustomName +" / Recipients & Launch";
-                    this.contactsOrPartnersSelectionText = "Select List of " + this.partnerModuleCustomName + " / Recipients  to be used in this campaign";
+                    this.contactsOrPartnersSelectionText = "Select Group of " + this.partnerModuleCustomName + " / Recipients  to be used in this campaign";
                 }
             } else if (this.isMarketingCompany) {
                 this.launchTabText = "Select Recipients & Launch";
-                this.contactsOrPartnersSelectionText = "Select List of Recipients to be used in this campaign";
+                this.contactsOrPartnersSelectionText = "Select Group of Recipients to be used in this campaign";
             } else if (this.isVendorCompany) {
                 this.launchTabText = "Select "+this.partnerModuleCustomName +" & Launch";
-                this.contactsOrPartnersSelectionText = "Select List of " + this.partnerModuleCustomName + " to be used in this campaign";
+                this.contactsOrPartnersSelectionText = "Select Group of " + this.partnerModuleCustomName + " to be used in this campaign";
             }
         }
         
@@ -995,6 +1003,14 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     }
 
     configurePipelines() {
+        this.campaign.dealTicketTypeId = this.defaultDealTicketTypeId;
+        this.campaign.leadTicketTypeId = this.defaultLeadTicketTypeId;
+        if(this.activeCRMDetails.type === 'HALOPSA'){
+            let self = this;
+            this.getHalopsaTicketTypes();
+        }
+            this.campaign.dealPipelineId = this.defaultDealPipelineId;
+            this.campaign.leadPipelineId = this.defaultLeadPipelineId;
          this.campaign.configurePipelines = !this.campaign.configurePipelines;
          if (!this.campaign.configurePipelines) {
              this.campaign.leadPipelineId = this.defaultLeadPipelineId;
@@ -1015,7 +1031,30 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                             let data = response.data;
                             this.leadPipelines = data.leadPipelines;
                             this.dealPipelines = data.dealPipelines;
+                            if ("HALOPSA" === this.activeCRMDetails.type) {
+                                this.leadTicketTypes = data.leadTicketTypes;
+                                this.dealTicketTypes = data.dealTicketTypes;
+                                this.leadPipelines = data.dealPipelines;
+                                this.getHalopsaTicketTypes();
+                            }
                             if (!this.activeCRMDetails.activeCRM) {
+
+                                this.leadTicketTypes.forEach(leadTicketType => {
+                                    if (leadTicketType.defaultLeadTicketType) {
+                                        this.defaultLeadTicketTypeId = leadTicketType.id;
+                                        if (this.campaign.leadTicketTypeId == undefined || this.campaign.leadTicketTypeId == null || this.campaign.leadTicketTypeId === 0) {
+                                            this.campaign.leadTicketTypeId = leadTicketType.id;
+                                        }                                     }
+                                });
+
+                                this.dealTicketTypes.forEach(dealTicketType => {
+                                    if (dealTicketType.defaultDealTicketType) {
+                                        this.defaultDealTicketTypeId = dealTicketType.id;
+                                        if (this.campaign.dealTicketTypeId == undefined || this.campaign.dealTicketTypeId == null || this.campaign.dealTicketTypeId === 0) {
+                                            this.campaign.dealTicketTypeId = dealTicketType.id;
+                                        }                                     }
+                                });
+
                                 this.leadPipelines.forEach(pipeline => {
                                     if (pipeline.default) {
                                         this.defaultLeadPipelineId = pipeline.id;
@@ -1037,6 +1076,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                                 this.defaultDealPipelineId = this.dealPipelines[0].id;
                                 if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
                                     this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                                }                                
+                                if ("HALOPSA" === this.activeCRMDetails.type) {
+                                    this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                                    this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
                                 }
                                 
                             }
@@ -1097,11 +1140,22 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         this.isValidCampaignDetailsTab = isValidCampaignName && isValidFromName && isValidSubjectLine && isValidPreHeader;
         /****Configure PipeLines**/
         if((this.campaign.channelCampaign && this.campaign.configurePipelines) || (this.showMarketingAutomationOption && this.campaign.configurePipelines)){
+            let isValidLeadTicketTypeSelected: boolean;
+            let isValidDealTicketTypeSelected: boolean;
+            if (this.activeCRMDetails != undefined && this.activeCRMDetails.type !=undefined && "HALOPSA" === this.activeCRMDetails.type) {
+                isValidLeadTicketTypeSelected = this.campaign.leadTicketTypeId!=undefined && this.campaign.leadTicketTypeId>0;
+                isValidDealTicketTypeSelected = this.campaign.dealTicketTypeId!=undefined && this.campaign.dealTicketTypeId>0;
+            } else {
+                isValidLeadTicketTypeSelected = true;
+                isValidDealTicketTypeSelected = true;
+            }
             let isValidLeadPipeLineSelected = this.campaign.leadPipelineId!=undefined && this.campaign.leadPipelineId>0;
             let isValidDealPipeLineSelected = this.campaign.dealPipelineId!=undefined && this.campaign.dealPipelineId>0;
+            this.leadTicketTypeClass = isValidLeadTicketTypeSelected ? successClass : errorClass;
+            this.dealTicketTypeClass = isValidDealTicketTypeSelected ? successClass : errorClass;
             this.leadPipelineClass = isValidLeadPipeLineSelected ? successClass : errorClass;
             this.dealPipelineClass = isValidDealPipeLineSelected ? successClass : errorClass;
-            this.isValidCampaignDetailsTab = this.isValidCampaignDetailsTab && isValidDealPipeLineSelected && isValidLeadPipeLineSelected;
+            this.isValidCampaignDetailsTab = this.isValidCampaignDetailsTab && isValidDealPipeLineSelected && isValidLeadPipeLineSelected && isValidLeadTicketTypeSelected && isValidDealTicketTypeSelected;
         }
         this.isValidVideoSelected();
         if(this.isValidCampaignDetailsTab && (this.selectedEmailTemplateRow>0 || this.selectedPageId>0) && this.isVideoSelected){
@@ -2148,11 +2202,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             vanityUrlDomainName = this.authenticationService.companyProfileName;
             vanityUrlCampaign = true;
         }
-        
-        // if (!this.campaign.configurePipelines && 'SALESFORCE' !== this.activeCRMDetails.type) {
-        //     this.campaign.leadPipelineId = null;
-        //     this.campaign.dealPipelineId = null;
-        // }
 
         var data = {
             'campaignName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
@@ -2190,6 +2239,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             'landingPageId': this.selectedPageId,
             'vanityUrlDomainName': vanityUrlDomainName,
             'vanityUrlCampaign': vanityUrlCampaign,
+            'leadTicketTypeId': this.campaign.leadTicketTypeId,
+            'dealTicketTypeId': this.campaign.dealTicketTypeId,
             'leadPipelineId': this.campaign.leadPipelineId,
             'dealPipelineId': this.campaign.dealPipelineId,
             'viewInBrowserTag': this.campaign.viewInBrowserTag,
@@ -2435,4 +2486,95 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     openPageInNewTab(id:number){
         this.referenceService.previewPageInNewTab(id);
     }
+
+    onChangeLeadTicketType() {
+        let self = this;
+        this.getHalopsaLeadPipelines();
+      }
+
+      onChangeDealTicketType() {
+        let self = this;
+        this.getHalopsaDealPipelines();
+      }
+
+      getHalopsaLeadPipelines() {
+        let self = this;
+        this.loggedInUserId = this.authenticationService.getUserId();
+         this.ngxLoading = true;
+         this.campaignService.getHalopsaPipelinesByTicketType(this.campaign.leadTicketTypeId, this.loggedInUserId)
+                .subscribe(
+                    response => {
+                        this.ngxLoading = false;
+                        if (response.statusCode == 200) {
+                            let data = response.data;                            
+                            this.leadPipelines = data;
+                            this.defaultLeadPipelineId = this.leadPipelines[0].id;
+                            this.campaign.leadPipelineId = this.leadPipelines[0].id;
+                        }
+                    },
+                    error => {
+                        this.ngxLoading = false;
+                        this.xtremandLogger.error(error);
+                    });
+      }
+
+      getHalopsaDealPipelines() {
+        let self = this;
+        this.loggedInUserId = this.authenticationService.getUserId();
+        this.ngxLoading = true;
+         this.campaignService.getHalopsaPipelinesByTicketType(this.campaign.dealTicketTypeId, this.loggedInUserId)
+         .subscribe(
+             response => {
+                this.ngxLoading = false;
+                 if (response.statusCode == 200) {
+                     let data = response.data;                            
+                     this.dealPipelines = data;
+                     this.defaultDealPipelineId = this.dealPipelines[0].id;
+                     this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                 }
+             },
+             error => {
+                this.ngxLoading = false;
+                 this.xtremandLogger.error(error);
+             });
+      }
+
+      getHalopsaTicketTypes(){
+        let self = this;
+        this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+            (result: any) => {
+                self.getHalopsaTicketTypesByCompanyId(result);
+            });
+      }
+
+      getHalopsaTicketTypesByCompanyId(companyId: number) {
+        this.campaignService.getHalopsaTicketTypes(companyId).subscribe(
+            response => {
+                if (response.statusCode == 200) {
+                    let data = response.data;
+                    let ticketTypesMap = response.map;                      
+                    this.dealTicketTypes = data;
+                    this.campaign.leadTicketTypeId = ticketTypesMap.leadTicketTypeId;
+                    this.campaign.dealTicketTypeId = ticketTypesMap.dealTicketTypeId;
+                    this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                    this.leadTicketTypes = data;
+                    this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                    this.getHalopsaLeadPipelines();
+                    this.getHalopsaDealPipelines();
+                }
+                this.referenceService.stopLoader(this.pipelineLoader);
+            },
+            error => {
+                this.referenceService.stopLoader(this.pipelineLoader);
+                this.xtremandLogger.error(error);
+            });
+      }
+
+      showContactsAlert(count:number){
+        this.emptyContactsMessage = "";
+        if(count==0){
+            this.emptyContactsMessage = "No Records Found For This Contact List";
+        }
+    }
+
 }

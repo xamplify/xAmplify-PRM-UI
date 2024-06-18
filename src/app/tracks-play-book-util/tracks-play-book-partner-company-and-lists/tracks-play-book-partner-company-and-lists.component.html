@@ -2,16 +2,18 @@
   <div class="panel-heading" id="company-and-group-tabs">
     <ul class="nav nav-tabs">
       <li id="partners-li">
-        <a class="partnersC" data-placement="top"
-          title="Click to see {{authenticationService?.partnerModule?.customName}} companies" href="#partners"
-          data-toggle="tab"
-          (click)="findPartnerCompanies(pagination)">{{authenticationService?.partnerModule?.customName}}</a>
+        <a class="partnersC" data-placement="top" title="Click to see {{authenticationService?.partnerModule?.customName}} companies" href="#partners"
+          data-toggle="tab" (click)="isPartnerCompaniesTabSelected = true;findPartnerCompanies(pagination)">{{authenticationService?.partnerModule?.customName}}
+          <i *ngIf="isPartnerCompaniesTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
+        </a>
       </li>
       <li id="partnerGroups-li">
-        <a class="partnerGroupsC" data-placement="bottom"
-          title="Click to see list of {{authenticationService?.partnerModule?.customName}}" href="#partnerGroups"
-          data-toggle="tab" (click)="findPartnerGroups(partnerGroupsPagination)">List Of
-          {{authenticationService?.partnerModule?.customName}}</a>
+
+        <a class="partnerGroupsC" data-placement="bottom" title="Click to see list of {{authenticationService?.partnerModule?.customName}}" href="#partnerGroups"
+          data-toggle="tab" (click)="isPartnerCompaniesTabSelected = false;findPartnerGroups(partnerGroupsPagination)">Group Of {{authenticationService?.partnerModule?.customName}}
+          <i *ngIf="!isPartnerCompaniesTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
+        </a>
+
       </li>
     </ul>
   </div>
@@ -53,19 +55,11 @@
           <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
             <div class="row">
               <div>
-
                 <div class="col-xs-12" style="padding-top: 5px;">
-                  <div class="alert alert-success text-center" style="padding: 5px;"
-                    *ngIf="selectedPartnershipIds?.length>0">
+                  <div class="alert alert-success" *ngIf="selectedPartnershipIds?.length>0">
                     <strong>
-                      <ng-container *ngIf="selectedPartnershipIds?.length==1">
-                        {{selectedPartnershipIds?.length}} company is selected
-                      </ng-container>
-                      <ng-container *ngIf="selectedPartnershipIds?.length>1">
-                        {{selectedPartnershipIds?.length}} companies are selected
-                      </ng-container>
+                      Selected Companies : {{selectedPartnershipIds?.length}}
                     </strong>
-                    <!---XNFR-326-->
                     <ng-template [ngTemplateOutlet]="emailNotificationTemplate"></ng-template>
                   </div>
                 </div>
@@ -84,6 +78,7 @@
                     <th scope="col">Company Logo</th>
                     <th scope="col" class="text-center">Company Name</th>
                     <th scope="col">Created Time</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -114,15 +109,18 @@
                         <app-timestamp [dateAndTime]="partner?.displayTime">
                         </app-timestamp>
                       </td>
+                      <td>
+                        <i *ngIf="selectedPartnershipIds?.indexOf(partner?.partnershipId)>-1" class="fa fa-check-circle-o success i-20px"></i>
+                      </td>
                     </tr>
                     <tr *ngIf="partner?.expand">
-                      <td colspan="4">
+                      <td colspan="5">
                         <div class="table-responsive x-hidden">
                           <div class="portlet-input input-inline float-right mb10p" id="search-div">
                             <div class="input-icon right" id="icon">
                               <input type="text" id="sort-text" class="form-control"
                                 [(ngModel)]="teamMembersPagination.searchKey" [ngModelOptions]="{standalone: true}"
-                                placeholder="search..." (keypress)="adminAndTeamMembersKeySearch($event.keyCode)">
+                                placeholder="Search..." (keypress)="adminAndTeamMembersKeySearch($event.keyCode)">
                               <button class="glyphicon glyphicon-remove search-box-item-clear"
                                 *ngIf="teamMembersPagination?.searchKey"
                                 (click)="teamMembersPagination.searchKey='';searchAdminsAndTeamMembers();"></button>
@@ -231,24 +229,16 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="alert alert-success alert-cu-for-consistency" *ngIf="selectedPartnerGroupIds?.length>0">
-                  <strong>
-                    <ng-container *ngIf="selectedPartnerGroupIds?.length==1">
-                      {{selectedPartnerGroupIds?.length}} list is selected
-                    </ng-container>
-                    <ng-container *ngIf="selectedPartnerGroupIds?.length>1">
-                      {{selectedPartnerGroupIds?.length}} lists are selected
-                    </ng-container>
-                  </strong>
-                  <!---XNFR-326-->
-                  <ng-template [ngTemplateOutlet]="emailNotificationTemplate"></ng-template>
-                </div>
-              </div>
             </div>
           </div>
         </div>
         <br>
+        <div class="alert alert-success" *ngIf="selectedPartnerGroupIds?.length>0">
+          <strong>
+            Selected Groups : {{selectedPartnerGroupIds?.length}}
+          </strong>
+          <ng-template [ngTemplateOutlet]="emailNotificationTemplate"></ng-template>
+        </div>
         <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
         <ng-container *ngIf="!httpRequestLoader.isLoading">
           <div class="table-responsive">
@@ -263,7 +253,7 @@
                       (change)="selectOrUnselectAllPartnerGroupsOfTheCurrentPage($event)">
                   </th>
                   <th *ngIf="showExpandButton"></th>
-                  <th scope="col" class="text-center">List Name</th>
+                  <th scope="col" class="text-center">Group Name</th>
                   <th scope="col" class="text-center">Count</th>
                   <th scope="col" class="text-center">Created Time</th>
                   <th scope="col" class="text-center">Preview</th>

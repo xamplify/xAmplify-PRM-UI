@@ -98,8 +98,14 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
-    deletebById( id: number ): Observable<any> {
-        return this.http.get( this.URL + "delete/" + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token, "" )
+    deletebById( id: number, isVendorJourney:boolean): Observable<any> {
+        let url
+        if(isVendorJourney){
+            url = this.URL +"vendorJourneyLandingpagedeleteById/"
+        }else{
+           url =  this.URL + "delete/"
+        }
+        return this.http.get( url + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -110,12 +116,17 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
-    getHtmlContentByAlias( landingPageHtmlDto:any,isPartnerLandingPage:boolean ) {
+    getHtmlContentByAlias( landingPageHtmlDto:any,isPartnerLandingPage:boolean, isMasterLandingPage:boolean) {
         landingPageHtmlDto['vanityUrlFilter']  = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
         if(isPartnerLandingPage){
             return this.http.post( this.authenticationService.REST_URL + "/getPartnerHtmlBodyByAlias",landingPageHtmlDto)
             .map( this.extractData )
             .catch( this.handleError );
+        }else if(isMasterLandingPage){
+            return this.http.post( this.authenticationService.REST_URL + "/getMasterLandingPageHtmlBodyByAlias",landingPageHtmlDto)
+            .map( this.extractData )
+            .catch( this.handleError );
+
         }else{
             return this.http.post( this.authenticationService.REST_URL + "/getHtmlBodyByAlias" , landingPageHtmlDto )
             .map( this.extractData )
@@ -237,8 +248,8 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
-    getVendorLogoDetailsByPartnerDetails( userId: number, companyId: number ) {
-        return this.http.get( this.URL + "/getVendorLogoDetailsByPartner/" + userId +"/"+companyId+ "?access_token=" + this.authenticationService.access_token, "" )
+    getVendorLogoDetailsByPartnerDetails( userId: number, companyId: number, landingPageId:number ) {
+        return this.http.get( this.URL + "/getVendorLogoDetailsByPartner/" + userId +"/"+companyId+"/"+landingPageId+"?access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }

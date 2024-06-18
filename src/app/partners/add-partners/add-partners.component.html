@@ -58,6 +58,9 @@
         </div>
         <app-user-guide-help-button [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
     </div>
+    <!-- Partner Domain Whitelisting #XNFR-549 -->
+    <app-domain-whitelisting *ngIf="isPartner && authenticationService?.module?.adminOrSuperVisor"
+        [isPartnerDomains]="true"></app-domain-whitelisting>
     <div class="">
         <!----XNFR-222-->
         <div class="portlet-body">
@@ -356,6 +359,33 @@
                                                     height="86" width="90">
                                             </a>
                                         </div>
+
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8 image_effect"
+                                            style="margin-top: 10px;">
+                                            <a *ngIf="haloPSAImageBlur" id="haloPSAContact_button"
+                                                style="background-color: white"
+                                                (click)="checkingHaloPSAContactsAuthentication()"
+                                                [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 13">
+                                                <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :haloPSAImageBlur==true}"
+                                                    src="assets/images/crm/haloPSA.png" style="border-radius:8px;"
+                                                    class="haloPSAImageClass" data-toggle="tooltip"
+                                                    data-placement="right"
+                                                    title="Click here to access {{authenticationService?.partnerModule?.customName}} from your HaloPSA account"
+                                                    height="86" width="90"
+                                                    onmouseover="this.src='assets/images/crm/connecting.png';"
+                                                    onmouseout="this.src='assets/images/crm/haloPSA.png';">
+                                            </a> <a *ngIf="haloPSAImageNormal" id="haloPSA_buttonNormal"
+                                                style="background-color: white"
+                                                (click)="checkingHaloPSAContactsAuthentication()"
+                                                [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 13">
+                                                <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :haloPSAImageBlur==true}"
+                                                    src="assets/images/crm/haloPSA.png" style="border-radius:8px;"
+                                                    class="haloPSAImageClass" data-toggle="tooltip"
+                                                    data-placement="right"
+                                                    title="Click here to access {{authenticationService?.partnerModule?.customName}} from your HaloPSA account"
+                                                    height="86" width="90">
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
@@ -392,7 +422,7 @@
                     <li><a id="saveAs_button" [class.disabled]="isSaveAsList"
                             *ngIf="selectedAddPartnerOption == 5 && !clipBoard"
                             (click)="saveAsChange(true); editContactComponent.addPartnerSave = true" translate>Create
-                            New List </a></li>
+                            New Group </a></li>
                     <li><a id="exportToExcel"
                             *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard"
                             (click)="downloadPartnerList()" translate>Export To Excel </a></li>
@@ -403,7 +433,7 @@
                     <!---XNFR-278-->
                     <li
                         *ngIf="isPartner && selectedAddPartnerOption == 5 && pagination?.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0">
-                        <a (click)="openMergePopup()" translate> Add To Lists</a>
+                        <a (click)="openMergePopup()" translate> Add To Groups</a>
                     </li>
                     <!---XNFR-278-->
                 </ul>
@@ -501,14 +531,15 @@
                                         <th translate>EMAIL</th>
                                         <th translate>FIRST NAME</th>
                                         <th translate>LAST NAME</th>
-                                        <th *ngIf="selectedAddPartnerOption === 6" translate>COMPANY</th>
-                                        <th *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9"></th>
+                                        <th
+                                            *ngIf="selectedAddPartnerOption == 7 || selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 6 ">
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <ng-container *ngFor="let user of pagedItems;let i = index">
                                         <tr class='row_{{i}}'>
-                                            <td *ngIf="selectedAddPartnerOption != 8 && selectedAddPartnerOption != 9"
+                                            <td *ngIf="selectedAddPartnerOption != 8 && selectedAddPartnerOption != 9 && selectedAddPartnerOption != 7 && selectedAddPartnerOption != 6"
                                                 align="center"><input type="checkbox"
                                                     [checked]="selectedContactListIds.indexOf(user.id)>-1"
                                                     class="chk checkBox_shadow"
@@ -517,7 +548,7 @@
                                                     id="{{user.id}}"
                                                     (click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,user.company,user.contactCompany,user,$event)" />
                                             </td>
-                                            <td *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9"
+                                            <td *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 7 || selectedAddPartnerOption == 6"
                                                 align="center"><input type="checkbox"
                                                     [checked]="selectedContactListIds.indexOf(user.id)>-1"
                                                     class="chk checkBox_shadow"
@@ -528,9 +559,8 @@
                                             <td>{{user.emailId}}</td>
                                             <td>{{user.firstName}}</td>
                                             <td>{{user.lastName}}</td>
-                                            <td *ngIf="selectedAddPartnerOption === 6">{{user.contactCompany}}</td>
                                             <td
-                                                *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 11 || selectedAddPartnerOption == 12">
+                                                *ngIf="selectedAddPartnerOption == 7 || selectedAddPartnerOption == 6 || selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 11 || selectedAddPartnerOption == 12">
                                                 <button class="lightgray-btn" id='more_less_button_{{i}}'
                                                     (click)="user.isShowDetails = ! user.isShowDetails">
                                                     <span *ngIf="!user.isShowDetails" translate>More</span> <span
@@ -543,13 +573,34 @@
                                             <td colspan="12">
                                                 <table cellpadding="5" cellspacing="0" class="border border-none">
                                                     <tbody>
-                                                        <tr *ngIf="user?.company">
-                                                            <td class='pt10 pb10 bold' translate>Company:</td>
+
+                                                        <tr>
+                                                            <td class='pt10 pb10 pr10 bold' translate>Account Name:
+                                                            </td>
+                                                            <td class='pt10 pb10'>{{user.accountName}}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td class='pt10 pb10 pr10 bold' translate>Account Sub Type:
+                                                            </td>
+                                                            <td class='pt10 pb10'>{{user.accountSubType}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class='pt10 pb10 bold' translate>Account Owner: </td>
+                                                            <td class='pt10 pb10'>{{user.accountOwner}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class='pt10 pb10 bold' translate>Company: </td>
                                                             <td class='pt10 pb10' style="padding-left: 20px;">
                                                                 {{user.company}}</td>
                                                         </tr>
-                                                        <tr *ngIf="user?.title">
-                                                            <td class='pt10 pb10 bold' translate>Job Title:</td>
+                                                        <tr>
+                                                            <td class='pt10 pb10 bold' translate>Company Domain: </td>
+                                                            <td class='pt10 pb10' style="padding-left: 20px;">
+                                                                {{user.companyDomain}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class='pt10 pb10 bold' translate>Job Title: </td>
                                                             <td class='pt10 pb10' style="padding-left: 20px;">
                                                                 {{user.title}}</td>
                                                         </tr>
@@ -578,7 +629,17 @@
                                                                 </h5>
                                                             </td>
                                                         </tr>
-                                                        <tr *ngIf="user?.website">
+                                                        <tr>
+                                                            <td class='pt10 pb10 bold' translate>Territory:</td>
+                                                            <td class='pt10 pb10'>{{user.territory}}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td class='pt10 pb10 bold' translate>Region:</td>
+                                                            <td class='pt10 pb10'>{{user.region}}</td>
+                                                        </tr>
+
+                                                        <tr>
                                                             <td class='pt10 pb10 bold' translate>Website:</td>
                                                             <td class='pt10 pb10'>{{user.website}}</td>
                                                         </tr>
@@ -645,9 +706,9 @@
                                 <textarea id="copyFromclipTextArea" class="textareaNumber copy_text_area_border"
                                     title="Calendar View" [(ngModel)]="clipboardTextareaText"
                                     title="please fill out this field"
-                                    placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
+                                    placeholder="FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
                                     [ngModelOptions]="{standalone: true}"
-                                    style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
+                                    style="height: 150px;font-size: 11px;line-height: 1.4;min-width: 100%;max-width: 200%;width: 140%;"
                                     required="required">
                                         </textarea>
                             </div>
@@ -687,13 +748,10 @@
                                         <thead *ngIf="newPartnerUser?.length != 0">
                                             <tr>
                                                 <th style="width: 25%; text-align: left;">Entity info</th>
-                                                <th>PHONE</th>
+                                                <th>FIRST NAME</th>
                                                 <!-- <th>JOB TITLE</th> -->
-                                                <th class="hidden-xs" translate>VERTICAL</th>
-                                                <th class="hidden-xs" translate>REGION</th>
-                                                <th class="hidden-xs" translate>TYPE</th>
-                                                <th class="hidden-xs" translate>CATEGORY</th>
-                                                <th class='hidden-xs hidden-sm text-left' translate>ADDRESS</th>
+                                                <th class="hidden-xs" translate>LAST NAME</th>
+                                                <th class="hidden-xs" translate></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -704,45 +762,108 @@
                                                             [userInfo]="newContact"> </app-user-info></td>
                                                     <td class="hidden-xs">
                                                         <h5>
-                                                            <span *ngIf="newContact?.mobileNumber; else NA"> <a
-                                                                    href="tel:{{newContact?.mobileNumber}}"><i
-                                                                        class="fa fa-phone" aria-hidden="true"
-                                                                        style="padding-right: 4px;"></i>{{newContact?.mobileNumber}}</a>
-                                                            </span>
+                                                            {{newContact?.firstName}}
                                                         </h5>
-                                                    </td>
-                                                    <td class="hidden-xs">{{newContact.vertical |
-                                                        slice:0:15}} <span
-                                                            *ngIf="newContact.vertical?.length>15">...</span>
-                                                    </td>
-                                                    <td class="hidden-xs">{{newContact.region |
-                                                        slice:0:15}} <span
-                                                            *ngIf="newContact.region?.length>15">...</span>
-                                                    </td>
-                                                    <td class="hidden-xs">{{newContact.partnerType |
-                                                        slice:0:15}} <span
-                                                            *ngIf="newContact.partnerType?.length>15">...</span>
-                                                    </td>
-                                                    <td class="hidden-xs hidden-sm">{{newContact.category |
-                                                        slice:0:15}} <span
-                                                            *ngIf="newContact.category?.length>15">...</span>
                                                     </td>
                                                     <td class="hidden-xs">
-                                                        <h5 *ngIf="newContact?.address" class='mb0'>
-                                                            {{newContact.address}}</h5>
-                                                        <h5 class='mb0'>
-                                                            <span
-                                                                *ngIf="newContact?.city">{{newContact.city}},&nbsp;</span><span
-                                                                *ngIf="newContact?.state">{{newContact.state}},</span>
-                                                        </h5>
-                                                        <h5 class='mt0'>
-                                                            <span
-                                                                *ngIf="newContact?.zipCode">{{newContact.zipCode}},&nbsp;</span><span
-                                                                *ngIf="newContact?.country">{{newContact.country}}</span>
+                                                        <h5>
+                                                            {{newContact?.lastName}}
                                                         </h5>
                                                     </td>
-                                                    <ng-template #NA>
-                                                        <span>N/A</span></ng-template>
+                                                    <td>
+                                                        <button id='more_less_button_{{i}}'
+                                                            class="hidden-xs lightgray-btn"
+                                                            (click)="newContact.isShowDetails = ! newContact.isShowDetails">
+                                                            <span *ngIf="!newContact.isShowDetails"
+                                                                translate>More</span>
+                                                            <span *ngIf="newContact.isShowDetails" translate>Less</span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="pagedItems"
+                                                    [ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}">
+                                                    <td colspan="12">
+                                                        <table cellpadding="5" cellspacing="0"
+                                                            class="border border-none">
+                                                            <tbody>
+
+                                                                <tr>
+                                                                    <td class='pt10 pb10 pr10 bold' translate>Account
+                                                                        Name:
+                                                                    </td>
+                                                                    <td class='pt10 pb10'>{{newContact.accountName}}
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td class='pt10 pb10 pr10 bold' translate>Account
+                                                                        Sub Type:
+                                                                    </td>
+                                                                    <td class='pt10 pb10'>{{newContact.accountSubType}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Account Owner:
+                                                                    </td>
+                                                                    <td class='pt10 pb10'>{{newContact.accountOwner}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Company Domain:
+                                                                    </td>
+                                                                    <td class='pt10 pb10' style="padding-left: 20px;">
+                                                                        {{newContact.companyDomain}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Address:</td>
+                                                                    <td align="center" class="hidden-xs">
+                                                                        <h5 *ngIf="newContact?.address" class='mb0'>
+                                                                            {{newContact.address}}
+                                                                        </h5>
+                                                                        <h5 class='m0' *ngIf="newContact?.city">
+                                                                            {{newContact.city}}<span
+                                                                                *ngIf="newContact.city && newContact.state">,&nbsp;</span>{{newContact.state}}
+                                                                        </h5>
+
+                                                                        <h5 *ngIf="newContact?.zipCode || newContact?.country"
+                                                                            class='mt0'>
+                                                                            {{newContact.zipCode}}<span
+                                                                                *ngIf="newContact?.zipCode && newContact.country">,&nbsp;</span>{{newContact.country}}
+                                                                        </h5>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Website:</td>
+                                                                    <td class='pt10 pb10'>{{newContact.website}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Region:</td>
+                                                                    <td class='pt10 pb10'>{{newContact.region}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Territory:</td>
+                                                                    <td class='pt10 pb10'>{{newContact.territory}}</td>
+                                                                </tr>
+
+
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Vertical:</td>
+                                                                    <td class='pt10 pb10'>{{newContact.vertical}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Type: </td>
+                                                                    <td class='pt10 pb10'>{{newContact.partnerType}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Category: </td>
+                                                                    <td class='pt10 pb10'>{{newContact.category}}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
                                                 </tr>
                                             </ng-container>
 
@@ -783,7 +904,7 @@
                     <div class="portlet-title" style="border-bottom: none !important;">
                         <div class="caption" style="padding-top: 11px !important;" translate>
                             <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>
-                            List of {{authenticationService?.partnerModule?.customName}}
+                            Group of {{authenticationService?.partnerModule?.customName}}
                         </div>
                         <div class="inputs" align="right" style="float: right; padding: 4px;display:flex;"
                             *ngIf="!referenceService.isMobileScreenSize()">
@@ -811,7 +932,7 @@
                                 </div>
                             </div>
                             <button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
-                                [disabled]="pagination.totalRecords == 0" title="Click here to email the list"
+                                [disabled]="pagination.totalRecords == 0" title="Click here to email the group"
                                 (click)="downloadPartnerListCsv()" style="margin: 3px -5px 0px 3px;">
                                 <i aria-hidden="true" class="fas fa-file-export p10"></i>
                             </button>
@@ -830,7 +951,8 @@
                                     <strong>Please wait while we process your request</strong>
                                 </div>
                                 <div *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList"
-                                    class="alert alert-info alert-dismissable text-center">No {{authenticationService?.partnerModule?.customName}} found.</div>
+                                    class="alert alert-info alert-dismissable text-center">No
+                                    {{authenticationService?.partnerModule?.customName}} found.</div>
                                 <app-list-loader *ngIf="isLoadingList"></app-list-loader>
                                 <div class="table-responsive" *ngIf="!isLoadingList">
                                     <table class='table tgrid' aria-describedby="">
@@ -928,7 +1050,7 @@
                                                             <a class="custom-icon"
                                                                 *ngIf="!contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor"
                                                                 data-toggle="tooltip" data-placement="bottom"
-                                                                title="unsubscribe" (click)="unsubscribeUser(contact)">
+                                                                title="Unsubscribe" (click)="unsubscribeUser(contact)">
                                                                 <i class="fa fa-bell-slash-o IconCustomization"
                                                                     aria-hidden="true"></i>
                                                                 <div class="clickicons"></div>
@@ -1005,48 +1127,70 @@
                                                         <table cellpadding="5" cellspacing="0" class="border"
                                                             style="border:none !important;">
                                                             <tbody>
-                                                                <tr class="hidden-sm hidden-md hidden-lg bg-unset">
-                                                                    <td class='pt10 pb10 bold mr_10' translate>Vertical:
+
+                                                                <tr>
+                                                                    <td class='pt10 pb10 pr10 bold' translate>Account
+                                                                        Name:
                                                                     </td>
-                                                                    <td>{{contact.vertical}}</td>
+                                                                    <td class='pt10 pb10'>{{contact.accountName}}</td>
                                                                 </tr>
-                                                                <tr class="hidden-sm hidden-md hidden-lg bg-unset">
-                                                                    <td class='pt10 pb10 bold mr_10' translate>Region:
+
+                                                                <tr>
+                                                                    <td class='pt10 pb10 pr10 bold' translate>Account
+                                                                        Sub Type:
                                                                     </td>
-                                                                    <td>{{contact.region}}</td>
-                                                                </tr>
-                                                                <tr class="hidden-sm hidden-md hidden-lg bg-unset">
-                                                                    <td class='pt10 pb10 bold mr_10' translate>Type:
+                                                                    <td class='pt10 pb10'>{{contact.accountSubType}}
                                                                     </td>
-                                                                    <td>{{contact.partnerType}}</td>
                                                                 </tr>
-                                                                <tr class="hidden-sm hidden-md hidden-lg bg-unset">
-                                                                    <td class='pt10 pb10 bold mr_10' translate>Category:
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Account Owner:
                                                                     </td>
-                                                                    <td>{{contact.category}}</td>
+                                                                    <td class='pt10 pb10'>{{contact.accountOwner}}</td>
                                                                 </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Company Domain:
+                                                                    </td>
+                                                                    <td class='pt10 pb10' style="padding-left: 20px;">
+                                                                        {{contact.companyDomain}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Website : </td>
+                                                                    <td class='pt10 pb10' style="padding-left: 20px;">
+                                                                        {{contact.website}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Address:  </td>
+                                                                    <td class="hidden-xs">
+                                                                        <h5 *ngIf="contact?.address" class='mb0'>
+                                                                            {{contact.address}}
+                                                                        </h5>
+                                                                        <h5 class='m0' *ngIf="contact?.city">
+                                                                            {{contact.city}}<span
+                                                                                *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}
+                                                                        </h5>
+                                                                        <h5 class='m0' *ngIf="contact?.region">
+                                                                            {{contact.region}}
+                                                                        </h5>
+                                                                        <h5 *ngIf="contact?.zipCode || contact?.country"
+                                                                            class='mt0'>
+                                                                            {{contact.zipCode}}<span
+                                                                                *ngIf="contact?.zipCode || contact.country">,&nbsp;</span>{{contact.country}}
+                                                                        </h5>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Territory : </td>
+                                                                    <td class='pt10 pb10' style="padding-left: 20px;">
+                                                                        {{contact.territory}}</td>
+                                                                </tr>
+
                                                                 <tr class="bg-unset" *ngIf="gdprStatus">
                                                                     <td class='pt10 pb10 bold mr_10' translate>Legal
                                                                         Basis :</td>
                                                                     <td align="center" class="pt10 pb10">
                                                                         {{contact.legalBasisString}}</td>
-                                                                </tr>
-                                                                <tr class="bg-unset">
-                                                                    <td class='pt10 pb10 bold mr_10' translate>Address:
-                                                                    </td>
-                                                                    <td align="center">
-                                                                        <h5 *ngIf="contact?.address" class='mb0'>
-                                                                            {{contact.address}}</h5>
-                                                                        <h5 class='m0'>
-                                                                            {{contact.city}}<span
-                                                                                *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}
-                                                                        </h5>
-                                                                        <h5 *ngIf="contact?.zipCode || contact.country"
-                                                                            class='mt0 pos_mrg_top12'>
-                                                                            {{contact.zipCode}}<span
-                                                                                *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
-                                                                        </h5>
-                                                                    </td>
                                                                 </tr>
                                                                 <tr class="bg-unset"
                                                                     *ngIf="authenticationService.contactsCount">
@@ -1067,7 +1211,8 @@
                             </div>
                         </div>
                     </div>
-                    <app-pagination  *ngIf="!isLoadingList" [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)"
+                    <app-pagination *ngIf="!isLoadingList" [pagination]="pagination" [type]="'contacts'"
+                        (notifyParent)="setPage($event)"
                         (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination>
                 </div>
                 <!-- END EXAMPLE TABLE PORTLET-->
@@ -1445,6 +1590,11 @@
         (closeEvent)="closeConnectWiseForm($event)"></app-connectwise-authentication-popup>
 </div>
 
+<!-- XNFR-502-->
+<div *ngIf="showHaloPSAAuthenticationForm">
+    <app-halopsaauthenticationpopup (closeEvent)="closeHaloPSAForm($event)"></app-halopsaauthenticationpopup>
+</div>
+
 <!-- T&C Modal -->
 <div class="modal fade" id="tcModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog"
     aria-labelledby="tcModalLabel" aria-hidden="true">
@@ -1775,6 +1925,7 @@
 <!---XNFR-278-->
 <ng-container *ngIf="mergeOptionClicked">
     <app-copy-group-users-modal-popup [userListId]="partnerListId" [selectedUserIds]="selectedUserIdsForMerging"
+        [moduleName]=module
         (copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>
 </ng-container>
 

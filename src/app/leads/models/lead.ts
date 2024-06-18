@@ -41,4 +41,5 @@ export class Lead {
     createdByPipelineStageId: number;
     createdForPipelineId: number;         
     createdForPipelineStageId: number;
+    halopsaTicketTypeId: any;
 }

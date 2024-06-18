@@ -125,7 +125,14 @@ export class Pagination {
 	source:string;
 	defaultLandingPage:boolean;
 	showLeadsForAttachingLead:boolean = false; /*** XNFR-476 ***/
+	campaignViewType : string = "";
 	/*** XNFR-504 ***/
 	selectedVendorCompanyIds: any[] = [];
 	selectedTeamMemberIds: any[] = [];
+	id = 0;
+	registeredByCompanyId = 0;
+	registeredByUserId = 0;
+	/*** XNFR-522 ***/
+	vendorJourneyOnly:boolean = false;
+
 }

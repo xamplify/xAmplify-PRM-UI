@@ -1,18 +1,20 @@
-<div class="caption caption-md col-xs-12" *ngIf="editVendorPage || isViewAnalytics">
+<div class="caption caption-md col-xs-12" *ngIf="editVendorPage || isViewAnalytics 
+|| isFormAnalytics">
   <i class="icon-globe theme-font hide" aria-hidden="true"></i>
   <a class="close-circle pull-right" (click)="goBack()">
       <i class="fa fa-times" aria-hidden="true"></i>
   </a>
 </div>
-<app-landing-pages-list-and-grid-view *ngIf="!editVendorPage && !isViewAnalytics" [vendorJourney]='vendorJourney'
+<app-landing-pages-list-and-grid-view *ngIf="!editVendorPage && !isViewAnalytics && !isFormAnalytics && !isEditVendorOrMasterForm" [vendorJourney]='vendorJourney'
   [isLandingPages] ='isLandingPages' [isMasterLandingPages] = 'isMasterLandingPages' [loggedInUserCompanyId]="loggedInUserCompanyId"
-  (vendorLandingPage)='editVendorLandingPage($event)' (viewAnalytics) = "viewAnalytics($event)"></app-landing-pages-list-and-grid-view>
+  (vendorLandingPage)='editVendorLandingPage($event)' (viewAnalytics) = "viewAnalytics($event)" (isFormAnalytics) = "viewLandingPageForms($event)"></app-landing-pages-list-and-grid-view>
 <div class="row" *ngIf="editVendorPage">
   <div class="col-xs-12">
     <div class="page-bar mWidth" style="border:none !important;">
       <app-preview-popup #previewPopUpComponent></app-preview-popup>
       <app-merge-tags [input]="mergeTagsInput"></app-merge-tags>
-      <app-add-vendor-logos [vendorLogoDetails] = "vendorLogoDetails" [input]="mergeTagsInput"></app-add-vendor-logos>
+      <app-add-vendor-logos *ngIf = "isMasterLandingPages" [vendorLogoDetails] = "vendorLogoDetails"
+      [sharedVendorLogoDetails] = "sharedVendorLogoDetails" [input]="mergeTagsInput"></app-add-vendor-logos>
       <div>
         <button class="button_blue bgcolor-unset" (click)="checkOrUncheckOpenLinksInNewTabOption()"
           style="float:right;padding-right:5px;">
@@ -25,9 +27,13 @@
     </div>
     <div class="tile mScroll" id="CardBgforSection" style="border-radius: 5px;">
       <app-xamplify-default-templates *ngIf="editVendorPage" [vendorJourney]='vendorJourney' [isMasterLandingPages] = 'isMasterLandingPages'
-        [landingPage]='vendorDefaultTemplate' (redirect)="resetVendorJourney()"></app-xamplify-default-templates>
+        [landingPage]='vendorDefaultTemplate' [openInNewTabChecked] = "openInNewTabChecked"  [loggedInUserCompanyId]= 'loggedInUserCompanyId' [vendorLogoDetails]="vendorLogoDetails" [sharedVendorLogoDetails] = "sharedVendorLogoDetails" (redirect)="resetVendorJourney()"
+        (landingPageOpenInNewTabChecked)="landingPageOpenInNewTabChecked()" ></app-xamplify-default-templates>
     </div>
   </div>
 </div>
 <app-landing-page-analytics *ngIf = "isViewAnalytics" [vendorJourney] = 'true' [vendorLandingPageId] = "selectedLandingPageId">
 </app-landing-page-analytics>
+<app-add-form-util *ngIf = "isEditVendorOrMasterForm" [isMdfForm]="false" [selectedForm]="selectedFrom"  [isCopyForm]="false"
+[isVendorOrMasterLandingPage] = "true" (goBack) = "goToManageForms()"></app-add-form-util>
+<app-manage-form *ngIf = "isFormAnalytics" [isVendorOrMasterLandingPage] = "true" [vendorLandingPageId]="selectedLandingPageId" (vendorJourneyOrMasterLandingPageEdit)="editForm($event)"></app-manage-form>

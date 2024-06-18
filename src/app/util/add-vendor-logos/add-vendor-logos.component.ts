@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter,OnDestroy } from '@angular/core';
-import { ReferenceService } from 'app/core/services/reference.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { VendorLogoDetails } from 'app/landing-pages/models/vendor-logo-details';
 declare var $: any;
 @Component({
   selector: 'app-add-vendor-logos',
@@ -14,12 +15,13 @@ export class AddVendorLogosComponent implements OnInit {
 	@Output() passValueAndNotifyComponent = new EventEmitter();
 	successMessagePrefix = "Copied";
 	modalPopupId = "add-vendor-logo-popup";
-	@Input()  vendorLogoDetails = [];
-	constructor() { }
+	@Input()  vendorLogoDetails:VendorLogoDetails[];
+
+	@Input() sharedVendorLogoDetails:VendorLogoDetails[]=[];
+	constructor(public authenticationService: AuthenticationService) { }
 
 	ngOnInit() {
 		this.hideButton = this.input['hideButton'];
-		let page = this.input['page'];
 
 		if (this.hideButton == undefined) {
 			this.hideButton = false;
@@ -42,16 +44,31 @@ export class AddVendorLogosComponent implements OnInit {
 		$('#' + this.modalPopupId).modal('hide');
 	}
 
-	passToOtherComponent(i: number) {
-		if (this.hideButton) {
-			let copiedValue = $('#merge-tag-' + i).val();
-			let object = {};
-			object['type'] = this.input['type'];
-			object['copiedValue'] = copiedValue;
-			object['autoResponseSubject'] = this.input['autoResponseSubject'];
-			this.passValueAndNotifyComponent.emit(object);
-			$('#' + this.modalPopupId).modal('hide');
-		}
+	viewTeamMembers(item: any) {
+		this.sharedVendorLogoDetails.forEach((element) => {
+			let partnerCompanyId = element.companyId
+			let clickedCompanyId = item.companyId;
+			if (clickedCompanyId == partnerCompanyId) {
+				element.expand = !element.expand;
+			}else{
+				element.expand= false;
+			}
+		});
+	}	
 
+	selctectLandingPageForCompany(companyId:number, partnerId:number){
+
+		for (let company of this.sharedVendorLogoDetails) {
+			if (company.companyId == companyId) {
+				for (let member of company.teamMembers) {
+					if (member.partnerId != partnerId) {
+						member.selected = false;
+					}
+				}
+			}
+		}
+		console.log(this.sharedVendorLogoDetails)
 	}
+
+
 }

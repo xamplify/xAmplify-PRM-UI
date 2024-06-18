@@ -60,7 +60,7 @@
             <th class="center-aligned" translate>Lead</th>
             <th class="center-aligned" *ngIf="pageText != 'TOTAL LEADS'" translate>Deal Title</th>
             <th class="center" translate>Campaign Name</th>
-            <th class="center"  translate>Added By</th>
+            <th class="center"  translate>{{LEAD_CONSTANTS.addedBy}}</th>
             <th class="center" *ngIf ="!isPartner && pageText != 'TOTAL LEADS'" translate>Status</th>
             <th class="center" style="width: 18%" translate>Actions</th>
             <!--  <th class="center">Details</th> -->
@@ -72,7 +72,6 @@
               <td>
                 <app-user-info [userInfo]="item" [isCompanyInfo]="true"></app-user-info>
               </td>
-
               <td class="re-distributed-count" title="{{item.dealTitle}}" *ngIf="pageText != 'TOTAL LEADS'">{{item.dealTitle | slice:0:20}}
                 <span *ngIf="item.dealTitle?.length>20">...</span>
               </td>
@@ -185,14 +184,8 @@
                    
                   <button class="btn btn-primary register_deal" *ngIf="item.deal" translate>Update Deal</button>
                   <button class="btn btn-primary register_deal" *ngIf="!item.deal" translate>Register Deal</button> 
-                   
-              
               </a>
               </td>
-              <!-- <td>
-                    	<a (click)="showComments(item.dealId)">Click Here</a>
-                    </td> -->
-           
             </tr>
           </ng-container>
         </tbody>

@@ -34,6 +34,7 @@ import { HostListener } from '@angular/core';
 import { ComponentCanDeactivate } from 'app/component-can-deactivate';
 import { Observable } from 'rxjs/Observable';
 
+
 declare var  $,swal,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
 
@@ -203,6 +204,7 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
     selectedAutoResponseId = 0;  
     selectedAutoResponseCustomEmailTemplateId = 0;
     anyLaunchButtonClicked = false;
+    
 
     /*****XNFR-330****/             
     errorClass = "form-group has-error has-feedback";

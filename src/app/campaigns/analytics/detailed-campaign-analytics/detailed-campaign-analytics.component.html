@@ -230,7 +230,8 @@
                      campaign.selectedEmailTemplateId > 0
                      ">
                      <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" style="display: flex"
-                        (click)="openEmailTemplateInNewTab(campaign.emailTemplate)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ? true : null">
+                        (click)="openEmailTemplateInNewTab(campaign.emailTemplate)"
+                        [class.disabled]="!isPartnerEnabledAnalyticsAccess ? true : null">
                         <div class="visual">
                            <i class="fa fa-envelope-open" aria-hidden="true"></i>
                         </div>
@@ -265,7 +266,8 @@
                         'col-sm-4': campaignType === 'LANDINGPAGE',
                         forbidden: !isPartnerEnabledAnalyticsAccess ? true : null
                         }" *ngIf="campaignType === 'LANDINGPAGE' && campaign.landingPageId > 0">
-                         <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" [class.disabled]="!isPartnerEnabledAnalyticsAccess ? true : null">
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft"
+                        [class.disabled]="!isPartnerEnabledAnalyticsAccess ? true : null">
                         <div class="visual mb-pageinfo">
                            <i class="fa fa-envelope-open" aria-hidden="true"></i>
                         </div>
@@ -277,7 +279,8 @@
                                  slice : 0 : 12 }}</strong>
                               <span *ngIf="campaign.landingPage.name?.length > 12">...</span>
                            </div>
-                           <div class="camp-desc" *ngIf="isDataShare" (click)="openPageInNewTab(campaign?.landingPage?.id)">
+                           <div class="camp-desc" *ngIf="isDataShare"
+                              (click)="openPageInNewTab(campaign?.landingPage?.id)">
                               <span>Click for preview</span>
                            </div>
                         </div>
@@ -355,13 +358,25 @@
                            <div class="camp-title" *ngIf="campaign?.oneClickLaunch">
                               Shared List Info
                            </div>
-                           <div class="camp-title" *ngIf="!campaign?.oneClickLaunch">
-                              List Info
+                           <div>
+                              <span class="camp-title"
+                                 *ngIf="((authenticationService.isOrgAdmin() && campaign?.channelCampaign )|| authenticationService.isVendorPartner()) ">
+                                 {{ 'Group Info' }}
+                              </span>
+                              <span class="camp-title"
+                                 *ngIf="((!authenticationService.isVendorPartner() && !campaign?.channelCampaign && !campaign?.oneClickLaunch)  && authenticationService.isOrgAdmin())">
+                                 {{ 'List Info' }}
+                              </span>
                            </div>
                            <div class="camp-number">
-                              <strong class="m0 StongTextdc" *ngIf="!campaign?.oneClickLaunch">{{
+                              <strong class="m0 StongTextdc"
+                                 *ngIf="((!authenticationService.isVendorPartner() && !campaign?.channelCampaign && !campaign?.oneClickLaunch)  && authenticationService.isOrgAdmin())">{{
                                  campaingContactLists?.length }}
                                  List(s)</strong>
+                              <strong class="m0 StongTextdc"
+                                 *ngIf="((authenticationService.isOrgAdmin() && campaign?.channelCampaign )|| authenticationService.isVendorPartner()) ">{{
+                                 campaingContactLists?.length }}
+                                 Group(s)</strong>
                               <strong class="m0" *ngIf="campaign?.oneClickLaunch">{{ campaingContactLists?.length }}
                                  Shared List(s)</strong>
                            </div>
@@ -1977,11 +1992,11 @@
                      </app-pagination>
                   </div>
                   <!-- End of 24 -->
-                  <div *ngIf="
+                 <!--  <div *ngIf="
                  pagination.totalRecords == 0 && !httpRequestLoader.isLoading
                  " class="alert alert-info">
                      <strong>No Data Found.</strong>
-                  </div>
+                  </div> -->
                </div>
             </div>
             <div class="col-xs-12 p5" *ngIf="statusCode == 404">
@@ -2027,7 +2042,8 @@
             </a>
             <app-manage-campaign-deals [campaignId]="campaignId" [isDataShare]="isDataShare"
                [fromAnalytics]="!isNavigatedThroughAnalytics" [showTeamMemberFilter]="campaign.channelCampaign"
-               [isPartnerVersion]="campaign.nurtureCampaign" (viewCampaignDealForm)="viewCampaignDealForm($event)"
+               [isVendorVersion]="!campaign.nurtureCampaign" [isPartnerVersion]="campaign.nurtureCampaign"
+               (viewCampaignDealForm)="viewCampaignDealForm($event)"
                (editCampaignDealForm)="editCampaignDealForm($event)" (refreshCounts)="refreshCounts()"
                (showCommentsPopUp)="showDealComments($event)">
             </app-manage-campaign-deals>
@@ -2042,15 +2058,15 @@
          style="margin: 9px 14px; padding-top: 3px; padding-left: 5px">
          <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px" aria-hidden="true"></span></a>
       <a class="pull-right close-circle" *ngIf="dealActionType=='edit'" data-rel="fancybox-button"
-         (click)="showDealComments(selectedDealForComments)" data-toggle="tooltip" data-placement="bottom" title="Comments/History"
-         style="margin: 9px 0px;padding-top: 7px;padding-left: 5px;">
+         (click)="showDealComments(selectedDealForComments)" data-toggle="tooltip" data-placement="bottom"
+         title="Comments/History" style="margin: 9px 0px;padding-top: 7px;padding-left: 5px;">
          <span class="fa fa-comments IconCustomization" style="z-index: 1;font-size: 13px;" aria-hidden="true"
             style="font-size:18px"></span>
          <span *ngIf="selectedDealForComments.unReadChatCount > 0" class="badge badge-default"
             style="margin-top: -62px; margin-right: -15px;background-color: #ed1c24 !important;">{{selectedDealForComments.unReadChatCount}}</span>
-      </a> 
-      <app-add-deal [leadId]="leadId" [dealId]="dealId" [actionType]="dealActionType" [hideAttachLeadButton]="true"
-         (notifySubmitSuccess)="showSubmitDealSuccess()">
+      </a>
+      <app-add-deal [leadId]="leadId" [dealId]="dealId" [actionType]="dealActionType" [hideAttachLeadButton]="true" 
+         (notifySubmitSuccess)="showSubmitDealSuccess()" [isVendorVersion]="!campaign.nurtureCampaign" >
       </app-add-deal>
    </div>
 </section>
@@ -3473,7 +3489,14 @@
             </button>
             <h4 class="modal-title" id="show_contact-list-info">
                <span *ngIf="campaign?.oneClickLaunch">Shared List Info</span>
-               <span *ngIf="!campaign?.oneClickLaunch">List Info</span>
+               <span
+                  *ngIf="((authenticationService.isOrgAdmin() && campaign?.channelCampaign )|| authenticationService.isVendorPartner()) ">
+                  {{ 'Group Info' }}
+               </span>
+               <span
+                  *ngIf="((!authenticationService.isVendorPartner() && !campaign?.channelCampaign && !campaign?.oneClickLaunch)  && authenticationService.isOrgAdmin())">
+                  {{ 'List Info' }}
+               </span>
             </h4>
          </div>
          <div class="modal-body">
@@ -3483,8 +3506,17 @@
                      <table class="table tgrid">
                         <thead>
                            <tr>
-                           <th class="center">List name</th>
-                        </tr>
+                              <th class="center">
+                                 <span class="camp-title"
+                                    *ngIf="((authenticationService.isOrgAdmin() && campaign?.channelCampaign) || authenticationService.isVendorPartner())">
+                                    Group Name
+                                 </span>
+                                 <span class="camp-title"
+                                    *ngIf="((!authenticationService.isVendorPartner() && !campaign?.channelCampaign && !campaign?.oneClickLaunch) && authenticationService.isOrgAdmin())">
+                                    List Name
+                                 </span>
+                              </th>
+                           </tr>
                         </thead>
                         <tbody>
                            <tr *ngFor="let item of campaingContactLists">
@@ -3506,10 +3538,10 @@
                      <table class="table tgrid">
                         <thead>
                            <tr>
-                           <th class="center">Email Id</th>
-                           <th class="center">First Name</th>
-                           <th class="center">Last Name</th>
-                        </tr>
+                              <th class="center">Email Id</th>
+                              <th class="center">First Name</th>
+                              <th class="center">Last Name</th>
+                           </tr>
                         </thead>
                         <tbody>
                            <tr *ngFor="let item of campaingContactListValues">
@@ -3810,6 +3842,7 @@
    </app-add-lead>
 </ng-container>
 <app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" [deal]="selectedDeal" [editTextArea]="editTextArea"
+   [isVendorVersion]="!campaign.nurtureCampaign"
    (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
 <!-- --Lead Registration -->
 <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

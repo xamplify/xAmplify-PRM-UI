@@ -457,7 +457,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
 								self.removeCsv();
 							} else {
-								if (!self.uploadCsvUsingFile && ! self.filePrevew) {
+								if (!self.uploadCsvUsingFile && !self.filePrevew) {
 									self.uploadCsvUsingFile = true;
 									self.filePrevew = true;
 									self.setCsvPage(1);
@@ -473,33 +473,39 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							self.uploader.queue.length = 0;
 						}
 
-					} else if ((self.isPartner && headers.length == 15)) {
+					} else if ((self.isPartner && headers.length == 21)) {
 						if (self.validatePartnerCsvHeaders(headers)) {
 							var csvResult = Papa.parse(contents);
 							var allTextLines = csvResult.data;
+
 							for (var i = 1; i < allTextLines.length; i++) {
-								if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
+								if (allTextLines[i][8] && allTextLines[i][8].trim().length > 0) {
 									let user = new User();
-									user.emailId = allTextLines[i][4].trim();
+									user.emailId = allTextLines[i][8].trim();
 									user.firstName = allTextLines[i][0].trim();
 									user.lastName = allTextLines[i][1].trim();
-									user.contactCompany = allTextLines[i][2].trim();
-									user.jobTitle = allTextLines[i][3].trim();
-									user.vertical = allTextLines[i][5].trim();
-									user.region = allTextLines[i][6].trim();
-									user.partnerType = allTextLines[i][7].trim();
-									user.category = allTextLines[i][8].trim();
-									user.address = allTextLines[i][9].trim();
-									user.city = allTextLines[i][10].trim();
-									user.state = allTextLines[i][11].trim();
-									user.zipCode = allTextLines[i][12].trim();
-									user.country = allTextLines[i][13].trim();
-									user.mobileNumber = allTextLines[i][14].trim();
+									user.accountName = allTextLines[i][2].trim();
+									user.accountOwner = allTextLines[i][3].trim();
+									user.accountSubType = allTextLines[i][4].trim();
+									user.contactCompany = allTextLines[i][5].trim();
+									user.companyDomain = allTextLines[i][6].trim();
+									user.jobTitle = allTextLines[i][7].trim();
+									user.website = allTextLines[i][9].trim();
+									user.vertical = allTextLines[i][10].trim();
+									user.region = allTextLines[i][11].trim();
+									user.territory = allTextLines[i][12].trim();
+									user.partnerType = allTextLines[i][13].trim();
+									user.category = allTextLines[i][14].trim();
+									user.address = allTextLines[i][15].trim();
+									user.city = allTextLines[i][16].trim();
+									user.state = allTextLines[i][17].trim();
+									user.zipCode = allTextLines[i][18].trim();
+									user.country = allTextLines[i][19].trim();
+									user.mobileNumber = allTextLines[i][20].trim();
 									user.legalBasis = self.selectedLegalBasisOptions;
 									self.users.push(user);
 									self.csvContacts.push(user);
 								}
-
 							}
 
 							if (allTextLines.length == 2) {
@@ -509,7 +515,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 								self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
 								self.removeCsv();
 							} else {
-								if (!self.uploadCsvUsingFile && ! self.filePrevew) {
+								if (!self.uploadCsvUsingFile && !self.filePrevew) {
 									self.uploadCsvUsingFile = true;
 									self.filePrevew = true;
 									self.setCsvPage(1);
@@ -542,20 +548,26 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	validatePartnerCsvHeaders(headers) {
 		return (this.removeDoubleQuotes(headers[0]) == "FIRSTNAME" &&
-		this.removeDoubleQuotes(headers[1]) == "LASTNAME" &&
-		this.removeDoubleQuotes(headers[2]) == "COMPANY" &&
-		this.removeDoubleQuotes(headers[3]) == "JOBTITLE" &&
-		this.removeDoubleQuotes(headers[4]) == "EMAILID" &&
-		this.removeDoubleQuotes(headers[5]) == "VERTICAL" &&
-		this.removeDoubleQuotes(headers[6]) == "REGION" &&
-		this.removeDoubleQuotes(headers[7]) == "TYPE" &&
-		this.removeDoubleQuotes(headers[8]) == "CATEGORY" &&
-		this.removeDoubleQuotes(headers[9]) == "ADDRESS" &&
-		this.removeDoubleQuotes(headers[10]) == "CITY" &&
-		this.removeDoubleQuotes(headers[11]) == "STATE" &&
-		this.removeDoubleQuotes(headers[12]) == "ZIP" &&
-		this.removeDoubleQuotes(headers[13]) == "COUNTRY" &&
-		this.removeDoubleQuotes(headers[14]) == "MOBILE NUMBER");
+			this.removeDoubleQuotes(headers[1]) == "LASTNAME" &&
+			this.removeDoubleQuotes(headers[2]) == "ACCOUNT NAME" &&
+			this.removeDoubleQuotes(headers[3]) == "ACCOUNT OWNER" &&
+			this.removeDoubleQuotes(headers[4]) == "ACCOUNT SUB TYPE" &&
+			this.removeDoubleQuotes(headers[5]) == "COMPANY" &&
+			this.removeDoubleQuotes(headers[6]) == "COMPANY DOMAIN" &&
+			this.removeDoubleQuotes(headers[7]) == "JOBTITLE" &&
+			this.removeDoubleQuotes(headers[8]) == "EMAILID" &&
+			this.removeDoubleQuotes(headers[9]) == "WEBSITE" &&
+			this.removeDoubleQuotes(headers[10]) == "VERTICAL" &&
+			this.removeDoubleQuotes(headers[11]) == "REGION" &&
+			this.removeDoubleQuotes(headers[12]) == "TERRITORY" &&
+			this.removeDoubleQuotes(headers[13]) == "TYPE" &&
+			this.removeDoubleQuotes(headers[14]) == "CATEGORY" &&
+			this.removeDoubleQuotes(headers[15]) == "ADDRESS" &&
+			this.removeDoubleQuotes(headers[16]) == "CITY" &&
+			this.removeDoubleQuotes(headers[17]) == "STATE" &&
+			this.removeDoubleQuotes(headers[18]) == "ZIP" &&
+			this.removeDoubleQuotes(headers[19]) == "COUNTRY" &&
+			this.removeDoubleQuotes(headers[20]) == "MOBILE NUMBER");
 		// return (headers[0].trim() == "FIRSTNAME" && headers[1].trim() == "LASTNAME" && headers[2].trim() == "COMPANY" && headers[3].trim() == "JOBTITLE" && headers[4].trim() == "EMAILID" && headers[5].trim() == "VERTICAL" && headers[6].trim() == "REGION" && headers[7].trim() == "TYPE" && headers[8].trim() == "CATEGORY" && headers[9].trim() == "ADDRESS" && headers[10].trim() == "CITY" && headers[11].trim() == "STATE" && headers[12].trim() == "ZIP" && headers[13].trim() == "COUNTRY" && headers[14].trim() == "MOBILE NUMBER");
 	}
 
@@ -788,10 +800,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						if (data.statusCode == 417) {
 							this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
 						}
-						if(data.statusCode == 401){
+						if (data.statusCode == 401) {
 							this.customResponse = new CustomResponse('ERROR', data.message, true);
 						}
-						if(data.statusCode == 402){
+						if (data.statusCode == 402) {
 							this.emailNotificationCustomResponse = new CustomResponse('ERROR', data.message, true);
 						}
 						this.checkingLoadContactsCount = true;
@@ -1277,14 +1289,44 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 
 		if (this.clipboardTextareaText != "") {
+			let isEmailError = false;
+			let isWebsiteError = false;
+			let emailError = ''
+			let websiteError = ''
 			for (var i = 0; i < allTextLines.length; i++) {
 				var data = allTextLines[i].split(splitValue);
-				if (!this.validateEmailAddress(data[4])) {
-					$("#clipBoardValidationMessage").append("<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[4] + "</h4>");
-					isValidData = false;
+				if (!this.isPartner) {
+					if (!this.validateEmailAddress(data[4])) {
+						$("#clipBoardValidationMessage").append("<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[4] + "</h4>");
+						isValidData = false;
+					}
+					this.users.length = 0;
+					this.pagination.pagedItems.length = 0;
+				} else {
+					if (!this.validateEmailAddress(data[8])) {
+						isEmailError = true;
+						//$("#clipBoardValidationMessage").append("<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[4] + "</h4>");
+						emailError = emailError + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[8] + "\n";
+						isValidData = false;
+					}
+
+					if (data[9] != undefined) {
+						if (!this.validateWebsite(data[9]) && data[9].length > 0) {
+							isWebsiteError = true;
+							websiteError = websiteError + "Website URL is not valid for Row:" + (i + 1) + " -- Entered Website URL : " + data[9] + "\n";
+							isValidData = false;
+						}
+					}
+					if (isEmailError) {
+						this.customResponse = new CustomResponse('ERROR', emailError, true);
+					}
+					if (isWebsiteError) {
+						this.customResponse = new CustomResponse('ERROR', websiteError, true);
+					}
+
+					this.users.length = 0;
+					this.pagination.pagedItems.length = 0;
 				}
-				this.users.length = 0;
-				this.pagination.pagedItems.length = 0;
 			}
 		}
 		if (isValidData) {
@@ -1407,145 +1449,272 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						case 3:
 							user.firstName = data[0];
 							user.lastName = data[1];
-							user.contactCompany = data[2];
+							user.accountName = data[2];
 							break;
 						case 4:
 							user.firstName = data[0];
 							user.lastName = data[1];
-							user.contactCompany = data[2];
-							user.jobTitle = data[3];
+							user.accountName = data[2];
+							user.accountOwner = data[3];
 							break;
 						case 5:
 							user.firstName = data[0];
 							user.lastName = data[1];
-							user.contactCompany = data[2];
-							user.jobTitle = data[3];
-							user.emailId = data[4];
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
 							break;
 						case 6:
 							user.firstName = data[0];
 							user.lastName = data[1];
-							user.contactCompany = data[2];
-							user.jobTitle = data[3];
-							user.emailId = data[4];
-							user.vertical = data[5];
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
 							break;
 						case 7:
 							user.firstName = data[0];
 							user.lastName = data[1];
-							user.contactCompany = data[2];
-							user.jobTitle = data[3];
-							user.emailId = data[4];
-							user.vertical = data[5];
-							user.region = data[6]
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
 							break;
 						case 8:
 							user.firstName = data[0];
 							user.lastName = data[1];
-							user.contactCompany = data[2];
-							user.jobTitle = data[3];
-							user.emailId = data[4];
-							user.vertical = data[5];
-							user.region = data[6]
-							user.partnerType = data[7]
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
 							break;
 						case 9:
 							user.firstName = data[0];
 							user.lastName = data[1];
-							user.contactCompany = data[2];
-							user.jobTitle = data[3];
-							user.emailId = data[4];
-							user.vertical = data[5];
-							user.region = data[6]
-							user.partnerType = data[7]
-							user.category = data[8]
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
+							user.emailId = data[8];
 							break;
 						case 10:
 							user.firstName = data[0];
 							user.lastName = data[1];
-							user.contactCompany = data[2];
-							user.jobTitle = data[3];
-							user.emailId = data[4];
-							user.vertical = data[5];
-							user.region = data[6]
-							user.partnerType = data[7]
-							user.category = data[8]
-							user.address = data[9]
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
+							user.emailId = data[8];
+							user.website = data[9];
 							break;
 						case 11:
 							user.firstName = data[0];
 							user.lastName = data[1];
-							user.contactCompany = data[2];
-							user.jobTitle = data[3];
-							user.emailId = data[4];
-							user.vertical = data[5];
-							user.region = data[6]
-							user.partnerType = data[7]
-							user.category = data[8]
-							user.address = data[9]
-							user.city = data[10]
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
+							user.emailId = data[8];
+							user.website = data[9];
+							user.territory = data[10];
 							break;
 						case 12:
 							user.firstName = data[0];
 							user.lastName = data[1];
-							user.contactCompany = data[2];
-							user.jobTitle = data[3];
-							user.emailId = data[4];
-							user.vertical = data[5];
-							user.region = data[6]
-							user.partnerType = data[7]
-							user.category = data[8]
-							user.address = data[9]
-							user.city = data[10]
-							user.state = data[11]
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
+							user.emailId = data[8];
+							user.website = data[9];
+							user.territory = data[10];
+							user.vertical = data[11];
 							break;
 						case 13:
 							user.firstName = data[0];
 							user.lastName = data[1];
-							user.contactCompany = data[2];
-							user.jobTitle = data[3];
-							user.emailId = data[4];
-							user.vertical = data[5];
-							user.region = data[6]
-							user.partnerType = data[7]
-							user.category = data[8]
-							user.address = data[9]
-							user.city = data[10]
-							user.state = data[11]
-							user.zipCode = data[12]
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
+							user.emailId = data[8];
+							user.website = data[9];
+							user.territory = data[10];
+							user.vertical = data[11];
+							user.region = data[12];
 							break;
 						case 14:
 							user.firstName = data[0];
 							user.lastName = data[1];
-							user.contactCompany = data[2];
-							user.jobTitle = data[3];
-							user.emailId = data[4];
-							user.vertical = data[5];
-							user.region = data[6]
-							user.partnerType = data[7]
-							user.category = data[8]
-							user.address = data[9]
-							user.city = data[10]
-							user.state = data[11]
-							user.zipCode = data[12]
-							user.country = data[13]
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
+							user.emailId = data[8];
+							user.website = data[9];
+							user.territory = data[10];
+							user.vertical = data[11];
+							user.region = data[12];
+							user.partnerType = data[13];
 							break;
 						case 15:
-							user.firstName = data[0].trim();
-							user.lastName = data[1].trim();
-							user.contactCompany = data[2].trim();
-							user.jobTitle = data[3].trim();
-							user.emailId = data[4].trim();
-							user.vertical = data[5].trim();
-							user.region = data[6].trim()
-							user.partnerType = data[7].trim()
-							user.category = data[8].trim()
-							user.address = data[9].trim()
-							user.city = data[10].trim()
-							user.state = data[11].trim()
-							user.zipCode = data[12].trim()
-							user.country = data[13].trim()
-							user.mobileNumber = data[14].trim()
+							user.firstName = data[0];
+							user.lastName = data[1];
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
+							user.emailId = data[8];
+							user.website = data[9];
+							user.territory = data[10];
+							user.vertical = data[11];
+							user.region = data[12];
+							user.partnerType = data[13];
+							user.category = data[14];
+							break;
+
+						case 16:
+							user.firstName = data[0];
+							user.lastName = data[1];
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
+							user.emailId = data[8];
+							user.website = data[9];
+							user.territory = data[10];
+							user.vertical = data[11];
+							user.region = data[12];
+							user.partnerType = data[13];
+							user.category = data[14];
+							user.address = data[15].trim();
+							break;
+
+						case 17:
+							user.firstName = data[0];
+							user.lastName = data[1];
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
+							user.emailId = data[8];
+							user.website = data[9];
+							user.territory = data[10];
+							user.vertical = data[11];
+							user.region = data[12];
+							user.partnerType = data[13];
+							user.category = data[14];
+							user.address = data[15].trim();
+							user.city = data[16];
+							break;
+						case 18:
+							user.firstName = data[0];
+							user.lastName = data[1];
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
+							user.emailId = data[8];
+							user.website = data[9];
+							user.territory = data[10];
+							user.vertical = data[11];
+							user.region = data[12];
+							user.partnerType = data[13];
+							user.category = data[14];
+							user.address = data[15].trim();
+							user.city = data[16];
+							user.state = data[17];
+							break;
+						case 19:
+							user.firstName = data[0];
+							user.lastName = data[1];
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
+							user.emailId = data[8];
+							user.website = data[9];
+							user.territory = data[10];
+							user.vertical = data[11];
+							user.region = data[12];
+							user.partnerType = data[13];
+							user.category = data[14];
+							user.address = data[15].trim();
+							user.city = data[16];
+							user.state = data[17];
+							user.zipCode = data[18];
+							break;
+
+						case 20:
+							user.firstName = data[0];
+							user.lastName = data[1];
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
+							user.emailId = data[8];
+							user.website = data[9];
+							user.territory = data[10];
+							user.vertical = data[11];
+							user.region = data[12];
+							user.partnerType = data[13];
+							user.category = data[14];
+							user.address = data[15].trim();
+							user.city = data[16];
+							user.state = data[17];
+							user.zipCode = data[18];
+							user.country = data[19];
+							break;
+
+						case 21:
+							user.firstName = data[0];
+							user.lastName = data[1];
+							user.accountName = data[2];
+							user.accountOwner = data[3];
+							user.accountSubType = data[4];
+							user.contactCompany = data[5];
+							user.companyDomain = data[6];
+							user.jobTitle = data[7];
+							user.emailId = data[8];
+							user.website = data[9];
+							user.territory = data[10];
+							user.vertical = data[11];
+							user.region = data[12];
+							user.partnerType = data[13];
+							user.category = data[14];
+							user.address = data[15].trim();
+							user.city = data[16];
+							user.state = data[17];
+							user.zipCode = data[18];
+							user.country = data[19];
+							user.mobileNumber = data[20];
 							break;
 					}
 				}
@@ -1557,11 +1726,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 			this.selectedAddContactsOption = 1;
 			self.setClipBoardPage(1);
-			var endTime = new Date();
-			$("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>");
-			$("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing Finished at: <b>" + endTime + "</b></h5>");
-			$("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Total Number of records Found: <b>" + allTextLines.length + "</b></h5>");
-			this.isValidClipBoardData = true;
+			if (!this.isPartner) {
+				var endTime = new Date();
+				$("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>");
+				$("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing Finished at: <b>" + endTime + "</b></h5>");
+				$("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Total Number of records Found: <b>" + allTextLines.length + "</b></h5>");
+				this.isValidClipBoardData = true;
+			} else {
+				var endTime = new Date();
+				let processMessage = '';
+				processMessage = "Processing started at: " + startTime + "\nProcessing Finished at:" + endTime + "\nTotal Number of records Found: " + allTextLines.length;
+				this.customResponse = new CustomResponse('SUCCESS', processMessage, true);
+				this.isValidClipBoardData = true;
+			}
 		} else {
 			$("button#sample_editable_1_new").prop('disabled', true);
 			$("#clipBoardValidationMessage").show();
@@ -1569,6 +1746,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.isValidClipBoardData = false;
 		}
 		this.xtremandLogger.info(this.users);
+	}
+
+
+	validateWebsite(website: string) {
+		var LINK_PATTERN = this.regularExpressions.LINK_PATTERN;
+		return LINK_PATTERN.test(website);
 	}
 
 	validateEmailAddress(emailId: string) {
@@ -1733,10 +1916,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						if (data.statusCode == 417) {
 							this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
 						}
-						if(data.statusCode == 401){
+						if (data.statusCode == 401) {
 							this.customResponse = new CustomResponse('ERROR', data.message, true);
 						}
-						if(data.statusCode == 402){
+						if (data.statusCode == 402) {
 							this.customResponse = new CustomResponse('ERROR', data.message, true);
 						}
 
@@ -1791,29 +1974,29 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				if (this.selectedAddContactsOption == 0) {
 					this.getContactsLimit();
 				} else {
-				if(this.isPartner){
-                        for (var i = 0; i <= this.users.length - 1; i++) {
-                        if(
-                            this.users[i].contactCompany != null
-                        && this.users[i].contactCompany.replace(/[^a-zA-Z0-9]/g,'').trim()!= '' && 
-                        (this.users[i].contactCompany && this.users[i].contactCompany.trim().length > 0)
-                        ){
-                            this.isCompanyDetails = true;
-        
-                        }else{
-                            this.isCompanyDetails = false;
-                            break;
-                        }
-                     }
-                    }
-                    
-                    if(this.isCompanyDetails){
+					if (this.isPartner) {
+						for (var i = 0; i <= this.users.length - 1; i++) {
+							if (
+								this.users[i].contactCompany != null
+								&& this.users[i].contactCompany.replace(/[^a-zA-Z0-9]/g, '').trim() != '' &&
+								(this.users[i].contactCompany && this.users[i].contactCompany.trim().length > 0)
+							) {
+								this.isCompanyDetails = true;
+
+							} else {
+								this.isCompanyDetails = false;
+								break;
+							}
+						}
+					}
+
+					if (this.isCompanyDetails) {
 						this.vaildateclipboardCSVPartners();
 						this.loading = false;
-                    }else{
-                        this.loading = false;
-                        this.customResponse = new CustomResponse('ERROR', 'Company Details is required', true);
-                    }
+					} else {
+						this.loading = false;
+						this.customResponse = new CustomResponse('ERROR', 'Company Details is required', true);
+					}
 				}
 			} else {
 				this.saveData();
@@ -1874,10 +2057,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.resetApplyFilter();
 		} else {
 			$('#assignContactAndMdfPopup').modal('hide');
-					this.processingPartnersLoader = false;
-					this.showNotifyPartnerOption = false;
-					this.resetApplyFilter();
-					this.saveData();
+			this.processingPartnersLoader = false;
+			this.showNotifyPartnerOption = false;
+			this.resetApplyFilter();
+			this.saveData();
 		}
 	}
 
@@ -2377,7 +2560,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		} else if (this.isPartner && this.isDefaultPartnerList) {
 			message = 'The ' + partnerModuleCustomName + '(s) will be deleted from this and all other ' + partnerModuleCustomName + ' lists.';
 		} else if (this.isPartner && !this.isDefaultPartnerList) {
-			message = 'This will only delete the ' + partnerModuleCustomName + '(s) from this list. To remove the ' + partnerModuleCustomName + '(s) completely from your account, please delete the record(s) from the Master List.';
+			message = 'This will only delete the ' + partnerModuleCustomName + '(s) from this group. To remove the ' + partnerModuleCustomName + '(s) completely from your account, please delete the record(s) from the Master Group.';
 		} else {
 			message = "This will only delete the Contact(s) from this list. To remove the Contact(s) completely from your account, please delete the record(s) from the Master Contact List.";
 		}
@@ -2607,7 +2790,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		return this.saveAsListName;
 	}
 	saveAs(showGDPR: boolean) {
-		if (this.selectedContactForSave.length === 0) {
+		if (this.selectedContactForSave.length === 0 && this.isPartner) {
+			this.customResponse = new CustomResponse('ERROR', "Please select atleast one " + (this.checkingContactTypeName).toLowerCase() + " to create the group", true);
+		} else if (this.selectedContactForSave.length === 0) {
 			this.customResponse = new CustomResponse('ERROR', "Please select atleast one " + (this.checkingContactTypeName).toLowerCase() + " to create the list", true);
 		} else {
 			try {
@@ -2622,6 +2807,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 		}
 	}
+
 	editListName() {
 		this.saveAsListName = this.selectedContactListName;
 	}
@@ -2842,7 +3028,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					else if (this.criterias[i].property == "Notes") {
 						this.criterias[i].property = "description";
 					}
-					
+
 				}
 			}
 			if (!this.isSegmentationErrorMessage) {
@@ -3071,7 +3257,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		} else {
 			let a = document.createElement('a');
 			a.href = url;
-			a.download = this.contactListName.substr(0, 26) + '_' + this.checkingContactTypeName + '_List.csv';
+			if (this.isPartner) {
+				a.download = this.contactListName.substr(0, 26) + '_' + this.checkingContactTypeName + '_Group.csv';
+			} else {
+				a.download = this.contactListName.substr(0, 26) + '_' + this.checkingContactTypeName + '_List.csv';
+			}
 			document.body.appendChild(a);
 			a.click();
 			document.body.removeChild(a);
@@ -3939,13 +4129,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	closeDuplicateEmailErrorMessage() {
 		this.dublicateEmailId = false;
 	}
-	
+
 	downloadUserListCsv() {
 		try {
 			this.userListPaginationWrapper.pagination = this.pagination;
 			this.userListPaginationWrapper.pagination.searchKey = this.searchKey;
 			this.contactListObj.id = this.selectedContactListId;
-			this.contactListObj.moduleName = this.checkingContactTypeName+'s';
+			this.contactListObj.moduleName = this.checkingContactTypeName + 's';
 			this.contactListObj.name = this.contactListName;
 			this.contactListObj.sharedLeads = this.sharedLeads;
 			this.contactListObj.isPartnerUserList = this.isPartner;
