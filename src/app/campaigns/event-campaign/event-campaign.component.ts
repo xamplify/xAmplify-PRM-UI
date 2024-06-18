@@ -314,7 +314,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
         if (this.isEditCampaign) {
             let selectedListSortOption = {
-                'name': 'Selected List', 'value': 'selectedList'
+                'name': 'Selected Group', 'value': 'selectedList'
             }
             this.recipientsSortOption.eventCampaignRecipientsDropDownOptions.push(selectedListSortOption);
             this.recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption = this.recipientsSortOption.eventCampaignRecipientsDropDownOptions[this.recipientsSortOption.eventCampaignRecipientsDropDownOptions.length - 1];

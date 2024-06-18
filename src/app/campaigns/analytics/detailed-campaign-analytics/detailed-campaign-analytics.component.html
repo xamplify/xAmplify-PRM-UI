@@ -360,21 +360,21 @@
                            </div>
                            <div>
                               <span class="camp-title"
-                                 *ngIf="((authenticationService.isOrgAdmin() && campaign?.channelCampaign )|| authenticationService.isVendorPartner()) ">
+                                 *ngIf="((authenticationService.isOrgAdmin() && campaign?.channelCampaign) || authenticationService.isVendorPartner())|| authenticationService.isVendor() ">
                                  {{ 'Group Info' }}
                               </span>
                               <span class="camp-title"
-                                 *ngIf="((!authenticationService.isVendorPartner() && !campaign?.channelCampaign && !campaign?.oneClickLaunch)  && authenticationService.isOrgAdmin())">
+                                 *ngIf="((!authenticationService.isVendor() && !campaign?.channelCampaign && !campaign?.oneClickLaunch)  && authenticationService.isOrgAdmin())">
                                  {{ 'List Info' }}
                               </span>
                            </div>
                            <div class="camp-number">
                               <strong class="m0 StongTextdc"
-                                 *ngIf="((!authenticationService.isVendorPartner() && !campaign?.channelCampaign && !campaign?.oneClickLaunch)  && authenticationService.isOrgAdmin())">{{
+                                 *ngIf="((!authenticationService.isVendor() && !campaign?.channelCampaign && !campaign?.oneClickLaunch)  && authenticationService.isOrgAdmin())">{{
                                  campaingContactLists?.length }}
                                  List(s)</strong>
                               <strong class="m0 StongTextdc"
-                                 *ngIf="((authenticationService.isOrgAdmin() && campaign?.channelCampaign )|| authenticationService.isVendorPartner()) ">{{
+                                 *ngIf="((authenticationService.isOrgAdmin() && campaign?.channelCampaign )|| authenticationService.isVendorPartner()) || authenticationService.isVendor() ">{{
                                  campaingContactLists?.length }}
                                  Group(s)</strong>
                               <strong class="m0" *ngIf="campaign?.oneClickLaunch">{{ campaingContactLists?.length }}
