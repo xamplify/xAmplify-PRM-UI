@@ -345,7 +345,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		if (this.selectedTeamMemberIds.length > 0) {
 			$('#partnerGroups-li').css({ 'cursor': 'not-allowed' });
 			$('.partnerGroupsC').css({ 'pointer-events': 'none' });
-			let tooltipMessage = "You can choose either company / list";
+			let tooltipMessage = "You can choose either company / group";
 			$('#partnerGroups-li').attr('title', tooltipMessage);
 		} else {
 			$('#partnerGroups-li').css({ 'cursor': 'auto' });
@@ -501,7 +501,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		if (this.selectedPartnerGroupIds.length > 0) {
 			$('#partners-li').css({ 'cursor': 'not-allowed' });
 			$('.partnersC').css({ 'pointer-events': 'none' });
-			let tooltipMessage = "You can choose either company / list";
+			let tooltipMessage = "You can choose either company / group";
 			$('#partners-li').attr('title', tooltipMessage);
 		} else {
 			$('#partners-li').css({ 'cursor': 'auto' });
