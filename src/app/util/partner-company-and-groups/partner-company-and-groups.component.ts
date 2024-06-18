@@ -86,6 +86,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			if(this.inputId!=undefined && this.inputId>0){
 				this.referenceService.startLoader(this.httpRequestLoader);
 				if (this.isPublishedToPartnerGroups) {
+					this.isPartnerCompaniesTabSelected = false;
 					this.isEdit = this.selectedPartnerGroupIds!=undefined && this.selectedPartnerGroupIds.length>0;
 					$('#partnerGroups-li').addClass('active');
 					$('#partnerGroups').addClass('tab-pane fade in active');
