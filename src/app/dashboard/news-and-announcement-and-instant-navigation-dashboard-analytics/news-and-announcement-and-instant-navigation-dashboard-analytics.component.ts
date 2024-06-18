@@ -104,4 +104,9 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
     }
     this.referenceService.goToRouter(router);
   }
+
+
+  viewAllQuickLinks(){
+    
+  }
 }
