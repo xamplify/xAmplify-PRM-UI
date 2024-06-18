@@ -7,7 +7,8 @@ button#copyFromClipBoard {
 button.btn.custom, .btn-group button, .selectRecord, button#save\&delete_button,
 .btn-success, .btn-primary, .color-flow-button, .button_blue, button.button_blue:disabled, button.button:disabled,
 button.btn.btn-primary, .mix-filter li:hover, .mix-filter li.active, .mix-filter li.campaign-type-selected, .mix-filter li.emailtemplate-selected,
-button.group-name-cclass.btn-primary.default-btn-cursor {
+button.group-name-cclass.btn-primary.default-btn-cursor,
+.color-flow-button.Btn-Green {
     background-color: var(--custom-buttonbg-color) !important;
     background-image: linear-gradient(1deg, var(--custom-gradient-one-color), var(--custom-gradient-two-color) 99%) !important;
     background-size: calc(100% + 20px) calc(100% + 20px) !important;
@@ -41,6 +42,16 @@ span.btn.btn-primary.transition.txt_pd-top3, span.btn.btn-primary.transition {
 }
 .Btn-Green {
   background: none !important;
+}
+button.search-box-item-click,
+button.search-box-item-click:hover {
+  background: none !important;
+    background-image: none !important;
+    background-size: none !important;
+    border: none !important;
+    /* color: none !important; */
+    border-radius: 0px !important;
+    box-shadow: none !important;
 }
 
 /***** Icons *****/

@@ -365,13 +365,8 @@ export class HomeComponent implements OnInit {
         this.loader = false;
         this.activeThemeDto = response.data;
         this.authenticationService.themeDto = this.activeThemeDto;
-        let path = this.activeThemeDto.backgroundImagePath;
-        if((this.activeThemeDto.parentThemeName == 'GLASSMORPHISMLIGHT' || this.activeThemeDto.parentThemeName == 'GLASSMORPHISMDARK') && (path && path.includes('/assets') || this.activeThemeDto.backgroundImagePath == undefined || this.activeThemeDto.backgroundImagePath == "" || this.activeThemeDto.backgroundImagePath == null ) ) {
-          this.getDefaultImagePath(this.activeThemeDto.parentThemeName,this.activeThemeDto.id);
-          this.imageHost = "";
-        } else if(this.activeThemeDto.backgroundImagePath != null || this.activeThemeDto.backgroundImagePath != "") {
-          this.activeThemeDto.backgroundImagePath= this.activeThemeDto.backgroundImagePath;
-          this.imageHost = this.authenticationService.MEDIA_URL;
+        if(this.activeThemeDto.parentThemeName == 'GLASSMORPHISMLIGHT' || this.activeThemeDto.parentThemeName  == 'GLASSMORPHISMDARK') {
+        this.getDefaultImagePath(this.activeThemeDto.parentThemeName,this.activeThemeDto.id);
         }
         this.getDefaultSkin(this.activeThemeDto);
         /******** For Charts *******/
@@ -517,6 +512,14 @@ export class HomeComponent implements OnInit {
     this.dashBoardService.getDefaultImagePath(name,themeId).subscribe(
       (data: any) => {
         this.bgImagePath = data.data;
+        let path = this.bgImagePath;
+        if((name == 'GLASSMORPHISMLIGHT' || name == 'GLASSMORPHISMDARK') && (path && path.includes('/assets') || this.bgImagePath == undefined || this.bgImagePath == "" || this.bgImagePath == null ) ) {
+          //this.getDefaultImagePath(this.activeThemeDto.parentThemeName,this.activeThemeDto.id);
+          this.imageHost = "";
+        } else if(this.activeThemeDto.backgroundImagePath != null || this.activeThemeDto.backgroundImagePath != "") {
+          this.imageHost = this.authenticationService.MEDIA_URL;
+        }
+        this.activeThemeDto.backgroundImagePath= this.bgImagePath;
       }, error =>{
         this.bgImagePath = "";
       }, () => {

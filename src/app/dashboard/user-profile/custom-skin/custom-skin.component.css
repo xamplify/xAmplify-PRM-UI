@@ -247,7 +247,7 @@ LEGEND {
 
 .profile-image-wrapper {
   display: block;
-  width: 100% !important;
+  width: 96% !important;
   height: auto;
   background: #fff;
   padding: 1px;
@@ -1979,6 +1979,7 @@ p.layoutcontent {
 }
 
 .custom-primary-button {
+  margin: 10px 0px 0px 0px;
   background-color: var(--change-button-color) !important;
   background-image: linear-gradient(1deg, var(--change-button-gradient-one-color), var(--change-button-gradient-two-color) 99%) !important;
   background-size: calc(100% + 20px) calc(100% + 20px) !important;
@@ -2005,4 +2006,8 @@ p.layoutcontent {
   border: none;
   bottom: 0;
   left: 0;
+}
+.previewButton {
+  margin: 10px 0px 0px 0px;
+  font-size: large;
 }

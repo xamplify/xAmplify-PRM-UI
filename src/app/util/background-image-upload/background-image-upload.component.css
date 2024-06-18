@@ -5,7 +5,7 @@
     background: #fff;
     padding: 1px;
     margin: 0 auto;
-    border: 2px dotted #0000008f !important;
+    border: 2px dotted #ddd !important;
     position: relative;
   }
   .dotted-image-border {

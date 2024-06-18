@@ -81,25 +81,41 @@
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
-	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"
-		*ngIf="themeDTO?.parentThemeName == 'GLASSMORPHISMLIGHT' || themeDTO?.parentThemeName == 'GLASSMORPHISMDARK'">
-		<div style="text-align: center;">
-			<label class="control-label">Upload Background Image</label>
-			<div class="profile-image-wrapper dotted-image-border upload-imgheight" (click)="uploadImage()">
-				<span *ngIf="(squareDataForBgImage | json) === '{}'">
-					<img [src]="uploadImagePath + themeDTO?.backgroundImagePath" class="profile-image img-grid" alt=""
-						style="object-fit: cover; width: 100%;">
-				</span>
-				<a class="" (click)="uploadImage()">
-					<i class="fa fa-camera icon" aria-hidden="true" data-toggle="tooltip" data-placement="right"
-						title="upload 16:9 ratio image!"
-						style="font-size:25px;padding-top:10px;left: 10px !important;bottom: 10px !important;"></i></a>
-			</div>
-			<div class="p10">
-				<span class="conectColor" (click)="resetPreviewImage()">Reset Preview Image</span>
+		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"
+			*ngIf="themeDTO?.parentThemeName == 'GLASSMORPHISMLIGHT' || themeDTO?.parentThemeName == 'GLASSMORPHISMDARK'">
+			<div style="text-align: center;">
+				<label class="control-label">Upload Background Image</label>
+				<div class="profile-image-wrapper dotted-image-border upload-imgheight" (click)="uploadImage()">
+					<span *ngIf="(squareDataForBgImage | json) === '{}'">
+						<img [src]="uploadImagePath + themeDTO?.backgroundImagePath" class="profile-image img-grid" alt=""
+							style="object-fit: cover; width: 100%;">
+					</span>
+					<a class="" (click)="uploadImage()">
+						<i class="fa fa-camera icon" aria-hidden="true" data-toggle="tooltip" data-placement="right"
+							title="upload 16:9 ratio image!"
+							style="font-size:25px;padding-top:10px;left: 10px !important;bottom: 10px !important;"></i></a>
+				</div>
+				<div class="p10">
+					<span class="conectColor" (click)="resetPreviewImage()">Reset Preview Image</span>
+				</div>
 			</div>
 		</div>
-	</div>
+		<div class="col-xs-12 col-md-8 col-lg-8 p0 mt5"
+			*ngIf="themeDTO?.parentThemeName == 'GLASSMORPHISMLIGHT' || themeDTO?.parentThemeName == 'GLASSMORPHISMDARK'">
+			<div style="text-align: center;">
+				<label class="control-label"></label>
+				<div class="profile-image-wrapper dotted-image-border upload-imgheight">
+					<ol class="pt10">
+						<li translate>
+							Click on Create a New API Key, enter the name and select the production environment.
+						</li>
+						<li translate>
+							Copy the API key and Secret Code, insert in above respective fields.
+						</li>
+					</ol>
+				</div>
+			</div>
+		</div>
 	
 	<div class="page-breadcrumb" *ngIf="themeDTO?.parentThemeName == 'LIGHT' || themeDTO?.parentThemeName == 'DARK'">
 		<ul class="nav nav-pills" style="border-bottom: 2px solid #2b5ec4;">
@@ -950,9 +966,13 @@
 						</div>
 						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 layout-cu-paddings cardleft-paddingzero">
 							<div class="">
-								<button
-									class="custom-btn-ref btn-alignment-theme pull-right alignmiddlebtn custom-primary-button">Primary
+								<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+									<label class="previewButton">Preview Button</label>
+								</div>
+								<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+								<button class="btn-alignment-theme pull-right custom-primary-button">Primary
 									Button</button>
+								</div>
 							</div>
 							<div class="bg-color-for-secondcard1">
 								<img alt="Button Primary" class="gif-img-cu"
