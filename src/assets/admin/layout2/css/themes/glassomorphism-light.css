@@ -532,7 +532,7 @@ tr {
 
 /**** dropdownmenu ***/
 .dropdown-menu {
-  background-color: rgb(255 255 255 / 75%) !important;
+  background-color: rgb(255 255 255 / 90%) !important;
   border: 1px solid rgb(208 207 199) !important;
 }
 .page-header.navbar
@@ -1387,7 +1387,7 @@ ul.alt-row-style1 li:nth-child(even) {
 }
 /* 14-6-2023 sudha sri */
 .dropdown-menu li > a > [class*=" fa-"] {
-  color: #000 !important;
+  color: #000;
 }
 .table tr.row-selected td {
   background-color: rgb(255 255 255 / 31%) !important ;
@@ -2364,7 +2364,7 @@ button.btn.btn-xs.l-g-view.disabled {
   background: rgb(255 255 255 / 31%) !important;
 }
 button.search-box-item-click{
-  background: rgba(255, 255, 255, 0.2) !important;
+  background: rgb(146 151 179 / 8%) !important;
   backdrop-filter: blur(5px);
   border:none !important;
   color:#000 !important;
@@ -3288,11 +3288,11 @@ td.pt10.pb10.bold.mr_10{
 a.tabColorOne b,
 h1 b,
 h6 b,
-span b,
 h3 b,
 div b {
   color: #fff !important;
 }
+span b{color: #787878 !important}
 /* Sudha Sri (27-12-2023) */
 .copy_text_mrgn{
   margin-left: 16px !important;
@@ -3927,8 +3927,7 @@ h1, h2, h3, h4, h5, h6{
   background-color: rgb(255 255 255 / 31%) !important;
 }
 
-.dashboard-stat.green-soft .details .number,
-.dashboard-stat.green-soft .details .desc,
+
 .dashboard-stat.red-soft .details .number,
 .dashboard-stat.red-soft .details .desc,
 .dashboard-stat.purple-soft .details .number,
@@ -4024,9 +4023,7 @@ button.swal2-cancel.styled{
 button.swal2-confirm.styled:hover{
   background: linear-gradient(348deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
 }
-a.tabColorOne b, h1 b, h6 b, span b, h3 b, div b {
-  color: #000 !important;
-}
+
 .page-header.navbar .page-top.active {
   background-color: rgb(255 255 255 / 88%) !important;
 }
@@ -4166,3 +4163,5 @@ button.btn.btn-xs.hidden-xs.l-g-view {
   border: 1px solid rgb(255 255 255 / 35%) !important;
   color: #000 !important;   
 }
+.dashboard-stat.green-soft .details .number,
+.dashboard-stat.green-soft .details .desc{color:#000 !important}

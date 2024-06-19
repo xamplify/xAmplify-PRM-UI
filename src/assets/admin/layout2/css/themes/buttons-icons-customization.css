@@ -8,7 +8,7 @@ button.btn.custom, .btn-group button, .selectRecord, button#save\&delete_button,
 .btn-success, .btn-primary, .color-flow-button, .button_blue, button.button_blue:disabled, button.button:disabled,
 button.btn.btn-primary, .mix-filter li:hover, .mix-filter li.active, .mix-filter li.campaign-type-selected, .mix-filter li.emailtemplate-selected,
 button.group-name-cclass.btn-primary.default-btn-cursor,
-.color-flow-button.Btn-Green {
+.color-flow-button.Btn-Green, li.mix-filter-li-selected {
     background-color: var(--custom-buttonbg-color) !important;
     background-image: linear-gradient(1deg, var(--custom-gradient-one-color), var(--custom-gradient-two-color) 99%) !important;
     background-size: calc(100% + 20px) calc(100% + 20px) !important;
@@ -21,7 +21,7 @@ button.button.bgcolor-unset,
 button.button_blue.bgcolor-unset,
 button#copyFrom_clipboard,
 button#add_contact, .btn.Btn-Green.fileinput-button-css, .btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow,
-label.btn.Btn-Green.mBtnAlign.button-border, .mix-filter-li-selected{ 
+label.btn.Btn-Green.mBtnAlign.button-border, .mix-filter-li-selected, .Btn-Green{ 
   border-radius: 7px !important;
   background-color: var(--custom-buttonbg-color) !important;
   background-image: linear-gradient(1deg, var(--custom-gradient-one-color), var(--custom-gradient-two-color) 99%) !important;
@@ -50,15 +50,15 @@ span.btn.btn-primary.transition.txt_pd-top3, span.btn.btn-primary.transition {
 }
 button.search-box-item-click,
 button.search-box-item-click:hover {
-  background: none !important;
+    background: none !important;
     background-image: none !important;
     background-size: none !important;
     border: none !important;
-     color: #000 !important; 
+    color: initial; 
     border-radius: 0px !important;
     box-shadow: none !important;
 }
-
+button.search-box-item-click:hover{color: initial !important;}
 /***** Icons *****/
 /* .custom-icon {
   display: inline-block !important;
@@ -78,13 +78,19 @@ button.search-box-item-click:hover {
 } */
 i.IconCustomization, 
 .gridIconCustomization a,
-.actions-block i {
+.actions-block i,
+.IconCustomizationcondition a i,
+.setting-icon-cu {
   color : var(--custom-icon-color) !important;
   border: 1px solid var(--custom-icon-border-color) !important;
   background-color: var(--custom-icon-hover-color) !important;
 }
+.setting-icon-cu .gearDropdownMenu{color : var(--custom-icon-color) !important;}
+.add-content-i{ color: var(--custom-text-color)  !important;}
 i.IconCustomization:hover,
-.gridIconCustomization a.Iconhover:hover {
+.gridIconCustomization a.Iconhover:hover,
+.IconCustomizationcondition a i:hover,
+.setting-icon-cu:hover {
 background: none !important;
 border: 1px solid var(--custom-icon-border-color) !important; 
 color : var(--custom-icon-color) !important;
@@ -97,3 +103,4 @@ body {
 label.btn.Btn-Green.mBtnAlign.button-border, .btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow{
   border-radius: 0px !important;
 }
+button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4, button.search-box-item-click, button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4, button.fa.fa-th-list.btn-xs.l-g-view.mr_4, button.fa.fa-th-large.btn-xs.l-g-view.mr_4, button.fa.fa-th-list.btn-xs.l-g-view, button.fa.fa-th-large.btn-xs.l-g-view, button.btn-xs.l-g-view.fa.fa-folder, button.btn-xs.l-g-view.fa.fa-th, button.btn.btn-xs.hidden-xs.l-g-view{color:#fff !important;}

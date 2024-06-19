@@ -205,11 +205,11 @@ div#reply-3:hover {
   background: linear-gradient(0deg, #178dd1 0, #2ebab5 100%) !important;
 }
 .aspect_ratio {
-  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #0276FF !important;
   border-radius: 7px;
 }
 .aspect_ratio:hover {
-  background: linear-gradient(89deg,#06beb8 0, #0c86cc 100%) !important;
+  background: #1C84FF !important;
 }
 
 .page-sidebar .page-sidebar-menu > li.active > a, .page-sidebar .page-sidebar-menu > li.hover > a {

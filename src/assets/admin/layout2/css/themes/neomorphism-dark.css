@@ -4159,3 +4159,17 @@ button.group-name-cclass.btn-primary.default-btn-cursor{
   background: #0276FF !important;
   border: 1px solid #266dc1 !important;
 }
+button.btn.btn-xs.hidden-xs.l-g-view, button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4, button.search-box-item-click, button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4, button.fa.fa-th-list.btn-xs.l-g-view.mr_4, button.fa.fa-th-large.btn-xs.l-g-view.mr_4, button.fa.fa-th-list.btn-xs.l-g-view, button.fa.fa-th-large.btn-xs.l-g-view, button.btn-xs.l-g-view.fa.fa-folder, button.btn-xs.l-g-view.fa.fa-th, button.btn.btn-xs.hidden-xs.l-g-view{
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  border: 1px solid #191b1e !important;
+  background-color: #2c2f33 !important;
+}
+button.search-box-item-click:hover {
+  background: none !important;
+  background-image: none !important;
+  background-size: none !important;
+  border: none !important;
+  color: initial; 
+  border-radius: 0px !important;
+  box-shadow: none !important;
+}
