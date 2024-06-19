@@ -492,10 +492,10 @@
 							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-7 layout-cu-paddings cardleft-paddingzero">
 								<div class="bg-color-for-secondcard1">
 									<img alt="Button Primary" class="gif-img-cu"
-										*ngIf="!authenticationService.isDarkForCharts"
+										*ngIf="themeDTO?.parentThemeName === 'LIGHT'"
 										src="/assets/images/Light-btn-primary.gif">
 									<img alt="Button Primary" class="gif-img-cu"
-										*ngIf="authenticationService.isDarkForCharts"
+										*ngIf="themeDTO?.parentThemeName === 'DARK'"
 										src="/assets/images/Dark-btn-primary.gif">
 								</div>
 							</div>
@@ -591,10 +591,10 @@
 									class="col-xs-12 col-sm-6 col-md-6 col-lg-7 layout-cu-paddings cardleft-paddingzero">
 									<div class="bg-color-for-thirdcard1">
 										<img alt="Button Secondary" class="gif-img-cu"
-											*ngIf="!authenticationService.isDarkForCharts"
+											*ngIf="themeDTO?.parentThemeName === 'LIGHT'"
 											src="/assets/images/Light-btn-secondary.gif">
 										<img alt="Button Secondary" class="gif-img-cu"
-											*ngIf="authenticationService.isDarkForCharts"
+											*ngIf="themeDTO?.parentThemeName === 'DARK'"
 											src="/assets/images/Dark-btn-secondary.gif">
 									</div>
 								</div>
@@ -830,7 +830,7 @@
 										[style.background]="buttonCustomizationForm.buttonColor" [cpWidth]="'200px'"
 										[cpHeight]="'265px'"
 										(colorPickerChange)="changeControllerColor($event,buttonCustomizationForm,'customButtonBgColor')"
-										[cpPosition]="'top'" readonly> </span>
+										[cpPosition]="'bottom'" readonly> </span>
 								</div>
 							</div>
 							<div *ngIf="customBgColor.hasError('required')" style="padding-left: 13px;">
@@ -976,11 +976,7 @@
 							</div>
 							<div class="bg-color-for-secondcard1">
 								<img alt="Button Primary" class="gif-img-cu"
-									*ngIf="!authenticationService.isDarkForCharts"
 									src="/assets/images/Light-btn-primary.gif">
-								<img alt="Button Primary" class="gif-img-cu"
-									*ngIf="authenticationService.isDarkForCharts"
-									src="/assets/images/Dark-btn-primary.gif">
 							</div>
 						</div>
 					</div>
