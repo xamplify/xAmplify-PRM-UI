@@ -27,6 +27,8 @@ import { SpfComponent } from './spf/spf.component';
 import { AdminReportCampaignWorkflowAnalyticsComponent } from './admin-report-campaign-workflow-analytics/admin-report-campaign-workflow-analytics.component';
 import { EditModuleNameComponent } from './edit-module-name/edit-module-name.component';
 import { CustomSkinComponent } from "./user-profile/custom-skin/custom-skin.component";
+import { QuickLinksComponent } from "./quick-links/quick-links.component";
+
 
 const routes: Routes = [
  { path: "", component: DashboardAnalyticsComponent },
@@ -62,7 +64,8 @@ const routes: Routes = [
   {path:'spf', component:SpfComponent},
   {path:'workflow-analytics',component:AdminReportCampaignWorkflowAnalyticsComponent},
   {path:'edit-module-names/:companyId',component:EditModuleNameComponent},
-  { path: 'microsoft-callback',component:SocialContactsCallbackComponent}
+  { path: 'microsoft-callback',component:SocialContactsCallbackComponent},
+  {path:'quick-links',component:QuickLinksComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

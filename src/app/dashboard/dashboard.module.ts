@@ -102,6 +102,7 @@ import { UpdatePasswordComponent } from './super-admin/update-password/update-pa
 import { AddVendorLogosComponent } from 'app/util/add-vendor-logos/add-vendor-logos.component';
 import { SupportAccountUsersComponent } from './support-account-users/support-account-users.component';
 import { FormsModule } from 'app/forms/forms.module';
+import { QuickLinksComponent } from './quick-links/quick-links.component';
 
 
 @NgModule({
@@ -177,6 +178,7 @@ import { FormsModule } from 'app/forms/forms.module';
         UpdatePasswordComponent,
         AddVendorLogosComponent,
         SupportAccountUsersComponent,
+        QuickLinksComponent,
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
