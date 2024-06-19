@@ -163,9 +163,10 @@
                                 <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"
                                     alt="No Image Found">
                                 <div>
-                                    <h4 class="xamplify-ellipsis overflow-hidden GridViewCotent gridViewTextAlignmnent"
+                                    <h4 class="assest-name overflow-hidden GridViewCotent gridViewTextAlignmnent"
                                         data-placement="bottom" data-toggle="tooltip" title="{{landingPage.name}}">
-                                        <b>Page Name:</b> {{landingPage.name}}
+                                        <b>Page Name:</b> {{landingPage.name | slice:0:54}}
+                                        <span *ngIf="landingPage.name?.length >54">...</span>
                                     </h4>
                                     <h6 class="GridViewCotent xamplify-ellipsis" title="{{landingPage.categoryName}}"
                                         data-placement="bottom" data-toggle="tooltip">

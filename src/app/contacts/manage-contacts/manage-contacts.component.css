@@ -181,6 +181,9 @@ h3 {
     white-space: nowrap;
     width: 117px;
   }
+  .search-class{
+    width: auto!important;
+    }
 }
 @media screen and (min-width: 601px) {
   .modal-css {
@@ -416,3 +419,12 @@ h6 {
     left: 0px!important;
 }
 }
+.align-height{
+  border-radius: 15px;
+}
+@media (min-width: 768px){
+  .align-height{
+     min-height: 300px;
+  }
+ }
+

@@ -1144,10 +1144,10 @@
                                              <img src="assets/images/Gif_Loading.gif" alt="Processing" class="loading">
                                           </ng-container>
                                        </div>
-                                       <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent active-campaigns-all-btns-oneinline"
+                                       <h4 class="tittle-name GridViewCotent gridViewTextAlignmnent active-campaigns-all-btns-oneinline"
                                           data-placement="bottom" data-toggle="tooltip"
                                           title="{{campaign.campaignName}}">
-                                          <b>Campaign Name:</b> {{campaign.campaignName}}
+                                        <p class="m0"><b>Campaign Name:</b><span class="line_height">{{campaign.campaignName |slice:0:50}}</span><span *ngIf="campaign?.campaignName?.length >50">...</span></p>  
                                        </h4>
                                        <div class="aligntowbtns">
                                           <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">

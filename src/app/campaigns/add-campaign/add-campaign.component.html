@@ -1183,7 +1183,7 @@
                                                                     <span class="ui-column-resizer"
                                                                         (mousedown)="referenceService?.onMouseDown($event,'campaignRecipientsTable',2)"></span>
                                                                         <span class="gridHeader" translate>
-                                                                            {{ (authenticationService.isOrgAdmin() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && campaignRecipientsPagination.filterBy == 'MY-PARTNERS' || this.campaign?.channelCampaign ? 'Group Name' : 'List Name' }}
+                                                                            {{  authenticationService.isVendor() || authenticationService.isVendorPartner() || campaignRecipientsPagination.filterBy == 'MY-PARTNERS' || this.campaign?.channelCampaign ? 'Group Name' : 'List Name' }}
                                                                           </span>
                                                                         </th>
                                                                 <th class="visible-xs" scope="row" colspan="1"

@@ -3103,3 +3103,14 @@ color:#fff!important;
 .mt--10px{
 margin-top: -10px;
 }
+.assest-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+.folder-name {
+  width: 100%;
+  text-overflow: ellipsis;
+  float: left !important;
+  padding: 0px 5px;
+}
