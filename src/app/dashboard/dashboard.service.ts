@@ -1353,6 +1353,8 @@ getDefaultThemes(){
             .catch(this.handleError);
     }
 
+   
+
 
     /*****XNFR-502*****/
     saveHalopsaCredentials(formData: any) {
@@ -1384,5 +1386,12 @@ getDefaultThemes(){
             .catch(this.handleError);
     }
 
+    findAllQuickLinks(pagination:Pagination){
+        let userId = this.authenticationService.getUserId();
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        let domainName = this.authenticationService.companyProfileName;
+        let findAllUrl = this.dashboardAnalytics+'findAllQuickLinks/domainName/'+domainName+'/userId/'+userId+this.QUERY_PARAMETERS+pageableUrl;
+        return this.authenticationService.callGetMethod(findAllUrl);
+    }
     
 }

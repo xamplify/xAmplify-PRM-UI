@@ -28,6 +28,7 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
   instantNavigationLinks:Array<any> = new Array<any>();
   companyId = 0;
   isPartnerLoggedInThroughVanityUrl = false;
+  quickLinksPagination:Pagination = new Pagination();
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public vanityUrlService:VanityURLService,private dashboardService:DashboardService) { }
 
@@ -36,8 +37,24 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
     this.isVanityUrlEnabled = this.authenticationService.vanityURLEnabled;
     if (this.isVanityUrlEnabled) {
       this.findNewsAndAnnouncements();
-      this.findInstantNavigationLinks();
+      this.findAllQuickLinks(this.quickLinksPagination);
     }
+  }
+  findAllQuickLinks(quickLinksPagination: Pagination) {
+    this.isInstantNavigationLinksApiLoading = true;
+    this.quickLinksPagination.pageIndex = 1;
+    this.quickLinksPagination.maxResults = 5;
+    this.dashboardService.findAllQuickLinks(quickLinksPagination).subscribe(
+        response=>{
+          this.instantNavigationLinks = response.data.list;
+          let map = response.map;
+          this.companyId = map['companyId'];
+          this.isPartnerLoggedInThroughVanityUrl = map['isPartnerLoggedInThroughVanityUrl'];
+          this.isInstantNavigationLinksApiLoading = false;
+        },error=>{
+          this.isInstantNavigationLinksApiLoading = false;
+          this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        });
   }
 
 
