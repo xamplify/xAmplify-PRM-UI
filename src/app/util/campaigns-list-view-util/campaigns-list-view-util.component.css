@@ -56,8 +56,8 @@
 	line-height: 2.5;
 }
 .view-more-css {
-	background-color: #d9edf7 !important;
-	border-color: #bce8f1 !important;
+	background-color: #d9edf700 !important;
+  	border-color: #bce8f100 !important;
 	color: #31708f !important;
 	padding: 5px 14px;
 	cursor:default;
