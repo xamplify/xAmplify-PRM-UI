@@ -85,15 +85,17 @@ i.IconCustomization,
   border: 1px solid var(--custom-icon-border-color) !important;
   background-color: var(--custom-icon-hover-color) !important;
 }
-.setting-icon-cu .gearDropdownMenu{color : var(--custom-icon-color) !important;}
+.setting-icon-cu .gearDropdownMenu{color : inherit !important;}
 .add-content-i{ color: var(--custom-text-color)  !important;}
 i.IconCustomization:hover,
 .gridIconCustomization a.Iconhover:hover,
 .IconCustomizationcondition a i:hover,
-.setting-icon-cu:hover {
-background: none !important;
+.setting-icon-cu:hover,
+.fa[class*="fa-"].IconCustomization:hover
+ {
+background: var(--custom-icon-color) !important;
 border: 1px solid var(--custom-icon-border-color) !important; 
-color : var(--custom-icon-color) !important;
+color : var(--custom-icon-hover-color) !important;
 
 }
 body {
