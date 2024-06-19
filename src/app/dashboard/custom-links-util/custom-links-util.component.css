@@ -276,3 +276,11 @@ legend {
   opacity: 0.5;
   cursor: not-allowed;
 }
+@media only screen and (min-width:992px) and (max-width:1135px) { 
+  .dashboard-banner-image{
+    height: 170px !important;
+  }
+  .img-grids{
+    height: 170px !important;
+  }
+}

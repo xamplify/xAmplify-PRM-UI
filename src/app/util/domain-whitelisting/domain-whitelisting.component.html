@@ -60,7 +60,7 @@
   <table class="table table-light" style="border: 0px !important; background-color: transparent !important;"
     *ngIf="!httpRequestLoader?.isLoading && !httpRequestLoader?.isServerError">
     <tbody class="neo-border-radius10">
-      <fieldset class="fild-custome-borders-none">
+      <fieldset class="fild-custome-borders-none mrow_15">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
           <div class="alert alert-info">{{domainWhitelistingDescription}}</div>
           <div class="alert alert-info mt5">{{domainWhitelistingUrlDescription}}</div>
@@ -89,7 +89,7 @@
           </div>
           <!--Search Option-->
           <div
-            class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6 TotalSearchBoxWidth mt10 float-right"
+            class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6 TotalSearchBoxWidth mt10 float-right pr0"
             [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
             <div class="input-icon right">
               <input type="text" [(ngModel)]="pagination.searchKey" (keypress)="searchDomainsOnKeyPress($event.keyCode)"

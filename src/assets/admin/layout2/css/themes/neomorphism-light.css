@@ -4302,3 +4302,9 @@ i.fa.fa-trash-o.trashIconCustimization.trash_bgcolor:hover {
   border: 1px solid #d0d5db !important;
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff;
 }
+.actions-block i.down-arrow{
+  line-height: 21px!important;
+}
+span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input {
+  color: #000;
+}

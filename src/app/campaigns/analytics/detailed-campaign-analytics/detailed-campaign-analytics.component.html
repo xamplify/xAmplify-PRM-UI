@@ -3507,11 +3507,11 @@
                         <thead>
                            <tr>
                               <th class="center">
-                                 <span class="camp-title"
+                                 <span 
                                     *ngIf="((authenticationService.isOrgAdmin() && campaign?.channelCampaign) || authenticationService.isVendorPartner())">
                                     Group Name
                                  </span>
-                                 <span class="camp-title"
+                                 <span
                                     *ngIf="((!authenticationService.isVendorPartner() && !campaign?.channelCampaign && !campaign?.oneClickLaunch) && authenticationService.isOrgAdmin())">
                                     List Name
                                  </span>
