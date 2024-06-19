@@ -304,10 +304,4 @@ span.Track-countbg {
 h4.folder-name.align-titletext {
     padding: 0px 5px;
 }
-.folder-name {
-    width: 100%;
-    text-overflow: ellipsis;
-    float: left !important;
-    padding: 0px 5px;
-}
 

@@ -290,3 +290,12 @@ span.gearicon-font-cu {
 .fs-13{
   font-size: 13px;
 }
+.tittle-name{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 9px;
+}
+.line_height{
+  line-height: 1.2 !important;
+  padding-left: 3px;
+}

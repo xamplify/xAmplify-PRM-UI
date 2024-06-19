@@ -416,3 +416,12 @@ h6 {
     left: 0px!important;
 }
 }
+.align-height{
+  border-radius: 15px;
+}
+@media (min-width: 768px){
+  .align-height{
+     min-height: 300px;
+  }
+ }
+
