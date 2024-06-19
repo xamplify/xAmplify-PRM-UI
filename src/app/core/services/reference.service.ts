@@ -3645,6 +3645,11 @@ preivewAssetForPartnerOnNewHost(id: any) {
   let userId = this.authenticationService.getUserId();
   let userIdAsString: string = String(userId);
   let encodedUserId =  btoa(userIdAsString);
+  console.log(id);
+  console.log(this.authenticationService.access_token);
+  console.log(companyName);
+  console.log(userId);
+  console.log(encodedUserId);
   let url = this.envService.PREVIEW_HOST+"p/preview/"+encodedId+"/"+encodedAccessToken+"/"+encodedIcon+"/"+encodedCompanyName+"/"+encodedUserId;
   window.open(url,"_blank");
 }
@@ -3658,6 +3663,7 @@ preivewAssetForPartnerOnNewHost(id: any) {
     } else {
       completeIconPath += this.envService.PREVIEW_HOST + "favicon.ico";
     }
+    console.log(completeIconPath);
     let encodedIcon = btoa(completeIconPath);
     return encodedIcon;
   }
