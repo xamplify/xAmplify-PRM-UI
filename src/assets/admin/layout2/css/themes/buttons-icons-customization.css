@@ -21,7 +21,7 @@ button.button.bgcolor-unset,
 button.button_blue.bgcolor-unset,
 button#copyFrom_clipboard,
 button#add_contact, .btn.Btn-Green.fileinput-button-css, .btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow,
-label.btn.Btn-Green.mBtnAlign.button-border{ 
+label.btn.Btn-Green.mBtnAlign.button-border, .mix-filter-li-selected{ 
   border-radius: 7px !important;
   background-color: var(--custom-buttonbg-color) !important;
   background-image: linear-gradient(1deg, var(--custom-gradient-one-color), var(--custom-gradient-two-color) 99%) !important;
@@ -54,7 +54,7 @@ button.search-box-item-click:hover {
     background-image: none !important;
     background-size: none !important;
     border: none !important;
-    /* color: none !important; */
+     color: #000 !important; 
     border-radius: 0px !important;
     box-shadow: none !important;
 }
@@ -93,6 +93,7 @@ color : var(--custom-icon-color) !important;
 body {
   background-image: var(--body-background-image);
 }
+/*** Sudha Sri (18-06-2024) ***/
 label.btn.Btn-Green.mBtnAlign.button-border, .btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow{
   border-radius: 0px !important;
 }

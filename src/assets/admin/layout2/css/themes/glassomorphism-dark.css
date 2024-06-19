@@ -262,11 +262,10 @@ th {
 }
 .read {
   color: white !important;
-  background-color: #22313a !important;
+  background-color: rgb(0 0 0 / 18%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .campaign-type-selected,
-ul.alt-row-style1 li:hover,
 .filter.form-selected,
 .filter.landing-page-selected,
 .mix-filter li.contact-filter-selected {
@@ -894,7 +893,7 @@ i.IconCustomization:hover{
   > li
   > a
   .time {
-  background-color: #23272c !important;
+  background-color: rgba(16 18 27 / 20%) !important;
 }
 .unread {
   background-color: #2c2f33 !important;
@@ -3937,3 +3936,4 @@ button.btn.btn-xs.hidden-xs.l-g-view {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background: rgb(146 151 179 / 13%) !important;
 }
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu .dropdown-menu-list > li > a:hover, ul.alt-row-style1 li:hover{background: rgb(146 151 179 / 13%) !important;}
