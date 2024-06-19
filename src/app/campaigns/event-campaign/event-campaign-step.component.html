@@ -952,7 +952,7 @@
 																		style="width: 35%">
 																		<span class="ui-column-resizer"
 																			(mousedown)="referenceService.onMouseDown($event, 'user_list_tb',2)"></span>
-																			{{ (authenticationService.isOrgAdmin() || authenticationService.isVendor() || authenticationService.isVendorPartner())  && contactListsPagination.filterBy == 'MY-PARTNERS' || this.eventCampaign?.channelCampaign ? 'Group Name' : 'List Name' }}																
+																			{{ authenticationService.isVendor() || authenticationService.isVendorPartner() || contactListsPagination.filterBy == 'MY-PARTNERS' || this.eventCampaign?.channelCampaign ? 'Group Name' : 'List Name' }}																
 																			</th>
 																	<th class="visible-xs" scope="row" colspan="1"
 																		style="width: 35%" translate>
