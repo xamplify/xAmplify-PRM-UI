@@ -631,6 +631,9 @@ export class CustomSkinComponent implements OnInit {
     this.saveThemeDto.createdBy = this.loggedInUserId;
     this.saveThemeDto.parentId = this.themeId;
     this.saveThemeDto.parentThemeName = this.themeDTO.parentThemeName;
+    if(!this.themeDTO.defaultTheme && !this.themeDTO.backgroundImagePath.includes('/assets')) {
+      this.uploadBgImage = this.bgImagePath;
+    }
     this.saveThemeDto.backgroundImagePath = this.uploadBgImage;
     console.log(this.saveThemeDto.parentId, "sudha");
     //this.ngxloading = false;
@@ -783,6 +786,7 @@ export class CustomSkinComponent implements OnInit {
     )
   }
   saveThemeEventEmit(value: String) {
+    document.body.style.removeProperty('background-image');
     this.closeEvent.emit(value);
   }
 
@@ -1019,7 +1023,6 @@ export class CustomSkinComponent implements OnInit {
         if(this.themeDTO.backgroundImagePath.includes('/assets')) {
           this.uploadImagePath ="";
         } else {
-          this.uploadBgImage = this.bgImagePath;
           this.uploadImagePath = this.authenticationService.MEDIA_URL;
         }
       }
