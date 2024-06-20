@@ -113,7 +113,35 @@
                                         </td>
                                     </ng-container>
                                     <td id="actions-td-width-xamp">
-                                        <div
+                                        <div *ngIf="!(vendorJourney || isLandingPages || isMasterLandingPages)"
+                                        class="actions-block override-actions flex mPadAction IconCustomizationcondition">
+                                        <div class="mActionDiv whitespace_nowrap display-inlineflex">
+                                            <!--Copy Icon-->
+                                            <ng-template [ngTemplateOutlet]="copyIcon"
+                                                [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                            <!--Edit Icon-->
+                                            <ng-template [ngTemplateOutlet]="editIcon"
+                                                [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                            <!--Preview Icon-->
+                                            <ng-template [ngTemplateOutlet]="previewIcon"
+                                                [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                            <!--Copy/Embed Link Icon-->
+                                            <ng-template [ngTemplateOutlet]="copyOrEmbedLinkIcon"
+                                                [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                            <!--Form Icon-->
+                                            <ng-template [ngTemplateOutlet]="formIcon"
+                                                [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                            <!--Analytics Icon-->
+                                            <ng-template [ngTemplateOutlet]="analyticsIcon"
+                                                [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                        </div>
+                                        <div class="mActionDiv whitespace_nowrap">
+                                            <!--Delete Icon-->
+                                            <ng-template [ngTemplateOutlet]="deleteIcon"
+                                                [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                        </div>
+                                    </div>
+                                        <div *ngIf="(vendorJourney || isLandingPages || isMasterLandingPages)"
                                             class="actions-block override-actions flex mPadAction IconCustomizationcondition">
                                             <div class="mActionDiv whitespace_nowrap display-inlineflex">
                                                 <!--Share Icon-->
@@ -212,7 +240,32 @@
                                     </h6>
                                 </div>
                                 <!---Icons-->
-                                <div class="bar gridIconCustomization flex icons-center" id="notificationBarCu">
+                                <div class="bar gridIconCustomization flex icons-center" id="notificationBarCu"
+                                *ngIf="!(vendorJourney || isLandingPages || isMasterLandingPages)">
+                                    <!--Copy Icon-->
+                                    <ng-template [ngTemplateOutlet]="copyIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--Edit Icon-->
+                                    <ng-template [ngTemplateOutlet]="editIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--Preview Icon-->
+                                    <ng-template [ngTemplateOutlet]="previewIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--Copy/Embed Link Icon-->
+                                    <ng-template [ngTemplateOutlet]="copyOrEmbedLinkIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--Form Icon-->
+                                    <ng-template [ngTemplateOutlet]="formIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--Analytics Icon-->
+                                    <ng-template [ngTemplateOutlet]="analyticsIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--Delete Icon-->
+                                    <ng-template [ngTemplateOutlet]="deleteIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                </div>
+                                <div class="bar gridIconCustomization flex icons-center" id="notificationBarCu"
+                                *ngIf="(vendorJourney || isLandingPages || isMasterLandingPages)">
                                     <!--Share Icon-->
                                     <ng-template *ngIf="vendorJourney" [ngTemplateOutlet]="shareIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
