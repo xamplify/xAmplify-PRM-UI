@@ -352,6 +352,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	vendorJourneyEditOrViewAnalytics: boolean = false;
 	expandOrCollapseClass = "";
 	isHalopsaDisplayed = false;
+	iszohoDisplayed = false;
 
 	/*****XNFR-528*****/
 	zohoRedirectURL: string;
