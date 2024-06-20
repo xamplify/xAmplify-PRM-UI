@@ -117,7 +117,7 @@
                                             class="actions-block override-actions flex mPadAction IconCustomizationcondition">
                                             <div class="mActionDiv whitespace_nowrap display-inlineflex">
                                                 <!--Share Icon-->
-                                                <ng-template *ngIf="vendorJourney" [ngTemplateOutlet]="shareIcon"
+                                                <ng-template *ngIf="vendorJourney && !landingPage?.defaultLandingPage" [ngTemplateOutlet]="shareIcon"
                                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                 <!--Copy Icon-->
                                                 <ng-template *ngIf="!isLandingPages  || (isMasterLandingPages && !landingPage?.defaultLandingPage )" [ngTemplateOutlet]="copyIcon"
@@ -163,9 +163,10 @@
                                 <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"
                                     alt="No Image Found">
                                 <div>
-                                    <h4 class="xamplify-ellipsis overflow-hidden GridViewCotent gridViewTextAlignmnent"
+                                    <h4 class="assest-name overflow-hidden GridViewCotent gridViewTextAlignmnent"
                                         data-placement="bottom" data-toggle="tooltip" title="{{landingPage.name}}">
-                                        <b>Page Name:</b> {{landingPage.name}}
+                                        <b>Page Name:</b> {{landingPage.name | slice:0:54}}
+                                        <span *ngIf="landingPage.name?.length >54">...</span>
                                     </h4>
                                     <h6 class="GridViewCotent xamplify-ellipsis" title="{{landingPage.categoryName}}"
                                         data-placement="bottom" data-toggle="tooltip">
@@ -228,13 +229,13 @@
                                     <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="copyOrEmbedLinkIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Form Icon-->
-                                    <ng-template *ngIf="isLandingPages||  vendorJourney  || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="formIcon"
+                                    <ng-template *ngIf="isLandingPages||  (vendorJourney && !landingPage?.defaultLandingPage)  || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="formIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Analytics Icon-->
-                                    <ng-template *ngIf = " vendorJourney || isLandingPages || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="analyticsIcon"
+                                    <ng-template *ngIf = " (vendorJourney &&  !landingPage?.defaultLandingPage) || isLandingPages || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="analyticsIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Delete Icon-->
-                                    <ng-template *ngIf="(!isLandingPages && !landingPage?.defaultLandingPage) || vendorJourney  || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="deleteIcon"
+                                    <ng-template *ngIf="(!isLandingPages && !landingPage?.defaultLandingPage) || (vendorJourney && !landingPage?.defaultLandingPage)  || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="deleteIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                 </div>
                             </div>

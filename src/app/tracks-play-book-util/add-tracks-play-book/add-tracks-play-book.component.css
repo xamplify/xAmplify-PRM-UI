@@ -1358,3 +1358,14 @@ ul.t-b-spacings {
 .toggleOnOff input:checked~.labels::before {
   opacity: 1;
 }
+@media only screen and (min-width:768px) and (max-width:1180px) { 
+  .img-grids{
+    height: 125px !important;
+}
+.feature-img-bg{
+  height: 130px!important;
+}
+.tab_m0{
+margin-left:0px!important;
+}
+}

@@ -32,6 +32,11 @@
                       <span *ngIf="dealTitle?.length>25">..</span>
                     </h5>
                   </div>
+                  <div *ngIf="referenceId != null && referenceId != undefined && isVendorVersion">
+                    <h5 class="mt10 mb0" title="{{referenceId}}">
+                      <span><strong>Deal ID </strong></span>: {{referenceId}}
+                    </h5>
+                  </div>
                 <!--Registered Details-->
                   <div class="underline mt5"><strong>{{DEAL_CONSTANTS?.addedBy}}:</strong></div>
                   <h5 class="mt10 mb0" *ngIf="createdByName" [title]="createdByName">

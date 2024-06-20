@@ -102,10 +102,12 @@ import { UpdatePasswordComponent } from './super-admin/update-password/update-pa
 import { AddVendorLogosComponent } from 'app/util/add-vendor-logos/add-vendor-logos.component';
 import { SupportAccountUsersComponent } from './support-account-users/support-account-users.component';
 import { IntegrationSettingsPopupComponent } from './integration-settings-popup/integration-settings-popup.component';
+import { FormsModule } from 'app/forms/forms.module';
+
 
 
 @NgModule({
-    imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
+    imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule ],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
         WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
         FollowersComponent, SharedComponent,EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent, DashboardStatsComponent, 

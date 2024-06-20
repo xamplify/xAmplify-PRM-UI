@@ -88,10 +88,11 @@
                         </div>
                         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 align-itams">
                             <div class="bg-folder">
-                                <h4 class="ellipsis align-titletext tab_whitespace" data-placement="bottom"
+                                <h4 class="folder-name align-titletext tab_whitespace" data-placement="bottom"
                                     data-toggle="tooltip" title="{{category.name}}">
-                                    <b>Folder Name:</b> {{category.name | slice:0:10}} <span
-                                        *ngIf="category.name?.length>10">...</span>
+                                    <b>Folder Name:</b> {{category.name}} 
+                                    <!-- <span
+                                        *ngIf="category.name?.length>20">...</span> -->
                                 </h4>
                                 <span class="Track-countbg">{{moduleName}} {{category.count}}</span>
                                 <h6 data-placement="bottom" data-toggle="tooltip" [title]="category.createdBy"

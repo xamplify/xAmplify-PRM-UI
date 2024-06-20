@@ -35,6 +35,8 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
   loggedInUserId: number;
   @Input()
   leadApprovalStatusType:string;
+  @Input()
+  isVendorVersion : boolean = false;
 
   @Output()
   closePopupEmitter = new EventEmitter();

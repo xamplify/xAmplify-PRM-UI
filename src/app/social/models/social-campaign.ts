@@ -15,6 +15,7 @@ export class SocialCampaign {
   shareNow = true;
   isPartner = true;
   channelCampaign = false;
+  toPartner = false;
   nurtureCampaign = false;
   userListIds: Array<number> = [];
 

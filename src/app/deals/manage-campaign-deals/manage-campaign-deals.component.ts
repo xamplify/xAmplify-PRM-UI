@@ -326,9 +326,7 @@ toggleFilterOption() {
   this.fromDateFilter = "";
   this.toDateFilter = "";
   this.statusFilter = "";
-  // this.dealsPagination.fromDateFilterString = "";
-  // this.dealsPagination.toDateFilterString = "";
-  // this.dealsPagination.stageFilter = "";
+  this.selectedRegisteredByUserId = 0;
   if (!this.showFilterOption) {
     this.dealsPagination.fromDateFilterString = "";
     this.dealsPagination.toDateFilterString = "";
@@ -336,6 +334,7 @@ toggleFilterOption() {
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.dealsPagination.pageIndex = 1;
+      this.dealsPagination.registeredByUserId = 0;
       this.listCampaignDeals(this.dealsPagination);
       this.filterMode = false;
     }      
@@ -352,6 +351,7 @@ closeFilterOption() {
   this.dealsPagination.fromDateFilterString = "";
   this.dealsPagination.toDateFilterString = "";
   this.dealsPagination.stageFilter = "";
+  this.dealsPagination.registeredByUserId = 0;
   this.filterResponse.isVisible = false;
   if (this.filterMode) {
     this.dealsPagination.pageIndex = 1;
@@ -360,7 +360,7 @@ closeFilterOption() {
   } 
 }
 
-validateDateFilters() {
+validateDateFiltersOld() {
   if ((this.statusFilter == undefined || this.statusFilter == "") && 
     (this.fromDateFilter == undefined || this.fromDateFilter == "") &&
       (this.toDateFilter == undefined || this.toDateFilter == "")) {
@@ -394,7 +394,6 @@ validateDateFilters() {
     if (validDates) {
       if (this.statusFilter != undefined && this.statusFilter != "") {
         this.dealsPagination.stageFilter = this.statusFilter;
-        // this.listCampaignLeads(this.leadsPagination);
       }
       else {
         this.dealsPagination.stageFilter = "";
@@ -408,6 +407,68 @@ validateDateFilters() {
     
   }
 }
+
+
+validateDateFilters() {
+  let isInvalidStatusFilter = this.statusFilter == undefined || this.statusFilter == "";
+  let isValidStatusFilter = this.statusFilter != undefined && this.statusFilter != "";
+  let isEmptyFromDateFilter = this.fromDateFilter == undefined || this.fromDateFilter == "";
+  let isValidFromDateFilter = this.fromDateFilter != undefined && this.fromDateFilter != "";
+  let isEmptyToDateFilter = this.toDateFilter == undefined || this.toDateFilter == "";
+  let isValidToDateFilter = this.toDateFilter != undefined && this.toDateFilter != "";
+  let isInValidRegisteredByUserFilter = this.selectedRegisteredByUserId==undefined || this.selectedRegisteredByUserId==0;
+  let isValidRegisteredByUserFilter = this.selectedRegisteredByUserId!=undefined && this.selectedRegisteredByUserId>0;
+  if (isInvalidStatusFilter && isEmptyFromDateFilter && isEmptyToDateFilter  && isInValidRegisteredByUserFilter) {
+        this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
+  } else { 
+    let validDates = false;   
+      if (isEmptyFromDateFilter && isEmptyToDateFilter ) {
+          validDates = true;
+      } else if (isValidFromDateFilter && isEmptyToDateFilter ) {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      } else if (isValidToDateFilter && isEmptyFromDateFilter) {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+      } else {
+        var toDate = Date.parse(this.toDateFilter);
+        var fromDate = Date.parse(this.fromDateFilter);
+        if (fromDate <= toDate) {
+          validDates = true;
+          this.dealsPagination.pageIndex = 1;
+          this.dealsPagination.maxResults = 12;
+          this.dealsPagination.fromDateFilterString = this.fromDateFilter;
+          this.dealsPagination.toDateFilterString = this.toDateFilter;
+        } else {
+          this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+        }        
+    }
+
+    if (validDates) {
+      this.filterStatus(isValidStatusFilter);
+      this.filterRegisteredByUserId(isValidRegisteredByUserFilter);
+      this.dealsPagination.pageIndex = 1;
+      this.dealsPagination.maxResults = 12;
+      this.filterMode = true;
+      this.filterResponse.isVisible = false;
+      this.listCampaignDeals(this.dealsPagination);
+    }
+  }
+}
+  
+private filterRegisteredByUserId(isValidRegisteredByUserFilter: boolean) {
+this.dealsPagination.registeredByUserId = 0;
+if (isValidRegisteredByUserFilter) {
+  this.dealsPagination.registeredByUserId = this.selectedRegisteredByUserId;
+}
+}
+
+private filterStatus(isValidStatusFilter) {
+  if (isValidStatusFilter) {
+    this.dealsPagination.stageFilter = this.statusFilter;
+  } else {
+    this.dealsPagination.stageFilter = "";
+  }
+}
+
 
 clearSearch() {
   this.dealsSortOption.searchKey='';
@@ -550,6 +611,14 @@ downloadDeals(pagination: Pagination){
       this.registeredByUsersLoader = false;
       this.isRegisteredByUsersLoadedSuccessfully = false;
     });
+}
+
+getSelectedRegisteredByUserId(event:any){
+  if(event!=null){
+    this.selectedRegisteredByUserId = event['id'];
+  }else{
+    this.selectedRegisteredByUserId = 0;
+  }
 }
 
 getSelectedStatus(event:any){

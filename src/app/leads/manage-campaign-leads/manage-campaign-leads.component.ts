@@ -343,6 +343,7 @@ toggleFilterOption() {
   this.fromDateFilter = "";
   this.toDateFilter = "";
   this.statusFilter = "";
+  this.selectedRegisteredByUserId = 0;
   if (!this.showFilterOption) {
     this.leadsPagination.fromDateFilterString = "";
     this.leadsPagination.toDateFilterString = "";
@@ -350,6 +351,7 @@ toggleFilterOption() {
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.leadsPagination.pageIndex = 1;
+      this.leadsPagination.registeredByUserId = 0;
       this.listCampaignLeads(this.leadsPagination);
       this.filterMode = false;
     }      
