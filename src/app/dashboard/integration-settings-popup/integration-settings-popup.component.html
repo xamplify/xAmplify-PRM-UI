@@ -1,54 +1,95 @@
-<div class="modal right fade" id="pipedrivePreSettingsForm" tabindex="-1" role="dialog"
-  aria-labelledby="pipedriveModalLabel" data-keyboard="false" data-backdrop="static">
+<div class="modal right fade" id="integrationSettingsForm" tabindex="-1" role="dialog"
+  aria-labelledby="integrtaionModalLabel" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog modal-css" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <a class="close-circle" data-dismiss="modal" (click)="hidePipedrivePresettingForm()"><i
+        <a class="close-circle" data-dismiss="modal" (click)="hideIntegrationSettingForm()"><i
             class="fa fa-times"></i></a>
         <h4 class="modal-title" id="templateRetrieve" translate>Custom Fields Settings</h4>
-        <!-- <span>{{customFields.name}}</span> -->
         <div>
         </div>
       </div>
       <div class="modal-body">
-        <!-- Convert {{customFields.name}}  -->
-        <div class="form-group" id="pipelineStageDiv">
-          <input class="checkBox_shadow" type="checkbox"
-          name="private" class="alignEqualtoText"> Picklist <span
-         class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"
-         title="This Field will be Converted to the PickList."></span>
-          <label style="text-align: center;width: 60%;">Options</label>
-          <ul>
-            <ng-container *ngFor=" let option of customFields.options; let x = index">
-              <li class="list-group-item" id="stage{{x}}">
-                <div class="row">
-                  <span class="col-lg-5 col-md-5 col-sm-12 col-xs-12 mb_pl10">
-                    <i class="fa fa-ellipsis-v"></i>
-                    <input type="text" placeholder="Enter Name" [(ngModel)]="option.label"
-                      class="bg-color field-border-customization inputFieldWidth">
-                  </span>
-                  <button type="button" class="btn-danger button-blue deleteBntAligment" data-toggle="tooltip"
-                    data-placement="top" title="Delete" (click)="delete(x)" style="float: right;"><span
-                      class="glyphicon glyphicon-trash"></span></button>
-                </div>
-              </li>
-            </ng-container>
-          </ul>
-          <div class="form-group">
-            <div *ngIf="customFields.options.length == 0" class="alert alert-info text-center mt5">
-              <strong>Please <a (click)="addOption()">Click here</a> to add a Option</strong>
+        <div class="form-group">
+          <div class="alert alert-danger" id="company-profile-error-div" *ngIf="!isValid">
+            <a class="close" aria-label="close" (click)="isValid = true">x</a>
+            <strong>{{errorMessage}}</strong>
           </div>
-          <a *ngIf="customFields.options.length >= 1" class="dashboard-stat " style="padding: 9px 0;margin-top: 10px;" (click)="addOption()">
-            <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> Add Option
-        </a>
+          <label>Name of the CustomField</label>
+          <input type="text" [disabled]="customFields.label.length >= 1" [(ngModel)]="customFields.label"
+            class="form-control">
+          <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-6">
+              <label *ngIf="customFields.selected" for="required">Required</label>
+              <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right"
+                title="Your partner must fill in this custom field if you toggle on this option."></span>
+              <label class="toggleOnOff" [ngClass]="!customFields?.canEditRequired ? 'disabled-opacity':''"
+                [attr.data-toggle]="!customFields?.canEditRequired ? 'tooltip' : null"
+                [attr.data-placement]="!customFields?.canEditRequired ? 'right' : null"
+                [attr.title]="!customFields?.canEditRequired ? 'Marked as required in your CRM account.' : null">
+                <input class="checkBox_shadow" type="checkbox" [disabled]="!customFields.canEditRequired"
+                  [(ngModel)]="customFields.required" [ngModelOptions]="{standalone: true}">
+                <span class="sliderOnOff"></span>
+                <span class="labels" data-on="ON" data-off="OFF"></span>
+              </label>
+            </div>
+            <div class="col-sm-6">
+              <label *ngIf="customFields.selected" for="displayName">Display Name</label>
+              <input *ngIf="customFields.selected" type="text" class="form-control" [(ngModel)]="customFields.displayName"
+                [ngModelOptions]="{standalone: true}" placeholder="Display Name">
+            </div>
+          </div>
+          <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-6">
+              <label *ngIf="customFields.selected" for="placeHolder">Placeholder</label>
+              <input *ngIf="customFields.selected" type="text" class="form-control" placeholder="Placeholder"
+                [(ngModel)]="customFields.placeHolder" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col-sm-6" *ngIf="!isDefaultField && customFields.type === 'string'">
+              <label for="mapAs" style="float: left;">Data Type</label>
+              <select class="form-control formSelectCustomization fa" [(ngModel)]="customFields.originalCRMType">
+                <option [ngValue]="'text'">String</option>
+                <option [ngValue]="'select'">PickList</option>
+              </select>
+            </div>
+          </div>
+          <div *ngIf="customFields.originalCRMType === 'select'" class="portlet light" style="margin-top: 20px;">
+            <div class="form-group">
+              <div *ngIf="customFields.options.length === 0" class="alert alert-info text-center mt5">
+                <strong>Please <a (click)="addOption()">Click here</a> to add an Option</strong>
+              </div>
+            </div>
+
+            <ul class="list-group">
+              <ng-container *ngFor="let option of customFields.options; let x = index">
+                <li class="list-group-item" id="stage{{x}}">
+                  <div class="row">
+                    <div class="col-lg-7 col-md-7 col-sm-9 col-xs-8">
+                      <input type="text" placeholder="Enter Name" [(ngModel)]="option.label"
+                        class="bg-color field-border-customization inputFieldWidth">
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-3 col-xs-4">
+                      <button *ngIf="customFields.options.length > 1" type="button"
+                        class="btn btn-danger deleteBntAligment" data-toggle="tooltip" data-placement="top"
+                        title="Delete" (click)="delete(x)">
+                        <span class="glyphicon glyphicon-trash"></span>
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ng-container>
+            </ul>
+
+            <a *ngIf="customFields.options.length >= 1" class="dashboard-stat" style="padding: 9px 0;margin-top: 10px;"
+              (click)="addOption()">
+              <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> Add Option
+            </a>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-warning" data-dismiss="modal" (click)="hidePipedrivePresettingForm()"
-          translate>CANCEL</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)=" hidePipedrivePresettingForm()"
-          translate>Submit</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="validateAndSubmit()"
+          translate>Save</button>
       </div>
     </div>
   </div>

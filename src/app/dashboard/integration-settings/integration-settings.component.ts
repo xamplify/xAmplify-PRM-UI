@@ -46,7 +46,6 @@ export class IntegrationSettingsComponent implements OnInit {
 	integrationDetails: any;
 	integrationPipelines = [];
 	selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
-	customFields = [];
 	customFieldsDtosLoader = false;
 	expandField: boolean = false;
 	typeMismatchMessage: any;
@@ -290,6 +289,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				selectedCustomFieldsDto.displayName = customFiledDto.displayName;
 				selectedCustomFieldsDto.formDefaultFieldType = customFiledDto.formDefaultFieldType;
 				selectedCustomFieldsDto.options = customFiledDto.options;
+				selectedCustomFieldsDto.originalCRMType = customFiledDto.originalCRMType;
 				self.selectedCustomFieldsDtos.push(selectedCustomFieldsDto);
 			}
 		});
@@ -758,9 +758,6 @@ export class IntegrationSettingsComponent implements OnInit {
 		if (event === "0") {
 			this.isCustomFieldsModelPopUp = false;
 		}	
-  }
-  getCustomFields(event: any){
-	this.customFields = event;
   }
 
 }

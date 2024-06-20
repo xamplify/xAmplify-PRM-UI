@@ -152,11 +152,11 @@
                 </td> -->
                 <td
                   *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA'">
-                  <a *ngIf="sfCustomField.selected" class="custom-icon" (click)="toggleSettings(sfCustomField)">
+                  <a *ngIf="sfCustomField.selected && integrationType != 'SALESFORCE'" class="custom-icon" (click)="toggleSettings(sfCustomField)">
                     <i *ngIf="sfCustomField.selected" class="fa fa-edit mr5 IconCustomization SingleIconCu"></i>
                     <div class="clickicons"></div>
                   </a>
-                  <a *ngIf="sfCustomField.selected && integrationType === 'SALESFORCE' && sfCustomField.type === 'string'" class="custom-icon">
+                  <a *ngIf="sfCustomField.selected && integrationType === 'SALESFORCE'" class="custom-icon">
                     <i *ngIf="sfCustomField.selected" (click)="addCustomFielsdModalOpen(sfCustomField)" class="fa fa-gear mr5 IconCustomization SingleIconCu"></i>
                     <div class="clickicons"></div>
                   </a>
@@ -283,7 +283,7 @@
       </div>
     </ng-container>
     <div *ngIf="isCustomFieldsModelPopUp">
-      <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" (customField)="getCustomFields($event)" [customFields]="customField"></app-integration-settings-popup>
+      <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField"></app-integration-settings-popup>
     </div>
   </div>
 </div>

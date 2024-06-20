@@ -11,5 +11,7 @@ export class CustomFieldsDto {
     canUnselect = true;
     displayName = "";
     formDefaultFieldType= '';
+    canEditRequired = false;
     options: Array<PicklistValues> = new Array<PicklistValues>();
+    originalCRMType = '';
 }
