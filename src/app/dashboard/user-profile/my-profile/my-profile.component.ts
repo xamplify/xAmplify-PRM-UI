@@ -4475,9 +4475,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.ngxloading = false;
 				let isDemoAccount = "spai@mobinar.com" == this.currentUser.userName;
 				this.defaultThemes = response.data.sort((a, b) => a.id - b.id);
-				if(this.isProduction && !isDemoAccount){
-					this.defaultThemes = this.defaultThemes.filter((item) =>item.name != "Glassomorphism Light");
-					this.defaultThemes = this.defaultThemes.filter((item) =>item.name != "Glassomorphism Dark");
+				if (this.isProduction && !isDemoAccount) {
+					this.defaultThemes = this.defaultThemes.filter((item) => item.name != "Glassomorphism Light");
+					this.defaultThemes = this.defaultThemes.filter((item) => item.name != "Glassomorphism Dark");
 				}
 			},
 			error => {
@@ -4614,6 +4614,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.activeTabHeader = "Custom Theme Settings";
 		//this.themeResponse.isVisible = false;
 	}
+
 	viewTheme() {
 		this.activeTabName = 'lightTheme';
 		this.activeTabHeader = "Theme View";

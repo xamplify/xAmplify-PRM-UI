@@ -106,11 +106,12 @@ import { FormsModule } from 'app/forms/forms.module';
 
 
 
+
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule ],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
         WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
-        FollowersComponent, SharedComponent,EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent, DashboardStatsComponent, 
+        FollowersComponent, SharedComponent, EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent, DashboardStatsComponent,
         VendorReportsComponent, AdminReportComponent,
         MarketoAuthenticationComponent,
         VendorRequestReportComponent,
@@ -126,7 +127,7 @@ import { FormsModule } from 'app/forms/forms.module';
         VideoStatisticsAnalyticsComponent,
         EmailStatsAnalyticsComponent,
         SocialAccountsAnalyticsComponent,
-        DashboardButtonsCarouselComponent, 
+        DashboardButtonsCarouselComponent,
         VanityEmailTemplatesComponent,
         ModuleAccessComponent,
         TagsComponent,
@@ -181,8 +182,9 @@ import { FormsModule } from 'app/forms/forms.module';
         SupportAccountUsersComponent,
         IntegrationSettingsPopupComponent,
             
+
     ],
-    exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
-    providers: [DashboardService,CompanyProfileService,DealRegistrationService, LandingPageService]
+    exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
+    providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService]
 })
 export class DashboardModule { }

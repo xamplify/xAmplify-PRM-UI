@@ -9,7 +9,9 @@
   color: #000 !important;
 }
 body{
-  background-image: url(/assets/images/glassmorphism-images/glassmorphism.png);
+
+  background-image: var(--body-background-image);
+
   color: white !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -110,7 +112,7 @@ h4.header-text-css,
 .copyright-css,
 .video,
 .hash-table-color {
-  background-color: #2e3033 !important;
+  background: rgb(255 255 255 / 31%) !important;
 }
 .page-bar .page-breadcrumb > li > a,
 .page-bar .page-breadcrumb > li > span {
@@ -261,7 +263,7 @@ th {
 }
 .read {
   color: white !important;
-  background-color: #22313a !important;
+  background-color: rgba(16 18 27 / 15%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .campaign-type-selected,
@@ -321,7 +323,7 @@ ul.alt-row-style1 li:hover,
 .col-block.col-block-disable,
 .bg-card-header,
 .clear-search {
-  background-color: rgb(146 151 179 / 8%) !important;
+  background-color: rgb(255 255 255 / 31%) !important;
 }
 .col-block.col-block-active {
   background-color: #00a8e7 !important;
@@ -377,7 +379,7 @@ ul.alt-row-style1 li:hover,
 }
 .table tbody tr.active td,
 .table tbody tr.active th {
-  background-color: #22313a !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
 .tgrid > tbody > tr > td,
 .tgrid > tbody > tr > th,
@@ -459,7 +461,9 @@ tr {
   background-color: #2c2f33 !important;
 }
 .page-sidebar .page-sidebar-menu > li.active > a,
-.page-sidebar .page-sidebar-menu > li.hover > a {
+.page-sidebar .page-sidebar-menu > li.hover > a,
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu .dropdown-menu-list > li > a:hover,
+.dropdown ul li a:hover {
     background-color: rgb(255 253 253 / 35%) !important;
 }
 .page-sidebar-closed.page-sidebar-fixed
@@ -530,11 +534,8 @@ tr {
 
 /**** dropdownmenu ***/
 .dropdown-menu {
-  background-color: rgb(255 255 255 / 75%) !important;
+  background-color: rgb(255 255 255 / 90%) !important;
   border: 1px solid rgb(208 207 199) !important;
-}
-.dropdown ul li a:hover {
-  background-color: rgb(236 236 236) !important;
 }
 .page-header.navbar
   .top-menu
@@ -609,7 +610,7 @@ tr {
   background: rgba(16 18 27 / 40%) !important;
 }
 .search-bgcolor {
-  background-color: #2b3c46 !important;
+  background-color: linear-gradient(45deg, #cdcdcd, transparent);
 }
 .profile-image-wrapper {
   background-color: rgb(146 151 179 / 8%) !important;
@@ -622,7 +623,7 @@ tr {
   border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .text-dropdown {
-  background-color: #2b3c46 !important;
+  background-color: rgb(255 255 255 / 31%) !important;
 }
 .write-new textarea,
 .card-bg {
@@ -776,7 +777,7 @@ select {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .xamplify-dropdown-content {
-  background-color: #2b3c46 !important;
+  background-color: rgb(255 255 255 / 31%) !important;
 }
 .preview-edit-color,
 .wrap-asset-name {
@@ -850,7 +851,7 @@ span.ui-column-resize {
   background-color: #2b3c46 !important;
 }
 .tab-bg {
-  background-color: #2c2f33 !important;
+  background-color: rgb(255 255 255 / 40%) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -877,7 +878,7 @@ span.ui-column-resize {
 .circled-number:hover,
 .circled-number:hover,
 .xamplify-dropdown-option:hover {
-  background-color: #22313a !important;
+  background-color: rgba(16 18 27 / 12%) !important;
 }
 .actions-block i,
 .circled-number,
@@ -906,7 +907,7 @@ i.IconCustomization:hover ,
   > li
   > a
   .time {
-  background-color: #23272c !important;
+  background-color: rgb(255 253 253 / 35%) !important;
 }
 .unread {
   background-color: #2c2f33 !important;
@@ -1169,7 +1170,7 @@ input#copy-link {
   border-style: none !important;
 }
 .tracks-bg-color {
-  background-color: rgba(16 18 27 / 40%) !important;
+  background-color: rgb(255 255 255 / 31%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   backdrop-filter: blur(5px);
 }
@@ -1266,7 +1267,7 @@ input.field-border-customization {
 }
 
 ul.alt-row-style1 li:hover {
-  background: #23272c !important;
+  background: rgb(255 253 253 / 35%) !important;
 }
 .fc-unthemed .fc-popover,
 .fc-unthemed .fc-row,
@@ -1388,7 +1389,7 @@ ul.alt-row-style1 li:nth-child(even) {
 }
 /* 14-6-2023 sudha sri */
 .dropdown-menu li > a > [class*=" fa-"] {
-  color: #000 !important;
+  color: #000;
 }
 .table tr.row-selected td {
   background-color: rgb(255 255 255 / 31%) !important ;
@@ -1571,6 +1572,7 @@ a.dropdown-toggle.circlebg-none-v:hover {
 
 /* 10-07-2023 */
 .vendor-img-cu img {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background-color: #22313a54 !important;
 }
 .dark-card-body-cu {
@@ -1723,9 +1725,7 @@ p.layoutcontent {
 .required {
   color: red !important;
 }
-.vendor-img-cu img {
-  border: 1px solid #1ca6f3 !important;
-}
+
 .template-height {
   margin-top: 9px !important;
 }
@@ -1948,7 +1948,7 @@ i.fa.fa-trash-o.dropdown-deleteicon:hover{
 i.IconCustomization :hover,
 .setting-icon-cu:hover,
 .IconCustomizationcondition a i:hover {
-  border:1px solid #fff!important; 
+  border:  0px solid rgba(255, 255, 255, 0.1) !important; 
   background: rgb(146 151 179 / 8%) !important;
 }
 
@@ -2004,7 +2004,11 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .btn-group button{
   background-color: #0276FF !important;
+
+  border: 1px solid #266dc1 !important;
+
   border: 1px solid #1ca6f369 !important;
+
 }
 
 .refresh-icon:hover {
@@ -2029,7 +2033,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   backdrop-filter: blur(5px);
 }
 .mix-filter li:hover{
-  background: none !important;
+  background: #fff !important;
   border: 1px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(5px);
 }
@@ -2071,6 +2075,7 @@ tbody {
   width: 32px !important;
   height: 32px !important;
   line-height: 28px !important;
+  border: 0px solid rgba(255, 255, 255, 0.1) !important;
 }
 .re-distributed-high-level {
   background-color: rgba(255, 255, 255, 0.2) !important;
@@ -2153,8 +2158,8 @@ a.title.padding_bottom.text-color.content-bg{
 .search-box-item-clear {
   background: #2c2f33 !important;
 }
-i.IconCustomization:hover {
-  border:0px solid #22313a!important;
+i.IconCustomization {
+  border: 1px solid rgb(255 255 255 / 35%) !important;
 }
 i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
 i.fa.fa-plus.fa-fa-consistency.IconCustomization,
@@ -2181,7 +2186,8 @@ i.fa.fa-expand.fa-fa-consistency.IconCustomization {
   background-color: #2c2f33 !important;
   border-bottom: 0px solid #2f4857 !important;
 }
-button.btn.Btn-Gray.btn-hvr-text {
+button.btn.Btn-Gray.btn-hvr-text,
+.setting-icon-cu .gearDropdownMenu:hover {
   color: #000 !important;
 }
 button.btn.btn-white {
@@ -2361,13 +2367,13 @@ button.btn.btn-xs.l-g-view,
 button.btn.btn-xs.l-g-view.disabled {
   box-shadow : 0 4px 30px rgba(0, 0, 0, 0.1) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  /* background: rgb(146 151 179 / 13%) !important; */
+  background: rgb(255 255 255 / 31%) !important;
 }
 button.search-box-item-click{
-  background: rgba(255, 255, 255, 0.2) !important;
+  background: rgb(146 151 179 / 8%) !important;
   backdrop-filter: blur(5px);
   border:none !important;
-  color:#000;
+  color:#000 !important;
 }
 /* 13-11-2023 */
 .bg-unset {
@@ -2801,7 +2807,7 @@ justify-content: center!important;
     border-radius: 8px !important;
     background: #0276FF !important;
     color: #fff !important;
-    /* border: 1px solid #1ca6f3 !important; */
+    border: 1px solid #266dc1 !important;
     margin-left: 4px;
   }
   button.group-name-cclass.btn-primary.default-btn-cursor, .tm-group-preview-css {
@@ -2964,7 +2970,9 @@ button.btn.custom {
   border-radius: 7px !important;
   background-color: #0276FF !important;
   color: #fff !important;
-  /* border:  1px solid #1ca6f3 !important */
+
+  border: 1px solid #266dc1 !important;
+
 }
 /* 30/11/2023 */
 .campaignViewIcon{
@@ -3146,7 +3154,7 @@ button.button:disabled {
   background: #14162b63 !important;
   opacity: 0.5;
   height: 37px !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid #14162b69 !important;
 }
 .tags-table tr:nth-child(odd){
   background-color: #2c2f33;
@@ -3288,11 +3296,11 @@ td.pt10.pb10.bold.mr_10{
 a.tabColorOne b,
 h1 b,
 h6 b,
-span b,
 h3 b,
 div b {
   color: #fff !important;
 }
+span b{color: #787878 !important}
 /* Sudha Sri (27-12-2023) */
 .copy_text_mrgn{
   margin-left: 16px !important;
@@ -3334,7 +3342,8 @@ h3#notifications {
 button.btn.custom:hover,
 .button:hover,
 .button_blue:hover{
-   background-color: #1C84FF !important;
+
+  background-color: #1C84FF !important;
   background-size: 250% !important;
   background-position: right center !important;
 }
@@ -3825,7 +3834,7 @@ li.filter.selectedBox{
 .Btn-Green,
 .btn-primary{
   background: rgb(255 255 255 / 31%) !important;
-  border: 1px solid rgb(255 255 255 / 35%) !important;
+  border: 1px solid #266dc1 !important;
   color: #000 !important;
 }
 .aspect_ratio{
@@ -3927,8 +3936,7 @@ h1, h2, h3, h4, h5, h6{
   background-color: rgb(255 255 255 / 31%) !important;
 }
 
-.dashboard-stat.green-soft .details .number,
-.dashboard-stat.green-soft .details .desc,
+
 .dashboard-stat.red-soft .details .number,
 .dashboard-stat.red-soft .details .desc,
 .dashboard-stat.purple-soft .details .number,
@@ -4024,9 +4032,7 @@ button.swal2-cancel.styled{
 button.swal2-confirm.styled:hover{
   background: linear-gradient(348deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
 }
-a.tabColorOne b, h1 b, h6 b, span b, h3 b, div b {
-  color: #000 !important;
-}
+
 .page-header.navbar .page-top.active {
   background-color: rgb(255 255 255 / 88%) !important;
 }
@@ -4104,3 +4110,67 @@ a.tabColorOne b, h1 b, h6 b, span b, h3 b, div b {
 }.beige {
   background-color: transparent !important;
 }
+thead>tr,
+.tgrid > thead {
+  background-color: hsla(0, 0%, 100%, .1) !important;
+  box-shadow: none !important;
+  border-radius: 10px 10px 0 0 !important;
+}
+button#addContacts:hover, button#copyFromClipBoard:hover, button#uploadCSV:hover {
+  transform: scale(1.02);
+}
+.dashboard-stat.blue-sharp .details .number{
+color: #000 !important;
+}
+button.button.bgcolor-unset, button#copyFrom_clipboard, button#add_contact,
+button.group-name-cclass.btn-primary.default-btn-cursor.white-co{
+  background-color: #0276FF !important;
+}
+span.btn.Btn-Green{
+  border:none !important;
+}
+button.fa.fa-th-list.btn-xs.l-g-view.mr_4,
+button.search-box-item-click,
+button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4{
+  color: #000 !important;
+    background-color: rgb(255 255 255 / 31%) !important;
+    border: 1px solid rgb(255 255 255 / 35%) !important;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+}
+/***** Sudha Sri(12-06-2024) *****/
+.dashboard-stat.blue .details .number,
+.dashboard-stat.green .details .number,
+.dashboard-stat.purple .details .number,
+.dashboard-stat.red .details .number{
+  color: #000 !important;
+}
+button.btn.btn-primary.shareVideoButton,
+button.btn.btn-primary.embedVideoButton{
+  background-color: #0276FF !important;
+  border: 1px solid #266dc1 !important;
+}
+button.btn.btn-primary.embedVideoButton:hover,
+button.btn.btn-primary.shareVideoButton:hover{
+  background-color: #1C84FF !important;
+}
+/***** Sudha Sri(13-06-2024) *****/
+.lt-blue-c:hover, .lt-green-c:hover,
+.vlt-blue-c:hover, .r-r-c:hover{border:1px solid rgba(255, 255, 255, 0.1) !important}
+button.search-box-item-click:hover{background: rgba(255, 255, 255, 0.2) !important;}
+button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4,
+button.search-box-item-click,
+button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4,
+button.fa.fa-th-list.btn-xs.l-g-view.mr_4,
+button.fa.fa-th-large.btn-xs.l-g-view.mr_4,
+button.fa.fa-th-list.btn-xs.l-g-view,
+button.fa.fa-th-large.btn-xs.l-g-view,
+button.btn-xs.l-g-view.fa.fa-folder,
+button.btn-xs.l-g-view.fa.fa-th,
+button.btn.btn-xs.hidden-xs.l-g-view {
+  background-color: rgb(255 255 255 / 31%) !important;
+  border: 1px solid rgb(255 255 255 / 35%) !important;
+  color: #000 !important;   
+}
+.dashboard-stat.green-soft .details .number,
+.dashboard-stat.green-soft .details .desc{color:#000 !important}
