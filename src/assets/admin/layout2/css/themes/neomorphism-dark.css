@@ -3092,6 +3092,8 @@ justify-content: center!important;
   } */
   span.btn.Btn-Green.transition{
     background : none !important;
+    box-shadow: none !important;
+    border: none !important;
     /* padding-top: 4px; */
   }
   span.btn.btn-primary.transition{
@@ -3304,10 +3306,8 @@ box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 input.field-border-customization {
   border: 1px solid #111111!important;
 }
-/* .Btn-Green, .btn-primary {
-    justify-content: center;
-    display: flex;
-    align-items: center;
+/* .Btn-Green{
+   border: none !important;
 } */
 /* 5-12-2023 SUDHA SRI */
 .card-background-v{

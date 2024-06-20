@@ -2733,7 +2733,7 @@ i.fa.fa-reply:hover,
 i.fa.fa-inbox:hover,
 i.fa.fa-envelope-o:hover,
 i.fa.fa-rocket:hover{
-  background-color: unset !important;
+  background-color: unset;
   z-index: 999;
   position: relative;
   color: #fff !important;
