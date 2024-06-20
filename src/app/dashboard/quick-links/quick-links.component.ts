@@ -15,7 +15,7 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
   providers: [Properties]
 })
 export class QuickLinksComponent implements OnInit {
-
+  selectedFilterIndex = 1;
   quickLinks:Array<any> = new Array<any>();
   isPartnerLoggedInThroughVanityUrl = false;
   isQuickLinksApiLoading = true;
@@ -68,6 +68,10 @@ export class QuickLinksComponent implements OnInit {
 
   navigate(quickLink:any){
     this.referenceService.navigateToQuickLinksAnalytics(quickLink,this.isPartnerLoggedInThroughVanityUrl);
+  }
+
+  filterQuickLinks(type:string,index:number){
+    
   }
   
 }

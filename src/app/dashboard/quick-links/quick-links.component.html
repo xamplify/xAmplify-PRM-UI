@@ -15,6 +15,12 @@
   <div class="row">
    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <app-modal-popup-loader  *ngIf="isQuickLinksApiLoading"></app-modal-popup-loader>
+      <ul class="mix-filter" >
+        <li class="filter" (click)="filterQuickLinks('All',0)" [class.emailtemplate-selected]="0 == selectedFilterIndex">All</li>
+        <li class="filter" (click)="filterQuickLinks('Assets',1)" [class.emailtemplate-selected]="0 == selectedFilterIndex">Assets</li>
+        <li class="filter" (click)="filterQuickLinks('Tracks',2)" [class.emailtemplate-selected]="4 == selectedFilterIndex">Tracks</li>
+        <li class="filter" (click)="filterQuickLinks('PlayBooks',3)" [class.emailtemplate-selected]="5 == selectedFilterIndex">Play Books</li>
+        </ul>
       <!---List-->
       <ng-container *ngIf="!isQuickLinksApiLoading">
         <div class="portlet light">
@@ -23,7 +29,7 @@
                     <i class="fa fa-link" aria-hidden="false"></i>
                     <h4 class="caption-subject header-css">{{properties?.instantNavigation}}</h4>
                 </div>
-                <div class="float-right input-icon right mDamSearch rSearch" id="alignline-m-serch" style="position: relative; right: -6px;">
+                <div class="float-right input-icon right mb10">
                 <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search..." (keypress)="searchQuickLinksOnKeyPress($event.keyCode)">
                     <button *ngIf="searchKey" class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';searchQuickLinks();"></button>
                     <button type="submit" class="search-box-item-click" (click)="searchQuickLinks()"><i class="fa fa-search" aria-hidden="true"></i></button>
