@@ -2004,11 +2004,8 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .btn-group button{
   background-color: #0276FF !important;
-
   border: 1px solid #266dc1 !important;
-
-  border: 1px solid #1ca6f369 !important;
-
+  /* border: 1px solid #1ca6f369 !important; */
 }
 
 .refresh-icon:hover {
@@ -3275,7 +3272,7 @@ span.btn.btn-primary.transition.merge_tag_text{
   padding-top: 0px !important;
 }
 .note_card_align{
-  border-bottom: 1px solid#191b1e !important;
+  border-bottom: 1px solid #191b1e !important;
   /* margin-left: 15px;
   margin-right: 15px; */
 }
@@ -4174,3 +4171,17 @@ button.btn.btn-xs.hidden-xs.l-g-view {
 }
 .dashboard-stat.green-soft .details .number,
 .dashboard-stat.green-soft .details .desc{color:#000 !important}
+i.fa.fa-trash-o.trashIconCustomization.bgcolor_change{
+  background: rgb(0 0 0 / 17%) !important;
+  color: #cb5a5e !important;
+}
+i.fa.fa-trash-o.trashIconCustomization.bgcolor_change:hover{ 
+  color: #cb5a5e !important;
+  background: rgb(255 253 253 / 57%) !important;
+  border: none !important;
+ }
+ /***Sudha Sri(20-6-2024)***/
+ a.custom-icon.disabled {
+  pointer-events: auto !important;
+}
+/***End(20-6-2024) ***/

@@ -2704,21 +2704,7 @@ hr.swal2-spacer {
   0% {transform: rotateY(0deg);}
   100% {transform: rotateY(360deg);}
 }
-.del-icon{
-  color: #3f68c5;
-  line-height: unset !important ;
-  transform: rotate(360deg);
-  transition: all 1s ease;
-  animation: wave1 13s linear infinite;
-  background-color: #cb5a5e!important;
-  position: absolute;
-  top: 110%;
-  height: 100% !important;
-  width: 100% !important;
-  border-radius: 32% !important;
-  left: 0;
-  z-index: -1;
-}
+
 .custom-icon:hover .del-icon{
   top: 0%;
 }
@@ -4338,4 +4324,13 @@ button.button_blue.bgcolor-unset:hover{
 span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input {
   color: #000;
 }
-
+i.fa.fa-trash-o.trashIconCustomization.bgcolor_change{
+  background: #f1f3fa !important;
+  color: #cb5a5e !important;
+  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+}
+i.fa.fa-trash-o.trashIconCustomization.bgcolor_change:hover{ 
+  color: #fff !important;
+  background: #cb5a5e !important;
+  border: none !important;
+ }
