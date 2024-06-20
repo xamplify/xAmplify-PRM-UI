@@ -179,3 +179,11 @@
   .w-80px{
     width: 80px  !important;
   }
+  .mix-filter {
+    margin: 5px;
+  }
+  .mix-filter li {
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  
