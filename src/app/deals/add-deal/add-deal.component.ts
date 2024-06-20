@@ -134,9 +134,9 @@ export class AddDealComponent implements OnInit {
   showCreatedByPipelineAndStage: boolean = false;
   showCreatedByPipelineAndStageOnTop: boolean = false;
 
-  titleFields = ['title','name','symptom'];
-  amountFields = ['amount','value','FOppValue'];
-  closeDateFields = ['expected_close_date','expectedCloseDate','FOppTargetDate','CloseDate'];
+  titleFields = ['title','name','symptom','Deal_Name'];
+  amountFields = ['amount','value','FOppValue','Amount'];
+  closeDateFields = ['expected_close_date','expectedCloseDate','FOppTargetDate','CloseDate','Closing_Date'];
   type = "DEAL";
   showOpportunityTypes:boolean = false;
   opportunityTypeId: any;
