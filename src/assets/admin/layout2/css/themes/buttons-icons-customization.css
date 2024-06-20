@@ -90,7 +90,8 @@ i.IconCustomization,
 i.IconCustomization:hover,
 .gridIconCustomization a.Iconhover:hover,
 .IconCustomizationcondition a i:hover,
-.setting-icon-cu:hover{
+.setting-icon-cu:hover,
+i.fa[class*="fa-"].IconCustomization:hover {
 background: var(--custom-icon-color) !important;
 border: 1px solid var(--custom-icon-border-color) !important; 
 color : var(--custom-icon-hover-color) !important;
