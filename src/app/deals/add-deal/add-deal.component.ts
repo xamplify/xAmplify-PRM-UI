@@ -1212,7 +1212,10 @@ export class AddDealComponent implements OnInit {
                 }
                 this.activeCRMDetails.hasCreatedForPipeline = false;
               } else if ("HALOPSA" === this.activeCRMDetails.createdByActiveCRMType) {
-                this.getHaloPSATicketTypes(this.deal.createdByCompanyId);
+                this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+                  (result: any) => {
+                    this.getHaloPSATicketTypes(result);
+                  });
                 this.createdByStages = [];
                 this.createdByPipelines = [];
                 if (this.actionType === "add") {
@@ -1429,8 +1432,17 @@ export class AddDealComponent implements OnInit {
       let createdByPipeline = createdByPipelines[0];
       self.deal.createdByPipelineId = createdByPipeline.id;
       self.pipelineIdError = false;
-      self.createdByStages = createdByPipeline.stages;
-      self.activeCRMDetails.hasCreatedByPipeline = true;
+      if ("HALOPSA" == this.activeCRMDetails.createdByActiveCRMType && self.actionType == 'add') {
+        let createdByPipelineStage = null;
+        let stages = createdByPipeline.stages;
+        createdByPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
+          mindisplayIndexStage.displayIndex < currentStage.displayIndex ? mindisplayIndexStage : currentStage
+        );
+        self.createdByStages = createdByPipeline.stages;
+        self.deal.createdByPipelineStageId = createdByPipelineStage.id;
+      }  else {
+        self.createdByStages = createdByPipeline.stages;
+      }
     } else {
       let createdByPipelineExist = false;
       for (let p of createdByPipelines) {

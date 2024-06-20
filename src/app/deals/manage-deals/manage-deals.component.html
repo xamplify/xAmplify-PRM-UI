@@ -168,7 +168,9 @@
                               aria-hidden="true"></i>{{DEAL_CONSTANTS?.registerADeal}}</span>
                         </button>
                       </a>
-                      <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO') || (isPartnerVersion && activeCRMDetails?.type == 'CONNECTWISE')"
+
+                      <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO') || (isPartnerVersion && (activeCRMDetails?.type == 'CONNECTWISE' || activeCRMDetails?.type == 'HALOPSA'))"
+
                         (click)="syncLeadsWithActiveCRM()">
                         <!-- <button class="btn btn-white salesforce-btn button neg-mar-top bgcolor-unset" -->
                         <button class="btn salesforce-btn button bgcolor-unset p0 btn-transitions mrgt-2 mrgt1-2"
