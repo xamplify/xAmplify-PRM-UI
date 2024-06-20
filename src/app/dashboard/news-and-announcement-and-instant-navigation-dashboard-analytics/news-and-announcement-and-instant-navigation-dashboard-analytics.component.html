@@ -1,5 +1,6 @@
 <div class="row" *ngIf="isVanityUrlEnabled">
-
+    <ngx-loading [show]="isNavigatingToViewAll" [config]="{ backdropBorderRadius: '14px' }"> </ngx-loading>    
+   
     <!--News & Announcements-->
     <div [ngClass]="!authenticationService?.module?.isInstanceNavigationLinksOptionDisplayed ? 'col-xs-12 col-sm-12 col-md-12 col-lg-12 pr-7 pd_btm5':'col-xs-12 col-sm-6 col-md-6 col-lg-6 pr-7 pd_btm5'">
         <app-modal-popup-loader [height]="220" *ngIf="isNewsAndAnnouncementApiLoading"></app-modal-popup-loader>

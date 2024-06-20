@@ -29,6 +29,7 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
   companyId = 0;
   isPartnerLoggedInThroughVanityUrl = false;
   quickLinksPagination:Pagination = new Pagination();
+  isNavigatingToViewAll = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public vanityUrlService:VanityURLService,private dashboardService:DashboardService) { }
 
@@ -124,6 +125,9 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
 
 
   viewAllQuickLinks(){
-    
+    this.isNavigatingToViewAll = true;
+    let url = RouterUrlConstants.home+RouterUrlConstants.dashboard+RouterUrlConstants.quickLinks;
+    alert(url);
+    this.referenceService.goToRouter(url);
   }
 }
