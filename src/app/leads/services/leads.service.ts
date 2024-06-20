@@ -12,6 +12,8 @@ import { UtilService } from 'app/core/services/util.service';
 @Injectable()
 export class LeadsService {
   
+  
+  
   URL = this.authenticationService.REST_URL + "lead/";
   constructor(private http: Http, private authenticationService: AuthenticationService,
      private logger: XtremandLogger,private utilService:UtilService) { }
@@ -49,7 +51,7 @@ export class LeadsService {
 
   getVendorList(userId:number) {
     let url = this.URL + "/"+userId+"/vendors";
-     /****XNFR-252*****/
+    /****XNFR-252*****/
    let subDomain = this.authenticationService.getSubDomain();
     if(subDomain.length==0){
         let loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
@@ -285,6 +287,50 @@ export class LeadsService {
       .map(this.extractData)
       .catch(this.handleError);
     }
+
+    findAllRegisteredByCompanies() {
+      let loggedInUserId = this.authenticationService.getUserId();
+      return this.http.get(this.authenticationService.REST_URL + `/lead/findRegisteredByCompanies/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+    }
+
+    findAllRegisteredByUsers() {
+      let loggedInUserId = this.authenticationService.getUserId();
+      return this.http.get(this.authenticationService.REST_URL + `/lead/findRegisteredByUsers/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+    }
+
+    findAllRegisteredByUsersForPartnerView() {
+      let loggedInUserId = this.authenticationService.getUserId();
+      return this.http.get(this.authenticationService.REST_URL + `/lead/findRegisteredByUsersForPartnerView/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+    }
+
+    findAllRegisteredByCompaniesForPartnerView() {
+      let loggedInUserId = this.authenticationService.getUserId();
+      return this.http.get(this.authenticationService.REST_URL + `/lead/findRegisteredByCompaniesForPartnerView/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+    }
+
+
+    findAllRegisteredByUsersByCampaignIdAndPartnerCompanyId(campaignId: any,partnerCompanyId:number) {
+      let isValidPartnerCompanyId = partnerCompanyId!=undefined && partnerCompanyId>0;
+      let loggedInUserId = this.authenticationService.getUserId();
+      let url = "";
+      if(isValidPartnerCompanyId){
+        url = this.authenticationService.REST_URL + `/lead/findRegisteredByUsersByPartnerCompanyId/${partnerCompanyId}/${campaignId}?access_token=${this.authenticationService.access_token}`;
+      }else{
+        url = url = this.authenticationService.REST_URL + `/lead/findRegisteredByUsersByCampaignId/${loggedInUserId}/${campaignId}?access_token=${this.authenticationService.access_token}`;
+      }
+      return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+   }
+   
 
 
 }

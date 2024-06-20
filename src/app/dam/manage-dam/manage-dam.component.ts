@@ -8,11 +8,13 @@ import { UserService } from 'app/core/services/user.service';
 import { VideoFileService } from 'app/videos/services/video-file.service';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { VideoFileEventEmitter } from '../models/video-file-event-emitter';
+import { Properties } from 'app/common/models/properties';
 
 @Component({
 	selector: 'app-manage-dam',
 	templateUrl: './manage-dam.component.html',
-	styleUrls: ['./manage-dam.component.css']
+	styleUrls: ['./manage-dam.component.css'],
+    providers:[Properties]
 })
 export class ManageDamComponent implements OnInit {
 	manageDam : boolean = true;
@@ -32,7 +34,8 @@ export class ManageDamComponent implements OnInit {
     mergeTagForGuide:any;
 
 	constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, 
-		private router: Router,private route: ActivatedRoute, public videoFileService: VideoFileService, public userService: UserService) {
+		private router: Router,private route: ActivatedRoute, public videoFileService: VideoFileService,
+         public userService: UserService,public properties:Properties) {
 		/****XNFR-169****/
         this.viewType = this.route.snapshot.params['viewType'];
         this.categoryId = this.route.snapshot.params['categoryId'];

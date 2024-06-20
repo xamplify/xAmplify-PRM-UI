@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Input, Renderer } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Input, Renderer, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -63,6 +63,11 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     mergeTagForGuide:any;
     roleName:string = "";
     partnerView = false;
+    /** XNFR-522 **/
+    @Input() isVendorOrMasterLandingPage:boolean = false;
+    @Input() vendorLandingPageId:number;
+    @Output() vendorJourneyOrMasterLandingPageEdit: EventEmitter<any> = new EventEmitter();
+
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -101,6 +106,19 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.selectedFormTypeIndex = 0;
         this.getRoleByUserId();
         this.pagination.filterKey = "All";
+        if(this.isVendorOrMasterLandingPage){
+            this.landingPageId = this.vendorLandingPageId;
+            this.pagination.landingPageId = this.landingPageId;
+            this.pagination.landingPageForm = true;
+            if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
+                this.modulesDisplayType.isListView = true;
+                this.modulesDisplayType.isGridView = false;
+            }
+            this.modulesDisplayType.isFolderListView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.listForms(this.pagination);
+
+        }else{
         if (this.router.url.endsWith('manage/')) {
             this.onlyForms = this.router.url.indexOf('/lf')<0;
             this.setViewType('Folder-Grid');
@@ -153,7 +171,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             }
             
         }
-
+    }
 
 
     }
@@ -315,6 +333,10 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                     if (data.statusCode === 200) {
                         this.formService.form = data.data;
                         let categoryId = this.route.snapshot.params['categoryId'];
+                        if(this.isVendorOrMasterLandingPage){
+                            this.vendorJourneyOrMasterLandingPageEdit.emit(data.data);
+                            return;
+                        }
                         if (categoryId > 0) {
                             this.router.navigate(["/home/forms/edit/" + categoryId]);
                         } else {

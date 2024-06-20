@@ -3,6 +3,7 @@ export class ActionsDescription {
    /* FOR CONTACTS*/
     contact_list_edit = 'Preview or edit list';
     contact_list_delete = 'Delete list';
+    contact_list_delete_group = 'Delete group';
     contact_list_saveAs = 'Copy and save';
     contact_list_synchronize = 'Synchronize list';
     contact_list_info = 'List Info';

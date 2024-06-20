@@ -181,6 +181,9 @@ h3 {
     white-space: nowrap;
     width: 117px;
   }
+  .search-class{
+    width: auto!important;
+    }
 }
 @media screen and (min-width: 601px) {
   .modal-css {
@@ -300,9 +303,9 @@ h3 {
     width: 100% !important;
   }
 }
-.success {
+/* .success {
   margin-top: -6px !important;
-}
+} */
 .pt5 {
   padding-top: 5px;
 }
@@ -333,7 +336,7 @@ h6 {
     height: 28px;
     border-radius: 50%;
     text-align: center;
-    line-height: 26px !important;
+    line-height: 26px;
     vertical-align: middle;
     margin-right: 7px;
     font-size: 14px !important;
@@ -416,3 +419,12 @@ h6 {
     left: 0px!important;
 }
 }
+.align-height{
+  border-radius: 15px;
+}
+@media (min-width: 768px){
+  .align-height{
+     min-height: 300px;
+  }
+ }
+

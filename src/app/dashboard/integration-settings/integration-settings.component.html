@@ -153,8 +153,12 @@
                 </td> -->
                 <td
                   *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO'">
-                  <a *ngIf="sfCustomField.selected" class="custom-icon" (click)="toggleSettings(sfCustomField)">
+                  <a *ngIf="sfCustomField.selected && integrationType != 'SALESFORCE'" class="custom-icon" (click)="toggleSettings(sfCustomField)">
                     <i *ngIf="sfCustomField.selected" class="fa fa-edit mr5 IconCustomization SingleIconCu"></i>
+                    <div class="clickicons"></div>
+                  </a>
+                  <a *ngIf="sfCustomField.selected && integrationType === 'SALESFORCE'" class="custom-icon">
+                    <i *ngIf="sfCustomField.selected" (click)="addCustomFielsdModalOpen(sfCustomField)" class="fa fa-gear mr5 IconCustomization SingleIconCu"></i>
                     <div class="clickicons"></div>
                   </a>
                 </td>
@@ -279,5 +283,8 @@
             class="btn btn-primary transition txt_pd-top3">Submit</span></button>
       </div>
     </ng-container>
+    <div *ngIf="isCustomFieldsModelPopUp">
+      <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField"></app-integration-settings-popup>
+    </div>
   </div>
 </div>

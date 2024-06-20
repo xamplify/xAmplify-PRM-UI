@@ -30,6 +30,19 @@
                                         <input type="text" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
                                         <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="contactSearchInput" (click)="contactSearchInput='';searchContactList()"></button>
                                         <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchContactList()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
+                                        <div class="col-xs-12 mb-p0" style="margin-top: 10px; margin-left: -77px;" *ngIf="isOrgAdminOrOrgAdminTeamMember && !eventCampaign?.channelCampaign || reDistributeEvent ||authenticationService.module.isOrgAdmin || authenticationService.module.isOnlyPartner || authenticationService.module.isPrmAndPartner || authenticationService.isVendorPartner() || authenticationService.module.isMarketing || authenticationService?.isTeamMember() || authenticationService.vanityURLEnabled" >
+                                          <ul class="mix-filter m0">
+                                             <li class="filter" [class.active]="'ALL' == contactsPagination.filterBy" (click)="filterContacts('ALL')">All</li>
+                                             <li class="filter" [class.active]="'MY-CONTACTS' == contactsPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
+                                             </li>
+                                             <li class="filter" *ngIf="!authenticationService?.module?.isMarketingCompany && !(nurtureCampaign) " [class.active]="'SHARED-LEADS' == contactsPagination.filterBy" (click)="filterContacts('SHARED-LEADS')" translate>Shared Leads
+                                             </li>               
+                                             <li class="filter" [class.active]="'FORM-CONTACTS' == contactsPagination.filterBy" (click)="filterContacts('FORM-CONTACTS')" translate>Form
+                                                Contacts</li>
+                                             <li class="filter" [class.active]="'COMPANY-CONTACTS' == contactsPagination.filterBy" (click)="filterContacts('COMPANY-CONTACTS')" translate>Company
+                                                Contacts</li>
+                                          </ul>
+                                       </div>
                                      </div>
                                   </div>
                                </div>
@@ -47,7 +60,7 @@
                                      <table class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactsPagination.totalRecords > 0">
                                         <thead>
                                            <tr>
-                                              <td align="center checkBox_shadow" id="border-bottom-padding">
+                                              <td align="text-center checkBox_shadow" id="border-bottom-padding">
                                                  <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
                                               </td>
                                               <th class="hidden-xs" *ngIf="showExpandButton"></th>
@@ -95,13 +108,16 @@
                                                  </ng-container>
                                               </td>
                                               <td class="text-center">
-                                                 <ng-container *ngIf="contacts.publicList">
+                                                 <!-- <ng-container *ngIf="contacts.publicList">
                                                     Public
                                                  </ng-container>
                                                  <ng-container *ngIf="!contacts.publicList">
                                                     Private
-                                                 </ng-container>
-                                                 <div *ngIf="contacts?.formList">Form Contact List</div>
+                                                 </ng-container> -->
+                                                 <div *ngIf="contacts?.formList">Contacts, Form Contact List</div>
+                                                 <div *ngIf="contacts?.companyList">Contacts, Company Contact List</div>
+                                                 <span *ngIf="contactsPagination.filterBy == 'SHARED-LEADS'">Leads</span>
+                                                 <span *ngIf="contactsPagination.filterBy == 'MY-CONTACTS'">Contacts</span>
                                               </td>
                                               <td class="text-center sorting_1">
                                                  <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>

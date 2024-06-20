@@ -19,9 +19,9 @@ import { AddMoreReceiversComponent } from 'app/campaigns/add-more-receivers/add-
 import { PublicEventEmailPopupComponent } from 'app/campaigns/public-event-email-popup/public-event-email-popup.component';
 import { UserService } from '../../core/services/user.service';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
-import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { utc } from 'moment';
 import { Properties } from 'app/common/models/properties';
+import { CustomAnimation } from 'app/core/models/custom-animation';
 
 declare var swal, $: any, flatpickr;
 
@@ -29,7 +29,8 @@ declare var swal, $: any, flatpickr;
     selector: 'app-campaigns-list-view-util',
     templateUrl: './campaigns-list-view-util.component.html',
     styleUrls: ['./campaigns-list-view-util.component.css', '../../campaigns/manage-publish/manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties],
+    animations:[CustomAnimation]
 })
 export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
@@ -176,7 +177,8 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
                 data => {
-                    this.isloading = false;
+                    this.isloading = false;                    
+                    this.showAllAnalytics = false;
                     if (data.access) {
                         this.campaigns = data.campaigns;
                         this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
@@ -201,15 +203,18 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     }
 
     setPage(event) {
+        this.showAllAnalytics = false;
         this.pagination.pageIndex = event.page;
         this.listCampaign(this.pagination);
     }
 
     searchCampaigns() {
+        this.showAllAnalytics = false;
         this.getAllFilteredResults(this.pagination);
     }
 
     getSortedResult(text: any) {
+        this.showAllAnalytics = false;
         this.selectedSortedOption = text;
         this.getAllFilteredResults(this.pagination);
     }
@@ -1020,12 +1025,14 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.campaignViewType = "list";
+            this.navigateToManageSection(viewType);
         } else if ("Grid" == viewType) {
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.campaignViewType = "grid";
+            this.navigateToManageSection(viewType); 
         }
     }
 
@@ -1382,6 +1389,7 @@ validateCopyCampaignName(){
                     campaign.redistributedCount  = data.data.redistributedCount;
                     campaign.totalAttendeesCount  = data.data.totalAttendeesCount;
                     campaign.attendeesCount        = data.data.attendeesCount;
+                    campaign.showLeadAndDealCounts = data.data.showLeadAndDealCounts;
                 }
             },
             (error: any) => {
@@ -1405,18 +1413,20 @@ validateCopyCampaignName(){
         }
     }
     
-    showGearIconOptions(campaign: any, index : number) {
-    if(campaign.channelCampaign){
-      this.checkLastElement(index);
-    }else{
+  showGearIconOptions(campaign: any, index : number) {
         this.campaignService.getGearIconOptions(campaign, this.loggedInUserId)
         .subscribe(
             data => {
                 if (data.statusCode == 200) {
                     campaign.hasAccess = data.data.hasAccess;
+                    campaign.canArchive = data.data.canArchive;
+                    campaign.formsCount = data.data.formsCount;
+                   campaign.parentCampaignLaunchedByVendorTierCompany = data.data.parentCampaignLaunchedByVendorTierCompany;
+                   campaign.isEventStarted = data.data.isEventStarted;
                     if(campaign.hasAccess){
-                       this.checkLastElement(index);
                        campaign.showGearIconOptions = data.data.showGearIconOptions ;
+                       campaign.showCancelButton = data.data.showCancelButton;
+                       this.checkLastElement(index);
                     }else{
                     this.customResponse = new CustomResponse('ERROR',"You don't have access for this campaign",true);
                     }
@@ -1425,8 +1435,31 @@ validateCopyCampaignName(){
             (error: any) => {
                 this.logger.errorPage(error);
             });
+    }  
+    
+    navigateToManageSection(viewType:string){
+        if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.campaignViewType = "list";
+            this.listCampaign(this.pagination);
+        }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.modulesDisplayType.isListView = false;
+            this.campaignViewType = "grid";
+            this.listCampaign(this.pagination);
+        }else  if(this.router.url.endsWith('/')){
+            if(this.teamMemberId!=undefined){
+                this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId);
+            }else{
+                this.router.navigateByUrl('/home/campaigns/manage');
+            }
             
         }
-    } 
+    }
 
-}
+ }

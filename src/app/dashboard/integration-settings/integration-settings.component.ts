@@ -37,6 +37,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	sfcfPager: any = {};
 	pageSize: number = 12;
 	sfcfPagedItems = new Array<CustomFieldsDto>();
+	customField = new CustomFieldsDto;
 	isHeaderCheckBoxChecked: boolean = false;
 	pageNumber: any;
 	selectedCustomFieldIds = [];
@@ -54,6 +55,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	haveCustomFields: boolean = false;
 	isSortApplied: boolean = false;
 	isFilterApplied: boolean = false;
+	isCustomFieldsModelPopUp: boolean = false;
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
@@ -62,6 +64,8 @@ export class IntegrationSettingsComponent implements OnInit {
 	];
 
 	public sortOption: any = this.sortOptions[0].value;
+	
+
 	constructor(private integrationService: IntegrationService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent,
 		public referenceService: ReferenceService, public authenticationService: AuthenticationService) {
 		this.pageNumber = this.paginationComponent.numberPerPage[0];
@@ -284,6 +288,8 @@ export class IntegrationSettingsComponent implements OnInit {
 				selectedCustomFieldsDto.placeHolder = customFiledDto.placeHolder;
 				selectedCustomFieldsDto.displayName = customFiledDto.displayName;
 				selectedCustomFieldsDto.formDefaultFieldType = customFiledDto.formDefaultFieldType;
+				selectedCustomFieldsDto.options = customFiledDto.options;
+				selectedCustomFieldsDto.originalCRMType = customFiledDto.originalCRMType;
 				self.selectedCustomFieldsDtos.push(selectedCustomFieldsDto);
 			}
 		});
@@ -339,7 +345,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				 this.referenceService.goToTop();
 				 return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);	
 			}
-			if((this.integrationType === 'HUBSPOT' || this.integrationType === 'PIPEDRIVE' || this.integrationType === 'CONNECTWISE') && displayName)
+			if((this.integrationType === 'HUBSPOT' || this.integrationType === 'PIPEDRIVE' || this.integrationType === 'CONNECTWISE' || this.integrationType === 'HALOPSA') && displayName)
 			{
 				this.ngxloading = false;
 				const missingFields: string[] = [];
@@ -741,5 +747,17 @@ export class IntegrationSettingsComponent implements OnInit {
 	setActiveTab(tabName: string) {
 		this.activeTab = tabName;
 	}
+
+	//XNFR-576
+	addCustomFielsdModalOpen(customfield: any){
+		this.isCustomFieldsModelPopUp = true;
+		this.customField = customfield;
+	}
+
+	closeCustomFielsModal(event: any) {
+		if (event === "0") {
+			this.isCustomFieldsModelPopUp = false;
+		}	
+  }
 
 }

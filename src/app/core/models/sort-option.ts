@@ -205,8 +205,8 @@ export class SortOption {
 		{ 'name': 'Last Name (Z-A)', 'value': 'lastName-DESC' },
 		{ 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
 		{ 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
-		{ 'name': 'Company Name (A-Z)', 'value': 'contactCompany-ASC' },
-		{ 'name': 'Company Name (Z-A)', 'value': 'contactCompany-DESC' },
+		{ 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+		{ 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
 		{ 'name': 'View Count (DESC)', 'value': 'viewCount-DESC' },
 		{ 'name': 'View Count (ASC)', 'value': 'viewCount-ASC' },
 		{ 'name': 'Download Count (DESC)', 'value': 'downloadCount-DESC' },
@@ -409,6 +409,15 @@ export class SortOption {
 		{ 'name': 'Uploaded On(ASC)', 'value': 'updatedTime-ASC' },
 		{ 'name': 'Uploaded On(DESC)', 'value': 'updatedTime-DESC' }
 	];
+
+	damPartnerCompaniesDropDown = [
+		{ 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+		{ 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
+		{ 'name': 'View Count (ASC)', 'value': 'viewCount-ASC' },
+		{ 'name': 'View Count (DESC)', 'value': 'viewCount-DESC' },
+		{ 'name': 'Download Count (ASC)', 'value': 'downloadCount-ASC' },
+		{ 'name': 'Download Count (DESC)', 'value': 'downloadCount-DESC' }
+	];
 	
 
 
@@ -466,5 +475,7 @@ export class SortOption {
 
 	selectedProcessingUserListsDropDownOption = this.processingUserListsDropDownOptions[this.processingUserListsDropDownOptions.length-1];
 
+	/*****XNFR-543*****/
+	selectedDamPartnerCompaniesDropDownOption = this.damPartnerCompaniesDropDown[0];
 
 }

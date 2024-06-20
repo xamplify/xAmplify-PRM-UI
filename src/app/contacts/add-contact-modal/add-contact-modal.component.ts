@@ -63,6 +63,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     @Input() partnerListId : number;
     validationResponse : CustomResponse = new CustomResponse();
     partners: User[] = [];
+    isWebsiteNotValid : boolean = false;
     
     
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
@@ -250,6 +251,23 @@ contactCompanyChecking( event:any ) {
         this.searchableDropdownEventReceiver(event);
     }
 
+    contactWebsiteChecking(){
+        if(this.addContactuser.website.length > 0){
+            if(this.validateWebsite( this.addContactuser.website)){
+                this.isWebsiteNotValid = false;
+            }else{
+                this.isWebsiteNotValid = true;
+            }
+        }else{
+            this.isWebsiteNotValid = false;
+        }
+    }
+    
+    validateWebsite( website: string ) {
+        var LINK_PATTERN = this.regularExpressions.LINK_PATTERN;
+        return LINK_PATTERN.test( website );
+    }
+
     validteContactsCount(contactsLimit:number){
         this.validLimit = contactsLimit>0;
     }
@@ -278,10 +296,18 @@ contactCompanyChecking( event:any ) {
             this.addContactuser.city = this.contactDetails.city;
             this.addContactuser.state = this.contactDetails.state;
             this.addContactuser.zipCode = this.contactDetails.zipCode;
-            this.addContactuser.country = this.contactDetails.country;
+            if(this.countryNames.countries.indexOf(this.contactDetails.country) !== -1){
+                this.addContactuser.country = this.contactDetails.country;
+            }
             this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
             this.addContactuser.legalBasis = this.contactDetails.legalBasis;
             this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;
+            this.addContactuser.accountName = this.contactDetails.accountName;
+            this.addContactuser.accountSubType = this.contactDetails.accountSubType;
+            this.addContactuser.accountOwner = this.contactDetails.accountOwner;
+            this.addContactuser.companyDomain = this.contactDetails.companyDomain;
+            this.addContactuser.territory = this.contactDetails.territory;
+            this.addContactuser.website = this.contactDetails.website;
             this.validLimit = this.contactDetails.contactsLimit>0;
             this.addContactuser.mdfAmount = this.contactDetails.mdfAmount;
             if ( this.isPartner){

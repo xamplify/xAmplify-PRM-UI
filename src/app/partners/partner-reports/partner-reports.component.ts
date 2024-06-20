@@ -314,6 +314,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
 
     listThroughPartnerCampaigns(pagination: Pagination) {
+        if(this.isListView){
+        pagination.campaignViewType = "list";
+        }else{
+        pagination.campaignViewType = "grid";
+        }
+    
         this.referenseService.loading(this.httpRequestLoader, true);
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(

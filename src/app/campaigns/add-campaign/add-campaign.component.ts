@@ -325,7 +325,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 this.campaignRecipientsPagination.editCampaign = true;
                 this.selectedContactListIds = this.campaign.userListIds.sort();
                 let selectedListSortOption = {
-                    'name': 'Selected List', 'value': 'selectedList'
+                    'name': 'Selected Group', 'value': 'selectedList'
                 };
                 this.recipientsSortOption.campaignRecipientsDropDownOptions.push(selectedListSortOption);
                 this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = this.recipientsSortOption.campaignRecipientsDropDownOptions[this.recipientsSortOption.campaignRecipientsDropDownOptions.length - 1];
@@ -939,17 +939,17 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             if (this.isOrgAdminCompany) {
                 if(this.campaign.channelCampaign){
                     this.launchTabText = "Select "+this.partnerModuleCustomName +" & Launch";
-                    this.contactsOrPartnersSelectionText = "Select List of " + this.partnerModuleCustomName + " to be used in this campaign";
+                    this.contactsOrPartnersSelectionText = "Select Group of " + this.partnerModuleCustomName + " to be used in this campaign";
                 }else{
                     this.launchTabText = "Select "+this.partnerModuleCustomName +" / Recipients & Launch";
-                    this.contactsOrPartnersSelectionText = "Select List of " + this.partnerModuleCustomName + " / Recipients  to be used in this campaign";
+                    this.contactsOrPartnersSelectionText = "Select Group of " + this.partnerModuleCustomName + " / List of Recipients  to be used in this campaign";
                 }
             } else if (this.isMarketingCompany) {
                 this.launchTabText = "Select Recipients & Launch";
-                this.contactsOrPartnersSelectionText = "Select List of Recipients to be used in this campaign";
+                this.contactsOrPartnersSelectionText = "Select Group of Recipients to be used in this campaign";
             } else if (this.isVendorCompany) {
                 this.launchTabText = "Select "+this.partnerModuleCustomName +" & Launch";
-                this.contactsOrPartnersSelectionText = "Select List of " + this.partnerModuleCustomName + " to be used in this campaign";
+                this.contactsOrPartnersSelectionText = "Select Group of " + this.partnerModuleCustomName + " to be used in this campaign";
             }
         }
         
@@ -1142,7 +1142,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         if((this.campaign.channelCampaign && this.campaign.configurePipelines) || (this.showMarketingAutomationOption && this.campaign.configurePipelines)){
             let isValidLeadTicketTypeSelected: boolean;
             let isValidDealTicketTypeSelected: boolean;
-            if ("HALOPSA" === this.activeCRMDetails.type) {
+            if (this.activeCRMDetails != undefined && this.activeCRMDetails.type !=undefined && "HALOPSA" === this.activeCRMDetails.type) {
                 isValidLeadTicketTypeSelected = this.campaign.leadTicketTypeId!=undefined && this.campaign.leadTicketTypeId>0;
                 isValidDealTicketTypeSelected = this.campaign.dealTicketTypeId!=undefined && this.campaign.dealTicketTypeId>0;
             } else {
@@ -2569,5 +2569,12 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 this.xtremandLogger.error(error);
             });
       }
+
+      showContactsAlert(count:number){
+        this.emptyContactsMessage = "";
+        if(count==0){
+            this.emptyContactsMessage = "No Records Found For This Contact List";
+        }
+    }
 
 }

@@ -97,13 +97,11 @@
                               <h4 class="header-text-css" translate>Track Builder</h4>
                               <p class="header-description-css" translate>
                                  <ng-container *ngIf="authenticationService?.module?.lmsAccess">
-                                    <span>Create training and certification programs to help partners understand your
-                                       product(s).</span><br>
+                                    <span>Create training and certification programs to help {{authenticationService?.partnerModule?.customName}}  understand your product(s).</span><br>
                                  </ng-container>
                                  <span
                                     *ngIf="authenticationService?.module?.lmsAccessAsPartner && !authenticationService?.module?.lmsAccess">Vendor-created
-                                    training and certification programs to help you better understand the products you
-                                    market and sell.</span>
+                                    training and certification programs to help you better understand the products you market and sell.</span>
                               </p>
                            </div>
                            <ng-container *ngIf="authenticationService?.module?.lmsAccess">
@@ -137,7 +135,7 @@
                   <div
                      *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"
                      [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-4 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-4':
-           (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
+                     (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
                      <div class="portlet light cpad  hover-effect pointer card-radius">
                         <div class="portlet-body">
                            <div class="img1 card-template">
