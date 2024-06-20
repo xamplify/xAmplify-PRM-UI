@@ -79,7 +79,7 @@ button.search-box-item-click:hover{color: initial !important;}
 } */
 i.IconCustomization, 
 .gridIconCustomization a,
-.actions-block i,
+i.fa.fa-plus,
 .IconCustomizationcondition a i,
 .setting-icon-cu {
   color : var(--custom-icon-color) !important;
@@ -92,7 +92,8 @@ i.IconCustomization:hover,
 .gridIconCustomization a.Iconhover:hover,
 .IconCustomizationcondition a i:hover,
 .setting-icon-cu:hover,
-.fa[class*="fa-"].IconCustomization:hover{
+.fa[class*="fa-"].IconCustomization:hover,
+i.fa.fa-plus:hover{
 background: var(--custom-icon-color) !important;
 border: 1px solid var(--custom-icon-border-color) !important; 
 color : var(--custom-icon-hover-color) !important;
