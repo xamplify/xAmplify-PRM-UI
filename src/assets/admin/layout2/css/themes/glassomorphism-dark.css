@@ -9,7 +9,9 @@
   color: white !important;
 }
 body{
+
   background-image: var(--body-background-image);
+
   color: white !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -1973,7 +1975,11 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .btn-group button{
   background-color: #0276FF !important;
+
   border: 1px solid #266dc1 !important;
+
+  border: 1px solid #1ca6f369 !important;
+
 }
 
 .search-box-item-click {
@@ -2522,7 +2528,9 @@ button.btn.custom {
   border-radius: 7px !important;
   background-color: #0276FF !important;
   color: #fff !important;
+
   border:  1px solid #266dc1 !important;
+
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu {
   border-radius: 10px !important;
@@ -2776,7 +2784,9 @@ justify-content: center!important;
     border-radius: 8px !important;
     background: #0276FF !important;
     color: #fff !important;
+
     border: 1px solid #266dc1 !important;
+
     margin-left: 4px;
   }
 span.btn.Btn-Green.transition{
@@ -3750,10 +3760,12 @@ img.email-template-preview.image_effect.template_image_border {
   padding-left: 1px !important;
 }
 .Btn-Green,
+
 .btn-primary,
 .btn.Btn-Green.fileinput-button-css{
   background: #0276FF !important;
   border: 1px solid #266dc1 !important;
+
 }
 .aspect_ratio{
   background-color: rgb(146 151 179 / 8%) !important;
@@ -3937,3 +3949,6 @@ button.btn.btn-xs.hidden-xs.l-g-view {
   background: rgb(146 151 179 / 13%) !important;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu .dropdown-menu-list > li > a:hover, ul.alt-row-style1 li:hover{background: rgb(146 151 179 / 13%) !important;}
+
+
+

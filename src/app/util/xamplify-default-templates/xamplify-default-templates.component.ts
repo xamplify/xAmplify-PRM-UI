@@ -14,6 +14,7 @@ import { LandingPageService } from 'app/landing-pages/services/landing-page.serv
 import { ModulesDisplayType } from '../models/modules-display-type';
 import { Observable } from 'rxjs';
 import { VendorLogoDetails } from 'app/landing-pages/models/vendor-logo-details';
+import { LandingPageType } from 'app/landing-pages/models/landing-page-type.enum';
 
 declare var BeePlugin,swal,$:any;
 
@@ -35,7 +36,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   @Input() landingPage:LandingPage;
   @Output() redirect = new EventEmitter();
   @Input() vendorLogoDetails:VendorLogoDetails[];
+  @Input() sharedVendorLogoDetails:VendorLogoDetails[];
   @Input() loggedInUserCompanyId:number;
+  @Input() openInNewTabChecked: boolean = false;
+  @Output() landingPageOpenInNewTabChecked = new EventEmitter();
   clickedButtonName = "";
   isAdd: boolean;
   name = "";
@@ -449,6 +453,8 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                   if(landingPage.sourceInString == 'VENDOR_JOURNEY' || landingPage.sourceInString == 'MASTER_PARTNER_PAGE'){
                     this.landingPage.sourceInString = landingPage.sourceInString;
                   }
+                  this.openInNewTabChecked = this.landingPage.openLinksInNewTab;
+                  this.landingPageOpenInNewTabChecked.emit()
                   $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", this.landingPage.openLinksInNewTab);
                   var request = function (method, url, data, type, callback) {
                       var req = new XMLHttpRequest();
@@ -484,7 +490,14 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                       self.landingPage.jsonBody = jsonContent;
 
                       if(self.isMasterLandingPages){
-                        if(self.vendorLogoDetails != null && self.vendorLogoDetails.every(logo=>!logo.selected)){
+                        if(self.authenticationService.module.isAnyAdminOrSupervisor){
+                          for(let logoDetails of self.vendorLogoDetails){
+                            logoDetails.selected = self.sharedVendorLogoDetails
+                            .filter(company=> company.companyId == logoDetails.companyId)[0].teamMembers
+                            .filter(member=>member.partnerId == logoDetails.partnerId)[0].selected;
+                          }
+                        }
+                        if((self.vendorLogoDetails.length == 0 || self.vendorLogoDetails == null  ||(self.vendorLogoDetails != null && self.vendorLogoDetails.length != 0 && self.vendorLogoDetails.every(logo=>!logo.selected)))){
                           swal("", "Whoops! We're unable to save this page because you havn't selected the vendor detail. You'll need to select vendor detail by clicking the Vendor Logos button", "error");
                           return false;
                         }
@@ -501,7 +514,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                           var buttons = $('<div><div id="bee-save-buton-loader"></div>')
                               .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200" autocomplete="off"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                           let dropDown = '';
-                          if (!self.authenticationService.module.isMarketingCompany) {
+                          if (!self.authenticationService.module.isMarketingCompany && !self.vendorJourney && !self.isMasterLandingPages) {
                               /**********Public/Private************** */
                               dropDown += '<div class="form-group">';
                               dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
@@ -571,7 +584,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                                   '<span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                           if (!self.loggedInAsSuperAdmin) {
                               let dropDown = '';
-                              if (!self.authenticationService.module.isMarketingCompany) {
+                              if (!self.authenticationService.module.isMarketingCompany && !self.vendorJourney && !self.isMasterLandingPages) {
                                   dropDown += '<div class="form-group">';
                                   dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
                                   dropDown += '<select class="form-control" id="pageType">';
@@ -737,13 +750,20 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
   this.landingPage.userId = this.loggedInUserId;
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
   this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
-  this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
 
-  if (!this.loggedInAsSuperAdmin) {
-      this.landingPage.type = $('#pageType option:selected').val();
-      this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
-      this.updateCompanyLogo(this.landingPage);
+  this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
+  if(this.landingPage.hasVendorJourney){
+    this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
+    this.landingPage.type = LandingPageType.PUBLIC;
+
+    this.updateCompanyLogo(this.landingPage);
   }
+  if (!this.loggedInAsSuperAdmin) {
+      if(!this.vendorJourney && !this.isMasterLandingPages){
+        this.landingPage.type = $('#pageType option:selected').val();
+      }
+      this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
+    }
   this.landingPageService.save(this.landingPage, this.loggedInAsSuperAdmin,this.id).subscribe(
       data => {
           swal.close();
@@ -777,7 +797,7 @@ goToManageAfterSave(data:any, isSaveAndRedirectButtonClicked:boolean) {
   if (data.access) {
       if (isSaveAndRedirectButtonClicked) {
           this.referenceService.addCreateOrUpdateSuccessMessage("Page created successfully");
-          this.navigateToManageSection();
+            this.navigateToManageSection();
       } else {
           //this.ngxloading = true;
           this.customResponse = new CustomResponse('SUCCESS',"Page created successfully",true);
@@ -805,6 +825,9 @@ updateLandingPage(updateAndRedirectClicked: boolean) {
   this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
   this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
+  if(this.landingPage.hasVendorJourney){
+    this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
+  }
   this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
   this.updateCompanyLogo(this.landingPage);
   this.landingPageService.update(this.landingPage).subscribe(

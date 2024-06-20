@@ -76,10 +76,11 @@
 						</div>
 						<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 align-itams">
 							<div class="bg-folder">
-								<h4 class="ellipsis align-titletext tab_whitespace" data-placement="bottom"
+								<h4 class="folder-name align-titletext tab_whitespace" data-placement="bottom"
 									data-toggle="tooltip" title="{{category.name}}">
-									<b translate>Folder Name:</b> {{category.name | slice:0:10}} <span
-										*ngIf="category.name?.length>10">...</span>
+									<!-- <b translate>Folder Name:</b> {{category.name | slice:0:10}} <span
+										*ngIf="category.name?.length>10">...</span> -->
+										<b translate>Folder Name:</b> {{category.name}}
 								</h4>
 								<span class="Track-countbg">
 									{{titleHeader}} {{category.count}}

@@ -2382,7 +2382,7 @@ button.btn.custom:hover,
 }
 .left-menu-color ul li a:hover,
 .left-menu-color ul li.active > a {
-  border-radius: 10px !important;
+  border-radius: 0px !important;
 }
 .left-menu-color {
   padding: 0px 0px !important;
@@ -2421,7 +2421,7 @@ input {
 }
 
 .page-sidebar-menu.page-sidebar-menu-hover-submenu > li:hover > .sub-menu {
-  margin-left: 188px;
+  /* margin-left: 188px; */
   margin-top: -78px;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
   background: #2c2f33 !important;
@@ -2612,7 +2612,7 @@ ul.pagination.padding {
 }
 .page-sidebar .page-sidebar-menu > li > a {
   border-bottom: unset !important;
-  border-radius: 10px;
+  border-radius: 0px;
 }
 li.divider-bottom,
 .page-header.navbar
@@ -4143,6 +4143,7 @@ button.btn.btn-white {
 border: 1px solid #191b1e !important;
 box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
+
 /***** Sudha Sri(11-06-2024) *****/
 button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4, button.search-box-item-click, button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4{
   background-color: #2c2f33 !important;
@@ -4173,3 +4174,11 @@ button.search-box-item-click:hover {
   border-radius: 0px !important;
   box-shadow: none !important;
 }
+
+.actions-block i.down-arrow{
+  line-height: 21px!important;
+}
+span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input {
+  color: #fff;
+}
+

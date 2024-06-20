@@ -511,7 +511,7 @@
                                                 <label class="control-label col-sm-4">Lead Pipeline
                                                     <span class="required"><strong>*</strong></span></label>
                                                 <div class="col-sm-8">
-                                                    <select class="form-control" [ngClass]="activeCRMDetails?.type ==='HALOPSA'?'disabled':''" [(ngModel)]="campaign.leadPipelineId" 
+                                                    <select class="form-control" [attr.disabled]="(activeCRMDetails?.type === 'HALOPSA') ? '' : null" [(ngModel)]="campaign.leadPipelineId" 
                                                         [ngModelOptions]="{standalone: true}"
                                                         placeholder="leadPipelineId" id="leadPipelineId"
                                                         [disabled]="preview"
@@ -530,7 +530,7 @@
                                                 <label class="control-label col-sm-4">Deal Pipeline
                                                     <span class="required"><strong>*</strong></span></label>
                                                 <div class="col-sm-8">
-                                                    <select class="form-control" [ngClass]="activeCRMDetails?.type ==='HALOPSA'?'disabled':''" [(ngModel)]="campaign.dealPipelineId"
+                                                    <select class="form-control" [attr.disabled]="(activeCRMDetails?.type === 'HALOPSA') ? '' : null" [(ngModel)]="campaign.dealPipelineId"
                                                         [ngModelOptions]="{standalone: true}"
                                                         placeholder="dealPipelineId" id="dealPipelineId"
                                                         [disabled]="preview"
@@ -1182,8 +1182,10 @@
                                                                     style="width: 35%">
                                                                     <span class="ui-column-resizer"
                                                                         (mousedown)="referenceService?.onMouseDown($event,'campaignRecipientsTable',2)"></span>
-                                                                    <span class="gridHeader" translate>List Name</span>
-                                                                </th>
+                                                                        <span class="gridHeader" translate>
+                                                                            {{  authenticationService.isVendor() || authenticationService.isVendorPartner() || campaignRecipientsPagination.filterBy == 'MY-PARTNERS' || this.campaign?.channelCampaign ? 'Group Name' : 'List Name' }}
+                                                                          </span>
+                                                                        </th>
                                                                 <th class="visible-xs" scope="row" colspan="1"
                                                                     style="width: 35%" translate>
                                                                     List Info
@@ -1332,8 +1334,7 @@
                                                                     </td>
                                                                     <td class="text-center" *ngIf="showContactType">
                                                                         <div>
-                                                                            <span
-                                                                                (mouseover)='showContactsAlert(contacts.count)'
+                                                                            <span (mouseover)='showContactsAlert(contacts.count)'
                                                                                 data-toggle="tooltip"
                                                                                 data-placement="bottom"
                                                                                 [attr.title]="emptyContactsMessage">

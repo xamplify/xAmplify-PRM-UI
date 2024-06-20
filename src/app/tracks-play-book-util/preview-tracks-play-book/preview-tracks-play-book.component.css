@@ -627,3 +627,8 @@ button:hover {
 .track-selected{
   color: green;
 }
+@media only screen and (min-width:768px) and (max-width:1180px) { 
+  .img_fit-content{
+   height: 100px!important;
+  }
+}

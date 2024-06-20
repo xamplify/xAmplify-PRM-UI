@@ -22,6 +22,7 @@ export class SocialContact{
     country:string;
     city: string;
     state: string;
+    region: string;
     postalCode: number;
     address: string;
     company: string;
@@ -37,5 +38,10 @@ export class SocialContact{
     contactCompany:string;
     contactListId : number;
     moduleName : string="";
+    accountName : string="";
+	accountSubType : string="";
+	territory : string="";
+	companyDomain : string="";
+	accountOwner : string="";
     
 }

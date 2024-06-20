@@ -25,6 +25,7 @@ import { Roles } from 'app/core/models/roles';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { Criteria } from 'app/contacts/models/criteria';
 import { WhiteLabeledContentSharedByVendorCompaniesDto } from 'app/dam/models/white-labeled-content-shared-by-vendor-companies-dto';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $: any, swal: any, flatpickr;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
@@ -33,6 +34,7 @@ declare var $: any, swal: any, flatpickr;
 	providers: [HttpRequestLoader, SortOption, Properties, ActionsDescription]
 })
 export class DamListAndGridViewComponent implements OnInit, OnDestroy {
+	readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
 	loading = false;
 	loggedInUserId: number = 0;
 	pagination: Pagination = new Pagination();
@@ -440,59 +442,21 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	viewAnalytics(asset: any) {
 		this.loading = true;
-		this.referenceService.setAssetLocalStorageValues(asset);
-		let isVideo = this.isVideo(asset.assetType);
-		if (isVideo) {
-			if (this.isPartnerView) {
-				this.navigateToDamAnalyticsForPartnerLogin(asset.id);
-			} else {
-				try {
-					this.videoFileService.getVideo(asset.alias, 'DRAFT')
-						.subscribe((editVideoFile: SaveVideoFile) => {
-							if (editVideoFile.access) {
-								if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
-									editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
-								}
-								editVideoFile.damId = asset.id;
-								this.videoFileService.saveVideoFile = editVideoFile;
-								this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
-								this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
-								this.videoFileService.campaignReport = true;
-								localStorage.setItem('campaignReport', 'true');
-								localStorage.setItem('saveVideoFile', JSON.stringify(editVideoFile));
-								/*****XNFR-169***/
-								this.navigateToPartnerAnalytics(asset.id);
-							} else {
-								this.authenticationService.forceToLogout();
-							}
-						},
-							(error: any) => {
-								this.xtremandLogger.error('Error In: show edit videos ():' + error);
-								this.xtremandLogger.errorPage(error);
-							}
-						);
-				} catch (error) {
-					this.xtremandLogger.error('error' + error);
-				}
-			}
+		/*****XNFR-169***/
+		if (this.isPartnerView) {
+			this.navigateToDamAnalyticsForPartnerLogin(asset.id);
 		} else {
-			/*****XNFR-169***/
-			if (this.isPartnerView) {
-				this.navigateToDamAnalyticsForPartnerLogin(asset.id);
-			} else {
-				this.navigateToPartnerAnalytics(asset.id);
-			}
+			this.navigateToPartnerAnalytics(asset.id);
 		}
 	}
 
 	/*****XNFR-169***/
 	navigateToPartnerAnalytics(id: number) {
-		let url = "/home/dam/partnerAnalytics/" + id;
-		this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+		this.referenceService.navigateToDamPartnerCompaniesAnalytics(id, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 	}
 
-	navigateToDamAnalyticsForPartnerLogin(id: number) {
-		let url = "/home/dam/pda/" + id;
+	navigateToDamAnalyticsForPartnerLogin(id: any) {
+		let url = "/home/dam/pda/" + this.referenceService.encodePathVariable(id);
 		this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 	}
 
@@ -500,7 +464,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	editDetails(id: number, assetType: string, alias: string, beeTemplate: boolean, videoId: number) {
 		this.loading = true;
 		setTimeout(() => {
-			if (!beeTemplate && this.isVideo(assetType)) {
+			if (!beeTemplate && this.referenceService.isVideo(assetType)) {
 				let url = "/home/dam/editVideo/" + videoId + "/" + id;
 				this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 			} else {
@@ -557,7 +521,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 	/*****Preview Asset******* */
 	preview(asset: any) {
-		if (this.isVideo(asset.assetType)) {
+		if (this.referenceService.isVideo(asset.assetType)) {
 			let url = "/home/dam/previewVideo/" + asset.videoId + "/" + asset.id;
 			this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 		} else if(asset.beeTemplate) {
@@ -644,28 +608,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.userService.getVideoDefaultSettings().subscribe((data) => { this.referenceService.defaultPlayerSettings = data; });
 	}
 
-	isVideo(filename: any) {
-		const parts = filename.split('.');
-		const ext = parts[parts.length - 1];
-		switch (ext.toLowerCase()) {
-			case 'm4v':
-			case 'mkv':
-			case 'avi':
-			case 'mpg':
-			case 'mp4':
-			case 'flv':
-			case 'mov':
-			case 'wmv':
-			case 'divx':
-			case 'f4v':
-			case 'mpeg':
-			case 'vob':
-			case 'xvid':
-				// etc
-				return true;
-		}
-		return false;
-	}
+	
 
 	listAssetsByType(videoType: string) {
 		this.pagination.pageIndex = 1;

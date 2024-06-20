@@ -2247,7 +2247,7 @@ a.UserguideBtnCustomization:hover {
 }
 .left-menu-color ul li a:hover,
 .left-menu-color ul li.active > a {
-  border-radius: 10px !important;
+  border-radius: 0px !important;
 }
 .left-menu-color {
   padding: 0px 0px !important;
@@ -2440,7 +2440,7 @@ ul.pagination.padding {
 }
 .page-sidebar .page-sidebar-menu > li > a {
   border-bottom: unset !important;
-  border-radius: 10px;
+  border-radius:0px;
 }
 li.divider-bottom,
 .page-header.navbar
@@ -4307,6 +4307,7 @@ i.fa.fa-trash-o.trashIconCustimization.trash_bgcolor:hover {
   border: 1px solid #d0d5db !important;
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #fff;
 }
+
 .btn-group button:hover,
 button.btn.custom:hover,
 .button:hover,
@@ -4330,3 +4331,11 @@ button.button.bgcolor-unset:hover,
 button.button_blue.bgcolor-unset:hover{
   background-color: #1C84FF !important;
 }
+
+.actions-block i.down-arrow{
+  line-height: 21px!important;
+}
+span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input {
+  color: #000;
+}
+

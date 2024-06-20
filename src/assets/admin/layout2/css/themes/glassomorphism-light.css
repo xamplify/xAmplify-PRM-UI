@@ -9,7 +9,9 @@
   color: #000 !important;
 }
 body{
+
   background-image: var(--body-background-image);
+
   color: white !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -2002,7 +2004,11 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .btn-group button{
   background-color: #0276FF !important;
+
   border: 1px solid #266dc1 !important;
+
+  border: 1px solid #1ca6f369 !important;
+
 }
 
 .refresh-icon:hover {
@@ -2964,7 +2970,9 @@ button.btn.custom {
   border-radius: 7px !important;
   background-color: #0276FF !important;
   color: #fff !important;
+
   border: 1px solid #266dc1 !important;
+
 }
 /* 30/11/2023 */
 .campaignViewIcon{
@@ -3334,6 +3342,7 @@ h3#notifications {
 button.btn.custom:hover,
 .button:hover,
 .button_blue:hover{
+
   background-color: #1C84FF !important;
   background-size: 250% !important;
   background-position: right center !important;

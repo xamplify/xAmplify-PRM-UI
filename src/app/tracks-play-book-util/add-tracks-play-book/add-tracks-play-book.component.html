@@ -45,7 +45,7 @@
       <div style="margin-top: 10px;" *ngIf="!ngxloading && !trackOrPlaybookPublishEmailNotificationLoader">
         <div class="portlet box mPortlet" style="border-radius:5px;">
           <div class=" form mPortlet-body">
-            <div class="row">
+            <div class="row tab_m0">
               <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 form-body">
                 <div class="row form-group">
                   <label class="control-label col-sm-4" style="text-align: right;" translate>Title
@@ -468,8 +468,7 @@
           </label>
           <app-custom-ui-switch [customSwitch]="tracksPlayBook.trackUpdatedEmailNotification" (customUiSwitchEventEmitter)="setTrackUpdatedEmailNotification($event)"></app-custom-ui-switch>
           <span class="info-color-xampc">
-            <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup"
-              data-toggle="tooltip" data-placement="top" aria-hidden="true"
+            <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup" data-toggle="tooltip" data-placement="top" aria-hidden="true"
               title="{{sendEmailNotificationOptionToolTipMessage}}"></i>
         </span>
         </div>
@@ -717,12 +716,13 @@
           <div class="col-xs-12">
             <div class="pg8 inline" style="float: right;">
               <ng-container *ngIf="type == undefined || type == 'TRACK'">
-                <label style="margin-right: 10px; margin-top: 4px;">Follow Sequence </label>
-                <div class="switch">
-                  <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round-flat checkBox_shadow"
+                <label style="margin-right: 10px; margin-top: 10px;">Follow Sequence </label>
+                <label class="toggleOnOff">
+                  <input id="cmn-toggle-1"  class="checkBox_shadow"
                     [(ngModel)]="tracksPlayBook.followAssetSequence" type="checkbox">
-                  <label for="cmn-toggle-1"></label>
-                </div>
+                    <span class="sliderOnOff"></span>
+                    <span class="labels" data-on="ON" data-off="OFF"></span>
+                </label>
               </ng-container>
             </div>
           </div>

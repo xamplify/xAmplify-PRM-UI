@@ -3081,6 +3081,7 @@ span.icon-alignments {
 .display-inline{
   display: inline !important;
 }
+
 .btn-group button,
 .custom{
   background-color: #0276FF !important;
@@ -3114,3 +3115,40 @@ button.btn.btn-xs.hidden-xs.l-g-view {
 }
 h4.txt_color{color:#fff !important;}
 .Btn-Gray:hover{color:#fff;}
+
+.txt_colors{
+color:#fff!important;
+}
+.text-danger {
+  color: red !important;
+}
+
+.i-20px{
+  font-size: 20px !important;
+}
+
+.selected-check-mark-circle{
+  border: 1px solid #0cf01ca6 !important;
+}
+.underline{
+  text-decoration: underline;
+}
+
+.h-50px{
+  height: 50px;
+}
+.mt--10px{
+margin-top: -10px;
+}
+.assest-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+.folder-name {
+  width: 100%;
+  text-overflow: ellipsis;
+  float: left !important;
+  padding: 0px 5px;
+}
+

@@ -124,6 +124,7 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
           this.customResponse = new CustomResponse('INFO', this.eventRedistributionMessage, true);
       }
       this.loadCampaignContacts(this.contactsPagination);
+      this.filterContacts('ALL');
   }
   
   eventHandler(event, type:string){
@@ -157,8 +158,6 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
               if(contactsPagination.filterBy!=null){
                   if(contactsPagination.filterBy==0){
                       contactsPagination.maxResults = data.totalRecords;
-                  }else{
-                      contactsPagination.maxResults = contactsPagination.filterBy;
                   }
               }
               contactsPagination = this.pagerService.getPagedItems(contactsPagination, this.campaignContactLists);
@@ -440,6 +439,13 @@ viewMatchedContacts(userList: any) {
         this.expandedUserList = userList;			
     }
 }
+
+filterContacts(filterType:string){
+    this.contactsPagination.pageIndex = 1;
+    this.contactsPagination.filterBy =filterType;
+    this.loadCampaignContacts(this.contactsPagination);
+}
+
 
 
 }

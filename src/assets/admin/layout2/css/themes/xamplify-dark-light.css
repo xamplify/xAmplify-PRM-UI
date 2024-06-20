@@ -2534,6 +2534,7 @@ a.Iconhover.custom-grid-icon.border-none i.fa.fa-trash-o.trashIconCustomization:
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
 }
+
 .button,
 .button_blue{
   border-color: #1ca6f3 !important;
@@ -2559,4 +2560,8 @@ button.btn.btn-primary.shareVideoButton:hover{
 }
 .Btn-Gray:hover{
   color:#fff;
+
+span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input {
+  color: #fff;
+
 }

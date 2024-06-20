@@ -98,8 +98,14 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
-    deletebById( id: number ): Observable<any> {
-        return this.http.get( this.URL + "delete/" + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token, "" )
+    deletebById( id: number, isVendorJourney:boolean): Observable<any> {
+        let url
+        if(isVendorJourney){
+            url = this.URL +"vendorJourneyLandingpagedeleteById/"
+        }else{
+           url =  this.URL + "delete/"
+        }
+        return this.http.get( url + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }

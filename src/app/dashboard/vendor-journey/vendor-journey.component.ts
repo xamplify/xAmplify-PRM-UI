@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PreviewPopupComponent } from 'app/forms/preview-popup/preview-popup.component';
+import { FormService } from 'app/forms/services/form.service';
 import { LandingPage } from 'app/landing-pages/models/landing-page';
 import { VendorLogoDetails } from 'app/landing-pages/models/vendor-logo-details';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
@@ -18,6 +19,7 @@ export class VendorJourneyComponent implements OnInit {
   @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
   mergeTagsInput: any = {};
   vendorLogoDetails:VendorLogoDetails[]=[];
+  sharedVendorLogoDetails:VendorLogoDetails[]=[];
   @Input()loggedInUserCompanyId = 0;
 	vendorJourney:boolean = false;
 	isLandingPages:boolean = false;
@@ -27,7 +29,10 @@ export class VendorJourneyComponent implements OnInit {
   @Output() vendorJourneyEditOrViewAnalytics: EventEmitter<any> = new EventEmitter();
   selectedLandingPageId:any;
   isViewAnalytics:boolean = false;
-  
+  openInNewTabChecked: boolean = false;
+  isFormAnalytics:boolean = false;
+  isEditVendorOrMasterForm:boolean = false;
+  selectedFrom:any;
   constructor(public landingPageService: LandingPageService, public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
@@ -57,6 +62,12 @@ export class VendorJourneyComponent implements OnInit {
     this.isLandingPages = false;
     this.isViewAnalytics = false;
     this.isMasterLandingPages = false;
+    this.vendorJourney = this.moduleType == "Vendor Journey";
+    this.isLandingPages = this.moduleType == "Landing Pages";
+    this.isMasterLandingPages = this.moduleType == "Master Landing Pages";
+    this.isFormAnalytics = false;
+    this.isEditVendorOrMasterForm = false;
+
     this.goBack();
   }
   
@@ -65,9 +76,11 @@ export class VendorJourneyComponent implements OnInit {
     if(isChecked){
       $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", false);
       this.vendorDefaultTemplate.openLinksInNewTab = false;
+      this.openInNewTabChecked = false
     }else{
       $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", true);
       this.vendorDefaultTemplate.openLinksInNewTab = true;
+      this.openInNewTabChecked = true;
     }
   }
 
@@ -77,23 +90,76 @@ export class VendorJourneyComponent implements OnInit {
     this.vendorJourneyEditOrViewAnalytics.emit();
   }
 
+  viewLandingPageForms(event){
+    this.selectedLandingPageId = event;
+    this.isFormAnalytics = true;
+    this.vendorJourneyEditOrViewAnalytics.emit();
+  }
+
+  editForm(event){
+    this.selectedFrom = event;
+    this.isEditVendorOrMasterForm = true;
+    this.isFormAnalytics = false;
+    this.vendorJourneyEditOrViewAnalytics.emit();
+  }
+
   goBack(){
     this.isViewAnalytics = false;
     this.editVendorPage = false;
+    this.isFormAnalytics = false;
+    this.isEditVendorOrMasterForm = false;
     this.goBackToMyProfile.emit();
   }
 
+  goToManageForms(){
+    this.isFormAnalytics = true;
+    this.isEditVendorOrMasterForm = false;
+    this.vendorJourneyEditOrViewAnalytics.emit();
+  }
   getVendorLogoDetailsByPartnerDetails() {
     let userId = this.authenticationService.getUserId();
     let landingPageId = this.landingPageService.id;
     this.landingPageService.getVendorLogoDetailsByPartnerDetails(userId, this.loggedInUserCompanyId, landingPageId).subscribe(
     (data: any) => {
              if(data.statusCode==200){
-              this.vendorLogoDetails = data.data;
+              var logoDetails:VendorLogoDetails[] = data.data;
+              this.vendorLogoDetails = logoDetails;
+              this.populateSharedVendorDetails(logoDetails);
             }
     }, (error: any) => {
       console.log(error);
     }
 );
+}
+
+populateSharedVendorDetails(data:VendorLogoDetails[]){
+  var companyIds:any[]=[];
+  var details:any;
+  this.sharedVendorLogoDetails = [];
+  for(let logo of data){
+    if(companyIds.length == 0 || !companyIds.some(id=>id == logo.companyId)){
+      companyIds.push(logo.companyId)
+      if(details != null ){
+        this.sharedVendorLogoDetails.push(details);
+      }
+      details=[];
+      details.companyId = logo.companyId;
+      details.companyLogo = logo.companyLogo;
+      details.companyName = logo.companyName;
+      details.expand = false;
+      details.teamMembers =[];  
+    }
+    details.teamMembers.push({'selected' :logo.selected,
+    'partnerId' : logo.partnerId,
+    'firstName' : logo.firstName,
+    'lastName' : logo.lastName,
+    'emailId' : logo.emailId});
+  }
+  if(details != null ){
+    this.sharedVendorLogoDetails.push(details);
+  }
+}
+landingPageOpenInNewTabChecked(){
+  $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", this.openInNewTabChecked);
 }
 }

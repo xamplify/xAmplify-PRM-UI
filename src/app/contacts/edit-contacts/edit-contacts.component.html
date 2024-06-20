@@ -74,9 +74,19 @@
 							<div>
 								<div class="page-breadcrumb">
 									<span class="col-xs-6 col-md-6 pl0">
-										<span *ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList
-							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && !isFormList"
+										<span
+											*ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList
+							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && !isFormList && !isPartner"
 											data-toggle="tooltip" data-placement="top" title="Edit list Name"
+											style="cursor:pointer;font-size: 16px;" (click)="editListName()">
+											<span class="ellipsis">{{selectedContactListName | slice:0:30}}
+												<span *ngIf="selectedContactListName?.length>30">...</span>
+											</span>
+										</span>
+										<span
+											*ngIf="!isDefaultPartnerList && !isDefaultContactList && selectedContactListName!=properties?.activeMasterPartnerList
+							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList && !isFormList && isPartner"
+											data-toggle="tooltip" data-placement="top" title="Edit group Name"
 											style="cursor:pointer;font-size: 16px;" (click)="editListName()">
 											<span class="ellipsis">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
@@ -322,7 +332,8 @@
 				((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads)) ? '-9px !important' : '2px !important'}">
 								<div class="portlet-title" style="padding-bottom: 6px !important;">
 									<div class="caption" translate style="font-size: 2;padding-top: 8px !important;">
-										<i class="fa fa-edit" aria-hidden="true" style="font-size: 20px;"></i>List of
+										<i class="fa fa-edit" aria-hidden="true"
+											style="font-size: 20px;"></i>{{isPartner ? 'Group of' : 'List of'}}
 										<span
 											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 										<span
@@ -348,7 +359,11 @@
 													</a>
 												</li>
 												<li><a id="saveAs_button"
-														*ngIf=" ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads))"
+														*ngIf=" isPartner && ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads))"
+														(click)="saveAs(true)" translate>Create New Group </a>
+												</li>
+												<li><a id="saveAs_button"
+														*ngIf=" !isPartner && ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads))"
 														(click)="saveAs(true)" translate>Create New List </a>
 												</li>
 												<li [ngClass]="{'disabled': noContactsFound == true }">
@@ -370,16 +385,22 @@
 												<!---XNFR-278-->
 												<li
 													*ngIf="isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">
-													<a (click)="openMergePopup()" translate> Add To Lists</a>
+													<a (click)="openMergePopup()" translate> Add To Groups</a>
 												</li>
 												<!---XNFR-278-->
 											</ul>
 										</div>
 										<button id="cancel_button" class="btn pull-right button_blue pd_0 bgcolor-unset"
-											*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) "
-											(click)="saveAs(true)" style="margin-right: 5px;" translate><span
+											*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) && !isPartner "
+											(click)="saveAs(true)" style="margin-right: -7px;" translate><span
 												class="btn btn-primary transition new_list_text">Create New
 												List</span>
+										</button>
+										<button id="cancel_button" class="btn pull-right button_blue pd_0 bgcolor-unset"
+											*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) && isPartner "
+											(click)="saveAs(true)" style="margin-right: -7px;" translate><span
+												class="btn btn-primary transition new_list_text">Create New
+												Group</span>
 										</button>
 									</div>
 									<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt mt_9"
@@ -437,8 +458,15 @@
 														</div>
 														<button data-placement="bottom"
 															class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
-															[disabled]="pagination.totalRecords == 0"
+															[disabled]="pagination.totalRecords == 0" *ngIf="!isPartner"
 															title="Click here to email the list"
+															(click)="downloadUserListCsv()" style="margin-left: 4px;">
+															<i aria-hidden="true" class="fas fa-file-export p10"></i>
+														</button>
+														<button data-placement="bottom"
+															class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+															[disabled]="pagination.totalRecords == 0" *ngIf="isPartner"
+															title="Click here to email the group"
 															(click)="downloadUserListCsv()" style="margin-left: 4px;">
 															<i aria-hidden="true" class="fas fa-file-export p10"></i>
 														</button>
@@ -623,9 +651,9 @@
 													class="textareaNumber" [(ngModel)]="clipboardTextareaText"
 													data-toggle="tooltip" data-placement="bottom"
 													title="please fill out this form"
-													placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
+													placeholder="FirstName,LastName,AccountName,AccountOwner,AccountSubType,Company,CompanyDomain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,AccountName,AccountOwner,AccountSubType,Company,CompanyDomain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,AccountName,AccountOwner,AccountSubType,Company,CompanyDomain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
 													[ngModelOptions]="{standalone: true}"
-													style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
+													style="height: 150px;font-size: 11px;line-height: 1.4;min-width: 100%;max-width: 200%;width: 130%;"
 													required="required">
 					  </textarea>
 											</div>
@@ -701,6 +729,27 @@
 																			style="border:none !important;"
 																			aria-describedby="">
 																			<tbody>
+																				<tr style="border-bottom: 1px solid #dcdcdc"
+																					*ngIf="isPartner">
+																					<td class='pt10 pb10' translate>
+																						Account Name:</td>
+																					<td class='pt10 pb10'>
+																						{{user.accountName}}</td>
+																				</tr>
+																				<tr style="border-bottom: 1px solid #dcdcdc"
+																					*ngIf="isPartner">
+																					<td class='pt10 pb10' translate>
+																						Account Owner :</td>
+																					<td class='pt10 pb10'>
+																						{{user.accountOwner}}</td>
+																				</tr>
+																				<tr style="border-bottom: 1px solid #dcdcdc"
+																					*ngIf="isPartner">
+																					<td class='pt10 pb10' translate>
+																						Account Sub Type :</td>
+																					<td class='pt10 pb10 pr10'>
+																						{{user.accountSubType}}</td>
+																				</tr>
 																				<tr
 																					style="border-bottom: 1px solid #dcdcdc">
 																					<td class='pt10 pb10' translate>
@@ -708,12 +757,26 @@
 																					<td class='pt10 pb10'>
 																						{{user.contactCompany}}</td>
 																				</tr>
+																				<tr style="border-bottom: 1px solid #dcdcdc"
+																					*ngIf="isPartner">
+																					<td class='pt10 pb10' translate>
+																						Comapny Domain:</td>
+																					<td class='pt10 pb10'>
+																						{{user.companyDomain}}</td>
+																				</tr>
 																				<tr
 																					style="border-bottom: 1px solid #dcdcdc">
 																					<td class='pt10 pb10' translate>Job
 																						Title:</td>
 																					<td class='pt10 pb10'>
 																						{{user.jobTitle}}</td>
+																				</tr>
+																				<tr style="border-bottom: 1px solid #dcdcdc"
+																					*ngIf="isPartner">
+																					<td class='pt10 pb10' translate>
+																						Website :</td>
+																					<td class='pt10 pb10'>
+																						{{user.website}}</td>
 																				</tr>
 																				<tr style="border-bottom: 1px solid #dcdcdc"
 																					*ngIf="isPartner">
@@ -728,6 +791,13 @@
 																						Region:</td>
 																					<td class='pt10 pb10'>
 																						{{user.region}}</td>
+																				</tr>
+																				<tr style="border-bottom: 1px solid #dcdcdc"
+																					*ngIf="isPartner">
+																					<td class='pt10 pb10' translate>
+																						Territory : </td>
+																					<td class='pt10 pb10'>
+																						{{user.territory}}</td>
 																				</tr>
 																				<tr style="border-bottom: 1px solid #dcdcdc"
 																					*ngIf="isPartner">
@@ -1107,13 +1177,57 @@
 																	<table cellpadding="5" cellspacing="0"
 																		class="border" style="border:none !important;">
 																		<tbody>
+
+																			<tr *ngIf="isPartner">
+																				<td class='pt10 pb10 bold mr_10' translate>
+																					Account Name:</td>
+																				<td class='pt10 pb10'>
+																					{{contact.accountName}}</td>
+																			</tr>
+
+																			<tr *ngIf="isPartner">
+																				<td class='pt10 pb10 bold mr_10' translate>
+																					Account Owner :</td>
+																				<td class='pt10 pb10'>
+																					{{contact.accountOwner}}</td>
+																			</tr>
+
+																			<tr *ngIf="isPartner">
+																				<td class='pt10 pb10 bold  pr10' translate>
+																					Account Sub Type :</td>
+																				<td class='pt10 pb10 pr10'>
+																					{{contact.accountSubType}}</td>
+																			</tr>
+
+																			<tr *ngIf="isPartner">
+																				<td class='pt10 pb10 bold mr_10' translate>
+																					Comapny Domain:</td>
+																				<td class='pt10 pb10'>
+																					{{contact.companyDomain}}</td>
+																			</tr>
+
+																			<tr *ngIf="isPartner">
+																				<td class='pt10 pb10 bold mr_10' translate>
+																					Website :</td>
+																				<td class='pt10 pb10'>
+																					{{contact.website}}</td>
+																			</tr>
+
+																			<tr *ngIf="isPartner">
+																				<td class='pt10 pb10 bold mr_10' translate>
+																					Territory : </td>
+																				<td class='pt10 pb10'>
+																					{{contact.territory}}</td>
+																			</tr>
+
 																			<tr *ngIf="gdprStatus" class="bg-unset">
-																				<td class='pt10 pb10 bold mr_10 legal_basis_alignment'
+																				<td class='pt10 pb10 bold mr_10'
 																					translate>Legal Basis: </td>
 																				<td align="center" class="pt10 pb10">
 																					{{contact.legalBasisString}}
 																				</td>
 																			</tr>
+																			
 																			<tr *ngIf="isPartner && authenticationService.contactsCount"
 																				class="bg-unset">
 																				<td class='pt10 pb10 bold mr_10'
@@ -1198,7 +1312,7 @@
 											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 										<span
 											*ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span>
-										List
+										Group
 									</span>
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'"
 										translate>
@@ -1207,7 +1321,7 @@
 											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 										<span
 											*ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span>
-										List
+										Group
 									</span>
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'"
 										translate>
@@ -1285,8 +1399,15 @@
 											<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view"
 												data-toggle="tooltip"
 												[disabled]="contactsByType.pagination.totalRecords == 0"
-												title="Click here to email the list" (click)="downloadUserListCsv()"
-												style="margin: 0px -10px 0px 10px;">
+												*ngIf="!isPartner" title="Click here to email the list"
+												(click)="downloadUserListCsv()" style="margin: 0px -10px 0px 10px;">
+												<i aria-hidden="true" class="fas fa-file-export p10"></i>
+											</button>
+											<button data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view"
+												data-toggle="tooltip"
+												[disabled]="contactsByType.pagination.totalRecords == 0"
+												*ngIf="isPartner" title="Click here to email the group"
+												(click)="downloadUserListCsv()" style="margin: 0px -10px 0px 10px;">
 												<i aria-hidden="true" class="fas fa-file-export p10"></i>
 											</button>
 										</div>
@@ -1855,6 +1976,7 @@
 <!---XNFR-278-->
 <ng-container *ngIf="mergeOptionClicked">
 	<app-copy-group-users-modal-popup [userListId]="selectedContactListId" [selectedUserIds]="selectedUserIdsForMerging"
+		[moduleName]="module"
 		(copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>
 </ng-container>
 
