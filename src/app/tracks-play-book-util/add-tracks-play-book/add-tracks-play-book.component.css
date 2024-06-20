@@ -482,6 +482,7 @@ h5 {
   z-index: 2;
   border-radius: 5px;
   border: 1px solid #eee;
+  object-fit: contain;
 }
 
 .list__item .item__name {
@@ -1356,4 +1357,15 @@ ul.t-b-spacings {
 }
 .toggleOnOff input:checked~.labels::before {
   opacity: 1;
+}
+@media only screen and (min-width:768px) and (max-width:1180px) { 
+  .img-grids{
+    height: 125px !important;
+}
+.feature-img-bg{
+  height: 130px!important;
+}
+.tab_m0{
+margin-left:0px!important;
+}
 }

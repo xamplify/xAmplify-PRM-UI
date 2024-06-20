@@ -20,36 +20,46 @@
                 </div>
               </div>
               <div class="col-md-9 col-lg-10" style="text-align: left;">
-                <div *ngIf="campaignName != null && campaignName != undefined">
-                  <h5 class="mt10 mb0" title="{{campaignName}}">
-                    <span><strong>Campaign name </strong></span>: {{campaignName | slice:0:25}}
-                    <span *ngIf="campaignName?.length>25">..</span>
+                  <div *ngIf="campaignName != null && campaignName != undefined">
+                    <h5 class="mt10 mb0" title="{{campaignName}}">
+                      <span><strong>Campaign Name </strong></span>: {{campaignName | slice:0:25}}
+                      <span *ngIf="campaignName?.length>25">..</span>
+                    </h5>
+                  </div>
+                  <div *ngIf="dealTitle != null && dealTitle != undefined">
+                    <h5 class="mt10 mb0" title="{{dealTitle}}">
+                      <span><strong>Deal Title </strong></span>: {{dealTitle | slice:0:25}}
+                      <span *ngIf="dealTitle?.length>25">..</span>
+                    </h5>
+                  </div>
+                  <div *ngIf="referenceId != null && referenceId != undefined && isVendorVersion">
+                    <h5 class="mt10 mb0" title="{{referenceId}}">
+                      <span><strong>Deal ID </strong></span>: {{referenceId}}
+                    </h5>
+                  </div>
+                <!--Registered Details-->
+                  <div class="underline mt5"><strong>{{DEAL_CONSTANTS?.addedBy}}:</strong></div>
+                  <h5 class="mt10 mb0" *ngIf="createdByName" [title]="createdByName">
+                    <span><strong>Name</strong></span>: {{createdByName | slice:0:25}}
+                    <span *ngIf="createdByName.length>25">..</span>
                   </h5>
-                </div>
-                <div *ngIf="dealTitle != null && dealTitle != undefined">
-                  <h5 class="mt10 mb0" title="{{dealTitle}}">
-                    <span><strong>Deal Title </strong></span>: {{dealTitle | slice:0:25}}
-                    <span *ngIf="dealTitle?.length>25">..</span>
+                  <h5 class="mt10 mb0" *ngIf="createdByEmail" [title]="createdByEmail">
+                    <span><strong>Email</strong></span>: {{createdByEmail | slice:0:30}}
+                    <span *ngIf="createdByEmail.length>30">..</span>
                   </h5>
-                </div>
-                <h5 class="mt10 mb0" *ngIf="createdByName " [title]="createdByName">
-                  <span><strong>Name</strong></span>: {{createdByName | slice:0:25}}
-                  <span *ngIf="createdByName.length>25">..</span>
-                </h5>
-                <h5 class="mt10 mb0" *ngIf="createdByEmail" [title]="createdByEmail">
-                  <span><strong>Email</strong></span>: {{createdByEmail | slice:0:25}}
-                  <span *ngIf="createdByEmail.length>25">..</span>
-                </h5>
-                <h5 class="mt10 mb0">
-                  <span><strong>Created On </strong></span>
-                  <span title="Upload date">: <app-timestamp [isOnlyDate]="true"
-                      [dateAndTime]="createdTime"></app-timestamp></span>
-
-                </h5>
-                <div *ngIf="lead">
-                  <h5 class="mt10 mb0">
-                    <span><strong>Lead Details </strong></span>:
-                    <div style="padding:5px"><app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info></div>
+                  <h5 class="mt10">
+                    <span><strong>Created On </strong></span>
+                    <span title="Created On">: 
+                      <app-timestamp [isOnlyDate]="true" [dateAndTime]="createdTime"></app-timestamp>
+                    </span>
+                  </h5>
+                <!--Lead Created Details-->
+                <div *ngIf="lead || showLeadInfo" class="lead-details-border mt5">
+                  <h5 class="mt10">
+                    <span class="ml5 underline"><strong>Lead Details:</strong></span>
+                    <div style="padding:5px">
+                      <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
+                    </div>
                   </h5>
                 </div>
               </div>

@@ -300,7 +300,6 @@ export class ShowHistoryComponent implements OnInit {
 	
 	    viewAnalytics(asset: any) {
         this.loading = true;
-        this.referenceService.setAssetLocalStorageValues(asset);
         let isVideo = this.isVideo(asset.assetType);
         if (isVideo) {
         	 if (this.isPartnerView) {
@@ -345,13 +344,12 @@ export class ShowHistoryComponent implements OnInit {
         }
     }
     
-    	navigateToPartnerAnalytics(id:number){
-		let url = "/home/dam/partnerAnalytics/"+id;
-		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+	navigateToPartnerAnalytics(id:number){
+		this.referenceService.navigateToDamPartnerCompaniesAnalytics(id,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 	}
 
-	navigateToDamAnalyticsForPartnerLogin(id:number){
-		let url = "/home/dam/pda/" + id;
+	navigateToDamAnalyticsForPartnerLogin(id:any){
+		let url = "/home/dam/pda/" + this.referenceService.encodePathVariable(id);
 		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 	}
 	

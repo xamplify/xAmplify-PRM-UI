@@ -26,7 +26,7 @@ import { CampaignSurveyFormsComponent } from './campaign-survey-forms/campaign-s
     imports: [
         CommonModule, SharedModule, ErrorPagesModule,CommonComponentModule,FormsRoutingModule,CKEditorModule
     ],
-    declarations: [AddFormComponent, ManageFormComponent, CampaignFormAnalyticsComponent,FormAnalyticsComponent,LandingPageFormAnalyticsComponent, LandingPageFormsComponent, CampaignLandingPageFormsComponent, SelectFormComponent, SurveyAnalyticsComponent, FormGeoAnalyticsComponent, FormDetailResponseComponent, CampaignSurveyFormsComponent],
-    providers: [FormService]
+    declarations: [AddFormComponent,  CampaignFormAnalyticsComponent,FormAnalyticsComponent,LandingPageFormAnalyticsComponent, LandingPageFormsComponent, CampaignLandingPageFormsComponent, SelectFormComponent, SurveyAnalyticsComponent, FormGeoAnalyticsComponent, CampaignSurveyFormsComponent],
+    
 } )
 export class FormsModule { }

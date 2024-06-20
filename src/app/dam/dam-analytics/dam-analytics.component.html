@@ -15,16 +15,17 @@
                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li>
-               <a (click)="goToDam()" translate>DAM</a>
+               <a (click)="goToDam()" translate>{{properties?.MANAGE_ASSETS}}</a>
                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <ng-container *ngIf="vendorView">
+               <li><a translate (click)="goBackToPartnerCompanies()">{{partnerModuleCustomName}} Companies</a><i class="fa fa-angle-right" aria-hidden="true"></i></li>
                <li>
-                  <a (click)="goBack()" translate>Published {{authenticationService?.partnerModule?.customName}}</a>
+                  <a (click)="goBack()" translate>{{authenticationService?.partnerModule?.customName}} Analytics</a>
                   <i class="fa fa-angle-right" aria-hidden="true"></i>
                </li>
             </ng-container>
-            <li><a translate> View & Download Analytics</a></li>
+            <li><a class="default-cursor"> View & Download Analytics</a></li>
          </ul>
          <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
             <i class="fa fa-times" aria-hidden="true"></i>
@@ -37,16 +38,6 @@
       <div class="row">
          <div class="col-md-12 col-lg-12">
             <div class="portlet light mHeight" style="height: 172px;padding-top: 3px !important;">
-               <div style="padding-top: 10px;margin-left: 10px;">
-                  <!-- <ul class="page-breadcrumb">
-            <li> -->
-                  <span>
-                     <strong class="bold-asset">Asset Name </strong>:
-                     <span title="{{selectedAssetName}}">{{selectedAssetName | slice:0:50}}</span>
-                     <span *ngIf="selectedAssetName?.length>50">..</span></span>
-                  <!-- </li>
-         </ul> -->
-               </div>
                <div class="row" style="margin-top: 20px;margin-right: -20px;margin-left: 0px;">
                   <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
                   <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
@@ -142,7 +133,7 @@
                               <div class="input-icon right">
                                  <input type="text" id="sort-text" style="height: 34px;" class="form-control"
                                     [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}"
-                                    placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+                                    placeholder="Search" (keypress)="eventHandler($event.keyCode)" autocomplete="off">
                                  <button class="glyphicon glyphicon-remove search-box-item-clear"
                                     *ngIf="pagination.searchKey"
                                     (click)="pagination.searchKey='';searchAnalytics();"></button>

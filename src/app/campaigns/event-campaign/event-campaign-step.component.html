@@ -318,7 +318,7 @@
 										<b style="color: #f55d7a !important">*</b>
 									</span></label>
 								<div class="col-sm-9">
-									<select class="form-control" [ngClass]="activeCRMDetails?.type ==='HALOPSA'?'disabled':''" [(ngModel)]="eventCampaign.leadPipelineId"
+									<select class="form-control" [attr.disabled]="(activeCRMDetails?.type === 'HALOPSA') ? '' : null" [(ngModel)]="eventCampaign.leadPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="leadPipelineId"
 										id="leadPipelineId" (change)="validatePipeline();"
 										[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">
@@ -333,7 +333,7 @@
 										<b style="color: #f55d7a !important">*</b>
 									</span></label>
 								<div class="col-sm-9">
-									<select class="form-control" [ngClass]="activeCRMDetails?.type ==='HALOPSA'?'disabled':''" [(ngModel)]="eventCampaign.dealPipelineId"
+									<select class="form-control" [attr.disabled]="(activeCRMDetails?.type === 'HALOPSA') ? '' : null" [(ngModel)]="eventCampaign.dealPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="dealPipelineId"
 										id="dealPipelineId" (change)="validatePipeline();"
 										[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">
@@ -837,7 +837,7 @@
 				<div class="row setup-content" id="step-4" *ngIf="recipientsTab ">
 					<div class="col-xs-12">
 						<fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
-							<legend class="scheduler-border">Selected {{reDistributeEvent?'Contact(s)':'Partner(s)'}} list</legend>
+							<legend class="scheduler-border">Selected {{reDistributeEvent?'Contact(s) list':'Partner(s) Group / Recipients List' }} </legend>
 								
 							<div class="row d-flex align-items-center">
 								<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -952,9 +952,8 @@
 																		style="width: 35%">
 																		<span class="ui-column-resizer"
 																			(mousedown)="referenceService.onMouseDown($event, 'user_list_tb',2)"></span>
-																		<span class="gridHeader" translate>List
-																			Name</span>
-																	</th>
+																			{{ authenticationService.isVendor() || authenticationService.isVendorPartner() || contactListsPagination.filterBy == 'MY-PARTNERS' || this.eventCampaign?.channelCampaign ? 'Group Name' : 'List Name' }}																
+																			</th>
 																	<th class="visible-xs" scope="row" colspan="1"
 																		style="width: 35%" translate>
 																		List Info
@@ -964,7 +963,7 @@
 																	</th>
 																	<th scope="row" style="text-align: center;"
 																		translate>
-																		Uploaded Date</th>
+																		Uploaded on</th>
 																	<th *ngIf="!this.reDistributeEvent && !this.reDistributeEventManage"
 																		scope="row" style="text-align: center;"
 																		translate>Count

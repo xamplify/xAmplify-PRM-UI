@@ -198,19 +198,19 @@
                         <!--XBI-1917-->
                         <ng-container
                            *ngIf="authenticationService?.module?.showAddLeadOrDealButtonInMyProfileSection && authenticationService?.user?.hasCompany">
-                           <!--Add Leads-->
+                           <!--Register Leads-->
                            <li>
                               <a (click)="navigateAndOpenAddLeadsModalPopUp()">
                                  <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                 Add Leads
+                                 {{LEAD_CONSTANTS?.registerLeads}}
                               </a>
                               <div class="border-bt"></div>
                            </li>
-                           <!--Add Deals-->
+                           <!--Register Deals-->
                            <li>
                               <a (click)=" navigateAndOpenAddDealsModalPopUp()">
                                  <i class="fa fa-tags" aria-hidden="true"></i>
-                                 Add Deals
+                                 {{DEAL_CONSTANTS?.registerDeals}}
                               </a>
                               <div class="border-bt"></div>
                            </li>

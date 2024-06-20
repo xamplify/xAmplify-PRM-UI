@@ -29,6 +29,7 @@ import { ConnectwiseCatalogItemDto } from '../models/connectwise-catalog-item-dt
 import { ConnectwiseOpportunityDto } from '../models/connectwise-opportunity-dto';
 import { ConnectwiseStatusDto } from '../models/connectwise-status-dto';
 import { DealComments } from 'app/deal-registration/models/deal-comments';
+import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
 declare var flatpickr: any, $: any, swal: any;
 
 
@@ -143,6 +144,8 @@ export class AddDealComponent implements OnInit {
   opportunityTypeIdError: boolean = true;
   isCreatedForStageIdDisable: boolean = false;
   isCampaignTicketTypeSelected: boolean = false;
+  existingHalopsaDealTicketTypeId: any;
+  isCopiedToClipboard : boolean = false;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -172,7 +175,7 @@ export class AddDealComponent implements OnInit {
       if(this.hideAttachLeadButton){
         this.showAttachLeadButton = false;
       }
-      this.dealFormTitle = "Add a Deal";
+      this.dealFormTitle = DEAL_CONSTANTS.registerADeal;
       if (this.leadId > 0) {
         this.getLead(this.leadId);
       } else {
@@ -263,7 +266,6 @@ export class AddDealComponent implements OnInit {
             self.contact.emailId = self.lead.email;
             self.deal.associatedLeadId = self.lead.id;
             self.deal.associatedUserId = self.lead.associatedUserId;
-            //this.isSalesForceEnabled();
             if (this.deal.createdForCompanyId == 0 && this.deal.createdForCompanyId != undefined) {
               self.deal.createdForCompanyId = self.lead.createdForCompanyId;
               self.createdForCompanyIdError = false;
@@ -317,7 +319,7 @@ export class AddDealComponent implements OnInit {
                   if ("HALOPSA" === this.activeCRMDetails.type) {
                     self.deal.haloPSATickettypeId = ticketTypeIdMap.halopsaTicketTypeId;   
                     self.showCustomForm = true;
-                    if (this.actionType == 'add') {
+                    if (this.actionType == 'add' || self.existingHalopsaDealTicketTypeId != undefined && self.existingHalopsaDealTicketTypeId != self.deal.haloPSATickettypeId) {
                       let createdForPipelineStage = null;
                       let stages = self.createdForStages;
                       createdForPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
@@ -386,6 +388,7 @@ export class AddDealComponent implements OnInit {
             if (self.deal.createdForCompanyId > 0) {
               this.getActiveCRMDetails();
             }
+            self.existingHalopsaDealTicketTypeId = self.deal.haloPSATickettypeId;
           }
         },
         error => {
@@ -894,8 +897,14 @@ export class AddDealComponent implements OnInit {
           if (fieldValue.length > 0 && fieldValue != "0") {
             this.opportunityTypeId = successClass;
             this.opportunityTypeIdError = false;
-            this.createdForPipelineStageIdError = false;
-            this.pipelineStageIdError = false;
+            if (this.actionType == 'add' || this.existingHalopsaDealTicketTypeId == this.deal.haloPSATickettypeId) {
+              this.createdForPipelineStageIdError = false;
+              this.pipelineStageIdError = false;
+            } else {
+              this.createdForPipelineStageIdError = true;
+              this.pipelineStageIdError = true;
+            }
+            this.createdForPipelineIdError = false;
           } else {
             this.opportunityTypeId = errorClass;
             this.opportunityTypeIdError = true;
@@ -933,7 +942,7 @@ export class AddDealComponent implements OnInit {
         this.pipelineStageIdError = false;
         this.createdForPipelineStageIdError = false;
       }
-    } else{
+    } else {
       this.opportunityTypeIdError = false;
     }
 
@@ -1405,9 +1414,7 @@ export class AddDealComponent implements OnInit {
             }
           } else if (data.statusCode == 404) {
             self.deal.pipelineId = 0;
-            self.deal.createdForPipelineId = 0;
             self.stages = [];
-            self.createdForStages = [];
             self.getPipelines();
             self.activeCRMDetails.hasDealPipeline = false;
           }
@@ -1461,7 +1468,8 @@ export class AddDealComponent implements OnInit {
       let createdForPipeline = createdForPipelines[0];
       self.deal.createdForPipelineId = createdForPipeline.id;
       self.pipelineIdError = false;
-      if ("HALOPSA" == this.activeCRMDetails.createdForActiveCRMType && self.actionType == 'add') {
+      if ("HALOPSA" == this.activeCRMDetails.createdForActiveCRMType && (self.actionType == 'add'
+        || self.existingHalopsaDealTicketTypeId != undefined && self.existingHalopsaDealTicketTypeId != self.deal.haloPSATickettypeId)) {
         let createdForPipelineStage = null;
         let stages = createdForPipeline.stages;
         createdForPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
@@ -1605,4 +1613,15 @@ export class AddDealComponent implements OnInit {
     this.getDealPipelines();
   }
 
+  copyReferenceId(inputElement: any) {
+    inputElement.select();
+    $('#copy-reference-id').hide();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copy-reference-id').show(500);
+    this.isCopiedToClipboard = true;
+  }
+
 }
+
+

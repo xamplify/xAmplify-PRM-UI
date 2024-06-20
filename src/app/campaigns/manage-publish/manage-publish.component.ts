@@ -22,6 +22,7 @@ import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { utc } from 'moment';
 import { Properties } from 'app/common/models/properties';
 import { access } from 'fs';
+import { CustomAnimation } from 'app/core/models/custom-animation';
 
 declare var swal, $: any, flatpickr;
 
@@ -29,9 +30,11 @@ declare var swal, $: any, flatpickr;
     selector: 'app-manage-publish',
     templateUrl: './manage-publish.component.html',
     styleUrls: ['./manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties],
+    animations:[CustomAnimation]
 })
 export class ManagePublishComponent implements OnInit, OnDestroy {
+    collpsableId = "campaignBoxAnalytics";
     campaigns: Campaign[];
     isCampaignDeleted = false;
     hasCampaignRole = false;
@@ -199,6 +202,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.isloading = false;
                 if(data.access){
                     this.campaigns = data.campaigns;
+                    this.showAllAnalytics = false;
                     this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
                     $.each(this.campaigns, function (_index:number, campaign) {
                         campaign.displayTime = new Date(campaign.utcTimeInString);
@@ -220,15 +224,18 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     setPage(event) {
+        this.showAllAnalytics = false;
         this.pagination.pageIndex = event.page;
         this.listCampaign(this.pagination);
     }
 
     searchCampaigns() {
+        this.showAllAnalytics = false;
         this.getAllFilteredResults(this.pagination);
     }
 
     getSortedResult(text: any) {
+        this.showAllAnalytics = false;
         this.selectedSortedOption = text;
         this.getAllFilteredResults(this.pagination);
     }
@@ -376,8 +383,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         self.modulesDisplayType.isFolderGridView = false;
                         self.listCampaign(self.pagination);
                     }else if(self.modulesDisplayType.isFolderGridView){
+                        self.campaignViewType = "Folder-Grid";
                         self.setViewType('Folder-Grid');
                     }else if(self.modulesDisplayType.isFolderListView){
+                        self.campaignViewType = "Folder-List";
                         self.setViewType('Folder-List');
                     }
                 }
@@ -1122,7 +1131,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isFolderListView = false;
             this.navigateToManageSection(viewType); 
         }else if("Folder-Grid"==viewType){
-            this.campaignViewType = "folder-grid";
+            this.campaignViewType = "Folder-Grid";
             this.closeFilterOption();
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
@@ -1142,7 +1151,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 
             }
         }else if("Folder-List"==viewType){
-            this.campaignViewType = "folder-list";
+            this.campaignViewType = "Folder-List";
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
@@ -1177,11 +1186,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
            if("List"==viewType){
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isListView = true;
-            this.campaignViewType = "folder-list";
+            this.campaignViewType = "list";
            }else{
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isListView = false;
-            this.campaignViewType = "folder-grid";
+            this.campaignViewType = "grid";
            }
            this.listCampaign(this.pagination);
         }else  if(this.router.url.endsWith('/')){
@@ -1359,6 +1368,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.modulesDisplayType.isGridView = false;
         this.modulesDisplayType.isFolderGridView = false;
         this.modulesDisplayType.isFolderListView = false;
+        this.campaignViewType = "list";
 
         this.showFilterOption = false;
         this.fromDateFilter = "";
@@ -1632,6 +1642,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     campaign.redistributedCount  = data.data.redistributedCount;
                     campaign.totalAttendeesCount  = data.data.totalAttendeesCount;
                     campaign.attendeesCount        = data.data.attendeesCount;
+                    campaign.showLeadAndDealCounts = data.data.showLeadAndDealCounts;
                 }
             },
             (error: any) => {
@@ -1656,17 +1667,20 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     
     showGearIconOptions(campaign: any, index : number) {
-    if(campaign.channelCampaign){
-      this.checkLastElement(index);
-    }else{
+
         this.campaignService.getGearIconOptions(campaign, this.loggedInUserId)
         .subscribe(
             data => {
                 if (data.statusCode == 200) {
                     campaign.hasAccess = data.data.hasAccess;
+                    campaign.canArchive = data.data.canArchive;
+                    campaign.formsCount = data.data.formsCount;
+                   campaign.parentCampaignLaunchedByVendorTierCompany = data.data.parentCampaignLaunchedByVendorTierCompany;
+                   campaign.isEventStarted = data.data.isEventStarted;
                     if(campaign.hasAccess){
-                       this.checkLastElement(index);
                        campaign.showGearIconOptions = data.data.showGearIconOptions ;
+                       campaign.showCancelButton = data.data.showCancelButton;
+                       this.checkLastElement(index);
                     }else{
                     this.customResponse = new CustomResponse('ERROR',"You don't have access for this campaign",true);
                     }
@@ -1675,8 +1689,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             (error: any) => {
                 this.logger.errorPage(error);
             });
-            
-        }
     } 
 
 }

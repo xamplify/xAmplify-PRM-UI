@@ -1,3 +1,140 @@
-<p>
-  dam-partner-company-analytics works!
-</p>
+<div class="page-content">
+   <div class="page-bar">
+      <ul class="page-breadcrumb">
+         <li>
+            <i class="fa fa-home" aria-hidden="true"></i>
+            <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+         </li>
+         <li>
+            <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+         </li>
+         <li><a translate (click)="goBack()">{{properties?.MANAGE_ASSETS}}</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
+         <li><a class="default-cursor">{{breadCrumb}}</a>
+         </li>
+      </ul>
+      <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
+         <i class="fa fa-times" aria-hidden="true"></i>
+      </a>
+   </div>
+   <div class="portlet light remove_cardBgcolor padding_0">
+     <div class="row">
+       <div class="col-md-12">
+         <div class="clearfix">
+           <div class="portlet-title pb-3px" *ngIf="isPublished">
+             <div class="row">
+               <div class="page-toolbar col-xs-12">
+                <!--All/My Partners-->
+                <div  class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0">
+                  <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany && isPublished"
+                  (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                </div>
+                <!--Search / Sort / Refresh-->
+                <div  class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0">
+                  <div class="btn-group pull-right">
+                    <div class="d-flex">
+                      <div class="inputs mDamTop alignline-m-flex float-right">
+                          <!--Refresh-->
+                          <a class="close-circle ref-mar"  (click)="refreshList()" data-toggle="tooltip" data-placement="bottom" title="Refresh">
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                          </a>
+                          <!--Sort Option-->
+                          <div class="pb3 float-left">
+                            <select class="form-control mDamSort"  [(ngModel)]="partnerCompaniesSortOption.selectedDamPartnerCompaniesDropDownOption"
+                                  (ngModelChange)="sortPartnerCompanies($event)" style="position: relative; right: -3px;">
+                                  <option *ngFor="let option of partnerCompaniesSortOption.damPartnerCompaniesDropDown"
+                                      [ngValue]="option">{{option.name}}</option>
+                                </select>
+                          </div>
+                          <!--Search-->
+                          <div class="portlet-input input-inline mr10">
+                            <div class="input-icon right mDamSearch rSearch"  style="position: relative; right: -6px;">
+                                <input type="text" class="form-control" [(ngModel)]="partnerCompaniesSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                                  placeholder="Search..." (keypress)="searchPartnerCompaniesOnEnter($event.keyCode)">
+                                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="partnerCompaniesSortOption.searchKey" (click)="partnerCompaniesSortOption.searchKey='';searchPartnerCompanies();"></button>
+                                <button type="submit" class="search-box-item-click" (click)="searchPartnerCompanies()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+           <app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
+           <ng-container *ngIf="!httpRequestLoader?.isLoading">
+             <div class="table-responsive pos_pd_top6">
+               <table class='table tgrid table-hover table-sm' id="dam-partner-companies">
+                <ng-template [ngTemplateOutlet]="partnerCompanyTable"></ng-template>
+                 <tbody>
+                  <ng-container *ngIf="isPublished">
+                    <tr *ngFor="let company of pagination?.pagedItems ;let i =index">
+                      <td class="text-center" style="width: 10%;">
+                        <div class="thumbnail-wrapper image_effect">
+                          <img class="img-company-list" [src]="authenticationService.MEDIA_URL + company?.companyLogo"
+                            onerror="this.src='assets/images/company-profile-logo.png';" alt="{{company?.companyLogo}}">
+                        </div>
+                      </td>
+                      <td>
+                        <h4 class="mt5 mb5 f-w-600 analytics-tooltip" data-toggle="tooltip" data-placement="bottom" title="{{company?.companyName}}">
+                          <span><strong>{{company?.companyName}}</strong></span>
+                        </h4>
+                        <h5>
+                          <strong> Company Name By Vendor :
+                             <span title="{{company?.contactCompany}}">{{company?.contactCompany | slice:0:50}}</span>
+                             <span *ngIf="company?.contactCompany.length>50">...</span>
+                          </strong>
+                       </h5>
+                      </td>
+                      <td class="text-center">{{company?.viewCount}}</td>
+                      <td class="text-center">{{company?.downloadCount}}</td>
+                      <td class="mtext-center" id="actions-row">
+                        <div class="actions-block override-actions custom-width-icon float-none">
+                          <a class="custom-icon"  data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(company)">
+                            <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                 </tbody>
+               </table>
+             </div>
+             <app-response-message *ngIf="customResponse.isVisible && !isPublished" [customResponse]="customResponse" [showCloseIcon]="false"></app-response-message>
+           </ng-container>
+           <!--Pagination-->
+           <div *ngIf="isPublished">
+            <div *ngIf="pagination?.totalRecords > 0 && !httpRequestLoader?.isLoading" class="pg8">
+              <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)"
+                 (notifyParentDropDown)="findPartnerCompanies($event)">
+              </app-pagination>
+           </div>
+           <div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader?.isLoading" class="alert alert-info text-center">
+              <strong>No Data Found</strong>
+           </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+   <!--Video Analytics-->
+   <app-modal-popup-loader *ngIf="!isVideoAnalyticsLoaded"></app-modal-popup-loader>
+   <app-video-based-report *ngIf="isVideoFile && isVideoAnalyticsLoaded"  [selectedVideo]="selectedVideo"  [damId]="damId"></app-video-based-report>
+</div>
+
+<ng-template #partnerCompanyTable>
+  <thead>
+    <tr>
+      <th  colspan="2" style="width: 45%" id="border-bottom">
+        <span *ngIf="isPublished" class="ui-column-resizer gray" (mousedown)="referenceService?.onMouseDown($event,'dam-partner-companies',2)"></span>
+        <span class="gridHeader">Company</span>
+      </th>
+      <th class="text-center">View Count</th>
+      <th class="text-center">Download Count</th>
+      <th class="text-center" id="min-width">Actions</th>
+    </tr>
+  </thead>
+</ng-template>

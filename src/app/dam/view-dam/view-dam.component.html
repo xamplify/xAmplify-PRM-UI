@@ -65,10 +65,15 @@
 						<div class="col-md-4 col-lg-4">
 							<div>
 								<div class="grid-box zero-margin" style="min-height: 200px;">
-									<img class="img-class mxv" src="{{assetDetailsViewDto?.thumbnailPath}}"
-										alt="No Image Found"><br> <button class="button_blue bgcolor-unset"
-										[class.disabled]="!showDownload" (click)="downloadContent()"><span
-											class="btn btn-primary transition txt_pd-top3">Download</span></button>
+									<img class="img-class mxv" src="{{assetDetailsViewDto?.thumbnailPath}}" alt="No Image Found"><br> 
+									<!--View-->
+									<button *ngIf="!loadVideoPlayer" class="button_blue bgcolor-unset"  (click)="viewContent()">
+										<span class="btn btn-primary transition txt_pd-top3">View</span>
+									</button>
+									<!--Download-->
+									<button class="button_blue bgcolor-unset" [class.disabled]="!showDownload" (click)="downloadContent()">
+										<span class="btn btn-primary transition txt_pd-top3">Download</span>
+									</button>
 									<h4>
 										Published On :
 										<app-timestamp [showInLine]="'true'"
