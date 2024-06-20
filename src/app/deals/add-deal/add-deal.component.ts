@@ -135,9 +135,9 @@ export class AddDealComponent implements OnInit {
   showCreatedByPipelineAndStage: boolean = false;
   showCreatedByPipelineAndStageOnTop: boolean = false;
 
-  titleFields = ['title','name','symptom'];
-  amountFields = ['amount','value','FOppValue'];
-  closeDateFields = ['expected_close_date','expectedCloseDate','FOppTargetDate','CloseDate'];
+  titleFields = ['title','name','symptom','Deal_Name'];
+  amountFields = ['amount','value','FOppValue','Amount'];
+  closeDateFields = ['expected_close_date','expectedCloseDate','FOppTargetDate','CloseDate','Closing_Date'];
   type = "DEAL";
   showOpportunityTypes:boolean = false;
   opportunityTypeId: any;
@@ -1192,7 +1192,7 @@ export class AddDealComponent implements OnInit {
             this.activeCRMDetails = response.data;
             if (this.activeCRMDetails.hasCustomForm
               && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
-                || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type)) {
+                || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type || "ZOHO" === this.activeCRMDetails.type)) {
               this.showCustomForm = true;
             } else if ("HALOPSA" === this.activeCRMDetails.type 
             && (this.actionType === "edit" || this.actionType === "view")) {
