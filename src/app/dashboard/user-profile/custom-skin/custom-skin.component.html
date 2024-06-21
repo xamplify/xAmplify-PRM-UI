@@ -975,8 +975,14 @@
 								</div>
 							</div>
 							<div class="bg-color-for-secondcard1">
-								<img alt="Button Primary" class="gif-img-cu"
-									src="/assets/images/Light-btn-primary.gif">
+								<img alt="Button Primary" class="gif-img-cu" *ngIf="themeDTO?.parentThemeName === 'GLASSMORPHISMDARK'"
+									src="/assets/images/theme/btn-preview-images/Glassomorphism_Dark_btn_preview.gif">
+								<img alt="Button Primary" class="gif-img-cu" *ngIf="themeDTO?.parentThemeName === 'GLASSMORPHISMLIGHT'"
+									src="/assets/images/theme/btn-preview-images/Glassomorphism_Light_btn_preview.gif">
+								<img alt="Button Primary" class="gif-img-cu" *ngIf="themeDTO?.parentThemeName === 'NEUMORPHISMLIGHT'"
+									src="/assets/images/theme/btn-preview-images/Neumorphism_Light_btn_preview.gif">
+								<img alt="Button Primary" class="gif-img-cu" *ngIf="themeDTO?.parentThemeName === 'NEUMORPHISMDARK'"
+									src="/assets/images/theme/btn-preview-images/Neumorphism_Dark_btn_preview.gif">
 							</div>
 						</div>
 					</div>
