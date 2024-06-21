@@ -411,6 +411,26 @@
 											</span>
 										</div>
 									</div>
+									<!---XNFR-255-->
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px"
+											translate>Add To Quick Links:</label>
+										<div class="col-xs-9 col-sm-9 col-md-9">
+											<switch 
+												[status]="saveVideoFile.addedToQuickLinks"
+												[onText]="callActionSwitch.onTextValue"
+												[offText]="callActionSwitch.offTextValue"
+												[onColor]="callActionSwitch.onGreenColorSwitch"
+												[offColor]="callActionSwitch.onDefaultColorSwitch"
+												[size]="callActionSwitch.size" (statusChange)="setAddedToQuickLinks($event)">
+											</switch>
+											<span class="info-color-xampc">
+												<i class="fa fa-question-circle toggle-info-white-label"
+													data-toggle="tooltip" data-placement="top" aria-hidden="true"
+													title="{{properties?.ADD_TO_QUICK_LINKS}}"></i>
+											</span>
+										</div>
+									</div>
 									<div>
 										<app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
 										<app-partner-company-and-groups

@@ -34,4 +34,7 @@ export class DamUploadPostDto {
     assetType  = "";
     videoId = 0;
     replaceVideoAsset = false;
+
+    /***XNFR-586 */
+    addedToQuickLinks = false;
 }

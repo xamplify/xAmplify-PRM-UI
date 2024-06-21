@@ -103,6 +103,7 @@ import { AddVendorLogosComponent } from 'app/util/add-vendor-logos/add-vendor-lo
 import { SupportAccountUsersComponent } from './support-account-users/support-account-users.component';
 import { IntegrationSettingsPopupComponent } from './integration-settings-popup/integration-settings-popup.component';
 import { FormsModule } from 'app/forms/forms.module';
+import { QuickLinksComponent } from './quick-links/quick-links.component';
 
 
 
@@ -180,7 +181,9 @@ import { FormsModule } from 'app/forms/forms.module';
         UpdatePasswordComponent,
         AddVendorLogosComponent,
         SupportAccountUsersComponent,
+        QuickLinksComponent,
         IntegrationSettingsPopupComponent,
+
             
 
     ],
