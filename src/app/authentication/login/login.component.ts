@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -54,7 +54,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   teamMemberSignedUpResponse:CustomResponse = new CustomResponse();
   isPleaseWaitButtonDisplayed = false;
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
-    public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer) {
+    public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer,
+    private route: ActivatedRoute) {
       this.SERVER_URL = this.envService.SERVER_URL;
       this.APP_URL = this.envService.CLIENT_URL;
       this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
@@ -287,6 +288,15 @@ bgIMage2:any;
         location.reload();
       }else{
         if (this.vanityURLService.isVanityURLEnabled()) {
+          this.route.queryParams.filter(params => params.error)
+          .subscribe(params => {
+            console.log(params);
+            if (params.error === "verr1") {
+              this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
+            }            
+          }
+        );
+
           this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
           this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
             this.vanityURLEnabled = result.enableVanityURL;
