@@ -2382,6 +2382,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         } else {
             this.isValidPipeline = false;
         }
+        if ('HALOPSA' ===  this.activeCRMDetails.type && this.eventCampaign.leadTicketTypeId > 0 
+            && this.eventCampaign.dealTicketTypeId > 0) {
+            this.isValidPipeline = true;
+        } else if ('HALOPSA' ===  this.activeCRMDetails.type && (this.eventCampaign.leadTicketTypeId == 0 
+            || this.eventCampaign.dealTicketTypeId == 0)) {
+            this.isValidPipeline = false;
+        }
         this.resetTabClass();
 
     }
