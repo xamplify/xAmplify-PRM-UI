@@ -87,7 +87,7 @@ export class CustomSkinComponent implements OnInit {
   footerTextContent: string;
   /******Footer**** */
   /** Button customization */
-  customButtonBgColor: String;
+  customButtonBgColor: string;
   customButtonBorderColor: string;
   customButtonValueColor: string;
   customGradientColorOne: string;
@@ -785,7 +785,7 @@ export class CustomSkinComponent implements OnInit {
       }
     )
   }
-  saveThemeEventEmit(value: String) {
+  saveThemeEventEmit(value: string) {
     document.body.style.removeProperty('background-image');
     this.closeEvent.emit(value);
   }
