@@ -15,7 +15,7 @@ import { RouterUrlConstants } from 'app/constants/router-url.contstants';
   providers: [Properties]
 })
 export class QuickLinksComponent implements OnInit {
-  selectedFilterIndex = 1;
+  selectedFilterIndex = 0;
   quickLinks:Array<any> = new Array<any>();
   isPartnerLoggedInThroughVanityUrl = false;
   isQuickLinksApiLoading = true;
@@ -27,10 +27,12 @@ export class QuickLinksComponent implements OnInit {
     public dashboardService:DashboardService) { }
 
   ngOnInit() {
+    this.quickLinksPagination.filterBy = "All";
     this.findAllQuickLinks(this.quickLinksPagination);
   }
 
   findAllQuickLinks(quickLinksPagination: Pagination) {
+    this.referenceService.scrollSmoothToTop();
     this.isQuickLinksApiLoading = true;
     this.dashboardService.findAllQuickLinks(quickLinksPagination).subscribe(
         response=>{
@@ -56,6 +58,7 @@ export class QuickLinksComponent implements OnInit {
 
   searchQuickLinks() {
 		this.quickLinksPagination.pageIndex = 1;
+    this.quickLinksPagination.maxResults = 12;
 		this.quickLinksPagination.searchKey = this.searchKey;
     this.findAllQuickLinks(this.quickLinksPagination);
 	}
@@ -71,7 +74,11 @@ export class QuickLinksComponent implements OnInit {
   }
 
   filterQuickLinks(type:string,index:number){
-    
+    this.selectedFilterIndex = index;
+    this.quickLinksPagination = new Pagination();
+    this.quickLinksPagination.searchKey = this.searchKey;
+    this.quickLinksPagination.filterBy = type;
+    this.findAllQuickLinks(this.quickLinksPagination);
   }
   
 }

@@ -21,10 +21,10 @@
             <div class="portlet-title">
                 <div class="caption">
                 <ul class="mix-filter">
-                    <li class="filter" (click)="filterQuickLinks('All',0)" [class.emailtemplate-selected]="0 == selectedFilterIndex">All</li>
-                    <li class="filter" (click)="filterQuickLinks('Assets',1)" [class.emailtemplate-selected]="0 == selectedFilterIndex">Assets</li>
-                    <li class="filter" (click)="filterQuickLinks('Tracks',2)" [class.emailtemplate-selected]="4 == selectedFilterIndex">Tracks</li>
-                    <li class="filter" (click)="filterQuickLinks('PlayBooks',3)" [class.emailtemplate-selected]="5 == selectedFilterIndex">Play Books</li>
+                    <li class="filter" (click)="filterQuickLinks('All',0)" [class.emailtemplate-selected]="0 == selectedFilterIndex">All<i class="fa fa-check-circle-o success" *ngIf="0 == selectedFilterIndex"></i></li>
+                    <li class="filter" (click)="filterQuickLinks('Assets',1)" [class.emailtemplate-selected]="1 == selectedFilterIndex">Assets<i class="fa fa-check-circle-o success" *ngIf="1 == selectedFilterIndex"></i></li>
+                    <li class="filter" (click)="filterQuickLinks('Tracks',2)" [class.emailtemplate-selected]="2 == selectedFilterIndex">Tracks<i class="fa fa-check-circle-o success" *ngIf="2 == selectedFilterIndex"></i></li>
+                    <li class="filter" (click)="filterQuickLinks('PlayBooks',3)" [class.emailtemplate-selected]="3 == selectedFilterIndex">Play Books<i class="fa fa-check-circle-o success" *ngIf="3 == selectedFilterIndex"></i></li>
                 </ul>
                 </div>
                 <div class="float-right input-icon right mb10">
