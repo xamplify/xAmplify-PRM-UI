@@ -32,6 +32,7 @@ export class QuickLinksComponent implements OnInit {
   }
 
   findAllQuickLinks(quickLinksPagination: Pagination) {
+    this.customResponse = new CustomResponse();
     this.referenceService.scrollSmoothToTop();
     this.isQuickLinksApiLoading = true;
     this.dashboardService.findAllQuickLinks(quickLinksPagination).subscribe(

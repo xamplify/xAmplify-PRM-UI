@@ -34,76 +34,79 @@
                 </div>                        
             </div>
             <div class="portlet-body pt0">
-            <div class="inline-flex border-end" *ngFor="let quickLink of quickLinks">
-                <div class="col w430 text-overflow">
-                    <h5 class="line-height m0 text-overflow">
-                    <span data-toggle="tooltip" data-placement="bottom"  title="{{quickLink?.title}}">{{quickLink?.title}}</span>
-                    </h5>
-                </div>
-                <div class="col">
-                    <div class="instant-links-type">
-                        <span *ngIf="quickLink?.type=='Asset'" class="view-banner banner-top mr5 w-80px">{{quickLink?.type}}</span>
-                        <span *ngIf="quickLink?.type=='Track'" class="view-banner orange-lable-cu1 mr5 w-80px">{{quickLink?.type}}</span>
-                        <span *ngIf="quickLink?.type=='Play Book'" class="view-banner published mr5 w-80px">{{quickLink?.type}}</span>
+             <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible" [showCloseIcon]="false"></app-response-message>
+             <ng-container *ngIf="!customResponse?.isVisible">
+                <div class="inline-flex border-end" *ngFor="let quickLink of quickLinks">
+                    <div class="col w430 text-overflow">
+                        <h5 class="line-height m0 text-overflow">
+                        <span data-toggle="tooltip" data-placement="bottom"  title="{{quickLink?.title}}">{{quickLink?.title}}</span>
+                        </h5>
                     </div>
+                    <div class="col">
+                        <div class="instant-links-type">
+                            <span *ngIf="quickLink?.type=='Asset'" class="view-banner banner-top mr5 w-80px">{{quickLink?.type}}</span>
+                            <span *ngIf="quickLink?.type=='Track'" class="view-banner orange-lable-cu1 mr5 w-80px">{{quickLink?.type}}</span>
+                            <span *ngIf="quickLink?.type=='Play Book'" class="view-banner published mr5 w-80px">{{quickLink?.type}}</span>
+                        </div>
+                    </div>
+                    <!--Asset-->
+                    <ng-container *ngIf="quickLink?.type=='Asset'">
+                        <!--Asset / Vendor View-->
+                        <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{quickLink:quickLink,
+                            access:authenticationService?.module?.damAccess,
+                            title: authenticationService?.module?.damAccess ?'Click here to view asset analytics':'You do not have permission to view the analytics'}">
+                        </ng-template>
+                        <!--Asset / Partner View-->
+                        <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{quickLink:quickLink,
+                            access:authenticationService?.module?.damAccessAsPartner,
+                            title: authenticationService?.module?.damAccessAsPartner ?'Click here to view the asset that has been shared by your vendor':'You do not have permission to view the asset'}">
+                        </ng-template>
+                    </ng-container>
+    
+                    <!--Track-->
+                    <ng-container *ngIf="quickLink?.type=='Track'">
+                        <!--Track / Vendor View-->
+                        <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{quickLink:quickLink,
+                            access:authenticationService?.module?.lmsAccess,
+                            title: authenticationService?.module?.lmsAccess ?'Click here to view track analytics':'You do not have permission to view the analytics'}">
+                        </ng-template>
+                        <!--Track / Partner View-->
+                        <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{quickLink:quickLink,
+                            access:authenticationService?.module?.lmsAccessAsPartner,
+                            title: authenticationService?.module?.lmsAccessAsPartner ?'Click here to view the track that has been shared by your vendor':'You do not have permission to view the track'}">
+                        </ng-template>
+                    </ng-container>
+    
+                    <!--Play Book-->
+                    <ng-container *ngIf="quickLink?.type=='Play Book'">
+                        <!--Play Book / Vendor View-->
+                        <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{quickLink:quickLink,
+                            access:authenticationService?.module?.playbookAccess,
+                            title: authenticationService?.module?.playbookAccess ?'Click here to view play book analytics':'You do not have permission to view the analytics'}">
+                        </ng-template>
+                        <!--Play Book / Partner View-->
+                        <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
+                            [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
+                            [ngTemplateOutletContext]="{quickLink:quickLink,
+                            access:authenticationService?.module?.playbookAccessAsPartner,
+                            title: authenticationService?.module?.playbookAccessAsPartner ?'Click here to view the play book that has been shared by your vendor':'You do not have permission to view the play book'}">
+                        </ng-template>
+                    </ng-container>
                 </div>
-                <!--Asset-->
-                <ng-container *ngIf="quickLink?.type=='Asset'">
-                    <!--Asset / Vendor View-->
-                    <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
-                        [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
-                        [ngTemplateOutletContext]="{quickLink:quickLink,
-                        access:authenticationService?.module?.damAccess,
-                        title: authenticationService?.module?.damAccess ?'Click here to view asset analytics':'You do not have permission to view the analytics'}">
-                    </ng-template>
-                    <!--Asset / Partner View-->
-                    <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
-                        [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
-                        [ngTemplateOutletContext]="{quickLink:quickLink,
-                        access:authenticationService?.module?.damAccessAsPartner,
-                        title: authenticationService?.module?.damAccessAsPartner ?'Click here to view the asset that has been shared by your vendor':'You do not have permission to view the asset'}">
-                    </ng-template>
-                </ng-container>
-
-                <!--Track-->
-                <ng-container *ngIf="quickLink?.type=='Track'">
-                    <!--Track / Vendor View-->
-                    <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
-                        [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
-                        [ngTemplateOutletContext]="{quickLink:quickLink,
-                        access:authenticationService?.module?.lmsAccess,
-                        title: authenticationService?.module?.lmsAccess ?'Click here to view track analytics':'You do not have permission to view the analytics'}">
-                    </ng-template>
-                    <!--Track / Partner View-->
-                    <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
-                        [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
-                        [ngTemplateOutletContext]="{quickLink:quickLink,
-                        access:authenticationService?.module?.lmsAccessAsPartner,
-                        title: authenticationService?.module?.lmsAccessAsPartner ?'Click here to view the track that has been shared by your vendor':'You do not have permission to view the track'}">
-                    </ng-template>
-                </ng-container>
-
-                <!--Play Book-->
-                <ng-container *ngIf="quickLink?.type=='Play Book'">
-                    <!--Play Book / Vendor View-->
-                    <ng-template *ngIf="!isPartnerLoggedInThroughVanityUrl"
-                        [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
-                        [ngTemplateOutletContext]="{quickLink:quickLink,
-                        access:authenticationService?.module?.playbookAccess,
-                        title: authenticationService?.module?.playbookAccess ?'Click here to view play book analytics':'You do not have permission to view the analytics'}">
-                    </ng-template>
-                    <!--Play Book / Partner View-->
-                    <ng-template *ngIf="isPartnerLoggedInThroughVanityUrl"
-                        [ngTemplateOutlet]="quickLinkNgTemplateIcon" 
-                        [ngTemplateOutletContext]="{quickLink:quickLink,
-                        access:authenticationService?.module?.playbookAccessAsPartner,
-                        title: authenticationService?.module?.playbookAccessAsPartner ?'Click here to view the play book that has been shared by your vendor':'You do not have permission to view the play book'}">
-                    </ng-template>
-                </ng-container>
-            </div>
-            <div class="alert alert-info text-center" *ngIf="quickLinks?.length==0">
-                <strong>No Data Found</strong>
-            </div>
+                <div class="alert alert-info text-center" *ngIf="quickLinks?.length==0">
+                    <strong>No Data Found</strong>
+                </div>
+             </ng-container>   
             </div>
         </div>
         <!--Pagination-->
