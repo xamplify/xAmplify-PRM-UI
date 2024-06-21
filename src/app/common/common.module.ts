@@ -186,6 +186,7 @@ import { TeamMemberwiseAssetsDetailedReportComponent } from 'app/util/team-membe
 import { TeamMemberAnalyticsCompanyDetailsComponent } from 'app/util/team-member-analytics-company-details/team-member-analytics-company-details.component';
 import { PreviewAssetPdfComponent } from './preview-asset-pdf/preview-asset-pdf.component';
 import { FilePreviewComponent } from 'app/util/file-preview/file-preview.component';
+import { BackgroundImageUploadComponent } from 'app/util/background-image-upload/background-image-upload.component';
 import { DomainWhitelistingComponent } from 'app/util/domain-whitelisting/domain-whitelisting.component';
 
 @NgModule({
@@ -223,7 +224,8 @@ import { DomainWhitelistingComponent } from 'app/util/domain-whitelisting/domain
 		TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
-		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent
+		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent
+
 	],
 
 
@@ -259,7 +261,8 @@ import { DomainWhitelistingComponent } from 'app/util/domain-whitelisting/domain
 		InteractedNotInteractedTrackDetailsComponent,TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
-		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent
+		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent
+
 	]
 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Renderer } from "@angular/core";
 import { Router } from "@angular/router";
 import { ReferenceService } from "../services/reference.service";
 import { UserService } from "../services/user.service";
@@ -48,7 +48,8 @@ export class HomeComponent implements OnInit {
     public authenticationService: AuthenticationService,
     public videoUtilService: VideoUtilService,
     private vanityURLService: VanityURLService,
-    public dashBoardService: DashboardService
+    public dashBoardService: DashboardService,
+    private renderer: Renderer
   ) {
     this.loggedInThroughVanityUrl = this.vanityURLService.isVanityURLEnabled();
     this.isAuthorized();
@@ -293,10 +294,10 @@ export class HomeComponent implements OnInit {
       if (this.currentUser['logedInCustomerCompanyNeme'] != undefined) {
         if (this.authenticationService.vanityURLEnabled && this.authenticationService.v_companyName) {
           this.setTitle(this.authenticationService.v_companyName);
-          localStorage.setItem('companyName',this.authenticationService.v_companyName);
+          localStorage.setItem('companyName', this.authenticationService.v_companyName);
         } else {
           this.setTitle(this.currentUser['logedInCustomerCompanyNeme']);
-          localStorage.setItem('companyName',this.currentUser['logedInCustomerCompanyNeme']);
+          localStorage.setItem('companyName', this.currentUser['logedInCustomerCompanyNeme']);
 
         }
       } else {
@@ -353,7 +354,10 @@ export class HomeComponent implements OnInit {
 
   maincontentCustom: ThemePropertiesDto = new ThemePropertiesDto();
 
+  buttonCustomizationForm: ThemePropertiesDto = new ThemePropertiesDto();
+
   activeThemeDto: ThemeDto = new ThemeDto();
+  imageHost:any;
   getThemeDtoByID(id: number) {
     this.loader = true;
     this.dashBoardService.getThemeDTOById(id).subscribe(
@@ -361,6 +365,9 @@ export class HomeComponent implements OnInit {
         this.loader = false;
         this.activeThemeDto = response.data;
         this.authenticationService.themeDto = this.activeThemeDto;
+        if(this.activeThemeDto.parentThemeName == 'GLASSMORPHISMLIGHT' || this.activeThemeDto.parentThemeName  == 'GLASSMORPHISMDARK') {
+        this.getDefaultImagePath(this.activeThemeDto.parentThemeName,this.activeThemeDto.id);
+        }
         this.getDefaultSkin(this.activeThemeDto);
         /******** For Charts *******/
         if (id == 2) {
@@ -383,21 +390,17 @@ export class HomeComponent implements OnInit {
           //this.ngxloading = false;
           this.loader = false;
           let skinMap = response.data;
-
-          // this.authenticationService.customMap = data.data;
+        // this.authenticationService.customMap = data.data;
           this.topCustom = skinMap.TOP_NAVIGATION_BAR;
           this.leftCustom = skinMap.LEFT_SIDE_MENU;
           this.footerCustom = skinMap.FOOTER;
           this.footerSkin = skinMap.FOOTER;
           this.maincontentCustom = skinMap.MAIN_CONTENT;
+          this.buttonCustomizationForm = skinMap.BUTTON_CUSTOMIZE;
           this.authenticationService.isLeft = !activeThemeDto.defaultTheme;
           this.authenticationService.isTop = !activeThemeDto.defaultTheme;
           this.authenticationService.isFoter = !activeThemeDto.defaultTheme;
           this.authenticationService.isMain = !activeThemeDto.defaultTheme;
-          //  this.authenticationService.customMap.set("top",skinMap.TOP_NAVIGATION_BAR);
-          //  this.authenticationService.customMap.set("left",skinMap.LEFT_SIDE_MENU);
-          //  this.authenticationService.customMap.set("footer",skinMap.FOOTER);
-          //  this.authenticationService.customMap.set("main",skinMap.MAIN_CONTENT);
           if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Light") {
             require("style-loader!../../../assets/admin/layout2/css/layout.css");
@@ -420,57 +423,79 @@ export class HomeComponent implements OnInit {
           else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Glassomorphism Light" && !this.router.url.includes('home/help')) {
             this.authenticationService.isDarkForCharts = false;
+            document.documentElement.style.setProperty('--body-background-image', 'url(' + this.imageHost + activeThemeDto.backgroundImagePath + ')');
             require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-light.css");
           }
           else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Glassomorphism Dark" && !this.router.url.includes('home/help')) {
             this.authenticationService.isDarkForCharts = true;
+            document.documentElement.style.setProperty('--body-background-image', 'url(' + this.imageHost + activeThemeDto.backgroundImagePath + ')');
             require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-dark.css");
-          }
+
+          } 
           else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && !this.router.url.includes('home/help')) {
-            document.documentElement.style.setProperty('--top-bg-color', this.topCustom.backgroundColor);
-            document.documentElement.style.setProperty('--top-buton-color', this.topCustom.buttonColor);
-            document.documentElement.style.setProperty('--top-button-border-color', this.topCustom.buttonBorderColor);
-            document.documentElement.style.setProperty('--top-button-value-color', this.topCustom.buttonValueColor);
-            document.documentElement.style.setProperty('--top-button-icon-color', this.topCustom.iconColor);
-            require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-header.css");
-            document.documentElement.style.setProperty('--left-bg-color', this.leftCustom.backgroundColor);
-            document.documentElement.style.setProperty('--left-text-color', this.leftCustom.textColor);
-            document.documentElement.style.setProperty('--left-border-color', this.leftCustom.buttonBorderColor);
-            document.documentElement.style.setProperty('--left-icon-color', this.leftCustom.iconColor);
-            require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-left-side-bar.css");
+            if (activeThemeDto.parentThemeName == 'LIGHT' || activeThemeDto.parentThemeName == 'DARK') {
+              document.documentElement.style.setProperty('--top-bg-color', this.topCustom.backgroundColor);
+              document.documentElement.style.setProperty('--top-buton-color', this.topCustom.buttonColor);
+              document.documentElement.style.setProperty('--top-button-border-color', this.topCustom.buttonBorderColor);
+              document.documentElement.style.setProperty('--top-button-value-color', this.topCustom.buttonValueColor);
+              document.documentElement.style.setProperty('--top-button-icon-color', this.topCustom.iconColor);
+              require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-header.css");
+              document.documentElement.style.setProperty('--left-bg-color', this.leftCustom.backgroundColor);
+              document.documentElement.style.setProperty('--left-text-color', this.leftCustom.textColor);
+              document.documentElement.style.setProperty('--left-border-color', this.leftCustom.buttonBorderColor);
+              document.documentElement.style.setProperty('--left-icon-color', this.leftCustom.iconColor);
+              require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-left-side-bar.css");
 
-            document.documentElement.style.setProperty('--footer-bg-color', this.footerSkin.backgroundColor);
-            document.documentElement.style.setProperty('--footer-text-color', this.footerSkin.textColor);
-            document.documentElement.style.setProperty('--footer-border-color', this.footerSkin.buttonBorderColor);
-            require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-footer.css");
-            document.documentElement.style.setProperty('--page-content', this.maincontentCustom.backgroundColor);
-            document.documentElement.style.setProperty('--div-bg-color', this.maincontentCustom.divBgColor);
-            document.documentElement.style.setProperty('--title-heading--text', this.maincontentCustom.textColor);
-            document.documentElement.style.setProperty('--border-color', this.maincontentCustom.buttonBorderColor);
-            document.documentElement.style.setProperty('---text-color', this.maincontentCustom.textColor);
-            document.documentElement.style.setProperty('--btn-primary-bg-color', this.maincontentCustom.buttonColor);
-            document.documentElement.style.setProperty('--btn-primary-border-color', this.maincontentCustom.buttonPrimaryBorderColor);
-            document.documentElement.style.setProperty('--btn-primary-text-color', this.maincontentCustom.buttonValueColor);
-            document.documentElement.style.setProperty('--btn-secondary-text-color', this.maincontentCustom.buttonSecondaryTextColor);
-            document.documentElement.style.setProperty('--btn-secondary-border-color', this.maincontentCustom.buttonSecondaryBorderColor);
-            document.documentElement.style.setProperty('--btn-secondary-bg-color', this.maincontentCustom.buttonSecondaryColor);
-            document.documentElement.style.setProperty('--button-primary-bg-color', this.maincontentCustom.buttonColor);
-            document.documentElement.style.setProperty('--button-primary-border-color', this.maincontentCustom.buttonPrimaryBorderColor);
-            document.documentElement.style.setProperty('--button-primary-text-color', this.maincontentCustom.buttonValueColor);
-            document.documentElement.style.setProperty('--button-secondary-bg-color', this.maincontentCustom.buttonSecondaryColor);
-            document.documentElement.style.setProperty('--button-secondary-border-color', this.maincontentCustom.buttonSecondaryBorderColor);
-            document.documentElement.style.setProperty('--button-secondary-text-color', this.maincontentCustom.buttonSecondaryTextColor);
-            document.documentElement.style.setProperty('--icon-color', this.maincontentCustom.iconColor);
-            document.documentElement.style.setProperty('--icon-border-color', this.maincontentCustom.iconBorderColor);
-            document.documentElement.style.setProperty('--icon-hover-color', this.maincontentCustom.iconHoverColor);
-            require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-main-content.css");
+              document.documentElement.style.setProperty('--footer-bg-color', this.footerSkin.backgroundColor);
+              document.documentElement.style.setProperty('--footer-text-color', this.footerSkin.textColor);
+              document.documentElement.style.setProperty('--footer-border-color', this.footerSkin.buttonBorderColor);
+              require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-footer.css");
+              document.documentElement.style.setProperty('--page-content', this.maincontentCustom.backgroundColor);
+              document.documentElement.style.setProperty('--div-bg-color', this.maincontentCustom.divBgColor);
+              document.documentElement.style.setProperty('--title-heading--text', this.maincontentCustom.textColor);
+              document.documentElement.style.setProperty('--border-color', this.maincontentCustom.buttonBorderColor);
+              document.documentElement.style.setProperty('---text-color', this.maincontentCustom.textColor);
+              document.documentElement.style.setProperty('--btn-primary-bg-color', this.maincontentCustom.buttonColor);
+              document.documentElement.style.setProperty('--btn-primary-border-color', this.maincontentCustom.buttonPrimaryBorderColor);
+              document.documentElement.style.setProperty('--btn-primary-text-color', this.maincontentCustom.buttonValueColor);
+              document.documentElement.style.setProperty('--btn-secondary-text-color', this.maincontentCustom.buttonSecondaryTextColor);
+              document.documentElement.style.setProperty('--btn-secondary-border-color', this.maincontentCustom.buttonSecondaryBorderColor);
+              document.documentElement.style.setProperty('--btn-secondary-bg-color', this.maincontentCustom.buttonSecondaryColor);
+              document.documentElement.style.setProperty('--button-primary-bg-color', this.maincontentCustom.buttonColor);
+              document.documentElement.style.setProperty('--button-primary-border-color', this.maincontentCustom.buttonPrimaryBorderColor);
+              document.documentElement.style.setProperty('--button-primary-text-color', this.maincontentCustom.buttonValueColor);
+              document.documentElement.style.setProperty('--button-secondary-bg-color', this.maincontentCustom.buttonSecondaryColor);
+              document.documentElement.style.setProperty('--button-secondary-border-color', this.maincontentCustom.buttonSecondaryBorderColor);
+              document.documentElement.style.setProperty('--button-secondary-text-color', this.maincontentCustom.buttonSecondaryTextColor);
+              document.documentElement.style.setProperty('--icon-color', this.maincontentCustom.iconColor);
+              document.documentElement.style.setProperty('--icon-border-color', this.maincontentCustom.iconBorderColor);
+              document.documentElement.style.setProperty('--icon-hover-color', this.maincontentCustom.iconHoverColor);
+              require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-main-content.css");
+            } else {
+              if (activeThemeDto.parentThemeName === 'NEUMORPHISMDARK') {
+                require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-dark.css");
+              } else if (activeThemeDto.parentThemeName === 'NEUMORPHISMLIGHT') {
+                require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-light.css");
+              } else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMDARK') {
+                document.documentElement.style.setProperty('--body-background-image', 'url(' + this.imageHost + activeThemeDto.backgroundImagePath + ')');
+                require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-dark.css");
+              } else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMLIGHT') {
+                document.documentElement.style.setProperty('--body-background-image', 'url(' + this.imageHost + activeThemeDto.backgroundImagePath + ')');
+                require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-light.css");
+              }
+              document.documentElement.style.setProperty('--custom-buttonbg-color', this.buttonCustomizationForm.buttonColor);
+              document.documentElement.style.setProperty('--custom-text-color', this.buttonCustomizationForm.buttonValueColor);
+              document.documentElement.style.setProperty('--custom-border-color', this.buttonCustomizationForm.buttonBorderColor);
+              document.documentElement.style.setProperty('--custom-gradient-one-color', this.buttonCustomizationForm.gradiantColorOne);
+              document.documentElement.style.setProperty('--custom-gradient-two-color', this.buttonCustomizationForm.gradiantColorTwo);
+              document.documentElement.style.setProperty('--custom-icon-color', this.buttonCustomizationForm.iconColor);
+              document.documentElement.style.setProperty('--custom-icon-border-color', this.buttonCustomizationForm.iconBorderColor);
+              document.documentElement.style.setProperty('--custom-icon-hover-color', this.buttonCustomizationForm.iconHoverColor);
 
+              require("style-loader!../../../assets/admin/layout2/css/themes/buttons-icons-customization.css");
+            }
           }
-
-
-
-
         }, error => {
           this.loader = false;
         });
@@ -481,5 +506,26 @@ export class HomeComponent implements OnInit {
   showLeftMenu: boolean;
   showLeftSideMenu() {
     this.showLeftMenu = this.referenceService.hideLeftSideMenu();
+  }
+  bgImagePath:any;
+  getDefaultImagePath(name:any,themeId:any) {
+    this.dashBoardService.getDefaultImagePath(name,themeId).subscribe(
+      (data: any) => {
+        this.bgImagePath = data.data;
+        let path = this.bgImagePath;
+        if((name == 'GLASSMORPHISMLIGHT' || name == 'GLASSMORPHISMDARK') && (path && path.includes('/assets') || this.bgImagePath == undefined || this.bgImagePath == "" || this.bgImagePath == null ) ) {
+          //this.getDefaultImagePath(this.activeThemeDto.parentThemeName,this.activeThemeDto.id);
+          this.imageHost = "";
+        } else if(this.bgImagePath != null || this.bgImagePath != "") {
+          this.imageHost = this.authenticationService.MEDIA_URL;
+        }
+        this.activeThemeDto.backgroundImagePath= this.bgImagePath;
+      }, error =>{
+        this.bgImagePath = "";
+      }, () => {
+        this.activeThemeDto.backgroundImagePath = this.bgImagePath;
+        // this.authenticationService.themeBackgroundImagePath =this.bgImagePath;
+      }
+    )
   }
 }

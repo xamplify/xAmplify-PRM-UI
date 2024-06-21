@@ -73,6 +73,20 @@
      <!--List All Partners For Logged In Vendor Vanity-->
      <app-list-all-users [showPartners]="true"></app-list-all-users>
   </div>
+      <!-- Add Background Image OF GlassMorphism Light and Dark Start-->
+<section>
+  <div class="wrap-collabsible">
+    <input id="collapsible-upload-image" name="collapsibleCheckBox" class="toggle" type="checkbox" checked>
+    <label for="collapsible-upload-image" name="collapsibleCheckBox" class="lbl-toggle">Upload Default GlassMorphism Images</label>
+    <div class="collapsible-content">
+      <div class="row">
+       <app-background-image-upload [type]="'GLASSMORPHISMLIGHT'"></app-background-image-upload>
+       <app-background-image-upload [type]="'GLASSMORPHISMDARK'"></app-background-image-upload>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Add Background Image OF GlassMorphism Light and Dark end-->
 
   <app-scroll-top></app-scroll-top>
    <section>

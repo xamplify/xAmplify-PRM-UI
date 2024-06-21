@@ -4098,10 +4098,20 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.duplicateEmailIds = [];
 			this.dublicateEmailId = false;
 			this.existedEmailIds = [];
+			let isWebsiteError = false;
+		    let websiteErrorMessage = '';
 			var testArray = [];
 			for (var i = 0; i <= this.users.length - 1; i++) {
 				testArray.push(this.users[i].emailId);
 				this.validateEmail(this.users[i].emailId);
+				if (this.users[i].website != undefined && this.users[i].website != null) {
+					if (this.users[i].website.length > 0) {
+						if (!this.validateWebsite(this.users[i].website.trim())) {
+							isWebsiteError = true;
+							websiteErrorMessage = websiteErrorMessage + "Following Website URL " + " '" + this.users[i].website + "' " + " is not valid " + "\n";
+						}
+					}
+				}
 			}
 
 			var newArray = this.compressArray(testArray);
@@ -4116,7 +4126,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			});
 			this.isDuplicateEmailId = isDuplicate;
 			if (!isDuplicate && !this.isEmailExist) {
-				this.validatePartnersCompany();
+				if (!isWebsiteError) {
+					this.validatePartnersCompany();
+				} else {
+					this.customResponse = new CustomResponse('ERROR', websiteErrorMessage, true);
+				}
 			} else if (this.isEmailExist) {
 				this.customResponse = new CustomResponse('ERROR', "These email(s) are already added " + this.existedEmailIds, true);
 			} else {

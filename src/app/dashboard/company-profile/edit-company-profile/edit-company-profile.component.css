@@ -88,11 +88,6 @@ svg {
   left: 2px !important;
   bottom: 4px !important;
 }
-@media screen and (max-width: 600px) {
-  .imgCrop-modal {
-    width: 100%;
-  }
-}
 @media screen and (min-width: 601px) {
   .imgCrop-modal {
     width: 40% !important;
@@ -115,17 +110,25 @@ svg {
   height: 42px;
   width: 120px;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1024px) {
   .mPadCompanyProfile {
     padding-left: 15px !important;
   }
   .mPad1 {
     padding-right: 0px !important;
-    padding-left: 0px !important;
+    padding-left: 15px !important;
   }
   .mPad2 {
-    padding-left: 2px !important;
-    padding-right: 0px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+}
+@media screen and (max-width: 600px) {
+  .imgCrop-modal {
+    width: 100%;
+  }
+  .mPad1 {
+    padding-right: 15px !important;
   }
 }
 .image-border {
@@ -161,7 +164,7 @@ svg {
 .fav-icon-responsive {
   height: 94px !important;
   width: 94px !important;
-  object-fit: fill;
+  object-fit: contain;
   margin-left: -12px;
 }
 .fav-icon-image-profile-wrapper {
@@ -217,4 +220,11 @@ margin: 10px 10px;
 }
 .upload_btn_pdg{
   padding-left: 0px;
+}
+@media only screen and (min-width: 768px) and (max-width: 1154px) { 
+  .fav-img-grid{
+    height: 78px !important;
+    width: 78px !important;
+    object-fit: contain;
+  } 
 }
