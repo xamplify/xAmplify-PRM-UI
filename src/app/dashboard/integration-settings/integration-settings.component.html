@@ -284,7 +284,7 @@
       </div>
     </ng-container>
     <div *ngIf="isCustomFieldsModelPopUp">
-      <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField"></app-integration-settings-popup>
+      <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField" [customFieldsList]="customFieldsList"></app-integration-settings-popup>
     </div>
   </div>
 </div>
