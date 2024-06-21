@@ -1,0 +1,125 @@
+.button:hover::before, .button_blue:hover::before{
+  transform: scale(0) !important;
+}
+button#copyFromClipBoard {
+  box-shadow: none !important;
+}
+button.btn.custom, .btn-group button, .selectRecord, button#save\&delete_button,button.group-name-cclass.btn-primary.default-btn-cursor.white-co,
+.btn-success, .btn-primary, .color-flow-button, .button_blue, button.button_blue:disabled, button.button:disabled,
+button.btn.btn-primary, .mix-filter li:hover, .mix-filter li.active, .mix-filter li.campaign-type-selected, .mix-filter li.emailtemplate-selected,
+button.group-name-cclass.btn-primary.default-btn-cursor,
+.color-flow-button.Btn-Green, li.mix-filter-li-selected {
+    background-color: var(--custom-buttonbg-color) !important;
+    background-image: linear-gradient(1deg, var(--custom-gradient-one-color), var(--custom-gradient-two-color) 99%) !important;
+    background-size: calc(100% + 20px) calc(100% + 20px) !important;
+    border: 1px solid var(--custom-border-color) !important;
+    color: var(--custom-text-color) !important;
+    border-radius: 7px;
+    box-shadow: none !important;
+}
+button.button.bgcolor-unset,
+button.button_blue.bgcolor-unset,
+button#copyFrom_clipboard,
+button#add_contact, .btn.Btn-Green.fileinput-button-css, .btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow,
+label.btn.Btn-Green.mBtnAlign.button-border, .mix-filter-li-selected, .Btn-Green,button.btn.btn-primary.shareVideoButton, button.btn.btn-primary.embedVideoButton{ 
+  border-radius: 7px !important;
+  background-color: var(--custom-buttonbg-color) !important;
+  background-image: linear-gradient(1deg, var(--custom-gradient-one-color), var(--custom-gradient-two-color) 99%) !important;
+  background-size: calc(100% + 20px) calc(100% + 20px) !important;
+  border: 1px solid var(--custom-border-color) !important;
+  color: var(--custom-text-color)  !important;
+  box-shadow: none !important;
+}
+button.button.bgcolor-unset:hover, button.btn.custom:hover, .btn-group button:hover, .selectRecord:hover,
+.btn-success:hover, .btn-primary:hover, .color-flow-button:hover, div > button.btn-primary:hover,
+.btn-primary:active:hover, .button_blue:hover, .mix-filter li:hover, button.group-name-cclass.btn-primary.default-btn-cursor:hover,
+button#copyFrom_clipboard:hover, button#add_contact:hover, .btn.Btn-Green.fileinput-button-css:hover, .btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow:hover,
+button.button_blue.bgcolor-unset:hover, label.btn.Btn-Green.mBtnAlign.button-border:hover,button.btn.btn-primary.shareVideoButton:hover, button.btn.btn-primary.embedVideoButton:hover{
+  background-color: var(--custom-buttonbg-color) !important;
+  background-image: linear-gradient(1deg, var(--custom-gradient-two-color), var(--custom-gradient-one-color) 99%) !important;
+  background-size: calc(100% + 20px) calc(100% + 20px) !important;
+  border: 1px solid var(--custom-border-color) !important;
+  color:  var(--custom-text-color) !important;
+  box-shadow: none !important;
+}
+span.btn.btn-primary.transition.txt_pd-top3, span.btn.btn-primary.transition {
+  border: none !important;
+}
+.Btn-Green {
+  background: none !important;
+  border: none !important;
+}
+button.search-box-item-click,
+button.search-box-item-click:hover {
+    background: none !important;
+    background-image: none !important;
+    background-size: none !important;
+    border: none !important;
+    color: initial; 
+    border-radius: 0px !important;
+    box-shadow: none !important;
+}
+button.search-box-item-click:hover{color: initial !important;}
+/***** Icons *****/
+/* .custom-icon {
+  display: inline-block !important;
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  border: none !important;
+  color: var(--custom-icon-color) !important;
+  border-radius: 50%;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  cursor: pointer;
+  margin-right: 8px;
+} */
+i.IconCustomization, 
+.gridIconCustomization a,
+.IconCustomizationcondition a i,
+.setting-icon-cu {
+  color : var(--custom-icon-color) !important;
+  border: 1px solid var(--custom-icon-border-color) !important;
+  background-color: var(--custom-icon-hover-color) !important;
+}
+.setting-icon-cu .gearDropdownMenu{color : inherit !important;}
+.add-content-i{ color: var(--custom-text-color)  !important;}
+i.IconCustomization:hover,
+.gridIconCustomization a.Iconhover:hover,
+.IconCustomizationcondition a i:hover,
+.setting-icon-cu:hover,
+i.fa[class*="fa-"].IconCustomization:hover {
+background: var(--custom-icon-color) !important;
+border: 1px solid var(--custom-icon-border-color) !important; 
+color : var(--custom-icon-hover-color) !important;
+}
+/*** Sudha Sri(20-6-2024)***/
+.setting-icon-cu .gearDropdownMenu:hover, i.fa.fa-envelope-o:hover,
+i.fa.fa-pencil-square-o:hover, i.fa.fa-files-o:hover,
+i.fa.fa-bullhorn:hover, i.fa.fa-edit:hover, i.fa.fa-history:hover, 
+i.fa.fa-reply:hover, i.fa.fa-inbox:hover, i.fa.fa-envelope-o:hover, i.fa.fa-rocket:hover,
+i.fa.fa-download:hover, i.fa.IconCustomization.fa-angle-right:hover, i.fa.IconCustomization.fa-angle-down:hover{
+  color : var(--custom-icon-hover-color) !important;
+}
+i.fa.fa-trash-o:hover{
+  color:#fff !important;
+}
+/*** End(20-6-2024)***/
+body {
+  background-image: var(--body-background-image);
+}
+/*** Sudha Sri (18-06-2024) ***/
+label.btn.Btn-Green.mBtnAlign.button-border, .btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow{
+  border-radius: 0px !important;
+}
+button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4, button.search-box-item-click, button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4,
+button.fa.fa-th-list.btn-xs.l-g-view.mr_4, button.fa.fa-th-large.btn-xs.l-g-view.mr_4, 
+button.fa.fa-th-list.btn-xs.l-g-view, button.fa.fa-th-large.btn-xs.l-g-view,
+button.btn-xs.l-g-view.fa.fa-folder, button.btn-xs.l-g-view.fa.fa-th, 
+button.btn.btn-xs.hidden-xs.l-g-view{color:#fff !important;}
+.clickicons, .del-icon {
+  animation: none !important;
+  background: none !important;}

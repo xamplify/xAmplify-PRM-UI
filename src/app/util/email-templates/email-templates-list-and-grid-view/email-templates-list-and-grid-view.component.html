@@ -436,7 +436,7 @@
         (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)"
          *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || 
            authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
-        <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+        <i class="fa fa-trash-o trashIconCustomization bgcolor_change" aria-hidden="true"></i>
         <div class="del-icon"></div>
     </a>
 </ng-template>

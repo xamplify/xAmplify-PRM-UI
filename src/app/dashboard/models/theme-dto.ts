@@ -14,5 +14,6 @@ export class ThemeDto {
     updatedBy: number;
     createdDate: number;
     updatedDate: number;
-
+    parentThemeName='';
+    backgroundImagePath = '';
 }

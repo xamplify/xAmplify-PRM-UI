@@ -480,8 +480,8 @@
                                                         <select class="form-control" [(ngModel)]="campaign.leadTicketTypeId" 
                                                             [ngModelOptions]="{standalone: true}"
                                                             placeholder="leadTicketTypeId" id="leadTicketTypeId" [disabled]="preview"
-                                                            (ngModelChange)="onChangeLeadTicketType()" (input)="validateField('leadTicketTypeId',false)">
-                                                            <option [value]="0">Select Lead Ticket Type</option>
+                                                            (ngModelChange)="onChangeLeadTicketType()" (change)="validateForm()">
+                                                            <!-- <option [value]="0">Select Lead Ticket Type</option> -->
                                                             <option *ngFor="let leadTicketType of leadTicketTypes"     
                                                             [value]="leadTicketType.id">{{leadTicketType.name}}</option>
                                                         </select>
@@ -497,8 +497,8 @@
                                                         <select class="form-control" [(ngModel)]="campaign.dealTicketTypeId"
                                                             [ngModelOptions]="{standalone: true}"
                                                             placeholder="dealTicketTypeId" id="dealTicketTypeId" [disabled]="preview"
-                                                            (ngModelChange)="onChangeDealTicketType()" (input)="validateField('dealTicketTypeId',false)">
-                                                            <option [value]="0">Select Deal Ticket Type</option>
+                                                            (ngModelChange)="onChangeDealTicketType()" (change)="validateForm()">
+                                                            <!-- <option [value]="0">Select Deal Ticket Type</option> -->
                                                             <option *ngFor="let dealTicketType of dealTicketTypes"     
                                                             [value]="dealTicketType.id">{{dealTicketType.name}}</option>
                                                         </select>

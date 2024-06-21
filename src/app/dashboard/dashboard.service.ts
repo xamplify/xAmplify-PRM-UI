@@ -3,7 +3,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, RequestOptions, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { SaveVideoFile } from '../videos/models/save-video-file';
 import { Pagination } from '../core/models/pagination';
@@ -1031,6 +1031,30 @@ getDefaultThemes(){
     .map(this.extractData)
     .catch(this.handleError);
 }
+/**** XNFR-554 ****/
+uploadBgImageFile(file: any) {
+    let formData: FormData = new FormData();
+    formData.append('bgImageFile', file, file.name);
+    let headers = new Headers();
+    let options = new RequestOptions({ headers: headers });
+    const url = this.authenticationService.REST_URL  + "custom/skin/backgroundImage/saveBgImage/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+    return this.http.post(url, formData, options)
+        .map(this.extractData)
+        .catch(this.handleError);
+}
+getDefaultImagePath(parentThemeName:any,themeId:any) {
+    let url = this.authenticationService.REST_URL +"custom/skin/getDefaultImagePath/"+parentThemeName+"/"+themeId+"?access_token=" + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+saveOrUpdateDefaultImages(themeDto:ThemeDto) {
+    const url = this.authenticationService.REST_URL + 'custom/skin/updateBgImagePath/?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,themeDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+/*** XNFR-554 ****/
 /*************XNFR-238****************/
     getVendors(pagination: Pagination) {
          /****XNFR-252*****/
@@ -1353,6 +1377,8 @@ getDefaultThemes(){
             .catch(this.handleError);
     }
 
+   
+
 
     /*****XNFR-502*****/
     saveHalopsaCredentials(formData: any) {
@@ -1384,5 +1410,12 @@ getDefaultThemes(){
             .catch(this.handleError);
     }
 
+    findAllQuickLinks(pagination:Pagination){
+        let userId = this.authenticationService.getUserId();
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        let domainName = this.authenticationService.companyProfileName;
+        let findAllUrl = this.dashboardAnalytics+'findAllQuickLinks/domainName/'+domainName+'/userId/'+userId+this.QUERY_PARAMETERS+pageableUrl;
+        return this.authenticationService.callGetMethod(findAllUrl);
+    }
     
 }

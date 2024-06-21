@@ -24,4 +24,6 @@ export class ThemePropertiesDto {
     buttonSecondaryBorderColor: string;
     buttonSecondaryTextColor: string;
     secondaryButtonTextColor = "";
+    gradiantColorOne = "";
+	gradiantColorTwo = "";
 }
