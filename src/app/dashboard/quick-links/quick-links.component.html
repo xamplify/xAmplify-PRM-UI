@@ -100,15 +100,13 @@
                         title: authenticationService?.module?.playbookAccessAsPartner ?'Click here to view the play book that has been shared by your vendor':'You do not have permission to view the play book'}">
                     </ng-template>
                 </ng-container>
-                
             </div>
-            <div class="alert alert-info text-center" *ngIf="quickLinks?.length==0">No Data Found</div>
+            <div class="alert alert-info text-center" *ngIf="quickLinks?.length==0">
+                <strong>No Data Found</strong>
+            </div>
             </div>
         </div>
-        <!---Pagination-->
-        <div *ngIf="quickLinksPagination?.totalRecords==0" class="alert alert-info text-center">
-            <strong>No Data Found.</strong>
-        </div>
+        <!--Pagination-->
         <div *ngIf="quickLinksPagination?.totalRecords>0">
             <app-pagination [pagination]="quickLinksPagination" (notifyParent)="navigateBetweenPageNumbers($event)" (notifyParentDropDown)="findAllQuickLinks($event)"></app-pagination>
         </div>
