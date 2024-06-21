@@ -437,7 +437,8 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
             } else {
                 this.ngxloading = true;
                 this.customResponse = new CustomResponse('SUCCESS',"Page created successfully",true);
-                let createdPageId = data.data;
+                let map = data.map;
+                let createdPageId = map['landingPageId'];
                 this.landingPageService.id = createdPageId;
                 this.findPageDataAndLoadBeeContainer(this.landingPageService,this.authenticationService);
             }
