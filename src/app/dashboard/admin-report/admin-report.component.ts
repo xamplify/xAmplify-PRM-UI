@@ -221,4 +221,8 @@ export class AdminReportComponent implements OnInit {
 		let isChecked =  $("input[name=collapsibleCheckBox]").is(":checked");
         $("input[name=collapsibleCheckBox]").prop('checked', !isChecked);
 	}
+
+    updateEmailAddress(){
+        
+    }
 }

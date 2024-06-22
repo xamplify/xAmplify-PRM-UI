@@ -13,6 +13,10 @@
  <ng-container *ngIf="!isVanityUrlEnabled">
   <div class="page-bar">
     <ul class="page-breadcrumb float-right">
+      <!--Update Email Address-->
+      <li class="topnav-button-css" style="display: none;">
+        <button class="btn btn-primary" (click)="updateEmailAddress()"><span>Update Email Address</span></button>
+      </li>
       <!--Expand/Collpase-->
       <li class="topnav-button-css">
         <button class="btn btn-primary" (click)="expandOrCollpase()"><span>Expand / Collapse</span></button>
