@@ -18,7 +18,8 @@
       </li>
     </ul>
     <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
-    <div *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember && authenticationService?.module?.isAdminAndPartnerCompany && !authenticationService.vanityURLEnabled">
+    <div
+      *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember && authenticationService?.module?.isAdminAndPartnerCompany && !authenticationService.vanityURLEnabled">
       <ul class="mix-filter p0 m0" style="float: right">
         <li class="filter" style="float: right; margin-top: 5px;" (click)="showPartnerView()"
           [class.campaign-type-selected]="!isVendorVersion" translate>
@@ -59,7 +60,9 @@
   </div>
 
   <!-- Team Member Domain Whitelisting #XNFR-549 -->
-  <app-domain-whitelisting *ngIf="isTeamMemberModule && (authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isPartnerSuperVisor || authenticationService?.module?.isPartnerAdmin)" [isTeamMemberDomains]="true"></app-domain-whitelisting>
+  <app-domain-whitelisting
+    *ngIf="!showAnalytics && isTeamMemberModule && (authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isPartnerSuperVisor || authenticationService?.module?.isPartnerAdmin)"
+    [isTeamMemberDomains]="true"></app-domain-whitelisting>
 
   <div class="row neg_mrg_top18">
     <!---Team Members---->
@@ -127,7 +130,8 @@
                   && !authenticationService?.module?.deletedPartner && !isCollapsed ">
                   <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                 </span>
-                <span *ngIf="isTeamMemberModule && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)"
+                <span
+                  *ngIf="isTeamMemberModule && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)"
                   class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}}" title="Filter">
                   <div class="btn-group">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -191,25 +195,27 @@
                     <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}"
                       class="list-team-member-class">
                       <td class="pdl-15">
-                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember" [hideCompanyName]="true" [hideJobTitle]="true"></app-user-info>
-                          <span class="active-status" *ngIf="teamMember?.teamMemberUserId==loggedInUserId">
-                            <strong>LoggedIn Account:<i class="fa fa-check active-status"></i></strong>
-                          </span>
-                          <br>
-                          <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany 
+                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember" [hideCompanyName]="true"
+                          [hideJobTitle]="true"></app-user-info>
+                        <span class="active-status" *ngIf="teamMember?.teamMemberUserId==loggedInUserId">
+                          <strong>LoggedIn Account:<i class="fa fa-check active-status"></i></strong>
+                        </span>
+                        <br>
+                        <span
+                          *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany 
                           && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin"
-                            [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
-                            data-toggle="tooltip" data-placement="bottom"
-                            [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
-                            <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
-                              (click)="teamMember?.partnersCount>0 && !isLoggedInAsTeamMember && showPartners(teamMember)">
-                              <strong>Total {{authenticationService?.partnerModule?.customName}} :
-                                {{teamMember?.partnersCount}}</strong>
-                            </a>
-                          </span>
-                          <span class="active-status" *ngIf="teamMember?.primaryAdmin">
-                            <strong>Primary Admin:<i class="fa fa-check active-status"></i></strong>
-                          </span>
+                          [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
+                          data-toggle="tooltip" data-placement="bottom"
+                          [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
+                          <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
+                            (click)="teamMember?.partnersCount>0 && !isLoggedInAsTeamMember && showPartners(teamMember)">
+                            <strong>Total {{authenticationService?.partnerModule?.customName}} :
+                              {{teamMember?.partnersCount}}</strong>
+                          </a>
+                        </span>
+                        <span class="active-status" *ngIf="teamMember?.primaryAdmin">
+                          <strong>Primary Admin:<i class="fa fa-check active-status"></i></strong>
+                        </span>
                       </td>
                       <!---Assigned Group-->
                       <td *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner"
@@ -347,7 +353,8 @@
                           </a>
                         </div>
                       </td>
-                      <td class="actions-row" *ngIf="teamMember?.teamMemberUserId==loggedInUserId || teamMember?.primaryAdmin">
+                      <td class="actions-row"
+                        *ngIf="teamMember?.teamMemberUserId==loggedInUserId || teamMember?.primaryAdmin">
                         <div class="alert alert-info NaNAData">
                           <span><strong>N/A</strong></span>
                         </div>
@@ -717,7 +724,7 @@
                       <span class="active-status" *ngIf="admin?.primaryAdmin">
                         <strong>Primary Admin:<i class="fa fa-check active-status"></i></strong>
                       </span>
-                     
+
                     </td>
                   </tr>
                 </ng-container>
@@ -768,7 +775,8 @@
   </ng-container>
 
   <ng-template #analyticsCode>
-    <span *ngIf="isTeamMemberModule && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin) ">
+    <span
+      *ngIf="isTeamMemberModule && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin) ">
       <!--******************COUNT TILES******************-->
       <div class="row rowPaddingCustomize2">
         <app-partner-journey-count-tiles [selectedTeamMemberIds]="selectedTeamMemberIds"
@@ -776,93 +784,103 @@
           [isTeamMemberAnalytics]="true" [vanityUrlFilter]="vanityUrlFilter"
           [vendorCompanyProfileName]="vendorCompanyProfileName"></app-partner-journey-count-tiles>
       </div>
-      <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization">
-        <div>
-          <!--******************Interacted & Not Interacted Donut Chart******************-->
-          <div class="ml15m">
-            <app-donut-pie-chart [chartId]="'interactedAndNotInteractedTracksDonut'" [isTeamMemberAnalytics]="true"
-              [applyFilter]="applyFilter" (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
-              [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-              [isVendorVersion]="isVendorVersion" [vanityUrlFilter]="vanityUrlFilter"
-              [vendorCompanyProfileName]="vendorCompanyProfileName"
-              (notifyUnSelectSlice)="interactionTracksDonutSliceUnSelected($event)"></app-donut-pie-chart>
+      <span *ngIf="!isVendorVersion || authenticationService?.lmsAccess">
+        <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization">
+          <div>
+            <!--******************Interacted & Not Interacted Donut Chart******************-->
+            <div class="ml15m">
+              <app-donut-pie-chart [chartId]="'interactedAndNotInteractedTracksDonut'" [isTeamMemberAnalytics]="true"
+                [applyFilter]="applyFilter" (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
+                [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+                [isVendorVersion]="isVendorVersion" [vanityUrlFilter]="vanityUrlFilter"
+                [vendorCompanyProfileName]="vendorCompanyProfileName"
+                (notifyUnSelectSlice)="interactionTracksDonutSliceUnSelected($event)"></app-donut-pie-chart>
+            </div>
           </div>
+          <!--******************Interacted & Not Interacted Track Details*******************-->
+          <app-interacted-not-interacted-track-details [trackType]="selectedTrackType" [isTeamMemberAnalytics]="true"
+            [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
+            [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
+            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [applyFilter]="applyFilter">
+          </app-interacted-not-interacted-track-details>
         </div>
-        <!--******************Interacted & Not Interacted Track Details*******************-->
-        <app-interacted-not-interacted-track-details [trackType]="selectedTrackType" [isTeamMemberAnalytics]="true"
-          [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
-          [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-          [selectedVendorCompanyIds]="selectedVendorCompanyIds" [applyFilter]="applyFilter">
-        </app-interacted-not-interacted-track-details>
-      </div>
+      </span>
       <!--******************Status wise Track Assets Donut Chart & Details******************-->
       <div class="row rowPaddingCustomization">
-        <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="cardPaddingCustomization">
-          <!--******************Type wise Track Assets Donut Chart******************-->
-          <app-donut-pie-chart [trackType]="selectedTrackType" [chartId]="'typewiseTrackContentDonut'"
-            [isTeamMemberAnalytics]="true" [isVendorVersion]="isVendorVersion"
-            (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)" [vanityUrlFilter]="vanityUrlFilter"
-            [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-            (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"></app-donut-pie-chart>
+        <span *ngIf="!isVendorVersion || authenticationService?.lmsAccess">
+          <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="cardPaddingCustomization">
+            <!--******************Type wise Track Assets Donut Chart******************-->
+            <app-donut-pie-chart [trackType]="selectedTrackType" [chartId]="'typewiseTrackContentDonut'"
+              [isTeamMemberAnalytics]="true" [isVendorVersion]="isVendorVersion"
+              (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)" [vanityUrlFilter]="vanityUrlFilter"
+              [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedTeamMemberIds]="selectedTeamMemberIds"
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+              (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"></app-donut-pie-chart>
 
-          <!--******************Type wise Track Content Details*******************-->
-          <app-typewise-track-content-details [trackType]="selectedTrackType" [assetType]="selectedAssetType"
-            [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-            [isVendorVersion]="isVendorVersion" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-            [applyFilter]="applyFilter">
-          </app-typewise-track-content-details>
-        </div>
-        <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization1">
-          <div class="col-sm-12 col-md-12 col-lg-12">
-            <!--******************Team Member wise Track Counts******************-->
-            <app-userwise-track-counts [type]="'TRACK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+            <!--******************Type wise Track Content Details*******************-->
+            <app-typewise-track-content-details [trackType]="selectedTrackType" [assetType]="selectedAssetType"
               [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
               [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
-              [applyFilter]="applyFilter"></app-userwise-track-counts>
+              [isVendorVersion]="isVendorVersion" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+              [applyFilter]="applyFilter">
+            </app-typewise-track-content-details>
+          </div>
+        </span>
+        <span *ngIf="!isVendorVersion || authenticationService?.lmsAccess">
+          <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization1">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+              <!--******************Team Member wise Track Counts******************-->
+              <app-userwise-track-counts [type]="'TRACK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+                [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
+                [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
+                [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
+                [applyFilter]="applyFilter"></app-userwise-track-counts>
 
-            <!--******************Team Member wise Playbook Counts******************-->
-            <app-userwise-track-counts [type]="'PLAYBOOK'" [vanityUrlFilter]="vanityUrlFilter"
-              [vendorCompanyProfileName]="vendorCompanyProfileName"
-              (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [isTeamMemberAnalytics]="true"
-              [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-              [isVendorVersion]="isVendorVersion" [applyFilter]="applyFilter"></app-userwise-track-counts>
+              <!--******************Team Member wise Playbook Counts******************-->
+              <app-userwise-track-counts [type]="'PLAYBOOK'" [vanityUrlFilter]="vanityUrlFilter"
+                [vendorCompanyProfileName]="vendorCompanyProfileName"
+                (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [isTeamMemberAnalytics]="true"
+                [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+                [isVendorVersion]="isVendorVersion" [applyFilter]="applyFilter"></app-userwise-track-counts>
+            </div>
+            <!--****************** TeamMember Wise Track details******************-->
+            <div class="row rowPaddingCustomize3">
+              <app-userwise-track-details [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
+                [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
+                [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
+                [applyFilter]="applyFilter"></app-userwise-track-details>
+            </div>
           </div>
-          <!--****************** TeamMember Wise Track details******************-->
-          <div class="row rowPaddingCustomize3">
-            <app-userwise-track-details [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
-              [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-              [applyFilter]="applyFilter"></app-userwise-track-details>
-          </div>
-        </div>
+        </span>
         <!--******************Track & Playbook Asset Details*******************-->
-        <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization1">
-          <div class="col-sm-12 col-md-12 col-lg-12">
-            <!--******************Track Asset Details*******************-->
-            <app-track-asset-details [type]="'TRACK'" [isTeamMemberAnalytics]="true" [vanityUrlFilter]="vanityUrlFilter"
-              [vendorCompanyProfileName]="vendorCompanyProfileName" [selectedTeamMemberIds]="selectedTeamMemberIds"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [applyFilter]="applyFilter"
-              [isVendorVersion]="isVendorVersion"></app-track-asset-details>
+        <span *ngIf="!isVendorVersion || authenticationService?.lmsAccess">
+          <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomization1">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+              <!--******************Track Asset Details*******************-->
+              <app-track-asset-details [type]="'TRACK'" [isTeamMemberAnalytics]="true"
+                [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
+                [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+                [applyFilter]="applyFilter" [isVendorVersion]="isVendorVersion"></app-track-asset-details>
 
-            <!--******************Playbook Asset Details*******************-->
-            <app-track-asset-details [type]="'PLAYBOOK'" [isTeamMemberAnalytics]="true"
-              [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-              [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
-              [applyFilter]="applyFilter" [isVendorVersion]="isVendorVersion"></app-track-asset-details>
+              <!--******************Playbook Asset Details*******************-->
+              <app-track-asset-details [type]="'PLAYBOOK'" [isTeamMemberAnalytics]="true"
+                [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
+                [selectedTeamMemberIds]="selectedTeamMemberIds" [selectedVendorCompanyIds]="selectedVendorCompanyIds"
+                [applyFilter]="applyFilter" [isVendorVersion]="isVendorVersion"></app-track-asset-details>
+            </div>
           </div>
-        </div>
+        </span>
         <!--******************Team Member Wise Assets Details*******************-->
-        <div *ngIf="isVendorVersion && ( isOrgAdmin || isVendorRole || isPrm ) " class="row rowPaddingCustomize6">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
-            <app-team-member-asset-analytics [selectedTeamMemberIds]="selectedTeamMemberIds"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-member-asset-analytics>
-            <app-team-memberwise-assets-detailed-report [selectedTeamMemberIds]="selectedTeamMemberIds"
-              [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-memberwise-assets-detailed-report>
+        <span *ngIf="authenticationService?.lmsAccess">
+          <div *ngIf="isVendorVersion && ( isOrgAdmin || isVendorRole || isPrm ) " class="row rowPaddingCustomize6">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
+              <app-team-member-asset-analytics [selectedTeamMemberIds]="selectedTeamMemberIds"
+                [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-member-asset-analytics>
+              <app-team-memberwise-assets-detailed-report [selectedTeamMemberIds]="selectedTeamMemberIds"
+                [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-team-memberwise-assets-detailed-report>
+            </div>
           </div>
-        </div>
+        </span>
         <!--******************All Partner Details*******************-->
         <div *ngIf="isVendorVersion && ( isOrgAdmin || isVendorRole || isPrm )" class="row rowPaddingCustomize4">
           <app-team-member-analytics-all-partners-details [selectedTeamMemberIds]="selectedTeamMemberIds"
@@ -888,12 +906,14 @@
           </div>
         </div>
         <!--******************Share Lead Details*******************-->
-        <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomize4">
-          <app-share-lead-details [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
-            [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-            [applyFilter]="applyFilter"></app-share-lead-details>
-        </div>
+        <span *ngIf="!isVendorVersion || authenticationService.module?.hasShareLeadAccess">
+          <div *ngIf="!isVendorVersion || isOrgAdmin || isVendorRole || isPrm " class="row rowPaddingCustomize4">
+            <app-share-lead-details [isTeamMemberAnalytics]="true" [selectedTeamMemberIds]="selectedTeamMemberIds"
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion"
+              [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
+              [applyFilter]="applyFilter"></app-share-lead-details>
+          </div>
+        </span>
         <!--******************Graphs Details*******************-->
         <div *ngIf="!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm"
           class="row rowPaddingCustomization3">
@@ -920,19 +940,23 @@
             [chartId]="'top10LeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
         </div>
         <!--******************Lead Details*******************-->
-        <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
-          <app-partner-journey-lead-details [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
-            [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
-            [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-partner-journey-lead-details>
-        </div>
+        <span *ngIf="!isVendorVersion || authenticationService?.enableLeads">
+          <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
+            <app-partner-journey-lead-details [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
+              [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
+              [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-partner-journey-lead-details>
+          </div>
+        </span>
         <!--******************Deal Details*******************-->
-        <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
-          <app-partner-journey-deal-details [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
-            [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
-            [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
-            [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-partner-journey-deal-details>
-        </div>
+        <span *ngIf="!isVendorVersion || authenticationService?.enableLeads">
+          <div *ngIf="!isVendorVersion || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
+            <app-partner-journey-deal-details [isTeamMemberAnalytics]="true" [applyFilter]="applyFilter"
+              [selectedTeamMemberIds]="selectedTeamMemberIds" [isVendorVersion]="isVendorVersion"
+              [vanityUrlFilter]="vanityUrlFilter" [vendorCompanyProfileName]="vendorCompanyProfileName"
+              [selectedVendorCompanyIds]="selectedVendorCompanyIds"></app-partner-journey-deal-details>
+          </div>
+        </span>
         <!--******************Contact Details*******************-->
         <div
           *ngIf="(!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm ) || isOrgAdmin || isMarketing "
@@ -942,7 +966,9 @@
           </app-team-member-analytics-contact-details>
         </div>
         <!--******************Company Details*******************-->
-        <div *ngIf="(!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm ) || isOrgAdmin || isMarketing " class="row rowPaddingCustomize4">
+        <div
+          *ngIf="(!isVendorVersion && !authenticationService?.partnershipEstablishedOnlyWithPrm ) || isOrgAdmin || isMarketing "
+          class="row rowPaddingCustomize4">
           <app-team-member-analytics-company-details [selectedTeamMemberIds]="selectedTeamMemberIds"
             [selectedVendorCompanyIds]="selectedVendorCompanyIds" [isVendorVersion]="isVendorVersion">
           </app-team-member-analytics-company-details>

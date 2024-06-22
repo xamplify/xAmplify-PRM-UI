@@ -35,8 +35,8 @@
             </div>
             <div class="col-sm-6">
               <label *ngIf="customFields.selected" for="displayName">Display Name</label>
-              <input *ngIf="customFields.selected" type="text" class="form-control" [(ngModel)]="customFields.displayName"
-                [ngModelOptions]="{standalone: true}" placeholder="Display Name">
+              <input *ngIf="customFields.selected" type="text" class="form-control"
+                [(ngModel)]="customFields.displayName" [ngModelOptions]="{standalone: true}" placeholder="Display Name">
             </div>
           </div>
           <div class="row" style="margin-top: 10px;">
@@ -46,8 +46,19 @@
                 [(ngModel)]="customFields.placeHolder" [ngModelOptions]="{standalone: true}">
             </div>
             <div class="col-sm-6" *ngIf="!isDefaultField && customFields.type === 'string'">
+              <label *ngIf="customFields.selected" for="html" style="float: left;">Map As</label>
+              <select class="form-control" [disabled]= "canDisableSelect" *ngIf="customFields.selected" [(ngModel)]="customFields.formDefaultFieldType"
+                [ngModelOptions]="{standalone: true}" (change)="onFieldTypeChange(customFields)">
+                <option [ngValue]="null">None</option>
+                <option [ngValue]="'DEAL_ID'">Deal Id
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-6" *ngIf="!isDefaultField && customFields.type === 'string'">
               <label for="mapAs" style="float: left;">Data Type</label>
-              <select class="form-control formSelectCustomization fa" [(ngModel)]="customFields.originalCRMType">
+              <select class="form-control" [disabled]= "canDisableType" [(ngModel)]="customFields.originalCRMType" (change)="onLabelTypeChange(customFields)">
                 <option [ngValue]="'text'">String</option>
                 <option [ngValue]="'select'">PickList</option>
               </select>

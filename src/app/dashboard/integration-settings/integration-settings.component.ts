@@ -56,6 +56,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	isSortApplied: boolean = false;
 	isFilterApplied: boolean = false;
 	isCustomFieldsModelPopUp: boolean = false;
+	customFieldsList: any;
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
@@ -64,6 +65,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	];
 
 	public sortOption: any = this.sortOptions[0].value;
+	
 	
 
 	constructor(private integrationService: IntegrationService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent,
@@ -752,6 +754,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	addCustomFielsdModalOpen(customfield: any){
 		this.isCustomFieldsModelPopUp = true;
 		this.customField = customfield;
+		this.customFieldsList = this.sfCustomFieldsResponse;
 	}
 
 	closeCustomFielsModal(event: any) {
