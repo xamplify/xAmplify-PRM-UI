@@ -5988,6 +5988,12 @@ Social Icons
 .social-icons li .microsoft {
   background: url(../img/social/microsoft.svg) no-repeat;
 }
+
+.social-icons li .sso {
+  background: url(../img/social/sso.png) no-repeat;
+  background-size: cover;
+}
+
 .social-icons.social-icons-color > li > a {
   opacity: 0.7;
   background-position: 0 -38px !important;

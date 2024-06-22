@@ -39,7 +39,6 @@
           </span>
       </div>
   </div>
-  <!-- <button class="btn green" style="float: left" (click)="tabClicked($event, 40, 'tab1')">Prev</button> -->
   <button class="btn green" style="float: right" (click)="tabClicked($event, 40, 'tab3')">Next</button>
 </div>
 
@@ -49,13 +48,13 @@
             <label>{{properties.UPLOAD_METADATA_TEXT1}}</label><br>
         </div>          
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="form-group">
-                <label translate>Select Identity Provider Name:</label>
-                <span>
+            <div class="form-group" [attr.class]="fromNameDivClass">
+                <label translate>Select Identity Provider Name <span class="required"> <strong>*</strong></span></label>
+                <span> 
                 <select class="form-control depth-shadow" [(ngModel)]="samlSecurityObj.identityProviderName"
                     placeholder="identityProviderName" id="identityProviderName"
                     (change)="selectIdentityProviderName($event.target.value)">
-                    <option [value]="0" selected>Select Identity Provider Name</option>
+                    <option [value]="null" [selected]="true">Select Identity Provider Name</option>
                     <option *ngFor="let idpName of identityServiceProviderNames"
                         [value]="idpName.value">{{idpName.label}}
                     </option>
@@ -65,10 +64,11 @@
 
         <div style="padding:10px">
             <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 0px 0px 10px 0px;">
+                <label translate>Browse/Upload Metadata <span class="required"> <strong>*</strong></span></label>
                 <label class="custom-file-upload btn btn-primary" style="float: right;">
                     <input type="file" (change)="onFileChange($event)" accept="text/xml" required
                         name="{{samlSecurityObj?.metadataFileName}}" id="attach_file">
-                    Browse Metadata</label>
+                    Upload <span><i class="fa fa-cloud-upload"></i></span></label>
             </div>
             <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 0px 0px 10px 0px;">
                 <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
@@ -79,16 +79,7 @@
                     [(ngModel)]="samlSecurityObj.metadata" name="metadata" readonly></textarea>
             </div>
         </div>
-
-        <div class="row" style="padding:10px">
-            <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
-                <label class="control-label color-black">Email Attribute Name:</label>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 4px 14px 4px 17px;">
-                <input class="form-control" type="text" [(ngModel)]="samlSecurityObj.emailAttributeName">
-            </div>
-        </div>
     </div>
     <button class="btn green" style="float: left" (click)="tabClicked($event, 40, 'tab2')">Prev</button>
-    <button type="submit" style="float: right" class="btn btn-primary" (click)="submitMetaData()">Submit</button>
+    <button type="submit" style="float: right" class="btn btn-primary" (click)="submitMetaData()" [disabled]="disableSubmitButton">Submit</button>
 </div>

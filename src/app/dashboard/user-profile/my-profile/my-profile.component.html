@@ -284,7 +284,7 @@
 
                                         <!-- Saml 2.0 SSO Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'saml2SSOsettings'}"
-                                            *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
+                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.isVendor() && !authenticationService?.module?.isMarketing">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'saml2SSOsettings'}"
                                                 (click)="activateTab('saml2SSOsettings');clearCustomResponse()">{{properties.saml2SSOsettings}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'saml2SSOsettings'}"></ng-template>

@@ -23,6 +23,11 @@ export class SamlSsoLoginComponent implements OnInit {
     { value: 'MICROSOFT_AZURE', label: 'Microsoft Azure' },
     { value: 'VERSA', label: 'Versa' }
   ];
+  errorClass = "form-group has-error has-feedback";
+  successClass = "form-group has-success has-feedback";
+  formGroupClass = "form-group";
+  fromNameDivClass:string =  this.formGroupClass;
+  disableSubmitButton = true;
   
 
   constructor(private authenticationService: AuthenticationService, private samlSecurityService: SamlSecurityService, 
@@ -36,8 +41,6 @@ export class SamlSsoLoginComponent implements OnInit {
       this.samlSecurityObj = result;
       this. saveSaml2Security();
     });
-   
-
   }
 
   tabClicked(event: any, percent: number, selectedTab: string) {
@@ -61,6 +64,7 @@ export class SamlSsoLoginComponent implements OnInit {
     } else if ((self.samlSecurityObj.id) && (self.samlSecurityObj.acsURL === undefined || self.samlSecurityObj.acsURL === null)) {
       self.samlSecurityObj.acsURL = self.authenticationService.REST_URL + "saml2/sso/" + self.samlSecurityObj.acsId;
     }
+    this.validateSubmitButton();
   }
 
 
@@ -70,7 +74,8 @@ export class SamlSsoLoginComponent implements OnInit {
     const file: File = (input.files as FileList)[0];
     const reader = new FileReader();
     reader.onload = () => {
-      this.samlSecurityObj.metadata = reader.result as string; 
+      this.samlSecurityObj.metadata = reader.result as string;
+      this.validateSubmitButton();
     };
     reader.readAsText(file);
   }
@@ -93,7 +98,23 @@ export class SamlSsoLoginComponent implements OnInit {
     element.select();
     document.execCommand('copy');
   }
-  selectIdentityProviderName(idpName: any){
+
+  selectIdentityProviderName(idpName: any) {
     this.samlSecurityObj.identityProviderName = idpName;
+    if (this.samlSecurityObj.identityProviderName == 'null') {
+      this.fromNameDivClass = this.errorClass;
+    } else{
+      this.fromNameDivClass = this.successClass;
+    }
+    this.samlSecurityObj.metadata = '';
+    this.disableSubmitButton = true;
+    this.validateSubmitButton();
+  }
+
+  validateSubmitButton() {
+    if(this.samlSecurityObj.identityProviderName !== undefined && this.samlSecurityObj.identityProviderName.length > 0
+      && this.samlSecurityObj.metadata !== undefined && this.samlSecurityObj.metadata.length > 0) {
+      this.disableSubmitButton = false;
+    }
   }
 }

@@ -362,7 +362,7 @@ bgIMage2:any;
             }
 
             if (result.showSAML2SSO) {
-              this.vanitySocialProviders.push({ "name": "SAML SSO", "iconName": "microsoft", "value": "samlsso" });
+              this.vanitySocialProviders.push({ "name": "SAML SSO", "iconName": "sso", "value": "samlsso" });
             }
             
           }, error => {

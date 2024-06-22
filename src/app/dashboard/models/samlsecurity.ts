@@ -6,8 +6,7 @@ export class SamlSecurity {
     acsURL: string;
     statusMessage: string;
     metadataFileName: string;
-    emailAttributeName: string;
     acsId: string;
-    identityProviderName: string;
+    identityProviderName: string = '';
     loggedInUserId: number;
 }
