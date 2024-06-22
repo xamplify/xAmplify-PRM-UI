@@ -299,7 +299,7 @@
                                             </a>
                                         </li>
                                         <!--Saml Settings-->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"
+                                        <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}" 
                                             *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}"
                                                 (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings}}
@@ -307,6 +307,17 @@
                                                     [ngTemplateOutletContext]="{'moduleName':'samlSettings'}"></ng-template>
                                             </a>
                                         </li>
+
+                                        <!-- Saml 2.0 SSO Settings-->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'saml2SSOsettings'}"
+                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.isVendor() && !authenticationService?.module?.isMarketing">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'saml2SSOsettings'}"
+                                                (click)="activateTab('saml2SSOsettings');clearCustomResponse()">{{properties.saml2SSOsettings}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'saml2SSOsettings'}"></ng-template>
+                                            </a>
+                                        </li>
+
+
                                         <li *ngIf="authenticationService?.vanityURLEnabled && authenticationService?.module?.showSupportSettingOption && !isLoggedInAsPartner"
                                             [ngClass]="{'active-tab': activeTabName == 'support'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'support'}"
@@ -2142,6 +2153,12 @@
                                         <div class="tab-pane hidden-xs"
                                             [ngClass]="{'active': activeTabName == 'samlSettings'}">
                                             <app-samlsecurity> </app-samlsecurity>
+                                        </div>
+
+                                        <!-- saml sso 2.0 settings -->
+                                        <div class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'saml2SSOsettings'}">
+                                            <app-saml-sso-login> </app-saml-sso-login>
                                         </div>
 
                                         <!-- Your Templates TAB -->
