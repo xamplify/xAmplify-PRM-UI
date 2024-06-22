@@ -172,7 +172,7 @@
                         </button>
                       </a>
                       <!-- XNFR-215 -->
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT' && activeCRMDetails?.type != 'CONNECTWISE'"
+                      <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT' && activeCRMDetails?.type != 'CONNECTWISE') || (isPartnerVersion && (activeCRMDetails?.type == 'HALOPSA'))"
                         (click)="syncLeadsWithActiveCRM()">
                         <button class="btn salesforce-btn button  bgcolor-unset p0 btn-transitions mrgt1-2"
                           style="margin-left: 3px;" data-toggle="tooltip" data-placement="bottom" title="Synchronize"
@@ -218,7 +218,7 @@
                         <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
                           style="margin-left: 5px !important;" title="Filter" *ngIf="listView"
                           (click)="toggleFilterOption()">
-                          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+                          <i  aria-hidden="true" class="fa fa-filter p10"></i>
                         </span>
                       </div>
 

@@ -202,6 +202,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.isloading = false;
                 if(data.access){
                     this.campaigns = data.campaigns;
+                    this.showAllAnalytics = false;
                     this.templateEmailOpenedAnalyticsAccess = data.templateEmailOpenedAnalyticsAccess;
                     $.each(this.campaigns, function (_index:number, campaign) {
                         campaign.displayTime = new Date(campaign.utcTimeInString);
@@ -223,15 +224,18 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     setPage(event) {
+        this.showAllAnalytics = false;
         this.pagination.pageIndex = event.page;
         this.listCampaign(this.pagination);
     }
 
     searchCampaigns() {
+        this.showAllAnalytics = false;
         this.getAllFilteredResults(this.pagination);
     }
 
     getSortedResult(text: any) {
+        this.showAllAnalytics = false;
         this.selectedSortedOption = text;
         this.getAllFilteredResults(this.pagination);
     }
@@ -1638,6 +1642,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     campaign.redistributedCount  = data.data.redistributedCount;
                     campaign.totalAttendeesCount  = data.data.totalAttendeesCount;
                     campaign.attendeesCount        = data.data.attendeesCount;
+                    campaign.showLeadAndDealCounts = data.data.showLeadAndDealCounts;
                 }
             },
             (error: any) => {
@@ -1673,8 +1678,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                    campaign.parentCampaignLaunchedByVendorTierCompany = data.data.parentCampaignLaunchedByVendorTierCompany;
                    campaign.isEventStarted = data.data.isEventStarted;
                     if(campaign.hasAccess){
-                       this.checkLastElement(index);
                        campaign.showGearIconOptions = data.data.showGearIconOptions ;
+                       campaign.showCancelButton = data.data.showCancelButton;
+                       this.checkLastElement(index);
                     }else{
                     this.customResponse = new CustomResponse('ERROR',"You don't have access for this campaign",true);
                     }
@@ -1683,7 +1689,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             (error: any) => {
                 this.logger.errorPage(error);
             });
-            
     } 
 
 }

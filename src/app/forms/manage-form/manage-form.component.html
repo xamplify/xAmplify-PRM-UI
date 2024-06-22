@@ -1,5 +1,5 @@
-<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
-    <div class="page-bar">
+<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin() || isVendorOrMasterLandingPage">
+    <div class="page-bar" *ngIf=" !isVendorOrMasterLandingPage">
         <ul class="page-breadcrumb">
             <li *ngIf="!authenticationService.isSuperAdmin()">
                 <i class="fa fa-home" aria-hidden="true"></i>
@@ -46,7 +46,7 @@
                     <app-category-folder-view-util [moduleType]="exportObject"
                         (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
-                <div class="" style="border-bottom: none;margin-bottom:0px !important">
+                <div class="" style="border-bottom: none;margin-bottom:0px !important" *ngIf = "!isVendorOrMasterLandingPage">
                     <div class="row">
                         <div class="page-toolbar"
                             *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
@@ -246,7 +246,7 @@
                                                         <div class="clickicons"></div>
                                                     </a>
                                                     <a class="mMobileDisable custom-icon"
-                                                        *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)"
+                                                        *ngIf="((!pagination.campaignForm && !pagination.landingPageForm  && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm) || isVendorOrMasterLandingPage) && (deleteAndEditAccess || loggedInUserId==form.userId)"
                                                         data-toggle="tooltip" data-placement="top" title="Edit"
                                                         (click)="edit(form.id)">
                                                         <i class="fa fa-pencil-square-o mDisableColor IconCustomization"
@@ -341,9 +341,10 @@
                                 <img class="fit-image" style="margin: unset;" [src]="form.thumbnailImage"
                                     onerror="this.src='assets/images/form.png';" alt="{{form.name}}">
                             </div>
-                            <h4 class="xamplify-ellipsis GridViewCotent gridViewDesignTextAlignmnent ListFontCu"
-                                data-placement="top" data-toggle="tooltip" title="{{form.name}}">
-                                <b>Form Name:</b> {{form.name}}
+                            <h4 class="assest-name GridViewCotent gridViewDesignTextAlignmnent ListFontCu" data-placement="top"
+                                data-toggle="tooltip" title="{{form.name}}">
+                                <p class="m0"><b>Form Name:</b><span>{{form.name |slice:0:50}}</span><span
+                                        *ngIf="form.name?.length >50">...</span></p>
                             </h4>
                             <!---XNFR-255-->
                             <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor">
@@ -505,7 +506,7 @@
         </div>
     </div>
     <app-scroll-top></app-scroll-top>
-    <app-preview-popup #previewPopUpComponent></app-preview-popup>
+    <app-preview-popup #previewPopUpComponent *ngIf="!isVendorOrMasterLandingPage" ></app-preview-popup>
 
 
     <div class="col-xs-12 p5" *ngIf="statusCode==403">

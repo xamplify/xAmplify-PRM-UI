@@ -255,6 +255,7 @@ export class ManageLeadsComponent implements OnInit {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
     this.showLeads();
+    this.getActiveCRMDetails();
     this.mergeTagForUserGuide();
     this.findAllRegisteredByUsersForPartnerView();
   }
@@ -1062,6 +1063,7 @@ export class ManageLeadsComponent implements OnInit {
       this.leadsPagination.toDateFilterString = "";
       this.leadsPagination.stageFilter = "";
       this.leadsPagination.registeredByCompanyId = 0;
+      this.leadsPagination.vendorCompanyId = 0;
       this.leadsPagination.registeredByUserId = 0;
       this.filterResponse.isVisible = false;
       if (this.filterMode) {
@@ -1280,7 +1282,7 @@ export class ManageLeadsComponent implements OnInit {
         error => {
           this.referenceService.loading(this.httpRequestLoader, false);
           let integrationType = (this.activeCRMDetails.type).charAt(0)+(this.activeCRMDetails.type).substring(1).toLocaleLowerCase();
-          if(integrationType == 'Salesforce'){
+          if(integrationType == 'Salesforce' || integrationType == 'Halopsa'){
             this.leadsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid credentials ",true);
           } else {
             this.leadsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid API Token",true);

@@ -71,6 +71,7 @@ export class AdminReportComponent implements OnInit {
     isVanityUrlEnabled = false;
     updatePasswordLoader = false;
     @ViewChild('updatePasswordComponent') updatePasswordComponent: UpdatePasswordComponent;
+    expandOrCollpaseAllText = "Collapse All";
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public router:Router) {
         this.isVanityUrlEnabled = this.authenticationService.vanityURLEnabled;
@@ -216,4 +217,8 @@ export class AdminReportComponent implements OnInit {
         this.updatePasswordComponent.openModalPopup();
     }
     
+    expandOrCollpase(){
+		let isChecked =  $("input[name=collapsibleCheckBox]").is(":checked");
+        $("input[name=collapsibleCheckBox]").prop('checked', !isChecked);
+	}
 }

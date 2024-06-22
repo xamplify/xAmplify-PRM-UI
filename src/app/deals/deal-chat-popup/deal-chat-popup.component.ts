@@ -16,11 +16,13 @@ export class DealChatPopupComponent implements OnInit {
   @Input() deal: any;
   @Input() lead: any;
   @Output() isCommentSection = new EventEmitter<any>();
+  @Input() isVendorVersion = false;
   //XNFR-426
   @Input() editTextArea: boolean;
 
   campaignName: String;
   dealTitle: String;
+  referenceId : String;
   leadName: String;
   createdByEmail: String;
   createdByName: String;
@@ -39,6 +41,7 @@ export class DealChatPopupComponent implements OnInit {
       this.createdByEmail = this.deal.createdByEmail;
       this.createdByName = this.deal.createdByName;
       this.createdTime = this.deal.createdTime;
+      this.referenceId = this.deal.referenceId
       let leadDetails = this.deal['associatedContact'];
       if(leadDetails!=undefined){
        this.lead = leadDetails;

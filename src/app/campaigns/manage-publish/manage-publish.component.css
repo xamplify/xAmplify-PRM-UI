@@ -272,16 +272,30 @@ span.gearicon-font-cu {
   width: 48px;
   height: 48px;
 }
-.plusicon{
-  width : 95%;
-}
-.buttonwidth{
-  width: 118px;
-  margin-right: 0px;
-}
-
 .view-more-css{
-  background-color: #d9edf7 !important;
-    border-color: #bce8f1 !important;
-    color: #31708f !important;
+  background-color: #d9edf700 !important;
+  border-color: #bce8f100 !important;
+  color: #3abeff !important;
+  padding: 5px 14px;
+  cursor:default;
+  width: 99%!important;
+}
+.down-arrow {
+  width: 21px!important;
+  height: 21px!important;
+  line-height: unset !important;
+  font-weight: 600;
+  margin-left: 2px;
+}
+.fs-13{
+  font-size: 13px;
+}
+.tittle-name{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 9px;
+}
+.line_height{
+  line-height: 1.2 !important;
+  padding-left: 3px;
 }

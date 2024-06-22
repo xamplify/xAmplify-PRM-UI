@@ -2144,3 +2144,8 @@ margin-left: 10px;
 .disabled-cursor {
   cursor: not-allowed;
 }
+@media only screen and (min-width: 992px) and (max-width: 1180px) {
+  .video-sidepadding {
+    padding: 0px!important;
+  }
+}

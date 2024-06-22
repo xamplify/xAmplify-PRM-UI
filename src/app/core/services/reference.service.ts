@@ -3023,7 +3023,9 @@ export class ReferenceService {
     let sortParam = sort.length>0 ? "&sort="+sort:"";
     let searchParam = searchKey.length>0 ? "&search="+searchKey:"";
     let teamMemberPartnerFilter = pagination.partnerTeamMemberGroupFilter ? "&filterPartners=true":"";
-    return $.trim("&page="+page+"&size="+size+sortParam+searchParam+teamMemberPartnerFilter);
+    let filterBy = $.trim(pagination.filterBy)!=null ? $.trim(pagination.filterBy) :"";
+    let filterParam = filterBy.length>0 ? "&filterBy="+filterBy:"";
+    return $.trim("&page="+page+"&size="+size+sortParam+searchParam+teamMemberPartnerFilter+filterParam);
   }
   
   downloadCsvTemplate(url:string){
@@ -3645,6 +3647,11 @@ preivewAssetForPartnerOnNewHost(id: any) {
   let userId = this.authenticationService.getUserId();
   let userIdAsString: string = String(userId);
   let encodedUserId =  btoa(userIdAsString);
+  console.log(id);
+  console.log(this.authenticationService.access_token);
+  console.log(companyName);
+  console.log(userId);
+  console.log(encodedUserId);
   let url = this.envService.PREVIEW_HOST+"p/preview/"+encodedId+"/"+encodedAccessToken+"/"+encodedIcon+"/"+encodedCompanyName+"/"+encodedUserId;
   window.open(url,"_blank");
 }
@@ -3658,6 +3665,7 @@ preivewAssetForPartnerOnNewHost(id: any) {
     } else {
       completeIconPath += this.envService.PREVIEW_HOST + "favicon.ico";
     }
+    console.log(completeIconPath);
     let encodedIcon = btoa(completeIconPath);
     return encodedIcon;
   }
@@ -3678,6 +3686,32 @@ preivewAssetForPartnerOnNewHost(id: any) {
     let url = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.encodePathVariable(damId);
 		this.navigateToRouterByViewTypes(url, categoryId, viewType, folderViewType, folderListView);
   }
+
+  navigateToQuickLinksAnalytics(quickLink:any,isPartnerLoggedInThroughVanityUrl:boolean){
+    let router = "";
+    let viewType = "/"+this.getListOrGridViewType();
+    if(quickLink.type=="Asset"){
+      if(isPartnerLoggedInThroughVanityUrl){
+        router = "/home/dam/sharedp/view/"+quickLink.damPartnerId+viewType;
+      }else{
+        router = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.encodePathVariable(quickLink.id)+viewType;
+      }
+    }else if(quickLink.type=="Track"){
+      if(isPartnerLoggedInThroughVanityUrl){
+        router = "home/tracks/tb/"+this.companyId+"/"+quickLink.slug+viewType;
+      }else{
+        router = "/home/tracks/analytics/"+quickLink.id+viewType;
+      }
+    }else if(quickLink.type=="Play Book"){
+      if(isPartnerLoggedInThroughVanityUrl){
+        router = "home/playbook/pb/"+this.companyId+"/"+quickLink.slug+viewType;
+      }else{
+        router = "/home/playbook/analytics/"+quickLink.id+viewType;
+      }
+    }
+    this.goToRouter(router);
+  }
+
   
 }
 

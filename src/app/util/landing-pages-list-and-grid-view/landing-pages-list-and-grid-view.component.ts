@@ -74,6 +74,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   landingPageSharedDetails:LandingPageShareDto = new LandingPageShareDto();
   @Output() viewAnalytics = new EventEmitter();
   @Input() isMasterLandingPages =  false;
+  @Output() isFormAnalytics = new EventEmitter();
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -378,18 +379,22 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   }
 
   goToFormAnalytics(id: number) {
+    if(this.isMasterLandingPages || this.vendorJourney){
+        this.isFormAnalytics.emit(id);
+    }else{
       if(this.categoryId>0){
           this.router.navigate(['/home/forms/category/'+this.categoryId+'/lf/' + id]);
       }else{
       this.router.navigate(['/home/forms/lf/' + id]);
 
       }
+    }
   }
   goToPartnerLandingPageFormAnalytics(alias: string) {
       this.router.navigate(['/home/forms/partner/lf/' + alias]);
   }
   goToLandingPageAnalytics(id: number) {
-    if(this.vendorJourney){
+    if(this.vendorJourney || this.isMasterLandingPages){
         this.viewAnalytics.emit(id);
     }else{
       if(this.categoryId>0){
@@ -523,6 +528,7 @@ copy(landingPage:any){
           this.pagination.source = "VENDOR_JOURNEY";
           this.pagination.defaultLandingPage = false;
           this.pagination.companyId = this.loggedInUserCompanyId;
+          this.pagination.searchKey = this.sortOption.searchKey;
           let self = this;
 
         this.landingPageService.findPartnerVendorJourneyLandingPages(pagination).subscribe(

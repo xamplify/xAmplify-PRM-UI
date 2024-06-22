@@ -464,7 +464,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	editDetails(id: number, assetType: string, alias: string, beeTemplate: boolean, videoId: number) {
 		this.loading = true;
 		setTimeout(() => {
-			if (!beeTemplate && this.isVideo(assetType)) {
+			if (!beeTemplate && this.referenceService.isVideo(assetType)) {
 				let url = "/home/dam/editVideo/" + videoId + "/" + id;
 				this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 			} else {
@@ -521,7 +521,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 	/*****Preview Asset******* */
 	preview(asset: any) {
-		if (this.isVideo(asset.assetType)) {
+		if (this.referenceService.isVideo(asset.assetType)) {
 			let url = "/home/dam/previewVideo/" + asset.videoId + "/" + asset.id;
 			this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 		} else if(asset.beeTemplate) {
@@ -608,28 +608,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.userService.getVideoDefaultSettings().subscribe((data) => { this.referenceService.defaultPlayerSettings = data; });
 	}
 
-	isVideo(filename: any) {
-		const parts = filename.split('.');
-		const ext = parts[parts.length - 1];
-		switch (ext.toLowerCase()) {
-			case 'm4v':
-			case 'mkv':
-			case 'avi':
-			case 'mpg':
-			case 'mp4':
-			case 'flv':
-			case 'mov':
-			case 'wmv':
-			case 'divx':
-			case 'f4v':
-			case 'mpeg':
-			case 'vob':
-			case 'xvid':
-				// etc
-				return true;
-		}
-		return false;
-	}
+	
 
 	listAssetsByType(videoType: string) {
 		this.pagination.pageIndex = 1;

@@ -9,7 +9,7 @@
       </li>
       <li id="partnerGroups-li">
 
-        <a class="partnerGroupsC" data-placement="bottom" title="Click to see list of {{authenticationService?.partnerModule?.customName}}" href="#partnerGroups"
+        <a class="partnerGroupsC" data-placement="bottom" title="Click to see group of {{authenticationService?.partnerModule?.customName}}" href="#partnerGroups"
           data-toggle="tab" (click)="isPartnerCompaniesTabSelected = false;findPartnerGroups(partnerGroupsPagination)">Group Of {{authenticationService?.partnerModule?.customName}}
           <i *ngIf="!isPartnerCompaniesTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
         </a>
@@ -229,29 +229,13 @@
                   </div>
                 </div>
               </div>
-
-              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="alert alert-success alert-cu-for-consistency" *ngIf="selectedPartnerGroupIds?.length>0">
-                  <strong>
-                    <ng-container *ngIf="selectedPartnerGroupIds?.length==1">
-                      {{selectedPartnerGroupIds?.length}} group is selected
-                    </ng-container>
-                    <ng-container *ngIf="selectedPartnerGroupIds?.length>1">
-                      {{selectedPartnerGroupIds?.length}} groups are selected
-                    </ng-container>
-                  </strong>
-                  <!---XNFR-326-->
-                  <ng-template [ngTemplateOutlet]="emailNotificationTemplate"></ng-template>
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
         <br>
         <div class="alert alert-success" *ngIf="selectedPartnerGroupIds?.length>0">
           <strong>
-            Selected Lists : {{selectedPartnerGroupIds?.length}}
+            Selected Groups : {{selectedPartnerGroupIds?.length}}
           </strong>
           <ng-template [ngTemplateOutlet]="emailNotificationTemplate"></ng-template>
         </div>

@@ -125,8 +125,9 @@
                                 </span>
                                 <img class="email-template-preview email-image-temp-custimize imghover-unset" *ngIf="emailTemplate.subject" src="{{emailTemplate.subject}}" alt="Image Not Found">
                                 <img alt="" class="email-template-preview email-image-temp-custimize imghover-unset" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg">
-                                <h4 class="xamplify-ellipsis GridViewCotent gridViewDesignTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate?.name}}">
-                                    <b translate>Template Name: </b> {{emailTemplate.name}}
+                                <h4 class="assest-name GridViewCotent gridViewDesignTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate?.name}}">
+                                    <b translate>Template Name: </b> {{emailTemplate.name |slice:0:50}}
+                                    <span *ngIf="emailTemplate?.name?.length>50">...</span>
                                 </h4>
                                 <div>
                                     <h6 class="xamplify-ellipsis GridViewCotent" title="{{emailTemplate?.category}}" data-toggle="tooltip" data-placement="top">
@@ -435,7 +436,7 @@
         (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)"
          *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || 
            authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
-        <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+        <i class="fa fa-trash-o trashIconCustomization bgcolor_change" aria-hidden="true"></i>
         <div class="del-icon"></div>
     </a>
 </ng-template>
