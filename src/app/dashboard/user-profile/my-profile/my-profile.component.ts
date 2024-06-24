@@ -252,6 +252,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	modalpopuploader = false;
 	isUpdateUser = false;
 	vendorJourneyAccess = false
+	masterLandingPageOrVendorPages = false;
 	/*******************VANITY******************* */
 	loggedInThroughVanityUrl = false;
 	public hubSpotCurrentUser: any;
@@ -684,6 +685,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.excludeUsersOrDomains = result.excludeUsersOrDomains;
 			this.customSkinSettingOption = result.customSkinSettings;
 			this.vendorJourneyAccess = result.vendorJourney;
+			this.masterLandingPageOrVendorPages = result.masterLandingPageOrVendorPages;
 			this.ngxloading = false;
 		}, _error => {
 			this.ngxloading = false;

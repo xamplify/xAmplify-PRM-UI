@@ -36,4 +36,4 @@
 </app-landing-page-analytics>
 <app-add-form-util *ngIf = "isEditVendorOrMasterForm" [isMdfForm]="false" [selectedForm]="selectedFrom"  [isCopyForm]="false"
 [isVendorOrMasterLandingPage] = "true" (goBack) = "goToManageForms()"></app-add-form-util>
-<app-manage-form *ngIf = "isFormAnalytics" [isVendorOrMasterLandingPage] = "true" [vendorLandingPageId]="selectedLandingPageId" (vendorJourneyOrMasterLandingPageEdit)="editForm($event)"></app-manage-form>
+<app-manage-form *ngIf = "isFormAnalytics" [isVendorJourney]="vendorJourney" [isMasterLandingPage] = "isMasterLandingPages"  [vendorLandingPageId]="selectedLandingPageId" (vendorJourneyOrMasterLandingPageEdit)="editForm($event)"></app-manage-form>

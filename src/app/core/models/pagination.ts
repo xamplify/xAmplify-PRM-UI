@@ -134,5 +134,8 @@ export class Pagination {
 	registeredByUserId = 0;
 	/*** XNFR-522 ***/
 	vendorJourneyOnly:boolean = false;
+	/*** XNFR-522 ***/
+	vendorJourney:boolean = false;
+	masterLandingPage:boolean  = false;	
 
 }

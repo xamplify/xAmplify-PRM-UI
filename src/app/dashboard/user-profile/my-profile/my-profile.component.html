@@ -425,7 +425,7 @@
                                             </ng-container>
                                             <!--Landing Pages-->
                                             <ng-container
-                                                *ngIf="(authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
+                                                *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'landingPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'landingPages'}"
                                                         (click)="activateTab('landingPages');clearCustomResponse()">
@@ -438,7 +438,7 @@
 
                                             <!--Master Landing Pages-->
 
-                                            <ng-container *ngIf="(authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
+                                            <ng-container *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
 
                                                 <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPages'}"

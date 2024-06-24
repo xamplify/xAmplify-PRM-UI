@@ -38,7 +38,7 @@ export class VendorJourneyComponent implements OnInit {
   ngOnInit() {
     this.resetVendorJourney();
     this.vendorJourney = this.moduleType == "Vendor Journey";
-    this.isLandingPages = this.moduleType == "Landing Pages";
+    this.isLandingPages = this.moduleType == "Vendor Pages";
     this.isMasterLandingPages = this.moduleType == "Master Landing Pages";
   }
 
@@ -63,7 +63,7 @@ export class VendorJourneyComponent implements OnInit {
     this.isViewAnalytics = false;
     this.isMasterLandingPages = false;
     this.vendorJourney = this.moduleType == "Vendor Journey";
-    this.isLandingPages = this.moduleType == "Landing Pages";
+    this.isLandingPages = this.moduleType == "Vendor Pages";
     this.isMasterLandingPages = this.moduleType == "Master Landing Pages";
     this.isFormAnalytics = false;
     this.isEditVendorOrMasterForm = false;
@@ -148,12 +148,14 @@ populateSharedVendorDetails(data:VendorLogoDetails[]){
       details.companyName = logo.companyName;
       details.expand = false;
       details.teamMembers =[];  
+      details.vendorJourneyId = logo.vendorJourneyId 
     }
     details.teamMembers.push({'selected' :logo.selected,
     'partnerId' : logo.partnerId,
     'firstName' : logo.firstName,
     'lastName' : logo.lastName,
-    'emailId' : logo.emailId});
+    'emailId' : logo.emailId,
+    'vendorJourneyId' : logo.vendorJourneyId});
   }
   if(details != null ){
     this.sharedVendorLogoDetails.push(details);
