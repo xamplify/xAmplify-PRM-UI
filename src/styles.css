@@ -3082,8 +3082,7 @@ span.icon-alignments {
   display: inline !important;
 }
 
-.btn-group button,
-.custom{
+.btn-group button, .btn_custom_bg{
   background-color: #0276FF !important;
   border-color: #1ca6f3 !important;
 }

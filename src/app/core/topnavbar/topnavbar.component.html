@@ -86,7 +86,7 @@
                   </li>
                   <li class="btnShare" class="topnav-button-css"
                      *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
-                     <button class="btn btn custom" [ngClass]="authenticationService?.isTop?'customskin':''"
+                     <button class="btn btn custom btn_custom_bg" [ngClass]="authenticationService?.isTop?'customskin':''"
                         [routerLink]="['/home/social/update-status']" style="border-radius: 3px;">
                         <span class="hidden-xs" translate>Update Status</span>
                         <i class="fa fa-share" [ngClass]="authenticationService?.isTop?'customskin-icon':''" button
