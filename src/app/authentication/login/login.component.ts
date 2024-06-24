@@ -293,6 +293,8 @@ bgIMage2:any;
             console.log(params);
             if (params.error === "verr1") {
               this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
+            } else if (params.error === "server_error_message") {
+              this.setCustomeResponse("ERROR", this.properties.serverErrorMessage);
             }            
           }
         );
