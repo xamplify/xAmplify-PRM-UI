@@ -12,6 +12,7 @@ export class VendorLogoDetails {
 	emailId:string
 	teamMembers:LogoTeamMembers[] = [];
 	expand:boolean = false;
+	vendorJourneyId:number;
 }
 
 export class LogoTeamMembers{
@@ -22,5 +23,6 @@ export class LogoTeamMembers{
 	firstName:string;
 	lastName:string;
 	emailId:string
+	vendorJourneyId:number;
 
 }

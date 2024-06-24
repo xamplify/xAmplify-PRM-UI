@@ -750,19 +750,19 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
   this.landingPage.userId = this.loggedInUserId;
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
   this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
-
+  this.landingPage.previousLandingPageId = this.id;
   this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
   if(this.landingPage.hasVendorJourney){
     this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
     this.landingPage.type = LandingPageType.PUBLIC;
-
-    this.updateCompanyLogo(this.landingPage);
   }
   if (!this.loggedInAsSuperAdmin) {
       if(!this.vendorJourney && !this.isMasterLandingPages){
         this.landingPage.type = $('#pageType option:selected').val();
       }
       this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
+      this.updateCompanyLogo(this.landingPage);
+      
     }
   this.landingPageService.save(this.landingPage, this.loggedInAsSuperAdmin,this.id).subscribe(
       data => {
