@@ -7,14 +7,15 @@
         <h4 class="modal-title text-center">Integration Details</h4>
       </div>
       <div class="modal-body">
-        <div class="row">
+        <!---List Section-->
+        <div [@fadeInOut] class="row" *ngIf="!isAccessOrRefreshTokenEdited">
           <div class="col-xs-12 p5" style="margin-bottom: -10px;">
           <div class="portlet light">
             <!--Search & Filter-->
             <div class="portlet-title">
               <div class="float-right">
                  <!--Searchable DropDown-->
-                 <div   class="pb3 float-left">
+                 <div class="pb3 float-left">
                   <p class="mt--10px" *ngIf="dropdownDataLoading">
                     <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Companies...</strong>
                   </p>
@@ -22,12 +23,14 @@
                     <app-searchable-dropdown *ngIf="!dropdownDataLoading && !isDropDownLoadingError" [searchableDropDownDto]="companiesSearchableDropDownDto" [id]="selectedCompanyId"
                     [disableDropDown]="false" (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event)">
                     </app-searchable-dropdown>
-                </div>
+                 </div>
+                 <!--Sort-->
                 <div class="float-left">
                     <select class="form-control" [(ngModel)]="sortOption.selectedIntegrationDetailsDropDownOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
                         <option *ngFor="let option of sortOption.integrationDetailsDropDown" [ngValue]="option"> {{option.name}}</option>
                     </select>
                 </div>
+                <!--Search-->
                 <div class="portlet-input input-inline">
                     <div class="input-icon right ml10">
                         <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
@@ -45,9 +48,10 @@
                 <thead>
                   <tr>
                     <th>Company Name</th>
+                    <th>Integration Type</th>
+                    <th>Created Time</th>
                     <th>Access Token</th>
                     <th>Refresh Token</th>
-                    <th>Integration Type</th>
                     <th>Active</th>
                     <th class="text-center">View More</th>
                   </tr>
@@ -56,22 +60,27 @@
                   <ng-container *ngFor="let integrationDetails of integrationsPagination.pagedItems;let i = index;">
                   <tr>
                     <td>{{integrationDetails?.companyName}}</td>
+                    <!--Type-->
+                    <td>{{integrationDetails?.type}}</td>
+                     <!--Created Time-->
+                     <td><app-display-date-and-time [dateAndTimeUTCString]="integrationDetails?.createdTimeInUTCString"></app-display-date-and-time></td>
                     <!--Access Token-->
                     <td>
                       <ng-container *ngIf="integrationDetails?.accessToken">
                         <div class="copy-link-display">
                           <span>
-                            <input type="text" id="copy-link" readonly="readonly"  value="{{integrationDetails.accessToken}}" #copiedValue><br>
-                        </span>
-                        <span class="modal-icon ml10" id="copy-access-token-span-{{i}}">
+                            <input class="blur-text" type="text" id="copy-link" readonly="readonly"  value="{{integrationDetails.accessToken}}" #copiedValue><br>
+                          </span>
+                          <span class="modal-icon ml10" id="copy-access-token-span-{{i}}">
                             <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(copiedValue,'Access Token',i)">
                                 <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
+                                <i class="fa fa-pencil IconCustomization campaignViewIcon ml5" (click)="editAccessOrRefreshToken(integrationDetails)" aria-hidden="true"></i>
                                 <div class="clickicons"></div>
                             </a>
-                        </span>
+                          </span>
                         </div>
                         <div>
-                          <span class="success" id="copied-access-token-message-{{i}}" style="display: none;">
+                          <span class="copied-text-success-message" id="copied-access-token-message-{{i}}" style="display: none;">
                             <strong>Access Token copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
                           </span>
                         </div>
@@ -85,17 +94,18 @@
                       <ng-container *ngIf="integrationDetails?.refreshToken">
                       <div class="copy-link-display">
                         <span>
-                          <input type="text" id="copy-link" readonly="readonly"  value="{{integrationDetails.refreshToken}}" #copiedValue><br>
-                      </span>
-                      <span class="modal-icon ml10" id="copy-refresh-token-span-{{i}}">
+                          <input class="blur-text" type="text" id="copy-link" readonly="readonly"  value="{{integrationDetails.refreshToken}}" #copiedValue><br>
+                        </span>
+                        <span class="modal-icon ml10" id="copy-refresh-token-span-{{i}}">
                           <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(copiedValue,'Refresh Token',i)">
                               <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
+                              <i class="fa fa-pencil IconCustomization campaignViewIcon ml5" (click)="editAccessOrRefreshToken(integrationDetails)" aria-hidden="true"></i>
                               <div class="clickicons"></div>
                           </a>
-                      </span>
+                        </span>
                       </div>
                       <div>
-                        <span class="success" id="copied-refresh-token-message-{{i}}" style="display: none;">
+                        <span class="copied-text-success-message" id="copied-refresh-token-message-{{i}}" style="display: none;">
                           <strong>Refresh Token copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
                         </span>
                       </div>
@@ -104,8 +114,6 @@
                         <span class="required"><strong>Refresh Token Not Found</strong></span>
                       </ng-container>
                     </td>
-                    <!--Type-->
-                    <td>{{integrationDetails?.type}}</td>
                     <!--Active / InActive Status-->
                     <td class="text-center"><i class="fa " [ngClass]="integrationDetails.active?'fa-check success':'fa fa-times required'"></i></td>
                     <!--View More-->
@@ -119,7 +127,7 @@
                     </td>
                   </tr>
                   <tr *ngIf="integrationDetails?.expand">
-                    <td colspan="6">
+                    <td colspan="8">
                       <table  class="table tgrid table-bordered">
                           <tr>
                             <th>Expiry Date</th>
@@ -215,7 +223,24 @@
             </ng-container>
        </div>
       </div>
-      </div>
+        </div>
+        <!--Edit Section-->
+        <div *ngIf="isAccessOrRefreshTokenEdited">
+          <!--Access Token-->
+          <div class="form-group">
+            <label><strong>Update Access Token</strong></label>
+            <textarea class="form-control" [(ngModel)]="selectedIntegratedDetails.accessToken" rows="5"  [ngModelOptions]="{standalone: true}"></textarea>
+          </div>
+          <!--Refresh Token-->
+          <div class="form-group">
+            <label><strong>Update Refresh Token</strong></label>
+            <textarea class="form-control" [(ngModel)]="selectedIntegratedDetails.refreshToken" rows="5" [ngModelOptions]="{standalone: true}"></textarea>
+          </div>
+          <div class="float-right">
+            <button class="btn btn-primary">Update</button>
+            <button class="btn btn-danger" (click)="isAccessOrRefreshTokenEdited=false;">Back</button>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button (click)="closeModal()"  class="btn btn-danger float-right">Close</button>

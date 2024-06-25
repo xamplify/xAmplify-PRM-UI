@@ -9,13 +9,16 @@ import { Properties } from 'app/common/models/properties';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { CustomAnimation } from 'app/core/models/custom-animation';
+
 
 declare var $:any;
 @Component({
   selector: 'app-integration-details',
   templateUrl: './integration-details.component.html',
   styleUrls: ['./integration-details.component.css'],
-  providers :[Properties,SortOption]
+  providers :[Properties,SortOption],
+  animations :[CustomAnimation]
 })
 export class IntegrationDetailsComponent implements OnInit {
   
@@ -28,6 +31,8 @@ export class IntegrationDetailsComponent implements OnInit {
   selectedCompanyId = 0;
 	dropdownDataLoading = true;
   isDropDownLoadingError = false;  
+  isAccessOrRefreshTokenEdited = false;
+  selectedIntegratedDetails:any;
 
   constructor(public authenticationService:AuthenticationService, public referenceService:ReferenceService,public pagerService:PagerService,
     public dashboardService:DashboardService,public properties:Properties,public utilService:UtilService) { }
@@ -36,6 +41,11 @@ export class IntegrationDetailsComponent implements OnInit {
   }
 
   openModalPopup() {
+    this.integrationsPagination = new Pagination();
+    this.customResponse = new CustomResponse();
+    this.companiesSearchableDropDownDto = new SearchableDropdownDto();
+    this.selectedCompanyId = 0;
+    this.isAccessOrRefreshTokenEdited = false;
     this.referenceService.openModalPopup("integration-details-modal");
     this.findAllIntegrations(this.integrationsPagination);
     this.findAllCompanyNames();
@@ -64,6 +74,7 @@ findAllCompanyNames() {
   }
 
   findAllIntegrations(pagination:Pagination){
+    this.referenceService.scrollToModalBodyTopByClass();
     this.integrationsLoader = true;
     this.customResponse = new CustomResponse();
     this.dashboardService.findAllIntegrations(pagination).subscribe(
@@ -95,7 +106,7 @@ findAllCompanyNames() {
   }
 
   copyInputMessage(inputElement, type: string, index: number) {
-    $(".success").hide();
+    $(".copied-text-success-message").hide();
     $('#copied-access-token-message-' + index).hide();
     $('#copied-refresh-token-message-' + index).hide();
     inputElement.select();
@@ -143,6 +154,11 @@ searchableDropdownEventReceiver(event:any){
     this.integrationsPagination = new Pagination();
   }
   this.getAllFilteredResults();
+}
+
+editAccessOrRefreshToken(integrationDetails:any){
+  this.selectedIntegratedDetails = integrationDetails;
+  this.isAccessOrRefreshTokenEdited = true;
 }
 
 }
