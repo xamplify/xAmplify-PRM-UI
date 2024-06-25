@@ -90,7 +90,6 @@ export class FormPreviewComponent implements OnInit {
       this.captchaValue.emit(this.enableButton);
     }
   }
-    masterLandingPage:boolean = false;
   constructor(private route: ActivatedRoute, public envService: EnvService, private referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private formService: FormService,
     private logger: XtremandLogger, public httpRequestLoader: HttpRequestLoader, public processor: Processor, private router: Router, private socialService: SocialService,
