@@ -1,0 +1,191 @@
+<!-- ---------------------Integration Details------------------ -->
+<div class="modal fade right" id="integration-details-modal" data-backdrop="static">
+  <div class="modal-dialog full-width">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+        <h4 class="modal-title text-center">Integration Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-12 p5" style="margin-bottom: -10px;">
+          <div class="portlet light">
+            <!--Search & Filter-->
+            <div class="portlet-title">
+              <div class="float-right">
+                <div class="float-left">
+                    <select class="form-control" [(ngModel)]="sortOption.selectedIntegrationDetailsDropDownOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+                        <option *ngFor="let option of sortOption.integrationDetailsDropDown" [ngValue]="option"> {{option.name}}</option>
+                    </select>
+                </div>
+                <div class="portlet-input input-inline">
+                    <div class="input-icon right ml10">
+                        <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                            placeholder="Search..." (keypress)="searchIntegrationDetailsOnKeyPress($event.keyCode)">
+                        <button *ngIf="sortOption.searchKey" class="glyphicon glyphicon-remove search-box-item-clear"  (click)="sortOption.searchKey='';searchIntegrationDetails();"></button>
+                        <button type="submit" class="search-box-item-click" (click)="searchIntegrationDetails()"><i class="fa fa-search" aria-hidden="true"></i> </button>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <app-modal-popup-loader *ngIf="integrationsLoader"></app-modal-popup-loader>
+            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible" [showCloseIcon]="false"></app-response-message>
+            <div class="table-responsive" *ngIf="!integrationsLoader">
+              <table class='table tgrid table-bordered' aria-describedby="">
+                <thead>
+                  <tr>
+                    <th>Company Name</th>
+                    <th>Access Token</th>
+                    <th>Refresh Token</th>
+                    <th>Type</th>
+                    <th>Active</th>
+                    <th class="text-center">View More</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let integrationDetails of integrationsPagination.pagedItems;let i = index;">
+                  <tr>
+                    <td>{{integrationDetails?.companyName}}</td>
+                    <!--Access Token-->
+                    <td>
+                      <ng-container *ngIf="integrationDetails?.accessToken">
+                        <div class="copy-link-display">
+                          <span>
+                            <input type="text" id="copy-link" readonly="readonly"  value="{{integrationDetails.accessToken}}" #copiedValue><br>
+                        </span>
+                        <span class="modal-icon ml10" id="copy-access-token-span-{{i}}">
+                            <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(copiedValue,'Access Token',i)">
+                                <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
+                                <div class="clickicons"></div>
+                            </a>
+                        </span>
+                        </div>
+                        <div>
+                          <span class="success" id="copied-access-token-message-{{i}}" style="display: none;">
+                            <strong>Access Token copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+                          </span>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf="!integrationDetails?.accessToken">
+                        <span class="required"><strong>Access Token Not Found</strong></span>
+                      </ng-container>
+                    </td>
+                    <!--Refresh Token-->
+                    <td>
+                      <ng-container *ngIf="integrationDetails?.refreshToken">
+                      <div class="copy-link-display">
+                        <span>
+                          <input type="text" id="copy-link" readonly="readonly"  value="{{integrationDetails.refreshToken}}" #copiedValue><br>
+                      </span>
+                      <span class="modal-icon ml10" id="copy-refresh-token-span-{{i}}">
+                          <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(copiedValue,'Refresh Token',i)">
+                              <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
+                              <div class="clickicons"></div>
+                          </a>
+                      </span>
+                      </div>
+                      <div>
+                        <span class="success" id="copied-refresh-token-message-{{i}}" style="display: none;">
+                          <strong>Refresh Token copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+                        </span>
+                      </div>
+                      </ng-container>
+                      <ng-container *ngIf="!integrationDetails?.refreshToken">
+                        <span class="required"><strong>Refresh Token Not Found</strong></span>
+                      </ng-container>
+                    </td>
+                    <!--Type-->
+                    <td>{{integrationDetails?.type}}</td>
+                    <!--Active / InActive Status-->
+                    <td class="text-center"><i class="fa " [ngClass]="integrationDetails.active?'fa-check success':'fa fa-times required'"></i></td>
+                    <!--View More-->
+                    <td class="text-center">
+                      <div class="actions-block float-none">
+                        <a  class ="custom-icon" (click)="viewMoreColumns(integrationDetails)" data-toggle="tooltip" data-placement="top" title="View More Columns">
+                          <i class="fa IconCustomization" aria-hidden="true" [ngClass]="{'fa-plus': !integrationDetails?.expand, 'fa-minus': integrationDetails?.expand}" ></i>
+                          <div class="clickicons"></div>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr *ngIf="integrationDetails?.expand">
+                    <td colspan="6">
+                      <table  class="table tgrid table-bordered">
+                          <tr>
+                            <th>Expiry Date</th>
+                            <td><app-display-date-and-time [dateAndTimeUTCString]="integrationDetails?.expriyDateInUTCString"></app-display-date-and-time></td>
+                          </tr>
+                          <tr>
+                            <th>Created Time</th>
+                            <td><app-display-date-and-time [dateAndTimeUTCString]="integrationDetails?.createdTimeInUTCString"></app-display-date-and-time></td>
+                          </tr>
+                          <tr>
+                            <th>Updated Time</th>
+                            <td><app-display-date-and-time [dateAndTimeUTCString]="integrationDetails?.updatedTimeInUTCString"></app-display-date-and-time></td>
+                          </tr>
+                          <tr>
+                            <th>Sand Box</th>
+                            <td><i class="fa " [ngClass]="integrationDetails.sandBox?'fa-check success':'fa fa-times required'"></i></td>   
+                          </tr>
+                          <tr>
+                            <th>Instance Url</th>
+                            <td><a>{{integrationDetails?.instanceUrl}}</a></td>
+                          </tr>
+                          <tr>
+                            <th>Push Leads</th>
+                            <td><i class="fa " [ngClass]="integrationDetails.pushLeads?'fa-check success':'fa fa-times required'"></i></td>               
+                          </tr>
+                          <tr>
+                            <th>Created By</th>
+                            <td>{{integrationDetails?.createdByEmailAddress}}</td>
+                          </tr>
+                          <tr>
+                            <th>External User Id</th>
+                            <td>{{integrationDetails?.externalUserId}}</td>
+                          </tr>
+                          <tr>
+                            <th>External Email</th>
+                            <td>{{integrationDetails?.externalEmail}}</td>
+                          </tr>
+                          <tr>
+                            <th>External Display Name</th>
+                            <td>{{integrationDetails?.externalDisplayName}}</td>
+                          </tr>
+                          <tr>
+                            <th>External User Name</th>
+                            <td>{{integrationDetails?.externalUserName}}</td>
+                          </tr>
+                          <tr>
+                            <th>External Organization Id</th>
+                            <td>{{integrationDetails?.externalOrganizationId}}</td>
+                          </tr>
+                          <tr>
+                            <th>External Thumbnail</th>
+                            <td>{{integrationDetails?.externalThumbnail}}</td>
+                          </tr>
+                          <tr>
+                            <th>WebApi Instance Url</th>
+                            <td>{{integrationDetails?.webApiInstanceUrl}}</td>
+                          </tr>
+                      </table>
+                    </td> 
+                  </tr>
+                </ng-container>
+                </tbody>
+              </table>
+            </div>
+            <!--Pagination-->
+            <ng-container *ngIf="!integrationsLoader">
+              <div *ngIf="integrationsPagination?.totalRecords==0" class="alert alert-info text-center">No Data Found</div>
+              <app-pagination  [pagination]="integrationsPagination" (notifyParent)="navigateIntegrationsByPageNumber($event)" (notifyParentDropDown)="findAllIntegrations($event)"></app-pagination>
+            </ng-container>
+       </div>
+      </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="closeModal()"  class="btn btn-danger float-right">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

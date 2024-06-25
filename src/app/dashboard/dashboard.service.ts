@@ -1417,5 +1417,16 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         let findAllUrl = this.dashboardAnalytics+'findAllQuickLinks/domainName/'+domainName+'/userId/'+userId+this.QUERY_PARAMETERS+pageableUrl;
         return this.authenticationService.callGetMethod(findAllUrl);
     }
+
+    findAllEmailAddresses(){
+        const url = this.superAdminUrl + 'findAllEmailAddresses?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    findAllIntegrations(pagination:Pagination){
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        const url = this.superAdminUrl + 'findIntegrations' + this.QUERY_PARAMETERS+pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+    }
     
 }

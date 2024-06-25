@@ -418,6 +418,15 @@ export class SortOption {
 		{ 'name': 'Download Count (ASC)', 'value': 'downloadCount-ASC' },
 		{ 'name': 'Download Count (DESC)', 'value': 'downloadCount-DESC' }
 	];
+
+	integrationDetailsDropDown = [
+		{ 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+		{ 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
+		{ 'name': 'Type (ASC)', 'value': 'type-ASC' },
+		{ 'name': 'Type (DESC)', 'value': 'type-DESC' },
+		{ 'name': 'Created Time (ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created Time (DESC)', 'value': 'createdTime-DESC' }
+	]
 	
 
 
@@ -477,5 +486,7 @@ export class SortOption {
 
 	/*****XNFR-543*****/
 	selectedDamPartnerCompaniesDropDownOption = this.damPartnerCompaniesDropDown[0];
+
+	selectedIntegrationDetailsDropDownOption = this.integrationDetailsDropDown[0];
 
 }

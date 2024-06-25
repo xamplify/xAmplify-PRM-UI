@@ -35,7 +35,7 @@
                                         <div class="input-icon right" id="search-icon">
                                             <input type="text" id="search-text" class="form-control"
                                                 [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                                                placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                                placeholder="Search..." (keypress)="eventHandler($event.keyCode)">
                                             <button class="glyphicon glyphicon-remove search-box-item-clear"
                                                 *ngIf="sortOption.searchKey"
                                                 (click)="sortOption.searchKey='';searchForms();"></button>
