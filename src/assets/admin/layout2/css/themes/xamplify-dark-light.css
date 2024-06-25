@@ -2389,7 +2389,7 @@ button.btn.btn-white.salesforce-btn.button{
 .gridViewImgBg {
   background-color: #22313a;
 }
-.table-responsive td, b {
+.table-responsive td {
   color: #fff !important;
 } 
 .img-grid-track {
@@ -2419,8 +2419,7 @@ a.tabColorOne b,
 h1 b,
 h6 b,
 span b,
-h3 b,
-div b {
+h3 b {
   color: #fff !important;
 }
 /* QA issues start*/
@@ -2566,3 +2565,6 @@ span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input {
   color: #fff;
 
 }
+/***** Sudha Sri(25-6-2024) *****/
+.lead-details-border{border: 2px solid #2f4857 !important;}
+hr{border-top: 0.5px solid #2f4857 !important;}
