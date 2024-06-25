@@ -462,7 +462,7 @@ h5 {
 .item__preview::before {
   content: "";
   display: block;
-  padding-top: 100%;
+  padding-top: 67%;
 }
 
 .item__preview.item__preview--image.custom {
@@ -482,8 +482,18 @@ h5 {
   z-index: 2;
   border-radius: 5px;
   border: 1px solid #eee;
-  object-fit: contain;
+  /* object-fit: contain; */
 }
+@media (min-width: 767px) and (max-width: 1205px) {
+  .item__preview.item__preview--image.custom .thumb {
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+  }
+  .item__preview {
+    height: auto;
+  }
+} 
 
 .list__item .item__name {
   color: #505659;

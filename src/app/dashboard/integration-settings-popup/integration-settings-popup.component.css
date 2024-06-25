@@ -76,9 +76,12 @@
   .list-group-item {
     padding: 5px 10px;
   }
-  .deleteBntAligment {
-    margin-top: 5px;
-  }
+    .deleteBntAligment {
+      margin-top: 3px;
+      padding: 4px 8px;
+      float: right;
+      margin-left: 10px;
+    }
   .disabled-opacity{
     opacity: 0.5;
     cursor: not-allowed;
@@ -86,4 +89,9 @@
   a.disabled {
     pointer-events: none;
  }
-
+ .bg-color-for-card {
+  background: #f1f5f9;
+  border: 1px solid rgba(221, 221, 221, 0.87);
+  padding:10px !important;
+  border-radius: 5px;
+ }
