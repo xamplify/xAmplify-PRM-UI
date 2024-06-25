@@ -110,8 +110,8 @@ export class IntegrationSettingsPopupComponent implements OnInit {
 
   onFieldTypeChange(selectedField: any) {
     this.customFieldsList.forEach(field => {
-      if (field.label === selectedField.label) {
-        field.formDefaultFieldType = 'DEAL_ID';
+      if (field.label === selectedField.label && selectedField.formDefaultFieldType === 'DEAL_ID') {
+        this.customFields.formDefaultFieldType = 'DEAL_ID';
         this.canDisableType = true;
       } else {
         field.formDefaultFieldType = null;
