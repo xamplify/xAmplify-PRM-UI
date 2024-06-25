@@ -3082,16 +3082,16 @@ span.icon-alignments {
   display: inline !important;
 }
 
-.btn-group button, .btn_custom_bg{
-  background-color: #0276FF !important;
-  border-color: #1ca6f3 !important;
+.btn_custom_bg{
+  background-color: #0276FF;
+  border-color: #1ca6f3;
 }
 /***** Sudha Sri(11-06-204) *****/
 button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4,
 button.search-box-item-click,
 button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4 {
-  background: #f1f3fa !important;
-  border-color: #e0e0e0 !important;
+  background: #f1f3fa;
+  border-color: #e0e0e0;
 }
 button.button.bgcolor-unset,
 button#copyFrom_clipboard,
@@ -3109,8 +3109,8 @@ button.fa.fa-th-large.btn-xs.l-g-view,
 button.btn-xs.l-g-view.fa.fa-folder,
 button.btn-xs.l-g-view.fa.fa-th,
 button.btn.btn-xs.hidden-xs.l-g-view {
-  background: #f1f3fa !important;
-  border-color: #ddd !important;
+  background: #f1f3fa;
+  border-color: #ddd;
 }
 h4.txt_color{color:#fff !important;}
 .Btn-Gray:hover{color:#fff;}

@@ -118,8 +118,8 @@ label {
   padding-top: 12px;
 }
 .btn-group button {
-  background-color: #008fd5;
-  border: 1px solid #3575b5;
+  background-color: #0276FF;
+  border: 1px solid #1ca6f3;
   color: #fff;
   padding: 6px 14px;
   cursor: pointer;
@@ -134,9 +134,9 @@ label {
   clear: both;
   display: table;
 }
-.btn-group button:hover {
+/* .btn-group button:hover {
   background-color: #4db1e2;
-}
+} */
 .refer-vendor-button {
   padding: 17px 5px 0px 0px;
 }
@@ -172,9 +172,9 @@ label {
   padding: 6px 14px !important;
 }
 .custom {
-  background-color: #008fd5;
+  background-color: #0276FF;
   color: #fff;
-  border: 1px solid #3575b5;
+  border: 1px solid #1ca6f3;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-menu {
   width: auto !important;

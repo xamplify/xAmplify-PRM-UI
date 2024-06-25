@@ -13,13 +13,21 @@
  <ng-container *ngIf="!isVanityUrlEnabled">
   <div class="page-bar">
     <ul class="page-breadcrumb float-right">
+      <!--Integration Details-->
+      <li class="topnav-button-css" *ngIf="isLocalHost">
+        <button class="btn btn-primary" (click)="openIntegrationDetailsModalPopup()"><span>Find Integration Details</span></button>
+      </li>
       <!--Update Email Address-->
-      <li class="topnav-button-css" style="display: none;">
-        <button class="btn btn-primary" (click)="updateEmailAddress()"><span>Update Email Address</span></button>
+      <li class="topnav-button-css" *ngIf="isLocalHost">
+        <button class="btn btn-primary" (click)="openUpdateEmailAddressModalPopup()"><span>Update Email Address</span></button>
+      </li>
+       <!--Update Email Address-->
+       <li class="topnav-button-css" *ngIf="isLocalHost">
+        <button class="btn btn-primary" (click)="openUpdateCompanyProfileNameModalPopup()"><span>Update Company Profile Name</span></button>
       </li>
       <!--Expand/Collpase-->
       <li class="topnav-button-css">
-        <button class="btn btn-primary" (click)="expandOrCollpase()"><span>Expand / Collapse</span></button>
+        <button class="btn btn-primary" (click)="expandOrCollpase()"><span>Expand All / Collapse All</span></button>
       </li>
       <!--Upgrade Partner Account-->
       <li class="topnav-button-css">
@@ -285,4 +293,8 @@
 <!--Update Password-->
 <app-update-password #updatePasswordComponent></app-update-password>
 
+<!--Update Email Address-->
+<app-update-email-address #updateEmailAddressComponent></app-update-email-address>
 
+<!--Find Integration Details-->
+<app-integration-details #integrationDetailsComponent></app-integration-details>

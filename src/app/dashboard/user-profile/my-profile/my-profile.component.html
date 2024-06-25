@@ -2157,8 +2157,8 @@
 
                                         <!-- saml sso 2.0 settings -->
                                         <div class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'saml2SSOsettings'}">
-                                            <app-saml-sso-login> </app-saml-sso-login>
+                                            [ngClass]="{'active': activeTabName == 'saml2SSOsettings'}" *ngIf="showSaml2SSOsettings">
+                                        <app-saml-sso-login> </app-saml-sso-login>
                                         </div>
 
                                         <!-- Your Templates TAB -->

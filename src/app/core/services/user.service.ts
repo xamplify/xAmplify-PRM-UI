@@ -528,10 +528,22 @@ export class UserService {
        .catch(this.handleError);
     }
     
-    validateExcludedDomains(excludedDomains: string[], loggedInUserId : number) {
-        return this.http.post(this.URL + "exclude/validate-domains/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludedDomains)
-           .map(this.extractData)
-           .catch(this.handleError);
-        }
+    validateExcludedDomains(excludedDomains: string[], loggedInUserId: number) {
+        return this.http.post(this.URL + "exclude/validate-domains/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token, excludedDomains)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
+    getDisplayViewType(userId: number, companyProfileName: string) {
+        return this.http.get(this.URL + "admin/getDisplayViewType/" + userId + "/" + companyProfileName + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    updateDisplayViewType(userId: number, type: string, companyProfileName: string) {
+        return this.http.get(this.URL + "admin/updateDisplayViewType/" + userId + "/" + type + "?access_token=" + this.authenticationService.access_token + "&companyProfileName=" + companyProfileName)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
 }
