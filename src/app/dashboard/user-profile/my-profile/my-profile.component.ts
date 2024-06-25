@@ -358,6 +358,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/*****XNFR-528*****/
 	zohoRedirectURL: string;
 	zohoRibbonText: string;
+	/** XNFR-534 **/
+	showSaml2SSOsettings: boolean = false;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -1912,6 +1915,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == "samlSettings") {
 			this.activeTabHeader = this.properties.samlSettings;
 		} else if (this.activeTabName == "saml2SSOsettings") {
+			this.showSaml2SSOsettings = true;
 			this.activeTabHeader = this.properties.saml2SSOsettings;
 		} 
 		else if (this.activeTabName == "gdpr") {
