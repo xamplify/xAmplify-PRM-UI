@@ -4,7 +4,7 @@
 }
 .activated-btn {
   border-radius: 20px 0px 0px 20px !important;
-  padding: 11px 20px;
+  padding: 12px 20px;
   background-color: #29dd50 !important;
   cursor: no-drop;
 }
@@ -268,4 +268,16 @@ margin-left:10px;
 }
 .justify-content-end{
   justify-content: end;
+}
+.btn-groups{
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+.btn-groups>.btn{
+  position: relative;
+  float: left;
+}
+.btn-groups .btn+.btn{
+  margin-left: -1px;
 }
