@@ -58,19 +58,25 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
                     this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Previous Quarter Leads' : 'Redistributed Campaigns For Previous Quarter';
                 }
                 //XNFR-316
-                else if (this.chartId == 'top10LeadsAndDealsBarChart' || this.chartId == 'partnerJourneyLeadsAndDealsBarChart' || this.chartId == 'allLeadsAndDealsBarChart') {
+                else if (this.chartId == 'top10LeadsAndDealsBarChart' || this.chartId == 'partnerJourneyLeadsAndDealsBarChart' || this.chartId == 'allLeadsAndDealsBarChart'
+                    || this.chartId === 'partnerJourneyredistributeCampaignsAndLeadsBarChart') {
                     if (this.hasLeadsAndDealsAccess || this.isTeamMemberAnalytics) {
                         this.hideLeadsAndDealsChart = false;
                     } else {
                         this.hideLeadsAndDealsChart = true;
                     }
-                    this.headerText = "Leads & Deals";
+                    if (!(this.chartId === 'partnerJourneyredistributeCampaignsAndLeadsBarChart')) {
+                        this.headerText = "Leads & Deals";
+                    } else {
+                        this.headerText = "Campaigns to Leads Conversion";
+                    }
                 }
             }, error => {
                 this.setErrorResponse(error);
             }, () => {
                 //XNFR-316
-                if (this.chartId == 'top10LeadsAndDealsBarChart' || this.chartId == 'partnerJourneyLeadsAndDealsBarChart' || this.chartId == 'allLeadsAndDealsBarChart') {
+                if (this.chartId == 'top10LeadsAndDealsBarChart' || this.chartId == 'partnerJourneyLeadsAndDealsBarChart' || this.chartId == 'allLeadsAndDealsBarChart'
+                    || this.chartId == 'partnerJourneyredistributeCampaignsAndLeadsBarChart') {
                     if (this.hasLeadsAndDealsAccess || this.isTeamMemberAnalytics) {
                         this.getDataForBarChart();
                     }
@@ -83,12 +89,12 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
     }
 
     getDataForBarChart() {
-        if (this.chartId == 'partnerJourneyLeadsAndDealsBarChart') {
+        if (this.chartId == 'partnerJourneyLeadsAndDealsBarChart' || this.chartId == 'partnerJourneyredistributeCampaignsAndLeadsBarChart') {
             let partnerJourneyRequest = new PartnerJourneyRequest();
             partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
             partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
             partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
-            this.partnerService.getPartnerJourneyLeadDealCounts(partnerJourneyRequest).subscribe(
+            this.partnerService.getPartnerJourneyLeadDealCounts(this.chartId, partnerJourneyRequest).subscribe(
                 response => {
                     this.processResponse(response);
                 }, error => {
@@ -165,6 +171,11 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
             secondaryAxisColor = Highcharts.getOptions().colors[2];
             primaryYAxisText = "Leads";
             secondaryYAxisText = "Deals";
+        } else if (chartId == "partnerJourneyredistributeCampaignsAndLeadsBarChart") {
+            primayAxisColor = Highcharts.getOptions().colors[0];
+            secondaryAxisColor = Highcharts.getOptions().colors[2];
+            primaryYAxisText = "Contacts";
+            secondaryYAxisText = "Leads";
         } else {
             primayAxisColor = Highcharts.getOptions().colors[0];
             secondaryAxisColor = Highcharts.getOptions().colors[2];
