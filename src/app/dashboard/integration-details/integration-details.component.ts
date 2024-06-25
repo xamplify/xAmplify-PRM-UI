@@ -8,6 +8,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 
 declare var $:any;
 @Component({
@@ -22,6 +23,12 @@ export class IntegrationDetailsComponent implements OnInit {
   integrationsLoader = true;
   customResponse:CustomResponse = new CustomResponse();
   sortOption:SortOption = new SortOption();
+
+  companiesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  selectedCompanyId = 0;
+	dropdownDataLoading = true;
+  isDropDownLoadingError = false;  
+
   constructor(public authenticationService:AuthenticationService, public referenceService:ReferenceService,public pagerService:PagerService,
     public dashboardService:DashboardService,public properties:Properties,public utilService:UtilService) { }
 
@@ -31,11 +38,30 @@ export class IntegrationDetailsComponent implements OnInit {
   openModalPopup() {
     this.referenceService.openModalPopup("integration-details-modal");
     this.findAllIntegrations(this.integrationsPagination);
+    this.findAllCompanyNames();
 }
 
 closeModal(){
   this.referenceService.closeModalPopup("integration-details-modal")
 }
+
+findAllCompanyNames() {
+  this.isDropDownLoadingError = false;
+  this.dropdownDataLoading = true;
+  this.dashboardService.findAllIntegrationCompanyNames().subscribe(
+    response => {
+      this.setSearchableDropdownData(response);
+    }, error => {
+      this.dropdownDataLoading = false;
+      this.isDropDownLoadingError = true;
+    });
+}
+  setSearchableDropdownData(response: any) {
+    this.companiesSearchableDropDownDto.data = response.data;
+		this.companiesSearchableDropDownDto.placeHolder = "Please Select Company";
+		this.dropdownDataLoading = false;
+    this.isDropDownLoadingError = false;
+  }
 
   findAllIntegrations(pagination:Pagination){
     this.integrationsLoader = true;
@@ -90,6 +116,12 @@ sortBy(text: any) {
   this.getAllFilteredResults();
 }
 
+searchIntegrationDetailsOnKeyPress(keyCode:number){
+  if(keyCode==13){
+    this.searchIntegrationDetails();
+  }
+}
+
 
 /*************************Search********************** */
 searchIntegrationDetails() {
@@ -103,5 +135,14 @@ getAllFilteredResults() {
   this.findAllIntegrations(this.integrationsPagination);
 }
 
+searchableDropdownEventReceiver(event:any){
+  if(event!=null){
+    let id = event['id'];
+    this.integrationsPagination.companyId = id;
+  }else{
+    this.integrationsPagination = new Pagination();
+  }
+  this.getAllFilteredResults();
+}
 
 }

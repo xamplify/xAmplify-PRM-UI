@@ -13,6 +13,16 @@
             <!--Search & Filter-->
             <div class="portlet-title">
               <div class="float-right">
+                 <!--Searchable DropDown-->
+                 <div   class="pb3 float-left">
+                  <p class="mt--10px" *ngIf="dropdownDataLoading">
+                    <strong><img class="h-50px" src="../../../assets/images/Spinner.gif" alt="">Loading Companies...</strong>
+                  </p>
+                   <p class="required mt5" *ngIf="!dropdownDataLoading && isDropDownLoadingError">Unable To Load Companies</p>
+                    <app-searchable-dropdown *ngIf="!dropdownDataLoading && !isDropDownLoadingError" [searchableDropDownDto]="companiesSearchableDropDownDto" [id]="selectedCompanyId"
+                    [disableDropDown]="false" (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event)">
+                    </app-searchable-dropdown>
+                </div>
                 <div class="float-left">
                     <select class="form-control" [(ngModel)]="sortOption.selectedIntegrationDetailsDropDownOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
                         <option *ngFor="let option of sortOption.integrationDetailsDropDown" [ngValue]="option"> {{option.name}}</option>
@@ -37,7 +47,7 @@
                     <th>Company Name</th>
                     <th>Access Token</th>
                     <th>Refresh Token</th>
-                    <th>Type</th>
+                    <th>Integration Type</th>
                     <th>Active</th>
                     <th class="text-center">View More</th>
                   </tr>
@@ -160,12 +170,36 @@
                             <td>{{integrationDetails?.externalOrganizationId}}</td>
                           </tr>
                           <tr>
+                            <th>External Organization Name</th>
+                            <td>{{integrationDetails?.externalOrganizationName}}</td>
+                          </tr>
+                          <tr>
                             <th>External Thumbnail</th>
                             <td>{{integrationDetails?.externalThumbnail}}</td>
                           </tr>
                           <tr>
                             <th>WebApi Instance Url</th>
                             <td>{{integrationDetails?.webApiInstanceUrl}}</td>
+                          </tr>
+                          <tr>
+                            <th>Client Id</th>
+                            <td>{{integrationDetails?.clientId}}</td>
+                          </tr>
+                          <tr>
+                            <th>Client Secret</th>
+                            <td>{{integrationDetails?.clientSecret}}</td>
+                          </tr>
+                          <tr>
+                            <th>Api Key</th>
+                            <td>{{integrationDetails?.apiKey}}</td>
+                          </tr>
+                          <tr>
+                            <th>Public Key</th>
+                            <td>{{integrationDetails?.publicKey}}</td>
+                          </tr>
+                          <tr>
+                            <th>Private Key</th>
+                            <td>{{integrationDetails?.privateKey}}</td>
                           </tr>
                       </table>
                     </td> 
