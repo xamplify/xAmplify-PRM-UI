@@ -4547,6 +4547,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.ngxloading = false;
 				let isDemoAccount = "spai@mobinar.com" == this.currentUser.userName;
 				this.defaultThemes = response.data.sort((a, b) => a.id - b.id);
+				if (this.defaultThemes.length >= 2) {
+					const lastIndex = this.defaultThemes.length - 1;
+					const temp = this.defaultThemes[lastIndex];
+					this.defaultThemes[lastIndex] = this.defaultThemes[lastIndex - 1];
+					this.defaultThemes[lastIndex - 1] = temp;
+				  }
 				if (this.isProduction && !isDemoAccount) {
 					this.defaultThemes = this.defaultThemes.filter((item) => item.name != "Glassomorphism Light");
 					this.defaultThemes = this.defaultThemes.filter((item) => item.name != "Glassomorphism Dark");
