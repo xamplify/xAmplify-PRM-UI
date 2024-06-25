@@ -1669,6 +1669,9 @@ strong {
 .lowercase-text {
   text-transform: lowercase;
 }
+.uppercase-text {
+  text-transform: uppercase;
+}
 
 .child-table-bg-color {
   background-color: #f1f1f1 !important;

@@ -258,7 +258,6 @@
                                         activeTabName == 'gdpr' ? 'show':'',
                                         activeTabName == 'integrations' ? 'show':'',
                                         activeTabName == 'samlSettings' ? 'show':'',
-                                        activeTabName == 'saml2SSOsettings' ? 'show':'',
                                         activeTabName == 'support' ? 'show':'']">
                                         Developers
                                         <a data-toggle="collapse" style="float: right;"
@@ -3693,15 +3692,15 @@
                                         <span class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
                                             <div class="mb_mt7 alignEqualtoFields">
                                                 <input class="radioButton_shadow" type="radio"
-                                                    [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x"
+                                                    [disabled]="pipelinePreview || pipeline.crmPipeline || pipeline?.integrationType == 'HALOPSA'" [value]="x"
                                                     [(ngModel)]="defaultStageIndex" id="defaultStage{{x}}"
                                                     name="defaultStage" class="alignEqualtoText"
                                                     (change)="defaultStageChange(pipelineStage)">
                                                 <span>Default</span>&nbsp;&nbsp;
                                                 <select class="formSelectCustomization"
                                                     [(ngModel)]="pipelineStage.markAs"
-                                                    [disabled]="pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE')"
-                                                    [ngClass]="{'disabled-cursor': (pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE'))}"
+                                                    [disabled]="pipelinePreview || (pipeline.crmPipeline && (pipeline?.integrationType == 'PIPEDRIVE' || pipeline?.integrationType == 'HALOPSA'))"
+                                                    [ngClass]="{'disabled-cursor': (pipelinePreview || (pipeline.crmPipeline && (pipeline?.integrationType == 'PIPEDRIVE' || pipeline?.integrationType == 'HALOPSA')))}"
                                                     (change)="handleMarkAsChange(x)">
                                                     <option value="markAs">Mark as</option>
                                                     <option value="won">Won</option>
@@ -3724,7 +3723,7 @@
                                                         [ngClass]="{'disabled-cursor': (shouldDisableCheckbox(x) || pipelinePreview)}">
                                                         <input class="checkBox_shadow" type="checkbox"
                                                             [(ngModel)]="pipelineStage.private" name="private"
-                                                            [disabled]="shouldDisableCheckbox(x) || pipelinePreview">
+                                                            [disabled]="shouldDisableCheckbox(x) || pipelinePreview || (pipeline?.integrationType == 'HALOPSA' && pipelineStage.defaultStage)">
                                                         <span class="sliderOnOff"></span>
                                                         <span class="labels" data-on="ON" data-off="OFF"></span>
                                                     </label>

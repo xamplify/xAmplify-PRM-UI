@@ -338,8 +338,14 @@ export class ParterService {
             .catch(this.handleError);
     }
 
-    getPartnerJourneyLeadDealCounts(partnerJourneyRequest: PartnerJourneyRequest) {
-        const url = this.URL + 'partner/journey/lead-to-deal/counts?access_token=' + this.authenticationService.access_token;
+    getPartnerJourneyLeadDealCounts(chartId: string,partnerJourneyRequest: PartnerJourneyRequest) {
+        let urlSuffix = "";
+        if(chartId == "partnerJourneyLeadsAndDealsBarChart"){
+            urlSuffix = "/lead-to-deal";
+        }else{
+            urlSuffix = "/campaigns-to-lead";
+        }
+        const url = this.URL + 'partner/journey' + urlSuffix + '/counts?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post(url, partnerJourneyRequest)
             .catch(this.handleError);
     }

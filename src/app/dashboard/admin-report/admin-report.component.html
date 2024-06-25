@@ -13,25 +13,30 @@
  <ng-container *ngIf="!isVanityUrlEnabled">
   <div class="page-bar">
     <ul class="page-breadcrumb float-right">
-      <!--Update Email Address-->
-      <li class="topnav-button-css" style="display: none;">
-        <button class="btn btn-primary" (click)="updateEmailAddress()"><span>Update Email Address</span></button>
+      <!--Integration Details-->
+      <li class="topnav-button-css uppercase-text">
+        <button class="btn btn-primary" (click)="openIntegrationDetailsModalPopup()"><span>Find Integration Details</span></button>
       </li>
-      <!--Expand/Collpase-->
-      <li class="topnav-button-css">
-        <button class="btn btn-primary" (click)="expandOrCollpase()"><span>Expand / Collapse</span></button>
+      <!--Update Email Address-->
+      <li class="topnav-button-css uppercase-text" *ngIf="isLocalHost">
+        <button class="btn btn-primary" (click)="openUpdateEmailAddressModalPopup()"><span>Update Email Address</span></button>
+      </li>
+       <!--Update Email Address-->
+       <li class="topnav-button-css uppercase-text" *ngIf="isLocalHost">
+        <button class="btn btn-primary" (click)="openUpdateCompanyProfileNameModalPopup()"><span>Update Company Profile Name</span></button>
       </li>
       <!--Upgrade Partner Account-->
-      <li class="topnav-button-css">
+      <li class="topnav-button-css uppercase-text">
         <button class="btn btn-primary" (click)="openUpgradeAccountModal()"><span>Upgrade Partner Account</span><i class="fa fa-level-up" aria-hidden="true"></i></button>
       </li>
       <!--Create An Account-->
-      <li class="topnav-button-css">
+      <li class="topnav-button-css uppercase-text">
           <button class="btn btn-primary" (click)="createNewAccount()"><span>Create An Account</span><i class="fa fa-user" aria-hidden="true"></i></button>
       </li>
     </ul>
   </div>
   <div>
+    <button class="btn btn-default full-width uppercase-text" (click)="expandOrCollpase()"><span>Expand All / Collapse All</span></button>
     <!--List All Users-->
     <app-list-all-users></app-list-all-users> 
     <!--Processing User Lists-->
@@ -285,4 +290,8 @@
 <!--Update Password-->
 <app-update-password #updatePasswordComponent></app-update-password>
 
+<!--Update Email Address-->
+<app-update-email-address #updateEmailAddressComponent></app-update-email-address>
 
+<!--Find Integration Details-->
+<app-integration-details #integrationDetailsComponent></app-integration-details>

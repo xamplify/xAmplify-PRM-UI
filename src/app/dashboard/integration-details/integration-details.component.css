@@ -1,0 +1,30 @@
+
+  .modal-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    vertical-align: middle;
+    margin-right: 7px;
+    font-size: 13px;
+  }
+  .copy-link-display{
+    display: flex;
+    height:45px;
+  }
+  
+  #copy-link {
+    width: 230px;
+    height: 35px;
+    cursor: not-allowed;
+    background-color: #eae9e9;
+  }
+  
+  .copied-text-success-message{
+    color: green;
+  }
+  .blur-text{
+    color: transparent;
+    text-shadow: 0 0 8px #000;
+  }
