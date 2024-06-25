@@ -2749,6 +2749,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.pagination.pageIndex = 1;
 		this.pagination.filterBy = filterType;
 		this.loadContactLists(this.pagination);
+		this.contactsCount();
 	}
 
 	getCompanyId() {
