@@ -324,6 +324,7 @@ export class HomeComponent implements OnInit {
       this.getActiveThemeData(this.vanityLoginDto);
       //this.getMainContent(this.userId);  
       this.showLeftSideMenu();
+      this.getDisplayViewType();
     } catch (error) {
       this.xtremandLogger.error("error" + error);
     }
@@ -530,4 +531,21 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
+  /*** XNFR-558 ***/
+  getDisplayViewType() {
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if (companyProfileName !== undefined && companyProfileName !== "") {
+      this.userService.getDisplayViewType(this.authenticationService.getUserId(), this.authenticationService.companyProfileName)
+        .subscribe(
+          data => {
+            if (data.statusCode == 200) {
+              localStorage.setItem('defaultDisplayType', data.data);
+            }
+          }, error => {
+            localStorage.setItem('defaultDisplayType', 'LIST');
+          });
+    }
+  }
+
 }
