@@ -87,4 +87,10 @@ export class SamlSecurityService {
                 .catch(this.handleError);
         }
     }
+
+    getSaml2DetailsByUserId(userId:number){
+        const url = this.authenticationService.REST_URL + "saml/sso/getSaml2User?userId=" + userId + "&access_token=" + this.authenticationService.access_token;
+        return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
+
 }
