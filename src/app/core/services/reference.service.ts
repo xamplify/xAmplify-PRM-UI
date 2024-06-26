@@ -3687,7 +3687,7 @@ preivewAssetForPartnerOnNewHost(id: any) {
 		this.navigateToRouterByViewTypes(url, categoryId, viewType, folderViewType, folderListView);
   }
 
-  navigateToQuickLinksAnalytics(quickLink:any,isPartnerLoggedInThroughVanityUrl:boolean){
+  navigateToQuickLinksAnalytics(quickLink:any,isPartnerLoggedInThroughVanityUrl:boolean,vendorCompanyId:number){
     let router = "";
     let viewType = "/"+this.getListOrGridViewType();
     if(quickLink.type=="Asset"){
@@ -3698,13 +3698,13 @@ preivewAssetForPartnerOnNewHost(id: any) {
       }
     }else if(quickLink.type=="Track"){
       if(isPartnerLoggedInThroughVanityUrl){
-        router = "home/tracks/tb/"+this.companyId+"/"+quickLink.slug+viewType;
+        router = "home/tracks/tb/"+vendorCompanyId+"/"+quickLink.slug+viewType;
       }else{
         router = "/home/tracks/analytics/"+quickLink.id+viewType;
       }
     }else if(quickLink.type=="Play Book"){
       if(isPartnerLoggedInThroughVanityUrl){
-        router = "home/playbook/pb/"+this.companyId+"/"+quickLink.slug+viewType;
+        router = "home/playbook/pb/"+vendorCompanyId+"/"+quickLink.slug+viewType;
       }else{
         router = "/home/playbook/analytics/"+quickLink.id+viewType;
       }
