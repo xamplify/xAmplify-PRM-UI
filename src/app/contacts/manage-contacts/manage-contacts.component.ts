@@ -2047,8 +2047,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			const activeMasterPartnerList = $.trim(this.properties.activeMasterPartnerList.toLowerCase().replace(/\s/g, ''));
 			const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
 			if ($.inArray(inputName, self.names) > -1) {
-				this.saveAsError = 'This list name is already taken.';
-			} else if (inputName == activeMasterPartnerList || inputName == inActiveMasterPartnerList) {
+				this.saveAsError = this.isPartner ? 'This group name is already taken.' : 'This list name is already taken.';		
+				} else if (inputName == activeMasterPartnerList || inputName == inActiveMasterPartnerList) {
 				this.saveAsError = 'This list name cannot be added';
 			} else {
 				if (name !== "" && name.length < 250) {

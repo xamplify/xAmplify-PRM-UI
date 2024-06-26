@@ -71,7 +71,7 @@ export class QuickLinksComponent implements OnInit {
   }
 
   navigate(quickLink:any){
-    this.referenceService.navigateToQuickLinksAnalytics(quickLink,this.isPartnerLoggedInThroughVanityUrl);
+    this.referenceService.navigateToQuickLinksAnalytics(quickLink,this.isPartnerLoggedInThroughVanityUrl,this.companyId);
   }
 
   filterQuickLinks(type:string,index:number){

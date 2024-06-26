@@ -42,4 +42,6 @@ export class Lead {
     createdForPipelineId: number;         
     createdForPipelineStageId: number;
     halopsaTicketTypeId: any;
+    title :string;
+    industry : string = 'Select Industry';
 }
