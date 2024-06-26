@@ -1,6 +1,5 @@
 
   .modal-icon {
-    width: 32px;
     height: 32px;
     border-radius: 50%;
     text-align: center;
@@ -15,9 +14,9 @@
   }
   
   #copy-link {
-    width: 230px;
     height: 35px;
     cursor: not-allowed;
+    pointer-events: none;
     background-color: #eae9e9;
   }
   
@@ -27,4 +26,5 @@
   .blur-text{
     color: transparent;
     text-shadow: 0 0 8px #000;
+    pointer-events: none;
   }

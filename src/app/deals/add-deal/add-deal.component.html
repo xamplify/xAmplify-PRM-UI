@@ -241,7 +241,7 @@
                             <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
                             <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
-                              id="createdByPipelineStageId" [disabled]="preview"
+                              id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
                               (input)="validateField('createdByPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
                               <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
@@ -335,7 +335,7 @@
                                 class="required"><strong>*</strong></span></label>
                             <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
-                              id="createdByPipelineStageId" [disabled]="preview"
+                              id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
                               (input)="validateField('createdByPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
                               <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
