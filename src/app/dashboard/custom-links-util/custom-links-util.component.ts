@@ -503,6 +503,7 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   private updateDashboardButton() {
+    this.ngxLoading = true;
     this.vanityURLService.updateCustomLinkDetails(this.customLinkDto,this.moduleType,this.formData).subscribe(result => {
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT, true);
@@ -512,16 +513,19 @@ export class CustomLinksUtilComponent implements OnInit {
           this.callInitMethods();
           this.isDropDownLoading = false;
           this.isAddDashboardBannersDivHidden = false;
+          this.ngxLoading = false;
         }, 500);
         
       }
       else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
+        this.ngxLoading = false;
       }
       this.referenceService.goToTop();
     }, error => {
       this.customResponse = new CustomResponse('ERROR', "Error while updating dashboard button", true);
       this.referenceService.goToTop();
+      this.ngxLoading = false;
     });
   }
 
