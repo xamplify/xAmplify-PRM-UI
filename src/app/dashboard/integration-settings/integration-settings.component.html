@@ -51,7 +51,7 @@
         <span>Username: {{integrationDetails?.externalUserName}}</span><br>
         <span>Organization: {{integrationDetails?.externalOrganizationName}}</span>
       </div>
-      <div class="btn-group active-btns mb_right0" role="group" aria-label="Basic example">
+      <div class="btn-groups active-btns mb_right0" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-primary activate-btn integration-btn"
           *ngIf="!(integrationDetails?.activeCRM)" (click)="activateCRM()">Activate</button>
         <button type="button" class="btn btn-primary inetgrations_activate_bgcolor activated-btn ActivatedBtn"
@@ -91,7 +91,7 @@
               <th>Data Type</th>
               <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Required</th> -->
               <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Place Holder</th> -->
-              <th
+              <th class="text-center"
                 *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO'">
                 Actions</th>
             </tr>
@@ -151,7 +151,7 @@
                   <input *ngIf="sfCustomField.selected" type="text" class="form-control" placeholder="PlaceHolder"
                     [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
                 </td> -->
-                <td
+                <td class="text-center"
                   *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO'">
                   <a *ngIf="sfCustomField.selected && integrationType != 'SALESFORCE'" class="custom-icon" (click)="toggleSettings(sfCustomField)">
                     <i *ngIf="sfCustomField.selected" class="fa fa-edit mr5 IconCustomization SingleIconCu"></i>

@@ -51,6 +51,9 @@ export class FormAnalyticsUtilComponent implements OnInit {
     formAnalyticsDownload = false;
     campaignFormAnalyticsDownload = false;
     campaignPartnerFormAnalyticsDownload: boolean;
+    @Input() isVendorJourney: boolean;
+    @Input() isMasterLandingPage: boolean;
+
     constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,

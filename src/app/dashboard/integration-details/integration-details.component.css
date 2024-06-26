@@ -21,4 +21,10 @@
     background-color: #eae9e9;
   }
   
-  
+  .copied-text-success-message{
+    color: green;
+  }
+  .blur-text{
+    color: transparent;
+    text-shadow: 0 0 8px #000;
+  }

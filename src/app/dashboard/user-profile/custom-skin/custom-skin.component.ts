@@ -1007,6 +1007,7 @@ export class CustomSkinComponent implements OnInit {
   }
   resetPreviewImage() {
     document.body.style.removeProperty('background-image');
+    this.getDefaultImagePath();
   }
 
   getDefaultImagePath() {

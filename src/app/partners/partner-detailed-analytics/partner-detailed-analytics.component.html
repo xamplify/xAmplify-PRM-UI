@@ -30,12 +30,14 @@
 
   <!--******************Campaign Counts - Tiles*******************-->
   <div class="row customeRow">
-    <app-campaign-count-tiles *ngIf="!authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember" [partnerCompanyId]="partnerCompanyId"></app-campaign-count-tiles>
+    <app-campaign-count-tiles
+      *ngIf="!authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
+      [partnerCompanyId]="partnerCompanyId"></app-campaign-count-tiles>
   </div>
   <!--******************All Counts - Tiles*******************-->
   <div class="row customeRow">
-    <app-partner-journey-count-tiles [partnerCompanyId]="partnerCompanyId"
-      [teamMemberId]="teamMemberId" [isDetailedAnalytics]="true"></app-partner-journey-count-tiles>
+    <app-partner-journey-count-tiles [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+      [isDetailedAnalytics]="true"></app-partner-journey-count-tiles>
   </div>
   <!--******************Team Member Details*******************-->
   <div class="row customeRow">
@@ -44,19 +46,33 @@
     </app-partner-journey-team-members-table>
   </div>
 
-  <!--******************Lead To Deal Conversion Chart & User wise Track Counts*******************-->
-  <div class="row rowPaddingCustomization mobilerowPadding">
+  <!--******************User wise Track Counts & User wise PlayBook Counts*******************-->
+  <div class="row rowPaddingCustomization2 mobilerowPadding">
     <div class="col-sm-12 col-md-12 col-lg-12">
+      <!--*****************User wise Track Counts********************-->
+      <app-userwise-track-counts [type]="'TRACK'" [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+        [isDetailedAnalytics]="true"></app-userwise-track-counts>
+      <!--******************User wise Playbook Counts*******************-->
+      <app-userwise-track-counts [type]="'PLAYBOOK'" [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+        [isDetailedAnalytics]="true"></app-userwise-track-counts>
+    </div>
+  </div>
+
+  <!--****************** Lead To Deal Conversion & Campaigns To Lead Conversion Charts *******************-->
+  <div class="row rowPaddingCustomization3 mobilerowPadding1">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <!--******************Campaigns To Lead Conversion Chart*******************-->
+      <div>
+        <app-redistributed-campaigns-and-leads-bar-chart [partnerCompanyId]="partnerCompanyId"
+          [teamMemberId]="teamMemberId"
+          [chartId]="'partnerJourneyredistributeCampaignsAndLeadsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
+      </div>
       <!--******************Lead To Deal Conversion Chart*******************-->
-      <div class="ml15m">
+      <div>
         <app-redistributed-campaigns-and-leads-bar-chart [partnerCompanyId]="partnerCompanyId"
           [teamMemberId]="teamMemberId"
           [chartId]="'partnerJourneyLeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
       </div>
-
-      <!--******************User wise Track Counts*******************-->
-      <app-userwise-track-counts [partnerCompanyId]="partnerCompanyId"
-        [teamMemberId]="teamMemberId" [isDetailedAnalytics]="true"></app-userwise-track-counts>
     </div>
   </div>
 
@@ -74,8 +90,8 @@
       </div>
 
       <!--******************Interacted & Not Interacted Track Details*******************-->
-      <app-interacted-not-interacted-track-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId" [isDetailedAnalytics]="true"
-        [trackType]="selectedTrackType"></app-interacted-not-interacted-track-details>
+      <app-interacted-not-interacted-track-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+        [isDetailedAnalytics]="true" [trackType]="selectedTrackType"></app-interacted-not-interacted-track-details>
     </div>
   </div>
 
@@ -91,25 +107,28 @@
       </div>
 
       <!--******************Type wise Track Content Details*******************-->
-      <app-typewise-track-content-details [partnerCompanyId]="partnerCompanyId" [trackType]="selectedTrackType" [isDetailedAnalytics]="true"
-        [assetType]="selectedAssetType" [teamMemberId]="teamMemberId"></app-typewise-track-content-details>
+      <app-typewise-track-content-details [partnerCompanyId]="partnerCompanyId" [trackType]="selectedTrackType"
+        [isDetailedAnalytics]="true" [assetType]="selectedAssetType"
+        [teamMemberId]="teamMemberId"></app-typewise-track-content-details>
     </div>
   </div>
 
   <!--******************Track Assets Detailed Report*******************-->
   <div class="row rowPaddingCustomization1">
-    <app-userwise-track-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId" [isDetailedAnalytics]="true"
-      *ngIf="authenticationService?.lmsAccess"></app-userwise-track-details>
+    <app-userwise-track-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+      [isDetailedAnalytics]="true" *ngIf="authenticationService?.lmsAccess"></app-userwise-track-details>
   </div>
   <!--******************Track & Playbook Asset Details*******************-->
   <div class="row rowPaddingCustomization mobilerowPadding">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--******************Track Asset Details*******************-->
-      <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId" [isDetailedAnalytics]="true" [type]="'TRACK'"
+      <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+        [isDetailedAnalytics]="true" [type]="'TRACK'"
         *ngIf="authenticationService?.lmsAccess"></app-track-asset-details>
 
       <!--******************Playbook Asset Details*******************-->
-      <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId" [isDetailedAnalytics]="true" [type]="'PLAYBOOK'"
+      <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+        [isDetailedAnalytics]="true" [type]="'PLAYBOOK'"
         *ngIf="authenticationService.module?.playbookAccess"></app-track-asset-details>
     </div>
   </div>

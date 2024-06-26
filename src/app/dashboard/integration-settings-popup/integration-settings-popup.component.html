@@ -64,34 +64,32 @@
               </select>
             </div>
           </div>
-          <div *ngIf="customFields.originalCRMType === 'select'" class="portlet light" style="margin-top: 20px;">
-            <div class="form-group">
-              <div *ngIf="customFields.options.length === 0" class="alert alert-info text-center mt5">
+          <div *ngIf="customFields.originalCRMType === 'select'" class="bg-color-for-card" style="margin-top: 20px;">
+            <div class="form-group mb0">
+              <div *ngIf="customFields.options.length === 0" class="alert alert-info text-center mb0">
                 <strong>Please <a (click)="addOption()">Click here</a> to add an Option</strong>
               </div>
             </div>
 
-            <ul class="list-group">
+            <ul class="list-group mb0">
               <ng-container *ngFor="let option of customFields.options; let x = index">
                 <li class="list-group-item" id="stage{{x}}">
                   <div class="row">
-                    <div class="col-lg-7 col-md-7 col-sm-9 col-xs-8">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 d-flex">
                       <input type="text" placeholder="Enter Name" [(ngModel)]="option.label"
-                        class="bg-color field-border-customization inputFieldWidth">
-                    </div>
-                    <div class="col-lg-5 col-md-5 col-sm-3 col-xs-4">
-                      <button *ngIf="customFields.options.length > 1" type="button"
-                        class="btn btn-danger deleteBntAligment" data-toggle="tooltip" data-placement="top"
-                        title="Delete" (click)="delete(x)">
-                        <span class="glyphicon glyphicon-trash"></span>
-                      </button>
+                        class="form-control bg-color field-border-customization inputFieldWidth">
+                        <button *ngIf="customFields.options.length > 1" type="button"
+                          class="btn btn-danger deleteBntAligment" data-toggle="tooltip" data-placement="top"
+                          title="Delete" (click)="delete(x)">
+                          <span class="glyphicon glyphicon-trash"></span>
+                        </button>
                     </div>
                   </div>
                 </li>
               </ng-container>
             </ul>
 
-            <a *ngIf="customFields.options.length >= 1" class="dashboard-stat" style="padding: 9px 0;margin-top: 10px;"
+            <a *ngIf="customFields.options.length >= 1" class="dashboard-stat pb0" style="padding: 9px 0;margin-top: 6px;"
               (click)="addOption()">
               <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> Add Option
             </a>

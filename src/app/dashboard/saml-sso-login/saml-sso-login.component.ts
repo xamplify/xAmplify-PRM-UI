@@ -37,7 +37,7 @@ export class SamlSsoLoginComponent implements OnInit {
     this.tabName = "tab2";
     this.emailId = this.authenticationService.user.emailId;
     this.loggedInUserId = this.authenticationService.getUserId();
-    this.samlSecurityService.getSamlDetailsByUserName(this.emailId).subscribe(result => {
+    this.samlSecurityService.getSaml2DetailsByUserId(this.loggedInUserId).subscribe(result => {
       this.samlSecurityObj = result;
       this. saveSaml2Security();
     });

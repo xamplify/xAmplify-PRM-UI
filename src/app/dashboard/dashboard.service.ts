@@ -1425,7 +1425,16 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
 
     findAllIntegrations(pagination:Pagination){
         let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-        const url = this.superAdminUrl + 'findIntegrations' + this.QUERY_PARAMETERS+pageableUrl;
+        let companyId = pagination.companyId;
+        if(companyId!=null && companyId>0){
+            pageableUrl+="&companyIdFilter="+pagination.companyId;
+        }
+        const url = this.superAdminUrl + 'integrations' + this.QUERY_PARAMETERS+pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    findAllIntegrationCompanyNames() {
+        const url = this.superAdminUrl + 'integrations/companyNames?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
     

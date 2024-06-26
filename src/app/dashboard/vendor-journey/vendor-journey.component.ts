@@ -30,9 +30,11 @@ export class VendorJourneyComponent implements OnInit {
   selectedLandingPageId:any;
   isViewAnalytics:boolean = false;
   openInNewTabChecked: boolean = false;
+  isManageForms:boolean = false;
   isFormAnalytics:boolean = false;
   isEditVendorOrMasterForm:boolean = false;
   selectedFrom:any;
+  importedObject:any={};
   constructor(public landingPageService: LandingPageService, public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
@@ -66,6 +68,7 @@ export class VendorJourneyComponent implements OnInit {
     this.isLandingPages = this.moduleType == "Vendor Pages";
     this.isMasterLandingPages = this.moduleType == "Master Landing Pages";
     this.isFormAnalytics = false;
+    this.isManageForms = false;
     this.isEditVendorOrMasterForm = false;
 
     this.goBack();
@@ -92,7 +95,7 @@ export class VendorJourneyComponent implements OnInit {
 
   viewLandingPageForms(event){
     this.selectedLandingPageId = event;
-    this.isFormAnalytics = true;
+    this.isManageForms = true;
     this.vendorJourneyEditOrViewAnalytics.emit();
   }
 
@@ -100,6 +103,7 @@ export class VendorJourneyComponent implements OnInit {
     this.selectedFrom = event;
     this.isEditVendorOrMasterForm = true;
     this.isFormAnalytics = false;
+    this.isManageForms = false;
     this.vendorJourneyEditOrViewAnalytics.emit();
   }
 
@@ -107,15 +111,17 @@ export class VendorJourneyComponent implements OnInit {
     this.isViewAnalytics = false;
     this.editVendorPage = false;
     this.isFormAnalytics = false;
+    this.isManageForms = false;
     this.isEditVendorOrMasterForm = false;
     this.goBackToMyProfile.emit();
   }
 
   goToManageForms(){
-    this.isFormAnalytics = true;
+    this.isManageForms = true;
     this.isEditVendorOrMasterForm = false;
     this.vendorJourneyEditOrViewAnalytics.emit();
   }
+
   getVendorLogoDetailsByPartnerDetails() {
     let userId = this.authenticationService.getUserId();
     let landingPageId = this.landingPageService.id;
@@ -163,5 +169,13 @@ populateSharedVendorDetails(data:VendorLogoDetails[]){
 }
 landingPageOpenInNewTabChecked(){
   $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", this.openInNewTabChecked);
+}
+
+goToFormAnalytics(event){
+  let data = event;
+  this.importedObject['formAlias'] = data.formAlias;
+  this.importedObject['partnerLandingPageId'] = data.partnerLandingPageId
+  this.isManageForms = false;
+  this.isFormAnalytics = true;
 }
 }

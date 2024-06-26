@@ -8,13 +8,17 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { CustomAnimation } from 'app/core/models/custom-animation';
+
 
 declare var $:any;
 @Component({
   selector: 'app-integration-details',
   templateUrl: './integration-details.component.html',
   styleUrls: ['./integration-details.component.css'],
-  providers :[Properties,SortOption]
+  providers :[Properties,SortOption],
+  animations :[CustomAnimation]
 })
 export class IntegrationDetailsComponent implements OnInit {
   
@@ -22,6 +26,14 @@ export class IntegrationDetailsComponent implements OnInit {
   integrationsLoader = true;
   customResponse:CustomResponse = new CustomResponse();
   sortOption:SortOption = new SortOption();
+
+  companiesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+  selectedCompanyId = 0;
+	dropdownDataLoading = true;
+  isDropDownLoadingError = false;  
+  isAccessOrRefreshTokenEdited = false;
+  selectedIntegratedDetails:any;
+
   constructor(public authenticationService:AuthenticationService, public referenceService:ReferenceService,public pagerService:PagerService,
     public dashboardService:DashboardService,public properties:Properties,public utilService:UtilService) { }
 
@@ -29,15 +41,40 @@ export class IntegrationDetailsComponent implements OnInit {
   }
 
   openModalPopup() {
+    this.integrationsPagination = new Pagination();
+    this.customResponse = new CustomResponse();
+    this.companiesSearchableDropDownDto = new SearchableDropdownDto();
+    this.selectedCompanyId = 0;
+    this.isAccessOrRefreshTokenEdited = false;
     this.referenceService.openModalPopup("integration-details-modal");
     this.findAllIntegrations(this.integrationsPagination);
+    this.findAllCompanyNames();
 }
 
 closeModal(){
   this.referenceService.closeModalPopup("integration-details-modal")
 }
 
+findAllCompanyNames() {
+  this.isDropDownLoadingError = false;
+  this.dropdownDataLoading = true;
+  this.dashboardService.findAllIntegrationCompanyNames().subscribe(
+    response => {
+      this.setSearchableDropdownData(response);
+    }, error => {
+      this.dropdownDataLoading = false;
+      this.isDropDownLoadingError = true;
+    });
+}
+  setSearchableDropdownData(response: any) {
+    this.companiesSearchableDropDownDto.data = response.data;
+		this.companiesSearchableDropDownDto.placeHolder = "Please Select Company";
+		this.dropdownDataLoading = false;
+    this.isDropDownLoadingError = false;
+  }
+
   findAllIntegrations(pagination:Pagination){
+    this.referenceService.scrollToModalBodyTopByClass();
     this.integrationsLoader = true;
     this.customResponse = new CustomResponse();
     this.dashboardService.findAllIntegrations(pagination).subscribe(
@@ -69,7 +106,7 @@ closeModal(){
   }
 
   copyInputMessage(inputElement, type: string, index: number) {
-    $(".success").hide();
+    $(".copied-text-success-message").hide();
     $('#copied-access-token-message-' + index).hide();
     $('#copied-refresh-token-message-' + index).hide();
     inputElement.select();
@@ -90,6 +127,12 @@ sortBy(text: any) {
   this.getAllFilteredResults();
 }
 
+searchIntegrationDetailsOnKeyPress(keyCode:number){
+  if(keyCode==13){
+    this.searchIntegrationDetails();
+  }
+}
+
 
 /*************************Search********************** */
 searchIntegrationDetails() {
@@ -103,5 +146,19 @@ getAllFilteredResults() {
   this.findAllIntegrations(this.integrationsPagination);
 }
 
+searchableDropdownEventReceiver(event:any){
+  if(event!=null){
+    let id = event['id'];
+    this.integrationsPagination.companyId = id;
+  }else{
+    this.integrationsPagination = new Pagination();
+  }
+  this.getAllFilteredResults();
+}
+
+editAccessOrRefreshToken(integrationDetails:any){
+  this.selectedIntegratedDetails = integrationDetails;
+  this.isAccessOrRefreshTokenEdited = true;
+}
 
 }

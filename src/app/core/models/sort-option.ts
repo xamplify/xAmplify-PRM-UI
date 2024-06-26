@@ -422,8 +422,8 @@ export class SortOption {
 	integrationDetailsDropDown = [
 		{ 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
 		{ 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
-		{ 'name': 'Type (ASC)', 'value': 'type-ASC' },
-		{ 'name': 'Type (DESC)', 'value': 'type-DESC' },
+		{ 'name': 'Integration Type (ASC)', 'value': 'type-ASC' },
+		{ 'name': 'Integration Type (DESC)', 'value': 'type-DESC' },
 		{ 'name': 'Created Time (ASC)', 'value': 'createdTime-ASC' },
 		{ 'name': 'Created Time (DESC)', 'value': 'createdTime-DESC' }
 	]

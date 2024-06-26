@@ -14,32 +14,29 @@
   <div class="page-bar">
     <ul class="page-breadcrumb float-right">
       <!--Integration Details-->
-      <li class="topnav-button-css" *ngIf="isLocalHost">
+      <li class="topnav-button-css uppercase-text">
         <button class="btn btn-primary" (click)="openIntegrationDetailsModalPopup()"><span>Find Integration Details</span></button>
       </li>
       <!--Update Email Address-->
-      <li class="topnav-button-css" *ngIf="isLocalHost">
+      <li class="topnav-button-css uppercase-text" *ngIf="isLocalHost">
         <button class="btn btn-primary" (click)="openUpdateEmailAddressModalPopup()"><span>Update Email Address</span></button>
       </li>
        <!--Update Email Address-->
-       <li class="topnav-button-css" *ngIf="isLocalHost">
+       <li class="topnav-button-css uppercase-text" *ngIf="isLocalHost">
         <button class="btn btn-primary" (click)="openUpdateCompanyProfileNameModalPopup()"><span>Update Company Profile Name</span></button>
       </li>
-      <!--Expand/Collpase-->
-      <li class="topnav-button-css">
-        <button class="btn btn-primary" (click)="expandOrCollpase()"><span>Expand All / Collapse All</span></button>
-      </li>
       <!--Upgrade Partner Account-->
-      <li class="topnav-button-css">
+      <li class="topnav-button-css uppercase-text">
         <button class="btn btn-primary" (click)="openUpgradeAccountModal()"><span>Upgrade Partner Account</span><i class="fa fa-level-up" aria-hidden="true"></i></button>
       </li>
       <!--Create An Account-->
-      <li class="topnav-button-css">
+      <li class="topnav-button-css uppercase-text">
           <button class="btn btn-primary" (click)="createNewAccount()"><span>Create An Account</span><i class="fa fa-user" aria-hidden="true"></i></button>
       </li>
     </ul>
   </div>
   <div>
+    <button class="btn btn-default full-width uppercase-text" (click)="expandOrCollpase()"><span>Expand All / Collapse All</span></button>
     <!--List All Users-->
     <app-list-all-users></app-list-all-users> 
     <!--Processing User Lists-->
