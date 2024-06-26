@@ -503,6 +503,7 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   private updateDashboardButton() {
+    this.referenceService.scrollSmoothToTop();
     this.ngxLoading = true;
     this.vanityURLService.updateCustomLinkDetails(this.customLinkDto,this.moduleType,this.formData).subscribe(result => {
       if (result.statusCode === 200) {
