@@ -2000,19 +2000,19 @@ p.pa-TextTwo {
 .pa-CardTwo:hover p {
   background-color: #22313a !important;
 }
-.pa-CardThree {
+.pa-CardThree, p.pa-TextTwelv, .pa-CardTwelve {
   color: #ffffff !important;
 }
 p.pa-TextThree {
   color: #ffffff !important;
 }
-.pa-CardThree:hover {
+.pa-CardThree:hover, .pa-CardTwelve:hover {
   background-color: #22313a !important;
 }
-.pa-CardThree {
+.pa-CardThree, .pa-CardTwelve {
   background-color: #22313a42 !important;
 }
-.pa-CardThree:hover p {
+.pa-CardThree:hover p, .pa-CardTwelve:hover p {
   background-color: #22313a !important;
 }
 .pa-CardFour {
@@ -2567,4 +2567,4 @@ span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input {
 }
 /***** Sudha Sri(25-6-2024) *****/
 .lead-details-border{border: 2px solid #2f4857 !important;}
-hr{border-top: 0.5px solid #2f4857 !important;}
+button.button.bgcolor-unset{border:none !important}

@@ -180,8 +180,8 @@ h6 {
 .pagination .active > a,
 .pagination .active > a:hover,
 .nav-tabs > li > a:hover {
-  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
-  border: 1px solid #d0d5db !important;
+  background: #1C84FF !important;
+  border: 1px solid #266dc1 !important;
   color: #fff !important;
   box-shadow: none !important;
 }
@@ -280,7 +280,7 @@ ul.alt-row-style1 li:hover,
 .filter.landing-page-selected{
   border: 0px solid #ececec !important;
   border-radius: 5px !important;
-  background-image: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #0276FF !important;
   box-shadow: -5px -5px 10px #d6dadf, 5px 5px 10px #ffffff !important;
   color:#fff !important;
 }
@@ -1983,12 +1983,11 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   color: #000 !important;
   border: 1px solid #d0d5db !important;
   box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff !important;
-}
-.mix-filter li:hover,
+},
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
 .mix-filter li.emailtemplate-selected {
-  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #0276FF !important;
   box-shadow: none !important;
 }
 .table-responsive {
@@ -3566,6 +3565,7 @@ button.glyphicon.glyphicon-remove.search-box-item-clear {
   margin-top: -1px !important;
   padding-left: 8px !important;
   padding-bottom: 4px !important;
+  border: none !important;
 }
 button#add_contact,
 button#copyFrom_clipboard,
@@ -3707,7 +3707,7 @@ label.ng-tns-c10-0.btn.btn-primary.button-border,
 label.ng-tns-c10-0.btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow,
 label.ng-tns-c10-19.btn.btn-primary.button-border,
 label.ng-tns-c10-19.btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow {
-  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  background-color: #0276FF !important;
 }
 span.text-algn.ng-tns-c10-0 {
   color: #fff;
@@ -3747,7 +3747,7 @@ div#reply-3:hover {
 button.btn.btn-primary.dropdown-toggle.rounded-0,
 button.group-name-cclass.btn-primary.default-btn-cursor,
 button.btn.btn-primary.breadcrumb-right-btn{
-  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #0276FF  !important;
 }
 /* Sudha Sri(23-1-2024) */
 button.btn.btn-primary.button-blue.add_icon_bg:hover{
@@ -3761,7 +3761,7 @@ button.btn.btn-primary.button-blue.add_icon_bg:hover{
   color: #000 !important;
 }
 .btn-success:hover {
-  background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important;
+  background-color: #1C84FF !important;
 }
 .setting-icon-cu{
   border: none !important;
@@ -3936,7 +3936,7 @@ li.active a.text-white.active-tab-anchor-text{
 .mix-filter li.contact-filter-selected {
   border: 0px solid #ececec !important;
   border-radius: 5px !important;
-  background-image: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #0276FF !important;
   box-shadow: none !important;
   color:#fff !important;
 }
@@ -3951,10 +3951,11 @@ h5.mt0.pos_mrg_top12{
   margin-top: 13px !important;
 }
 button.swal2-confirm.styled,.link button{
-  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;;
+  background: #0276FF !important;
+  border: 1px solid #266dc1 !important;
 }
 button.swal2-confirm.styled:hover {
-  background:  linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
+  background: #1C84FF !important;
 }
 button.swal2-cancel.styled{
   background: linear-gradient(65deg, #2b343a 0, #8c9594 100%) !important;
@@ -4334,3 +4335,13 @@ i.fa.fa-trash-o.trashIconCustomization.bgcolor_change:hover{
   background: #cb5a5e !important;
   border: none !important;
  }
+/***** Sudha Sri(26-6-2024) *****/
+.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v{background-color: unset !important;}
+button.btn.btn-primary.dropdown-toggle.rounded-0:hover{background-color: #1C84FF !important;}
+.mix-filter li:hover{
+  background-color: #1C84FF !important;
+  box-shadow:none !important;
+}
+li.campaign-type-selected{background-color: #0276FF !important;}
+.activated-btn{border: none !important;}
+div > button.activated-btn:hover{background-color: #29dd50 !important;}
