@@ -69,12 +69,12 @@
                       <ng-container *ngIf="integrationDetails?.accessToken">
                         <div class="copy-link-display">
                           <span>
-                            <input class="blur-text" type="text"  readonly="readonly"  value="{{integrationDetails.accessToken}}" #copiedValue><br>
+                            <input class="blur-text" type="text" id="copy-link"  readonly="readonly"  value="{{integrationDetails.accessToken}}" #copiedValue><br>
                           </span>
                           <span class="modal-icon ml10" id="copy-access-token-span-{{i}}">
-                            <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(copiedValue,'Access Token',i)">
-                                <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
-                                <i class="fa fa-pencil IconCustomization campaignViewIcon ml5" (click)="editAccessOrRefreshToken(integrationDetails)" aria-hidden="true"></i>
+                            <a class="custom-icon" >
+                                <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(copiedValue,'Access Token',i)"></i>
+                                <i class="fa fa-pencil IconCustomization campaignViewIcon ml5" aria-hidden="true"  data-toggle="tooltip" data-placement="top" title="Edit"  (click)="editAccessOrRefreshToken(integrationDetails)"></i>
                                 <div class="clickicons"></div>
                             </a>
                           </span>
@@ -94,12 +94,12 @@
                       <ng-container *ngIf="integrationDetails?.refreshToken">
                       <div class="copy-link-display">
                         <span>
-                          <input class="blur-text" type="text"  readonly="readonly"  value="{{integrationDetails.refreshToken}}" #copiedValue><br>
+                          <input class="blur-text" type="text" id="copy-link" readonly="readonly"  value="{{integrationDetails.refreshToken}}" #copiedValue><br>
                         </span>
                         <span class="modal-icon ml10" id="copy-refresh-token-span-{{i}}">
-                          <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(copiedValue,'Refresh Token',i)">
-                              <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
-                              <i class="fa fa-pencil IconCustomization campaignViewIcon ml5" (click)="editAccessOrRefreshToken(integrationDetails)" aria-hidden="true"></i>
+                          <a class="custom-icon">
+                              <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(copiedValue,'Refresh Token',i)"></i>
+                              <i class="fa fa-pencil IconCustomization campaignViewIcon ml5" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editAccessOrRefreshToken(integrationDetails)" ></i>
                               <div class="clickicons"></div>
                           </a>
                         </span>
