@@ -146,6 +146,7 @@ export class AddDealComponent implements OnInit {
   isCampaignTicketTypeSelected: boolean = false;
   existingHalopsaDealTicketTypeId: any;
   isCopiedToClipboard : boolean = false;
+  isCreatedByStageIdDisable: boolean = false;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -1443,9 +1444,13 @@ export class AddDealComponent implements OnInit {
         );
         self.createdByStages = createdByPipeline.stages;
         self.deal.createdByPipelineStageId = createdByPipelineStage.id;
+        self.isCreatedByStageIdDisable = true;
       }  else {
         self.createdByStages = createdByPipeline.stages;
+        self.isCreatedByStageIdDisable = false;
       }
+      self.activeCRMDetails.hasCreatedByPipeline = true;
+      self.activeCRMDetails.hasDealPipeline = true;
     } else {
       let createdByPipelineExist = false;
       for (let p of createdByPipelines) {
