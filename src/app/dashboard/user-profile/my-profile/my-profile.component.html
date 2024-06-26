@@ -142,7 +142,7 @@
                                         <li [ngClass]="{'active-tab': activeTabName == 'settings'}"
                                             [class.disabled]="authenticationService.isSuperAdmin()">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}"
-                                                (click)="activateTab('settings');clearCustomResponse();getSelectedDashboardForPartner();checkDashboardTypes()">
+                                                (click)="activateTab('settings');clearCustomResponse();getSelectedDashboardForPartner();">
                                                 {{properties.viewType}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
                                                     [ngTemplateOutletContext]="{'moduleName':'settings'}"></ng-template>
@@ -3364,7 +3364,7 @@
                                                     <span class="checkmark"></span>
                                                 </label>
                                                 <label class="container-checkbox-xamplify"
-                                                    translate>{{getDashboardForSelectedOption}}
+                                                    translate>Dashboard
 
                                                     <input class="radioButton_shadow" type="radio"
                                                         name="dashboardSelectedOption"
