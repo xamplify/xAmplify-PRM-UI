@@ -2,10 +2,10 @@
 .btn-primary::before,
 .button_blue::before,
 div.Btn-Green:hover,
-.button::before ,
+.button::before,
 /** 23-01-2024 **/
 .btn-success:hover {
-  background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important;
+  background: #1C84FF !important;
   box-shadow: none !important;
   border-radius: 7px !important;
 } 
@@ -149,15 +149,18 @@ i.disabled, a.inactive {
 }
 .mix-filter-li-selected,
 li.mix-filter-li-selected,
-li.mix-filter-li-selected:hover,
-ul.alt-row-style1 li:hover,
 .filter.form-selected,
 .filter.landing-page-selected,
-.mix-filter li.contact-filter-selected,
+.mix-filter li.contact-filter-selected{
+  background: #0276FF !important;
+  box-shadow: none !important;
+}
 .mix-filter li:hover, .mix-filter li.active, 
 .mix-filter li.campaign-type-selected, 
-.mix-filter li.emailtemplate-selected {
-  background-image: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+.mix-filter li.emailtemplate-selected,
+li.mix-filter-li-selected:hover,
+ul.alt-row-style1 li:hover {
+  background: #1C84FF !important;
   box-shadow: none !important;
   border-radius: 5px;
 }
@@ -166,7 +169,7 @@ ul.alt-row-style1 li:hover,
 .filter.form-selected:hover,
 .filter.landing-page-selected:hover,
 .mix-filter li.contact-filter-selected:hover {
-  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #1C84FF !important;
   box-shadow: none !important;
   border-radius: 5px;
 }

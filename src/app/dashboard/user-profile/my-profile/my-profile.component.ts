@@ -325,7 +325,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	updateDashboardError = false;
 	modulesDashboardForPartner: CustomResponse = new CustomResponse();
 	defaultSelectedDashboardTypeSetting = this.getSelectedDashboardForPartner();
-	checkSelectedDashboardType = [];
+
 	companyIdFromCompanyProfileNameForVanity: number;
 	removeMarketingNonInteractiveBox: boolean = false;
 	/** XNFR-426 **/
@@ -2883,26 +2883,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 					}
 				});
 		}
-	}
-
-	checkDashboardTypes() {
-		this.userService.getDashboardType().
-			subscribe(
-				data => {
-					this.checkSelectedDashboardType = data;
-				}
-			);
-	}
-
-	get getDashboardForSelectedOption(): string {
-		this.refService.filterArrayList(this.checkSelectedDashboardType, 'Welcome');
-		if (this.checkSelectedDashboardType.includes('Advanced Dashboard')) {
-			return 'Advanced Dashboard';
-		}
-		else if (this.checkSelectedDashboardType.includes('Detailed Dashboard')) {
-			return 'Detailed Dashboard';
-		}
-		else return 'Dashboard';
 	}
 
 	selectedLanguage(event: any) {

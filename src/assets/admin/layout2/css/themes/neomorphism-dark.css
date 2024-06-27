@@ -2353,10 +2353,11 @@ left-menu-color ul li a,
   border: 0px solid #2f4857 !important;
   color: #fff !important;
 }
-
-.Btn-Gray:hover,
-.btn-primary:hover,
 .campaign-box:hover,
+.Btn-Gray:hover{
+  background: none !important;
+}
+.btn-primary:hover,
 .custom:hover,
 .btnND:hover,
 .shadow-inset:hover,
@@ -2640,6 +2641,7 @@ span.input-group-btn {
 button.glyphicon.glyphicon-remove.search-box-item-clear {
   box-shadow: none !important;
   background: none !important;
+  border: none !important;
 }
 .angle-down {
   color: #191b1e !important;
@@ -4155,7 +4157,6 @@ button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4, button.search-box-item-click, but
 }
 button.button.bgcolor-unset, button#copyFrom_clipboard,button#add_contact,
 .mix-filter li.campaign-type-selected,
-.mix-filter li:hover,
 button.group-name-cclass.btn-primary.default-btn-cursor{
   background: #0276FF !important;
   border: 1px solid #266dc1 !important;
@@ -4181,4 +4182,5 @@ button.search-box-item-click:hover {
 span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input {
   color: #fff;
 }
-
+/***** Sudha Sri(26-6-2024) *****/
+.lead-details-border{border: 2px solid #191b1e !important;}
