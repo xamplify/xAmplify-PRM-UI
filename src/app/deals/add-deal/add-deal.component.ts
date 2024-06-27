@@ -1614,6 +1614,8 @@ export class AddDealComponent implements OnInit {
       if (this.hasCampaignPipeline && 'HALOPSA' !== this.activeCRMDetails.createdForActiveCRMType) {
         this.hasCampaignPipeline = false;
       }
+    } else if (this.actionType == 'add' && 'HALOPSA' == this.activeCRMDetails.createdForActiveCRMType) {
+      this.isCampaignTicketTypeSelected = false;
     }
     if (this.actionType == 'edit' && this.lead.campaignId != null && this.lead.campaignId > 0) {
       if ('HALOPSA' !== this.activeCRMDetails.createdForActiveCRMType) {
