@@ -39,6 +39,9 @@
     top: -82px !important;
     left: 93px;
   }
+ .copy_text_area_border{
+    width: 100%!important;
+  }
 }
 
 .cloud-items {

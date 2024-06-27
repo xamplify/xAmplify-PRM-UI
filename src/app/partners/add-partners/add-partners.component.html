@@ -474,7 +474,7 @@
         </div>
         <!-----Legal Basis Options -->
         <div *ngIf=" ((gdprStatus && filePreview) || (clipBoard) || (gdprStatus && selectedAddPartnerOption==2) )"
-            class="col-sm-12 form-group portlet light cloud_legal_basis">
+            class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group portlet light cloud_legal_basis">
             <a class="close-circle" *ngIf="clipBoard" data-dismiss="modal" (click)="cancelPartners()"><i
                     class="fa fa-times"></i></a>
             <div class="form-group"
@@ -698,7 +698,7 @@
                                 </select>
                             </div>
                             <div class="col-xs-6" style="margin-bottom: 10px">
-                                <button class="button bgcolor-unset" type="button" (click)="clipboardShowPreview()"
+                                <button class="button bgcolor-unset p0" type="button" (click)="clipboardShowPreview()"
                                     translate><span class="btn Btn-Green transition txt_pd-top3">Verify
                                         Data</span></button>
                             </div>
