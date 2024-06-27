@@ -240,8 +240,8 @@ export class Properties {
 
 	teamMemberGroups = 'Team Member Groups';
 
-	activeMasterPartnerList = 'Active Master Partner List';
-	inActiveMasterPartnerList = 'Inactive Master Partner List';
+	activeMasterPartnerList = 'Active Master Partner Group';
+	inActiveMasterPartnerList = 'Inactive Master Partner Group';
 
 	sandboxText = "The xAmplify Sandbox instance is ideal for safely designing, loading, updating, and testing all modules of the platform. The xAmplify Sandbox instance type can be used only for testing or user acceptance testing.";
 	oneClickLaunch = "One-Click Launch";

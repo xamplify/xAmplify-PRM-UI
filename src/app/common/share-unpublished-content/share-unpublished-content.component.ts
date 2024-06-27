@@ -67,8 +67,8 @@ export class ShareUnpublishedContentComponent implements OnInit {
       this.hasCampaignAccess = !this.isPartnersRouter;
     }
     accessList.push(this.hasCampaignAccess);
-    let isActiveMasterPartnerList = $.trim(userListName)=="Active Master Partner List";
-    let isInActiveMasterPartnerList = $.trim(userListName)=="Inactive Master Partner List";
+    let isActiveMasterPartnerList = $.trim(userListName)=="Active Master Partner Group";
+    let isInActiveMasterPartnerList = $.trim(userListName)=="Inactive Master Partner Group";
     let isActiveOrInActiveMasterPartnerList = isActiveMasterPartnerList || isInActiveMasterPartnerList;
     accessList.push(this.hasDamAccess && !isActiveOrInActiveMasterPartnerList);
     accessList.push(this.hasLmsAccess && !isActiveOrInActiveMasterPartnerList);
