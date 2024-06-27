@@ -15,6 +15,7 @@ import { Properties } from 'app/common/models/properties';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { LeadCustomFieldDto } from '../models/lead-custom-field';
 
 declare var swal, $, videojs: any;
 
@@ -82,12 +83,13 @@ export class AddLeadComponent implements OnInit {
   isCreatedForStageIdDisable: boolean = false;
   isCampaignTicketTypeSelected: boolean = false;
   existingHalopsaLeadTicketTypeId: any;
+  leadCustomFields = new Array<LeadCustomFieldDto>();
 
   industries = [
     "Select Industry", "Agriculture", "Apparel", "Banking", "Biotechnology", "Chemicals", "Communications", "Construction", "Consulting", "Education",
     "Electronics", "Energy", "Engineering", "Entertainment", "Environmental", "Finance", "Food & Beverage", "Government", "Healthcare", "Hospitality",
     "Insurance", "Machinery", "Manufacturing", "Media", "Not For Profit", "Recreation", "Retail", "Shipping", "Technology", "Telecommunications",
-    "Transportation", "Utilities","Other"
+    "Transportation", "Utilities", "Other"
   ];
 
 
@@ -103,6 +105,7 @@ export class AddLeadComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getLeadCustomFields();
     $('#leadFormModel').modal('show');
     this.errorMessage = "";
     this.lead.createdForCompanyId = 0;
@@ -864,6 +867,19 @@ export class AddLeadComponent implements OnInit {
       this.lead.createdForPipelineStageId = 0;
     }
     this.getLeadPipelines();
+  }
+
+  getLeadCustomFields() {
+    this.ngxloading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.getLeadCustomFields().subscribe(data => {
+      this.ngxloading = false;
+      this.referenceService.loading(this.httpRequestLoader, false);
+      if (data.statusCode == 200) {
+        this.leadCustomFields = data.data;
+        console.log(this.leadCustomFields);
+      }
+    });
   }
 
 }

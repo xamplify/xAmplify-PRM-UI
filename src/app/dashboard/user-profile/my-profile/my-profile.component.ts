@@ -360,6 +360,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	zohoRibbonText: string;
 	/** XNFR-534 **/
 	showSaml2SSOsettings: boolean = false;
+	showleadFieldSettings : boolean = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -1917,7 +1918,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == "saml2SSOsettings") {
 			this.showSaml2SSOsettings = true;
 			this.activeTabHeader = this.properties.saml2SSOsettings;
-		} 
+		}
 		else if (this.activeTabName == "gdpr") {
 			this.activeTabHeader = this.properties.gdprSettings;
 			this.getGdprSettings();
@@ -2110,7 +2111,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.masterLandingPages;
+		}/*****XNFR-592 ******/
+		else if (this.activeTabName == "leadFieldSettings") {
+			this.activeTabHeader = this.properties.leadFieldSettings;
+			this.showleadFieldSettings = true;
 		}
+
 		this.referenceService.scrollSmoothToTop();
 	}
 
@@ -4552,7 +4558,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 					const temp = this.defaultThemes[lastIndex];
 					this.defaultThemes[lastIndex] = this.defaultThemes[lastIndex - 1];
 					this.defaultThemes[lastIndex - 1] = temp;
-				  }
+				}
 				if (this.isProduction && !isDemoAccount) {
 					this.defaultThemes = this.defaultThemes.filter((item) => item.name != "Glassomorphism Light");
 					this.defaultThemes = this.defaultThemes.filter((item) => item.name != "Glassomorphism Dark");

@@ -189,6 +189,7 @@ import { FilePreviewComponent } from 'app/util/file-preview/file-preview.compone
 import { BackgroundImageUploadComponent } from 'app/util/background-image-upload/background-image-upload.component';
 import { DomainWhitelistingComponent } from 'app/util/domain-whitelisting/domain-whitelisting.component';
 import { SamlSsoLoginComponent } from 'app/dashboard/saml-sso-login/saml-sso-login.component';
+import { LeadCustomFieldsSettingsComponent } from 'app/dashboard/lead-custom-fields-settings/lead-custom-fields-settings.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -225,7 +226,7 @@ import { SamlSsoLoginComponent } from 'app/dashboard/saml-sso-login/saml-sso-log
 		TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
-		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent
+		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent
 
 
 	],
@@ -263,7 +264,7 @@ import { SamlSsoLoginComponent } from 'app/dashboard/saml-sso-login/saml-sso-log
 		InteractedNotInteractedTrackDetailsComponent,TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
-		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent
+		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent
 
 
 	]

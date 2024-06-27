@@ -1,0 +1,33 @@
+<div class="my-container">
+  <div class="table-responsive">
+    <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
+    <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
+      <table class='table tgrid'>
+        <thead>
+          <tr>
+            <th>Field Name</th>
+            <th>PlaceHolder</th>
+            <th>Display Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let leadField of leadCustomFields ">
+            <tr>
+              <td class="text-center"><input type="text" class="form-control" [(ngModel)]="leadField.labelName"
+                  [ngModelOptions]="{standalone: true}" readonly="readonly">
+              </td>
+              <td class="text-center"><input type="text" class="form-control" [(ngModel)]="leadField.placeholder"
+                  [ngModelOptions]="{standalone: true}">
+              </td>
+              <td class="text-center"><input type="text" class="form-control" [(ngModel)]="leadField.displayName"
+                  [ngModelOptions]="{standalone: true}">
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <button type="button" class="button_blue bgcolor-unset pr0 px-9" (click)="saveLeadCustomFields()"><span
+            class="btn btn-primary transition txt_pd-top3">Submit</span></button>
+    </ng-container>
+  </div>
+</div>
