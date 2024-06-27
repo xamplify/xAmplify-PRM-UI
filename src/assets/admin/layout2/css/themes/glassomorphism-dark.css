@@ -1976,9 +1976,9 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .btn-group button{
   background-color: #0276FF !important;
 
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb !important;
 
-  border: 1px solid #1ca6f369 !important;
+  /* border: 1px solid #1ca6f369 !important; */
 
 }
 
@@ -2529,7 +2529,7 @@ button.btn.custom {
   background-color: #0276FF !important;
   color: #fff !important;
 
-  border:  1px solid #266dc1 !important;
+  border:  1px solid #026deb !important;
 
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu {
@@ -2650,7 +2650,7 @@ button#cancel_button:active {
   position: relative !important;
   overflow: hidden !important;
   height: 3.5rem !important;
-	border-radius: 8px !important;
+	border-radius: 7px !important;
 	color: #fff !important;
 }
 .Btn-Gray:hover{
@@ -2781,11 +2781,11 @@ justify-content: center!important;
     position: relative !important;
     overflow: hidden !important;
     height: 3.5rem !important;
-    border-radius: 8px !important;
+    border-radius: 7px !important;
     background: #0276FF !important;
     color: #fff !important;
 
-    border: 1px solid #266dc1 !important;
+    border: 1px solid #026deb !important;
 
     margin-left: 4px;
   }
@@ -3459,10 +3459,10 @@ i.download_file:hover {
 .icons-center{
   display: block;
 }
-button#save\&delete_button {
+/* button#save\&delete_button {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background: rgb(146 151 179 / 8%) !important;
-}
+} */
 .mrgt1-2{
   margin-top:2px!important;
   }
@@ -3764,7 +3764,7 @@ img.email-template-preview.image_effect.template_image_border {
 .btn-primary,
 .btn.Btn-Green.fileinput-button-css{
   background: #0276FF !important;
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb !important;
 
 }
 .aspect_ratio{
@@ -3929,7 +3929,7 @@ button.btn.btn-xs.hidden-xs.l-g-view{
 }
 button.group-name-cclass.btn-primary.default-btn-cursor{
   background-color: #0276FF !important;
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb !important;
 }
 /***** Sudha Sri(13-06-2024) *****/
 .lt-blue-c:hover, .lt-green-c:hover,
@@ -3949,6 +3949,31 @@ button.btn.btn-xs.hidden-xs.l-g-view {
   background: rgb(146 151 179 / 13%) !important;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu .dropdown-menu-list > li > a:hover, ul.alt-row-style1 li:hover{background: rgb(146 151 179 / 13%) !important;}
+
+/**** 27 -06 -2024 (Tharak)******/
+/* .selectRecord,
+button#save\&delete_button {
+  background-color: #0276FF !important;
+  color: #fff !important;
+  border: 1px solid #026deb !important;
+}
+button#cancel_button {
+  border-radius: 3px !important;
+  border: none !important;
+}
+.color-flow-button {
+  border:1px solid #026deb !important ;
+}
+
+.help-iconbgadd a {
+  color: #fff !important;
+} */
+.dynamic_tbl_btn {
+  margin-right: 6px !important;
+}
+.help-iconbgadd {
+  border: 1px solid #026deb !important;
+}
 
 
 
