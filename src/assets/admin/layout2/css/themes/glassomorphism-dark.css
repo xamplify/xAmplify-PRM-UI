@@ -2027,7 +2027,7 @@ thead > tr {
 tbody {
   background: rgba(16 18 27 / 40%) !important;
   border-radius: 0px 0px 10px 10px !important;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px); */
   border: 1px solid #ffffff33 !important;
 }
 /* table header border top remove */
@@ -2203,7 +2203,7 @@ a.UserguideBtnCustomization {
 }
 .table tbody tr:hover {
   background-color: rgb(146 151 179 / 8%) !important;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px); */
 }
 .neumorphismDark li a {
   appearance: none;
@@ -3840,7 +3840,9 @@ button.button.bgcolor-unset:hover {
 .dashboard-stat.blue-sharp .visual > i,
 .dashboard-stat.blue-soft .visual > i{
   color: #ffffff !important;
-  opacity: 0.7 !important;
+  /* opacity: 0.7 !important; */
+  opacity: 0.9 !important;
+  font-size: 40px !important;
 }
 .alert-info {
     background-color: rgb(0 0 0 / 45%) !important;
@@ -3859,8 +3861,11 @@ button#copyFromClipBoard:hover,
 button#uploadCSV:hover{
   transform: scale(1.02);
 }
-.more{
-  opacity: 0.9 !important;
+.dashboard-stat .more,
+.dashboard-stat.yellow-gold {
+  opacity: 1;
+  font-weight: 600;
+  /* color: #fff !important; */
 }
 button.swal2-confirm.styled{
   background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
@@ -3974,6 +3979,13 @@ button#cancel_button {
 .help-iconbgadd {
   border: 1px solid #026deb !important;
 }
-
+.help-iconbgadd a {
+  color: #fff !important;
+}
+tbody.neo-border-radius10 {
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
 
 
