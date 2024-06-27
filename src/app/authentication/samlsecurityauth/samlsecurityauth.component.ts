@@ -121,20 +121,17 @@ export class SamlsecurityauthComponent implements OnInit {
       // } 
       if (this.moduleToRedirect === 'campaigns') {
         this.router.navigateByUrl('/home/campaigns/partner/all');
-      } 
-      else if (this.moduleToRedirect === 'playbooks') {
+      } else if (this.moduleToRedirect === 'playbooks') {
         this.router.navigateByUrl('/home/playbook/shared');
-      } 
-      else if (this.moduleToRedirect === 'tracks') {
+      } else if (this.moduleToRedirect === 'tracks') {
         this.router.navigateByUrl('/home/tracks/shared');
-      } 
-     else if (this.moduleToRedirect === 'assets') {
+      } else if (this.moduleToRedirect === 'assets') {
         this.router.navigateByUrl('/home/dam/shared');
-      }
-      else if (this.moduleToRedirect === 'pages') {
+      } else if (this.moduleToRedirect === 'pages') {
         this.router.navigateByUrl('/home/pages/partner');
-      }  
-      else {
+      } else if (this.moduleToRedirect === 'home') {
+        this.router.navigateByUrl('/home/dashboard');
+      } else {
         this.router.navigate(['/home/dashboard/add-company-profile']);
       }
     }, (error) => {
