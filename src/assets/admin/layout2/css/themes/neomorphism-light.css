@@ -180,8 +180,8 @@ h6 {
 .pagination .active > a,
 .pagination .active > a:hover,
 .nav-tabs > li > a:hover {
-  background: #1C84FF !important;
-  border: 1px solid #266dc1 !important;
+  background: #0276FF !important;
+  border: 1px solid #026deb !important;
   color: #fff !important;
   box-shadow: none !important;
 }
@@ -4350,11 +4350,13 @@ li.campaign-type-selected{background-color: #0276FF !important; border:1px solid
 .activated-btn{border: none !important;}
 div > button.activated-btn:hover{background-color: #29dd50 !important;}
 /***** Sudha Sri(27-6-2024) *****/
-button.button.bgcolor-unset, button#add_contact, button#copyFrom_clipboard{background-color: #0276FF !important;border:1px solid #026deb !important;}
+button.button.bgcolor-unset, button#add_contact, button#copyFrom_clipboard, .btn-success{background-color: #0276FF !important;border:1px solid #026deb !important;}
 button.search-box-item-click, button.search-box-item-click:hover {background: none !important;border: none !important;}
 li.campaign-type-selected, button.btn.btn-primary.add-btn, .mix-filter li.contact-filter-selected{border-radius: 3px !important;}
 .Btn-Green, .btn-primary{border-radius : 7px !important;}
-button#save\&delete_button:hover, button#add_contact:hover, button#copyFrom_clipboard:hover{background-color: #1C84FF !important;}
+button#save\&delete_button:hover, button#add_contact:hover, button#copyFrom_clipboard:hover, .btn-success:hover{background-color: #1C84FF !important;}
 a.title.padding_bottom.text-color.content-bg.m0, .col-md-6.col-lg-6.track-title.text-color.content-bg, a.title.padding_bottom.text-color.content-bg.row-space{box-shadow: none !important;}
 .dynamic_tbl_btn{margin-right: 6px !important;}
-button#cancel_button {border-radius: 3px !important;}
+button#cancel_button, button.button_blue.bgcolor-unset.p0.btn-transitions.mrgt1-2 {border-radius: 3px !important;}
+/* button.button_blue.bgcolor-unset.pd_top0{border-radius: 5px !important;} */
+.mix-filter li.emailtemplate-selected{color:#fff;}
