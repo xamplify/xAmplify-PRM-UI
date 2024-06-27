@@ -72,7 +72,7 @@ export class Properties {
 
 	PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your partner list has been updated successfully and any selected campaigns have been launched.";
 
-	PARTNERS_CREATE_SUCCESS = "Your Partner List has been created successfully.";
+	PARTNERS_CREATE_SUCCESS = "Your Partner Group has been created successfully.";
 	PARTNERS_CREATE_ERROR = "An error occured while creating";
 
 	PARTNERS_UPDATE_SUCCESS = "Your Partner has been updated successfully.";
