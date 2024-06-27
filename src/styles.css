@@ -2065,13 +2065,13 @@ button.glyphicon.glyphicon-remove.search-box-item-clear:before {
 /* btn-primary */
 .btn-primary {
   background-color: #0276FF !important;
-  border-color: #1ca6f3 !important;
-  border-radius: 4px;
+  border-color: 1px solid #026deb !important;
+  border-radius: 7px;
   padding: 7px 14px;
 }
 .btn-primary:hover {
-  background-color: #1C84FF;
-  border-color: #1ca6f3;
+  background-color: #1C84FF!important;
+  border-color: 1px solid #026deb !important;
 }
 
 /* btn-danger */
@@ -2109,15 +2109,15 @@ fieldset[disabled] .btn-danger.active {
 
 /* Site green button "success message" */
 .Btn-Green {
-  background-color: #0276FF !important;
-  border-color: #1ca6f3 !important;
+  background-color: #0276FF;
+  border-color: 1px solid #026deb !important;
   color: #ffffff;
-  border-radius: 4px;
+  border-radius: 7px;
   padding: 7px 14px;
 }
 .Btn-Green:hover {
   background-color: #1C84FF;
-  border-color: #1ca6f3;
+  border-color: 1px solid #026deb !important;
 }
 .Btn-Green.btn:hover {
   color: #fff;
@@ -2135,7 +2135,7 @@ fieldset[disabled] .btn-danger.active {
   background-color: #5a6268 !important;
   border-color: #5a6268;
   color: #ffffff;
-  border-radius: 4px;
+  border-radius: 7px;
   padding: 7px 14px;
 }
 .Btn-Gray:hover {
@@ -3161,4 +3161,17 @@ button.button_blue.bgcolor-unset.p0.btn-transitions.mrgt1-2{border-radius: 7px;}
 
 .cursor-default {
   cursor: default !important;
+}
+button#save\&delete_button {
+  border-radius: 4px;
+}
+button#cancel_button {
+  border-radius: 3px !important;
+  border: none !important;
+}
+.btn{
+  border-radius: 7px;
+}
+.mrg_rgt8{
+  margin-right: 6px;
 }

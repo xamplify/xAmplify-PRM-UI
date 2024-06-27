@@ -46,7 +46,7 @@
   <app-list-loader *ngIf="httpRequestLoader?.isLoading && (isTeamMemberDomains || isPartnerDomains)"></app-list-loader>
   <div class="portlet-body clearfix neg_mrg_top14" style="padding: 0px;">
     <div [ngClass]="{'': isCollapsed, 'collapse': !isCollapsed}" id="domainTemplate">
-      <div class="panel-body" style="padding: 0px;">
+      <div class="panel-body mpx-0" style="padding: 0px;">
         <!--Team Member Domains-->
         <ng-template *ngIf="isTeamMemberDomains" [ngTemplateOutlet]="domainsNgTemplate"></ng-template>
         <!--Partner Domains-->
