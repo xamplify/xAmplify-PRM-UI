@@ -129,6 +129,7 @@ export class Module {
     xamplifyCustomerSupportContactNumber = "";
     /***XBI-2313***/
     isInstanceNavigationLinksOptionDisplayed = false;
+    isPaymentOverDueModalPopUpDisplayed = false;
 
 
 }

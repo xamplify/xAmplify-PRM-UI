@@ -28,8 +28,6 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 @Injectable()
 export class DashboardService {
-  
-    
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/";
@@ -1437,5 +1435,12 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         const url = this.superAdminUrl + 'integrations/companyNames?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
+
+    /*****XNFR-595****/
+    isPaymentOverDue() {
+        const url = this.url + 'isPaymentOverDue/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
     
 }

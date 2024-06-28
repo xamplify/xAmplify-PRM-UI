@@ -195,6 +195,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   redirectTo(user: User) {
+    this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed = true;
     const roles = user.roles;
     if (this.authenticationService.isSuperAdmin()) {
       this.router.navigate(['/home/dashboard/admin-report']);
@@ -295,7 +296,9 @@ bgIMage2:any;
               this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
             } else if (params.error === "server_error_message") {
               this.setCustomeResponse("ERROR", this.properties.serverErrorMessage);
-            }            
+            } else if (params.error === "authentication_failed") {
+              this.setCustomeResponse("ERROR", this.properties.AUTHENTICATION_FAILURE);
+            }           
           }
         );
 

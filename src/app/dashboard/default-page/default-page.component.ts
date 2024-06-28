@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -8,6 +8,7 @@ import { UserService } from '../../core/services/user.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { DashboardService } from '../dashboard.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+declare var swal:any ,$:any;
 @Component({
     selector: 'app-default-page',
     templateUrl: './default-page.component.html',
@@ -23,12 +24,12 @@ export class DefaultPageComponent implements OnInit {
     vendorCompanyIdForPartnerVanity:any;
     loggedThroughVendorVanityUrl:any = true;
     loggedInUserId: number;
-
+    isPaymentOverDue = false;
     constructor(private router: Router, private userService: UserService, private authenticationService: AuthenticationService,
         private referenceService: ReferenceService, private vanityurlService : VanityURLService,private dashBoardService: DashboardService) {
             this.loggedInUserId = this.authenticationService.getUserId();
          }
-
+    
     getDefaultPage(userId: number) {
       if(this.referenceService.userDefaultPage==='WELCOME'|| this.referenceService.userDefaultPage==='DASHBOARD'){
         this.checkDefaultPage(this.referenceService.userDefaultPage);
@@ -40,7 +41,6 @@ export class DefaultPageComponent implements OnInit {
                     this.referenceService.userDefaultPage = "WELCOME";
             },
             () => {
-                console.log(this.defaultPage);
                 this.checkDefaultPage(this.defaultPage);
             }
             );
@@ -94,7 +94,6 @@ export class DefaultPageComponent implements OnInit {
             );
     }
     ngOnInit() {      
-        
         if (!this.referenceService.isMobileScreenSize()) {
             this.isGridView(this.loggedInUserId);
         }
@@ -106,10 +105,33 @@ export class DefaultPageComponent implements OnInit {
     }
     /* -- XNFR-415 -- */
     loadDashboard(){   
-        if (this.authenticationService.vanityURLEnabled  && this.authenticationService.module.loggedInThroughVendorVanityUrl) {
+        let isPartnerLoggedInThroughVendorVanityUrl = this.authenticationService.vanityURLEnabled  && this.authenticationService.module.loggedInThroughVendorVanityUrl;
+        if (isPartnerLoggedInThroughVendorVanityUrl) {
             this.getDefaultDashboardForPartner();
         } else {
-            this.getDefaultPage(this.loggedInUserId);
+            /*****XNFR-595****/
+            this.dashBoardService.isPaymentOverDue().subscribe(
+                response=>{
+                    this.isPaymentOverDue = response.data;
+                    if(this.isPaymentOverDue && this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed){
+                        let buttons = "Please settle your account as soon as possible to avoid any interruptions in service. Please reach out to our customer success team or contact support at <a href='mailto:support@xamplify.com'>support@xamplify.com</a>.";
+                       swal({
+                        title: "Your payment is overdue!!!",
+                        type: "warning",
+                        text: buttons,
+                        allowOutsideClick: false,
+                        confirmButtonText: "OK",
+                        allowEscapeKey:false
+                      });
+                    }
+                    this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed = false;
+                    this.getDefaultPage(this.loggedInUserId);
+                },error=>{
+                    this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed = false;
+                    this.getDefaultPage(this.loggedInUserId);
+                }
+            )
+            
         }
     }
 

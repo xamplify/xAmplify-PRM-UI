@@ -3,6 +3,7 @@ import { LeadsService } from 'app/leads/services/leads.service';
 import { LeadCustomFieldDto } from 'app/leads/models/lead-custom-field';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
+declare var $: any;
 
 @Component({
   selector: 'app-lead-custom-fields-settings',
@@ -17,6 +18,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
   customFieldsDtosLoader = false;
   leadCustomFields = new Array<LeadCustomFieldDto>();
   customResponse: CustomResponse = new CustomResponse();
+  isValid: boolean = false;
 
   ngOnInit() {
     this.getLeadFields();
@@ -37,6 +39,24 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
         this.customFieldsDtosLoader = false;
       }
     );
+  }
+
+  validateAndSubmit() {
+    this.isValid = true;
+    let errorMessage = "";
+    this.leadCustomFields.forEach(field => {
+      if ($.trim(field.displayName).length <= 0) {
+        this.isValid = false;
+         errorMessage = "Please enter the display name";
+      }
+    });
+
+    if (this.isValid) {
+      this.saveLeadCustomFields();
+    } else {
+      this.customResponse = new CustomResponse('ERROR', errorMessage, true);
+      this.referenceService.goToTop();
+    }
   }
 
   saveLeadCustomFields() {
