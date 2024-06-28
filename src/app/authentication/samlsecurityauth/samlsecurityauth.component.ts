@@ -131,6 +131,9 @@ export class SamlsecurityauthComponent implements OnInit {
         this.router.navigateByUrl('/home/pages/partner');
       } else if (this.moduleToRedirect === 'home') {
         this.router.navigateByUrl('/home/dashboard');
+      } else if (this.authenticationService.user.hasCompany) {
+        // this.router.navigateByUrl('/home/dashboard');
+        this.router.navigateByUrl('/home/dashboard/default');
       } else {
         this.router.navigate(['/home/dashboard/add-company-profile']);
       }
