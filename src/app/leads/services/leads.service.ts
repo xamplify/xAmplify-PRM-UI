@@ -12,7 +12,7 @@ import { LeadCustomFieldDto } from '../models/lead-custom-field';
 
 @Injectable()
 export class LeadsService {
-  
+
   URL = this.authenticationService.REST_URL + "lead/";
   constructor(private http: Http, private authenticationService: AuthenticationService,
     private logger: XtremandLogger, private utilService: UtilService) { }
@@ -330,6 +330,7 @@ export class LeadsService {
       .catch(this.handleError);
   }
 
+  /*** XNFR-592 ***/
   getLeadCustomFields() {
     let loggedInUserId = this.authenticationService.getUserId();
     return this.http.get(this.authenticationService.REST_URL + `/lead/custom/fields/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
@@ -343,5 +344,12 @@ export class LeadsService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+  getLeadCustomFieldsByVendorCompany(vendorCompanyId: number) {
+    return this.http.get(this.authenticationService.REST_URL + `/lead/vendor/custom/fields/${vendorCompanyId}?access_token=${this.authenticationService.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
 
 }

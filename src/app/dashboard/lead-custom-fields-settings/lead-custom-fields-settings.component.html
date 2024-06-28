@@ -1,4 +1,5 @@
 <div class="my-container">
+  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <div class="table-responsive">
     <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
     <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
@@ -26,7 +27,7 @@
           </ng-container>
         </tbody>
       </table>
-      <button type="button" class="button_blue bgcolor-unset pr0 px-9" (click)="saveLeadCustomFields()"><span
+      <button type="button" class="button_blue bgcolor-unset pr0 px-9 pull-right" (click)="saveLeadCustomFields()"><span
             class="btn btn-primary transition txt_pd-top3">Submit</span></button>
     </ng-container>
   </div>

@@ -105,7 +105,7 @@ export class AddLeadComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getLeadCustomFields();
+    this.getDefaultLeadCustomFields();
     $('#leadFormModel').modal('show');
     this.errorMessage = "";
     this.lead.createdForCompanyId = 0;
@@ -338,7 +338,8 @@ export class AddLeadComponent implements OnInit {
   onChangeCreatedFor() {
     //this.validateField('createdForCompanyId',false);
     if (this.lead.createdForCompanyId > 0) {
-      //this.isSalesForceEnabled();    
+      //this.isSalesForceEnabled(); 
+      this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);   
       this.getActiveCRMDetails();
     }
   }
@@ -869,7 +870,7 @@ export class AddLeadComponent implements OnInit {
     this.getLeadPipelines();
   }
 
-  getLeadCustomFields() {
+  getDefaultLeadCustomFields() {
     this.ngxloading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.getLeadCustomFields().subscribe(data => {
@@ -877,7 +878,18 @@ export class AddLeadComponent implements OnInit {
       this.referenceService.loading(this.httpRequestLoader, false);
       if (data.statusCode == 200) {
         this.leadCustomFields = data.data;
-        console.log(this.leadCustomFields);
+      }
+    });
+  }
+
+  getLeadCustomFieldsByVendorCompany(vendorCompanyId : number){
+    this.ngxloading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.getLeadCustomFieldsByVendorCompany(vendorCompanyId).subscribe(data => {
+      this.ngxloading = false;
+      this.referenceService.loading(this.httpRequestLoader, false);
+      if (data.statusCode == 200) {
+        this.leadCustomFields = data.data;
       }
     });
   }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LeadsService } from 'app/leads/services/leads.service';
 import { LeadCustomFieldDto } from 'app/leads/models/lead-custom-field';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { ReferenceService } from 'app/core/services/reference.service';
 
 @Component({
   selector: 'app-lead-custom-fields-settings',
@@ -11,7 +12,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 })
 export class LeadCustomFieldsSettingsComponent implements OnInit {
 
-  constructor(private leadService: LeadsService) { }
+  constructor(private leadService: LeadsService, public referenceService: ReferenceService) { }
   ngxloading: boolean;
   customFieldsDtosLoader = false;
   leadCustomFields = new Array<LeadCustomFieldDto>();
@@ -38,20 +39,23 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
     );
   }
 
-  saveLeadCustomFields(){
+  saveLeadCustomFields() {
     this.ngxloading = true;
     this.customFieldsDtosLoader = true;
     this.leadService.saveCustomLeadFields(this.leadCustomFields).subscribe(data => {
       if (data.statusCode == 200) {
+        this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
         this.ngxloading = false;
         this.customFieldsDtosLoader = false;
-        // this.leadCustomFields = data.data;
-        // console.log(this.leadCustomFields);
+        this.referenceService.goToTop();
+        this.getLeadFields();
       }
     },
       error => {
         this.ngxloading = false;
         this.customFieldsDtosLoader = false;
+        let errorMessage = this.referenceService.getApiErrorMessage(error);
+        this.customResponse = new CustomResponse('ERROR', errorMessage, true);
       }
     );
   }
