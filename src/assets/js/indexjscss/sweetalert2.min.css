@@ -150,7 +150,8 @@
     float: none;
     margin: 0;
     line-height: normal;
-    color: #000000
+    color: #000000;
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .swal2-icon.swal2-success,

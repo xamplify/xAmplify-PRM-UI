@@ -8,7 +8,7 @@ import { UserService } from '../../core/services/user.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { DashboardService } from '../dashboard.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
-declare var swal:any;
+declare var swal:any ,$:any;
 @Component({
     selector: 'app-default-page',
     templateUrl: './default-page.component.html',
@@ -114,8 +114,15 @@ export class DefaultPageComponent implements OnInit {
                 response=>{
                     this.isPaymentOverDue = response.data;
                     if(this.isPaymentOverDue && this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed){
-                        let buttons = "Your payment is overdue!!! Please settle your account as soon as possible to avoid any interruptions in service. Please reach out to our customer success team or contact support at <a href='mailto:support@xamplify.com'>support@xamplify.com</a>.";
-                        swal({ html: buttons,  allowOutsideClick: false,allowEscapeKey: false });
+                        let buttons = "Please settle your account as soon as possible to avoid any interruptions in service. Please reach out to our customer success team or contact support at <a href='mailto:support@xamplify.com'>support@xamplify.com</a>.";
+                       swal({
+                        title: "Your payment is overdue!!!",
+                        type: "warning",
+                        text: buttons,
+                        allowOutsideClick: false,
+                        confirmButtonText: "OK",
+                        allowEscapeKey:false
+                      });
                     }
                     this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed = false;
                     this.getDefaultPage(this.loggedInUserId);
