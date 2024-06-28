@@ -440,10 +440,14 @@ export class AddLeadComponent implements OnInit {
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
             self.lead = data.data;
+            if (!this.isVendorVersion) {
+              this.getLeadCustomFieldsByVendorCompany(self.lead.createdForCompanyId);
+            } else {
+              this.getDefaultLeadCustomFields();
+            }
             self.existingHalopsaLeadTicketTypeId = self.lead.halopsaTicketTypeId;
             if (self.lead.createdForCompanyId > 0) {
             }
-
             this.getActiveCRMDetails();
           }
         },
@@ -886,8 +890,6 @@ export class AddLeadComponent implements OnInit {
     this.ngxloading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.getLeadCustomFieldsByVendorCompany(vendorCompanyId).subscribe(data => {
-      this.ngxloading = false;
-      this.referenceService.loading(this.httpRequestLoader, false);
       if (data.statusCode == 200) {
         this.leadCustomFields = data.data;
       }
