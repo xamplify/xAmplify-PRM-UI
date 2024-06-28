@@ -10,7 +10,7 @@ a:hover {
   text-decoration: none;
 }
 .campaign-type-selected {
-  background-color: #0095da;
+  background-color: #0276ff;
   color: white;
 }
 img.active {
@@ -246,7 +246,7 @@ span.gearicon-font-cu {
   box-shadow: none !important;
 }
 .mix-filter li:hover {
-  background: #6dcff6;
+  background: #1c84ff;
 }
 
 /* 06-07-2023 */

@@ -56,6 +56,7 @@ padding-top:13px;
 .add-btn{
 padding: 4px 5px;
 margin: 0px 3px;
+border-radius: 4px;
 }
 .add-btns{
   position: relative;
@@ -64,6 +65,7 @@ margin: 0px 3px;
   margin: 0px 3px;
   float: right;
   right: 10px;
+  border-radius: 4px;
 }
 .panel-title > a {
   display: block;

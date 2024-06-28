@@ -20,12 +20,12 @@
               <!--Partner View-->
               <li class="filter view-type-css" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion">
                 {{authenticationService?.partnerModule?.customName}} View
-                <i *ngIf="isPartnerVersion" class="fa fa-check-circle-o success"></i>
+                <i *ngIf="isPartnerVersion" class="fa fa-check-circle-o check-icons"></i>
                </li>
               <!--Vendor View-->
               <li *ngIf="authenticationService?.enableLeads" class="filter view-type-css" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion">
                 Vendor View
-                <i *ngIf="isVendorVersion" class="fa fa-check-circle-o success"></i>
+                <i *ngIf="isVendorVersion" class="fa fa-check-circle-o check-icons"></i>
               </li>
               <p class="filter float-right m10">Opportunities as: </p>
             </ul>

@@ -2561,10 +2561,11 @@ div#bubble-chart {
 }
 
 .mix-filter li:hover {
-  background: #6dcff6;
+  background: #1c84ff;
 }
 .mix-filter-li-selected {
-  background-color: #6dcff6 !important;
+  background-color: #0276ff !important;
+  color:#fff;
 }
 .portlet.light.cpad.hover-effect.pointer.card-radius {
   padding: 0px !important;
@@ -3163,7 +3164,7 @@ button.button_blue.bgcolor-unset.p0.btn-transitions.mrgt1-2{border-radius: 7px;}
   cursor: default !important;
 }
 button#save\&delete_button {
-  border-radius: 4px;
+  border-radius: 3px;
 }
 button#cancel_button {
   border-radius: 3px !important;

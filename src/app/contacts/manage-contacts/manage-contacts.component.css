@@ -258,7 +258,11 @@ h3 {
   text-transform: uppercase;
 }
 .contact-filter-selected {
-  background-color: #6dcff6;
+  background-color: #0276ff;
+  color: #fff;
+}
+.mix-filter li:hover {
+  background: #1c84ff;
 }
 #header-custom-li-font {
   font-size: 16px;

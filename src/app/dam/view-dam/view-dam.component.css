@@ -11,6 +11,8 @@
   word-break: break-word;
 }
 .text-wrap {
+  font-size: 18px;
+  margin: 10px 0px;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -24,4 +26,7 @@ a.disabled {
 }
 .img-class{
   border-radius:5px!important;
+}
+.px-3{
+  padding: 0 3px;
 }

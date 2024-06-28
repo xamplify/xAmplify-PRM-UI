@@ -2572,3 +2572,6 @@ button.button.bgcolor-unset{border:none !important}
 .Btn-Green {
   border-radius: 7px;
 }
+i.fa.fa-check-circle-o.check-icons{
+  color: #008000!important;
+}
