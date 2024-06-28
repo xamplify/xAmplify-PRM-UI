@@ -200,10 +200,10 @@ border: 1px solid rgba(255, 255, 255, 0.1) !important;
 #asset-preview-content {
   color: white !important;
 }
-#notifications{
+/* #notifications{
   background-color: #22313a !important ;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
+} */
 #notification-list {
   background-color: #22313a !important ;
 }
@@ -421,8 +421,11 @@ tr {
     backdrop-filter: blur(5px);
 }
 .modal-content {
-  background-color: rgb(0 0 0 / 94%) !important;
-  color: white !important;
+  /* background-color: rgb(0 0 0 / 94%) !important;
+  color: white !important; */
+  background-color: #8d8a8a00 !important;
+  color: #fff !important;
+  backdrop-filter: blur(45px);
 }
 .upload-asset-div,
 .well,
@@ -556,7 +559,11 @@ div.scrolled{
 }
 /** alert **/
 .swal2-modal {
-  background-color: rgb(16 18 27 / 93%) !important;;
+  /* background-color: rgb(16 18 27 / 93%) !important;; */
+  background-color: #8d8a8a00 !important;
+  /* color: #fff !important; */
+  backdrop-filter: blur(14px);
+  border:1px solid rgba(255, 255, 255, 0.1) !important
 }
 .loader-container {
   background-color: #2b3c46 !important;
@@ -3281,10 +3288,10 @@ div b {
   background-color: unset !important;
   border-bottom: 0px solid #2f4857 !important;
 }
-h3#notifications {
+/* div#notifications {
   background: #217eac!important;
   border: unset!important;
-}
+} */
 .pricing.hover-effect.pointer.border-card.pricing_hover_effect{
   border-radius: 10px !important;
 }
@@ -3986,6 +3993,15 @@ tbody.neo-border-radius10 {
   background: none !important;
   box-shadow: none !important;
   border: none !important;
+}
+button.swal2-confirm.styled {
+  background: #0276FF !important;
+  border: 1px solid #026deb !important;
+  color: #fff !important;
+}
+button.swal2-confirm.styled:hover {
+  background: #1C84FF !important;
+  border: 1px solid #026deb !important;
 }
 
 
