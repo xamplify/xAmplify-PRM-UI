@@ -162,7 +162,7 @@
                         <label class="control-label">Vendor's xAmplify Pipeline<font> <b style="color: #f55d7a !important">*</b></font>
                         </label>
                         <select class="form-control" [(ngModel)]="lead.createdForPipelineId" [ngModelOptions]="{standalone: true}"
-                          placeholder="pipelineId" id="pipelineId" [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline" (ngModelChange)="resetStages()">
+                          placeholder="pipelineId" id="pipelineId" [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedForPipeline" (ngModelChange)="resetStages()">
                           <option [value]="0">Select Pipeline</option>
                           <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                         </select>
@@ -171,7 +171,7 @@
                       <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px">
                         <label class="control-label">Vendor's xAmplify Stage<font> <b style="color: #f55d7a !important">*</b></font></label>
                         <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId" [ngModelOptions]="{standalone: true}"
-                          placeholder="pipelineStageId" id="pipelineStageId" [disabled]="preview">
+                          placeholder="pipelineStageId" id="pipelineStageId" [disabled]="preview || isCreatedForStageIdDisable">
                           <option [value]="0">Select Stage</option>
                           <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">
                             {{lead.currentStageName}}</option>

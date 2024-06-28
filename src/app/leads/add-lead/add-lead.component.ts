@@ -572,6 +572,8 @@ export class AddLeadComponent implements OnInit {
                 this.lead.createdByPipelineStageId = 0;
                 this.lead.halopsaTicketTypeId = 0;
               }
+            } else {
+              this.showTicketTypesDropdown = false;
             }
             if (!this.activeCRMDetails.activeCRM) {
               if (this.edit || this.preview) {
