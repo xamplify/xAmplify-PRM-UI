@@ -249,6 +249,16 @@
                                                         [ngTemplateOutletContext]="{'moduleName':'leadDealApprove'}"></ng-template>
                                                 </a>
                                             </li>
+                                            <!-- XNFR-592 -->
+                                            <li [ngClass]="{'active-tab': activeTabName == 'leadFieldSettings'}"
+                                                *ngIf="authenticationService?.module?.isAdmin && !authenticationService.isOnlyPartner()">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadFieldSettings'}"
+                                                    (click)="activateTab('leadFieldSettings')">
+                                                    {{properties.leadFieldSettings}}
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':'leadFieldSettings'}"></ng-template>
+                                                </a>
+                                            </li>
 
                                         </ng-container>
                                     </ul>
@@ -299,7 +309,7 @@
                                             </a>
                                         </li>
                                         <!--Saml Settings-->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}" 
+                                        <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"
                                             *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}"
                                                 (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings}}
@@ -313,7 +323,8 @@
                                             *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'saml2SSOsettings'}"
                                                 (click)="activateTab('saml2SSOsettings');clearCustomResponse()">{{properties.saml2SSOsettings}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':'saml2SSOsettings'}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'saml2SSOsettings'}"></ng-template>
                                             </a>
                                         </li>
 
@@ -438,7 +449,8 @@
 
                                             <!--Master Landing Pages-->
 
-                                            <ng-container *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
+                                            <ng-container
+                                                *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
 
                                                 <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPages'}"
@@ -1417,9 +1429,9 @@
                                                             <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="zohoRibbonText == 'configured'"
                                                                     class="integration-cards">
-                                                                    <a (click)="zohoSettings()"
-                                                                        data-toggle="tooltip" data-placement="top"
-                                                                        title="Zoho Settings"><i class="fa fa-cog"
+                                                                    <a (click)="zohoSettings()" data-toggle="tooltip"
+                                                                        data-placement="top" title="Zoho Settings"><i
+                                                                            class="fa fa-cog"
                                                                             style="font-size: 20px !important;"></i></a>
                                                                 </span>
                                                                 <h5 class="card-title  text-uppercase text-center"
@@ -2149,6 +2161,12 @@
                                             <app-leftsidenavbar-custom></app-leftsidenavbar-custom>
                                         </div>
 
+                                        <!-- Lead Custom Field Settings -->
+                                        <div class="tab-pane" *ngIf="showleadFieldSettings"
+                                            [ngClass]="{'active': activeTabName == 'leadFieldSettings'}">
+                                            <app-lead-custom-fields-settings></app-lead-custom-fields-settings>
+                                        </div>
+
                                         <!-- Saml SETTINGS TAB -->
                                         <div class="tab-pane hidden-xs"
                                             [ngClass]="{'active': activeTabName == 'samlSettings'}">
@@ -2157,8 +2175,9 @@
 
                                         <!-- saml sso 2.0 settings -->
                                         <div class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'saml2SSOsettings'}" *ngIf="showSaml2SSOsettings">
-                                        <app-saml-sso-login> </app-saml-sso-login>
+                                            [ngClass]="{'active': activeTabName == 'saml2SSOsettings'}"
+                                            *ngIf="showSaml2SSOsettings">
+                                            <app-saml-sso-login> </app-saml-sso-login>
                                         </div>
 
                                         <!-- Your Templates TAB -->
@@ -2524,7 +2543,8 @@
 
                                         <!--XNFR-454 Domain Configuration-->
                                         <app-domain-whitelisting *ngIf="isAddDomainsOptionClicked" class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == properties?.addDomainsText}" [isMyProfileAndDomainWhitelisting]='true'>
+                                            [ngClass]="{'active': activeTabName == properties?.addDomainsText}"
+                                            [isMyProfileAndDomainWhitelisting]='true'>
                                         </app-domain-whitelisting>
 
                                         <!--XNFR-459 News & Announcements-->
@@ -3692,8 +3712,8 @@
                                         <span class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
                                             <div class="mb_mt7 alignEqualtoFields">
                                                 <input class="radioButton_shadow" type="radio"
-                                                    [disabled]="pipelinePreview || pipeline.crmPipeline || pipeline?.integrationType == 'HALOPSA'" [value]="x"
-                                                    [(ngModel)]="defaultStageIndex" id="defaultStage{{x}}"
+                                                    [disabled]="pipelinePreview || pipeline.crmPipeline || pipeline?.integrationType == 'HALOPSA'"
+                                                    [value]="x" [(ngModel)]="defaultStageIndex" id="defaultStage{{x}}"
                                                     name="defaultStage" class="alignEqualtoText"
                                                     (change)="defaultStageChange(pipelineStage)">
                                                 <span>Default</span>&nbsp;&nbsp;

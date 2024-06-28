@@ -348,22 +348,24 @@
                                   </span>
                                 </h5>
                               </div>
-                              <div *ngIf="isPartnerVersion && lead?.campaignId > 0" style="margin-left: 60px;">
+                              <div *ngIf="isPartnerVersion && lead?.campaignId > 0" style="margin-left: 60px;"
+                                data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}">
                                 <h5 class="m0"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
                                     <span *ngIf="lead.campaignName?.length>30">...</span>
                                   </span>
                                 </h5>
                               </div>
-                              <div *ngIf="isVendorVersion && lead?.parentCampaignId > 0" style="margin-left: 60px;">
+                              <div *ngIf="isVendorVersion && lead?.parentCampaignId > 0" style="margin-left: 60px;"
+                                data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}">
                                 <h5 class="m0"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.parentCampaignName | slice:0:30}}
                                     <span *ngIf="lead.parentCampaignName?.length>30">...</span>
                                   </span>
                                 </h5>
                               </div>
-                              <div *ngIf="isVendorVersion && lead?.parentCampaignId == 0 && lead?.campaignId > 0"
-                                style="margin-left: 60px;">
+                              <div *ngIf="isVendorVersion && lead?.parentCampaignId == 0 && lead?.campaignId > 0" style="margin-left: 60px;"
+                                data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}">
                                 <h5 class="m0"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
                                     <span *ngIf="lead.campaignName?.length>30">...</span>

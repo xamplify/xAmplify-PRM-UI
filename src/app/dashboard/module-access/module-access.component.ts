@@ -198,7 +198,6 @@ export class ModuleAccessComponent implements OnInit {
   
 
   updateModuleAccess(){
-    this.referenceService.goToTop();
     this.customResponse = new CustomResponse();
     this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
@@ -229,7 +228,7 @@ export class ModuleAccessComponent implements OnInit {
     this.customResponse = new CustomResponse('SUCCESS', "Modules updated successfully", true);
     this.getModuleAccessByCompanyId();
     this.getCompanyAndUserDetails();
-    this.referenceService.goToTop();
+    this.referenceService.goToDiv('module-access-table');
     this.ngxLoading = false;
   }
 
@@ -402,6 +401,11 @@ startCompanyProfileLoader(){
   this.companyProfileLoader = true;
   this.companyProfileNameError = false;
   this.companyProfileNameErrorMessage = '';
+}
+
+ /***XNFR-595****/
+ customUiSwitchEventReceiver(event:any){
+  this.campaignAccess.paymentOverDue = event;
 }
 
 
