@@ -134,6 +134,7 @@
                 </td>
                 <td><span>{{sfCustomField.type}}</span><span
                     *ngIf="sfCustomField.entryType">-{{sfCustomField.entryType}}</span>
+                    <div *ngIf="integrationType === 'SALESFORCE' && sfCustomField.originalCRMType === 'select'">Mapped As: PickList</div>
                 </td>
                 <!-- <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
                   <span *ngIf="sfCustomField.selected">Required

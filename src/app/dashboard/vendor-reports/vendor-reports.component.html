@@ -34,7 +34,7 @@
 								<div class="card-header bg-card-header card-paddings-vcu" [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}">
 									<div class="flex-row d-flex">
 										<div class="col-7 col-sm-7 col-md-7 col-lg-7 col-lg-auto marginvczero">
-											<div class="cards clogo vendor-img-cu">
+											<div class="cards clogo vendor-img-cu" (click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport, 'Home')  : false">
 												<img 
 													src="{{vendorReport.companyLogo}}"
 													alt="{{vendorReport.companyName}}" (error)="errorHandler($event)">
@@ -56,7 +56,7 @@
 										<span *ngFor="let count of vendorReport['counts'] | slice:1; let i = 'index+1'"> {{vendorReport.counts[i].count}} | {{vendorReport.counts[i].name}} </span>
 									</div> -->
 									<div class="flex-row pl10 backgroundfor-mv-title" [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}" >
-										<h4 *ngIf="vendorReport?.companyName!=null && vendorReport?.companyName?.length>0">
+										<h4 *ngIf="vendorReport?.companyName!=null && vendorReport?.companyName?.length>0" (click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport, 'Home') : false ">
 											<b>{{vendorReport?.companyName | slice:0:35}}</b>
 											<span *ngIf="vendorReport?.companyName?.length>35">...</span>
 										</h4>										

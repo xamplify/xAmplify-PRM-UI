@@ -1376,9 +1376,7 @@ ul.alt-row-style1 li:nth-child(even) {
   border: 1px solid #191b1e !important;
 }
 .border-card,
-.videoViews,
-.shareVideoButton,
-.embedVideoButton {
+.videoViews{
   border: 1px solid #191b1e !important;
 }
 /* 14-6-2023 sudha sri */
@@ -2068,7 +2066,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .btn-group button {
   /* box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
   background: #0276FF  !important;
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb !important;
 }
 
 .refresh-icon:hover {
@@ -2383,7 +2381,7 @@ button.btn.custom:hover,
 }
 .left-menu-color ul li a:hover,
 .left-menu-color ul li.active > a {
-  border-radius: 0px !important;
+  border-radius: 10px !important;
 }
 .left-menu-color {
   padding: 0px 0px !important;
@@ -2726,7 +2724,7 @@ ul.nav.neumorphismDark {
 button.btn.custom {
   border-radius: 7px !important;
   background: #0276FF !important;
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb !important;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu {
   border-radius: 10px !important;
@@ -3041,7 +3039,7 @@ justify-content: center!important;
     overflow: hidden !important;
     height: 3.5rem !important;
     /* padding: 0 2rem !important; */
-    border-radius: 20px !important;
+    border-radius: 7px !important;
     background: #0276FF !important;
     /* background-size: 400% !important; */
     color: #fff !important;
@@ -3055,7 +3053,7 @@ justify-content: center!important;
   .Btn-Green,
   .btn-primary {
     position: relative !important;
-    background: #0276FF !important;
+    background: #026deb !important;
     /* border: 1px solid #266dc1 !important; */
   }
   /* .button::before {
@@ -3818,7 +3816,7 @@ i.download_file:hover {
   display: block;
 }
 button#save\&delete_button {
-  border: none !important;
+  border:1px solid #026deb !important;
   background: linear-gradient(87deg, #00ED95 0%, #00ACEC 100%) !important;
   /* box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important; */
 }
@@ -3932,6 +3930,7 @@ input.form-control.flatpickr{
 /***** Sudha Sri(22-2-2024) ******/
 button.btn.btn-primary {
   background: #0276FF !important;
+  border:1px solid #026deb !important;
 }
 .btn-file input[type="file"]{
   position: absolute !important;
@@ -4069,7 +4068,7 @@ a.delete.custom-icon {
 /***** Sudha Sri(20-3-2024) *****/
 /***** Left Menu Changes *****/
 .left-menu-color ul li.active>a{
-  border-radius: 10px !important;
+  border-radius: 0px !important;
 }
 .page-sidebar .page-sidebar-menu>li.active>a{
   border-bottom: 2px solid #01b6ff5c !important;
@@ -4159,7 +4158,7 @@ button.button.bgcolor-unset, button#copyFrom_clipboard,button#add_contact,
 .mix-filter li.campaign-type-selected,
 button.group-name-cclass.btn-primary.default-btn-cursor{
   background: #0276FF !important;
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb !important;
 }
 button.btn.btn-xs.hidden-xs.l-g-view, button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4, button.search-box-item-click, button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4, button.fa.fa-th-list.btn-xs.l-g-view.mr_4, button.fa.fa-th-large.btn-xs.l-g-view.mr_4, button.fa.fa-th-list.btn-xs.l-g-view, button.fa.fa-th-large.btn-xs.l-g-view, button.btn-xs.l-g-view.fa.fa-folder, button.btn-xs.l-g-view.fa.fa-th, button.btn.btn-xs.hidden-xs.l-g-view{
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
@@ -4168,12 +4167,6 @@ button.btn.btn-xs.hidden-xs.l-g-view, button.fa.fa-th-list.btn.btn-xs.l-g-view.m
 }
 button.search-box-item-click:hover {
   background: none !important;
-  background-image: none !important;
-  background-size: none !important;
-  border: none !important;
-  color: initial; 
-  border-radius: 0px !important;
-  box-shadow: none !important;
 }
 
 .actions-block i.down-arrow{
@@ -4184,3 +4177,16 @@ span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input {
 }
 /***** Sudha Sri(26-6-2024) *****/
 .lead-details-border{border: 2px solid #191b1e !important;}
+/*****Sudha Sri(27-6-2024) *****/
+.help-iconbgadd.selectRecord,.btn-success {background: #0276FF !important;border: 1px solid #026deb !important;}
+.help-iconbgadd.selectRecord:hover, .btn-success:hover, button.group-name-cclass.btn-primary.default-btn-cursor:hover {background: #1C84FF !important;}
+.color-flow-button{ border:1px solid #026deb !important;}
+button#save\&delete_button:hover{background-color: #1C84FF !important;}
+button.button.bgcolor-unset:hover{background-color: #1C84FF !important;}
+.dynamic_tbl_btn{margin-right: 6px !important;}
+button#add_contact:hover, button.button.bgcolor-unset:hover, button#copyFrom_clipboard:hover{background-color: #1C84FF !important;}
+.button_blue, .Btn-Green, .shareVideoButton, .embedVideoButton, .playbook_border{border:1px solid #026deb !important;}
+button.button_blue.bgcolor-unset.p0.btn-transitions.mrgt1-2{border-radius: 3px !important;} 
+button.button_blue.bgcolor-unset.p0.btn-transitions.mrgt1-2:hover{ background-color: #1C84FF !important;}
+button.btn.salesforce-btn.button.bgcolor-unset.p0.btn-transitions.mrgt-2.mrgt1-2{margin-top: -1px !important;border-radius:3px !important;}
+span.btn.Btn-Green {border: 0px solid #fff !important;background: none !important;}

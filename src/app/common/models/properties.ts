@@ -72,7 +72,7 @@ export class Properties {
 
 	PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your partner list has been updated successfully and any selected campaigns have been launched.";
 
-	PARTNERS_CREATE_SUCCESS = "Your Partner List has been created successfully.";
+	PARTNERS_CREATE_SUCCESS = "Your Partner Group has been created successfully.";
 	PARTNERS_CREATE_ERROR = "An error occured while creating";
 
 	PARTNERS_UPDATE_SUCCESS = "Your Partner has been updated successfully.";
@@ -240,8 +240,8 @@ export class Properties {
 
 	teamMemberGroups = 'Team Member Groups';
 
-	activeMasterPartnerList = 'Active Master Partner List';
-	inActiveMasterPartnerList = 'Inactive Master Partner List';
+	activeMasterPartnerList = 'Active Master Partner Group';
+	inActiveMasterPartnerList = 'Inactive Master Partner Group';
 
 	sandboxText = "The xAmplify Sandbox instance is ideal for safely designing, loading, updating, and testing all modules of the platform. The xAmplify Sandbox instance type can be used only for testing or user acceptance testing.";
 	oneClickLaunch = "One-Click Launch";

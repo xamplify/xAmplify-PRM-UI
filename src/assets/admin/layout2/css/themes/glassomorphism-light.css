@@ -2005,7 +2005,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .btn-group button{
   background-color: #0276FF !important;
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb!important;
   /* border: 1px solid #1ca6f369 !important; */
 }
 
@@ -2057,7 +2057,7 @@ thead > tr {
 tbody {
   background: rgb(255 255 255 / 31%) !important;
   border-radius: 0px 0px 10px 10px !important;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px); */
   border: 1px solid rgb(255 255 255 / 31%) !important;
 }
 /* table header border top remove */
@@ -2232,7 +2232,7 @@ a.UserguideBtnCustomization {
 
 .table tbody tr:hover {
   background-color: rgb(146 151 179 / 8%) !important;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px); */
 }
 .neumorphismDark li a {
   appearance: none;
@@ -2669,7 +2669,7 @@ button#cancel_button:active {
   position: relative !important;
   overflow: hidden !important;
   height: 3.5rem !important;
-	border-radius: 8px !important;
+	border-radius: 7px !important;
 	color: #000 !important;
 }
 /* .Btn-Gray:hover{
@@ -2804,10 +2804,10 @@ justify-content: center!important;
     position: relative !important;
     overflow: hidden !important;
     height: 3.5rem !important;
-    border-radius: 8px !important;
+    border-radius: 7px !important;
     background: #0276FF !important;
     color: #fff !important;
-    border: 1px solid #266dc1 !important;
+    border: 1px solid #026deb !important;
     margin-left: 4px;
   }
   button.group-name-cclass.btn-primary.default-btn-cursor, .tm-group-preview-css {
@@ -2970,8 +2970,7 @@ button.btn.custom {
   border-radius: 7px !important;
   background-color: #0276FF !important;
   color: #fff !important;
-
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb !important;
 
 }
 /* 30/11/2023 */
@@ -3516,10 +3515,10 @@ i.download_file:hover {
 .icons-center{
   display: block;
 }
-button#save\&delete_button {
+/* button#save\&delete_button {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background: rgb(146 151 179 / 8%) !important;
-}
+} */
 /* deals btn */
 .mrgt1-2{
   margin-top:2px!important;
@@ -3834,7 +3833,7 @@ li.filter.selectedBox{
 .Btn-Green,
 .btn-primary{
   background: rgb(255 255 255 / 31%) !important;
-  border: 1px solid #266dc1 !important;
+  border: 1px solid  #026deb !important;
   color: #000 !important;
 }
 .aspect_ratio{
@@ -4148,7 +4147,7 @@ button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4{
 button.btn.btn-primary.shareVideoButton,
 button.btn.btn-primary.embedVideoButton{
   background-color: #0276FF !important;
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb !important;
 }
 button.btn.btn-primary.embedVideoButton:hover,
 button.btn.btn-primary.shareVideoButton:hover{
@@ -4196,3 +4195,38 @@ span.text-algn{color: #fff;}
 .btn-success{background-color: #0276FF !important;color:#fff !important;}
 a.Btn-Gray {color: #fff !important;}
 button.btn.btn-primary.rounded-0{background-color: #0276FF !important;}
+/**** 27 -06 -2024 (Tharak)******/
+/* .selectRecord,
+button#save\&delete_button {
+  background-color: #0276FF !important;
+  color: #fff !important;
+  border: 1px solid #026deb !important;
+}
+button#cancel_button {
+  border-radius: 3px !important;
+  border: none !important;
+}
+.color-flow-button {
+  border:1px solid #026deb !important ;
+}
+.cnl-glass {
+  margin-right: 6px !important;
+}
+.camp-desc, .camp-title, .camp-number {
+  color: #000 !important;
+}
+.help-iconbgadd a {
+  color: #fff !important;
+} */
+.dynamic_tbl_btn {
+  margin-right: 6px !important;
+}
+.camp-desc, .camp-title, .camp-number {
+  color: #000 !important;
+}
+.help-iconbgadd {
+  border: 1px solid #026deb !important;
+}
+.help-iconbgadd a {
+  color: #fff !important;
+}

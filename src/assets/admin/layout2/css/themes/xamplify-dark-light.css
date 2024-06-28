@@ -1557,14 +1557,15 @@ div#removeborder {
 }
 /* user guides hover icon */
 .help-iconbgadd:hover {
-  background: #22313a !important;
-  border: 1px solid #2f4857 !important;
+  background: #1C84FF !important;
+  border: 1px solid #026deb !important;
+
 }
 .help-iconbgadd i:hover {
   color: #fff !important;
 } /* end */
 .help-iconbgadd {
-  border: 1px solid #2f4857 !important;
+  border: 1px solid #026deb !important;
 }
 /* 18-07-2023 */
 td.bgc-lg {
@@ -2568,3 +2569,6 @@ span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input {
 /***** Sudha Sri(25-6-2024) *****/
 .lead-details-border{border: 2px solid #2f4857 !important;}
 button.button.bgcolor-unset{border:none !important}
+.Btn-Green {
+  border-radius: 7px;
+}

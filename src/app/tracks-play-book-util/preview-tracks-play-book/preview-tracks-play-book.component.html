@@ -57,7 +57,7 @@
                                 <div *ngIf="(type == undefined || type == 'TRACK') && isCreatedUser" class="center"
                                     style="padding-top: 10px;">
                                     <button style="border-radius: 5px;"
-                                        [className]="authenticationService.module.playbookAccess ? 'btn-primary':'inactive'"
+                                        [className]="authenticationService.module.playbookAccess ? 'btn-primary playbook_border':'inactive'"
                                         data-toggle="tooltip" data-placement="bottom"
                                         [title]="authenticationService.module.playbookAccess?'':'You do not have access'"
                                         (click)="saveAsPlayBook(authenticationService.module.playbookAccess)" translate>

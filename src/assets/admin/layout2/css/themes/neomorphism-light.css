@@ -180,8 +180,8 @@ h6 {
 .pagination .active > a,
 .pagination .active > a:hover,
 .nav-tabs > li > a:hover {
-  background: #1C84FF !important;
-  border: 1px solid #266dc1 !important;
+  background: #0276FF !important;
+  border: 1px solid #026deb !important;
   color: #fff !important;
   box-shadow: none !important;
 }
@@ -1174,7 +1174,7 @@ input#copy-link {
   border: 1px solid #ececec !important;
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff;
   padding: 6px 6px !important;
-  border-radius: 5px !important;
+  border-radius: 3px !important;
 }
 .filter-box-selected {
   background-color: #22313a !important;
@@ -1954,7 +1954,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .btn-group button {
   background: #0276FF  !important;
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb !important;
   padding: 7px 14px !important;
 }
 .refresh-icon:hover {
@@ -1983,7 +1983,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   color: #000 !important;
   border: 1px solid #d0d5db !important;
   box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff !important;
-},
+}
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
 .mix-filter li.emailtemplate-selected {
@@ -2246,7 +2246,7 @@ a.UserguideBtnCustomization:hover {
 }
 .left-menu-color ul li a:hover,
 .left-menu-color ul li.active > a {
-  border-radius: 0px !important;
+  border-radius: 10px !important;
 }
 .left-menu-color {
   padding: 0px 0px !important;
@@ -2466,6 +2466,8 @@ span.input-group-btn {
 }
 button.glyphicon.glyphicon-remove.search-box-item-clear {
   box-shadow: none !important;
+  background: none !important;
+  border: none !important;
 }
 .angle-down {
   color: #191b1e !important;
@@ -2545,6 +2547,7 @@ ul.nav.neumorphismDark {
 }
 button.btn.custom {
   border-radius: 7px !important;
+  color:#fff !important;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu {
   border-radius: 10px !important;
@@ -2795,7 +2798,7 @@ justify-content: center!important;
     border-radius: 7px !important;
     background: #0276FF !important;
     color: #000 !important;
-    border: 1px solid #266dc1 !important;
+    border: 1px solid #026deb !important;
   }
   .button:hover::before,
   .button_blue:hover::before {
@@ -2809,7 +2812,7 @@ justify-content: center!important;
     position: relative !important;
     background: #0276FF !important;
     color: #fff !important;
-    border: 1px solid #266dc1 !important;
+    border: 1px solid #026deb !important;
   }
 .btn-primary:hover,.btn.Btn-Green:hover, .Btn-Green:hover{
     background-color: #1C84FF !important;
@@ -3008,9 +3011,7 @@ border:0px!important;
   background: #0c86cc !important;
   box-shadow: inset -1.1em 0 0.9em #06beb8;
 }
-button.btn.custom {
- color:#fff !important;
-}
+
 /* 30/11/2023 */
 .campaignViewIcon{
   width: 32px;
@@ -3218,7 +3219,7 @@ button.button_blue:disabled span{
   padding-bottom: 1px;
 }
 .btn:focus{
-  color: #000 !important;
+  color: #fff !important;
 }
 .col-block.col-block-disable,
 .col-block.col-block-active,
@@ -3475,7 +3476,7 @@ input.form-control.remove_checkbox_shadow{
 button.btn.custom {
   background: #0276FF !important;
   padding: 7px 14px !important;
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb !important;
   }
 .portlet.light.card-height {
   box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff;
@@ -3483,7 +3484,6 @@ button.btn.custom {
 }
 /* Sudha Sri (11-1-2024) */
 /* .btn-group.refer-vendor-button.btnVendor:hover,
-button.btn.custom:hover, */
 .portlet.light.block.box_shadow.checked:hover {
   transform: scale(1.05);
   transition: all 0.1s ease;
@@ -3584,7 +3584,7 @@ button#save\&delete_button {
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
 .btn-default:hover{
-  /* border: 1px solid #d0d5db !important; */
+ 
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
 }
 a.title.padding_bottom.text-color.content-bg.m0,
@@ -3633,10 +3633,11 @@ a.title.padding_bottom.text-color.content-bg.row-space{
   color: #fff !important;
 }
 .help-iconbgadd.selectRecord {
-  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+  background: #0276FF !important;
+  border: 1px solid #026deb !important;
 }
 .help-iconbgadd.selectRecord:hover {
-  background: linear-gradient(360deg, rgb(1 180 255)  0%, rgb(53 58 241) 100%) !important;
+  background: #1C84FF !important;
 }
 .bootstrap-switch-container.ng-trigger.ng-trigger-statusChange,
 span.bootstrap-switch-label{
@@ -3695,7 +3696,7 @@ i.fa.fa-download.icon_color:hover {
   border-color: #d0d5db !important;
 }
 li.mix-filter-li-selected{
-  background-image: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #0276FF !important;
   box-shadow: none !important;
   color: #fff;
 }
@@ -3790,7 +3791,8 @@ button.btn.btn-primary.dropdown-toggle {
   border-radius: 15px !important;
 }
 .aspect_ratio {
-  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #0276FF !important;
+  border: 1px solid #026deb !important;
   border-radius: 7px;
 }
 li.active-tab a.active-tab-anchor-text,
@@ -3935,7 +3937,6 @@ li.active a.text-white.active-tab-anchor-text{
 }
 .mix-filter li.contact-filter-selected {
   border: 0px solid #ececec !important;
-  border-radius: 5px !important;
   background: #0276FF !important;
   box-shadow: none !important;
   color:#fff !important;
@@ -4306,7 +4307,10 @@ button.btn.custom:hover,
 button#addContacts:hover, button#copyFromClipBoard:hover, button#uploadCSV:hover {
   transform: scale(1.02);
 }
-button#save\&delete_button,
+button#save\&delete_button{
+  background: #0276FF !important;
+  border-radius : 3px !important;
+}
 button.group-name-cclass.btn-primary.default-btn-cursor.white-co{
   background: #0276FF !important;
 }
@@ -4342,6 +4346,17 @@ button.btn.btn-primary.dropdown-toggle.rounded-0:hover{background-color: #1C84FF
   background-color: #1C84FF !important;
   box-shadow:none !important;
 }
-li.campaign-type-selected{background-color: #0276FF !important;}
+li.campaign-type-selected{background-color: #0276FF !important; border:1px solid #026deb !important;}
 .activated-btn{border: none !important;}
 div > button.activated-btn:hover{background-color: #29dd50 !important;}
+/***** Sudha Sri(27-6-2024) *****/
+button.button.bgcolor-unset, button#add_contact, button#copyFrom_clipboard, .btn-success{background-color: #0276FF !important;border:1px solid #026deb !important;}
+button.search-box-item-click, button.search-box-item-click:hover {background: none !important;border: none !important;}
+li.campaign-type-selected, button.btn.btn-primary.add-btn, .mix-filter li.contact-filter-selected{border-radius: 3px !important;}
+.Btn-Green, .btn-primary{border-radius : 7px !important;}
+button#save\&delete_button:hover, button#add_contact:hover, button#copyFrom_clipboard:hover, .btn-success:hover{background-color: #1C84FF !important;}
+a.title.padding_bottom.text-color.content-bg.m0, .col-md-6.col-lg-6.track-title.text-color.content-bg, a.title.padding_bottom.text-color.content-bg.row-space{box-shadow: none !important;}
+.dynamic_tbl_btn{margin-right: 6px !important;}
+button#cancel_button, button.button_blue.bgcolor-unset.p0.btn-transitions.mrgt1-2 {border-radius: 3px !important;}
+/* button.button_blue.bgcolor-unset.pd_top0{border-radius: 5px !important;} */
+.mix-filter li.emailtemplate-selected{color:#fff;}

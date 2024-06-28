@@ -327,7 +327,7 @@
                                        *ngIf="!campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
                                        <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
                                           <div class="row m0 pt10">    
-                                          <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9 pl0 pr0" *ngIf="(authenticationService.module.isOrgAdmin || authenticationService.module.isOnlyPartner || authenticationService.module.isPrmAndPartner || authenticationService.isVendorPartner() || authenticationService.module.isMarketing || authenticationService?.isTeamMember() || authenticationService.vanityURLEnabled)">
+                                          <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9 pl0 pr0" *ngIf="!campaign?.oneClickLaunch && (authenticationService.module.isOrgAdmin || authenticationService.module.isOnlyPartner || authenticationService.module.isPrmAndPartner || authenticationService.isVendorPartner() || authenticationService.module.isMarketing || authenticationService?.isTeamMember() || authenticationService.vanityURLEnabled)">
                                              <ul class="mix-filter m0">
                                                 <li class="filter" [class.active]="'ALL' == contactListPagination.filterBy" (click)="filterContacts('ALL')">All</li>
                                                 <li class="filter" [class.active]="'MY-CONTACTS' == contactListPagination.filterBy" (click)="filterContacts('MY-CONTACTS')" translate>My Contacts
