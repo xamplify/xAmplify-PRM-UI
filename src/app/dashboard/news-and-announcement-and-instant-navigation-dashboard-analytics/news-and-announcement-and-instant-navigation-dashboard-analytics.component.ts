@@ -74,7 +74,7 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
   }
 
   navigate(quickLink:any){
-    this.referenceService.navigateToQuickLinksAnalytics(quickLink,this.isPartnerLoggedInThroughVanityUrl);
+    this.referenceService.navigateToQuickLinksAnalytics(quickLink,this.isPartnerLoggedInThroughVanityUrl,this.companyId);
   }
 
 

@@ -1910,5 +1910,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             );
     }
 
+    /***XNFR-595****/
+    customUiSwitchEventReceiver(event:any){
+        this.campaignAccess.paymentOverDue = event;
+    }
 
 }

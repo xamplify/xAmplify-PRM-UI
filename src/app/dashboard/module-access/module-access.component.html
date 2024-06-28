@@ -113,10 +113,7 @@
 				</thead>
 			</table>
 			</div>
-			<div class="table-responsive">
-			<app-response-message [customResponse]="customResponse"
-			*ngIf="customResponse.isVisible"></app-response-message>
-			</div>
+			
 			<!--Download Partner Contacts-->
 			<div class="table-responsive">
 			  <table  class='table tgrid' aria-describedby="">
@@ -141,10 +138,11 @@
 			  </table>
 			</div>
 			<!---Module Access-->		
-			<fieldset style="margin: 20px 2px;">
+			<fieldset style="margin: 20px 2px;" id="module-access-table">
 				<legend>Module Access</legend>
 				<app-modal-popup-loader *ngIf="moduleLoader"></app-modal-popup-loader>
-				<div *ngIf="!moduleLoader" class="table-responsive" style="overflow-x: inherit; padding:15px;">
+				<div *ngIf="!moduleLoader"  class="table-responsive" style="overflow-x: inherit; padding:15px;">
+					<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 					<table class='table tgrid table-hover' aria-describedby="Module-Table">
 						<thead>
 							<tr>
@@ -375,7 +373,13 @@
 								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.vendorJourney"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
-
+							<!--XNFR-595-->
+							<tr>
+								<th scope="row">Payment Overdue</th>
+								<td class="pt0">
+									<app-custom-ui-switch [customSwitch]="campaignAccess.paymentOverDue" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>

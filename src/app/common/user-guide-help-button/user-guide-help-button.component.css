@@ -19,10 +19,14 @@
     background: #e8eaed;
 } */
 .selectRecord{
-    background-color: #1091d9 !important;
+    background: #0276FF;
+    border: 1px solid #026deb;
     color: #fff !important;
     fill: #0B2533 !important;
     padding: 4px 8px;
     border-radius: 20px;
     font-size: 15px;
   }
+.selectRecord:hover{
+background: #1C84FF;
+}

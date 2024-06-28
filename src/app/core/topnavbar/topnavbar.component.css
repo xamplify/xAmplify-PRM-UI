@@ -126,6 +126,10 @@ label {
   float: left;
   font-size: 14px;
 }
+.btn-group button:hover,
+button.btn.custom:hover {
+  background-color: #1C84FF;
+}
 .btn-group button:not(:last-child) {
   border-right: none;
 }

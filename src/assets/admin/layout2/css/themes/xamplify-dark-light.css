@@ -1557,14 +1557,15 @@ div#removeborder {
 }
 /* user guides hover icon */
 .help-iconbgadd:hover {
-  background: #22313a !important;
-  border: 1px solid #2f4857 !important;
+  background: #1C84FF !important;
+  border: 1px solid #026deb !important;
+
 }
 .help-iconbgadd i:hover {
   color: #fff !important;
 } /* end */
 .help-iconbgadd {
-  border: 1px solid #2f4857 !important;
+  border: 1px solid #026deb !important;
 }
 /* 18-07-2023 */
 td.bgc-lg {
@@ -2000,19 +2001,19 @@ p.pa-TextTwo {
 .pa-CardTwo:hover p {
   background-color: #22313a !important;
 }
-.pa-CardThree {
+.pa-CardThree, p.pa-TextTwelv, .pa-CardTwelve {
   color: #ffffff !important;
 }
 p.pa-TextThree {
   color: #ffffff !important;
 }
-.pa-CardThree:hover {
+.pa-CardThree:hover, .pa-CardTwelve:hover {
   background-color: #22313a !important;
 }
-.pa-CardThree {
+.pa-CardThree, .pa-CardTwelve {
   background-color: #22313a42 !important;
 }
-.pa-CardThree:hover p {
+.pa-CardThree:hover p, .pa-CardTwelve:hover p {
   background-color: #22313a !important;
 }
 .pa-CardFour {
@@ -2389,7 +2390,7 @@ button.btn.btn-white.salesforce-btn.button{
 .gridViewImgBg {
   background-color: #22313a;
 }
-.table-responsive td, b {
+.table-responsive td {
   color: #fff !important;
 } 
 .img-grid-track {
@@ -2419,8 +2420,7 @@ a.tabColorOne b,
 h1 b,
 h6 b,
 span b,
-h3 b,
-div b {
+h3 b {
   color: #fff !important;
 }
 /* QA issues start*/
@@ -2565,4 +2565,10 @@ button.btn.btn-primary.shareVideoButton:hover{
 span.e-input-group.e-control-wrapper.e-ddl.e-lib.e-keyboard.e-valid-input {
   color: #fff;
 
+}
+/***** Sudha Sri(25-6-2024) *****/
+.lead-details-border{border: 2px solid #2f4857 !important;}
+button.button.bgcolor-unset{border:none !important}
+.Btn-Green {
+  border-radius: 7px;
 }

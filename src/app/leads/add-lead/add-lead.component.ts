@@ -81,6 +81,7 @@ export class AddLeadComponent implements OnInit {
   type = "LEAD";
   showTicketTypesDropdown: boolean = false;
   isCreatedForStageIdDisable: boolean = false;
+  isCreatedByStageIdDisable: boolean = false;
   isCampaignTicketTypeSelected: boolean = false;
   existingHalopsaLeadTicketTypeId: any;
   leadCustomFields = new Array<LeadCustomFieldDto>();
@@ -91,7 +92,7 @@ export class AddLeadComponent implements OnInit {
     "Insurance", "Machinery", "Manufacturing", "Media", "Not For Profit", "Recreation", "Retail", "Shipping", "Technology", "Telecommunications",
     "Transportation", "Utilities", "Other"
   ];
-
+ 
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, private leadsService: LeadsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService, public countryNames: CountryNames,
@@ -579,6 +580,8 @@ export class AddLeadComponent implements OnInit {
                 this.lead.createdByPipelineStageId = 0;
                 this.lead.halopsaTicketTypeId = 0;
               }
+            } else {
+              this.showTicketTypesDropdown = false;
             }
             if (!this.activeCRMDetails.activeCRM) {
               if (this.edit || this.preview) {
@@ -781,8 +784,11 @@ export class AddLeadComponent implements OnInit {
         );
         self.createdByStages = createdByPipeline.stages;
         self.lead.createdByPipelineStageId = createdByPipelineStage.id;
+        self.isCreatedByStageIdDisable = true;
+      } else {
+        self.createdByStages = createdByPipeline.stages;
+        self.isCreatedByStageIdDisable = false;
       }
-      self.createdByStages = createdByPipeline.stages;
       self.activeCRMDetails.hasCreatedByPipeline = true;
     } else {
       let createdByPipelineExist = false;
@@ -798,6 +804,7 @@ export class AddLeadComponent implements OnInit {
         self.lead.createdByPipelineStageId = 0;
       }
       self.activeCRMDetails.hasCreatedByPipeline = false;
+      self.isCreatedByStageIdDisable = false;
     }
   }
 

@@ -146,6 +146,7 @@ export class AddDealComponent implements OnInit {
   isCampaignTicketTypeSelected: boolean = false;
   existingHalopsaDealTicketTypeId: any;
   isCopiedToClipboard : boolean = false;
+  isCreatedByStageIdDisable: boolean = false;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -1443,9 +1444,13 @@ export class AddDealComponent implements OnInit {
         );
         self.createdByStages = createdByPipeline.stages;
         self.deal.createdByPipelineStageId = createdByPipelineStage.id;
+        self.isCreatedByStageIdDisable = true;
       }  else {
         self.createdByStages = createdByPipeline.stages;
+        self.isCreatedByStageIdDisable = false;
       }
+      self.activeCRMDetails.hasCreatedByPipeline = true;
+      self.activeCRMDetails.hasDealPipeline = true;
     } else {
       let createdByPipelineExist = false;
       for (let p of createdByPipelines) {
@@ -1609,6 +1614,8 @@ export class AddDealComponent implements OnInit {
       if (this.hasCampaignPipeline && 'HALOPSA' !== this.activeCRMDetails.createdForActiveCRMType) {
         this.hasCampaignPipeline = false;
       }
+    } else if (this.actionType == 'add' && 'HALOPSA' == this.activeCRMDetails.createdForActiveCRMType) {
+      this.isCampaignTicketTypeSelected = false;
     }
     if (this.actionType == 'edit' && this.lead.campaignId != null && this.lead.campaignId > 0) {
       if ('HALOPSA' !== this.activeCRMDetails.createdForActiveCRMType) {

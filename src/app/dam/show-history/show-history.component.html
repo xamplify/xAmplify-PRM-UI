@@ -66,8 +66,8 @@
 						<div class="gridViewImgpositioning">
 							<img  class="img-class mxv" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"alt="Image Not Found">
 						</div>
-						<h4 class="xamplify-ellipsis overflow-hidden GridViewCotent gridViewTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{asset?.assetName}}">
-							<b>Asset Name: </b>{{asset?.assetName}} 
+						<h4 class="assest-name overflow-hidden GridViewCotent gridViewTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{asset?.assetName}}">
+							<b>Asset Name: </b>{{asset?.assetName | slice: 0:54}} <span *ngIf="asset?.assetName?.length>54">...</span>
 						</h4>
 						 <div class="divapdding-or-cards">
 							<div class="aligntowbtns"> 

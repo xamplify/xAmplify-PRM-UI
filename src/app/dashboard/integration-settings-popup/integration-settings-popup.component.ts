@@ -63,14 +63,14 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     this.isValid = true;
     if (this.customFields.options.length == 0 && this.customFields.originalCRMType === 'select') {
       this.isValid = false;
-      this.errorMessage = "please add options"
+      this.errorMessage = "please add options for Picklist."
     }
     if (this.customFields.originalCRMType === 'select') {
       for (let i = 0; i < this.customFields.options.length; i++) {
         const option = this.customFields.options[i];
         if (!option || !option.label || option.label.trim().length === 0) {
           this.isValid = false;
-          this.errorMessage = "Please fill options.";
+          this.errorMessage = "Please fill options for Picklist.";
           return;
         }
       }
@@ -81,7 +81,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
         const lowerCaseLabel = option.label.trim().toLowerCase();
         if (label.has(lowerCaseLabel)) {
           this.isValid = false;
-          this.errorMessage = 'Please remove duplicate options.';
+          this.errorMessage = 'Please remove duplicate options from Picklist.';
           return true;
         } else {
           label.add(lowerCaseLabel);
