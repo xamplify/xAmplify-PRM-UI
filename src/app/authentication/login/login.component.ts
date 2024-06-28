@@ -195,6 +195,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   redirectTo(user: User) {
+    this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed = true;
     const roles = user.roles;
     if (this.authenticationService.isSuperAdmin()) {
       this.router.navigate(['/home/dashboard/admin-report']);
