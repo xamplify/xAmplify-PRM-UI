@@ -3634,7 +3634,7 @@ div b {
   background-color: unset !important;
   border-bottom: 0px solid #2f4857 !important;
 }
-h3#notifications {
+div#notifications {
   background: #217eac!important;
   border: unset!important;
 }
