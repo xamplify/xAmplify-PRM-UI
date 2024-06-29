@@ -635,5 +635,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			} 
 			return status;
 		}
+ 
 	
 }

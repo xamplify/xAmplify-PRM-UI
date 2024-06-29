@@ -63,8 +63,7 @@
                 <div class="portlet-input input-inline" id="search-div">
                   <div class="input-icon right" id="icon">
                     <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
-                      [ngModelOptions]="{standalone: true}" placeholder="Search..."
-                      (keypress)="partnersSearchOnKeyEvent($event.keyCode)" autocomplete="off">
+                      [ngModelOptions]="{standalone: true}" placeholder="Search..." (keydown.enter)="searchPartners()" autocomplete="off">
                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
                       (click)="sortOption.searchKey='';searchPartners();"></button>
                     <button type="submit" class="search-box-item-click" (click)="searchPartners()">
@@ -243,7 +242,7 @@
                   <div class="input-icon right" id="icon">
                     <input type="text" id="sort-text" class="form-control"
                       [(ngModel)]="partnerGroupsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                      placeholder="Search..." (keypress)="partnerGroupsSearchOnKeyEvent($event.keyCode)"
+                      placeholder="Search..." (keydown.enter)="searchPartnerGroups()"
                       autocomplete="off">
                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="partnerGroupsSortOption.searchKey"
                       (click)="partnerGroupsSortOption.searchKey='';searchPartnerGroups();"></button>
