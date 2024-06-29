@@ -420,12 +420,12 @@ export class SortOption {
 	];
 
 	customLinksCompaniesDropDown = [
-		{ 'name': 'Title (A-Z)', 'value': 'title-ASC' },
-		{ 'name': 'Title (Z-A)', 'value': 'title-DESC' },
-		{ 'name': 'Link (ASC)', 'value': 'link-ASC' },
-		{ 'name': 'Link (DESC)', 'value': 'link-DESC' },
-		{ 'name': 'Created On (ASC)', 'value': 'createdOn-ASC' },
-		{ 'name': 'Created On (DESC)', 'value': 'createdOn-DESC' }
+		{ 'name': 'Title (A-Z)', 'value': 'buttonTitle-ASC' },
+		{ 'name': 'Title (Z-A)', 'value': 'buttonTitle-DESC' },
+		{ 'name': 'Link (ASC)', 'value': 'buttonLink-ASC' },
+		{ 'name': 'Link (DESC)', 'value': 'buttonLink-DESC' },
+		{ 'name': 'Created On (ASC)', 'value': 'timestamp-ASC' },
+		{ 'name': 'Created On (DESC)', 'value': 'timestamp-DESC' }
 	];
 	
 
