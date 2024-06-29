@@ -651,4 +651,30 @@ export class CustomLinksUtilComponent implements OnInit {
     this.findLinks(this.pagination);
   }
 
+  /*************************Sort********************** */
+sortBy(text: any) {
+  this.sortOption.selectedCustomLinksDropDownOption = text;
+  this.getAllFilteredResults();
+}
+
+searchOnKeyPress(keyCode:number){
+  if(keyCode==13){
+    this.search();
+  }
+}
+
+
+/*************************Search********************** */
+search() {
+  this.getAllFilteredResults();
+}
+
+getAllFilteredResults() {
+  this.pagination.pageIndex = 1;
+  this.pagination.searchKey = this.sortOption.searchKey;
+  this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedCustomLinksDropDownOption, this.pagination);
+  this.findLinks(this.pagination);
+}
+
+
 }
