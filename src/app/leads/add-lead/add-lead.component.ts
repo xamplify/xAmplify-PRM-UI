@@ -162,6 +162,7 @@ export class AddLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             this.lead.createdForCompanyId = data.data;
+
             if (this.campaignId > 0) {
               this.lead.campaignId = this.campaignId;
               this.lead.campaignName = this.campaignName;
@@ -171,6 +172,7 @@ export class AddLeadComponent implements OnInit {
               this.getContactInfo();
             } else {
               //this.isSalesForceEnabled(); 
+              this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
               this.getActiveCRMDetails();
             }
           }
@@ -281,6 +283,7 @@ export class AddLeadComponent implements OnInit {
             this.referenceService.loading(this.httpRequestLoader, false);
             if (data.statusCode == 200) {
               self.lead.createdForCompanyId = data.data;
+              this.getLeadCustomFieldsByVendorCompany(self.lead.createdForCompanyId);
               //this.isSalesForceEnabled();
               this.getActiveCRMDetails();
             }
@@ -445,6 +448,9 @@ export class AddLeadComponent implements OnInit {
               this.getLeadCustomFieldsByVendorCompany(self.lead.createdForCompanyId);
             } else {
               this.getDefaultLeadCustomFields();
+            }
+            if (self.lead.industry == null || self.lead.industry == undefined || self.lead.industry == '') {
+              self.lead.industry = this.industries[0];
             }
             self.existingHalopsaLeadTicketTypeId = self.lead.halopsaTicketTypeId;
             if (self.lead.createdForCompanyId > 0) {
