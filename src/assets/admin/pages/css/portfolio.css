@@ -20,16 +20,17 @@ Portfolio
   margin-bottom: 5px;
   background: #f1f3fa;
   display: inline-block;
-  border-radius: 2px;
+  border-radius: 3px;
   border: 1px solid #e0e0e0;
   /* 12-01-2023 */
   font-size: 13px;
+  font-weight: 500;
 }
 
 .mix-filter li:hover,
 .mix-filter li.active {
   color: #fff;
-  background: #0da3e2;
+  background: #1c84ff;
   border-radius: 2px;
   border: 1px solid #0da3e2;
 }

@@ -26,7 +26,7 @@ export class IntegrationDetailsComponent implements OnInit {
   integrationsLoader = true;
   customResponse:CustomResponse = new CustomResponse();
   sortOption:SortOption = new SortOption();
-
+  updateLoader = false;
   companiesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   selectedCompanyId = 0;
 	dropdownDataLoading = true;
@@ -159,6 +159,20 @@ searchableDropdownEventReceiver(event:any){
 editAccessOrRefreshToken(integrationDetails:any){
   this.selectedIntegratedDetails = integrationDetails;
   this.isAccessOrRefreshTokenEdited = true;
+}
+
+updateDetails(){
+  this.updateLoader = true;
+  console.log(this.selectedIntegratedDetails);
+  this.dashboardService.updateAccessTokenAndRefreshToken(this.selectedIntegratedDetails).subscribe(
+      response=>{
+        this.referenceService.showSweetAlertSuccessMessage("Details Updated Successfully");
+        this.findAllIntegrations(this.integrationsPagination);
+        this.updateLoader = false;
+      },error=>{
+        this.updateLoader = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+      });
 }
 
 }

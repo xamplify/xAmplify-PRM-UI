@@ -1442,5 +1442,11 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         return this.authenticationService.callGetMethod(url);
     }
 
+    updateAccessTokenAndRefreshToken(integrationDetails:any){
+        const url = this.superAdminUrl + 'integrations/updateAccessTokenAndRefreshToken?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url,integrationDetails);
+
+    }
+
     
 }

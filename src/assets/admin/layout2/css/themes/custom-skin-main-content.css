@@ -2424,3 +2424,9 @@ table tr:nth-child(odd).highlightRow, table tr:nth-child(odd).highlightRow:hover
 .vendor-details-tiles {
   border: 1px solid var(--border-color) !important;
 }
+div#notifications {
+  color: var(---text-color) !important;
+}
+i.fa.fa-check-circle-o.check-icons{
+  color: #008000!important;
+}

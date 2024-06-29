@@ -4,7 +4,11 @@
   border: 1px solid #e5e5e5;
 }
 .campaign-type-selected {
-  background-color: #6dcff6;
+  background-color: #0276ff;
+  color: #fff;
+}
+i.fa.fa-check-circle-o.check-icons{
+  color: #fff;
 }
 .greay {
   background-color: #8a8282c4;
