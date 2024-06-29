@@ -415,6 +415,8 @@ export class IntegrationSettingsComponent implements OnInit {
 	reloadCustomFields() {
 		this.sfcfPagedItems = [];
 		this.sfcfMasterCBClicked = false;
+		this.searchKey = '';
+		this.sortOption = '';
 		this.isFilterApplied = false;
 		this.isSortApplied = false;
 		this.customFieldsResponse.isVisible = false;
