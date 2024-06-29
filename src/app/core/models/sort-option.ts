@@ -418,6 +418,15 @@ export class SortOption {
 		{ 'name': 'Download Count (ASC)', 'value': 'downloadCount-ASC' },
 		{ 'name': 'Download Count (DESC)', 'value': 'downloadCount-DESC' }
 	];
+
+	customLinksCompaniesDropDown = [
+		{ 'name': 'Title (A-Z)', 'value': 'title-ASC' },
+		{ 'name': 'Title (Z-A)', 'value': 'title-DESC' },
+		{ 'name': 'Link (ASC)', 'value': 'link-ASC' },
+		{ 'name': 'Link (DESC)', 'value': 'link-DESC' },
+		{ 'name': 'Created On (ASC)', 'value': 'createdOn-ASC' },
+		{ 'name': 'Created On (DESC)', 'value': 'createdOn-DESC' }
+	];
 	
 
 
@@ -477,5 +486,8 @@ export class SortOption {
 
 	/*****XNFR-543*****/
 	selectedDamPartnerCompaniesDropDownOption = this.damPartnerCompaniesDropDown[0];
+
+	/***XNFR-571****/
+	selectedCustomLinksDropDownOption = this.customLinksCompaniesDropDown[this.customLinksCompaniesDropDown.length-1];
 
 }

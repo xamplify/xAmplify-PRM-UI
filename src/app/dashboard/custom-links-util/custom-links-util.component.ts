@@ -16,12 +16,14 @@ import { CustomLinkType } from '../models/custom-link-type.enum';
 import { ErrorResponse } from 'app/util/models/error-response';
 import { UtilService } from 'app/core/services/util.service';
 import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { SortOption } from 'app/core/models/sort-option';
+
 declare var swal: any, $:any;
 @Component({
   selector: 'app-custom-links-util',
   templateUrl: './custom-links-util.component.html',
   styleUrls: ['./custom-links-util.component.css'],
-  providers: [Properties, HttpRequestLoader,RegularExpressions]
+  providers: [Properties, HttpRequestLoader,RegularExpressions,SortOption]
 })
 export class CustomLinksUtilComponent implements OnInit {
   readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
@@ -101,6 +103,7 @@ export class CustomLinksUtilComponent implements OnInit {
   partnerGroupIds = [];
   partnerIds = [];
   partnerGroupSelected = false;
+  sortOption:SortOption = new SortOption();
   /***XNFR-571****/
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
