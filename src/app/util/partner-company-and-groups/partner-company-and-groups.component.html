@@ -13,19 +13,21 @@
     </ng-container>
   </div>
   <!--Tabs-->
-  <div class="panel with-nav-tabs panel-default" *ngIf="!sendSuccess">
+  <div class="panel with-nav-tabs panel-default" [hidden]="sendSuccess">
     <div class="panel-heading" id="company-and-group-tabs">
       <ul class="nav nav-tabs hideBorder">
+        <!--Partner Companies-->
         <li id="partner-companies-li" [ngClass]="{'active': isPartnerCompaniesTabSelected}">
           <a class="partnerCompaniesC" id="width-205px"
             (click)="!isPartnerCompaniesTabSelected && activatePartnerCompaniesTab()" data-toggle="tab"
-            href="#">{{authenticationService?.partnerModule?.customName}}
+            href="javascript:void(0)">{{authenticationService?.partnerModule?.customName}}
             <i *ngIf="isPartnerCompaniesTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
           </a>
         </li>
+        <!--Partner Groups-->
         <li id="partnerGroups-li" [ngClass]="{'active': isPartnerGroupsTabSelected}">
           <a class="partnerGroupsC" id="width-205px" (click)="!isPartnerGroupsTabSelected && activatePartnerGroupsTab()"
-            data-toggle="tab" href="#">Group Of {{authenticationService?.partnerModule?.customName}}
+            data-toggle="tab" href="javascript:void(0)">Group Of {{authenticationService?.partnerModule?.customName}}
             <i *ngIf="isPartnerGroupsTabSelected" id="tick-mark" class="fa fa-check-circle-o success"></i>
           </a>
         </li>

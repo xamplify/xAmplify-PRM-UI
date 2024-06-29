@@ -75,7 +75,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	@Input() selectedPartnerIdAndPartnerStatus:any[] = [];
 	@Input() selectedPartnerGroupPartnerIdAndPartnerStatus:any[] = [];
 
-	isPartnerCompaniesTabSelected = false;
+	isPartnerCompaniesTabSelected = true;
 	isPartnerGroupsTabSelected = false;
 
 	/****XNFR-571****/
@@ -98,6 +98,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		}else if(this.isDashboardButtonsModule){
 			this.isEmailNotSentNotificationDisplayed = !this.isDashboardButtonPublishedEmailNotification;
 		}
+		this.initializeTabs();
 	}
 
 	private initializeTabs() {
@@ -119,6 +120,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		this.referenceService.startLoader(this.httpRequestLoader);
 		let isPartnerCompaniesSelected = this.selectedTeamMemberIds != undefined && this.selectedTeamMemberIds.length > 0;
 		if (this.isPublishedToPartnerGroups) {
+			this.isPartnerCompaniesTabSelected = false;
 			if(isPartnerCompaniesSelected){
 				this.activatePartnerCompaniesTab();
 			    this.disableOrEnablePartnerListsTab();
@@ -155,7 +157,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	}
 
 	ngAfterViewInit(){
-		this.initializeTabs();
+		//this.initializeTabs();
 	}
 
 	findPartnerCompanies(pagination: Pagination) { 
@@ -370,14 +372,17 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		let isEnableBothTabs = this.moduleName!=this.properties.dashboardButtons;
 		if(isEnableBothTabs){
 			if (this.selectedTeamMemberIds.length > 0) {
+				$('#partnerGroups-li').removeClass('active');
+				$('#partnerGroups-li').addClass('cursor-not-allowed');
 				$('#partnerGroups-li').css({ 'cursor': 'not-allowed' });
 				$('.partnerGroupsC').css({ 'pointer-events': 'none' });
-				let tooltipMessage = "You can choose either company / list";
+				let tooltipMessage = "You can choose either company / group";
 				$('#partnerGroups-li').attr('title', tooltipMessage);
 			} else {
+				$('#partnerGroups-li').removeClass('cursor-not-allowed');
 				$('#partnerGroups-li').css({ 'cursor': 'auto' });
 				$('.partnerGroupsC').css({ 'pointer-events': 'auto' });
-				$('#partnerGroups-li').attr('title', 'Click to see lists');
+				$('#partnerGroups-li').attr('title', 'Click to see groups');
 			}
 		}
 		this.sendEmitterValues();
@@ -512,11 +517,13 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		let isEnableBothTabs = this.moduleName!=this.properties.dashboardButtons;
 		if(isEnableBothTabs){
 			if (this.selectedPartnerGroupIds.length > 0) {
+				$('#partner-companies-li').addClass('cursor-not-allowed');
 				$('#partner-companies-li').css({ 'cursor': 'not-allowed' });
 				$('.partnerCompaniesC').css({ 'pointer-events': 'none' });
-				let tooltipMessage = "You can choose either company / list";
+				let tooltipMessage = "You can choose either company / group";
 				$('#partner-companies-li').attr('title', tooltipMessage);
 			} else {
+				$('#partner-companies-li').removeClass('cursor-not-allowed');
 				$('#partner-companies-li').css({ 'cursor': 'auto' });
 				$('.partnerCompaniesC').css({ 'pointer-events': 'auto' });
 				$('#partner-companies-li').attr('title', 'Click to see companies');
