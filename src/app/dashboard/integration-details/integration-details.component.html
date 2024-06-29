@@ -226,20 +226,23 @@
         </div>
         <!--Edit Section-->
         <div *ngIf="isAccessOrRefreshTokenEdited">
-          <!--Access Token-->
-          <div class="form-group">
-            <label><strong>Update Access Token</strong></label>
-            <textarea class="form-control" [(ngModel)]="selectedIntegratedDetails.accessToken" rows="5"  [ngModelOptions]="{standalone: true}"></textarea>
-          </div>
-          <!--Refresh Token-->
-          <div class="form-group">
-            <label><strong>Update Refresh Token</strong></label>
-            <textarea class="form-control" [(ngModel)]="selectedIntegratedDetails.refreshToken" rows="5" [ngModelOptions]="{standalone: true}"></textarea>
-          </div>
-          <div class="float-right">
-            <button class="btn btn-primary">Update</button>
-            <button class="btn btn-danger" (click)="isAccessOrRefreshTokenEdited=false;">Back</button>
-          </div>
+          <app-modal-popup-loader *ngIf="updateLoader"></app-modal-popup-loader>
+          <ng-container *ngIf="!updateLoader">
+              <!--Access Token-->
+              <div class="form-group">
+                <label><strong>Update Access Token</strong></label>
+                <textarea class="form-control" [(ngModel)]="selectedIntegratedDetails.accessToken" rows="5"  [ngModelOptions]="{standalone: true}"></textarea>
+              </div>
+              <!--Refresh Token-->
+              <div class="form-group">
+                <label><strong>Update Refresh Token</strong></label>
+                <textarea class="form-control" [(ngModel)]="selectedIntegratedDetails.refreshToken" rows="5" [ngModelOptions]="{standalone: true}"></textarea>
+              </div>
+              <div class="float-right">
+                <button class="btn btn-primary" (click)="updateDetails()">Update</button>
+                <button class="btn btn-danger" (click)="isAccessOrRefreshTokenEdited=false;">Back</button>
+              </div>
+          </ng-container>
         </div>
       </div>
       <div class="modal-footer">
