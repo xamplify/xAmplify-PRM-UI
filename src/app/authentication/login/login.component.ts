@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -54,7 +54,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   teamMemberSignedUpResponse:CustomResponse = new CustomResponse();
   isPleaseWaitButtonDisplayed = false;
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
-    public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer) {
+    public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer,
+    private route: ActivatedRoute) {
       this.SERVER_URL = this.envService.SERVER_URL;
       this.APP_URL = this.envService.CLIENT_URL;
       this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
@@ -194,6 +195,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   redirectTo(user: User) {
+    this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed = true;
     const roles = user.roles;
     if (this.authenticationService.isSuperAdmin()) {
       this.router.navigate(['/home/dashboard/admin-report']);
@@ -287,6 +289,19 @@ bgIMage2:any;
         location.reload();
       }else{
         if (this.vanityURLService.isVanityURLEnabled()) {
+          this.route.queryParams.filter(params => params.error)
+          .subscribe(params => {
+            console.log(params);
+            if (params.error === "verr1") {
+              this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
+            } else if (params.error === "server_error_message") {
+              this.setCustomeResponse("ERROR", this.properties.serverErrorMessage);
+            } else if (params.error === "authentication_failed") {
+              this.setCustomeResponse("ERROR", this.properties.AUTHENTICATION_FAILURE);
+            }           
+          }
+        );
+
           this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
           this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
             this.vanityURLEnabled = result.enableVanityURL;
@@ -350,6 +365,11 @@ bgIMage2:any;
             if (result.showMicrosoftSSO) {
               this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });
             }
+
+            if (result.showSAML2SSO) {
+              this.vanitySocialProviders.push({ "name": "SAML SSO", "iconName": "sso", "value": "samlsso" });
+            }
+            
           }, error => {
             console.log(error);
           });
@@ -385,10 +405,15 @@ bgIMage2:any;
       }
       let loginUrl = "/" + socialProviderName + "/login";
       if (this.isLoggedInVanityUrl) {
-        let loginUrl = this.authenticationService.APP_URL+"v/"+socialProviderName+"/"+window.location.hostname;
-        let x = screen.width / 2 - 700 / 2;
-        let y = screen.height / 2 - 450 / 2;
-        window.open(loginUrl, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
+        if (socialProvider.value === "samlsso") {
+          loginUrl = "/" + socialProvider.value + "/login";
+          this.router.navigate([loginUrl]);
+        } else {
+          let loginUrl = this.authenticationService.APP_URL+"v/"+socialProviderName+"/"+window.location.hostname;
+          let x = screen.width / 2 - 700 / 2;
+          let y = screen.height / 2 - 450 / 2;
+          window.open(loginUrl, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
+        }        
       } else {
         this.router.navigate([loginUrl]);
       }

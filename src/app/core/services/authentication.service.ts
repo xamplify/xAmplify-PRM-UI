@@ -158,6 +158,9 @@ export class AuthenticationService {
   /*** XNFR-416 ****/
   properties = new Properties();
   companyUrl = "";
+  /*** XNFR-570 ****/
+  themeBackgroundImagePath = "";
+  /****XNFR-570 */
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -1324,7 +1327,7 @@ getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:b
   }else{
     URL_PREFIX = this.REST_URL+"landing-page/";
   }
-  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&vendorJourney="+vendorJourney+"&access_token="+this.access_token;
+  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&vendorJourney="+vendorJourney+"&masterLandingPage="+isMasterLandingPages+"&access_token="+this.access_token;
   return this.callGetMethod(URL);
 }
 

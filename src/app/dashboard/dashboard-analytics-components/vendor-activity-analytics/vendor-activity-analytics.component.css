@@ -95,7 +95,7 @@
 /* 16-06-2023 */
 #notifications {
   position: absolute;
-  top: -32px;
+  top: -14px;
   right: -18px;
   padding: 5px 13px;
   border-radius: 3px;
@@ -104,7 +104,7 @@
   min-height: auto;
   min-width: 32px;
   font-size: 14px;
-  color: #fff !important;
+  color: #fff;
   clip-path: polygon(50% 0%, 100% 0, 85% 51%, 100% 100%, 0 100%, 15% 49%, 0 0);
 }
 #notification-text {

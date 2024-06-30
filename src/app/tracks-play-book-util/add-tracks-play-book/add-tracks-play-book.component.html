@@ -45,7 +45,7 @@
       <div style="margin-top: 10px;" *ngIf="!ngxloading && !trackOrPlaybookPublishEmailNotificationLoader">
         <div class="portlet box mPortlet" style="border-radius:5px;">
           <div class=" form mPortlet-body">
-            <div class="row">
+            <div class="row tab_m0">
               <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 form-body">
                 <div class="row form-group">
                   <label class="control-label col-sm-4" style="text-align: right;" translate>Title
@@ -130,9 +130,22 @@
                     </span>
                   </div>
                 </div>
+                <!--XNFR-586--->
+                <div class="row form-group pb10">
+                  <label class="control-label col-sm-4" style="text-align: right;" translate>Add To Quick Links</label>
+                  <div class="col-sm-8 col-xs-12 mt--10px">
+                    <app-custom-ui-switch [customSwitch]="tracksPlayBook?.addedToQuickLinks"
+                        (customUiSwitchEventEmitter)="setAddToQuickLinksOption($event)" [tooltipMessage]="customSwitchToolTipMessage"></app-custom-ui-switch>
+                    <span class="info-color-xampc">
+                        <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup"
+                          data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                          title="{{properties?.ADD_TO_QUICK_LINKS}}"></i>
+                    </span>
+                  </div>
+                </div>
                 <!---Tags-->
                 <div class="row form-group mTags" style="padding-bottom: 10px;">
-                  <label class="control-label col-sm-4 col-xs-6 mTextAlign" style="text-align: right;" translate>Tags
+                  <label class="control-label col-sm-4 col-xs-6 mTextAlign" style="text-align: right;">Tags
                   </label>
                   <div class="inline col-sm-8 col-xs-8">
                     <div class="portlet light" style="width: 100%;padding: 5px !important;">
@@ -380,7 +393,7 @@
                             <img
                               ng-src="https://d15k2d11r6t6rl.cloudfront.net/public/_thumbs/Integrators/6639d69f-523f-44ca-b809-a00daa26b367/bee-12092/BC-xAmplify-changes1.jpg_thumb.png?hash=1537857431976"
                               id="content_image_grid_{{i}}" (error)="changeImage(i, file.filePath)"
-                              class="thumb ng-scope img-format" src="{{file.thumbnailPath}}" alt="">
+                              class="thumb ng-scope img-format" src="{{file.thumbnailPath}}" alt="" height="100px">
                           </div>
                         </a> <a href="javascript:;"> </a>
                       </span>

@@ -1,3 +1,8 @@
 .border-bottom-1px {
   border-bottom: 1px solid #ddd;
 }
+@media (min-width: 768px) {
+.dialog-width{
+  width: 48% !important;
+}
+}

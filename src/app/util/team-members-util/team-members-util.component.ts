@@ -303,7 +303,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.selectedTeamMembers.push(teamMemberId);
       this.selectedTeamMemberIds = this.selectedTeamMembers;
       this.showAnalytics = true;
-      this.referenceService.goToTop();
     }
 
   }
@@ -337,12 +336,10 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.referenceService.loading(this.addTeamMemberLoader, true);
       this.customResponse = new CustomResponse();
-      this.referenceService.goToTop();
       this.teamMemberService.updateTeamMemberXNFR2(this.team)
         .subscribe(
           data => {
             this.referenceService.loading(this.addTeamMemberLoader, false);
-            this.referenceService.goToTop();
             this.loading = false;
             if (data.statusCode == 200) {
               this.editTeamMember = false;
@@ -425,7 +422,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           this.deletePopupLoader = false;
           this.loading = false;
           $('#delete-team-member-popup').modal('hide');
-          this.referenceService.goToTop();
           this.successMessage = this.selectedTeamMemberEmailId + " deleted successfully.";
           this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
           this.teamMemberIdToDelete = 0;
@@ -708,7 +704,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
 
   addTeamMembers() {
-    this.referenceService.goToTop();
     this.referenceService.loading(this.addTeamMemberLoader, true);
     this.customResponse = new CustomResponse();
     let teamInput = {};
@@ -936,7 +931,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   addServerError(error: any) {
-    this.referenceService.goToTop();
     this.referenceService.loading(this.addTeamMemberLoader, false);
     this.loading = false;
     let statusCode = JSON.parse(error['status']);

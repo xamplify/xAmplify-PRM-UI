@@ -116,9 +116,12 @@ cursor: default;
 }
 
 .form-selected{
-  background-color: #6dcff6;
+  background-color: #0276ff;
+  color: #fff;
 }
-
+.mix-filter li:hover {
+	background: #1c84ff;
+  }
 .ellipsis {
   width: 100%;
   text-overflow: ellipsis;
@@ -179,10 +182,13 @@ cursor: default;
 
 
 .gridCardBoxHeight{
-  height: 385px !important;
+  height: 405px !important;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px){ 
 .tab_view_img{
   margin-left:0px!important;
 }
+}
+h4.gridViewDesignTextAlignmnent{
+  padding-bottom: 3px;
 }

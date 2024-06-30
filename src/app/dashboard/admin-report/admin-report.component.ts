@@ -13,6 +13,8 @@ import { Roles } from '../../core/models/roles';
 import { CampaignAccess } from '../../campaigns/models/campaign-access';
 import { DynamicEmailContentComponent } from '../dynamic-email-content/dynamic-email-content.component';
 import { UpdatePasswordComponent } from './../super-admin/update-password/update-password.component';
+import { UpdateEmailAddressComponent } from '../update-email-address/update-email-address.component';
+import { IntegrationDetailsComponent } from '../integration-details/integration-details.component';
 declare var swal:any,$:any;
 
 @Component({
@@ -71,9 +73,14 @@ export class AdminReportComponent implements OnInit {
     isVanityUrlEnabled = false;
     updatePasswordLoader = false;
     @ViewChild('updatePasswordComponent') updatePasswordComponent: UpdatePasswordComponent;
+    @ViewChild('updateEmailAddressComponent') updateEmailAddressComponent: UpdateEmailAddressComponent;
+    expandOrCollpaseAllText = "Collapse All";
+    isLocalHost = true;
+    @ViewChild('integrationDetailsComponent') integrationDetailsComponent:IntegrationDetailsComponent;
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public router:Router) {
         this.isVanityUrlEnabled = this.authenticationService.vanityURLEnabled;
+        this.isLocalHost = this.authenticationService.isLocalHost();
   }
   
   listTop10RecentUsers(){
@@ -216,4 +223,20 @@ export class AdminReportComponent implements OnInit {
         this.updatePasswordComponent.openModalPopup();
     }
     
+    expandOrCollpase(){
+		let isChecked =  $("input[name=collapsibleCheckBox]").is(":checked");
+        $("input[name=collapsibleCheckBox]").prop('checked', !isChecked);
+	}
+
+    openUpdateEmailAddressModalPopup(){
+        this.updateEmailAddressComponent.openModalPopup();
+    }
+
+    openIntegrationDetailsModalPopup(){
+        this.integrationDetailsComponent.openModalPopup();
+    }
+
+    openUpdateCompanyProfileNameModalPopup(){
+        
+    }
 }

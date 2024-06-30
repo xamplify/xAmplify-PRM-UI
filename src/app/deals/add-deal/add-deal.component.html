@@ -157,7 +157,7 @@
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
                       <div class="form-group" style="margin-bottom: 20px"
-                        *ngIf="!isVendorVersion && deal.campaignId > 0">
+                        *ngIf="deal.campaignId > 0">
                         <label class="control-label">Campaign Name
                           <span class="required"><strong>*</strong></span>
                         </label>
@@ -165,14 +165,14 @@
                           class="form-control" id="campaignName" />
                       </div>
 
-                      <div class="form-group" style="margin-bottom: 20px"
+                      <!-- <div class="form-group" style="margin-bottom: 20px"
                         *ngIf="isVendorVersion && deal.parentCampaignId > 0">
                         <label class="control-label">Campaign Name
                           <span class="required"><strong>*</strong></span>
                         </label>
                         <input type="text" disabled="disabled" name="parentCampaignName"
                           value="{{deal.parentCampaignName}}" class="form-control" id="parentCampaignName" />
-                      </div>
+                      </div> -->
 
                       <div class="form-group" style="margin-bottom: 20px"
                         *ngIf="!(deal.campaignId > 0) && !(deal.parentCampaignId > 0)">
@@ -241,7 +241,7 @@
                             <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
                             <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
-                              id="createdByPipelineStageId" [disabled]="preview"
+                              id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
                               (input)="validateField('createdByPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
                               <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
@@ -335,7 +335,7 @@
                                 class="required"><strong>*</strong></span></label>
                             <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
-                              id="createdByPipelineStageId" [disabled]="preview"
+                              id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
                               (input)="validateField('createdByPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
                               <option *ngIf="!isVendorVersion && deal.currentStagePrivate"

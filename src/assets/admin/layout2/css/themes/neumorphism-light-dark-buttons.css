@@ -2,10 +2,9 @@
 .btn-primary::before,
 .button_blue::before,
 div.Btn-Green:hover,
-.button::before ,
-/** 23-01-2024 **/
-.btn-success:hover {
-  background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important;
+.button::before
+ {
+  background: #1C84FF !important;
   box-shadow: none !important;
   border-radius: 7px !important;
 } 
@@ -15,24 +14,25 @@ span.switch.switch-small {
 }
 .btn-group button.salesforce-btn,
 .btn-group button.button_blue,
-.button_blue, 
 .Btn-Green, 
 .button,      
-.button_blue:hover,
-.Btn-Green:hover,
 button#save\&delete_button, 
+.btn-primary,
 /** 23-01-2024 **/
-.btn-success,
 button.button.bgcolor-unset
 {
-  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  background :#0276FF !important;
   box-shadow: none !important;
   border-radius: 7px !important;
+  /* border: 1px solid #266dc1 !important; */
 }
-.btn-primary,
+
+.button_blue:hover,
+.Btn-Green:hover,
 .btn-primary:hover{
-  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  background:#1C84FF !important;
   box-shadow: none !important;
+  /* border: 1px solid #266dc1 !important; */
 }
 .Btn-Gray:hover {
   box-shadow: none !important;
@@ -54,18 +54,18 @@ button#copyFromClipBoard,
 .full_popup {
   box-shadow : none !important
 }
-.btn-group .invite_vendor_radius,
+/* .btn-group .invite_vendor_radius,
 .btn-group .analytics_icon_radius {
   box-shadow: none !important;
   background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
   border: 0px solid #0104ff !important;
   padding: 7px 14px !important;
-}
-button.btn.custom {
+} */
+/* button.btn.custom {
   box-shadow: none !important;
   background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
   padding: 7px 14px !important;
-  }
+  } */
 .invite_vendor_radius {
   border-radius: 7px 0px 0px 7px !important;
 }
@@ -75,11 +75,11 @@ button.btn.custom {
 button.btn.custom {
   border-radius: 7px !important;
 }
-.btn-group.refer-vendor-button.btnVendor:hover,
+/* .btn-group.refer-vendor-button.btnVendor:hover,
 button.btn.custom:hover {
   transform: scale(1.05);
   transition: all 0.1s ease;
-}
+} */
 span.btn.Btn-Green.transition {
     box-shadow: none !important;
 }
@@ -89,12 +89,6 @@ span.btn.Btn-Green.transition {
 .page-sidebar .page-sidebar-menu > li.active > a > i, 
 .page-sidebar .page-sidebar-menu > li.active.open > a > i {
   color: #01b6ff85 !important;
-}
-.help-iconbgadd.selectRecord {
-  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
-}
-.help-iconbgadd.selectRecord:hover {
-  background: linear-gradient(360deg, rgb(1 180 255)  0%, rgb(53 58 241) 100%) !important;
 }
 /**** tharak(12-01-2024) *********/
 h3#notifications {
@@ -111,7 +105,7 @@ h3#notifications {
 
 button.button_blue:disabled,
  button.button:disabled {
-  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #0276FF !important;
   box-shadow: none !important;
 }
 i.disabled, a.inactive {
@@ -142,19 +136,23 @@ i.disabled, a.inactive {
 }
 
 .mix-filter li {
-  border-radius: 5px !important;
+  border-radius: 3px !important;
 }
 .mix-filter-li-selected,
 li.mix-filter-li-selected,
-li.mix-filter-li-selected:hover,
-ul.alt-row-style1 li:hover,
 .filter.form-selected,
 .filter.landing-page-selected,
-.mix-filter li.contact-filter-selected,
+.mix-filter li.contact-filter-selected{
+  background: #0276FF !important;
+  box-shadow: none !important;
+  border:1px solid #026deb !important;  
+}
 .mix-filter li:hover, .mix-filter li.active, 
 .mix-filter li.campaign-type-selected, 
-.mix-filter li.emailtemplate-selected {
-  background-image: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+.mix-filter li.emailtemplate-selected,
+li.mix-filter-li-selected:hover,
+ul.alt-row-style1 li:hover {
+  background: #1C84FF !important;
   box-shadow: none !important;
   border-radius: 5px;
 }
@@ -163,7 +161,7 @@ ul.alt-row-style1 li:hover,
 .filter.form-selected:hover,
 .filter.landing-page-selected:hover,
 .mix-filter li.contact-filter-selected:hover {
-  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #1C84FF !important;
   box-shadow: none !important;
   border-radius: 5px;
 }
@@ -202,11 +200,12 @@ div#reply-3:hover {
   background: linear-gradient(0deg, #178dd1 0, #2ebab5 100%) !important;
 }
 .aspect_ratio {
-  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #0276FF !important;
   border-radius: 7px;
+  border: 1px solid #026deb !important;
 }
 .aspect_ratio:hover {
-  background: linear-gradient(89deg,#06beb8 0, #0c86cc 100%) !important;
+  background: #1C84FF !important;
 }
 
 .page-sidebar .page-sidebar-menu > li.active > a, .page-sidebar .page-sidebar-menu > li.hover > a {
@@ -239,12 +238,12 @@ div#reply-3:hover {
   border: none;
   cursor: pointer;
   overflow: hidden;
-  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #0276FF !important;
   transform-origin: 0 50% !important;
   transition: all 0.475s;
   border-radius: 7px !important;
 }
-.color-flow-button:before {
+/* .color-flow-button:before {
   content: '';
   position: absolute;
   top: 0;
@@ -253,9 +252,9 @@ div#reply-3:hover {
   height: 100%;
   background: inherit;
   transition: all 0.475s;
-}
+} */
 .color-flow-button:hover {
-  background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important; /* Updated gradient color on hover */
+  background: #1C84FF !important; /* Updated gradient color on hover */
 }
 
 .color-flow-button:hover:before {
@@ -308,14 +307,16 @@ margin-left: 8px !important;
 
 /****07-02-2024 (Tharak) ***/
 button.swal2-confirm.styled {
-  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;;
+  background: #0276FF !important;;
   background-position: 100%;
+  border:1px solid #026deb !important;
+  border-radius:7px !important;
 }
 
 button.swal2-confirm.styled:hover {
-  background:  linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
+  background:  #1C84FF !important;
   background-position: 0 100%;
-  transition: background-color 0.5s ease; /* Transition duration and easing */
+  /* Transition duration and easing */
 }
 
 button.swal2-cancel.styled {
@@ -347,6 +348,6 @@ button.swal2-cancel.styled:hover {
     background: linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
   }
   div > button.btn-primary:hover{
-    background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important;
+    background: #1C84FF !important;
     box-shadow: none !important;
   }

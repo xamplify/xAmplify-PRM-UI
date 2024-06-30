@@ -1285,6 +1285,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     }
 
     private filterPageTypeAndFindPages() {
+        this.selectedPageId = 0;
+        this.isEmailTemplateOrPageSelected = false;
         this.setPageCampaignFilterOptions();
         let dropDownLength =   this.pagesSortOption.eventCampaignRecipientsDropDownOptions.length;
         if(this.selectedPageId==0 && !this.isAdd && dropDownLength==5){

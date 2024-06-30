@@ -123,7 +123,7 @@
                            </div>
                            <div class="details">
                               <div class="number numberCss NumberFontDecrease"
-                                 style="font-weight: 300 !important; color: #FFFFFF;">
+                                 style="font-weight: 300; color: #FFFFFF;">
                                  {{contactsByType.activeContactsCount}}
                               </div>
                               <div class="desc fz-16 TextFontDecrease" translate>
@@ -326,14 +326,10 @@
                                  [className]="checkingContactTypeName=='Contact' ? 'col-xs-12 col-sm-6 col-lg-6 pb6':'col-xs-12 col-sm-6 col-lg-6 p0 pull-right'">
                                  <div class="btn-group pull-right">
                                     <ng-container class='m10'>
-                                       <span class="btn btn-xs l-g-view" *ngIf="!isPartner" data-toggle="tooltip" ng
+                                       <span class="btn btn-xs l-g-view" data-toggle="tooltip" ng
                                           data-placement="bottom" style="margin-right: 10px;" title="List View"
                                           [class.disabled]="isListView" (click)="isListView = true"><i
                                              class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                                             <span class="btn btn-xs l-g-view" *ngIf="isPartner" data-toggle="tooltip" ng
-                                             data-placement="bottom" style="margin-right: 10px;" title="Group View"
-                                             [class.disabled]="isListView" (click)="isListView = true"><i
-                                                class="fa fa-th-list p10" aria-hidden="true"></i></span>
                                        <span class="btn btn-xs l-g-view mr_4" data-toggle="tooltip"
                                           data-placement="bottom" title="Grid View"
                                           [class.disabled]="!isListView || showExpandButton"
@@ -792,12 +788,12 @@
                                  </table>
                               </div>
                            </section>
-                           <div class="row mix-grid GridViewrowPaddings" [hidden]="isListView"
+                           <div class="row mix-grid GridViewrowPaddings aligntowbtns" [hidden]="isListView"
                               [ngStyle]="{'margin-top' : isListView ? '-5px' : ''}"
                               *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
                               <div *ngFor="let contactList of pagination.pagedItems"
                                  class="col-xs-12 col-sm-4 col-lg-3 GridviewSidePaddings">
-                                 <div class="grid-box media-querryfor-small-dev" id="contactListDiv_{{contactList.id}}">
+                                 <div class="grid-box media-querryfor-small-dev align-height" id="contactListDiv_{{contactList.id}}">
                                     <div class="gridViewImgBg">
                                        <img alt="" class="imageClassCss image_effect"
                                           *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList"
@@ -845,10 +841,11 @@
                                           <span class="arrow"></span>
                                        </h3>
                                     </div>
-                                    <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent"
+                                    <h4 class="assest-name GridViewCotent gridViewTextAlignmnent"
                                        data-toggle="tooltip" data-placement="top" title="{{contactList.name}}"
                                        style="float:none !important">
-                                       <b translate>{{ isPartner ? 'Group Name: ' : 'List Name: ' }}</b>{{ contactList.name }}
+                                       <b translate>{{ isPartner ? 'Group Name: ' : 'List Name: ' }}</b>{{ contactList.name| slice:0:54}}
+                                       <span *ngIf="contactList?.name?.length>54">...</span>
                                     </h4>
                                     <div class="aligntowbtns">
                                        <span class="view-banner Assigned-lable LableSpaceings"
@@ -1674,7 +1671,7 @@
                   <div class="row col-sm-1 tab_ml0" style="margin-left: 32px;">
                      <div data-toggle="tooltip" data-placement="top" title="Add a condition">
                         <span [class.disabled]="criterias.length > 5" (click)="addNewRow()"
-                           class="btn btn-default pull-right">
+                           class="btn btn-default pull-right" style="border-radius: 4px;">
                            <i class="fa fa-plus-square" aria-hidden="true" style="color: #0196da"></i>
                         </span>
                      </div>

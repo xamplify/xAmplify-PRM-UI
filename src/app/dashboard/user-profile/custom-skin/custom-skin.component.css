@@ -247,12 +247,12 @@ LEGEND {
 
 .profile-image-wrapper {
   display: block;
-  width: 100% !important;
+  width: 96% !important;
   height: auto;
   background: #fff;
   padding: 1px;
   margin: 0 auto;
-  border: 2px dotted #ddd;
+  border: 2px dotted #0000008f !important;
   position: relative;
 }
 
@@ -664,8 +664,8 @@ label {
   font-size: 23px !important;
   padding-top: 8px !important;
   position: absolute !important;
-  left: 16px !important;
-  bottom: 45px !important;
+  left: 10px !important;
+  /* bottom: 45px !important; */
 }
 
 .icon {
@@ -1964,4 +1964,53 @@ p.layoutcontent {
   margin-right: -15px !important;
   margin-bottom: 10px !important;
   margin-left: -15px !important;
+}
+.hide{
+  display: none !important;
+}
+
+.upload-imgheight {
+  height: 125px;
+}
+.dotted-image-border {
+  cursor: pointer;
+  text-align: center;
+  color: #fff;
+}
+
+.custom-primary-button {
+  margin: 10px 0px 0px 0px;
+  background-color: var(--change-button-color) !important;
+  background-image: linear-gradient(1deg, var(--change-button-gradient-one-color), var(--change-button-gradient-two-color) 99%) !important;
+  background-size: calc(100% + 20px) calc(100% + 20px) !important;
+  border: 1px solid var(--change-button-border-color) !important;
+  color:  var(--change-button-value-color) !important;
+  box-shadow: none !important;
+}
+.custom-primary-button:hover {
+  background-image: linear-gradient(1deg, var(--change-button-gradient-two-color), var(--change-button-gradient-one-color) 99%) !important;
+}
+.conectColor{
+  background-color: #008fd5;
+  border: 1px solid #3575b5;
+  border-radius: 5px;
+  /* padding:5px 10px; */
+  padding: 2px 6px;
+  color:white;
+  cursor: pointer;
+  font-size: 12px;
+}
+.profile-pic{
+  margin-top: -5px;
+  position: absolute;
+  border: none;
+  bottom: 0;
+  left: 0;
+}
+.previewButton {
+  margin: 10px 0px 0px 0px;
+  font-size: large;
+}
+.text_alligns{
+  text-align: left;
 }

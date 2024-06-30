@@ -1284,8 +1284,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.xtremandLogger.info("allTextLines Length: " + allTextLines.length);
 		var isValidData: boolean = true;
 		if (this.clipboardTextareaText === "") {
-			$("#clipBoardValidationMessage").append("<h4 style='color:#f68a55;'>" + "Please enter the valid data." + "</h4>");
-			isValidData = false;
+			if (!this.isPartner) {
+				$("#clipBoardValidationMessage").append("<h4 style='color:#f68a55;'>" + "Please enter the valid data." + "</h4>");
+				isValidData = false;
+			} else {
+				this.customResponse = new CustomResponse('ERROR', "Please enter the valid data.", true);
+				isValidData = false;
+			}
 		}
 
 		if (this.clipboardTextareaText != "") {
@@ -4099,7 +4104,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.dublicateEmailId = false;
 			this.existedEmailIds = [];
 			let isWebsiteError = false;
-		    let websiteErrorMessage = '';
+			let websiteErrorMessage = '';
 			var testArray = [];
 			for (var i = 0; i <= this.users.length - 1; i++) {
 				testArray.push(this.users[i].emailId);

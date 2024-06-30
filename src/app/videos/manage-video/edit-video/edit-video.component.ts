@@ -1343,6 +1343,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           let partnerGroupIds = this.saveVideoFile.partnerGroupIds;
           let partnerIds = this.saveVideoFile.partnerIds;
           let partnerGroupSelected = this.saveVideoFile.partnerGroupSelected;
+          let addedToQuickLinks = this.saveVideoFile.addedToQuickLinks;
           /****XNFR-255****/
           this.saveVideoFile = this.videoForm.value;
           this.saveVideoFile.damId = damId;
@@ -1403,6 +1404,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           this.saveVideoFile.partnerIds = partnerIds;
           this.saveVideoFile.partnerGroupSelected = partnerGroupSelected;
           this.saveVideoFile.shareAsWhiteLabeledAsset = shareAsWhiteLabeledAsset;
+          this.saveVideoFile.addedToQuickLinks = addedToQuickLinks;
            /****XNFR-255****/
           return this.videoFileService.updateVideoContent(this.saveVideoFile)
               .subscribe((result: any) => {
@@ -1572,4 +1574,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
     /***XNFR-434***/
+
+    setAddedToQuickLinks(event){
+        this.saveVideoFile.addedToQuickLinks = event;
+    }
 }

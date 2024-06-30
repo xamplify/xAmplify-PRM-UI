@@ -22,11 +22,13 @@
 .greay {
   background-color: #8a8282c4;
 }
-
 .campaign-type-selected {
-  background-color: #6dcff6;
+  background-color: #0276ff;
+  color:#fff;
 }
-
+i.fa.fa-check-circle-o.check-icons{
+  color: #fff;
+}
 /* sudha sri */
 @media (max-width: 375px) {
   .padding {

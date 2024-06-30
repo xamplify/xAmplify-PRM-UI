@@ -20,5 +20,6 @@ export class DamPostDto {
 
 	 /***XNFR-427**/
 	 loggedInUserId = 0;
+ 	 addedToQuickLinks = false;
 
 }

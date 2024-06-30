@@ -12,30 +12,55 @@
 
 
 /* Partner Analytics Ui adjustments */
-.customeRow{margin:0px}
+.customeRow {
+	margin: 0px
+}
+
 .cardPaddingCustomization {
 	padding: 0px !important;
-  }
-  .rowPaddingCustomization{
+}
+
+.rowPaddingCustomization {
 	margin-right: -51px !important;
-  }
-  .rowPaddingCustomization1{
+}
+
+.rowPaddingCustomization1 {
 	margin-right: -25px !important;
-	margin-left:0px;
-  }
-  .rowMarginCustomization{margin-right: 0px !important;}
-  .responsivepaddding1 {
+	margin-left: 0px;
+}
+
+.rowPaddingCustomization2 {
+	margin-right: -60px !important;
+}
+
+.rowPaddingCustomization3 {
+	margin-right: -20px;
+	margin-left: -30px;
+}
+
+.rowMarginCustomization {
+	margin-right: 0px !important;
+}
+
+.responsivepaddding1 {
 	margin-right: -10px !important;
-  }
-  
-  @media (min-width: 200px) and (max-width: 767px)  { 
- 
-	.rowPaddingCustomization{
-	  margin-right: 0px !important;
+}
+
+@media (min-width: 200px) and (max-width: 767px) {
+
+	.rowPaddingCustomization {
+		margin-right: 0px !important;
 	}
-	.rowPaddingCustomization1{
-	  margin-right: 0px !important;
+
+	.rowPaddingCustomization1 {
+		margin-right: 0px !important;
 	}
-	.mobilerowPadding{ margin-right: -15px !important;}
-	.mobilerowPadding1{ margin-right: -30px !important;}
-  }
+
+	.mobilerowPadding {
+		margin-right: -15px !important;
+	}
+
+	.mobilerowPadding1 {
+		margin-right: -30px !important;
+	}
+}

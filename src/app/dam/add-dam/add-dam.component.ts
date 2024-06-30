@@ -184,6 +184,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
             if(dam.whiteLabeledAssetSharedWithPartners!=undefined){
               this.damPostDto.shareAsWhiteLabeledAsset = dam.whiteLabeledAssetSharedWithPartners;
             }
+            this.damPostDto.addedToQuickLinks = dam.addedToQuickLinks;
             this.name = dam.assetName;
             this.validForm = true;
             this.isValidName = true;
@@ -536,6 +537,11 @@ downloadPdf(){
 
 }
 
+ /****XNFR-586****/
+ setAddToQuickLinks(event){
+  this.damPostDto.addedToQuickLinks = event;
+
+}
 
 
 }

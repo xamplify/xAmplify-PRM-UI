@@ -172,9 +172,9 @@
 .ffolder.big.gray.folder-cheight {
     height: 144px;
 }
-h4.ellipsis.align-titletext {
+/* h4.ellipsis.align-titletext {
     padding: 0px 5px;
-}
+} */
 .bar a {
     width: 28px;
     height: 28px;
@@ -191,7 +191,7 @@ h4.ellipsis.align-titletext {
     height: 50px;
 }
 .barview {
-    opacity: 1 !important;
+    /* opacity: 1 !important; */
     visibility: initial;
     /* background: #2c4a5a; */
       background: #54a7e9;  
@@ -297,4 +297,7 @@ margin-bottom: 9px;
 }
 .no-scrollbar {
     overflow: hidden;
+}
+  h4.folder-name.align-titletext {
+    padding: 0px 5px;
 }
