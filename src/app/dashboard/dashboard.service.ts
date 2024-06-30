@@ -1,3 +1,4 @@
+import { ChangeEmailAddressRequestDto } from './models/change-email-address-request-dto';
 import { DownloadRequestDto } from 'app/util/models/download-request-dto';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -1416,11 +1417,6 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         return this.authenticationService.callGetMethod(findAllUrl);
     }
 
-    findAllEmailAddresses(){
-        const url = this.superAdminUrl + 'findAllEmailAddresses?access_token=' + this.authenticationService.access_token;
-        return this.authenticationService.callGetMethod(url);
-    }
-
     findAllIntegrations(pagination:Pagination){
         let pageableUrl = this.referenceService.getPagebleUrl(pagination);
         let companyId = pagination.companyId;
@@ -1445,6 +1441,11 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
     updateAccessTokenAndRefreshToken(integrationDetails:any){
         const url = this.superAdminUrl + 'integrations/updateAccessTokenAndRefreshToken?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callPutMethod(url,integrationDetails);
+    }
+
+    updateEmailAddress(changeEmailAddressRequestDto:ChangeEmailAddressRequestDto){
+        const url = this.superAdminUrl + 'updateEmailAddress?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url,changeEmailAddressRequestDto);
 
     }
 

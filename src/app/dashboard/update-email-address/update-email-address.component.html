@@ -4,38 +4,37 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title text-center">Update Email Address</h4>
-       
       </div>
       <div class="modal-body">
         <app-modal-popup-loader *ngIf="updateEmailAddressLoader"></app-modal-popup-loader>
-        <div class="table-responsive">
+        <ng-container *ngIf="!updateEmailAddressLoader && updateEmailAddressResponse?.isVisible">
+          <div>
+             <app-response-message [customResponse]="updateEmailAddressResponse"></app-response-message>
+          </div>
+        </ng-container>
+        <div class="table-responsive" *ngIf="!updateEmailAddressLoader">
           <table class='table tgrid table-bordered' aria-describedby="">
             <thead>
               <!--Enter Existing Email Address-->
               <tr>
-                <th scope="row">Enter Email Address</th>
+                <th scope="row">Enter Existing Email Address</th>
                 <th>
-                  <input type="email" class="form-control" placeholder="Enter Email Address" autocomplete="off" [(ngModel)]="existingEmailAddress" [ngModelOptions]="{standalone: true}">
-                  <span *ngIf="existingEmailAddressErrorMessage?.length>0" class="required"><strong>{{existingEmailAddressErrorMessage}}</strong></span>
-                </th>
-                <th scope="row" class="inline-flex">
-                  <button  class="btn btn-primary" (click)="validateExistingEmailAddress()">Click Here To Validate Email Address</button>
+                  <input type="email" class="form-control" placeholder="Enter Email Address" autocomplete="off" [(ngModel)]="changeEmailAddressRequestDto.existingEmailAddress" [ngModelOptions]="{standalone: true}">
                 </th>
                 </tr>
               <!--Update Existing Email Address-->
-              <tr [@fadeInOut] *ngIf="isUpdatedEmailAddressDisplayed">
-                <th scope="row">Update Email Address</th>
+              <tr>
+                <th scope="row">Enter New Email Address</th>
                 <th>
-                  <input type="email" class="form-control" placeholder="Update Email Address As" autocomplete="off" [(ngModel)]="updatedEmailAddress"
-                   [ngModelOptions]="{standalone: true}" (keypress)="upgradeAccountOnKeyPress($event.keyCode)">
-                  <span *ngIf="!isValidUpdatedEmailAddress" class="required"><strong>Please Enter Email</strong></span>
+                  <input type="email" class="form-control" placeholder="New Email Address" autocomplete="off" [(ngModel)]="updatedEmailAddress"
+                   [ngModelOptions]="{standalone: true}">
                 </th>
                 </tr>
             </thead>
           </table>
         </div>
       </div>
-      <div class="modal-footer" *ngIf="isFooterDisplayed">
+      <div class="modal-footer">
         <button [disabled]="updateEmailAddressLoader || isUpdateButtonDisabled" class="btn btn-primary" (click)="updateEmailAddress()">Update</button>
         <button [disabled]="updateEmailAddressLoader" (click)="closeUpdateEmailAddressAccountModal()"  class="btn btn-danger float-right">Close</button>
       </div>
