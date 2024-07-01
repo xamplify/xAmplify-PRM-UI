@@ -1433,8 +1433,8 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
     }
 
     /*****XNFR-595****/
-    isPaymentOverDue() {
-        const url = this.url + 'isPaymentOverDue/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
+    isPaymentOverDue(companyProfileName:string) {
+        const url = this.url + 'isPaymentOverDue/'+this.authenticationService.getUserId()+'/'+companyProfileName+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
