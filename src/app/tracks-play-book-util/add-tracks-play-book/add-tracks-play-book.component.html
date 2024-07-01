@@ -1328,14 +1328,14 @@
     </ng-container>
     <!-- ---------------------------DropDown Menu----------------------------- -->
     <ng-container *ngIf="columnInfo.labelType=='select'">
-      <select class="form-control form-placeholder">
+      <select class="form-control form-placeholder" disabled="disabled">
         <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
           {{dropDownValue.name}}</option>
       </select>
     </ng-container>
     <!-- ---------------------------Country(XNFR-423)----------------------------- -->
     <ng-container *ngIf="columnInfo.labelType=='country'">
-      <select class="form-control form-placeholder">
+      <select class="form-control form-placeholder" disabled="disabled">
         <option *ngFor="let countryName of countryNames">
           {{countryName}}</option>
       </select>
