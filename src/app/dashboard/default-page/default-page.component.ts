@@ -110,7 +110,7 @@ export class DefaultPageComponent implements OnInit {
             this.getDefaultDashboardForPartner();
         } else {
             /*****XNFR-595****/
-            this.dashBoardService.isPaymentOverDue().subscribe(
+            this.dashBoardService.isPaymentOverDue(this.authenticationService.companyProfileName).subscribe(
                 response=>{
                     this.isPaymentOverDue = response.data;
                     if(this.isPaymentOverDue && this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed){
