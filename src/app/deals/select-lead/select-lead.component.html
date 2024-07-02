@@ -73,11 +73,10 @@
 
                           <tbody>
                             <ng-container *ngFor='let lead of pagination.pagedItems; let i=index'>
-                              <tr (click)="selectLead(lead.id)" [ngClass]="lead.id === showSelectedLead ? 'highlightRow' : ''">
-                                <td><input class="pointer" (click)="selectLead(lead.id)" [checked]="lead.id === showSelectedLead" type="checkbox"></td>
-                                <td width="5%">
-                                  <i *ngIf="lead.id === showSelectedLead" class="fa fa-check active-status" aria-hidden="true" style="font-size: 14px;"></i>
-                                </td>
+                              <tr [class.row-selected]="lead.id === showSelectedLead">
+                                <td><input id="leadCheckBox-{{i}}" class="pointer" (click)="selectLeadOnCheckBoxClick(lead.id,i)"
+                                  [checked]="lead.id === showSelectedLead" type="checkbox">
+                               </td>
                                 <td>
                                   <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
                                   <div class="mrg_lft66" style="margin-left: 60px;">

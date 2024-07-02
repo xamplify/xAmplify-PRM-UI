@@ -107,6 +107,10 @@ export class FormAnalyticsUtilComponent implements OnInit {
     listSubmittedData(pagination: Pagination) {
         pagination.searchKey = this.searchKey;
         this.referenceService.loading(this.httpRequestLoader, true);
+        if(this.isVendorJourney){
+            pagination.vendorJourney = true;
+            pagination.masterLandingPageId = this.importedObject['masterLandingPageId'];
+        }
         this.formService.getFormAnalytics(pagination, this.alias, false).subscribe(
             (response: any) => {
                 const data = response.data;
