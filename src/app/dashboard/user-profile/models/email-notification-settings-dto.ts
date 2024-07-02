@@ -3,4 +3,7 @@ export class EmailNotificationSettingsDto {
 	assetPublishedEmailNotification:boolean = false;
 	trackPublishedEmailNotification:boolean = false;
 	playbookPublishedEmailNotification:boolean = false;
+	dashboardButtonsEmailNotification:boolean = false;
+	dashboardBannersEmailNotification:boolean = false;
+	newsAndAnnouncementsEmailNotification:boolean = false;
 }

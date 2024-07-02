@@ -3143,6 +3143,11 @@ color:#fff!important;
 .mt--10px{
 margin-top: -10px;
 }
+
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
 .assest-name {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3175,4 +3180,5 @@ button#cancel_button {
 }
 .mrg_rgt8{
   margin-right: 6px;
+
 }

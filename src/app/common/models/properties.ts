@@ -363,11 +363,15 @@ export class Properties {
 	TRACK_OR_PLAY_BOOK_EMAIL_NOTIFICATION_OPTION_DISABLED = "To enable this option, please turn on 'Published Track Email Notifications' in your 'Email Notification Settings' located in your 'My Profile' section.";
 	MANAGE_ASSETS = "Manage Assets";
 
+	dashboardButton = "Dashboard Button";
+
+
 	ADD_TO_QUICK_LINKS = "Add this to the quick links for display";
 	ADDING_TEAM_MEMBER_IS_NOT_ALLOWED = "This feature is not available when using the Login As option.";
 
 	/** XNFR-534 - SAML2 SSO */
 	AUTHENTICATION_FAILURE = "Oops! your authentication has failed, please try again!";
+
 
 }
 
