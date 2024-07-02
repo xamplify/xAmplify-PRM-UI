@@ -627,7 +627,11 @@ export class ManageDealsComponent implements OnInit {
   }
 
   showSubmitDealSuccess() {
-    this.dealsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+    if (this.actionType == 'edit') {
+      this.dealsResponse = new CustomResponse('SUCCESS', "Deal Updated Successfully", true);
+    } else {
+      this.dealsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+    }
     this.showDealForm = false;
     this.showFilterOption = false;
     //this.getCounts();    
