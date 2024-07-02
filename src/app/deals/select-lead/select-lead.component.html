@@ -73,7 +73,7 @@
 
                           <tbody>
                             <ng-container *ngFor='let lead of pagination.pagedItems; let i=index'>
-                              <tr [ngClass]="lead.id === showSelectedLead ? 'highlightRow' : ''">
+                              <tr [class.row-selected]="lead.id === showSelectedLead">
                                 <td><input id="leadCheckBox-{{i}}" class="pointer" (click)="selectLeadOnCheckBoxClick(lead.id,i)"
                                   [checked]="lead.id === showSelectedLead" type="checkbox">
                                </td>
