@@ -251,6 +251,9 @@ export class CustomLinksUtilComponent implements OnInit {
     this.previouslySelectedImagePath = "";
     this.dashboardBannersInfoMessage = new CustomResponse();
     this.selectedButtonIcon = "";
+    this.partnerGroupIds = [];
+    this.partnerIds = [];
+    this.partnerGroupSelected = false;
   }
 
   findLinks(pagination: Pagination) {
