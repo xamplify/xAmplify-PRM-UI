@@ -2430,3 +2430,7 @@ div#notifications {
 i.fa.fa-check-circle-o.check-icons{
   color: #008000!important;
 }
+/***** Sudha Sri(01-07-2024) *****/
+.btn.btn-primary-dark.btn-primary-light:hover {
+  color: var(---text-color) !important;
+}

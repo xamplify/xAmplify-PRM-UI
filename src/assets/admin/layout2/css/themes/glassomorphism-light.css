@@ -4243,3 +4243,10 @@ button.swal2-confirm.styled:hover {
   background: #1C84FF !important;
   border: 1px solid #026deb !important;
 }
+/***** Sudha Sri(01-07-2024) *****/
+.write-new button{
+  border-radius: 7px !important;
+  background-color: #0276FF !important;
+  color: #fff !important;
+  border: 1px solid #026deb !important;
+}

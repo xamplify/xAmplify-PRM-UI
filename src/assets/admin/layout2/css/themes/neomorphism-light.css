@@ -4360,3 +4360,5 @@ a.title.padding_bottom.text-color.content-bg.m0, .col-md-6.col-lg-6.track-title.
 button#cancel_button, button.button_blue.bgcolor-unset.p0.btn-transitions.mrgt1-2 {border-radius: 3px !important;}
 /* button.button_blue.bgcolor-unset.pd_top0{border-radius: 5px !important;} */
 .mix-filter li.emailtemplate-selected{color:#fff;}
+/***** Sudha Sri(01-07-2024) *****/
+button#cancel_button {background-image: linear-gradient(89deg, #2b343a 0, #cbd8d7 100%) !important;}
