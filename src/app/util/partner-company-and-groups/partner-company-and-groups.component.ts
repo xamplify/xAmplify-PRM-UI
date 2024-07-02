@@ -136,7 +136,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		}
 	}
 
-	private activatePartnerCompaniesTab() {
+	public activatePartnerCompaniesTab() {
 		$('#partner-companies-li').addClass('active');
 		$('#partnerGroups-li').removeClass('active');
 		this.selectedTab = 1;
@@ -146,7 +146,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		this.findPartnerCompanies(this.pagination);
 	}
 
-	private activatePartnerGroupsTab() {
+	public activatePartnerGroupsTab() {
 		$('#partnerGroups-li').addClass('active');
 		$('#partner-companies-li').removeClass('active');
 		this.showFilter = false;
