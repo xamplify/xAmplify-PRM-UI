@@ -137,5 +137,6 @@ export class Pagination {
 	/*** XNFR-522 ***/
 	vendorJourney:boolean = false;
 	masterLandingPage:boolean  = false;	
+	masterLandingPageId:number;
 
 }
