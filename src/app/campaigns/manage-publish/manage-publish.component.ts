@@ -1642,6 +1642,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     campaign.redistributedCount  = data.data.redistributedCount;
                     campaign.totalAttendeesCount  = data.data.totalAttendeesCount;
                     campaign.attendeesCount        = data.data.attendeesCount;
+                    campaign.showLeadAndDealCounts = data.data.showLeadAndDealCounts;
                 }
             },
             (error: any) => {

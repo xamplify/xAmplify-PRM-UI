@@ -72,7 +72,7 @@ export class Properties {
 
 	PARTNER_SAVE_SUCCESS_AND_MAIL_SENT_SUCCESS = "Your partner list has been updated successfully and any selected campaigns have been launched.";
 
-	PARTNERS_CREATE_SUCCESS = "Your Partner List has been created successfully.";
+	PARTNERS_CREATE_SUCCESS = "Your Partner Group has been created successfully.";
 	PARTNERS_CREATE_ERROR = "An error occured while creating";
 
 	PARTNERS_UPDATE_SUCCESS = "Your Partner has been updated successfully.";
@@ -155,8 +155,8 @@ export class Properties {
 	/****************** SAML Security *********************/
 	EMAIL_TEXT1 = 'You are about to initiate the SSO configuration with Allbound.'
 	EMAIL_TEXT2 = 'Begin by verifying that the email address listed below is associated with your Allbound instance.'
-	ACS_URL_TEXT1 = 'Copy and paste the ACS URL into Login and Assertion URL text fields at the time of IDP configuration with Allbound and save the entire settings to download the Metadata.'
-	UPLOAD_METADATA_TEXT1 = 'Upload the metadata which is downloaded from Allbound after the IDP configuration, we process the content and will save the same into the system.'
+	ACS_URL_TEXT1 = 'Copy and paste the ACS URL into Login and Assertion URL text fields at the time of IDP configuration and save the entire settings to download the Metadata.'
+	UPLOAD_METADATA_TEXT1 = 'Upload the metadata which is downloaded after the IDP configuration, we process the content and will save the same into the system.'
 	UPLOAD_METADATA_TEXT2 = 'Success! Processed the metadata and saved into the system.';
 
 	/*************My Profile Tab Names*******************************/
@@ -172,6 +172,8 @@ export class Properties {
 	samlSettings = "Allbound SAML Settings";
 	leadPipelines = "Lead Pipelines";
 	dealPipelines = "Deal Pipelines";
+	saml2SSOsettings = "SAML 2.0 SSO Settings";
+	leadFieldSettings = "Lead Fields Settings";
 
 	/************XNFR-426**********/
 	leadDealApprove = "Lead Approval/Rejection";
@@ -193,7 +195,7 @@ export class Properties {
 	notifyPartnersHeaderText = "Onboarding configurations of your partners";
 
 	vendorJourney = "Vendor Journey";
-	landingPages = "Landing Pages";
+	landingPages = "Vendor Pages";
 	masterLandingPages = "Master Landing Pages"
 	/********Error Messages************* */
 	roleUpdatedMessage = "Your role has been changed.Please login again.";
@@ -239,8 +241,8 @@ export class Properties {
 
 	teamMemberGroups = 'Team Member Groups';
 
-	activeMasterPartnerList = 'Active Master Partner List';
-	inActiveMasterPartnerList = 'Inactive Master Partner List';
+	activeMasterPartnerList = 'Active Master Partner Group';
+	inActiveMasterPartnerList = 'Inactive Master Partner Group';
 
 	sandboxText = "The xAmplify Sandbox instance is ideal for safely designing, loading, updating, and testing all modules of the platform. The xAmplify Sandbox instance type can be used only for testing or user acceptance testing.";
 	oneClickLaunch = "One-Click Launch";
@@ -360,7 +362,16 @@ export class Properties {
 	SEND_UPDATED_TRACK_EMAIL_NOTIFICATION_MESSAGE = "Send an email notification to {{partnersMergeTag}} who have made progress";
 	TRACK_OR_PLAY_BOOK_EMAIL_NOTIFICATION_OPTION_DISABLED = "To enable this option, please turn on 'Published Track Email Notifications' in your 'Email Notification Settings' located in your 'My Profile' section.";
 	MANAGE_ASSETS = "Manage Assets";
+
 	dashboardButton = "Dashboard Button";
+
+
+	ADD_TO_QUICK_LINKS = "Add this to the quick links for display";
+	ADDING_TEAM_MEMBER_IS_NOT_ALLOWED = "This feature is not available when using the Login As option.";
+
+	/** XNFR-534 - SAML2 SSO */
+	AUTHENTICATION_FAILURE = "Oops! your authentication has failed, please try again!";
+
 
 }
 

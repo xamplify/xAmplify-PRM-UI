@@ -11,7 +11,6 @@
   <div class="portlet-title">
     <div class="caption" style="padding: 7px 0px 10px 5px !important; font-size: 16px;
     font-weight: 500;">{{dealFormTitle}}
-     <span *ngIf="isVendorVersion && preview" style="float:right;">Deal ID : {{deal.referenceId}}</span>
     </div>
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -43,15 +42,15 @@
                       </label>
                       <input type="text" disabled="disabled" name="campaignName" value="{{deal.campaignName}}"
                         class="form-control" id="campaignName" />
-                    </div>
+                      </div>
         
-                    <div class="form-group" style="margin-bottom: 20px" *ngIf="isVendorVersion && deal.parentCampaignId > 0">
+                      <div class="form-group" style="margin-bottom: 20px" *ngIf="isVendorVersion && deal.parentCampaignId > 0">
                       <label class="control-label">Campaign Name
                         <span class="required"><strong>*</strong></span>
                       </label>
                       <input type="text" disabled="disabled" name="parentCampaignName" value="{{deal.parentCampaignName}}"
                         class="form-control" id="parentCampaignName" />
-                    </div> -->
+                     </div> -->
 
                       <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
                         *ngIf="actionType === 'add' || actionType === 'edit' || (actionType === 'view' && !isVendorVersion)">
@@ -74,6 +73,27 @@
                           <option [value]="deal?.createdByCompanyId">{{deal?.createdByCompanyName}}
                           </option>
                         </select>
+                      </div>
+                      <div [ngStyle]="{ 'margin-bottom': isCopiedToClipboard ? '2px' : '20px' }"
+                        *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
+                        <div> <label class="control-label">Deal ID</label></div>
+                        <div style="display:flex; height:35px;">
+                          <input type="text" maxlength="100" name="referenceId" class="form-control"
+                            [(ngModel)]="deal.referenceId" [ngModelOptions]="{standalone: true}" readonly="readonly"
+                            #referenceIdInput>
+                          <div>
+                            <a class="button_blue" (click)="copyReferenceId(referenceIdInput)">
+                              <span class="btn btn-primary transition copy_link" data-toggle="tooltip"
+                                data-placement="top" title="Copy ID"><i class="fa fa-copy"></i></span>
+                            </a>
+                          </div>
+                        </div>
+                        <div>
+                          <span class="success">
+                            <strong id="copy-reference-id" *ngIf="isCopiedToClipboard">Deal Id copied successfully<i
+                                class="fa fa-check" aria-hidden="true"></i></strong>
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -137,7 +157,7 @@
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
                       <div class="form-group" style="margin-bottom: 20px"
-                        *ngIf="!isVendorVersion && deal.campaignId > 0">
+                        *ngIf="deal.campaignId > 0">
                         <label class="control-label">Campaign Name
                           <span class="required"><strong>*</strong></span>
                         </label>
@@ -145,14 +165,14 @@
                           class="form-control" id="campaignName" />
                       </div>
 
-                      <div class="form-group" style="margin-bottom: 20px"
+                      <!-- <div class="form-group" style="margin-bottom: 20px"
                         *ngIf="isVendorVersion && deal.parentCampaignId > 0">
                         <label class="control-label">Campaign Name
                           <span class="required"><strong>*</strong></span>
                         </label>
                         <input type="text" disabled="disabled" name="parentCampaignName"
                           value="{{deal.parentCampaignName}}" class="form-control" id="parentCampaignName" />
-                      </div>
+                      </div> -->
 
                       <div class="form-group" style="margin-bottom: 20px"
                         *ngIf="!(deal.campaignId > 0) && !(deal.parentCampaignId > 0)">
@@ -221,7 +241,7 @@
                             <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
                             <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
-                              id="createdByPipelineStageId" [disabled]="preview"
+                              id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
                               (input)="validateField('createdByPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
                               <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
@@ -315,7 +335,7 @@
                                 class="required"><strong>*</strong></span></label>
                             <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
-                              id="createdByPipelineStageId" [disabled]="preview"
+                              id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
                               (input)="validateField('createdByPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
                               <option *ngIf="!isVendorVersion && deal.currentStagePrivate"

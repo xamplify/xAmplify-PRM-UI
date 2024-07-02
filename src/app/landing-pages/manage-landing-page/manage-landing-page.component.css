@@ -137,9 +137,12 @@ td h6 {
 }
 
 .landing-page-selected {
-  background-color: #6dcff6;
+  background-color: #0276ff;
+  color: #fff;
 }
-
+.mix-filter li:hover {
+	background: #1c84ff;
+}
 #custom-response-div {
   position: relative;
   top: -10px;

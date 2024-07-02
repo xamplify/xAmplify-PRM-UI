@@ -10,7 +10,7 @@ a:hover {
   text-decoration: none;
 }
 .campaign-type-selected {
-  background-color: #0095da;
+  background-color: #0276ff;
   color: white;
 }
 img.active {
@@ -246,7 +246,7 @@ span.gearicon-font-cu {
   box-shadow: none !important;
 }
 .mix-filter li:hover {
-  background: #6dcff6;
+  background: #1c84ff;
 }
 
 /* 06-07-2023 */
@@ -273,9 +273,9 @@ span.gearicon-font-cu {
   height: 48px;
 }
 .view-more-css{
-  background-color: #d9edf7 !important;
-  border-color: #bce8f1 !important;
-  color: #31708f !important;
+  background-color: #d9edf700 !important;
+  border-color: #bce8f100 !important;
+  color: #3abeff !important;
   padding: 5px 14px;
   cursor:default;
   width: 99%!important;
@@ -289,4 +289,13 @@ span.gearicon-font-cu {
 }
 .fs-13{
   font-size: 13px;
+}
+.tittle-name{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 9px;
+}
+.line_height{
+  line-height: 1.2 !important;
+  padding-left: 3px;
 }

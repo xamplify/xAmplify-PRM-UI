@@ -13,17 +13,30 @@
  <ng-container *ngIf="!isVanityUrlEnabled">
   <div class="page-bar">
     <ul class="page-breadcrumb float-right">
+      <!--Integration Details-->
+      <li class="topnav-button-css uppercase-text">
+        <button class="btn btn-primary" (click)="openIntegrationDetailsModalPopup()"><span>Find Integration Details</span></button>
+      </li>
+      <!--Update Email Address-->
+      <li class="topnav-button-css uppercase-text" *ngIf="isLocalHost">
+        <button class="btn btn-primary" (click)="openUpdateEmailAddressModalPopup()"><span>Update Email Address</span></button>
+      </li>
+       <!--Update Email Address-->
+       <li class="topnav-button-css uppercase-text" *ngIf="isLocalHost">
+        <button class="btn btn-primary" (click)="openUpdateCompanyProfileNameModalPopup()"><span>Update Company Profile Name</span></button>
+      </li>
       <!--Upgrade Partner Account-->
-      <li class="topnav-button-css">
+      <li class="topnav-button-css uppercase-text">
         <button class="btn btn-primary" (click)="openUpgradeAccountModal()"><span>Upgrade Partner Account</span><i class="fa fa-level-up" aria-hidden="true"></i></button>
       </li>
       <!--Create An Account-->
-      <li class="topnav-button-css">
+      <li class="topnav-button-css uppercase-text">
           <button class="btn btn-primary" (click)="createNewAccount()"><span>Create An Account</span><i class="fa fa-user" aria-hidden="true"></i></button>
       </li>
     </ul>
   </div>
   <div>
+    <button class="btn btn-default full-width uppercase-text" (click)="expandOrCollpase()"><span>Expand All / Collapse All</span></button>
     <!--List All Users-->
     <app-list-all-users></app-list-all-users> 
     <!--Processing User Lists-->
@@ -73,6 +86,20 @@
      <!--List All Partners For Logged In Vendor Vanity-->
      <app-list-all-users [showPartners]="true"></app-list-all-users>
   </div>
+      <!-- Add Background Image OF GlassMorphism Light and Dark Start-->
+<section>
+  <div class="wrap-collabsible">
+    <input id="collapsible-upload-image" name="collapsibleCheckBox" class="toggle" type="checkbox" checked>
+    <label for="collapsible-upload-image" name="collapsibleCheckBox" class="lbl-toggle">Upload Default GlassMorphism Images</label>
+    <div class="collapsible-content">
+      <div class="row">
+       <app-background-image-upload [type]="'GLASSMORPHISMLIGHT'"></app-background-image-upload>
+       <app-background-image-upload [type]="'GLASSMORPHISMDARK'"></app-background-image-upload>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Add Background Image OF GlassMorphism Light and Dark end-->
 
   <app-scroll-top></app-scroll-top>
    <section>
@@ -263,4 +290,8 @@
 <!--Update Password-->
 <app-update-password #updatePasswordComponent></app-update-password>
 
+<!--Update Email Address-->
+<app-update-email-address #updateEmailAddressComponent></app-update-email-address>
 
+<!--Find Integration Details-->
+<app-integration-details #integrationDetailsComponent></app-integration-details>

@@ -35,7 +35,7 @@
                                         <div class="input-icon right" id="search-icon">
                                             <input type="text" id="search-text" class="form-control"
                                                 [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                                                placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                                placeholder="Search..." (keypress)="eventHandler($event.keyCode)">
                                             <button class="glyphicon glyphicon-remove search-box-item-clear"
                                                 *ngIf="sortOption.searchKey"
                                                 (click)="sortOption.searchKey='';searchForms();"></button>
@@ -338,14 +338,14 @@
         </ng-container>
         <!-- ---------------------------DropDown Menu----------------------------- -->
         <ng-container *ngIf="columnInfo.labelType=='select'">
-            <select class="form-control form-placeholder">
+            <select class="form-control form-placeholder" disabled="disabled">
                 <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
                     {{dropDownValue.name}}</option>
             </select>
         </ng-container>
         <!-- ---------------------------Country (XNFR-423) ----------------------------- -->
         <ng-container *ngIf="columnInfo?.labelType=='country'">
-            <select class="form-control form-placeholder">
+            <select class="form-control form-placeholder" disabled="disabled">
                 <option *ngFor="let countryName of countryNames">
                     {{countryName}}</option>
             </select>

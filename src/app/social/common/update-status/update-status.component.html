@@ -760,7 +760,7 @@
                                             <span class="ui-column-resizer"
                                                 (mousedown)="referenceService?.onMouseDown($event,'social-contact-list-table',2)"></span>
                                             <span class="gridHeader" translate>
-                                                {{this.contactListsPagination.filterBy == 'MY-PARTNERS' ? 'Group Name' : 'List Name'}}</span>
+                                                {{ this.socialCampaign?.toPartner  || contactListsPagination.filterBy == 'MY-PARTNERS' || this.socialCampaign?.channelCampaign ? 'Group Name' : 'List Name' }}</span>
                                         </th>
                                         <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
                                             List Info

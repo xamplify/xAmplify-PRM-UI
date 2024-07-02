@@ -59,7 +59,7 @@ export class ProcessingCampaignsComponent implements OnInit {
       response=>{
         const data = response.data;
         pagination.totalRecords = data.totalRecords;
-		pagination = this.pagerService.getPagedItems(pagination, data.list);
+		    pagination = this.pagerService.getPagedItems(pagination, data.list);
         this.stopLoaders();
       },error=>{
         this.stopLoaders();

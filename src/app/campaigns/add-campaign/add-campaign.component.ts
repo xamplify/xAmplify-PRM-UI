@@ -325,7 +325,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 this.campaignRecipientsPagination.editCampaign = true;
                 this.selectedContactListIds = this.campaign.userListIds.sort();
                 let selectedListSortOption = {
-                    'name': 'Selected List', 'value': 'selectedList'
+                    'name': 'Selected Group', 'value': 'selectedList'
                 };
                 this.recipientsSortOption.campaignRecipientsDropDownOptions.push(selectedListSortOption);
                 this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = this.recipientsSortOption.campaignRecipientsDropDownOptions[this.recipientsSortOption.campaignRecipientsDropDownOptions.length - 1];
@@ -942,7 +942,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     this.contactsOrPartnersSelectionText = "Select Group of " + this.partnerModuleCustomName + " to be used in this campaign";
                 }else{
                     this.launchTabText = "Select "+this.partnerModuleCustomName +" / Recipients & Launch";
-                    this.contactsOrPartnersSelectionText = "Select Group of " + this.partnerModuleCustomName + " / Recipients  to be used in this campaign";
+                    this.contactsOrPartnersSelectionText = "Select Group of " + this.partnerModuleCustomName + " / List of Recipients  to be used in this campaign";
                 }
             } else if (this.isMarketingCompany) {
                 this.launchTabText = "Select Recipients & Launch";
@@ -1285,6 +1285,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     }
 
     private filterPageTypeAndFindPages() {
+        this.selectedPageId = 0;
+        this.isEmailTemplateOrPageSelected = false;
         this.setPageCampaignFilterOptions();
         let dropDownLength =   this.pagesSortOption.eventCampaignRecipientsDropDownOptions.length;
         if(this.selectedPageId==0 && !this.isAdd && dropDownLength==5){

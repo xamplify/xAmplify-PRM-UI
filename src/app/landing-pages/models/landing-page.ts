@@ -34,4 +34,6 @@ export class LandingPage {
     vendorJourneyId = 0;
     hasVendorJourney:boolean = false;
     vendorLogoDetails :VendorLogoDetails[];
+    /*XNFR-583*/
+    previousLandingPageId = 0;
 }

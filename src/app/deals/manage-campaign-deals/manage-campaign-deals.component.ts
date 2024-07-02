@@ -334,6 +334,7 @@ toggleFilterOption() {
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.dealsPagination.pageIndex = 1;
+      this.dealsPagination.registeredByUserId = 0;
       this.listCampaignDeals(this.dealsPagination);
       this.filterMode = false;
     }      

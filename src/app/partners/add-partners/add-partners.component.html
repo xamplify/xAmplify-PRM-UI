@@ -59,7 +59,8 @@
         <app-user-guide-help-button [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
     </div>
     <!-- Partner Domain Whitelisting #XNFR-549 -->
-    <app-domain-whitelisting *ngIf="isPartner && authenticationService?.module?.adminOrSuperVisor" [isPartnerDomains]="true"></app-domain-whitelisting>
+    <app-domain-whitelisting *ngIf="isPartner && authenticationService?.module?.adminOrSuperVisor"
+        [isPartnerDomains]="true"></app-domain-whitelisting>
     <div class="">
         <!----XNFR-222-->
         <div class="portlet-body">
@@ -473,7 +474,7 @@
         </div>
         <!-----Legal Basis Options -->
         <div *ngIf=" ((gdprStatus && filePreview) || (clipBoard) || (gdprStatus && selectedAddPartnerOption==2) )"
-            class="col-sm-12 form-group portlet light cloud_legal_basis">
+            class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group portlet light cloud_legal_basis">
             <a class="close-circle" *ngIf="clipBoard" data-dismiss="modal" (click)="cancelPartners()"><i
                     class="fa fa-times"></i></a>
             <div class="form-group"
@@ -621,10 +622,6 @@
                                                                     {{user.city}}<span
                                                                         *ngIf="user.city && user.state">,&nbsp;</span>{{user.state}}
                                                                 </h5>
-                                                                <h5 class='m0' *ngIf="user?.region">
-                                                                    {{user.region}}<span
-                                                                        *ngIf="user.territory">,&nbsp;</span>{{user.territory}}
-                                                                </h5>
                                                                 <h5 *ngIf="user?.postalCode || user?.country"
                                                                     class='mt0'>
                                                                     {{user.postalCode}}<span
@@ -632,6 +629,16 @@
                                                                 </h5>
                                                             </td>
                                                         </tr>
+                                                        <tr>
+                                                            <td class='pt10 pb10 bold' translate>Territory:</td>
+                                                            <td class='pt10 pb10'>{{user.territory}}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td class='pt10 pb10 bold' translate>Region:</td>
+                                                            <td class='pt10 pb10'>{{user.region}}</td>
+                                                        </tr>
+
                                                         <tr>
                                                             <td class='pt10 pb10 bold' translate>Website:</td>
                                                             <td class='pt10 pb10'>{{user.website}}</td>
@@ -691,7 +698,7 @@
                                 </select>
                             </div>
                             <div class="col-xs-6" style="margin-bottom: 10px">
-                                <button class="button bgcolor-unset" type="button" (click)="clipboardShowPreview()"
+                                <button class="button bgcolor-unset p0" type="button" (click)="clipboardShowPreview()"
                                     translate><span class="btn Btn-Green transition txt_pd-top3">Verify
                                         Data</span></button>
                             </div>
@@ -699,7 +706,7 @@
                                 <textarea id="copyFromclipTextArea" class="textareaNumber copy_text_area_border"
                                     title="Calendar View" [(ngModel)]="clipboardTextareaText"
                                     title="please fill out this field"
-                                    placeholder="FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
+                                    placeholder="FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone&#10;FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone &#10;FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
                                     [ngModelOptions]="{standalone: true}"
                                     style="height: 150px;font-size: 11px;line-height: 1.4;min-width: 100%;max-width: 200%;width: 140%;"
                                     required="required">
@@ -802,30 +809,10 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Company: </td>
-                                                                    <td class='pt10 pb10' style="padding-left: 20px;">
-                                                                        {{newContact.company}}</td>
-                                                                </tr>
-                                                                <tr>
                                                                     <td class='pt10 pb10 bold' translate>Company Domain:
                                                                     </td>
                                                                     <td class='pt10 pb10' style="padding-left: 20px;">
                                                                         {{newContact.companyDomain}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Job Title:
-                                                                    </td>
-                                                                    <td class='pt10 pb10' style="padding-left: 20px;">
-                                                                        {{newContact.title}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Phone:</td>
-                                                                    <td class='pt10 pb10'>
-                                                                        <!-- <div *ngIf="user?.mobilePhone" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
-                                                                        <int-phone-prefix [(ngModel)]="user.mobilePhone" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-                                                                    </div> -->
-                                                                        {{newContact?.mobileNumber}}
-                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class='pt10 pb10 bold' translate>Address:</td>
@@ -837,14 +824,11 @@
                                                                             {{newContact.city}}<span
                                                                                 *ngIf="newContact.city && newContact.state">,&nbsp;</span>{{newContact.state}}
                                                                         </h5>
-                                                                        <h5 class='m0' *ngIf="newContact?.region">
-                                                                            {{newContact.region}}<span
-                                                                                *ngIf="newContact.territory">,&nbsp;</span>{{newContact.territory}}
-                                                                        </h5>
-                                                                        <h5 *ngIf="newContact?.postalCode || newContact?.country"
+
+                                                                        <h5 *ngIf="newContact?.zipCode || newContact?.country"
                                                                             class='mt0'>
-                                                                            {{newContact.postalCode}}<span
-                                                                                *ngIf="newContact?.postalCode && newContact.country">,&nbsp;</span>{{newContact.country}}
+                                                                            {{newContact.zipCode}}<span
+                                                                                *ngIf="newContact?.zipCode && newContact.country">,&nbsp;</span>{{newContact.country}}
                                                                         </h5>
                                                                     </td>
                                                                 </tr>
@@ -852,6 +836,18 @@
                                                                     <td class='pt10 pb10 bold' translate>Website:</td>
                                                                     <td class='pt10 pb10'>{{newContact.website}}</td>
                                                                 </tr>
+
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Region:</td>
+                                                                    <td class='pt10 pb10'>{{newContact.region}}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Territory:</td>
+                                                                    <td class='pt10 pb10'>{{newContact.territory}}</td>
+                                                                </tr>
+
+
                                                                 <tr>
                                                                     <td class='pt10 pb10 bold' translate>Vertical:</td>
                                                                     <td class='pt10 pb10'>{{newContact.vertical}}</td>
@@ -1133,37 +1129,30 @@
                                                             <tbody>
 
                                                                 <tr>
-                                                                    <td class='pt10 pb10 pr10 bold' translate>Account Name:
+                                                                    <td class='pt10 pb10 pr10 bold' translate>Account
+                                                                        Name:
                                                                     </td>
                                                                     <td class='pt10 pb10'>{{contact.accountName}}</td>
                                                                 </tr>
-        
+
                                                                 <tr>
-                                                                    <td class='pt10 pb10 pr10 bold' translate>Account Sub Type:
+                                                                    <td class='pt10 pb10 pr10 bold' translate>Account
+                                                                        Sub Type:
                                                                     </td>
-                                                                    <td class='pt10 pb10'>{{contact.accountSubType}}</td>
+                                                                    <td class='pt10 pb10'>{{contact.accountSubType}}
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Account Owner: </td>
+                                                                    <td class='pt10 pb10 bold' translate>Account Owner:
+                                                                    </td>
                                                                     <td class='pt10 pb10'>{{contact.accountOwner}}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Company: </td>
-                                                                    <td class='pt10 pb10' style="padding-left: 20px;">
-                                                                        {{contact.contactCompany}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Company Domain: </td>
+                                                                    <td class='pt10 pb10 bold' translate>Company Domain:
+                                                                    </td>
                                                                     <td class='pt10 pb10' style="padding-left: 20px;">
                                                                         {{contact.companyDomain}}</td>
                                                                 </tr>
-
-                                                                <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Job Title: </td>
-                                                                    <td class='pt10 pb10' style="padding-left: 20px;">
-                                                                        {{contact.title}}</td>
-                                                                </tr>
-
 
                                                                 <tr>
                                                                     <td class='pt10 pb10 bold' translate>Website : </td>
@@ -1172,8 +1161,8 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Address:</td>
-                                                                    <td align="center" class="hidden-xs">
+                                                                    <td class='pt10 pb10 bold' translate>Address:  </td>
+                                                                    <td class="hidden-xs">
                                                                         <h5 *ngIf="contact?.address" class='mb0'>
                                                                             {{contact.address}}
                                                                         </h5>
@@ -1182,22 +1171,19 @@
                                                                                 *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}
                                                                         </h5>
                                                                         <h5 class='m0' *ngIf="contact?.region">
-                                                                            {{contact.region}}<span
-                                                                                *ngIf="contact.territory">,&nbsp;</span>{{contact.territory}}
+                                                                            {{contact.region}}
                                                                         </h5>
-                                                                        <h5 *ngIf="contact?.postalCode || contact?.country"
+                                                                        <h5 *ngIf="contact?.zipCode || contact?.country"
                                                                             class='mt0'>
-                                                                            {{contact.postalCode}}<span
-                                                                                *ngIf="contact?.postalCode && contact.country">,&nbsp;</span>{{contact.country}}
+                                                                            {{contact.zipCode}}<span
+                                                                                *ngIf="contact?.zipCode || contact.country">,&nbsp;</span>{{contact.country}}
                                                                         </h5>
                                                                     </td>
                                                                 </tr>
-
                                                                 <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Phone:</td>
-                                                                    <td class='pt10 pb10'>
-                                                                        {{contact?.mobilePhone}}
-                                                                    </td>
+                                                                    <td class='pt10 pb10 bold' translate>Territory : </td>
+                                                                    <td class='pt10 pb10' style="padding-left: 20px;">
+                                                                        {{contact.territory}}</td>
                                                                 </tr>
 
                                                                 <tr class="bg-unset" *ngIf="gdprStatus">
@@ -1938,7 +1924,8 @@
 
 <!---XNFR-278-->
 <ng-container *ngIf="mergeOptionClicked">
-    <app-copy-group-users-modal-popup [userListId]="partnerListId" [selectedUserIds]="selectedUserIdsForMerging" [moduleName] = module
+    <app-copy-group-users-modal-popup [userListId]="partnerListId" [selectedUserIds]="selectedUserIdsForMerging"
+        [moduleName]=module
         (copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>
 </ng-container>
 

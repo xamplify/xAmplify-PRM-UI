@@ -24,10 +24,11 @@
   cursor: hand;
 }
 .emailtemplate-selected {
-  background-color: #6dcff6;
+  background-color: #0276ff;
+  color: #fff;
 }
 .mix-filter li:hover {
-  background: #6dcff6;
+  background: #1c84ff;
 }
 .grid-box img {
   margin: 0 auto;

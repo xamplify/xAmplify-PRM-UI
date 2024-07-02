@@ -22,7 +22,8 @@ th {
   min-height: auto;
 }
 .campaign-type-selected {
-  background-color: #6dcff6;
+  background-color: #0276ff;
+  color:#fff;
 }
 
 .more {

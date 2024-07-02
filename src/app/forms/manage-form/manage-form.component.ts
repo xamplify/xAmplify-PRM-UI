@@ -64,10 +64,11 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     roleName:string = "";
     partnerView = false;
     /** XNFR-522 **/
-    @Input() isVendorOrMasterLandingPage:boolean = false;
+    @Input() isVendorJourney:boolean = false;
+    @Input() isMasterLandingPage:boolean = false;
     @Input() vendorLandingPageId:number;
     @Output() vendorJourneyOrMasterLandingPageEdit: EventEmitter<any> = new EventEmitter();
-
+    @Output() formAnalytics: EventEmitter<any> = new EventEmitter();
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -106,10 +107,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.selectedFormTypeIndex = 0;
         this.getRoleByUserId();
         this.pagination.filterKey = "All";
-        if(this.isVendorOrMasterLandingPage){
+        if(this.isVendorJourney || this.isMasterLandingPage){
             this.landingPageId = this.vendorLandingPageId;
             this.pagination.landingPageId = this.landingPageId;
             this.pagination.landingPageForm = true;
+            this.pagination.vendorJourney = this.isVendorJourney;
+            this.pagination.masterLandingPage = this.isMasterLandingPage;
             if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
                 this.modulesDisplayType.isListView = true;
                 this.modulesDisplayType.isGridView = false;
@@ -333,7 +336,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                     if (data.statusCode === 200) {
                         this.formService.form = data.data;
                         let categoryId = this.route.snapshot.params['categoryId'];
-                        if(this.isVendorOrMasterLandingPage){
+                        if(this.isVendorJourney || this.isMasterLandingPage){
                             this.vendorJourneyOrMasterLandingPageEdit.emit(data.data);
                             return;
                         }
@@ -390,6 +393,16 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     }
 
     goToAnalytics(form: Form) {
+        if(this.isMasterLandingPage || this.isVendorJourney){
+            let data ={
+                "formAlias":form.alias,
+                "partnerLandingPageId":this.landingPageId,
+                "isVendorJourney":this.isVendorJourney,
+                "isMasterLandingPage":this.isMasterLandingPage
+            }
+            this.formAnalytics.emit(data);
+            return;
+        }
         if (this.pagination.campaignForm) {
             this.router.navigate(['/home/forms/' + form.alias + '/' + this.campaignId + '/analytics']);
         } else if (this.pagination.landingPageCampaignForm) {

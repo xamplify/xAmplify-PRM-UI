@@ -20,12 +20,12 @@
               <!--Partner View-->
               <li class="filter view-type-css" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion">
                 {{authenticationService?.partnerModule?.customName}} View
-                <i *ngIf="isPartnerVersion" class="fa fa-check-circle-o success"></i>
+                <i *ngIf="isPartnerVersion" class="fa fa-check-circle-o check-icons"></i>
                </li>
               <!--Vendor View-->
               <li *ngIf="authenticationService?.enableLeads" class="filter view-type-css" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion">
                 Vendor View
-                <i *ngIf="isVendorVersion" class="fa fa-check-circle-o success"></i>
+                <i *ngIf="isVendorVersion" class="fa fa-check-circle-o check-icons"></i>
               </li>
               <p class="filter float-right m10">Opportunities as: </p>
             </ul>
@@ -172,7 +172,7 @@
                         </button>
                       </a>
                       <!-- XNFR-215 -->
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT' && activeCRMDetails?.type != 'CONNECTWISE'"
+                      <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT' && activeCRMDetails?.type != 'CONNECTWISE') || (isPartnerVersion && (activeCRMDetails?.type == 'HALOPSA'))"
                         (click)="syncLeadsWithActiveCRM()">
                         <button class="btn salesforce-btn button  bgcolor-unset p0 btn-transitions mrgt1-2"
                           style="margin-left: 3px;" data-toggle="tooltip" data-placement="bottom" title="Synchronize"
@@ -218,7 +218,7 @@
                         <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
                           style="margin-left: 5px !important;" title="Filter" *ngIf="listView"
                           (click)="toggleFilterOption()">
-                          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+                          <i  aria-hidden="true" class="fa fa-filter p10"></i>
                         </span>
                       </div>
 
@@ -348,22 +348,24 @@
                                   </span>
                                 </h5>
                               </div>
-                              <div *ngIf="isPartnerVersion && lead?.campaignId > 0" style="margin-left: 60px;">
+                              <div *ngIf="isPartnerVersion && lead?.campaignId > 0" style="margin-left: 60px;"
+                                data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}">
                                 <h5 class="m0"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
                                     <span *ngIf="lead.campaignName?.length>30">...</span>
                                   </span>
                                 </h5>
                               </div>
-                              <div *ngIf="isVendorVersion && lead?.parentCampaignId > 0" style="margin-left: 60px;">
+                              <div *ngIf="isVendorVersion && lead?.parentCampaignId > 0" style="margin-left: 60px;"
+                                data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}">
                                 <h5 class="m0"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.parentCampaignName | slice:0:30}}
                                     <span *ngIf="lead.parentCampaignName?.length>30">...</span>
                                   </span>
                                 </h5>
                               </div>
-                              <div *ngIf="isVendorVersion && lead?.parentCampaignId == 0 && lead?.campaignId > 0"
-                                style="margin-left: 60px;">
+                              <div *ngIf="isVendorVersion && lead?.parentCampaignId == 0 && lead?.campaignId > 0" style="margin-left: 60px;"
+                                data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}">
                                 <h5 class="m0"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
                                     <span *ngIf="lead.campaignName?.length>30">...</span>

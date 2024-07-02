@@ -12,6 +12,7 @@
 /* 07-07-2023 - Campaign  -- Manage Campaigns */
 @media (min-width: 767px) and (max-width: 1205px)  { 
   .scroll-top-margin { margin-top: 30px;}
+  .grid-box{border-radius: 15px;}
 }
 
   .pb_8{
@@ -351,7 +352,7 @@
     display: flex;
   }
   .mr_4{
-    margin-right: 4px;
+    margin-right: 3px;
   }
   .table-responsive {
     border: unset!important; 

@@ -369,7 +369,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	}
 
 	disableOrEnablePartnerListsTab() {
-		let isEnableBothTabs = this.moduleName!=this.properties.dashboardButtons;
+  let isEnableBothTabs = this.moduleName!=this.properties.dashboardButtons;
 		if(isEnableBothTabs){
 			if (this.selectedTeamMemberIds.length > 0) {
 				$('#partnerGroups-li').removeClass('active');
@@ -514,7 +514,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	}
 
 	disableOrEnablePartnerCompaniesTab() {
-		let isEnableBothTabs = this.moduleName!=this.properties.dashboardButtons;
+  let isEnableBothTabs = this.moduleName!=this.properties.dashboardButtons;
 		if(isEnableBothTabs){
 			if (this.selectedPartnerGroupIds.length > 0) {
 				$('#partner-companies-li').addClass('cursor-not-allowed');

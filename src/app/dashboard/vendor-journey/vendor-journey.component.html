@@ -1,11 +1,11 @@
 <div class="caption caption-md col-xs-12" *ngIf="editVendorPage || isViewAnalytics 
-|| isFormAnalytics">
+|| isFormAnalytics || isManageForms">
   <i class="icon-globe theme-font hide" aria-hidden="true"></i>
   <a class="close-circle pull-right" (click)="goBack()">
       <i class="fa fa-times" aria-hidden="true"></i>
   </a>
 </div>
-<app-landing-pages-list-and-grid-view *ngIf="!editVendorPage && !isViewAnalytics && !isFormAnalytics && !isEditVendorOrMasterForm" [vendorJourney]='vendorJourney'
+<app-landing-pages-list-and-grid-view *ngIf="!editVendorPage && !isViewAnalytics && !isManageForms && !isFormAnalytics && !isEditVendorOrMasterForm" [vendorJourney]='vendorJourney'
   [isLandingPages] ='isLandingPages' [isMasterLandingPages] = 'isMasterLandingPages' [loggedInUserCompanyId]="loggedInUserCompanyId"
   (vendorLandingPage)='editVendorLandingPage($event)' (viewAnalytics) = "viewAnalytics($event)" (isFormAnalytics) = "viewLandingPageForms($event)"></app-landing-pages-list-and-grid-view>
 <div class="row" *ngIf="editVendorPage">
@@ -36,4 +36,6 @@
 </app-landing-page-analytics>
 <app-add-form-util *ngIf = "isEditVendorOrMasterForm" [isMdfForm]="false" [selectedForm]="selectedFrom"  [isCopyForm]="false"
 [isVendorOrMasterLandingPage] = "true" (goBack) = "goToManageForms()"></app-add-form-util>
-<app-manage-form *ngIf = "isFormAnalytics" [isVendorOrMasterLandingPage] = "true" [vendorLandingPageId]="selectedLandingPageId" (vendorJourneyOrMasterLandingPageEdit)="editForm($event)"></app-manage-form>
+<app-manage-form *ngIf = "isManageForms" [isVendorJourney]="vendorJourney" [isMasterLandingPage] = "isMasterLandingPages"  [vendorLandingPageId]="selectedLandingPageId" (vendorJourneyOrMasterLandingPageEdit)="editForm($event)"
+(formAnalytics)="goToFormAnalytics($event)"></app-manage-form>
+<app-form-analytics-util *ngIf = "isFormAnalytics" [importedObject]="importedObject" ></app-form-analytics-util>

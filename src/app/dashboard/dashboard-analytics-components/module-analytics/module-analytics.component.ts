@@ -92,7 +92,7 @@ export class ModuleAnalyticsComponent implements OnInit {
      }
 
      showSubmitLeadSuccess() {  
-      //this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+      this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
       this.notifyLeadSuccess.emit();
       this.showLeadForm = false;
     }

@@ -225,6 +225,9 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 				this.integrationCallback(code, "isalesforce");
 			} else if (this.router.url.includes("microsoft-callback")) {
 				this.integrationCallback(code, "microsoft");	
+			} else if (this.router.url.includes("dashboard/zoho-callback")) {
+				code += "domain" + domain;
+				this.integrationCallback(code, "zoho");
 			} else {
 				this.socialContactsCallback(queryParam, domain);
 			}

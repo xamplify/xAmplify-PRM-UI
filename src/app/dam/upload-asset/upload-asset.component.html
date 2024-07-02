@@ -290,25 +290,34 @@
                                              <div class="form-group">
                                                 <label class="control-label col-sm-2" translate>White Labeled</label>
                                                 <div class="col-sm-10">
-                                                   <switch [disabled]="damUploadPostDto?.disableWhiteLabelOption"
-                                                      class="pull-left"
-                                                      [status]="damUploadPostDto?.shareAsWhiteLabeledAsset"
-                                                      [onText]="callActionSwitch.onTextValue"
-                                                      [offText]="callActionSwitch.offTextValue"
-                                                      [onColor]="callActionSwitch.onGreenColorSwitch"
-                                                      [offColor]="callActionSwitch.onDefaultColorSwitch"
-                                                      [size]="callActionSwitch.size"
-                                                      (statusChange)="setWhiteLabeled($event)">
-                                                   </switch>
+                                                   <app-custom-ui-switch  [isSwitchOptionDisabled]="damUploadPostDto?.disableWhiteLabelOption" [customSwitch]="damUploadPostDto?.disableWhiteLabelOption"
+                                                   (customUiSwitchEventEmitter)="setWhiteLabeled($event)"></app-custom-ui-switch>
                                                    <span class="info-color-xampc">
-                                                      <i class="fa fa-question-circle toggle-info-white-label"
-                                                         data-toggle="tooltip" data-placement="top" aria-hidden="true"
-                                                         [title]="isAdd ? 'Share As White Labeled Content':damUploadPostDto?.whiteLabeledToolTipMessage"></i>
+                                                      <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                                                         [title]="isAdd ? 'Share As White Labeled Content':damUploadPostDto?.whiteLabeledToolTipMessage">
+                                                      </i>
                                                    </span>
                                                 </div>
                                              </div>
                                           </div>
                                           <!---White Labeled-- XNFR-255-->
+
+                                          <!--XNFR-578-->
+                                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                                             <div class="form-group">
+                                                <label class="control-label col-sm-2">Add To Quick Links</label>
+                                                <div class="col-sm-10">
+                                                   <app-custom-ui-switch [customSwitch]="damUploadPostDto?.addedToQuickLinks"
+                                                   (customUiSwitchEventEmitter)="setAddToQuickLinks($event)"></app-custom-ui-switch>
+                                                   <span class="info-color-xampc">
+                                                      <i class="fa fa-question-circle toggle-info-white-label"
+                                                         data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                                                         title="{{properties?.ADD_TO_QUICK_LINKS}}"></i>
+                                                   </span>
+                                                </div>
+                                             </div>
+                                          </div>
+
                                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                                              <div class="form-group" style="margin-bottom: 0;">
                                                 <label class="control-label col-sm-2" translate>Tags

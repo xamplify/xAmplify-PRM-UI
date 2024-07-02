@@ -285,8 +285,8 @@
 									 <select class="form-control" [(ngModel)]="eventCampaign.leadTicketTypeId" 
 										 [ngModelOptions]="{standalone: true}"
 										 placeholder="leadTicketTypeId" id="leadTicketTypeId" [disabled]="preview"
-										 (ngModelChange)="onChangeLeadTicketType()" (input)="validateField('leadTicketTypeId',false)">
-										 <option [value]="0">Select Lead TicketType</option>
+										 (ngModelChange)="onChangeLeadTicketType()" (change)="validatePipeline()">
+										 <!-- <option [value]="0">Select Lead TicketType</option> -->
 										 <option *ngFor="let leadTicketType of leadTicketTypes"     
 										 [value]="leadTicketType.id">{{leadTicketType.name}}</option>
 									 </select>
@@ -302,8 +302,8 @@
 									 <select class="form-control" [(ngModel)]="eventCampaign.dealTicketTypeId"
 										 [ngModelOptions]="{standalone: true}"
 										 placeholder="dealTicketTypeId" id="dealTicketTypeId" [disabled]="preview"
-										 (ngModelChange)="onChangeDealTicketType()" (input)="validateField('dealTicketTypeId',false)">
-										 <option [value]="0">Select Deal Ticket Type</option>
+										 (ngModelChange)="onChangeDealTicketType()" (change)="validatePipeline()">
+										 <!-- <option [value]="0">Select Deal Ticket Type</option> -->
 										 <option *ngFor="let dealTicketType of dealTicketTypes"     
 										 [value]="dealTicketType.id">{{dealTicketType.name}}</option>
 									 </select>
@@ -837,7 +837,7 @@
 				<div class="row setup-content" id="step-4" *ngIf="recipientsTab ">
 					<div class="col-xs-12">
 						<fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
-							<legend class="scheduler-border">Selected {{reDistributeEvent?'Contact(s) list':'Partner(s) group' }} </legend>
+							<legend class="scheduler-border">Selected {{reDistributeEvent?'Contact(s) list':'Partner(s) Group / Recipients List' }} </legend>
 								
 							<div class="row d-flex align-items-center">
 								<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -952,8 +952,8 @@
 																		style="width: 35%">
 																		<span class="ui-column-resizer"
 																			(mousedown)="referenceService.onMouseDown($event, 'user_list_tb',2)"></span>
-																		<span class="gridHeader" translate>{{this.contactListsPagination.filterBy == 'MY-PARTNERS' ? 'Group Name' : 'List Name'}}</span>
-																	</th>
+																			{{ authenticationService.isVendor() || authenticationService.isVendorPartner() || contactListsPagination.filterBy == 'MY-PARTNERS' || this.eventCampaign?.channelCampaign ? 'Group Name' : 'List Name' }}																
+																			</th>
 																	<th class="visible-xs" scope="row" colspan="1"
 																		style="width: 35%" translate>
 																		List Info

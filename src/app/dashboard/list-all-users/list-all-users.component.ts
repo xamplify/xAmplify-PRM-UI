@@ -90,7 +90,6 @@ export class ListAllUsersComponent implements OnInit {
 		if(event!=null){
 			this.pagination = new Pagination();
 			this.pagination.companyId = event['id'];
-			this.listAllApprovedUsers(this.pagination);
 		}else{
 			this.pagination = new Pagination();
 		}

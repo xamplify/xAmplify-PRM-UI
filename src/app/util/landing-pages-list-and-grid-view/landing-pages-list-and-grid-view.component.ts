@@ -395,7 +395,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   }
   goToLandingPageAnalytics(id: number) {
     if(this.vendorJourney || this.isMasterLandingPages){
-        this.isFormAnalytics.emit(id);
+        this.viewAnalytics.emit(id);
     }else{
       if(this.categoryId>0){
           this.router.navigate(['/home/pages/' + id + '/category/'+this.categoryId+'/analytics']);

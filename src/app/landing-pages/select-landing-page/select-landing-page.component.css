@@ -42,9 +42,12 @@
 }
 
 .landing-page-selected {
-  background-color: #6dcff6;
+  background-color: #0276ff;
+  color: #fff;
 }
-
+.mix-filter li:hover {
+	background: #1c84ff;
+  }
 .ribbon1 {
   position: absolute;
   top: -6.1px;

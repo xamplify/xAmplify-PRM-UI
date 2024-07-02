@@ -22,12 +22,12 @@
               <li class="filter float-right mt5" (click)="showPartner()"
                 [class.campaign-type-selected]="isPartnerVersion">
                 {{authenticationService?.partnerModule?.customName}} View
-                <i *ngIf="isPartnerVersion" class="fa fa-check-circle-o success"></i>
+                <i *ngIf="isPartnerVersion" class="fa fa-check-circle-o check-icons"></i>
               </li>
               <!--Vendor View-->
               <li *ngIf="authenticationService?.enableLeads" class="filter float-right mt5" (click)="showVendor()"
                 [class.campaign-type-selected]="isVendorVersion">
-                Vendor View<i *ngIf="isVendorVersion" class="fa fa-check-circle-o success"></i>
+                Vendor View<i *ngIf="isVendorVersion" class="fa fa-check-circle-o check-icons"></i>
               </li>
               <p class="filter float-right m10">Opportunities as: </p>
             </ul>
@@ -168,7 +168,9 @@
                               aria-hidden="true"></i>{{DEAL_CONSTANTS?.registerADeal}}</span>
                         </button>
                       </a>
-                      <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO') || (isPartnerVersion && activeCRMDetails?.type == 'CONNECTWISE')"
+
+                      <a *ngIf="(isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO') || (isPartnerVersion && (activeCRMDetails?.type == 'CONNECTWISE' || activeCRMDetails?.type == 'HALOPSA'))"
+
                         (click)="syncLeadsWithActiveCRM()">
                         <!-- <button class="btn btn-white salesforce-btn button neg-mar-top bgcolor-unset" -->
                         <button class="btn salesforce-btn button bgcolor-unset p0 btn-transitions mrgt-2 mrgt1-2"
@@ -364,12 +366,14 @@
                                 </h5>
                               </div>
                               <div>
-                                <h5 *ngIf="isPartnerVersion && deal?.campaignId > 0"><b>Campaign:</b>
+                                <h5 *ngIf="isPartnerVersion && deal?.campaignId > 0" data-toggle="tooltip" data-placement="bottom"
+                                  title="{{deal.campaignName}}"><b>Campaign:</b>
                                   <span style="color: #5b9bd1;">{{deal.campaignName | slice:0:30}}
                                     <span *ngIf="deal.campaignName?.length>30">...</span>
                                   </span>
                                 </h5>
-                                <h5 *ngIf="isVendorVersion && deal?.parentCampaignId > 0"><b>Campaign:</b>
+                                <h5 *ngIf="isVendorVersion && deal?.parentCampaignId > 0" data-toggle="tooltip" data-placement="bottom"
+                                  title="{{deal.parentCampaignName}}"><b>Campaign:</b>
                                   <span style="color: #5b9bd1;">{{deal.parentCampaignName | slice:0:30}}
                                     <span *ngIf="deal.campaignName?.length>30">...</span>
                                   </span>
@@ -730,10 +734,10 @@
 </section>
 
 <app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="currentDealToUpdateStage"
-  [isPartnerVersion]="isPartnerVersion" [isCommentSection]="isCommentSection" [loggedInUserId]="loggedInUserId"
-  [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments(deal)" (closePopupEmitter)="resetModalPopup()"
-  (stageUpdateStatusStatusCode)="stageUpdateResponse($event)">
+  [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [isCommentSection]="isCommentSection"
+  [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments(deal)"
+  (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusStatusCode)="stageUpdateResponse($event)">
 </app-opportunities-chat-modal-popup>
 
-<app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable" 
-[isVendorVersion] ="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
+<app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"
+  [isVendorVersion]="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>

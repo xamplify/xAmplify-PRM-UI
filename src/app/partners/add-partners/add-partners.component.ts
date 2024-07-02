@@ -521,10 +521,20 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.dublicateEmailId = false;
 		this.existedEmailIds = [];
 		this.isEmailExist = false;
+		let isWebsiteError = false;
+		let websiteErrorMessage = '';
 		var testArray = [];
 		for (var i = 0; i <= this.newPartnerUser.length - 1; i++) {
 			testArray.push(this.newPartnerUser[i].emailId.trim().toLowerCase());
 			this.validateEmail(this.newPartnerUser[i].emailId.trim().toLowerCase());
+			if (this.newPartnerUser[i].website != undefined && this.newPartnerUser[i].website != null) {
+				if (this.newPartnerUser[i].website.length > 0) {
+					if (!this.validateWebsite(this.newPartnerUser[i].website.trim())) {
+						isWebsiteError = true;
+						websiteErrorMessage = websiteErrorMessage + "Following Website URL " + " '" + this.newPartnerUser[i].website + "' " + " is not valid " + "\n";
+					}
+				}
+			}
 		}
 
 		var newArray = this.compressArray(testArray);
@@ -541,7 +551,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.isDuplicateEmailId = isDuplicate;
 		if (this.newPartnerUser[0].emailId != undefined) {
 			if (!isDuplicate && !this.isEmailExist) {
-				this.saveValidEmails();
+				if (!isWebsiteError) {
+					this.saveValidEmails();
+				} else {
+					this.customResponse = new CustomResponse('ERROR', websiteErrorMessage, true);
+				}
 			} else if (this.isEmailExist) {
 				let message = "These " + this.authenticationService.partnerModule.customName + "(s) are already added " + this.existedEmailIds;
 				this.customResponse = new CustomResponse('ERROR', message, true);
@@ -1150,11 +1164,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		let isZipMatched = headers[18].trim() == "ZIP" || headers[18].trim() == "\"ZIP\"";
 		let isCountryMatched = headers[19].trim() == "COUNTRY" || headers[19].trim() == "\"COUNTRY\"";
 		let isMobileNumberMatched = headers[20].trim() == "MOBILE NUMBER" || headers[20].trim() == "\"MOBILE NUMBER\"";
-		let isAccountSubTypeMatched = headers[4].trim() == "ACCOUNT SUB TYPE" || headers[3].trim() == "\"ACCOUNT SUB TYPE\"";
-		let isAccountOwnerMatched = headers[3].trim() == "ACCOUNT OWNER" || headers[2].trim() == "\"ACCOUNT OWNER\"";
+		let isAccountSubTypeMatched = headers[4].trim() == "ACCOUNT SUB TYPE" || headers[4].trim() == "\"ACCOUNT SUB TYPE\"";
+		let isAccountOwnerMatched = headers[3].trim() == "ACCOUNT OWNER" || headers[3].trim() == "\"ACCOUNT OWNER\"";
 		let isCompanyDomainMatched = headers[6].trim() == "COMPANY DOMAIN" || headers[6].trim() == "\"COMPANY DOMAIN\"";
 		let isTerritoryMatched = headers[12].trim() == "TERRITORY" || headers[12].trim() == "\"TERRITORY\"";
-		let isAccountNameMatched = headers[2].trim() == "ACCOUNT NAME" || headers[11].trim() == "\"ACCOUNT NAME\"";
+		let isAccountNameMatched = headers[2].trim() == "ACCOUNT NAME" || headers[2].trim() == "\"ACCOUNT NAME\"";
 		let isWebsiteMatched = headers[9].trim() == "WEBSITE" || headers[9].trim() == "\"WEBSITE\"";
 		return (isFirstNameMatched && isLastNameMatched && isCompanyMatched && isJobTitleMatched
 			&& isEmailIdMatched && isVerticalMatched && isRegionMatched && isTypeMatched &&
@@ -1234,7 +1248,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					emailError = emailError + "Email Address is not valid for Row:" + (i + 1) + " -- Entered Email Address: " + data[8] + "\n";
 					isValidData = false;
 				}
-				if (data[8] != undefined) {
+
+				if (data[9] != undefined) {
 					if (!this.validateWebsite(data[9]) && data[9].length > 0) {
 						isWebsiteError = true;
 						websiteError = websiteError + "Website URL is not valid for Row:" + (i + 1) + " -- Entered Website URL : " + data[9] + "\n";
@@ -1511,28 +1526,28 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						break;
 
 					case 21:
-							user.firstName = data[0];
-							user.lastName = data[1];
-							user.accountName = data[2];
-							user.accountOwner = data[3];
-							user.accountSubType = data[4];
-							user.contactCompany = data[5];
-							user.companyDomain = data[6];
-							user.jobTitle = data[7];
-							user.emailId = data[8];
-							user.website = data[9];
-							user.territory = data[10];
-							user.vertical = data[11];
-							user.region = data[12];
-							user.partnerType = data[13];
-							user.category = data[14];
-							user.address = data[15].trim();
-							user.city = data[16];
-							user.state = data[17];
-							user.zipCode = data[18];
-							user.country = data[19];
-							user.mobileNumber = data[20];
-							break;
+						user.firstName = data[0];
+						user.lastName = data[1];
+						user.accountName = data[2];
+						user.accountOwner = data[3];
+						user.accountSubType = data[4];
+						user.contactCompany = data[5];
+						user.companyDomain = data[6];
+						user.jobTitle = data[7];
+						user.emailId = data[8];
+						user.website = data[9];
+						user.territory = data[10];
+						user.vertical = data[11];
+						user.region = data[12];
+						user.partnerType = data[13];
+						user.category = data[14];
+						user.address = data[15].trim();
+						user.city = data[16];
+						user.state = data[17];
+						user.zipCode = data[18];
+						user.country = data[19];
+						user.mobileNumber = data[20];
+						break;
 				}
 				this.xtremandLogger.info(user);
 				self.newPartnerUser.push(user);
@@ -3500,7 +3515,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						"jobTitle": self.pagedItems[i].title,
 						"mobilePhone": self.pagedItems[i].mobilePhone,
 						"mobileNumber": self.pagedItems[i].mobilePhone,
-						"accountName" : self.pagedItems[i].accountName,
+						"accountName": self.pagedItems[i].accountName,
 						"accountSubType": self.pagedItems[i].accountSubType,
 						"territory": self.pagedItems[i].territory,
 						"companyDomain": self.pagedItems[i].companyDomain,

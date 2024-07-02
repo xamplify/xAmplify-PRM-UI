@@ -363,7 +363,9 @@
     class="btn btn-danger btn-xs margin-left-one-per float-right">
     <i class="fa fa-times-circle-o"></i>
   </button>
-  <span *ngIf="isEmailNotSentNotificationDisplayed" class="required float-right">No emails will be sent.</span>
+
+  <span *ngIf="isEmailNotSentNotificationDisplayed && !vendorJourney" class="required float-right">No emails will be sent.</span>
+
 </ng-template>
 <ng-container *ngIf="vendorJourney">
   <button type="submit" class="button bgcolor-unset" *ngIf = "!sendSuccess" (click)="publish()">

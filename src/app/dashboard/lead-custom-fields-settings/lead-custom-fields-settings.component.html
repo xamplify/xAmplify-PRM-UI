@@ -1,0 +1,34 @@
+<div class="my-container">
+  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+  <div class="table-responsive">
+    <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
+    <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
+      <table class='table tgrid'>
+        <thead>
+          <tr>
+            <th>Field Name</th>
+            <th>PlaceHolder</th>
+            <th>Display Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let leadField of leadCustomFields ">
+            <tr>
+              <td class="text-center"><input type="text" class="form-control" [(ngModel)]="leadField.labelName"
+                  [ngModelOptions]="{standalone: true}" readonly="readonly" maxlength="255">
+              </td>
+              <td class="text-center"><input type="text" class="form-control" [(ngModel)]="leadField.placeholder"
+                  [ngModelOptions]="{standalone: true}" maxlength="255">
+              </td>
+              <td class="text-center"><input type="text" class="form-control" [(ngModel)]="leadField.displayName"
+                  [ngModelOptions]="{standalone: true}" maxlength="255">
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <button type="button" class="button_blue bgcolor-unset pr0 px-9 pull-right" (click)="validateAndSubmit()"><span
+            class="btn btn-primary transition txt_pd-top3">Submit</span></button>
+    </ng-container>
+  </div>
+</div>

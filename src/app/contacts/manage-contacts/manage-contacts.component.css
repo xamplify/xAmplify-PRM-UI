@@ -181,6 +181,9 @@ h3 {
     white-space: nowrap;
     width: 117px;
   }
+  .search-class{
+    width: auto!important;
+    }
 }
 @media screen and (min-width: 601px) {
   .modal-css {
@@ -255,7 +258,11 @@ h3 {
   text-transform: uppercase;
 }
 .contact-filter-selected {
-  background-color: #6dcff6;
+  background-color: #0276ff;
+  color: #fff;
+}
+.mix-filter li:hover {
+  background: #1c84ff;
 }
 #header-custom-li-font {
   font-size: 16px;
@@ -416,3 +423,12 @@ h6 {
     left: 0px!important;
 }
 }
+.align-height{
+  border-radius: 15px;
+}
+@media (min-width: 768px){
+  .align-height{
+     min-height: 300px;
+  }
+ }
+

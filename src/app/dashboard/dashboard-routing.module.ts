@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { WelcomeComponent } from "./welcome/welcome.component";
 import { DefaultPageComponent } from "./default-page/default-page.component";
@@ -27,6 +26,9 @@ import { SpfComponent } from './spf/spf.component';
 import { AdminReportCampaignWorkflowAnalyticsComponent } from './admin-report-campaign-workflow-analytics/admin-report-campaign-workflow-analytics.component';
 import { EditModuleNameComponent } from './edit-module-name/edit-module-name.component';
 import { CustomSkinComponent } from "./user-profile/custom-skin/custom-skin.component";
+import { QuickLinksComponent } from "./quick-links/quick-links.component";
+import { RouterUrlConstants } from "app/constants/router-url.contstants";
+
 
 const routes: Routes = [
  { path: "", component: DashboardAnalyticsComponent },
@@ -62,7 +64,8 @@ const routes: Routes = [
   {path:'spf', component:SpfComponent},
   {path:'workflow-analytics',component:AdminReportCampaignWorkflowAnalyticsComponent},
   {path:'edit-module-names/:companyId',component:EditModuleNameComponent},
-  { path: 'microsoft-callback',component:SocialContactsCallbackComponent}
+  { path: 'microsoft-callback',component:SocialContactsCallbackComponent},
+  {path:RouterUrlConstants.quickLinks,component:QuickLinksComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

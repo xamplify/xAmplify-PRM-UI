@@ -1414,4 +1414,9 @@ zoomOut() {
         this.beeContainerInput = {};
         this.isBeeTemplateComponentCalled = false;
     }
+
+    /****XNFR-586****/
+    setAddToQuickLinks(event){
+        this.damUploadPostDto.addedToQuickLinks = event;
+    }
 }
