@@ -40,7 +40,7 @@
                   alt="No image" (load)="isImageLoading=false" (error)="isImageLoading=false">
                 </ng-container>
               </ng-template>
-              <a class="btn btn-primary1 profile-pic" data-toggle="tooltip" data-placement="bottom" title="Upload 5:1 ratio logo">
+              <a class="btn btn-primary1 profile-pic"  title="Upload 5:1 ratio logo">
                 <i class="fa fa-camera icon camera-icon" aria-hidden="true"></i>
               </a>
             </div>
@@ -211,12 +211,12 @@
           <tbody>
             <tr *ngFor="let item of pagination.pagedItems">
               <ng-container *ngIf="moduleType==properties?.dashboardButtons">
-                <td class="td-overflow-text"><span class="mr5"><i class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
-                <td>{{item.buttonLink}}</td>
+                <td class="td-overflow-text"><span  title="{{item.buttonTitle}}"><i class="fa mr5 {{item.buttonIcon}}" aria-hidden="true"></i>{{item.buttonTitle}}</span></td>
+                <td class="td-overflow-text"><span title="{{item.buttonLink}}">{{item.buttonLink}}</span></td> 
               </ng-container>
               <ng-container *ngIf="moduleType!=properties?.dashboardButtons">
-                <td class="td-overflow-text"><span  data-toggle="tooltip" data-placement="bottom" title="{{item.title}}"><i class="fa mr5 {{item.icon}}" aria-hidden="true"></i>{{item.title}}</span></td>
-                <td class="td-overflow-text"><span data-toggle="tooltip" data-placement="bottom" title="{{item.link}}">{{item.link}}</span></td> 
+                <td class="td-overflow-text"><span  title="{{item.title}}"><i class="fa mr5 {{item.icon}}" aria-hidden="true"></i>{{item.title}}</span></td>
+                <td class="td-overflow-text"><span title="{{item.link}}">{{item.link}}</span></td> 
                 <ng-container *ngIf="moduleType==properties?.dashboardBanners">
                     <td class="td-overflow-text text-center">
                       <app-custom-ui-switch [customSwitch]="item?.displayTitle" [isSwitchOptionDisabled]="true"></app-custom-ui-switch>
@@ -236,11 +236,11 @@
               <td>
                 <div class="actions-block override-actions float-none">
                   <ng-container *ngIf="!item?.publishingInProgress">
-                    <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit/Preview">
+                    <a class="custom-icon" (click)="edit(item.id)"  title="Edit/Preview">
                       <i class="fa fa-pencil-square-o"></i>
                       <div class="clickicons"></div>
                     </a>
-                    <a class="custom-icon" (click)="showAlert(item)" data-toggle="tooltip" data-placement="top" title="Delete">
+                    <a class="custom-icon" (click)="showAlert(item)"  title="Delete">
                       <i class="fa fa-trash-o"></i>
                       <div class="del-icon"></div>
                     </a>
@@ -249,7 +249,7 @@
                     <p class="success mt5 text-align-center" *ngIf="item?.publishingInProgress">
                       <strong><img src="assets/images/loading.gif" alt="Please Wait..."style="height:15px">{{XAMPLIFY_CONSTANTS?.pleaseWait}}</strong>
                     </p>
-                    <a class="custom-icon" (click)="refresh()" data-toggle="tooltip" data-placement="top" title="Refresh">
+                    <a class="custom-icon" (click)="refresh()"  title="Refresh">
                       <i class="fa fa-refresh"></i>
                       <div class="clickicons"></div>
                     </a>
