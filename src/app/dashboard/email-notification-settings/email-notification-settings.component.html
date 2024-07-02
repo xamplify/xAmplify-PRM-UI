@@ -26,6 +26,12 @@
     notificationSettingOption:emailNotificationSettingsDto?.playbookPublishedEmailNotification,moduleType:4}">
   </ng-template>
 
+   <!---Dashboard Banners-->
+   <ng-template *ngIf="isVanityLogin" [ngTemplateOutlet]="notificationOptionTemplateOutlet"
+   [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:dashboardButtonsPublishedTextDto,
+   notificationSettingOption:emailNotificationSettingsDto?.dashboardButtonsEmailNotification,moduleType:5}">
+ </ng-template>
+
   <!--Update Button-->
   <div id="right">
     <button type="button" class="button_blue bgcolor-unset" translate (click)="updateSettings()"><span

@@ -97,7 +97,8 @@ export class VanityURLService {
 
   findCustomLinks(pagination: Pagination) {
     if(pagination.filterKey==this.properties.dashboardButtons){
-      const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons" + "?access_token=" + this.authenticationService.access_token;
+      let encodedSearchKey = this.referenceService.getEncodedUri(pagination.searchKey);
+      const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons?searchKey="+encodedSearchKey + "&access_token=" + this.authenticationService.access_token;
       return this.http.post(url, pagination)
         .map(this.extractData)
         .catch(this.handleError);
@@ -113,7 +114,8 @@ export class VanityURLService {
   }
 
   getDashboardButtonsForCarousel(companyProfileName: string) {
-    const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons/" + companyProfileName + "?access_token=" + this.authenticationService.access_token;
+    let userId = this.authenticationService.getUserId();
+    const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons/" + companyProfileName + "/"+userId+"?access_token=" + this.authenticationService.access_token;
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 

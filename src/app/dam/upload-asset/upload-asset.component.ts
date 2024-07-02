@@ -687,7 +687,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
  listTags(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
     pagination.maxResults = 0;
-    let self = this;
     this.referenceService.startLoader(this.tagsLoader);
     this.userService.getTagsSearchTagName(pagination)
       .subscribe(

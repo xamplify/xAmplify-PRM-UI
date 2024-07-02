@@ -21,6 +21,12 @@ export class CustomLinkDto {
     displayTitle = false;
     buttonText = "Learn More";
     /***XNFR-532*****/
+    /****XNFR-571***/
+    partnerGroupIds = [];
+    partnerIds = [];
+    partnershipIds = [];
+    partnerGroupSelected = false;
+     /****XNFR-571***/
 
 
 }
