@@ -10,7 +10,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { CustomLinkDto } from 'app/vanity-url/models/custom-link-dto';
 import { FormBuilder, FormControl, FormGroup,Validators } from '@angular/forms';
-import { max120CharactersLimitValidator,noWhiteSpaceOrMax20CharactersLimitValidator,max40CharactersLimitValidator, noWhiteSpaceValidatorWithOutLimit } from 'app/form-validator';
+import { max120CharactersLimitValidator,noWhiteSpaceOrMax20CharactersLimitValidator,max40CharactersLimitValidator, noWhiteSpaceValidatorWithOutLimit,noWhiteSpaceOrMax40CharactersLimitValidator } from 'app/form-validator';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CustomLinkType } from '../models/custom-link-type.enum';
 import { ErrorResponse } from 'app/util/models/error-response';
@@ -60,7 +60,7 @@ export class CustomLinksUtilComponent implements OnInit {
   formErrors = {
     'title': '',
     'link': '',
-    'subtitle':'',
+    'subTitle':'',
     'description':'',
     'icon':'',
     'buttonText':''
@@ -70,7 +70,7 @@ export class CustomLinksUtilComponent implements OnInit {
       'title': {
           'required': 'Title is required.',
           'whitespace': 'Empty spaces are not allowed.',
-          'maxLimitReached': 'Title cannot be more than 20 characters long.',
+          'maxLimitReached': 'Title cannot be more than 40 characters long.',
       },
       'link': {
           'required': 'Link is required.',
@@ -140,7 +140,7 @@ export class CustomLinksUtilComponent implements OnInit {
 	buildCustomLinkForm() {
     if(this.moduleType==this.properties.dashboardButtons){
       this.customLinkForm = this.formBuilder.group({
-        'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceOrMax20CharactersLimitValidator])],
+        'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceOrMax40CharactersLimitValidator])],
         'subTitle': [this.customLinkDto.buttonSubTitle,Validators.compose([max40CharactersLimitValidator])],
         'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.LINK_PATTERN)])],
         'icon': [this.customLinkDto.buttonIcon],
