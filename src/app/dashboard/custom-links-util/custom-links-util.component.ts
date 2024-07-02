@@ -106,7 +106,7 @@ export class CustomLinksUtilComponent implements OnInit {
   sortOption:SortOption = new SortOption();
   /***XNFR-571****/
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
-    private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
+    private xtremandLogger: XtremandLogger, public properties: Properties, public httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
     private regularExpressions:RegularExpressions,public utilService:UtilService) {
       this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
