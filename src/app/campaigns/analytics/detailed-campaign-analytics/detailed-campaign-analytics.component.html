@@ -364,13 +364,13 @@
                                  {{ 'Group Info' }}
                               </span>
                               <span class="camp-title"
-                                 *ngIf="((!authenticationService.isVendor() && !campaign?.channelCampaign && !campaign?.oneClickLaunch)  && authenticationService.isOrgAdmin())">
+                                 *ngIf="((!authenticationService.isVendor() && !campaign?.channelCampaign)  && authenticationService.isOrgAdmin() || authenticationService.isOnlyPartner() && !campaign?.oneClickLaunch)">
                                  {{ 'List Info' }}
                               </span>
                            </div>
                            <div class="camp-number">
                               <strong class="m0 StongTextdc"
-                                 *ngIf="((!authenticationService.isVendor() && !campaign?.channelCampaign && !campaign?.oneClickLaunch)  && authenticationService.isOrgAdmin())">{{
+                                 *ngIf="((!authenticationService.isVendor() && !campaign?.channelCampaign)  && authenticationService.isOrgAdmin() || authenticationService.isOnlyPartner() && !campaign?.oneClickLaunch)">{{
                                  campaingContactLists?.length }}
                                  List(s)</strong>
                               <strong class="m0 StongTextdc"
