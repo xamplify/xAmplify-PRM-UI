@@ -10,8 +10,6 @@
       </div>
       <div class="modal-body border-bottom-1px">
         <div class="portlet light" id="del-profile-div" style="border: 0px !important">
-          <!-- <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px',fullScreenBackdrop:true }">
-          </ngx-loading> -->
           <app-modal-popup-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
           </app-modal-popup-loader>
           <app-response-message class="pg8" [customResponse]="selectLeadModalResponse"
@@ -65,7 +63,8 @@
                         <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                           <thead>
                             <tr>
-                              <th>     </th>
+                              <th> </th>
+                              <th> </th>
                               <th class="center-aligned leadTablewidth0" translate>Lead Details</th>
                               <th class="center leadTablewidth1" translate>{{LEAD_CONSTANTS.addedBy}}</th>
                               <th class="leadTablewidth3" style="text-align:center" translate>Actions</th>
@@ -74,11 +73,12 @@
 
                           <tbody>
                             <ng-container *ngFor='let lead of pagination.pagedItems; let i=index'>
-                              <tr [ngClass]="lead.id === showSelectedLead ? 'highlightRow' : ''">
-                                <td (click)="selectLead(lead.id)" width="5%">
+                              <tr (click)="selectLead(lead.id)" [ngClass]="lead.id === showSelectedLead ? 'highlightRow' : ''">
+                                <td><input class="pointer" (click)="selectLead(lead.id)" [checked]="lead.id === showSelectedLead" type="checkbox"></td>
+                                <td width="5%">
                                   <i *ngIf="lead.id === showSelectedLead" class="fa fa-check active-status" aria-hidden="true" style="font-size: 14px;"></i>
                                 </td>
-                                <td (click)="selectLead(lead.id)">
+                                <td>
                                   <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
                                   <div class="mrg_lft66" style="margin-left: 60px;">
                                     <h5 class="m0"><strong>Added For:</strong>
