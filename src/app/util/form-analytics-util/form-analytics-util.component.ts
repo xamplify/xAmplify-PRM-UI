@@ -51,6 +51,9 @@ export class FormAnalyticsUtilComponent implements OnInit {
     formAnalyticsDownload = false;
     campaignFormAnalyticsDownload = false;
     campaignPartnerFormAnalyticsDownload: boolean;
+    @Input() isVendorJourney: boolean;
+    @Input() isMasterLandingPage: boolean;
+
     constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
@@ -104,6 +107,10 @@ export class FormAnalyticsUtilComponent implements OnInit {
     listSubmittedData(pagination: Pagination) {
         pagination.searchKey = this.searchKey;
         this.referenceService.loading(this.httpRequestLoader, true);
+        if(this.isVendorJourney){
+            pagination.vendorJourney = true;
+            pagination.masterLandingPageId = this.importedObject['masterLandingPageId'];
+        }
         this.formService.getFormAnalytics(pagination, this.alias, false).subscribe(
             (response: any) => {
                 const data = response.data;

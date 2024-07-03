@@ -122,6 +122,21 @@ export function noWhiteSpaceValidatorWithMin3(control: FormControl): {[key: stri
     }
   }
 
+  export function noWhiteSpaceOrMax40CharactersLimitValidator(control: FormControl): {[key: string]: any} {
+    if (control.value != null) {
+      let trimmedValue = control.value.trim();
+      if (trimmedValue.length == 0) {
+        return {
+          whitespace: true,
+        };
+      } else if (trimmedValue.length > 40) {
+        return {
+          maxLimitReached: true,
+        };
+      }
+    }
+  }
+
   export function max120CharactersLimitValidator(control: FormControl): {[key: string]: any} {
     if (control.value != null) {
       let trimmedValue = control.value.trim();

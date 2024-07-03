@@ -8,9 +8,9 @@
 						<div class="col-xs-12 col-sm-6 col-md-6 text-left p0">
 							<div class="caption text-wrap" title="{{title}}" style="padding:10px">
 								<span class="caption-subject font-red-sunglo uppercase"
-									*ngIf="!pagination.checkInLeads">{{title}}</span>
+									*ngIf="!pagination.checkInLeads && !isVendorJourney">{{title}}</span>
 								<span class="caption-subject font-red-sunglo uppercase"
-									*ngIf="pagination.checkInLeads && !httpRequestLoader.isLoading"></span>
+									*ngIf="(pagination.checkInLeads || isVendorJourney) && !httpRequestLoader.isLoading"></span>
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-6 col-md-6 text-right">

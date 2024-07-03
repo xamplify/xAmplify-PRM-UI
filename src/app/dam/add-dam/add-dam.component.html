@@ -126,6 +126,19 @@
                            </span>
                         </div>
                      </div>
+                      <!--Added To Quick Links--->
+                      <div class="col-lg-12 col-md-12" *ngIf="!isPartnerView">
+                        <div class="form-group col-md-6 col-lg-6">
+                           <label>Add To Quick Links</label>
+                           <app-custom-ui-switch [customSwitch]="damPostDto?.addedToQuickLinks"
+                              (customUiSwitchEventEmitter)="setAddToQuickLinks($event)"></app-custom-ui-switch>
+                           <span class="info-color-xampc">
+                              <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup"
+                                 data-toggle="tooltip" data-placement="top" aria-hidden="true"
+                                 title="{{properties?.ADD_TO_QUICK_LINKS}}"></i>
+                           </span>
+                        </div>
+                     </div>
                      <!--Description-->
                      <div class="col-lg-12 col-md-12">
                         <div *ngIf="!isValidDescription" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">

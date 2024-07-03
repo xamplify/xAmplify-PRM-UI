@@ -40,9 +40,9 @@
                   alt="No image" (load)="isImageLoading=false" (error)="isImageLoading=false">
                 </ng-container>
               </ng-template>
-              <a class="btn btn-primary1 profile-pic" data-toggle="tooltip" data-placement="bottom"
-                title="Upload 5:1 ratio logo"><i class="fa fa-camera icon" aria-hidden="true"
-                  style="font-size:25px;padding-top:4px;margin-right: -5px;"></i></a>
+              <a class="btn btn-primary1 profile-pic"  title="Upload 5:1 ratio logo">
+                <i class="fa fa-camera icon camera-icon" aria-hidden="true"></i>
+              </a>
             </div>
           </div>
         </div>
@@ -119,10 +119,25 @@
       </div>
       <!--Description-->
       <div class="form-group col-md-12 col-xs-12">
-      <label>Description</label>
-      <textarea class="form-control" rows="3" placeholder="Description" formControlName="description" style="resize: none;"></textarea>
+        <label>Description</label>
+        <textarea class="form-control" rows="3" placeholder="Description" formControlName="description" style="resize: none;"></textarea>
         <span *ngIf="formErrors.description" class="required">{{ formErrors.description }}</span>
       </div>
+      <!--XNFR-571 Publish To Partner Groups / Partner Companies -->
+      <div class="form-group col-md-12 col-xs-12" *ngIf="isDashboardButtonsModule">
+        <app-list-loader *ngIf="emailNotificationSettingsLoader"></app-list-loader>
+        <app-partner-company-and-groups *ngIf="!emailNotificationSettingsLoader && !this.authenticationService.module.isMarketingCompany"
+         [moduleName]="properties?.dashboardButtons"
+          [inputId]="customLinkDto?.id"
+          [isPublishedToPartnerGroups]="customLinkDto?.partnerGroupSelected"
+          [selectedPartnerGroupIds]="customLinkDto?.partnerGroupIds"
+          [selectedPartnershipIds]="customLinkDto?.partnershipIds"
+          [selectedTeamMemberIds]="customLinkDto?.partnerIds"
+          [isDashboardButtonPublishedEmailNotification]="isDashboardButtonPublishedEmailNotification"
+          (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)">
+        </app-partner-company-and-groups>
+      </div>
+      
       <!--Save/Update/Cancel-->
       <div class="form-row">
         <div class="form-group col-xs-12 col-md-12">
@@ -141,69 +156,117 @@
 </form>
 
 <!--List-->
-<fieldset style="margin: 20px 2px;">
-  <legend>{{listHeaderText}}</legend>
-  <app-list-loader *ngIf="isLoadingBanners || isDeleteOptionClicked"></app-list-loader>
-  <div class="alert alert-info text-center" *ngIf="pagination.totalRecords==0 && !isLoadingBanners">No Data Found</div>
-  <ng-container *ngIf="pagination?.totalRecords>0 && !isLoadingBanners && !isDeleteOptionClicked">
-    <ng-container *ngIf="moduleType==properties?.dashboardBanners">
-      <div class="alert alert-info text-center" *ngIf="!isAddDashboardBannersDivHidden">{{properties?.maximumDashboardBannersLimitMessage}}</div>
-       <span><strong>Dashboard banners : <span>{{pagination.totalRecords}}</span> / 5</strong></span>
-    </ng-container>
-    <div  class="table-responsive">
-      <table class='table tgrid table-hover'>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Link</th>
-            <th class="text-center" *ngIf="moduleType==properties?.dashboardBanners">Display Title</th>
-            <th class="text-center" *ngIf="moduleType==properties?.dashboardBanners">Button Text</th>
-            <th *ngIf="moduleType==properties?.newsAndAnnouncements">Type</th>
-            <th class="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of pagination.pagedItems">
-            <ng-container *ngIf="moduleType==properties?.dashboardButtons">
-              <td class="td-overflow-text"><span class="mr5"><i class="fa {{item.buttonIcon}}"></i></span>{{item.buttonTitle}}</td>
-              <td>{{item.buttonLink}}</td>
-            </ng-container>
-            <ng-container *ngIf="moduleType!=properties?.dashboardButtons">
-              <td class="td-overflow-text"><span  data-toggle="tooltip" data-placement="bottom" title="{{item.title}}"><i class="fa mr5 {{item.icon}}" aria-hidden="true"></i>{{item.title}}</span></td>
-              <td class="td-overflow-text"><span data-toggle="tooltip" data-placement="bottom" title="{{item.link}}">{{item.link}}</span></td> 
-              <ng-container *ngIf="moduleType==properties?.dashboardBanners">
-                  <td class="td-overflow-text text-center">
-                    <app-custom-ui-switch [customSwitch]="item?.displayTitle" [isSwitchOptionDisabled]="true"></app-custom-ui-switch>
-                  </td>
-                  <td class="td-overflow-text text-center">{{item?.buttonText}}</td>
-              </ng-container>
-            </ng-container>
-            <ng-container *ngIf="moduleType==properties?.newsAndAnnouncements">
-              <td>{{item.type}}</td>
-            </ng-container>
-            <td>
-              <div class="actions-block override-actions float-none">
-                <a class="custom-icon" (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit/Preview">
-                  <i class="fa fa-pencil-square-o"></i>
-                  <div class="clickicons"></div>
-                </a>
-                <a class="custom-icon" (click)="showAlert(item)" data-toggle="tooltip" data-placement="top" title="Delete">
-                  <i class="fa fa-trash-o"></i>
-                  <div class="del-icon"></div>
-                </a>
+<div class="portlet light">
+  <!--Search & Filter-->
+  <div class="portlet-title">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-lg-12">
+          <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10 mt--5">
+              <h4>Manage {{moduleType}}</h4>
+          </div>
+          <div class="col-xs-12 col-sm-7 col-lg-7 p0" *ngIf="moduleType==properties?.dashboardButtons">
+              <div class="page-toolbar">
+                  <div class="btn-group pull-right">
+                      <div class="inputs float-right" style="display: inline-flex;">
+                          <div class="float-left">
+                              <select class="form-control"[(ngModel)]="sortOption.selectedCustomLinksDropDownOption"
+                                  (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                  <option *ngFor="let option of sortOption.customLinksCompaniesDropDown"  [ngValue]="option">{{option.name}}</option>
+                              </select>
+                          </div>
+                          <div>
+                              <div class="ml5">
+                                  <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search..." (keydown.enter)="search()">
+                                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';search();"></button>
+                                  <button type="submit" class="search-box-item-click"(click)="search();"><i class="fa fa-search" aria-hidden="true"></i></button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
               </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div  *ngIf="moduleType!=properties?.dashboardBanners">
-      <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-        (notifyParentDropDown)="findLinks($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
-    </div>
-  </ng-container>
+          </div>
+      </div>
+  </div>
+  </div>
+    <app-list-loader *ngIf="isLoadingBanners || isDeleteOptionClicked || httpRequestLoader?.isLoading"></app-list-loader>
+    <div class="alert alert-info text-center" *ngIf="pagination.totalRecords==0 && !isLoadingBanners">No Data Found</div>
+    <ng-container *ngIf="pagination?.totalRecords>0 && !isLoadingBanners && !isDeleteOptionClicked && !httpRequestLoader?.isLoading">
+      <ng-container *ngIf="moduleType==properties?.dashboardBanners">
+        <div class="alert alert-info text-center" *ngIf="!isAddDashboardBannersDivHidden">{{properties?.maximumDashboardBannersLimitMessage}}</div>
+         <span><strong>Dashboard banners : <span>{{pagination.totalRecords}}</span> / 5</strong></span>
+      </ng-container>
+      <div  class="table-responsive">
+        <table class='table tgrid table-hover'>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Link</th>
+              <th class="text-center" *ngIf="moduleType==properties?.dashboardBanners">Display Title</th>
+              <th class="text-center" *ngIf="moduleType==properties?.dashboardBanners">Button Text</th>
+              <th *ngIf="moduleType==properties?.newsAndAnnouncements">Type</th>
+              <th *ngIf="moduleType==properties?.dashboardButtons" class="text-center">Published</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of pagination.pagedItems">
+              <ng-container *ngIf="moduleType==properties?.dashboardButtons">
+                <td class="td-overflow-text"><span  title="{{item.buttonTitle}}"><i class="fa mr5 {{item.buttonIcon}}" aria-hidden="true"></i>{{item.buttonTitle}}</span></td>
+                <td class="td-overflow-text"><span title="{{item.buttonLink}}">{{item.buttonLink}}</span></td> 
+              </ng-container>
+              <ng-container *ngIf="moduleType!=properties?.dashboardButtons">
+                <td class="td-overflow-text"><span  title="{{item.title}}"><i class="fa mr5 {{item.icon}}" aria-hidden="true"></i>{{item.title}}</span></td>
+                <td class="td-overflow-text"><span title="{{item.link}}">{{item.link}}</span></td> 
+                <ng-container *ngIf="moduleType==properties?.dashboardBanners">
+                    <td class="td-overflow-text text-center">
+                      <app-custom-ui-switch [customSwitch]="item?.displayTitle" [isSwitchOptionDisabled]="true"></app-custom-ui-switch>
+                    </td>
+                    <td class="td-overflow-text text-center">{{item?.buttonText}}</td>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="moduleType==properties?.newsAndAnnouncements">
+                <td>{{item.type}}</td>
+              </ng-container>
+              <ng-container *ngIf="moduleType==properties?.dashboardButtons">
+                <td class="text-align-center">
+                  <i *ngIf="item?.published" class="fa fa-check success ft-20px"></i>
+                  <i *ngIf="!item?.published" class="fa fa-times required ft-20px"></i>
+                </td>
+              </ng-container>
+              <td>
+                <div class="actions-block override-actions float-none">
+                  <ng-container *ngIf="!item?.publishingInProgress">
+                    <a class="custom-icon" (click)="edit(item.id)"  title="Edit/Preview">
+                      <i class="fa fa-pencil-square-o"></i>
+                      <div class="clickicons"></div>
+                    </a>
+                    <a class="custom-icon" (click)="showAlert(item)"  title="Delete">
+                      <i class="fa fa-trash-o"></i>
+                      <div class="del-icon"></div>
+                    </a>
+                  </ng-container>
+                  <ng-container *ngIf="item?.publishingInProgress">
+                    <p class="success mt5 text-align-center" *ngIf="item?.publishingInProgress">
+                      <strong><img src="assets/images/loading.gif" alt="Please Wait..."style="height:15px">{{XAMPLIFY_CONSTANTS?.pleaseWait}}</strong>
+                    </p>
+                    <a class="custom-icon" (click)="refresh()"  title="Refresh">
+                      <i class="fa fa-refresh"></i>
+                      <div class="clickicons"></div>
+                    </a>
+                  </ng-container>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div  *ngIf="moduleType!=properties?.dashboardBanners">
+        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+          (notifyParentDropDown)="findLinks($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+      </div>
+    </ng-container>
+</div>
 
-</fieldset>
 
 <app-upload-image-util *ngIf="uploadImageOptionClicked"  [moduleName]="properties?.dashboardBanners" 
 (croppedImageEventEmitter)="croppedImageEventReceiver($event)" (modalPopupClosedEventEmitter)="modalPopupClosedEventReceiver()"></app-upload-image-util>

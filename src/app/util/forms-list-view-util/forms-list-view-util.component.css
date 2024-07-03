@@ -116,9 +116,12 @@ cursor: default;
 }
 
 .form-selected{
-  background-color: #6dcff6;
+  background-color: #0276ff;
+  color: #fff;
 }
-
+.mix-filter li:hover {
+	background: #1c84ff;
+  }
 .ellipsis {
   width: 100%;
   text-overflow: ellipsis;

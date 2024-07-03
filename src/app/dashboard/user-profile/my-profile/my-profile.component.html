@@ -142,7 +142,7 @@
                                         <li [ngClass]="{'active-tab': activeTabName == 'settings'}"
                                             [class.disabled]="authenticationService.isSuperAdmin()">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}"
-                                                (click)="activateTab('settings');clearCustomResponse();getSelectedDashboardForPartner();checkDashboardTypes()">
+                                                (click)="activateTab('settings');clearCustomResponse();getSelectedDashboardForPartner();">
                                                 {{properties.viewType}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
                                                     [ngTemplateOutletContext]="{'moduleName':'settings'}"></ng-template>
@@ -249,6 +249,16 @@
                                                         [ngTemplateOutletContext]="{'moduleName':'leadDealApprove'}"></ng-template>
                                                 </a>
                                             </li>
+                                            <!-- XNFR-592 -->
+                                            <li [ngClass]="{'active-tab': activeTabName == 'leadFieldSettings'}"
+                                                *ngIf="authenticationService?.module?.isAdmin && !authenticationService.isOnlyPartner()">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadFieldSettings'}"
+                                                    (click)="activateTab('leadFieldSettings')">
+                                                    {{properties.leadFieldSettings}}
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':'leadFieldSettings'}"></ng-template>
+                                                </a>
+                                            </li>
 
                                         </ng-container>
                                     </ul>
@@ -307,6 +317,18 @@
                                                     [ngTemplateOutletContext]="{'moduleName':'samlSettings'}"></ng-template>
                                             </a>
                                         </li>
+
+                                        <!-- Saml 2.0 SSO Settings-->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'saml2SSOsettings'}"
+                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'saml2SSOsettings'}"
+                                                (click)="activateTab('saml2SSOsettings');clearCustomResponse()">{{properties.saml2SSOsettings}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'saml2SSOsettings'}"></ng-template>
+                                            </a>
+                                        </li>
+
+
                                         <li *ngIf="authenticationService?.vanityURLEnabled && authenticationService?.module?.showSupportSettingOption && !isLoggedInAsPartner"
                                             [ngClass]="{'active-tab': activeTabName == 'support'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'support'}"
@@ -414,7 +436,7 @@
                                             </ng-container>
                                             <!--Landing Pages-->
                                             <ng-container
-                                                *ngIf="(authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
+                                                *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'landingPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'landingPages'}"
                                                         (click)="activateTab('landingPages');clearCustomResponse()">
@@ -427,7 +449,8 @@
 
                                             <!--Master Landing Pages-->
 
-                                            <ng-container *ngIf="(authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
+                                            <ng-container
+                                                *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
 
                                                 <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPages'}"
@@ -1406,9 +1429,9 @@
                                                             <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="zohoRibbonText == 'configured'"
                                                                     class="integration-cards">
-                                                                    <a (click)="zohoSettings()"
-                                                                        data-toggle="tooltip" data-placement="top"
-                                                                        title="Zoho Settings"><i class="fa fa-cog"
+                                                                    <a (click)="zohoSettings()" data-toggle="tooltip"
+                                                                        data-placement="top" title="Zoho Settings"><i
+                                                                            class="fa fa-cog"
                                                                             style="font-size: 20px !important;"></i></a>
                                                                 </span>
                                                                 <h5 class="card-title  text-uppercase text-center"
@@ -2138,10 +2161,23 @@
                                             <app-leftsidenavbar-custom></app-leftsidenavbar-custom>
                                         </div>
 
+                                        <!-- Lead Custom Field Settings -->
+                                        <div class="tab-pane" *ngIf="showleadFieldSettings"
+                                            [ngClass]="{'active': activeTabName == 'leadFieldSettings'}">
+                                            <app-lead-custom-fields-settings></app-lead-custom-fields-settings>
+                                        </div>
+
                                         <!-- Saml SETTINGS TAB -->
                                         <div class="tab-pane hidden-xs"
                                             [ngClass]="{'active': activeTabName == 'samlSettings'}">
                                             <app-samlsecurity> </app-samlsecurity>
+                                        </div>
+
+                                        <!-- saml sso 2.0 settings -->
+                                        <div class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'saml2SSOsettings'}"
+                                            *ngIf="showSaml2SSOsettings">
+                                            <app-saml-sso-login> </app-saml-sso-login>
                                         </div>
 
                                         <!-- Your Templates TAB -->
@@ -2507,7 +2543,8 @@
 
                                         <!--XNFR-454 Domain Configuration-->
                                         <app-domain-whitelisting *ngIf="isAddDomainsOptionClicked" class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == properties?.addDomainsText}" [isMyProfileAndDomainWhitelisting]='true'>
+                                            [ngClass]="{'active': activeTabName == properties?.addDomainsText}"
+                                            [isMyProfileAndDomainWhitelisting]='true'>
                                         </app-domain-whitelisting>
 
                                         <!--XNFR-459 News & Announcements-->
@@ -3347,7 +3384,7 @@
                                                     <span class="checkmark"></span>
                                                 </label>
                                                 <label class="container-checkbox-xamplify"
-                                                    translate>{{getDashboardForSelectedOption}}
+                                                    translate>Dashboard
 
                                                     <input class="radioButton_shadow" type="radio"
                                                         name="dashboardSelectedOption"
@@ -3675,15 +3712,15 @@
                                         <span class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
                                             <div class="mb_mt7 alignEqualtoFields">
                                                 <input class="radioButton_shadow" type="radio"
-                                                    [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x"
-                                                    [(ngModel)]="defaultStageIndex" id="defaultStage{{x}}"
+                                                    [disabled]="pipelinePreview || pipeline.crmPipeline || pipeline?.integrationType == 'HALOPSA'"
+                                                    [value]="x" [(ngModel)]="defaultStageIndex" id="defaultStage{{x}}"
                                                     name="defaultStage" class="alignEqualtoText"
                                                     (change)="defaultStageChange(pipelineStage)">
                                                 <span>Default</span>&nbsp;&nbsp;
                                                 <select class="formSelectCustomization"
                                                     [(ngModel)]="pipelineStage.markAs"
-                                                    [disabled]="pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE')"
-                                                    [ngClass]="{'disabled-cursor': (pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE'))}"
+                                                    [disabled]="pipelinePreview || (pipeline.crmPipeline && (pipeline?.integrationType == 'PIPEDRIVE' || pipeline?.integrationType == 'HALOPSA'))"
+                                                    [ngClass]="{'disabled-cursor': (pipelinePreview || (pipeline.crmPipeline && (pipeline?.integrationType == 'PIPEDRIVE' || pipeline?.integrationType == 'HALOPSA')))}"
                                                     (change)="handleMarkAsChange(x)">
                                                     <option value="markAs">Mark as</option>
                                                     <option value="won">Won</option>
@@ -3706,7 +3743,7 @@
                                                         [ngClass]="{'disabled-cursor': (shouldDisableCheckbox(x) || pipelinePreview)}">
                                                         <input class="checkBox_shadow" type="checkbox"
                                                             [(ngModel)]="pipelineStage.private" name="private"
-                                                            [disabled]="shouldDisableCheckbox(x) || pipelinePreview">
+                                                            [disabled]="shouldDisableCheckbox(x) || pipelinePreview || (pipeline?.integrationType == 'HALOPSA' && pipelineStage.defaultStage)">
                                                         <span class="sliderOnOff"></span>
                                                         <span class="labels" data-on="ON" data-off="OFF"></span>
                                                     </label>

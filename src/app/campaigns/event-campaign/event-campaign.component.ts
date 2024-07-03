@@ -872,8 +872,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
 
 
-        // this.contactListMethod(this.contactListsPagination);
-        this.filterContacts('ALL');
+        this.contactListMethod(this.contactListsPagination);
+        // this.filterContacts('ALL');
     }
 
     /*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
@@ -2380,6 +2380,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         if (leadPipelineId && leadPipelineId !== '0' && dealPilelineId && dealPilelineId !== '0') {
             this.isValidPipeline = true;
         } else {
+            this.isValidPipeline = false;
+        }
+        if ('HALOPSA' ===  this.activeCRMDetails.type && this.eventCampaign.leadTicketTypeId > 0 
+            && this.eventCampaign.dealTicketTypeId > 0) {
+            this.isValidPipeline = true;
+        } else if ('HALOPSA' ===  this.activeCRMDetails.type && (this.eventCampaign.leadTicketTypeId == 0 
+            || this.eventCampaign.dealTicketTypeId == 0)) {
             this.isValidPipeline = false;
         }
         this.resetTabClass();

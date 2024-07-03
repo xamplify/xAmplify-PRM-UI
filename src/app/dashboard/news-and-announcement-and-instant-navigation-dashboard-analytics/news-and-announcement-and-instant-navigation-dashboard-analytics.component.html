@@ -1,4 +1,7 @@
 <div class="row" *ngIf="isVanityUrlEnabled">
+    <ngx-loading [show]="isNavigatingToViewAll" [config]="{ backdropBorderRadius: '14px' }"> </ngx-loading>    
+   
+    <!--News & Announcements-->
     <div [ngClass]="!authenticationService?.module?.isInstanceNavigationLinksOptionDisplayed ? 'col-xs-12 col-sm-12 col-md-12 col-lg-12 pr-7 pd_btm5':'col-xs-12 col-sm-6 col-md-6 col-lg-6 pr-7 pd_btm5'">
         <app-modal-popup-loader [height]="220" *ngIf="isNewsAndAnnouncementApiLoading"></app-modal-popup-loader>
         <div class="portlet light h-240" *ngIf="!isNewsAndAnnouncementApiLoading">
@@ -6,6 +9,7 @@
                 <div class="caption">
                     <h4 class="caption-subject header-css">{{properties?.newsAndAnnouncements}}</h4>
                 </div>
+                
             </div>
             <div class="portlet-body pt0">
                 <div class="inline-flex border-end" *ngFor="let item of customLinkDtos">
@@ -27,7 +31,7 @@
         </div>
     </div>
 
-
+    <!--Quick Links-->
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pl-7 pd_btm5"  *ngIf="authenticationService?.module?.isInstanceNavigationLinksOptionDisplayed">
         <app-modal-popup-loader [height]="220" *ngIf="isInstantNavigationLinksApiLoading"></app-modal-popup-loader>
         <div class="portlet light h-240" *ngIf="!isInstantNavigationLinksApiLoading">
@@ -36,6 +40,7 @@
                     <i class="fa fa-link" aria-hidden="false"></i>
                     <h4 class="caption-subject header-css">{{properties?.instantNavigation}}</h4>
                 </div>
+                <div class="float-right" (click)="viewAllQuickLinks()"><a>View All</a></div>
             </div>
             <div class="portlet-body pt0">
                 <div class="inline-flex border-end" *ngFor="let instantNavigationLink of instantNavigationLinks">
@@ -46,9 +51,9 @@
                     </div>
                     <div class="col">
                         <div class="instant-links-type">
-                            <span *ngIf="instantNavigationLink?.type=='Asset'" class="view-banner banner-top mr5">{{instantNavigationLink?.type}}</span>
-                            <span *ngIf="instantNavigationLink?.type=='Track'" class="view-banner orange-lable-cu1 mr5">{{instantNavigationLink?.type}}</span>
-                            <span *ngIf="instantNavigationLink?.type=='Play Book'" class="view-banner published mr5">{{instantNavigationLink?.type}}</span>
+                            <span *ngIf="instantNavigationLink?.type=='Asset'" class="view-banner banner-top mr5 w-80px">{{instantNavigationLink?.type}}</span>
+                            <span *ngIf="instantNavigationLink?.type=='Track'" class="view-banner orange-lable-cu1 mr5 w-80px">{{instantNavigationLink?.type}}</span>
+                            <span *ngIf="instantNavigationLink?.type=='Play Book'" class="view-banner published mr5 w-80px">{{instantNavigationLink?.type}}</span>
                         </div>
                     </div>
                     <!--Asset-->

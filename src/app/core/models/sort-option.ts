@@ -418,7 +418,25 @@ export class SortOption {
 		{ 'name': 'Download Count (ASC)', 'value': 'downloadCount-ASC' },
 		{ 'name': 'Download Count (DESC)', 'value': 'downloadCount-DESC' }
 	];
-	
+
+
+	customLinksCompaniesDropDown = [
+		{ 'name': 'Title (A-Z)', 'value': 'buttonTitle-ASC' },
+		{ 'name': 'Title (Z-A)', 'value': 'buttonTitle-DESC' },
+		{ 'name': 'Link (ASC)', 'value': 'buttonLink-ASC' },
+		{ 'name': 'Link (DESC)', 'value': 'buttonLink-DESC' },
+		{ 'name': 'Created On (ASC)', 'value': 'timestamp-ASC' },
+		{ 'name': 'Created On (DESC)', 'value': 'timestamp-DESC' }
+	];
+
+	integrationDetailsDropDown = [
+		{ 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+		{ 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
+		{ 'name': 'Integration Type (ASC)', 'value': 'type-ASC' },
+		{ 'name': 'Integration Type (DESC)', 'value': 'type-DESC' },
+		{ 'name': 'Created Time (ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created Time (DESC)', 'value': 'createdTime-DESC' }
+	]
 
 
 	public selectedSortedOption: any = this.sortByDropDown[0];
@@ -477,5 +495,12 @@ export class SortOption {
 
 	/*****XNFR-543*****/
 	selectedDamPartnerCompaniesDropDownOption = this.damPartnerCompaniesDropDown[0];
+
+
+	/***XNFR-571****/
+	selectedCustomLinksDropDownOption = this.customLinksCompaniesDropDown[this.customLinksCompaniesDropDown.length-1];
+
+	selectedIntegrationDetailsDropDownOption = this.integrationDetailsDropDown[0];
+
 
 }

@@ -60,3 +60,6 @@ td:nth-child(last) {
 .w75 {
   width: 75%;
 }
+#loading-bg-image{
+  background: transparent url(../../../../assets/images/loading-popup.gif) no-repeat center center;
+}

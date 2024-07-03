@@ -15,6 +15,7 @@ import { Properties } from 'app/common/models/properties';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { LeadCustomFieldDto } from '../models/lead-custom-field';
 
 declare var swal, $, videojs: any;
 
@@ -39,7 +40,7 @@ export class AddLeadComponent implements OnInit {
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyManageLeadsComponentToHidePopup = new EventEmitter();
 
-  @Output() notifyAnalyticsComponentToHidePopup= new EventEmitter();
+  @Output() notifyAnalyticsComponentToHidePopup = new EventEmitter();
   /****XNFR-426****/
   @Output() notifyUnReadChatCount = new EventEmitter();
   @Output() notifyClose = new EventEmitter();
@@ -66,7 +67,7 @@ export class AddLeadComponent implements OnInit {
   //XNFR-426
   selectedLead: Lead;
   isCommentSection = false;
-  editTextArea:boolean = false;
+  editTextArea: boolean = false;
 
   disableCreatedFor: boolean = false;
   createdByActiveCRM: any;
@@ -80,9 +81,18 @@ export class AddLeadComponent implements OnInit {
   type = "LEAD";
   showTicketTypesDropdown: boolean = false;
   isCreatedForStageIdDisable: boolean = false;
+  isCreatedByStageIdDisable: boolean = false;
   isCampaignTicketTypeSelected: boolean = false;
   existingHalopsaLeadTicketTypeId: any;
+  leadCustomFields = new Array<LeadCustomFieldDto>();
 
+  industries = [
+    "Select Industry", "Agriculture", "Apparel", "Banking", "Biotechnology", "Chemicals", "Communications", "Construction", "Consulting", "Education",
+    "Electronics", "Energy", "Engineering", "Entertainment", "Environmental", "Finance", "Food & Beverage", "Government", "Healthcare", "Hospitality",
+    "Insurance", "Machinery", "Manufacturing", "Media", "Not For Profit", "Recreation", "Retail", "Shipping", "Technology", "Telecommunications",
+    "Transportation", "Utilities", "Other"
+  ];
+ 
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, private leadsService: LeadsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService, public countryNames: CountryNames,
@@ -96,12 +106,13 @@ export class AddLeadComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getDefaultLeadCustomFields();
     $('#leadFormModel').modal('show');
     this.errorMessage = "";
     this.lead.createdForCompanyId = 0;
     this.lead.pipelineId = 0;
     this.lead.pipelineStageId = 0;
-    this.lead.createdForPipelineId =0;
+    this.lead.createdForPipelineId = 0;
     this.lead.createdByPipelineId = 0;
     this.lead.createdForPipelineStageId = 0;
     this.lead.createdByPipelineStageId = 0;
@@ -151,6 +162,7 @@ export class AddLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             this.lead.createdForCompanyId = data.data;
+
             if (this.campaignId > 0) {
               this.lead.campaignId = this.campaignId;
               this.lead.campaignName = this.campaignName;
@@ -160,6 +172,7 @@ export class AddLeadComponent implements OnInit {
               this.getContactInfo();
             } else {
               //this.isSalesForceEnabled(); 
+              this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
               this.getActiveCRMDetails();
             }
           }
@@ -270,6 +283,7 @@ export class AddLeadComponent implements OnInit {
             this.referenceService.loading(this.httpRequestLoader, false);
             if (data.statusCode == 200) {
               self.lead.createdForCompanyId = data.data;
+              this.getLeadCustomFieldsByVendorCompany(self.lead.createdForCompanyId);
               //this.isSalesForceEnabled();
               this.getActiveCRMDetails();
             }
@@ -328,7 +342,8 @@ export class AddLeadComponent implements OnInit {
   onChangeCreatedFor() {
     //this.validateField('createdForCompanyId',false);
     if (this.lead.createdForCompanyId > 0) {
-      //this.isSalesForceEnabled();    
+      //this.isSalesForceEnabled(); 
+      this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);   
       this.getActiveCRMDetails();
     }
   }
@@ -411,7 +426,7 @@ export class AddLeadComponent implements OnInit {
     this.notifyAnalyticsComponentToHidePopup.emit();
     this.notifyManageLeadsComponentToHidePopup.emit();
 
-    if(this.actionType === "edit"){
+    if (this.actionType === "edit") {
       this.notifyUnReadChatCount.emit();
     }
 
@@ -429,10 +444,17 @@ export class AddLeadComponent implements OnInit {
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
             self.lead = data.data;
+            if (!this.isVendorVersion) {
+              this.getLeadCustomFieldsByVendorCompany(self.lead.createdForCompanyId);
+            } else {
+              this.getDefaultLeadCustomFields();
+            }
+            if (self.lead.industry == null || self.lead.industry == undefined || self.lead.industry == '') {
+              self.lead.industry = this.industries[0];
+            }
             self.existingHalopsaLeadTicketTypeId = self.lead.halopsaTicketTypeId;
             if (self.lead.createdForCompanyId > 0) {
             }
-
             this.getActiveCRMDetails();
           }
         },
@@ -455,8 +477,8 @@ export class AddLeadComponent implements OnInit {
     this.isValid = true;
     if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType && (this.lead.halopsaTicketTypeId == undefined ||
       this.lead.halopsaTicketTypeId <= 0)) {
-        this.isValid = false;
-        this.errorMessage = "Please select Ticket Type";
+      this.isValid = false;
+      this.errorMessage = "Please select Ticket Type";
     } else if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
       this.isValid = false;
       this.errorMessage = "Please select Lead For";
@@ -502,7 +524,7 @@ export class AddLeadComponent implements OnInit {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.errorMessage = "";
     this.lead.userId = this.loggedInUserId;
-    if(this.lead.createdForPipelineId > 0 && this.lead.createdForPipelineStageId > 0){
+    if (this.lead.createdForPipelineId > 0 && this.lead.createdForPipelineStageId > 0) {
       this.lead.pipelineId = this.lead.createdForPipelineId;
       this.lead.pipelineStageId = this.lead.createdForPipelineStageId;
     }
@@ -547,7 +569,7 @@ export class AddLeadComponent implements OnInit {
               this.showTicketTypesDropdown = true;
               this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
               if (this.actionType === 'add') {
-                this.lead.createdForPipelineId =0;
+                this.lead.createdForPipelineId = 0;
                 this.lead.createdByPipelineId = 0;
                 this.lead.createdForPipelineStageId = 0;
                 this.lead.createdByPipelineStageId = 0;
@@ -559,13 +581,15 @@ export class AddLeadComponent implements OnInit {
                 (result: any) => {
                   this.getHaloPSATicketTypes(result, this.activeCRMDetails.createdByActiveCRMType);
                 });
-                if (this.actionType === 'add') {
-                  this.lead.createdForPipelineId =0;
-                  this.lead.createdByPipelineId = 0;
-                  this.lead.createdForPipelineStageId = 0;
-                  this.lead.createdByPipelineStageId = 0;
-                  this.lead.halopsaTicketTypeId = 0;
-                }
+              if (this.actionType === 'add') {
+                this.lead.createdForPipelineId = 0;
+                this.lead.createdByPipelineId = 0;
+                this.lead.createdForPipelineStageId = 0;
+                this.lead.createdByPipelineStageId = 0;
+                this.lead.halopsaTicketTypeId = 0;
+              }
+            } else {
+              this.showTicketTypesDropdown = false;
             }
             if (!this.activeCRMDetails.activeCRM) {
               if (this.edit || this.preview) {
@@ -768,8 +792,11 @@ export class AddLeadComponent implements OnInit {
         );
         self.createdByStages = createdByPipeline.stages;
         self.lead.createdByPipelineStageId = createdByPipelineStage.id;
-      } 
-      self.createdByStages = createdByPipeline.stages;
+        self.isCreatedByStageIdDisable = true;
+      } else {
+        self.createdByStages = createdByPipeline.stages;
+        self.isCreatedByStageIdDisable = false;
+      }
       self.activeCRMDetails.hasCreatedByPipeline = true;
     } else {
       let createdByPipelineExist = false;
@@ -785,6 +812,7 @@ export class AddLeadComponent implements OnInit {
         self.lead.createdByPipelineStageId = 0;
       }
       self.activeCRMDetails.hasCreatedByPipeline = false;
+      self.isCreatedByStageIdDisable = false;
     }
   }
 
@@ -795,7 +823,7 @@ export class AddLeadComponent implements OnInit {
       let createdForPipeline = createdForPipelines[0];
       self.lead.createdForPipelineId = createdForPipeline.id;
       if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType && this.actionType === 'add'
-        || (self.existingHalopsaLeadTicketTypeId != undefined && self.existingHalopsaLeadTicketTypeId != self.lead.halopsaTicketTypeId) ) {
+        || (self.existingHalopsaLeadTicketTypeId != undefined && self.existingHalopsaLeadTicketTypeId != self.lead.halopsaTicketTypeId)) {
         let createdForPipelineStage = null;
         let stages = createdForPipeline.stages;
         createdForPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
@@ -841,8 +869,8 @@ export class AddLeadComponent implements OnInit {
     this.isCommentSection = !this.isCommentSection;
     this.editTextArea = !this.editTextArea;
   }
-  
-  halopsaTicketTypeId:number = 0;
+
+  halopsaTicketTypeId: number = 0;
   halopsaTicketTypes: any;
   getHaloPSATicketTypes(companyId:number, integrationType:string) {
     this.ngxloading = true;
@@ -854,11 +882,33 @@ export class AddLeadComponent implements OnInit {
     })
   }
 
-  onChangeTicketType(){
+  onChangeTicketType() {
     if (this.actionType === 'edit') {
       this.lead.createdForPipelineStageId = 0;
     }
     this.getLeadPipelines();
+  }
+
+  getDefaultLeadCustomFields() {
+    this.ngxloading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.getLeadCustomFields().subscribe(data => {
+      this.ngxloading = false;
+      this.referenceService.loading(this.httpRequestLoader, false);
+      if (data.statusCode == 200) {
+        this.leadCustomFields = data.data;
+      }
+    });
+  }
+
+  getLeadCustomFieldsByVendorCompany(vendorCompanyId : number){
+    this.ngxloading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.getLeadCustomFieldsByVendorCompany(vendorCompanyId).subscribe(data => {
+      if (data.statusCode == 200) {
+        this.leadCustomFields = data.data;
+      }
+    });
   }
 
 }

@@ -42,4 +42,5 @@ export class TracksPlayBook {
     learningTrackContentMappingId = 0;
     /***XNFR-523*****/
     trackUpdatedEmailNotification = false;
+    addedToQuickLinks = false;
 }

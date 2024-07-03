@@ -410,14 +410,16 @@ export class SfDealComponent implements OnInit {
   }
 
   validatePhoneNumber(columnInfo: ColumnInfo) {
-    let phoneNumber = columnInfo.value.toString();
-    if (phoneNumber.length < 8 || !this.referenceService.validatePhoneNumber($.trim(phoneNumber))) {
-      columnInfo.errorMessage = "Please enter valid phone number";
-      columnInfo.divClass = "error";
-      this.isInvalidPhoneNumber = true;
-    } else {
-      columnInfo.divClass = "success";
-      this.isInvalidPhoneNumber = false;
+    if (columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
+      let phoneNumber = columnInfo.value.toString();
+      if (phoneNumber.length < 8 || !this.referenceService.validatePhoneNumber($.trim(phoneNumber))) {
+        columnInfo.errorMessage = "Please enter valid phone number";
+        columnInfo.divClass = "error";
+        this.isInvalidPhoneNumber = true;
+      } else {
+        columnInfo.divClass = "success";
+        this.isInvalidPhoneNumber = false;
+      }
     }
   }
 

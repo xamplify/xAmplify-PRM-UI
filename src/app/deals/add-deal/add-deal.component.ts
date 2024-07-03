@@ -147,6 +147,8 @@ export class AddDealComponent implements OnInit {
   existingHalopsaDealTicketTypeId: any;
   isCopiedToClipboard : boolean = false;
   isZohoLeadAttached: boolean = false;
+  isCreatedByStageIdDisable: boolean = false;
+
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -341,7 +343,8 @@ export class AddDealComponent implements OnInit {
                     self.resetStages();
                   }
                 }
-              } else if (self.deal.haloPSATickettypeId > 0 && this.actionType === 'edit') {
+              } else if (self.deal.haloPSATickettypeId > 0 && (this.actionType === 'edit' 
+                || self.deal.haloPSATickettypeId == ticketTypeIdMap.halopsaTicketTypeId)) {
                 self.isCampaignTicketTypeSelected = true;
               }
               self.hasCampaignPipeline = true;
@@ -523,7 +526,9 @@ export class AddDealComponent implements OnInit {
 
   resetPipelines() {
     this.deal.pipelineId = 0;
+    this.deal.createdForPipelineId = 0;
     this.deal.pipelineStageId = 0;
+    this.deal.createdForPipelineStageId = 0;
     this.getPipelines();
     this.hasSfPipeline = false;
     this.activeCRMDetails.hasDealPipeline = false;
@@ -1446,9 +1451,13 @@ export class AddDealComponent implements OnInit {
         );
         self.createdByStages = createdByPipeline.stages;
         self.deal.createdByPipelineStageId = createdByPipelineStage.id;
+        self.isCreatedByStageIdDisable = true;
       }  else {
         self.createdByStages = createdByPipeline.stages;
+        self.isCreatedByStageIdDisable = false;
       }
+      self.activeCRMDetails.hasCreatedByPipeline = true;
+      self.activeCRMDetails.hasDealPipeline = true;
     } else {
       let createdByPipelineExist = false;
       for (let p of createdByPipelines) {
@@ -1577,6 +1586,7 @@ export class AddDealComponent implements OnInit {
     this.showSelectLeadModel = false;
   }
 
+  holdTicketTypeId: any;
   /*** XNFR-476 ***/
   resetAttachedLeadInfo() {
     this.showContactInfo = false;
@@ -1593,17 +1603,38 @@ export class AddDealComponent implements OnInit {
         this.resetPipelines();
         this.resetStages();
         this.isDealRegistrationFormValid = false;
+        this.showOpportunityTypes = false;
+        this.pipelines = [];
+        this.createdForPipelines = [];
+        this.stages = [];
+        this.createdForStages = [];
+        this.isCreatedForStageIdDisable = false;
+        if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType) {
+          this.hasCampaignPipeline = false;
+        }
+      } else {
+        this.holdTicketTypeId = this.deal.haloPSATickettypeId;
       }
       if (this.deal.pipelineId == 0) {
         this.activeCRMDetails.hasDealPipeline = false;
+        if ('HALOPSA' !== this.activeCRMDetails.createdForActiveCRMType) {
+          this.hasCampaignPipeline = false;
+        } else {
+          this.isCampaignTicketTypeSelected = false;
+        }
+      }
+      if (this.hasCampaignPipeline && 'HALOPSA' !== this.activeCRMDetails.createdForActiveCRMType) {
         this.hasCampaignPipeline = false;
       }
-      if (this.hasCampaignPipeline) {
-        this.hasCampaignPipeline = false;
-      }
+    } else if (this.actionType == 'add' && 'HALOPSA' == this.activeCRMDetails.createdForActiveCRMType) {
+      this.isCampaignTicketTypeSelected = false;
     }
     if (this.actionType == 'edit' && this.lead.campaignId != null && this.lead.campaignId > 0) {
-      this.hasCampaignPipeline = false;
+      if ('HALOPSA' !== this.activeCRMDetails.createdForActiveCRMType) {
+        this.hasCampaignPipeline = false;
+      } else {
+        this.isCampaignTicketTypeSelected = false;
+      }
     }
   }
 

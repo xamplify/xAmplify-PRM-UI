@@ -1,0 +1,43 @@
+<!-- ---------------------Update Email Address------------------ -->
+<div class="modal fade right" id="update-email-address-modal" data-backdrop="static">
+  <div class="modal-dialog full-width">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-center">Update Email Address</h4>
+      </div>
+      <div class="modal-body">
+        <app-modal-popup-loader *ngIf="updateEmailAddressLoader"></app-modal-popup-loader>
+        <ng-container *ngIf="!updateEmailAddressLoader && updateEmailAddressResponse?.isVisible">
+          <div>
+             <app-response-message [customResponse]="updateEmailAddressResponse"></app-response-message>
+          </div>
+        </ng-container>
+        <div class="table-responsive" *ngIf="!updateEmailAddressLoader">
+          <table class='table tgrid table-bordered' aria-describedby="">
+            <thead>
+              <!--Enter Existing Email Address-->
+              <tr>
+                <th scope="row">Enter Existing Email Address</th>
+                <th>
+                  <input type="email" class="form-control" placeholder="Enter Email Address" autocomplete="off" [(ngModel)]="changeEmailAddressRequestDto.existingEmailAddress" [ngModelOptions]="{standalone: true}">
+                </th>
+                </tr>
+              <!--Update Existing Email Address-->
+              <tr>
+                <th scope="row">Enter New Email Address</th>
+                <th>
+                  <input type="email" class="form-control" placeholder="New Email Address" autocomplete="off" [(ngModel)]="updatedEmailAddress"
+                   [ngModelOptions]="{standalone: true}">
+                </th>
+                </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button [disabled]="updateEmailAddressLoader || isUpdateButtonDisabled" class="btn btn-primary" (click)="updateEmailAddress()">Update</button>
+        <button [disabled]="updateEmailAddressLoader" (click)="closeUpdateEmailAddressAccountModal()"  class="btn btn-danger float-right">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

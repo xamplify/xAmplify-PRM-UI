@@ -34,6 +34,7 @@ import { Properties } from 'app/common/models/properties';
 
 @Injectable()
 export class AuthenticationService {
+  
 
 
   access_token: string;
@@ -1327,7 +1328,7 @@ getLandingPageHtmlBody(id:number,subDomain:boolean,isPartnerLandingPagePreview:b
   }else{
     URL_PREFIX = this.REST_URL+"landing-page/";
   }
-  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&vendorJourney="+vendorJourney+"&access_token="+this.access_token;
+  let URL= URL_PREFIX +"preview?id="+id+"&userId="+userId+"&subDomain="+subDomain+"&vendorJourney="+vendorJourney+"&masterLandingPage="+isMasterLandingPages+"&access_token="+this.access_token;
   return this.callGetMethod(URL);
 }
 
@@ -1368,6 +1369,18 @@ getRoleByUserId() {
 }
 /*** XNFR-512 ****/
 
+/****XNFR-571****/
+findDashboardButtonPublishEmailNotificationOption() {
+  let companyProfileName = this.getSubDomain();
+  let url = this.REST_URL + "admin/dashboardButtonPublishedEmailNotification/";
+  if (companyProfileName != "") {
+    url += "companyProfileName/" + companyProfileName;
+  } else {
+    url += "loggedInUserId/" + this.getUserId();
+  }
+  let apiUrl = url + "?access_token=" + this.access_token;
+  return this.callGetMethod(apiUrl);
+}
 
 
 }

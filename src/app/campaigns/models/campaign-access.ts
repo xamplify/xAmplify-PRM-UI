@@ -44,4 +44,7 @@ export class CampaignAccess {
   createWorkflow = false;
   vendorJourney : boolean = false ;
 
+  /****XNFR-595****/
+  paymentOverDue =  false;
+
 }

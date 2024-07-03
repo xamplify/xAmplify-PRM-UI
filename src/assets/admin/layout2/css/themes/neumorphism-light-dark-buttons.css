@@ -2,10 +2,9 @@
 .btn-primary::before,
 .button_blue::before,
 div.Btn-Green:hover,
-.button::before ,
-/** 23-01-2024 **/
-.btn-success:hover {
-  background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important;
+.button::before
+ {
+  background: #1C84FF !important;
   box-shadow: none !important;
   border-radius: 7px !important;
 } 
@@ -15,13 +14,11 @@ span.switch.switch-small {
 }
 .btn-group button.salesforce-btn,
 .btn-group button.button_blue,
-.button_blue, 
 .Btn-Green, 
 .button,      
 button#save\&delete_button, 
 .btn-primary,
 /** 23-01-2024 **/
-.btn-success,
 button.button.bgcolor-unset
 {
   background :#0276FF !important;
@@ -93,12 +90,6 @@ span.btn.Btn-Green.transition {
 .page-sidebar .page-sidebar-menu > li.active.open > a > i {
   color: #01b6ff85 !important;
 }
-.help-iconbgadd.selectRecord {
-  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
-}
-.help-iconbgadd.selectRecord:hover {
-  background: linear-gradient(360deg, rgb(1 180 255)  0%, rgb(53 58 241) 100%) !important;
-}
 /**** tharak(12-01-2024) *********/
 h3#notifications {
   border: unset!important;
@@ -145,19 +136,23 @@ i.disabled, a.inactive {
 }
 
 .mix-filter li {
-  border-radius: 5px !important;
+  border-radius: 3px !important;
 }
 .mix-filter-li-selected,
 li.mix-filter-li-selected,
-li.mix-filter-li-selected:hover,
-ul.alt-row-style1 li:hover,
 .filter.form-selected,
 .filter.landing-page-selected,
-.mix-filter li.contact-filter-selected,
+.mix-filter li.contact-filter-selected{
+  background: #0276FF !important;
+  box-shadow: none !important;
+  border:1px solid #026deb !important;  
+}
 .mix-filter li:hover, .mix-filter li.active, 
 .mix-filter li.campaign-type-selected, 
-.mix-filter li.emailtemplate-selected {
-  background-image: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+.mix-filter li.emailtemplate-selected,
+li.mix-filter-li-selected:hover,
+ul.alt-row-style1 li:hover {
+  background: #1C84FF !important;
   box-shadow: none !important;
   border-radius: 5px;
 }
@@ -166,7 +161,7 @@ ul.alt-row-style1 li:hover,
 .filter.form-selected:hover,
 .filter.landing-page-selected:hover,
 .mix-filter li.contact-filter-selected:hover {
-  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #1C84FF !important;
   box-shadow: none !important;
   border-radius: 5px;
 }
@@ -207,6 +202,7 @@ div#reply-3:hover {
 .aspect_ratio {
   background: #0276FF !important;
   border-radius: 7px;
+  border: 1px solid #026deb !important;
 }
 .aspect_ratio:hover {
   background: #1C84FF !important;
@@ -311,14 +307,16 @@ margin-left: 8px !important;
 
 /****07-02-2024 (Tharak) ***/
 button.swal2-confirm.styled {
-  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;;
+  background: #0276FF !important;;
   background-position: 100%;
+  border:1px solid #026deb !important;
+  border-radius:7px !important;
 }
 
 button.swal2-confirm.styled:hover {
-  background:  linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
+  background:  #1C84FF !important;
   background-position: 0 100%;
-  transition: background-color 0.5s ease; /* Transition duration and easing */
+  /* Transition duration and easing */
 }
 
 button.swal2-cancel.styled {

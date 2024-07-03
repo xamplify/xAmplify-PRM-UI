@@ -262,3 +262,6 @@ a.disabled {
     left: 0px!important;
 }
 }
+.btn-default{
+  border-radius: 3px;
+}

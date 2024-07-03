@@ -69,6 +69,11 @@ export class FormPreviewComponent implements OnInit {
   /*****XNFR-423****/
   countryNames = [];
   vendorJourney:boolean =false;
+  masterLandingPage:boolean = false;
+
+  /*****XNFR-583****/
+  isFromMasterLandingPage:boolean = false;
+  masterLandingPageId:number;
   resolved(captchaResponse: string) {
     if(captchaResponse){
       this.formService.validateCaptcha(captchaResponse).subscribe(
@@ -111,6 +116,14 @@ export class FormPreviewComponent implements OnInit {
     }
     if(this.router.url.includes("/vjf/")){
       this.vendorJourney = true;
+    }
+    if(this.router.url.includes("/mlvjf/")){
+      this.vendorJourney = true;
+      this.isFromMasterLandingPage = true;
+      this.masterLandingPageId =  this.route.snapshot.params['landingPageId'];
+    }
+    if(this.router.url.includes("/mlpf/")){
+      this.masterLandingPage = true;
     }
   let loggedInUser = localStorage.getItem('currentUser');
     if (loggedInUser !== undefined && loggedInUser !== null) {
@@ -370,6 +383,8 @@ export class FormPreviewComponent implements OnInit {
       let geoLocationAnalytics = this.geoLocationAnalytics;    
       formSubmit.geoLocationAnalyticsDTO = geoLocationAnalytics;
       formSubmit.vendorJourney = this.vendorJourney;
+      formSubmit.masterLandingPage = this.masterLandingPage;
+      formSubmit.partnerMasterLandingPageId = this.masterLandingPageId;
       this.formService.submitForm(formSubmit, formType)
         .subscribe(
           (response: any) => {

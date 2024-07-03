@@ -1,3 +1,4 @@
+import { ChangeEmailAddressRequestDto } from './models/change-email-address-request-dto';
 import { DownloadRequestDto } from 'app/util/models/download-request-dto';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -28,8 +29,6 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 @Injectable()
 export class DashboardService {
-  
-    
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/";
@@ -1377,6 +1376,8 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
             .catch(this.handleError);
     }
 
+   
+
 
     /*****XNFR-502*****/
     saveHalopsaCredentials(formData: any) {
@@ -1406,6 +1407,46 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         return this.http.get(this.authenticationService.REST_URL + `halopsa/getAuth/${userId}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);
+    }
+
+    findAllQuickLinks(pagination:Pagination){
+        let userId = this.authenticationService.getUserId();
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        let domainName = this.authenticationService.companyProfileName;
+        let findAllUrl = this.dashboardAnalytics+'findAllQuickLinks/domainName/'+domainName+'/userId/'+userId+this.QUERY_PARAMETERS+pageableUrl;
+        return this.authenticationService.callGetMethod(findAllUrl);
+    }
+
+    findAllIntegrations(pagination:Pagination){
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        let companyId = pagination.companyId;
+        if(companyId!=null && companyId>0){
+            pageableUrl+="&companyIdFilter="+pagination.companyId;
+        }
+        const url = this.superAdminUrl + 'integrations' + this.QUERY_PARAMETERS+pageableUrl;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    findAllIntegrationCompanyNames() {
+        const url = this.superAdminUrl + 'integrations/companyNames?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    /*****XNFR-595****/
+    isPaymentOverDue(companyProfileName:string) {
+        const url = this.url + 'isPaymentOverDue/'+this.authenticationService.getUserId()+'/'+companyProfileName+'?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    updateAccessTokenAndRefreshToken(integrationDetails:any){
+        const url = this.superAdminUrl + 'integrations/updateAccessTokenAndRefreshToken?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url,integrationDetails);
+    }
+
+    updateEmailAddress(changeEmailAddressRequestDto:ChangeEmailAddressRequestDto){
+        const url = this.superAdminUrl + 'updateEmailAddress?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url,changeEmailAddressRequestDto);
+
     }
 
     

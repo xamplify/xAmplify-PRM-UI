@@ -28,6 +28,8 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
   instantNavigationLinks:Array<any> = new Array<any>();
   companyId = 0;
   isPartnerLoggedInThroughVanityUrl = false;
+  quickLinksPagination:Pagination = new Pagination();
+  isNavigatingToViewAll = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public vanityUrlService:VanityURLService,private dashboardService:DashboardService) { }
 
@@ -36,32 +38,24 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
     this.isVanityUrlEnabled = this.authenticationService.vanityURLEnabled;
     if (this.isVanityUrlEnabled) {
       this.findNewsAndAnnouncements();
-      this.findInstantNavigationLinks();
+      this.findAllQuickLinks(this.quickLinksPagination);
     }
   }
-
-
-  private findInstantNavigationLinks() {
+  findAllQuickLinks(quickLinksPagination: Pagination) {
     this.isInstantNavigationLinksApiLoading = true;
-    this.vanityLoginDto.userId = this.authenticationService.getUserId();
-    let companyProfileName = this.authenticationService.companyProfileName;
-    if (companyProfileName !== undefined && companyProfileName !== "") {
-      this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
-      this.vanityLoginDto.vanityUrlFilter = true;
-    } else {
-      this.vanityLoginDto.vanityUrlFilter = false;
-    }
-    this.dashboardService.findInstantNavigationLinks(this.vanityLoginDto).subscribe(
-      response => {
-        this.instantNavigationLinks = response.data;
-        let map = response.map;
-        this.companyId = map['companyId'];
-        this.isPartnerLoggedInThroughVanityUrl = map['isPartnerLoggedInThroughVanityUrl'];
-        this.isInstantNavigationLinksApiLoading = false;
-      }, error => {
-        this.isInstantNavigationLinksApiLoading = false;
-        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-      });
+    this.quickLinksPagination.pageIndex = 1;
+    this.quickLinksPagination.maxResults = 5;
+    this.dashboardService.findAllQuickLinks(quickLinksPagination).subscribe(
+        response=>{
+          this.instantNavigationLinks = response.data.list;
+          let map = response.map;
+          this.companyId = map['companyId'];
+          this.isPartnerLoggedInThroughVanityUrl = map['isPartnerLoggedInThroughVanityUrl'];
+          this.isInstantNavigationLinksApiLoading = false;
+        },error=>{
+          this.isInstantNavigationLinksApiLoading = false;
+          this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        });
   }
 
   private findNewsAndAnnouncements() {
@@ -79,29 +73,14 @@ export class NewsAndAnnouncementAndInstantNavigationDashboardAnalyticsComponent 
       });
   }
 
-  navigate(instantNavigation:any){
-   
-    let router = "";
-    let viewType = "/"+this.referenceService.getListOrGridViewType();
-    if(instantNavigation.type=="Asset"){
-      if(this.isPartnerLoggedInThroughVanityUrl){
-        router = "/home/dam/sharedp/view/"+instantNavigation.damPartnerId+viewType;
-      }else{
-        router = RouterUrlConstants['home']+RouterUrlConstants['dam']+RouterUrlConstants['damPartnerCompanyAnalytics']+this.referenceService.encodePathVariable(instantNavigation.id)+viewType;
-      }
-    }else if(instantNavigation.type=="Track"){
-      if(this.isPartnerLoggedInThroughVanityUrl){
-        router = "home/tracks/tb/"+this.companyId+"/"+instantNavigation.slug+viewType;
-      }else{
-        router = "/home/tracks/analytics/"+instantNavigation.id+viewType;
-      }
-    }else if(instantNavigation.type=="Play Book"){
-      if(this.isPartnerLoggedInThroughVanityUrl){
-        router = "home/playbook/pb/"+this.companyId+"/"+instantNavigation.slug+viewType;
-      }else{
-        router = "/home/playbook/analytics/"+instantNavigation.id+viewType;
-      }
-    }
-    this.referenceService.goToRouter(router);
+  navigate(quickLink:any){
+    this.referenceService.navigateToQuickLinksAnalytics(quickLink,this.isPartnerLoggedInThroughVanityUrl,this.companyId);
+  }
+
+
+  viewAllQuickLinks(){
+    this.isNavigatingToViewAll = true;
+    let url = RouterUrlConstants.home+RouterUrlConstants.dashboard+RouterUrlConstants.quickLinks;
+    this.referenceService.goToRouter(url);
   }
 }

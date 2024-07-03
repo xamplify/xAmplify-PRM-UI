@@ -68,4 +68,6 @@
     font-size: 30px;
     color: red;
   }
-  
+  .mix-filter-li-selected {
+    color:#fff;
+  }

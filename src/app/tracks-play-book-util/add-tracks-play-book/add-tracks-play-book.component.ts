@@ -1650,4 +1650,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     this.tracksPlayBook.trackUpdatedEmailNotification = event;
   }
 
+  setAddToQuickLinksOption(event:any){
+    this.tracksPlayBook.addedToQuickLinks = event;
+  }
+
 }

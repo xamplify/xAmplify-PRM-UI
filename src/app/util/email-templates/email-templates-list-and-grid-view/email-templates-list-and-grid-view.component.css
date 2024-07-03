@@ -22,7 +22,8 @@
   cursor: hand;
 }
 .emailtemplate-selected {
-  background-color: #6dcff6;
+  background-color: #0276ff;
+  color: #fff;
 }
 a.disabled {
   pointer-events: none;
@@ -170,13 +171,13 @@ td h6 {
   border: 1px solid #e0e0e0;
 }
 .cardHeight {
-  height: 560px !important;
+  height: 603px !important;
 }
 .grid-box img {
   object-fit: cover !important;
 }
 .mix-filter li:hover {
-  background-color: #6dcff6;
+  background: #1c84ff;
 }
 /* 30-6-2023 */
 .email-image-temp-custimize {

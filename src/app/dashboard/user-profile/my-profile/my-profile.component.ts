@@ -252,6 +252,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	modalpopuploader = false;
 	isUpdateUser = false;
 	vendorJourneyAccess = false
+	masterLandingPageOrVendorPages = false;
 	/*******************VANITY******************* */
 	loggedInThroughVanityUrl = false;
 	public hubSpotCurrentUser: any;
@@ -324,7 +325,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	updateDashboardError = false;
 	modulesDashboardForPartner: CustomResponse = new CustomResponse();
 	defaultSelectedDashboardTypeSetting = this.getSelectedDashboardForPartner();
-	checkSelectedDashboardType = [];
+
 	companyIdFromCompanyProfileNameForVanity: number;
 	removeMarketingNonInteractiveBox: boolean = false;
 	/** XNFR-426 **/
@@ -357,6 +358,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/*****XNFR-528*****/
 	zohoRedirectURL: string;
 	zohoRibbonText: string;
+	/** XNFR-534 **/
+	showSaml2SSOsettings: boolean = false;
+	showleadFieldSettings : boolean = false;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -684,6 +689,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.excludeUsersOrDomains = result.excludeUsersOrDomains;
 			this.customSkinSettingOption = result.customSkinSettings;
 			this.vendorJourneyAccess = result.vendorJourney;
+			this.masterLandingPageOrVendorPages = result.masterLandingPageOrVendorPages;
 			this.ngxloading = false;
 		}, _error => {
 			this.ngxloading = false;
@@ -1909,7 +1915,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.integrations;
 		} else if (this.activeTabName == "samlSettings") {
 			this.activeTabHeader = this.properties.samlSettings;
-		} else if (this.activeTabName == "gdpr") {
+		} else if (this.activeTabName == "saml2SSOsettings") {
+			this.showSaml2SSOsettings = true;
+			this.activeTabHeader = this.properties.saml2SSOsettings;
+		}
+		else if (this.activeTabName == "gdpr") {
 			this.activeTabHeader = this.properties.gdprSettings;
 			this.getGdprSettings();
 		} else if (this.activeTabName == "categories") {
@@ -2101,7 +2111,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.masterLandingPages;
+		}/*****XNFR-592 ******/
+		else if (this.activeTabName == "leadFieldSettings") {
+			this.activeTabHeader = this.properties.leadFieldSettings;
+			this.showleadFieldSettings = true;
 		}
+
 		this.referenceService.scrollSmoothToTop();
 	}
 
@@ -2701,9 +2716,37 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	}
 
-	/*************Default Display View */
-
+	/*** Default Display View ***/
 	getModulesDisplayDefaultView() {
+		let companyProfileName = this.authenticationService.companyProfileName;
+		if (companyProfileName !== "" && companyProfileName !== undefined) {
+			this.getDisplayViewType();
+		} else {
+			this.getModulesDisplayViewType();
+		}
+	}
+
+	/* -- XNFR-558 -- */
+	getDisplayViewType() {
+		this.modulesDisplayTypeError = false;
+		this.modulesDisplayViewcustomResponse = new CustomResponse();
+		this.userService.getDisplayViewType(this.authenticationService.getUserId(), this.authenticationService.companyProfileName)
+			.subscribe(
+				data => {
+					if (data.statusCode == 200) {
+						this.modulesDisplayTypeString = data.data;
+					} else {
+						this.modulesDisplayTypeError = true;
+						this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+					}
+				},
+				error => {
+					this.modulesDisplayTypeError = true;
+					this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				});
+	}
+
+	getModulesDisplayViewType() {
 		this.modulesDisplayTypeError = false;
 		this.modulesDisplayViewcustomResponse = new CustomResponse();
 		this.userService.getModulesDisplayDefaultView(this.authenticationService.getUserId())
@@ -2725,10 +2768,45 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	setDefaultView() {
+		let selectedValue = $("input[name=moduleDisplayType]:checked").val();
+		let companyProfileName = this.authenticationService.companyProfileName;
+		if (companyProfileName !== "" && companyProfileName !== undefined) {
+			this.updateDisplayViewType(selectedValue);
+		} else {
+			this.updateDefaultDisplayView(selectedValue);
+		}
+	}
+
+	/* -- XNFR-558 -- */
+	updateDisplayViewType(selectedValue: string) {
 		this.ngxloading = true;
 		this.modulesDisplayViewcustomResponse = new CustomResponse();
 		this.updateDisplayViewError = false;
-		let selectedValue = $("input[name=moduleDisplayType]:checked").val();
+		this.userService.updateDisplayViewType(this.loggedInUserId, selectedValue, this.authenticationService.companyProfileName)
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					if (data.statusCode == 200) {
+						this.referenceService.showSweetAlertSuccessMessage(data.message);
+						localStorage.setItem('defaultDisplayType', selectedValue);
+					} else {
+						this.updateDisplayViewError = true;
+						this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
+					}
+				},
+				error => {
+					this.updateDisplayViewError = true;
+					this.ngxloading = false;
+					this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
+				},
+				() => { }
+			);
+	}
+
+	updateDefaultDisplayView(selectedValue: string) {
+		this.ngxloading = true;
+		this.modulesDisplayViewcustomResponse = new CustomResponse();
+		this.updateDisplayViewError = false;
 		this.userService.updateDefaultDisplayView(this.authenticationService.getUserId(), selectedValue)
 			.subscribe(
 				data => {
@@ -2811,26 +2889,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 					}
 				});
 		}
-	}
-
-	checkDashboardTypes() {
-		this.userService.getDashboardType().
-			subscribe(
-				data => {
-					this.checkSelectedDashboardType = data;
-				}
-			);
-	}
-
-	get getDashboardForSelectedOption(): string {
-		this.refService.filterArrayList(this.checkSelectedDashboardType, 'Welcome');
-		if (this.checkSelectedDashboardType.includes('Advanced Dashboard')) {
-			return 'Advanced Dashboard';
-		}
-		else if (this.checkSelectedDashboardType.includes('Detailed Dashboard')) {
-			return 'Detailed Dashboard';
-		}
-		else return 'Dashboard';
 	}
 
 	selectedLanguage(event: any) {
@@ -4475,6 +4533,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.ngxloading = false;
 				let isDemoAccount = "spai@mobinar.com" == this.currentUser.userName;
 				this.defaultThemes = response.data.sort((a, b) => a.id - b.id);
+				if (this.defaultThemes.length >= 2) {
+					const lastIndex = this.defaultThemes.length - 1;
+					const temp = this.defaultThemes[lastIndex];
+					this.defaultThemes[lastIndex] = this.defaultThemes[lastIndex - 1];
+					this.defaultThemes[lastIndex - 1] = temp;
+				}
 				if (this.isProduction && !isDemoAccount) {
 					this.defaultThemes = this.defaultThemes.filter((item) => item.name != "Glassomorphism Light");
 					this.defaultThemes = this.defaultThemes.filter((item) => item.name != "Glassomorphism Dark");

@@ -8,4 +8,6 @@ export class FormSubmit {
     learningTrackId:number;
     geoLocationAnalyticsDTO: GeoLocationAnalytics;
     vendorJourney: boolean = false;
+    masterLandingPage:boolean = false;
+    partnerMasterLandingPageId:number;
 }

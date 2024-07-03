@@ -3054,10 +3054,12 @@ viewCampaignLeadForm(leadId: any) {
 
   showSubmitLeadSuccess() {
     this.showLeadForm = false;
-    this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);  
     if (this.leadActionType == "edit") {
+      this.customResponse = new CustomResponse('SUCCESS', "Lead Updated Successfully", true);  
       this.refreshCampaignLeadsSubject.next(true);
-    }  
+    } else {
+      this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);  
+    } 
   }
 
   registerDealForm(leadId: any) {
@@ -3089,7 +3091,11 @@ viewCampaignLeadForm(leadId: any) {
     
   showSubmitDealSuccess() {
     this.showDealForm = false;
-    this.customResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);    
+    if (this.dealActionType == 'edit') {
+      this.customResponse = new CustomResponse('SUCCESS', "Deal Updated Successfully", true);
+    } else {
+      this.customResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
+    }    
   }
 
   showComments(lead: any) {

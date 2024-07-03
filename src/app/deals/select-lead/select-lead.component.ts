@@ -36,6 +36,7 @@ export class SelectLeadComponent implements OnInit {
   disableCreatedForVendor: boolean = false;
   enableAddLeadButton: boolean = false;
   showSelectedLead: number = 0;
+  isLeadSelected = false;
   readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
   constructor(public properties: Properties, public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     private leadsService: LeadsService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService) {
@@ -54,6 +55,7 @@ export class SelectLeadComponent implements OnInit {
     this.sortOption.searchKey = "";
     this.leadId = this.dealToLead.leadId;
     this.showSelectedLead = this.dealToLead.leadId;
+    this.isLeadSelected = this.showSelectedLead!=undefined && this.showSelectedLead>0;
     this.getLeads(this.pagination);
   }
 
@@ -81,9 +83,18 @@ export class SelectLeadComponent implements OnInit {
     this.leadSelected();   
   }
 
-  selectLead(leadId : any) {
-    this.leadId = leadId;
-    this.showSelectedLead = leadId;    
+ 
+  selectLeadOnCheckBoxClick(leadId : any,index:number) {
+    let isChecked = $('#leadCheckBox-' + index).is(':checked');
+    if(isChecked){
+      this.leadId = leadId;
+      this.showSelectedLead = leadId; 
+      this.isLeadSelected = true; 
+    }else{
+      this.leadId = 0;
+      this.showSelectedLead = 0;
+      this.isLeadSelected = false; 
+    }
   }
 
   leadSelected() {

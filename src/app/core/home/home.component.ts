@@ -38,6 +38,7 @@ export class HomeComponent implements OnInit {
   footerSkin: ThemePropertiesDto = new ThemePropertiesDto();
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number;
+  serverImageHostUrl = "";
   constructor(
     private titleService: Title,
     public referenceService: ReferenceService,
@@ -54,6 +55,7 @@ export class HomeComponent implements OnInit {
     this.loggedInThroughVanityUrl = this.vanityURLService.isVanityURLEnabled();
     this.isAuthorized();
     /**** XNFR-134 ****/
+    this.serverImageHostUrl = this.authenticationService.MEDIA_URL;
     this.loggedInUserId = this.authenticationService.getUserId();
     this.vanityLoginDto.userId = this.loggedInUserId;
     let companyProfileName = this.authenticationService.companyProfileName;
@@ -322,6 +324,7 @@ export class HomeComponent implements OnInit {
       this.getActiveThemeData(this.vanityLoginDto);
       //this.getMainContent(this.userId);  
       this.showLeftSideMenu();
+      this.getDisplayViewType();
     } catch (error) {
       this.xtremandLogger.error("error" + error);
     }
@@ -357,7 +360,7 @@ export class HomeComponent implements OnInit {
   buttonCustomizationForm: ThemePropertiesDto = new ThemePropertiesDto();
 
   activeThemeDto: ThemeDto = new ThemeDto();
-  imageHost:any;
+  imageHost:any = "";
   getThemeDtoByID(id: number) {
     this.loader = true;
     this.dashBoardService.getThemeDTOById(id).subscribe(
@@ -423,13 +426,13 @@ export class HomeComponent implements OnInit {
           else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Glassomorphism Light" && !this.router.url.includes('home/help')) {
             this.authenticationService.isDarkForCharts = false;
-            document.documentElement.style.setProperty('--body-background-image', 'url(' + this.imageHost + activeThemeDto.backgroundImagePath + ')');
+            document.documentElement.style.setProperty('--body-background-image', 'url(' +  activeThemeDto.backgroundImagePath + ')');
             require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-light.css");
           }
           else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Glassomorphism Dark" && !this.router.url.includes('home/help')) {
             this.authenticationService.isDarkForCharts = true;
-            document.documentElement.style.setProperty('--body-background-image', 'url(' + this.imageHost + activeThemeDto.backgroundImagePath + ')');
+            document.documentElement.style.setProperty('--body-background-image', 'url(' +  activeThemeDto.backgroundImagePath + ')');
             require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-dark.css");
 
           } 
@@ -478,10 +481,10 @@ export class HomeComponent implements OnInit {
               } else if (activeThemeDto.parentThemeName === 'NEUMORPHISMLIGHT') {
                 require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-light.css");
               } else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMDARK') {
-                document.documentElement.style.setProperty('--body-background-image', 'url(' + this.imageHost + activeThemeDto.backgroundImagePath + ')');
+                document.documentElement.style.setProperty('--body-background-image', 'url(' + activeThemeDto.backgroundImagePath + ')');
                 require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-dark.css");
               } else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMLIGHT') {
-                document.documentElement.style.setProperty('--body-background-image', 'url(' + this.imageHost + activeThemeDto.backgroundImagePath + ')');
+                document.documentElement.style.setProperty('--body-background-image', 'url(' + activeThemeDto.backgroundImagePath + ')');
                 require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-light.css");
               }
               document.documentElement.style.setProperty('--custom-buttonbg-color', this.buttonCustomizationForm.buttonColor);
@@ -508,24 +511,41 @@ export class HomeComponent implements OnInit {
     this.showLeftMenu = this.referenceService.hideLeftSideMenu();
   }
   bgImagePath:any;
+  isBgImagePath =false;
   getDefaultImagePath(name:any,themeId:any) {
     this.dashBoardService.getDefaultImagePath(name,themeId).subscribe(
       (data: any) => {
         this.bgImagePath = data.data;
-        let path = this.bgImagePath;
-        if((name == 'GLASSMORPHISMLIGHT' || name == 'GLASSMORPHISMDARK') && (path && path.includes('/assets') || this.bgImagePath == undefined || this.bgImagePath == "" || this.bgImagePath == null ) ) {
-          //this.getDefaultImagePath(this.activeThemeDto.parentThemeName,this.activeThemeDto.id);
-          this.imageHost = "";
-        } else if(this.bgImagePath != null || this.bgImagePath != "") {
-          this.imageHost = this.authenticationService.MEDIA_URL;
-        }
-        this.activeThemeDto.backgroundImagePath= this.bgImagePath;
+        this.isBgImagePath = data.statusCode == 200;
+        //this.activeThemeDto.backgroundImagePath= this.bgImagePath;
       }, error =>{
-        this.bgImagePath = "";
+         this.loader = false;
       }, () => {
-        this.activeThemeDto.backgroundImagePath = this.bgImagePath;
-        // this.authenticationService.themeBackgroundImagePath =this.bgImagePath;
+        if(this.isBgImagePath) {
+        if((name == 'GLASSMORPHISMLIGHT' || name == 'GLASSMORPHISMDARK') && (this.bgImagePath && this.bgImagePath.includes('/theme-background-image/'))) {
+          this.imageHost = this.serverImageHostUrl;
+        } else {
+          this.imageHost = "";
+        }
+        this.activeThemeDto.backgroundImagePath = this.imageHost + this.bgImagePath;
       }
-    )
+    });
   }
+
+  /*** XNFR-558 ***/
+  getDisplayViewType() {
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if (companyProfileName !== undefined && companyProfileName !== "") {
+      this.userService.getDisplayViewType(this.authenticationService.getUserId(), this.authenticationService.companyProfileName)
+        .subscribe(
+          data => {
+            if (data.statusCode == 200) {
+              localStorage.setItem('defaultDisplayType', data.data);
+            }
+          }, error => {
+            localStorage.setItem('defaultDisplayType', 'LIST');
+          });
+    }
+  }
+
 }

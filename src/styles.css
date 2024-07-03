@@ -1669,6 +1669,9 @@ strong {
 .lowercase-text {
   text-transform: lowercase;
 }
+.uppercase-text {
+  text-transform: uppercase;
+}
 
 .child-table-bg-color {
   background-color: #f1f1f1 !important;
@@ -2062,13 +2065,13 @@ button.glyphicon.glyphicon-remove.search-box-item-clear:before {
 /* btn-primary */
 .btn-primary {
   background-color: #0276FF !important;
-  border-color: #1ca6f3 !important;
-  border-radius: 4px;
+  border-color: 1px solid #026deb !important;
+  border-radius: 7px;
   padding: 7px 14px;
 }
 .btn-primary:hover {
-  background-color: #1C84FF;
-  border-color: #1ca6f3;
+  background-color: #1C84FF!important;
+  border-color: 1px solid #026deb !important;
 }
 
 /* btn-danger */
@@ -2106,15 +2109,15 @@ fieldset[disabled] .btn-danger.active {
 
 /* Site green button "success message" */
 .Btn-Green {
-  background-color: #0276FF !important;
-  border-color: #1ca6f3 !important;
+  background-color: #0276FF;
+  border-color: 1px solid #026deb !important;
   color: #ffffff;
-  border-radius: 4px;
+  border-radius: 7px;
   padding: 7px 14px;
 }
 .Btn-Green:hover {
   background-color: #1C84FF;
-  border-color: #1ca6f3;
+  border-color: 1px solid #026deb !important;
 }
 .Btn-Green.btn:hover {
   color: #fff;
@@ -2132,7 +2135,7 @@ fieldset[disabled] .btn-danger.active {
   background-color: #5a6268 !important;
   border-color: #5a6268;
   color: #ffffff;
-  border-radius: 4px;
+  border-radius: 7px;
   padding: 7px 14px;
 }
 .Btn-Gray:hover {
@@ -2558,10 +2561,11 @@ div#bubble-chart {
 }
 
 .mix-filter li:hover {
-  background: #6dcff6;
+  background: #1c84ff;
 }
 .mix-filter-li-selected {
-  background-color: #6dcff6 !important;
+  background-color: #0276ff !important;
+  color:#fff;
 }
 .portlet.light.cpad.hover-effect.pointer.card-radius {
   padding: 0px !important;
@@ -3082,17 +3086,16 @@ span.icon-alignments {
   display: inline !important;
 }
 
-.btn-group button,
-.custom{
-  background-color: #0276FF !important;
-  border-color: #1ca6f3 !important;
+.btn_custom_bg{
+  background-color: #0276FF;
+  border-color: #1ca6f3;
 }
 /***** Sudha Sri(11-06-204) *****/
 button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4,
 button.search-box-item-click,
 button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4 {
-  background: #f1f3fa !important;
-  border-color: #e0e0e0 !important;
+  background: #f1f3fa;
+  border-color: #e0e0e0;
 }
 button.button.bgcolor-unset,
 button#copyFrom_clipboard,
@@ -3110,8 +3113,8 @@ button.fa.fa-th-large.btn-xs.l-g-view,
 button.btn-xs.l-g-view.fa.fa-folder,
 button.btn-xs.l-g-view.fa.fa-th,
 button.btn.btn-xs.hidden-xs.l-g-view {
-  background: #f1f3fa !important;
-  border-color: #ddd !important;
+  background: #f1f3fa;
+  border-color: #ddd;
 }
 h4.txt_color{color:#fff !important;}
 .Btn-Gray:hover{color:#fff;}
@@ -3140,6 +3143,11 @@ color:#fff!important;
 .mt--10px{
 margin-top: -10px;
 }
+
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
 .assest-name {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3151,4 +3159,26 @@ margin-top: -10px;
   float: left !important;
   padding: 0px 5px;
 }
+button.button_blue.bgcolor-unset.p0.btn-transitions.mrgt1-2{border-radius: 7px;}
 
+.position-relative{
+  position: relative;
+}
+
+.cursor-default {
+  cursor: default !important;
+}
+button#save\&delete_button {
+  border-radius: 3px;
+}
+button#cancel_button {
+  border-radius: 3px !important;
+  border: none !important;
+}
+.btn{
+  border-radius: 7px;
+}
+.mrg_rgt8{
+  margin-right: 6px;
+
+}

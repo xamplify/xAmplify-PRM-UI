@@ -4,7 +4,7 @@
 button#copyFromClipBoard {
   box-shadow: none !important;
 }
-button.btn.custom, .btn-group button, .selectRecord, button#save\&delete_button,
+button.btn.custom, .btn-group button, .selectRecord, button#save\&delete_button,button.group-name-cclass.btn-primary.default-btn-cursor.white-co,
 .btn-success, .btn-primary, .color-flow-button, .button_blue, button.button_blue:disabled, button.button:disabled,
 button.btn.btn-primary, .mix-filter li:hover, .mix-filter li.active, .mix-filter li.campaign-type-selected, .mix-filter li.emailtemplate-selected,
 button.group-name-cclass.btn-primary.default-btn-cursor,
@@ -79,7 +79,6 @@ button.search-box-item-click:hover{color: initial !important;}
 } */
 i.IconCustomization, 
 .gridIconCustomization a,
-i.fa.fa-plus,
 .IconCustomizationcondition a i,
 .setting-icon-cu {
   color : var(--custom-icon-color) !important;
@@ -92,13 +91,23 @@ i.IconCustomization:hover,
 .gridIconCustomization a.Iconhover:hover,
 .IconCustomizationcondition a i:hover,
 .setting-icon-cu:hover,
-.fa[class*="fa-"].IconCustomization:hover,
-i.fa.fa-plus:hover{
+i.fa[class*="fa-"].IconCustomization:hover {
 background: var(--custom-icon-color) !important;
 border: 1px solid var(--custom-icon-border-color) !important; 
 color : var(--custom-icon-hover-color) !important;
 }
-.setting-icon-cu .gearDropdownMenu:hover, i.fa.fa-envelope-o:hover{color : var(--custom-icon-hover-color) !important;}
+/*** Sudha Sri(20-6-2024)***/
+.setting-icon-cu .gearDropdownMenu:hover, i.fa.fa-envelope-o:hover,
+i.fa.fa-pencil-square-o:hover, i.fa.fa-files-o:hover,
+i.fa.fa-bullhorn:hover, i.fa.fa-edit:hover, i.fa.fa-history:hover, 
+i.fa.fa-reply:hover, i.fa.fa-inbox:hover, i.fa.fa-envelope-o:hover, i.fa.fa-rocket:hover,
+i.fa.fa-download:hover, i.fa.IconCustomization.fa-angle-right:hover, i.fa.IconCustomization.fa-angle-down:hover{
+  color : var(--custom-icon-hover-color) !important;
+}
+i.fa.fa-trash-o:hover{
+  color:#fff !important;
+}
+/*** End(20-6-2024)***/
 body {
   background-image: var(--body-background-image);
 }

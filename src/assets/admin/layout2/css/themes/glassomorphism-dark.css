@@ -200,10 +200,10 @@ border: 1px solid rgba(255, 255, 255, 0.1) !important;
 #asset-preview-content {
   color: white !important;
 }
-#notifications{
+/* #notifications{
   background-color: #22313a !important ;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
+} */
 #notification-list {
   background-color: #22313a !important ;
 }
@@ -421,8 +421,11 @@ tr {
     backdrop-filter: blur(5px);
 }
 .modal-content {
-  background-color: rgb(0 0 0 / 94%) !important;
-  color: white !important;
+  /* background-color: rgb(0 0 0 / 94%) !important;
+  color: white !important; */
+  background-color: #8d8a8a00 !important;
+  color: #fff !important;
+  backdrop-filter: blur(45px);
 }
 .upload-asset-div,
 .well,
@@ -556,7 +559,11 @@ div.scrolled{
 }
 /** alert **/
 .swal2-modal {
-  background-color: rgb(16 18 27 / 93%) !important;;
+  /* background-color: rgb(16 18 27 / 93%) !important;; */
+  background-color: #8d8a8a00 !important;
+  /* color: #fff !important; */
+  backdrop-filter: blur(14px);
+  border:1px solid rgba(255, 255, 255, 0.1) !important
 }
 .loader-container {
   background-color: #2b3c46 !important;
@@ -1976,9 +1983,9 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .btn-group button{
   background-color: #0276FF !important;
 
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb !important;
 
-  border: 1px solid #1ca6f369 !important;
+  /* border: 1px solid #1ca6f369 !important; */
 
 }
 
@@ -2027,7 +2034,7 @@ thead > tr {
 tbody {
   background: rgba(16 18 27 / 40%) !important;
   border-radius: 0px 0px 10px 10px !important;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px); */
   border: 1px solid #ffffff33 !important;
 }
 /* table header border top remove */
@@ -2116,7 +2123,7 @@ textarea {
   border-radius: 10px !important;
 }
 .maualSPFCardbg {
-  background-color: #2c2f33 !important;
+  background-color: rgb(16 18 27 / 59%) !important;
 }
 .col-md-6.col-lg-6.track-title.text-color.content-bg,
 .col-md-12.col-lg-12.color-inline.border-line {
@@ -2203,7 +2210,7 @@ a.UserguideBtnCustomization {
 }
 .table tbody tr:hover {
   background-color: rgb(146 151 179 / 8%) !important;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px); */
 }
 .neumorphismDark li a {
   appearance: none;
@@ -2529,7 +2536,7 @@ button.btn.custom {
   background-color: #0276FF !important;
   color: #fff !important;
 
-  border:  1px solid #266dc1 !important;
+  border:  1px solid #026deb !important;
 
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu {
@@ -2650,7 +2657,7 @@ button#cancel_button:active {
   position: relative !important;
   overflow: hidden !important;
   height: 3.5rem !important;
-	border-radius: 8px !important;
+	border-radius: 7px !important;
 	color: #fff !important;
 }
 .Btn-Gray:hover{
@@ -2781,11 +2788,11 @@ justify-content: center!important;
     position: relative !important;
     overflow: hidden !important;
     height: 3.5rem !important;
-    border-radius: 8px !important;
+    border-radius: 7px !important;
     background: #0276FF !important;
     color: #fff !important;
 
-    border: 1px solid #266dc1 !important;
+    border: 1px solid #026deb !important;
 
     margin-left: 4px;
   }
@@ -3281,10 +3288,10 @@ div b {
   background-color: unset !important;
   border-bottom: 0px solid #2f4857 !important;
 }
-h3#notifications {
+/* div#notifications {
   background: #217eac!important;
   border: unset!important;
-}
+} */
 .pricing.hover-effect.pointer.border-card.pricing_hover_effect{
   border-radius: 10px !important;
 }
@@ -3459,10 +3466,10 @@ i.download_file:hover {
 .icons-center{
   display: block;
 }
-button#save\&delete_button {
+/* button#save\&delete_button {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background: rgb(146 151 179 / 8%) !important;
-}
+} */
 .mrgt1-2{
   margin-top:2px!important;
   }
@@ -3764,7 +3771,7 @@ img.email-template-preview.image_effect.template_image_border {
 .btn-primary,
 .btn.Btn-Green.fileinput-button-css{
   background: #0276FF !important;
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb !important;
 
 }
 .aspect_ratio{
@@ -3840,7 +3847,9 @@ button.button.bgcolor-unset:hover {
 .dashboard-stat.blue-sharp .visual > i,
 .dashboard-stat.blue-soft .visual > i{
   color: #ffffff !important;
-  opacity: 0.7 !important;
+  /* opacity: 0.7 !important; */
+  opacity: 0.9 !important;
+  font-size: 40px !important;
 }
 .alert-info {
     background-color: rgb(0 0 0 / 45%) !important;
@@ -3859,8 +3868,11 @@ button#copyFromClipBoard:hover,
 button#uploadCSV:hover{
   transform: scale(1.02);
 }
-.more{
-  opacity: 0.9 !important;
+.dashboard-stat .more,
+.dashboard-stat.yellow-gold {
+  opacity: 1;
+  font-weight: 600;
+  /* color: #fff !important; */
 }
 button.swal2-confirm.styled{
   background: linear-gradient(15deg, rgb(0 159 231 / 48%) 50%, rgb(0 222 223 / 61%) 100%, rgb(0 159 231 / 44%) 50%) no-repeat !important;
@@ -3929,7 +3941,7 @@ button.btn.btn-xs.hidden-xs.l-g-view{
 }
 button.group-name-cclass.btn-primary.default-btn-cursor{
   background-color: #0276FF !important;
-  border: 1px solid #266dc1 !important;
+  border: 1px solid #026deb !important;
 }
 /***** Sudha Sri(13-06-2024) *****/
 .lt-blue-c:hover, .lt-green-c:hover,
@@ -3950,5 +3962,46 @@ button.btn.btn-xs.hidden-xs.l-g-view {
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu .dropdown-menu-list > li > a:hover, ul.alt-row-style1 li:hover{background: rgb(146 151 179 / 13%) !important;}
 
+/**** 27 -06 -2024 (Tharak)******/
+/* .selectRecord,
+button#save\&delete_button {
+  background-color: #0276FF !important;
+  color: #fff !important;
+  border: 1px solid #026deb !important;
+}
+button#cancel_button {
+  border-radius: 3px !important;
+  border: none !important;
+}
+.color-flow-button {
+  border:1px solid #026deb !important ;
+}
+
+.help-iconbgadd a {
+  color: #fff !important;
+} */
+.dynamic_tbl_btn {
+  margin-right: 6px !important;
+}
+.help-iconbgadd {
+  border: 1px solid #026deb !important;
+}
+.help-iconbgadd a {
+  color: #fff !important;
+}
+tbody.neo-border-radius10 {
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+button.swal2-confirm.styled {
+  background: #0276FF !important;
+  border: 1px solid #026deb !important;
+  color: #fff !important;
+}
+button.swal2-confirm.styled:hover {
+  background: #1C84FF !important;
+  border: 1px solid #026deb !important;
+}
 
 

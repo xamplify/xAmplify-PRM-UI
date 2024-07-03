@@ -548,7 +548,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
 
                           buttons.append(self.createButton('Save As', function () {
                               self.clickedButtonName = "SAVE_AS";
-                              self.saveLandingPage(true);
+                              self.saveLandingPage(false);
                           })).append(self.createButton('Update', function () {
                               let selectedPageType = $('#pageType option:selected').val();
                               if (self.landingPage.type == selectedPageType || selectedPageType == undefined) {
@@ -742,6 +742,8 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
 }
 
 saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
+  console.log("______3444")
+  console.log("______ww"+isSaveAndRedirectButtonClicked)
   this.isSaveAndRedirectButtonClicked = isSaveAndRedirectButtonClicked;
   this.customResponse = new CustomResponse();
   $("#bee-save-buton-loader").addClass("button-loader"); 
@@ -750,22 +752,24 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
   this.landingPage.userId = this.loggedInUserId;
   this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
   this.landingPage.hasVendorJourney = this.vendorJourney || this.isMasterLandingPages;
-
+  this.landingPage.previousLandingPageId = this.id;
   this.landingPage.vendorLogoDetails = this.vendorLogoDetails.filter(vendor=>vendor.selected);
   if(this.landingPage.hasVendorJourney){
     this.landingPage.openLinksInNewTab = this.openInNewTabChecked;
     this.landingPage.type = LandingPageType.PUBLIC;
-
-    this.updateCompanyLogo(this.landingPage);
   }
   if (!this.loggedInAsSuperAdmin) {
       if(!this.vendorJourney && !this.isMasterLandingPages){
         this.landingPage.type = $('#pageType option:selected').val();
       }
       this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
+      this.updateCompanyLogo(this.landingPage);
+      
     }
   this.landingPageService.save(this.landingPage, this.loggedInAsSuperAdmin,this.id).subscribe(
       data => {
+        console.log("_sss_s_dd__6")
+
           swal.close();
           $("#bee-save-buton-loader").removeClass("button-loader"); 
           if (this.loggedInAsSuperAdmin) {
@@ -776,6 +780,7 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
                 this.navigateToManageSection();
               }, 1500);
           } else {
+            console.log("_sss_s_dd__")
               this.goToManageAfterSave(data, isSaveAndRedirectButtonClicked);
           }
       },
@@ -794,6 +799,8 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
 }
 
 goToManageAfterSave(data:any, isSaveAndRedirectButtonClicked:boolean) {
+  console.log("_________s"+data.access)
+  console.log("_____s____s"+isSaveAndRedirectButtonClicked)
   if (data.access) {
       if (isSaveAndRedirectButtonClicked) {
           this.referenceService.addCreateOrUpdateSuccessMessage("Page created successfully");

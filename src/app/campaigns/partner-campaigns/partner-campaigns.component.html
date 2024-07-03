@@ -348,7 +348,7 @@
 					<!---Grid View-->
 					<div class="tab-pane active" *ngIf="this.modulesDisplayType.isGridView">
 						<div class="margin-top-10 mrg_right6">
-							<div class="row mix-grid p15">
+							<div class="row mix-grid p15 aligntowbtns">
 								<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 								<ng-container
 									*ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
@@ -360,9 +360,10 @@
 													alt="">
 											</div>
 											<h4 data-toggle="tooltip" data-placement="bottom"
-												class="xamplify-ellipsis  GridViewCotent gridViewTextAlignmnent"
+												class="assest-name  GridViewCotent gridViewTextAlignmnent"
 												title="{{campaign.campaignName}}">
-												<b>Campaign Name:</b> {{campaign.campaignName}}
+												<b>Campaign Name:</b> {{campaign.campaignName |slice:0:50}}
+												<span *ngIf="campaign?.campaignName?.length >50">...</span> 
 											</h4>
 											<!---XNFR-125-->
 											<div class="aligntowbtns">

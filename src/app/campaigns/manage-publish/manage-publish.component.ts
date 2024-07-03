@@ -1339,14 +1339,16 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     showArchivedCampaigns() {
         this.archived = true;
         this.campaignService.archived = true;
-        this.resetPagination();        
+        this.resetPagination();
+        this.refService.setDefaultDisplayType(this.modulesDisplayType);        
         this.listCampaign(this.pagination);
     }
 
     showActiveCampaigns() {
         this.archived = false;
         this.campaignService.archived = false;  
-        this.resetPagination();      
+        this.resetPagination();
+        this.refService.setDefaultDisplayType(this.modulesDisplayType);      
         this.listCampaign(this.pagination);
     }
 
