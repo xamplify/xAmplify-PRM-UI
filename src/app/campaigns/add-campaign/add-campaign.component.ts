@@ -2548,7 +2548,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
       }
 
       getHalopsaTicketTypesByCompanyId(companyId: number) {
-        this.campaignService.getHalopsaTicketTypes(companyId).subscribe(
+        this.campaignService.getHalopsaTicketTypes(companyId,"DEAL").subscribe(
             response => {
                 if (response.statusCode == 200) {
                     let data = response.data;

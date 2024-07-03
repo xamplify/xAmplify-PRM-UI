@@ -251,6 +251,14 @@
           (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
         </angular4-multiselect></span>
       </ng-container>
+      <!---- XNFR-528 ---->
+      <!-- ---------------------------Searchable DropDown For Lookup----------------------------- -->
+      <ng-container *ngIf="columnInfo.labelType=='lookup'">
+        <span [class.disabled]="isVendor || isPreview">
+          <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDtoForLookup"
+          [(account)]="columnInfo.value" [disableDropDown]="false" 
+          (searchableDropdownEventEmitter)="onItemSelect($event)"></app-searchable-dropdown></span>
+      </ng-container>
     </div>
 </ng-template>
 

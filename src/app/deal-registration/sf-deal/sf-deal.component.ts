@@ -57,6 +57,7 @@ export class SfDealComponent implements OnInit {
   isInvalidWebsiteURL: boolean = false;
   isInvalidPhoneNumber: boolean = false;
   isInvalidGeoLocation: boolean = false;
+  searchableDropDownDtoForLookup: SearchableDropdownDto = new SearchableDropdownDto();
 
 
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
@@ -99,7 +100,11 @@ export class SfDealComponent implements OnInit {
       if (this.dealId == undefined || this.dealId <= 0) {
         this.dealId = 0;
       }
-      if ("HALOPSA" !== this.activeCRM.createdByActiveCRMType && "HALOPSA" !== this.activeCRM.createdForActiveCRMType) {
+      if ("HALOPSA" !== this.activeCRM.createdByActiveCRMType && "HALOPSA" !== this.activeCRM.createdForActiveCRMType 
+        && "ZOHO" !== this.activeCRM.createdForActiveCRMType) {
+        if (this.ticketTypeId == undefined || this.ticketTypeId <= 0) {
+          this.ticketTypeId = 0;
+        }
         this.addLoader();
         this.getActiveCRMCustomForm();
       }
@@ -163,9 +168,15 @@ export class SfDealComponent implements OnInit {
             });
           }
         }
+
         this.searchableDropDownDto.data = result.data.connectWiseProducts;
         this.searchableDropDownDto.placeHolder = "Please Select Product";
         this.showConnectWiseProducts = result.data.showConnectWiseProducts;
+        let allLookupFields = this.form.formLabelDTOs.filter(column => column.labelType === 'lookup');
+        for (let field of allLookupFields) {
+          this.searchableDropDownDtoForLookup.data = field.lookupDropDownChoices;
+        }
+        this.searchableDropDownDtoForLookup.placeHolder = "Please Select Account";
         /*********XNFR-403*********/
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") {
         this.showSFFormError = true;
