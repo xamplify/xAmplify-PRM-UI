@@ -3,6 +3,7 @@ import { LeadsService } from 'app/leads/services/leads.service';
 import { LeadCustomFieldDto } from 'app/leads/models/lead-custom-field';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { DragulaService } from 'ng2-dragula';
 declare var $: any;
 
 @Component({
@@ -13,7 +14,12 @@ declare var $: any;
 })
 export class LeadCustomFieldsSettingsComponent implements OnInit {
 
-  constructor(private leadService: LeadsService, public referenceService: ReferenceService) { }
+  constructor(private leadService: LeadsService,private dragulaService: DragulaService, public referenceService: ReferenceService) { 
+    dragulaService.setOptions('leadFieldDragula', {})
+    dragulaService.dropModel.subscribe((value) => {
+      this.onDropModel(value);
+    });
+  }
   ngxloading: boolean;
   customFieldsDtosLoader = false;
   leadCustomFields = new Array<LeadCustomFieldDto>();
@@ -22,6 +28,13 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.getLeadFields();
+  }
+
+  ngOnDestroy() {
+    this.dragulaService.destroy('leadFieldDragula');
+  }
+
+  private onDropModel(args) {
   }
 
   getLeadFields() {

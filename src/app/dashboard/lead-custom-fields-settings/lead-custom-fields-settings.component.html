@@ -11,9 +11,9 @@
             <th>Display Name</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody [dragula]='"leadFieldDragula"' [dragulaModel]='leadCustomFields'>
           <ng-container *ngFor="let leadField of leadCustomFields ">
-            <tr>
+            <tr style="cursor: move;">
               <td class="text-center"><input type="text" class="form-control" [(ngModel)]="leadField.labelName"
                   [ngModelOptions]="{standalone: true}" readonly="readonly" maxlength="255">
               </td>
