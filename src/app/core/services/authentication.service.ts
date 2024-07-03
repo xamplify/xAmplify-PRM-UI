@@ -1259,7 +1259,7 @@ export class AuthenticationService {
   findPublishedPartnerIdsByUserListIdAndModuleId(userListId: number, id: number, moduleName: string) {
     let urlPrefix = moduleName;
     if(moduleName==this.properties.dashboardButtons){
-      urlPrefix = "v_url/dashboardButtons"
+      urlPrefix = "dashboardButtons"
     }
     let url = this.REST_URL + urlPrefix + "/findPublishedPartnerIds/" + userListId + "/" + id + "?access_token=" + this.access_token;
     return this.callGetMethod(url);
