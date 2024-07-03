@@ -187,7 +187,6 @@ ul.alt-row-style1 li:hover,
   background-color: var(--page-content) !important;
 }
 .l-g-view,
-.alert-success,
 .campaign-email-template-filter-icon,
 .list__item.list__item--selected > .flex-row,
 .filter-button-color {
@@ -477,7 +476,7 @@ label {
   background-color: var(--div-bg-color) !important;
 }
 .with-nav-tabs.panel-default .nav-tabs > li > a {
-  color: #f8f6f9 !important;
+  color: var(---text-color) !important;
 }
 body {
   color: var(---text-color) !important;
@@ -1635,16 +1634,16 @@ i.IconCustomization:hover {
 .IconCustomizationcondition a i:hover {
   border: 1px solid var(--icon-border-color) !important;
   background: var(--icon-border-color) !important;
-  color: var(--icon-color) !important;
+  color: var(--div-bg-color) !important;
 }
 
 #download-template {
-  border: 1px solid var(--border-color) !important;
-  color: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  color: var(--icon-color) !important;
 }
 #download-template:hover {
-  border: 1px solid var(--border-color) !important;
-  background: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  background: var(--icon-border-color) !important;
   color: var(--div-bg-color) !important;
 }
 
@@ -2061,30 +2060,30 @@ p.pa-TextTen {
   font-weight: 600;
 }
 i.IconopenedCount {
-  border: 1px solid var(--border-color) !important;
-  color: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  color: var(--icon-color) !important;
 }
 i.IconopenedCount:hover {
-  border: 1px solid var(--border-color) !important;
-  background: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  background: var(--icon-hover-color) !important;
   color: var(--div-bg-color) !important;
 }
 i.IconviewedCount {
-  border: 1px solid var(--border-color) !important;
-  color: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  color: var(--icon-color) !important;
 }
 i.IconviewedCount:hover {
-  border: 1px solid var(--border-color) !important;
-  background: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  background: var(--icon-hover-color) !important;
   color: var(--div-bg-color) !important;
 }
 i.IconodownloadedCount {
-  border: 1px solid var(--border-color) !important;
-  color: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  color: var(--icon-color) !important;
 }
 i.IconodownloadedCount:hover {
-  border: 1px solid var(--border-color) !important;
-  background: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  background: var(--icon-hover-color) !important;
   color: var(--div-bg-color) !important;
 }
 .BgForCard {
@@ -2432,5 +2431,19 @@ i.fa.fa-check-circle-o.check-icons{
 }
 /***** Sudha Sri(01-07-2024) *****/
 .btn.btn-primary-dark.btn-primary-light:hover {
+  color: var(---text-color) !important;
+}
+/***** Sudha Sri(03-07-2024) *****/
+.e-input-group, .e-input-group.e-control-wrapper, .e-float-input, .e-float-input.e-input-group, .e-float-input.e-control-wrapper, .e-float-input.e-input-group.e-control-wrapper,
+.e-input-group:not(.e-disabled) .e-input-group-icon:hover, .e-input-group.e-control-wrapper:not(.e-disabled) .e-input-group-icon:hover,
+.e-float-input .e-clear-icon, .e-float-input.e-control-wrapper .e-clear-icon, .e-input-group .e-clear-icon, .e-input-group.e-control-wrapper .e-clear-icon,
+.e-input-group .e-input-group-icon, .e-input-group.e-control-wrapper .e-input-group-icon {
+  color: var(---text-color) !important;
+}
+button.button_blue.bgcolor-unset {
+  background: none !important;
+  border: none !important;
+}
+.comment.author-comment p, .comment.user-comment p{
   color: var(---text-color) !important;
 }

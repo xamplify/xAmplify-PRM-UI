@@ -4,7 +4,7 @@
 }
 .activated-btn {
   border-radius: 20px 0px 0px 20px !important;
-  padding: 12px 20px;
+  padding: 11px 20px;
   background-color: #29dd50 !important;
   cursor: no-drop;
 }
@@ -177,7 +177,7 @@ a.disabled {
   }
 @media (min-width: 992px) and (max-width: 1300px) {
   button.btn.ActivatedBtn {
-    font-size: 12px !important;
+    font-size: 14px !important;
   }
 }
 

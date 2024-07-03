@@ -2110,7 +2110,7 @@ fieldset[disabled] .btn-danger.active {
 /* Site green button "success message" */
 .Btn-Green {
   background-color: #0276FF;
-  border-color: 1px solid #026deb !important;
+  border: 1px solid #026deb !important;
   color: #ffffff;
   border-radius: 7px;
   padding: 7px 14px;

@@ -30,7 +30,7 @@
     <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
       <div
         [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-md-11 col-xs-11 col-sm-11':'col-md-5 col-xs-5 col-sm-5'">
-        <h4 data-toggle="tooltip" data-placement="bottom" title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' | translate}}
+        <h4 data-toggle="tooltip" data-placement="bottom" title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow tooltip_position">{{'Welcome' | translate}}
           {{logedInCustomerCompanyName}}</h4>
       </div>
       <div class="col-md-6 col-xs-6 col-sm-6"
