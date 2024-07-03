@@ -1,47 +1,23 @@
-<div style="display: flex;padding: 1em;">
-
-    <div class="col-block" [class.col-block-active]="tabName === 'tab2'" (click)="tabClicked($event, 40, 'tab2');"
-      style="width:50%;border: 1px solid #bfbdbd;background: #fffdfd; border-radius: 3px;">
-      <div class="cenetered-block">
-          <span>
-              <i class="fa fa-clipboard"></i>
-          </span>
-          <h5 class="hidden-xs">ACS URL</h5>
-      </div>
-  </div>
-
-  <div id="step3" [class.col-block-active]="tabName === 'tab3'" (click)="tabClicked($event, 40, 'tab3');"
-      style="width:50%;border: 1px solid #bfbdbd;background: #fffdfd; border-radius: 3px;">
-      <div class="cenetered-block">
-          <span>
-              <i class="fa fa-cloud-upload"></i>
-          </span>
-          <h5 class="hidden-xs">Upload Metadata</h5>
-      </div>
-  </div>
-
-</div>
-
-<div class="portlet-border" *ngIf="tabName == 'tab2'">
+<div class="portlet-border">
   <div class="portlet box">
       <div style="padding:10px">
-          <label>{{properties.ACS_URL_TEXT1}}</label><br>
+          <label> --- Some text goes here --- </label><br>
       </div>
       <div class="row" style="padding:10px">
           <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
-              <label class="control-label color-black">ACS URL:</label>
+              <label class="control-label color-black">Redirect URL:</label>
           </div>
           <div class="col-sm-12 col-xs-12 col-md-5 col-lg-5" style="width:85%">
-              <input class="form-control" type="text" value="{{samlSecurityObj?.acsURL}}" #acsURL readonly> <!--value="{{samlSecurityObj.acsURL}}" #acsURL readonly-->
+              <input class="form-control" type="text" value="{{oauthSsoObj?.redirectUrl}}" #acsURL readonly> <!--value="{{oauthSsoObj.acsURL}}" #acsURL readonly-->
           </div>
           <span>
               <button class="btn btn-primary" (click)="copyToClipboard(acsURL)">Copy URL</button>
           </span>
       </div>
   </div>
-  <button class="btn green" style="float: right" (click)="tabClicked($event, 40, 'tab3')">Next</button>
+  <!-- <button class="btn green" style="float: right" (click)="tabClicked($event, 40, 'tab3')">Next</button> -->
 </div>
-
+<!-- 
 <div class="portlet-border" *ngIf="tabName == 'tab3'">
     <div class="portlet box">
         <div style="padding:10px">
@@ -51,7 +27,7 @@
             <div class="form-group" [attr.class]="fromNameDivClass">
                 <label translate>Select Identity Provider Name <span class="required"> <strong>*</strong></span></label>
                 <span> 
-                <select class="form-control depth-shadow" [(ngModel)]="samlSecurityObj.identityProviderName"
+                <select class="form-control depth-shadow" [(ngModel)]="oauthSsoObj.identityProviderName"
                     placeholder="identityProviderName" id="identityProviderName"
                     (change)="selectIdentityProviderName($event.target.value)">
                     <option [value]="null" [selected]="true">Select Identity Provider Name</option>
@@ -67,7 +43,7 @@
                 <label translate>Browse/Upload Metadata <span class="required"> <strong>*</strong></span></label>
                 <label class="custom-file-upload btn btn-primary" style="float: right;">
                     <input type="file" (change)="onFileChange($event)" accept="text/xml" required
-                        name="{{samlSecurityObj?.metadataFileName}}" id="attach_file">
+                        name="{{oauthSsoObj?.metadataFileName}}" id="attach_file">
                     Upload <span><i class="fa fa-cloud-upload"></i></span></label>
             </div>
             <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 0px 0px 10px 0px;">
@@ -76,10 +52,10 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 0px 0px 10px 0px;">
                 <textarea id="metadata" rows="5" placeholder="Metadata" class="form-control"
-                    [(ngModel)]="samlSecurityObj.metadata" name="metadata" readonly></textarea>
+                    [(ngModel)]="oauthSsoObj.metadata" name="metadata" readonly></textarea>
             </div>
         </div>
     </div>
     <button class="btn green" style="float: left" (click)="tabClicked($event, 40, 'tab2')">Prev</button>
     <button type="submit" style="float: right" class="btn btn-primary" (click)="submitMetaData()" [disabled]="disableSubmitButton">Submit</button>
-</div>
+</div> -->

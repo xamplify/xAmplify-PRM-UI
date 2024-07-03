@@ -15,7 +15,7 @@ export class SamlSsoLoginComponent implements OnInit {
 
   emailId: string;
   tabName: string;
-  samlSecurityObj: SamlSecurity;
+  oauthSsoObj: SamlSecurity;
   customResponse: CustomResponse = new CustomResponse();
   loggedInUserId: any;
   metaDataFile:any;
@@ -34,35 +34,36 @@ export class SamlSsoLoginComponent implements OnInit {
    public properties: Properties) { }
 
   ngOnInit() {
-    this.tabName = "tab2";
+
     this.emailId = this.authenticationService.user.emailId;
     this.loggedInUserId = this.authenticationService.getUserId();
-    this.samlSecurityService.getSaml2DetailsByUserId(this.loggedInUserId).subscribe(result => {
-      this.samlSecurityObj = result;
-      this. saveSaml2Security();
+    this.samlSecurityService.getOauthSsoConfigurationDetails(this.loggedInUserId).subscribe(result => {
+        this.oauthSsoObj = result;
+        this.saveOauthSsoConfiguration();
     });
   }
 
-  tabClicked(event: any, percent: number, selectedTab: string) {
-    this.tabName = selectedTab;
-    if (this.tabName === "tab2") {
-      this. saveSaml2Security();
-    } 
-  }
+  // tabClicked(event: any, percent: number, selectedTab: string) {
+  //   this.tabName = selectedTab;
+  //   if (this.tabName === "tab2") {
+  //     this. saveOauthSsoConfiguration();
+  //   } 
+  // }
 
-  saveSaml2Security(){
+  saveOauthSsoConfiguration(){
     let self = this;
-    if (self.samlSecurityObj.id === undefined || self.samlSecurityObj.id === null) {
-      let samlObj = {
-        emailId: self.emailId,
-        companyId: self.authenticationService.user.campaignAccessDto.companyId,
-        createdByUserId: self.loggedInUserId
-      }
-      self.samlSecurityService.saveSaml2Security(samlObj).subscribe(response => {
-        self.samlSecurityObj = response;
+    if (self.oauthSsoObj.id === undefined || self.oauthSsoObj.id === null) {
+      //self.oauthSsoObj.createdBy = self.loggedInUserId;
+      self.oauthSsoObj.companyId = self.authenticationService.user.campaignAccessDto.companyId;
+
+      self.samlSecurityService.saveOauthSsoConfiguration(self.oauthSsoObj).subscribe(response => {
+        self.oauthSsoObj = response;
       });
-    } else if ((self.samlSecurityObj.id) && (self.samlSecurityObj.acsURL === undefined || self.samlSecurityObj.acsURL === null)) {
-      self.samlSecurityObj.acsURL = self.authenticationService.REST_URL + "saml2/sso/" + self.samlSecurityObj.acsId;
+    } 
+    
+    
+    else if ((self.oauthSsoObj.id) && (self.oauthSsoObj.acsURL === undefined || self.oauthSsoObj.acsURL === null)) {
+      self.oauthSsoObj.acsURL = self.authenticationService.REST_URL + "saml2/sso/" + self.oauthSsoObj.acsId;
     }
     this.validateSubmitButton();
   }
@@ -74,7 +75,7 @@ export class SamlSsoLoginComponent implements OnInit {
     const file: File = (input.files as FileList)[0];
     const reader = new FileReader();
     reader.onload = () => {
-      this.samlSecurityObj.metadata = reader.result as string;
+      this.oauthSsoObj.metadata = reader.result as string;
       this.validateSubmitButton();
     };
     reader.readAsText(file);
@@ -85,8 +86,8 @@ export class SamlSsoLoginComponent implements OnInit {
       if (fileList.length > 0) {
         var file: File = fileList[0];
       }
-      this.samlSecurityObj.loggedInUserId = this.loggedInUserId;
-    this.samlSecurityService.uploadSaml2MetadataFile(file, this.samlSecurityObj)
+      this.oauthSsoObj.loggedInUserId = this.loggedInUserId;
+    this.samlSecurityService.uploadSaml2MetadataFile(file, this.oauthSsoObj)
     .subscribe(response => {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.UPLOAD_METADATA_TEXT2, true);
     }, error => {
@@ -100,20 +101,20 @@ export class SamlSsoLoginComponent implements OnInit {
   }
 
   selectIdentityProviderName(idpName: any) {
-    this.samlSecurityObj.identityProviderName = idpName;
-    if (this.samlSecurityObj.identityProviderName == 'null') {
+    this.oauthSsoObj.identityProviderName = idpName;
+    if (this.oauthSsoObj.identityProviderName == 'null') {
       this.fromNameDivClass = this.errorClass;
     } else{
       this.fromNameDivClass = this.successClass;
     }
-    this.samlSecurityObj.metadata = '';
+    this.oauthSsoObj.metadata = '';
     this.disableSubmitButton = true;
     this.validateSubmitButton();
   }
 
   validateSubmitButton() {
-    if(this.samlSecurityObj.identityProviderName !== undefined && this.samlSecurityObj.identityProviderName.length > 0
-      && this.samlSecurityObj.metadata !== undefined && this.samlSecurityObj.metadata.length > 0) {
+    if(this.oauthSsoObj.identityProviderName !== undefined && this.oauthSsoObj.identityProviderName.length > 0
+      && this.oauthSsoObj.metadata !== undefined && this.oauthSsoObj.metadata.length > 0) {
       this.disableSubmitButton = false;
     }
   }
