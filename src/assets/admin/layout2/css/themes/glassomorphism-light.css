@@ -831,7 +831,7 @@ span.ui-column-resize {
 .form-border {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
-/* .label-box, */
+.label-box,
 .amount-border,
 .image-preview {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
