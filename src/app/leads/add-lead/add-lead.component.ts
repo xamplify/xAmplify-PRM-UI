@@ -563,9 +563,11 @@ export class AddLeadComponent implements OnInit {
           this.ngxloading = false;
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
-            if ("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType) {
+            if ("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType 
+              || "ZOHO" === this.activeCRMDetails.createdForActiveCRMType
+            ) {
               this.showTicketTypesDropdown = true;
-              this.getHaloPSATicketTypes(this.lead.createdForCompanyId);
+              this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
               if (this.actionType === 'add') {
                 this.lead.createdForPipelineId = 0;
                 this.lead.createdByPipelineId = 0;
@@ -577,7 +579,7 @@ export class AddLeadComponent implements OnInit {
               this.showTicketTypesDropdown = true;
               this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
                 (result: any) => {
-                  this.getHaloPSATicketTypes(result);
+                  this.getHaloPSATicketTypes(result, this.activeCRMDetails.createdByActiveCRMType);
                 });
               if (this.actionType === 'add') {
                 this.lead.createdForPipelineId = 0;
@@ -870,9 +872,9 @@ export class AddLeadComponent implements OnInit {
 
   halopsaTicketTypeId: number = 0;
   halopsaTicketTypes: any;
-  getHaloPSATicketTypes(companyId: number) {
+  getHaloPSATicketTypes(companyId:number, integrationType:string) {
     this.ngxloading = true;
-    this.integrationService.getHaloPSATicketTypes(companyId).subscribe(data => {
+    this.integrationService.getHaloPSATicketTypes(companyId, integrationType.toLowerCase(), 'LEAD').subscribe(data => {
       this.ngxloading = false;
       if (data.statusCode == 200) {
         this.halopsaTicketTypes = data.data;
