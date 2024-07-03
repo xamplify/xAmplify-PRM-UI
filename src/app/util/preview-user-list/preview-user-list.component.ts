@@ -108,4 +108,10 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
    } 
    return status;
  }
+
+ searchPartners(){
+  this.pagination.pageIndex = 1;
+  this.findUsersByUserListId(this.pagination);
+
+ }
 }
