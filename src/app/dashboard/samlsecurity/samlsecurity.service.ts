@@ -65,9 +65,9 @@ export class SamlSecurityService {
     }
 
     /** XNFR-534, XNFR-579 **/
-    saveOauthSsoConfiguration(oauthSso: any): Observable<SamlSecurity> {
-        const url = this.authenticationService.REST_URL + "oauth/sso/save?access_token=" + this.authenticationService.access_token;
-        return this.http.post(url, oauthSso)
+    saveSaml2Security(samlSecurity: any): Observable<SamlSecurity> {
+        const url = this.authenticationService.REST_URL + "saml2/sso/save?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, samlSecurity)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -88,8 +88,8 @@ export class SamlSecurityService {
         }
     }
 
-    getOauthSsoConfigurationDetails(userId:number){
-        const url = this.authenticationService.REST_URL + "oauth/sso/getDetails?userId=" + userId + "&access_token=" + this.authenticationService.access_token;
+    getSaml2DetailsByUserId(userId:number){
+        const url = this.authenticationService.REST_URL + "saml/sso/getSaml2User?userId=" + userId + "&access_token=" + this.authenticationService.access_token;
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
 
