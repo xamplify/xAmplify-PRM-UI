@@ -25,6 +25,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
   leadCustomFields = new Array<LeadCustomFieldDto>();
   customResponse: CustomResponse = new CustomResponse();
   isValid: boolean = false;
+  isOrderChanged : boolean = false;
 
   ngOnInit() {
     this.getLeadFields();
@@ -35,6 +36,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
   }
 
   private onDropModel(args) {
+    this.isOrderChanged = true;
   }
 
   getLeadFields() {
@@ -45,6 +47,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
         this.ngxloading = false;
         this.customFieldsDtosLoader = false;
         this.leadCustomFields = data.data;
+        this.isOrderChanged = false;
       }
     },
       error => {
@@ -57,6 +60,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
   validateAndSubmit() {
     this.isValid = true;
     let errorMessage = "";
+    this.isOrderChanged = false;
     this.leadCustomFields.forEach(field => {
       if ($.trim(field.displayName).length <= 0) {
         this.isValid = false;

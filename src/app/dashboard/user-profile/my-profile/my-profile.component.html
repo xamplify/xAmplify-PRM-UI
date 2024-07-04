@@ -251,7 +251,7 @@
                                             </li>
                                             <!-- XNFR-592 -->
                                             <li [ngClass]="{'active-tab': activeTabName == 'leadFieldSettings'}"
-                                                *ngIf="authenticationService?.module?.isAdmin && !authenticationService.isOnlyPartner()">
+                                                *ngIf="!authenticationService.isOnlyPartner()">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadFieldSettings'}"
                                                     (click)="activateTab('leadFieldSettings')">
                                                     {{properties.leadFieldSettings}}
