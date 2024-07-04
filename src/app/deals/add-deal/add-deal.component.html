@@ -195,7 +195,7 @@
                       <label class="control-label">Ticket Types<span class="required"><strong>*</strong></span></label>
                       <select class="form-control" [(ngModel)]="deal.haloPSATickettypeId"
                         [ngModelOptions]="{standalone: true}" placeholder="opportunityTypeId" id="opportunityTypeId"
-                        [disabled]="preview || isCampaignTicketTypeSelected" (ngModelChange)="onChangeTicketType()"
+                        [disabled]="preview || isCampaignTicketTypeSelected || isZohoLeadAttached" (ngModelChange)="onChangeTicketType()"
                         (input)="validateField('opportunityTypeId',false)">
                         <option [value]="0">Select Ticket Type</option>
                         <!-- <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">

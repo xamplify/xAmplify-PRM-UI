@@ -282,7 +282,7 @@ th {
   background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-.alert-success,
+/* .alert-success, */
 .campaign-email-template-filter-icon,
 .list__item.list__item--selected > .flex-row,
 .btn.btn-secondary {

@@ -3312,7 +3312,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
     getHalopsaTicketTypesByCompanyId(companyId: any) {
         let self = this;
-        this.campaignService.getHalopsaTicketTypes(companyId)
+        this.campaignService.getHalopsaTicketTypes(companyId,"DEAL")
             .subscribe(
                 response => {
                     if (response.statusCode == 200) {

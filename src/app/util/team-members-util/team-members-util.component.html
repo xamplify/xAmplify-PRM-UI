@@ -50,7 +50,7 @@
   <!-- End Of CSV Errors---->
 
   <div *ngIf="customResponse.isVisible">
-    <div style="padding: 7px 10px;"
+    <div
       [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success':'alert alert-danger'">
       <button (click)="customResponse.isVisible=false" type="button" class="close of-this-component" aria-label="Close">
         <span aria-hidden="true">x</span>

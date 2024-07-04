@@ -1,71 +1,90 @@
 <div class="modal fade right" id="userListUsersPreviewPopup" tabindex="-1" role="dialog" aria-labelledby="userListUsersPreviewPopup" data-backdrop="static" data-keyboard="false">
   <div  [className]="customWidth ? 'modal-dialog':'modal-dialog full-width'" role="document" style="width: 90% !important;">
-    <!-- <div  [className]="customWidth ? 'modal-dialog custom-full-width':'modal-dialog full-width'" role="document"> -->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" (click)="closePopup()">
           <i class="fa fa-times" aria-hidden="true"></i>
           </button>
-          <h4 class="modal-title center-align" data-toggle="tooltip" data-placement="bottom"
-           title="{{userListName}}">
+          <h4 class="modal-title center-align" title="{{userListName}}">
             <strong>{{userListName|slice:0:50}}<span *ngIf="userListName?.length>50">...</span></strong>
         </h4>
         </div>
         <div class="modal-body">
-          <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-          </app-response-message>
-          <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-          <ng-container *ngIf="!httpRequestLoader.isLoading && !customResponse.isVisible">
-          <div>
-            <table class='table tgrid table-condensed table-bordered' *ngIf="pagination.pagedItems?.length>0" id="user-list-users"
-              aria-describedby="userListUsersTableDescription">
-              <thead>
-                <tr>
-                  <th scope="col">Company Name</th>
-                  <th scope="col">EmailId</th>
-                  <th scope="col">First Name</th>
-                  <th scope="col">Last Name</th>  
-                  <th scope="col" *ngIf = "vendorJourney">Status</th>                
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let user of pagination.pagedItems ;let i =index">
-                  <td>
-                    <strong>{{user?.companyName}}</strong>
-                  </td>
-                  <td [ngClass]="[ user?.validEmail ? 'valid' : 'invalid']">
-                    <span  data-toggle="tooltip" data-placement="bottom"
-                    [title]="user?.validEmail ? 'This is a valid email address':'This is an invalid email address'">{{user.emailId}}
-                  </span>
-                  <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)>-1" class="success pointer" title="Published"  data-toggle="tooltip" data-placement="bottom" >
-                    <i class="fa fa-check-circle-o"></i>
-                  </span>
-                  </td>
-                  <td>
-                    {{user?.firstName}}
-                  </td>
-                  <td>
-                    {{user?.lastName}}
-                  </td>    
-                  <td *ngIf = "vendorJourney">
-                    {{getUserStatus(user?.userId)}}
-                  </td>              
-                </tr>
-              </tbody>
-            </table>
+          <div class="row">
+            <div class="col-xs-12 p5" style="margin-bottom: -10px;">
+            <div class="portlet light">
+              <!--Search & Filter-->
+              <div class="portlet-title">
+                <div class="float-right">
+                  <!--Search-->
+                  <div class="portlet-input input-inline">
+                      <div class="input-icon right ml10">
+                          <input type="text" id="search-text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}"
+                              placeholder="Search..." (keydown.enter)="searchPartners()"  autocomplete="off">
+                          <button *ngIf="pagination.searchKey" class="glyphicon glyphicon-remove search-box-item-clear"  (click)="pagination.searchKey='';searchPartners();"></button>
+                          <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i class="fa fa-search" aria-hidden="true"></i> </button>
+                      </div>
+                  </div>
+              </div>
+              </div><!--End Of Modal Body-->
+              <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+              <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+              <ng-container *ngIf="!httpRequestLoader.isLoading && !customResponse.isVisible">
+              <div>
+                <table class='table tgrid table-condensed table-bordered' *ngIf="pagination.pagedItems?.length>0" id="user-list-users" aria-describedby="userListUsersTableDescription">
+                  <thead>
+                    <tr>
+                      <th scope="col">Company Name</th>
+                      <th scope="col">EmailId</th>
+                      <th scope="col">First Name</th>
+                      <th scope="col">Last Name</th>  
+                      <th scope="col" *ngIf = "vendorJourney">Status</th>                
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let user of pagination.pagedItems ;let i =index">
+                      <td>
+                        <strong>{{user?.companyName}}</strong>
+                      </td>
+                      <td [ngClass]="[ user?.validEmail ? 'valid' : 'invalid']">
+                        <span  data-toggle="tooltip" data-placement="bottom"
+                        [title]="user?.validEmail ? 'This is a valid email address':'This is an invalid email address'">{{user.emailId}}
+                      </span>
+                      <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)>-1" class="success" title="Published">
+                        <i class="fa fa-check"></i>
+                      </span>
+                      <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)<0" class="required" title="Not Published" >
+                        <i class="fa fa-exclamation-circle"></i>
+                      </span>
+                      </td>
+                      <td>
+                        {{user?.firstName}}
+                      </td>
+                      <td>
+                        {{user?.lastName}}
+                      </td>    
+                      <td *ngIf = "vendorJourney">
+                        {{getUserStatus(user?.userId)}}
+                      </td>              
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+                <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                  <strong>No Data Found.</strong>
+              </div>
+              </ng-container>
+              <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+                <app-pagination [pagination]="pagination" (notifyParent)="navigateUsers($event)" (notifyParentDropDown)="findUsersByUserListId($event)">
+                </app-pagination>
             </div>
-            <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-              <strong>No Data Found.</strong>
-           </div>
-          </ng-container>
-          <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
-            <app-pagination [pagination]="pagination" (notifyParent)="navigateUsers($event)" (notifyParentDropDown)="findUsersByUserListId($event)">
-            </app-pagination>
-         </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
-        </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
+            </div>
+            </div>
+          </div>
+       </div>
     </div>
-    </div>
+  </div>
 </div>

@@ -1341,8 +1341,8 @@ export class CampaignService {
         .catch(this.handleError);
     }
 
-    getHalopsaTicketTypes(_userId: number) {
-        return this.http.get(this.URL + "/halopsa/opportunity/types/" + _userId+ "?access_token=" + this.authenticationService.access_token)
+    getHalopsaTicketTypes(_userId: number, moduleName: string) {
+        return this.http.get(this.URL + "/halopsa/opportunity/types/" + _userId+ "/" + moduleName + "?access_token=" + this.authenticationService.access_token)
         .map(this.extractData)
         .catch(this.handleError);
     }

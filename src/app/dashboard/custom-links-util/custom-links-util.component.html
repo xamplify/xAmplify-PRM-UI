@@ -139,7 +139,7 @@
       </div>
       
       <!--Save/Update/Cancel-->
-      <div class="form-row">
+      <div class="float-right">
         <div class="form-group col-xs-12 col-md-12">
           <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
             [disabled]="!customLinkForm.valid || saving || !isDashboardBannerImageUploaded" (click)="saving=true;save();">

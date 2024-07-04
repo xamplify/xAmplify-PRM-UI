@@ -49,5 +49,6 @@ export class ColumnInfo {
     showOptions:boolean = false;
     index:number;
     /** XNFR-424 ENDS **/
-
+    /** XNFR-528 **/
+    lookupDropDownChoices: Array<FormOption> = new Array<FormOption>();
 }

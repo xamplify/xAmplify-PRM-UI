@@ -283,7 +283,7 @@ ul.alt-row-style1 li:hover,
   background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-.alert-success,
+/* .alert-success, */
 .campaign-email-template-filter-icon,
 .list__item.list__item--selected > .flex-row,
 .btn.btn-secondary {
@@ -831,7 +831,7 @@ span.ui-column-resize {
 .form-border {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
-/* .label-box, */
+.label-box,
 .amount-border,
 .image-preview {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;

@@ -1256,8 +1256,12 @@ export class AuthenticationService {
     return this.callPutMethod(url, requestDto);
   }
 
-  findPublishedPartnerIdsByUserListIdAndDamId(userListId: number, id: number, moduleName: string) {
-    let url = this.REST_URL + moduleName + "/findPublishedPartnerIds/" + userListId + "/" + id + "?access_token=" + this.access_token;
+  findPublishedPartnerIdsByUserListIdAndModuleId(userListId: number, id: number, moduleName: string) {
+    let urlPrefix = moduleName;
+    if(moduleName==this.properties.dashboardButtons){
+      urlPrefix = "dashboardButtons"
+    }
+    let url = this.REST_URL + urlPrefix + "/findPublishedPartnerIds/" + userListId + "/" + id + "?access_token=" + this.access_token;
     return this.callGetMethod(url);
   }
 
