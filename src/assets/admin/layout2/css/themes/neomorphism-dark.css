@@ -2224,8 +2224,11 @@ a.title.padding_bottom.text-color.content-bg,
   background: #2c2f33 !important;
   border: none !important;
 }
-.search-box-item-clear {
-  background: #2c2f33 !important;
+.search-box-item-clear,
+.btn-group button.glyphicon.glyphicon-remove.search-box-item-clear {
+  background: #191b1eb3 !important;
+  opacity: 1;
+  margin: -1px 4px 2px 2px;
 }
 i.IconCustomization:hover {
   background-color: #22313a !important;
@@ -2640,7 +2643,7 @@ span.input-group-btn {
 }
 button.glyphicon.glyphicon-remove.search-box-item-clear {
   box-shadow: none !important;
-  background: none !important;
+  /* background: none !important; */
   border: none !important;
 }
 .angle-down {

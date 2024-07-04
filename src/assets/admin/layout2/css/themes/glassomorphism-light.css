@@ -2160,7 +2160,8 @@ a.title.padding_bottom.text-color.content-bg{
   border: none !important;
 }
 .search-box-item-clear {
-  background: #2c2f33 !important;
+  background: rgb(255 255 255 / 31%) !important;
+  margin: -1px 4px 2px 2px;
 }
 i.IconCustomization {
   border: 1px solid rgb(255 255 255 / 35%) !important;
@@ -2485,7 +2486,7 @@ span.input-group-btn {
 }
 button.glyphicon.glyphicon-remove.search-box-item-clear {
   box-shadow: none !important;
-  background: none !important;
+  /* background: none !important; */
   border: none !important;
 }
 .angle-down {
@@ -4250,3 +4251,5 @@ button.swal2-confirm.styled:hover {
   color: #fff !important;
   border: 1px solid #026deb !important;
 }
+/***** Sudha Sri(04-07-2024) *****/
+a.btn.btn-large.btn-primary.carousel-btn {color: #fff !important;}
