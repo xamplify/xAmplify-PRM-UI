@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from "@angular/http";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { Observable } from "rxjs/Observable";
-import { SamlSsoLoginComponent } from './saml-sso-login.component';
+import { SamlSsoLoginComponent } from '../saml-sso-login/saml-sso-login.component';
 import { SamlSecurity } from '../models/samlsecurity';
 
 @Injectable()
