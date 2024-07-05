@@ -485,7 +485,7 @@
                         <label>Survey</label>
                     </div>
                     <!-- XNFR-108 -->
-                    <div class="form-group col-lg-12 col-md-12">
+                    <div class="form-group col-lg-12 col-md-12" *ngIf = "!isVendorOrMasterLandingPage">
                         <label>Team Member Group</label>
                         <p class="pencil-color" style="font-size: 12px;" translate>
                             Selected team members will receive form submit notifications.

@@ -331,8 +331,7 @@ fieldset,
 /* 04-07-2023 Templates privew background */
 .table-striped > tbody > tr:nth-of-type(odd),
 table tr:nth-child(odd),
-table tr:nth-child(even),
-.search-box-item-clear {
+table tr:nth-child(even){
   background-color: transparent !important;
 }
 .table .table {
@@ -2550,7 +2549,7 @@ button.fa.fa-th-large.btn-xs.l-g-view,
 button.btn-xs.l-g-view.fa.fa-folder,
 button.btn-xs.l-g-view.fa.fa-th,
 button.btn.btn-xs.hidden-xs.l-g-view {
-  background: #22313a !important;
+  background: #2b3c46 !important;
   border-color: #2f4857 !important;
 }
 /***** Sudha Sri(12-06-2024) *****/
@@ -2574,4 +2573,11 @@ button.button.bgcolor-unset{border:none !important}
 }
 i.fa.fa-check-circle-o.check-icons{
   color: #008000!important;
+}
+/***** Sudha Sri(04-07-2024) *****/
+.search-box-item-clear,
+.btn-group button.glyphicon.glyphicon-remove.search-box-item-clear {
+  background-color: #2b3c46e0 !important;
+  opacity: 1;
+  margin: -1px 4px 2px 2px;
 }

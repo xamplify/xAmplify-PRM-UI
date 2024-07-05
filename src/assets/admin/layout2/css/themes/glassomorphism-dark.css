@@ -2137,7 +2137,8 @@ a.title.padding_bottom.text-color.content-bg{
   border: none !important;
 }
 .search-box-item-clear {
-  background: #2c2f33 !important;
+  background: rgb(0 0 0 / 18%) !important;
+  margin: -1px 4px 2px 2px;
 }
 /* i.IconCustomization:hover {
   border:0px solid #22313a!important;
@@ -2456,7 +2457,7 @@ span.input-group-btn {
   padding-left: 15px !important;
 }
 button.glyphicon.glyphicon-remove.search-box-item-clear {
-  background: none !important;
+  /* background: none !important; */
   border: none !important;
 }
 .angle-down {
@@ -4003,5 +4004,6 @@ button.swal2-confirm.styled:hover {
   background: #1C84FF !important;
   border: 1px solid #026deb !important;
 }
-
+/***** Sudha Sri(04-07-2024) *****/
+.portlet.light.remove_cardBgcolor.glass_Bgcolor {background: rgb(0 0 0 / 18%) !important;}
 

@@ -366,7 +366,7 @@ export class Properties {
 	dashboardButton = "Dashboard Button";
 
 
-	ADD_TO_QUICK_LINKS = "Add this to the quick links for display.Quick links will be displayed for vanity login users only.";
+	ADD_TO_QUICK_LINKS = "Add this to the quick links for display. Quick links will be displayed for vanity login users only.";
 	ADDING_TEAM_MEMBER_IS_NOT_ALLOWED = "This feature is not available when using the Login As option.";
 
 	/** XNFR-534 - SAML2 SSO */

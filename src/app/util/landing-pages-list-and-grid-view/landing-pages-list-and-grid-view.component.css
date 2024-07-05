@@ -139,12 +139,9 @@
   }
   
   .landing-page-selected {
-    background-color: #0276ff;
-    color: #fff;
+    background-color: #6dcff6;
   }
-  .mix-filter li:hover {
-    background: #1c84ff;
-  }
+  
   #custom-response-div {
     position: relative;
     top: -10px;
@@ -324,4 +321,8 @@
    }
    .override-actions {
     float: inherit;
+}
+
+#form-count-cursor-not-allowed {
+  cursor: not-allowed;
 }

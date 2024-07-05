@@ -524,13 +524,19 @@
 <!--Forms Count-->
 <ng-template #formIcon let-landingPage="landingPage">
     <ng-container *ngIf="landingPage.formsCount>0 && !(isPartnerLandingPage && landingPage.type=='PRIVATE')">
-        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage" data-rel="fancybox-button"
+        <a class="Iconhover custom-grid-icon" *ngIf="isLandingPages" data-rel="fancybox-button"
+        id="form-count-cursor-not-allowed" data-toggle="tooltip" data-placement="top" title="Form Count">
+        <i class="fa fa-wpforms" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" s
+            aria-hidden="true"></i>
+        <div class="clickicons"></div>
+        </a>
+        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && !isLandingPages" data-rel="fancybox-button"
             (click)="goToFormAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Form Count">
             <i class="fa fa-wpforms" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" s
                 aria-hidden="true"></i>
             <div class="clickicons"></div>
         </a>
-        <a class="Iconhover custom-grid-icon" *ngIf="isPartnerLandingPage" data-rel="fancybox-button"
+        <a class="Iconhover custom-grid-icon" *ngIf="isPartnerLandingPage && !isLandingPages" data-rel="fancybox-button"
             (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top"
             title="Form Count">
             <i class="fa fa-wpforms" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"

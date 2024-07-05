@@ -2113,8 +2113,11 @@ a.title.padding_bottom.text-color.content-bg{
   background:none !important;
   border: none !important;
 }
-.search-box-item-clear {
-  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+.search-box-item-clear,
+.btn-group button.glyphicon.glyphicon-remove.search-box-item-clear {
+  background: #f1f3fad4 !important;
+  opacity: 1;
+  margin: -1px 4px 2px 2px;
 }
 i.IconCustomization:hover {
   background-color: #22313a !important;
@@ -2466,7 +2469,7 @@ span.input-group-btn {
 }
 button.glyphicon.glyphicon-remove.search-box-item-clear {
   box-shadow: none !important;
-  background: none !important;
+  /* background: none !important; */
   border: none !important;
 }
 .angle-down {

@@ -18,12 +18,19 @@ export class UnauthorizedPageComponent implements OnInit {
 
   login(){
     if(this.authenticationService.vanityURLEnabled){
-      window.location.href = "https://"+window.location.hostname+"/login";
+      if(this.authenticationService.isLocalHost()){
+        this.reloadAndNavigateLoginPage();
+      }else{
+        window.location.href = "https://"+window.location.hostname+"/login";
+      }
     }else{
-      this.authenticationService.reloadLoginPage = true;
-      this.referenceService.goToRouter('/login');
+      this.reloadAndNavigateLoginPage();
     }
-    
+  }
+
+  reloadAndNavigateLoginPage(){
+    this.authenticationService.reloadLoginPage = true;
+    this.referenceService.goToRouter('/login');
   }
 
 }

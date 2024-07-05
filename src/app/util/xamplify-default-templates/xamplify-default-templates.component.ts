@@ -768,8 +768,6 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
     }
   this.landingPageService.save(this.landingPage, this.loggedInAsSuperAdmin,this.id).subscribe(
       data => {
-        console.log("_sss_s_dd__6")
-
           swal.close();
           $("#bee-save-buton-loader").removeClass("button-loader"); 
           if (this.loggedInAsSuperAdmin) {
@@ -780,7 +778,6 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
                 this.navigateToManageSection();
               }, 1500);
           } else {
-            console.log("_sss_s_dd__")
               this.goToManageAfterSave(data, isSaveAndRedirectButtonClicked);
           }
       },
@@ -799,8 +796,6 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
 }
 
 goToManageAfterSave(data:any, isSaveAndRedirectButtonClicked:boolean) {
-  console.log("_________s"+data.access)
-  console.log("_____s____s"+isSaveAndRedirectButtonClicked)
   if (data.access) {
       if (isSaveAndRedirectButtonClicked) {
           this.referenceService.addCreateOrUpdateSuccessMessage("Page created successfully");
@@ -808,7 +803,8 @@ goToManageAfterSave(data:any, isSaveAndRedirectButtonClicked:boolean) {
       } else {
           //this.ngxloading = true;
           this.customResponse = new CustomResponse('SUCCESS',"Page created successfully",true);
-          let createdPageId = data.data;
+          let map = data.map;
+          let createdPageId = map['landingPageId'];
           this.landingPageService.id = createdPageId;
           this.findPageDataAndLoadBeeContainer(this.landingPageService,this.authenticationService);
       }
