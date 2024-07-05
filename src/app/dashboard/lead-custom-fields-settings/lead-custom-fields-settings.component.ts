@@ -3,6 +3,7 @@ import { LeadsService } from 'app/leads/services/leads.service';
 import { LeadCustomFieldDto } from 'app/leads/models/lead-custom-field';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { DragulaService } from 'ng2-dragula';
 declare var $: any;
 
 @Component({
@@ -13,15 +14,29 @@ declare var $: any;
 })
 export class LeadCustomFieldsSettingsComponent implements OnInit {
 
-  constructor(private leadService: LeadsService, public referenceService: ReferenceService) { }
+  constructor(private leadService: LeadsService,private dragulaService: DragulaService, public referenceService: ReferenceService) { 
+    dragulaService.setOptions('leadFieldDragula', {})
+    dragulaService.dropModel.subscribe((value) => {
+      this.onDropModel(value);
+    });
+  }
   ngxloading: boolean;
   customFieldsDtosLoader = false;
   leadCustomFields = new Array<LeadCustomFieldDto>();
   customResponse: CustomResponse = new CustomResponse();
   isValid: boolean = false;
+  isOrderChanged : boolean = false;
 
   ngOnInit() {
     this.getLeadFields();
+  }
+
+  ngOnDestroy() {
+    this.dragulaService.destroy('leadFieldDragula');
+  }
+
+  private onDropModel(args) {
+    this.isOrderChanged = true;
   }
 
   getLeadFields() {
@@ -32,6 +47,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
         this.ngxloading = false;
         this.customFieldsDtosLoader = false;
         this.leadCustomFields = data.data;
+        this.isOrderChanged = false;
       }
     },
       error => {
@@ -44,6 +60,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
   validateAndSubmit() {
     this.isValid = true;
     let errorMessage = "";
+    this.isOrderChanged = false;
     this.leadCustomFields.forEach(field => {
       if ($.trim(field.displayName).length <= 0) {
         this.isValid = false;
