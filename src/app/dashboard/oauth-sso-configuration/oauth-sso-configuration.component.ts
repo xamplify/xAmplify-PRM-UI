@@ -74,4 +74,9 @@ export class OauthSsoConfigurationComponent implements OnInit {
     () => { });
   }
 
+  copyToClipboard(element) {
+    element.select();
+    document.execCommand('copy');
+  }
+
 }
