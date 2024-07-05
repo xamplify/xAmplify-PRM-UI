@@ -213,6 +213,7 @@ export class ModuleAccessComponent implements OnInit {
     ()=>{
       if(this.statusCode==200){
         if(this.campaignAccess.mdf && !this.companyAndUserDetails.defaultMdfFormAvaible){
+          this.ngxLoading = true;
           this.addDefaultMdfForm();
         }else{
           this.showSuccessMessage();
