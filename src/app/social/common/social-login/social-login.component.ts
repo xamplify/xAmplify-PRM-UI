@@ -15,7 +15,7 @@ import { OauthSsoService } from 'app/dashboard/oauth-sso-configuration/oauth-sso
 	selector: 'app-social-login',
 	templateUrl: './social-login.component.html',
 	styleUrls: ['./social-login.component.css'],
-	providers: [SamlSecurityService]
+	providers: [SamlSecurityService, OauthSsoService]
 })
 export class SocialLoginComponent implements OnInit {
 	error: string;
@@ -128,8 +128,8 @@ export class SocialLoginComponent implements OnInit {
 		} else if (providerName == 'oauthsso' && this.vanityURLService.isVanityURLEnabled()) {
 			this.oauthSsoService.login(this.authenticationService.companyProfileName).subscribe(data => {
 				let response = data;
-				if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-					window.location.href = "" + response.data.redirectUrl;
+				if (response.data !== undefined && response.data !== '') {
+					window.location.href = "" + response.data;
 				}				
 			}, (error: any) => {
 				this.xtremandLogger.error(error);

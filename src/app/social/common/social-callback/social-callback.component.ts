@@ -21,11 +21,13 @@ export class SocialCallbackComponent implements OnInit {
     //xnfr-256
     SERVER_URL: any;
     APP_URL: any;
+    isVanityUrl: boolean;
     constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService,
         private authenticationService: AuthenticationService, public envService: EnvService,
         private refService: ReferenceService, private vanityUrlService: VanityURLService) {
         this.SERVER_URL = this.envService.SERVER_URL;
         this.APP_URL = this.envService.CLIENT_URL;
+        this.isVanityUrl = this.vanityUrlService.isVanityURLEnabled();
     }
 
     callback(providerName: string) {
@@ -80,7 +82,7 @@ export class SocialCallbackComponent implements OnInit {
                             } else {
                                 if (localStorage.getItem('currentUser')) {
                                     this.redirect();
-                                } else {
+                                } else {   
                                     this.refService.userName = result["emailId"];
                                     if (providerName === "salesforce") {
                                         client_id = "3MVG9ZL0ppGP5UrD8Ne7RAUL7u6QpApHOZv3EY_qRFttg9c1L2GtSyEqiM8yU8tT3kolxyXZ7FOZfp1V_xQ4l";
