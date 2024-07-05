@@ -14,4 +14,5 @@ export class CustomFieldsDto {
     canEditRequired = false;
     options: Array<PicklistValues> = new Array<PicklistValues>();
     originalCRMType = '';
+    order: number;
 }
