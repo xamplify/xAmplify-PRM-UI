@@ -9,11 +9,11 @@ export class OauthSso {
     tokenEndpoint: string;
     userInfoEndpoint: string;
     scope: string;
-    redirectUrl: string;
+    redirectUri: string;
     createdBy: number;
     statusCode: number;
     createdTime: Date;
     updatedTime: Date;
     updatedBy: number;
-  message: string;
+    message: string;
 }

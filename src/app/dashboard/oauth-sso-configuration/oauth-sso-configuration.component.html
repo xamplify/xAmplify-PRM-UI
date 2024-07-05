@@ -10,20 +10,20 @@
 
     <div class="row" style="padding:10px">
       <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
-        <label class="control-label col-sm-3">Redirect URL <span class="required">*</span></label>
+        <label class="control-label col-sm-3" style="padding-left: 0px;">Redirect URI <span class="required">*</span></label>
       </div>
       <div class="col-sm-12 col-xs-12 col-md-5 col-lg-5" style="width:85%">
-        <input class="form-control" type="text" value="{{oauthSso.redirectUrl}}" #redirectUrl readonly>
+        <input class="form-control" type="text" value="{{oauthSso.redirectUri}}" #redirectUri readonly>
       </div>
       <span>
-        <button class="btn btn-primary" (click)="copyToClipboard(redirectUrl)">Copy URL</button>
+        <button class="btn btn-primary" (click)="copyToClipboard(redirectUri)">Copy URL</button>
       </span>
     </div>
 
     <div class="row" style="padding:10px">
       <div class="col-md-12 col-lg-12">
         <div class="form-group" [attr.class]="fromNameDivClass">
-          <label class="control-label col-sm-3">Grant Type <span class="required"> <strong>*</strong></span></label>
+          <label class="control-label col-sm-3" style="padding-left: 0px;">Grant Type <span class="required"> <strong>*</strong></span></label>
           <span>
             <select class="form-control depth-shadow" [(ngModel)]="oauthSso.grantType" placeholder="grantType"
               id="grantType" (change)="selectGrantType($event.target.value)">
@@ -40,12 +40,7 @@
     <div class="row" style="padding:10px">
       <div class="col-md-12 col-lg-12">
         <div class="form-group">
-          <label class="control-label col-sm-3">Client Id <span class="required">*</span>
-            <span class="info-color-xampc">
-              <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
-                aria-hidden="true" title="some text goes here"></i>
-            </span></label>
-
+          <label class="control-label col-sm-3" style="padding-left: 0px;">Client Id <span class="required">*</span></label>
           <div class=""> <!--{{firstNameDivClass}}-->
             <input type="text" autocomplete="off" id="clientId" placeholder="Enter Client Id" class="form-control"
               [(ngModel)]="oauthSso.clientId" [ngModelOptions]="{standalone: true}" name="clientId"
@@ -57,12 +52,7 @@
     <div class="row" style="padding:10px">
       <div class="col-md-12 col-lg-12">
         <div class="form-group">
-          <label class="control-label col-sm-3">Client Secret Id <span class="required">*</span>
-            <span class="info-color-xampc">
-              <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
-                aria-hidden="true" title="some text goes here"></i>
-            </span></label>
-
+          <label class="control-label col-sm-3" style="padding-left: 0px;">Client Secret Id <span class="required">*</span></label>
           <div class="">
             <input type="text" autocomplete="off" id="clientSecretId" placeholder="Enter Client Secret Id"
               class="form-control" [(ngModel)]="oauthSso.clientSecretId" [ngModelOptions]="{standalone: true}"
@@ -75,7 +65,7 @@
     <div class="row" style="padding:10px">
       <div class="col-md-12 col-lg-12">
         <div class="form-group">
-          <label class="control-label col-sm-3" style="width: 32%;">Authorization Endpoint <span
+          <label class="control-label col-sm-3" style="width: 32%;padding-left: 0px;" >Authorization Endpoint <span
               class="required">*</span>
             <span class="info-color-xampc">
               <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
@@ -94,7 +84,19 @@
     <div class="row" style="padding:10px">
       <div class="col-md-12 col-lg-12">
         <div class="form-group">
-          <label class="control-label col-sm-3">Token Endpoint <span class="required">*</span>
+          <label class="control-label col-sm-3" style="padding-left: 0px;">Scope <span class="required">*</span></label>
+          <div class="">
+            <input type="text" autocomplete="off" id="scope" placeholder="Enter Scope" class="form-control"
+              [(ngModel)]="oauthSso.scope" [ngModelOptions]="{standalone: true}" name="scope" maxlength="255">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="padding:10px">
+      <div class="col-md-12 col-lg-12">
+        <div class="form-group">
+          <label class="control-label col-sm-3" style="padding-left: 0px;">Token Endpoint <span class="required">*</span>
             <span class="info-color-xampc">
               <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
                 aria-hidden="true" title="some text goes here"></i>
@@ -112,7 +114,7 @@
     <div class="row" style="padding:10px">
       <div class="col-md-12 col-lg-12">
         <div class="form-group">
-          <label class="control-label col-sm-3">User Info Endpoint <span class="required">*</span>
+          <label class="control-label col-sm-3" style="padding-left: 0px;">User Info Endpoint <span class="required">*</span>
             <span class="info-color-xampc">
               <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
                 aria-hidden="true" title="some text goes here"></i>
@@ -126,25 +128,6 @@
         </div>
       </div>
     </div>
-
-    <div class="row" style="padding:10px">
-      <div class="col-md-12 col-lg-12">
-        <div class="form-group">
-          <label class="control-label col-sm-3">Scope <span class="required">*</span>
-            <span class="info-color-xampc">
-              <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
-                aria-hidden="true" title="some text goes here"></i>
-            </span></label>
-          <div class="">
-            <input type="text" autocomplete="off" id="scope" placeholder="Enter Scope" class="form-control"
-              [(ngModel)]="oauthSso.scope" [ngModelOptions]="{standalone: true}" name="scope" maxlength="255">
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
   </div>
   <button type="submit" style="float: right" class="btn btn-primary"
     (click)="saveOauthSsoConfiguration()">Submit</button>
