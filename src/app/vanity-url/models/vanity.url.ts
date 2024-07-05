@@ -33,6 +33,6 @@ export class VanityURL{
 
     /**** XNFR-603 ******/
     showVendorSSO:boolean = false;
-    vendorSSOName:string = "Login with SSO";
+    vendorSSOName:string = "SSO";
     vendorSSOType:string = "oauth";
 }
