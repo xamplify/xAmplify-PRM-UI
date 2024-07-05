@@ -509,7 +509,9 @@
                                                       <b> Group Name:</b> {{contactList?.name}}
                                                    </span>
                                                 </h4>
-
+                                                <h5 *ngIf="contactList?.defaultPartnerList" class="mb0 moreipsis">
+                                                   <span class="f-w-400 success"><b>Default Group:</b><i class="fa fa-check ml5"></i></span>
+                                                </h5>
                                                 <h5 class='mb0 moreipsis'>
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList?.uploadedBy}}">
@@ -546,9 +548,7 @@
                                                       </span>
                                                    </h5>
                                                 </h5>
-                                                <h5 *ngIf="contactList?.defaultPartnerList" class="mb0 moreipsis">
-                                                   <span class="f-w-400 success"><b>Default Group:</b><i class="fa fa-check ml5"></i></span>
-                                                </h5>
+                                               
                                                 <h5 style=" position: relative;top: 10px;text-align: left;"
                                                    *ngIf="contactList.moduleName=='SHARE LEADS' && !assignLeads">
                                                    <span class="view-banner" data-toggle="tooltip" data-placement="top"
@@ -858,6 +858,9 @@
                                           *ngIf="assignLeads && contactList?.assignedLeadsList && !contactList.assignedToPartner"
                                           translate>Not Assigned</span>
                                     </div>
+                                    <h6 class="xamplify-ellipsis GridViewCotent success" *ngIf="contactList?.defaultPartnerList">
+                                       <span><b>Default Group:</b><i class="fa fa-check ml5"></i></span>
+                                    </h6>
                                     <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip"
                                        data-placement="top" title="{{contactList.uploadedBy}}">
                                        <span>
@@ -868,9 +871,7 @@
                                        *ngIf="!contactList?.companyList">
                                        <span><b>Company Name:</b> {{contactList.companyName}}</span>
                                     </h6>
-                                    <h6 class="xamplify-ellipsis GridViewCotent success" *ngIf="contactList?.defaultPartnerList">
-                                       <span><b>Default Group:</b><i class="fa fa-check ml5"></i></span>
-                                    </h6>
+                                    
                                     <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip"
                                        data-placement="top" title="{{contactList.associatedCompany}}"
                                        *ngIf="contactList?.companyList">
