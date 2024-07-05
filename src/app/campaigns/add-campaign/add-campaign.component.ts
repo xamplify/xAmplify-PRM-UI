@@ -251,6 +251,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   skipConfirmAlert = false;
   hideConfigurePipelineCrms = ['SALESFORCE'];
   loggedInUserCompanyId: number;
+  isDealLayoutSelected:boolean = false;
+
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -1008,6 +1010,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         if(this.activeCRMDetails.type === 'HALOPSA'){
             let self = this;
             this.getHalopsaTicketTypes();
+        } else if (this.activeCRMDetails.type === 'ZOHO') {
+            this.getZohoLeadLayouts();
         }
             this.campaign.dealPipelineId = this.defaultDealPipelineId;
             this.campaign.leadPipelineId = this.defaultLeadPipelineId;
@@ -1036,6 +1040,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                                 this.dealTicketTypes = data.dealTicketTypes;
                                 this.leadPipelines = data.dealPipelines;
                                 this.getHalopsaTicketTypes();
+                            }
+                            if ("ZOHO" === this.activeCRMDetails.type) {
+                                this.getZohoLeadLayouts();
                             }
                             if (!this.activeCRMDetails.activeCRM) {
 
@@ -2492,6 +2499,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     onChangeLeadTicketType() {
         let self = this;
         this.getHalopsaLeadPipelines();
+        if ('ZOHO' === this.activeCRMDetails.type) {
+            this.getZohoDealLayouts();
+        }
       }
 
       onChangeDealTicketType() {
@@ -2503,7 +2513,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         let self = this;
         this.loggedInUserId = this.authenticationService.getUserId();
          this.ngxLoading = true;
-         this.campaignService.getHalopsaPipelinesByTicketType(this.campaign.leadTicketTypeId, this.loggedInUserId)
+         this.campaignService.getHalopsaPipelinesByTicketType(this.campaign.leadTicketTypeId, this.loggedInUserId, "LEAD")
                 .subscribe(
                     response => {
                         this.ngxLoading = false;
@@ -2524,7 +2534,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         let self = this;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.ngxLoading = true;
-         this.campaignService.getHalopsaPipelinesByTicketType(this.campaign.dealTicketTypeId, this.loggedInUserId)
+         this.campaignService.getHalopsaPipelinesByTicketType(this.campaign.dealTicketTypeId, this.loggedInUserId, "DEAL")
          .subscribe(
              response => {
                 this.ngxLoading = false;
@@ -2550,7 +2560,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
       }
 
       getHalopsaTicketTypesByCompanyId(companyId: number) {
-        this.campaignService.getHalopsaTicketTypes(companyId,"DEAL").subscribe(
+        this.campaignService.getHalopsaTicketTypes(companyId, this.activeCRMDetails.type.toLowerCase(),"DEAL").subscribe(
             response => {
                 if (response.statusCode == 200) {
                     let data = response.data;
@@ -2577,6 +2587,75 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         if(count==0){
             this.emptyContactsMessage = "No Records Found For This Contact List";
         }
+    }
+
+    getZohoLeadLayouts() {
+        let self = this;
+        this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+            (result: any) => {
+                self.getZohoLeadTicketTypesById(result);
+            });
+    }
+
+    getZohoLeadTicketTypesById(companyId:any) {
+        this.ngxLoading = true;
+        this.campaignService.getHalopsaTicketTypes(companyId, this.activeCRMDetails.type.toLowerCase(),"LEAD").subscribe(
+            response => {
+                this.ngxLoading = false;
+                if (response.statusCode == 200) {
+                    let data = response.data;
+                    let ticketTypesMap = response.map;
+                    this.campaign.leadTicketTypeId = ticketTypesMap.leadTicketTypeId;
+                    this.leadTicketTypes = data;
+                    this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                    this.isDealLayoutSelected = true;
+                    this.getZohoDealTicketTypesById(companyId);
+                    this.getMappedDealLayoutIdByLeadLayoutId(companyId, this.campaign.leadTicketTypeId);
+                    this.getHalopsaLeadPipelines();
+                }
+                this.referenceService.stopLoader(this.pipelineLoader);
+            },
+            error => {
+                this.referenceService.stopLoader(this.pipelineLoader);
+                this.xtremandLogger.error(error);
+            });
+    }
+
+    getZohoDealLayouts() {
+        let self = this;
+        this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+            (result: any) => {
+                self.getMappedDealLayoutIdByLeadLayoutId(result, this.campaign.leadTicketTypeId);
+            });
+    }
+
+    getZohoDealTicketTypesById(companyId:any) {
+        this.campaignService.getHalopsaTicketTypes(companyId, this.activeCRMDetails.type.toLowerCase(),"DEAL").subscribe(
+            response => {
+                if (response.statusCode == 200) {
+                    let data = response.data;
+                    this.dealTicketTypes = data;
+                }
+                this.referenceService.stopLoader(this.pipelineLoader);
+            },
+            error => {
+                this.referenceService.stopLoader(this.pipelineLoader);
+                this.xtremandLogger.error(error);
+            });
+    }
+
+    getMappedDealLayoutIdByLeadLayoutId(companyId:any, leadLayoutId:any) {
+        this.ngxLoading = true;
+        this.integrationService.getLeadConvertMappingLayoutId(companyId, leadLayoutId).subscribe(
+            data => {
+                this.ngxLoading = false;
+                if (data.statusCode == 200) {
+                    this.campaign.dealTicketTypeId = data.data;
+                    this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                    this.getHalopsaDealPipelines();
+                }
+            }
+        )
     }
 
 }
