@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from "@angular/http";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { Observable } from "rxjs/Observable";
-import { SamlSsoLoginComponent } from '../saml-sso-login/saml-sso-login.component';
-import { SamlSecurity } from '../models/samlsecurity';
+import { OauthSso } from '../models/oauth-sso';
 
 @Injectable()
 export class OauthSsoService {
@@ -29,7 +28,7 @@ export class OauthSsoService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
-  saveOauthSsoConfiguration(oauthSso: any): Observable<SamlSecurity> {
+  saveOauthSsoConfiguration(oauthSso: any): Observable<OauthSso> {
     const url = this.authenticationService.REST_URL + "oauth/sso/save?access_token=" + this.authenticationService.access_token;
     return this.http.post(url, oauthSso)
       .map(this.extractData)

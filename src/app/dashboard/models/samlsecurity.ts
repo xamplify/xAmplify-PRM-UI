@@ -2,7 +2,7 @@ export class SamlSecurity {
     id: number;
     emailId: string;
     companyId: number;
-    metadata: string;
+    metadata: any;
     acsURL: string;
     statusMessage: string;
     metadataFileName: string;
@@ -10,17 +10,4 @@ export class SamlSecurity {
     identityProviderName: string = '';
     loggedInUserId: number;
 
-	clientId: string;
-	clientSecretId: string;
-	grantType: string;
-	authorizationEndpoint: string;
-	tokenEndpoint: string;
-	userInfoEndpoint: string;
-	scope: string;
-	redirectUrl: string;
-    createdBy: number;
-	// createdTime;
-	// updatedTime;
-    // createdBy;
-	// updatedBy;
 }
