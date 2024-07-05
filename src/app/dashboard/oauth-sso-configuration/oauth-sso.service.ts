@@ -35,4 +35,10 @@ export class OauthSsoService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+  login(companyProfileName: any) {
+    const url = this.authenticationService.REST_URL+ `/oauth/sso/authorize/${companyProfileName}`;
+    return this.http.get(url).map(this.extractData).catch(this.handleError);
+  }
+
 }

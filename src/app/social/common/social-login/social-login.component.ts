@@ -7,6 +7,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { HubSpotService } from '../../../core/services/hubspot.service';
 import { SamlSecurityService } from 'app/dashboard/samlsecurity/samlsecurity.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { OauthSsoService } from 'app/dashboard/oauth-sso-configuration/oauth-sso.service';
 //import { AddContactsComponent } from 'app/contacts/add-contacts/add-contacts.component';
 
 
@@ -27,7 +28,7 @@ export class SocialLoginComponent implements OnInit {
 
 	constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService, private hubSpotService: HubSpotService,
 		public contactService: ContactService, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService, 
-		public samlSecurityService: SamlSecurityService, private vanityURLService: VanityURLService) {
+		public samlSecurityService: SamlSecurityService, private vanityURLService: VanityURLService, public oauthSsoService: OauthSsoService) {
 		this.isLoggedInVanityUrl = localStorage.getItem('vanityUrlFilter');		
 	}
 	login(providerName: string) {
@@ -117,6 +118,15 @@ export class SocialLoginComponent implements OnInit {
 
 		} else if (providerName == 'samlsso' && this.vanityURLService.isVanityURLEnabled()) {
 			this.samlSecurityService.login(this.authenticationService.companyProfileName).subscribe(data => {
+				let response = data;
+				if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+					window.location.href = "" + response.data.redirectUrl;
+				}				
+			}, (error: any) => {
+				this.xtremandLogger.error(error);
+			}, () => this.xtremandLogger.log("SAML2 SSO Done"));
+		} else if (providerName == 'oauthsso' && this.vanityURLService.isVanityURLEnabled()) {
+			this.oauthSsoService.login(this.authenticationService.companyProfileName).subscribe(data => {
 				let response = data;
 				if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
 					window.location.href = "" + response.data.redirectUrl;

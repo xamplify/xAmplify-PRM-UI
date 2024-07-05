@@ -111,6 +111,9 @@ export class SocialCallbackComponent implements OnInit {
                                             client_id = this.envService.microsoftDevClientId;
                                             client_secret = this.envService.microsoftDevClientSecret;
                                         }
+                                    } else if (providerName === "oauthsso") {
+                                        client_id = "my-trusted-client";
+                                        client_secret = "";
                                     }
 
                                     const authorization = 'Basic' + btoa(client_id + ':');
