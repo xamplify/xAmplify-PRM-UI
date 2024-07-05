@@ -339,8 +339,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                             || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.emailTemplateRole)>-1
                             || roles.indexOf(this.roles.prmRole)>-1 || isMarketing || roles.indexOf(this.roles.partnersRole)>-1;  
             let hasPartnerLandingPageAccess = isPartner && (url.indexOf("/partner")>-1);
-            let isLoggedAsTeamMember = this.utilService.isLoggedAsTeamMember();
-            if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess || partnerLandingPageAccess || isLoggedAsTeamMember){
+          //  let isLoggedAsTeamMember = this.utilService.isLoggedAsTeamMember();
+            if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess || partnerLandingPageAccess){
                 return true;
             }else{
                 return this.goToAccessDenied(url);
@@ -403,7 +403,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       }
 
     goToAccessDenied(url):boolean{
-        if(!(url.includes('/home/team/add-team'))){
+        if(!(url.includes('/home/team/add-team') && this.utilService.isLoggedAsTeamMember())){
             this.router.navigate( ['/access-denied'] );
             return false;
         }else{

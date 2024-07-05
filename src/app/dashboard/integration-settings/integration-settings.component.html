@@ -74,6 +74,9 @@
                   title="Refresh Custom Fields"><i class="fa fa-refresh" style="font-size: 14px !important;"></i>
                   Reload</a>
               </span>
+              <button *ngIf="integrationType === 'SALESFORCE'" type="button" class="button_blue bgcolor-unset pr0 px-9 pull-right"
+            (click)="addCustomFielsdOrderModalOpen()"><span
+             class="btn btn-primary transition txt_pd-top3">Order Custom Fields</span></button>
             </h3>
           </div>
         </div>
@@ -286,6 +289,9 @@
     </ng-container>
     <div *ngIf="isCustomFieldsModelPopUp">
       <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField" [customFieldsList]="customFieldsList"></app-integration-settings-popup>
+    </div>
+    <div *ngIf="isCustomFieldsOrderModelPopUp">
+      <app-custom-fields-order-popup (closeEvent)="closeCustomFielsOrderModal($event)" [customFieldsList]="customFieldsList"></app-custom-fields-order-popup>
     </div>
   </div>
 </div>
