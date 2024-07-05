@@ -173,6 +173,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
         this.pagination.defaultLandingPage = false;
         this.pagination.loginAsUserId = this.loggedInUserId;
         this.pagination.companyId = this.loggedInUserCompanyId;
+        this.pagination.masterLandingPage = true;
       }else{
         this.pagination.source = "MANUAL";
       }
