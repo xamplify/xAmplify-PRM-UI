@@ -83,7 +83,11 @@ export class SocialService {
       // User has denied the permission to login through social account.
       this.router.navigate(['/']);
     } else {
-      return this.http.get(this.URL + socialProvider + '/callback' + queryParam)
+      let url = this.URL + socialProvider + '/callback' + queryParam;
+      if (socialProvider === "oauthsso") {
+        url = this.URL + 'oauth/sso/' + '/callback/'+ this.authenticationService.companyProfileName + queryParam
+      } 
+      return this.http.get(url)
         .map(this.extractData)
         .catch(this.handleError);
     }

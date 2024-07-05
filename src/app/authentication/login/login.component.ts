@@ -411,6 +411,7 @@ bgIMage2:any;
       if (this.isLoggedInVanityUrl) {
         if (socialProvider.value === "samlsso" || socialProvider.value === "oauthsso") {
           loginUrl = "/" + socialProvider.value + "/login";
+          alert(loginUrl);
           this.router.navigate([loginUrl]);
         } else {
           let loginUrl = this.authenticationService.APP_URL+"v/"+socialProviderName+"/"+window.location.hostname;

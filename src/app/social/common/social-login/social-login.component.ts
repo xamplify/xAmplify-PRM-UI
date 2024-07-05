@@ -133,7 +133,7 @@ export class SocialLoginComponent implements OnInit {
 				}				
 			}, (error: any) => {
 				this.xtremandLogger.error(error);
-			}, () => this.xtremandLogger.log("SAML2 SSO Done"));
+			}, () => this.xtremandLogger.log("OAuth SSO Done"));
 		} else {
 			this.socialService.login(providerName)
 				.subscribe(
