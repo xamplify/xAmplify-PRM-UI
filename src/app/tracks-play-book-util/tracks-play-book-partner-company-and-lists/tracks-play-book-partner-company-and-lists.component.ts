@@ -93,6 +93,7 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 				}else{
 					$('#partnerGroups-li').addClass('active');
 					$('#partnerGroups').addClass('tab-pane fade in active');
+					this.isPartnerCompaniesTabSelected = false;
 					this.findPartnerGroups(this.partnerGroupsPagination);
 				}
 			} else {
