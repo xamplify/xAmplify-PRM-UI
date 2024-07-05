@@ -322,20 +322,22 @@ export class AddDealComponent implements OnInit {
                 }     
                 self.pipelineIdError = false;
                 if (this.actionType == 'add' || this.actionType == 'edit') {
-                  if ("HALOPSA" === this.activeCRMDetails.type) {
+                  if ("HALOPSA" === this.activeCRMDetails.type || "ZOHO" === this.activeCRMDetails.type) {
                     self.deal.haloPSATickettypeId = ticketTypeIdMap.halopsaTicketTypeId;   
                     self.showCustomForm = true;
                     if (this.actionType == 'add' || self.existingHalopsaDealTicketTypeId != undefined && self.existingHalopsaDealTicketTypeId != self.deal.haloPSATickettypeId) {
                       let createdForPipelineStage = null;
-                      let stages = self.createdForStages;
-                      createdForPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
-                        mindisplayIndexStage.displayIndex < currentStage.displayIndex ? mindisplayIndexStage : currentStage
-                      );
-                      self.deal.createdForPipelineStageId = createdForPipelineStage.id;
-                      if (self.deal.createdForPipelineStageId != undefined && self.deal.createdForPipelineStageId > 0) {
-                        self.createdForPipelineStageIdError = false;
+                      if ("HALOPSA" === this.activeCRMDetails.type) {
+                        let stages = self.createdForStages;
+                        createdForPipelineStage = stages.reduce((mindisplayIndexStage, currentStage) =>
+                          mindisplayIndexStage.displayIndex < currentStage.displayIndex ? mindisplayIndexStage : currentStage
+                        );
+                        self.deal.createdForPipelineStageId = createdForPipelineStage.id;
+                        if (self.deal.createdForPipelineStageId != undefined && self.deal.createdForPipelineStageId > 0) {
+                          self.createdForPipelineStageIdError = false;
+                        }
+                        self.isCreatedForStageIdDisable = true;
                       }
-                      self.isCreatedForStageIdDisable = true;
                       self.submitButtonStatus();
                     }
                     self.isCampaignTicketTypeSelected = true;
@@ -1101,10 +1103,12 @@ export class AddDealComponent implements OnInit {
             }
 
           } else if (formLabel.labelType === 'datetime') {
-            sfCfData.value = formLabel.value;
-            sfCfData.type = formLabel.labelType;
-            const event = new Date(formLabel.value);
-            sfCfData.dateTimeIsoValue = event.toISOString();
+            if (formLabel.value != undefined && formLabel.value.length > 0) {
+              sfCfData.value = formLabel.value;
+              sfCfData.type = formLabel.labelType;
+              const event = new Date(formLabel.value);
+              sfCfData.dateTimeIsoValue = event.toISOString();
+            }
           }
           else {
             sfCfData.value = formLabel.value;
@@ -1275,6 +1279,9 @@ export class AddDealComponent implements OnInit {
             if (!this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown || this.actionType === "edit") {
               this.getDealPipelines();
             }
+          }
+          if ("ZOHO" == this.activeCRMDetails.createdForActiveCRMType && this.leadId !== undefined && this.leadId > 0) {
+            this.getConvertMappingLayout(this.lead.halopsaTicketTypeId);
           }
         });
   }
