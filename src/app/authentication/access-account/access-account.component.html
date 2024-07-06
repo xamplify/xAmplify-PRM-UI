@@ -85,9 +85,14 @@
 				<input class="form-control placeholder-no-fix lastNameTF" type="text" placeholder="Last Name" formControlName="lastName" autocomplete="off" />
 				</div>
 			<!---Email--->
-			<div class="form-group">
+			<div class="form-group" *ngIf="!isActivateAccountPage">
 				<label class="control-label visible-ie8 visible-ie9">Email</label>
-				<input [disabled]="isActivateAccountPage"  autocomplete="off" class="form-control placeholder-no-fix emailTF ng-invalid" type="email" placeholder="Email" id="teamMember-signup-emailId" required formControlName="emailId"/>
+				<input autocomplete="off" class="form-control placeholder-no-fix emailTF ng-invalid" type="email" placeholder="Email" id="teamMember-signup-emailId" required formControlName="emailId"/>
+				<div *ngIf="formErrors.emailId" class="alert alert-danger">{{ formErrors.emailId }}</div>
+			</div>
+			<div class="form-group" *ngIf="isActivateAccountPage">
+				<label class="control-label visible-ie8 visible-ie9">Email</label>
+				<input class="form-control placeholder-no-fix emailTF ng-invalid" formControlName="emailId" readonly="readonly">
 				<div *ngIf="formErrors.emailId" class="alert alert-danger">{{ formErrors.emailId }}</div>
 			</div>
 			<!---Company Name--->
