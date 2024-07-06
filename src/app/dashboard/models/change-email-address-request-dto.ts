@@ -8,7 +8,11 @@ export class ChangeEmailAddressRequestDto {
     updatedEmailAddressErrorMessage = "";
     isValidUpdatedEmailAddress = false;
 
-    updateUserProfileLoader = true;
-    updateCampaignEmailLoader = true;
-    removeAccessTokenLoader = true;
+    updateUserProfileLoader = false;
+    updateCampaignEmailLoader = false;
+    removeAccessTokenLoader = false;
+
+    emailAddressUpdatedSuccessfully = false;
+    campaignEmailAddressUpdatedSuccessfully = false;
+    accessTokenRemovedSuccessfully = false;
 }

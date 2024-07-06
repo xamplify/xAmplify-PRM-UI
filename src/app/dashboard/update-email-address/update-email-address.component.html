@@ -26,17 +26,32 @@
                   </div>
               </ng-container>
               <!--User Profile Loader---->
-              <div class="alert alert-info" *ngIf="updateUserProfileLoader">
-                  <strong>Updating User Profile...</strong>
-              </div>
+              <ng-container *ngIf="changeEmailAddressRequestDto?.updateUserProfileLoader">
+                <div *ngIf="!changeEmailAddressRequestDto?.emailAddressUpdatedSuccessfully" class="alert alert-info" >
+                  <strong><img class="h-25" src="../../../assets/images/loader.gif">Updating User Profile...</strong>
+                </div>
+                <div *ngIf="changeEmailAddressRequestDto?.emailAddressUpdatedSuccessfully" class="alert alert-success" >
+                  <strong><img  src="../../../assets/images/launched.png">Email Address Updated Successfully In User Profile Table.</strong>
+                </div>
+              </ng-container>
               <!--Campaign Loader---->
-               <div class="alert alert-info" *ngIf="updateCampaignEmailLoader">
-                <strong>Updating Campaign Email...</strong>
-               </div>
-              <!--Remove Access Token Loader---->
-              <div class="alert alert-info" *ngIf="removeAccessTokenLoader">
-              <strong>Removing Access Token...</strong>
-              </div>
+              <ng-container *ngIf="changeEmailAddressRequestDto?.updateCampaignEmailLoader">
+                <div *ngIf="!changeEmailAddressRequestDto?.campaignEmailAddressUpdatedSuccessfully" class="alert alert-info">
+                  <strong><img class="h-25" src="../../../assets/images/launched.png">Updating Campaign Email...</strong>
+                 </div>
+                <div *ngIf="changeEmailAddressRequestDto?.campaignEmailAddressUpdatedSuccessfully" class="alert alert-success" >
+                  <strong><img  src="../../../assets/images/launched.png">Campaign Email Updated Successfully.</strong>
+                </div>
+              </ng-container>
+              <!--Access Token Loader---->
+              <ng-container *ngIf="changeEmailAddressRequestDto?.updateCampaignEmailLoader">
+                <div *ngIf="!changeEmailAddressRequestDto?.campaignEmailAddressUpdatedSuccessfully" class="alert alert-info">
+                  <strong><img class="h-25" src="../../../assets/images/launched.png">Updating Campaign Email...</strong>
+                 </div>
+                <div *ngIf="changeEmailAddressRequestDto?.campaignEmailAddressUpdatedSuccessfully" class="alert alert-success" >
+                  <strong><img  src="../../../assets/images/launched.png">Campaign Email Updated Successfully.</strong>
+                </div>
+              </ng-container>
               
             </div>
           </div>
