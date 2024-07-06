@@ -1449,5 +1449,10 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
 
     }
 
+    validateEmailAddressChange(changeEmailAddressRequestDto:ChangeEmailAddressRequestDto){
+        const url = this.superAdminUrl + 'changeEmailAddressRequestDto?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callPutMethod(url,changeEmailAddressRequestDto);
+    }
+
     
 }

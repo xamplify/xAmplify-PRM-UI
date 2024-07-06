@@ -14,15 +14,14 @@ import { Properties } from 'app/common/models/properties';
 })
 export class UpdateEmailAddressComponent implements OnInit {
 
-  updateEmailAddressLoader = false;
+  validateEmailAddressLoader = false;
   updateEmailAddressResponse:CustomResponse = new CustomResponse();
   isUpdateButtonDisabled = true;
   changeEmailAddressRequestDto:ChangeEmailAddressRequestDto = new ChangeEmailAddressRequestDto();
-  isEmailAddressUpdatedSuccessfully = false;
+  isEmailAddressValidatedSuccessfully = false;
   isCampaignEmailAddressUpdatedSuccessfully = false;
   isAccessTokenRemoved = false;
   statusCode = 0;
-
   constructor(public referenceService:ReferenceService,public dashboardService:DashboardService,public properties:Properties) { }
 
   ngOnInit() {
@@ -40,10 +39,10 @@ export class UpdateEmailAddressComponent implements OnInit {
 
   updateEmailAddress(){
     this.updateEmailAddressResponse = new CustomResponse();
-    this.updateEmailAddressLoader = true;
+    this.validateEmailAddressLoader = true;
     this.changeEmailAddressRequestDto.existingEmailAddressErrorMessage = "";
     this.changeEmailAddressRequestDto.updatedEmailAddressErrorMessage = "";
-    this.dashboardService.updateEmailAddress(this.changeEmailAddressRequestDto).subscribe(
+    this.dashboardService.validateEmailAddressChange(this.changeEmailAddressRequestDto).subscribe(
       response=>{
         this.statusCode = response.statusCode;
         if(this.statusCode==400){
@@ -58,15 +57,20 @@ export class UpdateEmailAddressComponent implements OnInit {
               this.changeEmailAddressRequestDto.updatedEmailAddressErrorMessage = errorMessage;
             }
           });
+          this.validateEmailAddressLoader = false;
         }else{
-          this.isEmailAddressUpdatedSuccessfully = true;
+          this.isEmailAddressValidatedSuccessfully = true;
         }
-        this.updateEmailAddressLoader = false;
+        
       },error=>{
-        this.updateEmailAddressLoader = false;
+        this.validateEmailAddressLoader = false;
         this.updateEmailAddressResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
       },()=>{
-
+        if(this.isEmailAddressValidatedSuccessfully){
+          this.validateEmailAddressLoader = false;
+          this.changeEmailAddressRequestDto.updateUserProfileLoader = true;
+          
+        }
       });
   }
 

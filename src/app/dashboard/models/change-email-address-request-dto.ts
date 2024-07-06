@@ -7,4 +7,8 @@ export class ChangeEmailAddressRequestDto {
     updatedEmailAddress = "";
     updatedEmailAddressErrorMessage = "";
     isValidUpdatedEmailAddress = false;
+
+    updateUserProfileLoader = true;
+    updateCampaignEmailLoader = true;
+    removeAccessTokenLoader = true;
 }

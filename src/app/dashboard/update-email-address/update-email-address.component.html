@@ -6,11 +6,12 @@
         <h4 class="modal-title text-center">Update Email Address</h4>
       </div>
       <div class="modal-body">
-        <div [@fadeInOut] class="row">
+        <div class="row">
           <div class="col-xs-12 p5 mb--10">
             <div class="portlet light">
-              <app-modal-popup-loader *ngIf="updateEmailAddressLoader"></app-modal-popup-loader>
-              <ng-container *ngIf="!updateEmailAddressLoader">
+              <app-modal-popup-loader *ngIf="validateEmailAddressLoader"></app-modal-popup-loader>
+              <ng-container *ngIf="!validateEmailAddressLoader && !changeEmailAddressRequestDto?.updateUserProfileLoader && 
+                  !changeEmailAddressRequestDto?.updateCampaignEmailLoader && !changeEmailAddressRequestDto?.removeAccessTokenLoader">
                   <!--Existing Email Address-->
                   <div class="form-group">
                     <label><strong>Existing Email Address</strong></label>
@@ -24,13 +25,26 @@
                   <p class="required"  *ngIf="changeEmailAddressRequestDto?.updatedEmailAddressErrorMessage?.length>0">{{changeEmailAddressRequestDto?.updatedEmailAddressErrorMessage}}</p>
                   </div>
               </ng-container>
+              <!--User Profile Loader---->
+              <div class="alert alert-info" *ngIf="updateUserProfileLoader">
+                  <strong>Updating User Profile...</strong>
+              </div>
+              <!--Campaign Loader---->
+               <div class="alert alert-info" *ngIf="updateCampaignEmailLoader">
+                <strong>Updating Campaign Email...</strong>
+               </div>
+              <!--Remove Access Token Loader---->
+              <div class="alert alert-info" *ngIf="removeAccessTokenLoader">
+              <strong>Removing Access Token...</strong>
+              </div>
+              
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button [disabled]="updateEmailAddressLoader || isUpdateButtonDisabled" class="btn btn-primary" (click)="updateEmailAddress()">Update</button>
-        <button [disabled]="updateEmailAddressLoader" (click)="closeUpdateEmailAddressAccountModal()"  class="btn btn-danger float-right">Close</button>
+        <button [disabled]="validateEmailAddressLoader || isUpdateButtonDisabled" class="btn btn-primary" (click)="updateEmailAddress()">Update</button>
+        <button [disabled]="validateEmailAddressLoader" (click)="closeUpdateEmailAddressAccountModal()"  class="btn btn-danger float-right">Close</button>
       </div>
     </div>
   </div>
