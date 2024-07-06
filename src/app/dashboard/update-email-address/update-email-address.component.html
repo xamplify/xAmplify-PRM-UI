@@ -6,32 +6,26 @@
         <h4 class="modal-title text-center">Update Email Address</h4>
       </div>
       <div class="modal-body">
-        <app-modal-popup-loader *ngIf="updateEmailAddressLoader"></app-modal-popup-loader>
-        <ng-container *ngIf="!updateEmailAddressLoader && updateEmailAddressResponse?.isVisible">
-          <div>
-             <app-response-message [customResponse]="updateEmailAddressResponse"></app-response-message>
+        <div [@fadeInOut] class="row">
+          <div class="col-xs-12 p5 mb--10">
+            <div class="portlet light">
+              <app-modal-popup-loader *ngIf="updateEmailAddressLoader"></app-modal-popup-loader>
+              <ng-container *ngIf="!updateEmailAddressLoader">
+                  <!--Existing Email Address-->
+                  <div class="form-group">
+                    <label><strong>Existing Email Address</strong></label>
+                    <input type="email" class="form-control" (input)="validateExistingEmailAddress()" placeholder="Enter Existing Email Address" autocomplete="off" [(ngModel)]="changeEmailAddressRequestDto.existingEmailAddress" [ngModelOptions]="{standalone: true}">
+                    <p class="required"  *ngIf="changeEmailAddressRequestDto?.existingEmailAddressErrorMessage?.length>0">{{changeEmailAddressRequestDto?.existingEmailAddressErrorMessage}}</p>
+                  </div>
+                  <!--Updated Email Address--->
+                  <div class="form-group">
+                    <label><strong>Updated Email Address</strong></label>
+                    <input type="email" class="form-control" (input)="validateUpdatedEmailAddress()" placeholder="Enter New Email Address" autocomplete="off" [(ngModel)]="changeEmailAddressRequestDto.updatedEmailAddress" [ngModelOptions]="{standalone: true}">
+                  <p class="required"  *ngIf="changeEmailAddressRequestDto?.updatedEmailAddressErrorMessage?.length>0">{{changeEmailAddressRequestDto?.updatedEmailAddressErrorMessage}}</p>
+                  </div>
+              </ng-container>
+            </div>
           </div>
-        </ng-container>
-        <div class="table-responsive" *ngIf="!updateEmailAddressLoader">
-          <table class='table tgrid table-bordered' aria-describedby="">
-            <thead>
-              <!--Enter Existing Email Address-->
-              <tr>
-                <th scope="row">Enter Existing Email Address</th>
-                <th>
-                  <input type="email" class="form-control" placeholder="Enter Email Address" autocomplete="off" [(ngModel)]="changeEmailAddressRequestDto.existingEmailAddress" [ngModelOptions]="{standalone: true}">
-                </th>
-                </tr>
-              <!--Update Existing Email Address-->
-              <tr>
-                <th scope="row">Enter New Email Address</th>
-                <th>
-                  <input type="email" class="form-control" placeholder="New Email Address" autocomplete="off" [(ngModel)]="updatedEmailAddress"
-                   [ngModelOptions]="{standalone: true}">
-                </th>
-                </tr>
-            </thead>
-          </table>
         </div>
       </div>
       <div class="modal-footer">
