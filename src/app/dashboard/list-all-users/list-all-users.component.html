@@ -136,7 +136,8 @@
                          <td class="text-center"  scope="col">{{request.companyName}}</td>
                          <td  class="text-center" scope="col">{{request.roleName}}</td>
                          <td class="text-center" *ngIf="!isVanityUrlEnabled">
-                            <a href="{{request?.vanityUrlLink}}" target="_blank">{{request?.vanityUrlLink}}</a>
+                          <p class="required" *ngIf="request.roleName=='Partner'"><strong>Not Available For Partner Role</strong></p>
+                          <a *ngIf="request.roleName!='Partner'" href="{{request?.vanityUrlLink}}" target="_blank">{{request?.vanityUrlLink}}</a>
                          </td>
                          <td class="text-center"  scope="col">{{request.createdTime | date:'mediumDate'}} {{request.createdTime | date:'shortTime'}}</td>
                          <td id="center" class="xAmpColor">
