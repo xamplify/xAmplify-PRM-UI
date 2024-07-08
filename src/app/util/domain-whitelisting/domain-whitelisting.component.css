@@ -1,15 +1,8 @@
 @media only screen and (max-width:578px){
-.mrow_15{
-    margin-right: -15px;
-    margin-left:-15px;
-}
 .TotalSearchBoxWidth{
  width:60%!important;
 }
 .nav-tabs > li > a{
     font-size: 12px;
-}
-.mpx-0 {
-    padding: 0px 15px;
 }
 }

@@ -114,7 +114,8 @@ a.disabled {
   padding: 1em;
 }
 .emailtemplate-selected {
-  background-color: #6dcff6;
+  background-color: #0276ff;
+  color: #fff;
 }
 @media (min-width: 1200px) {
   h4 {

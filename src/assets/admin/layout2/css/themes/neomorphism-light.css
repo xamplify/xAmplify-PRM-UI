@@ -1986,7 +1986,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected {
+.mix-filter li.emailtemplate-selected,.mix-filter li.filter-box-selected{
   background: #0276FF !important;
   box-shadow: none !important;
 }
@@ -3321,7 +3321,7 @@ span.btn.Btn-Green.transition.txt_pd-top3{
 .pd_lft8{
   padding-left: 8px !important;
 }
-.pd_top0{
+.pd_top0,span.btn.Btn-Green.transition.txt_pd-top3.btn-copy{
   padding-top: 0px !important;
 }
 .note_card_align{
@@ -4009,11 +4009,11 @@ button.btn.Btn-Green.float-left.mobileBottomPa.responsiveBtnCU:hover {
 .mrg_lft0{
   margin-left: 0px !important;
 }
-li.filter.filter-box-selected{
+/* li.filter.filter-box-selected{
   background: linear-gradient(0deg, #06beb8 0, #0c86cc 100%) !important;
   box-shadow: none !important;
   color: #fff !important;
-}
+} */
 .list_view_deal{
   margin-right: 6px !important;
   margin-top: -4px !important;
