@@ -426,6 +426,8 @@ tr {
   background-color: #8d8a8a00 !important;
   color: #fff !important;
   backdrop-filter: blur(45px);
+ /* transform: translate(0%,0%); */
+ transform: translate3d(0%, 0, 0) !important;
 }
 .upload-asset-div,
 .well,
@@ -4007,3 +4009,12 @@ button.swal2-confirm.styled:hover {
 /***** Sudha Sri(04-07-2024) *****/
 .portlet.light.remove_cardBgcolor.glass_Bgcolor {background: rgb(0 0 0 / 18%) !important;}
 
+.modal-body {
+  max-height: calc(100vh - 113px);
+}
+div#add-form-designs {
+  padding-right: 0px !important;
+}
+.modal-footer {
+  padding: 14px;
+}
