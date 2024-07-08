@@ -28,8 +28,13 @@ export class OauthSsoService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
-  saveOauthSsoConfiguration(oauthSso: any): Observable<OauthSso> {
-    const url = this.authenticationService.REST_URL + "oauth/sso/save?access_token=" + this.authenticationService.access_token;
+  saveOrUpdateOauthSsoConfiguration(oauthSso: any): Observable<OauthSso> {
+    let saveOrUpdateUrl = "oauth/sso/save"; 
+    if (oauthSso.id !== undefined && oauthSso.id > 0) {
+      saveOrUpdateUrl = "oauth/sso/update"
+    }
+
+    const url = this.authenticationService.REST_URL + saveOrUpdateUrl +"?access_token=" + this.authenticationService.access_token;
     return this.http.post(url, oauthSso)
       .map(this.extractData)
       .catch(this.handleError);
