@@ -263,6 +263,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     pipelineLoader:HttpRequestLoader = new HttpRequestLoader();
     dealTicketTypes: any;
     leadTicketTypes: any;
+    isDealLayoutSelected:boolean = false;
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
         public campaignService: CampaignService,
@@ -643,7 +644,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     error => {
                         this.httpRequestLoader.isServerError = true;
                     },
-                    () => { }
+                    () => {
+                        if ("HALOPSA" === this.activeCRMDetails.type || "ZOHO" === this.activeCRMDetails.type) {
+                            this.getConfigureHalopsaTicketTypes();
+                        }
+                     }
                 );
         }
 
@@ -3152,12 +3157,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.integrationService.getActiveCRMDetailsByUserId(this.authenticationService.getUserId()).subscribe(data => {
                 this.activeCRMDetails = data.data;
                 if (this.activeCRMDetails.activeCRM) {
-                    if("HALOPSA" === this.activeCRMDetails.type){
-                        this.showConfigurePipelines = true;
-                        this.listCampaignPipelines();
-                        this.getConfigureHalopsaTicketTypes();
-                    }
-                    else if ("SALESFORCE" === this.activeCRMDetails.type) {
+                    if ("SALESFORCE" === this.activeCRMDetails.type) {
                         this.salesforceIntegrated = true;
                         this.listCampaignPipelines();
                         this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
@@ -3237,8 +3237,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.eventCampaign.leadPipelineId = this.defaultLeadPipelineId;
 
         if(this.activeCRMDetails.type === 'HALOPSA'){
-            let self = this;
             this.getHalopsaTicketTypes();
+        } else if (this.activeCRMDetails.type === 'ZOHO') {
+            this.getZohoLeadLayouts();
         }
             this.eventCampaign.dealPipelineId = this.defaultDealPipelineId;
             this.eventCampaign.leadPipelineId = this.defaultLeadPipelineId;
@@ -3261,6 +3262,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
       onChangeLeadTicketType() {
         let self = this;
         this.getHalopsaLeadPipelines();
+        if ("ZOHO" === this.activeCRMDetails.type) {
+            this.getZohoDealLayouts();
+        }
       }
 
       onChangeDealTicketType() {
@@ -3272,7 +3276,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         let self = this;
         this.completeLoader = true;
         this.loggedInUserId = this.authenticationService.getUserId();
-         this.campaignService.getHalopsaPipelinesByTicketType(this.eventCampaign.leadTicketTypeId, this.loggedInUserId)
+         this.campaignService.getHalopsaPipelinesByTicketType(this.eventCampaign.leadTicketTypeId, this.loggedInUserId,'LEAD')
                 .subscribe(
                     response => {
                         this.completeLoader = false;
@@ -3293,7 +3297,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         let self = this;
         this.completeLoader = true;
         this.loggedInUserId = this.authenticationService.getUserId();
-         this.campaignService.getHalopsaPipelinesByTicketType(this.eventCampaign.dealTicketTypeId, this.loggedInUserId)
+        this.campaignService.getHalopsaPipelinesByTicketType(this.eventCampaign.dealTicketTypeId, this.loggedInUserId, 'DEAL')
          .subscribe(
              response => {
                 this.completeLoader = false;
@@ -3305,14 +3309,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                  }
              },
              error => {
-                 this.completeLoader = false;
-                 this.logger.error(error);
+                this.completeLoader = false;
+                this.logger.error(error);
              });
       }
 
     getHalopsaTicketTypesByCompanyId(companyId: any) {
         let self = this;
-        this.campaignService.getHalopsaTicketTypes(companyId,"DEAL")
+        this.campaignService.getHalopsaTicketTypes(companyId, self.activeCRMDetails.type.toLowerCase(), "DEAL")
             .subscribe(
                 response => {
                     if (response.statusCode == 200) {
@@ -3333,6 +3337,75 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     this.referenceService.stopLoader(this.pipelineLoader);
                     this.logger.error(error);
                 });
+    }
+
+    getZohoLeadLayouts() {
+        let self = this;
+        this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+            (result: any) => {
+                self.getZohoLeadTicketTypesById(result);
+            });
+    }
+
+    getZohoLeadTicketTypesById(companyId:any) {
+        this.completeLoader = true;
+        this.campaignService.getHalopsaTicketTypes(companyId, this.activeCRMDetails.type.toLowerCase(),"LEAD").subscribe(
+            response => {
+                this.completeLoader = false;
+                if (response.statusCode == 200) {
+                    let data = response.data;
+                    let ticketTypesMap = response.map;
+                    this.eventCampaign.leadTicketTypeId = ticketTypesMap.leadTicketTypeId;
+                    this.leadTicketTypes = data;
+                    this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                    this.isDealLayoutSelected = true;
+                    this.getZohoDealTicketTypesById(companyId);
+                    this.getHalopsaLeadPipelines();
+                    this.getMappedDealLayoutIdByLeadLayoutId(companyId, this.eventCampaign.leadTicketTypeId);
+                }
+                this.referenceService.stopLoader(this.pipelineLoader);
+            },
+            error => {
+                this.referenceService.stopLoader(this.pipelineLoader);
+                this.logger.error(error);
+            });
+    }
+
+    getMappedDealLayoutIdByLeadLayoutId(companyId:any, leadLayoutId:any) {
+        this.completeLoader = true;
+        this.integrationService.getLeadConvertMappingLayoutId(companyId, leadLayoutId).subscribe(
+            data => {
+                this.completeLoader = false;
+                if (data.statusCode == 200) {
+                    this.eventCampaign.dealTicketTypeId = data.data;
+                    this.defaultDealTicketTypeId = data.data;
+                    this.getHalopsaDealPipelines();
+                }
+            }
+        )
+    }
+
+    getZohoDealTicketTypesById(companyId:any) {
+        this.campaignService.getHalopsaTicketTypes(companyId, this.activeCRMDetails.type.toLowerCase(),"DEAL").subscribe(
+            response => {
+                if (response.statusCode == 200) {
+                    let data = response.data;
+                    this.dealTicketTypes = data;
+                }
+                this.referenceService.stopLoader(this.pipelineLoader);
+            },
+            error => {
+                this.referenceService.stopLoader(this.pipelineLoader);
+                this.logger.error(error);
+            });
+    }
+
+    getZohoDealLayouts() {
+        let self = this;
+        this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+            (result: any) => {
+                self.getMappedDealLayoutIdByLeadLayoutId(result, this.eventCampaign.leadTicketTypeId);
+            });
     }
 
 }

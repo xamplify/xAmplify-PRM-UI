@@ -32,6 +32,7 @@ export class MdfService {
   ];
 
   defaultActivityOptions = ["Advertisement", "Event", "Promotion", "Seminar", "Trade Show", "Webinar"];
+  rowInfos = [];
 
   constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,private utilService:UtilService) { }
 
@@ -56,6 +57,12 @@ export class MdfService {
     this.defaultMdfRequestLabels.forEach(labelDetails => {
       this.frameFormLabelData(labelDetails);
     });
+    /***Added By Sravan On 06/07/2024****/
+    const rowInfo: any = {};
+    rowInfo['formLabelDTOs'] = this.columnInfos;
+    this.rowInfos.push(rowInfo);
+    this.form.formLabelDTORows = this.rowInfos;
+    /***Added By Sravan On 06/07/2024****/
     this.form.formLabelDTOs = this.columnInfos;
   }
 

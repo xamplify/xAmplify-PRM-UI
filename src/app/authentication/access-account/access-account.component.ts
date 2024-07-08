@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { ActivatedRoute,Router,NavigationStart, NavigationEnd  } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-
 import { User } from '../../core/models/user';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { CustomResponse } from '../../common/models/custom-response';

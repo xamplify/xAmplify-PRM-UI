@@ -429,6 +429,8 @@ tr {
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     backdrop-filter: blur(13.5px);
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    /* transform: translate(0%,0%); */
+    transform: translate3d(0%, 0, 0) !important;
 }
 .upload-asset-div,
 .well,
@@ -4253,3 +4255,12 @@ button.swal2-confirm.styled:hover {
 }
 /***** Sudha Sri(04-07-2024) *****/
 a.btn.btn-large.btn-primary.carousel-btn {color: #fff !important;}
+.modal-body {
+  max-height: calc(100vh - 113px);
+}
+div#add-form-designs {
+  padding-right: 0px !important;
+}
+.modal-footer {
+  padding: 14px;
+}

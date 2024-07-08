@@ -14,13 +14,11 @@ import { Properties } from 'app/common/models/properties';
 })
 export class UpdateEmailAddressComponent implements OnInit {
 
-  updateEmailAddressLoader = false;
+  validateEmailAddressLoader = false;
   updateEmailAddressResponse:CustomResponse = new CustomResponse();
-  updatedEmailAddress = "";
-  existingEmailAddress = "";
   isUpdateButtonDisabled = true;
   changeEmailAddressRequestDto:ChangeEmailAddressRequestDto = new ChangeEmailAddressRequestDto();
-  isEmailAddressUpdatedSuccessfully = false;
+  isEmailAddressValidatedSuccessfully = false;
   isCampaignEmailAddressUpdatedSuccessfully = false;
   isAccessTokenRemoved = false;
   statusCode = 0;
@@ -32,8 +30,7 @@ export class UpdateEmailAddressComponent implements OnInit {
 
   closeUpdateEmailAddressAccountModal(){
     this.referenceService.closeModalPopup("update-email-address-modal");
-    this.existingEmailAddress = "";
-    this.updatedEmailAddress = "";
+    this.changeEmailAddressRequestDto = new ChangeEmailAddressRequestDto();
   }
 
   openModalPopup(){
@@ -42,22 +39,51 @@ export class UpdateEmailAddressComponent implements OnInit {
 
   updateEmailAddress(){
     this.updateEmailAddressResponse = new CustomResponse();
-    this.updateEmailAddressLoader = true;
-    this.dashboardService.updateEmailAddress(this.changeEmailAddressRequestDto).subscribe(
+    this.validateEmailAddressLoader = true;
+    this.changeEmailAddressRequestDto.existingEmailAddressErrorMessage = "";
+    this.changeEmailAddressRequestDto.updatedEmailAddressErrorMessage = "";
+    this.dashboardService.validateEmailAddressChange(this.changeEmailAddressRequestDto).subscribe(
       response=>{
         this.statusCode = response.statusCode;
         if(this.statusCode==400){
-
+          let errorObjects = response.data.errorMessages;
+          errorObjects.forEach((errorObject: { field: any; message: any; }) => {
+            let field = errorObject.field;
+            let errorMessage = errorObject.message;
+            if(field=="existingEmailAddress"){
+              this.changeEmailAddressRequestDto.existingEmailAddressErrorMessage = errorMessage;
+            }
+            if(field=="updatedEmailAddress"){
+              this.changeEmailAddressRequestDto.updatedEmailAddressErrorMessage = errorMessage;
+            }
+          });
+          this.validateEmailAddressLoader = false;
         }else{
-          this.isEmailAddressUpdatedSuccessfully = true;
+          this.isEmailAddressValidatedSuccessfully = true;
         }
-        this.updateEmailAddressLoader = false;
+        
       },error=>{
-        this.updateEmailAddressLoader = false;
+        this.validateEmailAddressLoader = false;
         this.updateEmailAddressResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
       },()=>{
-
+        if(this.isEmailAddressValidatedSuccessfully){
+          this.validateEmailAddressLoader = false;
+          this.changeEmailAddressRequestDto.updateUserProfileLoader = true;
+          
+        }
       });
+  }
+
+  validateExistingEmailAddress(){
+    this.changeEmailAddressRequestDto.isValidExistingEmailAddress = this.referenceService.validateEmailId(this.changeEmailAddressRequestDto.existingEmailAddress);
+    this.changeEmailAddressRequestDto.existingEmailAddressErrorMessage = this.changeEmailAddressRequestDto.isValidExistingEmailAddress ? '' : 'Please enter a valid email address';
+    this.isUpdateButtonDisabled = !this.changeEmailAddressRequestDto.isValidExistingEmailAddress && !this.changeEmailAddressRequestDto.isValidUpdatedEmailAddress;
+  }
+
+  validateUpdatedEmailAddress(){
+    this.changeEmailAddressRequestDto.isValidUpdatedEmailAddress = this.referenceService.validateEmailId(this.changeEmailAddressRequestDto.updatedEmailAddress);
+    this.changeEmailAddressRequestDto.updatedEmailAddressErrorMessage = this.changeEmailAddressRequestDto.isValidUpdatedEmailAddress ? '' : 'Please enter a valid email address';
+    this.isUpdateButtonDisabled = !this.changeEmailAddressRequestDto.isValidExistingEmailAddress && !this.changeEmailAddressRequestDto.isValidUpdatedEmailAddress;
   }
   
 

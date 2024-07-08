@@ -319,7 +319,8 @@ export class AddLeadComponent implements OnInit {
                 self.createdByStages = campaignLeadPipeline.createdByCampaignPipelines.stages;
               }
               self.hasCampaignPipeline = true;
-              if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType) {
+              if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType
+                 || 'ZOHO' === this.activeCRMDetails.createdForActiveCRMType) {
                 self.isCampaignTicketTypeSelected = true;
               }
             } else if (data.statusCode == 404) {
@@ -563,9 +564,8 @@ export class AddLeadComponent implements OnInit {
           this.ngxloading = false;
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
-            if ("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType 
-              || "ZOHO" === this.activeCRMDetails.createdForActiveCRMType
-            ) {
+            if (("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType 
+              || "ZOHO" === this.activeCRMDetails.createdForActiveCRMType) && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
               this.showTicketTypesDropdown = true;
               this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
               if (this.actionType === 'add') {
@@ -575,7 +575,7 @@ export class AddLeadComponent implements OnInit {
                 this.lead.createdByPipelineStageId = 0;
                 this.lead.halopsaTicketTypeId = 0;
               }
-            } else if ("HALOPSA" === this.activeCRMDetails.createdByActiveCRMType) {
+            } else if ("HALOPSA" === this.activeCRMDetails.createdByActiveCRMType && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
               this.showTicketTypesDropdown = true;
               this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
                 (result: any) => {

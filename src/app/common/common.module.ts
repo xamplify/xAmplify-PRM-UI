@@ -191,6 +191,8 @@ import { DomainWhitelistingComponent } from 'app/util/domain-whitelisting/domain
 import { SamlSsoLoginComponent } from 'app/dashboard/saml-sso-login/saml-sso-login.component';
 import { LeadCustomFieldsSettingsComponent } from 'app/dashboard/lead-custom-fields-settings/lead-custom-fields-settings.component';
 import { VendorJourneyFormAnalyticsComponent } from '../util/vendor-journey-form-analytics/vendor-journey-form-analytics.component';
+import { OauthSsoConfigurationComponent } from 'app/dashboard/oauth-sso-configuration/oauth-sso-configuration.component';
+
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -228,7 +230,7 @@ import { VendorJourneyFormAnalyticsComponent } from '../util/vendor-journey-form
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent
 
 	],
 
@@ -266,7 +268,7 @@ import { VendorJourneyFormAnalyticsComponent } from '../util/vendor-journey-form
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent
 
 	]
 

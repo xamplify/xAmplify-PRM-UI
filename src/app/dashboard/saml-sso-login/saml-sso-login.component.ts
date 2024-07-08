@@ -28,6 +28,8 @@ export class SamlSsoLoginComponent implements OnInit {
   formGroupClass = "form-group";
   fromNameDivClass:string =  this.formGroupClass;
   disableSubmitButton = true;
+  attachedMeataData: File;
+  ngxLoading: boolean = false;
   
 
   constructor(private authenticationService: AuthenticationService, private samlSecurityService: SamlSecurityService, 
@@ -39,14 +41,14 @@ export class SamlSsoLoginComponent implements OnInit {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.samlSecurityService.getSaml2DetailsByUserId(this.loggedInUserId).subscribe(result => {
       this.samlSecurityObj = result;
-      this. saveSaml2Security();
+      this.saveSaml2Security();
     });
   }
 
   tabClicked(event: any, percent: number, selectedTab: string) {
     this.tabName = selectedTab;
     if (this.tabName === "tab2") {
-      this. saveSaml2Security();
+      this.saveSaml2Security();
     } 
   }
 
@@ -78,20 +80,28 @@ export class SamlSsoLoginComponent implements OnInit {
       this.validateSubmitButton();
     };
     reader.readAsText(file);
+
+    var fileList: FileList = this.metaDataFile.target.files;
+      if (fileList.length > 0) {
+        this.attachedMeataData = fileList[0];
+      }
   }
 
   submitMetaData() {
-    var fileList: FileList = this.metaDataFile.target.files;
-      if (fileList.length > 0) {
-        var file: File = fileList[0];
-      }
+    if (this.attachedMeataData != undefined) {
       this.samlSecurityObj.loggedInUserId = this.loggedInUserId;
-    this.samlSecurityService.uploadSaml2MetadataFile(file, this.samlSecurityObj)
-    .subscribe(response => {
-        this.customResponse = new CustomResponse('SUCCESS', this.properties.UPLOAD_METADATA_TEXT2, true);
-    }, error => {
-      this.customResponse = new CustomResponse('ERROR', "Error in uploading file", true);
-    });
+      this.ngxLoading = true;
+      this.samlSecurityService.uploadSaml2MetadataFile(this.attachedMeataData, this.samlSecurityObj)
+        .subscribe(response => {
+          this.ngxLoading = false;
+          this.customResponse = new CustomResponse('SUCCESS', this.properties.UPLOAD_METADATA_TEXT2, true);
+        }, error => {
+          this.ngxLoading = false;
+          this.customResponse = new CustomResponse('ERROR', "Error in uploading file", true);
+        });
+    } else {
+      this.customResponse = new CustomResponse('SUCCESS', this.properties.UPLOAD_METADATA_TEXT2, true);
+    }
   }
 
   copyToClipboard(element) {
@@ -112,8 +122,8 @@ export class SamlSsoLoginComponent implements OnInit {
   }
 
   validateSubmitButton() {
-    if(this.samlSecurityObj.identityProviderName !== undefined && this.samlSecurityObj.identityProviderName.length > 0
-      && this.samlSecurityObj.metadata !== undefined && this.samlSecurityObj.metadata.length > 0) {
+    if(this.samlSecurityObj.identityProviderName !== undefined && this.samlSecurityObj.identityProviderName !== null && this.samlSecurityObj.identityProviderName !== ''
+      && this.samlSecurityObj.metadata !== undefined && this.samlSecurityObj.metadata !== null && this.samlSecurityObj.metadata !== '') {
       this.disableSubmitButton = false;
     }
   }

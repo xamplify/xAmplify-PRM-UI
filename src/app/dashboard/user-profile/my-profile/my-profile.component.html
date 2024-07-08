@@ -328,6 +328,16 @@
                                             </a>
                                         </li>
 
+                                        <!-- Oauth SSO Settings-->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'oauthSSOConfiguration'}"
+                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'oauthSSOConfiguration'}"
+                                                (click)="activateTab('oauthSSOConfiguration');clearCustomResponse()">{{properties.oauthSSOConfiguration}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'oauthSSOConfiguration'}"></ng-template>
+                                            </a>
+                                        </li>
+
 
                                         <li *ngIf="authenticationService?.vanityURLEnabled && authenticationService?.module?.showSupportSettingOption && !isLoggedInAsPartner"
                                             [ngClass]="{'active-tab': activeTabName == 'support'}">
@@ -1423,7 +1433,7 @@
                                                     </div>
 
                                                     <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16"
-                                                        *ngIf="!httpRequestLoader.isLoading && iszohoDisplayed">
+                                                        *ngIf="!httpRequestLoader.isLoading">
                                                         <div
                                                             [className]="activeCRMDetails?.type === 'ZOHO'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
                                                             <div class="card-body" style="padding:10px;">
@@ -2178,6 +2188,12 @@
                                             [ngClass]="{'active': activeTabName == 'saml2SSOsettings'}"
                                             *ngIf="showSaml2SSOsettings">
                                             <app-saml-sso-login> </app-saml-sso-login>
+                                        </div>
+
+                                        <!-- Oauth SSO settings -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'oauthSSOConfiguration'}"
+                                         *ngIf="showOauthSSOConfiguration">
+                                            <app-oauth-sso-configuration></app-oauth-sso-configuration>
                                         </div>
 
                                         <!-- Your Templates TAB -->

@@ -174,6 +174,8 @@ export class Properties {
 	dealPipelines = "Deal Pipelines";
 	saml2SSOsettings = "SAML 2.0 SSO Settings";
 	leadFieldSettings = "Lead Fields Settings";
+	oauthSSOConfiguration = "oAuth SSO Settings";
+
 
 	/************XNFR-426**********/
 	leadDealApprove = "Lead Approval/Rejection";
