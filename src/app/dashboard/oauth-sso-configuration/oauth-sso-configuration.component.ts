@@ -32,6 +32,7 @@ export class OauthSsoConfigurationComponent implements OnInit {
   disableSubmitButton = true;
   responseMessage: CustomResponse = new CustomResponse();
   ngxLoading: boolean = false;
+  saveOrUpdateButtonText: String = "Submit";
 
 
   ngOnInit() {
@@ -45,6 +46,9 @@ export class OauthSsoConfigurationComponent implements OnInit {
       this.ngxLoading = false;
       if(result.statusCode == 200) {
         this.oauthSso = result.data;
+        if (this.oauthSso.id !== undefined &&  this.oauthSso.id > 0) {
+          this.saveOrUpdateButtonText = 'Update';
+        }
       }
     }, error => {
       this.ngxLoading = false;
@@ -52,17 +56,17 @@ export class OauthSsoConfigurationComponent implements OnInit {
     });
   }
 
-  saveOauthSsoConfiguration() {
+  saveOrUpdateOauthSsoConfiguration() {
     let self = this;
     self.oauthSso.companyId = self.authenticationService.user.campaignAccessDto.companyId;
     self.oauthSso.createdBy = self.loggedInUserId;
     self.ngxLoading = true;
-    self.oauthSsoService.saveOauthSsoConfiguration(self.oauthSso).subscribe(data => {
-      // this.referenceService.loading(this.httpRequestLoader, false);
+    self.oauthSsoService.saveOrUpdateOauthSsoConfiguration(self.oauthSso).subscribe(data => {
       this.referenceService.goToTop();
       self.ngxLoading = false;
       if (data.statusCode == 200) {
         this.responseMessage = new CustomResponse('SUCCESS', "Details Submitted Succesfully", true);
+        this.saveOrUpdateButtonText = 'Update';
       } else if (data.statusCode == 400) {
         this.responseMessage = new CustomResponse('ERROR', data.message, true);
       }

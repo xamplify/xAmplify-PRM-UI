@@ -16,4 +16,5 @@ export class OauthSso {
     updatedTime: Date;
     updatedBy: number;
     message: string;
+    data: any;
 }

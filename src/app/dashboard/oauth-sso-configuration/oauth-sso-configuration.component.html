@@ -4,9 +4,6 @@
   <div class="portlet box">
     <app-response-message class="pg8" [customResponse]="responseMessage"
       *ngIf="responseMessage.isVisible"></app-response-message>
-    <div style="padding:10px">
-      <label> --- Some text goes here --- </label><br>
-    </div>
 
     <div class="row" style="padding:10px">
       <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
@@ -67,10 +64,11 @@
         <div class="form-group">
           <label class="control-label col-sm-3" style="width: 32%;padding-left: 0px;" >Authorization Endpoint <span
               class="required">*</span>
-            <span class="info-color-xampc">
+            <!-- <span class="info-color-xampc">
               <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
                 aria-hidden="true" title="some text goes here"></i>
-            </span></label>
+            </span> -->
+          </label>
 
           <div class="">
             <input type="text" autocomplete="off" id="authorizationEndpoint" placeholder="Enter Authorization Endpoint"
@@ -97,11 +95,11 @@
       <div class="col-md-12 col-lg-12">
         <div class="form-group">
           <label class="control-label col-sm-3" style="padding-left: 0px;">Token Endpoint <span class="required">*</span>
-            <span class="info-color-xampc">
+            <!-- <span class="info-color-xampc">
               <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
                 aria-hidden="true" title="some text goes here"></i>
-            </span></label>
-
+            </span> -->
+          </label>
           <div class="">
             <input type="text" autocomplete="off" id="tokenEndpoint" placeholder="Enter Token Endpoint"
               class="form-control" [(ngModel)]="oauthSso.tokenEndpoint" [ngModelOptions]="{standalone: true}"
@@ -115,11 +113,11 @@
       <div class="col-md-12 col-lg-12">
         <div class="form-group">
           <label class="control-label col-sm-3" style="padding-left: 0px;">User Info Endpoint <span class="required">*</span>
-            <span class="info-color-xampc">
+            <!-- <span class="info-color-xampc">
               <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
                 aria-hidden="true" title="some text goes here"></i>
-            </span></label>
-
+            </span> -->
+          </label>
           <div class="">
             <input type="text" autocomplete="off" id="userInfoEndpoint" placeholder="Enter User Info Endpoint"
               class="form-control" [(ngModel)]="oauthSso.userInfoEndpoint" [ngModelOptions]="{standalone: true}"
@@ -130,7 +128,7 @@
     </div>
   </div>
   <button type="submit" style="float: right" class="btn btn-primary"
-    (click)="saveOauthSsoConfiguration()">Submit</button>
+    (click)="saveOrUpdateOauthSsoConfiguration()">{{saveOrUpdateButtonText}}</button>
   <!--[disabled]="disableSubmitButton"-->
 
 </div>
