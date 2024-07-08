@@ -1,7 +1,7 @@
 (function (window) {
 	window.__env = window.__env || {};
 
-	window.__env.domainName = "stratappsvendor";
+	window.__env.domainName = "";
 	
 	/*************Local*******************************/
 	window.__env.CLIENT_URL = 'http://localhost:4200/'; 
