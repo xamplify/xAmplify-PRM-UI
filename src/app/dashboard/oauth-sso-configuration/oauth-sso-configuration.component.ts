@@ -15,7 +15,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 })
 export class OauthSsoConfigurationComponent implements OnInit {
 
-  constructor(private authenticationService: AuthenticationService, private oauthSsoService: OauthSsoService, private oauthSso: OauthSso,
+  constructor(private authenticationService: AuthenticationService, private oauthSsoService: OauthSsoService, public oauthSso: OauthSso,
     public referenceService: ReferenceService
   ) { }
 
@@ -81,6 +81,17 @@ export class OauthSsoConfigurationComponent implements OnInit {
   copyToClipboard(element) {
     element.select();
     document.execCommand('copy');
+  }
+
+  selectGrantType(grantType: any) {
+    this.oauthSso.grantType = grantType;
+    // if (this.oauthSso.grantType == 'null') {
+    //   this.fromNameDivClass = this.errorClass;
+    // } else{
+    //   this.fromNameDivClass = this.successClass;
+    // }
+    // this.disableSubmitButton = true;
+    // this.validateSubmitButton();
   }
 
 }

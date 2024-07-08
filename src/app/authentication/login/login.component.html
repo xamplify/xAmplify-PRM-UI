@@ -76,16 +76,19 @@
 			 </ul>
 		  </div>
 		  <div class="login-options login-form m5" *ngIf="authenticationService?.vanityURLEnabled  && vanitySocialProviders?.length">
-			 <h4>Or login with</h4>
+			 <!-- <h4>Or login with</h4> -->
 			 <ul class="social-icons">
 				<ng-container *ngFor="let socialProvider of vanitySocialProviders">
 				   <li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
-					  <a *ngIf="!isPleaseWaitButtonDisplayed" class="" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
+					  <!-- <a *ngIf="!isPleaseWaitButtonDisplayed" class="" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
 					  	<span class="img-child {{socialProvider.iconName}}"></span>
-					  </a>
-					  <span *ngIf="isPleaseWaitButtonDisplayed"  class="disabled" title="{{socialProvider.name}}">
+					  </a> -->
+					  <button *ngIf="!isPleaseWaitButtonDisplayed" class="btn btn-primary pull-left  signin" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
+						Login with Versa SSO
+					  </button>
+					  <!-- <span *ngIf="isPleaseWaitButtonDisplayed"  class="disabled" title="{{socialProvider.name}}">
 						<span class="img-child {{socialProvider.iconName}}"></span>
-					  </span>
+					  </span> -->
 				   </li>
 				</ng-container>
 			 </ul>
