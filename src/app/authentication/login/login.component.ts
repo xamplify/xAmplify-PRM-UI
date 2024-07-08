@@ -364,10 +364,14 @@ bgIMage2:any;
             this.vanityURLService.setVanityURLTitleAndFavIcon();
             if (result.showMicrosoftSSO) {
               this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });
-            }
+            }            
 
-            if (result.showSAML2SSO) {
-              this.vanitySocialProviders.push({ "name": "SAML SSO", "iconName": "sso", "value": "samlsso" });
+            if (result.showVendorSSO) {
+              if (result.vendorSSOType === "oauth") {
+                this.vanitySocialProviders.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "oauthsso" });
+              } else if (result.vendorSSOType === "saml") {
+                this.vanitySocialProviders.push({ "name": "SAML SSO", "iconName": "sso", "value": "samlsso" });
+              }              
             }
             
           }, error => {
@@ -405,7 +409,7 @@ bgIMage2:any;
       }
       let loginUrl = "/" + socialProviderName + "/login";
       if (this.isLoggedInVanityUrl) {
-        if (socialProvider.value === "samlsso") {
+        if (socialProvider.value === "samlsso" || socialProvider.value === "oauthsso") {
           loginUrl = "/" + socialProvider.value + "/login";
           this.router.navigate([loginUrl]);
         } else {
