@@ -220,7 +220,8 @@
   </ng-container>
   <!--Pagination-->
   <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
-    <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findPartnerCompanies($event)"></app-pagination>
+    <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" 
+    (notifyParentDropDown)="findPartnerCompanies($event)" [customDropDown]="customDropDown"></app-pagination>
   </div>
   
 </ng-template>
@@ -346,7 +347,7 @@
   </ng-container>
   <div *ngIf="partnerGroupsPagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
     <app-pagination [pagination]="partnerGroupsPagination" (notifyParent)="navigatePartnerGroups($event)"
-      (notifyParentDropDown)="findPartnerGroups($event)">
+      (notifyParentDropDown)="findPartnerGroups($event)" [customDropDown]="customDropDown">
     </app-pagination>
   </div>
 </ng-template>

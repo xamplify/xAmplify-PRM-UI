@@ -104,6 +104,10 @@ export class CustomLinksUtilComponent implements OnInit {
   partnerIds = [];
   partnerGroupSelected = false;
   sortOption:SortOption = new SortOption();
+  saveButtonText = "Save";
+  updateButtonText = "Update";
+  isAddedAndPublished = false;
+  isUpdatedAndPublished = false;
   /***XNFR-571****/
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
     private xtremandLogger: XtremandLogger, public properties: Properties, public httpRequestLoader: HttpRequestLoader, 
@@ -306,7 +310,11 @@ export class CustomLinksUtilComponent implements OnInit {
       if (result.statusCode === 200) {
         let message = "";
         if(this.moduleType==this.properties.dashboardButtons){
-          message = this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT;
+          if(this.isAddedAndPublished){
+            message = this.properties.VANITY_URL_DB_BUTTON_ADDED_AND_PUBLISHED_SUCCESS_TEXT;
+          }else{
+            message = this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT;
+          }
           this.isDropDownLoading = true;
         }else{
           message = result.message;
@@ -515,7 +523,13 @@ export class CustomLinksUtilComponent implements OnInit {
     this.ngxLoading = true;
     this.vanityURLService.updateCustomLinkDetails(this.customLinkDto,this.moduleType,this.formData).subscribe(result => {
       if (result.statusCode === 200) {
-        this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT, true);
+        let message = "";
+        if(this.isUpdatedAndPublished){
+          message = this.properties.VANITY_URL_DB_BUTTON_UPDATED_AND_PUBLISHED_TEXT;
+        }else{
+          message = this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT;
+        }
+        this.customResponse = new CustomResponse('SUCCESS', message, true);
         this.isDropDownLoading = true;
         this.isAddDashboardBannersDivHidden = true;
         setTimeout(() => {
@@ -650,6 +664,13 @@ export class CustomLinksUtilComponent implements OnInit {
     this.partnerGroupIds = event['partnerGroupIds'];
     this.partnerIds = event['partnerIds'];
     this.partnerGroupSelected = event['partnerGroupSelected'];
+    if(this.partnerGroupIds.length>0 || this.partnerIds.length>0){
+      this.saveButtonText = "Save & Publish";
+      this.isAddedAndPublished = true;
+    }else{
+      this.saveButtonText = "Save";
+      this.isAddedAndPublished = false;
+    }
   }
 
   refresh(){
