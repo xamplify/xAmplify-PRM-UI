@@ -376,6 +376,9 @@ export class Properties {
 	/** XNFR-534 - SAML2 SSO */
 	AUTHENTICATION_FAILURE = "Oops! your authentication has failed, please try again!";
 
+	/* XNFR-603 OAUTH SSO*/
+	OAUTH_SSO_HELP_TEXT1 = "Please fill the following URLs provided by your Identity Provider (IDP) to set up OAuth Single Sign-On (SSO). These URLs facilitate secure authentication and access to user data.";
+	OAUTH_SSO_HELP_TEXT2 = "Make sure to share below Redirect URI with your IDP for proper configuration and ensure all URLs are accurate and accessible for seamless integration with your IDP.";
 
 }
 
