@@ -308,8 +308,6 @@ export class AddLeadComponent implements OnInit {
             this.referenceService.loading(this.httpRequestLoader, false);
             if (data.statusCode == 200) {
               let campaignLeadPipeline = data.data;
-              let ticketTypeIdMap = data.map;
-              self.lead.halopsaTicketTypeId = ticketTypeIdMap.halopsaTicketTypeId;
               if (campaignLeadPipeline.createdForCampaignPipelines != undefined) {
                 self.lead.pipelineId = campaignLeadPipeline.createdForCampaignPipelines.id;
                 self.lead.createdForPipelineId = campaignLeadPipeline.createdForCampaignPipelines.id;
@@ -322,6 +320,8 @@ export class AddLeadComponent implements OnInit {
               self.hasCampaignPipeline = true;
               if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType
                 || 'ZOHO' === this.activeCRMDetails.createdForActiveCRMType) {
+                let ticketTypeIdMap = data.map;
+                self.lead.halopsaTicketTypeId = ticketTypeIdMap.halopsaTicketTypeId;
                 self.isCampaignTicketTypeSelected = true;
               }
             } else if (data.statusCode == 404) {
