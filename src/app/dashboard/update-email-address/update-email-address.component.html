@@ -15,41 +15,50 @@
                   <!--Existing Email Address-->
                   <div class="form-group">
                     <label><strong>Existing Email Address</strong></label>
-                    <input type="email" class="form-control" (input)="validateExistingEmailAddress()" placeholder="Enter Existing Email Address" autocomplete="off" [(ngModel)]="changeEmailAddressRequestDto.existingEmailAddress" [ngModelOptions]="{standalone: true}">
+                    <input type="email" (keydown.enter)="!isUpdateButtonDisabled && updateEmailAddress()" class="form-control" (input)="validateExistingEmailAddress()" placeholder="Enter Existing Email Address" autocomplete="off" [(ngModel)]="changeEmailAddressRequestDto.existingEmailAddress" [ngModelOptions]="{standalone: true}">
                     <p class="required"  *ngIf="changeEmailAddressRequestDto?.existingEmailAddressErrorMessage?.length>0">{{changeEmailAddressRequestDto?.existingEmailAddressErrorMessage}}</p>
                   </div>
                   <!--Updated Email Address--->
                   <div class="form-group">
                     <label><strong>Updated Email Address</strong></label>
-                    <input type="email" class="form-control" (input)="validateUpdatedEmailAddress()" placeholder="Enter New Email Address" autocomplete="off" [(ngModel)]="changeEmailAddressRequestDto.updatedEmailAddress" [ngModelOptions]="{standalone: true}">
+                    <input type="email" (keydown.enter)="!isUpdateButtonDisabled && updateEmailAddress()" class="form-control" (input)="validateUpdatedEmailAddress()" placeholder="Enter New Email Address" autocomplete="off" [(ngModel)]="changeEmailAddressRequestDto.updatedEmailAddress" [ngModelOptions]="{standalone: true}">
                   <p class="required"  *ngIf="changeEmailAddressRequestDto?.updatedEmailAddressErrorMessage?.length>0">{{changeEmailAddressRequestDto?.updatedEmailAddressErrorMessage}}</p>
                   </div>
               </ng-container>
               <!--User Profile Loader---->
               <ng-container *ngIf="changeEmailAddressRequestDto?.updateUserProfileLoader">
-                <div *ngIf="!changeEmailAddressRequestDto?.emailAddressUpdatedSuccessfully" class="alert alert-info" >
-                  <strong><img class="h-25" src="../../../assets/images/loader.gif">Updating User Profile...</strong>
+                <div *ngIf="!changeEmailAddressRequestDto?.emailAddressUpdatedSuccessfully && !changeEmailAddressRequestDto?.emailAddressUpdateError" class="alert alert-info" >
+                  <strong><img class="h-25 mr5" src="../../../assets/images/loader.gif">Updating User Profile...</strong>
                 </div>
                 <div *ngIf="changeEmailAddressRequestDto?.emailAddressUpdatedSuccessfully" class="alert alert-success" >
-                  <strong><img  src="../../../assets/images/launched.png">Email Address Updated Successfully In User Profile Table.</strong>
+                  <strong><img  class="mr5"  src="../../../assets/images/launched.png">Email Address Updated Successfully In User Profile Table.</strong>
+                </div>
+                <div *ngIf="changeEmailAddressRequestDto?.emailAddressUpdateError" class="alert alert-danger" >
+                  <strong><img  class="h-25 mr5"  src="../../../assets/images/event-error.ico">Unable To Update Email Address.Please Contact Support Team.</strong>
                 </div>
               </ng-container>
               <!--Campaign Loader---->
               <ng-container *ngIf="changeEmailAddressRequestDto?.updateCampaignEmailLoader">
-                <div *ngIf="!changeEmailAddressRequestDto?.campaignEmailAddressUpdatedSuccessfully" class="alert alert-info">
-                  <strong><img class="h-25" src="../../../assets/images/launched.png">Updating Campaign Email...</strong>
+                <div *ngIf="!changeEmailAddressRequestDto?.campaignEmailAddressUpdatedSuccessfully && !changeEmailAddressRequestDto?.campaignEmailAddressUpdateError" class="alert alert-info">
+                  <strong><img class="h-25 mr5" src="../../../assets/images/loader.gif">Updating Campaign Email...</strong>
                  </div>
                 <div *ngIf="changeEmailAddressRequestDto?.campaignEmailAddressUpdatedSuccessfully" class="alert alert-success" >
-                  <strong><img  src="../../../assets/images/launched.png">Campaign Email Updated Successfully.</strong>
+                  <strong><img class="mr5" src="../../../assets/images/launched.png">Campaign Email Updated Successfully.</strong>
+                </div>
+                <div *ngIf="changeEmailAddressRequestDto?.campaignEmailAddressUpdateError" class="alert alert-danger" >
+                  <strong><img  class="h-25 mr5"  src="../../../assets/images/event-error.ico">Unable To Update Email Address.Please Contact Support Team.</strong>
                 </div>
               </ng-container>
               <!--Access Token Loader---->
-              <ng-container *ngIf="changeEmailAddressRequestDto?.updateCampaignEmailLoader">
-                <div *ngIf="!changeEmailAddressRequestDto?.campaignEmailAddressUpdatedSuccessfully" class="alert alert-info">
-                  <strong><img class="h-25" src="../../../assets/images/launched.png">Updating Campaign Email...</strong>
+              <ng-container *ngIf="changeEmailAddressRequestDto?.removeAccessTokenLoader">
+                <div *ngIf="!changeEmailAddressRequestDto?.accessTokenRemovedSuccessfully && !changeEmailAddressRequestDto?.accessTokenRemovedError" class="alert alert-info">
+                  <strong><img class="h-25 mr5" src="../../../assets/images/loader.gif">Removing Access Token...</strong>
                  </div>
-                <div *ngIf="changeEmailAddressRequestDto?.campaignEmailAddressUpdatedSuccessfully" class="alert alert-success" >
-                  <strong><img  src="../../../assets/images/launched.png">Campaign Email Updated Successfully.</strong>
+                <div *ngIf="changeEmailAddressRequestDto?.accessTokenRemovedSuccessfully" class="alert alert-success" >
+                  <strong><img class="mr5" src="../../../assets/images/launched.png">Access Token Removed Successfully.</strong>
+                </div>
+                <div *ngIf="changeEmailAddressRequestDto?.accessTokenRemovedError" class="alert alert-danger" >
+                  <strong><img  class="h-25 mr5"  src="../../../assets/images/event-error.ico">Unable To Remove Access Token.Please Contact Support Team.</strong>
                 </div>
               </ng-container>
               
@@ -58,8 +67,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button [disabled]="validateEmailAddressLoader || isUpdateButtonDisabled" class="btn btn-primary" (click)="updateEmailAddress()">Update</button>
-        <button [disabled]="validateEmailAddressLoader" (click)="closeUpdateEmailAddressAccountModal()"  class="btn btn-danger float-right">Close</button>
+        <button *ngIf="changeEmailAddressRequestDto?.displayEmailAddressFields" [disabled]="validateEmailAddressLoader || isUpdateButtonDisabled" class="btn btn-primary" (click)="updateEmailAddress()">Update</button>
+        <button  [disabled]="validateEmailAddressLoader" (click)="closeUpdateEmailAddressAccountModal()"  class="btn btn-danger float-right">Close</button>
       </div>
     </div>
   </div>

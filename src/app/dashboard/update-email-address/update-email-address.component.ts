@@ -2,9 +2,10 @@ import { ChangeEmailAddressRequestDto } from './../models/change-email-address-r
 import { Component, OnInit } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { DashboardService } from '../dashboard.service';
 import { CustomAnimation } from 'app/core/models/custom-animation';
 import { Properties } from 'app/common/models/properties';
+import { SuperAdminServiceService } from '../super-admin-service.service';
+
 @Component({
   selector: 'app-update-email-address',
   templateUrl: './update-email-address.component.html',
@@ -22,13 +23,16 @@ export class UpdateEmailAddressComponent implements OnInit {
   isCampaignEmailAddressUpdatedSuccessfully = false;
   isAccessTokenRemoved = false;
   statusCode = 0;
-  constructor(public referenceService:ReferenceService,public dashboardService:DashboardService,public properties:Properties) { }
+  constructor(public referenceService:ReferenceService,public superAdminService:SuperAdminServiceService,public properties:Properties) { }
 
   ngOnInit() {
   }
 
 
   closeUpdateEmailAddressAccountModal(){
+    if(this.changeEmailAddressRequestDto.isEmailAddressUpdatedSuccessfully){
+       window.location.reload();
+    }
     this.referenceService.closeModalPopup("update-email-address-modal");
     this.changeEmailAddressRequestDto = new ChangeEmailAddressRequestDto();
   }
@@ -38,11 +42,10 @@ export class UpdateEmailAddressComponent implements OnInit {
   }
 
   updateEmailAddress(){
-    this.updateEmailAddressResponse = new CustomResponse();
     this.validateEmailAddressLoader = true;
     this.changeEmailAddressRequestDto.existingEmailAddressErrorMessage = "";
     this.changeEmailAddressRequestDto.updatedEmailAddressErrorMessage = "";
-    this.dashboardService.validateEmailAddressChange(this.changeEmailAddressRequestDto).subscribe(
+    this.superAdminService.validateEmailAddressChange(this.changeEmailAddressRequestDto).subscribe(
       response=>{
         this.statusCode = response.statusCode;
         if(this.statusCode==400){
@@ -58,19 +61,60 @@ export class UpdateEmailAddressComponent implements OnInit {
             }
           });
           this.validateEmailAddressLoader = false;
+          this.isEmailAddressValidatedSuccessfully = false;
         }else{
           this.isEmailAddressValidatedSuccessfully = true;
         }
-        
       },error=>{
         this.validateEmailAddressLoader = false;
         this.updateEmailAddressResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
       },()=>{
         if(this.isEmailAddressValidatedSuccessfully){
-          this.validateEmailAddressLoader = false;
+          this.changeEmailAddressRequestDto.displayEmailAddressFields = false;
           this.changeEmailAddressRequestDto.updateUserProfileLoader = true;
-          
+          this.changeEmailAddressRequestDto.updateCampaignEmailLoader = true;
+          this.changeEmailAddressRequestDto.removeAccessTokenLoader = true;
+          this.validateEmailAddressLoader = false;
+          this.updateEmailAddressInUserProfileTable();
         }
+      });
+  }
+
+  private updateEmailAddressInUserProfileTable() {
+    this.superAdminService.updateEmailAddress(this.changeEmailAddressRequestDto).subscribe(
+      response => {
+        this.changeEmailAddressRequestDto.emailAddressUpdatedSuccessfully = true;
+        this.changeEmailAddressRequestDto.emailAddressUpdateError = false;
+        this.changeEmailAddressRequestDto.isEmailAddressUpdatedSuccessfully = true;
+      }, error => {
+        this.changeEmailAddressRequestDto.emailAddressUpdateError = true;
+        this.changeEmailAddressRequestDto.campaignEmailAddressUpdateError = true;
+        this.changeEmailAddressRequestDto.accessTokenRemovedError = true;
+        this.changeEmailAddressRequestDto.isEmailAddressUpdatedSuccessfully = false;
+      },()=>{
+        this.updateCampaignEmailAddress();
+        this.removeAccessToken();
+      });
+  }
+
+  private removeAccessToken() {
+    this.superAdminService.removeAccessToken(this.changeEmailAddressRequestDto).subscribe(
+      response => {
+        this.changeEmailAddressRequestDto.accessTokenRemovedSuccessfully = true;
+        this.changeEmailAddressRequestDto.accessTokenRemovedError = false;
+      }, error => {
+        this.changeEmailAddressRequestDto.accessTokenRemovedError = true;
+      }
+    );
+  }
+
+  private updateCampaignEmailAddress() {
+    this.superAdminService.updateCampaignEmail(this.changeEmailAddressRequestDto).subscribe(
+      response => {
+        this.changeEmailAddressRequestDto.campaignEmailAddressUpdatedSuccessfully = true;
+        this.changeEmailAddressRequestDto.campaignEmailAddressUpdateError = false;
+      }, error => {
+        this.changeEmailAddressRequestDto.campaignEmailAddressUpdateError = true;
       });
   }
 
@@ -86,6 +130,11 @@ export class UpdateEmailAddressComponent implements OnInit {
     this.isUpdateButtonDisabled = !this.changeEmailAddressRequestDto.isValidExistingEmailAddress && !this.changeEmailAddressRequestDto.isValidUpdatedEmailAddress;
   }
   
+
+  showEmailAddressFields(){
+    this.changeEmailAddressRequestDto = new ChangeEmailAddressRequestDto();
+    this.changeEmailAddressRequestDto.removeLoaders();
+  }
 
   
 }
