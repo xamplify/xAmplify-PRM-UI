@@ -134,7 +134,8 @@
           [selectedPartnershipIds]="customLinkDto?.partnershipIds"
           [selectedTeamMemberIds]="customLinkDto?.partnerIds"
           [isDashboardButtonPublishedEmailNotification]="isDashboardButtonPublishedEmailNotification"
-          (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)">
+          (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)"
+          [customDropDown]="true">
         </app-partner-company-and-groups>
       </div>
       
@@ -143,11 +144,11 @@
         <div class="form-group col-xs-12 col-md-12">
           <button *ngIf="buttonActionType" type="submit" class="button_blue bgcolor-unset"
             [disabled]="!customLinkForm.valid || saving || !isDashboardBannerImageUploaded" (click)="saving=true;save();">
-            <span class="btn btn-primary transition txt_pd-top3">Save</span>
+            <span class="btn btn-primary transition txt_pd-top3">{{saveButtonText}}</span>
           </button>
           <button *ngIf="!buttonActionType" type="submit" class="button_blue bgcolor-unset" 
             [disabled]="!customLinkForm.valid || saving" (click)="saving=true;update()">
-              <span class="btn btn-primary transition txt_pd-top3">Update</span>
+              <span class="btn btn-primary transition txt_pd-top3">{{updateButtonText}}</span>
           </button>
           <button *ngIf="!buttonActionType" type="submit" class="btn Btn-Gray neg_mrg_top4 pos_mar_rgt3" (click)="cancel()">Cancel</button>
         </div>
@@ -204,7 +205,7 @@
               <th class="text-center" *ngIf="moduleType==properties?.dashboardBanners">Display Title</th>
               <th class="text-center" *ngIf="moduleType==properties?.dashboardBanners">Button Text</th>
               <th *ngIf="moduleType==properties?.newsAndAnnouncements">Type</th>
-              <th *ngIf="moduleType==properties?.dashboardButtons" class="text-center">Published</th>
+              <th *ngIf="moduleType==properties?.dashboardButtons && !authenticationService?.module?.isMarketingCompany" class="text-center">Published</th>
               <th class="text-center">Actions</th>
             </tr>
           </thead>
@@ -227,7 +228,7 @@
               <ng-container *ngIf="moduleType==properties?.newsAndAnnouncements">
                 <td>{{item.type}}</td>
               </ng-container>
-              <ng-container *ngIf="moduleType==properties?.dashboardButtons">
+              <ng-container *ngIf="moduleType==properties?.dashboardButtons && !authenticationService?.module?.isMarketingCompany">
                 <td class="text-align-center">
                   <i *ngIf="item?.published" class="fa fa-check success ft-20px"></i>
                   <i *ngIf="!item?.published" class="fa fa-times required ft-20px"></i>

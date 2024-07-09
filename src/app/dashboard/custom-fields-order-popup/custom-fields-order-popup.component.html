@@ -16,9 +16,10 @@
             <thead>
               <tr>
                 <th>
-                  <span class="gridHeader" translate>Name</span>
+                  <span class="gridHeader" translate>Field Name</span>
                 </th>
-                <th class="text-center" translate scope="col">Type</th>
+                <th class="text-center" translate scope="col">Display Name</th>
+                <th class="text-center" translate scope="col">Data Type</th>
               </tr>
             </thead>
             <tbody [dragula]='"customFieldsDragula"' [dragulaModel]='customFieldsList'>
@@ -27,7 +28,13 @@
                   <td>
                     <h4 class="mt5 mb5 f-w-600" translate>
                       <span data-toggle="tooltip" data-placement="bottom"
-                        title="{{customField.name}}"><strong>{{customField.label}}</strong></span>
+                        title="{{customField.label}}"><strong>{{customField.label}}</strong></span>
+                    </h4>
+                  </td>
+                  <td class="text-center">
+                    <h4 class="mt5 mb5 f-w-600" translate>
+                      <span data-toggle="tooltip" data-placement="bottom"
+                        title="{{customField.displayName}}"><strong>{{customField.displayName|slice:0:35}}</strong><span *ngIf="customField.displayName.length>35">...</span></span>
                     </h4>
                   </td>
                   <td class="text-center">
