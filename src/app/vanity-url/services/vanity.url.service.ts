@@ -204,7 +204,7 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
 }
 /**** XNFR-416 *****/
   isVanityURLEnabled() {
-   let url = window.location.hostname;
+    let url = window.location.hostname;
     let isLocalHost = this.envService.SERVER_URL.indexOf('localhost')>-1 && 
     this.envService.CLIENT_URL.indexOf('localhost')>-1;
     if(isLocalHost){
