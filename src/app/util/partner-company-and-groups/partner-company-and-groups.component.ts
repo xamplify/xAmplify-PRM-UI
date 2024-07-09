@@ -84,6 +84,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	isDashboardButtonsModule = false;
 	isEmailNotSentNotificationDisplayed = false;
 	/****XNFR-571****/
+	@Input()customDropDown = false;
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public landingPageService: LandingPageService,
 		 public utilService: UtilService, public userService: UserService,public callActionSwitch:CallActionSwitch) {
@@ -91,6 +92,10 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	}
 
 	ngOnInit() {
+		if(this.customDropDown){
+			this.pagination.maxResults = 4;
+			this.partnerGroupsPagination.maxResults = 4;
+		}
 		this.isDamModule = this.moduleName=="dam";
 		this.isDashboardButtonsModule = this.moduleName==this.properties.dashboardButtons;
 		if(this.isDamModule){

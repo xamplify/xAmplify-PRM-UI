@@ -205,7 +205,9 @@ export class Properties {
 	/****************** Vanity Relates *********************/
 	VANITY_URL_ERROR1 = "You are not associated to vendor company";
 	VANITY_URL_DB_BUTTON_SUCCESS_TEXT = "Button added successfully";
+	VANITY_URL_DB_BUTTON_ADDED_AND_PUBLISHED_SUCCESS_TEXT = "Button added & published successfully";
 	VANITY_URL_DB_BUTTON_UPDATE_TEXT = "Button updated successfully";
+	VANITY_URL_DB_BUTTON_UPDATED_AND_PUBLISHED_TEXT = "Button updated & published successfully";
 	VANITY_URL_DB_BUTTON_DELETE_TEXT = "Button deleted successfully";
 	VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT = "Button title already exists";
 	VANITY_URL_ET_SUCCESS_TEXT = "Email Template updated successfully";
