@@ -41,7 +41,7 @@ export class SearchableDropdownComponent implements OnInit {
 
   getSelectedDropDownData(event:any){
     let selectedDropDownInfo = event.itemData;
-    this.accountChange.emit(selectedDropDownInfo);
+    this.accountChange.emit(selectedDropDownInfo.id);
     this.searchableDropdownEventEmitter.emit(selectedDropDownInfo);
   }
 
