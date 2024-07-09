@@ -84,14 +84,15 @@ export class OauthSsoConfigurationComponent implements OnInit {
       this.referenceService.goToTop();
       self.ngxLoading = false;
       if (data.statusCode == 200) {
-        this.responseMessage = new CustomResponse('SUCCESS', "Details Submitted Succesfully", true);
-        this.saveOrUpdateButtonText = 'Update';
+        self.responseMessage = new CustomResponse('SUCCESS', "Details Submitted Succesfully", true);
+        self.saveOrUpdateButtonText = 'Update';
+        self.getOauthSsoConfigurationDetails();
       } else if (data.statusCode == 400) {
-        this.responseMessage = new CustomResponse('ERROR', data.message, true);
+        self.responseMessage = new CustomResponse('ERROR', data.message, true);
       }
     },
     error => {
-      this.ngxLoading = false;
+      self.ngxLoading = false;
           console.log(error);
     },
     () => { });
