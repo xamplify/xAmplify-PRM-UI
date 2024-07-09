@@ -664,12 +664,23 @@ export class CustomLinksUtilComponent implements OnInit {
     this.partnerGroupIds = event['partnerGroupIds'];
     this.partnerIds = event['partnerIds'];
     this.partnerGroupSelected = event['partnerGroupSelected'];
-    if(this.partnerGroupIds.length>0 || this.partnerIds.length>0){
+    let isPartnerGroupSelected = this.partnerGroupIds!=null && this.partnerGroupIds!=undefined && this.partnerGroupIds.length>0;
+    let isPartnerIdSelected = this.partnerIds!=null && this.partnerIds!=undefined && this.partnerIds.length>0;
+    if(isPartnerGroupSelected || isPartnerIdSelected){
       this.saveButtonText = "Save & Publish";
       this.isAddedAndPublished = true;
+      if(this.customLinkDto.published){
+        this.updateButtonText = "Update";
+        this.isUpdatedAndPublished = false;
+      }else{
+        this.updateButtonText = "Update & Publish";
+        this.isUpdatedAndPublished = true;
+      }
     }else{
       this.saveButtonText = "Save";
       this.isAddedAndPublished = false;
+      this.updateButtonText = "Update";
+      this.isUpdatedAndPublished = false;
     }
   }
 

@@ -26,7 +26,8 @@ export class CustomLinkDto {
     partnerIds = [];
     partnershipIds = [];
     partnerGroupSelected = false;
-     /****XNFR-571***/
+    /****XNFR-571***/
+    published = false;
 
 
 }
