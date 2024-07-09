@@ -52,3 +52,11 @@
 .cw {
   width: 1%;
 }
+.px-5{
+  padding: 0 5px;
+}
+@media screen and (max-width:578px) {
+  .table-responsive>.table-bordered {
+    border: 1px solid #ddd;
+}
+}

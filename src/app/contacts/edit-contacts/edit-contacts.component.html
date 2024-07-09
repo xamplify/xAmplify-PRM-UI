@@ -70,7 +70,7 @@
 					</div>
 					<div class="tab-pane active">
 						<!-- BEGIN FILTER -->
-						<div class="portlet light m0" style="padding-bottom: 5px !important;">
+						<div class="portlet light m0 mb10" style="padding-bottom: 5px !important;">
 							<div>
 								<div class="page-breadcrumb">
 									<span class="col-xs-6 col-md-6 pl0">
@@ -493,7 +493,7 @@
 															(click)="addContactModalOpen()"
 															[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9 || ((masterContactListSync && !this.isPartnerUserList)|| (contactsCompanyListSync  && !this.isPartnerUserList))"
 															translate>
-															<span class="btn Btn-Green transition txt_pd-top3">One at a
+															<span class="btn Btn-Green transition txt_pd-top3 btn-copy">One at a
 																Time<i class="fa fa-plus"
 																	style="font-size: 12px; margin-left: 5px;"
 																	aria-hidden="true"></i></span>
@@ -506,7 +506,7 @@
 																[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9 || ((masterContactListSync && !this.isPartnerUserList)||  (contactsCompanyListSync  && !this.isPartnerUserList))"
 																(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);"
 																translate>
-																<span class="btn Btn-Green transition txt_pd-top3">Copy
+																<span class="btn Btn-Green transition txt_pd-top3 btn-copy">Copy
 																	List From
 																	ClipBoard<i class="fa fa-clipboard"
 																		aria-hidden="true"
@@ -520,7 +520,7 @@
 																translate>
 																<button class="button bgcolor-unset">
 																	<span
-																		class="btn Btn-Green transition txt_pd-top3">Upload
+																		class="btn Btn-Green transition txt_pd-top3 btn-copy">Upload
 																		CSV <i class="fa fa-upload" aria-hidden="true"
 																			style="font-size: 12px; margin-left: 5px;"></i></span>
 																	<input type="file" ng2FileSelect class="upload"
@@ -636,7 +636,7 @@
 												</div>
 												<button class=" col-sm-3 btn button bgcolor-unset p0" type="button"
 													(click)="clipboardShowPreview()" translate><span
-														class="btn Btn-Green transition verify_text txt_pd-top3">VERIFY
+														class="btn Btn-Green transition verify_text">VERIFY
 														DATA</span></button>
 											</div>
 											<div class="col-sm-9">
@@ -1960,7 +1960,7 @@
 				[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 			<div class="modal-footer">
 				<button type="submit" class="button bgcolor-unset" (click)="validatePartners()" translate><span
-						class="btn Btn-Green transition">Continue</span></button>
+						class="btn Btn-Green transition btn-copy">Continue</span></button>
 				<button type="submit" class="btn Btn-Gray neg_mrg_top4" (click)="closeAssignContactAndMdfAmountPopup()"
 					translate>Close</button>
 			</div>

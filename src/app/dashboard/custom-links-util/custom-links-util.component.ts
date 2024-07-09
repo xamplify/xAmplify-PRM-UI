@@ -254,6 +254,8 @@ export class CustomLinksUtilComponent implements OnInit {
     this.partnerGroupIds = [];
     this.partnerIds = [];
     this.partnerGroupSelected = false;
+    $('#parnterGroupsHeaderCheckBox').prop('checked',false);
+    $(".pointer.checkBox_shadow").prop('checked',false);
   }
 
   findLinks(pagination: Pagination) {

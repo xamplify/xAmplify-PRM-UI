@@ -1179,7 +1179,7 @@ input#copy-link {
 .tracks-bg-color {
   background-color: rgb(255 255 255 / 31%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px); */
 }
 .portlet.light,
 .feature-img {
@@ -2043,7 +2043,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   color:#fff !important;
 }
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected,
+.mix-filter li.emailtemplate-selected,.mix-filter li.filter-box-selected,
 .mix-filter li.active {
   /* background: rgba(16 18 27 / 40%) !important; */
   background-color: #0276FF !important;
@@ -3277,7 +3277,7 @@ span.btn.btn-primary.transition.merge_tag_text{
 .pd_lft8{
   padding-left: 8px !important;
 }
-.pd_top0{
+.pd_top0,.btn-copy{
   padding-top: 0px !important;
 }
 .note_card_align{
@@ -4264,3 +4264,6 @@ div#add-form-designs {
 .modal-footer {
   padding: 14px;
 }
+.integration-ribbon{
+  left:-5px!important;
+ }

@@ -249,16 +249,16 @@
                               <br>
                               <div class="d-flex">
                                  <button type="button" class="pull-right btn-sm button_blue bgcolor-unset email-tempbtn" (click)="openEmailTemplateInNewTab(campaign)">
-                                    <span class="btn btn-primary transition txt_pd-top3 prev-btn"><i class="fa fa-eye"></i> Preview</span> 
+                                    <span class="btn btn-primary transition prev-btn"><i class="fa fa-eye"></i> Preview</span> 
                                  </button>
                                  <!--XNFR-541-->
-                                  <button type="button" class="pull-right btn-sm button_blue bgcolor-unset email-tempbtn" (click)="downloadAsImage(campaign)">
-                                    <span class="btn btn-primary transition txt_pd-top3 prev-btn"><i class="fa fa-picture-o"></i> Download</span> 
+                                  <button type="button" class="pull-right btn-sm button_blue bgcolor-unset email-tempbtn ml-5" (click)="downloadAsImage(campaign)">
+                                    <span class="btn btn-primary transition prev-btn"><i class="fa fa-picture-o"></i> Download</span> 
                                  </button> 
                                  <!--XNFR-541-->
-                                 <button *ngIf="campaign?.emailTemplate?.editPartnerTemplate"  type="button" class="pull-right btn-sm button_blue ml-5 bgcolor-unset" style="margin-right: 6px"
+                                 <button *ngIf="campaign?.emailTemplate?.editPartnerTemplate"  type="button" class="pull-right btn-sm button_blue ml-5 bgcolor-unset email-tempbtn" style="margin-right: 6px"
                                     (click)="editPartnerTemplate()">
-                                    <span  class="btn btn-primary transition txt_pd-top3 prev-btn"><i class="fa fa-edit"></i> Edit
+                                    <span  class="btn btn-primary transition prev-btn"><i class="fa fa-edit"></i> Edit
                                     </span>
                                  </button>
                               </div>

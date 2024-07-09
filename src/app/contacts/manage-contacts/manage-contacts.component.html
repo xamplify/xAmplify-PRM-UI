@@ -791,7 +791,7 @@
                                  </table>
                               </div>
                            </section>
-                           <div class="row mix-grid GridViewrowPaddings aligntowbtns" [hidden]="isListView"
+                           <div class="row mix-grid GridViewrowPaddings" [hidden]="isListView"
                               [ngStyle]="{'margin-top' : isListView ? '-5px' : ''}"
                               *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
                               <div *ngFor="let contactList of pagination.pagedItems"
