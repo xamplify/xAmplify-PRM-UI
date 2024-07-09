@@ -262,6 +262,8 @@ export class CustomLinksUtilComponent implements OnInit {
     $(".pointer.checkBox_shadow").prop('checked',false);
     this.saveButtonText = "Save";
     this.updateButtonText = "Update";
+    this.isAddedAndPublished = false;
+    this.isUpdatedAndPublished = false;
   }
 
   findLinks(pagination: Pagination) {
