@@ -553,11 +553,21 @@ export class AddLeadComponent implements OnInit {
       this.isValid = false;
       this.errorMessage = `Please fill ${displayName} field`;
     } else if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.regularExpressions.EMAIL_ID_PATTERN.test(this.lead.email)) {
+      this.leadCustomFields.forEach(field => {
+        if (field.labelId === 'email') {
+          displayName = field.displayName;
+        }
+      });
       this.isValid = false;
-      this.errorMessage = "Please fill Valid Email Id";
+      this.errorMessage = `Please fill Valid ${displayName} Id`;
     } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)) {
+      this.leadCustomFields.forEach(field => {
+        if (field.labelId === 'website') {
+          displayName = field.displayName;
+        }
+      });
       this.isValid = false;
-      this.errorMessage = "Please fill Valid Website";
+      this.errorMessage = `Please fill Valid ${displayName}`;
     }
 
     if (this.isValid) {
