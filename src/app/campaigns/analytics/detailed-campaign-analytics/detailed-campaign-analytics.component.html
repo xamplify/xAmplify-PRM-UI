@@ -360,21 +360,21 @@
                            </div>
                            <div>
                               <span class="camp-title"
-                                 *ngIf="((authenticationService.isOrgAdmin() && campaign?.channelCampaign) || authenticationService.isVendorPartner())|| authenticationService.isVendor() ">
+                                 *ngIf="(authenticationService.isOrgAdmin() && campaign?.channelCampaign) || ((authenticationService.isVendorPartner() && !authenticationService.isOrgAdmin()) || authenticationService.isVendor() || (authenticationService?.module?.isTeamMember && campaign?.channelCampaign))">
                                  {{ 'Group Info' }}
                               </span>
                               <span class="camp-title"
-                                 *ngIf="((!authenticationService.isVendor() && !campaign?.channelCampaign)  && authenticationService.isOrgAdmin() || authenticationService.isOnlyPartner() && !campaign?.oneClickLaunch)">
+                                 *ngIf="((!authenticationService.isVendor() && !campaign?.channelCampaign)  && authenticationService.isOrgAdmin() || authenticationService.isOnlyPartner() && !campaign?.oneClickLaunch) || (authenticationService?.module?.isTeamMember  && !campaign?.channelCampaign)">
                                  {{ 'List Info' }}
                               </span>
                            </div>
                            <div class="camp-number">
                               <strong class="m0 StongTextdc"
-                                 *ngIf="((!authenticationService.isVendor() && !campaign?.channelCampaign)  && authenticationService.isOrgAdmin() || authenticationService.isOnlyPartner() && !campaign?.oneClickLaunch)">{{
+                                 *ngIf="((!authenticationService.isVendor() && !campaign?.channelCampaign)  && authenticationService.isOrgAdmin() || authenticationService.isOnlyPartner() && !campaign?.oneClickLaunch) || (authenticationService?.module?.isTeamMember  && !campaign?.channelCampaign)">{{
                                  campaingContactLists?.length }}
                                  List(s)</strong>
                               <strong class="m0 StongTextdc"
-                                 *ngIf="((authenticationService.isOrgAdmin() && campaign?.channelCampaign )|| authenticationService.isVendorPartner()) || authenticationService.isVendor() ">{{
+                              *ngIf="(authenticationService.isOrgAdmin() && campaign?.channelCampaign) || ((authenticationService.isVendorPartner() && !authenticationService.isOrgAdmin()) || authenticationService.isVendor() || (authenticationService?.module?.isTeamMember && campaign?.channelCampaign))">{{
                                  campaingContactLists?.length }}
                                  Group(s)</strong>
                               <strong class="m0" *ngIf="campaign?.oneClickLaunch">{{ campaingContactLists?.length }}
