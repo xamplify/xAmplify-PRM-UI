@@ -30,6 +30,7 @@ export class CampaignAnalyticsSettingsComponent implements OnInit {
     this.myProfileService.findCampaignAnalyticsSettings().subscribe(
       response=>{
         this.campaignAnalyticsSettingsDto.campaignAnalyticsSettingsEnabled = response.data;
+        this.loading = false;
       },error=>{
         this.campaignAnalyticsSettingsDto = new CampaignAnalyticsSettingsDto();
         this.loading = false;
