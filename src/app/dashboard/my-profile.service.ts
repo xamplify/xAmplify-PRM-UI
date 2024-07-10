@@ -11,12 +11,13 @@ export class MyProfileService {
   constructor(private authenticationService:AuthenticationService) { }
 
   updateCampaignAnalyticsSettings(campaignAnalyticsSettingsDto:CampaignAnalyticsSettingsDto){
+    campaignAnalyticsSettingsDto.loggedInUserId = this.authenticationService.getUserId();
     const url = this.myProfileUrl + 'updateCampaignAnalyticsSettings?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url,campaignAnalyticsSettingsDto);
   }
 
   findCampaignAnalyticsSettings(){
-    const url = this.myProfileUrl + 'updateCampaignAnalyticsSettings/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
+    const url = this.myProfileUrl + 'findCampaignAnalyticsSettings/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callGetMethod(url,);
   }
 

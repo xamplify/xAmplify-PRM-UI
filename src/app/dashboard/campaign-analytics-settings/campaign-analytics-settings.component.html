@@ -1,6 +1,5 @@
 <app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
-<app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-</app-response-message>
+<app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 <div *ngIf="!loading">
   <div class="portlet light">
     <h4 class="bold-font-weight">Turn Campaign Analytics on or off
@@ -9,8 +8,13 @@
     <div>
       <h5 class="bold-font-weight h5-custom-font">Enabling this option will result in a 15-second delay for loading the analytics:
         <br><br>
-        <app-custom-ui-switch [customSwitch]="isCampaignAnalyticsSettingsEnabled" [tooltipMessage]="Sravan" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
+        <app-custom-ui-switch [customSwitch]="campaignAnalyticsSettingsDto?.campaignAnalyticsSettingsEnabled" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
       </h5>
     </div>
+  </div>
+  <!--Update Button-->
+  <div id="right">
+    <button type="button" class="button_blue bgcolor-unset" translate (click)="updateCampaignAnalyticsSettingsOption()">
+      <span class="btn btn-primary transition txt_pd-top3">Update</span></button>
   </div>
 </div>
