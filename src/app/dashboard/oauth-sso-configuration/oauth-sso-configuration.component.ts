@@ -44,6 +44,7 @@ export class OauthSsoConfigurationComponent implements OnInit {
   tokenEndpointDivClass: string;
   userInfoEndpointDivClass: string;
   grantTypeDivClass: string;
+  authenticationServiceNameDivClass: string;
   clientIdError: boolean = true;
   clientSecretIdError: boolean = true;
   authorizationEndpointError: boolean = true;
@@ -52,6 +53,7 @@ export class OauthSsoConfigurationComponent implements OnInit {
   userInfoEndpointError: boolean = true;
   grantTypeError: boolean = true;
   disableSubmitButton: boolean = true;
+  authenticationServiceNameError: boolean = true;
 
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -109,8 +111,8 @@ export class OauthSsoConfigurationComponent implements OnInit {
   }
 
   validateField(fieldName: string) {
-    var errorClass = "form-group has-error has-feedback";
-    var successClass = "form-group has-success has-feedback";
+    var errorClass = "form-group has-error";
+    var successClass = "form-group has-success";
     if ("clientId" == fieldName) {
       this.oauthSso.clientId = $.trim(this.oauthSso.clientId);
       if (this.oauthSso.clientId.length > 0) {
@@ -174,13 +176,22 @@ export class OauthSsoConfigurationComponent implements OnInit {
         this.grantTypeError = true;
         this.grantTypeDivClass = errorClass;
       } 
-    }
+    } else if ("authenticationServiceName" == fieldName) {
+      this.oauthSso.authenticationServiceName = $.trim(this.oauthSso.authenticationServiceName);
+      if (this.oauthSso.authenticationServiceName.length > 0) {
+        this.authenticationServiceNameError = false;
+        this.authenticationServiceNameDivClass = successClass;
+      } else {
+        this.authenticationServiceNameError = true;
+        this.authenticationServiceNameDivClass = errorClass;
+      }
+    } 
     this.validateSubmitButton();
   }
 
   validateSubmitButton() {
     if (!this.clientIdError && !this.clientSecretIdError && !this.authorizationEndpointError && !this.scopeError
-      && !this.userInfoEndpointError && !this.tokenEndpointError && !this.grantTypeError) {
+      && !this.userInfoEndpointError && !this.tokenEndpointError && !this.grantTypeError && !this.authenticationServiceNameError) {
       this.disableSubmitButton = false;
     } else if (this.oauthSso.clientId !== undefined && this.oauthSso.clientId !== null && this.oauthSso.clientId !== '' && 
       this.oauthSso.clientSecretId !== undefined && this.oauthSso.clientSecretId !== null && this.oauthSso.clientSecretId !== '' &&
@@ -188,7 +199,8 @@ export class OauthSsoConfigurationComponent implements OnInit {
       this.oauthSso.authorizationEndpoint !== undefined && this.oauthSso.authorizationEndpoint !== null && this.oauthSso.authorizationEndpoint !== '' &&
       this.oauthSso.tokenEndpoint !== undefined && this.oauthSso.tokenEndpoint !== null && this.oauthSso.tokenEndpoint !== '' &&
       this.oauthSso.userInfoEndpoint !== undefined && this.oauthSso.userInfoEndpoint !== null && this.oauthSso.userInfoEndpoint !== '' &&
-      this.oauthSso.scope !== undefined && this.oauthSso.scope !== null && this.oauthSso.scope !== '') {
+      this.oauthSso.scope !== undefined && this.oauthSso.scope !== null && this.oauthSso.scope !== '' &&
+      this.oauthSso.authenticationServiceName !== undefined &&  this.oauthSso.authenticationServiceName !== null && this.oauthSso.authenticationServiceName !== '') {
       this.disableSubmitButton = false;
     } else {
       this.disableSubmitButton = true;

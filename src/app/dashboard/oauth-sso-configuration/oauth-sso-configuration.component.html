@@ -24,8 +24,26 @@
     </div>
 
     <div class="row" style="padding:10px">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="form-group">
+          <label class="control-label col-sm-3" style="padding-left: 0px;width: 67%;">Authentication Service Name<span class="required">*</span>
+            <span class="info-color-xampc">
+              <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
+                aria-hidden="true" title="The user-facing display name for this service. Maximum of 20 characters allowed"></i>
+            </span>
+          </label>
+          <div class="{{authenticationServiceNameDivClass}}">
+            <input type="text" autocomplete="off" id="authenticationServiceName" placeholder="Enter Authentication Service Name"
+              class="form-control" [(ngModel)]="oauthSso.authenticationServiceName" [ngModelOptions]="{standalone: true}"
+              name="authenticationServiceName" maxlength="20" (input)="validateField('authenticationServiceName')">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="padding:10px">
       <div class="col-md-12 col-lg-12">
-        <div class="form-group"> <!-- [attr.class]="grantTypeDivClass"-->
+        <div class="form-group" [attr.class]="grantTypeDivClass">
           <label class="control-label col-sm-3" style="padding-left: 0px;">Grant Type <span class="required"> <strong>*</strong></span></label>
           <span>
             <select class="form-control depth-shadow" [(ngModel)]="oauthSso.grantType" placeholder="grantType"
@@ -44,7 +62,7 @@
       <div class="col-md-12 col-lg-12">
         <div class="form-group">
           <label class="control-label col-sm-3" style="padding-left: 0px;">Client Id <span class="required">*</span></label>
-          <div> <!--class="{{clientIdDivClass}}"-->
+          <div class="{{clientIdDivClass}}">
             <input type="text" autocomplete="off" id="clientId" placeholder="Enter Client Id" class="form-control"
               [(ngModel)]="oauthSso.clientId" [ngModelOptions]="{standalone: true}" name="clientId" (input)="validateField('clientId')"
               maxlength="255">
@@ -56,7 +74,7 @@
       <div class="col-md-12 col-lg-12">
         <div class="form-group">
           <label class="control-label col-sm-3" style="padding-left: 0px;">Client Secret Id <span class="required">*</span></label>
-          <div> <!-- class="{{clientSecretIdDivClass}}"-->
+          <div class="{{clientSecretIdDivClass}}">
             <input type="text" autocomplete="off" id="clientSecretId" placeholder="Enter Client Secret Id"
               class="form-control" [(ngModel)]="oauthSso.clientSecretId" [ngModelOptions]="{standalone: true}"
               name="clientSecretId" maxlength="255" (input)="validateField('clientSecretId')">
@@ -77,7 +95,7 @@
             </span>
           </label>
 
-          <div> <!--class="{{authorizationEndpointDivClass}}"-->
+          <div class="{{authorizationEndpointDivClass}}">
             <input type="text" autocomplete="off" id="authorizationEndpoint" placeholder="Enter Authorization Endpoint"
               class="form-control" [(ngModel)]="oauthSso.authorizationEndpoint" [ngModelOptions]="{standalone: true}"
               name="authorizationEndpoint" maxlength="255" (input)="validateField('authorizationEndpoint')">
@@ -89,8 +107,13 @@
     <div class="row" style="padding:10px">
       <div class="col-md-12 col-lg-12">
         <div class="form-group">
-          <label class="control-label col-sm-3" style="padding-left: 0px;">Scope <span class="required">*</span></label>
-          <div> <!-- class="{{scopeDivClass}}"-->
+          <label class="control-label col-sm-3" style="padding-left: 0px;">Scope <span class="required">*</span>
+            <span class="info-color-xampc">
+              <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
+                aria-hidden="true" title="Scope should be space seperated"></i>
+            </span>
+          </label>
+          <div class="{{scopeDivClass}}">
             <input type="text" autocomplete="off" id="scope" placeholder="Enter Scope" class="form-control"
               [(ngModel)]="oauthSso.scope" [ngModelOptions]="{standalone: true}" name="scope" maxlength="255" (input)="validateField('scope')">
           </div>
@@ -107,7 +130,7 @@
                 aria-hidden="true" title=" Token Endpoint in OAuth SSO is where authorization codes are exchanged for access tokens. Enter the URL provided by your identity provider (IDP) for token exchange and secure API access."></i>
             </span>
           </label>
-          <div> <!-- class="{{tokenEndpointDivClass}}"-->
+          <div class="{{tokenEndpointDivClass}}">
             <input type="text" autocomplete="off" id="tokenEndpoint" placeholder="Enter Token Endpoint"
               class="form-control" [(ngModel)]="oauthSso.tokenEndpoint" [ngModelOptions]="{standalone: true}"
               name="tokenEndpoint" maxlength="255" (input)="validateField('tokenEndpoint')">
@@ -126,7 +149,7 @@
                 Enter the URL provided by your identity provider (IDP) for accessing user information."></i>
             </span>
           </label>
-          <div> <!-- class="{{userInfoEndpointDivClass}}"-->
+          <div class="{{userInfoEndpointDivClass}}">
             <input type="text" autocomplete="off" id="userInfoEndpoint" placeholder="Enter User Info Endpoint"
               class="form-control" [(ngModel)]="oauthSso.userInfoEndpoint" [ngModelOptions]="{standalone: true}"
               name="userInfoEndpoint" maxlength="255" (input)="validateField('userInfoEndpoint')">
