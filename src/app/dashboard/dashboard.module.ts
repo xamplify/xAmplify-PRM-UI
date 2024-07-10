@@ -102,16 +102,13 @@ import { UpdatePasswordComponent } from './super-admin/update-password/update-pa
 import { AddVendorLogosComponent } from 'app/util/add-vendor-logos/add-vendor-logos.component';
 import { SupportAccountUsersComponent } from './support-account-users/support-account-users.component';
 import { IntegrationSettingsPopupComponent } from './integration-settings-popup/integration-settings-popup.component';
-import { FormsModule } from 'app/forms/forms.module';
 import { QuickLinksComponent } from './quick-links/quick-links.component';
 import { UpdateEmailAddressComponent } from './update-email-address/update-email-address.component';
 import { IntegrationDetailsComponent } from './integration-details/integration-details.component';
 import { CustomFieldsOrderPopupComponent } from './custom-fields-order-popup/custom-fields-order-popup.component';
 import { SuperAdminServiceService } from './super-admin-service.service';
 import { CampaignAnalyticsSettingsComponent } from './campaign-analytics-settings/campaign-analytics-settings.component';
-
-
-
+import { MyProfileService } from './my-profile.service';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule ],
@@ -197,6 +194,7 @@ import { CampaignAnalyticsSettingsComponent } from './campaign-analytics-setting
 
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
-    providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,SuperAdminServiceService]
+    providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,
+        SuperAdminServiceService,MyProfileService]
 })
 export class DashboardModule { }

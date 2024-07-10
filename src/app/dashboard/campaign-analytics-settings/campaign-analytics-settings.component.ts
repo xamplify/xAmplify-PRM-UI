@@ -1,7 +1,9 @@
+import { CampaignAnalyticsSettingsDto } from './../models/campaign-analytics-settings-dto';
 import { Component, OnInit } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { MyProfileService } from '../my-profile.service';
 
 CustomResponse
 @Component({
@@ -14,11 +16,17 @@ export class CampaignAnalyticsSettingsComponent implements OnInit {
   loading = false;
   customResponse: CustomResponse = new CustomResponse();
   isCampaignAnalyticsSettingsEnabled = false;
-  constructor(public authenticationService:AuthenticationService,private referenceService:ReferenceService) { }
+  campaignAnalyticsSettingsDto:CampaignAnalyticsSettingsDto = new CampaignAnalyticsSettingsDto();
+  constructor(public authenticationService:AuthenticationService,private referenceService:ReferenceService,private myProfileService:MyProfileService) { }
 
   ngOnInit() {
   }
 
+  findCampaignAnalyticsSettingsOption(){
+    
+  }
+
   customUiSwitchEventReceiver(event:any){
+    
   }
 }
