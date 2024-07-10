@@ -1986,7 +1986,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected {
+.mix-filter li.emailtemplate-selected,.mix-filter li.filter-box-selected{
   background: #0276FF !important;
   box-shadow: none !important;
 }
@@ -2113,8 +2113,11 @@ a.title.padding_bottom.text-color.content-bg{
   background:none !important;
   border: none !important;
 }
-.search-box-item-clear {
-  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+.search-box-item-clear,
+.btn-group button.glyphicon.glyphicon-remove.search-box-item-clear {
+  background: #f1f3fad4 !important;
+  opacity: 1;
+  margin: -1px 4px 2px 2px;
 }
 i.IconCustomization:hover {
   background-color: #22313a !important;
@@ -2466,7 +2469,7 @@ span.input-group-btn {
 }
 button.glyphicon.glyphicon-remove.search-box-item-clear {
   box-shadow: none !important;
-  background: none !important;
+  /* background: none !important; */
   border: none !important;
 }
 .angle-down {
@@ -3318,7 +3321,7 @@ span.btn.Btn-Green.transition.txt_pd-top3{
 .pd_lft8{
   padding-left: 8px !important;
 }
-.pd_top0{
+.pd_top0,span.btn.Btn-Green.transition.txt_pd-top3.btn-copy{
   padding-top: 0px !important;
 }
 .note_card_align{
@@ -4006,11 +4009,11 @@ button.btn.Btn-Green.float-left.mobileBottomPa.responsiveBtnCU:hover {
 .mrg_lft0{
   margin-left: 0px !important;
 }
-li.filter.filter-box-selected{
+/* li.filter.filter-box-selected{
   background: linear-gradient(0deg, #06beb8 0, #0c86cc 100%) !important;
   box-shadow: none !important;
   color: #fff !important;
-}
+} */
 .list_view_deal{
   margin-right: 6px !important;
   margin-top: -4px !important;
@@ -4360,3 +4363,5 @@ a.title.padding_bottom.text-color.content-bg.m0, .col-md-6.col-lg-6.track-title.
 button#cancel_button, button.button_blue.bgcolor-unset.p0.btn-transitions.mrgt1-2 {border-radius: 3px !important;}
 /* button.button_blue.bgcolor-unset.pd_top0{border-radius: 5px !important;} */
 .mix-filter li.emailtemplate-selected{color:#fff;}
+/***** Sudha Sri(01-07-2024) *****/
+button#cancel_button {background-image: linear-gradient(89deg, #2b343a 0, #cbd8d7 100%) !important;}

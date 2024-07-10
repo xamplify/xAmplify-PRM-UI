@@ -206,6 +206,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     /** XNFR-522 **/
     @Input() isVendorOrMasterLandingPage:boolean = false;
     @Output() goBack:EventEmitter<any> = new EventEmitter();
+    isValidFormWithFormLabels = true;
     constructor(public regularExpressions: RegularExpressions, public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
         private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute,
@@ -432,7 +433,6 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.formService.getPriceTypes().subscribe(
             (response: any) => {
                 this.priceTypes = response.data;
-                console.log(response.data)
             },
             error => {
                 this.logger.errorPage(error);
@@ -595,11 +595,20 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
 
     highlightByLength(rowLength: number, columnLength: number) {
-        if (rowLength > 0 && columnLength > 0) {
-            this.selectedRow = this.rowInfos[rowLength - 1];
-            this.selectedColumn = this.selectedRow.formLabelDTOs[columnLength - 1];
-            this.isRowClicked = true;
-            this.isColumnClicked = true;
+        if (rowLength > 0 && columnLength > 0 ) {
+            if(this.rowInfos!=undefined && this.rowInfos.length>0){
+                this.selectedRow = this.rowInfos[rowLength - 1];
+                this.selectedColumn = this.selectedRow.formLabelDTOs[columnLength - 1];
+                this.isRowClicked = true;
+                this.isColumnClicked = true;
+            }else{
+                if(this.isMdfForm){
+                    this.isValidFormWithFormLabels = false;
+                }else{
+                    this.isValidFormWithFormLabels = true;
+                }
+            }
+            
         }
     }
 
@@ -803,10 +812,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             columnInfo.choiceErrorMessage = "Minimum two options required";
         } else {
             columnInfo.choiceErrorMessage = "";
-            console.log(choice.labelId);
             columnInfo.choices = this.referenceService.removeObjectFromArrayList(columnInfo.choices, choice.labelId, 'labelId');
         }
-        console.log(columnInfo.choices);
     }
 
     removeRadioButtonChoice(columnInfo: ColumnInfo, index: number, choice: FormOption) {
@@ -814,10 +821,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             columnInfo.radioButtonErrorMessage = "Minimum two options required";
         } else {
             columnInfo.radioButtonErrorMessage = "";
-            console.log(choice.labelId);
             columnInfo.radioButtonChoices = this.referenceService.removeObjectFromArrayList(columnInfo.radioButtonChoices, choice.labelId, 'labelId');
         }
-        console.log(columnInfo.radioButtonChoices);
     }
 
     removeCheckBoxChoice(columnInfo: ColumnInfo, index: number, choice: FormOption) {
@@ -1457,7 +1462,6 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         } else if (this.popupOpenedFor == 'companyLogo') {
             this.croppedCompanyLogoImage = event.base64;
         }
-        console.log(event);
     }
 
     imageLoaded() {
@@ -1483,7 +1487,6 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             this.loadingcrop = true;
             this.backgroundImageFileObj = this.utilService.convertBase64ToFileObject(this.croppedBackgroundImage);
             this.backgroundImageFileObj = this.utilService.blobToFile(this.backgroundImageFileObj);
-            console.log(this.backgroundImageFileObj.size)
             this.uploadFile(this.backgroundImageFileObj, 'backgroundImage')
             this.formBackgroundImagePath = null;
             this.backgroundImageChangedEvent = null;
@@ -1520,7 +1523,6 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     cropperSettings() {
         this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings, 130, 196, 130, false);
         this.squareCropperSettings.noFileInput = true;
-        console.log(this.authenticationService.SERVER_URL + this.form.companyLogo)
     }
 
     chooseFileFromList() {

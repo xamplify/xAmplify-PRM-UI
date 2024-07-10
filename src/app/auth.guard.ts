@@ -337,7 +337,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
             let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
                             || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.emailTemplateRole)>-1
-                            || roles.indexOf(this.roles.prmRole)>-1 || isMarketing;  
+                            || roles.indexOf(this.roles.prmRole)>-1 || isMarketing || roles.includes(this.roles.partnersRole)>-1 || roles.includes(this.roles.companyPartnerRole)>-1 || this.utilService.isLoggedAsTeamMember();  
             let hasPartnerLandingPageAccess = isPartner && (url.indexOf("/partner")>-1);
             if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess || partnerLandingPageAccess){
                 return true;

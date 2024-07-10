@@ -34,7 +34,7 @@
                 <div class="portlet-input input-inline">
                     <div class="input-icon right ml10">
                         <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                            placeholder="Search..." (keypress)="searchIntegrationDetailsOnKeyPress($event.keyCode)">
+                            placeholder="Search..." (keypress)="searchIntegrationDetailsOnKeyPress($event.keyCode)" autocomplete="off">
                         <button *ngIf="sortOption.searchKey" class="glyphicon glyphicon-remove search-box-item-clear"  (click)="sortOption.searchKey='';searchIntegrationDetails();"></button>
                         <button type="submit" class="search-box-item-click" (click)="searchIntegrationDetails()"><i class="fa fa-search" aria-hidden="true"></i> </button>
                     </div>
@@ -222,7 +222,7 @@
               <app-pagination  [pagination]="integrationsPagination" (notifyParent)="navigateIntegrationsByPageNumber($event)" (notifyParentDropDown)="findAllIntegrations($event)"></app-pagination>
             </ng-container>
        </div>
-      </div>
+          </div>
         </div>
         <!--Edit Section-->
         <div *ngIf="isAccessOrRefreshTokenEdited">

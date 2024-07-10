@@ -1015,16 +1015,19 @@ strong {
   height: 32px;
 }
 
-.search-box-item-clear {
+.search-box-item-clear,
+.btn-group button.glyphicon.glyphicon-remove.search-box-item-clear {
   cursor: pointer;
   pointer-events: all;
   width: 25px !important;
   right: 40px !important;
   top: 6px !important;
-  background: #ffffff !important;
+  background: #f1f3fab8 !important;
   color: #008fd5 !important;
   font-size: 13px !important;
   position: absolute !important;
+  opacity: 1;
+  margin: -1px 4px 2px 2px;
 }
 
 .search-box-item-clear:hover {
@@ -1400,7 +1403,7 @@ strong {
 }
 
 .filter-box-selected {
-  background-color: #6dcff6 !important;
+  background-color:#0276ff !important;
 }
 
 .overflow-x-auto {
@@ -2110,7 +2113,7 @@ fieldset[disabled] .btn-danger.active {
 /* Site green button "success message" */
 .Btn-Green {
   background-color: #0276FF;
-  border-color: 1px solid #026deb !important;
+  border: 1px solid #026deb !important;
   color: #ffffff;
   border-radius: 7px;
   padding: 7px 14px;
@@ -3143,6 +3146,11 @@ color:#fff!important;
 .mt--10px{
 margin-top: -10px;
 }
+
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
 .assest-name {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3175,4 +3183,5 @@ button#cancel_button {
 }
 .mrg_rgt8{
   margin-right: 6px;
+
 }

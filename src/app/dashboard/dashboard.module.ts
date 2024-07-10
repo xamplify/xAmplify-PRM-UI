@@ -106,6 +106,8 @@ import { FormsModule } from 'app/forms/forms.module';
 import { QuickLinksComponent } from './quick-links/quick-links.component';
 import { UpdateEmailAddressComponent } from './update-email-address/update-email-address.component';
 import { IntegrationDetailsComponent } from './integration-details/integration-details.component';
+import { CustomFieldsOrderPopupComponent } from './custom-fields-order-popup/custom-fields-order-popup.component';
+import { SuperAdminServiceService } from './super-admin-service.service';
 
 
 
@@ -187,11 +189,12 @@ import { IntegrationDetailsComponent } from './integration-details/integration-d
         IntegrationSettingsPopupComponent,
         UpdateEmailAddressComponent,
         IntegrationDetailsComponent,
+        CustomFieldsOrderPopupComponent,
 
             
 
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
-    providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService]
+    providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,SuperAdminServiceService]
 })
 export class DashboardModule { }

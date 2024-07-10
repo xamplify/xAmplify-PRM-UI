@@ -1,0 +1,140 @@
+<div class="portlet-border">
+  <!-- <form role="form" class="form-horizontal form-bordered form-label-stripped"> -->
+  <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <div class="portlet box">
+    <div style="padding:10px">
+      <label>{{properties.OAUTH_SSO_HELP_TEXT1}}</label><br>
+  </div>
+  <div style="padding:10px">
+    <label>{{properties.OAUTH_SSO_HELP_TEXT2}}</label><br>
+  </div>
+    <app-response-message class="pg8" [customResponse]="responseMessage"
+      *ngIf="responseMessage.isVisible"></app-response-message>
+
+    <div class="row" style="padding:10px">
+      <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+        <label class="control-label col-sm-3" style="padding-left: 0px;">Redirect URI <span class="required">*</span></label>
+      </div>
+      <div class="col-sm-12 col-xs-12 col-md-5 col-lg-5" style="width:85%">
+        <input class="form-control" type="text" value="{{oauthSso.redirectUri}}" #redirectUri readonly>
+      </div>
+      <span>
+        <button class="btn btn-primary" (click)="copyToClipboard(redirectUri)">Copy URI</button>
+      </span>
+    </div>
+
+    <div class="row" style="padding:10px">
+      <div class="col-md-12 col-lg-12">
+        <div class="form-group"> <!-- [attr.class]="grantTypeDivClass"-->
+          <label class="control-label col-sm-3" style="padding-left: 0px;">Grant Type <span class="required"> <strong>*</strong></span></label>
+          <span>
+            <select class="form-control depth-shadow" [(ngModel)]="oauthSso.grantType" placeholder="grantType"
+              id="grantType" (change)="selectGrantType($event.target.value, 'grantType')">
+              <option [value]="null" [selected]="true">Select Grant Type</option>
+              <option *ngFor="let grantType of grantTypes" [value]="grantType.value">
+                {{grantType.label}}
+              </option>
+            </select>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="padding:10px">
+      <div class="col-md-12 col-lg-12">
+        <div class="form-group">
+          <label class="control-label col-sm-3" style="padding-left: 0px;">Client Id <span class="required">*</span></label>
+          <div> <!--class="{{clientIdDivClass}}"-->
+            <input type="text" autocomplete="off" id="clientId" placeholder="Enter Client Id" class="form-control"
+              [(ngModel)]="oauthSso.clientId" [ngModelOptions]="{standalone: true}" name="clientId" (input)="validateField('clientId')"
+              maxlength="255">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="padding:10px">
+      <div class="col-md-12 col-lg-12">
+        <div class="form-group">
+          <label class="control-label col-sm-3" style="padding-left: 0px;">Client Secret Id <span class="required">*</span></label>
+          <div> <!-- class="{{clientSecretIdDivClass}}"-->
+            <input type="text" autocomplete="off" id="clientSecretId" placeholder="Enter Client Secret Id"
+              class="form-control" [(ngModel)]="oauthSso.clientSecretId" [ngModelOptions]="{standalone: true}"
+              name="clientSecretId" maxlength="255" (input)="validateField('clientSecretId')">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="padding:10px">
+      <div class="col-md-12 col-lg-12">
+        <div class="form-group">
+          <label class="control-label col-sm-3" style="width: 32%;padding-left: 0px;" >Authorization Endpoint <span
+              class="required">*</span>
+            <span class="info-color-xampc">
+              <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
+                aria-hidden="true" title="Authorization endpoint in OAuth SSO is where users authenticate and authorize access to their data.
+                Use the full URL provided by your identity provider (IDP)."></i>
+            </span>
+          </label>
+
+          <div> <!--class="{{authorizationEndpointDivClass}}"-->
+            <input type="text" autocomplete="off" id="authorizationEndpoint" placeholder="Enter Authorization Endpoint"
+              class="form-control" [(ngModel)]="oauthSso.authorizationEndpoint" [ngModelOptions]="{standalone: true}"
+              name="authorizationEndpoint" maxlength="255" (input)="validateField('authorizationEndpoint')">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="padding:10px">
+      <div class="col-md-12 col-lg-12">
+        <div class="form-group">
+          <label class="control-label col-sm-3" style="padding-left: 0px;">Scope <span class="required">*</span></label>
+          <div> <!-- class="{{scopeDivClass}}"-->
+            <input type="text" autocomplete="off" id="scope" placeholder="Enter Scope" class="form-control"
+              [(ngModel)]="oauthSso.scope" [ngModelOptions]="{standalone: true}" name="scope" maxlength="255" (input)="validateField('scope')">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="padding:10px">
+      <div class="col-md-12 col-lg-12">
+        <div class="form-group">
+          <label class="control-label col-sm-3" style="padding-left: 0px;">Token Endpoint <span class="required">*</span>
+            <span class="info-color-xampc">
+              <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
+                aria-hidden="true" title=" Token Endpoint in OAuth SSO is where authorization codes are exchanged for access tokens. Enter the URL provided by your identity provider (IDP) for token exchange and secure API access."></i>
+            </span>
+          </label>
+          <div> <!-- class="{{tokenEndpointDivClass}}"-->
+            <input type="text" autocomplete="off" id="tokenEndpoint" placeholder="Enter Token Endpoint"
+              class="form-control" [(ngModel)]="oauthSso.tokenEndpoint" [ngModelOptions]="{standalone: true}"
+              name="tokenEndpoint" maxlength="255" (input)="validateField('tokenEndpoint')">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="padding:10px">
+      <div class="col-md-12 col-lg-12">
+        <div class="form-group">
+          <label class="control-label col-sm-3" style="padding-left: 0px;">User Info Endpoint <span class="required">*</span>
+            <span class="info-color-xampc">
+              <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip" data-placement="top"
+                aria-hidden="true" title="User Info Endpoint in OAuth SSO is where authenticated user data can be securely retrieved.
+                Enter the URL provided by your identity provider (IDP) for accessing user information."></i>
+            </span>
+          </label>
+          <div> <!-- class="{{userInfoEndpointDivClass}}"-->
+            <input type="text" autocomplete="off" id="userInfoEndpoint" placeholder="Enter User Info Endpoint"
+              class="form-control" [(ngModel)]="oauthSso.userInfoEndpoint" [ngModelOptions]="{standalone: true}"
+              name="userInfoEndpoint" maxlength="255" (input)="validateField('userInfoEndpoint')">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="submit" style="float: right" class="btn btn-primary"
+    (click)="saveOrUpdateOauthSsoConfiguration()" [disabled]="disableSubmitButton">{{saveOrUpdateButtonText}}</button>
+</div>

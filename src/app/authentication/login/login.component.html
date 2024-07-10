@@ -76,7 +76,7 @@
 			 </ul>
 		  </div>
 		  <div class="login-options login-form m5" *ngIf="authenticationService?.vanityURLEnabled  && vanitySocialProviders?.length">
-			 <h4>Or login with</h4>
+			 <h4 *ngIf="orLoginWithText">Or login with</h4>
 			 <ul class="social-icons">
 				<ng-container *ngFor="let socialProvider of vanitySocialProviders">
 				   <li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
@@ -90,6 +90,14 @@
 				</ng-container>
 			 </ul>
 		  </div>
+			<div class="login-options login-form m5" style="float: right;">
+				<ng-container *ngFor="let vanityOauthSSOProvider of vanityOauthSSOProviders">
+					<button *ngIf="!isPleaseWaitButtonDisplayed && showOauthSSO" class="btn btn-primary pull-left  signin"
+						title="Login with Versa SSO" (click)="loginUsingSocialAccounts(vanityOauthSSOProvider)">
+						Login with Versa SSO
+					</button>
+				</ng-container>
+			</div>
 		  <!-- </div>  -->
 		  <div class="text-center mt10">
 			 <label class="check">

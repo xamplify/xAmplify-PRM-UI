@@ -163,7 +163,6 @@ editAccessOrRefreshToken(integrationDetails:any){
 
 updateDetails(){
   this.updateLoader = true;
-  console.log(this.selectedIntegratedDetails);
   this.dashboardService.updateAccessTokenAndRefreshToken(this.selectedIntegratedDetails).subscribe(
       response=>{
         this.referenceService.showSweetAlertSuccessMessage("Details Updated Successfully");

@@ -548,7 +548,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
 
                           buttons.append(self.createButton('Save As', function () {
                               self.clickedButtonName = "SAVE_AS";
-                              self.saveLandingPage(true);
+                              self.saveLandingPage(false);
                           })).append(self.createButton('Update', function () {
                               let selectedPageType = $('#pageType option:selected').val();
                               if (self.landingPage.type == selectedPageType || selectedPageType == undefined) {
@@ -742,6 +742,8 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
 }
 
 saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
+  console.log("______3444")
+  console.log("______ww"+isSaveAndRedirectButtonClicked)
   this.isSaveAndRedirectButtonClicked = isSaveAndRedirectButtonClicked;
   this.customResponse = new CustomResponse();
   $("#bee-save-buton-loader").addClass("button-loader"); 
@@ -801,7 +803,8 @@ goToManageAfterSave(data:any, isSaveAndRedirectButtonClicked:boolean) {
       } else {
           //this.ngxloading = true;
           this.customResponse = new CustomResponse('SUCCESS',"Page created successfully",true);
-          let createdPageId = data.data;
+          let map = data.map;
+          let createdPageId = map['landingPageId'];
           this.landingPageService.id = createdPageId;
           this.findPageDataAndLoadBeeContainer(this.landingPageService,this.authenticationService);
       }

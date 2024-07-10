@@ -14,29 +14,57 @@
   <div class="page-bar">
     <ul class="page-breadcrumb float-right">
       <!--Integration Details-->
-      <li class="topnav-button-css uppercase-text">
+      <li class="mt10 uppercase-text">
         <button class="btn btn-primary" (click)="openIntegrationDetailsModalPopup()"><span>Find Integration Details</span></button>
       </li>
       <!--Update Email Address-->
-      <li class="topnav-button-css uppercase-text" *ngIf="isLocalHost">
+      <li class="mt10 uppercase-text">
         <button class="btn btn-primary" (click)="openUpdateEmailAddressModalPopup()"><span>Update Email Address</span></button>
       </li>
-       <!--Update Email Address-->
-       <li class="topnav-button-css uppercase-text" *ngIf="isLocalHost">
+       <!--Update Company Profile Name-->
+       <li class="mt10 uppercase-text" *ngIf="isLocalHost">
         <button class="btn btn-primary" (click)="openUpdateCompanyProfileNameModalPopup()"><span>Update Company Profile Name</span></button>
       </li>
       <!--Upgrade Partner Account-->
-      <li class="topnav-button-css uppercase-text">
+      <li class="mt10 uppercase-text">
         <button class="btn btn-primary" (click)="openUpgradeAccountModal()"><span>Upgrade Partner Account</span><i class="fa fa-level-up" aria-hidden="true"></i></button>
       </li>
       <!--Create An Account-->
-      <li class="topnav-button-css uppercase-text">
+      <li class="mt10 uppercase-text">
           <button class="btn btn-primary" (click)="createNewAccount()"><span>Create An Account</span><i class="fa fa-user" aria-hidden="true"></i></button>
       </li>
     </ul>
   </div>
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+       <!--Approved Users-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#all-approved-users', name:SUPER_ADMIN_MODULE_CONTSTANTS.allApprovedUsers}"></ng-template>
+      <!--Processing User Lists-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#processing-user-lists', name:SUPER_ADMIN_MODULE_CONTSTANTS.processingUserLists}"></ng-template>
+      <!--Demo Requests-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#demo-requests', name:SUPER_ADMIN_MODULE_CONTSTANTS.demoRequests}"></ng-template>
+      <!--Top 10-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#top10-registered-and-logged-in-users', name:SUPER_ADMIN_MODULE_CONTSTANTS.top10recentRegisteredAndLoggedInUsers}"></ng-template>
+      <!--Vendor Report-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#vendor-report', name:SUPER_ADMIN_MODULE_CONTSTANTS.vendorReport}"></ng-template>
+      <!--Partner Companies-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#partner-companies', name:SUPER_ADMIN_MODULE_CONTSTANTS.partnerCompanies}"></ng-template>
+      <!--Vendor Invitation Reports-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#vendor-invitation-reports', name:SUPER_ADMIN_MODULE_CONTSTANTS.vendorInvitationReports}"></ng-template>
+      <!--Marketing Requests-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#marketing-requests', name:SUPER_ADMIN_MODULE_CONTSTANTS.marketingRequests}"></ng-template>
+      <!--Processing Campaigns-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#processing-or-scheduling-campaigns', name:SUPER_ADMIN_MODULE_CONTSTANTS.processingCampaigns}"></ng-template>
+      <!--Scheduled Campaigns-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#processing-or-scheduling-campaigns', name:SUPER_ADMIN_MODULE_CONTSTANTS.scheduledCampaigns}"></ng-template>
+      <!--Active Queries-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#active-queries', name:SUPER_ADMIN_MODULE_CONTSTANTS.activeQueries}"></ng-template>
+      <!--Upload GlassMorphism Images-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#upload-default-glassmorphism-images', name:SUPER_ADMIN_MODULE_CONTSTANTS.uploadDefaultGlassMorphismImages}"></ng-template>
+    </ul>
+  </div>
   <div>
-    <button class="btn btn-default full-width uppercase-text" (click)="expandOrCollpase()"><span>Expand All / Collapse All</span></button>
+    <button class="btn btn-success full-width uppercase-text" (click)="expandOrCollpase()"><span>Expand / Collapse All</span></button>
     <!--List All Users-->
     <app-list-all-users></app-list-all-users> 
     <!--Processing User Lists-->
@@ -45,7 +73,7 @@
     <app-demo-request></app-demo-request>
     <!--Top 10 Recent Registered / Loggedin Users-->
 	  <section>
-      <div class="wrap-collabsible">
+      <div class="wrap-collabsible" id="top10-registered-and-logged-in-users">
         <input id="collapsible-recent-users" name="collapsibleCheckBox" class="toggle" type="checkbox" checked>
         <label for="collapsible-recent-users" name="collapsibleCheckBox" class="lbl-toggle">Top 10 recent registered/logged in users</label>
         <div class="collapsible-content">
@@ -88,7 +116,7 @@
   </div>
       <!-- Add Background Image OF GlassMorphism Light and Dark Start-->
 <section>
-  <div class="wrap-collabsible">
+  <div class="wrap-collabsible" id="upload-default-glassmorphism-images">
     <input id="collapsible-upload-image" name="collapsibleCheckBox" class="toggle" type="checkbox" checked>
     <label for="collapsible-upload-image" name="collapsibleCheckBox" class="lbl-toggle">Upload Default GlassMorphism Images</label>
     <div class="collapsible-content">
@@ -295,3 +323,11 @@
 
 <!--Find Integration Details-->
 <app-integration-details #integrationDetailsComponent></app-integration-details>
+
+<ng-template #listItemTemplateButton let-id="id" let-name="name">
+  <li class="mt10">
+    <button  [scrollTo]="id" [scrollDuration]="1000" [scrollOffset]="-100" class="btn btn-success uppercase-text">
+      <span>{{name}}</span><i class="fa fa-caret-down"></i>
+    </button>
+  </li>
+</ng-template>

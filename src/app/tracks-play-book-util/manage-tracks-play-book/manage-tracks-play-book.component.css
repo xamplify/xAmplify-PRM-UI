@@ -185,4 +185,7 @@ p.warning-red-textcolor {
       width: 95% !important;
     }
 }
-
+.row{
+  display: flex;
+  flex-wrap: wrap;
+}

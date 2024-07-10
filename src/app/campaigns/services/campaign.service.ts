@@ -1335,14 +1335,14 @@ export class CampaignService {
             .catch(this.handleError);
     }			
 
- getHalopsaPipelinesByTicketType(ticketTypeId: number, _userId: number) {
-        return this.http.get(this.URL + "/pipeline/ticket-type/"+ticketTypeId+ "/" +_userId+"?access_token=" + this.authenticationService.access_token)
+ getHalopsaPipelinesByTicketType(ticketTypeId: number, _userId: number, pipelineType:any) {
+        return this.http.get(this.URL + "/pipeline/ticket-type/"+ticketTypeId+ "/" +_userId+"/"+pipelineType+"?access_token=" + this.authenticationService.access_token)
         .map(this.extractData)
         .catch(this.handleError);
     }
 
-    getHalopsaTicketTypes(_userId: number) {
-        return this.http.get(this.URL + "/halopsa/opportunity/types/" + _userId+ "?access_token=" + this.authenticationService.access_token)
+    getHalopsaTicketTypes(_userId: number,integrationType:any, moduleName: string) {
+        return this.http.get(this.URL + "/"+ integrationType +"/opportunity/types/" + _userId+ "/" + moduleName + "?access_token=" + this.authenticationService.access_token)
         .map(this.extractData)
         .catch(this.handleError);
     }

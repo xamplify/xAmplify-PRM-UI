@@ -30,4 +30,9 @@ export class VanityURL{
 
     /**** XNFR-534 ******/
     showSAML2SSO:boolean = false;   
+
+    /**** XNFR-603 ******/
+    showVendorSSO:boolean = false;
+    vendorSSOName:string = "SSO";
+    vendorSSOType:string = "oauth";
 }

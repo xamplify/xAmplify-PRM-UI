@@ -151,4 +151,7 @@ ul.custome-dropdown-changs {
 .custome-dropdown-changs li a {
   margin: 6px 10px !important;
 }
-
+.row{
+  display: flex;
+  flex-wrap: wrap;
+}

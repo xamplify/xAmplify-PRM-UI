@@ -179,8 +179,14 @@ export class IntegrationService {
             .catch(this.handleError);
     }
 
-    getHaloPSATicketTypes(loggedInUserId: number) {
-        return this._http.get(this.authenticationService.REST_URL + `/halopsa/opportunity/types/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+    getHaloPSATicketTypes(companyId: number, integrationType: any, moduleType: string) {
+        return this._http.get(this.authenticationService.REST_URL + `/${integrationType}/opportunity/types/${companyId}/${moduleType}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getLeadConvertMappingLayoutId(companyId:number , layoutId:string) {
+        return this._http.get(this.authenticationService.REST_URL + `/zoho/layout/${companyId}/${layoutId}?access_token=${this.authenticationService.access_token}`)
         .map(this.extractData)
         .catch(this.handleError);
     }

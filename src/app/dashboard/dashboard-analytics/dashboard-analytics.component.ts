@@ -515,7 +515,7 @@ showCampaignDetails(campaign:any){
   }
 
   showSubmitLeadSuccess() {
-    this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+   // this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
   }
 
   getSelectedIndexFromPopup(event:any){

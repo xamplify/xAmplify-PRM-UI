@@ -15,8 +15,10 @@ export class SearchableDropdownComponent implements OnInit {
   @Output() searchableDropdownEventEmitter = new EventEmitter();
   @Input() id:any;
   @Input() disableDropDown:boolean;
+  @Input() account:any;
   public sort: string = 'Ascending'; 
   public value: string = '';
+  @Output() accountChange: EventEmitter<any> = new EventEmitter<any>();
 
 
   constructor() { }
@@ -25,6 +27,9 @@ export class SearchableDropdownComponent implements OnInit {
 
   ngOnInit() {
       this.value = this.id;
+      if (this.account != undefined) {
+        this.value = this.account;
+      }
       this.disableDropDown = this.disableDropDown==undefined ? false:this.disableDropDown;
   }
 
@@ -36,8 +41,8 @@ export class SearchableDropdownComponent implements OnInit {
 
   getSelectedDropDownData(event:any){
     let selectedDropDownInfo = event.itemData;
+    this.accountChange.emit(selectedDropDownInfo.id);
     this.searchableDropdownEventEmitter.emit(selectedDropDownInfo);
-
   }
 
 }

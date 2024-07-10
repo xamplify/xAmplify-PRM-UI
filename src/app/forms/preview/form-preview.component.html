@@ -38,7 +38,9 @@
                                 <a class="close-circle" (click)="refreshForm()" title="Refresh" style="margin: -5px -10px 0 3px;">
                                     <i class="fa fa-refresh" id="line-height" aria-hidden="true"></i>
                                 </a>
-                                <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
+                                <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}
+                                    <span *ngIf="form.name?.length > 30">...</span>
+                                </div>
                             </div>
                             <div class="panel-body border-fivepx padding-20px" >
                                 <h5 class="mb15 form-name-wrap" title="{{form.description}}">{{form.description}}</h5>

@@ -1443,11 +1443,6 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         return this.authenticationService.callPutMethod(url,integrationDetails);
     }
 
-    updateEmailAddress(changeEmailAddressRequestDto:ChangeEmailAddressRequestDto){
-        const url = this.superAdminUrl + 'updateEmailAddress?access_token=' + this.authenticationService.access_token;
-        return this.authenticationService.callPutMethod(url,changeEmailAddressRequestDto);
-
-    }
-
+  
     
 }

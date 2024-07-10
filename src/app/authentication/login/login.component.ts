@@ -53,6 +53,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   isBgColor:boolean;
   teamMemberSignedUpResponse:CustomResponse = new CustomResponse();
   isPleaseWaitButtonDisplayed = false;
+  showOauthSSO: boolean = false;
+  orLoginWithText: boolean = false;
+  vanityOauthSSOProviders = [];
+
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer,
     private route: ActivatedRoute) {
@@ -363,11 +367,17 @@ bgIMage2:any;
             localStorage.setItem('appIcon',result.companyFavIconPath);
             this.vanityURLService.setVanityURLTitleAndFavIcon();
             if (result.showMicrosoftSSO) {
+              this.orLoginWithText = true;
               this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });
-            }
+            }            
 
-            if (result.showSAML2SSO) {
-              this.vanitySocialProviders.push({ "name": "SAML SSO", "iconName": "sso", "value": "samlsso" });
+            if (result.showVendorSSO) {
+              if (result.vendorSSOType === "oauth") {
+                this.showOauthSSO = true;
+                this.vanityOauthSSOProviders.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "oauthsso" });
+              } else if (result.vendorSSOType === "saml") {
+                // this.vanitySocialProviders.push({ "name": "SAML SSO", "iconName": "sso", "value": "samlsso" });
+              }              
             }
             
           }, error => {
@@ -405,7 +415,7 @@ bgIMage2:any;
       }
       let loginUrl = "/" + socialProviderName + "/login";
       if (this.isLoggedInVanityUrl) {
-        if (socialProvider.value === "samlsso") {
+        if (socialProvider.value === "samlsso" || socialProvider.value === "oauthsso") {
           loginUrl = "/" + socialProvider.value + "/login";
           this.router.navigate([loginUrl]);
         } else {

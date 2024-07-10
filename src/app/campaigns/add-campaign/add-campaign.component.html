@@ -472,8 +472,8 @@
                                                 
                                             <!--Lead Ticket Type-->
                                             <div class="form-group" [attr.class]="leadTicketTypeClass"
-                                                style="margin-bottom: 20px" *ngIf="campaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
-                                                <label class="control-label col-sm-4">Lead Ticket Type
+                                                style="margin-bottom: 20px" *ngIf="campaign?.configurePipelines && (activeCRMDetails?.type === 'HALOPSA' || activeCRMDetails?.type === 'ZOHO')">
+                                                <label class="control-label col-sm-4">{{(activeCRMDetails?.type === 'HALOPSA')?'Lead Ticket Type':'Lead Layout'}}
                                                     <span class="required"><strong>*</strong></span>
                                                 </label>
                                                     <div class="col-sm-8">
@@ -490,13 +490,13 @@
 
                                             <!--Deal Ticket Type-->
                                             <div class="form-group" [attr.class]="dealTicketTypeClass"
-                                                style="margin-bottom: 20px" *ngIf="campaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
-                                                <label class="control-label col-sm-4">Deal Ticket Type
+                                                style="margin-bottom: 20px" *ngIf="campaign?.configurePipelines && (activeCRMDetails?.type === 'HALOPSA' || activeCRMDetails?.type === 'ZOHO')">
+                                                <label class="control-label col-sm-4">{{(activeCRMDetails?.type === 'HALOPSA')?'Deal Ticket Type':'Deal Layout'}}
                                                     <span class="required"><strong>*</strong></span></label>
                                                     <div class="col-sm-8">
                                                         <select class="form-control" [(ngModel)]="campaign.dealTicketTypeId"
                                                             [ngModelOptions]="{standalone: true}"
-                                                            placeholder="dealTicketTypeId" id="dealTicketTypeId" [disabled]="preview"
+                                                            placeholder="dealTicketTypeId" id="dealTicketTypeId" [disabled]="preview || isDealLayoutSelected"
                                                             (ngModelChange)="onChangeDealTicketType()" (change)="validateForm()">
                                                             <!-- <option [value]="0">Select Deal Ticket Type</option> -->
                                                             <option *ngFor="let dealTicketType of dealTicketTypes"     

@@ -282,7 +282,7 @@ th {
   background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-.alert-success,
+/* .alert-success, */
 .campaign-email-template-filter-icon,
 .list__item.list__item--selected > .flex-row,
 .btn.btn-secondary {
@@ -426,6 +426,8 @@ tr {
   background-color: #8d8a8a00 !important;
   color: #fff !important;
   backdrop-filter: blur(45px);
+ /* transform: translate(0%,0%); */
+ transform: translate3d(0%, 0, 0) !important;
 }
 .upload-asset-div,
 .well,
@@ -1165,7 +1167,7 @@ input#copy-link {
 .tracks-bg-color {
   background-color: rgba(16 18 27 / 40%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px); */
 }
 .portlet.light,
 .feature-img {
@@ -2017,7 +2019,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   backdrop-filter: blur(5px);
 }
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected,
+.mix-filter li.emailtemplate-selected,.mix-filter li.filter-box-selected,
 .mix-filter li.active {
   background: rgba(16 18 27 / 40%) !important;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -2137,7 +2139,8 @@ a.title.padding_bottom.text-color.content-bg{
   border: none !important;
 }
 .search-box-item-clear {
-  background: #2c2f33 !important;
+  background: rgb(0 0 0 / 18%) !important;
+  margin: -1px 4px 2px 2px;
 }
 /* i.IconCustomization:hover {
   border:0px solid #22313a!important;
@@ -2456,7 +2459,7 @@ span.input-group-btn {
   padding-left: 15px !important;
 }
 button.glyphicon.glyphicon-remove.search-box-item-clear {
-  background: none !important;
+  /* background: none !important; */
   border: none !important;
 }
 .angle-down {
@@ -4003,5 +4006,18 @@ button.swal2-confirm.styled:hover {
   background: #1C84FF !important;
   border: 1px solid #026deb !important;
 }
+/***** Sudha Sri(04-07-2024) *****/
+.portlet.light.remove_cardBgcolor.glass_Bgcolor {background: rgb(0 0 0 / 18%) !important;}
 
-
+.modal-body {
+  max-height: calc(100vh - 113px);
+}
+div#add-form-designs {
+  padding-right: 0px !important;
+}
+.modal-footer {
+  padding: 14px;
+}
+.integration-ribbon{
+  left:-5px!important;
+}

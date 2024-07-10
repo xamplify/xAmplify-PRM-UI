@@ -278,8 +278,8 @@
 
 							 <!--Lead Ticket Type-->
 							 <div class="form-group" [attr.class]="leadTicketTypeClass"
-							 style="margin-bottom: 8px" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
-							 <label class="control-label col-sm-3">Lead Ticket Type<span
+							 style="margin-bottom: 8px" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines && (activeCRMDetails?.type === 'HALOPSA' || activeCRMDetails?.type === 'ZOHO')">
+							 <label class="control-label col-sm-3">{{(activeCRMDetails?.type === 'HALOPSA')?'Lead Ticket Type':'Lead Layout'}}<span
 								 class="required"><strong>*</strong></span></label>
 								 <div class="col-sm-9">
 									 <select class="form-control" [(ngModel)]="eventCampaign.leadTicketTypeId" 
@@ -295,13 +295,13 @@
 
 						 <!--Deal Ticket Type-->
 						 <div class="form-group" [attr.class]="dealTicketTypeClass"
-							 style="margin-bottom: 8px" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines && activeCRMDetails?.type === 'HALOPSA'">
-							 <label class="control-label col-sm-3">Deal Ticket Type<span
+							 style="margin-bottom: 8px" *ngIf="eventCampaign?.channelCampaign && eventCampaign?.configurePipelines && (activeCRMDetails?.type === 'HALOPSA' || activeCRMDetails?.type === 'ZOHO')">
+							 <label class="control-label col-sm-3">{{(activeCRMDetails?.type === 'HALOPSA')?'Deal Ticket Type':'Deal Layout'}}<span
 								 class="required"><strong>*</strong></span></label>
 								 <div class="col-sm-9">
 									 <select class="form-control" [(ngModel)]="eventCampaign.dealTicketTypeId"
 										 [ngModelOptions]="{standalone: true}"
-										 placeholder="dealTicketTypeId" id="dealTicketTypeId" [disabled]="preview"
+										 placeholder="dealTicketTypeId" id="dealTicketTypeId" [disabled]="preview || isDealLayoutSelected"
 										 (ngModelChange)="onChangeDealTicketType()" (change)="validatePipeline()">
 										 <!-- <option [value]="0">Select Deal Ticket Type</option> -->
 										 <option *ngFor="let dealTicketType of dealTicketTypes"     
@@ -2165,7 +2165,7 @@
 								class="btn btn-warning button-border Sch-class" style="width: 10em;"
 								(click)="scheduleCampaign()">Schedule</button>
 							<button type="submit" *ngIf="checkLaunchOption=='SAVE'"
-								class="button bgcolor-unset button-border" style="width: 10em;"
+								class="button bgcolor-unset button-border save_border" style="width: 10em;"
 								(click)="createEventCampaign(eventCampaign, 'SAVE')"><span
 									class="btn Btn-Green transition txt_pd-top3">Save</span></button>
 							<button type="button" class="button bgcolor-unset neg_mrg_top4" (click)="spamCheck()"

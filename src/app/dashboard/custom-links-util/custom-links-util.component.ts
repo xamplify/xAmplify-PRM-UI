@@ -10,20 +10,23 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { CustomLinkDto } from 'app/vanity-url/models/custom-link-dto';
 import { FormBuilder, FormControl, FormGroup,Validators } from '@angular/forms';
-import { max120CharactersLimitValidator,noWhiteSpaceOrMax20CharactersLimitValidator,max40CharactersLimitValidator, noWhiteSpaceValidatorWithOutLimit } from 'app/form-validator';
+import { max120CharactersLimitValidator,noWhiteSpaceOrMax20CharactersLimitValidator,max40CharactersLimitValidator, noWhiteSpaceValidatorWithOutLimit,noWhiteSpaceOrMax40CharactersLimitValidator } from 'app/form-validator';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CustomLinkType } from '../models/custom-link-type.enum';
 import { ErrorResponse } from 'app/util/models/error-response';
 import { UtilService } from 'app/core/services/util.service';
-import { ThrowStmt } from '@angular/compiler';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { SortOption } from 'app/core/models/sort-option';
+
 declare var swal: any, $:any;
 @Component({
   selector: 'app-custom-links-util',
   templateUrl: './custom-links-util.component.html',
   styleUrls: ['./custom-links-util.component.css'],
-  providers: [Properties, HttpRequestLoader,RegularExpressions]
+  providers: [Properties, HttpRequestLoader,RegularExpressions,SortOption]
 })
 export class CustomLinksUtilComponent implements OnInit {
+  readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
   @Input() moduleType:string="";
   customResponse: CustomResponse = new CustomResponse();
   customLinkDto: CustomLinkDto = new CustomLinkDto();
@@ -57,7 +60,7 @@ export class CustomLinksUtilComponent implements OnInit {
   formErrors = {
     'title': '',
     'link': '',
-    'subtitle':'',
+    'subTitle':'',
     'description':'',
     'icon':'',
     'buttonText':''
@@ -67,7 +70,7 @@ export class CustomLinksUtilComponent implements OnInit {
       'title': {
           'required': 'Title is required.',
           'whitespace': 'Empty spaces are not allowed.',
-          'maxLimitReached': 'Title cannot be more than 20 characters long.',
+          'maxLimitReached': 'Title cannot be more than 40 characters long.',
       },
       'link': {
           'required': 'Link is required.',
@@ -88,8 +91,26 @@ export class CustomLinksUtilComponent implements OnInit {
     }
       
   };
+
+  /***XNFR-571****/
+  emailNotificationSettingsLoader = true;
+  isDashboardButtonPublishedEmailNotification = false;
+  isDashboardBannerPublishedEmailNotification = false;
+  isNewsAndAnnouncementsPublishedEmailNotification = false;
+  isDashboardButtonsModule = false;
+  isDashboardBannersModule = false;
+  isNewsAndAnnouncementsModule = false;
+  partnerGroupIds = [];
+  partnerIds = [];
+  partnerGroupSelected = false;
+  sortOption:SortOption = new SortOption();
+  saveButtonText = "Save";
+  updateButtonText = "Update";
+  isAddedAndPublished = false;
+  isUpdatedAndPublished = false;
+  /***XNFR-571****/
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, 
-    private xtremandLogger: XtremandLogger, public properties: Properties, private httpRequestLoader: HttpRequestLoader, 
+    private xtremandLogger: XtremandLogger, public properties: Properties, public httpRequestLoader: HttpRequestLoader, 
     private referenceService: ReferenceService, private pagerService: PagerService,private formBuilder:FormBuilder,
     private regularExpressions:RegularExpressions,public utilService:UtilService) {
       this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
@@ -103,6 +124,7 @@ export class CustomLinksUtilComponent implements OnInit {
     let announcements = {'id':CustomLinkType[CustomLinkType.ANNOUNCEMENTS],'value':"Announcements"};
     this.customLinkTypes.push(news);
     this.customLinkTypes.push(announcements);
+    
   }
   
   private setDefaultValuesForForm() {
@@ -122,7 +144,7 @@ export class CustomLinksUtilComponent implements OnInit {
 	buildCustomLinkForm() {
     if(this.moduleType==this.properties.dashboardButtons){
       this.customLinkForm = this.formBuilder.group({
-        'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceOrMax20CharactersLimitValidator])],
+        'title': [this.referenceService.getTrimmedData(this.customLinkDto.buttonTitle), Validators.compose([Validators.required, noWhiteSpaceOrMax40CharactersLimitValidator])],
         'subTitle': [this.customLinkDto.buttonSubTitle,Validators.compose([max40CharactersLimitValidator])],
         'link': [this.customLinkDto.buttonLink, Validators.compose([Validators.required,Validators.pattern(this.regularExpressions.LINK_PATTERN)])],
         'icon': [this.customLinkDto.buttonIcon],
@@ -180,11 +202,28 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   callInitMethods(){
+    this.isDashboardButtonsModule = this.moduleType==this.properties.dashboardButtons;
     this.initializeVariables();
     setTimeout(() => {
+      this.referenceService.scrollSmoothToTop();
       this.findLinks(this.pagination);
+      /***XNFR-571*****/
+      if(this.isDashboardButtonsModule){
+        this.findDashboardButtonPublishEmailNotificationOption();
+      }
     }, 500);
-    
+  }
+  /****XNFR-571****/
+  findDashboardButtonPublishEmailNotificationOption() {
+    this.emailNotificationSettingsLoader = true;
+    this.authenticationService.findDashboardButtonPublishEmailNotificationOption()
+    .subscribe(
+      response=>{
+          this.isDashboardButtonPublishedEmailNotification = response.data;
+          this.emailNotificationSettingsLoader = false;
+      },error=>{
+          this.emailNotificationSettingsLoader = false;
+      });
   }
 
   private initializeVariables() {
@@ -216,10 +255,18 @@ export class CustomLinksUtilComponent implements OnInit {
     this.previouslySelectedImagePath = "";
     this.dashboardBannersInfoMessage = new CustomResponse();
     this.selectedButtonIcon = "";
+    this.partnerGroupIds = [];
+    this.partnerIds = [];
+    this.partnerGroupSelected = false;
+    $('#parnterGroupsHeaderCheckBox').prop('checked',false);
+    $(".pointer.checkBox_shadow").prop('checked',false);
+    this.saveButtonText = "Save";
+    this.updateButtonText = "Update";
+    this.isAddedAndPublished = false;
+    this.isUpdatedAndPublished = false;
   }
 
   findLinks(pagination: Pagination) {
-    this.referenceService.scrollSmoothToTop();
     if (this.authenticationService.vanityURLEnabled) {
       this.referenceService.loading(this.httpRequestLoader, true);
       pagination.userId = this.authenticationService.getUserId();
@@ -267,7 +314,11 @@ export class CustomLinksUtilComponent implements OnInit {
       if (result.statusCode === 200) {
         let message = "";
         if(this.moduleType==this.properties.dashboardButtons){
-          message = this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT;
+          if(this.isAddedAndPublished){
+            message = this.properties.VANITY_URL_DB_BUTTON_ADDED_AND_PUBLISHED_SUCCESS_TEXT;
+          }else{
+            message = this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT;
+          }
           this.isDropDownLoading = true;
         }else{
           message = result.message;
@@ -359,6 +410,10 @@ export class CustomLinksUtilComponent implements OnInit {
     this.customLinkDto.buttonText = customFormDetails.buttonText;
     this.customLinkDto.displayTitle = customFormDetails.displayTitle;
     /****XNFR-532*****/
+    /***XNFR-571***/
+    this.customLinkDto.partnerGroupIds = this.partnerGroupIds;
+    this.customLinkDto.partnerIds = this.partnerIds;
+    this.customLinkDto.partnerGroupSelected = this.partnerGroupSelected;
   }
 
   edit(id: number) {
@@ -374,37 +429,42 @@ export class CustomLinksUtilComponent implements OnInit {
     this.saving = false;
     this.referenceService.goToTop();
     if(this.moduleType==this.properties.dashboardButtons){
+      this.headerText = "Edit Button";
       const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
       this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
       this.selectedButtonIcon = this.customLinkDto.buttonIcon;
       this.buildCustomLinkForm();
       this.stopDropDownLoader(); 
     }else{
-      this.ngxLoading = true;
-      this.vanityURLService.getCustomLinkDetailsById(id).subscribe(
-        response=>{
-            this.customLinkDto = response.data;
-            this.customLinkDto.buttonTitle = this.customLinkDto.title;
-            this.customLinkDto.buttonIcon = this.customLinkDto.icon;
-            this.customLinkDto.buttonLink = this.customLinkDto.link;
-            this.customLinkDto.buttonDescription = this.customLinkDto.description;
-            this.customLinkDto.openInNewTab = this.customLinkDto.openLinkInNewTab;
-            this.buildCustomLinkForm();
-            this.previouslySelectedImagePath = this.customLinkDto.bannerImagePath;
-            this.ngxLoading = false;
-            this.isDropDownLoading = false;
-        },error=>{
-          this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-          this.buttonActionType = true;
-          this.customLinkDto = new CustomLinkDto();
-          this.setDefaultValuesForForm();
-          this.buildCustomLinkForm();
-          this.customLinkForm.get('customLinkType').setValue(this.defaultType);
-          this.ngxLoading = false;
-          this.isDropDownLoading = false;
-        });
+      this.getCustomLinksById(id);
     }
     
+  }
+
+  private getCustomLinksById(id: number) {
+    this.ngxLoading = true;
+    this.vanityURLService.getCustomLinkDetailsById(id).subscribe(
+      response => {
+        this.customLinkDto = response.data;
+        this.customLinkDto.buttonTitle = this.customLinkDto.title;
+        this.customLinkDto.buttonIcon = this.customLinkDto.icon;
+        this.customLinkDto.buttonLink = this.customLinkDto.link;
+        this.customLinkDto.buttonDescription = this.customLinkDto.description;
+        this.customLinkDto.openInNewTab = this.customLinkDto.openLinkInNewTab;
+        this.buildCustomLinkForm();
+        this.previouslySelectedImagePath = this.customLinkDto.bannerImagePath;
+        this.ngxLoading = false;
+        this.isDropDownLoading = false;
+      }, error => {
+        this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        this.buttonActionType = true;
+        this.customLinkDto = new CustomLinkDto();
+        this.setDefaultValuesForForm();
+        this.buildCustomLinkForm();
+        this.customLinkForm.get('customLinkType').setValue(this.defaultType);
+        this.ngxLoading = false;
+        this.isDropDownLoading = false;
+      });
   }
 
   update() {
@@ -422,7 +482,6 @@ export class CustomLinksUtilComponent implements OnInit {
           if(statusCode==200){
             this.customResponse = new CustomResponse('SUCCESS',response.message,true);
             this.callInitMethods();
-          
           }else{
             this.removeTitleErrorClass();
             let data = response.data;
@@ -464,25 +523,36 @@ export class CustomLinksUtilComponent implements OnInit {
   }
 
   private updateDashboardButton() {
+    this.referenceService.scrollSmoothToTop();
+    this.ngxLoading = true;
     this.vanityURLService.updateCustomLinkDetails(this.customLinkDto,this.moduleType,this.formData).subscribe(result => {
       if (result.statusCode === 200) {
-        this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT, true);
+        let message = "";
+        if(this.isUpdatedAndPublished){
+          message = this.properties.VANITY_URL_DB_BUTTON_UPDATED_AND_PUBLISHED_TEXT;
+        }else{
+          message = this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT;
+        }
+        this.customResponse = new CustomResponse('SUCCESS', message, true);
         this.isDropDownLoading = true;
         this.isAddDashboardBannersDivHidden = true;
         setTimeout(() => {
           this.callInitMethods();
           this.isDropDownLoading = false;
           this.isAddDashboardBannersDivHidden = false;
+          this.ngxLoading = false;
         }, 500);
         
       }
       else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
+        this.ngxLoading = false;
       }
       this.referenceService.goToTop();
     }, error => {
       this.customResponse = new CustomResponse('ERROR', "Error while updating dashboard button", true);
       this.referenceService.goToTop();
+      this.ngxLoading = false;
     });
   }
 
@@ -592,6 +662,60 @@ export class CustomLinksUtilComponent implements OnInit {
   getSelectedIcon(event:any){
     this.selectedButtonIcon = event;
   }
+
+  /***XNFR-571****/
+  receivePartnerCompanyAndGroupsEventEmitterData(event:any){
+    this.partnerGroupIds = event['partnerGroupIds'];
+    this.partnerIds = event['partnerIds'];
+    this.partnerGroupSelected = event['partnerGroupSelected'];
+    let isPartnerGroupSelected = this.partnerGroupIds!=null && this.partnerGroupIds!=undefined && this.partnerGroupIds.length>0;
+    let isPartnerIdSelected = this.partnerIds!=null && this.partnerIds!=undefined && this.partnerIds.length>0;
+    if(isPartnerGroupSelected || isPartnerIdSelected){
+      this.saveButtonText = "Save & Publish";
+      this.isAddedAndPublished = true;
+      if(this.customLinkDto.published){
+        this.updateButtonText = "Update";
+        this.isUpdatedAndPublished = false;
+      }else{
+        this.updateButtonText = "Update & Publish";
+        this.isUpdatedAndPublished = true;
+      }
+    }else{
+      this.saveButtonText = "Save";
+      this.isAddedAndPublished = false;
+      this.updateButtonText = "Update";
+      this.isUpdatedAndPublished = false;
+    }
+  }
+
+  refresh(){
+    this.findLinks(this.pagination);
+  }
+
+  /*************************Sort********************** */
+sortBy(text: any) {
+  this.sortOption.selectedCustomLinksDropDownOption = text;
+  this.getAllFilteredResults();
+}
+
+searchOnKeyPress(keyCode:number){
+  if(keyCode==13){
+    this.search();
+  }
+}
+
+
+/*************************Search********************** */
+search() {
+  this.getAllFilteredResults();
+}
+
+getAllFilteredResults() {
+  this.pagination.pageIndex = 1;
+  this.pagination.searchKey = this.sortOption.searchKey;
+  this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedCustomLinksDropDownOption, this.pagination);
+  this.findLinks(this.pagination);
+}
 
 
 }

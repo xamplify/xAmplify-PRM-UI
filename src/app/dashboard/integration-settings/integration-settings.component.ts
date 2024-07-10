@@ -56,7 +56,9 @@ export class IntegrationSettingsComponent implements OnInit {
 	isSortApplied: boolean = false;
 	isFilterApplied: boolean = false;
 	isCustomFieldsModelPopUp: boolean = false;
+	isCustomFieldsOrderModelPopUp: boolean = false;
 	customFieldsList: any;
+	selectedCustomFields: Array<CustomFieldsDto> = new Array<CustomFieldsDto>();
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
@@ -78,7 +80,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	ngOnInit() {
 		this.getIntegrationDetails();
 	}
-
+	
 	checkAuthorization() {
 		this.ngxloading = true;
 		let type: string = this.integrationType.toLowerCase();
@@ -109,7 +111,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						if (!this.isSortApplied && !this.isFilterApplied) {
 							self.selectedCfIds = [];
 							this.sfCustomFieldsResponse = data.data;
-							if(this.sfCustomFieldsResponse != undefined){
+							if (this.sfCustomFieldsResponse != undefined) {
 								if (this.sfCustomFieldsResponse.length > 0) {
 									this.haveCustomFields = true;
 								}
@@ -124,6 +126,9 @@ export class IntegrationSettingsComponent implements OnInit {
 									self.requiredCfIds.push(customField.name);
 									if (!customField.selected) {
 										self.selectedCfIds.push(customField.name);
+									}
+									if (!customField.canUnselect) {
+										self.canNotUnSelectIds.push(customField.name)
 									}
 								}
 							});
@@ -140,7 +145,21 @@ export class IntegrationSettingsComponent implements OnInit {
 					this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
 					this.customFieldsDtosLoader = false;
 				},
-				() => { }
+				() => {
+					this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
+					$.each(this.sfCustomFieldsResponse, function (_index: number, customFiledDto: any) {
+						if (customFiledDto.selected) {
+							  self.selectedCustomFieldsDtos.push(customFiledDto);
+						}
+						if (customFiledDto.order >= 1) {
+							self.selectedCustomFieldsDtos.sort((a, b) => {
+								if (a['order'] === null) return 1;  
+								if (b['order'] === null) return -1;
+								return a['order'] - b['order'];
+							});
+						}
+					});
+				}
 			);
 	}
 
@@ -189,7 +208,17 @@ export class IntegrationSettingsComponent implements OnInit {
                     this.customFieldsResponse = new CustomResponse('ERROR',errorMessage,true);
 					this.customFieldsDtosLoader = false;
 				},
-				() => { }
+				() => {
+					// this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
+					// $.each(this.sfCustomFieldsResponse, function (_index: number, customFiledDto: any) {
+					// 	if (customFiledDto.selected) {
+					// 		  self.selectedCustomFieldsDtos.push(customFiledDto);
+					// 	}
+					// 	if (customFiledDto.order >= 1) {
+					// 		self.selectedCustomFieldsDtos.sort((a, b) => a['order'] - b['order']);
+					// 	}
+					// });
+				 }
 			);
 
 	}
@@ -280,21 +309,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		});
 
 		/*****XNFR-339*****/
-		this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
-		$.each(this.sfCustomFieldsResponse,function(_index:number,customFiledDto:any){
-			if(customFiledDto.selected){
-				let selectedCustomFieldsDto = new CustomFieldsDto();
-				selectedCustomFieldsDto.name = customFiledDto.name;
-				selectedCustomFieldsDto.label = customFiledDto.label;
-				selectedCustomFieldsDto.required = customFiledDto.required;
-				selectedCustomFieldsDto.placeHolder = customFiledDto.placeHolder;
-				selectedCustomFieldsDto.displayName = customFiledDto.displayName;
-				selectedCustomFieldsDto.formDefaultFieldType = customFiledDto.formDefaultFieldType;
-				selectedCustomFieldsDto.options = customFiledDto.options;
-				selectedCustomFieldsDto.originalCRMType = customFiledDto.originalCRMType;
-				self.selectedCustomFieldsDtos.push(selectedCustomFieldsDto);
-			}
-		});
+
 		 if (this.integrationType.toLowerCase() === 'salesforce') {
 			const displayName = this.selectedCustomFieldsDtos.find(field => $.trim(field.displayName).length <= 0);
 			if((this.integrationType.toLowerCase() === 'salesforce') && displayName)
@@ -327,6 +342,24 @@ export class IntegrationSettingsComponent implements OnInit {
 					() => { }
 		 		);
 		 } else {
+		this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
+		if(this.integrationType.toLowerCase() != 'salesforce'){
+			this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
+			$.each(this.sfCustomFieldsResponse,function(_index:number,customFiledDto:any){
+				if(customFiledDto.selected){
+					let selectedCustomFieldsDto = new CustomFieldsDto();
+					selectedCustomFieldsDto.name = customFiledDto.name;
+					selectedCustomFieldsDto.label = customFiledDto.label;
+					selectedCustomFieldsDto.required = customFiledDto.required;
+					selectedCustomFieldsDto.placeHolder = customFiledDto.placeHolder;
+					selectedCustomFieldsDto.displayName = customFiledDto.displayName;
+					selectedCustomFieldsDto.formDefaultFieldType = customFiledDto.formDefaultFieldType;
+					selectedCustomFieldsDto.options = customFiledDto.options;
+					selectedCustomFieldsDto.originalCRMType = customFiledDto.originalCRMType;
+					self.selectedCustomFieldsDtos.push(selectedCustomFieldsDto);
+				}
+			});
+		}
 			const amountField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'AMOUNT');
 			const closeDateField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'CLOSE_DATE');
 			const dealNameField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'DEAL_NAME');
@@ -390,12 +423,14 @@ export class IntegrationSettingsComponent implements OnInit {
 		if (isChecked) {
 			if (this.selectedCfIds.indexOf(cfName) == -1) {
 				this.selectedCfIds.push(cfName);
+				this.selectedCustomFieldsDtos.push(sfCustomField);
 			}
 			if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
 				this.paginatedSelectedIds.push(cfName);
 			}
 			sfCustomField.selected = true;
 		} else {
+			this.selectedCustomFieldsDtos.splice(this.selectedCustomFieldsDtos.indexOf(sfCustomField), 1);
 			let indexInSelectedIds = this.selectedCfIds.indexOf(cfName);
 			if (indexInSelectedIds !== -1) {
 				this.selectedCfIds.splice(indexInSelectedIds, 1);
@@ -618,8 +653,9 @@ export class IntegrationSettingsComponent implements OnInit {
 			this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
 			$.each(this.sfcfPagedItems,function(index:number,value:any){
 				value.selected = true;
+				self.selectedCustomFieldsDtos.push(value);
 			});
-
+			self.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(self.selectedCustomFieldsDtos);
 		} else {
 			let self = this;
 			$('[name="sfcf[]"]').each(function () {
@@ -641,8 +677,10 @@ export class IntegrationSettingsComponent implements OnInit {
 			$.each(self.sfcfPagedItems,function(index:number,value:any){
 				if(value.canUnselect){
 					value.selected = false;
+					self.selectedCustomFieldsDtos.splice(self.selectedCustomFieldsDtos.indexOf(value), 1);
 				}
 			});
+			self.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
 		}
 		ev.stopPropagation();
 	}
@@ -764,5 +802,18 @@ export class IntegrationSettingsComponent implements OnInit {
 			this.isCustomFieldsModelPopUp = false;
 		}	
   }
+
+  //XNFR-601
+		addCustomFielsdOrderModalOpen(){
+			this.isCustomFieldsOrderModelPopUp = true;
+			this.customFieldsList = this.selectedCustomFieldsDtos;
+		}
+
+		closeCustomFielsOrderModal(event: any) {
+			if (event === "0") {
+				this.isCustomFieldsOrderModelPopUp = false;
+			}	
+	}
+
 
 }

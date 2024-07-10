@@ -2,7 +2,7 @@
     <div class="my-container">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     </div>
-    <div *ngIf="!isHideFormInfo" class="row">
+    <div *ngIf="!isHideFormInfo && isValidFormWithFormLabels" class="row">
         <div class="col-md-12">
             <div class="portlet light" id="portlet-height">
                 <div class="row">
@@ -440,6 +440,9 @@
             </div>
         </div>
     </div>
+    <div *ngIf="!isValidFormWithFormLabels">
+        <div class="alert alert-danger"><strong>An unexpected error occurred, please contact support team.</strong></div>
+    </div>
     <app-preview-popup *ngIf="!isVendorOrMasterLandingPage" #previewPopUpComponent></app-preview-popup>
 </div>
 <!-- -End Of page-content -->
@@ -485,7 +488,7 @@
                         <label>Survey</label>
                     </div>
                     <!-- XNFR-108 -->
-                    <div class="form-group col-lg-12 col-md-12">
+                    <div class="form-group col-lg-12 col-md-12" *ngIf = "!isVendorOrMasterLandingPage">
                         <label>Team Member Group</label>
                         <p class="pencil-color" style="font-size: 12px;" translate>
                             Selected team members will receive form submit notifications.

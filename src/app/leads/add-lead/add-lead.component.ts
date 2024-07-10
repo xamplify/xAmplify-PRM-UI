@@ -92,7 +92,7 @@ export class AddLeadComponent implements OnInit {
     "Insurance", "Machinery", "Manufacturing", "Media", "Not For Profit", "Recreation", "Retail", "Shipping", "Technology", "Telecommunications",
     "Transportation", "Utilities", "Other"
   ];
- 
+
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, private leadsService: LeadsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService, public countryNames: CountryNames,
@@ -136,6 +136,7 @@ export class AddLeadComponent implements OnInit {
       } else if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
         if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
           this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
+          this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
           this.getActiveCRMDetails();
         }
       } else {
@@ -307,8 +308,6 @@ export class AddLeadComponent implements OnInit {
             this.referenceService.loading(this.httpRequestLoader, false);
             if (data.statusCode == 200) {
               let campaignLeadPipeline = data.data;
-              let ticketTypeIdMap = data.map;
-              self.lead.halopsaTicketTypeId = ticketTypeIdMap.halopsaTicketTypeId;
               if (campaignLeadPipeline.createdForCampaignPipelines != undefined) {
                 self.lead.pipelineId = campaignLeadPipeline.createdForCampaignPipelines.id;
                 self.lead.createdForPipelineId = campaignLeadPipeline.createdForCampaignPipelines.id;
@@ -319,7 +318,10 @@ export class AddLeadComponent implements OnInit {
                 self.createdByStages = campaignLeadPipeline.createdByCampaignPipelines.stages;
               }
               self.hasCampaignPipeline = true;
-              if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType) {
+              if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType
+                || 'ZOHO' === this.activeCRMDetails.createdForActiveCRMType) {
+                let ticketTypeIdMap = data.map;
+                self.lead.halopsaTicketTypeId = ticketTypeIdMap.halopsaTicketTypeId;
                 self.isCampaignTicketTypeSelected = true;
               }
             } else if (data.statusCode == 404) {
@@ -343,8 +345,20 @@ export class AddLeadComponent implements OnInit {
     //this.validateField('createdForCompanyId',false);
     if (this.lead.createdForCompanyId > 0) {
       //this.isSalesForceEnabled(); 
-      this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);   
+      this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
       this.getActiveCRMDetails();
+    } else {
+      this.resetPipelines();
+      this.lead.createdForPipelineId = 0;
+      this.lead.createdByPipelineId = 0;
+      this.lead.createdForPipelineStageId = 0;
+      this.lead.createdByPipelineStageId = 0;
+      this.lead.halopsaTicketTypeId = 0;
+      this.activeCRMDetails.hasCreatedForPipeline = false;
+      this.activeCRMDetails.hasCreatedByPipeline = false;
+      this.showTicketTypesDropdown = false;
+      this.resetLeadDetails();
+      this.getDefaultLeadCustomFields();
     }
   }
 
@@ -355,6 +369,25 @@ export class AddLeadComponent implements OnInit {
     this.hasSfPipeline = false;
     this.activeCRMDetails.hasLeadPipeline = false;
     this.getPipelines();
+  }
+
+
+  resetLeadDetails() {
+    this.lead.firstName = "";
+    this.lead.lastName = "";
+    this.lead.email = "";
+    this.lead.company = "";
+    this.lead.city = "";
+    this.lead.website = "";
+    this.lead.country = 'Select Country';
+    this.lead.phone = '';
+    this.lead.street = '';
+    this.lead.city = '';
+    this.lead.state = '';
+    this.lead.title = '';
+    this.lead.postalCode = '';
+    this.lead.leadComment = '';
+    this.lead.industry = 'Select Industry';
   }
 
   getPipelines() {
@@ -474,6 +507,7 @@ export class AddLeadComponent implements OnInit {
   }
 
   validateAndSubmit() {
+    let displayName = '';
     this.isValid = true;
     if ('HALOPSA' === this.activeCRMDetails.createdForActiveCRMType && (this.lead.halopsaTicketTypeId == undefined ||
       this.lead.halopsaTicketTypeId <= 0)) {
@@ -495,20 +529,45 @@ export class AddLeadComponent implements OnInit {
       this.isValid = false;
       this.errorMessage = "Please select a Pipeline Stage ";
     } else if (this.lead.lastName == undefined || this.lead.lastName == "") {
+      this.leadCustomFields.forEach(field => {
+        if (field.labelId === 'last_name') {
+          displayName = field.displayName;
+        }
+      });
       this.isValid = false;
-      this.errorMessage = "Please fill Last Name field";
+      this.errorMessage = `Please fill ${displayName} field`;
     } else if (this.lead.company == undefined || this.lead.company == "") {
+      this.leadCustomFields.forEach(field => {
+        if (field.labelId === 'company') {
+          displayName = field.displayName;
+        }
+      });
       this.isValid = false;
-      this.errorMessage = "Please fill Company field";
+      this.errorMessage = `Please fill ${displayName} field`;
     } else if (this.lead.email == undefined || this.lead.email == "") {
+      this.leadCustomFields.forEach(field => {
+        if (field.labelId === 'email') {
+          displayName = field.displayName;
+        }
+      });
       this.isValid = false;
-      this.errorMessage = "Please fill email field";
+      this.errorMessage = `Please fill ${displayName} field`;
     } else if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.regularExpressions.EMAIL_ID_PATTERN.test(this.lead.email)) {
+      this.leadCustomFields.forEach(field => {
+        if (field.labelId === 'email') {
+          displayName = field.displayName;
+        }
+      });
       this.isValid = false;
-      this.errorMessage = "Please fill Valid Email Id";
+      this.errorMessage = `Please fill Valid ${displayName} Id`;
     } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)) {
+      this.leadCustomFields.forEach(field => {
+        if (field.labelId === 'website') {
+          displayName = field.displayName;
+        }
+      });
       this.isValid = false;
-      this.errorMessage = "Please fill Valid Website";
+      this.errorMessage = `Please fill Valid ${displayName}`;
     }
 
     if (this.isValid) {
@@ -563,9 +622,10 @@ export class AddLeadComponent implements OnInit {
           this.ngxloading = false;
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
-            if ("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType) {
+            if (("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType
+              || "ZOHO" === this.activeCRMDetails.createdForActiveCRMType) && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
               this.showTicketTypesDropdown = true;
-              this.getHaloPSATicketTypes(this.lead.createdForCompanyId);
+              this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
               if (this.actionType === 'add') {
                 this.lead.createdForPipelineId = 0;
                 this.lead.createdByPipelineId = 0;
@@ -573,11 +633,11 @@ export class AddLeadComponent implements OnInit {
                 this.lead.createdByPipelineStageId = 0;
                 this.lead.halopsaTicketTypeId = 0;
               }
-            } else if ("HALOPSA" === this.activeCRMDetails.createdByActiveCRMType) {
+            } else if ("HALOPSA" === this.activeCRMDetails.createdByActiveCRMType && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
               this.showTicketTypesDropdown = true;
               this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
                 (result: any) => {
-                  this.getHaloPSATicketTypes(result);
+                  this.getHaloPSATicketTypes(result, this.activeCRMDetails.createdByActiveCRMType);
                 });
               if (this.actionType === 'add') {
                 this.lead.createdForPipelineId = 0;
@@ -870,9 +930,9 @@ export class AddLeadComponent implements OnInit {
 
   halopsaTicketTypeId: number = 0;
   halopsaTicketTypes: any;
-  getHaloPSATicketTypes(companyId: number) {
+  getHaloPSATicketTypes(companyId: number, integrationType: string) {
     this.ngxloading = true;
-    this.integrationService.getHaloPSATicketTypes(companyId).subscribe(data => {
+    this.integrationService.getHaloPSATicketTypes(companyId, integrationType.toLowerCase(), 'LEAD').subscribe(data => {
       this.ngxloading = false;
       if (data.statusCode == 200) {
         this.halopsaTicketTypes = data.data;
@@ -899,7 +959,7 @@ export class AddLeadComponent implements OnInit {
     });
   }
 
-  getLeadCustomFieldsByVendorCompany(vendorCompanyId : number){
+  getLeadCustomFieldsByVendorCompany(vendorCompanyId: number) {
     this.ngxloading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.getLeadCustomFieldsByVendorCompany(vendorCompanyId).subscribe(data => {

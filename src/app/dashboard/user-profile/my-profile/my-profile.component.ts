@@ -361,6 +361,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/** XNFR-534 **/
 	showSaml2SSOsettings: boolean = false;
 	showleadFieldSettings : boolean = false;
+	showOauthSSOConfiguration: boolean = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -571,9 +572,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 			this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 			if (this.isProduction) {
-				this.isHalopsaDisplayed = "spai@mobinar.com" == this.currentUser.userName;
+				this.iszohoDisplayed = false;
 			} else {
-				this.isHalopsaDisplayed = true;
+				this.iszohoDisplayed = true;
 			}
 			this.getUserByUserName(this.currentUser.userName);
 			this.cropperSettings();
@@ -1918,8 +1919,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == "saml2SSOsettings") {
 			this.showSaml2SSOsettings = true;
 			this.activeTabHeader = this.properties.saml2SSOsettings;
-		}
-		else if (this.activeTabName == "gdpr") {
+		} else if (this.activeTabName == "oauthSSOConfiguration") {
+			this.showOauthSSOConfiguration = true;
+			this.activeTabHeader = this.properties.oauthSSOConfiguration;
+		} else if (this.activeTabName == "gdpr") {
 			this.activeTabHeader = this.properties.gdprSettings;
 			this.getGdprSettings();
 		} else if (this.activeTabName == "categories") {

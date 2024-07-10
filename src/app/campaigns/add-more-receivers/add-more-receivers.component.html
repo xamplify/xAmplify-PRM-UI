@@ -56,7 +56,7 @@
                                         </td>
                                      </tr>
                                   </table>
-                                  <div class="table-responsive">
+                                  <div class="table-responsive text-center">
                                      <table class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactsPagination.totalRecords > 0">
                                         <thead>
                                            <tr>
@@ -97,7 +97,7 @@
                                               </td>
                                               <!-- data-toggle="tooltip" data-placement="bottom" title="{{contacts.name}}" -->
                                               <td class="text-center moreipsis">
-                                                 <span>{{contacts.name}}</span>
+                                                 <span class="px-5">{{contacts.name}}</span>
                                               </td>
                                               <td *ngIf="showContactType">
                                                  <ng-container *ngIf="contacts.partnerUserList">
@@ -156,7 +156,7 @@
           </div>
           <div class="modal-footer" *ngIf="!sendingRequest && !contactListLoader.isLoading">
              <a class="btn btn-primary" (click)="send()" *ngIf="!sendSuccess">Send</a>
-             <a (click)="closeMoreInvitesPopup()" class="btn btn-default" style="float: right">Close</a>
+             <a (click)="closeMoreInvitesPopup()" class="btn Btn-Gray" style="float: right">Close</a>
           </div>
        </div>
     </div>

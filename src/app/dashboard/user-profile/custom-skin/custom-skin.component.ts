@@ -631,8 +631,10 @@ export class CustomSkinComponent implements OnInit {
     this.saveThemeDto.createdBy = this.loggedInUserId;
     this.saveThemeDto.parentId = this.themeId;
     this.saveThemeDto.parentThemeName = this.themeDTO.parentThemeName;
-    if(!this.themeDTO.defaultTheme && !this.themeDTO.backgroundImagePath.includes('/assets')) {
-      this.uploadBgImage = this.bgImagePath;
+    if (this.themeDTO.parentThemeName == 'GLASSMORPHISMLIGHT' || this.themeDTO.parentThemeName == 'GLASSMORPHISMDARK') {
+      if (!this.themeDTO.defaultTheme && !this.themeDTO.backgroundImagePath.includes('/assets')) {
+        this.uploadBgImage = this.bgImagePath;
+      }
     }
     this.saveThemeDto.backgroundImagePath = this.uploadBgImage;
     console.log(this.saveThemeDto.parentId, "sudha");

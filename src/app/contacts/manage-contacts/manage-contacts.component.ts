@@ -1969,16 +1969,25 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	saveAs() {
 		try {
-			this.saveAsTypeList = 'manage-all-contacts';
-			this.saveAsListName = '';
-			this.selectedLegalBasisOptions = [];
-			this.saveAsError = '';
-			this.disableSave = false;
-			$('#saveAsModal').modal('show');
+			if (this.selectedContactListIds.length != 0) {
+				this.saveAsTypeList = 'manage-all-contacts';
+				this.saveAsListName = '';
+				this.selectedLegalBasisOptions = [];
+				this.saveAsError = '';
+				this.disableSave = false;
+				$('#saveAsModal').modal('show');
+			} else {
+				if (this.isPartner) {
+					this.customResponse = new CustomResponse('ERROR', "Please select atleast one " + this.authenticationService.partnerModule.customName + " to create the Group", true);
+				} else {
+					this.customResponse = new CustomResponse('ERROR', this.properties.NO_USERS_SELECT_ERROR, true);
+				}
+			}
 		} catch (error) {
 			this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsAlert()");
 		}
 	}
+
 
 	saveAsNewList(contactList: ContactList) {
 		try {

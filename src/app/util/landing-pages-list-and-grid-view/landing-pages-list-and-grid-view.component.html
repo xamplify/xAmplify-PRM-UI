@@ -181,7 +181,8 @@
                 <!---Grid View----->
                 <section *ngIf="modulesDisplayType?.isGridView &&  !httpRequestLoader?.isLoading">
                     <div class="row p10" style="padding: 0px 3px 0px 3px;">
-                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20 GridviewSidePaddings"
+                        <div class=" col-md-4 col-sm-4 col-xs-12 tab_mt_20 GridviewSidePaddings"
+                        [ngClass]="{'col-lg-3': !(vendorJourney || isLandingPages || isMasterLandingPages), 'col-lg-4': (vendorJourney || isLandingPages || isMasterLandingPages)}"
                             *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                             <div class="grid-box grid-box-height" id="landingPageListDiv_{{landingPage.id}}">
                                 <ng-container *ngIf="!isPartnerLandingPage">
@@ -267,10 +268,10 @@
                                 <div class="bar gridIconCustomization flex icons-center" id="notificationBarCu"
                                 *ngIf="(vendorJourney || isLandingPages || isMasterLandingPages)">
                                     <!--Share Icon-->
-                                    <ng-template *ngIf="vendorJourney" [ngTemplateOutlet]="shareIcon"
+                                    <ng-template *ngIf="vendorJourney && !landingPage?.defaultLandingPage " [ngTemplateOutlet]="shareIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Copy Icon-->
-                                    <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="copyIcon"
+                                    <ng-template *ngIf="!isLandingPages" [ngTemplateOutlet]="copyIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Edit Icon-->
                                     <ng-template *ngIf="!isLandingPages" [ngTemplateOutlet]="editIcon"
@@ -279,10 +280,10 @@
                                     <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="previewIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Copy/Embed Link Icon-->
-                                    <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="copyOrEmbedLinkIcon"
+                                    <ng-template *ngIf="(!isLandingPages && !landingPage?.defaultLandingPage) || (isLandingPages && landingPage?.status == 'ACTIVE')" [ngTemplateOutlet]="copyOrEmbedLinkIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Form Icon-->
-                                    <ng-template *ngIf="isLandingPages||  (vendorJourney && !landingPage?.defaultLandingPage)  || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="formIcon"
+                                    <ng-template *ngIf="isLandingPages||  (vendorJourney && !landingPage?.defaultLandingPage)  || (isMasterLandingPages)" [ngTemplateOutlet]="formIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Analytics Icon-->
                                     <ng-template *ngIf = " (vendorJourney &&  !landingPage?.defaultLandingPage) || isLandingPages || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="analyticsIcon"
@@ -372,7 +373,7 @@
                 <div>
                     <ul class="mix-filter" style="margin-top: 2px;"
                         *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView && !authenticationService?.module?.isMarketingCompany">
-                        <li class="filter" (click)="showAllLandingPages('All',0)"
+                        <li class="filter" (click)="showAllLandingPages('All',0)" *ngIf="!isMasterLandingPages && !vendorJourney && !isLandingPages"
                             [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All
                         </li>
                         <ng-container *ngIf="!isPartnerLandingPage && !isMasterLandingPages && !vendorJourney && !isLandingPages">
@@ -387,7 +388,7 @@
                                 [class.landing-page-selected]="4 == selectedLandingPageTypeIndex">Co-Branded (Private)
                             </li>
                         </ng-container>
-                        <ng-container *ngIf="isPartnerLandingPage || isMasterLandingPages || vendorJourney">
+                        <ng-container *ngIf="isPartnerLandingPage ">
                             <li class="filter" (click)="showAllLandingPages('PUBLIC',5)"
                                 [class.landing-page-selected]="5 == selectedLandingPageTypeIndex">Public</li>
                             <li class="filter" (click)="showAllLandingPages('PRIVATE',6)"
@@ -522,21 +523,28 @@
 
 <!--Forms Count-->
 <ng-template #formIcon let-landingPage="landingPage">
-    <ng-container *ngIf="landingPage.formsCount>0 && !(isPartnerLandingPage && landingPage.type=='PRIVATE')">
-        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage" data-rel="fancybox-button"
+    <ng-container *ngIf="(landingPage.formsCount>0 || (isMasterLandingPages && landingPage?.defaultLandingPage )) && !(isPartnerLandingPage && landingPage.type=='PRIVATE')">
+        <a class="Iconhover custom-grid-icon" *ngIf="isLandingPages || (isMasterLandingPages && landingPage?.defaultLandingPage )" data-rel="fancybox-button"
+        id="form-count-cursor-not-allowed" data-toggle="tooltip" data-placement="top" title="Form Count">
+        <i class="fa fa-wpforms" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" s
+            aria-hidden="true"></i>
+        <div class="clickicons"></div>
+        </a>
+        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && !(isLandingPages || (isMasterLandingPages && landingPage?.defaultLandingPage ))" data-rel="fancybox-button"
             (click)="goToFormAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Form Count">
             <i class="fa fa-wpforms" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" s
                 aria-hidden="true"></i>
             <div class="clickicons"></div>
         </a>
-        <a class="Iconhover custom-grid-icon" *ngIf="isPartnerLandingPage" data-rel="fancybox-button"
+        <a class="Iconhover custom-grid-icon" *ngIf="isPartnerLandingPage && !(isLandingPages || (isMasterLandingPages && landingPage?.defaultLandingPage ))" data-rel="fancybox-button"
             (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top"
             title="Form Count">
             <i class="fa fa-wpforms" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
                 aria-hidden="true"></i>
             <div class="clickicons"></div>
         </a>
-        <span class="badge" id="notification-list">{{landingPage.formsCount}}</span>
+        <span class="badge" id="notification-list" *ngIf = "!(isMasterLandingPages && landingPage?.defaultLandingPage )">{{landingPage.formsCount}}</span>
+        <span class="badge" id="notification-list" *ngIf = "(isMasterLandingPages && landingPage?.defaultLandingPage )">1</span>
     </ng-container>
 </ng-template>
 

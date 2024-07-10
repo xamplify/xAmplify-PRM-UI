@@ -149,7 +149,7 @@ li.mix-filter-li-selected,
 }
 .mix-filter li:hover, .mix-filter li.active, 
 .mix-filter li.campaign-type-selected, 
-.mix-filter li.emailtemplate-selected,
+.mix-filter li.emailtemplate-selected,.mix-filter li.filter-box-selected,
 li.mix-filter-li-selected:hover,
 ul.alt-row-style1 li:hover {
   background: #1C84FF !important;

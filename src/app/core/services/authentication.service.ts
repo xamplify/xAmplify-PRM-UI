@@ -34,6 +34,7 @@ import { Properties } from 'app/common/models/properties';
 
 @Injectable()
 export class AuthenticationService {
+  
 
 
   access_token: string;
@@ -1255,8 +1256,12 @@ export class AuthenticationService {
     return this.callPutMethod(url, requestDto);
   }
 
-  findPublishedPartnerIdsByUserListIdAndDamId(userListId: number, id: number, moduleName: string) {
-    let url = this.REST_URL + moduleName + "/findPublishedPartnerIds/" + userListId + "/" + id + "?access_token=" + this.access_token;
+  findPublishedPartnerIdsByUserListIdAndModuleId(userListId: number, id: number, moduleName: string) {
+    let urlPrefix = moduleName;
+    if(moduleName==this.properties.dashboardButtons){
+      urlPrefix = "dashboardButtons"
+    }
+    let url = this.REST_URL + urlPrefix + "/findPublishedPartnerIds/" + userListId + "/" + id + "?access_token=" + this.access_token;
     return this.callGetMethod(url);
   }
 
@@ -1368,6 +1373,18 @@ getRoleByUserId() {
 }
 /*** XNFR-512 ****/
 
+/****XNFR-571****/
+findDashboardButtonPublishEmailNotificationOption() {
+  let companyProfileName = this.getSubDomain();
+  let url = this.REST_URL + "admin/dashboardButtonPublishedEmailNotification/";
+  if (companyProfileName != "") {
+    url += "companyProfileName/" + companyProfileName;
+  } else {
+    url += "loggedInUserId/" + this.getUserId();
+  }
+  let apiUrl = url + "?access_token=" + this.access_token;
+  return this.callGetMethod(apiUrl);
+}
 
 
 }

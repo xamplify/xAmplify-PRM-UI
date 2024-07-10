@@ -174,6 +174,8 @@ export class Properties {
 	dealPipelines = "Deal Pipelines";
 	saml2SSOsettings = "SAML 2.0 SSO Settings";
 	leadFieldSettings = "Lead Fields Settings";
+	oauthSSOConfiguration = "oAuth SSO Settings";
+
 
 	/************XNFR-426**********/
 	leadDealApprove = "Lead Approval/Rejection";
@@ -203,7 +205,9 @@ export class Properties {
 	/****************** Vanity Relates *********************/
 	VANITY_URL_ERROR1 = "You are not associated to vendor company";
 	VANITY_URL_DB_BUTTON_SUCCESS_TEXT = "Button added successfully";
+	VANITY_URL_DB_BUTTON_ADDED_AND_PUBLISHED_SUCCESS_TEXT = "Button added & published successfully";
 	VANITY_URL_DB_BUTTON_UPDATE_TEXT = "Button updated successfully";
+	VANITY_URL_DB_BUTTON_UPDATED_AND_PUBLISHED_TEXT = "Button updated & published successfully";
 	VANITY_URL_DB_BUTTON_DELETE_TEXT = "Button deleted successfully";
 	VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT = "Button title already exists";
 	VANITY_URL_ET_SUCCESS_TEXT = "Email Template updated successfully";
@@ -363,11 +367,18 @@ export class Properties {
 	TRACK_OR_PLAY_BOOK_EMAIL_NOTIFICATION_OPTION_DISABLED = "To enable this option, please turn on 'Published Track Email Notifications' in your 'Email Notification Settings' located in your 'My Profile' section.";
 	MANAGE_ASSETS = "Manage Assets";
 
-	ADD_TO_QUICK_LINKS = "Add this to the quick links for display";
+	dashboardButton = "Dashboard Button";
+
+
+	ADD_TO_QUICK_LINKS = "Add this to the quick links for display. Quick links will be displayed for vanity login users only.";
 	ADDING_TEAM_MEMBER_IS_NOT_ALLOWED = "This feature is not available when using the Login As option.";
 
 	/** XNFR-534 - SAML2 SSO */
 	AUTHENTICATION_FAILURE = "Oops! your authentication has failed, please try again!";
+
+	/* XNFR-603 OAUTH SSO*/
+	OAUTH_SSO_HELP_TEXT1 = "Please fill the following URLs provided by your Identity Provider (IDP) to set up OAuth Single Sign-On (SSO). These URLs facilitate secure authentication and access to user data.";
+	OAUTH_SSO_HELP_TEXT2 = "Make sure to share below Redirect URI with your IDP for proper configuration and ensure all URLs are accurate and accessible for seamless integration with your IDP.";
 
 }
 

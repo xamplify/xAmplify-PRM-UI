@@ -186,6 +186,9 @@
     font-size: 12px;
     text-transform: uppercase;
   }
-
+  .emailtemplate-selected{
+    background-color: #0276ff;
+    color: #fff;
+  }
 
   

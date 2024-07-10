@@ -1,0 +1,114 @@
+<div class="row">
+	<div class="col-xs-12 p5" *ngIf="statusCode==200">
+		<div class="portlet light remove_cardBgcolor padding_0">
+			<div class="portlet-title">
+				<div class="col-xs-12">
+					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-6 text-left p0">
+							<div class="caption text-wrap" title="{{title}}" style="padding:10px">
+								<span class="caption-subject font-red-sunglo uppercase"
+									*ngIf="!pagination.checkInLeads">{{title}}</span>
+								<span class="caption-subject font-red-sunglo uppercase"
+									*ngIf="pagination.checkInLeads && !httpRequestLoader.isLoading"></span>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+
+			</div>
+			<div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
+				<div id="response-message">
+					<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+					</app-response-message>
+				</div>
+			</div>
+      <div class="table-responsive overflow-x-hidden mscroll_x" >
+        <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+        <table class='table tgrid table-hover table-sm' id="folder-list-view" *ngIf="pagination.pagedItems?.length>0"
+          aria-describedby="">
+          <thead>
+            <tr>
+              <th class="text-center" colspan="2"  id="border-bottom"><span
+                  class="ui-column-resizer gray"
+                  (mousedown)="referenceService.onMouseDown($event,'folder-list-view',2)">
+                </span> <span class="gridHeader" translate>Landing Page Name</span></th>
+				<th class="text-center" id="border-bottom" translate>Created
+					By</th>
+				<th class="text-center" id="border-bottom" translate>Partner Company</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let landingPage of pagination.pagedItems ;let i =index">
+              <tr id="folder-row-{{i}}" class="child-row-list-view border-cls">
+                <td class="custom-icon-width">
+					<div class="actions-block ">
+					<a (click)="$event.stopPropagation();viewLandingPageFormAnalytics(landingPage,i)"
+                    data-toggle="tooltip" data-placement="bottom" title="View Items"> 
+					
+					<i class="fa IconCustomization"
+					[ngClass]="{'fa-angle-right': !landingPage.expanded, 'fa-angle-down': landingPage.expanded}"
+					aria-hidden="true"></i>
+                  </a>
+				</div>
+				</td>
+                <td>
+                  <h4 class="">
+                    <span *ngIf="landingPage.masterLandingPageName != null && landingPage.masterLandingPageName != ''" data-toggle="tooltip" data-placement="bottom" title="{{landingPage.masterLandingPageName}}">
+                      <b>Name:</b> {{landingPage.masterLandingPageName}}</span>
+					<span *ngIf="landingPage.masterLandingPageName == null || landingPage.masterLandingPageName == ''" data-toggle="tooltip" data-placement="bottom" title="{{landingPage.masterLandingPageName}}">
+						<b>Uncategorised</b></span>                  </h4>
+                </td>
+				<td class="text-center">
+					<div class="override-actions">
+						{{landingPage.partnerMailId}}
+					</div>
+				</td>
+				<td class="text-center">
+					<div class="override-actions">
+						{{landingPage.partnerCompanyName}}
+					</div>
+				</td>
+              </tr>
+              <tr [ngClass]="{'hidden': !landingPage.expanded}" id="list-folder-items">
+                <td class="td-netbg" colspan="5">
+                  <ng-container *ngIf="landingPage.expanded">
+                    <ng-container > 
+                      <app-form-analytics-util [importedObject]="analyticsObject" [isVendorJourney]="true"></app-form-analytics-util>
+                    </ng-container> 
+                  </ng-container>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 pos_pd_top2">
+				<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+					(notifyParentDropDown)="listSubmittedData($event)" [hidden]="httpRequestLoader.isLoading">
+				</app-pagination>
+			</div>
+			<!-- End of 24 -->
+			<div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+				<strong>No Data Found.</strong>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12 p5" *ngIf="statusCode==404">
+		<div class="alert alert-danger">
+			<strong>
+				<h4>Form does not exists</h4>
+			</strong>
+		</div>
+	</div>
+	<div class="col-xs-12 p5" *ngIf="statusCode==403">
+		<div class="alert alert-danger">
+			<strong>
+				<h4>Access Denied</h4>
+			</strong>
+		</div>
+	</div>
+	<app-scroll-top></app-scroll-top>
+</div>

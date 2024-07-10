@@ -622,7 +622,11 @@ export class ManageLeadsComponent implements OnInit {
   searchPartnersKeyPress(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
 
   showSubmitLeadSuccess() {
-    this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+    if (this.actionType == 'edit') {
+      this.leadsResponse = new CustomResponse('SUCCESS', "Lead Updated Successfully", true);
+    } else {
+      this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+    }
     this.showLeadForm = false;
     this.showFilterOption = false;
     this.showLeads();

@@ -26,4 +26,6 @@ export class GeoLocationAnalytics {
     partnerLandingPageAlias:string = "";
     partnerCompanyId:number;
     openedInBrowser = false;
+    vendorJourney:boolean = false;
+    fromMasterLandingPage:boolean =false;
 }

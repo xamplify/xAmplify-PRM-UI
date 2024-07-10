@@ -7,8 +7,8 @@ import {AuthenticationService} from 'app/core/services/authentication.service';
 import {CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { EmailNotificationSettingsDto } from '../user-profile/models/email-notification-settings-dto';
 import { EmailNotificationSettingsTextDto } from '../user-profile/models/email-notification-settings-text-dto';
-import { ModuleCustomName } from '../models/module-custom-name';
-
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+VanityURLService
 
 @Component({
   selector: 'app-email-notification-settings',
@@ -25,10 +25,14 @@ export class EmailNotificationSettingsComponent implements OnInit {
  assetPublishedTextDto:EmailNotificationSettingsTextDto = new EmailNotificationSettingsTextDto();
  trackPublishedTextDto:EmailNotificationSettingsTextDto = new EmailNotificationSettingsTextDto();
  playbookPublishedTextDto:EmailNotificationSettingsTextDto = new EmailNotificationSettingsTextDto();
+ dashboardButtonsPublishedTextDto:EmailNotificationSettingsTextDto = new EmailNotificationSettingsTextDto();
 
+ isVanityLogin = false;
  customModulePartnerName = "";
  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,
-  public dashboardService:DashboardService,public callActionSwitch: CallActionSwitch) { }
+  public dashboardService:DashboardService,public callActionSwitch: CallActionSwitch,public vanityUrlService:VanityURLService) {
+   this.isVanityLogin =  this.vanityUrlService.isVanityURLEnabled();
+   }
   
  ngOnInit() {
    this.loading  = true;
@@ -46,6 +50,10 @@ export class EmailNotificationSettingsComponent implements OnInit {
 
    /********Play Book Notification****/
    this.setPlaybookNotificationText();
+
+   /********Dashboard Buttons Notification****/
+   /****XNFR-571****/
+   this.setDashboardButtonsNotificationText();
 
    this.findEmailNotificationSettings();
   }
@@ -86,6 +94,17 @@ export class EmailNotificationSettingsComponent implements OnInit {
     this.assetPublishedTextDto.text1 = this.getText1(assetHeaderText);
     this.assetPublishedTextDto.text2 = this.getText2(assetText2Suffix);
     this.assetPublishedTextDto.text3 = this.getText3(assetText3Suffix);
+  }
+
+  /****XNFR-571****/
+  private setDashboardButtonsNotificationText() {
+    let headerText = this.properties.dashboardButton;
+    let text2Suffix = "dashboard buttons";
+    let text3Suffix = "a dashboard button";
+    this.dashboardButtonsPublishedTextDto.headerText = this.getHeaderText(headerText);
+    this.dashboardButtonsPublishedTextDto.text1 = this.getText1(headerText);
+    this.dashboardButtonsPublishedTextDto.text2 = this.getText2(text2Suffix);
+    this.dashboardButtonsPublishedTextDto.text3 = this.getText3(text3Suffix);
   }
 
   getHeaderText(headerTextPrefix:string){
@@ -141,6 +160,8 @@ export class EmailNotificationSettingsComponent implements OnInit {
       this.emailNotificationSettingsDto.trackPublishedEmailNotification = event;
     }else if(moduleType==4){
       this.emailNotificationSettingsDto.playbookPublishedEmailNotification = event;
+    }else if(moduleType==5){
+      this.emailNotificationSettingsDto.dashboardButtonsEmailNotification = event;
     }
   }
 

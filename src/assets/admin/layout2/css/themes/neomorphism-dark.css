@@ -272,7 +272,9 @@ ul.alt-row-style1 li:hover,
   border: 1px solid #191b1e !important;
 }
 .re-distributed-high-level:hover {
-  background-color: #22313a !important;
+  background-color: #2c2f33 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  border: 1px solid #191b1e !important;
 }
 
 .alert-success,
@@ -730,8 +732,7 @@ select {
 .merge-tag-input-border {
   border: 1px solid #191b1e !important;
 }
-.btn-default > i,
-.btn-default {
+.btn-default > i{
   color: white !important;
   background-color: #2e3033 !important;
   border: 1px solid #191b1e !important;
@@ -893,8 +894,9 @@ span.ui-column-resize {
   color: #93a3b5 !important;
 }
 .reload-btn {
-  background-color: #22313a !important;
-  border: 1px solid #2f4857 !important;
+  background-color: #2d3035 !important;
+  border: 1px solid #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 /* a, */
 .gear-icon,
@@ -2222,8 +2224,11 @@ a.title.padding_bottom.text-color.content-bg,
   background: #2c2f33 !important;
   border: none !important;
 }
-.search-box-item-clear {
-  background: #2c2f33 !important;
+.search-box-item-clear,
+.btn-group button.glyphicon.glyphicon-remove.search-box-item-clear {
+  background: #191b1eb3 !important;
+  opacity: 1;
+  margin: -1px 4px 2px 2px;
 }
 i.IconCustomization:hover {
   background-color: #22313a !important;
@@ -2638,7 +2643,7 @@ span.input-group-btn {
 }
 button.glyphicon.glyphicon-remove.search-box-item-clear {
   box-shadow: none !important;
-  background: none !important;
+  /* background: none !important; */
   border: none !important;
 }
 .angle-down {
@@ -2975,7 +2980,8 @@ width:inherit!important;
 }
 /* sudha sri(21-11-2023) */
 div#collapse1,
-.panel-heading.panel-header {
+.panel-heading.panel-header,
+label.form-check-label {
   border: none !important;
 }
 a.delete.custom-icon {
@@ -4190,3 +4196,17 @@ button.button_blue.bgcolor-unset.p0.btn-transitions.mrgt1-2{border-radius: 3px !
 button.button_blue.bgcolor-unset.p0.btn-transitions.mrgt1-2:hover{ background-color: #1C84FF !important;}
 button.btn.salesforce-btn.button.bgcolor-unset.p0.btn-transitions.mrgt-2.mrgt1-2{margin-top: -1px !important;border-radius:3px !important;}
 span.btn.Btn-Green {border: 0px solid #fff !important;background: none !important;}
+/***** Sudha Sri(01-07-2024) *****/
+button#cancel_button{background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%) !important;}
+/***** Sudha Sri(03-07-2024) *****/
+textarea.alert-info {
+  background-color: #2c2f33 !important;
+  border: 1px solid #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.btn-default{
+  background: #2c2f33 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  border: 1px solid #191b1e !important;
+  color: #fff !important;
+}

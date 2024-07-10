@@ -112,6 +112,14 @@ export class FormService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+
+    getVendorJourneyFormAnalytics( pagination: Pagination,alias:string,campaignFormAnalytics:boolean): Observable<any> {
+        let url = "";
+                url = this.URL + "vendorJourneyAnalytics/"+alias;
+        return this.http.post(url+"?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
     
     checkInAttendees( campaignId:number,formSubmitId:number,checkInStatus:boolean ) {
         return this.http.get( this.authenticationService.REST_URL  + "campaign/check-in/"+campaignId+"/"+formSubmitId+"/"+checkInStatus+"?access_token=" + this.authenticationService.access_token,"" )

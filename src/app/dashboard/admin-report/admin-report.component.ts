@@ -1,3 +1,4 @@
+import { SUPER_ADMIN_MODULE_CONTSTANTS } from './../../constants/super-admin-modules.constants';
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { DashboardReport } from '../../core/models/dashboard-report';
 import { DashboardService } from '../dashboard.service';
@@ -40,11 +41,8 @@ export class AdminReportComponent implements OnInit {
     customResponse: CustomResponse = new CustomResponse();
     copiedLinkCustomResponse:CustomResponse = new CustomResponse();
     roles: Roles = new Roles();
-    
     sortcolumn: string = null;
     sortingOrder: string = null;
-
-    
     sortOptions = [
                    { 'name': 'Sort by', 'value': '' },
                    { 'name': 'Conpany name (A-Z)', 'value': 'companyName-ASC' },
@@ -77,6 +75,7 @@ export class AdminReportComponent implements OnInit {
     expandOrCollpaseAllText = "Collapse All";
     isLocalHost = true;
     @ViewChild('integrationDetailsComponent') integrationDetailsComponent:IntegrationDetailsComponent;
+    readonly SUPER_ADMIN_MODULE_CONTSTANTS = SUPER_ADMIN_MODULE_CONTSTANTS;
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public router:Router) {
         this.isVanityUrlEnabled = this.authenticationService.vanityURLEnabled;
@@ -239,4 +238,5 @@ export class AdminReportComponent implements OnInit {
     openUpdateCompanyProfileNameModalPopup(){
         
     }
+
 }

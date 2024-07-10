@@ -1,0 +1,58 @@
+<div class="modal right fade" id="integrationSettingsForm" tabindex="-1" role="dialog"
+  aria-labelledby="integrtaionModalLabel" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-css" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" data-dismiss="modal" (click)="hideIntegrationSettingForm()"><i
+            class="fa fa-times"></i></a>
+        <h4 class="modal-title" id="templateRetrieve" translate>Custom Fields Order</h4>
+        <div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class='table tgrid table-hover table-sm'
+            aria-describedby="describe">
+            <thead>
+              <tr>
+                <th>
+                  <span class="gridHeader" translate>Field Name</span>
+                </th>
+                <th class="text-center" translate scope="col">Display Name</th>
+                <th class="text-center" translate scope="col">Data Type</th>
+              </tr>
+            </thead>
+            <tbody [dragula]='"customFieldsDragula"' [dragulaModel]='customFieldsList'>
+              <tr *ngFor="let customField of customFieldsList; let i = index" style="cursor: move;">
+                <ng-container>
+                  <td>
+                    <h4 class="mt5 mb5 f-w-600" translate>
+                      <span data-toggle="tooltip" data-placement="bottom"
+                        title="{{customField.label}}"><strong>{{customField.label}}</strong></span>
+                    </h4>
+                  </td>
+                  <td class="text-center">
+                    <h4 class="mt5 mb5 f-w-600" translate>
+                      <span data-toggle="tooltip" data-placement="bottom"
+                        title="{{customField.displayName}}"><strong>{{customField.displayName|slice:0:35}}</strong><span *ngIf="customField.displayName.length>35">...</span></span>
+                    </h4>
+                  </td>
+                  <td class="text-center">
+                    <h4 class="mt5 mb5 f-w-600" translate>
+                      <span data-toggle="tooltip" data-placement="bottom"
+                        title="{{customField.type}}"><strong>{{customField.type}}</strong></span>
+                    </h4>
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="orderAndSubmit()"
+          translate>Save</button>
+      </div> -->
+    </div>
+  </div>
+</div>

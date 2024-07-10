@@ -545,6 +545,16 @@ export class HomeComponent implements OnInit {
           }, error => {
             localStorage.setItem('defaultDisplayType', 'LIST');
           });
+    } else {
+      this.userService.getModulesDisplayDefaultView(this.authenticationService.getUserId())
+        .subscribe(
+          data => {
+            if (data.statusCode == 200) {
+              localStorage.setItem('defaultDisplayType', data.data);
+            }
+          }, error => {
+            localStorage.setItem('defaultDisplayType', 'LIST');
+          });
     }
   }
 

@@ -251,7 +251,7 @@
                                             </li>
                                             <!-- XNFR-592 -->
                                             <li [ngClass]="{'active-tab': activeTabName == 'leadFieldSettings'}"
-                                                *ngIf="authenticationService?.module?.isAdmin && !authenticationService.isOnlyPartner()">
+                                                *ngIf="!authenticationService.isOnlyPartner()">
                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadFieldSettings'}"
                                                     (click)="activateTab('leadFieldSettings')">
                                                     {{properties.leadFieldSettings}}
@@ -325,6 +325,16 @@
                                                 (click)="activateTab('saml2SSOsettings');clearCustomResponse()">{{properties.saml2SSOsettings}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
                                                     [ngTemplateOutletContext]="{'moduleName':'saml2SSOsettings'}"></ng-template>
+                                            </a>
+                                        </li>
+
+                                        <!-- Oauth SSO Settings-->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'oauthSSOConfiguration'}"
+                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'oauthSSOConfiguration'}"
+                                                (click)="activateTab('oauthSSOConfiguration');clearCustomResponse()">{{properties.oauthSSOConfiguration}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'oauthSSOConfiguration'}"></ng-template>
                                             </a>
                                         </li>
 
@@ -1118,12 +1128,12 @@
                                                                     style="padding-top: 4%;">Marketo</h5>
 
 
-                                                                <div class="ribbon draft config" style="left:10px"
+                                                                <div class="ribbon draft config integration-ribbon" style="left:10px"
                                                                     *ngIf="integrateRibbonText == 'configured'">
                                                                     <span
                                                                         [style.background-color]="'green'">{{integrateRibbonText}}</span>
                                                                 </div>
-                                                                <div class="ribbon draft" style="left:10px"
+                                                                <div class="ribbon draft integration-ribbon" style="left:10px"
                                                                     *ngIf="integrateRibbonText != 'configured'">
                                                                     <span
                                                                         [style.background-color]="'yello'">{{integrateRibbonText}}</span>
@@ -1166,12 +1176,12 @@
                                                                 <h5 class="card-title  text-uppercase text-center"
                                                                     style="padding-top: 4%;">HubSpot</h5>
 
-                                                                <div class="ribbon draft config" style="left:10px"
+                                                                <div class="ribbon draft config integration-ribbon" style="left:10px"
                                                                     *ngIf="hubSpotRibbonText == 'configured'">
                                                                     <span
                                                                         [style.background-color]="'green'">{{hubSpotRibbonText}}</span>
                                                                 </div>
-                                                                <div class="ribbon draft" style="left:10px"
+                                                                <div class="ribbon draft integration-ribbon" style="left:10px"
                                                                     *ngIf="hubSpotRibbonText != 'configured'">
                                                                     <span
                                                                         [style.background-color]="'yello'">{{hubSpotRibbonText}}</span>
@@ -1214,12 +1224,12 @@
                                                                     style="padding-top: 4%;">Salesforce</h5>
 
 
-                                                                <div class="ribbon draft config" style="left:10px"
+                                                                <div class="ribbon draft config integration-ribbon" style="left:10px"
                                                                     *ngIf="sfRibbonText == 'configured'">
                                                                     <span
                                                                         [style.background-color]="'green'">{{sfRibbonText}}</span>
                                                                 </div>
-                                                                <div class="ribbon draft" style="left:10px"
+                                                                <div class="ribbon draft integration-ribbon" style="left:10px"
                                                                     *ngIf="sfRibbonText != 'configured'">
                                                                     <span
                                                                         [style.background-color]="'yello'">{{sfRibbonText}}</span>
@@ -1261,12 +1271,12 @@
                                                                     style="padding-top: 4%;">Microsoft</h5>
 
 
-                                                                <div class="ribbon draft config" style="left:10px"
+                                                                <div class="ribbon draft config integration-ribbon" style="left:10px"
                                                                     *ngIf="microsoftRibbonText == 'configured'">
                                                                     <span
                                                                         [style.background-color]="'green'">{{microsoftRibbonText}}</span>
                                                                 </div>
-                                                                <div class="ribbon draft" style="left:10px"
+                                                                <div class="ribbon draft integration-ribbon" style="left:10px"
                                                                     *ngIf="microsoftRibbonText != 'configured'">
                                                                     <span
                                                                         [style.background-color]="'yello'">{{microsoftRibbonText}}</span>
@@ -1305,12 +1315,12 @@
                                                                 <h5 class="card-title  text-uppercase text-center"
                                                                     style="padding-top: 4%;">Pipedrive</h5>
 
-                                                                <div class="ribbon draft config" style="left:10px"
+                                                                <div class="ribbon draft config integration-ribbon" style="left:10px"
                                                                     *ngIf="pipedriveRibbonText == 'configured'">
                                                                     <span
                                                                         [style.background-color]="'green'">{{pipedriveRibbonText}}</span>
                                                                 </div>
-                                                                <div class="ribbon draft" style="left:10px"
+                                                                <div class="ribbon draft integration-ribbon" style="left:10px"
                                                                     *ngIf="pipedriveRibbonText != 'configured'">
                                                                     <span
                                                                         [style.background-color]="'yello'">{{pipedriveRibbonText}}</span>
@@ -1351,12 +1361,12 @@
                                                                 <h5 class="card-title  text-uppercase text-center"
                                                                     style="padding-top: 4%;">ConnectWise</h5>
 
-                                                                <div class="ribbon draft config" style="left:10px"
+                                                                <div class="ribbon draft config integration-ribbon" style="left:10px"
                                                                     *ngIf="connectwiseRibbonText == 'configured'">
                                                                     <span
                                                                         [style.background-color]="'green'">{{connectwiseRibbonText}}</span>
                                                                 </div>
-                                                                <div class="ribbon draft" style="left:10px"
+                                                                <div class="ribbon draft integration-ribbon" style="left:10px"
                                                                     *ngIf="connectwiseRibbonText != 'configured'">
                                                                     <span
                                                                         [style.background-color]="'yello'">{{connectwiseRibbonText}}</span>
@@ -1394,12 +1404,12 @@
                                                                 <h5 class="card-title  text-uppercase text-center"
                                                                     style="padding-top: 4%;">HALOPSA</h5>
 
-                                                                <div class="ribbon draft config" style="left:10px"
+                                                                <div class="ribbon draft config integration-ribbon" style="left:10px"
                                                                     *ngIf="halopsaRibbonText == 'configured'">
                                                                     <span
                                                                         [style.background-color]="'green'">{{halopsaRibbonText}}</span>
                                                                 </div>
-                                                                <div class="ribbon draft" style="left:10px"
+                                                                <div class="ribbon draft integration-ribbon" style="left:10px"
                                                                     *ngIf="halopsaRibbonText != 'configured'">
                                                                     <span
                                                                         [style.background-color]="'yello'">{{halopsaRibbonText}}</span>
@@ -1438,12 +1448,12 @@
                                                                     style="padding-top: 4%;">Zoho</h5>
 
 
-                                                                <div class="ribbon draft config" style="left:10px"
+                                                                <div class="ribbon draft config integration-ribbon" style="left:10px"
                                                                     *ngIf="zohoRibbonText == 'configured'">
                                                                     <span
                                                                         [style.background-color]="'green'">{{zohoRibbonText}}</span>
                                                                 </div>
-                                                                <div class="ribbon draft" style="left:10px"
+                                                                <div class="ribbon draft integration-ribbon" style="left:10px"
                                                                     *ngIf="zohoRibbonText != 'configured'">
                                                                     <span
                                                                         [style.background-color]="'yello'">{{zohoRibbonText}}</span>
@@ -1755,7 +1765,7 @@
                                                             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                                                                 <div class="page-toolbar">
                                                                     <div class="btn-group pull-right">
-                                                                        <a *ngIf="activeCRMDetails?.activeCRM && (activeCRMDetails?.type == 'HUBSPOT' || activeCRMDetails?.type == 'PIPEDRIVE' || activeCRMDetails?.type == 'HALOPSA') && activeTabName == 'dealPipelines'"
+                                                                        <a *ngIf="activeCRMDetails?.activeCRM && (activeCRMDetails?.type == 'HUBSPOT' || activeCRMDetails?.type == 'PIPEDRIVE' || activeCRMDetails?.type == 'HALOPSA' || activeCRMDetails?.type == 'ZOHO') && activeTabName == 'dealPipelines'"
                                                                             (click)="syncPipelines()">
                                                                             <button
                                                                                 class="btn btn-white Synchronize_btn"
@@ -2178,6 +2188,12 @@
                                             [ngClass]="{'active': activeTabName == 'saml2SSOsettings'}"
                                             *ngIf="showSaml2SSOsettings">
                                             <app-saml-sso-login> </app-saml-sso-login>
+                                        </div>
+
+                                        <!-- Oauth SSO settings -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'oauthSSOConfiguration'}"
+                                         *ngIf="showOauthSSOConfiguration">
+                                            <app-oauth-sso-configuration></app-oauth-sso-configuration>
                                         </div>
 
                                         <!-- Your Templates TAB -->
