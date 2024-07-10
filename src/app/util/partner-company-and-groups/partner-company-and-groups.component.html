@@ -219,7 +219,7 @@
     </div>
   </ng-container>
   <!--Pagination-->
-  <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+  <div *ngIf="pagination.pagedItems.length !== 0 && !httpRequestLoader.isLoading" class="pg8">
     <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" 
     (notifyParentDropDown)="findPartnerCompanies($event)" [customDropDown]="customDropDown"></app-pagination>
   </div>
