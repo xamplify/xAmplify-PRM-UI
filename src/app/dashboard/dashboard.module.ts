@@ -108,6 +108,7 @@ import { UpdateEmailAddressComponent } from './update-email-address/update-email
 import { IntegrationDetailsComponent } from './integration-details/integration-details.component';
 import { CustomFieldsOrderPopupComponent } from './custom-fields-order-popup/custom-fields-order-popup.component';
 import { SuperAdminServiceService } from './super-admin-service.service';
+import { CampaignAnalyticsSettingsComponent } from './campaign-analytics-settings/campaign-analytics-settings.component';
 
 
 
@@ -190,6 +191,7 @@ import { SuperAdminServiceService } from './super-admin-service.service';
         UpdateEmailAddressComponent,
         IntegrationDetailsComponent,
         CustomFieldsOrderPopupComponent,
+        CampaignAnalyticsSettingsComponent,
 
             
 

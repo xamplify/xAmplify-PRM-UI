@@ -3376,6 +3376,11 @@
                                             (editLoginTemplate)="openBeeEditorForLoginTemplate($event)"
                                             *ngIf="isCustomLoginScreenSettingsOptionClicked" class="tab-pane"
                                             [ngClass]="{'active': activeTabName == properties?.customLoginScreen}"></app-custom-login-screen-settings>
+
+                                        <!--XNFR-609-->
+                                            <app-campaign-analytics-settings *ngIf="isCampaignAnalyticsOptionClicked" class="tab-pane"
+                                                [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}">
+                                            </app-campaign-analytics-settings>
                                     </div>
                                 </div>
                             </div>

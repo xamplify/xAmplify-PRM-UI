@@ -1,0 +1,16 @@
+<app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
+<app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+</app-response-message>
+<div *ngIf="!loading">
+  <div class="portlet light">
+    <h4 class="bold-font-weight">Turn Campaign Analytics on or off
+    </h4>
+    <label class="bold-font">You have the ability to view and control campaign analytics in the "Manage Campaigns" section.</label>
+    <div>
+      <h5 class="bold-font-weight h5-custom-font">Show campaign analytics:
+        <br><br>
+        <app-custom-ui-switch [customSwitch]="isCampaignAnalyticsSettingsEnabled" [tooltipMessage]="Sravan" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
+      </h5>
+    </div>
+  </div>
+</div>
