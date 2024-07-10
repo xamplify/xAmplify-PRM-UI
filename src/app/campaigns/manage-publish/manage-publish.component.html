@@ -35,9 +35,6 @@
             Active Campaigns</button>
       </div>
       <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
-
-
-
    </div>
    <ngx-loading [show]="isloading || refService.loadingPreview" [config]="{ backdropBorderRadius: '14px' }">
    </ngx-loading>
@@ -120,8 +117,6 @@
                                                    [class.disabled]="modulesDisplayType.isGridView"
                                                    (click)="!modulesDisplayType.isGridView && setViewType('Grid')">
                                                    <i class="fa fa-th-large p10" aria-hidden="true"></i>
-
-
                                                 </span>
                                                 <ng-container
                                                    *ngIf="(pagination?.categoryId==0 || pagination?.categoryId=='undefined')">
