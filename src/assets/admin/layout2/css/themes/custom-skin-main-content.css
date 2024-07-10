@@ -472,7 +472,7 @@ label {
 .with-nav-tabs.panel-default .nav-tabs > li.active > a,
 .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover,
 .with-nav-tabs.panel-default .nav-tabs > li.active > a:focus {
-  color: #f8f6f9 !important;
+  color: var(---text-color) !important;
   background-color: var(--div-bg-color) !important;
 }
 .with-nav-tabs.panel-default .nav-tabs > li > a {
@@ -961,7 +961,8 @@ h4 > a,
 .border-none,
 .border-none-dark,
 .bar a.border-none-dark,
-.inline {
+.inline,
+button.button.bgcolor-unset.button-border.save_border {
   border: none !important;
 }
 
@@ -1633,7 +1634,7 @@ i.IconCustomization:hover {
 }
 .IconCustomizationcondition a i:hover {
   border: 1px solid var(--icon-border-color) !important;
-  background: var(--icon-border-color) !important;
+  background: var(--icon-hover-color) !important;
   color: var(--div-bg-color) !important;
 }
 
@@ -1643,7 +1644,7 @@ i.IconCustomization:hover {
 }
 #download-template:hover {
   border: 1px solid var(--icon-border-color) !important;
-  background: var(--icon-border-color) !important;
+  background: var(--icon-hover-color) !important;
   color: var(--div-bg-color) !important;
 }
 

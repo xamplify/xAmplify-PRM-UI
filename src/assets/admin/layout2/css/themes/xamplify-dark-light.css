@@ -2581,3 +2581,6 @@ i.fa.fa-check-circle-o.check-icons{
   opacity: 1;
   margin: -1px 4px 2px 2px;
 }
+/***** Sudha Sri(08-07-2024) *****/
+.copy_text_area_border{border: 1px solid #2f4857 !important;}
+button.filter.btn-hvr-text.emailtemplate-selected, button.filter.btn-hvr-text{color: #000 !important;}

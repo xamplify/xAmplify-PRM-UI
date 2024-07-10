@@ -572,9 +572,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 			this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 			if (this.isProduction) {
-				this.isHalopsaDisplayed = "spai@mobinar.com" == this.currentUser.userName;
+				this.iszohoDisplayed = false;
 			} else {
-				this.isHalopsaDisplayed = true;
+				this.iszohoDisplayed = true;
 			}
 			this.getUserByUserName(this.currentUser.userName);
 			this.cropperSettings();

@@ -4267,3 +4267,7 @@ div#add-form-designs {
 .integration-ribbon{
   left:-5px!important;
  }
+
+ [id^="count-"] b {
+  color: #000 !important;
+}
