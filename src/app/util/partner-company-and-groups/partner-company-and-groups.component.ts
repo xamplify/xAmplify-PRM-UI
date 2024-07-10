@@ -564,6 +564,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	getSelectedIndex(index:number){
 		this.selectedFilterIndex = index;
 		this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
+		this.pagination.maxResults = 4;
 		this.findPartnerCompanies(this.pagination);
 	}
 

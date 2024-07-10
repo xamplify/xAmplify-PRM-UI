@@ -90,13 +90,13 @@
 				</ng-container>
 			 </ul>
 		  </div>
-			<div class="login-options login-form m5" style="float: right;">
-				<ng-container *ngFor="let vanityOauthSSOProvider of vanityOauthSSOProviders">
-					<button *ngIf="!isPleaseWaitButtonDisplayed && showOauthSSO" class="btn btn-primary pull-left  signin"
-						title="Login with Versa SSO" (click)="loginUsingSocialAccounts(vanityOauthSSOProvider)">
-						Login with Versa SSO
-					</button>
-				</ng-container>
+
+			<div class="login-options login-form m5" style="display: flex;flex-direction: row-reverse;">
+				<button *ngIf="!isPleaseWaitButtonDisplayed && showVendorSSO" class="btn btn-primary pull-left  signin"
+					data-toggle="tooltip" data-placement="top" aria-hidden="true" title="{{vendorSSOProvider.name}}"
+					(click)="loginUsingSocialAccounts(vendorSSOProvider)">
+					{{vendorSSOProvider.name}}
+				</button>
 			</div>
 		  <!-- </div>  -->
 		  <div class="text-center mt10">

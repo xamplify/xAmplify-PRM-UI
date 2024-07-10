@@ -146,7 +146,7 @@
                     <div class="input-icon right" id="icon">
                       <input type="text" id="sort-text" class="form-control"
                         [(ngModel)]="teamMembersPagination.searchKey" [ngModelOptions]="{standalone: true}"
-                        placeholder="Search..." (keypress)="adminAndTeamMembersKeySearch($event.keyCode)"
+                        placeholder="Search..." (keydown.enter)="searchAdminsAndTeamMembers()"
                         autocomplete="off">
                       <button class="glyphicon glyphicon-remove search-box-item-clear"
                         *ngIf="teamMembersPagination?.searchKey"
@@ -219,7 +219,7 @@
     </div>
   </ng-container>
   <!--Pagination-->
-  <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+  <div *ngIf="pagination.pagedItems.length !== 0 && !httpRequestLoader.isLoading" class="pg8">
     <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" 
     (notifyParentDropDown)="findPartnerCompanies($event)" [customDropDown]="customDropDown"></app-pagination>
   </div>

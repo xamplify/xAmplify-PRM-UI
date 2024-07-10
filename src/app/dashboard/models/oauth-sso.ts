@@ -17,4 +17,5 @@ export class OauthSso {
     updatedBy: number;
     message: string;
     data: any;
+    authenticationServiceName: string;
 }

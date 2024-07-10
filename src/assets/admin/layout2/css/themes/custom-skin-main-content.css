@@ -2445,6 +2445,7 @@ button.button_blue.bgcolor-unset {
   background: none !important;
   border: none !important;
 }
-.comment.author-comment p, .comment.user-comment p{
+.comment.author-comment p, .comment.user-comment p,
+button.btn.btn-secondary.unlink-btn.disable-btn-text-color.deactivate-btn{
   color: var(---text-color) !important;
 }
