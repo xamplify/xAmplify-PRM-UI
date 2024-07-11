@@ -20,7 +20,6 @@ import { ReferenceService } from 'app/core/services/reference.service';
 declare var swal:any, $:any, Promise: any;
 @Injectable()
 export class CampaignService {
-       
    
     campaign: Campaign;
     eventCampaign:any;
@@ -1369,5 +1368,16 @@ export class CampaignService {
         return this.http.post(url, campaign)
             .map(this.extractData)
             .catch(this.handleError);
+    }
+
+    /***XNFR-609****/
+    getTotalRecipients(campaignId:number){
+        const url = this.URL + 'campaign/getTotalRecipients/'+campaignId+'?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+   
+    getDealsCount(campaignId:number){
+        const url = this.URL + 'campaign/getDealsCount/'+campaignId+'?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
     }
 }

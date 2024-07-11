@@ -1620,14 +1620,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     getCampaignHighLevelAnalytics2(campaign : any, index:number){
      this.isloading = true;
         try{
-        
         if(this.selectedIndex!=undefined && this.selectedIndex != index){
            this.showAllAnalytics = false;
            this.pagination.pagedItems[this.selectedIndex]['isExpand']=false;
         } 
-        
          if(!campaign['isExpand'] && !campaign.openRate){
-        
          this.campaignService.getCampaignHighLevelAnalytics2(this.loggedInUserId, campaign)
         .subscribe(
             data => {    
@@ -1697,4 +1694,95 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             });
     } 
 
+
+    /*****XNFR-609*****/
+    findDetailedAnalytics(campaign:any,index:number){
+        campaign.isExpand = !campaign.isExpand;
+        if(campaign.isExpand){
+            this.getTotalRecipients(campaign);
+            this.getTotalEmailsSent(campaign);
+            this.getActiveRecipients(campaign);
+            this.getUnsubscribedCount(campaign);
+            this.getDeliverabilityPercentage(campaign);
+            this.getOpenRatePercentage(campaign);
+            this.getClickedUrlCount(campaign);
+            this.getAttendeesCount(campaign);
+            this.getTotalAttendeesCount(campaign);
+            this.getClickThroughRateCount(campaign);
+            this.getViewsCount(campaign);
+            this.getHardBounceCount(campaign);
+            this.getSoftBounceCount(campaign);
+            this.getLeadsCount(campaign);
+            this.getDealsCount(campaign);
+        
+        }
+    }
+    getDealsCount(campaign: any) {
+        campaign.dealLoader = true;
+        campaign.dealError = false;
+        this.campaignService.getDealsCount(campaign.campaignId).subscribe(
+        response => {
+            campaign.dealLoader = false;
+            campaign.dealError = false;
+            campaign.dealCount = response.data;
+        }, error => {
+            campaign.dealLoader = false;
+            campaign.dealError = true;
+        });
+    }
+    getLeadsCount(campaign: any) {
+        throw new Error('Method not implemented.');
+    }
+    getSoftBounceCount(campaign: any) {
+        throw new Error('Method not implemented.');
+    }
+    getHardBounceCount(campaign: any) {
+        throw new Error('Method not implemented.');
+    }
+    getClickThroughRateCount(campaign: any) {
+        throw new Error('Method not implemented.');
+    }
+    getViewsCount(campaign: any) {
+        throw new Error('Method not implemented.');
+    }
+    getTotalAttendeesCount(campaign: any) {
+        throw new Error('Method not implemented.');
+    }
+    getAttendeesCount(campaign: any) {
+        throw new Error('Method not implemented.');
+    }
+    getClickedUrlCount(campaign: any) {
+        throw new Error('Method not implemented.');
+    }
+    getOpenRatePercentage(campaign: any) {
+        throw new Error('Method not implemented.');
+    }
+    getDeliverabilityPercentage(campaign: any) {
+        throw new Error('Method not implemented.');
+    }
+    getUnsubscribedCount(campaign: any) {
+        throw new Error('Method not implemented.');
+    }
+    getActiveRecipients(campaign: any) {
+        throw new Error('Method not implemented.');
+    }
+    getTotalEmailsSent(campaign: any) {
+        throw new Error('Method not implemented.');
+    }
+
+    getTotalRecipients(campaign:any){
+        campaign.totalRecipientsLoader = true;
+        campaign.totalRecipientsError = false;
+        this.campaignService.getTotalRecipients(campaign.campaignId).subscribe(
+        response => {
+            campaign.totalRecipientsLoader = false;
+            campaign.totalRecipientsError = false;
+            campaign.totalRecipients = response.data;
+        }, error => {
+            campaign.totalRecipientsLoader = false;
+            campaign.totalRecipientsError = true;
+        });
+    }
+
+    
 }
