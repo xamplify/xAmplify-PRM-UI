@@ -1462,4 +1462,244 @@ validateCopyCampaignName(){
         }
     }
 
+     /*****XNFR-609*****/
+     findDetailedAnalytics(campaign: any, index: number) {
+        campaign.isExpand = !campaign.isExpand;
+        if (campaign.isExpand) {
+            this.getTotalRecipients(campaign);
+            this.getTotalEmailsSent(campaign);
+            this.getActiveRecipients(campaign);
+            this.getUnsubscribedCount(campaign);
+            this.getDeliverabilityPercentage(campaign);
+            this.getOpenRatePercentage(campaign);
+            this.getClickedUrlCount(campaign);
+            this.getAttendeesCount(campaign);
+            this.getTotalAttendeesCount(campaign);
+            this.getClickThroughRateCount(campaign);
+            this.getViewsCount(campaign);
+            this.getHardBounceCount(campaign);
+            this.getSoftBounceCount(campaign);
+            this.getLeadsCount(campaign);
+            this.getDealsCount(campaign);
+
+        }
+    }
+    getDealsCount(campaign: any) {
+        if (campaign.showLeadAndDealCounts) {
+            campaign.dealLoader = true;
+            campaign.dealError = false;
+            this.campaignService.getDealsCount(campaign.campaignId).subscribe(
+                response => {
+                    campaign.dealLoader = false;
+                    campaign.dealError = false;
+                    campaign.dealCount = response.data;
+                }, error => {
+                    campaign.dealLoader = false;
+                    campaign.dealError = true;
+                });
+        }
+
+    }
+    getLeadsCount(campaign: any) {
+        if (campaign.showLeadAndDealCounts) {
+            campaign.leadLoader = true;
+            campaign.leadError = false;
+            this.campaignService.getLeadCount(campaign.campaignId).subscribe(
+                response => {
+                    campaign.leadLoader = false;
+                    campaign.leadError = false;
+                    campaign.leadCount = response.data;
+                }, error => {
+                    campaign.leadLoader = false;
+                    campaign.leadError = true;
+                });
+        }
+
+    }
+    getSoftBounceCount(campaign: any) {
+        campaign.softBounceLoader = true;
+        campaign.softBounceError = false;
+        this.campaignService.getSoftBounceCount(campaign.campaignId).subscribe(
+            response => {
+                campaign.softBounceLoader = false;
+                campaign.softBounceError = false;
+                campaign.softBounce = response.data;
+            }, error => {
+                campaign.softBounceLoader = false;
+                campaign.softBounceError = true;
+            });
+    }
+    getHardBounceCount(campaign: any) {
+        campaign.hardBounceLoader = true;
+        campaign.hardBounceError = false;
+        this.campaignService.getHardBounceCount(campaign.campaignId).subscribe(
+            response => {
+                campaign.hardBounceLoader = false;
+                campaign.hardBounceError = false;
+                campaign.hardBounce = response.data;
+            }, error => {
+                campaign.hardBounceLoader = false;
+                campaign.hardBounceError = true;
+            });
+    }
+    getClickThroughRateCount(campaign: any) {
+        if (campaign.campaignType.indexOf('EVENT') < 0 && campaign.campaignType.indexOf('SOCIAL') < 0) {
+            campaign.clickThroughRateLoader = true;
+            campaign.clickThroughRateError = false;
+            this.campaignService.getClickThroughRate(campaign.campaignId).subscribe(
+                response => {
+                    campaign.clickThroughRateLoader = false;
+                    campaign.clickThroughRateError = false;
+                    campaign.clickthroughRate = response.data;
+                }, error => {
+                    campaign.clickThroughRateLoader = false;
+                    campaign.clickThroughRateError = true;
+                });
+        }
+    }
+    getViewsCount(campaign: any) {
+        if (campaign.campaignType.indexOf('VIDEO') > -1) {
+            campaign.viewCountLoader = true;
+            campaign.viewCountError = false;
+            this.campaignService.getViewsCount(campaign.campaignId).subscribe(
+                response => {
+                    campaign.viewCountLoader = false;
+                    campaign.viewCountError = false;
+                    campaign.views = response.data;
+                }, error => {
+                    campaign.viewCountLoader = false;
+                    campaign.viewCountError = true;
+                });
+        }
+
+    }
+    getTotalAttendeesCount(campaign: any) {
+        if (campaign.campaignType.indexOf('EVENT') > -1) {
+            campaign.totalAttendeesLoader = true;
+            campaign.totalAttendeesError = false;
+            this.campaignService.getTotalAttendeesCount(campaign.campaignId).subscribe(
+                response => {
+                    campaign.totalAttendeesLoader = false;
+                    campaign.totalAttendeesError = false;
+                    campaign.totalAttendeesCount = response.data;
+                }, error => {
+                    campaign.totalAttendeesLoader = false;
+                    campaign.totalAttendeesError = true;
+                });
+        }
+
+    }
+    getAttendeesCount(campaign: any) {
+        if (campaign.campaignType.indexOf('EVENT') > -1) {
+            campaign.attendeesLoader = true;
+            campaign.attendeesError = false;
+            this.campaignService.getAttendeesCount(campaign.campaignId).subscribe(
+                response => {
+                    campaign.attendeesLoader = false;
+                    campaign.attendeesError = false;
+                    campaign.attendeesCount = response.data;
+                }, error => {
+                    campaign.attendeesLoader = false;
+                    campaign.attendeesError = true;
+                });
+        }
+
+    }
+    getClickedUrlCount(campaign: any) {
+        if (campaign.campaignType.indexOf('REGULAR') > -1 || campaign.campaignType.indexOf('VIDEO') > -1 || campaign.campaignType.indexOf('LANDINGPAGE') > -1) {
+            campaign.clickedUrlLoader = true;
+            campaign.clickedUrlError = false;
+            this.campaignService.getClickedUrlCount(campaign.campaignId).subscribe(
+                response => {
+                    campaign.clickedUrlLoader = false;
+                    campaign.clickedUrlError = false;
+                    campaign.emailClicked = response.data;
+                }, error => {
+                    campaign.clickedUrlLoader = false;
+                    campaign.clickedUrlError = true;
+                });
+        }
+
+    }
+    getOpenRatePercentage(campaign: any) {
+        campaign.openRateLoader = true;
+        campaign.openRateError = false;
+        this.campaignService.getClickedUrlCount(campaign.campaignId).subscribe(
+            response => {
+                campaign.openRateLoader = false;
+                campaign.openRateError = false;
+                campaign.openRate = response.data;
+            }, error => {
+                campaign.openRateLoader = false;
+                campaign.openRateError = true;
+            });
+    }
+    getDeliverabilityPercentage(campaign: any) {
+        campaign.deliverabilityLoader = true;
+        campaign.deliverabilityError = false;
+        this.campaignService.getDeliverabilityPercentage(campaign.campaignId).subscribe(
+            response => {
+                campaign.deliverabilityLoader = false;
+                campaign.deliverabilityError = false;
+                campaign.delivered = response.data;
+            }, error => {
+                campaign.deliverabilityLoader = false;
+                campaign.deliverabilityError = true;
+            });
+    }
+    getUnsubscribedCount(campaign: any) {
+        campaign.unsubscribedLoader = true;
+        campaign.unsubscribedError = false;
+        this.campaignService.getUnsubscribedCount(campaign.campaignId).subscribe(
+            response => {
+                campaign.unsubscribedLoader = false;
+                campaign.unsubscribedError = false;
+                campaign.unsubscribed = response.data;
+            }, error => {
+                campaign.unsubscribedLoader = false;
+                campaign.unsubscribedError = true;
+            });
+    }
+    getActiveRecipients(campaign: any) {
+        campaign.activeRecipientsLoader = true;
+        campaign.activeRecipientsError = false;
+        this.campaignService.getActiveRecipients(campaign.campaignId).subscribe(
+            response => {
+                campaign.activeRecipientsLoader = false;
+                campaign.activeRecipientsError = false;
+                campaign.activeRecipients = response.data;
+            }, error => {
+                campaign.activeRecipientsLoader = false;
+                campaign.activeRecipientsError = true;
+            });
+    }
+    getTotalEmailsSent(campaign: any) {
+        campaign.totalEmailsSentLoader = true;
+        campaign.totalEmailsSentError = false;
+        this.campaignService.getTotalEmailsSent(campaign.campaignId).subscribe(
+            response => {
+                campaign.totalEmailsSentLoader = false;
+                campaign.totalEmailsSentError = false;
+                campaign.totalEmailsSent = response.data;
+            }, error => {
+                campaign.totalEmailsSentLoader = false;
+                campaign.totalEmailsSentError = true;
+            });
+    }
+
+    getTotalRecipients(campaign: any) {
+        campaign.totalRecipientsLoader = true;
+        campaign.totalRecipientsError = false;
+        this.campaignService.getTotalRecipients(campaign.campaignId).subscribe(
+            response => {
+                campaign.totalRecipientsLoader = false;
+                campaign.totalRecipientsError = false;
+                campaign.totalRecipients = response.data;
+            }, error => {
+                campaign.totalRecipientsLoader = false;
+                campaign.totalRecipientsError = true;
+            });
+    }
+
+
  }
