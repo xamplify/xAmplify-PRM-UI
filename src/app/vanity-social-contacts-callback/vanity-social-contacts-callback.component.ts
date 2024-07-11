@@ -163,12 +163,13 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
                         if (vanityUrlFilter == 'true' ) {
                                 if(type == 'hubspot'){
                                     this.postingMessage = "isHubSpotAuth";
-                                }
-                                else if(type === "isalesforce"){
+                                } else if(type === "isalesforce"){
                                     this.postingMessage = "isSalesForceAuth";
-                                }else if(type === "microsoft"){
+                                } else if(type === "microsoft"){
                                     this.postingMessage = "isMicrosoftAuth";
-                                }
+                                } else if(type === 'zoho') {
+									this.postingMessage = "isZohoAuth";
+								}
                                 this.postingMessageToParentWindow(this.postingMessage);
                         }
                         else{

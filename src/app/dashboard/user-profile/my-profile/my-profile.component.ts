@@ -663,6 +663,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				else if (e.data == 'isMicrosoftAuth') {
 					localStorage.setItem('isMicrosoftAuth', 'yes');
 				}
+				else if (e.data == 'isZohoAuth') {
+					localStorage.setItem('isZohoAuth', 'yes');
+				}
 			}, false);
 			this.getModuleAccessByUser();
 			this.findUpgradeRequest();
@@ -764,9 +767,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckMicrosoftAuth = localStorage.getItem('isMicrosoftAuth');
+		let tempCheckZohoAuth = localStorage.getItem('isZohoAuth');
 		localStorage.removeItem('isHubSpotAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isMicrosoftAuth');
+		localStorage.removeItem('isZohoAuth');
 
 		if (tempCheckHubSpotAuth == 'yes') {
 			this.referenceService.integrationCallBackStatus = true;
@@ -781,6 +786,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.router.navigate(['/home/dashboard/myprofile']);
 		}
 		else if (tempCheckMicrosoftAuth == 'yes') {
+			this.referenceService.integrationCallBackStatus = true;
+			localStorage.removeItem("userAlias");
+			localStorage.removeItem("currentModule");
+			this.router.navigate(['/home/dashboard/myprofile']);
+		}
+		else if (tempCheckZohoAuth == 'yes') {
 			this.referenceService.integrationCallBackStatus = true;
 			localStorage.removeItem("userAlias");
 			localStorage.removeItem("currentModule");
@@ -2245,7 +2256,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			let vanityUserId = JSON.parse(zohoCurrentUser)['userId'];
 			let url = null;
 			if (this.zohoRedirectURL) {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + null;
+				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + 'configuration' + "/" + null;
 			} else {
 				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
 			}
