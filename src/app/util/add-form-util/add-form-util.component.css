@@ -1712,9 +1712,9 @@ div.switch5 > input.switch:focus ~ label:before {
   min-height: 32px;
 }
 @media (min-width: 992px) and (max-width: 1300px) {
-  .BtnWidthForPopup {
+  /* .BtnWidthForPopup {
     width: 100px;
-  }
+  } */
   .vertical-center {
     margin: 10px 40px 0px 40px;
   }
