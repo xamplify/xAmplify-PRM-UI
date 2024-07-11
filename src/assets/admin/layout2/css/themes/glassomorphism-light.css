@@ -937,16 +937,17 @@ i.IconCustomization:hover ,
 .bootstrap-switch,
 .bootstrap-switch .bootstrap-switch-container,
 .bootstrap-switch .bootstrap-switch-label {
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgb(187 227 223) !important;
   /* background-color: rgb(255 255 255 / 31%)!important; */
-  background-color: #b5b0b000 !important;
-  /* backdrop-filter: blur(5px); */
+  background-color: #d5d4d4 !important;
+  border-radius: 4px !important;
+  backdrop-filter: blur(5px);
 }
-.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info,
+/* .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info,
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default,
-.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success,
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, 
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success,
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger,
@@ -957,7 +958,7 @@ i.IconCustomization:hover ,
   background: rgb(255 253 253 / 57%) !important;
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
+} */
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
   color: #fff;
@@ -1665,7 +1666,7 @@ button.button.bgcolor-unset:hover,
 }
 /* 18-07-2023 */
 td.bgc-lg {
-  background-color: #2c2f33 !important;
+  background-color: inherit !important;
 }
 td.td-netbg {
   background: transparent !important;
@@ -2968,11 +2969,20 @@ border:0px!important;
   background: #2b2f33!important;
 }
 /* manikanta */
-.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning {
+/* .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info, 
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info, 
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default, 
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default, 
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success,
+ .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success, 
+ .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger, 
+ .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger, 
+ .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning, 
+ .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning {
   color: #000 !important;
   background-color: rgb(146 151 179 / 9%) !important;
   backdrop-filter: blur(5px);
-}
+} */
 button.btn.custom {
   border-radius: 7px !important;
   background-color: #0276FF !important;
@@ -3858,7 +3868,8 @@ li.filter.selectedBox{
 /* .page-header-inner {
   background: rgba(16 18 27 / 40%) !important;
 } */
-.add-options button{
+.add-options button,
+.add-design-upload {
   border-radius: 7px !important; 
 }
 /***** Sudha Sri(25-4-2024) *****/
@@ -4271,3 +4282,12 @@ div#add-form-designs {
  [id^="count-"] b {
   color: #000 !important;
 }
+
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success {
+  color: #fff !important;
+  /* background: #5cb85c !important; */
+  background: #006FFC !important;
+}
+/* .bootstrap-switch-off{
+  width: 84px !important;
+} */

@@ -21,10 +21,9 @@ import { UserService } from '../../core/services/user.service';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { utc } from 'moment';
 import { Properties } from 'app/common/models/properties';
-import { access } from 'fs';
 import { CustomAnimation } from 'app/core/models/custom-animation';
 
-declare var swal, $: any, flatpickr;
+declare var swal:any, $: any, flatpickr:any;
 
 @Component({
     selector: 'app-manage-publish',
@@ -134,6 +133,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     selectedIndex : number;
     gearIconOptions : boolean = false;
     campaignViewType : string = "";
+    campaignAnalyticsSettingsOptionEnabled = false;
     
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -343,6 +343,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 self.campaignAccess.landingPageCampaign = campaignAccess.page;
                 self.campaignAccess.formBuilder = campaignAccess.form;
                 self.campaignAccess.survey = campaignAccess.survey;
+                let map = response['map'];
+                let campaignAnalyticsSettingsOptionEnabled = map['isCampaignAnalyticsSettingsOptionEnabled'];
+                self.campaignAnalyticsSettingsOptionEnabled = campaignAnalyticsSettingsOptionEnabled!=undefined ? campaignAnalyticsSettingsOptionEnabled:false;
+                self.pagination.campaignAnalyticsSettingsOptionEnabled = self.campaignAnalyticsSettingsOptionEnabled;
             },_error=>{
                 self.refService.showSweetAlertErrorMessage("Unable to fetch campaign types");
                 self.isloading = false;

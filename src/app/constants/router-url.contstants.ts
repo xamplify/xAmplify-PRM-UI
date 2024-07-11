@@ -5,6 +5,7 @@ export const RouterUrlConstants = {
     damPartnerCompanyAnalytics: 'partner-companies/',
     damPartnerAnalytics:'partner-analytics/',
     quickLinks: 'quick-links',
-    superAdmin:'superAdmin/'
+    superAdmin:'superAdmin/',
+    myProfile:'myProfile/'
    
 }

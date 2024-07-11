@@ -742,8 +742,6 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
 }
 
 saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
-  console.log("______3444")
-  console.log("______ww"+isSaveAndRedirectButtonClicked)
   this.isSaveAndRedirectButtonClicked = isSaveAndRedirectButtonClicked;
   this.customResponse = new CustomResponse();
   $("#bee-save-buton-loader").addClass("button-loader"); 

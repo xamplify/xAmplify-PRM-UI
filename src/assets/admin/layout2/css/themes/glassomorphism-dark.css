@@ -3791,7 +3791,8 @@ img.email-template-preview.image_effect.template_image_border {
 /* .page-header-inner {
   background: rgba(16 18 27 / 40%) !important;
 } */
-.add-options button{
+.add-options button,
+.add-design-upload {
   border-radius: 7px !important; 
 }
 /***** Sudha Sri(25-4-2024) *****/

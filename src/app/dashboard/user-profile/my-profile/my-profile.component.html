@@ -171,7 +171,6 @@
                                             </a>
 
                                         </li>
-
                                         <!---Themes-->
                                         <li *ngIf="customSkinSettingOption &&  roleNames !='Partner' && authenticationService.module.isAnyAdminOrSupervisor"
                                             [ngClass]="{'active-tab': activeTabName == 'customskin'}">
@@ -181,7 +180,15 @@
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
                                                     [ngTemplateOutletContext]="{'moduleName':'customskin'}"></ng-template>
                                             </a>
-
+                                        </li>
+                                        <!--XNFR-609-->
+                                         <!---Campaign Analytics-->
+                                         <li *ngIf="isLocalHost && (authenticationService.module.isAnyAdminOrSupervisor || authenticationService?.module?.isCampaign)" [ngClass]="{'active-tab': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"
+                                                (click)="activateTab(MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER);clearCustomResponse()">
+                                                {{MY_PROFILE_MENU_CONSTANTS.CAMPAIGN_ANALYTICS_MENU_HEADER}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"></ng-template>
+                                            </a>
                                         </li>
                                         <!--XNFR-386--->
                                         <!--Custom Login Screen Settings-->
@@ -238,7 +245,6 @@
                                                         [ngTemplateOutletContext]="{'moduleName':'dealPipelines'}"></ng-template>
                                                 </a>
                                             </li>
-
                                             <!-- XNFR-426 -->
                                             <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}"
                                                 *ngIf="authenticationService?.module?.isAdmin && (!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember)) && !authenticationService.isOnlyPartner()">
@@ -259,7 +265,6 @@
                                                         [ngTemplateOutletContext]="{'moduleName':'leadFieldSettings'}"></ng-template>
                                                 </a>
                                             </li>
-
                                         </ng-container>
                                     </ul>
                                     <!--------------Developers----------------------->
@@ -3350,6 +3355,8 @@
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'landingPages'}">
                                             <app-vendor-journey *ngIf="isLandingPages"
                                                 [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                                (goBackToMyProfile)="goBackToMyProfile()"
                                                 [moduleType]="properties.landingPages"></app-vendor-journey>
                                         </div>
                                         <!--Master Landing Pages -->
@@ -3371,6 +3378,12 @@
                                             (editLoginTemplate)="openBeeEditorForLoginTemplate($event)"
                                             *ngIf="isCustomLoginScreenSettingsOptionClicked" class="tab-pane"
                                             [ngClass]="{'active': activeTabName == properties?.customLoginScreen}"></app-custom-login-screen-settings>
+
+                                        <!--XNFR-609-->
+                                        <app-modal-popup-loader *ngIf="ngxloading"></app-modal-popup-loader>
+                                            <app-campaign-analytics-settings *ngIf="isCampaignAnalyticsOptionClicked" class="tab-pane"
+                                                [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}">
+                                        </app-campaign-analytics-settings>
                                     </div>
                                 </div>
                             </div>

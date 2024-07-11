@@ -148,6 +148,7 @@ export class AddDealComponent implements OnInit {
   isCopiedToClipboard : boolean = false;
   isZohoLeadAttached: boolean = false;
   isCreatedByStageIdDisable: boolean = false;
+  isZohoLeadAttachedWithoutSelectingDealFor: boolean = false;
 
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -1247,6 +1248,9 @@ export class AddDealComponent implements OnInit {
                 this.deal.haloPSATickettypeId = 0;
               }
             }
+            if ("ZOHO" == this.activeCRMDetails.createdForActiveCRMType && this.leadId !== undefined && this.leadId > 0) {
+              this.isZohoLeadAttachedWithoutSelectingDealFor = true;
+            }
           }
         },
         error => {
@@ -1269,7 +1273,7 @@ export class AddDealComponent implements OnInit {
           //XNFR-461
           if (this.deal.campaignId > 0) {
             this.getCampaignDealPipeline();
-          } else {
+          } else if (!this.isZohoLeadAttachedWithoutSelectingDealFor) {
             this.getActiveCRMPipelines();
           }
           if (this.actionType === "view") {
@@ -1280,7 +1284,7 @@ export class AddDealComponent implements OnInit {
               this.getDealPipelines();
             }
           }
-          if ("ZOHO" == this.activeCRMDetails.createdForActiveCRMType && this.leadId !== undefined && this.leadId > 0) {
+          if (this.isZohoLeadAttachedWithoutSelectingDealFor) {
             this.getConvertMappingLayout(this.lead.halopsaTicketTypeId);
           }
         });
@@ -1604,6 +1608,7 @@ export class AddDealComponent implements OnInit {
     this.deal.campaignName = '';
     this.leadId = 0;
     this.isZohoLeadAttached = false;
+    this.isZohoLeadAttachedWithoutSelectingDealFor = false;
     if (this.actionType == 'add' && !this.vanityLoginDto.vanityUrlFilter) {
       this.deal.createdForCompanyId = this.holdCreatedForCompanyId;
       if (this.deal.createdForCompanyId == 0) {
