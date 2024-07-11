@@ -5,7 +5,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Properties } from 'app/common/models/properties';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { BaseOptions } from 'flatpickr/dist/types/options';
+import { RegularExpressions } from "app/common/models/regular-expressions";
 declare var flatpickr: any, $: any, swal: any;
 
 
@@ -54,6 +54,12 @@ export class OauthSsoConfigurationComponent implements OnInit {
   grantTypeError: boolean = true;
   disableSubmitButton: boolean = true;
   authenticationServiceNameError: boolean = true;
+  authorizationEndpointErrorMessage: string = '';
+  tokenEndpointErrorMessage: string = '';
+  userInfoEndpointErrorMessage: string = '';
+  isCopiedToClipboard: boolean = false;
+  regularExpressions = new RegularExpressions();
+
 
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -86,11 +92,13 @@ export class OauthSsoConfigurationComponent implements OnInit {
       this.referenceService.goToTop();
       self.ngxLoading = false;
       if (data.statusCode == 200) {
-        self.responseMessage = new CustomResponse('SUCCESS', "Details Submitted Succesfully", true);
+        self.responseMessage = new CustomResponse('SUCCESS', "Details Submitted Succesfully!", true);
         self.saveOrUpdateButtonText = 'Update';
         self.getOauthSsoConfigurationDetails();
       } else if (data.statusCode == 400) {
-        self.responseMessage = new CustomResponse('ERROR', data.message, true);
+        self.responseMessage = new CustomResponse('ERROR', "Something went wrong, Please try agian after sometime!", true);
+      } else if (data.statusCode == 500) {
+        self.responseMessage = new CustomResponse('ERROR', "Something went wrong, Please check the Url's entered!", true);
       }
     },
     error => {
@@ -100,10 +108,14 @@ export class OauthSsoConfigurationComponent implements OnInit {
     () => { });
   }
 
-  copyToClipboard(element) {
-    element.select();
+  copyToClipboard(inputElement: any) {
+    inputElement.select();
+    $('#copy-reference-id').hide();
     document.execCommand('copy');
+    $('#copy-reference-id').show(500);
+    this.isCopiedToClipboard = true;
   }
+
 
   selectGrantType(grantType: any, fieldValue : string) {
     this.oauthSso.grantType = grantType;
@@ -133,7 +145,8 @@ export class OauthSsoConfigurationComponent implements OnInit {
       }
     } else if ("authorizationEndpoint" == fieldName) {
       this.oauthSso.authorizationEndpoint = $.trim(this.oauthSso.authorizationEndpoint);
-      if (this.oauthSso.authorizationEndpoint.length > 0) {
+      this.authorizationEndpointErrorMessage = this.referenceService.validateOauthUrlPattern(this.oauthSso.authorizationEndpoint) ? '' : 'Please enter a valid Authorization endpoint url';
+      if (this.oauthSso.authorizationEndpoint.length > 0 && this.authorizationEndpointErrorMessage == '') {
         this.authorizationEndpointError = false;
         this.authorizationEndpointDivClass = successClass;
       } else {
@@ -151,7 +164,8 @@ export class OauthSsoConfigurationComponent implements OnInit {
       }
     } else if ("tokenEndpoint" == fieldName) {
       this.oauthSso.tokenEndpoint = $.trim(this.oauthSso.tokenEndpoint);
-      if (this.oauthSso.tokenEndpoint.length > 0) {
+      this.tokenEndpointErrorMessage = this.referenceService.validateOauthUrlPattern(this.oauthSso.tokenEndpoint) ? '' : 'Please enter a valid Token endpoint url';
+      if (this.oauthSso.tokenEndpoint.length > 0 && this.tokenEndpointErrorMessage == '') {
         this.tokenEndpointError = false;
         this.tokenEndpointDivClass = successClass;
       } else {
@@ -160,7 +174,8 @@ export class OauthSsoConfigurationComponent implements OnInit {
       }
     } else if ("userInfoEndpoint" == fieldName) {
       this.oauthSso.userInfoEndpoint = $.trim(this.oauthSso.userInfoEndpoint);
-      if (this.oauthSso.userInfoEndpoint.length > 0) {
+      this.userInfoEndpointErrorMessage = this.referenceService.validateOauthUrlPattern(this.oauthSso.userInfoEndpoint) ? '' : 'Please enter a valid User info endpoint url';
+      if (this.oauthSso.userInfoEndpoint.length > 0 && this.userInfoEndpointErrorMessage == '') {
         this.userInfoEndpointError = false;
         this.userInfoEndpointDivClass = successClass;
       } else {
@@ -200,7 +215,8 @@ export class OauthSsoConfigurationComponent implements OnInit {
       this.oauthSso.tokenEndpoint !== undefined && this.oauthSso.tokenEndpoint !== null && this.oauthSso.tokenEndpoint !== '' &&
       this.oauthSso.userInfoEndpoint !== undefined && this.oauthSso.userInfoEndpoint !== null && this.oauthSso.userInfoEndpoint !== '' &&
       this.oauthSso.scope !== undefined && this.oauthSso.scope !== null && this.oauthSso.scope !== '' &&
-      this.oauthSso.authenticationServiceName !== undefined &&  this.oauthSso.authenticationServiceName !== null && this.oauthSso.authenticationServiceName !== '') {
+      this.oauthSso.authenticationServiceName !== undefined &&  this.oauthSso.authenticationServiceName !== null && this.oauthSso.authenticationServiceName !== '' &&
+      this.authorizationEndpointErrorMessage == '' && this.tokenEndpointErrorMessage == '' && this.userInfoEndpointErrorMessage == '') {
       this.disableSubmitButton = false;
     } else {
       this.disableSubmitButton = true;

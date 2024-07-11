@@ -21,6 +21,12 @@
       <span>
         <button class="btn btn-primary" (click)="copyToClipboard(redirectUri)">Copy URI</button>
       </span>
+      <div style="padding-left: 15px;">
+        <span class="success">
+          <strong id="copy-reference-id" *ngIf="isCopiedToClipboard">Redirect URI copied successfully<i
+              class="fa fa-check" aria-hidden="true"></i></strong>
+        </span>
+      </div>
     </div>
 
     <div class="row" style="padding:10px">
@@ -98,6 +104,9 @@
             <input type="text" autocomplete="off" id="authorizationEndpoint" placeholder="Enter Authorization Endpoint"
               class="form-control" [(ngModel)]="oauthSso.authorizationEndpoint" [ngModelOptions]="{standalone: true}"
               name="authorizationEndpoint" maxlength="255" (input)="validateField('authorizationEndpoint')">
+              <span *ngIf="authorizationEndpointErrorMessage?.length > 0" class="required">
+                {{authorizationEndpointErrorMessage}}
+              </span>
           </div>
         </div>
       </div>
@@ -133,6 +142,9 @@
             <input type="text" autocomplete="off" id="tokenEndpoint" placeholder="Enter Token Endpoint"
               class="form-control" [(ngModel)]="oauthSso.tokenEndpoint" [ngModelOptions]="{standalone: true}"
               name="tokenEndpoint" maxlength="255" (input)="validateField('tokenEndpoint')">
+              <span *ngIf="tokenEndpointErrorMessage?.length > 0" class="required">
+                {{tokenEndpointErrorMessage}}
+              </span>
           </div>
         </div>
       </div>
@@ -151,6 +163,9 @@
             <input type="text" autocomplete="off" id="userInfoEndpoint" placeholder="Enter User Info Endpoint"
               class="form-control" [(ngModel)]="oauthSso.userInfoEndpoint" [ngModelOptions]="{standalone: true}"
               name="userInfoEndpoint" maxlength="255" (input)="validateField('userInfoEndpoint')">
+              <span *ngIf="userInfoEndpointErrorMessage?.length > 0" class="required">
+                {{userInfoEndpointErrorMessage}}
+              </span>
           </div>
         </div>
       </div>
