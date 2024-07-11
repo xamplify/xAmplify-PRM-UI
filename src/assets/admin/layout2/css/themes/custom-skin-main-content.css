@@ -2449,3 +2449,4 @@ button.button_blue.bgcolor-unset {
 button.btn.btn-secondary.unlink-btn.disable-btn-text-color.deactivate-btn{
   color: var(---text-color) !important;
 }
+.progress:hover{background-color: var(--div-bg-color)!important;}
