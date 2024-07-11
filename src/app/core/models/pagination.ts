@@ -140,6 +140,8 @@ export class Pagination {
 	masterLandingPageId:number;
 	/*** XNFR-583 ***/
 	vendorPages:boolean = false;
+	campaignAnalyticsSettingsOptionEnabled = false;
+
 
 
 }
