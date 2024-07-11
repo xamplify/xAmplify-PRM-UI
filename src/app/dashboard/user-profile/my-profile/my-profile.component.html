@@ -183,7 +183,7 @@
                                         </li>
                                         <!--XNFR-609-->
                                          <!---Campaign Analytics-->
-                                         <li *ngIf="isLocalHost && (authenticationService.module.isAnyAdminOrSupervisor || authenticationService?.module?.isCampaign)" [ngClass]="{'active-tab': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}">
+                                         <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor || authenticationService?.module?.isCampaign" [ngClass]="{'active-tab': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"
                                                 (click)="activateTab(MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER);clearCustomResponse()">
                                                 {{MY_PROFILE_MENU_CONSTANTS.CAMPAIGN_ANALYTICS_MENU_HEADER}}
