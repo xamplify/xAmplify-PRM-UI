@@ -1,9 +1,9 @@
-<div  [ngClass]="{'page-content':!vendorJourney}">
+<div  [ngClass]="{'page-content':(!vendorJourney && !vendorPages) }">
     <ng-container *ngIf="pageLoader">
       <app-modal-popup-loader></app-modal-popup-loader>
     </ng-container>
     <ng-container *ngIf="!pageLoader">
-    <div class="page-bar" *ngIf = "!vendorJourney" >
+    <div class="page-bar" *ngIf = "!vendorJourney && !vendorPages" >
         <ul class="page-breadcrumb">
             <li *ngIf="!authenticationService.isSuperAdmin()">
                 <i class="fa fa-home" aria-hidden="true"></i>

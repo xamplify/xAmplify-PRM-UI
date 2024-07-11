@@ -3355,6 +3355,8 @@
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'landingPages'}">
                                             <app-vendor-journey *ngIf="isLandingPages"
                                                 [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                                (goBackToMyProfile)="goBackToMyProfile()"
                                                 [moduleType]="properties.landingPages"></app-vendor-journey>
                                         </div>
                                         <!--Master Landing Pages -->

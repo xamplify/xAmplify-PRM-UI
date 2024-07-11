@@ -138,5 +138,8 @@ export class Pagination {
 	vendorJourney:boolean = false;
 	masterLandingPage:boolean  = false;	
 	masterLandingPageId:number;
+	/*** XNFR-583 ***/
+	vendorPages:boolean = false;
+
 
 }

@@ -28,6 +28,7 @@ export class VendorJourneyComponent implements OnInit {
   @Output() goBackToMyProfile: EventEmitter<any> = new EventEmitter();
   @Output() vendorJourneyEditOrViewAnalytics: EventEmitter<any> = new EventEmitter();
   selectedLandingPageId:any;
+  selectedVendorPageAlias:any;
   isViewAnalytics:boolean = false;
   openInNewTabChecked: boolean = false;
   isManageForms:boolean = false;
@@ -93,6 +94,12 @@ export class VendorJourneyComponent implements OnInit {
     this.vendorJourneyEditOrViewAnalytics.emit();
   }
 
+  viewVendorPageAnalytics(event){
+    this.selectedVendorPageAlias = event;
+    this.isViewAnalytics = true;
+    this.vendorJourneyEditOrViewAnalytics.emit();
+
+  }
   viewLandingPageForms(event){
     this.selectedLandingPageId = event;
     this.isManageForms = true;
