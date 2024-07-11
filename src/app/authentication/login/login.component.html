@@ -90,15 +90,7 @@
 				</ng-container>
 			 </ul>
 		  </div>
-
-			<div class="login-options login-form m5" style="display: flex;flex-direction: row-reverse;">
-				<button *ngIf="!isPleaseWaitButtonDisplayed && showVendorSSO" class="btn btn-primary pull-left  signin"
-					data-toggle="tooltip" data-placement="top" aria-hidden="true" title="{{vendorSSOProvider.name}}"
-					(click)="loginUsingSocialAccounts(vendorSSOProvider)">
-					{{vendorSSOProvider.name}}
-				</button>
-			</div>
-		  <!-- </div>  -->
+		  <ng-template [ngTemplateOutlet]="vendorSSOLoginButton"></ng-template>
 		  <div class="text-center mt10">
 			 <label class="check">
 			 <a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&
@@ -206,6 +198,7 @@
 								</ng-container>
 							</ul>
 						</div>
+						<ng-template [ngTemplateOutlet]="vendorSSOLoginButton"></ng-template>
 						<div class="text-center mt10">
 							<label class="check">
 								<a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of
@@ -225,3 +218,14 @@
 		</div>
 	</div>
 </div>
+
+
+<ng-template #vendorSSOLoginButton>
+	<div *ngIf="authenticationService?.vanityURLEnabled" class="login-options login-form m5" style="display: flex;flex-direction: row-reverse;">
+		<button *ngIf="!isPleaseWaitButtonDisplayed && showVendorSSO" class="btn btn-primary pull-left  signin"
+			data-toggle="tooltip" data-placement="top" aria-hidden="true" title="{{vendorSSOProvider.name}}"
+			(click)="loginUsingSocialAccounts(vendorSSOProvider)">
+			{{vendorSSOProvider.name}}
+		</button>
+	</div>
+</ng-template>	
