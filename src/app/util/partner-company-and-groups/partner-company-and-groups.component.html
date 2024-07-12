@@ -345,7 +345,7 @@
       <strong>No Data Found.</strong>
     </div>
   </ng-container>
-  <div *ngIf="partnerGroupsPagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+  <div *ngIf="partnerGroupsPagination.pagedItems.length !== 0" class="pg8 mt10" [hidden]="httpRequestLoader.isLoading">
     <app-pagination [pagination]="partnerGroupsPagination" (notifyParent)="navigatePartnerGroups($event)"
       (notifyParentDropDown)="findPartnerGroups($event)" [customDropDown]="customDropDown">
     </app-pagination>

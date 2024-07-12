@@ -17,6 +17,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 declare var swal: any, $: any, Promise: any;
 @Injectable()
 export class CampaignService {
+    
     campaign: Campaign;
     eventCampaign: any;
     reDistributeCampaign: Campaign;
@@ -71,7 +72,12 @@ export class CampaignService {
             pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
         }
         /****XNFR-252*****/
+        let searchKey = pagination.searchKey;
+        let encodedUrlForSearch = this.referenceService.getEncodedUri(searchKey);
         let url = this.URL + "campaign/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
+        if(!pagination.campaignAnalyticsSettingsOptionEnabled){
+            url = this.URL + "campaign/listCampaign/" + userId + "?searchKey="+encodedUrlForSearch+"&access_token=" + this.authenticationService.access_token;
+        }
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -1436,6 +1442,12 @@ export class CampaignService {
 
     getTotalEmailsSent(campaignId: any) {
         const url = this.URL + 'campaign/getTotalEmailsSent/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    getLeadOrDealAccess(campaignId: number) {
+        let userId = this.authenticationService.getUserId();
+        const url = this.URL + 'campaign/leadOrDealAccess/' + campaignId + '/'+userId+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 

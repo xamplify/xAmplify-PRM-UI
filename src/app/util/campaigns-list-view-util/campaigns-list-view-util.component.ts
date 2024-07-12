@@ -1466,23 +1466,41 @@ validateCopyCampaignName(){
      findDetailedAnalytics(campaign: any, index: number) {
         campaign.isExpand = !campaign.isExpand;
         if (campaign.isExpand) {
-            this.getTotalRecipients(campaign);
-            this.getTotalEmailsSent(campaign);
-            this.getActiveRecipients(campaign);
-            this.getUnsubscribedCount(campaign);
-            this.getDeliverabilityAndOpenRatePercentage(campaign);
-            this.getClickedUrlCount(campaign);
-            this.getAttendeesCount(campaign);
-            this.getTotalAttendeesCount(campaign);
-            this.getClickThroughRateCount(campaign);
-            this.getViewsCount(campaign);
-            this.getHardBounceCount(campaign);
-            this.getSoftBounceCount(campaign);
-            this.getLeadsCount(campaign);
-            this.getDealsCount(campaign);
-
+            campaign.boxLoader = true;
+            this.getLeadOrDealAccess(campaign);
         }
     }
+
+    getLeadOrDealAccess(campaign:any){
+        this.campaignService.getLeadOrDealAccess(campaign.campaignId).subscribe(
+            response=>{
+                campaign.boxLoader = false;
+                campaign.showLeadAndDealCounts = response.data;
+                this.findAllBoxAnalytics(campaign);
+            },error=>{
+                campaign.showLeadAndDealCounts = false;
+                 campaign.boxLoader = false;
+                this.findAllBoxAnalytics(campaign);
+            });
+    }
+
+    private findAllBoxAnalytics(campaign: any) {
+        this.getTotalRecipients(campaign);
+        this.getTotalEmailsSent(campaign);
+        this.getActiveRecipients(campaign);
+        this.getUnsubscribedCount(campaign);
+        this.getDeliverabilityAndOpenRatePercentage(campaign);
+        this.getClickedUrlCount(campaign);
+        this.getAttendeesCount(campaign);
+        this.getTotalAttendeesCount(campaign);
+        this.getClickThroughRateCount(campaign);
+        this.getViewsCount(campaign);
+        this.getHardBounceCount(campaign);
+        this.getSoftBounceCount(campaign);
+        this.getLeadsCount(campaign);
+        this.getDealsCount(campaign);
+    }
+
     getDealsCount(campaign: any) {
         if (campaign.showLeadAndDealCounts) {
             campaign.dealLoader = true;

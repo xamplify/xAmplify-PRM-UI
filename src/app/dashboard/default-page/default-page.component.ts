@@ -105,33 +105,11 @@ export class DefaultPageComponent implements OnInit {
     }
     /* -- XNFR-415 -- */
     loadDashboard(){   
-        let isPartnerLoggedInThroughVendorVanityUrl = this.authenticationService.vanityURLEnabled  && this.authenticationService.module.loggedInThroughVendorVanityUrl;
-        if (isPartnerLoggedInThroughVendorVanityUrl) {
+        if (this.authenticationService.vanityURLEnabled) {
             this.getDefaultDashboardForPartner();
+            this.CheckIsPaymentOverDue();
         } else {
-            /*****XNFR-595****/
-            this.dashBoardService.isPaymentOverDue(this.authenticationService.companyProfileName).subscribe(
-                response=>{
-                    this.isPaymentOverDue = response.data;
-                    if(this.isPaymentOverDue && this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed){
-                        let buttons = "Please settle your account as soon as possible to avoid any interruptions in service. Please reach out to our customer success team or contact support at <a href='mailto:support@xamplify.com'>support@xamplify.com</a>.";
-                       swal({
-                        title: "Your payment is overdue!!!",
-                        type: "warning",
-                        text: buttons,
-                        allowOutsideClick: false,
-                        confirmButtonText: "OK",
-                        allowEscapeKey:false
-                      });
-                    }
-                    this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed = false;
-                    this.getDefaultPage(this.loggedInUserId);
-                },error=>{
-                    this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed = false;
-                    this.getDefaultPage(this.loggedInUserId);
-                }
-            )
-            
+            this.getDefaultPage(this.loggedInUserId);
         }
     }
 
@@ -166,4 +144,30 @@ export class DefaultPageComponent implements OnInit {
                 () => { }
             );
     }
+
+    /*****XNFR-595****/
+    CheckIsPaymentOverDue() {
+        this.dashBoardService.isPaymentOverDue(this.authenticationService.companyProfileName).subscribe(
+            response => {
+                this.isPaymentOverDue = response.data;
+                if (this.isPaymentOverDue && this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed) {
+                    let buttons = "Please settle your account as soon as possible to avoid any interruptions in service. Please reach out to our customer success team or contact support at <a href='mailto:support@xamplify.com'>support@xamplify.com</a>.";
+                    swal({
+                        title: "Your payment is overdue!!!",
+                        type: "warning",
+                        text: buttons,
+                        allowOutsideClick: false,
+                        confirmButtonText: "OK",
+                        allowEscapeKey: false
+                    });
+                }
+                this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed = false;
+                this.getDefaultPage(this.loggedInUserId);
+            }, error => {
+                this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed = false;
+                this.getDefaultPage(this.loggedInUserId);
+            }
+        )
+    }
+
 }
