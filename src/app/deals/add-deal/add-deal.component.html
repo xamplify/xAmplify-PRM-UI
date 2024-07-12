@@ -192,12 +192,16 @@
                   <div class="card-bgcolors h-260 pl0 pr0">
                     <div class="form-group" [attr.class]="opportunityTypeId" style="margin-bottom: 20px"
                       id="dealStageDiv" *ngIf="showOpportunityTypes">
-                      <label class="control-label">{{(activeCRMDetails?.type === 'HALOPSA')?'Ticket Type':'Deal Layout'}}<span class="required"><strong>*</strong></span></label>
+                      <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
+                        ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
+                        ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}<span class="required"><strong>*</strong></span></label>
                       <select class="form-control" [(ngModel)]="deal.haloPSATickettypeId"
                         [ngModelOptions]="{standalone: true}" placeholder="opportunityTypeId" id="opportunityTypeId"
                         [disabled]="preview || isCampaignTicketTypeSelected || isZohoLeadAttached" (ngModelChange)="onChangeTicketType()"
                         (input)="validateField('opportunityTypeId',false)">
-                        <option [value]="0">Select {{(activeCRMDetails?.type === 'HALOPSA')?'Ticket Type':'Deal Layout'}}</option>
+                        <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
+                          ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
+                          ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}</option>
                         <!-- <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">
                           {{deal.currentStageName}}</option> -->
                         <option *ngFor="let type of halopsaTicketTypes" [value]="type.id">{{type.name}}</option>
