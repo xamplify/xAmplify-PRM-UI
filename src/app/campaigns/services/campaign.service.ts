@@ -1418,13 +1418,9 @@ export class CampaignService {
         return this.authenticationService.callGetMethod(url);
     }
 
-    getOpenRatePercentage(campaignId: any) {
-        const url = this.URL + 'campaign/getOpenRatePercentage/' + campaignId + '?access_token=' + this.authenticationService.access_token;
-        return this.authenticationService.callGetMethod(url);
-    }
 
-    getDeliverabilityPercentage(campaignId: any) {
-        const url = this.URL + 'campaign/getDeliverabilityPercentage/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getDeliverabilityAndOpenRatePercentage(campaignId: any) {
+        const url = this.URL + 'campaign/getDeliverabilityAndOpenRatePercentage/' + campaignId + '?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 

@@ -650,9 +650,9 @@
                                                     class="btn btn-default btn-xs re-distributed-high-level tk-blue-c TableDataBtn">
                                                     <div class="portlet-body text-center">
                                                         <h6 class="custom-font-size">
-                                                            <img class="h-25" *ngIf="campaign?.deliverabilityLoader" src="../../../assets/images/loadbar.gif">
-                                                            <img class="h-25" *ngIf="!campaign?.deliverabilityLoader && campaign?.deliverabilityError" src="../../../assets/images/error-icon.png">
-                                                            <strong *ngIf="!campaign?.deliverabilityLoader && !campaign?.deliverabilityError" class="custom-font-weight">{{campaign?.delivered}}</strong>
+                                                            <img class="h-25" *ngIf="campaign?.deliverabilityAndOpenRateLoader" src="../../../assets/images/loadbar.gif">
+                                                            <img class="h-25" *ngIf="!campaign?.deliverabilityAndOpenRateLoader && campaign?.deliverabilityAndOpenRateError" src="../../../assets/images/error-icon.png">
+                                                            <strong *ngIf="!campaign?.deliverabilityAndOpenRateLoader && !campaign?.deliverabilityAndOpenRateError" class="custom-font-weight">{{campaign?.delivered}}</strong>
                                                         </h6>
                                                         <span class="custom-font-weight">Deliverability</span>
                                                     </div>
@@ -664,9 +664,9 @@
                                                     class="btn btn-default btn-xs re-distributed-high-level pure-blue-c TableDataBtn">
                                                     <div class="portlet-body text-center">
                                                         <h6 class="custom-font-size">
-                                                            <img class="h-25" *ngIf="campaign?.openRateLoader" src="../../../assets/images/loadbar.gif">
-                                                            <img class="h-25" *ngIf="!campaign?.openRateLoader && campaign?.openRateError" src="../../../assets/images/error-icon.png">
-                                                            <strong *ngIf="!campaign?.openRateLoader && !campaign?.openRateError" class="custom-font-weight">{{campaign?.openRate}}</strong>
+                                                            <img class="h-25" *ngIf="campaign?.deliverabilityAndOpenRateLoader" src="../../../assets/images/loadbar.gif">
+                                                            <img class="h-25" *ngIf="!campaign?.deliverabilityAndOpenRateLoader && campaign?.deliverabilityAndOpenRateError" src="../../../assets/images/error-icon.png">
+                                                            <strong *ngIf="!campaign?.deliverabilityAndOpenRateLoader && !campaign?.deliverabilityAndOpenRateError" class="custom-font-weight">{{campaign?.openRate}}</strong>
                                                         </h6>
                                                         <span class="custom-font-weight">Open Rate</span>
                                                     </div>

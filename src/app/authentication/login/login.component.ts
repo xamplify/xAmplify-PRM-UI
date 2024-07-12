@@ -474,6 +474,9 @@ bgIMage2:any;
         client_id = this.envService.microsoftDevClientId;
         client_secret = this.envService.microsoftDevClientSecret;
       }
+    } else if (providerName === "oauthsso") {
+      client_id = "my-trusted-client";
+      client_secret = "";
     }
 
     if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined && this.referenceService.userName!=undefined) {

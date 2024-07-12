@@ -1470,8 +1470,7 @@ validateCopyCampaignName(){
             this.getTotalEmailsSent(campaign);
             this.getActiveRecipients(campaign);
             this.getUnsubscribedCount(campaign);
-            this.getDeliverabilityPercentage(campaign);
-            this.getOpenRatePercentage(campaign);
+            this.getDeliverabilityAndOpenRatePercentage(campaign);
             this.getClickedUrlCount(campaign);
             this.getAttendeesCount(campaign);
             this.getTotalAttendeesCount(campaign);
@@ -1634,17 +1633,19 @@ validateCopyCampaignName(){
                 campaign.openRateError = true;
             });
     }
-    getDeliverabilityPercentage(campaign: any) {
-        campaign.deliverabilityLoader = true;
-        campaign.deliverabilityError = false;
-        this.campaignService.getDeliverabilityPercentage(campaign.campaignId).subscribe(
+    getDeliverabilityAndOpenRatePercentage(campaign: any) {
+        campaign.deliverabilityAndOpenRateLoader = true;
+        campaign.deliverabilityAndOpenRateError = false;
+        this.campaignService.getDeliverabilityAndOpenRatePercentage(campaign.campaignId).subscribe(
             response => {
-                campaign.deliverabilityLoader = false;
-                campaign.deliverabilityError = false;
-                campaign.delivered = response.data;
+                campaign.deliverabilityAndOpenRateLoader = false;
+                campaign.deliverabilityAndOpenRateError = false;
+                let dto = response.data;
+                campaign.delivered = dto.delivered;
+                campaign.openRate = dto.openRate;
             }, error => {
-                campaign.deliverabilityLoader = false;
-                campaign.deliverabilityError = true;
+                campaign.deliverabilityAndOpenRateLoader = false;
+                campaign.deliverabilityAndOpenRateError = true;
             });
     }
     getUnsubscribedCount(campaign: any) {

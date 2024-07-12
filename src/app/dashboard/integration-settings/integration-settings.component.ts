@@ -380,7 +380,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				 this.referenceService.goToTop();
 				 return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);	
 			}
-			if((this.integrationType === 'HUBSPOT' || this.integrationType === 'PIPEDRIVE' || this.integrationType === 'CONNECTWISE' || this.integrationType === 'HALOPSA') && displayName)
+			if((this.integrationType === 'HUBSPOT' || this.integrationType === 'PIPEDRIVE' || this.integrationType === 'CONNECTWISE' || this.integrationType === 'HALOPSA' || this.integrationType === 'ZOHO') && displayName)
 			{
 				this.ngxloading = false;
 				const missingFields: string[] = [];
