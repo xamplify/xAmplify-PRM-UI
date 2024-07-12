@@ -715,7 +715,7 @@
                                                          <div class="portlet-body text-center">
                                                             <h6 class="custom-font-size" >
                                                                <img class="h-25" *ngIf="campaign?.totalEmailsSentLoader" src="../../../assets/images/loadbar.gif">
-                                                               <img class="h-25" *ngIf="!campaign?.totalEmailsSentLoader && campaign?.totalEmailsSentError" src="../../../assets/images/error-icon.png">
+                                                               <img class="h-13" *ngIf="!campaign?.totalEmailsSentLoader && campaign?.totalEmailsSentError" src="../../../assets/images/error-icon.png">
                                                                <strong *ngIf="!campaign?.totalEmailsSentLoader && !campaign?.totalEmailsSentError" class="custom-font-weight">{{campaign?.totalEmailsSent}}</strong>
                                                             </h6>
                                                             <span class="custom-font-weight">Total Emails Sent</span>
@@ -729,7 +729,7 @@
                                                          <div class="portlet-body text-center">
                                                             <h6 class="custom-font-size">
                                                                <img class="h-25" *ngIf="campaign?.activeRecipientsLoader" src="../../../assets/images/loadbar.gif">
-                                                               <img class="h-25" *ngIf="!campaign?.activeRecipientsLoader && campaign?.activeRecipientsError" src="../../../assets/images/error-icon.png">
+                                                               <img class="h-13" *ngIf="!campaign?.activeRecipientsLoader && campaign?.activeRecipientsError" src="../../../assets/images/error-icon.png">
                                                                <strong *ngIf="!campaign?.activeRecipientsLoader && !campaign?.activeRecipientsError" class="custom-font-weight">{{campaign?.activeRecipients}}</strong>
                                                             </h6>
                                                             <span class="custom-font-weight" *ngIf="campaign.campaignType.indexOf('EVENT') > -1">Opened</span>
@@ -744,7 +744,7 @@
                                                          <div class="portlet-body text-center">
                                                             <h6 class="custom-font-size">
                                                                <img class="h-25" *ngIf="campaign?.unsubscribedLoader" src="../../../assets/images/loadbar.gif">
-                                                               <img class="h-25" *ngIf="!campaign?.unsubscribedLoader && campaign?.unsubscribedError" src="../../../assets/images/error-icon.png">
+                                                               <img class="h-13" *ngIf="!campaign?.unsubscribedLoader && campaign?.unsubscribedError" src="../../../assets/images/error-icon.png">
                                                                <strong *ngIf="!campaign?.unsubscribedLoader && !campaign?.unsubscribedError" class="custom-font-weight">{{campaign?.unsubscribed}}</strong>
                                                             </h6>
                                                             <span class="custom-font-weight">Unsubscribe</span>
@@ -757,9 +757,9 @@
                                                          class="btn btn-default btn-xs re-distributed-high-level tk-blue-c TableDataBtn">
                                                          <div class="portlet-body text-center">
                                                             <h6 class="custom-font-size">
-                                                               <img class="h-25" *ngIf="campaign?.deliverabilityLoader" src="../../../assets/images/loadbar.gif">
-                                                               <img class="h-25" *ngIf="!campaign?.deliverabilityLoader && campaign?.deliverabilityError" src="../../../assets/images/error-icon.png">
-                                                               <strong *ngIf="!campaign?.deliverabilityLoader && !campaign?.deliverabilityError" class="custom-font-weight">{{campaign?.delivered}}</strong>
+                                                               <img class="h-25" *ngIf="campaign?.deliverabilityAndOpenRateLoader" src="../../../assets/images/loadbar.gif">
+                                                               <img class="h-13" *ngIf="!campaign?.deliverabilityAndOpenRateLoader && campaign?.deliverabilityAndOpenRateError" src="../../../assets/images/error-icon.png">
+                                                               <strong *ngIf="!campaign?.deliverabilityAndOpenRateLoader && !campaign?.deliverabilityAndOpenRateError" class="custom-font-weight">{{campaign?.delivered}}</strong>
                                                             </h6>
                                                             <span class="custom-font-weight">Deliverability</span>
                                                          </div>
@@ -771,9 +771,9 @@
                                                          class="btn btn-default btn-xs re-distributed-high-level pure-blue-c TableDataBtn">
                                                          <div class="portlet-body text-center">
                                                             <h6 class="custom-font-size">
-                                                               <img class="h-25" *ngIf="campaign?.openRateLoader" src="../../../assets/images/loadbar.gif">
-                                                               <img class="h-25" *ngIf="!campaign?.openRateLoader && campaign?.openRateError" src="../../../assets/images/error-icon.png">
-                                                               <strong *ngIf="!campaign?.openRateLoader && !campaign?.openRateError" class="custom-font-weight">{{campaign?.openRate}}</strong>
+                                                               <img class="h-25" *ngIf="campaign?.deliverabilityAndOpenRateLoader" src="../../../assets/images/loadbar.gif">
+                                                               <img class="h-13" *ngIf="!campaign?.deliverabilityAndOpenRateLoader && campaign?.deliverabilityAndOpenRateError" src="../../../assets/images/error-icon.png">
+                                                               <strong *ngIf="!campaign?.deliverabilityAndOpenRateLoader && !campaign?.deliverabilityAndOpenRateError" class="custom-font-weight">{{campaign?.openRate}}</strong>
                                                             </h6>
                                                             <span class="custom-font-weight">Open Rate</span>
                                                          </div>
@@ -786,7 +786,7 @@
                                                       <div class="portlet-body text-center">
                                                          <h6 class="custom-font-size">
                                                             <img class="h-25" *ngIf="campaign?.clickedUrlLoader" src="../../../assets/images/loadbar.gif">
-                                                            <img class="h-25" *ngIf="!campaign?.clickedUrlLoader && campaign?.clickedUrlError" src="../../../assets/images/error-icon.png">
+                                                            <img class="h-13" *ngIf="!campaign?.clickedUrlLoader && campaign?.clickedUrlError" src="../../../assets/images/error-icon.png">
                                                             <strong *ngIf="!campaign?.clickedUrlLoader && !campaign?.clickedUrlLoader" class="custom-font-weight">{{campaign?.emailClicked}}</strong>
                                                          </h6>
                                                          <span class="custom-font-weight">Clicked URL</span>
@@ -800,7 +800,7 @@
                                                       <div class="portlet-body text-center">
                                                          <h6 class="custom-font-size">
                                                             <img class="h-25" *ngIf="campaign?.attendeesLoader" src="../../../assets/images/loadbar.gif">
-                                                            <img class="h-25" *ngIf="!campaign?.attendeesLoader && campaign?.attendeesError" src="../../../assets/images/error-icon.png">
+                                                            <img class="h-13" *ngIf="!campaign?.attendeesLoader && campaign?.attendeesError" src="../../../assets/images/error-icon.png">
                                                             <strong *ngIf="!campaign?.attendeesLoader && !campaign?.attendeesError" class="custom-font-weight">{{campaign?.attendeesCount}}</strong>
                                                          </h6>
                                                          <span class="custom-font-weight">Yes</span>
@@ -815,7 +815,7 @@
                                                       <div class="portlet-body text-center">
                                                          <h6 class="custom-font-size">
                                                             <img class="h-25" *ngIf="campaign?.totalAttendeesLoader" src="../../../assets/images/loadbar.gif">
-                                                            <img class="h-25" *ngIf="!campaign?.totalAttendeesLoader && campaign?.totalAttendeesError" src="../../../assets/images/error-icon.png">
+                                                            <img class="h-13" *ngIf="!campaign?.totalAttendeesLoader && campaign?.totalAttendeesError" src="../../../assets/images/error-icon.png">
                                                             <strong *ngIf="!campaign?.totalAttendeesLoader && !campaign?.totalAttendeesError" class="custom-font-weight">{{campaign?.totalAttendeesCount}}</strong>
                                                          </h6>
                                                          <span class="custom-font-weight">Total</span>
@@ -828,7 +828,7 @@
                                                       <div class="portlet-body text-center">
                                                          <h6 class="custom-font-size">
                                                             <img class="h-25" *ngIf="campaign?.clickThroughRateLoader" src="../../../assets/images/loadbar.gif">
-                                                            <img class="h-25" *ngIf="!campaign?.clickThroughRateLoader && campaign?.clickThroughRateError" src="../../../assets/images/error-icon.png">
+                                                            <img class="h-13" *ngIf="!campaign?.clickThroughRateLoader && campaign?.clickThroughRateError" src="../../../assets/images/error-icon.png">
                                                             <strong *ngIf="!campaign?.clickThroughRateLoader && !campaign?.clickThroughRateError" class="custom-font-weight">{{campaign?.clickthroughRate}}</strong>
                                                          </h6>
                                                          <span class="custom-font-weight">Clickthrough Rate</span>
@@ -841,7 +841,7 @@
                                                       <div class="portlet-body text-center">
                                                          <h6 class="custom-font-size">
                                                             <img class="h-25" *ngIf="campaign?.viewCountLoader" src="../../../assets/images/loadbar.gif">
-                                                            <img class="h-25" *ngIf="!campaign?.viewCountLoader && campaign?.viewCountError" src="../../../assets/images/error-icon.png">
+                                                            <img class="h-13" *ngIf="!campaign?.viewCountLoader && campaign?.viewCountError" src="../../../assets/images/error-icon.png">
                                                             <strong *ngIf="!campaign?.viewCountLoader && !campaign?.viewCountError" class="custom-font-weight">{{campaign?.views}}</strong>
                                                          </h6>
                                                          <span class="custom-font-weight">Views</span>
@@ -854,7 +854,7 @@
                                                       <div class="portlet-body text-center">
                                                          <h6 class="custom-font-size">
                                                             <img class="h-25" *ngIf="campaign?.hardBounceLoader" src="../../../assets/images/loadbar.gif">
-                                                            <img class="h-25" *ngIf="!campaign?.hardBounceLoader && campaign?.hardBounceError" src="../../../assets/images/error-icon.png">
+                                                            <img class="h-13" *ngIf="!campaign?.hardBounceLoader && campaign?.hardBounceError" src="../../../assets/images/error-icon.png">
                                                             <strong *ngIf="!campaign?.hardBounceLoader && !campaign?.hardBounceError" class="custom-font-weight">{{campaign?.hardBounce}}</strong>
                                                          </h6>
                                                          <span class="custom-font-weight">Hard Bounce</span>
@@ -867,7 +867,7 @@
                                                       <div class="portlet-body text-center">
                                                          <h6 class="custom-font-size">
                                                             <img class="h-25" *ngIf="campaign?.softBounceLoader" src="../../../assets/images/loadbar.gif">
-                                                            <img class="h-25" *ngIf="!campaign?.softBounceLoader && campaign?.softBounceError" src="../../../assets/images/error-icon.png">
+                                                            <img class="h-13" *ngIf="!campaign?.softBounceLoader && campaign?.softBounceError" src="../../../assets/images/error-icon.png">
                                                             <strong *ngIf="!campaign?.softBounceLoader && !campaign?.softBounceError" class="custom-font-weight">{{campaign?.softBounce}}</strong>
                                                          </h6>
                                                          <span class="custom-font-weight">Soft Bounce</span>
@@ -880,7 +880,7 @@
                                                       <div class="portlet-body text-center">
                                                          <h6 class="custom-font-size">
                                                             <img class="h-25" *ngIf="campaign?.leadLoader" src="../../../assets/images/loadbar.gif">
-                                                            <img class="h-25" *ngIf="!campaign?.leadLoader && campaign?.leadError" src="../../../assets/images/error-icon.png">
+                                                            <img class="h-13" *ngIf="!campaign?.leadLoader && campaign?.leadError" src="../../../assets/images/error-icon.png">
                                                             <strong *ngIf="!campaign?.leadLoader && !campaign?.leadError" class="custom-font-weight">{{campaign?.leadCount}}</strong>
                                                          </h6>
                                                          <span class="custom-font-weight">Leads</span>
@@ -894,7 +894,7 @@
                                                          <h6 class="custom-font-size">
                                                             <h6 class="custom-font-size">
                                                                <img class="h-25" *ngIf="campaign?.dealLoader" src="../../../assets/images/loadbar.gif">
-                                                               <img class="h-25" *ngIf="!campaign?.dealLoader && campaign?.dealError" src="../../../assets/images/error-icon.png">
+                                                               <img class="h-13" *ngIf="!campaign?.dealLoader && campaign?.dealError" src="../../../assets/images/error-icon.png">
                                                                <strong *ngIf="!campaign?.dealLoader && !campaign?.dealError" class="custom-font-weight">{{campaign?.dealCount}}</strong>
                                                             </h6>
                                                          </h6>
