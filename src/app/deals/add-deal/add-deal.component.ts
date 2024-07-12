@@ -1273,16 +1273,14 @@ export class AddDealComponent implements OnInit {
           //XNFR-461
           if (this.deal.campaignId > 0) {
             this.getCampaignDealPipeline();
-          } else if (!this.isZohoLeadAttachedWithoutSelectingDealFor) {
+          } else if (!this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown || this.actionType === "edit") {
             this.getActiveCRMPipelines();
           }
           if (this.actionType === "view") {
             this.getDealPipelinesForView();
           }
-          else {
-            if (!this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown || this.actionType === "edit") {
-              this.getDealPipelines();
-            }
+          else if (!this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown || this.actionType === "edit") {
+            this.getDealPipelines();
           }
           if (this.isZohoLeadAttachedWithoutSelectingDealFor) {
             this.getConvertMappingLayout(this.lead.halopsaTicketTypeId);
