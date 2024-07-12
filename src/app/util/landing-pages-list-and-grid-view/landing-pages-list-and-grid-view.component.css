@@ -269,9 +269,9 @@
     }
   }
   
-  .grid-box-height {
-    height: 600px !important;
-  }
+    .grid-box-height {
+      height: 630px !important;
+    }
   .flexContant{
     display: flex;
     justify-content: center;
