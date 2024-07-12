@@ -71,7 +71,12 @@ export class CampaignService {
             pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
         }
         /****XNFR-252*****/
+        let searchKey = pagination.searchKey;
+        let encodedUrlForSearch = this.referenceService.getEncodedUri(searchKey);
         let url = this.URL + "campaign/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
+        if(!pagination.campaignAnalyticsSettingsOptionEnabled){
+            url = this.URL + "campaign/listCampaign/" + userId + "?searchKey="+encodedUrlForSearch+"&access_token=" + this.authenticationService.access_token;
+        }
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
