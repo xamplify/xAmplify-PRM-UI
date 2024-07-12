@@ -360,7 +360,7 @@
                            </div>
                            <div>
                               <span class="camp-title"
-                                 *ngIf="(authenticationService.isOrgAdmin() && campaign?.channelCampaign) || ((authenticationService.isVendorPartner() && !authenticationService.isOrgAdmin()) || authenticationService.isVendor() || (authenticationService?.module?.isTeamMember && campaign?.channelCampaign))">
+                                 *ngIf="!campaign?.oneClickLaunch && ((authenticationService.isOrgAdmin() && campaign?.channelCampaign) || (authenticationService.isVendorPartner() && !authenticationService.isOrgAdmin()) || authenticationService.isVendor() || (authenticationService?.module?.isTeamMember && campaign?.channelCampaign))">
                                  {{ 'Group Info' }}
                               </span>
                               <span class="camp-title"
@@ -374,8 +374,8 @@
                                  campaingContactLists?.length }}
                                  List(s)</strong>
                               <strong class="m0 StongTextdc"
-                              *ngIf="(authenticationService.isOrgAdmin() && campaign?.channelCampaign) || ((authenticationService.isVendorPartner() && !authenticationService.isOrgAdmin()) || authenticationService.isVendor() || (authenticationService?.module?.isTeamMember && campaign?.channelCampaign))">{{
-                                 campaingContactLists?.length }}
+                              *ngIf="!campaign?.oneClickLaunch && ((authenticationService.isOrgAdmin() && campaign?.channelCampaign) || (authenticationService.isVendorPartner() && !authenticationService.isOrgAdmin()) || authenticationService.isVendor() || (authenticationService?.module?.isTeamMember && campaign?.channelCampaign))">{{
+                              campaingContactLists?.length }}
                                  Group(s)</strong>
                               <strong class="m0" *ngIf="campaign?.oneClickLaunch">{{ campaingContactLists?.length }}
                                  Shared List(s)</strong>
