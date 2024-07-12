@@ -17,6 +17,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 declare var swal: any, $: any, Promise: any;
 @Injectable()
 export class CampaignService {
+    
     campaign: Campaign;
     eventCampaign: any;
     reDistributeCampaign: Campaign;
@@ -1441,6 +1442,12 @@ export class CampaignService {
 
     getTotalEmailsSent(campaignId: any) {
         const url = this.URL + 'campaign/getTotalEmailsSent/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    getLeadOrDealAccess(campaignId: number) {
+        let userId = this.authenticationService.getUserId();
+        const url = this.URL + 'campaign/leadOrDealAccess/' + campaignId + '/'+userId+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
