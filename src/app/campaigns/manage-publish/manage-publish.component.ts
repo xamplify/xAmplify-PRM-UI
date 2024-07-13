@@ -1700,6 +1700,20 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         campaign.isExpand = !campaign.isExpand;
         if (campaign.isExpand) {
             campaign.boxLoader = true;
+            campaign.dealLoader = true;
+            campaign.leadLoader = true;
+            campaign.softBounceLoader = true;
+            campaign.hardBounceLoader = true;
+            campaign.clickThroughRateLoader = true;
+            campaign.viewCountLoader = true;
+            campaign.totalAttendeesLoader = true;
+            campaign.attendeesLoader = true;
+            campaign.clickedUrlLoader = true;
+            campaign.deliverabilityAndOpenRateLoader = true;
+            campaign.unsubscribedLoader = true;
+            campaign.activeRecipientsLoader = true;
+            campaign.totalEmailsSentLoader = true;
+            campaign.totalRecipientsLoader = true;
             this.getLeadOrDealAccess(campaign);
         }
     }
@@ -1729,14 +1743,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.findAllBoxAnalytics(campaign);
             },error=>{
                 campaign.showLeadAndDealCounts = false;
-                 campaign.boxLoader = false;
+                campaign.boxLoader = false;
                 this.findAllBoxAnalytics(campaign);
             });
     }
 
     getDealsCount(campaign: any) {
         if (campaign.showLeadAndDealCounts) {
-            campaign.dealLoader = true;
             campaign.dealError = false;
             this.campaignService.getDealsCount(campaign).subscribe(
                 response => {
@@ -1752,7 +1765,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     getLeadsCount(campaign: any) {
         if (campaign.showLeadAndDealCounts) {
-            campaign.leadLoader = true;
             campaign.leadError = false;
             this.campaignService.getLeadCount(campaign).subscribe(
                 response => {
@@ -1767,7 +1779,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     }
     getSoftBounceCount(campaign: any) {
-        campaign.softBounceLoader = true;
         campaign.softBounceError = false;
         this.campaignService.getSoftBounceCount(campaign).subscribe(
             response => {
@@ -1780,7 +1791,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             });
     }
     getHardBounceCount(campaign: any) {
-        campaign.hardBounceLoader = true;
         campaign.hardBounceError = false;
         this.campaignService.getHardBounceCount(campaign).subscribe(
             response => {
@@ -1794,7 +1804,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     getClickThroughRateCount(campaign: any) {
         if (campaign.campaignType.indexOf('EVENT') < 0 && campaign.campaignType.indexOf('SOCIAL') < 0) {
-            campaign.clickThroughRateLoader = true;
             campaign.clickThroughRateError = false;
             this.campaignService.getClickThroughRate(campaign).subscribe(
                 response => {
@@ -1809,7 +1818,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     getViewsCount(campaign: any) {
         if (campaign.campaignType.indexOf('VIDEO') > -1) {
-            campaign.viewCountLoader = true;
             campaign.viewCountError = false;
             this.campaignService.getViewsCount(campaign).subscribe(
                 response => {
@@ -1825,7 +1833,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     getTotalAttendeesCount(campaign: any) {
         if (campaign.campaignType.indexOf('EVENT') > -1) {
-            campaign.totalAttendeesLoader = true;
             campaign.totalAttendeesError = false;
             this.campaignService.getTotalAttendeesCount(campaign).subscribe(
                 response => {
@@ -1841,7 +1848,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     getAttendeesCount(campaign: any) {
         if (campaign.campaignType.indexOf('EVENT') > -1) {
-            campaign.attendeesLoader = true;
             campaign.attendeesError = false;
             this.campaignService.getAttendeesCount(campaign).subscribe(
                 response => {
@@ -1857,7 +1863,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     getClickedUrlCount(campaign: any) {
         if (campaign.campaignType.indexOf('REGULAR') > -1 || campaign.campaignType.indexOf('VIDEO') > -1 || campaign.campaignType.indexOf('LANDINGPAGE') > -1) {
-            campaign.clickedUrlLoader = true;
             campaign.clickedUrlError = false;
             this.campaignService.getClickedUrlCount(campaign).subscribe(
                 response => {
@@ -1873,7 +1878,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
    
     getDeliverabilityAndOpenRatePercentage(campaign: any) {
-        campaign.deliverabilityAndOpenRateLoader = true;
         campaign.deliverabilityAndOpenRateError = false;
         this.campaignService.getDeliverabilityAndOpenRatePercentage(campaign).subscribe(
             response => {
@@ -1888,7 +1892,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             });
     }
     getUnsubscribedCount(campaign: any) {
-        campaign.unsubscribedLoader = true;
         campaign.unsubscribedError = false;
         this.campaignService.getUnsubscribedCount(campaign).subscribe(
             response => {
@@ -1901,7 +1904,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             });
     }
     getActiveRecipients(campaign: any) {
-        campaign.activeRecipientsLoader = true;
         campaign.activeRecipientsError = false;
         this.campaignService.getActiveRecipients(campaign).subscribe(
             response => {
@@ -1914,7 +1916,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             });
     }
     getTotalEmailsSent(campaign: any) {
-        campaign.totalEmailsSentLoader = true;
         campaign.totalEmailsSentError = false;
         this.campaignService.getTotalEmailsSent(campaign).subscribe(
             response => {
@@ -1928,7 +1929,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     getTotalRecipients(campaign: any) {
-        campaign.totalRecipientsLoader = true;
         campaign.totalRecipientsError = false;
         this.campaignService.getTotalRecipients(campaign).subscribe(
             response => {
