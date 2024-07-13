@@ -186,6 +186,8 @@ export class DomainWhitelistingComponent implements OnInit, OnDestroy {
   }
 
   validateDomain(domain: string) {
+    this.isDomainExist = false;
+    this.validDomainFormat = false;
     const lowerCaseDomain = this.referenceService.getTrimmedData(domain.toLowerCase());
     if (lowerCaseDomain.length > 0) {
       let isValidDomainName = this.validateDomainName(lowerCaseDomain);
