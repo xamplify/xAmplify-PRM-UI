@@ -1505,7 +1505,7 @@ validateCopyCampaignName(){
         if (campaign.showLeadAndDealCounts) {
             campaign.dealLoader = true;
             campaign.dealError = false;
-            this.campaignService.getDealsCount(campaign.campaignId).subscribe(
+            this.campaignService.getDealsCount(campaign).subscribe(
                 response => {
                     campaign.dealLoader = false;
                     campaign.dealError = false;
@@ -1521,7 +1521,7 @@ validateCopyCampaignName(){
         if (campaign.showLeadAndDealCounts) {
             campaign.leadLoader = true;
             campaign.leadError = false;
-            this.campaignService.getLeadCount(campaign.campaignId).subscribe(
+            this.campaignService.getLeadCount(campaign).subscribe(
                 response => {
                     campaign.leadLoader = false;
                     campaign.leadError = false;
@@ -1536,7 +1536,7 @@ validateCopyCampaignName(){
     getSoftBounceCount(campaign: any) {
         campaign.softBounceLoader = true;
         campaign.softBounceError = false;
-        this.campaignService.getSoftBounceCount(campaign.campaignId).subscribe(
+        this.campaignService.getSoftBounceCount(campaign).subscribe(
             response => {
                 campaign.softBounceLoader = false;
                 campaign.softBounceError = false;
@@ -1549,7 +1549,7 @@ validateCopyCampaignName(){
     getHardBounceCount(campaign: any) {
         campaign.hardBounceLoader = true;
         campaign.hardBounceError = false;
-        this.campaignService.getHardBounceCount(campaign.campaignId).subscribe(
+        this.campaignService.getHardBounceCount(campaign).subscribe(
             response => {
                 campaign.hardBounceLoader = false;
                 campaign.hardBounceError = false;
@@ -1563,7 +1563,7 @@ validateCopyCampaignName(){
         if (campaign.campaignType.indexOf('EVENT') < 0 && campaign.campaignType.indexOf('SOCIAL') < 0) {
             campaign.clickThroughRateLoader = true;
             campaign.clickThroughRateError = false;
-            this.campaignService.getClickThroughRate(campaign.campaignId).subscribe(
+            this.campaignService.getClickThroughRate(campaign).subscribe(
                 response => {
                     campaign.clickThroughRateLoader = false;
                     campaign.clickThroughRateError = false;
@@ -1578,7 +1578,7 @@ validateCopyCampaignName(){
         if (campaign.campaignType.indexOf('VIDEO') > -1) {
             campaign.viewCountLoader = true;
             campaign.viewCountError = false;
-            this.campaignService.getViewsCount(campaign.campaignId).subscribe(
+            this.campaignService.getViewsCount(campaign).subscribe(
                 response => {
                     campaign.viewCountLoader = false;
                     campaign.viewCountError = false;
@@ -1594,7 +1594,7 @@ validateCopyCampaignName(){
         if (campaign.campaignType.indexOf('EVENT') > -1) {
             campaign.totalAttendeesLoader = true;
             campaign.totalAttendeesError = false;
-            this.campaignService.getTotalAttendeesCount(campaign.campaignId).subscribe(
+            this.campaignService.getTotalAttendeesCount(campaign).subscribe(
                 response => {
                     campaign.totalAttendeesLoader = false;
                     campaign.totalAttendeesError = false;
@@ -1610,7 +1610,7 @@ validateCopyCampaignName(){
         if (campaign.campaignType.indexOf('EVENT') > -1) {
             campaign.attendeesLoader = true;
             campaign.attendeesError = false;
-            this.campaignService.getAttendeesCount(campaign.campaignId).subscribe(
+            this.campaignService.getAttendeesCount(campaign).subscribe(
                 response => {
                     campaign.attendeesLoader = false;
                     campaign.attendeesError = false;
@@ -1626,7 +1626,7 @@ validateCopyCampaignName(){
         if (campaign.campaignType.indexOf('REGULAR') > -1 || campaign.campaignType.indexOf('VIDEO') > -1 || campaign.campaignType.indexOf('LANDINGPAGE') > -1) {
             campaign.clickedUrlLoader = true;
             campaign.clickedUrlError = false;
-            this.campaignService.getClickedUrlCount(campaign.campaignId).subscribe(
+            this.campaignService.getClickedUrlCount(campaign).subscribe(
                 response => {
                     campaign.clickedUrlLoader = false;
                     campaign.clickedUrlError = false;
@@ -1641,7 +1641,7 @@ validateCopyCampaignName(){
     getOpenRatePercentage(campaign: any) {
         campaign.openRateLoader = true;
         campaign.openRateError = false;
-        this.campaignService.getClickedUrlCount(campaign.campaignId).subscribe(
+        this.campaignService.getClickedUrlCount(campaign).subscribe(
             response => {
                 campaign.openRateLoader = false;
                 campaign.openRateError = false;
@@ -1654,7 +1654,7 @@ validateCopyCampaignName(){
     getDeliverabilityAndOpenRatePercentage(campaign: any) {
         campaign.deliverabilityAndOpenRateLoader = true;
         campaign.deliverabilityAndOpenRateError = false;
-        this.campaignService.getDeliverabilityAndOpenRatePercentage(campaign.campaignId).subscribe(
+        this.campaignService.getDeliverabilityAndOpenRatePercentage(campaign).subscribe(
             response => {
                 campaign.deliverabilityAndOpenRateLoader = false;
                 campaign.deliverabilityAndOpenRateError = false;
@@ -1669,7 +1669,7 @@ validateCopyCampaignName(){
     getUnsubscribedCount(campaign: any) {
         campaign.unsubscribedLoader = true;
         campaign.unsubscribedError = false;
-        this.campaignService.getUnsubscribedCount(campaign.campaignId).subscribe(
+        this.campaignService.getUnsubscribedCount(campaign).subscribe(
             response => {
                 campaign.unsubscribedLoader = false;
                 campaign.unsubscribedError = false;
@@ -1682,7 +1682,7 @@ validateCopyCampaignName(){
     getActiveRecipients(campaign: any) {
         campaign.activeRecipientsLoader = true;
         campaign.activeRecipientsError = false;
-        this.campaignService.getActiveRecipients(campaign.campaignId).subscribe(
+        this.campaignService.getActiveRecipients(campaign).subscribe(
             response => {
                 campaign.activeRecipientsLoader = false;
                 campaign.activeRecipientsError = false;
@@ -1695,7 +1695,7 @@ validateCopyCampaignName(){
     getTotalEmailsSent(campaign: any) {
         campaign.totalEmailsSentLoader = true;
         campaign.totalEmailsSentError = false;
-        this.campaignService.getTotalEmailsSent(campaign.campaignId).subscribe(
+        this.campaignService.getTotalEmailsSent(campaign).subscribe(
             response => {
                 campaign.totalEmailsSentLoader = false;
                 campaign.totalEmailsSentError = false;

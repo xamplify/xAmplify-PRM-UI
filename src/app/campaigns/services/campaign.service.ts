@@ -1379,69 +1379,69 @@ export class CampaignService {
         return this.authenticationService.callGetMethod(url);
     }
 
-    getDealsCount(campaignId: number) {
-        const url = this.URL + 'campaign/getDealsCount/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getDealsCount(campaign:any) {
+        const url = this.URL + 'campaign/getDealsCount/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
-    getLeadCount(campaignId: any) {
-        const url = this.URL + 'campaign/getLeadsCount/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getLeadCount(campaign:any) {
+        const url = this.URL + 'campaign/getLeadsCount/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
-    getSoftBounceCount(campaignId: any) {
-        const url = this.URL + 'campaign/getSoftBounceCount/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getSoftBounceCount(campaign:any) {
+        const url = this.URL + 'campaign/getSoftBounceCount/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
-    getHardBounceCount(campaignId: any) {
-        const url = this.URL + 'campaign/getHardBounceCount/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getHardBounceCount(campaign:any) {
+        const url = this.URL + 'campaign/getHardBounceCount/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
-    getViewsCount(campaignId: any) {
-        const url = this.URL + 'campaign/getViewsCount/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getViewsCount(campaign:any) {
+        const url = this.URL + 'campaign/getViewsCount/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
-    getClickThroughRate(campaignId: any) {
-        const url = this.URL + 'campaign/getClickThroughRate/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getClickThroughRate(campaign:any) {
+        const url = this.URL + 'campaign/getClickThroughRate/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
-    getTotalAttendeesCount(campaignId: any) {
-        const url = this.URL + 'campaign/getTotalAttendeesCount/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getTotalAttendeesCount(campaign:any) {
+        const url = this.URL + 'campaign/getTotalAttendeesCount/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
-    getAttendeesCount(campaignId: any) {
-        const url = this.URL + 'campaign/getAttendeesCount/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getAttendeesCount(campaign:any) {
+        const url = this.URL + 'campaign/getAttendeesCount/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
-    getClickedUrlCount(campaignId: any) {
-        const url = this.URL + 'campaign/getClickedUrlCount/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getClickedUrlCount(campaign:any) {
+        const url = this.URL + 'campaign/getClickedUrlCount/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
 
-    getDeliverabilityAndOpenRatePercentage(campaignId: any) {
-        const url = this.URL + 'campaign/getDeliverabilityAndOpenRatePercentage/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getDeliverabilityAndOpenRatePercentage(campaign:any) {
+        const url = this.URL + 'campaign/getDeliverabilityAndOpenRatePercentage/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
-    getUnsubscribedCount(campaignId: any) {
-        const url = this.URL + 'campaign/getUnsubscribedCount/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getUnsubscribedCount(campaign:any) {
+        const url = this.URL + 'campaign/getUnsubscribedCount/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
-    getActiveRecipients(campaignId: any) {
-        const url = this.URL + 'campaign/getActiveRecipients/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getActiveRecipients(campaign:any) {
+        const url = this.URL + 'campaign/getActiveRecipients/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
-    getTotalEmailsSent(campaignId: any) {
-        const url = this.URL + 'campaign/getTotalEmailsSent/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getTotalEmailsSent(campaign:any) {
+        const url = this.URL + 'campaign/getTotalEmailsSent/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
