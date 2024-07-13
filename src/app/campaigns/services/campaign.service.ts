@@ -1410,12 +1410,12 @@ export class CampaignService {
     }
 
     getTotalAttendeesCount(campaign:any) {
-        const url = this.URL + 'campaign/getTotalAttendeesCount/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
+        const url = this.URL + 'campaign/getTotalAttendeesCount/' + campaign.campaignId + '?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
     getAttendeesCount(campaign:any) {
-        const url = this.URL + 'campaign/getAttendeesCount/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
+        const url = this.URL + 'campaign/getAttendeesCount/' + campaign.campaignId + '?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 

@@ -1838,7 +1838,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 response => {
                     campaign.totalAttendeesLoader = false;
                     campaign.totalAttendeesError = false;
-                    campaign.totalAttendeesCount = response.data;
+                    let totalAttendeesCount = response.data;
+                    if(totalAttendeesCount!=null){
+                        campaign.totalAttendeesCount = totalAttendeesCount;
+                    }else{
+                        campaign.totalAttendeesCount = 0;
+                    }
                 }, error => {
                     campaign.totalAttendeesLoader = false;
                     campaign.totalAttendeesError = true;
