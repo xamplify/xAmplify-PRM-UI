@@ -1,3 +1,4 @@
+import { CustomAnimation } from './../../core/models/custom-animation';
 import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
@@ -29,7 +30,8 @@ declare var $: any, swal: any;
   selector: 'app-team-members-util',
   templateUrl: './team-members-util.component.html',
   styleUrls: ['./team-members-util.component.css'],
-  providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch, Properties, RegularExpressions]
+  providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch, Properties, RegularExpressions],
+  animations:[CustomAnimation]
 })
 export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
