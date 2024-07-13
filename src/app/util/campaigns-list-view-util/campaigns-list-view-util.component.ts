@@ -1709,7 +1709,7 @@ validateCopyCampaignName(){
     getTotalRecipients(campaign: any) {
         campaign.totalRecipientsLoader = true;
         campaign.totalRecipientsError = false;
-        this.campaignService.getTotalRecipients(campaign.campaignId).subscribe(
+        this.campaignService.getTotalRecipients(campaign).subscribe(
             response => {
                 campaign.totalRecipientsLoader = false;
                 campaign.totalRecipientsError = false;

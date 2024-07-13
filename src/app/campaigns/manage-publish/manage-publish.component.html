@@ -701,7 +701,7 @@
                                                          <div class="portlet-body text-center">
                                                             <h6 class="custom-font-size" >
                                                                <img class="h-25" *ngIf="campaign?.totalRecipientsLoader" src="../../../assets/images/loadbar.gif">
-                                                               <img class="h-25" *ngIf="!campaign?.totalRecipientsLoader && campaign?.totalRecipientsError" src="../../../assets/images/error-icon.png">
+                                                               <img class="h-13" *ngIf="!campaign?.totalRecipientsLoader && campaign?.totalRecipientsError" src="../../../assets/images/error-icon.png">
                                                                <strong *ngIf="!campaign?.totalRecipientsLoader && !campaign?.totalRecipientsError" class="custom-font-weight">{{campaign?.totalRecipients}}</strong>
                                                             </h6>
                                                             <span class="custom-font-weight" *ngIf="campaign.campaignType.indexOf('EVENT') > -1">Invites</span>

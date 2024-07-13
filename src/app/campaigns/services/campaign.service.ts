@@ -1374,8 +1374,8 @@ export class CampaignService {
     }
 
     /***XNFR-609****/
-    getTotalRecipients(campaignId: number) {
-        const url = this.URL + 'campaign/getTotalRecipients/' + campaignId + '?access_token=' + this.authenticationService.access_token;
+    getTotalRecipients(campaign:any) {
+        const url = this.URL + 'campaign/getTotalRecipients/' + campaign.campaignId + '/'+campaign.campaignType+'?access_token=' + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 
