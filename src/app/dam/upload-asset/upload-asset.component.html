@@ -500,7 +500,7 @@
                                                    <label class="control-label" translate>
                                                    </label>
                                                 </td>
-                                                <td class="desc">
+                                                <td class="desc" [class.customDisableCss]='isDisableForm==true'>
                                                    <div class="mDesc overflowtable-control">
                                                       <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
                                                       <app-partner-company-and-groups

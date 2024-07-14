@@ -323,10 +323,12 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			}
 		} else {
 			$('#publishToPartners' + teamMemberId).removeClass('row-selected');
-			this.selectedTeamMemberIds.splice($.inArray(teamMemberId, this.selectedTeamMemberIds), 1);
-			this.companyAndPartnerMap.get(companyId).splice($.inArray(teamMemberId, this.companyAndPartnerMap.get(companyId)), 1)
-			if(this.companyAndPartnerMap.get(companyId).length ==0){
-				this.companyAndPartnerMap.delete(companyId);
+			if(this.selectedTeamMemberIds!=undefined && this.selectedTeamMemberIds.length>0){
+				this.selectedTeamMemberIds.splice($.inArray(teamMemberId, this.selectedTeamMemberIds), 1);
+				this.companyAndPartnerMap.get(companyId).splice($.inArray(teamMemberId, this.companyAndPartnerMap.get(companyId)), 1)
+				if(this.companyAndPartnerMap.get(companyId).length ==0){
+					this.companyAndPartnerMap.delete(companyId);
+				}
 			}
 		}
 		this.checkHeaderCheckBox(partnershipId);
