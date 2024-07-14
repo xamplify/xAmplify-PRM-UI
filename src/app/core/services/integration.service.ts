@@ -190,4 +190,16 @@ export class IntegrationService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+    getDealHeaderByUserId(loggedInUserId: number) {
+        return this._http.get(this.authenticationService.REST_URL + `crm/active/deal/header/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    setDealHeader(userId: number, request: any) {
+        return this._http.post(this.authenticationService.REST_URL + `crm/active/save/deal/header/${userId}/${request}?access_token=${this.authenticationService.access_token}`, request)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

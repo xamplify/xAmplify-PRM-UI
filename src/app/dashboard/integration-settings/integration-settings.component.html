@@ -8,6 +8,8 @@
     <li><a (click)="setActiveTab('menu1')"
         data-toggle="tab" href="#menu1">Custom fields</a>
     </li>
+    <li *ngIf="integrationType === 'SALESFORCE'"><a (click)="setActiveTab('menu2')"
+      data-toggle="tab" href="#menu2">Settings</a></li>
     <div class="d-flex justify-content-end">
       <li *ngIf="activeTab === 'menu1' && haveCustomFields " class ="ml_15">
         <div class="inputs mr10 width100">
@@ -69,6 +71,7 @@
         <div class="col-md-12 p0">
           <div style="margin-bottom:20px">
             <h3 class="fs-16">{{ integrationType }} custom fields
+              <!-- <span><a class="fa fa-edit mr5 IconCustomization SingleIconCu" (click)="toggleHeaderSettings()"></a></span> -->
               <span class="reload-btn">
                 <a (click)="reloadCustomFields()" data-toggle="tooltip" data-placement="top"
                   title="Refresh Custom Fields"><i class="fa fa-refresh" style="font-size: 14px !important;"></i>
@@ -78,6 +81,10 @@
             (click)="addCustomFielsdOrderModalOpen()"><span
              class="btn btn-primary transition txt_pd-top3">Order Custom Fields</span></button>
             </h3>
+            <!-- <div [ngClass]="{'hidden': !showHeaderTextArea}">
+              <textarea [(ngModel)]="dealHeader" rows="4" cols="4" class="form-control"
+              maxlength="255"></textarea>
+            </div> -->
           </div>
         </div>
       </div>
@@ -292,6 +299,19 @@
     </div>
     <div *ngIf="isCustomFieldsOrderModelPopUp">
       <app-custom-fields-order-popup (closeEvent)="closeCustomFielsOrderModal($event)" [customFieldsList]="customFieldsList"></app-custom-fields-order-popup>
+    </div>
+  </div>
+  <div id="menu2" class="tab-pane fade pt-top">
+    <div>
+      <app-list-loader *ngIf="ngxloading"></app-list-loader>
+      <h4>Deal Form Description</h4>
+      <ng-container *ngIf="!ngxloading">
+      <textarea [(ngModel)]="dealHeader" rows="4" cols="4" class="form-control mb10"
+      maxlength="500"></textarea>
+      </ng-container>
+      <button type="button" class="button_blue bgcolor-unset pr0 px-9 pull-right mt10"
+      (click)="setDealHeader()"><span
+        class="btn btn-primary transition txt_pd-top3">Submit</span></button>
     </div>
   </div>
 </div>

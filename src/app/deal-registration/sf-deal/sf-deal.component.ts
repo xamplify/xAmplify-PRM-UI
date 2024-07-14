@@ -58,6 +58,7 @@ export class SfDealComponent implements OnInit {
   isInvalidPhoneNumber: boolean = false;
   isInvalidGeoLocation: boolean = false;
   searchableDropDownDtoForLookup: SearchableDropdownDto = new SearchableDropdownDto();
+  dealHeader: any;
 
 
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
@@ -140,6 +141,7 @@ export class SfDealComponent implements OnInit {
       this.removeLoader();
       if (result.statusCode == 200) {
         this.form = result.data;
+        this.dealHeader = result.data.dealFormHeader;
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
         for (let multiSelectObj of allMultiSelects) {
           if (multiSelectObj !== undefined && multiSelectObj.value !== undefined) {

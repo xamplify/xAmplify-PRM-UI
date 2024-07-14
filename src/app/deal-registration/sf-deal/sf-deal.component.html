@@ -24,6 +24,7 @@
             <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+              <div *ngIf="dealHeader?.length>1"><div class="alert alert-info">{{dealHeader}}</div></div>
               <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
                 <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="formFields"
                   [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
@@ -107,6 +108,7 @@
 
 <!--Added On 11/12/2023-->
 <ng-template #formFields let-columnInfo="columnInfo">
+  
   <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" *ngIf="!isLoading">
     <!-- <label *ngIf ="this.activeCRM.createdForActiveCRMType != 'HUBSPOT' && this.activeCRM.createdForActiveCRMType != 'PIPEDRIVE' && this.activeCRM.createdForActiveCRMType != 'CONNECTWISE' && this.activeCRM.createdForActiveCRMType != 'SALESFORCE'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0 control-label">{{columnInfo.labelName}} <span class="required" *ngIf="columnInfo.required">*</span>
       <span
