@@ -116,11 +116,7 @@ export class SocialCallbackComponent implements OnInit {
                                                 client_id = this.envService.microsoftDevClientId;
                                                 client_secret = this.envService.microsoftDevClientSecret;
                                             }
-                                        } else if (providerName === "oauthsso") {
-                                            client_id = "my-trusted-client";
-                                            client_secret = "";
                                         }
-
                                         const authorization = 'Basic' + btoa(client_id + ':');
                                         const body = 'client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials';
 
@@ -191,32 +187,34 @@ export class SocialCallbackComponent implements OnInit {
 
     }
 
-    loginAfterSSOCallbackInVanity(emailId: any, providerName: any) {        
-        this.refService.userName = emailId;        
-        let client_id: string;
-        let client_secret: string;
-        
-        if (providerName === "oauthsso") {
-          client_id = "my-trusted-client";
-          client_secret = "";
-        }
-    
-        if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined && this.refService.userName!=undefined) {
-          this.vanityUrlService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName, this.refService.userName).
-          subscribe(result => {
-            if (result.message === "success") {
-              this.loginSSOUser(this.refService.userName, client_id, client_secret);
-            } else {
-                this.authenticationService.showVanityURLError1 = true;
-                this.router.navigate(['/login']);
+    loginAfterSSOCallbackInVanity(emailId: any, providerName: any) {
+        if (emailId != undefined && emailId != "undefined" && emailId !== null && emailId !== "") {
+            this.refService.userName = emailId;
+            let client_id: string;
+            let client_secret: string;
+
+            if (providerName === "oauthsso") {
+                client_id = "my-trusted-client";
+                client_secret = "";
             }
-          },error=>{            
-          });
+
+            if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined && this.refService.userName != undefined) {
+                this.vanityUrlService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName, this.refService.userName).
+                    subscribe(result => {
+                        if (result.message === "success") {
+                            this.loginSSOUser(this.refService.userName, client_id, client_secret);
+                        } else {
+                            this.authenticationService.showVanityURLError1 = true;
+                            this.router.navigate(['/login']);
+                        }
+                    }, error => {
+                    });
+            }
+        } else {
+            this.authenticationService.showVanityURLError1 = true;
+            this.router.navigate(['/login']);
         }
-        else {
-          this.loginSSOUser(this.refService.userName, client_id, client_secret);
-        }
-      }
+    }
     
       loginSSOUser(userName: string, client_id: string, client_secret: string) {
        if(userName!=undefined && userName!="undefined"){
