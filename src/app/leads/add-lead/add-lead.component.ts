@@ -16,6 +16,8 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { LeadCustomFieldDto } from '../models/lead-custom-field';
+import { RegionNames } from 'app/common/models/region-names';
+import { TabHeadingDirective } from 'ngx-bootstrap';
 
 declare var swal, $, videojs: any;
 
@@ -23,7 +25,7 @@ declare var swal, $, videojs: any;
   selector: 'app-add-lead',
   templateUrl: './add-lead.component.html',
   styleUrls: ['./add-lead.component.css'],
-  providers: [HttpRequestLoader, CountryNames, Properties, DealsService, RegularExpressions],
+  providers: [HttpRequestLoader, CountryNames, Properties, DealsService, RegularExpressions,RegionNames],
 })
 export class AddLeadComponent implements OnInit {
   @Input() public leadId: any;
@@ -85,6 +87,8 @@ export class AddLeadComponent implements OnInit {
   isCampaignTicketTypeSelected: boolean = false;
   existingHalopsaLeadTicketTypeId: any;
   leadCustomFields = new Array<LeadCustomFieldDto>();
+  regionBasedCountries : any;
+  filteredCountries = ['Select Country'];
 
   industries = [
     "Select Industry", "Agriculture", "Apparel", "Banking", "Biotechnology", "Chemicals", "Communications", "Construction", "Consulting", "Education",
@@ -96,7 +100,7 @@ export class AddLeadComponent implements OnInit {
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, private leadsService: LeadsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService, public countryNames: CountryNames,
-    private dealsService: DealsService, public regularExpressions: RegularExpressions, private integrationService: IntegrationService) {
+    private dealsService: DealsService, public regularExpressions: RegularExpressions, private integrationService: IntegrationService, public regions: RegionNames) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -484,6 +488,12 @@ export class AddLeadComponent implements OnInit {
             }
             if (self.lead.industry == null || self.lead.industry == undefined || self.lead.industry == '') {
               self.lead.industry = this.industries[0];
+            }
+            if (self.lead.region == null || self.lead.region == undefined || self.lead.region == '') {
+              self.lead.region = "Select Region";
+              self.lead.country = 'Select Country';
+            } else {
+              this.onChangeRegion(self.lead.region);
             }
             self.existingHalopsaLeadTicketTypeId = self.lead.halopsaTicketTypeId;
             if (self.lead.createdForCompanyId > 0) {
@@ -966,6 +976,15 @@ export class AddLeadComponent implements OnInit {
       if (data.statusCode == 200) {
         this.leadCustomFields = data.data;
       }
+    });
+  }
+
+  onChangeRegion(event: any) {
+    let selectedRegion = event;
+    this.filteredCountries = ['Select Country'];
+    this.regionBasedCountries = this.countryNames.regionBasedCountries.filter(country => country.region === selectedRegion);
+    this.regionBasedCountries.forEach(country => {
+      this.filteredCountries.push(country.name);
     });
   }
 

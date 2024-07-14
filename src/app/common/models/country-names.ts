@@ -989,4 +989,748 @@ export class CountryNames {
         "dial_code": "+1 340",
         "code": "VI"
     }]
+
+
+    regionBasedCountries = [{
+        "name": "Andorra",
+        "region": "EMEA"
+    }, {
+        "name": "Afghanistan",
+        "region": "EMEA"
+    }, {
+        "name": "Antigua and Barbuda",
+        "region": "LATAM"
+    }, {
+        "name": "Anguilla",
+        "region": "LATAM"
+    },{
+        "name": "Albania",
+        "region": "EMEA"
+    },{
+        "name": "Armenia",
+        "region": "EMEA"
+    },{
+        "name": "Angola",
+        "region": "EMEA"
+    },{
+        "name": "Antarctica",
+        "region": "EMEA"
+    },{
+        "name": "Argentina",
+        "region": "LATAM"
+    },{
+        "name": "American Samoa",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Austria",
+        "region": "EMEA"
+    },{
+        "name": "Australia",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Aruba",
+        "region": "LATAM"
+    },{
+        "name": "Åland Islands",
+        "region": "EMEA"
+    },{
+        "name": "Algeria",
+        "region": "EMEA"
+    },{
+        "name": "Azerbaijan",
+        "region": "EMEA"
+    },{
+        "name": "Bosnia and Herzegovina",
+        "region": "EMEA"
+    },{
+        "name": "Barbados",
+        "region": "LATAM"
+    },{
+        "name": "Bangladesh",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Belgium",
+        "region": "EMEA"
+    },{
+        "name": "Burkina Faso",
+        "region": "EMEA"
+    },{
+        "name": "Bulgaria",
+        "region": "EMEA"
+    },{
+        "name": "Bahrain",
+        "region": "EMEA"
+    },{
+        "name": "Burundi",
+        "region": "EMEA"
+    },{
+        "name": "Benin",
+        "region": "EMEA"
+    },{
+        "name": "Saint Barthélemy",
+        "region": "EMEA"
+    },{
+        "name": "Bermuda",
+        "region": "LATAM"
+    },{
+        "name": "Brunei Darussalam",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Bolivia, Plurinational State of",
+        "region": "LATAM"
+    },{
+        "name": "Brazil",
+        "region": "LATAM"
+    },{
+        "name": "Bahamas",
+        "region": "LATAM"
+    },{
+        "name": "Bhutan",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Bouvet Island",
+        "region": "EMEA"
+    },{
+        "name": "Botswana",
+        "region": "EMEA"
+    },{
+        "name": "Belarus",
+        "region": "EMEA"
+    },{
+        "name": "Belize",
+        "region": "LATAM"
+    },{
+        "name": "British Indian Ocean Territory",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Cambodia",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Canada",
+        "region": "Noram(North America)"
+    },{
+        "name": "Cayman Islands",
+        "region": "LATAM"
+    },{
+        "name": "Cocos (Keeling) Islands",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Congo, the Democratic Republic of the",
+        "region": "EMEA"
+    },{
+        "name": "Central African Republic",
+        "region": "EMEA"
+    },{
+        "name": "Chad",
+        "region": "EMEA"
+    },{
+        "name": "Congo",
+        "region": "EMEA"
+    },{
+        "name": "Côte d'Ivoire",
+        "region": "EMEA"
+    },{
+        "name": "Cook Islands",
+        "region": "EMEA"
+    },{
+        "name": "Chile",
+        "region": "LATAM"
+    },{
+        "name": "Cameroon",
+        "region": "EMEA"
+    },{
+        "name": "China",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Comoros",
+        "region": "EMEA"
+    },{
+        "name": "Colombia",
+        "region": "LATAM"
+    },{
+        "name": "Costa Rica",
+        "region": "LATAM"
+    },{
+        "name": "Collectivity of Saint Martin",
+        "region": "EMEA"
+    },{
+        "name": "Cuba",
+        "region": "LATAM"
+    },{
+        "name": "Cabo Verde",
+        "region": "EMEA"
+    },{
+        "name": "Curaçao",
+        "region": "EMEA"
+    },{
+        "name": "Christmas Island",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Croatia",
+        "region": "EMEA"
+    },{
+        "name": "Cyprus",
+        "region": "EMEA"
+    },{
+        "name": "Czechia",
+        "region": "EMEA"
+    },{
+        "name": "Germany",
+        "region": "EMEA"
+    },{
+        "name": "Djibouti",
+        "region": "EMEA"
+    },{
+        "name": "Denmark",
+        "region": "EMEA"
+    },{
+        "name": "Dominica",
+        "region": "LATAM"
+    },{
+        "name": "Dominican Republic",
+        "region": "LATAM"
+    },{
+        "name": "Equatorial Guinea",
+        "region": "EMEA"
+    },{
+        "name": "Ecuador",
+        "region": "LATAM"
+    },{
+        "name": "Estonia",
+        "region": "EMEA"
+    },{
+        "name": "Egypt",
+        "region": "EMEA"
+    },{
+        "name": "Western Sahara",
+        "region": "EMEA"
+    },{
+        "name": "Eritrea",
+        "region": "EMEA"
+    },{
+        "name": "Spain",
+        "region": "EMEA"
+    },{
+        "name": "Ethiopia",
+        "region": "EMEA"
+    },{
+        "name": "Finland",
+        "region": "EMEA"
+    },{
+        "name": "Fiji",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Falkland Islands (Malvinas)",
+        "region": "LATAM"
+    },{
+        "name": "Faroe Islands",
+        "region": "EMEA"
+    },{
+        "name": "France",
+        "region": "EMEA"
+    },{
+        "name": "Gabon",
+        "region": "EMEA"
+    },{
+        "name": "United Kingdom of Great Britain and Northern Ireland",
+        "region": "EMEA"
+    },{
+        "name": "Grenada",
+        "region": "LATAM"
+    },{
+        "name": "Georgia",
+        "region": "EMEA"
+    },{
+        "name": "French Guiana",
+        "region": "EMEA"
+    },{
+        "name": "Guernsey",
+        "region": "EMEA"
+    },{
+        "name": "Ghana",
+        "region": "EMEA"
+    },{
+        "name": "Gibralta",
+        "region": "EMEA"
+    },{
+        "name": "Greenland",
+        "region": "EMEA"
+    },{
+        "name": "Gambia",
+        "region": "EMEA"
+    },{
+        "name": "Guinea",
+        "region": "EMEA"
+    },{
+        "name": "Guadeloupe",
+        "region": "EMEA"
+    },{
+        "name": "Equatorial Guinea",
+        "region": "EMEA"
+    },{
+        "name": "Greece",
+        "region": "EMEA"
+    },{
+        "name": "Guatemala",
+        "region": "LATAM"
+    },{
+        "name": "Guam",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Guinea-Bissau",
+        "region": "EMEA"
+    },{
+        "name": "Guyana",
+        "region": "LATAM"
+    },{
+        "name": "Hong Kong",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Heard Island and McDonald Islands",
+        "region": "EMEA"
+    },{
+        "name": "Holy See",
+        "region": "EMEA"
+    },{
+        "name": "Honduras",
+        "region": "LATAM"
+    },{
+        "name": "Haiti",
+        "region": "LATAM"
+    },{
+        "name": "Hungary",
+        "region": "EMEA"
+    },{
+        "name": "Indonesia",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Iceland",
+        "region": "EMEA"
+    },{
+        "name": "Ireland",
+        "region": "EMEA"
+    },{
+        "name": "Israel",
+        "region": "EMEA"
+    },{
+        "name": "Isle of Man",
+        "region": "EMEA"
+    },{
+        "name": "India",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Iraq",
+        "region": "EMEA"
+    },{
+        "name": "Iran, Islamic Republic of",
+        "region": "EMEA"
+    },{
+        "name": "Italy",
+        "region": "EMEA"
+    },{
+        "name": "Jersey",
+        "region": "EMEA"
+    },{
+        "name": "Jamaica",
+        "region": "LATAM"
+    },{
+        "name": "Jordan",
+        "region": "EMEA"
+    },{
+        "name": "Japan",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Kenya",
+        "region": "EMEA"
+    },{
+        "name": "Kyrgyzstan",
+        "region": "EMEA"
+    },{
+        "name": "Kiribati",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Saint Kitts and Nevis",
+        "region": "LATAM"
+    },{
+        "name": "Korea, Democratic People's Republic of",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Korea, Republic of",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Kuwait",
+        "region": "EMEA"
+    },{
+        "name": "Kazakhstan",
+        "region": "EMEA"
+    },{
+        "name": "Lao People's Democratic Republic",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Lebanon",
+        "region": "EMEA"
+    },{
+        "name": "Saint Lucia",
+        "region": "LATAM"
+    },{
+        "name": "Liechtenstein",
+        "region": "EMEA"
+    },{
+        "name": "Liberia",
+        "region": "EMEA"
+    },{
+        "name": "Lesotho",
+        "region": "EMEA"
+    },{
+        "name": "Lithuania",
+        "region": "EMEA"
+    },{
+        "name": "Luxembourg",
+        "region": "EMEA"
+    },{
+        "name": "Latvia",
+        "region": "EMEA"
+    },{
+        "name": "Libya",
+        "region": "EMEA"
+    },{
+        "name": "Morocco",
+        "region": "EMEA"
+    },{
+        "name": "Monaco",
+        "region": "EMEA"
+    },{
+        "name": "Micronesia, Federated States of",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Moldova, Republic of",
+        "region": "EMEA"
+    },{
+        "name": "Montenegro",
+        "region": "EMEA"
+    },{
+        "name": "Madagascar",
+        "region": "EMEA"
+    },{
+        "name": "Marshall Islands",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Macedonia, the former Yugoslav Republic of",
+        "region": "EMEA"
+    },{
+        "name": "Mali",
+        "region": "EMEA"
+    },{
+        "name": "Myanmar",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Mongolia",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Macao",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Martinique",
+        "region": "EMEA"
+    },{
+        "name": "Mauritania",
+        "region": "EMEA"
+    },{
+        "name": "Montserrat",
+        "region": "LATAM"
+    },{
+        "name": "Malta",
+        "region": "EMEA"
+    },{
+        "name": "Maldives",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Malawi",
+        "region": "EMEA"
+    },{
+        "name": "Mexico",
+        "region": "Noram(North America)"
+    },{
+        "name": "Malaysia",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Mozambique",
+        "region": "EMEA"
+    },{
+        "name": "Namibia",
+        "region": "EMEA"
+    },{
+        "name": "New Caledonia",
+        "region": "EMEA"
+    },{
+        "name": "Niger",
+        "region": "EMEA"
+    },{
+        "name": "Norfolk Island",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Nigeria",
+        "region": "EMEA"
+    },{
+        "name": "Nicaragua",
+        "region": "LATAM"
+    },{
+        "name": "Netherlands",
+        "region": "EMEA"
+    },{
+        "name": "Norway",
+        "region": "EMEA"
+    },{
+        "name": "Nepal",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Nauru",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Niue",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "New Zealand",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Northern Mariana Islands",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Oman",
+        "region": "EMEA"
+    },{
+        "name": "Panama",
+        "region": "LATAM"
+    },{
+        "name": "Peru",
+        "region": "LATAM"
+    },{
+        "name": "French Polynesia",
+        "region": "EMEA"
+    },{
+        "name": "Papua New Guinea",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Philippines",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Pakistan",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Poland",
+        "region": "EMEA"
+    },{
+        "name": "Saint Pierre and Miquelon",
+        "region": "EMEA"
+    },{
+        "name": "Pitcairn",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Puerto Rico",
+        "region": "LATAM"
+    },{
+        "name": "Palestine, State of",
+        "region": "EMEA"
+    },{
+        "name": "Portugal",
+        "region": "EMEA"
+    },{
+        "name": "Palau",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Paraguay",
+        "region": "LATAM"
+    },{
+        "name": "Qatar",
+        "region": "EMEA"
+    },{
+        "name": "Réunion",
+        "region": "EMEA"
+    },{
+        "name": "Romania",
+        "region": "EMEA"
+    },{
+        "name": "Serbia",
+        "region": "EMEA"
+    },{
+        "name": "Russian Federation",
+        "region": "EMEA"
+    },{
+        "name": "Rwanda",
+        "region": "EMEA"
+    },{
+        "name": "Saudi Arabia",
+        "region": "EMEA"
+    },{
+        "name": "Solomon Islands",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Seychelles",
+        "region": "EMEA"
+    },{
+        "name": "Sudan",
+        "region": "EMEA"
+    },{
+        "name": "Sweden",
+        "region": "EMEA"
+    },{
+        "name": "Singapore",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Saint Helena, Ascension and Tristan da Cunha",
+        "region": "EMEA"
+    },{
+        "name": "Slovenia",
+        "region": "EMEA"
+    },{
+        "name": "Slovakia",
+        "region": "EMEA"
+    },{
+        "name": "Sierra Leone",
+        "region": "EMEA"
+    },{
+        "name": "San Marino",
+        "region": "EMEA"
+    },{
+        "name": "Senegal",
+        "region": "EMEA"
+    },{
+        "name": "Somalia",
+        "region": "EMEA"
+    },{
+        "name": "Suriname",
+        "region": "LATAM"
+    },{
+        "name": "South Sudan",
+        "region": "EMEA"
+    },{
+        "name": "South Africa",
+        "region": "EMEA"
+    },{
+        "name": "Sao Tome and Principe",
+        "region": "EMEA"
+    },{
+        "name": "Samoa",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "South Georgia and the South Sandwich Islands",
+        "region": "LATAM"
+    },{
+        "name": "Sao Tome and Principe",
+        "region": "EMEA"
+    },{
+        "name": "El Salvador",
+        "region": "LATAM"
+    },{
+        "name": "Sint Maarten",
+        "region": "EMEA"
+    },{
+        "name": "Swaziland",
+        "region": "EMEA"
+    },{
+        "name": "Switzerland",
+        "region": "EMEA"
+    },{
+        "name": "Sri Lanka",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Turks and Caicos Islands",
+        "region": "LATAM"
+    },{
+        "name": "French Southern Territories",
+        "region": "EMEA"
+    },{
+        "name": "Togo",
+        "region": "EMEA"
+    },{
+        "name": "Thailand",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Tajikistan",
+        "region": "EMEA"
+    },{
+        "name": "Tokelau",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Timor-Leste",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Turkmenistan",
+        "region": "EMEA"
+    },{
+        "name": "Tunisia",
+        "region": "EMEA"
+    },{
+        "name": "Tonga",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Turkey",
+        "region": "EMEA"
+    },{
+        "name": "Trinidad and Tobago",
+        "region": "LATAM"
+    },{
+        "name": "Tuvalu",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Taiwan, Province of China",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Tanzania, United Republic of",
+        "region": "EMEA"
+    },{
+        "name": "Ukraine",
+        "region": "EMEA"
+    },{
+        "name": "Uganda",
+        "region": "EMEA"
+    },{
+        "name": "United States Minor Outlying Islands",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "United States of America",
+        "region": "Noram(North America)"
+    },{
+        "name": "United Arab Emirates",
+        "region": "EMEA"
+    },{
+        "name": "Uruguay",
+        "region": "LATAM"
+    },{
+        "name": "Uzbekistan",
+        "region": "EMEA"
+    },{
+        "name": "Saint Vincent and the Grenadines",
+        "region": "LATAM"
+    },{
+        "name": "Venezuela, Bolivarian Republic of",
+        "region": "LATAM"
+    },{
+        "name": "Virgin Islands, British",
+        "region": "LATAM"
+    },{
+        "name": "Virgin Islands, U.S.",
+        "region": "LATAM"
+    },{
+        "name": "Vietnam",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Vanuatu",
+        "region": "APJC(Asia Pacific)"
+    },{
+        "name": "Wallis and Futuna",
+        "region": "EMEA"
+    },{
+        "name": "Yemen",
+        "region": "EMEA"
+    },{
+        "name": "Mayotte",
+        "region": "EMEA"
+    },{
+        "name": "Zambia",
+        "region": "EMEA"
+    },{
+        "name": "Zimbabwe",
+        "region": "EMEA"
+    }]
 }
