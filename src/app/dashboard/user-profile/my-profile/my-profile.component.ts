@@ -3095,7 +3095,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	listSalesforceCustomFields() {
 		let self = this;
 		self.selectedCfIds = [];
-		self.integrationService.listSalesforceCustomFields(this.loggedInUserId)
+		self.integrationService.listSalesforceCustomFields(this.loggedInUserId, 'DEAL')
 			.subscribe(
 				data => {
 					this.ngxloading = false;
@@ -3137,7 +3137,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			self.selectedCustomFieldIds.push(id);
 		});
 
-		this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCfIds, type)
+		this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCfIds, type, 'DEAL')
 			.subscribe(
 				data => {
 					this.ngxloading = false;

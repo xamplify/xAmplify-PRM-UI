@@ -58,8 +58,8 @@ export class IntegrationService {
         return Observable.throw(error);
     }
     
-    listSalesforceCustomFields(userId: number) {
-        return this._http.get(this.authenticationService.REST_URL + "/salesforce/formfields/" + userId + "/all?access_token=" + this.authenticationService.access_token)
+    listSalesforceCustomFields(userId: number, type: any) {
+        return this._http.get(this.authenticationService.REST_URL + "/salesforce/" + type + "/formfields/" + userId + "/all?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -149,8 +149,8 @@ export class IntegrationService {
             .catch(this.handleError);
       }  
 
-    syncCustomForm(userId: number, request: any, type: any) {
-        return this._http.post(this.authenticationService.REST_URL + `external/form/sync/${userId}/${type}/v2?access_token=${this.authenticationService.access_token}`, request)
+    syncCustomForm(userId: number, request: any, type: any, opportunityType: any) {
+        return this._http.post(this.authenticationService.REST_URL + `external/${opportunityType}/form/sync/${userId}/${type}/v2?access_token=${this.authenticationService.access_token}`, request)
             .map(this.extractData)
             .catch(this.handleError);
     }
