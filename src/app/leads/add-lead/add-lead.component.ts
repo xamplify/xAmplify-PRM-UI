@@ -65,6 +65,7 @@ export class AddLeadComponent implements OnInit {
   hasSfPipeline = false;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   activeCRMDetails: any;
+  countryBasedStates : any;
 
   //XNFR-426
   selectedLead: Lead;
@@ -89,6 +90,8 @@ export class AddLeadComponent implements OnInit {
   leadCustomFields = new Array<LeadCustomFieldDto>();
   regionBasedCountries : any;
   filteredCountries = ['Select Country'];
+  filteredStates = ['Select State'];
+  states: any[];
 
   industries = [
     "Select Industry", "Agriculture", "Apparel", "Banking", "Biotechnology", "Chemicals", "Communications", "Construction", "Consulting", "Education",
@@ -494,6 +497,15 @@ export class AddLeadComponent implements OnInit {
               self.lead.country = 'Select Country';
             } else {
               this.onChangeRegion(self.lead.region);
+            }
+
+            if (self.lead.country == null || self.lead.country == 'Select Country' || self.lead.country == null) {
+              self.lead.state = 'Select State';
+            } else {
+              if (self.lead.state == null || self.lead.state == '') {
+                self.lead.state = 'Select State';
+              }
+              this.onChangeCountry(self.lead.country);
             }
             self.existingHalopsaLeadTicketTypeId = self.lead.halopsaTicketTypeId;
             if (self.lead.createdForCompanyId > 0) {
@@ -986,6 +998,24 @@ export class AddLeadComponent implements OnInit {
     this.regionBasedCountries.forEach(country => {
       this.filteredCountries.push(country.name);
     });
+  }
+
+  onChangeCountry(event: any) {
+    let selectedCountry = event;
+    this.filteredStates = ['Select State'];
+    this.countryBasedStates = this.countryNames.countriesAndStates.filter(country => country.name === selectedCountry);
+    this.countryBasedStates.forEach(countryStates => {
+      this.states = countryStates.states;
+      if (this.states.length > 0) {
+        this.states.sort((a, b) => a.name.localeCompare(b.name));
+        if (this.states.length > 0) {
+          this.states.forEach(state => {
+            this.filteredStates.push(state.name)
+          });
+        }
+      }
+    });
+    this.filteredCountries.sort();
   }
 
 }

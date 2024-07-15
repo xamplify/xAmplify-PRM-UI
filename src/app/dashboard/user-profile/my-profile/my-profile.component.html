@@ -324,14 +324,14 @@
                                         </li>
 
                                         <!-- Saml 2.0 SSO Settings-->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'saml2SSOsettings'}"
+                                        <!-- <li [ngClass]="{'active-tab': activeTabName == 'saml2SSOsettings'}"
                                             *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'saml2SSOsettings'}"
                                                 (click)="activateTab('saml2SSOsettings');clearCustomResponse()">{{properties.saml2SSOsettings}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
                                                     [ngTemplateOutletContext]="{'moduleName':'saml2SSOsettings'}"></ng-template>
                                             </a>
-                                        </li>
+                                        </li> -->
 
                                         <!-- Oauth SSO Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'oauthSSOConfiguration'}"
