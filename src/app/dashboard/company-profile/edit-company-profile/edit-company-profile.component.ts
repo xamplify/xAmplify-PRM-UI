@@ -1915,4 +1915,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.campaignAccess.paymentOverDue = event;
     }
 
+    setSSOValue(event:any){
+        this.campaignAccess.ssoEnabled = event;
+    }
+
 }
