@@ -130,6 +130,7 @@ export class Module {
     /***XBI-2313***/
     isInstanceNavigationLinksOptionDisplayed = false;
     isPaymentOverDueModalPopUpDisplayed = false;
+    ssoEnabled = false;
 
 
 }

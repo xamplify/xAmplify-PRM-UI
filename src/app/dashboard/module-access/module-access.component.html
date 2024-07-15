@@ -10,6 +10,9 @@
 				{{headerName}}
 			</li>
 		</ul>
+		<a class="close-circle mr5 mt5" [routerLink]="['/home/dashboard/admin-report']">
+			<i class="fa fa-times" aria-hidden="true"></i>
+		</a>
 	</div>
 	<div class="portlet light" *ngIf="!isDashboardStats">
 		<div class="portlet-body clearfix">
@@ -251,6 +254,12 @@
 									<td><input class="checkBox_shadow" type="checkbox"
 										[(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics"
 										[ngModelOptions]="{standalone: true}"></td>
+								</tr>
+								<tr>
+									<th scope="row">SSO Enabled</th>
+									<td class="pt0">
+										<app-custom-ui-switch [customSwitch]="campaignAccess.ssoEnabled" (customUiSwitchEventEmitter)="setSSOValue($event)"></app-custom-ui-switch>
+									</td>
 								</tr>
 							</ng-container>
 							<tr>

@@ -197,6 +197,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
 					//XNFR-276
 					this.menuItems = data.menuItems;
+					this.authenticationService.module.ssoEnabled = data.ssoEnabeld;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);

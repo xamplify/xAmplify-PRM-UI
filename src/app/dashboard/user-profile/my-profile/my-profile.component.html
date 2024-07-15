@@ -335,7 +335,7 @@
 
                                         <!-- Oauth SSO Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'oauthSSOConfiguration'}"
-                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing">
+                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing && authenticationService?.module?.ssoEnabled">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'oauthSSOConfiguration'}"
                                                 (click)="activateTab('oauthSSOConfiguration');clearCustomResponse()">{{properties.oauthSSOConfiguration}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
@@ -1438,7 +1438,7 @@
                                                     </div>
 
                                                     <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16"
-                                                        *ngIf="!httpRequestLoader.isLoading && iszohoDisplayed">
+                                                        *ngIf="!httpRequestLoader.isLoading">
                                                         <div
                                                             [className]="activeCRMDetails?.type === 'ZOHO'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
                                                             <div class="card-body" style="padding:10px;">
