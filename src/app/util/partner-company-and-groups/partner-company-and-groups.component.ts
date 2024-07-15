@@ -263,6 +263,10 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			this.teamMembersPagination.companyId = item.partnerCompanyId;
 			this.teamMembersPagination.partnershipId = item.partnershipId;
 			this.teamMembersPagination.campaignId = this.inputId;
+			let searchKey = this.pagination.searchKey;
+			if(searchKey.length>0){
+				this.teamMembersPagination.searchKey = searchKey;
+			}
 			this.getTeamMembersAndAdmins(this.teamMembersPagination);
 
 		}
