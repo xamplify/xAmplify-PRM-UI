@@ -44,4 +44,5 @@ export class Lead {
     halopsaTicketTypeId: any;
     title :string;
     industry : string = 'Select Industry';
+    region : string = 'Select Region';
 }
