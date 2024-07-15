@@ -1910,7 +1910,10 @@ p.pa-TextTwo {
   color: var(--div-bg-color) !important;
 }
 
-.pa-CardThree {
+.pa-CardThree,
+.pa-CardTwelve,
+p.pa-TextTwelv,
+p.pa-TextTwelv {
   color: var(--border-color) !important;
 }
 
@@ -1918,13 +1921,15 @@ p.pa-TextThree {
   color: var(--border-color) !important;
 }
 
-.pa-CardThree:hover {
+.pa-CardThree:hover,
+.pa-CardTwelve:hover {
   border: 1px solid var(--border-color) !important;
   color: var(--div-bg-color) !important;
   background: var(--border-color) !important;
 }
 
-.pa-CardThree:hover p {
+.pa-CardThree:hover p,
+.pa-CardTwelve:hover p {
   background: var(--border-color) !important;
   color: var(--div-bg-color) !important;
 }
@@ -2448,4 +2453,9 @@ button.button_blue.bgcolor-unset {
 .comment.author-comment p, .comment.user-comment p,
 button.btn.btn-secondary.unlink-btn.disable-btn-text-color.deactivate-btn{
   color: var(---text-color) !important;
+}
+.progress:hover{background-color: var(--div-bg-color)!important;}
+.panel-heading.panel-heading-custom.panel-bg {
+  border-top-left-radius: 1px !important;
+  border-top-right-radius: 1px !important;
 }

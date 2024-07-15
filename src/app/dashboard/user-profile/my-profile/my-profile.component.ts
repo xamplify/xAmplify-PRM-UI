@@ -1,8 +1,8 @@
+import { MY_PROFILE_MENU_CONSTANTS } from './../../../constants/my-profile-menu-constants';
 import { SweetAlertParameterDto } from './../../../common/models/sweet-alert-parameter-dto';
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, Renderer } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
 import { matchingPasswords, noWhiteSpaceValidator } from '../../../form-validator';
 import { UserService } from '../../../core/services/user.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
@@ -19,7 +19,6 @@ import { CountryNames } from '../../../common/models/country-names';
 import { VideoFileService } from '../../../videos/services/video-file.service'
 import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
 import { UtilService } from 'app/core/services/util.service';
-
 import { DealQuestions } from '../../../deal-registration/models/deal-questions';
 import { DealForms } from '../../../deal-registration/models/deal-forms';
 import { DealType } from '../../../deal-registration/models/deal-type';
@@ -27,22 +26,18 @@ import { DealRegistrationService } from '../../../deal-registration/services/dea
 import { DashboardService } from '../../dashboard.service';
 import { HubSpotService } from 'app/core/services/hubspot.service';
 import { GdprSetting } from '../../models/gdpr-setting';
-
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { Category } from '../../models/category';
 import { CategoryPreviewItem } from '../../models/category-preview-item';
-
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from '../../../core/models/sort-option';
 import { PagerService } from '../../../core/services/pager.service';
 import { ModulesDispalyType } from "app/dashboard/models/modules-dispaly-type.enum";
 import { TranslateService } from '@ngx-translate/core';
 import { VanityEmailTempalte } from 'app/email-template/models/vanity-email-template';
-
 import { SocialPagerService } from '../../../contacts/services/social-pager.service';
 import { PaginationComponent } from '../../../common/pagination/pagination.component';
-
 import { DragulaService } from 'ng2-dragula';
 import { Pipeline } from '../../models/pipeline';
 import { PipelineStage } from '../../models/pipeline-stage';
@@ -79,7 +74,7 @@ declare var swal, $, videojs: any, Papa: any;
 	providers: [FileUtil, User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
-
+	readonly MY_PROFILE_MENU_CONSTANTS = MY_PROFILE_MENU_CONSTANTS;
 	csvExcludeUsersFilePreview: boolean = false;
 	csvExcludeDomainsFilePreview: boolean = false;
 	isListLoader = false;
@@ -362,7 +357,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showSaml2SSOsettings: boolean = false;
 	showleadFieldSettings : boolean = false;
 	showOauthSSOConfiguration: boolean = false;
-
+	isCampaignAnalyticsOptionClicked = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -618,12 +613,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnInit() {
 		try {
-
 			this.searchWithModuleName = 19;
 			this.activeTabName = 'personalInfo';
 			this.activeTabHeader = this.properties.personalInfo;
 			this.customConstructorCall();
-
 			this.geoLocation();
 			this.showThemes();
 			this.getDefaultThemes()
@@ -669,6 +662,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 				else if (e.data == 'isMicrosoftAuth') {
 					localStorage.setItem('isMicrosoftAuth', 'yes');
+				}
+				else if (e.data == 'isZohoAuth') {
+					localStorage.setItem('isZohoAuth', 'yes');
 				}
 			}, false);
 			this.getModuleAccessByUser();
@@ -771,9 +767,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckMicrosoftAuth = localStorage.getItem('isMicrosoftAuth');
+		let tempCheckZohoAuth = localStorage.getItem('isZohoAuth');
 		localStorage.removeItem('isHubSpotAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isMicrosoftAuth');
+		localStorage.removeItem('isZohoAuth');
 
 		if (tempCheckHubSpotAuth == 'yes') {
 			this.referenceService.integrationCallBackStatus = true;
@@ -788,6 +786,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.router.navigate(['/home/dashboard/myprofile']);
 		}
 		else if (tempCheckMicrosoftAuth == 'yes') {
+			this.referenceService.integrationCallBackStatus = true;
+			localStorage.removeItem("userAlias");
+			localStorage.removeItem("currentModule");
+			this.router.navigate(['/home/dashboard/myprofile']);
+		}
+		else if (tempCheckZohoAuth == 'yes') {
 			this.referenceService.integrationCallBackStatus = true;
 			localStorage.removeItem("userAlias");
 			localStorage.removeItem("currentModule");
@@ -2060,7 +2064,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.addDomainsText;
-
 		}
 		/****XNFR-459****/
 		else if (this.activeTabName == this.properties.newsAndAnnouncements) {
@@ -2105,7 +2108,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 500);
 			this.activeTabHeader = this.properties.landingPages;
 		} else if (this.activeTabName == "masterLandingPages") {
-
 			this.ngxloading = true;
 			this.isMasterLandingPages = false;
 			let self = this;
@@ -2114,12 +2116,23 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.masterLandingPages;
-		}/*****XNFR-592 ******/
+		}
+		/*****XNFR-592 ******/
 		else if (this.activeTabName == "leadFieldSettings") {
 			this.activeTabHeader = this.properties.leadFieldSettings;
 			this.showleadFieldSettings = true;
 		}
-
+		/*****XNFR-609 ******/
+		else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CAMPAIGN_ANALYTICS_MENU_HEADER) {
+			this.ngxloading = true;
+			this.isCampaignAnalyticsOptionClicked = false;
+			let self = this;
+			setTimeout(() => {
+				self.isCampaignAnalyticsOptionClicked = true;
+				self.ngxloading = false;
+			}, 500);
+			this.activeTabHeader = this.MY_PROFILE_MENU_CONSTANTS.CAMPAIGN_ANALYTICS_MENU_HEADER;
+		}
 		this.referenceService.scrollSmoothToTop();
 	}
 
@@ -2243,7 +2256,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			let vanityUserId = JSON.parse(zohoCurrentUser)['userId'];
 			let url = null;
 			if (this.zohoRedirectURL) {
-				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + null;
+				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + 'configuration' + "/" + null;
 			} else {
 				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
 			}

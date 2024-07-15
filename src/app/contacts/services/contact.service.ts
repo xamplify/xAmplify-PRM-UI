@@ -895,4 +895,10 @@ export class ContactService {
 
     }
 
+    vanityConfigZoho() {
+        return this._http.get(this.authenticationService.REST_URL + 'zoho/' + localStorage.getItem('vanityUserId') + "/authorize")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 }

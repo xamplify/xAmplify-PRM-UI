@@ -82,6 +82,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (serverStoppedMessage != "") {
       this.setCustomeResponse("ERROR", serverStoppedMessage);
     }
+    
+    if (this.authenticationService.showVanityURLError1) {
+      this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
+    }
+
     "https://xamplify.co/"==envService.CLIENT_URL && !this.authenticationService.vanityURLEnabled ? this.signInText = "Sign In to Sandbox" :this.signInText = "Sign In";
   }
 
@@ -474,6 +479,9 @@ bgIMage2:any;
         client_id = this.envService.microsoftDevClientId;
         client_secret = this.envService.microsoftDevClientSecret;
       }
+    } else if (providerName === "oauthsso") {
+      client_id = "my-trusted-client";
+      client_secret = "";
     }
 
     if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined && this.referenceService.userName!=undefined) {

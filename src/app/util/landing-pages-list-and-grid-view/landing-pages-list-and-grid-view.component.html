@@ -557,14 +557,14 @@
                 aria-hidden="true"></i>
             <div class="clickicons"></div>
         </a>
-        <a class="Iconhover custom-grid-icon" *ngIf="landingPage.analyticsCount>0 && !isPartnerLandingPage"
+        <a class="Iconhover custom-grid-icon" *ngIf="landingPage.analyticsCount>0 && !(isPartnerLandingPage || isLandingPages)"
             data-rel="fancybox-button" (click)="goToLandingPageAnalytics(landingPage.id)" data-toggle="tooltip"
             data-placement="top" title="Analytics">
             <i class="fa fa-line-chart" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
                 aria-hidden="true"></i>
             <div class="clickicons"></div>
         </a>
-        <a class="Iconhover custom-grid-icon" *ngIf="landingPage.analyticsCount>0 && isPartnerLandingPage"
+        <a class="Iconhover custom-grid-icon" *ngIf="landingPage.analyticsCount>0 && (isPartnerLandingPage|| isLandingPages)"
             data-rel="fancybox-button" (click)="goToPartnerLandingPageAnalytics(landingPage.alias)"
             data-toggle="tooltip" data-placement="top" title="Analytics">
             <i class="fa fa-line-chart" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"

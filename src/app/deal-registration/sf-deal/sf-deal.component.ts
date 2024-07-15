@@ -7,6 +7,7 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { FadeAnimation } from 'app/core/animations/fade-animation';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 declare var $: any, swal: any;
 
@@ -58,9 +59,12 @@ export class SfDealComponent implements OnInit {
   isInvalidPhoneNumber: boolean = false;
   isInvalidGeoLocation: boolean = false;
   searchableDropDownDtoForLookup: SearchableDropdownDto = new SearchableDropdownDto();
+  dealHeader: any;
+  isOnlyPartner: boolean = false;
 
 
-  constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
+  constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
+    this.isOnlyPartner = this.authenticationService.isOnlyPartner();
   }
 
   addLoader() {
@@ -140,6 +144,7 @@ export class SfDealComponent implements OnInit {
       this.removeLoader();
       if (result.statusCode == 200) {
         this.form = result.data;
+        this.dealHeader = result.data.dealFormHeader;
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
         for (let multiSelectObj of allMultiSelects) {
           if (multiSelectObj !== undefined && multiSelectObj.value !== undefined) {

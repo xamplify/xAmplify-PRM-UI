@@ -49,7 +49,7 @@
   </div>
   <!-- End Of CSV Errors---->
 
-  <div *ngIf="customResponse.isVisible">
+  <div [@fadeInOut] *ngIf="customResponse.isVisible">
     <div
       [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success':'alert alert-danger'">
       <button (click)="customResponse.isVisible=false" type="button" class="close of-this-component" aria-label="Close">

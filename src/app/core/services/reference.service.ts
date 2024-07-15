@@ -374,6 +374,10 @@ export class ReferenceService {
     return this.regularExpressions.PHONE_NUMBER_PATTERN.test(phoneNumber);
   }
 
+  validateOauthUrlPattern(url: string) {
+    return this.regularExpressions.LINK_PATTERN_OAUTH.test(url);
+  }
+
   hideDiv(divId: string) {
     $("#" + divId).hide(600);
   }

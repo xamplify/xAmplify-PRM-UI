@@ -1462,4 +1462,256 @@ validateCopyCampaignName(){
         }
     }
 
+       /*****XNFR-609*****/
+    findDetailedAnalytics(campaign: any, index: number) {
+        campaign.isExpand = !campaign.isExpand;
+        if (campaign.isExpand) {
+            campaign.boxLoader = true;
+            campaign.dealLoader = true;
+            campaign.leadLoader = true;
+            campaign.softBounceLoader = true;
+            campaign.hardBounceLoader = true;
+            campaign.clickThroughRateLoader = true;
+            campaign.viewCountLoader = true;
+            campaign.totalAttendeesLoader = true;
+            campaign.attendeesLoader = true;
+            campaign.clickedUrlLoader = true;
+            campaign.deliverabilityAndOpenRateLoader = true;
+            campaign.unsubscribedLoader = true;
+            campaign.activeRecipientsLoader = true;
+            campaign.totalEmailsSentLoader = true;
+            campaign.totalRecipientsLoader = true;
+            this.getLeadOrDealAccess(campaign);
+        }
+    }
+
+    private findAllBoxAnalytics(campaign: any) {
+        this.getTotalRecipients(campaign);
+        this.getTotalEmailsSent(campaign);
+        this.getActiveRecipients(campaign);
+        this.getUnsubscribedCount(campaign);
+        this.getDeliverabilityAndOpenRatePercentage(campaign);
+        this.getClickedUrlCount(campaign);
+        this.getAttendeesCount(campaign);
+        this.getTotalAttendeesCount(campaign);
+        this.getClickThroughRateCount(campaign);
+        this.getViewsCount(campaign);
+        this.getHardBounceCount(campaign);
+        this.getSoftBounceCount(campaign);
+        this.getLeadsCount(campaign);
+        this.getDealsCount(campaign);
+    }
+
+    getLeadOrDealAccess(campaign:any){
+        this.campaignService.getLeadOrDealAccess(campaign.campaignId).subscribe(
+            response=>{
+                campaign.boxLoader = false;
+                campaign.showLeadAndDealCounts = response.data;
+                this.findAllBoxAnalytics(campaign);
+            },error=>{
+                campaign.showLeadAndDealCounts = false;
+                campaign.boxLoader = false;
+                this.findAllBoxAnalytics(campaign);
+            });
+    }
+
+    getDealsCount(campaign: any) {
+        if (campaign.showLeadAndDealCounts) {
+            campaign.dealError = false;
+            this.campaignService.getDealsCount(campaign).subscribe(
+                response => {
+                    campaign.dealLoader = false;
+                    campaign.dealError = false;
+                    campaign.dealCount = response.data;
+                }, error => {
+                    campaign.dealLoader = false;
+                    campaign.dealError = true;
+                });
+        }
+
+    }
+    getLeadsCount(campaign: any) {
+        if (campaign.showLeadAndDealCounts) {
+            campaign.leadError = false;
+            this.campaignService.getLeadCount(campaign).subscribe(
+                response => {
+                    campaign.leadLoader = false;
+                    campaign.leadError = false;
+                    campaign.leadCount = response.data;
+                }, error => {
+                    campaign.leadLoader = false;
+                    campaign.leadError = true;
+                });
+        }
+
+    }
+    getSoftBounceCount(campaign: any) {
+        campaign.softBounceError = false;
+        this.campaignService.getSoftBounceCount(campaign).subscribe(
+            response => {
+                campaign.softBounceLoader = false;
+                campaign.softBounceError = false;
+                campaign.softBounce = response.data;
+            }, error => {
+                campaign.softBounceLoader = false;
+                campaign.softBounceError = true;
+            });
+    }
+    getHardBounceCount(campaign: any) {
+        campaign.hardBounceError = false;
+        this.campaignService.getHardBounceCount(campaign).subscribe(
+            response => {
+                campaign.hardBounceLoader = false;
+                campaign.hardBounceError = false;
+                campaign.hardBounce = response.data;
+            }, error => {
+                campaign.hardBounceLoader = false;
+                campaign.hardBounceError = true;
+            });
+    }
+    getClickThroughRateCount(campaign: any) {
+        if (campaign.campaignType.indexOf('EVENT') < 0 && campaign.campaignType.indexOf('SOCIAL') < 0) {
+            campaign.clickThroughRateError = false;
+            this.campaignService.getClickThroughRate(campaign).subscribe(
+                response => {
+                    campaign.clickThroughRateLoader = false;
+                    campaign.clickThroughRateError = false;
+                    campaign.clickthroughRate = response.data;
+                }, error => {
+                    campaign.clickThroughRateLoader = false;
+                    campaign.clickThroughRateError = true;
+                });
+        }
+    }
+    getViewsCount(campaign: any) {
+        if (campaign.campaignType.indexOf('VIDEO') > -1) {
+            campaign.viewCountError = false;
+            this.campaignService.getViewsCount(campaign).subscribe(
+                response => {
+                    campaign.viewCountLoader = false;
+                    campaign.viewCountError = false;
+                    campaign.views = response.data;
+                }, error => {
+                    campaign.viewCountLoader = false;
+                    campaign.viewCountError = true;
+                });
+        }
+
+    }
+    getTotalAttendeesCount(campaign: any) {
+        if (campaign.campaignType.indexOf('EVENT') > -1) {
+            campaign.totalAttendeesError = false;
+            this.campaignService.getTotalAttendeesCount(campaign).subscribe(
+                response => {
+                    campaign.totalAttendeesLoader = false;
+                    campaign.totalAttendeesError = false;
+                    let totalAttendeesCount = response.data;
+                    if(totalAttendeesCount!=null){
+                        campaign.totalAttendeesCount = totalAttendeesCount;
+                    }else{
+                        campaign.totalAttendeesCount = 0;
+                    }
+                }, error => {
+                    campaign.totalAttendeesLoader = false;
+                    campaign.totalAttendeesError = true;
+                });
+        }
+    }
+
+    getAttendeesCount(campaign: any) {
+        if (campaign.campaignType.indexOf('EVENT') > -1) {
+            campaign.attendeesError = false;
+            this.campaignService.getAttendeesCount(campaign).subscribe(
+                response => {
+                    campaign.attendeesLoader = false;
+                    campaign.attendeesError = false;
+                    campaign.attendeesCount = response.data;
+                }, error => {
+                    campaign.attendeesLoader = false;
+                    campaign.attendeesError = true;
+                });
+        }
+
+    }
+    getClickedUrlCount(campaign: any) {
+        if (campaign.campaignType.indexOf('REGULAR') > -1 || campaign.campaignType.indexOf('VIDEO') > -1 || campaign.campaignType.indexOf('LANDINGPAGE') > -1) {
+            campaign.clickedUrlError = false;
+            this.campaignService.getClickedUrlCount(campaign).subscribe(
+                response => {
+                    campaign.clickedUrlLoader = false;
+                    campaign.clickedUrlError = false;
+                    campaign.emailClicked = response.data;
+                }, error => {
+                    campaign.clickedUrlLoader = false;
+                    campaign.clickedUrlError = true;
+                });
+        }
+
+    }
+   
+    getDeliverabilityAndOpenRatePercentage(campaign: any) {
+        campaign.deliverabilityAndOpenRateError = false;
+        this.campaignService.getDeliverabilityAndOpenRatePercentage(campaign).subscribe(
+            response => {
+                campaign.deliverabilityAndOpenRateLoader = false;
+                campaign.deliverabilityAndOpenRateError = false;
+                let dto = response.data;
+                campaign.delivered = dto.delivered;
+                campaign.openRate = dto.openRate;
+            }, error => {
+                campaign.deliverabilityAndOpenRateLoader = false;
+                campaign.deliverabilityAndOpenRateError = true;
+            });
+    }
+    getUnsubscribedCount(campaign: any) {
+        campaign.unsubscribedError = false;
+        this.campaignService.getUnsubscribedCount(campaign).subscribe(
+            response => {
+                campaign.unsubscribedLoader = false;
+                campaign.unsubscribedError = false;
+                campaign.unsubscribed = response.data;
+            }, error => {
+                campaign.unsubscribedLoader = false;
+                campaign.unsubscribedError = true;
+            });
+    }
+    getActiveRecipients(campaign: any) {
+        campaign.activeRecipientsError = false;
+        this.campaignService.getActiveRecipients(campaign).subscribe(
+            response => {
+                campaign.activeRecipientsLoader = false;
+                campaign.activeRecipientsError = false;
+                campaign.activeRecipients = response.data;
+            }, error => {
+                campaign.activeRecipientsLoader = false;
+                campaign.activeRecipientsError = true;
+            });
+    }
+    getTotalEmailsSent(campaign: any) {
+        campaign.totalEmailsSentError = false;
+        this.campaignService.getTotalEmailsSent(campaign).subscribe(
+            response => {
+                campaign.totalEmailsSentLoader = false;
+                campaign.totalEmailsSentError = false;
+                campaign.totalEmailsSent = response.data;
+            }, error => {
+                campaign.totalEmailsSentLoader = false;
+                campaign.totalEmailsSentError = true;
+            });
+    }
+
+    getTotalRecipients(campaign: any) {
+        campaign.totalRecipientsError = false;
+        this.campaignService.getTotalRecipients(campaign).subscribe(
+            response => {
+                campaign.totalRecipientsLoader = false;
+                campaign.totalRecipientsError = false;
+                campaign.totalRecipients = response.data;
+            }, error => {
+                campaign.totalRecipientsLoader = false;
+                campaign.totalRecipientsError = true;
+            });
+    }
+
+
  }

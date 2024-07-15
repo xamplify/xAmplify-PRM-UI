@@ -39,8 +39,8 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-warning" data-dismiss="modal" (click)="hideHaloPSAPreSettingsForm()" translate>CANCEL</button>
-            <button type="button" class="btn btn-primary" [disabled]="!clientId" [class.disabled]="!clientId" [disabled]="!clientSecret" [class.disabled]="!clientSecret" [disabled]="!instanceURL" [class.disabled]="!instanceURL"
-            (click)="submitHalopsaCredentials()">AUTHORIZE</button>
+            <button type="button" class="btn btn-primary" [class.disabled]="!clientId || !clientSecret || !instanceURL" 
+            (click)="(!clientId || !clientSecret || !instanceURL) ? '':submitHalopsaCredentials()">AUTHORIZE</button>
          </div>
       </div>
    </div>

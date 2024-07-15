@@ -327,7 +327,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
             return true;
         }
-
+        const hasRole = roles.includes(role) || roles.includes(this.roles.partnersRole) || roles.includes(this.roles.allRole);
+        if (hasRole) {
+            return true;
+        } 
+    
         else if(urlType==this.landingPagesUrl){
             let hasLandingPageAccess = false;
             let partnerLandingPageAccess = false;

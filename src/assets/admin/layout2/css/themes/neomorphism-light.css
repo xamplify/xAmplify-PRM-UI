@@ -189,7 +189,7 @@ h6 {
 .pagination > li > a:hover,
 .pagination > li > span:focus,
 .pagination > li > span:hover {
-  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  background: #0276FF !important;
   box-shadow: none !important;
   color:#fff !important;
 }
@@ -625,7 +625,8 @@ tr {
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff;
 }
 .search-bgcolor {
-  background-color: #2b3c46 !important;
+  background-color: #f0f5fa !important;
+  box-shadow: inset -5px -5px 10px #d6dadf, inset 5px 5px 10px #ffffff !important;
 }
 .profile-image-wrapper {
   background-color: #f0f5fa !important;
@@ -796,7 +797,7 @@ select {
   border: 1px solid rgb(1 180 255) !important;
 }
 .xamplify-dropdown-content {
-  background-color: #2b3c46 !important;
+  background-color: #f0f5fa !important;
 }
 .preview-edit-color,
 .wrap-asset-name {
@@ -895,8 +896,7 @@ span.ui-column-resize {
   border: 1px solid #ddd !important;
 }
 .circled-number:hover,
-.circled-number:hover,
-.xamplify-dropdown-option:hover {
+.circled-number:hover{
   background-color: #f0f5fa !important;
 }
 .actions-block i,
@@ -4360,8 +4360,13 @@ li.campaign-type-selected, button.btn.btn-primary.add-btn, .mix-filter li.contac
 button#save\&delete_button:hover, button#add_contact:hover, button#copyFrom_clipboard:hover, .btn-success:hover{background-color: #1C84FF !important;}
 a.title.padding_bottom.text-color.content-bg.m0, .col-md-6.col-lg-6.track-title.text-color.content-bg, a.title.padding_bottom.text-color.content-bg.row-space{box-shadow: none !important;}
 .dynamic_tbl_btn{margin-right: 6px !important;}
-button#cancel_button, button.button_blue.bgcolor-unset.p0.btn-transitions.mrgt1-2 {border-radius: 3px !important;}
+button#cancel_button, button.button_blue.bgcolor-unset.p0.btn-transitions.mrgt1-2 {border-radius: 7px !important;}
 /* button.button_blue.bgcolor-unset.pd_top0{border-radius: 5px !important;} */
 .mix-filter li.emailtemplate-selected{color:#fff;}
 /***** Sudha Sri(01-07-2024) *****/
 button#cancel_button {background-image: linear-gradient(89deg, #2b343a 0, #cbd8d7 100%) !important;}
+/***** Sudha Sri(10-07-2024) *****/
+.disable-btn-text-color{color: #fff;}
+a.button_blue.remove_bg{background: none !important;border: none !important;}
+span.btn.btn-primary.transition.copy_link{background: #0276FF !important;border: 1px solid #026deb !important;}
+.xamplify-dropdown-option:hover {background-color: #dee1e5 !important;}

@@ -409,5 +409,9 @@ startCompanyProfileLoader(){
   this.campaignAccess.paymentOverDue = event;
 }
 
+setSSOValue(event){
+  this.campaignAccess.ssoEnabled = event;
+}
+
 
 }

@@ -65,7 +65,7 @@ export class HalopsaauthenticationpopupComponent implements OnInit {
     this.instanceURL = this.instanceURL.trim();
     this.clientId = this.clientId.trim();
     this.clientSecret = this.clientSecret.trim();
-    this.loadingHalopsa = true;
+    this.loading = true;
         const obj = {
             userId: this.authenticationService.getUserId(),
             instanceUrl: this.instanceURL,
@@ -75,7 +75,7 @@ export class HalopsaauthenticationpopupComponent implements OnInit {
 
         this.dashBoardService.saveHalopsaCredentials(obj).subscribe(response =>
         {
-          this.loadingHalopsa = false; 
+          this.loading = false; 
             if (response.statusCode == 200)
             {
               $( "#haloPSAPreSettingsForm" ).modal( 'hide' );
@@ -87,7 +87,7 @@ export class HalopsaauthenticationpopupComponent implements OnInit {
             }
         }, error =>
         {
-        this.loadingHalopsa = false;
+        this.loading = false;
         this.templateErrorHalopsa = error;
         }, () => {}
         )

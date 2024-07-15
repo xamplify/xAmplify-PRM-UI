@@ -58,13 +58,17 @@
               
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0" *ngIf="showTicketTypesDropdown">
                   <div class="form-group" [attr.class]="halopsaTicketTypeId" style="margin-bottom: 20px" *ngIf="true">
-                    <label class="control-label">Ticket Types<font> <b style="color: #f55d7a !important">*</b>
+                    <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
+                      ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
+                      ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}<font> <b style="color: #f55d7a !important">*</b>
                       </font>
                     </label>
                     <select class="form-control" [(ngModel)]="lead.halopsaTicketTypeId" [ngModelOptions]="{standalone: true}"
                       placeholder="halopsaTicketTypeId" id="halopsaTicketTypeId" [disabled]="preview || isCampaignTicketTypeSelected"
                       (ngModelChange)="onChangeTicketType()">
-                      <option [value]="0">Select Ticket Type</option>
+                      <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
+                        ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
+                        ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}</option>
                       <option *ngFor="let ticketType of halopsaTicketTypes" [value]="ticketType.id">
                         {{ticketType.name}}</option>
                     </select>
@@ -599,12 +603,14 @@
         placeholder="{{leadCustomField.placeholder}}" [ngModelOptions]="{standalone: true}" id="city"
         [disabled]="preview" />
     </div>
-    <div class="form-group" *ngIf="leadCustomField.labelId =='state'" [attr.class]="leadState"
-      style="margin-bottom: 20px">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='state'" [attr.class]="leadState" style="margin-bottom: 20px">
       <label class="control-label">{{leadCustomField.displayName}}</label>
-      <input type="text" maxlength="100" class="form-control" name="lead state" [(ngModel)]=" lead.state"
-        [ngModelOptions]="{standalone: true}" id="state" placeholder="{{leadCustomField.placeholder}}"
-        [disabled]="preview" />
+      <span *ngIf="leadCustomField.placeholder?.length > 0">({{leadCustomField.placeholder}})
+      </span>
+      <select class="form-control" [(ngModel)]="lead.state" [ngModelOptions]="{standalone: true}" id="state"
+        [disabled]="preview">
+        <option *ngFor="let state of filteredStates" [value]="state">{{state}}</option>
+      </select>
     </div>
     <div class="form-group" *ngIf="leadCustomField.labelId =='postalCode'" [attr.class]="leadPostalCode"
       style="margin-bottom: 20px">
@@ -614,14 +620,24 @@
         [ngModelOptions]="{standalone: true}" id="postalCode" [disabled]="preview" />
     </div>
 
+    <div class="form-group" *ngIf="leadCustomField.labelId =='region'" [attr.class]="region" style="margin-bottom: 20px">
+      <label class="control-label">{{leadCustomField.displayName}}</label>
+      <span *ngIf="leadCustomField.placeholder?.length > 0">({{leadCustomField.placeholder}})
+      </span>
+      <select class="form-control" [(ngModel)]="lead.region" [ngModelOptions]="{standalone: true}" id="region"
+        [disabled]="preview" (ngModelChange)="onChangeRegion($event)">
+        <option *ngFor="let region of regions.regions" [value]="region.name">{{region.name}}</option>
+      </select>
+    </div>
+
     <div class="form-group" *ngIf="leadCustomField.labelId =='country'" [attr.class]="country"
       style="margin-bottom: 20px">
       <label class="control-label">{{leadCustomField.displayName}}</label>
       <span *ngIf="leadCustomField.placeholder?.length > 0">({{leadCustomField.placeholder}})
       </span>
       <select class="form-control" [(ngModel)]="lead.country" [ngModelOptions]="{standalone: true}" id="country"
-        [disabled]="preview">
-        <option *ngFor="let country of countryNames.countries" [value]="country">{{country}}</option>
+        [disabled]="preview"  (ngModelChange)="onChangeCountry($event)">
+        <option *ngFor="let country of filteredCountries" [value]="country">{{country}}</option>
       </select>
     </div>
   </div>

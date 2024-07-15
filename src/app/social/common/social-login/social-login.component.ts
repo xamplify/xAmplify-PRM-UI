@@ -72,7 +72,17 @@ export class SocialLoginComponent implements OnInit {
 				);
 		} else if (providerName == 'zoho' && this.isLoggedInVanityUrl == 'true') {
 			let currentModule = localStorage.getItem('vanityCurrentModule');
-			this.contactService.checkingZohoVanityAuthentication(currentModule)
+			if (currentModule == 'configuration') {
+				this.contactService.vanityConfigZoho().subscribe(data => {
+					let response = data;
+					if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+						window.location.href = "" + response.data.redirectUrl;
+					}
+				}, (error: any) => {
+					this.xtremandLogger.error(error);
+				}, () => this.xtremandLogger.log("Zoho Configuration Checking done"));
+			} else {
+				this.contactService.checkingZohoVanityAuthentication(currentModule)
 				.subscribe(
 					response => {
 						this.storeLogin = response.data;
@@ -86,6 +96,7 @@ export class SocialLoginComponent implements OnInit {
 					},
 					() => this.xtremandLogger.log("addContactComponent salesforceContacts() login finished.")
 				);
+			}
 		} else if (providerName == 'hubspot' && this.isLoggedInVanityUrl == 'true') {
 			this.contactService.vanityConfigHubSpot().subscribe(data => {
 				let response = data;

@@ -8,7 +8,7 @@ export class Lead {
     website: string;
     street: string;
     city: string;
-    state: string;
+    state = 'Select State';
     country = 'Select Country';
     postalCode: any;
     campaignId: number;
@@ -44,4 +44,5 @@ export class Lead {
     halopsaTicketTypeId: any;
     title :string;
     industry : string = 'Select Industry';
+    region : string = 'Select Region';
 }

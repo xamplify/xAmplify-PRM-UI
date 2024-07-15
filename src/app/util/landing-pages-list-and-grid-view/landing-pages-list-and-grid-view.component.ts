@@ -73,6 +73,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   selectedLandingPageId:any;
   landingPageSharedDetails:LandingPageShareDto = new LandingPageShareDto();
   @Output() viewAnalytics = new EventEmitter();
+  @Output() viewVendorPageAnalytics = new EventEmitter();
   @Input() isMasterLandingPages =  false;
   @Output() isFormAnalytics = new EventEmitter();
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
@@ -409,7 +410,11 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
      
   }
   goToPartnerLandingPageAnalytics(alias: string) {
-      this.router.navigate(['/home/pages/partner/' + alias + '/analytics']);
+    if(this.isLandingPages){
+        this.viewVendorPageAnalytics.emit(alias);
+    }else{
+        this.router.navigate(['/home/pages/partner/' + alias + '/analytics']);
+    }
   }
 
 

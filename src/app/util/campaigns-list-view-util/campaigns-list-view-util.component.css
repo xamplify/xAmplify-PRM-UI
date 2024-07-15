@@ -76,3 +76,6 @@
   .d-flex{
 	display: flex!important;
   }
+  .h-25{
+	height: 25px;
+  }

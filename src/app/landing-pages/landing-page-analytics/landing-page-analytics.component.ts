@@ -51,7 +51,10 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     routerLink = "";
     pageLoader = false;
     @Input() vendorJourney = false;
+    @Input() vendorPages = false;
     @Input() vendorLandingPageId;
+    @Input() vendorPageAlias;
+    
     constructor(public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public pagerService: PagerService, public authenticationService: AuthenticationService, 
         public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService,private campaignService:CampaignService) {
@@ -68,6 +71,10 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
         let categoryId = this.route.snapshot.params['categoryId'];
         if(this.vendorJourney){
             this.landingPageId = this.vendorLandingPageId;
+        }
+        if(this.vendorPages){
+            this.landingPageAlias = this.vendorPageAlias;
+            this.landingPageAnalyticsPostDto.vendorPages = true;
         }
         if(categoryId>0){
             this.routerLink = this.managePagesRouterLink+"/"+categoryId;
@@ -188,6 +195,9 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     listAnalytics(pagination:Pagination){
         this.referenceService.loading( pagination.loader, true );
         pagination.partnerId = this.partnerId;
+        if(this.vendorPages){
+            pagination.vendorPages = true;
+        }
         this.landingPageService.listAnalytics( pagination,this.countryCode ).subscribe(
             ( response: any ) => {
                 this.statusCode = response.statusCode;

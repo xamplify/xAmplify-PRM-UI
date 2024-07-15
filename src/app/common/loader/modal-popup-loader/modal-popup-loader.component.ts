@@ -26,6 +26,8 @@ updatedHeight:string="";
 			this.updatedHeight = "150px";
 		}else if(this.height=="935"){
 			this.updatedHeight = "935px";
+		}else if(this.height=="200"){
+			this.updatedHeight = "200px";
 		}else{
 			this.updatedHeight = "220px";
 		}

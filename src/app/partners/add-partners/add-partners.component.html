@@ -687,7 +687,7 @@
                     <div class="col-sm-12" style="padding-left: 0px">
                         <h4 class="copy_text_mrgn" style="margin-left: 30px;" translate>Copy from text --
                             paste below</h4>
-                        <div class="col-xs-12 col-sm-9 copy_text_select_dropdown">
+                        <div class="col-xs-12 col-sm-12 copy_text_select_dropdown">
                             <div class="col-xs-6" style="margin-bottom: 10px">
                                 <select class="opts form-control">
                                     <option selected value="DEFAULT" translate>Delimiter
@@ -705,10 +705,10 @@
                             <div class="col-xs-12">
                                 <textarea id="copyFromclipTextArea" class="textareaNumber copy_text_area_border"
                                     title="Calendar View" [(ngModel)]="clipboardTextareaText"
-                                    title="please fill out this field"
+                                    title="please fill out this field" data-toggle="tooltip"
                                     placeholder="FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone&#10;FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone &#10;FirstName,LastName,Account Name,Account Owner,Account Sub Type,Company,Company Domain,Jobtitle,Email,Website,Territory,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
                                     [ngModelOptions]="{standalone: true}"
-                                    style="height: 150px;font-size: 11px;line-height: 1.4;min-width: 100%;max-width: 200%;width: 140%;"
+                                    style="height: 150px;font-size: 11px;line-height: 1.4;width: 100%;"
                                     required="required">
                                         </textarea>
                             </div>

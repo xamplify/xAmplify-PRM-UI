@@ -171,7 +171,6 @@
                                             </a>
 
                                         </li>
-
                                         <!---Themes-->
                                         <li *ngIf="customSkinSettingOption &&  roleNames !='Partner' && authenticationService.module.isAnyAdminOrSupervisor"
                                             [ngClass]="{'active-tab': activeTabName == 'customskin'}">
@@ -181,7 +180,15 @@
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
                                                     [ngTemplateOutletContext]="{'moduleName':'customskin'}"></ng-template>
                                             </a>
-
+                                        </li>
+                                        <!--XNFR-609-->
+                                         <!---Campaign Analytics-->
+                                         <li *ngIf="(!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember) && (authenticationService?.module?.isAnyAdminOrSupervisor || authenticationService?.module?.isCampaign)" [ngClass]="{'active-tab': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"
+                                                (click)="activateTab(MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER);clearCustomResponse()">
+                                                {{MY_PROFILE_MENU_CONSTANTS.CAMPAIGN_ANALYTICS_MENU_HEADER}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"></ng-template>
+                                            </a>
                                         </li>
                                         <!--XNFR-386--->
                                         <!--Custom Login Screen Settings-->
@@ -238,7 +245,6 @@
                                                         [ngTemplateOutletContext]="{'moduleName':'dealPipelines'}"></ng-template>
                                                 </a>
                                             </li>
-
                                             <!-- XNFR-426 -->
                                             <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}"
                                                 *ngIf="authenticationService?.module?.isAdmin && (!authenticationService?.module?.isMarketingCompany || (!authenticationService?.module?.isMarketing && !authenticationService?.module?.isMarketingTeamMember)) && !authenticationService.isOnlyPartner()">
@@ -259,7 +265,6 @@
                                                         [ngTemplateOutletContext]="{'moduleName':'leadFieldSettings'}"></ng-template>
                                                 </a>
                                             </li>
-
                                         </ng-container>
                                     </ul>
                                     <!--------------Developers----------------------->
@@ -319,18 +324,18 @@
                                         </li>
 
                                         <!-- Saml 2.0 SSO Settings-->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'saml2SSOsettings'}"
+                                        <!-- <li [ngClass]="{'active-tab': activeTabName == 'saml2SSOsettings'}"
                                             *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'saml2SSOsettings'}"
                                                 (click)="activateTab('saml2SSOsettings');clearCustomResponse()">{{properties.saml2SSOsettings}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
                                                     [ngTemplateOutletContext]="{'moduleName':'saml2SSOsettings'}"></ng-template>
                                             </a>
-                                        </li>
+                                        </li> -->
 
                                         <!-- Oauth SSO Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'oauthSSOConfiguration'}"
-                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing">
+                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing && authenticationService?.module?.ssoEnabled">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'oauthSSOConfiguration'}"
                                                 (click)="activateTab('oauthSSOConfiguration');clearCustomResponse()">{{properties.oauthSSOConfiguration}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
@@ -1433,7 +1438,7 @@
                                                     </div>
 
                                                     <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16"
-                                                        *ngIf="!httpRequestLoader.isLoading && iszohoDisplayed">
+                                                        *ngIf="!httpRequestLoader.isLoading">
                                                         <div
                                                             [className]="activeCRMDetails?.type === 'ZOHO'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
                                                             <div class="card-body" style="padding:10px;">
@@ -3350,6 +3355,8 @@
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'landingPages'}">
                                             <app-vendor-journey *ngIf="isLandingPages"
                                                 [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                                (goBackToMyProfile)="goBackToMyProfile()"
                                                 [moduleType]="properties.landingPages"></app-vendor-journey>
                                         </div>
                                         <!--Master Landing Pages -->
@@ -3371,6 +3378,12 @@
                                             (editLoginTemplate)="openBeeEditorForLoginTemplate($event)"
                                             *ngIf="isCustomLoginScreenSettingsOptionClicked" class="tab-pane"
                                             [ngClass]="{'active': activeTabName == properties?.customLoginScreen}"></app-custom-login-screen-settings>
+
+                                        <!--XNFR-609-->
+                                        <app-modal-popup-loader *ngIf="ngxloading"></app-modal-popup-loader>
+                                            <app-campaign-analytics-settings *ngIf="isCampaignAnalyticsOptionClicked" class="tab-pane"
+                                                [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}">
+                                        </app-campaign-analytics-settings>
                                     </div>
                                 </div>
                             </div>

@@ -61,7 +61,7 @@ export class SelectDropdownComponent implements OnInit {
     if (inputElement == null || inputElement == undefined) {
       this.filteredDropDownItems = this.dropDownItems;
     } else {
-      let value = inputElement.value;
+      let value = this.referenceService.getTrimmedData(inputElement.value);
       if (value != undefined && value != null && value != "") {
         this.filteredDropDownItems = this.dropDownItems.filter(
           item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
