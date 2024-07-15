@@ -927,10 +927,11 @@ i.IconCustomization:hover{
 .bootstrap-switch .bootstrap-switch-container,
 .bootstrap-switch .bootstrap-switch-label {
   border-color: rgba(255, 255, 255, 0.1) !important;
-  background-color: rgb(16 18 27 / 10%) !important;
+  background-color: #4a4653c7 !important;
+  border-radius: 4px !important;
   backdrop-filter: blur(5px);
 }
-.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info,
+/* .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info,
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default,
@@ -945,7 +946,7 @@ span.bootstrap-switch-label {
   color: #fff !important;
   background: rgb(146 151 179 / 9%) !important;
   backdrop-filter: blur(5px);
-}
+} */
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
   color: #fff;
@@ -1554,7 +1555,7 @@ a.dropdown-toggle.circlebg-none-v:hover {
 }
 /* 04-07-2024 */
 .dark-beige {
-  background: #2a404d !important;
+  background: transparent !important;
 }
 
 /* 10-07-2023 */
@@ -2031,7 +2032,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 thead > tr {
   background-color: rgba(255, 255, 255, 0.1)!important;
   border-radius: 10px 10px 0px 0px !important;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px); */
 }
 tbody {
   background: rgba(16 18 27 / 40%) !important;
@@ -2933,11 +2934,11 @@ border:0px!important;
   background: #2b2f33!important;
 }
 /* manikanta */
-.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning {
+/* .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning {
   color: #fff !important;
   background-color: rgb(146 151 179 / 9%) !important;
   backdrop-filter: blur(5px);
-}
+} */
 button.btn.custom {
   background: #0276FF !important;
 }
@@ -3910,11 +3911,11 @@ button.button.bgcolor-unset{
 .page-sidebar .page-sidebar-menu>li>a{
   border-bottom: 1px solid hsla(0, 0%, 100%, .3) !important;
 }
-thead>tr {
+/* thead>tr {
   background-color: hsla(0, 0%, 100%, .1) !important;
   box-shadow: none !important;
   border-radius: 10px 10px 0 0 !important;
-}
+} */
 button.fa.fa-th-list.btn.btn-xs.l-g-view.mr_4,
 button.fa.fa-th-large.btn.btn-xs.l-g-view.mr_4{
   color: white !important;
@@ -4021,4 +4022,18 @@ div#add-form-designs {
 }
 .integration-ribbon{
   left:-5px!important;
+}
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success {
+  color: #fff !important;
+  /* background: #5cb85c !important; */
+  background: #006FFC !important;
+}
+.ribbon1 {
+  z-index: 1;
+}
+.btn-group.open .dropdown-toggle {
+  box-shadow: none;
+}
+.l-g-view.FliterAlignment {
+  backdrop-filter: none;
 }
