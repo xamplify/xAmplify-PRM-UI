@@ -10,6 +10,9 @@
 					aria-hidden="true"></i></li>
 			<li><i class="fa fa-building-o" aria-hidden="true"></i>Company Profile</li>
 		</ul>
+		<a *ngIf="authenticationService.isSuperAdmin()" class="close-circle mr5 mt5" [routerLink]="['/home/dashboard/admin-report']">
+			<i class="fa fa-times" aria-hidden="true"></i>
+		</a>
 	</div>
 
 	<div class="" id="company-profile-div">
