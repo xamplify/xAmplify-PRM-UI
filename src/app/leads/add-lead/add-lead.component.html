@@ -60,7 +60,7 @@
                   <div class="form-group" [attr.class]="halopsaTicketTypeId" style="margin-bottom: 20px" *ngIf="true">
                     <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
                       ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
-                      ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}<font> <b style="color: #f55d7a !important">*</b>
+                      ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}<font> <b style="color: #f55d7a !important">*</b>
                       </font>
                     </label>
                     <select class="form-control" [(ngModel)]="lead.halopsaTicketTypeId" [ngModelOptions]="{standalone: true}"
@@ -68,7 +68,7 @@
                       (ngModelChange)="onChangeTicketType()">
                       <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
                         ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
-                        ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}</option>
+                        ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}</option>
                       <option *ngFor="let ticketType of halopsaTicketTypes" [value]="ticketType.id">
                         {{ticketType.name}}</option>
                     </select>
