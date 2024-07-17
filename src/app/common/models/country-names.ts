@@ -1020,14 +1020,14 @@ export class CountryNames {
         "region": "LATAM"
     },{
         "name": "American Samoa",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Austria",
         "region": "EMEA"
 
     },{
         "name": "Australia",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Aruba",
         "region": "LATAM"
@@ -1048,7 +1048,7 @@ export class CountryNames {
         "region": "LATAM"
     },{
         "name": "Bangladesh",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Belgium",
         "region": "EMEA"
@@ -1075,7 +1075,7 @@ export class CountryNames {
         "region": "LATAM"
     },{
         "name": "Brunei Darussalam",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Bolivia, Plurinational State of",
         "region": "LATAM"
@@ -1087,7 +1087,7 @@ export class CountryNames {
         "region": "LATAM"
     },{
         "name": "Bhutan",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Bouvet Island",
         "region": "EMEA"
@@ -1102,10 +1102,10 @@ export class CountryNames {
         "region": "LATAM"
     },{
         "name": "British Indian Ocean Territory",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Cambodia",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Canada",
         "region": "Noram(North America)"
@@ -1114,7 +1114,7 @@ export class CountryNames {
         "region": "LATAM"
     },{
         "name": "Cocos (Keeling) Islands",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Congo, the Democratic Republic of the",
         "region": "EMEA"
@@ -1141,7 +1141,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "China",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Comoros",
         "region": "EMEA"
@@ -1165,7 +1165,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Christmas Island",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Croatia",
         "region": "EMEA"
@@ -1219,7 +1219,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Fiji",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Falkland Islands (Malvinas)",
         "region": "LATAM"
@@ -1276,7 +1276,7 @@ export class CountryNames {
         "region": "LATAM"
     },{
         "name": "Guam",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Guinea-Bissau",
         "region": "EMEA"
@@ -1285,7 +1285,7 @@ export class CountryNames {
         "region": "LATAM"
     },{
         "name": "Hong Kong",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Heard Island and McDonald Islands",
         "region": "EMEA"
@@ -1303,7 +1303,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Indonesia",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Iceland",
         "region": "EMEA"
@@ -1318,7 +1318,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "India",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Iraq",
         "region": "EMEA"
@@ -1339,7 +1339,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Japan",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Kenya",
         "region": "EMEA"
@@ -1348,16 +1348,16 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Kiribati",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Saint Kitts and Nevis",
         "region": "LATAM"
     },{
         "name": "Korea, Democratic People's Republic of",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Korea, Republic of",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Kuwait",
         "region": "EMEA"
@@ -1366,7 +1366,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Lao People's Democratic Republic",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Lebanon",
         "region": "EMEA"
@@ -1402,7 +1402,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Micronesia, Federated States of",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Moldova, Republic of",
         "region": "EMEA"
@@ -1414,7 +1414,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Marshall Islands",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Macedonia, the former Yugoslav Republic of",
         "region": "EMEA"
@@ -1423,13 +1423,13 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Myanmar",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Mongolia",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Macao",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Martinique",
         "region": "EMEA"
@@ -1444,7 +1444,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Maldives",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Malawi",
         "region": "EMEA"
@@ -1453,7 +1453,7 @@ export class CountryNames {
         "region": "Noram(North America)"
     },{
         "name": "Malaysia",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Mozambique",
         "region": "EMEA"
@@ -1468,7 +1468,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Norfolk Island",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Nigeria",
         "region": "EMEA"
@@ -1483,19 +1483,19 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Nepal",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Nauru",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Niue",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "New Zealand",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Northern Mariana Islands",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Oman",
         "region": "EMEA"
@@ -1510,13 +1510,13 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Papua New Guinea",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Philippines",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Pakistan",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Poland",
         "region": "EMEA"
@@ -1525,7 +1525,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Pitcairn",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Puerto Rico",
         "region": "LATAM"
@@ -1537,7 +1537,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Palau",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Paraguay",
         "region": "LATAM"
@@ -1564,7 +1564,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Solomon Islands",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Seychelles",
         "region": "EMEA"
@@ -1576,7 +1576,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Singapore",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Saint Helena, Ascension and Tristan da Cunha",
         "region": "EMEA"
@@ -1612,7 +1612,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Samoa",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "South Georgia and the South Sandwich Islands",
         "region": "LATAM"
@@ -1633,7 +1633,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Sri Lanka",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Turks and Caicos Islands",
         "region": "LATAM"
@@ -1645,16 +1645,16 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Thailand",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Tajikistan",
         "region": "EMEA"
     },{
         "name": "Tokelau",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Timor-Leste",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Turkmenistan",
         "region": "EMEA"
@@ -1663,7 +1663,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "Tonga",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Turkey",
         "region": "EMEA"
@@ -1672,10 +1672,10 @@ export class CountryNames {
         "region": "LATAM"
     },{
         "name": "Tuvalu",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Taiwan, Province of China",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Tanzania, United Republic of",
         "region": "EMEA"
@@ -1687,7 +1687,7 @@ export class CountryNames {
         "region": "EMEA"
     },{
         "name": "United States Minor Outlying Islands",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "United States of America",
         "region": "Noram(North America)"
@@ -1714,10 +1714,10 @@ export class CountryNames {
         "region": "LATAM"
     },{
         "name": "Vietnam",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Vanuatu",
-        "region": "APJC(Asia Pacific)"
+        "region": "APAC(Asia Pacific)"
     },{
         "name": "Wallis and Futuna",
         "region": "EMEA"
@@ -21715,7 +21715,7 @@ export class CountryNames {
         {
           "code2": "US",
           "code3": "USA",
-          "name": "United States",
+          "name": "United States of America",
           "capital": "Washington, D.C.",
           "region": "Americas",
           "subregion": "Northern America",

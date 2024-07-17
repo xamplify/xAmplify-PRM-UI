@@ -10,7 +10,7 @@ export class RegionNames {
     }, {
         "id": "2",
         "label" : "APJC(Asia Pacific)",
-        "name": "APJC(Asia Pacific)"
+        "name": "APAC(Asia Pacific)"
     }, {
         "id": "3",
         "label" : "EMEA",
