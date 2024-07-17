@@ -372,7 +372,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 this.companyProfile.isAdd = false;
                 this.profileCompleted = 100;
             }else{
-				if(this.authenticationService.isPartner()){
+				if(this.authenticationService.isPartner()|| this.authenticationService.isOnlyUser()){
             			this.getPartnerDetails();
             	}
             }
