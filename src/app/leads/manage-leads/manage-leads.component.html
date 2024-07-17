@@ -1,4 +1,4 @@
-<div class="page-content" *ngIf="!showDealForm">
+<div class="page-content" *ngIf="!showLeadForm">
   <div id="deals-page-content-div">
     <div>
       <div class="page-bar">
@@ -743,10 +743,23 @@
 </app-deal-chat-popup>
 
 <!-- Add Lead Model-->
-<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="actionType"
+<!-- <app-add-lead *ngIf="showLeadForm && !vanityLoginDto?.vanityUrlFilter" [leadId]="leadId" [actionType]="actionType"
   (notifySubmitSuccess)="showSubmitLeadSuccess()" (notifyUnReadChatCount)="resetUnReadChatCount()"
   (notifyManageLeadsComponentToHidePopup)="resetValues()" [isVendorVersion]="isVendorVersion"
-  [isOrgAdmin]="isOrgAdmin"></app-add-lead>
+  [isOrgAdmin]="isOrgAdmin"></app-add-lead> -->
+
+  <section *ngIf="showLeadForm">
+    <div class="page-content">
+      <div>
+        <a (click)="closeLeadForm()" class="pull-right close-circle mrg1"
+          style="margin: 14px 20px;padding-top: 3px;padding-left: 5px;">
+          <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span>
+        </a> 
+      </div>
+      <app-custom-add-lead [leadId]="leadId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
+        [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-custom-add-lead>
+    </div>
+  </section>
 
 <!-- Deal Form-->
 <section *ngIf="showDealForm">

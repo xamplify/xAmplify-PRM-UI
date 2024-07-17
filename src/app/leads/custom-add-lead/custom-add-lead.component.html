@@ -10,7 +10,7 @@
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="portlet-title">
     <div class="caption" style="padding: 7px 0px 10px 5px !important; font-size: 16px;
-    font-weight: 500;">{{dealFormTitle}}
+    font-weight: 500;">{{leadFormTitle}}
     </div>
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -27,13 +27,13 @@
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
-                    <a href="dealDetails" (click)="toggleDealpipepline($event)"> <i
+                    <a href="leadDetails" (click)="toggleDealpipepline($event)"> <i
                         [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed, 'fa-chevron-down collapseIn': isCollapsed}"
                         class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;"></i>
-                      Deal Details</a>
+                      Lead Details</a>
                   </h4>
                 </div>
-                <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="dealDetails">
+                <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="leadDetails">
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
                       <!-- <div class="form-group" style="margin-bottom: 20px" *ngIf="!isVendorVersion && deal.campaignId > 0">
@@ -53,19 +53,19 @@
                      </div> -->
 
                       <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
-                        *ngIf="actionType === 'add' || actionType === 'edit' || (actionType === 'view' && !isVendorVersion)">
-                        <label class="control-label">Deal For<span class="required"><strong>*</strong></span></label>
-                        <select class="form-control" [(ngModel)]="deal.createdForCompanyId"
+                      *ngIf="(!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany))) && !(lead.campaignId > 0)">
+                        <label class="control-label">Lead For<span class="required"><strong>*</strong></span></label>
+                        <select class="form-control" [(ngModel)]="lead.createdForCompanyId"
                           [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId"
                           id="createdForCompanyId"
-                          [disabled]="preview || edit || leadId > 0 || vanityLoginDto?.vanityUrlFilter"
+                          [disabled]="disableCreatedFor || disableCreatedForVendor" 
                           (ngModelChange)="onChangeCreatedFor()" (input)="validateField('createdForCompanyId',false)">
                           <option [value]="0">Select Company</option>
                           <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">{{vendor.companyName}}
                           </option>
                         </select>
                       </div>
-                      <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
+                      <!-- <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
                         *ngIf="actionType === 'view' && isVendorVersion">
                         <label class="control-label">Deal By<span class="required"><strong>*</strong></span></label>
                         <select class="form-control"
@@ -73,8 +73,8 @@
                           <option [value]="deal?.createdByCompanyId">{{deal?.createdByCompanyName}}
                           </option>
                         </select>
-                      </div>
-                      <div [ngStyle]="{ 'margin-bottom': isCopiedToClipboard ? '2px' : '20px' }"
+                      </div> -->
+                      <!-- <div [ngStyle]="{ 'margin-bottom': isCopiedToClipboard ? '2px' : '20px' }"
                         *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
                         <div> <label class="control-label">Deal ID</label></div>
                         <div style="display:flex; height:35px;">
@@ -94,14 +94,14 @@
                                 class="fa fa-check" aria-hidden="true"></i></strong>
                           </span>
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <!-- <div class="col-sm-6 col-xs-12 px-10 pl0"> -->
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <!-- <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
@@ -141,7 +141,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!-- <div class="col-sm-12 col-xs-12 col-lg-12 px-10 pl0"> -->
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
               <div class="panel panel-default deal-bgcolor">
@@ -156,12 +156,12 @@
                 <div [ngClass]="{'collapse': isCollapsed2, '': !isCollapsed2}" id="CampaignInfo">
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
-                      <div class="form-group" style="margin-bottom: 20px" data-toggle="tooltip" data-placement="bottom" title="{{deal.campaignName}}"
-                        *ngIf="deal.campaignId > 0">
+                      <div class="form-group" style="margin-bottom: 20px" data-toggle="tooltip" data-placement="bottom" title="{{lead.campaignName}}"
+                        *ngIf="lead.campaignId > 0">
                         <label class="control-label">Campaign Name
                           <span class="required"><strong>*</strong></span>
                         </label>
-                        <input type="text" disabled="disabled" name="campaignName" value="{{deal.campaignName}}"
+                        <input type="text" disabled="disabled" name="campaignName" value="{{lead.campaignName}}"
                           class="form-control" id="campaignName" />
                       </div>
 
@@ -175,7 +175,7 @@
                       </div> -->
 
                       <div class="form-group" style="margin-bottom: 20px"
-                        *ngIf="!(deal.campaignId > 0) && !(deal.parentCampaignId > 0)">
+                        *ngIf="!(lead.campaignId > 0) && !(lead.parentCampaignId > 0)">
                         <label class="control-label">No Campaign Info</label>
                       </div>
                     </div>
@@ -187,7 +187,7 @@
           </div>
           <div class="col-sm-6 col-xs-12 px-10 pl0">
             <div class="row">
-              <div class="panel panel-default deal-bgcolor" *ngIf="showOpportunityTypes">
+              <!-- <div class="panel panel-default deal-bgcolor" *ngIf="showOpportunityTypes">
                 <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                   <div class="card-bgcolors h-260 pl0 pr0">
                     <div class="form-group" [attr.class]="opportunityTypeId" style="margin-bottom: 20px"
@@ -202,14 +202,12 @@
                         <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
                           ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
                           ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}</option>
-                        <!-- <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">
-                          {{deal.currentStageName}}</option> -->
                         <option *ngFor="let type of halopsaTicketTypes" [value]="type.id">{{type.name}}</option>
                       </select>
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="panel-group" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default deal-bgcolor">
                   <div class="panel-heading deal-bgcolor">
@@ -228,7 +226,7 @@
                             *ngIf="showCreatedByPipelineAndStage">
                             <label class="control-label">Pipeline<span
                                 class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdByPipelineId"
+                            <select class="form-control" [(ngModel)]="lead.createdByPipelineId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdByPipelineId"
                               [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasCreatedByPipeline"
                               (ngModelChange)="resetCreatedByPipelineStages()"
@@ -243,14 +241,14 @@
                           <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px"
                             id="dealStageDiv" *ngIf="showCreatedByPipelineAndStage">
                             <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
+                            <select class="form-control" [(ngModel)]="lead.createdByPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                               id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
                               (input)="validateField('createdByPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
-                              <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
-                                [value]="deal.currentStageId">
-                                {{deal.currentStageName}}</option>
+                              <option *ngIf="!isVendorVersion && lead.currentStagePrivate"
+                                [value]="lead.currentStageId">
+                                {{lead.currentStageName}}</option>
                               <option *ngFor="let stage of createdByStages" [value]="stage.id">{{stage.stageName}}
                               </option>
                             </select>
@@ -258,9 +256,9 @@
                           <div class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
                             <label class="control-label">Vendor's xAmplify Pipeline<span
                                 class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdForPipelineId"
+                            <select class="form-control" [(ngModel)]="lead.createdForPipelineId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
-                              [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline"
+                              [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline || activeCRMDetails?.hasCreatedForPipeline"
                               (ngModelChange)="resetCreatedForPipelineStages()"
                               (input)="validateField('createdForPipelineId',false)">
                               <option [value]="0">Select Pipeline</option>
@@ -274,14 +272,14 @@
                             id="dealStageDiv">
                             <label class="control-label">Vendor's xAmplify Stage<span
                                 class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
+                            <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                               id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
                               (input)="validateField('createdForPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
-                              <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
-                                [value]="deal.currentStageId">
-                                {{deal.currentStageName}}</option>
+                              <option *ngIf="!isVendorVersion && lead.currentStagePrivate"
+                                [value]="lead.currentStageId">
+                                {{lead.currentStageName}}</option>
                               <option *ngFor="let stage of createdForStages" [value]="stage.id">{{stage.stageName}}
                               </option>
                             </select>
@@ -292,9 +290,9 @@
                           <div class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
                             <label class="control-label">Pipeline<span
                                 class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdForPipelineId"
+                            <select class="form-control" [(ngModel)]="lead.createdForPipelineId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
-                              [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline"
+                              [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedForPipeline"
                               (ngModelChange)="resetCreatedForPipelineStages()"
                               (input)="validateField('createdForPipelineId',false)">
                               <option [value]="0">Select Pipeline</option>
@@ -306,14 +304,14 @@
                           <div class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
                             id="dealStageDiv">
                             <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
+                            <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                               id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
                               (input)="validateField('createdForPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
                               <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
-                                [value]="deal.currentStageId">
-                                {{deal.currentStageName}}</option>
+                                [value]="lead.currentStageId">
+                                {{lead.currentStageName}}</option>
                               <option *ngFor="let stage of createdForStages" [value]="stage.id">{{stage.stageName}}
                               </option>
                             </select>
@@ -322,7 +320,7 @@
                             *ngIf="showCreatedByPipelineAndStage">
                             <label class="control-label">Partner's xAmplify Pipeline<span
                                 class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdByPipelineId"
+                            <select class="form-control" [(ngModel)]="lead.createdByPipelineId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdByPipelineId"
                               [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasCreatedByPipeline"
                               (ngModelChange)="resetCreatedByPipelineStages()"
@@ -337,13 +335,13 @@
                             id="dealStageDiv" *ngIf="showCreatedByPipelineAndStage">
                             <label class="control-label">Partner's xAmplify Stage<span
                                 class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
+                            <select class="form-control" [(ngModel)]="lead.createdByPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                               id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
                               (input)="validateField('createdByPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
-                              <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
-                                [value]="deal.currentStageId">
+                              <option *ngIf="!isVendorVersion && lead.currentStagePrivate"
+                                [value]="lead.currentStageId">
                                 {{deal.currentStageName}}</option>
                               <option *ngFor="let stage of createdByStages" [value]="stage.id">{{stage.stageName}}
                               </option>
@@ -357,7 +355,7 @@
                           <label class="control-label">Add Comment</label>
                           <textarea type="text" maxlength="250" rows="3" class="form-control" name="dealComment"
                             placeholder="Write your comment here" id="dealComment"
-                            [(ngModel)]="deal.dealComment"></textarea>
+                            [(ngModel)]="lead.leadComment"></textarea>
                         </div>
                       </div>
                     </div>
@@ -367,12 +365,11 @@
             </div>
           </div>
         </div>
-        <div *ngIf="showCustomForm && deal.createdForCompanyId">
-          <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [activeCRM]="activeCRMDetails"
-            [dealId]="deal.id" [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson"
-            [ticketTypeId]="deal.haloPSATickettypeId" [opportunityType]="'DEAL'"></app-sf-deal>
+        <div *ngIf="showCustomForm && lead.createdForCompanyId">
+          <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
+            [leadId]="lead.id" [isPreview]="preview" [opportunityType]= "'LEAD'" [ticketTypeId]="0"></app-sf-deal>
         </div>
-        <div *ngIf="!showCustomForm && showDefaultForm">
+        <!-- <div *ngIf="!showCustomForm && showDefaultForm">
           <div class=" row portlet light deal-box">
             <h4 class="caption" class="portlet-title">Deal Details</h4>
             <div class="col-sm-12 col-xs-12">
@@ -502,9 +499,9 @@
             </div>
           </div>
 
-        </div>
+        </div> -->
 
-        <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
+        <!-- <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
           <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
             class="button bgcolor-unset" *ngIf="!edit"><span class="btn Btn-Green transition txt_pd-top3">Register
               Deal</span></button>
@@ -512,17 +509,17 @@
             class="button bgcolor-unset" *ngIf="edit"><span class="btn Btn-Green transition txt_pd-top3">Update
               Deal</span></button>
 
-        </div>
+        </div> -->
         <div class="pull-right mr10" *ngIf="!preview && showCustomForm">
           <ng-container *ngIf="!showLoadingButton">
             <button type="button" id="saveDeal"
-              [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid"
+              
               (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
-                class="btn Btn-Green transition txt_pd-top3">Register Deal</span></button>
+                class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
             <button type="button" id="saveDeal"
               [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid"
               (click)="save()" class="button bgcolor-unset" *ngIf="edit"><span
-                class="btn Btn-Green transition txt_pd-top3">Update Deal</span></button>
+                class="btn Btn-Green transition txt_pd-top3">Update Lead</span></button>
           </ng-container>
           <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -535,13 +532,13 @@
 </div>
 
 <!-- Add Lead Model-->
-<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="dealToLead.leadActionType" [dealToLead]="dealToLead"
+<!-- <app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="dealToLead.leadActionType" [dealToLead]="dealToLead"
   (notifySubmitSuccess)="leadCreated($event)" (notifyClose)="closeLeadForm()" [isVendorVersion]="isVendorVersion"
-  [isOrgAdmin]="isOrgAdmin"></app-add-lead>
+  [isOrgAdmin]="isOrgAdmin"></app-add-lead> -->
 
 <!-- Select Lead Model-->
-<app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead"
-  (notifyLeadSelected)="leadSelected($event)"></app-select-lead>
+<!-- <app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead"
+  (notifyLeadSelected)="leadSelected($event)"></app-select-lead> -->
 
 
 <!-- END CONTENT -->

@@ -30,6 +30,7 @@ import { LandingPageAnalyticsComponent } from 'app/landing-pages/landing-page-an
 import { ManageFormComponent } from 'app/forms/manage-form/manage-form.component';
 import { FormDetailResponseComponent } from 'app/forms/form-detail-response/form-detail-response.component';
 import { FormService } from 'app/forms/services/form.service';
+import { CustomAddLeadComponent } from 'app/leads/custom-add-lead/custom-add-lead.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
@@ -38,7 +39,7 @@ import { FormService } from 'app/forms/services/form.service';
                   CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule],
 
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
-                LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent ],
+                LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent ],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -46,7 +47,7 @@ import { FormService } from 'app/forms/services/form.service';
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
-                EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent],
+                EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent],
         providers: [FormService],
 })
 

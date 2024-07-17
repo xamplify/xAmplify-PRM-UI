@@ -1,0 +1,81 @@
+.dashboard-stat.yellow-gold {
+    background-color: #00a6e8;
+    height: auto;
+    text-align: center;
+    padding: 15px 0;
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 0px;
+    width: 50%;
+  }
+  #question-icons {
+    margin-top: 5px;
+  }
+  .colorBlue {
+    background: #808080;
+  }
+  .colorRed {
+    background: #5bb1d4;
+  }
+  .row {
+    margin-left: 0px;
+  }
+  .deal-box {
+    margin-bottom: 50px;
+    border: 1px solid #ddd;
+    margin: 10px;
+    padding: 10px;
+  }
+  .amount-border {
+    border: 1px solid #e5e5e5;
+  }
+  /* 8-6-2023 sudha sri */
+  .cont-info {
+    font-size: 21px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: block;
+    line-height: inherit;
+    width: 100%;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  /* prt */
+  .card-bgcolors{
+    border-radius: 5px;
+    padding: 10px 15px;
+  }
+  .deal-heading{
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  .h-260{
+    min-height: 100px;
+  }
+  .panel-title > a {
+    display: block;
+    position: relative;
+    font-size: 16px;
+  }
+  .panel-title > a:hover {
+    color:unset!important;
+  }
+  .panel-heading {
+    padding: 10px 15px;
+  }
+  .br-unset{
+    border-radius: unset!important;
+    margin: 0px 15px;
+    border-top:1px solid #ddd;
+  }
+  @media only screen and (max-width:600px){
+    .card-bgcolors{
+     margin-bottom:14px;
+    }
+    .mb_pr0{
+      padding-right: 0px;
+    }
+  }
+  .mr-3{
+  margin-right: 3px;
+  }
+  

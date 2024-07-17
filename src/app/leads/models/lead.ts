@@ -1,3 +1,5 @@
+import { SfCustomFieldsDataDTO } from "app/deal-registration/models/sfcustomfieldsdata";
+
 export class Lead {
     id: number;
     firstName: string;
@@ -45,4 +47,6 @@ export class Lead {
     title :string;
     industry : string = 'Select Industry';
     region : string = 'Select Region';
+    /***XNFR-615***/
+    sfCustomFieldsDataDto: Array<SfCustomFieldsDataDTO> = new Array<SfCustomFieldsDataDTO>();
 }

@@ -20,11 +20,13 @@ declare var $: any, swal: any;
 export class SfDealComponent implements OnInit {
   @Input() public createdForCompanyId: any;
   @Input() public dealId: any;
+  @Input() public leadId: any;
   @Input() campaign: any;
   @Input() public isPreview = false;
   @Input() isVendor = false;
   @Input() activeCRM: any;
   @Input() public ticketTypeId: any;
+  @Input() public opportunityType: any;
   form: Form = new Form();
   errorMessage: string;
   isDealRegistrationFormInvalid: boolean = true;
@@ -79,49 +81,49 @@ export class SfDealComponent implements OnInit {
 
   ngOnInit() {
     this.showSFFormError = false;
-    if (("HALOPSA" === this.activeCRM.createdByActiveCRMType || "HALOPSA" === this.activeCRM.createdForActiveCRMType)) {
-      this.dropdownSettings = {
-        singleSelection: false,
-        text: "Please select",
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        enableSearchFilter: true,
-        classes: "myclass custom-class",
-        limitSelection: 2
-      };
-    } else {
-      this.dropdownSettings = {
-        singleSelection: false,
-        text: "Please select",
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        enableSearchFilter: true,
-        classes: "myclass custom-class"
-      };
-    }
+    // if (("HALOPSA" === this.activeCRM.createdByActiveCRMType || "HALOPSA" === this.activeCRM.createdForActiveCRMType)) {
+    //   this.dropdownSettings = {
+    //     singleSelection: false,
+    //     text: "Please select",
+    //     selectAllText: 'Select All',
+    //     unSelectAllText: 'UnSelect All',
+    //     enableSearchFilter: true,
+    //     classes: "myclass custom-class",
+    //     limitSelection: 2
+    //   };
+    // } else {
+    //   this.dropdownSettings = {
+    //     singleSelection: false,
+    //     text: "Please select",
+    //     selectAllText: 'Select All',
+    //     unSelectAllText: 'UnSelect All',
+    //     enableSearchFilter: true,
+    //     classes: "myclass custom-class"
+    //   };
+    // }
 
-    if (this.createdForCompanyId != undefined && this.createdForCompanyId > 0) {
-      if (this.dealId == undefined || this.dealId <= 0) {
-        this.dealId = 0;
-      }
-      if ("HALOPSA" !== this.activeCRM.createdByActiveCRMType && "HALOPSA" !== this.activeCRM.createdForActiveCRMType 
-        && "ZOHO" !== this.activeCRM.createdForActiveCRMType) {
-        if (this.ticketTypeId == undefined || this.ticketTypeId <= 0) {
-          this.ticketTypeId = 0;
-        }
+    // if (this.createdForCompanyId != undefined && this.createdForCompanyId > 0) {
+    //   if (this.dealId == undefined || this.dealId <= 0) {
+    //     this.dealId = 0;
+    //   }
+      // if ("HALOPSA" !== this.activeCRM.createdByActiveCRMType && "HALOPSA" !== this.activeCRM.createdForActiveCRMType 
+      //   && "ZOHO" !== this.activeCRM.createdForActiveCRMType) {
+      //   if (this.ticketTypeId == undefined || this.ticketTypeId <= 0) {
+      //     this.ticketTypeId = 0;
+      //   }
         this.addLoader();
         this.getActiveCRMCustomForm();
-      }
+      // }
       // if ("SALESFORCE" === this.activeCRM) {
       //   this.getSalesforceCustomForm();
       // } else {
       //   this.getActiveCRMCustomForm();
       // }
-    }
+    // }
 
-    if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType)) {
-      this.isConnectWiseEnabledAsActiveCRM = true;
-    }
+    // if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType)) {
+    //   this.isConnectWiseEnabledAsActiveCRM = true;
+    // }
 
   }
 
@@ -139,7 +141,7 @@ export class SfDealComponent implements OnInit {
   }
 
   getActiveCRMCustomForm() {
-    this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId, this.ticketTypeId).subscribe(result => {
+    this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId, this.ticketTypeId, this.opportunityType).subscribe(result => {
       this.showSFFormError = false;
       this.removeLoader();
       if (result.statusCode == 200) {
