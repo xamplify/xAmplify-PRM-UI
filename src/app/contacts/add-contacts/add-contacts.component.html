@@ -567,7 +567,7 @@
 										style="font-size: 20px; margin-left: 10px; margin-top: 12px;">
 									</i>
 								</span> <span style="margin-left: 5px;">
-									<switch [status]="model.isPublic" [onText]="'Public'" [offText]="'Private'"
+									<switch class="switchON" [status]="model.isPublic" [onText]="'Public'" [offText]="'Private'"
 										[onColor]="callActionSwitch.onGreenColorSwitch"
 										[offColor]="callActionSwitch.offPrivateColor" [size]="callActionSwitch.size"
 										(statusChange)="changeStatus($event)"> </switch>

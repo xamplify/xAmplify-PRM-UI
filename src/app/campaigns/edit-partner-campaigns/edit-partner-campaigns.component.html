@@ -138,7 +138,7 @@
                                  <div class="form-group">
                                     <label class="control-label col-sm-4 p0">Data Share</label>
                                     <div class="col-sm-8">
-                                       <switch [status]="campaign?.dataShare" [onText]="callActionSwitch.onTextValue"
+                                       <switch class="switchControl" [status]="campaign?.dataShare" [onText]="callActionSwitch.onTextValue"
                                           [offText]="callActionSwitch.offTextValue"
                                           [onColor]="callActionSwitch.onGreenColorSwitch"
                                           [offColor]="callActionSwitch.onDefaultColorSwitch"
@@ -150,7 +150,7 @@
                                  <div class="form-group" *ngIf="campaign?.dataShare">
                                     <label class="control-label col-sm-4 p0">Detailed Analytics</label>
                                     <div class="col-sm-8">
-                                       <switch [status]="campaign?.detailedAnalyticsShared"
+                                       <switch class="switchControl" [status]="campaign?.detailedAnalyticsShared"
                                           [onText]="callActionSwitch.onTextValue"
                                           [offText]="callActionSwitch.offTextValue"
                                           [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -166,7 +166,7 @@
                                  <label class="control-label col-sm-4 p0">Notify Me When</label>
                                  <div class="col-sm-8 mb10">
                                     <strong id="download-drop">Email Opened</strong>
-                                    <switch class="pull-left" [status]="campaign.emailOpened"
+                                    <switch class="pull-left switchControl" [status]="campaign.emailOpened"
                                        [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                                        [onColor]="callActionSwitch.onGreenColorSwitch"
                                        [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -181,7 +181,7 @@
                                  <label class="control-label col-sm-4 p0"></label>
                                  <div class="col-sm-8 mb10">
                                     <strong id="download-drop">Link Opened</strong>
-                                    <switch class="pull-left" [status]="campaign.linkOpened"
+                                    <switch class="pull-left switchControl" [status]="campaign.linkOpened"
                                        [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                                        [onColor]="callActionSwitch.onGreenColorSwitch"
                                        [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"

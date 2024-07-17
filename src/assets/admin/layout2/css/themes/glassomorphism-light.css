@@ -269,11 +269,14 @@ th {
 .campaign-type-selected,
 ul.alt-row-style1 li:hover,
 .filter.form-selected,
-.filter.landing-page-selected{ background-color: rgb(255 255 255 / 59%) !important;}
-.mix-filter li.contact-filter-selected {
+.filter.landing-page-selected,.mix-filter li.contact-filter-selected{ 
+   background-color: #0276FF !important;
+  color:#fff !important;
+} 
+/* {
   background-color: #0276FF !important;
   color:#fff !important;
-}
+} */
 
 .list__item > .flex-row {
   background-color: rgb(255 255 255 / 31%) !important;
@@ -1164,7 +1167,7 @@ input#copy-link {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 .mix-filter li {
-  color: #000 !important;
+  color: #000;
   background-color: rgb(255 255 255 / 31%);
   border: 0px solid #191b1e !important;
   padding: 6px 6px !important;
@@ -2349,6 +2352,8 @@ input {
 /* sudha sri (9-11-2023) */
 .mix-filter-li-selected {
   background-color: rgb(255 253 253 / 57%) !important;
+   color: #fff!important;
+   background:#0276ff!important;
 }
 .portlet.light.cpad.hover-effect.pointer.card-radius,
 .portlet.light.cpad.hover-effect.pointer {
@@ -4291,3 +4296,30 @@ div#add-form-designs {
 /* .bootstrap-switch-off{
   width: 84px !important;
 } */
+span b {
+  color:#000!important;
+}
+switch.switchControl .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-small {
+  width: 82px!important;
+}
+switch.switchControl span.bootstrap-switch-handle-on.bootstrap-switch-success {
+  width: 42px !important;
+}
+switch.switchControls .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-small {
+  width: 74px!important;
+}
+switch.SwitchControl .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-mini {
+  width: 63px!important;
+}
+switch.SwitchControl span.bootstrap-switch-handle-on.bootstrap-switch-success {
+  width: 32px!important;
+}
+switch.SwitchControls .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-mini {
+  width: 54px!important;
+}
+switch.switchbtns>.bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-normal {
+  width: 117px !important;
+}
+switch.switchON .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-small {
+  width:113px!important;
+}

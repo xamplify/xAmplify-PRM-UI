@@ -151,7 +151,7 @@
                         <div>
                             <h6 class="caption-subject font-red-sunglo uppercase bold m0">Additional Settings</h6>
                             <section class="mt5 mb5">
-                                <switch [status]="socialCampaign.emailOpened" [onText]="callActionSwitch.onTextValue"
+                                <switch class="SwitchControl" [status]="socialCampaign.emailOpened" [onText]="callActionSwitch.onTextValue"
                                     [offText]="callActionSwitch.offTextValue"
                                     [onColor]="callActionSwitch.onGreenColorSwitch"
                                     [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
@@ -165,7 +165,7 @@
                     <div class="col-sm-5 col-xs-12" *ngIf="socialCampaign?.channelCampaign">
                         <div>
                             <section class="mt5 mb5">
-                                <switch [status]="socialCampaign.allowPartnerToEditThePost"
+                                <switch class="SwitchControl" [status]="socialCampaign.allowPartnerToEditThePost"
                                     [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                                     [onColor]="callActionSwitch.onGreenColorSwitch"
                                     [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
@@ -180,7 +180,7 @@
                     <div class="col-sm-7 col-xs-12 margin-top-folder" *ngIf="!alias && !marketingCompany">
                         <h5 class="pr10 font-red-sunglo inline" [ngClass]="{'f-w-600': socialCampaign.channelCampaign}">
                             Through {{authenticationService?.partnerModule?.customName}}</h5>
-                        <switch [status]="socialCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue"
+                        <switch class="SwitchControls" [status]="socialCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue"
                             [offText]="callActionSwitch.onTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
                             [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.bsize"
                             (statusChange)="changeChannelCampaign($event)">

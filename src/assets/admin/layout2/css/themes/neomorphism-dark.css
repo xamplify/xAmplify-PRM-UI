@@ -4218,3 +4218,6 @@ textarea.alert-info {
 a.button_blue.remove_bg{background: none !important;border: none !important;}
 span.btn.btn-primary.transition.copy_link{background: #0276FF !important;border: 1px solid #026deb !important;}
 .xamplify-dropdown-option:hover {background-color: #292b2e !important}
+.domainlist {
+  padding: 10px;
+}

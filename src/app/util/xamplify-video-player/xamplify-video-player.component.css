@@ -51,8 +51,12 @@
   width: auto;
 }
 :host /deep/ .video-js .vjs-big-play-button {
-  top: 127px;
-  left: 264px;
+  /* top: 127px;
+  left: 264px; */
+  position: absolute;
+  top: 50%!important;
+  left: 50%!important;
+  transform: translate(-50%, -50%)!important;
 }
 
 .notFoundVideo {

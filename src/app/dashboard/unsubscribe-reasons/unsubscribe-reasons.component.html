@@ -85,7 +85,7 @@
               <span *ngIf="referenceService.isSafariBrowser()">{{unsubscribeReason?.displayTime}}</span>
             </td>
             <td class="text-center">
-              <switch [status]="unsubscribeReason.customReason" [onText]="callActionSwitch.onTextValue"
+              <switch class="SwitchControl" [status]="unsubscribeReason.customReason" [onText]="callActionSwitch.onTextValue"
                 [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
                 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
                 [disabled]="callActionSwitch.disabled">
@@ -146,7 +146,7 @@
               Custom Reason
             </th>
             <td>
-              <switch [status]="unsubscribeReason.customReason" [onText]="callActionSwitch.onTextValue"
+              <switch class="switchbtns" [status]="unsubscribeReason.customReason" [onText]="callActionSwitch.onTextValue"
                 [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
                 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
                 (statusChange)="changeStatus($event,unsubscribeReason)">
@@ -179,7 +179,7 @@
             <tr>
               <th scope="row" class="shfw">
                 Show Header Text
-                <switch [status]="!unsubscribePageDetails.hideHeaderText" [onText]="callActionSwitch.onTextValue"
+                <switch class="switchbtns" [status]="!unsubscribePageDetails.hideHeaderText" [onText]="callActionSwitch.onTextValue"
                   [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
                   [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
                   (statusChange)="changeHeaderTextStatus($event,unsubscribePageDetails)">
@@ -203,7 +203,7 @@
             <tr>
               <th scope="row" class="shfw">
                 Show Footer Text
-                <switch [status]="!unsubscribePageDetails.hideFooterText" [onText]="callActionSwitch.onTextValue"
+                <switch class="switchbtns" [status]="!unsubscribePageDetails.hideFooterText" [onText]="callActionSwitch.onTextValue"
                   [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
                   [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
                   (statusChange)="changeFooterTextStatus($event,unsubscribePageDetails)">

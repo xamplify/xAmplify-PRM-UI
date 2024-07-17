@@ -2019,7 +2019,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   border: 0px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(5px);
 }
-.mix-filter li.campaign-type-selected,
+.mix-filter li.campaign-type-selected,.mix-filter-li-selected,
 .mix-filter li.emailtemplate-selected,.mix-filter li.filter-box-selected,
 .mix-filter li.active {
   background: rgba(16 18 27 / 40%) !important;
@@ -2333,9 +2333,9 @@ input {
   background: none !important;
 }
 /* sudha sri (9-11-2023) */
-.mix-filter-li-selected {
+/* .mix-filter-li-selected {
   background-color: rgba(255,255,255,0.3) !important;
-}
+} */
 .portlet.light.cpad.hover-effect.pointer.card-radius,
 .portlet.light.cpad.hover-effect.pointer {
   padding: 1px 0px !important;
@@ -4036,4 +4036,29 @@ div#add-form-designs {
 }
 .l-g-view.FliterAlignment {
   backdrop-filter: none;
+}
+/* switch ON & OFF  */
+switch.switchControl .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-small {
+  width: 82px!important;
+}
+switch.switchControl span.bootstrap-switch-handle-on.bootstrap-switch-success {
+  width: 42px !important;
+}
+switch.switchControls .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-small {
+  width: 74px!important;
+}
+switch.SwitchControl .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-mini {
+  width: 63px!important;
+}
+switch.SwitchControl span.bootstrap-switch-handle-on.bootstrap-switch-success {
+  width: 32px!important;
+}
+switch.SwitchControls .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-mini {
+  width: 54px!important;
+}
+switch.switchbtns>.bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-normal {
+  width: 117px !important;
+}
+switch.switchON .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-small {
+  width:113px!important;
 }
