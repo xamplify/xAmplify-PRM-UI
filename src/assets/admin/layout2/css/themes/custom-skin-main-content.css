@@ -2459,3 +2459,6 @@ button.btn.btn-secondary.unlink-btn.disable-btn-text-color.deactivate-btn{
   border-top-left-radius: 1px !important;
   border-top-right-radius: 1px !important;
 }
+button.btn.Btn-Gray.btn-hvr-text.neg_mrg_top4 {
+  color: #fff !important;
+}

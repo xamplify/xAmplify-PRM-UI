@@ -119,7 +119,7 @@
                       <i class="circled-number IconCustomization fontStyleNormal">{{item?.redistributedCount}}</i>
                       <div class="clickicons"></div>
                     </div>
-                      <a  class ="custom-icon" (click)="showRedistributedCampaings(item)" data-toggle="tooltip" data-placement="top" title="View Redistributed Campaigns"   *ngIf="item?.redistributedCount> 0">
+                      <a  class ="custom-icon" (click)="showRedistributedCampaings(item)" data-toggle="tooltip" data-placement="top" title="View More/Less Redistributed Campaigns"   *ngIf="item?.redistributedCount> 0">
                         <i class="fa IconCustomization" aria-hidden="true" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}" ></i>
                       <div class="clickicons"></div>
                       </a>
