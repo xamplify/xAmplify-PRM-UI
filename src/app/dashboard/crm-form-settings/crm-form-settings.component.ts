@@ -10,21 +10,20 @@ import { CustomFieldsDto } from '../models/custom-fields-dto';
 declare var swal:any, $:any;
 
 @Component({
-	selector: 'app-integration-settings',
-	templateUrl: './integration-settings.component.html',
-	styleUrls: ['./integration-settings.component.css']
+  selector: 'app-crm-form-settings',
+  templateUrl: './crm-form-settings.component.html',
+  styleUrls: ['./crm-form-settings.component.css']
 })
-export class IntegrationSettingsComponent implements OnInit {
+export class CrmFormSettingsComponent {
 
-	loggedInUserId: any;
-	@Input() integrationType: String;
-	@Output() closeEvent = new EventEmitter<any>();
-	@Output() unlinkEvent = new EventEmitter<any>();
-	@Output() refreshEvent = new EventEmitter<any>();
+  @Input() integrationType: String;
+  @Input() opportunityType :any;
+  @Output() closeEvent = new EventEmitter<any>();
+  @Output() notifySubmitSuccess = new EventEmitter<any>();
+  loggedInUserId: any;
 	customResponse: CustomResponse = new CustomResponse();
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	loading: boolean = false;
-	userProfileImage = "assets/images/icon-user-default.png";
 	selectedCfIds = [];
 	canNotUnSelectIds = [];
 	ngxloading: boolean;
@@ -50,7 +49,6 @@ export class IntegrationSettingsComponent implements OnInit {
 	expandField: boolean = false;
 	typeMismatchMessage: any;
 	searchKey: any;
-	activeTab: string = 'home';
 	FilteredCustomFields: any;
 	haveCustomFields: boolean = false;
 	isSortApplied: boolean = false;
@@ -61,8 +59,6 @@ export class IntegrationSettingsComponent implements OnInit {
 	selectedCustomFields: Array<CustomFieldsDto> = new Array<CustomFieldsDto>();
 	showHeaderTextArea: boolean = false;
 	dealHeader = '';
-	opportunityType: any;
-
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
@@ -81,11 +77,15 @@ export class IntegrationSettingsComponent implements OnInit {
 		this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
 	}
 	
-	ngOnInit() {
-		this.getIntegrationDetails();
+	ngOnChanges() {
+		if (this.integrationType.toLowerCase() === 'salesforce') {
+			this.listSalesforceCustomFields(this.opportunityType);
+		} else {
+			this.listExternalCustomFields();
+		}
 	}
-	
-	checkAuthorization() {
+
+  checkAuthorization() {
 		this.ngxloading = true;
 		let type: string = this.integrationType.toLowerCase();
 		if (this.integrationType.toLowerCase() === 'salesforce') {
@@ -140,6 +140,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						this.setSfCfPage(1);
 					} else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
 						this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
+            this.notifySubmitSuccess.emit("Your Salesforce integration is not valid. Re-configure with valid credentials");
 					}
 					this.customFieldsDtosLoader = false;
 				},
@@ -147,6 +148,7 @@ export class IntegrationSettingsComponent implements OnInit {
 					this.ngxloading = false;
 					this.haveCustomFields = false;
 					this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
+          this.notifySubmitSuccess.emit("Your Salesforce integration is not valid. Re-configure with valid credentials");
 					this.customFieldsDtosLoader = false;
 				},
 				() => {
@@ -328,6 +330,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						const missingFieldsMessage = missingFields.join(', ');
 						this.referenceService.goToTop();
 						return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);	
+            
 			}
 			this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, 'isalesforce', this.opportunityType)
 		 		.subscribe(
@@ -335,6 +338,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		 				this.ngxloading = false;
 						if (data.statusCode == 200) {
 							this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+              this.notifySubmitSuccess.emit("Submitted Successfully");
 							this.isFilterApplied = false;
 							this.isSortApplied = false;
 							this.listSalesforceCustomFields(this.opportunityType);
@@ -403,6 +407,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	 				this.ngxloading = false;
 						if (data.statusCode == 200) {
 		 					this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+               this.notifySubmitSuccess.emit("Submitted Successfully");
 							 this.isFilterApplied = false;
 							 this.isSortApplied = false;
 		 					this.listExternalCustomFields();
@@ -466,41 +471,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		}
 	}
 
-	unlinkCRM() {
-		try {
-			let self = this;
-			swal({
-				title: 'Are you sure?',
-				text: "Unlinking CRM delete pipelines and some deal data, click Yes to continue.",
-				type: 'warning',
-				showCancelButton: true,
-				swalConfirmButtonColor: '#54a7e9',
-				swalCancelButtonColor: '#999',
-				confirmButtonText: 'Yes, delete!'
-
-			}).then(function () {
-				let request: any = {};
-				request.userId = self.loggedInUserId;
-				request.type = self.integrationType;
-				self.ngxloading = true;
-				self.integrationService.unlinkCRM(self.loggedInUserId, self.integrationType.toLowerCase())
-					.subscribe(
-						data => {
-							if (data.statusCode == 200) {
-								self.unlinkEvent.emit();
-								self.ngxloading = false;
-							}
-						});
-			}, function (dismiss: any) {
-				console.log('you clicked on option' + dismiss);
-			});
-		} catch (error) {
-			this.referenceService.showServerError(this.httpRequestLoader);
-		}
-	}
-
-
-	getIntegrationDealPipelines() {
+  getIntegrationDealPipelines() {
 		this.ngxloading = true;
 		this.integrationService.getCRMPipelines(this.loggedInUserId, this.integrationType)
 		.subscribe(
@@ -519,96 +490,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		);
 	}
 
-
-	activateCRM() {
-		if (this.integrationType === 'HUBSPOT' || this.integrationType === 'PIPEDRIVE') {
-			this.activateCRMBySelectingDealPipeline();
-		} else {
-			this.activateCRMNormal();
-		}
-
-	}
-	activateCRMBySelectingDealPipeline() {
-		if (this.integrationPipelines != undefined && this.integrationPipelines != null
-			&& this.integrationPipelines.length > 0) {
-			let self = this;
-			let modalPopUp = $('<div><div id="bee-save-buton-loader"></div>');
-			let dropDown = '<div class="form-group">';
-			dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select default deal pipeline </label>';
-			dropDown += '<select class="form-control" id="deal-pipeline-dropdown" style="max-height: 50px;">';
-			$.each(this.integrationPipelines, function (_index: number, pipeline: any) {
-				dropDown += '<option value=' + pipeline.id + '>' + pipeline.name + '</option>';
-				$.each(pipeline.stages, function (_index: number, stage: any) {
-					dropDown += '<option disabled style="font-style:italic">&nbsp;&nbsp;&nbsp;' + stage.stageName + '</option>';
-				});
-
-			});
-			dropDown += '</select>';
-			dropDown += '</div><br>';
-			modalPopUp.append(dropDown);
-			modalPopUp.append(self.createButton('Activate', function () {
-				swal.close();
-				let request: any = {};
-				request.userId = self.loggedInUserId;
-				request.type = self.integrationType;
-				request.defaultDealPipelineId = $.trim($('#deal-pipeline-dropdown option:selected').val());
-				self.setActiveCRM(request);
-			})).append(self.createButton('Cancel', function () {
-				swal.close();
-			}));
-			swal({ html: modalPopUp, showConfirmButton: false, showCancelButton: false });
-		} else {
-			this.customFieldsResponse = new CustomResponse('ERROR', "Activation failed as there are no deal pipelines.", true);
-		}
-	}
-
-	createButton(text, cb) {
-		if (text == "Activate") {
-			return $('<input type="submit" class="btn btn-primary" value="' + text + '" id="activate">').on('click', cb);
-		} else {
-			return $('<input type="submit" class="btn Btn-Gray" value="' + text + '">').on('click', cb);
-		}
-	}
-
-	activateCRMNormal() {
-		try {
-			let self = this;
-			swal({
-				title: 'Are you sure?',
-				text: "Click Yes to mark this as your active CRM",
-				type: 'warning',
-				showCancelButton: true,
-				swalConfirmButtonColor: '#54a7e9',
-				swalCancelButtonColor: '#999',
-				confirmButtonText: 'Yes, activate!'
-
-			}).then(function () {
-				let request: any = {};
-				request.userId = self.loggedInUserId;
-				request.type = self.integrationType;
-				self.setActiveCRM(request);
-			}, function (dismiss: any) {
-				console.log('you clicked on option' + dismiss);
-			});
-		} catch (error) {
-			this.referenceService.showServerError(this.httpRequestLoader);
-		}
-	}
-
-	setActiveCRM(request: any) {
-		this.ngxloading = true;
-		this.integrationService.setActiveCRM(request)
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					if (data.statusCode == 200) {
-						this.getIntegrationDetails();
-						this.refreshEvent.emit();
-					}
-				});
-	}
-
-	getActiveCRMDetails() {
+  getActiveCRMDetails() {
 		this.integrationService.getActiveCRMDetailsByUserId(this.loggedInUserId)
 			.subscribe(
 				data => {
@@ -763,17 +645,6 @@ export class IntegrationSettingsComponent implements OnInit {
 	searchFields() {
 		this.getAllFilteredResultsFields();
 	}
-	setActiveTab(tabName: string) {
-		this.activeTab = tabName;
-		if(tabName === 'menu1'){
-			this.opportunityType = 'DEAL'
-			// this.listSalesforceCustomFields(this.opportunityType);
-		}
-		if(tabName === 'menu2'){
-			this.opportunityType = 'LEAD'
-			// this.listSalesforceCustomFields(this.opportunityType);
-		}
-	}
 
 	getAllFilteredResultsFields() {
 		this.isFilterApplied = true;
@@ -859,9 +730,6 @@ export class IntegrationSettingsComponent implements OnInit {
 				});
 	}
 
-	setCustomResponse(event: any) {
-		this.customFieldsResponse = new CustomResponse('SUCCESS', event, true);
-	}
 
 
 }

@@ -69,12 +69,13 @@
   </div>
   <div id="menu1" class="tab-pane fade pt-top">
     <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
-    <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
+    <app-crm-form-settings *ngIf="activeTab === 'menu1'" (notifySubmitSuccess)="setCustomResponse($event)"  [integrationType]="integrationType" [opportunityType]="opportunityType"></app-crm-form-settings>
+    <!-- <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
       <div class="row m0">
         <div class="col-md-12 p0">
           <div style="margin-bottom:20px">
             <h3 class="fs-16">{{ integrationType }} custom fields
-              <!-- <span><a class="fa fa-edit mr5 IconCustomization SingleIconCu" (click)="toggleHeaderSettings()"></a></span> -->
+               <span><a class="fa fa-edit mr5 IconCustomization SingleIconCu" (click)="toggleHeaderSettings()"></a></span>
               <span class="reload-btn">
                 <a (click)="reloadCustomFields()" data-toggle="tooltip" data-placement="top"
                   title="Refresh Custom Fields"><i class="fa fa-refresh" style="font-size: 14px !important;"></i>
@@ -84,10 +85,10 @@
             (click)="addCustomFielsdOrderModalOpen()"><span
              class="btn btn-primary transition txt_pd-top3">Order Custom Fields</span></button>
             </h3>
-            <!-- <div [ngClass]="{'hidden': !showHeaderTextArea}">
+             <div [ngClass]="{'hidden': !showHeaderTextArea}">
               <textarea [(ngModel)]="dealHeader" rows="4" cols="4" class="form-control"
               maxlength="255"></textarea>
-            </div> -->
+            </div> 
           </div>
         </div>
       </div>
@@ -103,8 +104,8 @@
               <th>Field Label</th>
               <th *ngIf="integrationType === 'SALESFORCE'">Field Name</th>
               <th>Data Type</th>
-              <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Required</th> -->
-              <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Place Holder</th> -->
+               <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Required</th> 
+               <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Place Holder</th>
               <th class="text-center"
                 *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO'">
                 Actions</th>
@@ -154,7 +155,7 @@
                     *ngIf="sfCustomField.entryType">-{{sfCustomField.entryType}}</span>
                     <div *ngIf="integrationType === 'SALESFORCE' && sfCustomField.originalCRMType === 'select'">Mapped As: PickList</div>
                 </td>
-                <!-- <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
+                <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
                   <span *ngIf="sfCustomField.selected">Required
                     <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right"
                       title="Your partner must fill in this custom field if you toggle on this option."></span>
@@ -165,11 +166,11 @@
                       <span class="labels" data-on="ON" data-off="OFF"></span>
                     </label>
                   </span>
-                </td> -->
-                <!-- <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
+                </td>
+                 <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
                   <input *ngIf="sfCustomField.selected" type="text" class="form-control" placeholder="PlaceHolder"
                     [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
-                </td> -->
+                </td>
                 <td class="text-center"
                   *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO'">
                   <a *ngIf="sfCustomField.selected && integrationType != 'SALESFORCE'" class="custom-icon" (click)="toggleSettings(sfCustomField)">
@@ -301,7 +302,7 @@
           *ngIf="sfcfPager.pages && sfcfPager.pages.length" (click)="saveCustomFieldsSelection()"><span
             class="btn btn-primary transition txt_pd-top3">Submit</span></button>
       </div>
-    </ng-container>
+    </ng-container> -->
     <!-- <div *ngIf="isCustomFieldsModelPopUp">
       <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField" [customFieldsList]="customFieldsList"></app-integration-settings-popup>
     </div>
@@ -309,8 +310,9 @@
       <app-custom-fields-order-popup (closeEvent)="closeCustomFielsOrderModal($event)" [customFieldsList]="customFieldsList"></app-custom-fields-order-popup>
     </div> -->
   </div>
-  <div id="menu2" class="tab-pane fade pt-top">
-    <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
+  <div id="menu2">
+    <app-crm-form-settings  *ngIf="activeTab === 'menu2'"  (notifySubmitSuccess)="setCustomResponse($event)"  [integrationType]="integrationType" [opportunityType]="opportunityType"></app-crm-form-settings>
+    <!-- <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
     <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
       <div class="row m0">
         <div class="col-md-12 p0">
@@ -445,7 +447,7 @@
           *ngIf="sfcfPager.pages && sfcfPager.pages.length" (click)="saveCustomFieldsSelection()"><span
             class="btn btn-primary transition txt_pd-top3">Submit</span></button>
       </div>
-    </ng-container>
+    </ng-container> -->
     <!-- <div *ngIf="isCustomFieldsModelPopUp">
       <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField" [customFieldsList]="customFieldsList"></app-integration-settings-popup>
     </div>
