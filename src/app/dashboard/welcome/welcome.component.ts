@@ -160,19 +160,13 @@ export class WelcomeComponent implements OnInit, OnDestroy {
      }
     getDefaultPage(userId: number) {
       try{
-        this.userService.getUserDefaultPage(userId)
+        this.userService.loadUserDefaultPage(userId, this.authenticationService.companyProfileName)
             .subscribe(
                 data => {
                     try {
-                        if (data.defaultPage === 'welcome' || data.defaultPage.includes('welcome')) {
-                          if(this.authenticationService.module.loggedInThroughVendorVanityUrl && !data.isDefaultPageUpdated) {
-                            this.userDefaultPage.isCurrentPageDefaultPage = false;
-                          } else {
-                            this.userDefaultPage.isCurrentPageDefaultPage = true;
-                          }
+                        if (data.dashboardType === 'welcome' || data.dashboardType.includes('welcome')) {
+                            this.userDefaultPage.isCurrentPageDefaultPage = data.isCurrentPageDefaultPage;
                             this.referenceService.userDefaultPage = 'WELCOME';
-                        } else if (this.authenticationService.module.loggedInThroughVendorVanityUrl && !data.isDefaultPageUpdated) {
-                          this.userDefaultPage.isCurrentPageDefaultPage = false;
                         }
                     } catch (error) {
                         console.log('data undefined in welcome page');

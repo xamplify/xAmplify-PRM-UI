@@ -36,7 +36,7 @@ export class DefaultPageComponent implements OnInit {
       }else {
       this.userService.getUserDefaultPage(userId)
             .subscribe(
-            data => this.defaultPage = data.defaultPage.replace(/['"]+/g, ''),
+            data => this.defaultPage = data.replace(/['"]+/g, ''),
             error => {this.goToWelcomePage();
                     this.referenceService.userDefaultPage = "WELCOME";
             },

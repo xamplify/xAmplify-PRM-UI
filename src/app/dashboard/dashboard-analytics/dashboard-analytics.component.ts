@@ -183,18 +183,12 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
 
   getDefaultPage(userId: number) {
     this.ngxLoading = true;
-    this.userService.getUserDefaultPage(userId)
+    this.userService.loadUserDefaultPage(userId, this.authenticationService.companyProfileName)
         .subscribe(
             data => {
-                if (data.defaultPage.includes('dashboard')) {
-                    if (this.authenticationService.module.loggedInThroughVendorVanityUrl && !data.isDefaultPageUpdated) {
-                        this.userDefaultPage.isCurrentPageDefaultPage = false;
-                    } else {
-                        this.userDefaultPage.isCurrentPageDefaultPage = true;
-                    }
+                if (data.dashboardType.includes('dashboard')) {
+                    this.userDefaultPage.isCurrentPageDefaultPage = data.isCurrentPageDefaultPage;
                     this.referenceService.userDefaultPage = 'DASHBOARD';
-                } else if (this.authenticationService.module.loggedInThroughVendorVanityUrl && !data.isDefaultPageUpdated) {
-                    this.userDefaultPage.isCurrentPageDefaultPage = false;
                 }
                 this.ngxLoading = false;
             },
