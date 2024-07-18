@@ -86,7 +86,6 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     mergeTagForGuide:any;
     isOnlyPartner:boolean;
     roleName: Roles = new Roles();
-    isDefaultPageUpdated: boolean = false;
     /****** User Guide *******/
 
     constructor(
@@ -166,7 +165,6 @@ export class WelcomeComponent implements OnInit, OnDestroy {
                 data => {
                     try {
                         if (data.defaultPage === 'welcome' || data.defaultPage.includes('welcome')) {
-                          this.isDefaultPageUpdated = data.isDefaultPageUpdated;
                           if(this.authenticationService.module.loggedInThroughVendorVanityUrl && !data.isDefaultPageUpdated) {
                             this.userDefaultPage.isCurrentPageDefaultPage = false;
                           } else {
