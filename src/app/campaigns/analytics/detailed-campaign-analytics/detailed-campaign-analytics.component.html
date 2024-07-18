@@ -27,7 +27,7 @@
   !isTimeLineView &&
   !showRsvpDetails &&
   !isShowPartnerLeads &&
-  !showDealForm
+  !showDealForm && !showLeadForm
   " [class.ml0]="authenticationService.isSuperAdmin()">
       <div class="page-bar square-box" style="margin: 0 0px 15px">
          <ng-template [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
@@ -2422,7 +2422,7 @@
       </div>
    </div>
 </section>
-<section *ngIf="!isChannelCampaign || campaignType != 'EVENT'">
+<section *ngIf="(!isChannelCampaign || campaignType != 'EVENT') && !isDealRegistration">
    <div [ngClass]="hidePageContent ? '' : 'page-content'" id="timeline-view" *ngIf="isTimeLineView"
       [class.ml0]="authenticationService.isSuperAdmin()">
       <div class="page-bar white-co" style="border: 1px solid #ccc">
@@ -3831,15 +3831,40 @@
    </div>
 </div>
 <ng-container *ngIf="isDealRegistration && !isDealPreview">
-   <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaign.campaignId"
+   <!-- <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaign.campaignId"
       [campaignName]="campaign.campaignName" [actionType]="leadActionType" (notifyOtherComponent)="showTimeLineView()">
-   </app-add-lead>
+   </app-add-lead> -->
+   <section>
+      <div class="page-content">
+        <div>
+          <a (click)="closeLeadForm()" class="pull-right close-circle mrg1"
+            style="margin: 14px 20px;padding-top: 3px;padding-left: 5px;">
+            <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span>
+          </a> 
+        </div>
+        <app-custom-add-lead [leadId]="leadId" [selectedContact]="selectedRow" [campaignId]="campaign.campaignId" [actionType]="leadActionType" 
+        [campaignName]="campaign.campaignName" ></app-custom-add-lead>
+      </div>
+    </section>
 </ng-container>
 <ng-container *ngIf="showLeadForm">
-   <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaign.campaignId"
+   <!-- <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaign.campaignId"
       [campaignName]="campaign.campaignName" [actionType]="leadActionType"
       (notifyAnalyticsComponentToHidePopup)="closeLeadsForm()" (notifySubmitSuccess)="showSubmitLeadSuccess()">
-   </app-add-lead>
+   </app-add-lead> -->
+   <section>
+      <div class="page-content">
+        <div>
+          <a (click)="closeCustomLeadForm()" class="pull-right close-circle mrg1"
+            style="margin: 14px 20px;padding-top: 3px;padding-left: 5px;">
+            <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span>
+          </a> 
+        </div>
+        <app-custom-add-lead [leadId]="leadId" [selectedContact]="selectedRow" [campaignId]="campaign.campaignId" [actionType]="leadActionType" 
+        [campaignName]="campaign.campaignName" [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitLeadSuccess()"></app-custom-add-lead>
+      </div>
+    </section>
+
 </ng-container>
 <app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" [deal]="selectedDeal" [editTextArea]="editTextArea"
    [isVendorVersion]="!campaign.nurtureCampaign"

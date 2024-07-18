@@ -1007,6 +1007,9 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
     this.getDealState(this.selectedRow);
   }
 
+  closeLeadForm(){
+    this.showTimeLineView();
+  }
   /****************END of Deal Registration***************************/
 
 
@@ -3050,6 +3053,10 @@ viewCampaignLeadForm(leadId: any) {
     
   closeLeadsForm() {
     this.showLeadForm = false;        
+  } 
+
+  closeCustomLeadForm(){
+    this.showLeadForm = false;
   }
 
   showSubmitLeadSuccess() {

@@ -278,7 +278,7 @@
         </div>
         <div *ngIf="showCustomForm && !showDefaultForm && lead.createdForCompanyId">
           <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
-            [dealId]="lead.id" [isPreview]="preview" [opportunityType]= "'LEAD'" [ticketTypeId]="lead.halopsaTicketTypeId "></app-sf-deal>
+            [dealId]="lead.id" [isPreview]="preview" [opportunityType]= "'LEAD'" [ticketTypeId]="0"></app-sf-deal>
         </div>
         <div *ngIf="!showCustomForm && showDefaultForm && lead.createdForCompanyId">
           <div class=" row portlet light deal-box">

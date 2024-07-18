@@ -1,4 +1,4 @@
-<div class="page-content" *ngIf="!showLeadForm">
+<div class="page-content" *ngIf="!showLeadForm && !showDealForm">
   <div id="deals-page-content-div">
     <div>
       <div class="page-bar">
@@ -757,7 +757,7 @@
         </a> 
       </div>
       <app-custom-add-lead [leadId]="leadId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
-        [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-custom-add-lead>
+        [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitLeadSuccess()"></app-custom-add-lead>
     </div>
   </section>
 

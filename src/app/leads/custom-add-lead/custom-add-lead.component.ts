@@ -41,6 +41,7 @@ export class CustomAddLeadComponent implements OnInit {
   @Input() public campaignId: any;
   @Input() public campaignName: any;
   @Input() public actionType: string;
+  @Input() public selectedContact: any;
   @Input() public isVendorVersion: boolean;
   @Input() public isOrgAdmin: boolean;
   @Input() public hideAttachLeadButton: boolean;
@@ -224,7 +225,9 @@ export class CustomAddLeadComponent implements OnInit {
         if (this.campaignId > 0) {
           this.lead.campaignId = this.campaignId;
           this.lead.campaignName = this.campaignName;
+          this.lead.associatedUserId = this.selectedContact.userId;
           this.getCreatedForCompanyIdByCampaignId();
+          this.getContactInfo();
         }
       }
     }
@@ -245,7 +248,10 @@ export class CustomAddLeadComponent implements OnInit {
             if (this.campaignId > 0) {
               this.lead.campaignId = this.campaignId;
               this.lead.campaignName = this.campaignName;
+              this.lead.associatedUserId = this.selectedContact.userId;
               this.getCreatedForCompanyIdByCampaignId();
+              this.getContactInfo();
+              
             } else {
               this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
               this.getActiveCRMDetails();
@@ -341,6 +347,33 @@ export class CustomAddLeadComponent implements OnInit {
           () => { }
         );
     }
+  }
+
+  getContactInfo() {
+    this.dealRegistrationService.getLeadData(this.selectedContact)
+      .subscribe(
+        data => {
+          console.log(data)
+          this.setDefaultLeadData(data);
+
+        },
+        (error: any) => {
+          this.httpRequestLoader.isServerError = true;
+        }
+      );
+  }
+
+  setDefaultLeadData(data: any) {
+    this.lead.firstName = data.firstName;
+    this.lead.lastName = data.lastName;
+    this.lead.country = data.country;
+    this.lead.street = data.address;
+    this.lead.phone = data.mobileNumber;
+    this.lead.state = data.state;
+    this.lead.postalCode = data.zipCode;
+    this.lead.company = data.contactCompany;
+    this.lead.city = data.city;
+    this.lead.email = this.selectedContact.emailId;
   }
 
   getCampaignLeadPipeline() {
@@ -1241,7 +1274,22 @@ export class CustomAddLeadComponent implements OnInit {
       self.isCreatedForStageIdDisable = false;
     }
   }
-
+  toggleDealpipepline(event: Event) {
+    event.preventDefault();
+    this.isCollapsed = !this.isCollapsed;
+  }
+  toggleCollapsecontact(event: Event) {
+    event.preventDefault();
+    this.isCollapsed1 = !this.isCollapsed1;
+  }
+  toggleCollapsecampaignInfo(event: Event) {
+    event.preventDefault();
+    this.isCollapsed2 = !this.isCollapsed2;
+  }
+  toggleCollapsepipepline(event: Event) {
+    event.preventDefault();
+    this.isCollapsed3 = !this.isCollapsed3;
+  }
 
   /********XNFR-426********/
   // showComments(lead: any) {
