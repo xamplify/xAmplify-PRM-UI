@@ -860,7 +860,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	}
 
 	setCustomResponse(event: any) {
-		this.customFieldsResponse = new CustomResponse('SUCCESS', event, true);
+		this.customFieldsResponse = event;
 	}
 
 

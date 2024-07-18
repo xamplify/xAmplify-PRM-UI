@@ -140,7 +140,7 @@ export class CrmFormSettingsComponent {
 						this.setSfCfPage(1);
 					} else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
 						this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
-            this.notifySubmitSuccess.emit("Your Salesforce integration is not valid. Re-configure with valid credentials");
+                        this.notifySubmitSuccess.emit(this.customFieldsResponse);
 					}
 					this.customFieldsDtosLoader = false;
 				},
@@ -148,7 +148,7 @@ export class CrmFormSettingsComponent {
 					this.ngxloading = false;
 					this.haveCustomFields = false;
 					this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
-          this.notifySubmitSuccess.emit("Your Salesforce integration is not valid. Re-configure with valid credentials");
+                    this.notifySubmitSuccess.emit(this.customFieldsResponse);
 					this.customFieldsDtosLoader = false;
 				},
 				() => {
@@ -338,7 +338,7 @@ export class CrmFormSettingsComponent {
 		 				this.ngxloading = false;
 						if (data.statusCode == 200) {
 							this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-              this.notifySubmitSuccess.emit("Submitted Successfully");
+                            this.notifySubmitSuccess.emit(this.customFieldsResponse);
 							this.isFilterApplied = false;
 							this.isSortApplied = false;
 							this.listSalesforceCustomFields(this.opportunityType);
@@ -407,7 +407,7 @@ export class CrmFormSettingsComponent {
 	 				this.ngxloading = false;
 						if (data.statusCode == 200) {
 		 					this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-               this.notifySubmitSuccess.emit("Submitted Successfully");
+                            this.notifySubmitSuccess.emit(this.customFieldsResponse );
 							 this.isFilterApplied = false;
 							 this.isSortApplied = false;
 		 					this.listExternalCustomFields();

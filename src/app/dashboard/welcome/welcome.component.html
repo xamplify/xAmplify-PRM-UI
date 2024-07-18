@@ -9,7 +9,7 @@
     cursor: not-allowed;
   }
 </style>
-<div class="page-content" *ngIf="!showDealForm">
+<div class="page-content" *ngIf="!showDealForm && !showLeadForm">
   <div *ngIf="showSandboxText" class="alert alert-info">
     <strong>{{properties?.sandboxText}}</strong>
   </div>
@@ -56,7 +56,7 @@
     <app-response-message class="pg8" [customResponse]="dealResponse"
       *ngIf="dealResponse.isVisible"></app-response-message>
     <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
-    <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true"
+    <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true" (notifyShowLeadForm)="showLeadForm=true"
       [applyFilter]="applyFilter"></app-module-analytics>
   </div>
   <!---XNFR-459--->
@@ -323,10 +323,20 @@
 <!-- Deal Form-->
 <section *ngIf="showDealForm">
   <div class="page-content">
-    <a (click)="closeDealForm()" class="pull-right close-circle"
+    <a (click)="closeDealForm()" class="pull-right close-circle  mrg1"
       style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
       <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
     <app-add-deal [actionType]="'add'" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
+  </div>
+</section>
+
+<!-- Lead Form-->
+<section *ngIf="showLeadForm">
+  <div class="page-content">
+    <a (click)="closeLeadForm()" class="pull-right close-circle  mrg1"
+      style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+      <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+    <app-custom-add-lead [actionType]="'add'" (notifySubmitSuccess)="showSubmitLeadSuccess()"></app-custom-add-lead>
   </div>
 </section>
 
