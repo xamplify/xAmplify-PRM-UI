@@ -281,3 +281,12 @@
   .btn-groups .btn+.btn{
     margin-left: -1px;
   }
+
+  .sortAlign{
+    margin-left: 35px;
+    margin-top: 5px;
+  }
+
+.searhAlign{
+    margin-top: 5px;
+}

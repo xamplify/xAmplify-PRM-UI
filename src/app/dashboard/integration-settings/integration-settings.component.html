@@ -310,7 +310,7 @@
       <app-custom-fields-order-popup (closeEvent)="closeCustomFielsOrderModal($event)" [customFieldsList]="customFieldsList"></app-custom-fields-order-popup>
     </div> -->
   </div>
-  <div id="menu2">
+  <div id="menu2" class="tab-pane fade pt-top">
     <app-crm-form-settings  *ngIf="activeTab === 'menu2'"  (notifySubmitSuccess)="setCustomResponse($event)"  [integrationType]="integrationType" [opportunityType]="opportunityType"></app-crm-form-settings>
     <!-- <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
     <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
