@@ -276,11 +276,11 @@
             </div>
           </div>
         </div>
-        <div *ngIf="showCustomForm && lead.createdForCompanyId">
+        <div *ngIf="showCustomForm && !showDefaultForm && lead.createdForCompanyId">
           <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
             [dealId]="lead.id" [isPreview]="preview" [opportunityType]= "'LEAD'" [ticketTypeId]="lead.halopsaTicketTypeId "></app-sf-deal>
         </div>
-        <div *ngIf="!showCustomForm && showDealForm && lead.createdForCompanyId">
+        <div *ngIf="!showCustomForm && showDefaultForm && lead.createdForCompanyId">
           <div class=" row portlet light deal-box">
             <h4 class="caption" class="portlet-title">Lead Details</h4>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">

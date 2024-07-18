@@ -518,12 +518,10 @@ export class CustomAddLeadComponent implements OnInit {
             if (self.lead.industry == null || self.lead.industry == undefined || self.lead.industry == '') {
               self.lead.industry = this.industries[0];
             }
-            if (self.lead.createdForCompanyId > 0) {
-              this.getActiveCRMDetails();
-            }
             self.existingHalopsaLeadTicketTypeId = self.lead.halopsaTicketTypeId;
             if (self.lead.createdForCompanyId > 0) {
             }
+            this.getActiveCRMDetails();
           }
         },
         error => {
@@ -946,7 +944,7 @@ export class CustomAddLeadComponent implements OnInit {
           this.ngxloading = false;
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
-            if("SALESFORCE" === this.activeCRMDetails){
+            if("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType){
               this.showCustomForm = true;
             } else{
               this.showDefaultForm = true;
