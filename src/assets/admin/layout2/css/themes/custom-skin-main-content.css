@@ -920,7 +920,7 @@ textarea:focus {
 .mix-filter li:hover,
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected {
+.mix-filter li.emailtemplate-selected,.mix-filter-li-selected {
   background: var(--page-content) !important;
 }
 .filter-box-selected {

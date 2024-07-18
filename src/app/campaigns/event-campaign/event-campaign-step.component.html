@@ -205,7 +205,7 @@
 									{{authenticationService?.partnerModule?.customName}}
 								</span>
 								<div class="col-sm-2 mSwitch">
-									<switch [status]="eventCampaign.channelCampaign"
+									<switch class="switchControls" [status]="eventCampaign.channelCampaign"
 										[onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue"
 										[onColor]="callActionSwitch.onGreenColorSwitch"
 										[offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
@@ -231,7 +231,7 @@
 								*ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner()">
 								<label class="col-sm-3" translate>Co-Branding Logo</label>
 								<div class="col-sm-9">
-									<switch class="pull-left" [status]="eventCampaign.enableCoBrandingLogo"
+									<switch class="pull-left switchControl" [status]="eventCampaign.enableCoBrandingLogo"
 										[onText]="callActionSwitch.onTextValue"
 										[offText]="callActionSwitch.offTextValue"
 										[onColor]="callActionSwitch.onGreenColorSwitch"
@@ -254,7 +254,7 @@
 									<div class="email-options-checkbox-group email-options-notify">
 										<div class="email-options-checkbox clearfix">
 											<div class="col-sm-1 ui-switch-custom-div">
-												<switch [status]="eventCampaign.configurePipelines"
+												<switch class="switchControl" [status]="eventCampaign.configurePipelines"
 													[onText]="callActionSwitch.onTextValue"
 													[offText]="callActionSwitch.offTextValue"
 													[onColor]="callActionSwitch.onGreenColorSwitch"
@@ -434,7 +434,7 @@
 								<label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Online Meeting
 								</label>
 								<div class="col-sm-9">
-									<switch
+									<switch class="switchControl"
 										[disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)"
 										[status]="eventCampaign.onlineMeeting" [onText]="callActionSwitch.onTextValue"
 										[offText]="callActionSwitch.offTextValue"
@@ -590,7 +590,7 @@
 									<ng-container
 										*ngIf="eventCampaign.emailNotification || !eventCampaign.channelCampaign">
 										<li><label>
-												<switch [status]="eventCampaign.emailOpened"
+												<switch class="SwitchControl" [status]="eventCampaign.emailOpened"
 													[onText]="callActionSwitch.onTextValue"
 													[offText]="callActionSwitch.offTextValue"
 													[disabled]="isPreviewEvent"
@@ -601,7 +601,7 @@
 												</switch> Notify me when email is opened
 											</label></li>
 										<li><label>
-												<switch [status]="eventCampaign.linkOpened"
+												<switch class="SwitchControl" [status]="eventCampaign.linkOpened"
 													[onText]="callActionSwitch.onTextValue"
 													[offText]="callActionSwitch.offTextValue"
 													[disabled]="isPreviewEvent"
@@ -613,7 +613,7 @@
 											</label></li>
 									</ng-container>
 									<li><label>
-											<switch [status]="eventCampaign.rsvpReceived"
+											<switch class="SwitchControl" [status]="eventCampaign.rsvpReceived"
 												[onText]="callActionSwitch.onTextValue"
 												[offText]="callActionSwitch.offTextValue" [disabled]="isPreviewEvent"
 												[onColor]="callActionSwitch.onGreenColorSwitch"
@@ -623,7 +623,7 @@
 											</switch> Notify me when guests RSVP
 										</label></li>
 									<li><label>
-											<switch [status]="eventCampaign.inviteOthers"
+											<switch class="SwitchControl" [status]="eventCampaign.inviteOthers"
 												[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
 												[onText]="callActionSwitch.onTextValue"
 												[offText]="callActionSwitch.offTextValue"

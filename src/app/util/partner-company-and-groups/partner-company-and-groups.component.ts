@@ -644,7 +644,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 
 		getUserStatus(userId: number) {
 			 let status = "N/A";
-			if (this.selectedPartnerIdAndPartnerStatus.some(e => e.partnerId ===  userId)) {
+			if (this.selectedPartnerIdAndPartnerStatus != null &&  this.selectedPartnerIdAndPartnerStatus.some(e => e.partnerId ===  userId)) {
 				status = this.selectedPartnerIdAndPartnerStatus.filter(e => e.partnerId === userId)[0].status;
 			} 
 			return status;

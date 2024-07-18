@@ -2363,14 +2363,17 @@ left-menu-color ul li a,
 .btn-primary:hover,
 .custom:hover,
 .btnND:hover,
-.shadow-inset:hover,
-.shadow-inset,
 .left-menu-color ul li a:hover,
 .circle-100,
 a.UserguideBtnCustomization:hover {
   /* box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
   color: #fff !important;
   background-color: #1C84FF !important;
+}
+.shadow-inset:hover,
+.shadow-inset{
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  background: #2d3035 !important;
 }
 .dashboard-stat2:hover{
   color: #fff !important;
@@ -4215,3 +4218,6 @@ textarea.alert-info {
 a.button_blue.remove_bg{background: none !important;border: none !important;}
 span.btn.btn-primary.transition.copy_link{background: #0276FF !important;border: 1px solid #026deb !important;}
 .xamplify-dropdown-option:hover {background-color: #292b2e !important}
+.domainlist {
+  padding: 10px;
+}

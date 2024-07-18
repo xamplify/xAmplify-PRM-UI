@@ -396,7 +396,7 @@
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px"
 											translate>White Labeled:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<switch [disabled]="saveVideoFile?.disableWhiteLabelOption"
+											<switch class="switchControl" [disabled]="saveVideoFile?.disableWhiteLabelOption"
 												[status]="saveVideoFile.shareAsWhiteLabeledAsset"
 												[onText]="callActionSwitch.onTextValue"
 												[offText]="callActionSwitch.offTextValue"
@@ -416,7 +416,7 @@
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px"
 											translate>Add To Quick Links:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<switch 
+											<switch class="switchControl"
 												[status]="saveVideoFile.addedToQuickLinks"
 												[onText]="callActionSwitch.onTextValue"
 												[offText]="callActionSwitch.offTextValue"
@@ -474,7 +474,7 @@
 											<label class="col-xs-5 col-sm-5 col-md-5 control-label"
 												style="margin-top:-6px" translate>Default Settings:</label>
 											<div class="col-xs-7 col-sm-7 col-md-7">
-												<switch [status]="defaultSettingValue"
+												<switch class="switchControl" [status]="defaultSettingValue"
 													[onText]="callActionSwitch.onTextValue"
 													[offText]="callActionSwitch.offTextValue"
 													[onColor]="callActionSwitch.onGreenColorSwitch"
@@ -513,7 +513,7 @@
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label"
 													style="margin-top:-5px" translate>Enable Video Controller:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7">
-													<switch [status]="newEnableController"
+													<switch class="switchControl" [status]="newEnableController"
 														[onText]="callActionSwitch.onTextValue"
 														[offText]="callActionSwitch.offTextValue"
 														[onColor]="callActionSwitch.onGreenColorSwitch"
@@ -568,7 +568,7 @@
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label"
 													style="margin-top:-5px" translate>Enable Video Logo & Url:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7">
-													<switch [status]="enableVideoLogo"
+													<switch class="switchControl" [status]="enableVideoLogo"
 														[onText]="callActionSwitch.onTextValue"
 														[offText]="callActionSwitch.offTextValue"
 														[onColor]="callActionSwitch.onGreenColorSwitch"
@@ -651,7 +651,7 @@
 												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
 													Sharing:</label>
 												<div class="col-xs-6 col-sm-3 col-md-3">
-													<switch [status]="newAllowSharing"
+													<switch class="switchControl" [status]="newAllowSharing"
 														[onText]="callActionSwitch.onTextValue"
 														[offText]="callActionSwitch.offTextValue"
 														[onColor]="callActionSwitch.onGreenColorSwitch"
@@ -664,7 +664,7 @@
 												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable
 													Settings:</label>
 												<div class="col-xs-6 col-sm-3 col-md-3">
-													<switch [status]="newEnableSetting"
+													<switch class="switchControl" [status]="newEnableSetting"
 														[onText]="callActionSwitch.onTextValue"
 														[offText]="callActionSwitch.offTextValue"
 														[onColor]="callActionSwitch.onRedColorSwitch"
@@ -679,7 +679,7 @@
 												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
 													Fullscreen:</label>
 												<div class="col-xs-6 col-sm-3 col-md-3">
-													<switch [status]="newFullScreen"
+													<switch class="switchControl" [status]="newFullScreen"
 														[onText]="callActionSwitch.onTextValue"
 														[offText]="callActionSwitch.offTextValue"
 														[onColor]="callActionSwitch.onSkyBlueColorSwitch"
@@ -692,7 +692,7 @@
 												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
 													Comments:</label>
 												<div class="col-xs-6 col-sm-3 col-md-3">
-													<switch [status]="newComments"
+													<switch class="switchControl" [status]="newComments"
 														[onText]="callActionSwitch.onTextValue"
 														[offText]="callActionSwitch.offTextValue"
 														[onColor]="callActionSwitch.onSkyBlueColorSwitch"
@@ -707,7 +707,7 @@
 												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
 													Likes:</label>
 												<div class="col-xs-6 col-sm-3 col-md-3">
-													<switch [status]="newAllowLikes"
+													<switch class="switchControl" [status]="newAllowLikes"
 														[onText]="callActionSwitch.onTextValue"
 														[offText]="callActionSwitch.offTextValue"
 														[onColor]="callActionSwitch.onSkyBlueColorSwitch"
@@ -720,7 +720,7 @@
 												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable
 													Casting:</label>
 												<div class="col-xs-6 col-sm-3 col-md-3">
-													<switch [status]="newEnableCasting"
+													<switch class="switchControl" [status]="newEnableCasting"
 														[onText]="callActionSwitch.onTextValue"
 														[offText]="callActionSwitch.offTextValue"
 														[onColor]="callActionSwitch.onYellowColorSwitch"
@@ -736,7 +736,7 @@
 												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
 													Embed:</label>
 												<div class="col-xs-6 col-sm-3 col-md-3">
-													<switch [status]="newAllowEmbed"
+													<switch class="switchControl" [status]="newAllowEmbed"
 														[onText]="callActionSwitch.onTextValue"
 														[offText]="callActionSwitch.offTextValue"
 														[onColor]="callActionSwitch.onRedColorSwitch"
@@ -749,7 +749,7 @@
 												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>360
 													video:</label>
 												<div class="col-xs-6 col-sm-3 col-md-3">
-													<switch [status]="newValue360"
+													<switch class="switchControl" [status]="newValue360"
 														[onText]="callActionSwitch.onTextValue"
 														[offText]="callActionSwitch.offTextValue"
 														[onColor]="callActionSwitch.onBlueColorSwitch"
@@ -803,7 +803,7 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
 												Sharing:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newAllowSharing"
+												<switch class="switchControl" [status]="newAllowSharing"
 													[onText]="callActionSwitch.onTextValue"
 													[offText]="callActionSwitch.offTextValue"
 													[onColor]="callActionSwitch.onGreenColorSwitch"
@@ -815,7 +815,7 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable
 												Settings:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newEnableSetting"
+												<switch class="switchControl" [status]="newEnableSetting"
 													[onText]="callActionSwitch.onTextValue"
 													[offText]="callActionSwitch.offTextValue"
 													[onColor]="callActionSwitch.onRedColorSwitch"
@@ -829,7 +829,7 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
 												Fullscreen:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue"
+												<switch class="switchControl" [status]="newFullScreen" [onText]="callActionSwitch.onTextValue"
 													[offText]="callActionSwitch.offTextValue"
 													[onColor]="callActionSwitch.onSkyBlueColorSwitch"
 													[offColor]="callActionSwitch.onDefaultColorSwitch"
@@ -840,7 +840,7 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
 												Comments:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newComments" [onText]="callActionSwitch.onTextValue"
+												<switch class="switchControl" [status]="newComments" [onText]="callActionSwitch.onTextValue"
 													[offText]="callActionSwitch.offTextValue"
 													[onColor]="callActionSwitch.onSkyBlueColorSwitch"
 													[offColor]="callActionSwitch.onDefaultColorSwitch"
@@ -853,7 +853,7 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
 												Likes:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue"
+												<switch class="switchControl" [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue"
 													[offText]="callActionSwitch.offTextValue"
 													[onColor]="callActionSwitch.onSkyBlueColorSwitch"
 													[offColor]="callActionSwitch.onDefaultColorSwitch"
@@ -864,7 +864,7 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable
 												Casting:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newEnableCasting"
+												<switch class="switchControl" [status]="newEnableCasting"
 													[onText]="callActionSwitch.onTextValue"
 													[offText]="callActionSwitch.offTextValue"
 													[onColor]="callActionSwitch.onYellowColorSwitch"
@@ -879,7 +879,7 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
 												Embed:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue"
+												<switch class="switchControl" [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue"
 													[offText]="callActionSwitch.offTextValue"
 													[onColor]="callActionSwitch.onRedColorSwitch"
 													[offColor]="callActionSwitch.onDefaultColorSwitch"
@@ -890,7 +890,7 @@
 											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>360
 												video:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newValue360" [onText]="callActionSwitch.onTextValue"
+												<switch class="switchControl" [status]="newValue360" [onText]="callActionSwitch.onTextValue"
 													[offText]="callActionSwitch.offTextValue"
 													[onColor]="callActionSwitch.onBlueColorSwitch"
 													[offColor]="callActionSwitch.onDefaultColorSwitch"
@@ -924,7 +924,7 @@
 									<label class="col-xs-6 control-label" translate>Enable Call To Action:</label>
 									<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 										<div>
-											<switch [status]="enableCalltoAction"
+											<switch class="switchControl" [status]="enableCalltoAction"
 												[onText]="callActionSwitch.onTextValue"
 												[offText]="callActionSwitch.offTextValue"
 												[onColor]="callActionSwitch.onGreenColorSwitch"
@@ -944,7 +944,7 @@
 									<div class="col-xs-5 col-sm-4 col-md-4 col-lg-4">
 										<div>
 											<label translate> Start of the video</label>
-											<switch [status]="callAction.startCalltoAction"
+											<switch class="SwitchControl"  [status]="callAction.startCalltoAction"
 												[onText]="callActionSwitch.onTextValue"
 												[offText]="callActionSwitch.offTextValue"
 												[onColor]="callActionSwitch.onBlueColorSwitch"
@@ -959,7 +959,7 @@
 									<div class="col-xs-5 col-sm-4 col-md-4 col-lg-4">
 										<div>
 											<label translate>End of the video</label>
-											<switch [status]="callAction.endCalltoAction"
+											<switch class="SwitchControl" [status]="callAction.endCalltoAction"
 												[onText]="callActionSwitch.onTextValue"
 												[offText]="callActionSwitch.offTextValue"
 												[onColor]="callActionSwitch.onBlueColorSwitch"

@@ -78,7 +78,7 @@
                                         <div class="email-options-checkbox-group email-options-notify">
                                             <div class="email-options-checkbox clearfix">
                                                 <div class="col-sm-4 ui-switch-custom-div">
-                                                    <switch [status]="campaignDetailsDto.emailOpened"
+                                                    <switch class="switchbtns" [status]="campaignDetailsDto.emailOpened"
                                                         [onText]="callActionSwitch.onTextValue"
                                                         [offText]="callActionSwitch.offTextValue"
                                                         [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -94,7 +94,7 @@
                                             <div *ngIf="campaignDetailsDto?.campaignType!='SOCIAL'"
                                                 class="email-options-checkbox clearfix">
                                                 <div class="col-sm-4 ui-switch-custom-div">
-                                                    <switch [status]="campaignDetailsDto.linkOpened"
+                                                    <switch class="switchbtns" [status]="campaignDetailsDto.linkOpened"
                                                         [onText]="callActionSwitch.onTextValue"
                                                         [offText]="callActionSwitch.offTextValue"
                                                         [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -110,7 +110,7 @@
                                             <div class="email-options-checkbox clearfix"
                                                 *ngIf="campaignDetailsDto.campaignType=='VIDEO'">
                                                 <div class="col-sm-4 ui-switch-custom-div">
-                                                    <switch [status]="campaignDetailsDto.videoPlayed"
+                                                    <switch class="switchbtns" [status]="campaignDetailsDto.videoPlayed"
                                                         [onText]="callActionSwitch.onTextValue"
                                                         [offText]="callActionSwitch.offTextValue"
                                                         [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -126,7 +126,7 @@
                                             <div class="email-options-checkbox clearfix"
                                                 *ngIf="campaignDetailsDto.campaignType=='EVENT'">
                                                 <div class="col-sm-4 ui-switch-custom-div">
-                                                    <switch [status]="campaignDetailsDto.rsvpReceived"
+                                                    <switch class="switchbtns" [status]="campaignDetailsDto.rsvpReceived"
                                                         [onText]="callActionSwitch.onTextValue"
                                                         [offText]="callActionSwitch.offTextValue"
                                                         [onColor]="callActionSwitch.onGreenColorSwitch"

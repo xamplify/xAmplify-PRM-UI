@@ -782,7 +782,10 @@ saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
       error => {
           $("#bee-save-buton-loader").removeClass("button-loader"); 
           let statusCode = JSON.parse(error['status']);
-          if (statusCode == 409) {
+          if (error.status == 400) {
+            let message = JSON.parse(error['_body']).message;
+            swal(message, "", "error");
+          }else if (statusCode == 409) {
               let errorResponse = JSON.parse(error['_body']);
               let message = errorResponse['message'];
               $('#templateNameSpanError').text(message);

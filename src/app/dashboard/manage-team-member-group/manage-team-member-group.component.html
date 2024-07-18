@@ -95,7 +95,7 @@
               <br>
             </th>
             <td>
-              <switch [disabled]="groupDto?.previewGroup" [status]="defaultModule.enabled"
+              <switch class="switchControl" [disabled]="groupDto?.previewGroup" [status]="defaultModule.enabled"
                 [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
                 [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
