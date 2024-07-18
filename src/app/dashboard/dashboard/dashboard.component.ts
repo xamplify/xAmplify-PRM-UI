@@ -487,9 +487,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.userService.getUserDefaultPage(userId)
             .subscribe(
                 data => {
-                    if (data.includes('dashboard')) {
-                        this.userDefaultPage.isCurrentPageDefaultPage = true;
+                    if (data.defaultPage.includes('dashboard')) {
+                        if (this.authenticationService.module.loggedInThroughVendorVanityUrl && !data.isDefaultPageUpdated) {
+                            this.userDefaultPage.isCurrentPageDefaultPage = false;
+                        } else {
+                            this.userDefaultPage.isCurrentPageDefaultPage = true;
+                        }
                         this.referenceService.userDefaultPage = 'DASHBOARD';
+                    } else if (this.authenticationService.module.loggedInThroughVendorVanityUrl && !data.isDefaultPageUpdated) {
+                        this.userDefaultPage.isCurrentPageDefaultPage = false;
                     }
                 },
                 error => this.xtremandLogger.log(error),

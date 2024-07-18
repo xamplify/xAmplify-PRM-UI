@@ -86,6 +86,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     mergeTagForGuide:any;
     isOnlyPartner:boolean;
     roleName: Roles = new Roles();
+    isDefaultPageUpdated: boolean = false;
     /****** User Guide *******/
 
     constructor(
@@ -164,9 +165,16 @@ export class WelcomeComponent implements OnInit, OnDestroy {
             .subscribe(
                 data => {
                     try {
-                        if (data === 'welcome' || data['_body'].includes('welcome')) {
+                        if (data.defaultPage === 'welcome' || data.defaultPage.includes('welcome')) {
+                          this.isDefaultPageUpdated = data.isDefaultPageUpdated;
+                          if(this.authenticationService.module.loggedInThroughVendorVanityUrl && !data.isDefaultPageUpdated) {
+                            this.userDefaultPage.isCurrentPageDefaultPage = false;
+                          } else {
                             this.userDefaultPage.isCurrentPageDefaultPage = true;
+                          }
                             this.referenceService.userDefaultPage = 'WELCOME';
+                        } else if (this.authenticationService.module.loggedInThroughVendorVanityUrl && !data.isDefaultPageUpdated) {
+                          this.userDefaultPage.isCurrentPageDefaultPage = false;
                         }
                     } catch (error) {
                         console.log('data undefined in welcome page');
