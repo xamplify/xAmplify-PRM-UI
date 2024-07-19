@@ -429,16 +429,40 @@ export class CustomLinksUtilComponent implements OnInit {
     this.saving = false;
     this.referenceService.goToTop();
     if(this.moduleType==this.properties.dashboardButtons){
-      this.headerText = "Edit Button";
-      const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
-      this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
-      this.selectedButtonIcon = this.customLinkDto.buttonIcon;
-      this.buildCustomLinkForm();
-      this.stopDropDownLoader(); 
+        this.isDashboardButtonPublished(id);
     }else{
       this.getCustomLinksById(id);
     }
     
+  }
+
+  private isDashboardButtonPublished(id:number){
+    this.ngxLoading = true;
+    this.customResponse = new CustomResponse();
+    let status = false;
+    this.vanityURLService.isDashboardButtonPublished(id).subscribe(
+      response=>{
+        status = response.data;
+      },error=>{
+        this.ngxLoading = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+        this.callInitMethods();
+      },()=>{
+        if(status==false){
+          this.headerText = "Edit Button";
+          const dbButtonObj = this.customLinkDtos.filter(dbButton => dbButton.id === id)[0];
+          this.customLinkDto = JSON.parse(JSON.stringify(dbButtonObj));
+          this.selectedButtonIcon = this.customLinkDto.buttonIcon;
+          this.buildCustomLinkForm();
+          this.stopDropDownLoader(); 
+          this.ngxLoading = false;
+        }else{
+          this.isDropDownLoading = false;
+          this.isLoadingBanners = false;
+          this.customResponse = new CustomResponse('ERROR',"This button cannot be edited as it is getting published",true);
+          this.callInitMethods();
+        }
+      });
   }
 
   private getCustomLinksById(id: number) {

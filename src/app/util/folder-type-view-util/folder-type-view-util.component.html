@@ -144,7 +144,7 @@
 				<ng-container *ngFor="let category of pagination.pagedItems ;let i =index">
 					<tr id="folder-row-{{i}}" class="child-row-list-view border-cls">
 						<td class="custom-icon-width"><a (click)="$event.stopPropagation();viewFolderItems(category,i)"
-								data-toggle="tooltip" data-placement="bottom" title="View Items"> <i class="fa"
+								data-toggle="tooltip" data-placement="right" title="View More/Less Items"> <i class="fa"
 									id="fa-folder-custom-size"
 									[ngClass]="{'fa-angle-right': !category.expanded, 'fa-angle-down': category.expanded}"
 									aria-hidden="true"> </i> <i class="fa" id="fa-folder-custom-size"
