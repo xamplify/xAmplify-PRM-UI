@@ -463,8 +463,8 @@
     <app-custom-fields-order-popup (closeEvent)="closeCustomFielsOrderModal($event)" [customFieldsList]="customFieldsList"></app-custom-fields-order-popup>
   </div>
 
-  <div id="menu3" class="tab-pane fade pt-top">
-    <div>
+  <div id="menu3" class="tab-pane fade pt-top" *ngIf="integrationDetails != undefined">
+    <!-- <div>
       <app-list-loader *ngIf="ngxloading"></app-list-loader>
       <h4>Deal Form Description</h4>
       <ng-container *ngIf="!ngxloading">
@@ -474,6 +474,7 @@
       <button type="button" class="button_blue bgcolor-unset pr0 px-9 pull-right mt10"
       (click)="setDealHeader()"><span
         class="btn btn-primary transition txt_pd-top3">Submit</span></button>
-    </div>
+    </div> -->
+    <app-crm-settings [integrationDetails]="integrationDetails" [integrationType]="integrationType"></app-crm-settings>
   </div>
 </div>

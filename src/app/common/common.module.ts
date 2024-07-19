@@ -192,6 +192,7 @@ import { SamlSsoLoginComponent } from 'app/dashboard/saml-sso-login/saml-sso-log
 import { LeadCustomFieldsSettingsComponent } from 'app/dashboard/lead-custom-fields-settings/lead-custom-fields-settings.component';
 import { VendorJourneyFormAnalyticsComponent } from '../util/vendor-journey-form-analytics/vendor-journey-form-analytics.component';
 import { OauthSsoConfigurationComponent } from 'app/dashboard/oauth-sso-configuration/oauth-sso-configuration.component';
+import { CrmSettingsComponent } from 'app/dashboard/crm-settings/crm-settings.component'; 
 
 
 @NgModule({
@@ -230,7 +231,7 @@ import { OauthSsoConfigurationComponent } from 'app/dashboard/oauth-sso-configur
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent
 
 	],
 
@@ -268,7 +269,7 @@ import { OauthSsoConfigurationComponent } from 'app/dashboard/oauth-sso-configur
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent
 
 	]
 

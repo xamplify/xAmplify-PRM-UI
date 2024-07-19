@@ -202,4 +202,16 @@ export class IntegrationService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    updateCRMSettings(integrationType:string, loggedInUserId:any, integrationDetails:any) {
+        return this._http.post(this.authenticationService.REST_URL + `update/${integrationType}/crm/settings/${loggedInUserId}?access_token=${this.authenticationService.access_token}`,integrationDetails)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+    getCRMPipelinesForCRMSettings(createdForCompanyId: number, loggedInUserId: number, type: any, halopsaTicketTypeId: any, pipelineType:any) {
+        return this._http.get(this.authenticationService.REST_URL + `/pipeline/${pipelineType}/${type}/${createdForCompanyId}/${loggedInUserId}/${halopsaTicketTypeId}?access_token=${this.authenticationService.access_token}`)
+          .map(this.extractData)
+          .catch(this.handleError);
+      }
 }
