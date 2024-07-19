@@ -109,7 +109,7 @@ import { CustomFieldsOrderPopupComponent } from './custom-fields-order-popup/cus
 import { SuperAdminServiceService } from './super-admin-service.service';
 import { CampaignAnalyticsSettingsComponent } from './campaign-analytics-settings/campaign-analytics-settings.component';
 import { MyProfileService } from './my-profile.service';
-import { CrmSettingsComponent } from './crm-settings/crm-settings.component';
+import { CrmFormSettingsComponent } from './crm-form-settings/crm-form-settings.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule ],
@@ -190,7 +190,7 @@ import { CrmSettingsComponent } from './crm-settings/crm-settings.component';
         IntegrationDetailsComponent,
         CustomFieldsOrderPopupComponent,
         CampaignAnalyticsSettingsComponent,
-        CrmSettingsComponent,
+        CrmFormSettingsComponent,
 
             
 
