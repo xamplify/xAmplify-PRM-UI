@@ -4062,3 +4062,10 @@ switch.switchbtns>.bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-an
 switch.switchON .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-small {
   width:113px!important;
 }
+.leads-bgcolor{
+  background: rgba(16 18 27 / 40%) !important;
+  border-radius: 8px!important;
+}
+.lead-label{
+  color: #fff !important;
+}

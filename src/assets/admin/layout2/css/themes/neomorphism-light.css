@@ -4373,3 +4373,7 @@ span.btn.btn-primary.transition.copy_link{background: #0276FF !important;border:
 .domainlist{
 padding:10px;
 }
+.leads-bgcolor{
+  background-color: #e2e5e8 !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #e5e9ee;
+}
