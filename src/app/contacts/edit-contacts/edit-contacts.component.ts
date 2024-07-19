@@ -2203,7 +2203,16 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.currentContactType = "all_contacts";
 			pagination.criterias = this.criterias;
 			pagination.sharedLeads = this.sharedLeads;
-			this.contactService.loadUsersOfContactList(contactSelectedListId, pagination).subscribe(
+			this.userListPaginationWrapper.pagination = pagination;
+			this.contactListObject = new ContactList;
+			this.contactListObject.contactType = this.currentContactType;
+			this.contactListObject.assignedLeadsList = this.assignLeads;
+			this.contactListObject.sharedLeads = pagination.sharedLeads;
+			this.contactListObject.id = this.selectedContactListId;
+			this.contactListObject.isPartnerUserList = this.isPartnerUserList;
+			this.contactListObject.moduleName = this.module;
+			this.userListPaginationWrapper.userList = this.contactListObject;
+			this.contactService.loadUsersOfContactLists(this.userListPaginationWrapper).subscribe(
 				(data: any) => {
 					this.xtremandLogger.info("MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify(data));
 					this.contacts = data.listOfUsers;
@@ -2623,7 +2632,16 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.refService.loading(this.httpRequestLoader, true);
 			this.httpRequestLoader.isHorizontalCss = true;
 			this.contactsByType.pagination.criterias = this.criterias;
-			this.contactService.listOfSelectedContactListByType(this.selectedContactListId, contactType, this.contactsByType.pagination)
+			this.userListPaginationWrapper.pagination = this.contactsByType.pagination;
+			this.contactListObject = new ContactList;
+			this.contactListObject.contactType = contactType;
+			this.contactListObject.assignedLeadsList = this.assignLeads;
+			this.contactListObject.sharedLeads = this.sharedLeads;
+			this.contactListObject.id = this.selectedContactListId;
+			this.contactListObject.isPartnerUserList = this.isPartnerUserList;
+			this.contactListObject.moduleName = this.module;
+			this.userListPaginationWrapper.userList = this.contactListObject;
+			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
 						this.contactsByType.selectedCategory = contactType;
@@ -3075,7 +3093,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.gettingAllUserspagination.maxResults = totalRecords;
 			this.gettingAllUserspagination.pageIndex = 1;
 			this.gettingAllUserspagination.searchKey = searchKey;
-			this.contactService.loadUsersOfContactList(contactSelectedListId, this.gettingAllUserspagination)
+			this.contactListObject = new ContactList;
+			this.userListPaginationWrapper.pagination = this.gettingAllUserspagination;
+			this.contactListObject.id = this.selectedContactListId;
+			this.userListPaginationWrapper.userList = this.contactListObject;
+			this.contactService.loadUsersOfContactList(this.userListPaginationWrapper)
 				.subscribe(
 					(data: any) => {
 						this.totalListUsers = data.listOfUsers;
@@ -3412,7 +3434,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			// this.resetListContacts();
 			// this.resetResponse();
 			this.contactsByType.contactPagination.maxResults = this.contactsByType.allContactsCount;
-			this.contactService.listOfSelectedContactListByType(this.selectedContactListId, this.contactsByType.selectedCategory, this.contactsByType.contactPagination)
+			this.contactsByType.pagination.criterias = this.criterias;
+			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
+			this.contactListObject = new ContactList;
+			this.contactListObject.contactType = this.contactsByType.selectedCategory;
+			this.contactListObject.assignedLeadsList = this.assignLeads;
+			this.contactListObject.sharedLeads = this.sharedLeads;
+			this.contactListObject.id = this.selectedContactListId;
+			this.contactListObject.isPartnerUserList = this.isPartnerUserList;
+			this.contactListObject.moduleName = this.module;
+			this.userListPaginationWrapper.userList = this.contactListObject;
+			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
 						//	this.contactsByType.selectedCategory = contactType;

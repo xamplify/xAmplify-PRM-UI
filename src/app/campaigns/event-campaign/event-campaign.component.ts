@@ -47,6 +47,7 @@ import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from '../../core/services/util.service';
 import { utc } from 'moment';
 import { OpportunityTypes } from 'app/dashboard/models/opportunity-types';
+import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
 
 declare var $, swal, flatpickr, CKEDITOR, require;
 var moment = require('moment-timezone');
@@ -82,6 +83,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     contactListsPagination: Pagination = new Pagination();
     contactsPagination: Pagination = new Pagination();
     paginationType: string;
+    userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
+
 
     vanityLoginDto: VanityLoginDto = new VanityLoginDto();
 
@@ -888,7 +891,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     loadContacts(contactList: ContactList, pagination: Pagination) {
         this.paginationType = 'contacts';
         this.previewContactList = contactList;
-        this.contactService.loadUsersOfContactList(this.previewContactList.id, pagination).subscribe(
+        this.userListPaginationWrapper.pagination = pagination;
+        this.userListPaginationWrapper.userList =  this.previewContactList;
+        this.contactService.loadUsersOfContactList(this.userListPaginationWrapper).subscribe(
             (data: any) => {
                 pagination.totalRecords = data.totalRecords;
                 this.contactsPagination = this.pagerService.getPagedItems(pagination, data.listOfUsers);
