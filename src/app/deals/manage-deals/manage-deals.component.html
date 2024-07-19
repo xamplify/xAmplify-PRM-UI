@@ -407,9 +407,9 @@
 
                               <!-- xnfr-426-->
                               <a data-rel="fancybox-button"
-                                (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
+                                (click)="deal?.showDealActions ? updatePipelineStage(deal,authenticationService?.module?.deletedPartner):''"
                                 data-toggle="tooltip" data-placement="bottom" title="Edit Deal Stage">
-                                <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
+                                <span class=" fa fa-edit mr5 IconCustomization" [ngClass]="deal?.showDealActions ? '':'disabled gray'" aria-hidden="true"></span>
                               </a>
 
                             </td>
@@ -425,16 +425,17 @@
                                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                   <a class="custom-icon" data-rel="fancybox-button"
                                     *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
-                                    (click)="editDeal(deal)" data-toggle="tooltip" data-placement="bottom"
+                                    (click)="deal?.showDealActions?editDeal(deal):''" data-toggle="tooltip" data-placement="bottom"
                                     title="Edit Deal" id="deal">
-                                    <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+                                    <i [ngClass]="deal?.showDealActions? '':'disabled gray'" aria-hidden="true"
+                                    class="fa fa-edit mr5 IconCustomization"></i>
                                     <div class="clickicons"></div>
                                   </a>
                                   <a class="custom-icon" data-rel="fancybox-button"
                                     *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
-                                    (click)="confirmDeleteDeal(deal)" data-toggle="tooltip" data-placement="bottom"
+                                    (click)="deal?.showDealActions ? confirmDeleteDeal(deal):''" data-toggle="tooltip" data-placement="bottom"
                                     title="Delete Deal" id="deal">
-                                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                                    <i [ngClass]="deal?.showDealActions ? '':'disabled gray'" aria-hidden="true" class="fa fa-trash-o trashIconCustomization"></i>
                                     <div class="del-icon"></div>
                                   </a>
                                 </ng-container>

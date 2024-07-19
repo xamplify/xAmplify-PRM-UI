@@ -49,4 +49,5 @@ export class Lead {
     region : string = 'Select Region';
     /***XNFR-615***/
     sfCustomFieldsDataDto: Array<SfCustomFieldsDataDTO> = new Array<SfCustomFieldsDataDTO>();
+    showRegisterDeal:boolean;
 }
