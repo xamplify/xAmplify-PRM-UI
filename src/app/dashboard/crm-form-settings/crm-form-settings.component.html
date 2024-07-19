@@ -3,48 +3,45 @@
     <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
     <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
       <div class="row m0">
-        <div class="col-md-12 p0">
+        <div class="col-md-12 p0 mb10 mt10">
           <div style="margin-bottom:20px">
-            <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
-              <li>
-                <h3 class="fs-16">{{ opportunityType }} custom fields
-                  <!-- <span><a class="fa fa-edit mr5 IconCustomization SingleIconCu" (click)="toggleHeaderSettings()"></a></span> -->
-                  <span class="reload-btn">
-                    <a (click)="reloadCustomFields()" data-toggle="tooltip" data-placement="top" title="Refresh Custom Fields"><i
-                        class="fa fa-refresh" style="font-size: 14px !important;"></i>
-                      Reload</a>
-                  </span>
-                </h3>
-              </li>
-              <li class="ml_15 pull-right"><button *ngIf="integrationType === 'SALESFORCE'" type="button"
-                  class="button_blue bgcolor-unset pr0 px-9" (click)="addCustomFielsdOrderModalOpen()"><span
-                    class="btn btn-primary transition txt_pd-top3">Order Custom
-                    Fields</span></button></li>
-              <li class="searhAlign pull-right mr5">
-                <div class="inputs">
-                  <div class="portlet-input input-inline align-width">
-                    <div class="input-icon right">
-                      <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-                        placeholder="Search.." (keypress)="searchFieldsKeyPress($event.keyCode)">
-                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
-                        (click)="clearFieldSearch()"></button>
-                      <button type="submit" class="search-box-item-click" (click)="searchFields()"><i
-                          class="fa fa-search"></i></button>
-                    </div>
-                  </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 p0">
+            <h3 class="fs-16 mt10">{{ opportunityType }} custom fields
+              <!-- <span><a class="fa fa-edit mr5 IconCustomization SingleIconCu" (click)="toggleHeaderSettings()"></a></span> -->
+              <span class="reload-btn">
+                <a (click)="reloadCustomFields()" data-toggle="tooltip" data-placement="top" title="Refresh Custom Fields"><i
+                    class="fa fa-refresh" style="font-size: 14px !important;"></i>
+                  Reload</a>
+              </span>
+            </h3>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pr0">
+            <div class="d-flex justify-content-end">
+            <div class="inputs mr5 width100">
+              <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
+                (ngModelChange)="sortFieldsByOption()">
+                <ng-container *ngFor="let sort of sortOptions">
+                  <option [ngValue]="sort.value">{{sort.name}}</option>
+                </ng-container>
+              </select>
+            </div>
+            <div class="inputs">
+              <div class="portlet-input input-inline align-width">
+                <div class="input-icon right">
+                  <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+                    placeholder="Search.." (keypress)="searchFieldsKeyPress($event.keyCode)">
+                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+                    (click)="clearFieldSearch()"></button>
+                  <button type="submit" class="search-box-item-click" (click)="searchFields()"><i
+                      class="fa fa-search"></i></button>
                 </div>
-              </li>
-              <li class="sortAlign pull-right">
-                <div class="inputs mr5 width100">
-                  <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
-                    (ngModelChange)="sortFieldsByOption()">
-                    <ng-container *ngFor="let sort of sortOptions">
-                      <option [ngValue]="sort.value">{{sort.name}}</option>
-                    </ng-container>
-                  </select>
-                </div>
-              </li>
-            </ul>
+              </div>
+            </div>
+            <button *ngIf="integrationType === 'SALESFORCE'" type="button" class="button_blue bgcolor-unset pr0 px-9 pt0"
+              (click)="addCustomFielsdOrderModalOpen()"><span class="btn btn-primary transition txt_pd-top3">Order Custom
+                Fields</span></button>
+              </div> 
+            </div> 
           </div>
         </div>
       </div>
