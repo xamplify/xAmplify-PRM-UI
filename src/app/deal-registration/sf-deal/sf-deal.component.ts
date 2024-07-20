@@ -148,6 +148,7 @@ export class SfDealComponent implements OnInit {
         this.form = result.data;
         this.dealHeader = result.data.dealFormHeader;
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
+        let allDropdowns = this.form.formLabelDTOs.filter(column => column.labelType === "select");
         for (let multiSelectObj of allMultiSelects) {
           if (multiSelectObj !== undefined && multiSelectObj.value !== undefined) {
             let selectedOptions = multiSelectObj.value.split(';');
@@ -160,6 +161,17 @@ export class SfDealComponent implements OnInit {
             multiSelectObj.value = multiSelectvalueArray;
           }
         }
+
+        for (let dropDownObj of allDropdowns) {
+          if (dropDownObj !== undefined && dropDownObj.value !== undefined) {
+            let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(dropDownObj.id);
+            if (haveChildrenDropDown) {
+              let selectedValueId = this.getIdOfSelectedParentChoice(dropDownObj);
+              this.populateDependentChildValues(dropDownObj.id, selectedValueId);
+            }
+          }
+        }
+
 
         let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
         if (reqFieldsCheck.length === 0) {
@@ -247,9 +259,44 @@ export class SfDealComponent implements OnInit {
     this.validateAllFields();
   }
 
-  selectOnChangeEvent() {
+  selectOnChangeEvent(columnInfo: any) {
+    let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(columnInfo.id);
+    if (haveChildrenDropDown) {
+      let selectedValueId = this.getIdOfSelectedParentChoice(columnInfo);
+      this.populateDependentChildValues(columnInfo.id, selectedValueId);
+    }
     this.validateAllFields();
   }
+
+  getIdOfSelectedParentChoice(columnInfo: any): any {
+
+    let selectedDropDownChoices = columnInfo.dropDownChoices
+    let selectedChoiceId = 0;
+    for (const choice of selectedDropDownChoices) {
+      if (choice.labelId === columnInfo.value) {
+        selectedChoiceId = choice.id;
+      }
+    }
+    return selectedChoiceId;
+
+  }
+
+  checkIfHaveChildrenDropdown(id: any): boolean {
+    let dependentChildPickList = this.form.formLabelDTOs.filter(column => column.parentLabelId == id);
+    if (dependentChildPickList != undefined && dependentChildPickList.length != 0) {
+      return true;
+    }
+    return false;
+  }
+
+  populateDependentChildValues(parentId: any, selectedValueId: number) {
+    this.form.formLabelDTOs.forEach(column => {
+      if (column.parentLabelId === parentId) {
+        column.dropDownChoices = column.dependentDropDownChoices.filter(choice => choice.parentChoiceId == selectedValueId);
+      }
+    });
+  }
+
 
   validateAllFields() {
     let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === "" || column.value === null || (column.value !== null && column.value.length === 0) || column.value === "false"));
