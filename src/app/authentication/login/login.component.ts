@@ -579,7 +579,7 @@ bgIMage2:any;
             let companyName = response.data.companyName;
             let supportEmailId = response.data.supportEmailId;
             let errorMessage = 'You are not associated to ' + companyName + '.';
-            if (supportEmailId !== undefined && supportEmailId !== '') {
+            if (supportEmailId != undefined && supportEmailId != null && supportEmailId != '') {
               errorMessage += ' Please contact ' + supportEmailId;
             }
             this.setCustomeResponse("ERROR", errorMessage);
