@@ -11,6 +11,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
   @Output() closeEvent = new EventEmitter<any>();
   @Input() customField = new CustomFieldsDto;
   @Input() customFieldsList: any;
+  @Input() opportunityType :any;
   customFields = new CustomFieldsDto;
   defaultFields = ['Name']
   isDefaultField: boolean = false;
@@ -30,7 +31,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     if(this.customField.originalCRMType === 'select'){
       this.canDisableSelect = true;
     }
-    if(this.customField.formDefaultFieldType === 'DEAL_ID'){
+    if(this.customField.formDefaultFieldType === 'DEAL_ID' || this.customField.formDefaultFieldType === 'LEAD_ID'){
       this.canDisableType = true;
     }
     this.customFields.required = this.customField.required;
@@ -113,12 +114,22 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       if (field.label === selectedField.label && selectedField.formDefaultFieldType === 'DEAL_ID') {
         this.customFields.formDefaultFieldType = 'DEAL_ID';
         this.canDisableType = true;
-      } else {
+      }  else {
         field.formDefaultFieldType = null;
         if (field.name === 'xAmplify_Deal_Reference_ID__c') {
           field.canUnselect = true;
         }
       }
+      if (field.label === selectedField.label && selectedField.formDefaultFieldType === 'LEAD_ID') {
+        this.customFields.formDefaultFieldType = 'LEAD_ID';
+        this.canDisableType = true;
+      }  else {
+        field.formDefaultFieldType = null;
+        if (field.name === 'xAmplify_Lead_Reference_ID__c') {
+          field.canUnselect = true;
+        }
+      }
+     
     });
     if(selectedField.formDefaultFieldType === null){
       this.canDisableType = false;

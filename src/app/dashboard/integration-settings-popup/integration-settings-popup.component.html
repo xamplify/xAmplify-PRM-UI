@@ -50,7 +50,9 @@
               <select class="form-control" [disabled]= "canDisableSelect" *ngIf="customFields.selected" [(ngModel)]="customFields.formDefaultFieldType"
                 [ngModelOptions]="{standalone: true}" (change)="onFieldTypeChange(customFields)">
                 <option [ngValue]="null">None</option>
-                <option [ngValue]="'DEAL_ID'">Deal Id
+                <option *ngIf="opportunityType === 'DEAL'" [ngValue]="'DEAL_ID'">Deal Id
+                </option>
+                <option *ngIf="opportunityType === 'LEAD'" [ngValue]="'LEAD_ID'">Lead Id
                 </option>
               </select>
             </div>
