@@ -73,8 +73,8 @@ export class CustomAddLeadComponent implements OnInit {
   propertiesQuestions: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
   propertiesComments: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
   properties: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
-  showDefaultForm = false;
-  showContactInfo = false;
+  showDefaultForm : boolean = false;
+  showContactInfo : boolean  = false;
 
   ngxloading: boolean;
   isLoading = false;
@@ -173,6 +173,7 @@ export class CustomAddLeadComponent implements OnInit {
   errorMessage = "";
   leadCustomFields = new Array<LeadCustomFieldDto>();
   hidePageContent: boolean = false;
+  inValidEmailId : boolean = false;
 
   industries = [
     "Select Industry", "Agriculture", "Apparel", "Banking", "Biotechnology", "Chemicals", "Communications", "Construction", "Consulting", "Education",
@@ -654,11 +655,12 @@ export class CustomAddLeadComponent implements OnInit {
       this.errorMessage = `Please fill Valid ${displayName}`;
     }
 
-    // if (this.isValid) {
-    //   this.save();
-    // } else {
-    //   this.referenceService.scrollToModalBodyTopByClass();
-    // }
+    if (this.isValid) {
+      this.save();
+    } else {
+      this.referenceService.scrollToModalBodyTopByClass();
+    }
+
   }
 
   resetCreatedByPipelineStages() {
@@ -727,6 +729,7 @@ export class CustomAddLeadComponent implements OnInit {
   }
 
   validateField(fieldId: any, isFormElement: boolean) {
+    this.validateAllFields();
     var errorClass = "form-group has-error has-feedback";
     var successClass = "form-group has-success has-feedback";
     if (isFormElement && fieldId.key != null && fieldId.key != undefined) {
@@ -1372,6 +1375,44 @@ export class CustomAddLeadComponent implements OnInit {
     }
     this.notifyClose.emit();
     $('#leadFormModel').modal('hide');
+  }
+
+  validateAllFields() {
+
+    this.isValid = true;
+    if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
+      this.isValid = false;
+    } else if (this.lead.createdForPipelineId == undefined || this.lead.createdForPipelineId <= 0) {
+      this.isValid = false;
+    } else if (this.lead.createdForPipelineStageId == undefined || this.lead.createdForPipelineStageId <= 0) {
+      this.isValid = false;
+    } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineId == undefined || this.lead.createdByPipelineId <= 0)) {
+      this.isValid = false;;
+    } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineStageId == undefined || this.lead.createdByPipelineStageId <= 0)) {
+      this.isValid = false;
+    } else if (this.lead.lastName == undefined || this.lead.lastName == "") {
+      this.isValid = false;
+    } else if (this.lead.company == undefined || this.lead.company == "") {
+      this.isValid = false;
+    } else if (this.lead.email == undefined || this.lead.email == "") {
+      this.isValid = false;
+    } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)) {
+      this.isValid = false;
+    }
+
+  }
+
+
+  validateEmailId() {
+    if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.regularExpressions.EMAIL_ID_PATTERN.test(this.lead.email)) {
+      this.inValidEmailId = true;
+      this.isValid = false;
+      this.errorMessage = "Enter the Valid Email Id";
+    } else {
+      this.inValidEmailId = false;
+      this.isValid = true;
+      this.validateAllFields();
+    }
   }
 
 }
