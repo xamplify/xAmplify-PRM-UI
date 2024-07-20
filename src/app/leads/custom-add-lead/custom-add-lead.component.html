@@ -307,7 +307,7 @@
         </div>
         <div class="pull-right mr10" *ngIf="!preview && showCustomForm">
           <ng-container *ngIf="!showLoadingButton">
-            <button type="button" id="saveDeal" [disabled]=sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
+            <button type="button" id="saveDeal" [disabled]="sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
                 class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
             <button type="button" id="saveDeal"
               [disabled]="sfDealComponent?.isDealRegistrationFormInvalid"
