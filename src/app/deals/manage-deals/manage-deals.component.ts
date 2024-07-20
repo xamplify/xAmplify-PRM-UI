@@ -103,7 +103,9 @@ export class ManageDealsComponent implements OnInit {
   registeredByCompaniesSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   selectedRegisteredByCompanyId = 0;
 
-  registeredByUsersLoader = true;;
+  registeredByUsersLoader = true;
+  isCloseDisable: boolean = false;
+
   registeredByUsersSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   isRegisteredByUsersLoadedSuccessfully = true;
   selectedRegisteredByUserId = 0;

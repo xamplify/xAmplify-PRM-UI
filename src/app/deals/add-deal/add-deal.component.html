@@ -18,12 +18,12 @@
     <a class="close" aria-label="close">x</a>
     <strong>Please complete the required (*) fields. </strong>
   </div>
-  <div class="portlet-body clearfix">
+  <div class="portlet-body clearfix"  >
     <div>
       <form role="form" id="deal-registration-form">
         <div class="row mr-3">
           <div class="col-sm-6 col-xs-12 px-10 pl0 mb_pr0">
-            <div class="panel-group" role="tablist" aria-multiselectable="true">
+            <div class="panel-group" role="tablist" aria-multiselectable="true" *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany)))">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
@@ -53,7 +53,7 @@
                      </div> -->
 
                       <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
-                        *ngIf="actionType === 'add' || actionType === 'edit' || (actionType === 'view' && !isVendorVersion)">
+                        *ngIf="(!vanityLoginDto.vanityUrlFilter) && actionType === 'add' || actionType === 'edit' || (actionType === 'view' && !isVendorVersion)">
                         <label class="control-label">Deal For<span class="required"><strong>*</strong></span></label>
                         <select class="form-control" [(ngModel)]="deal.createdForCompanyId"
                           [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId"
@@ -535,9 +535,9 @@
 </div>
 
 <!-- Add Lead Model-->
-<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="dealToLead.leadActionType" [dealToLead]="dealToLead"
-  (notifySubmitSuccess)="leadCreated($event)" (notifyClose)="closeLeadForm()" [isVendorVersion]="isVendorVersion"
-  [isOrgAdmin]="isOrgAdmin"></app-add-lead>
+<!-- <app-custom-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="dealToLead.leadActionType" [dealToLead]="dealToLead"
+  (notifySubmitSuccess)="leadCreated($event)" (notifyCloseLead)="closeLeadForm()" [isVendorVersion]="isVendorVersion"
+  [isOrgAdmin]="isOrgAdmin"></app-custom-add-lead> -->
 
 <!-- Select Lead Model-->
 <app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead"

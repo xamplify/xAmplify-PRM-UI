@@ -61,7 +61,7 @@ export class SfDealComponent implements OnInit {
   isInvalidPhoneNumber: boolean = false;
   isInvalidGeoLocation: boolean = false;
   searchableDropDownDtoForLookup: SearchableDropdownDto = new SearchableDropdownDto();
-  dealHeader: any;
+  formDescription: any;
   isOnlyPartner: boolean = false;
 
 
@@ -70,8 +70,12 @@ export class SfDealComponent implements OnInit {
   }
 
   addLoader() {
-    this.isLoading = true;
-    this.referenceService.showSweetAlertProceesor('We are fetching the deal form');
+    if(this.opportunityType === 'DEAL'){
+      this.referenceService.showSweetAlertProceesor('We are fetching the deal form');
+    }
+    if(this.opportunityType === 'LEAD'){
+      this.referenceService.showSweetAlertProceesor('We are fetching the lead form');
+    }
   }
 
   removeLoader() {
@@ -146,7 +150,7 @@ export class SfDealComponent implements OnInit {
       this.removeLoader();
       if (result.statusCode == 200) {
         this.form = result.data;
-        this.dealHeader = result.data.dealFormHeader;
+        this.formDescription = result.data.description;
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
         let allDropdowns = this.form.formLabelDTOs.filter(column => column.labelType === "select");
         for (let multiSelectObj of allMultiSelects) {

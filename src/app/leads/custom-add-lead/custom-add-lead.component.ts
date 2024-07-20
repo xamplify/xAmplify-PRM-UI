@@ -45,12 +45,18 @@ export class CustomAddLeadComponent implements OnInit {
   @Input() public isVendorVersion: boolean;
   @Input() public isOrgAdmin: boolean;
   @Input() public hideAttachLeadButton: boolean;
+  @Input() public dealToLead: any;
+  @Input() public disableCreatedForVendor;
   @Output() notifySubmitSuccess = new EventEmitter();
+  @Output() notifyClose = new EventEmitter();
+  @Output() notifyOtherComponent = new EventEmitter();
+  @Output() notifyManageLeadsComponentToHidePopup = new EventEmitter();
 
   preview = false;
   edit = false;
   loggedInUserId: number;
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  leadModalResponse: CustomResponse = new CustomResponse();
   leadFormTitle = "Lead Details";
   showCustomForm: boolean = false;
   vendorList = new Array();
@@ -106,7 +112,6 @@ export class CustomAddLeadComponent implements OnInit {
   isCollapsed3: boolean;
 
   showLeadForm: boolean = false;
-  dealToLead: any;
   showSelectLeadModel: boolean = false;
   showAttachLeadButton: boolean = false;
   attachLeadText: string = "Attach a Lead";
@@ -167,6 +172,7 @@ export class CustomAddLeadComponent implements OnInit {
   isValid: boolean = false;
   errorMessage = "";
   leadCustomFields = new Array<LeadCustomFieldDto>();
+  hidePageContent: boolean = false;
 
   industries = [
     "Select Industry", "Agriculture", "Apparel", "Banking", "Biotechnology", "Chemicals", "Communications", "Construction", "Consulting", "Education",
@@ -174,6 +180,7 @@ export class CustomAddLeadComponent implements OnInit {
     "Insurance", "Machinery", "Manufacturing", "Media", "Not For Profit", "Recreation", "Retail", "Shipping", "Technology", "Telecommunications",
     "Transportation", "Utilities", "Other"
   ];
+  
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -205,6 +212,15 @@ export class CustomAddLeadComponent implements OnInit {
       if (this.leadId > 0) {
         this.getLead(this.leadId);
       }
+      if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
+        $('#leadFormModel').modal('show');
+        this.hidePageContent = true;
+        if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
+          this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
+          this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
+          this.getActiveCRMDetails();
+        }
+      }
     } else if (this.actionType === "edit") {
       this.edit = true;
       this.leadFormTitle = "Edit Lead";
@@ -216,6 +232,8 @@ export class CustomAddLeadComponent implements OnInit {
       if (this.vanityLoginDto.vanityUrlFilter) {
         this.setCreatedForCompanyId();
       } else if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
+        $('#leadFormModel').modal('show');
+        this.hidePageContent = true;
         if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
           this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
           this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
@@ -636,11 +654,11 @@ export class CustomAddLeadComponent implements OnInit {
       this.errorMessage = `Please fill Valid ${displayName}`;
     }
 
-    if (this.isValid) {
-      this.save();
-    } else {
-      this.referenceService.scrollToModalBodyTopByClass();
-    }
+    // if (this.isValid) {
+    //   this.save();
+    // } else {
+    //   this.referenceService.scrollToModalBodyTopByClass();
+    // }
   }
 
   resetCreatedByPipelineStages() {
@@ -692,6 +710,7 @@ export class CustomAddLeadComponent implements OnInit {
           this.showLoadingButton = false;
           if (data.statusCode == 200) {
             this.notifySubmitSuccess.emit(data.data);
+            this.closeLeadModal();
           } else if (data.statusCode == 500) {
             this.customResponse = new CustomResponse('ERROR', data.message, true);
           }
@@ -1344,6 +1363,15 @@ export class CustomAddLeadComponent implements OnInit {
         this.leadCustomFields = data.data;
       }
     });
+  }
+
+  closeLeadModal() {
+    this.notifyOtherComponent.emit();
+    this.notifyManageLeadsComponentToHidePopup.emit();
+    if (this.actionType === "edit") {
+    }
+    this.notifyClose.emit();
+    $('#leadFormModel').modal('hide');
   }
 
 }

@@ -31,6 +31,7 @@ import { ManageFormComponent } from 'app/forms/manage-form/manage-form.component
 import { FormDetailResponseComponent } from 'app/forms/form-detail-response/form-detail-response.component';
 import { FormService } from 'app/forms/services/form.service';
 import { CustomAddLeadComponent } from 'app/leads/custom-add-lead/custom-add-lead.component';
+import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
@@ -39,7 +40,7 @@ import { CustomAddLeadComponent } from 'app/leads/custom-add-lead/custom-add-lea
                   CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule],
 
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
-                LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent ],
+                LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent ],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -47,7 +48,7 @@ import { CustomAddLeadComponent } from 'app/leads/custom-add-lead/custom-add-lea
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
-                EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent],
+                EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent],
         providers: [FormService],
 })
 

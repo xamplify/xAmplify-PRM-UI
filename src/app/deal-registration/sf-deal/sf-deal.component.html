@@ -23,7 +23,7 @@
             <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-              <div *ngIf="dealHeader?.length>1 && isOnlyPartner && !isPreview"><div class="alert alert-info">{{dealHeader}}</div></div>
+              <div *ngIf="formDescription?.length>1 && isOnlyPartner && !isPreview"><div class="alert alert-info">{{formDescription}}</div></div>
               <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
                 <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="formFields"
                   [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
