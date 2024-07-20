@@ -336,4 +336,10 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
       return this.authenticationService.callGetMethod(findAllUrl);
     }
 
+    /** XNFR-618 **/
+    getVanityUrlDetailsbyCompanyProfileName(companyProfileName: string){
+      const url = this.authenticationService.REST_URL + "v_url/company/details/by/profile/name/"+ companyProfileName;
+      return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
+
 }
