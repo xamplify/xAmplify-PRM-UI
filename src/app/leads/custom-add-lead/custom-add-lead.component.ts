@@ -174,6 +174,7 @@ export class CustomAddLeadComponent implements OnInit {
   leadCustomFields = new Array<LeadCustomFieldDto>();
   showAttachLeadPopUp: boolean = false;
   inValidEmailId : boolean = false;
+  isValidPipeplineAndStage  : boolean = false;
 
   industries = [
     "Select Industry", "Agriculture", "Apparel", "Banking", "Biotechnology", "Chemicals", "Communications", "Construction", "Consulting", "Education",
@@ -1383,19 +1384,24 @@ export class CustomAddLeadComponent implements OnInit {
     $('#leadFormModel').modal('hide');
   }
 
-  validateAllFields() {
+ validateAllFields() {
 
     this.isValid = true;
+    this.isValidPipeplineAndStage = true;
     if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
       this.isValid = false;
     } else if (this.lead.createdForPipelineId == undefined || this.lead.createdForPipelineId <= 0) {
       this.isValid = false;
+      this.isValidPipeplineAndStage = false;
     } else if (this.lead.createdForPipelineStageId == undefined || this.lead.createdForPipelineStageId <= 0) {
       this.isValid = false;
+      this.isValidPipeplineAndStage = false;
     } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineId == undefined || this.lead.createdByPipelineId <= 0)) {
-      this.isValid = false;;
+      this.isValid = false;
+      this.isValidPipeplineAndStage = false;
     } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineStageId == undefined || this.lead.createdByPipelineStageId <= 0)) {
       this.isValid = false;
+      this.isValidPipeplineAndStage = false;
     } else if (this.lead.lastName == undefined || this.lead.lastName == "") {
       this.isValid = false;
     } else if (this.lead.company == undefined || this.lead.company == "") {
@@ -1413,7 +1419,7 @@ export class CustomAddLeadComponent implements OnInit {
     if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.regularExpressions.EMAIL_ID_PATTERN.test(this.lead.email)) {
       this.inValidEmailId = true;
       this.isValid = false;
-      this.errorMessage = "Enter the Valid Email Id";
+      this.errorMessage = "Please enter a valid email address";
     } else {
       this.inValidEmailId = false;
       this.isValid = true;
