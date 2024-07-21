@@ -37,7 +37,7 @@
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
                       <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
-                        *ngIf="(!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany))) && !(lead.campaignId > 0)">
+                      *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany)))">
                         <label class="control-label">Lead For<span class="required"><strong>*</strong></span></label>
                         <select class="form-control" [(ngModel)]="lead.createdForCompanyId"
                           [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId"
@@ -48,6 +48,36 @@
                             {{vendor.companyName}}
                           </option>
                         </select>
+                      </div>
+                      <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
+                      *ngIf="actionType === 'view' && isVendorVersion">
+                      <label class="control-label">Lead By<span class="required"><strong>*</strong></span></label>
+                      <select class="form-control"
+                        [disabled]="preview || edit || leadId > 0 || vanityLoginDto?.vanityUrlFilter">
+                        <option [value]="lead?.createdByCompanyId">{{lead?.createdByCompanyName}}
+                        </option>
+                      </select>
+                    </div>
+                      <div [ngStyle]="{ 'margin-bottom': isCopiedToClipboard ? '2px' : '20px' }"
+                        *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
+                        <div> <label class="control-label">Lead ID</label></div>
+                        <div style="display:flex; height:35px;">
+                          <input type="text" maxlength="100" name="referenceId" class="form-control"
+                            [(ngModel)]="lead.referenceId" [ngModelOptions]="{standalone: true}" readonly="readonly"
+                            #referenceIdInput>
+                          <div>
+                            <a class="button_blue" (click)="copyReferenceId(referenceIdInput)">
+                              <span class="btn btn-primary transition copy_link" data-toggle="tooltip"
+                                data-placement="top" title="Copy ID"><i class="fa fa-copy"></i></span>
+                            </a>
+                          </div>
+                        </div>
+                        <div>
+                          <span class="success">
+                            <strong id="copy-reference-id" *ngIf="isCopiedToClipboard">Lead Id copied successfully<i
+                                class="fa fa-check" aria-hidden="true"></i></strong>
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -1415,4 +1415,14 @@ export class CustomAddLeadComponent implements OnInit {
     }
   }
 
+  
+copyReferenceId(inputElement: any) {
+  inputElement.select();
+  $('#copy-reference-id').hide();
+  document.execCommand('copy');
+  inputElement.setSelectionRange(0, 0);
+  $('#copy-reference-id').show(500);
+  this.isCopiedToClipboard = true;
+}
+
 }
