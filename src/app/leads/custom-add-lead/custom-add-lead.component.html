@@ -128,17 +128,17 @@
           </div>
           <div class="col-sm-6 col-xs-12 px-10 pl0">
             <div class="row">
-              <div class="panel panel-default deal-bgcolor" *ngIf="showOpportunityTypes">
+              <div class="panel panel-default deal-bgcolor" *ngIf="showTicketTypesDropdown">
                 <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                   <div class="card-bgcolors h-260 pl0 pr0">
                     <div class="form-group" [attr.class]="opportunityTypeId" style="margin-bottom: 20px"
-                      id="dealStageDiv" *ngIf="showOpportunityTypes">
+                      id="dealStageDiv" *ngIf="showTicketTypesDropdown">
                       <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
                         ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket
                         Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
                         ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}<span
                           class="required"><strong>*</strong></span></label>
-                      <select class="form-control" [(ngModel)]="lead.haloPSATickettypeId"
+                      <select class="form-control" [(ngModel)]="lead.halopsaTicketTypeId"
                         [ngModelOptions]="{standalone: true}" placeholder="opportunityTypeId" id="opportunityTypeId"
                         [disabled]="preview || isCampaignTicketTypeSelected || isZohoLeadAttached"
                         (ngModelChange)="onChangeTicketType()" (input)="validateField('opportunityTypeId',false)">
@@ -152,7 +152,8 @@
                   </div>
                 </div>
               </div>
-              <div class="panel-group" role="tablist" aria-multiselectable="true">
+              <div class="panel-group" role="tablist" aria-multiselectable="true"
+              *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showLeadPipeline || activeCRMDetails?.showLeadPipelineStage">
                 <div class="panel panel-default deal-bgcolor">
                   <div class="panel-heading deal-bgcolor">
                     <h4 class="panel-title">
@@ -197,7 +198,7 @@
                               </option>
                             </select>
                           </div>
-                          <div class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
+                          <div *ngIf="activeCRMDetails?.showLeadPipeline" class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
                             <label class="control-label">Vendor's xAmplify Pipeline<span
                                 class="required"><strong>*</strong></span></label>
                             <select class="form-control" [(ngModel)]="lead.createdForPipelineId"
@@ -212,7 +213,7 @@
 
                           </div>
 
-                          <div class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
+                          <div *ngIf="activeCRMDetails?.showLeadPipelineStage" class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
                             id="dealStageDiv">
                             <label class="control-label">Vendor's xAmplify Stage<span
                                 class="required"><strong>*</strong></span></label>
@@ -311,7 +312,7 @@
         </div>
         <div *ngIf="showCustomForm && !showDefaultForm && lead.createdForCompanyId && !showAttachLeadPopUp">
           <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
-            [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="0"></app-sf-deal>
+            [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="lead.halopsaTicketTypeId"></app-sf-deal>
         </div>
         <div class="panel-group" *ngIf="!showCustomForm && showDefaultForm && lead.createdForCompanyId">
           <div class=" row portlet light m0">

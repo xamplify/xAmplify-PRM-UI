@@ -145,7 +145,11 @@ export class SfDealComponent implements OnInit {
   }
 
   getActiveCRMCustomForm() {
-    this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId, this.ticketTypeId, this.opportunityType).subscribe(result => {
+    let ticketTypeId = 0;
+    if (this.ticketTypeId != undefined && this.ticketTypeId > 0) {
+      ticketTypeId = this.ticketTypeId;
+    }
+    this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId, ticketTypeId, this.opportunityType).subscribe(result => {
       this.showSFFormError = false;
       this.removeLoader();
       if (result.statusCode == 200) {

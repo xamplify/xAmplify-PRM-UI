@@ -214,4 +214,10 @@ export class IntegrationService {
           .map(this.extractData)
           .catch(this.handleError);
       }
+
+    getVendorRegisterDealValue(partnerUserId:number, vendorCompanyProfileName:string) {
+        return this._http.get(this.authenticationService.REST_URL + `/vendor/register/deal/${partnerUserId}/${vendorCompanyProfileName}?access_token=${this.authenticationService.access_token}`)
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
 }

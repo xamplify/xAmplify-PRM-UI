@@ -161,7 +161,7 @@
                         (click)="downloadDeals(dealsPagination)">
                         <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                       </button>
-                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
+                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled"
                         (click)="addDeal()" style="padding-left: 11px;">
                         <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
                           <span class="btn btn-primary transition d-inline"><i class="fa fa-plus"

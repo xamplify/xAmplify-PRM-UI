@@ -118,6 +118,7 @@ export class ManageDealsComponent implements OnInit {
   statusSearchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
   statusLoader = false;
   isStatusLoadedSuccessfully = true;
+  isRegisterDealEnabled:boolean = true;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -261,6 +262,15 @@ export class ManageDealsComponent implements OnInit {
         }  
       });    
     });
+    if (this.authenticationService.vanityURLEnabled) {
+      this.integrationService.getVendorRegisterDealValue(this.loggedInUserId,this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+        data => {
+          if (data.statusCode == 200) {
+            this.isRegisterDealEnabled = data.data;
+          }
+        }
+      )
+    }
    
   }
 
