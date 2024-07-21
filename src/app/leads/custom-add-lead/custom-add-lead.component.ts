@@ -172,7 +172,7 @@ export class CustomAddLeadComponent implements OnInit {
   isValid: boolean = false;
   errorMessage = "";
   leadCustomFields = new Array<LeadCustomFieldDto>();
-  hidePageContent: boolean = false;
+  showAttachLeadPopUp: boolean = false;
   inValidEmailId : boolean = false;
 
   industries = [
@@ -215,7 +215,7 @@ export class CustomAddLeadComponent implements OnInit {
       }
       if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
         $('#leadFormModel').modal('show');
-        this.hidePageContent = true;
+        this.showAttachLeadPopUp = true;
         if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
           this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
           this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
@@ -234,7 +234,7 @@ export class CustomAddLeadComponent implements OnInit {
         this.setCreatedForCompanyId();
       } else if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
         $('#leadFormModel').modal('show');
-        this.hidePageContent = true;
+        this.showAttachLeadPopUp = true;
         if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
           this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
           this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);

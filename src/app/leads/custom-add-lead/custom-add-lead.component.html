@@ -309,7 +309,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="showCustomForm && !showDefaultForm && lead.createdForCompanyId">
+        <div *ngIf="showCustomForm && !showDefaultForm && lead.createdForCompanyId && !showAttachLeadPopUp">
           <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
             [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="0"></app-sf-deal>
         </div>
@@ -626,10 +626,10 @@
             </div>
           </div>
         </div>
-      </div>
-      <div *ngIf="showCustomForm && !showDefaultForm && lead.createdForCompanyId">
-        <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
-          [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="0"></app-sf-deal>
+        <div *ngIf="showCustomForm && !showDefaultForm && lead.createdForCompanyId">
+          <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
+            [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="0"></app-sf-deal>
+        </div>
       </div>
       <div class="pull-right" style="margin: 15px" *ngIf="!preview">
 
