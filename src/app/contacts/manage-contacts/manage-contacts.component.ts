@@ -130,7 +130,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	loggedInUserCompanyId: any;
 	masterContactListSync: boolean = false;
 	contactsCompanyListSync: boolean = false;
-	isPartnerUserList: boolean;
+	isPartnerUserList: boolean = false;
 
 	public currentContactType: string = "valid";
 
@@ -1519,7 +1519,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactListObject.contactType = contactType;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.sharedLeads = this.sharedLeads;
-			this.contactListObject.isPartnerUserList = this.isPartnerUserList;
+			this.contactListObject.isPartnerUserList = this.isPartner;
 			this.contactListObject.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
 			this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 			this.contactListObject.moduleName = this.module;
