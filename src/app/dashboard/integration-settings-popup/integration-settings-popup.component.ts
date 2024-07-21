@@ -13,7 +13,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
   @Input() customFieldsList: any;
   @Input() opportunityType :any;
   customFields = new CustomFieldsDto;
-  defaultFields = ['Name']
+  defaultFields = ['Name','Last Name']
   isDefaultField: boolean = false;
   options: any;
   deleteOptionVisible: boolean = false;
@@ -125,7 +125,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
         this.canDisableType = true;
       }  else {
         field.formDefaultFieldType = null;
-        if (field.name === 'xAmplify_Lead_Reference_ID__c') {
+        if (field.name === 'xAmplify_Lead_ID__c') {
           field.canUnselect = true;
         }
       }

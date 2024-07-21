@@ -23,7 +23,7 @@
         <div class="row mr-3">
           <div class="col-sm-6 col-xs-12 px-10 pl0 mb_pr0">
             <div class="panel-group" role="tablist" aria-multiselectable="true"
-              *ngIf="(!vanityLoginDto.vanityUrlFilter) && (!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany))) && !(lead.campaignId > 0)">
+            *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany)))">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
@@ -37,7 +37,7 @@
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
                       <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
-                      *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany)))">
+                      *ngIf="(!vanityLoginDto.vanityUrlFilter) && (!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany))) && !(lead.campaignId > 0)">
                         <label class="control-label">Lead For<span class="required"><strong>*</strong></span></label>
                         <select class="form-control" [(ngModel)]="lead.createdForCompanyId"
                           [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId"

@@ -233,6 +233,10 @@ export class CustomAddLeadComponent implements OnInit {
       this.leadFormTitle = LEAD_CONSTANTS.registerALead;
       if (this.vanityLoginDto.vanityUrlFilter) {
         this.setCreatedForCompanyId();
+        if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
+          $('#leadFormModel').modal('show');
+          this.showAttachLeadPopUp = true;
+        }
       } else if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
         $('#leadFormModel').modal('show');
         this.showAttachLeadPopUp = true;
