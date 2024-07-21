@@ -1445,7 +1445,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	contactsCount() {
 		try {
-			this.loading = true;
 			this.contactListObject = new ContactList;
 			this.contactListObject.isPartnerUserList = this.isPartner;
 			if (this.assignLeads) {
@@ -1468,12 +1467,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
 						this.contactsByType.validContactsCount = data.validContactsCount;
 						this.contactsByType.excludedContactsCount = data.excluded;
-						this.loading = false;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
 						this.xtremandLogger.errorPage(error);
-						this.loading = false;
 					},
 					() => console.log("LoadContactsCount Finished")
 				);
@@ -1526,7 +1523,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactListObject.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
 			this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 			this.contactListObject.moduleName = this.module;
-
 			this.userListPaginationWrapper.userList = this.contactListObject;
 
 			this.contactService.listContactsByType(this.userListPaginationWrapper)
@@ -1972,20 +1968,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	saveAs() {
 		try {
-			if (this.selectedContactListIds.length != 0) {
-				this.saveAsTypeList = 'manage-all-contacts';
-				this.saveAsListName = '';
-				this.selectedLegalBasisOptions = [];
-				this.saveAsError = '';
-				this.disableSave = false;
-				$('#saveAsModal').modal('show');
-			} else {
-				if (this.isPartner) {
-					this.customResponse = new CustomResponse('ERROR', "Please select atleast one " + this.authenticationService.partnerModule.customName + " to create the Group", true);
-				}else{
-					this.customResponse = new CustomResponse('ERROR', this.properties.NO_USERS_SELECT_ERROR, true);
-				}
-			}
+			this.saveAsTypeList = 'manage-all-contacts';
+			this.saveAsListName = '';
+			this.selectedLegalBasisOptions = [];
+			this.saveAsError = '';
+			this.disableSave = false;
+			$('#saveAsModal').modal('show');
 		} catch (error) {
 			this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsAlert()");
 		}
@@ -2272,7 +2260,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						if (data.message == "success") {
 							this.customResponse = new CustomResponse('SUCCESS', "We are processing your contact list, once done will send you an email.", true);
 							this.loadContactLists(this.pagination);
-							this.contactsCount();
 						}
 					},
 					(error: any) => {
