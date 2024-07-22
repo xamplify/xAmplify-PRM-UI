@@ -78,4 +78,6 @@
   .mr-3{
   margin-right: 3px;
   }
-  
+  .modal-dialog{
+    width: 70% !important;
+  }
