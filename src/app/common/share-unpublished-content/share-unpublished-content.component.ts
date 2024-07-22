@@ -50,6 +50,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
   isPublishingToPartnerList = false;
   trackOrPlayBooksSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   isTrackOrPlayBooksSweetAlertComponentCalled = false;
+  isDashboardButtonsComponentCalled = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,private router: Router,private campaignService:CampaignService) { }
 
