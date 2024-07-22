@@ -155,6 +155,11 @@ export class SfDealComponent implements OnInit {
       if (result.statusCode == 200) {
         this.form = result.data;
         this.formDescription = result.data.description;
+        this.form.formLabelDTOs.forEach((columnInfo: ColumnInfo) => {
+          if (columnInfo.nonInteractive) {
+            columnInfo.value = columnInfo.dropDownChoices.length > 0 ? columnInfo.dropDownChoices[0].labelId : null;
+          }
+        });
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
         let allDropdowns = this.form.formLabelDTOs.filter(column => column.labelType === "select");
         for (let multiSelectObj of allMultiSelects) {
