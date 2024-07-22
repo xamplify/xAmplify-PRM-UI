@@ -2200,7 +2200,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.showSelectedCategoryUsers = false;
 			this.xtremandLogger.info("manageContacts editContactList #contactSelectedListId " + contactSelectedListId);
 			this.selectedContactListId = contactSelectedListId;
-			this.currentContactType = "all_contacts";
+			this.currentContactType = "all";
 			pagination.criterias = this.criterias;
 			pagination.sharedLeads = this.sharedLeads;
 			this.userListPaginationWrapper.pagination = pagination;
@@ -2209,7 +2209,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.sharedLeads = pagination.sharedLeads;
 			this.contactListObject.id = this.selectedContactListId;
-			this.contactListObject.isPartnerUserList = this.isPartnerUserList;
+			this.contactListObject.isPartnerUserList = this.isPartner;
 			this.contactListObject.moduleName = this.module;
 			this.userListPaginationWrapper.userList = this.contactListObject;
 			this.contactService.loadUsersOfContactLists(this.userListPaginationWrapper).subscribe(
@@ -2615,7 +2615,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 
 			if (contactType === 'all') {
-				this.currentContactType = "all_contacts";
+				this.currentContactType = "all";
 			} else {
 				this.currentContactType = '';
 			}
@@ -2638,7 +2638,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.sharedLeads = this.sharedLeads;
 			this.contactListObject.id = this.selectedContactListId;
-			this.contactListObject.isPartnerUserList = this.isPartnerUserList;
+			this.contactListObject.isPartnerUserList = this.isPartner;
 			this.contactListObject.moduleName = this.module;
 			this.userListPaginationWrapper.userList = this.contactListObject;
 			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
@@ -3441,7 +3441,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.sharedLeads = this.sharedLeads;
 			this.contactListObject.id = this.selectedContactListId;
-			this.contactListObject.isPartnerUserList = this.isPartnerUserList;
+			this.contactListObject.isPartnerUserList = this.isPartner;
 			this.contactListObject.moduleName = this.module;
 			this.userListPaginationWrapper.userList = this.contactListObject;
 			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
