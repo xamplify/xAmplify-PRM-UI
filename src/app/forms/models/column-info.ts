@@ -44,11 +44,13 @@ export class ColumnInfo {
     skipped:boolean = false;
     submittedAnswerCorrect: boolean = false;
     formDefaultFieldType: any;
-
     /** XNFR-424 **/
     showOptions:boolean = false;
     index:number;
     /** XNFR-424 ENDS **/
     /** XNFR-528 **/
     lookupDropDownChoices: Array<FormOption> = new Array<FormOption>();
+    parentLabelId : number;
+    dependentDropDownChoices: Array<FormOption> = new Array<FormOption>();
+    nonInteractive = false;
 }

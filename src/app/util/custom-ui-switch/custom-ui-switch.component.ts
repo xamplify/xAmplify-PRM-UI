@@ -22,6 +22,12 @@ export class CustomUiSwitchComponent implements OnInit {
 
   }
 
+  ngOnChanges(){
+    if(this.isSwitchOptionDisabled==undefined){
+      this.isSwitchOptionDisabled = false;
+    }
+  }
+
   getSwitchValue(event:any){
     this.customUiSwitchEventEmitter.emit(event);
   }

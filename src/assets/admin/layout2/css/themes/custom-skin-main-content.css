@@ -2462,3 +2462,13 @@ button.btn.btn-secondary.unlink-btn.disable-btn-text-color.deactivate-btn{
 button.btn.Btn-Gray.btn-hvr-text.neg_mrg_top4 {
   color: #fff !important;
 }
+.leads-bgcolor{
+  background-color: var(--page-content) !important;
+  border-radius: 3px!important;
+}
+.lead-label{
+  color: var(---text-color) !important;
+}
+legend.scheduler-borders{
+ background-color: var(--page-content) !important;
+}

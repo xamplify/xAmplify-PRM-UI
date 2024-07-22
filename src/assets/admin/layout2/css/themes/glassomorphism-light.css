@@ -2367,7 +2367,8 @@ input {
   color: #000;
 }
 fieldset {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  /* border: 1px solid rgba(255, 255, 255, 0.1) !important; */
+  border: 1px solid rgb(255 255 255 / 41%) !important;
 }
 select.form-control.ng-untouched.ng-pristine.ng-valid,
 button.fa.fa-th-list.btn-xs.l-g-view,
@@ -4322,4 +4323,7 @@ switch.switchbtns>.bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-an
 }
 switch.switchON .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-animate.bootstrap-switch-off.bootstrap-switch-small {
   width:113px!important;
+}
+.leads-bgcolor{
+  background: rgb(255 255 255 / 31%) !important;
 }

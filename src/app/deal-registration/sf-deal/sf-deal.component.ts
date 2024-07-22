@@ -20,11 +20,13 @@ declare var $: any, swal: any;
 export class SfDealComponent implements OnInit {
   @Input() public createdForCompanyId: any;
   @Input() public dealId: any;
+  @Input() public leadId: any;
   @Input() campaign: any;
   @Input() public isPreview = false;
   @Input() isVendor = false;
   @Input() activeCRM: any;
   @Input() public ticketTypeId: any;
+  @Input() public opportunityType: any;
   form: Form = new Form();
   errorMessage: string;
   isDealRegistrationFormInvalid: boolean = true;
@@ -59,7 +61,7 @@ export class SfDealComponent implements OnInit {
   isInvalidPhoneNumber: boolean = false;
   isInvalidGeoLocation: boolean = false;
   searchableDropDownDtoForLookup: SearchableDropdownDto = new SearchableDropdownDto();
-  dealHeader: any;
+  formDescription: any;
   isOnlyPartner: boolean = false;
 
 
@@ -68,8 +70,12 @@ export class SfDealComponent implements OnInit {
   }
 
   addLoader() {
-    this.isLoading = true;
-    this.referenceService.showSweetAlertProceesor('We are fetching the deal form');
+    if(this.opportunityType === 'DEAL'){
+      this.referenceService.showSweetAlertProceesor('We are fetching the deal form');
+    }
+    if(this.opportunityType === 'LEAD'){
+      this.referenceService.showSweetAlertProceesor('We are fetching the lead form');
+    }
   }
 
   removeLoader() {
@@ -115,7 +121,7 @@ export class SfDealComponent implements OnInit {
       // if ("SALESFORCE" === this.activeCRM) {
       //   this.getSalesforceCustomForm();
       // } else {
-      //   this.getActiveCRMCustomForm();
+        this.getActiveCRMCustomForm();
       // }
     }
 
@@ -139,13 +145,23 @@ export class SfDealComponent implements OnInit {
   }
 
   getActiveCRMCustomForm() {
-    this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId, this.ticketTypeId).subscribe(result => {
+    let ticketTypeId = 0;
+    if (this.ticketTypeId != undefined && this.ticketTypeId > 0) {
+      ticketTypeId = this.ticketTypeId;
+    }
+    this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId, ticketTypeId, this.opportunityType).subscribe(result => {
       this.showSFFormError = false;
       this.removeLoader();
       if (result.statusCode == 200) {
         this.form = result.data;
-        this.dealHeader = result.data.dealFormHeader;
+        this.formDescription = result.data.description;
+        this.form.formLabelDTOs.forEach((columnInfo: ColumnInfo) => {
+          if (columnInfo.nonInteractive) {
+            columnInfo.value = columnInfo.dropDownChoices.length > 0 ? columnInfo.dropDownChoices[0].labelId : null;
+          }
+        });
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
+        let allDropdowns = this.form.formLabelDTOs.filter(column => column.labelType === "select");
         for (let multiSelectObj of allMultiSelects) {
           if (multiSelectObj !== undefined && multiSelectObj.value !== undefined) {
             let selectedOptions = multiSelectObj.value.split(';');
@@ -158,6 +174,17 @@ export class SfDealComponent implements OnInit {
             multiSelectObj.value = multiSelectvalueArray;
           }
         }
+
+        for (let dropDownObj of allDropdowns) {
+          if (dropDownObj !== undefined && dropDownObj.value !== undefined) {
+            let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(dropDownObj.id);
+            if (haveChildrenDropDown) {
+              let selectedValueId = this.getIdOfSelectedParentChoice(dropDownObj);
+              this.populateDependentChildValues(dropDownObj.id, selectedValueId);
+            }
+          }
+        }
+
 
         let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
         if (reqFieldsCheck.length === 0) {
@@ -245,9 +272,44 @@ export class SfDealComponent implements OnInit {
     this.validateAllFields();
   }
 
-  selectOnChangeEvent() {
+  selectOnChangeEvent(columnInfo: any) {
+    let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(columnInfo.id);
+    if (haveChildrenDropDown) {
+      let selectedValueId = this.getIdOfSelectedParentChoice(columnInfo);
+      this.populateDependentChildValues(columnInfo.id, selectedValueId);
+    }
     this.validateAllFields();
   }
+
+  getIdOfSelectedParentChoice(columnInfo: any): any {
+
+    let selectedDropDownChoices = columnInfo.dropDownChoices
+    let selectedChoiceId = 0;
+    for (const choice of selectedDropDownChoices) {
+      if (choice.labelId === columnInfo.value) {
+        selectedChoiceId = choice.id;
+      }
+    }
+    return selectedChoiceId;
+
+  }
+
+  checkIfHaveChildrenDropdown(id: any): boolean {
+    let dependentChildPickList = this.form.formLabelDTOs.filter(column => column.parentLabelId == id);
+    if (dependentChildPickList != undefined && dependentChildPickList.length != 0) {
+      return true;
+    }
+    return false;
+  }
+
+  populateDependentChildValues(parentId: any, selectedValueId: number) {
+    this.form.formLabelDTOs.forEach(column => {
+      if (column.parentLabelId === parentId) {
+        column.dropDownChoices = column.dependentDropDownChoices.filter(choice => choice.parentChoiceId == selectedValueId);
+      }
+    });
+  }
+
 
   validateAllFields() {
     let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === "" || column.value === null || (column.value !== null && column.value.length === 0) || column.value === "false"));

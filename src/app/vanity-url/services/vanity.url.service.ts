@@ -16,6 +16,7 @@ import { Properties } from "app/common/models/properties";
 
 @Injectable()
 export class VanityURLService {
+  
   properties:Properties = new Properties();
   URL = this.authenticationService.REST_URL;
   ACCESS_TOKEN_SUFFIX_URL = "?access_token=";
@@ -326,6 +327,19 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
     isDashboardButtonPublished(id: number) {
       let url = this.DASHBOARD_BUTTON_PREFIX_URL+'/isPublished/'+id+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
       return this.authenticationService.callGetMethod(url);
+    }
+
+    findAllUnPublishedAndFilteredPublishedDashboardButtons(pagination: Pagination) {
+      let userId = this.authenticationService.getUserId();
+      let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+      let findAllUrl = this.DASHBOARD_BUTTON_PREFIX_URL+'/findAllUnPublishedAndFilteredPublishedAssets/'+userId+'/'+pagination.userListId+'/'+pagination.partnerId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+      return this.authenticationService.callGetMethod(findAllUrl);
+    }
+
+    /** XNFR-618 **/
+    getVanityUrlDetailsbyCompanyProfileName(companyProfileName: string){
+      const url = this.authenticationService.REST_URL + "v_url/company/details/by/profile/name/"+ companyProfileName;
+      return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
 
 }

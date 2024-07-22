@@ -595,24 +595,48 @@
 <!--XNFR-432-->
 <app-copy-modal-popup #copyModalPopupComponent
     (copyModalPopupOutputEmitter)="copyModalPopupOutputReceiver($event)"></app-copy-modal-popup>
-<ng-container *ngIf="showShareListPopup">
-    <div [style.display]="showShareListPopup ? 'block' : 'none'" class="modal fade right" id="partnerCompaniesPopup"
-        role="dialog" aria-labelledby="partnerCompaniesPopup" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <app-partner-company-and-groups *ngIf="showShareListPopup" [moduleName]="'My Profile'"
-                    [isPublishedToPartnerGroups]="landingPageSharedDetails?.publishedToPartnerGroups"
-                    [selectedTeamMemberIds]="landingPageSharedDetails?.partnerIds"
-                    [selectedPartnershipIds]="landingPageSharedDetails?.partnershipIds"
-                    [selectedPartnerGroupIds]="landingPageSharedDetails?.partnerGroupIds" [vendorJourney]="true"
-                    [selectedPartnerIdAndPartnerStatus] = "landingPageSharedDetails?.partnerIdAndPartnerStatus"
-                    [selectedPartnerGroupPartnerIdAndPartnerStatus] = "landingPageSharedDetails?.partnerGroupPartnerIdAndPartnerStatus"
-                    [inputId]="selectedLandingPageId" (closePopup)=closeShareListPopup()>
-                </app-partner-company-and-groups>
+
+<div id="shareVendorDetailsPopup" class="modal fade right " tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+data-backdrop="static" data-keyboard="false">
+<div class="modal-dialog modal-css" role="document" style="width: 75% !important;">
+   <!-- Modal content-->
+   <div class="modal-content">
+      <div class="modal-header">
+         <h4 class="modal-title" style="font-weight: 600;" translate>Share Vendor Journey Page</h4>
+      </div>
+      <div class="modal-body popup-border-bottom">
+         <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+         </app-response-message>
+         <div>
+            <div class="portlet box">
+               <!---Select Partner Lists/Partners-->
+               <div class="form-group col-lg-12 col-md-12 ml15">
+                  <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
+                  <app-partner-company-and-groups #partnerCompanyAndGroupsComponent  *ngIf="showShareListPopup" [moduleName]="'My Profile'"
+                  [isPublishedToPartnerGroups]="landingPageSharedDetails?.publishedToPartnerGroups"
+                  [selectedTeamMemberIds]="landingPageSharedDetails?.partnerIds"
+                  [selectedPartnershipIds]="landingPageSharedDetails?.partnershipIds"
+                  [selectedPartnerGroupIds]="landingPageSharedDetails?.partnerGroupIds" [vendorJourney]="true"
+                  [selectedPartnerIdAndPartnerStatus] = "landingPageSharedDetails?.partnerIdAndPartnerStatus"
+                  [selectedPartnerGroupPartnerIdAndPartnerStatus] = "landingPageSharedDetails?.partnerGroupPartnerIdAndPartnerStatus"
+                  [inputId]="selectedLandingPageId" (closePopup)=closeShareListPopup()>
+              </app-partner-company-and-groups>
+               </div>
             </div>
-        </div>
-    </div>
-</ng-container>
+         </div>
+      </div>
+      <div class="modal-footer cmr" style="border:none;border-top:none !important" >
+         <button class="btn Btn-Gray neg_mrg_top4" type="reset" (click)="closeShareListPopup();" translate>Close</button>
+         
+         
+         <button type="button" class="button_blue bgcolor-unset" 
+            (click)="publishVendorJourney()" translate><span
+               class="btn btn-primary transition txt_pd-top3">Publish</span>
+         </button>
+      </div>
+   </div>
+</div>
+</div>
 <!--<app-partner-company-modal-popup [companyId]="loggedInUserCompanyId" [vendorJourney] = "vendorJourney" [vendorJourneyLandingPageId] = "selectedLandingPageId"
    *ngIf="showShareListPopup" (notifyOtherComponent)="closeShareListPopup()">
 </app-partner-company-modal-popup>-->

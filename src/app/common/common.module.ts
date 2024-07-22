@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BootstrapSwitchModule } from 'angular2-bootstrap-switch';
-
 import { DonutChartComponent } from './donut-chart/donut-chart.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { WorldmapComponent } from './worldmap/worldmap.component';
@@ -34,9 +33,7 @@ import { EmailSpamCheckComponent } from '../email-template/email-spam-check/emai
 import { AutoResponseLoaderComponent } from './loader/auto-response-loader/auto-response-loader.component';
 import { PreviewPopupComponent } from '../forms/preview-popup/preview-popup.component';
 import { PreviewLandingPageComponent } from '../landing-pages/preview-landing-page/preview-landing-page.component';
-
 import { FormPreviewComponent } from '../forms/preview/form-preview.component';
-
 import { LandingPageLoaderComponent } from '../landing-page-loader/landing-page-loader.component';
 import { DashboardLoaderComponent } from './loader/dashboard-loader/dashboard-loader.component';
 import { ModalPopupLoaderComponent } from './loader/modal-popup-loader/modal-popup-loader.component';
@@ -121,7 +118,6 @@ import { PipedriveAuthenticationPopupComponent } from 'app/contacts/pipedrive-au
 /*********XNFR-255******/
 import { PartnerCompanyAndGroupsComponent } from 'app/util/partner-company-and-groups/partner-company-and-groups.component';
 import { CopyGroupUsersModalPopupComponent } from 'app/util/copy-group-users-modal-popup/copy-group-users-modal-popup.component';
-
 import { UserGuideHelpButtonComponent } from './user-guide-help-button/user-guide-help-button.component';
 import { GuideLeftMenuComponent } from 'app/guides/guide-left-menu/guide-left-menu.component';
 import { SearchGuidesComponent } from 'app/guides/search-guides/search-guides.component';
@@ -138,7 +134,6 @@ import { EmailTemplatesListAndGridViewComponent } from 'app/util/email-templates
 import { CustomUiSwitchComponent } from 'app/util/custom-ui-switch/custom-ui-switch.component';
 import { EditTemplateOrPageModalPopupComponent } from 'app/util/edit-template-or-page-modal-popup/edit-template-or-page-modal-popup.component';
 import { ImageUploadCropperComponent } from './image-upload-cropper/image-upload-cropper.component';
-
 import { ShareCampaignsComponent } from './share-campaigns/share-campaigns.component';
 import { ShareAssetsComponent } from './share-assets/share-assets.component';
 import { SharePlaybooksComponent } from './share-playbooks/share-playbooks.component';
@@ -151,12 +146,9 @@ import { ScrollToModule } from 'ng2-scroll-to-el';
 import { ConfirmUnpublishTracksOrPlaybooksModelPopupComponent } from 'app/util/confirm-unpublish-tracks-or-playbooks-model-popup/confirm-unpublish-tracks-or-playbooks-model-popup.component';
 import { CustomUiFilterComponent } from 'app/util/custom-ui-filter/custom-ui-filter.component';
 import { TrimPipe } from 'app/core/custom-pipes/trim.pipe';
-
-//XNFR-426
 import { DealChatPopupComponent } from 'app/deals/deal-chat-popup/deal-chat-popup.component';
 import { ChatComponent } from 'app/util/chat/chat.component';
 import { OpportunitiesChatModalPopupComponent } from 'app/util/opportunities-chat-modal-popup/opportunities-chat-modal-popup.component';
-
 import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
 import { AddCompanyComponent } from 'app/company/add-company/add-company.component';
 import { LandingPagesListAndGridViewComponent } from 'app/util/landing-pages-list-and-grid-view/landing-pages-list-and-grid-view.component';
@@ -165,7 +157,6 @@ import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component
 import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-image-util.component';
 import { PreviewEmailTemplateComponent } from 'app/util/preview-email-template/preview-email-template.component';
 import { PreviewPageComponent } from 'app/util/preview-page/preview-page.component';
-
 import { PartnerJourneyCountTilesComponent } from 'app/util/partner-journey-count-tiles/partner-journey-count-tiles.component';
 import { BoxLoaderComponent } from '../box-loader/box-loader.component';
 import { InteractedNotInteractedTrackDetailsComponent } from 'app/util/interacted-not-interacted-track-details/interacted-not-interacted-track-details.component';
@@ -192,6 +183,8 @@ import { SamlSsoLoginComponent } from 'app/dashboard/saml-sso-login/saml-sso-log
 import { LeadCustomFieldsSettingsComponent } from 'app/dashboard/lead-custom-fields-settings/lead-custom-fields-settings.component';
 import { VendorJourneyFormAnalyticsComponent } from '../util/vendor-journey-form-analytics/vendor-journey-form-analytics.component';
 import { OauthSsoConfigurationComponent } from 'app/dashboard/oauth-sso-configuration/oauth-sso-configuration.component';
+import { CrmSettingsComponent } from 'app/dashboard/crm-settings/crm-settings.component'; 
+import { ShareDashboardButtonsComponent } from './share-dashboard-buttons/share-dashboard-buttons.component';
 
 
 @NgModule({
@@ -224,14 +217,13 @@ import { OauthSsoConfigurationComponent } from 'app/dashboard/oauth-sso-configur
 		EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
-		LandingPagesListAndGridViewComponent,BrowseContentComponent,AddCompanyComponent, SelectLeadComponent,DealChatPopupComponent,
+		LandingPagesListAndGridViewComponent,BrowseContentComponent,AddCompanyComponent,DealChatPopupComponent,
 		ChatComponent,OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PreviewAssetPdfComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,InteractedNotInteractedTrackDetailsComponent,
 		TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent
-
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent
 	],
 
 
@@ -262,13 +254,13 @@ import { OauthSsoConfigurationComponent } from 'app/dashboard/oauth-sso-configur
 		ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,AddCompanyComponent,
-		LandingPagesListAndGridViewComponent,BrowseContentComponent, SelectLeadComponent,DealChatPopupComponent,ChatComponent,
+		LandingPagesListAndGridViewComponent,BrowseContentComponent,DealChatPopupComponent,ChatComponent,
 		OpportunitiesChatModalPopupComponent,UploadImageUtilComponent,PreviewEmailTemplateComponent,PreviewPageComponent,PreviewAssetPdfComponent,PartnerJourneyCountTilesComponent,BoxLoaderComponent,
 		InteractedNotInteractedTrackDetailsComponent,TypewiseTrackContentDetailsComponent,UserwiseTrackCountsComponent,UserwiseTrackDetailsComponent,TrackAssetDetailsComponent,
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent
 
 	]
 

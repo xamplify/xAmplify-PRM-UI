@@ -28,6 +28,7 @@ export class ModuleAnalyticsComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   showDealForm: boolean;
   @Output() notifyShowDealForm = new EventEmitter();
+  @Output() notifyShowLeadForm = new EventEmitter();
   @Output() notifyLeadSuccess = new EventEmitter();
   @Input() applyFilter:boolean;
   constructor(public router: Router,public xtremandLogger:XtremandLogger,public dashboardService: DashboardService,
@@ -82,9 +83,10 @@ export class ModuleAnalyticsComponent implements OnInit {
     }
     
     addLead() {      
-       this.showLeadForm = true;
-       this.actionType = "add";
-       this.leadId = 0;    
+      //  this.showLeadForm = true;
+      //  this.actionType = "add";
+      //  this.leadId = 0;
+      this.notifyShowLeadForm.emit();    
      }
    
      resetValues(){

@@ -11,8 +11,9 @@ export class IntegrationSettingsPopupComponent implements OnInit {
   @Output() closeEvent = new EventEmitter<any>();
   @Input() customField = new CustomFieldsDto;
   @Input() customFieldsList: any;
+  @Input() opportunityType :any;
   customFields = new CustomFieldsDto;
-  defaultFields = ['Name']
+  defaultFields = ['Name','Last Name']
   isDefaultField: boolean = false;
   options: any;
   deleteOptionVisible: boolean = false;
@@ -20,6 +21,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
   errorMessage = "";
   canDisableSelect: boolean = false;
   canDisableType: boolean = false;
+  selectedPicklistValue: any;
   constructor() { }
 
   ngOnInit() {
@@ -30,7 +32,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     if(this.customField.originalCRMType === 'select'){
       this.canDisableSelect = true;
     }
-    if(this.customField.formDefaultFieldType === 'DEAL_ID'){
+    if(this.customField.formDefaultFieldType === 'DEAL_ID' || this.customField.formDefaultFieldType === 'LEAD_ID'){
       this.canDisableType = true;
     }
     this.customFields.required = this.customField.required;
@@ -46,7 +48,12 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     this.customFields.required = this.customField.required;
     this.customFields.canEditRequired = this.customField.canEditRequired;
     this.customFields.selected = this.customField.selected;
+    this.customFields.nonInteractive = this.customField.nonInteractive;
     this.customFields.options = this.customField.options.map(option => new PicklistValues(option.label, option.value));
+    this.customFields.picklistValues = this.customField.picklistValues;
+    if (this.customFields.picklistValues.length > 0) {
+      this.selectedPicklistValue = this.customFields.picklistValues[0].label;
+    }
   }
   hideIntegrationSettingForm() {
     $("#integrationSettingsForm").modal('hide');
@@ -103,6 +110,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.customField.required = this.customFields.required;
       this.customField.canEditRequired = this.customFields.canEditRequired;
       this.customField.selected = this.customFields.selected;
+      this.customField.nonInteractive = this.customFields.nonInteractive;
       this.customField.options = this.customFields.options.map(option => new PicklistValues(option.label, option.value));
       this.hideIntegrationSettingForm();
     }
@@ -113,12 +121,22 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       if (field.label === selectedField.label && selectedField.formDefaultFieldType === 'DEAL_ID') {
         this.customFields.formDefaultFieldType = 'DEAL_ID';
         this.canDisableType = true;
-      } else {
+      }  else {
         field.formDefaultFieldType = null;
         if (field.name === 'xAmplify_Deal_Reference_ID__c') {
           field.canUnselect = true;
         }
       }
+      if (field.label === selectedField.label && selectedField.formDefaultFieldType === 'LEAD_ID') {
+        this.customFields.formDefaultFieldType = 'LEAD_ID';
+        this.canDisableType = true;
+      }  else {
+        field.formDefaultFieldType = null;
+        if (field.name === 'xAmplify_Lead_ID__c') {
+          field.canUnselect = true;
+        }
+      }
+     
     });
     if(selectedField.formDefaultFieldType === null){
       this.canDisableType = false;

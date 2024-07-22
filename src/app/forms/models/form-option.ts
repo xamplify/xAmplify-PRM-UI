@@ -9,5 +9,5 @@ export class FormOption {
     isValid = true;
     defaultColumn = false;
     correct = false;
-
+    parentChoiceId = 0;
 }

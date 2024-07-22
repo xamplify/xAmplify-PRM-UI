@@ -5,13 +5,16 @@
 <div class="scrollbar-x">
 <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
     <li class="active"><a (click)="setActiveTab('home')" data-toggle="tab" href="#home">User Info</a></li>
-    <li><a (click)="setActiveTab('menu1')"
-        data-toggle="tab" href="#menu1">Custom fields</a>
-    </li>
     <li *ngIf="integrationType === 'SALESFORCE'"><a (click)="setActiveTab('menu2')"
-      data-toggle="tab" href="#menu2">Settings</a></li>
+        data-toggle="tab" href="#menu2">Lead Custom fields</a>
+    </li>
+    <li><a (click)="setActiveTab('menu1')"
+      data-toggle="tab" href="#menu1">Deal Custom fields</a>
+  </li>
+    <li *ngIf="integrationType === 'SALESFORCE'"><a (click)="setActiveTab('menu3')"
+      data-toggle="tab" href="#menu3">Settings</a></li>
     <div class="d-flex justify-content-end">
-      <li *ngIf="activeTab === 'menu1' && haveCustomFields " class ="ml_15">
+      <li *ngIf="(activeTab === 'menu1' || activeTab === 'menu2') && haveCustomFields && !integrationType === 'SALESFORCE'" class ="ml_15">
         <div class="inputs mr10 width100">
           <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
             (ngModelChange)="sortFieldsByOption()">
@@ -21,7 +24,7 @@
           </select>
         </div>
       </li>
-      <li *ngIf="activeTab === 'menu1' && haveCustomFields ">
+      <li *ngIf="(activeTab === 'menu1' || activeTab === 'menu2') && haveCustomFields ">
         <div class="inputs mr10">
           <div class="portlet-input input-inline align-width">
             <div class="input-icon right">
@@ -66,12 +69,13 @@
   </div>
   <div id="menu1" class="tab-pane fade pt-top">
     <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
-    <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
+    <app-crm-form-settings *ngIf="activeTab === 'menu1'" (notifySubmitSuccess)="setCustomResponse($event)"  [integrationType]="integrationType" [opportunityType]="opportunityType"></app-crm-form-settings>
+    <!-- <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
       <div class="row m0">
         <div class="col-md-12 p0">
           <div style="margin-bottom:20px">
             <h3 class="fs-16">{{ integrationType }} custom fields
-              <!-- <span><a class="fa fa-edit mr5 IconCustomization SingleIconCu" (click)="toggleHeaderSettings()"></a></span> -->
+               <span><a class="fa fa-edit mr5 IconCustomization SingleIconCu" (click)="toggleHeaderSettings()"></a></span>
               <span class="reload-btn">
                 <a (click)="reloadCustomFields()" data-toggle="tooltip" data-placement="top"
                   title="Refresh Custom Fields"><i class="fa fa-refresh" style="font-size: 14px !important;"></i>
@@ -81,10 +85,10 @@
             (click)="addCustomFielsdOrderModalOpen()"><span
              class="btn btn-primary transition txt_pd-top3">Order Custom Fields</span></button>
             </h3>
-            <!-- <div [ngClass]="{'hidden': !showHeaderTextArea}">
+             <div [ngClass]="{'hidden': !showHeaderTextArea}">
               <textarea [(ngModel)]="dealHeader" rows="4" cols="4" class="form-control"
               maxlength="255"></textarea>
-            </div> -->
+            </div> 
           </div>
         </div>
       </div>
@@ -97,10 +101,11 @@
                   id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="isHeaderCheckBoxChecked"
                   (change)="checkAll($event)" class="pointer" />
               </th>
-              <th>Field Name</th>
+              <th>Field Label</th>
+              <th *ngIf="integrationType === 'SALESFORCE'">Field Name</th>
               <th>Data Type</th>
-              <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Required</th> -->
-              <!-- <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Place Holder</th> -->
+               <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Required</th> 
+               <th *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Place Holder</th>
               <th class="text-center"
                 *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO'">
                 Actions</th>
@@ -142,11 +147,15 @@
                   <span *ngIf="integrationType === 'HALOPSA'"><b>TicketType(s)</b>: {{sfCustomField.halopsaTicketTypeName}}</span>
                   <span *ngIf="integrationType === 'ZOHO'"><b>Layout(s)</b>: {{sfCustomField.halopsaTicketTypeName}}</span>
                 </td>
+                <td *ngIf="integrationType === 'SALESFORCE'"><span data-toggle="tooltip" data-placement="top"
+                  title="{{sfCustomField.name}}">{{sfCustomField.name | slice:0:30}}
+                  <span *ngIf="sfCustomField.name?.length>30">...</span>
+                </span></td>
                 <td><span>{{sfCustomField.type}}</span><span
                     *ngIf="sfCustomField.entryType">-{{sfCustomField.entryType}}</span>
                     <div *ngIf="integrationType === 'SALESFORCE' && sfCustomField.originalCRMType === 'select'">Mapped As: PickList</div>
                 </td>
-                <!-- <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
+                <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
                   <span *ngIf="sfCustomField.selected">Required
                     <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right"
                       title="Your partner must fill in this custom field if you toggle on this option."></span>
@@ -157,11 +166,11 @@
                       <span class="labels" data-on="ON" data-off="OFF"></span>
                     </label>
                   </span>
-                </td> -->
-                <!-- <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
+                </td>
+                 <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
                   <input *ngIf="sfCustomField.selected" type="text" class="form-control" placeholder="PlaceHolder"
                     [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
-                </td> -->
+                </td>
                 <td class="text-center"
                   *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO'">
                   <a *ngIf="sfCustomField.selected && integrationType != 'SALESFORCE'" class="custom-icon" (click)="toggleSettings(sfCustomField)">
@@ -293,16 +302,169 @@
           *ngIf="sfcfPager.pages && sfcfPager.pages.length" (click)="saveCustomFieldsSelection()"><span
             class="btn btn-primary transition txt_pd-top3">Submit</span></button>
       </div>
-    </ng-container>
-    <div *ngIf="isCustomFieldsModelPopUp">
+    </ng-container> -->
+    <!-- <div *ngIf="isCustomFieldsModelPopUp">
       <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField" [customFieldsList]="customFieldsList"></app-integration-settings-popup>
     </div>
     <div *ngIf="isCustomFieldsOrderModelPopUp">
       <app-custom-fields-order-popup (closeEvent)="closeCustomFielsOrderModal($event)" [customFieldsList]="customFieldsList"></app-custom-fields-order-popup>
-    </div>
+    </div> -->
   </div>
   <div id="menu2" class="tab-pane fade pt-top">
-    <div>
+    <app-crm-form-settings  *ngIf="activeTab === 'menu2'"  (notifySubmitSuccess)="setCustomResponse($event)"  [integrationType]="integrationType" [opportunityType]="opportunityType"></app-crm-form-settings>
+    <!-- <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
+    <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
+      <div class="row m0">
+        <div class="col-md-12 p0">
+          <div style="margin-bottom:20px">
+            <h3 class="fs-16">{{ integrationType }} custom fields
+              <span class="reload-btn">
+                <a (click)="reloadCustomFields()" data-toggle="tooltip" data-placement="top"
+                  title="Refresh Custom Fields"><i class="fa fa-refresh" style="font-size: 14px !important;"></i>
+                  Reload</a>
+              </span>
+              <button *ngIf="integrationType === 'SALESFORCE'" type="button" class="button_blue bgcolor-unset pr0 px-9 pull-right"
+            (click)="addCustomFielsdOrderModalOpen()"><span
+             class="btn btn-primary transition txt_pd-top3">Order Custom Fields</span></button>
+            </h3>
+          </div>
+        </div>
+      </div>
+      <form class="form-horizontal" autocomplete="off">
+        <div class="table-responsive">
+        <table class='table tgrid'>
+          <thead>
+            <tr>
+              <th class="text-center"><input type="checkbox" class="checkBox_shadow" value="sfcfSelectAll"
+                  id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="isHeaderCheckBoxChecked"
+                  (change)="checkAll($event)" class="pointer" />
+              </th>
+              <th>Field Label</th>
+              <th *ngIf="integrationType === 'SALESFORCE'">Field Name</th>
+              <th>Data Type</th>
+              <th class="text-center"
+                *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO'">
+                Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let sfCustomField of sfcfPagedItems ">
+              <tr>
+                <td class="text-center"><input type="checkbox" lass="checkBox_shadow" value="{{sfCustomField.name}}"
+                    (click)="selectCf(sfCustomField)" id="{{sfCustomField.name}}" name="sfcf[]"
+                    [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required"
+                    [disabled]="!sfCustomField.canUnselect" class="pointer" /></td>
+                <td>
+                  <span class="FieldName" data-toggle="tooltip" data-placement="top"
+                    title="{{sfCustomField.label}}">{{sfCustomField.label | slice:0:30}}
+                    <span *ngIf="sfCustomField.label?.length>30">...</span>
+                  </span>
+
+                  <ul
+                    *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO'"
+                    class="textDecoration">
+
+                    <li>{{sfCustomField.displayName}}</li>
+                    <li
+                      *ngIf="(sfCustomField.formDefaultFieldType != null)  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)">
+                      Mapped As:
+                      <ng-container [ngSwitch]="sfCustomField.formDefaultFieldType">
+                        <i *ngSwitchCase="'AMOUNT'" class="fa fa-usd" aria-hidden="true"></i>
+                        <i *ngSwitchCase="'CLOSE_DATE'" class="fa fa-calendar" aria-hidden="true"></i>
+                        <i *ngSwitchCase="'DEAL_NAME'" class="fa fa-tags" aria-hidden="true"></i>
+                      </ng-container>
+                      {{ sfCustomField.formDefaultFieldType }}
+                    </li>
+                    <li *ngIf="sfCustomField.required"><i class="fa fa-check-circle-o GreenCheckMark"
+                        aria-hidden="true"></i>
+                      Required
+                    </li>
+                  </ul>
+                  <span *ngIf="integrationType === 'HALOPSA'"><b>TicketType(s)</b>: {{sfCustomField.halopsaTicketTypeName}}</span>
+                  <span *ngIf="integrationType === 'ZOHO'"><b>Layout(s)</b>: {{sfCustomField.halopsaTicketTypeName}}</span>
+                </td>
+                <td *ngIf="integrationType === 'SALESFORCE'"><span data-toggle="tooltip" data-placement="top"
+                  title="{{sfCustomField.name}}">{{sfCustomField.name | slice:0:30}}
+                  <span *ngIf="sfCustomField.name?.length>30">...</span>
+                </span></td>
+                <td><span>{{sfCustomField.type}}</span><span
+                    *ngIf="sfCustomField.entryType">-{{sfCustomField.entryType}}</span>
+                    <div *ngIf="integrationType === 'SALESFORCE' && sfCustomField.originalCRMType === 'select'">Mapped As: PickList</div>
+                </td>
+                <td class="text-center"
+                  *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE' || integrationType === 'SALESFORCE' || integrationType === 'HALOPSA' || integrationType === 'ZOHO'">
+                  <a *ngIf="sfCustomField.selected && integrationType != 'SALESFORCE'" class="custom-icon" (click)="toggleSettings(sfCustomField)">
+                    <i *ngIf="sfCustomField.selected" class="fa fa-edit mr5 IconCustomization SingleIconCu"></i>
+                    <div class="clickicons"></div>
+                  </a>
+                  <a *ngIf="sfCustomField.selected && integrationType === 'SALESFORCE'" class="custom-icon">
+                    <i *ngIf="sfCustomField.selected" (click)="addCustomFielsdModalOpen(sfCustomField)" class="fa fa-gear mr5 IconCustomization SingleIconCu"></i>
+                    <div class="clickicons"></div>
+                  </a>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        </div>
+      </form>
+      <ul *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="pagination">
+        <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a (click)="setSfCfPage(1)">First</a></li>
+        <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a
+            (click)="setSfCfPage(sfcfPager.currentPage - 1)">Previous</a></li>
+        <li *ngFor="let page of sfcfPager.pages" [ngClass]="{active:sfcfPager.currentPage === page}"><a
+            (click)="setSfCfPage(page)" [class.disabled]="sfcfPager.currentPage === page">{{page}}</a></li>
+        <li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
+          <a (click)="setSfCfPage(sfcfPager.currentPage + 1)">Next</a>
+        </li>
+        <li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
+          <a (click)="setSfCfPage(sfcfPager.totalPages)">Last</a>
+        </li>
+      </ul>
+      <div *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="p-drop-down pl10 custom-fields-items-count">
+        <select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber"
+          [ngModelOptions]="{standalone: true}" (ngModelChange)="selectedPageNumber($event.value)">
+          <option [ngValue]="paginationComponent.numberPerPage[0]">{{paginationComponent.numberPerPage[0].name}}
+          </option>
+          <option *ngIf="sfcfPager.totalItems>12" [ngValue]="paginationComponent.numberPerPage[1]">
+            {{paginationComponent.numberPerPage[1].name}}</option>
+          <option *ngIf="sfcfPager.totalItems>24" [ngValue]="paginationComponent.numberPerPage[2]">
+            {{paginationComponent.numberPerPage[2].name}}</option>
+        </select>
+      </div>
+      <div class="text-center" *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
+        <span *ngIf="integrationType =='SALESFORCE' && !isFilterApplied">Please Reconfigure {{ integrationType | titlecase }} as the token
+          has expired</span>
+        <span *ngIf="integrationType !='SALESFORCE' && !isFilterApplied">There are no custom fields in your {{ integrationType | titlecase
+          }} account.</span>
+          <span *ngIf="isFilterApplied">No Custom fields found</span>
+      </div>
+      <div class="modal-footer border-none pr0 pt0 pl0">
+        <span *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="align-item-left">
+          <strong>Total Records :{{sfcfPager.totalItems}}</strong>
+        </span>
+        <button type="button" class="button_blue bgcolor-unset pr0 px-9"
+          *ngIf="sfcfPager.pages && sfcfPager.pages.length" (click)="saveCustomFieldsSelection()"><span
+            class="btn btn-primary transition txt_pd-top3">Submit</span></button>
+      </div>
+    </ng-container> -->
+    <!-- <div *ngIf="isCustomFieldsModelPopUp">
+      <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField" [customFieldsList]="customFieldsList"></app-integration-settings-popup>
+    </div>
+    <div *ngIf="isCustomFieldsOrderModelPopUp">
+      <app-custom-fields-order-popup (closeEvent)="closeCustomFielsOrderModal($event)" [customFieldsList]="customFieldsList"></app-custom-fields-order-popup>
+    </div> -->
+  </div>
+
+  <div *ngIf="isCustomFieldsModelPopUp">
+    <app-integration-settings-popup (closeEvent)="closeCustomFielsModal($event)" [customField]="customField" [customFieldsList]="customFieldsList"></app-integration-settings-popup>
+  </div>
+  <div *ngIf="isCustomFieldsOrderModelPopUp">
+    <app-custom-fields-order-popup (closeEvent)="closeCustomFielsOrderModal($event)" [customFieldsList]="customFieldsList"></app-custom-fields-order-popup>
+  </div>
+
+  <div id="menu3" class="tab-pane fade pt-top" *ngIf="integrationDetails != undefined">
+    <!-- <div>
       <app-list-loader *ngIf="ngxloading"></app-list-loader>
       <h4>Deal Form Description</h4>
       <ng-container *ngIf="!ngxloading">
@@ -312,6 +474,7 @@
       <button type="button" class="button_blue bgcolor-unset pr0 px-9 pull-right mt10"
       (click)="setDealHeader()"><span
         class="btn btn-primary transition txt_pd-top3">Submit</span></button>
-    </div>
+    </div> -->
+    <app-crm-settings [integrationDetails]="integrationDetails" [integrationType]="integrationType"></app-crm-settings>
   </div>
 </div>
