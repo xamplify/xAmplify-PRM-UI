@@ -52,7 +52,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     this.customFields.options = this.customField.options.map(option => new PicklistValues(option.label, option.value));
     this.customFields.picklistValues = this.customField.picklistValues;
     if (this.customFields.picklistValues.length > 0) {
-      this.selectedPicklistValue = this.customFields.picklistValues[0].label; // Assuming you want to select the first value by default
+      this.selectedPicklistValue = this.customFields.picklistValues[0].label;
     }
   }
   hideIntegrationSettingForm() {
