@@ -135,6 +135,8 @@ export class CustomAddLeadComponent implements OnInit {
   isMarketingCompany: boolean = false;
   showCreatedByPipelineAndStage: boolean = false;
   showCreatedByPipelineAndStageOnTop: boolean = false;
+  vendorCompanyName:string = '';
+
 
   titleFields = ['title','name','symptom','Deal_Name','Title'];
   amountFields = ['amount','value','FOppValue','Amount'];
@@ -448,6 +450,9 @@ export class CustomAddLeadComponent implements OnInit {
     //this.validateField('createdForCompanyId',false);
     if (this.lead.createdForCompanyId > 0) {
       //this.isSalesForceEnabled(); 
+      let vendorCompany;
+      vendorCompany = this.vendorList.find(vendor => vendor.companyId == this.lead.createdForCompanyId);
+      this.vendorCompanyName = vendorCompany.companyName;
       this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
       this.getActiveCRMDetails();
     } else {
@@ -1388,16 +1393,16 @@ export class CustomAddLeadComponent implements OnInit {
     $('#leadFormModel').modal('hide');
   }
 
- validateAllFields() {
+  validateAllFields() {
 
     this.isValid = true;
     this.isValidPipeplineAndStage = true;
     if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
       this.isValid = false;
-    } else if (this.lead.createdForPipelineId == undefined || this.lead.createdForPipelineId <= 0) {
+    } else if ((this.lead.createdForPipelineId == undefined || this.lead.createdForPipelineId <= 0) && (this.activeCRMDetails.showLeadPipeline)) {
       this.isValid = false;
       this.isValidPipeplineAndStage = false;
-    } else if (this.lead.createdForPipelineStageId == undefined || this.lead.createdForPipelineStageId <= 0) {
+    } else if ((this.lead.createdForPipelineStageId == undefined || this.lead.createdForPipelineStageId <= 0) && (this.activeCRMDetails.showLeadPipelineStage)) {
       this.isValid = false;
       this.isValidPipeplineAndStage = false;
     } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineId == undefined || this.lead.createdByPipelineId <= 0)) {
