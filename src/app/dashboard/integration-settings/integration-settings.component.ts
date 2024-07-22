@@ -17,7 +17,7 @@ declare var swal:any, $:any;
 export class IntegrationSettingsComponent implements OnInit {
 
 	loggedInUserId: any;
-	@Input() integrationType: String;
+	@Input() integrationType: string;
 	@Output() closeEvent = new EventEmitter<any>();
 	@Output() unlinkEvent = new EventEmitter<any>();
 	@Output() refreshEvent = new EventEmitter<any>();
