@@ -217,11 +217,11 @@ export class CustomAddLeadComponent implements OnInit {
       if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
         $('#leadFormModel').modal('show');
         this.showAttachLeadPopUp = true;
-        if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
-          this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
-          this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
-          this.getActiveCRMDetails();
-        }
+        // if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
+        //   this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
+        //   this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
+        //   this.getActiveCRMDetails();
+        // }
       }
     } else if (this.actionType === "edit") {
       this.edit = true;
