@@ -50,4 +50,5 @@ export class Deal {
     createdForPipelineId: number;         
     createdForPipelineStageId: number;
     haloPSATickettypeId: any;
+    showDealActions:boolean;
 }

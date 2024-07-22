@@ -207,7 +207,7 @@
                               <div class="border-bt"></div>
                            </li>
                            <!--Register Deals-->
-                           <li>
+                           <li *ngIf="isRegisterDealEnabled">
                               <a (click)=" navigateAndOpenAddDealsModalPopUp()">
                                  <i class="fa fa-tags" aria-hidden="true"></i>
                                  {{DEAL_CONSTANTS?.registerDeals}}

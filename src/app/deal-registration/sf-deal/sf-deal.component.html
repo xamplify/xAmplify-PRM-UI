@@ -5,8 +5,7 @@
         <h4 class="panel-title">
           <a class="collapsed" href="DealDetails" (click)="toggleCollapseDeal($event)"> <i
               [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed2, 'fa-chevron-down collapseIn': isCollapsed2}"
-              class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;"></i>Deal
-            Details</a>
+              class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;"></i>{{ opportunityType === 'DEAL' ? 'Deal Details' : 'Lead Details' }}</a>
         </h4>
       </div>
       <div [ngClass]="{'collapse': isCollapsed2, '': !isCollapsed2}" id="DealDetails">
@@ -24,7 +23,7 @@
             <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-              <div *ngIf="dealHeader?.length>1 && isOnlyPartner && !isPreview"><div class="alert alert-info">{{dealHeader}}</div></div>
+              <div *ngIf="formDescription?.length>1 && isOnlyPartner && !isPreview"><div class="alert alert-info">{{formDescription}}</div></div>
               <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
                 <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="formFields"
                   [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
@@ -239,8 +238,8 @@
       </ng-container>
       <!-- ---------------------------DropDown Menu----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='select'">
-        <select class="form-control" [(ngModel)]="columnInfo.value" [disabled]="isVendor || isPreview"
-          (ngModelChange)="selectOnChangeEvent($event)">
+        <select class="form-control" [(ngModel)]="columnInfo.value" [disabled]="isVendor || isPreview || !columnInfo?.dropDownChoices?.length > 0 || columnInfo.nonInteractive"
+          (ngModelChange)="selectOnChangeEvent(columnInfo)">
           <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [ngValue]="dropDownValue.labelId">
             {{dropDownValue.name}}</option>
         </select>

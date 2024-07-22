@@ -50,7 +50,31 @@
               <select class="form-control" [disabled]= "canDisableSelect" *ngIf="customFields.selected" [(ngModel)]="customFields.formDefaultFieldType"
                 [ngModelOptions]="{standalone: true}" (change)="onFieldTypeChange(customFields)">
                 <option [ngValue]="null">None</option>
-                <option [ngValue]="'DEAL_ID'">Deal Id
+                <option *ngIf="opportunityType === 'DEAL'" [ngValue]="'DEAL_ID'">Deal Id
+                </option>
+                <option *ngIf="opportunityType === 'LEAD'" [ngValue]="'LEAD_ID'">Lead Id
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-6" *ngIf="customFields.selected && customFields.type === 'picklist'">
+              <label for="required">Non Interactive</label>
+              <span class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"
+                title="Your partner can not fill in this custom field if you toggle on this option."></span>
+              <label class="toggleOnOff">
+                <input class="checkBox_shadow" type="checkbox"
+                  [(ngModel)]="customFields.nonInteractive" [ngModelOptions]="{standalone: true}">
+                <span class="sliderOnOff"></span>
+                <span class="labels" data-on="ON" data-off="OFF"></span>
+              </label>
+            </div>
+            <div class="col-sm-6" *ngIf="customFields.selected && customFields.type === 'picklist' && customFields.nonInteractive">
+              <label class="control-label">PickList Values<span class="required"><strong>*</strong></span></label>
+              <select class="form-control" [(ngModel)]="selectedPicklistValue"
+              [ngModelOptions]="{standalone: true}">
+                <option [value]="0">Select value</option>
+                <option *ngFor="let value of customFields.picklistValues" [value]="value.label">{{value.label}}
                 </option>
               </select>
             </div>
@@ -62,7 +86,7 @@
                 <option [ngValue]="'text'">String</option>
                 <option [ngValue]="'select'">PickList</option>
               </select>
-            </div>
+            </div>       
           </div>
           <div *ngIf="customFields.originalCRMType === 'select'" class="bg-color-for-card" style="margin-top: 20px;">
             <div class="form-group mb0">

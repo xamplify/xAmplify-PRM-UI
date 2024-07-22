@@ -731,6 +731,12 @@ export class AddDealComponent implements OnInit {
     //   this.deal.createdForPipelineId = this.deal.createdByPipelineId;
     //   this.deal.createdForPipelineStageId = this.deal.createdByPipelineStageId;
     // }
+    if (!this.activeCRMDetails.showDealPipeline) {
+      this.deal.createdForPipelineId = this.activeCRMDetails.dealPipelineId;
+    }
+    if (!this.activeCRMDetails.showDealPipelineStage) {
+      this.deal.createdForPipelineStageId = this.activeCRMDetails.dealPipelineStageId;
+    }
     if(this.deal.createdForPipelineId > 0 && this.deal.createdForPipelineStageId > 0){
       this.deal.pipelineId = this.deal.createdForPipelineId;
       this.deal.pipelineStageId = this.deal.createdForPipelineStageId;
@@ -942,6 +948,14 @@ export class AddDealComponent implements OnInit {
       this.dealTypeError = false;
       this.properties.length = 0;
       this.propertiesQuestions.length = 0;
+    }
+
+    if (!this.activeCRMDetails.showDealPipeline) {
+      this.pipelineIdError = false;
+    }
+    if (!this.activeCRMDetails.showDealPipelineStage) {
+      this.pipelineStageIdError = false;
+      this.createdForPipelineStageIdError = false;
     }
 
     if (!this.showCreatedByPipelineAndStage && !this.createdForPipelineStageIdError) {

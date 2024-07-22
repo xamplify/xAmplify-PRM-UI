@@ -77,6 +77,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     welcomePageItemsLoader = false;
     customResponse:CustomResponse = new CustomResponse();
     showDealForm: boolean = false;
+    showLeadForm: boolean = false;
     dealResponse:CustomResponse = new CustomResponse();
     showSandboxText = false;
     vanityLoginDto: VanityLoginDto = new VanityLoginDto();
@@ -251,6 +252,14 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   
     closeDealForm() {
       this.showDealForm = false;
+    }
+ 
+    showSubmitLeadSuccess() {
+      this.showLeadForm = false;
+      this.dealResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+    }
+    closeLeadForm() {
+      this.showLeadForm = false;
     }
 
     getSelectedIndexFromPopup(event:any){
