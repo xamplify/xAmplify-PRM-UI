@@ -5,16 +5,16 @@
 <div class="scrollbar-x">
 <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
     <li class="active"><a (click)="setActiveTab('home')" data-toggle="tab" href="#home">User Info</a></li>
-    <li *ngIf="integrationType == 'SALESFORCE'"><a (click)="setActiveTab('menu2')"
+    <li *ngIf="isSalesForceType"><a (click)="setActiveTab('menu2')"
         data-toggle="tab" href="#menu2">Lead Custom fields</a>
     </li>
     <li><a (click)="setActiveTab('menu1')"
       data-toggle="tab" href="#menu1">Deal Custom fields</a>
   </li>
-    <li *ngIf="integrationType == 'SALESFORCE'"><a (click)="setActiveTab('menu3')"
+    <li *ngIf="isSalesForceType"><a (click)="setActiveTab('menu3')"
       data-toggle="tab" href="#menu3">Settings</a></li>
     <div class="d-flex justify-content-end">
-      <li *ngIf="(activeTab == 'menu1' || activeTab == 'menu2') && haveCustomFields && !integrationType == 'SALESFORCE'" class ="ml_15">
+      <li *ngIf="(activeTab == 'menu1' || activeTab == 'menu2') && haveCustomFields && !isSalesForceType" class ="ml_15">
         <div class="inputs mr10 width100">
           <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
             (ngModelChange)="sortFieldsByOption()">

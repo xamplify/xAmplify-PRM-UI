@@ -62,7 +62,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	showHeaderTextArea: boolean = false;
 	dealHeader = '';
 	opportunityType: any;
-
+	isSalesForceType = false;
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
@@ -82,6 +82,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	}
 	
 	ngOnInit() {
+		this.isSalesForceType = this.integrationType!=undefined && (this.integrationType=='SALESFORCE' || this.integrationType=='salesforce');
 		this.getIntegrationDetails();
 	}
 	
