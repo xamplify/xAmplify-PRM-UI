@@ -161,12 +161,12 @@ export class WelcomeComponent implements OnInit, OnDestroy {
      }
     getDefaultPage(userId: number) {
       try{
-        this.userService.getUserDefaultPage(userId)
+        this.userService.loadUserDefaultPage(userId, this.authenticationService.companyProfileName)
             .subscribe(
                 data => {
                     try {
-                        if (data === 'welcome' || data['_body'].includes('welcome')) {
-                            this.userDefaultPage.isCurrentPageDefaultPage = true;
+                        if (data.dashboardType === 'welcome' || data.dashboardType.includes('welcome')) {
+                            this.userDefaultPage.isCurrentPageDefaultPage = data.isCurrentPageDefaultPage;
                             this.referenceService.userDefaultPage = 'WELCOME';
                         }
                     } catch (error) {

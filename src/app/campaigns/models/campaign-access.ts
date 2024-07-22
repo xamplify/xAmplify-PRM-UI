@@ -46,5 +46,6 @@ export class CampaignAccess {
 
   /****XNFR-595****/
   paymentOverDue =  false;
+  ssoEnabled = false;
 
 }

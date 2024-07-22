@@ -2,11 +2,10 @@
 <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 <div *ngIf="!loading">
   <div class="portlet light">
-    <h4 class="bold-font-weight">Turn Campaign Analytics on or off
-    </h4>
-    <label class="bold-font">You have the ability to view and control campaign analytics in the "Manage Campaigns" section.</label>
+    <h4 class="bold-font-weight">Turn Campaign Analytics ON or OFF</h4>
+    <label class="bold-font">You have the ability to view or hide the campaign analytics in the "Manage Campaigns" section.</label>
     <div>
-      <h5 class="bold-font-weight h5-custom-font">Enabling this option will result in a 15-second delay for loading the analytics:
+      <h5 class="bold-font-weight h5-custom-font">Enabling this option may result in a delay when loading the analytics.
         <br><br>
         <app-custom-ui-switch [customSwitch]="campaignAnalyticsSettingsDto?.campaignAnalyticsSettingsEnabled" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
       </h5>

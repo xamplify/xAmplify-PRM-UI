@@ -138,8 +138,9 @@ tr > td > h6 {
   -ms-transform: rotate(-15deg);
   transform: rotate(-15deg);
   position: absolute;
-  bottom: 12px;
-  font-size: 78px !important;
+  font-size: 65px !important;
+  bottom: 25px !important;
+  margin-left: -29px !important;
 }
 .dashboard-stat {
   height: auto !important;

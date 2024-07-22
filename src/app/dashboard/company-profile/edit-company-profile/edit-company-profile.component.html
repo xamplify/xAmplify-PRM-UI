@@ -10,6 +10,9 @@
 					aria-hidden="true"></i></li>
 			<li><i class="fa fa-building-o" aria-hidden="true"></i>Company Profile</li>
 		</ul>
+		<a *ngIf="authenticationService.isSuperAdmin()" class="close-circle mr5 mt5" [routerLink]="['/home/dashboard/admin-report']">
+			<i class="fa fa-times" aria-hidden="true"></i>
+		</a>
 	</div>
 
 	<div class="" id="company-profile-div">
@@ -329,6 +332,12 @@
 																[(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics"
 																[ngModelOptions]="{standalone: true}"></td>
 													</tr>
+													<tr>
+														<th scope="row">SSO Enabled</th>
+														<td class="pt0">
+															<app-custom-ui-switch [customSwitch]="campaignAccess.ssoEnabled" (customUiSwitchEventEmitter)="setSSOValue($event)"></app-custom-ui-switch>
+														</td>
+													</tr>
 												</ng-container>
 												<tr>
 													<th scope="col">Share Leads</th>
@@ -594,6 +603,16 @@
 													style="color: #f55d7a">{{websiteErrorMessage}}</span>
 											</div>
 										</div>
+										<div class="col-md-6 col-lg-6 mPadCompanyProfile" style="padding-left: 15px;">
+											<div class="form-group" [attr.class]="supportEmailIdDivClass">
+												<label class="control-label" translate>Support Email Id </label>
+												<input type="text" id="supportEmailId" name="supportEmailId" placeholder="Enter Support Email Id"
+													maxlength="240" class="form-control" [(ngModel)]="companyProfile.supportEmailId" autocomplete="off"
+													(input)="validatePattern('supportEmailId')" (blur)="validatePattern('supportEmailId')" /> <span
+													*ngIf="supportEmailIdError" style="color: #f55d7a">{{supportEmailIdErrorMessage}}</span>
+											</div>
+										</div>
+
 										<div class="col-md-12 col-lg-12">
 											<div class="form-group" [attr.class]="aboutUsDivClass">
 												<label class="control-label" translate>About Us <font><b

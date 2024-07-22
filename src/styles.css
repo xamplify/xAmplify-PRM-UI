@@ -284,7 +284,9 @@ nav a.active {
 .mt5 {
   margin-top: 5px !important;
 }
-
+.mb4{
+  margin-bottom: 4px !important;
+}
 .mb5 {
   margin-bottom: 5px !important;
 }
@@ -2567,7 +2569,7 @@ div#bubble-chart {
   background: #1c84ff;
 }
 .mix-filter-li-selected {
-  background-color: #0276ff !important;
+  background-color: #0276ff;
   color:#fff;
 }
 .portlet.light.cpad.hover-effect.pointer.card-radius {
@@ -3185,3 +3187,8 @@ button#cancel_button {
   margin-right: 6px;
 
 }
+.mb-star.star{
+  color: #f55d7a !important;
+}
+.submit_txt_align{margin-top: -6px !important;}
+.neg_mrg_top5{margin-top: -5px !important;}

@@ -16,10 +16,12 @@ import { Properties } from "app/common/models/properties";
 
 @Injectable()
 export class VanityURLService {
+  
   properties:Properties = new Properties();
   URL = this.authenticationService.REST_URL;
   ACCESS_TOKEN_SUFFIX_URL = "?access_token=";
   CUSTOM_LINK_PREFIX_URL = this.authenticationService.REST_URL + "customLinks";
+  DASHBOARD_BUTTON_PREFIX_URL = this.authenticationService.REST_URL + "dashboardButtons";
   CUSTOM_LINK_URL = this.CUSTOM_LINK_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
 
   constructor(private http: Http, private authenticationService: AuthenticationService, private titleService: Title,
@@ -321,5 +323,23 @@ getImageFile(imageUrl: string,name:any): Observable<File> {
     return modifiedHtml;
   }
     /**** 18-02-2024  Add !important end of the style attributes ********/
+
+    isDashboardButtonPublished(id: number) {
+      let url = this.DASHBOARD_BUTTON_PREFIX_URL+'/isPublished/'+id+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+      return this.authenticationService.callGetMethod(url);
+    }
+
+    findAllUnPublishedAndFilteredPublishedDashboardButtons(pagination: Pagination) {
+      let userId = this.authenticationService.getUserId();
+      let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+      let findAllUrl = this.DASHBOARD_BUTTON_PREFIX_URL+'/findAllUnPublishedAndFilteredPublishedAssets/'+userId+'/'+pagination.userListId+'/'+pagination.partnerId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+      return this.authenticationService.callGetMethod(findAllUrl);
+    }
+
+    /** XNFR-618 **/
+    getVanityUrlDetailsbyCompanyProfileName(companyProfileName: string){
+      const url = this.authenticationService.REST_URL + "v_url/company/details/by/profile/name/"+ companyProfileName;
+      return this.http.get(url).map(this.extractData).catch(this.handleError);
+    }
 
 }

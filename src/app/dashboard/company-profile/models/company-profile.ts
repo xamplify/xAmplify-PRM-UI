@@ -47,5 +47,5 @@ export class CompanyProfile {
     /*** XNFR-233 */
     
     addedAdminCompanyId : number;
-
+    supportEmailId = "";
 }

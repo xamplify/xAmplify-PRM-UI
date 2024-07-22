@@ -65,6 +65,7 @@ export class AddLeadComponent implements OnInit {
   hasSfPipeline = false;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   activeCRMDetails: any;
+  countryBasedStates : any;
 
   //XNFR-426
   selectedLead: Lead;
@@ -89,6 +90,8 @@ export class AddLeadComponent implements OnInit {
   leadCustomFields = new Array<LeadCustomFieldDto>();
   regionBasedCountries : any;
   filteredCountries = ['Select Country'];
+  filteredStates = ['Select State'];
+  states: any[];
 
   industries = [
     "Select Industry", "Agriculture", "Apparel", "Banking", "Biotechnology", "Chemicals", "Communications", "Construction", "Consulting", "Education",
@@ -489,12 +492,29 @@ export class AddLeadComponent implements OnInit {
             if (self.lead.industry == null || self.lead.industry == undefined || self.lead.industry == '') {
               self.lead.industry = this.industries[0];
             }
+
             if (self.lead.region == null || self.lead.region == undefined || self.lead.region == '') {
               self.lead.region = "Select Region";
               self.lead.country = 'Select Country';
+              self.lead.state = 'Select State';
             } else {
-              this.onChangeRegion(self.lead.region);
+              if (self.lead.country == null || self.lead.country == '') {
+                self.lead.country = 'Select Country';
+                self.lead.state = 'Select State';
+              }
+              this.getRegionBasedCountries(self.lead.region);
             }
+
+            if (self.lead.country == null || self.lead.country == 'Select Country' || self.lead.country == null) {
+              self.lead.country = 'Select Country';
+              self.lead.state = 'Select State';
+            } else {
+              if (self.lead.state == null || self.lead.state == '') {
+                self.lead.state = 'Select State';
+              }
+              this.getCountriesBasedCites(self.lead.country);
+            }
+
             self.existingHalopsaLeadTicketTypeId = self.lead.halopsaTicketTypeId;
             if (self.lead.createdForCompanyId > 0) {
             }
@@ -981,11 +1001,47 @@ export class AddLeadComponent implements OnInit {
 
   onChangeRegion(event: any) {
     let selectedRegion = event;
+    this.lead.country = 'Select Country';
+    this.lead.state = 'Select State';
+    this.filteredStates = ['Select State'];
     this.filteredCountries = ['Select Country'];
+    this.getRegionBasedCountries(selectedRegion);
+  }
+
+  onChangeCountry(event: any) {
+    let selectedCountry = event;
+    this.filteredStates = ['Select State'];
+    this.lead.state = 'Select State';
+    this.getCountriesBasedCites(selectedCountry);
+  }
+  
+  getCountriesBasedCites(selectedCountry: any) {
+    this.countryBasedStates = this.countryNames.countriesAndStates.filter(country => country.name === selectedCountry);
+    this.countryBasedStates.forEach(countryStates => {
+      this.states = countryStates.states;
+      if (this.states.length > 0) {
+        this.states.sort((a, b) => a.name.localeCompare(b.name));
+        this.states.forEach(state => {
+          this.filteredStates.push(state.name)
+        });
+      } else {
+        if (this.lead.country != 'Select Country') {
+          this.lead.state = 'Select State';
+        }
+      }
+    });
+  }
+
+  getRegionBasedCountries(selectedRegion: any) {
+    if (selectedRegion === 'APJC(Asia Pacific)') {
+      selectedRegion = 'APAC(Asia Pacific)';
+    }
     this.regionBasedCountries = this.countryNames.regionBasedCountries.filter(country => country.region === selectedRegion);
     this.regionBasedCountries.forEach(country => {
       this.filteredCountries.push(country.name);
     });
   }
-
+  
 }
+
+

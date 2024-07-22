@@ -4370,3 +4370,10 @@ button#cancel_button {background-image: linear-gradient(89deg, #2b343a 0, #cbd8d
 a.button_blue.remove_bg{background: none !important;border: none !important;}
 span.btn.btn-primary.transition.copy_link{background: #0276FF !important;border: 1px solid #026deb !important;}
 .xamplify-dropdown-option:hover {background-color: #dee1e5 !important;}
+.domainlist{
+padding:10px;
+}
+.leads-bgcolor{
+  background-color: #e2e5e8 !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #e5e9ee;
+}

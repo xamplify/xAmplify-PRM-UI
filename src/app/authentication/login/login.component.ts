@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     
     if (this.authenticationService.showVanityURLError1) {
-      this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
+      this.showVanityLoginErrorMessage();
     }
 
     "https://xamplify.co/"==envService.CLIENT_URL && !this.authenticationService.vanityURLEnabled ? this.signInText = "Sign In to Sandbox" :this.signInText = "Sign In";
@@ -118,7 +118,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               } else {
                 this.loading = false;
                 this.isPleaseWaitButtonDisplayed = false;
-                this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
+                this.showVanityLoginErrorMessage();
               }
             });
           }
@@ -305,7 +305,7 @@ bgIMage2:any;
           .subscribe(params => {
             console.log(params);
             if (params.error === "verr1") {
-              this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
+              this.showVanityLoginErrorMessage();
             } else if (params.error === "server_error_message") {
               this.setCustomeResponse("ERROR", this.properties.serverErrorMessage);
             } else if (params.error === "authentication_failed") {
@@ -491,7 +491,7 @@ bgIMage2:any;
           this.loginSSOUser(this.referenceService.userName, client_id, client_secret);
         } else {
           this.loading = false;
-          this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
+          this.showVanityLoginErrorMessage();
         }
       },error=>{
         this.loading = false;
@@ -568,4 +568,30 @@ bgIMage2:any;
     )
   }
   /****** XNFR-233 ************/
+
+  /** XNFR-618 **/
+  showVanityLoginErrorMessage() {
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if (companyProfileName != undefined && companyProfileName != '') {
+      this.vanityURLService.getVanityUrlDetailsbyCompanyProfileName(companyProfileName).subscribe(
+        response => {
+          if (response.statusCode == 200) {
+            let companyName = response.data.companyName;
+            let supportEmailId = response.data.supportEmailId;
+            let errorMessage = 'You are not associated to ' + companyName + '.';
+            if (supportEmailId != undefined && supportEmailId != null && supportEmailId != '') {
+              errorMessage += ' Please contact ' + supportEmailId;
+            }
+            this.setCustomeResponse("ERROR", errorMessage);
+          } else {
+            this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
+          }
+        }, error => {
+          this.xtremandLogger.errorPage(error);
+          this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
+        });
+    } else {
+      this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
+    }
+  }
 }

@@ -101,6 +101,9 @@ export class ShareUnpublishedContentComponent implements OnInit {
     if(this.hasPlaybookAccess) {
       this.filterOptions.push(this.properties.playBooksHeaderText);
     }
+    if(this.authenticationService.isLocalHost()){
+      this.filterOptions.push(this.properties.dashboardButtons);
+    }
   }
 
   private resetValues() {

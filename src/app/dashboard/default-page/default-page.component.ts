@@ -106,7 +106,6 @@ export class DefaultPageComponent implements OnInit {
     /* -- XNFR-415 -- */
     loadDashboard(){   
         if (this.authenticationService.vanityURLEnabled) {
-            this.getDefaultDashboardForPartner();
             this.CheckIsPaymentOverDue();
         } else {
             this.getDefaultPage(this.loggedInUserId);
@@ -135,7 +134,7 @@ export class DefaultPageComponent implements OnInit {
                             this.getDefaultPage(this.loggedInUserId);
                         }
                     } else {
-                        this.goToWelcomePage();
+                        this.getDefaultPage(this.loggedInUserId);
                     }
                 },
                 error => {
@@ -162,10 +161,18 @@ export class DefaultPageComponent implements OnInit {
                     });
                 }
                 this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed = false;
-                this.getDefaultPage(this.loggedInUserId);
+                if (this.authenticationService.vanityURLEnabled) {
+                    this.getDefaultDashboardForPartner();
+                } else {
+                    this.getDefaultPage(this.loggedInUserId);
+                }
             }, error => {
                 this.authenticationService.module.isPaymentOverDueModalPopUpDisplayed = false;
-                this.getDefaultPage(this.loggedInUserId);
+                if (this.authenticationService.vanityURLEnabled) {
+                    this.getDefaultDashboardForPartner();
+                } else {
+                    this.getDefaultPage(this.loggedInUserId);
+                }
             }
         )
     }

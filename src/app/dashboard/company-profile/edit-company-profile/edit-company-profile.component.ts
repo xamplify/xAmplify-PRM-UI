@@ -204,6 +204,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     marketing: boolean;
     isLocalHost = false;
     isDisable = false;
+
+    supportEmailIdDivClass: string = this.formGroupDefaultClass;
+    supportEmailIdError = false;
+    supportEmailIdErrorMessage = "";
+
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
@@ -372,7 +377,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 this.companyProfile.isAdd = false;
                 this.profileCompleted = 100;
             }else{
-				if(this.authenticationService.isPartner()){
+				if(this.authenticationService.isPartner()|| this.authenticationService.isOnlyUser()){
             			this.getPartnerDetails();
             	}
             }
@@ -1483,6 +1488,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         }
         else if (column == "state") {
             this.validateState();
+        } else if (column == "supportEmailId") {
+            this.validateSupportEmailId();
         }
     }
 
@@ -1913,6 +1920,38 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     /***XNFR-595****/
     customUiSwitchEventReceiver(event:any){
         this.campaignAccess.paymentOverDue = event;
+    }
+
+    setSSOValue(event:any){
+        this.campaignAccess.ssoEnabled = event;
+    }
+
+    /** XNFR-618 **/
+    validateSupportEmailId() {
+        let supportEmailId = $.trim(this.companyProfile.supportEmailId);
+        if (supportEmailId.length > 0) {
+            if (!this.regularExpressions.EMAIL_ID_PATTERN.test(this.companyProfile.supportEmailId)) {
+                this.addSupportEmailIdError();
+            } else {
+                this.removeSupportEmailIdError();
+            }
+        } else {
+            this.removeSupportEmailIdError();
+        }
+    }
+
+    addSupportEmailIdError() {
+        this.supportEmailIdError = true;
+        this.supportEmailIdDivClass = this.refService.errorClass;
+        this.supportEmailIdErrorMessage = "Please enter a valid email address.";
+        this.disableButton();
+    }
+
+    removeSupportEmailIdError() {
+        this.supportEmailIdError = false;
+        this.supportEmailIdDivClass = this.refService.successClass;
+        this.supportEmailIdErrorMessage = "";
+        this.enableOrDisableButton();
     }
 
 }

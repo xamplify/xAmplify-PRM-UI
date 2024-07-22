@@ -263,6 +263,10 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			this.teamMembersPagination.companyId = item.partnerCompanyId;
 			this.teamMembersPagination.partnershipId = item.partnershipId;
 			this.teamMembersPagination.campaignId = this.inputId;
+			let searchKey = this.pagination.searchKey;
+			if(searchKey.length>0){
+				this.teamMembersPagination.searchKey = searchKey;
+			}
 			this.getTeamMembersAndAdmins(this.teamMembersPagination);
 
 		}
@@ -566,7 +570,9 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	getSelectedIndex(index:number){
 		this.selectedFilterIndex = index;
 		this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
-		this.pagination.maxResults = 4;
+		if(this.moduleName==this.properties.dashboardButtons){
+			this.pagination.maxResults = 4;
+		}
 		this.findPartnerCompanies(this.pagination);
 	}
 
@@ -638,7 +644,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 
 		getUserStatus(userId: number) {
 			 let status = "N/A";
-			if (this.selectedPartnerIdAndPartnerStatus.some(e => e.partnerId ===  userId)) {
+			if (this.selectedPartnerIdAndPartnerStatus != null &&  this.selectedPartnerIdAndPartnerStatus.some(e => e.partnerId ===  userId)) {
 				status = this.selectedPartnerIdAndPartnerStatus.filter(e => e.partnerId === userId)[0].status;
 			} 
 			return status;

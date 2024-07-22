@@ -183,7 +183,7 @@
                                         </li>
                                         <!--XNFR-609-->
                                          <!---Campaign Analytics-->
-                                         <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor || authenticationService?.module?.isCampaign" [ngClass]="{'active-tab': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}">
+                                         <li *ngIf="authenticationService?.module?.isCampaign" [ngClass]="{'active-tab': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"
                                                 (click)="activateTab(MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER);clearCustomResponse()">
                                                 {{MY_PROFILE_MENU_CONSTANTS.CAMPAIGN_ANALYTICS_MENU_HEADER}}
@@ -324,18 +324,18 @@
                                         </li>
 
                                         <!-- Saml 2.0 SSO Settings-->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'saml2SSOsettings'}"
+                                        <!-- <li [ngClass]="{'active-tab': activeTabName == 'saml2SSOsettings'}"
                                             *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'saml2SSOsettings'}"
                                                 (click)="activateTab('saml2SSOsettings');clearCustomResponse()">{{properties.saml2SSOsettings}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
                                                     [ngTemplateOutletContext]="{'moduleName':'saml2SSOsettings'}"></ng-template>
                                             </a>
-                                        </li>
+                                        </li> -->
 
                                         <!-- Oauth SSO Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'oauthSSOConfiguration'}"
-                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing">
+                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing && authenticationService?.module?.ssoEnabled">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'oauthSSOConfiguration'}"
                                                 (click)="activateTab('oauthSSOConfiguration');clearCustomResponse()">{{properties.oauthSSOConfiguration}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
@@ -1087,7 +1087,7 @@
                                                                 <div class="col-md-3 col-lg-3 text-right"
                                                                     style="padding-top:10px">
                                                                     <section>
-                                                                        <switch [(status)]="leadApprovalStatus"
+                                                                        <switch class="switchbtns" [(status)]="leadApprovalStatus"
                                                                             [onText]="callActionSwitch.onTextValue"
                                                                             [offText]="callActionSwitch.offTextValue"
                                                                             [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -1438,7 +1438,7 @@
                                                     </div>
 
                                                     <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16"
-                                                        *ngIf="!httpRequestLoader.isLoading && iszohoDisplayed">
+                                                        *ngIf="!httpRequestLoader.isLoading">
                                                         <div
                                                             [className]="activeCRMDetails?.type === 'ZOHO'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
                                                             <div class="card-body" style="padding:10px;">
@@ -2130,7 +2130,7 @@
                                                                     <div class="col-md-3 col-lg-3 text-right"
                                                                         style="padding-top:10px">
                                                                         <section>
-                                                                            <switch [(status)]="gdprSetting.gdprStatus"
+                                                                            <switch class="switchbtns" [(status)]="gdprSetting.gdprStatus"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
                                                                                 [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -2629,7 +2629,7 @@
                                                                             translate}}:</label>
                                                                         <div
                                                                             class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.enableVideoController"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2720,7 +2720,7 @@
                                                                             Sharing' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowSharing"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2736,7 +2736,7 @@
                                                                             Fullscreen' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowFullscreen"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2754,7 +2754,7 @@
                                                                             Likes' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowLikes"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2770,7 +2770,7 @@
                                                                             Embed' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowEmbed"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2791,7 +2791,7 @@
                                                                             Settings' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.enableSettings"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2807,7 +2807,7 @@
                                                                             Comments' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowComments"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2825,7 +2825,7 @@
                                                                             Casting' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.enableCasting"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2841,7 +2841,7 @@
                                                                             video' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.is360video"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"

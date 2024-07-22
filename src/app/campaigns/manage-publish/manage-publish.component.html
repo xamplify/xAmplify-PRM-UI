@@ -1572,6 +1572,13 @@
                                                 <div class="clickicons"></div>
                                              </a>
                                              <a class="Iconhover custom-grid-icon"
+                                                *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
+                                                (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0"
+                                                data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
+                                                <i class="mobile-circled-number disabled fontStyleNormal"><strong>{{campaign.redistributedCount}}</strong></i>
+                                                <div class="clickicons"></div>
+                                             </a> 
+                                             <a class="Iconhover custom-grid-icon"
                                                 [class.disablednew]="!campaign.hasAccess && !authenticationService?.module?.deletedPartner"
                                                 *ngIf=" authenticationService?.module?.deletedPartner || hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier || isOnlyPartner"
                                                 (click)="campaginRouter(campaign)" data-toggle="tooltip"
@@ -1673,7 +1680,7 @@
                                                 <div class="clickicons"></div>
                                              </a>
                                              <a class="delete custom-icon"
-                                                *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted"
+                                                *ngIf=" !(campaign.showCancelButton) && (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted)"
                                                 (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)"
                                                 data-toggle="tooltip" data-placement="top" title="Delete Campaign">
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -1767,7 +1774,7 @@
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn Btn-Gray btn-hvr-text neg_mrg_top4" data-dismiss="modal"
+            <button type="button" class="btn Btn-Gray neg_mrg_top4" data-dismiss="modal"
                translate>Close</button>
             <button type="button" [disabled]="clicked || !isValidCopyCampaignName" class="button_blue bgcolor-unset"
                (click)="saveAsCampaign(); clicked = true" translate><span
@@ -2026,7 +2033,7 @@
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn Btn-Gray btn-hvr-text neg_mrg_top4" data-dismiss="modal" translate
+            <button type="button" class="btn Btn-Gray neg_mrg_top4" data-dismiss="modal" translate
                (click)="closeEndDateModal()">Close</button>
             <button type="button" class="button_blue bgcolor-unset" (click)="updateEndDate()" translate><span
                   class="btn btn-primary transition txt_pd-top3">Save changes</span></button>

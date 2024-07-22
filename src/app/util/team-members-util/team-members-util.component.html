@@ -504,7 +504,7 @@
                     <label class="control-label col-sm-3">Enable As An Admin</label>
                     <div class="col-sm-8">
                       <div>
-                        <switch *ngIf="!team.enableOption" style="height:100%;display: inline-block;"
+                        <switch class="switchbtns" *ngIf="!team.enableOption" style="height:100%;display: inline-block;"
                           data-toggle="tooltip" data-placement="bottom"
                           [title]="!team?.enableOption? 'This option is not available for the selected group':''"
                           [status]="team.secondAdmin" [onText]="callActionSwitch.onTextValue"
@@ -512,7 +512,7 @@
                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
                           (statusChange)="changeOrgAdminStatus(team,$event)" [disabled]="!team.enableOption">
                         </switch>
-                        <switch *ngIf="team.enableOption" [status]="team.secondAdmin"
+                        <switch class="switchbtns" *ngIf="team.enableOption" [status]="team.secondAdmin"
                           [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                           [onColor]="callActionSwitch.onGreenColorSwitch"
                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"

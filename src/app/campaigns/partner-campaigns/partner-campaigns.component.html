@@ -416,13 +416,13 @@
 												<a class="Iconhover custom-grid-icon"
 													*ngIf="campaign.campaignType !== 'SOCIAL'"
 													(click)="openEmailTemplateInNewTab(campaign)" data-toggle="tooltip"
-													data-placement="bottom" title="Preview campaign"> <i
+													data-placement="top" title="Preview campaign"> <i
 														class="fa fa-eye mr4"></i>
 													<div class="clickicons"></div>
 												</a> <a class="Iconhover custom-grid-icon"
 													*ngIf="campaign.campaignType == 'SOCIAL'"
 													(click)="showSocialCampaignPreview(campaign)" data-toggle="tooltip"
-													data-placement="bottom" title="Preview Campaign"> <i
+													data-placement="top" title="Preview Campaign"> <i
 														class="fa fa-eye" aria-hidden="true"></i>
 													<div class="clickicons"></div>
 												</a>
@@ -477,14 +477,14 @@
 													</div>
 													<a class="Iconhover custom-grid-icon"
 														*ngIf="!campaign.allowDownload" data-toggle="tooltip"
-														data-placement="bottom"
+														data-placement="top"
 														title="Please turn on GDPR settings to download"
 														data-rel="fancybox-button"> <i
 															class="fa fa-download cancelled-event"
 															aria-hidden="true"></i>
 														<div class="clickicons"></div>
 													</a> <a class="Iconhover custom-grid-icon" data-toggle="tooltip"
-														data-placement="bottom"
+														data-placement="top"
 														(click)="viewDownloadedHistory(campaign)"
 														title="View Download History" data-rel="fancybox-button">
 														<i class="fa fa-history" aria-hidden="true"></i>

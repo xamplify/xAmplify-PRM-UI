@@ -567,7 +567,7 @@
 										style="font-size: 20px; margin-left: 10px; margin-top: 12px;">
 									</i>
 								</span> <span style="margin-left: 5px;">
-									<switch [status]="model.isPublic" [onText]="'Public'" [offText]="'Private'"
+									<switch class="switchON" [status]="model.isPublic" [onText]="'Public'" [offText]="'Private'"
 										[onColor]="callActionSwitch.onGreenColorSwitch"
 										[offColor]="callActionSwitch.offPrivateColor" [size]="callActionSwitch.size"
 										(statusChange)="changeStatus($event)"> </switch>
@@ -1086,10 +1086,10 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"
+				<button type="button" class="btn Btn-Gray neg_mrg_top5" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"
 					translate>Close</button>
 				<button type="button" class="button_blue bgcolor-unset" (click)="checkingZohoPopupValues()"
-					translate><span class="btn btn-primary transition">Submit</span></button>
+					translate><span class="btn btn-primary transition submit_txt_align">Submit</span></button>
 			</div>
 		</div>
 	</div>
@@ -1388,7 +1388,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn Btn-Gray btn-hvr-text neg_mrg_top4" data-dismiss="modal"
+				<button type="button" class="btn Btn-Gray neg_mrg_top4" data-dismiss="modal"
 					(click)="cancelContacts()" translate>Decline</button>
 				<button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset"
 					(click)="saveContactsWithPermission()" translate><span
