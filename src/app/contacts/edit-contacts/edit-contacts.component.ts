@@ -2203,6 +2203,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.currentContactType = "all";
 			pagination.criterias = this.criterias;
 			pagination.sharedLeads = this.sharedLeads;
+			this.pagination.searchKey = this.searchKey;
 			this.userListPaginationWrapper.pagination = pagination;
 			this.contactListObject = new ContactList;
 			this.contactListObject.contactType = this.currentContactType;
@@ -2632,6 +2633,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.refService.loading(this.httpRequestLoader, true);
 			this.httpRequestLoader.isHorizontalCss = true;
 			this.contactsByType.pagination.criterias = this.criterias;
+			this.contactsByType.pagination.searchKey = this.searchKey;
 			this.userListPaginationWrapper.pagination = this.contactsByType.pagination;
 			this.contactListObject = new ContactList;
 			this.contactListObject.contactType = contactType;
@@ -3434,6 +3436,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			// this.resetListContacts();
 			// this.resetResponse();
 			this.contactsByType.contactPagination.maxResults = this.contactsByType.allContactsCount;
+			this.contactsByType.pagination.searchKey = this.searchKey;
 			this.contactsByType.pagination.criterias = this.criterias;
 			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
 			this.contactListObject = new ContactList;
