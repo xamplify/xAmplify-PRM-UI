@@ -22,6 +22,7 @@ import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-po
 import { CopyDto } from '../models/copy-dto';
 import { Properties } from 'app/common/models/properties';
 import { LandingPageShareDto } from 'app/dashboard/user-profile/models/LandingPageShareDto';
+import { PartnerCompanyAndGroupsComponent } from '../partner-company-and-groups/partner-company-and-groups.component';
 declare var swal: any, $: any;
 @Component({
   selector: 'app-landing-pages-list-and-grid-view',
@@ -76,6 +77,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @Output() viewVendorPageAnalytics = new EventEmitter();
   @Input() isMasterLandingPages =  false;
   @Output() isFormAnalytics = new EventEmitter();
+  @ViewChild("partnerCompanyAndGroupsComponent") partnerCompanyAndGroupsComponent:PartnerCompanyAndGroupsComponent;
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -106,7 +108,6 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
     }
     this.showMessageOnTop();
 }
-
 
   private sefDefaultViewType() {
     if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages){
@@ -506,6 +507,7 @@ copy(landingPage:any){
                     }
                   self.ngxloading = false;
                   self.showShareListPopup = true;
+                  $("#shareVendorDetailsPopup").modal("show");
                   setTimeout(() => $('#partnerCompaniesPopup').modal('show'), 0);          
               },
               error => {
@@ -515,8 +517,10 @@ copy(landingPage:any){
     }
     closeShareListPopup() {
         this.showShareListPopup = false;
+        $("#shareVendorDetailsPopup").modal("hide");
         this.ngxloading = false;
         $('#partnerCompaniesPopup').modal('hide');
+        this.partnerCompanyAndGroupsComponent.resetFields();
     }
 
     findPartnerVendorJourneyLandingPages(pagination: Pagination) {
@@ -563,5 +567,9 @@ copy(landingPage:any){
           },()=>{
               this.callFolderListViewEmitter();
           });
+    }
+
+    publishVendorJourney(){
+        this.partnerCompanyAndGroupsComponent.publish();
     }
 }
