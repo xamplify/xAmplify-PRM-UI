@@ -105,16 +105,6 @@
                         <input type="text" disabled="disabled" name="campaignName" value="{{lead.campaignName}}"
                           class="form-control" id="campaignName" />
                       </div>
-
-                      <!-- <div class="form-group" style="margin-bottom: 20px"
-                        *ngIf="isVendorVersion && deal.parentCampaignId > 0">
-                        <label class="control-label">Campaign Name
-                          <span class="required"><strong>*</strong></span>
-                        </label>
-                        <input type="text" disabled="disabled" name="parentCampaignName"
-                          value="{{deal.parentCampaignName}}" class="form-control" id="parentCampaignName" />
-                      </div> -->
-
                       <div class="form-group" style="margin-bottom: 20px"
                         *ngIf="!(lead.campaignId > 0) && !(lead.parentCampaignId > 0)">
                         <label class="control-label">No Campaign Info</label>
@@ -293,8 +283,6 @@
                             </select>
                           </div>
                         </div>
-
-                        <!--    xnfr-426----->
                         <div class="form-group" *ngIf="actionType!=='view'" [attr.class]="leadComment"
                           style="margin-bottom: 20px">
                           <label class="control-label">Add Comment</label>
@@ -310,11 +298,11 @@
             </div>
           </div>
         </div>
-        <div *ngIf="showCustomForm && !showDefaultForm && lead.createdForCompanyId && !showAttachLeadPopUp">
+        <div *ngIf="showCustomForm && !showDefaultForm && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0 && !showAttachLeadPopUp">
           <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
             [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="lead.halopsaTicketTypeId"></app-sf-deal>
         </div>
-        <div class="panel-group" *ngIf="!showCustomForm && showDefaultForm && lead.createdForCompanyId">
+        <div class="panel-group" *ngIf="!showCustomForm && showDefaultForm && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
           <div class=" row portlet light m0">
             <div class="panel-heading deal-bgcolor">
               <h4 class="panel-title">Lead Details
@@ -362,16 +350,6 @@
     </div>
   </div>
 </div>
-
-<!-- Add Lead Model-->
-<!-- <app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="dealToLead.leadActionType" [dealToLead]="dealToLead"
-  (notifySubmitSuccess)="leadCreated($event)" (notifyClose)="closeLeadForm()" [isVendorVersion]="isVendorVersion"
-  [isOrgAdmin]="isOrgAdmin"></app-add-lead> -->
-
-<!-- Select Lead Model-->
-<!-- <app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead"
-  (notifyLeadSelected)="leadSelected($event)"></app-select-lead> -->
-
 
 
 <!-- Attach Lead Model-->
