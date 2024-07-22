@@ -310,11 +310,11 @@
             </div>
           </div>
         </div>
-        <div *ngIf="showCustomForm && !showDefaultForm && !showAttachLeadPopUp">
+        <div *ngIf="showCustomForm && !showDefaultForm && !showAttachLeadPopUp && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
           <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
             [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="lead.halopsaTicketTypeId"></app-sf-deal>
         </div>
-        <div class="panel-group" *ngIf="!showCustomForm && showDefaultForm && lead.createdForCompanyId">
+        <div class="panel-group" *ngIf="!showCustomForm && showDefaultForm && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
           <div class=" row portlet light m0">
             <div class="panel-heading deal-bgcolor">
               <h4 class="panel-title">Lead Details
@@ -627,7 +627,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="showCustomForm && !showDefaultForm && lead.createdForCompanyId">
+        <div *ngIf="showCustomForm && !showDefaultForm && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
           <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
             [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="0"></app-sf-deal>
         </div>
