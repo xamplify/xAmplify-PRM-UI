@@ -611,7 +611,6 @@ data-backdrop="static" data-keyboard="false">
             <div class="portlet box">
                <!---Select Partner Lists/Partners-->
                <div class="form-group col-lg-12 col-md-12 ml15">
-                  <app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
                   <app-partner-company-and-groups #partnerCompanyAndGroupsComponent  *ngIf="showShareListPopup" [moduleName]="'My Profile'"
                   [isPublishedToPartnerGroups]="landingPageSharedDetails?.publishedToPartnerGroups"
                   [selectedTeamMemberIds]="landingPageSharedDetails?.partnerIds"
