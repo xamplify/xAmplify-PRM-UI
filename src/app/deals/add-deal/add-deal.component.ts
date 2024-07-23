@@ -149,6 +149,7 @@ export class AddDealComponent implements OnInit {
   isZohoLeadAttached: boolean = false;
   isCreatedByStageIdDisable: boolean = false;
   isZohoLeadAttachedWithoutSelectingDealFor: boolean = false;
+  vendorCompanyName:string = '';
 
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -523,7 +524,9 @@ export class AddDealComponent implements OnInit {
         error => {
           this.httpRequestLoader.isServerError = true;
         },
-        () => { }
+        () => {
+          this.getFilteredVendorList();
+         }
       );
   }
 
@@ -540,6 +543,9 @@ export class AddDealComponent implements OnInit {
   onChangeCreatedFor() {
     this.holdCreatedForCompanyId = this.deal.createdForCompanyId;
     if (this.deal.createdForCompanyId > 0) {
+      let vendorCompany;
+      vendorCompany = this.vendorList.find(vendor => vendor.companyId == this.deal.createdForCompanyId);
+      this.vendorCompanyName = vendorCompany.companyName + "'s";
       this.getActiveCRMDetails();
     } else {
       this.deal.pipelineId = 0;
@@ -549,6 +555,7 @@ export class AddDealComponent implements OnInit {
       this.showDefaultForm = false;
       this.propertiesQuestions = [];
       this.hasCampaignPipeline = false;
+      this.vendorCompanyName = '';
     }
   }
 
@@ -1699,6 +1706,25 @@ export class AddDealComponent implements OnInit {
           this.getDealPipelines();
         }
       });
+  }
+
+  getFilteredVendorList(){
+    this.integrationService.getVendorRegisterDealValue(this.loggedInUserId,' ').subscribe(
+      data => {
+        if (data.statusCode == 200) {
+          let resultMap = new Map<string,object>();
+          resultMap = data.map;
+          let filteredVendorList = [];
+          for (let vendor of this.vendorList) {
+            let vendor2 = resultMap[vendor.companyId+""];
+            if (vendor2) {
+              filteredVendorList.push(vendor);
+            }
+          }
+          this.vendorList = filteredVendorList;
+        }
+      }
+    )
   }
 
 }

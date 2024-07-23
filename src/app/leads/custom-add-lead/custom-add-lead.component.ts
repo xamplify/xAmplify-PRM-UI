@@ -452,7 +452,7 @@ export class CustomAddLeadComponent implements OnInit {
       //this.isSalesForceEnabled(); 
       let vendorCompany;
       vendorCompany = this.vendorList.find(vendor => vendor.companyId == this.lead.createdForCompanyId);
-      this.vendorCompanyName = vendorCompany.companyName;
+      this.vendorCompanyName = vendorCompany.companyName + "'s";
       this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
       this.getActiveCRMDetails();
     } else {
@@ -467,6 +467,7 @@ export class CustomAddLeadComponent implements OnInit {
       this.showTicketTypesDropdown = false;
       this.resetLeadDetails();
       this.getDefaultLeadCustomFields();
+      this.vendorCompanyName = '';
     }
   }
 

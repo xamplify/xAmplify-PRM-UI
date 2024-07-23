@@ -134,7 +134,7 @@
                         <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
                           ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket
                           Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
-                          ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}</option>
+                          ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}</option>
                         <option *ngFor="let type of halopsaTicketTypes" [value]="type.id">{{type.name}}</option>
                       </select>
                     </div>
@@ -188,7 +188,7 @@
                             </select>
                           </div>
                           <div *ngIf="activeCRMDetails?.showLeadPipeline" class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
-                            <label class="control-label">{{vendorCompanyName}}'s Pipeline<span
+                            <label class="control-label">{{vendorCompanyName}} Pipeline<span
                                 class="required"><strong>*</strong></span></label>
                             <select class="form-control" [(ngModel)]="lead.createdForPipelineId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
@@ -204,7 +204,7 @@
 
                           <div *ngIf="activeCRMDetails?.showLeadPipelineStage" class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
                             id="dealStageDiv">
-                            <label class="control-label">{{vendorCompanyName}}'s Stage<span
+                            <label class="control-label">{{vendorCompanyName}} Stage<span
                                 class="required"><strong>*</strong></span></label>
                             <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"

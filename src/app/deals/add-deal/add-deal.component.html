@@ -257,7 +257,7 @@
                             </select>
                           </div>
                           <div *ngIf="activeCRMDetails?.showDealPipeline" class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
-                            <label class="control-label">Vendor's xAmplify Pipeline<span
+                            <label class="control-label">{{vendorCompanyName}} Pipeline<span
                                 class="required"><strong>*</strong></span></label>
                             <select class="form-control" [(ngModel)]="deal.createdForPipelineId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
@@ -273,7 +273,7 @@
 
                           <div *ngIf="activeCRMDetails?.showDealPipelineStage" class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
                             id="dealStageDiv">
-                            <label class="control-label">Vendor's xAmplify Stage<span
+                            <label class="control-label">{{vendorCompanyName}} Stage<span
                                 class="required"><strong>*</strong></span></label>
                             <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
