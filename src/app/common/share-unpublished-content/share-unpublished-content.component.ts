@@ -145,6 +145,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
       this.isAssetChildComponentCalled = this.hasDamAccess && filterOption==this.properties.assetsHeaderText;
       this.isTrackChildComponentCalled = this.hasLmsAccess && filterOption==this.properties.tracksHeaderText;
       this.isPlayBookChildComponentCalled = this.hasPlaybookAccess && filterOption==this.properties.playBooksHeaderText;
+      this.isDashboardButtonsComponentCalled = filterOption==this.properties.dashboardButtons;
       this.ngxLoading = false;
     }, 500);
    
