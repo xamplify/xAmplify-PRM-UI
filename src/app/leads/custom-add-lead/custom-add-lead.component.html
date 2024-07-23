@@ -105,16 +105,6 @@
                         <input type="text" disabled="disabled" name="campaignName" value="{{lead.campaignName}}"
                           class="form-control" id="campaignName" />
                       </div>
-
-                      <!-- <div class="form-group" style="margin-bottom: 20px"
-                        *ngIf="isVendorVersion && deal.parentCampaignId > 0">
-                        <label class="control-label">Campaign Name
-                          <span class="required"><strong>*</strong></span>
-                        </label>
-                        <input type="text" disabled="disabled" name="parentCampaignName"
-                          value="{{deal.parentCampaignName}}" class="form-control" id="parentCampaignName" />
-                      </div> -->
-
                       <div class="form-group" style="margin-bottom: 20px"
                         *ngIf="!(lead.campaignId > 0) && !(lead.parentCampaignId > 0)">
                         <label class="control-label">No Campaign Info</label>
@@ -124,7 +114,6 @@
                 </div>
               </div>
             </div>
-            <!-- </div> -->
           </div>
           <div class="col-sm-6 col-xs-12 px-10 pl0">
             <div class="row">
@@ -294,7 +283,7 @@
                           </div>
                         </div>
 
-                        <!--    xnfr-426----->
+                        <!--xnfr-426----->
                         <div class="form-group" *ngIf="actionType!=='view'" [attr.class]="leadComment"
                           style="margin-bottom: 20px">
                           <label class="control-label">Add Comment</label>
@@ -310,11 +299,11 @@
             </div>
           </div>
         </div>
-        <div *ngIf="showCustomForm && !showDefaultForm && !showAttachLeadPopUp">
+        <div *ngIf="showCustomForm && !showDefaultForm && !showAttachLeadPopUp && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
           <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
             [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="lead.halopsaTicketTypeId"></app-sf-deal>
         </div>
-        <div class="panel-group" *ngIf="!showCustomForm && showDefaultForm && lead.createdForCompanyId">
+        <div class="panel-group" *ngIf="!showCustomForm && showDefaultForm && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
           <div class=" row portlet light m0">
             <div class="panel-heading deal-bgcolor">
               <h4 class="panel-title">Lead Details
@@ -616,7 +605,7 @@
                     [disabled]="preview"></textarea>
                 </div>
               </div>
-              <div *ngIf="!showCustomForm && showDefaultForm && lead.createdForCompanyId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+              <div *ngIf="!showCustomForm && showDefaultForm && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                 <ng-container *ngFor="let leadCustomField of leadCustomFields;let i = index">
                   <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="leadFields"
                     [ngTemplateOutletContext]="{leadCustomField:leadCustomField}"></ng-template>
@@ -627,7 +616,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="showCustomForm && !showDefaultForm && lead.createdForCompanyId">
+        <div *ngIf="showCustomForm && !showDefaultForm && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
           <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
             [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="0"></app-sf-deal>
         </div>
