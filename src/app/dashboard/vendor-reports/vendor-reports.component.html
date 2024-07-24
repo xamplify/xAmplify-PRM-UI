@@ -40,15 +40,20 @@
 													alt="{{vendorReport.companyName}}" (error)="errorHandler($event)">
 											</div>											
 										</div>
-										  <div class="col-5 col-sm-5 col-md-5 col-lg-5 marginvczero additinal-paddings" (click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport, vendorReport.counts[0].name) : false">
-											<h3 class="mt-0 justify-content-end d-flex mv-color-text font-incresss-mv">
-												<b>{{vendorReport.counts[0].count}}</b></h3>
-											<h5 class="mt-0 justify-content-end d-flex mv-color-text font-incresss-mv">{{vendorReport.counts[0].name}}</h5>
-										</div>  
-									</div>
-									<div class="flex-row d-flex col-6 col-lg-auto pull-right mv-topspace fontControl" >
-										<h5 class="mt-0 justify-content-end d-flex mv-color-text" *ngFor="let count of vendorReport['counts'] | slice:1; let i = 'index+1'" (click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport, vendorReport.counts[i].name) : false"> {{vendorReport.counts[i].count}}  {{vendorReport.counts[i].name}} | &nbsp;</h5>
-								</div>
+										<div class="col-5 col-sm-5 col-md-5 col-lg-5 marginvczero additinal-paddings" (click)="vendorReport.counts[0].count > 0 && !vanityLoginDto.vanityUrlFilter ? navigateToVendorCampaigns(vendorReport, vendorReport.counts[0].name) : false">
+									   <h3 class="mt-0 justify-content-end d-flex mv-color-text font-incresss-mv">
+										   <b>{{vendorReport.counts[0].count}}</b></h3>
+									   <h5 class="mt-0 justify-content-end d-flex mv-color-text font-incresss-mv">{{vendorReport.counts[0].name}}</h5>
+								   </div>
+								   </div>
+								   <div class="flex-row d-flex col-6 col-lg-auto pull-right mv-topspace fontControl">
+									   <ng-container *ngFor="let count of vendorReport['counts'].slice(1); let i = index">
+										   <h5 class="mt-0 justify-content-end d-flex mv-color-text"
+											   (click)="vendorReport.counts[i + 1].count > 0 && !vanityLoginDto.vanityUrlFilter ? navigateToVendorCampaigns(vendorReport, vendorReport.counts[i + 1].name) : false"> {{count.count}} {{count.name}} | &nbsp;
+										   </h5>
+									   </ng-container>
+								   </div>
+
 								</div>
 								<div class="card-body p-0 card-bgcolor dark-card-body-cu">
 									<!-- <div class="col-12 number-vedor-card"> 
