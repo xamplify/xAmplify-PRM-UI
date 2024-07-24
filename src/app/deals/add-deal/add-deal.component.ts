@@ -738,10 +738,10 @@ export class AddDealComponent implements OnInit {
     //   this.deal.createdForPipelineId = this.deal.createdByPipelineId;
     //   this.deal.createdForPipelineStageId = this.deal.createdByPipelineStageId;
     // }
-    if (!this.activeCRMDetails.showDealPipeline) {
+    if (!this.activeCRMDetails.showDealPipeline && !this.isOrgAdmin && !this.isMarketingCompany) {
       this.deal.createdForPipelineId = this.activeCRMDetails.dealPipelineId;
     }
-    if (!this.activeCRMDetails.showDealPipelineStage) {
+    if (!this.activeCRMDetails.showDealPipelineStage && !this.isOrgAdmin && !this.isMarketingCompany) {
       this.deal.createdForPipelineStageId = this.activeCRMDetails.dealPipelineStageId;
     }
     if(this.deal.createdForPipelineId > 0 && this.deal.createdForPipelineStageId > 0){
@@ -917,7 +917,8 @@ export class AddDealComponent implements OnInit {
           this.createdForPipelineStageIdError = true;
         }
       }
-      if (this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
+      if (this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown !== undefined 
+        && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
         if (fieldId == "opportunityTypeId") {
           if (fieldValue.length > 0 && fieldValue != "0") {
             this.opportunityTypeId = successClass;
@@ -957,10 +958,10 @@ export class AddDealComponent implements OnInit {
       this.propertiesQuestions.length = 0;
     }
 
-    if (!this.activeCRMDetails.showDealPipeline) {
+    if (!this.activeCRMDetails.showDealPipeline  && !this.isOrgAdmin && !this.isMarketingCompany) {
       this.pipelineIdError = false;
     }
-    if (!this.activeCRMDetails.showDealPipelineStage) {
+    if (!this.activeCRMDetails.showDealPipelineStage  && !this.isOrgAdmin && !this.isMarketingCompany) {
       this.pipelineStageIdError = false;
       this.createdForPipelineStageIdError = false;
     }
@@ -1716,8 +1717,8 @@ export class AddDealComponent implements OnInit {
           resultMap = data.map;
           let filteredVendorList = [];
           for (let vendor of this.vendorList) {
-            let vendor2 = resultMap[vendor.companyId+""];
-            if (vendor2) {
+            let vendorFromMap = resultMap[String(vendor.companyId)];
+            if (vendorFromMap || vendorFromMap == undefined) {
               filteredVendorList.push(vendor);
             }
           }

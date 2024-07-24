@@ -262,7 +262,7 @@ export class ManageDealsComponent implements OnInit {
         }  
       });    
     });
-    if (this.authenticationService.vanityURLEnabled) {
+    if (this.authenticationService.vanityURLEnabled && !this.isOrgAdmin && !this.authenticationService.superiorRole.includes("Marketing")) {
       this.integrationService.getVendorRegisterDealValue(this.loggedInUserId,this.vanityLoginDto.vendorCompanyProfileName).subscribe(
         data => {
           if (data.statusCode == 200) {

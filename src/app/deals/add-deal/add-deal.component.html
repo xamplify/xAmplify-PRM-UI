@@ -85,7 +85,8 @@
             </div>
 
             <!--Pipe Line Details-->
-            <div class="panel-group" role="tablist" aria-multiselectable="true" *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showDealPipeline || activeCRMDetails?.showDealPipelineStage">
+            <div class="panel-group" role="tablist" aria-multiselectable="true" 
+            *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showDealPipeline || activeCRMDetails?.showDealPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
@@ -121,7 +122,7 @@
                             <option *ngFor="let stage of createdByStages" [value]="stage.id">{{stage.stageName}}</option>
                           </select>
                         </div>
-                        <div *ngIf="activeCRMDetails?.showDealPipeline" class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
+                        <div *ngIf="activeCRMDetails?.showDealPipeline || isOrgAdmin || isMarketingCompany || showDefaultForm" class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
                           <label class="control-label">{{vendorCompanyName}} Pipeline<span class="required"><strong>*</strong></span></label>
                           <select class="form-control" [(ngModel)]="deal.createdForPipelineId"
                             [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
@@ -133,7 +134,7 @@
                           </select>
                         </div>
 
-                        <div *ngIf="activeCRMDetails?.showDealPipelineStage" class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
+                        <div *ngIf="activeCRMDetails?.showDealPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm" class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
                           id="dealStageDiv">
                           <label class="control-label">{{vendorCompanyName}} Stage<span
                               class="required"><strong>*</strong></span></label>
