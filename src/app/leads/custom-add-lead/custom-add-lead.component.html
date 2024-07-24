@@ -511,7 +511,7 @@
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineId"
                       [ngModelOptions]="{standalone: true}" placeholder="createdForPipelineId" id="createdForPipelineId"
                       [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedForPipeline"
-                      (ngModelChange)="resetStages()" (input)="validateField('createdForPipelineId',false)">
+                      (ngModelChange)="resetCreatedForPipelineStages()" (input)="validateField('createdForPipelineId',false)">
                       <option [value]="0">Select Pipeline</option>
                       <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">{{pipeline.name}}
                       </option>
@@ -524,7 +524,7 @@
                     </label>
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId"
                       [ngModelOptions]="{standalone: true}"  (input)="validateField('createdForPipelineStageId',false)"
-                       placeholder="pipelineStageId" id="createdForPipelineStageId"
+                       placeholder="createdForPipelineStageId" id="createdForPipelineStageId"
                       [disabled]="preview || isCreatedForStageIdDisable">
                       <option [value]="0">Select Stage</option>
                       <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">
@@ -542,7 +542,7 @@
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineId"
                       [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="pipelineId"
                       [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedForPipeline"
-                      (ngModelChange)="resetStages()">
+                      (ngModelChange)="resetStages()" (input)="validateField('createdForPipelineStageId',false)">
                       <option [value]="0">Select Pipeline</option>
                       <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">{{pipeline.name}}
                       </option>
