@@ -84,7 +84,7 @@
                 </div>
               </div>
             </div>
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" *ngIf="lead.campaignId > 0">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
@@ -98,7 +98,7 @@
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
                       <div class="form-group" style="margin-bottom: 20px" data-toggle="tooltip" data-placement="bottom"
-                        title="{{lead.campaignName}}" *ngIf="lead.campaignId > 0">
+                        title="{{lead.campaignName}}">
                         <label class="control-label">Campaign Name
                           <span class="required"><strong>*</strong></span>
                         </label>
