@@ -142,7 +142,7 @@
                 </div>
               </div>
               <div class="panel-group" role="tablist" aria-multiselectable="true"
-              *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showLeadPipeline || activeCRMDetails?.showLeadPipelineStage">
+              *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showLeadPipeline || activeCRMDetails?.showLeadPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm">
                 <div class="panel panel-default deal-bgcolor">
                   <div class="panel-heading deal-bgcolor">
                     <h4 class="panel-title">
@@ -387,6 +387,7 @@
           </ngx-loading>
           <app-modal-popup-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
           </app-modal-popup-loader>
+          <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
           <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
           </app-response-message>
           <div class="portlet-body clearfix" *ngIf="!httpRequestLoader.isLoading">
@@ -508,9 +509,9 @@
                     </label>
 
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineId"
-                      [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="pipelineId"
+                      [ngModelOptions]="{standalone: true}" placeholder="createdForPipelineId" id="createdForPipelineId"
                       [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedForPipeline"
-                      (ngModelChange)="resetStages()">
+                      (ngModelChange)="resetStages()" (input)="validateField('createdForPipelineId',false)">
                       <option [value]="0">Select Pipeline</option>
                       <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">{{pipeline.name}}
                       </option>
@@ -518,14 +519,13 @@
                   </div>
 
                   <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px">
-
                     <label class="control-label">Vendor's xAmplify Stage<font> <b
                           style="color: #f55d7a !important">*</b></font>
                     </label>
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId"
-                      [ngModelOptions]="{standalone: true}"  (input)="validateField('createdForPipelineStageId',false)" placeholder="pipelineStageId" id="pipelineStageId"
+                      [ngModelOptions]="{standalone: true}"  (input)="validateField('createdForPipelineStageId',false)"
+                       placeholder="pipelineStageId" id="createdForPipelineStageId"
                       [disabled]="preview || isCreatedForStageIdDisable">
-
                       <option [value]="0">Select Stage</option>
                       <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">
                         {{lead.currentStageName}}</option>
