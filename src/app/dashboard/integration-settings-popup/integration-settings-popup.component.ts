@@ -123,7 +123,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
         this.canDisableType = true;
       }  else {
         field.formDefaultFieldType = null;
-        if (field.name === 'xAmplify_Deal_Reference_ID__c') {
+        if (field.name === 'xAmplify_Deal_ID__c') {
           field.canUnselect = true;
         }
       }
