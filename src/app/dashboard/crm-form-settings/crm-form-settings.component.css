@@ -244,6 +244,7 @@
     }
     .scrollbar-x{
       overflow-x: auto;
+      overflow-y: hidden;
     }
     .width100{
     width: 100px;
@@ -257,7 +258,15 @@
     .ml_10{
       margin-left: 10px;
     }
-    
+    .mb-flex-wrap{
+     flex-wrap: wrap;
+    }
+    .pl-left0{
+     padding-left: 0px!important;
+    }
+    .my-10{
+      margin:10px 0px;
+    }
   }
   .align-item-left{
     float: left;
@@ -289,4 +298,9 @@
 
 .searhAlign{
     margin-top: 5px;
+}
+@media only screen and (min-width:768px) and (max-width:1078px) { 
+  .tabview-fields{
+    margin: 12px 0px;
+  }
 }
