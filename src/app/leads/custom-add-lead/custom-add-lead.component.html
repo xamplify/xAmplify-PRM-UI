@@ -323,9 +323,9 @@
         </div>
         <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
           <ng-container *ngIf="!showLoadingButton">
-            <button type="button" id="saveLead" [disabled]="!isValid" (click)="save()" class="button bgcolor-unset"
+            <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid" (click)="save()" class="button bgcolor-unset"
               *ngIf="!edit"><span class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
-            <button type="button" id="saveLead" (click)="save()" class="button bgcolor-unset"
+            <button type="button" id="saveLead" (click)="save()" class="button bgcolor-unset" [disabled]="!isLeadRegistrationFormValid"
               *ngIf="edit"><span class="btn Btn-Green transition txt_pd-top3">Update Lead</span></button>
           </ng-container>
           <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
@@ -523,7 +523,7 @@
                           style="color: #f55d7a !important">*</b></font>
                     </label>
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId"
-                      [ngModelOptions]="{standalone: true}"  (ngModelChange)="validateAllFields()" placeholder="pipelineStageId" id="pipelineStageId"
+                      [ngModelOptions]="{standalone: true}"  (input)="validateField('createdForPipelineStageId',false)" placeholder="pipelineStageId" id="pipelineStageId"
                       [disabled]="preview || isCreatedForStageIdDisable">
 
                       <option [value]="0">Select Stage</option>
@@ -623,9 +623,9 @@
       </div>
       <div class="pull-right" *ngIf="!preview && !showCustomForm && showDefaultForm">
         <ng-container *ngIf="!showLoadingButton">
-          <button type="button" id="saveLead" [disabled]="!isValid" (click)="save()" class="button bgcolor-unset"
+          <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid" (click)="save()" class="button bgcolor-unset"
             *ngIf="!edit"><span class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
-          <button type="button" id="saveLead" [disabled]="!isValid" (click)="save()" class="button bgcolor-unset"
+          <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid" (click)="save()" class="button bgcolor-unset"
             *ngIf="edit"><span class="btn Btn-Green transition txt_pd-top3">Update Lead</span></button>
         </ng-container>
         <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
@@ -635,10 +635,10 @@
       </div>
       <div class="pull-right" *ngIf="!preview && showCustomForm">
         <ng-container *ngIf="!showLoadingButton">
-          <button type="button" id="saveLead" [disabled]="sfDealComponent?.isDealRegistrationFormInvalid || !isValidPipeplineAndStage" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
+          <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
               class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
           <button type="button" id="saveLead"
-            [disabled]="sfDealComponent?.isDealRegistrationFormInvalid || !isValidPipeplineAndStage"
+          [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid"
             (click)="save()" class="button bgcolor-unset" *ngIf="edit"><span
               class="btn Btn-Green transition txt_pd-top3">Update Lead</span></button>
         </ng-container>
@@ -660,34 +660,34 @@
         id="firstName" [disabled]="preview" />
     </div>
 
-    <div *ngIf="leadCustomField.labelId =='last_name'" class="form-group" [attr.class]="lastName">
+    <div *ngIf="leadCustomField.labelId =='last_name'" class="form-group" [attr.class]="lastNameDivClass">
       <label class="control-label">{{leadCustomField.displayName}}
         <font> <strong style="color: #f55d7a">*</strong></font>
       </label>
       <input type="text" maxlength="100" class="form-control" [(ngModel)]=" lead.lastName"
-        placeholder="{{leadCustomField.placeholder}}" (input)="validateAllFields()" [ngModelOptions]="{standalone: true}" id="lastName"
+        placeholder="{{leadCustomField.placeholder}}" (input)="validateField('lastName',false)" [ngModelOptions]="{standalone: true}" id="lastName"
         [disabled]="preview" />
     </div>
-    <div *ngIf="leadCustomField.labelId =='company'" class="form-group" [attr.class]="company">
+    <div *ngIf="leadCustomField.labelId =='company'" class="form-group" [attr.class]="companyDivClass">
       <label class="control-label">{{leadCustomField.displayName}}
         <font>
           <strong style="color: #f55d7a">*</strong>
         </font>
       </label>
       <input type="text" maxlength="100" class="form-control" [(ngModel)]=" lead.company"
-        placeholder="{{leadCustomField.placeholder}}" (input)="validateAllFields()" [ngModelOptions]="{standalone: true}" id="company"
+        placeholder="{{leadCustomField.placeholder}}" (input)="validateField('company',false)" [ngModelOptions]="{standalone: true}" id="company"
         [disabled]="preview" />
     </div>
 
 
-    <div class="form-group" *ngIf="leadCustomField.labelId =='email'" [attr.class]="email">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='email'" [attr.class]="emailDivClass">
       <label class="control-label">{{leadCustomField.displayName}}
         <font>
           <strong style="color: #f55d7a">*</strong>
         </font>
       </label>
       <input type="text" maxlength="100" class="form-control" [(ngModel)]=" lead.email"
-        [ngModelOptions]="{standalone: true}" id="email" (input)="validateEmailId()"
+        [ngModelOptions]="{standalone: true}" id="email" (input)="validateField('email',false)"
         placeholder="{{leadCustomField.placeholder}}" [disabled]="preview || edit || (lead.campaignId > 0)" />
       <span class="required" *ngIf="inValidEmailId">{{errorMessage}}</span>
     </div>
