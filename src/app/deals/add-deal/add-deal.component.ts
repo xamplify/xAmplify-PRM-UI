@@ -23,14 +23,8 @@ import { Properties } from 'app/common/models/properties';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { IntegrationService } from 'app/core/services/integration.service';
-import { ConnectwiseProductsDto } from '../models/connectwise-products-dto';
-import { ConnectwiseProductsRequestDto } from '../models/connectwise-products-request-dto';
-import { ConnectwiseCatalogItemDto } from '../models/connectwise-catalog-item-dto';
-import { ConnectwiseOpportunityDto } from '../models/connectwise-opportunity-dto';
-import { ConnectwiseStatusDto } from '../models/connectwise-status-dto';
-import { DealComments } from 'app/deal-registration/models/deal-comments';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
-declare var flatpickr: any, $: any, swal: any;
+declare var $: any, swal: any;
 
 
 @Component({
@@ -40,7 +34,7 @@ declare var flatpickr: any, $: any, swal: any;
   providers: [HttpRequestLoader, LeadsService, Properties],
 })
 export class AddDealComponent implements OnInit {
-
+  readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
   @Input() public dealId: any;
   @Input() public leadId: any;
   @Input() public campaignId: any;
@@ -151,7 +145,14 @@ export class AddDealComponent implements OnInit {
   isZohoLeadAttachedWithoutSelectingDealFor: boolean = false;
   vendorCompanyName:string = '';
 
-
+  /***Static Values ****/
+  dealTitle = "Demo Deal Title";
+  referenceId= 2003;
+  createdByName = "Sravan Kumar Chowdam";
+  createdByEmail = "csravan@stratapps.com";
+  editTextArea = false;
+  enableWrite = true;
+  isLocalHost = false;
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public userService: UserService, private integrationService: IntegrationService) {
@@ -161,8 +162,8 @@ export class AddDealComponent implements OnInit {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.vanityLoginDto.userId = this.loggedInUserId;
       this.vanityLoginDto.vanityUrlFilter = true;
-
     }
+    this.isLocalHost = this.authenticationService.isLocalHost();
   }
 
   ngOnInit() {
