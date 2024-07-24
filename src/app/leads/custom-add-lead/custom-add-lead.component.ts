@@ -84,20 +84,18 @@ export class CustomAddLeadComponent implements OnInit {
   successClass: string = "form-group has-success has-feedback";
 
   title: string;
-  titleError: boolean = true;
   opportunityAmount: string;
   opportunityAmountError: boolean = true;
   estimatedCloseDate: string;
   estimatedCloseDateError: boolean = true;
   dealType: string;
-  dealTypeError: boolean = true;
   createdForCompanyId: string;
   createdForCompanyIdError: boolean = true;
   pipelineId: string;
   pipelineIdError: boolean = true;
   pipelineStageId: string;
   pipelineStageIdError: boolean = true;
-  isDealRegistrationFormValid: boolean = true;
+  isLeadRegistrationFormValid: boolean = true;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   property: DealDynamicProperties = new DealDynamicProperties();
   ownDeal: boolean = false;
@@ -184,6 +182,13 @@ export class CustomAddLeadComponent implements OnInit {
     "Insurance", "Machinery", "Manufacturing", "Media", "Not For Profit", "Recreation", "Retail", "Shipping", "Technology", "Telecommunications",
     "Transportation", "Utilities", "Other"
   ];
+
+  lastNameDivClass: string;
+  companyDivClass: string;
+  emailDivClass: string;
+  emailError: boolean = true;
+  companyError: boolean = true;
+  lastNameError: boolean = true;
   
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -319,7 +324,7 @@ export class CustomAddLeadComponent implements OnInit {
           console.log(error);
         },
         () => {
-
+          //this.setFieldErrorStates();
         });
   }
 
@@ -447,12 +452,11 @@ export class CustomAddLeadComponent implements OnInit {
   }
 
   onChangeCreatedFor() {
-    //this.validateField('createdForCompanyId',false);
     if (this.lead.createdForCompanyId > 0) {
       //this.isSalesForceEnabled(); 
       let vendorCompany;
       vendorCompany = this.vendorList.find(vendor => vendor.companyId == this.lead.createdForCompanyId);
-      this.vendorCompanyName = vendorCompany.companyName;
+      this.vendorCompanyName = vendorCompany.companyName + "'s";
       this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
       this.getActiveCRMDetails();
     } else {
@@ -467,6 +471,7 @@ export class CustomAddLeadComponent implements OnInit {
       this.showTicketTypesDropdown = false;
       this.resetLeadDetails();
       this.getDefaultLeadCustomFields();
+      this.vendorCompanyName = '';
     }
   }
 
@@ -679,7 +684,7 @@ export class CustomAddLeadComponent implements OnInit {
       this.getStages();
       this.pipelineStageId = "form-group has-error has-feedback";
       this.pipelineStageIdError = true;
-      this.isDealRegistrationFormValid = false;
+      this.isLeadRegistrationFormValid = false;
     }
   }
 
@@ -689,7 +694,7 @@ export class CustomAddLeadComponent implements OnInit {
       this.getStages();
       this.createdForPipelineStageId = "form-group has-error has-feedback";
       this.createdForPipelineStageIdError = true;
-      this.isDealRegistrationFormValid = false;
+      this.isLeadRegistrationFormValid = false;
     }
   }
 
@@ -744,8 +749,7 @@ export class CustomAddLeadComponent implements OnInit {
       );
   }
 
-  validateField(fieldId: any, isFormElement: boolean) {
-    this.validateAllFields();
+	validateField(fieldId: any, isFormElement: boolean) {
     var errorClass = "form-group has-error has-feedback";
     var successClass = "form-group has-success has-feedback";
     if (isFormElement && fieldId.key != null && fieldId.key != undefined) {
@@ -753,8 +757,49 @@ export class CustomAddLeadComponent implements OnInit {
       if (fieldValue.length > 0) {
         fieldId.class = successClass;
         fieldId.error = false;
-      } 
-    
+      } else {
+        fieldId.class = errorClass;
+        fieldId.error = true;
+      }
+    } else {
+      let fieldValue = $.trim($('#' + fieldId).val());
+
+      if (fieldId == "lastName") {
+        if (fieldValue.length > 0 && fieldValue != '') {
+          this.lastNameDivClass = successClass;
+          this.lastNameError = false;
+        } else {
+          this.lastNameDivClass = errorClass;
+          this.lastNameError = true;
+        }
+      }
+
+      if (fieldId == "company") {
+        if (fieldValue.length > 0 && fieldValue != '') {
+          this.companyDivClass = successClass;
+          this.companyError = false;
+        } else {
+          this.companyDivClass = errorClass;
+          this.companyError = true;
+        }
+      }
+
+      if (fieldId == "email") {
+        if (fieldValue.length > 0 && fieldValue != '' && this.regularExpressions.EMAIL_ID_PATTERN.test(fieldValue)) {
+          this.emailDivClass = successClass;
+          this.emailError = false;
+          this.isValid = true;
+          this.inValidEmailId = false;
+        } else {
+          this.emailDivClass = errorClass;
+          this.emailError = true;
+          this.inValidEmailId = true;
+          this.isValid = false;
+          this.errorMessage = "Please enter a valid email address";
+        }
+      }
+
+
       if (fieldId == "createdForCompanyId") {
         if (fieldValue.length > 0 && fieldValue != "0") {
           this.createdForCompanyId = successClass;
@@ -844,10 +889,9 @@ export class CustomAddLeadComponent implements OnInit {
   submitButtonStatus() {
     let self = this;
     if (this.showCustomForm) {
-      this.opportunityAmountError = false;
-      this.titleError = false;
-      this.estimatedCloseDateError = false;
-      this.dealTypeError = false;
+      this.lastNameError = false;
+      this.emailError = false;
+      this.companyError = false;
       this.properties.length = 0;
       this.propertiesQuestions.length = 0;
     }
@@ -866,81 +910,73 @@ export class CustomAddLeadComponent implements OnInit {
       this.opportunityTypeIdError = false;
     }
 
-    if (!this.opportunityAmountError && !this.estimatedCloseDateError
-      && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError 
+    if (!this.lastNameError && !this.companyError && !this.emailError && !this.createdForCompanyIdError 
       && !this.pipelineStageIdError && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError) {
       let qCount = 0;
       let cCount = 0;
       this.propertiesQuestions.forEach(propery => {
         if (propery.error) {
-          this.isDealRegistrationFormValid = false;
+          this.isLeadRegistrationFormValid = false;
           qCount++;
         }
       })
       this.propertiesComments.forEach(propery => {
         if (propery.error) {
-          this.isDealRegistrationFormValid = false;
+          this.isLeadRegistrationFormValid = false;
           cCount++;
         }
       })
       if (qCount == 0 && cCount == 0)
-        this.isDealRegistrationFormValid = true;
+        this.isLeadRegistrationFormValid = true;
       else
-        this.isDealRegistrationFormValid = false;
+        this.isLeadRegistrationFormValid = false;
     } else {
 
-      this.isDealRegistrationFormValid = false;
+      this.isLeadRegistrationFormValid = false;
     }
   }
 
   setFieldErrorStates() {
-    /****************close Date *******************/
-    if (this.deal.closeDateString != null && this.deal.closeDateString.length > 0)
-      this.estimatedCloseDateError = false
+    if (this.lead.lastName != null && this.lead.lastName !='')
+      this.lastNameError = false;
     else
-      this.estimatedCloseDateError = true;
-    /**************** Title *******************/
-    if (this.deal.title != null && this.deal.title.length > 0)
-      this.titleError = false
+      this.lastNameError = true;
+
+    if (this.lead.email != null && this.lead.email !='')
+      this.emailError = false;
     else
-      this.titleError = true;
-    /**************** Amount *******************/
-    if (this.deal.amount != null
-      && parseFloat(this.deal.amount) > 0)
-      this.opportunityAmountError = false
+      this.emailError = true;
+
+    if (this.lead.company != null && this.lead.company !='')
+      this.companyError = false;
     else
-      this.opportunityAmountError = true;
-    /**************** DealType *******************/
-    if (this.deal.dealType != null && this.deal.dealType.length > 0
-      && this.deal.dealType != 'Select Dealtype')
-      this.dealTypeError = false
-    else
-      this.dealTypeError = true;
-    /**************** Created For Company *******************/
-    if (this.deal.createdForCompanyId != null && this.deal.createdForCompanyId > 0)
+      this.companyError = true;
+
+    if (this.lead.createdForCompanyId != null && this.lead.createdForCompanyId > 0)
       this.createdForCompanyIdError = false
     else
       this.createdForCompanyIdError = true;
-     /**************** Pipeline Id *******************/
-     if (this.deal.createdByPipelineId != null && this.deal.createdByPipelineId > 0)
+
+    if (this.lead.createdByPipelineId != null && this.lead.createdByPipelineId > 0)
       this.pipelineIdError = false
     else
       this.pipelineIdError = true;
-    /**************** Pipeline Id *******************/
-    if (this.deal.createdForPipelineId != null && this.deal.createdForPipelineId > 0)
+
+    if ((this.lead.createdForPipelineId != null && this.lead.createdForPipelineId > 0) || !this.activeCRMDetails.showLeadPipeline)
       this.createdForPipelineIdError = false
     else
       this.createdForPipelineIdError = true;
-    /**************** Pipeline Stage Id *******************/
-    if (this.deal.createdByPipelineStageId != null && this.deal.createdByPipelineStageId > 0)
+
+    if (this.lead.createdByPipelineStageId != null && this.lead.createdByPipelineStageId > 0)
       this.pipelineStageIdError = false
     else
       this.pipelineStageIdError = true;
-     /**************** Pipeline Stage Id *******************/
-     if (this.deal.createdForPipelineStageId != null && this.deal.createdForPipelineStageId > 0)
-     this.createdForPipelineStageIdError = false
 
-
+    if ((this.lead.createdForPipelineStageId != null && this.lead.createdForPipelineStageId > 0) || !this.activeCRMDetails.showLeadPipelineStage)
+      this.createdForPipelineStageIdError = false
+    else
+      this.createdForPipelineStageIdError = true;
+    
     this.submitButtonStatus();
   }
 
@@ -1086,7 +1122,7 @@ export class CustomAddLeadComponent implements OnInit {
           console.log(error);
         },
         () => {
-
+          this.setFieldErrorStates();
         });
   }
   getActiveCRMPipeline() {
@@ -1171,7 +1207,7 @@ export class CustomAddLeadComponent implements OnInit {
             if (createdForPipelines !== undefined && createdForPipelines !== null) {
               this.handleCreatedForPipelines(createdForPipelines);
             }
-
+            this.setFieldErrorStates();
           } else if (data.statusCode == 404) {
             this.lead.createdForPipelineId = 0;
             this.lead.createdByPipelineId = 0;
@@ -1268,6 +1304,7 @@ export class CustomAddLeadComponent implements OnInit {
       if (!createdByPipelineExist) {
         self.lead.createdByPipelineId = 0;
         self.lead.createdByPipelineStageId = 0;
+        //this.setFieldErrorStates();
       }
       self.activeCRMDetails.hasCreatedByPipeline = false;
       self.isCreatedByStageIdDisable = false;
@@ -1307,6 +1344,7 @@ export class CustomAddLeadComponent implements OnInit {
       if (!createdForPipelineExist) {
         self.lead.createdForPipelineId = 0;
         self.lead.createdForPipelineStageId = 0;
+        //this.setFieldErrorStates();
       }
       self.activeCRMDetails.hasCreatedForPipeline = false;
       self.isCreatedForStageIdDisable = false;

@@ -6,6 +6,7 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { ContactService } from 'app/contacts/services/contact.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { EnvService } from 'app/env.service';
 
 declare var swal: any;
 
@@ -16,7 +17,6 @@ declare var swal: any;
 })
 export class VanitySocialContactsCallbackComponent implements OnInit {
 
-// public isPartner: boolean;
 	currentModule = '';
 	callbackName: string;
 	vanityUrlFilter: string;
@@ -25,7 +25,7 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 
 	constructor(private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router,
 			private contactService: ContactService, public xtremandLogger: XtremandLogger, private hubSpotService: HubSpotService,
-			private integrationService: IntegrationService) {
+			private integrationService: IntegrationService,public env: EnvService) {
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.currentModule = 'contacts';

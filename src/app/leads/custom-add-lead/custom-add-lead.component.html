@@ -84,7 +84,7 @@
                 </div>
               </div>
             </div>
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" *ngIf="lead.campaignId > 0">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
@@ -98,7 +98,7 @@
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
                       <div class="form-group" style="margin-bottom: 20px" data-toggle="tooltip" data-placement="bottom"
-                        title="{{lead.campaignName}}" *ngIf="lead.campaignId > 0">
+                        title="{{lead.campaignName}}">
                         <label class="control-label">Campaign Name
                           <span class="required"><strong>*</strong></span>
                         </label>
@@ -134,7 +134,7 @@
                         <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
                           ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket
                           Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
-                          ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}</option>
+                          ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}</option>
                         <option *ngFor="let type of halopsaTicketTypes" [value]="type.id">{{type.name}}</option>
                       </select>
                     </div>
@@ -188,7 +188,7 @@
                             </select>
                           </div>
                           <div *ngIf="activeCRMDetails?.showLeadPipeline" class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
-                            <label class="control-label">{{vendorCompanyName}}'s Pipeline<span
+                            <label class="control-label">{{vendorCompanyName}} Pipeline<span
                                 class="required"><strong>*</strong></span></label>
                             <select class="form-control" [(ngModel)]="lead.createdForPipelineId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
@@ -204,12 +204,12 @@
 
                           <div *ngIf="activeCRMDetails?.showLeadPipelineStage" class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
                             id="dealStageDiv">
-                            <label class="control-label">{{vendorCompanyName}}'s Stage<span
+                            <label class="control-label">{{vendorCompanyName}} Stage<span
                                 class="required"><strong>*</strong></span></label>
                             <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                               id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
-                              (ngModelChange)="validateAllFields()">
+                              (input)="validateField('createdForPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
                               <option *ngIf="!isVendorVersion && lead.currentStagePrivate"
                                 [value]="lead.currentStageId">
@@ -323,9 +323,9 @@
         </div>
         <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
           <ng-container *ngIf="!showLoadingButton">
-            <button type="button" id="saveDeal" [disabled]="!isValid" (click)="save()" class="button bgcolor-unset"
+            <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid" (click)="save()" class="button bgcolor-unset"
               *ngIf="!edit"><span class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
-            <button type="button" id="saveDeal" (click)="save()" class="button bgcolor-unset"
+            <button type="button" id="saveLead" (click)="save()" class="button bgcolor-unset" [disabled]="!isLeadRegistrationFormValid"
               *ngIf="edit"><span class="btn Btn-Green transition txt_pd-top3">Update Lead</span></button>
           </ng-container>
           <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
@@ -335,10 +335,10 @@
         </div>
         <div class="pull-right mr10" *ngIf="!preview && showCustomForm">
           <ng-container *ngIf="!showLoadingButton">
-            <button type="button" id="saveDeal" [disabled]="sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
+            <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
                 class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
-            <button type="button" id="saveDeal"
-              [disabled]="sfDealComponent?.isDealRegistrationFormInvalid"
+            <button type="button" id="saveLead"
+              [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid"
               (click)="save()" class="button bgcolor-unset" *ngIf="edit"><span
                 class="btn Btn-Green transition txt_pd-top3">Update Lead</span></button>
           </ng-container>
@@ -523,7 +523,7 @@
                           style="color: #f55d7a !important">*</b></font>
                     </label>
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId"
-                      [ngModelOptions]="{standalone: true}"  (ngModelChange)="validateAllFields()" placeholder="pipelineStageId" id="pipelineStageId"
+                      [ngModelOptions]="{standalone: true}"  (input)="validateField('createdForPipelineStageId',false)" placeholder="pipelineStageId" id="pipelineStageId"
                       [disabled]="preview || isCreatedForStageIdDisable">
 
                       <option [value]="0">Select Stage</option>
@@ -623,9 +623,9 @@
       </div>
       <div class="pull-right" *ngIf="!preview && !showCustomForm && showDefaultForm">
         <ng-container *ngIf="!showLoadingButton">
-          <button type="button" id="saveDeal" [disabled]="!isValid" (click)="save()" class="button bgcolor-unset"
+          <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid" (click)="save()" class="button bgcolor-unset"
             *ngIf="!edit"><span class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
-          <button type="button" id="saveDeal" [disabled]="!isValid" (click)="save()" class="button bgcolor-unset"
+          <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid" (click)="save()" class="button bgcolor-unset"
             *ngIf="edit"><span class="btn Btn-Green transition txt_pd-top3">Update Lead</span></button>
         </ng-container>
         <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
@@ -635,10 +635,10 @@
       </div>
       <div class="pull-right" *ngIf="!preview && showCustomForm">
         <ng-container *ngIf="!showLoadingButton">
-          <button type="button" id="saveDeal" [disabled]="sfDealComponent?.isDealRegistrationFormInvalid || !isValidPipeplineAndStage" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
+          <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
               class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
-          <button type="button" id="saveDeal"
-            [disabled]="sfDealComponent?.isDealRegistrationFormInvalid || !isValidPipeplineAndStage"
+          <button type="button" id="saveLead"
+          [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid"
             (click)="save()" class="button bgcolor-unset" *ngIf="edit"><span
               class="btn Btn-Green transition txt_pd-top3">Update Lead</span></button>
         </ng-container>
@@ -660,34 +660,34 @@
         id="firstName" [disabled]="preview" />
     </div>
 
-    <div *ngIf="leadCustomField.labelId =='last_name'" class="form-group" [attr.class]="lastName">
+    <div *ngIf="leadCustomField.labelId =='last_name'" class="form-group" [attr.class]="lastNameDivClass">
       <label class="control-label">{{leadCustomField.displayName}}
         <font> <strong style="color: #f55d7a">*</strong></font>
       </label>
       <input type="text" maxlength="100" class="form-control" [(ngModel)]=" lead.lastName"
-        placeholder="{{leadCustomField.placeholder}}" (input)="validateAllFields()" [ngModelOptions]="{standalone: true}" id="lastName"
+        placeholder="{{leadCustomField.placeholder}}" (input)="validateField('lastName',false)" [ngModelOptions]="{standalone: true}" id="lastName"
         [disabled]="preview" />
     </div>
-    <div *ngIf="leadCustomField.labelId =='company'" class="form-group" [attr.class]="company">
+    <div *ngIf="leadCustomField.labelId =='company'" class="form-group" [attr.class]="companyDivClass">
       <label class="control-label">{{leadCustomField.displayName}}
         <font>
           <strong style="color: #f55d7a">*</strong>
         </font>
       </label>
       <input type="text" maxlength="100" class="form-control" [(ngModel)]=" lead.company"
-        placeholder="{{leadCustomField.placeholder}}" (input)="validateAllFields()" [ngModelOptions]="{standalone: true}" id="company"
+        placeholder="{{leadCustomField.placeholder}}" (input)="validateField('company',false)" [ngModelOptions]="{standalone: true}" id="company"
         [disabled]="preview" />
     </div>
 
 
-    <div class="form-group" *ngIf="leadCustomField.labelId =='email'" [attr.class]="email">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='email'" [attr.class]="emailDivClass">
       <label class="control-label">{{leadCustomField.displayName}}
         <font>
           <strong style="color: #f55d7a">*</strong>
         </font>
       </label>
       <input type="text" maxlength="100" class="form-control" [(ngModel)]=" lead.email"
-        [ngModelOptions]="{standalone: true}" id="email" (input)="validateEmailId()"
+        [ngModelOptions]="{standalone: true}" id="email" (input)="validateField('email',false)"
         placeholder="{{leadCustomField.placeholder}}" [disabled]="preview || edit || (lead.campaignId > 0)" />
       <span class="required" *ngIf="inValidEmailId">{{errorMessage}}</span>
     </div>
