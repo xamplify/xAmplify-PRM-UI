@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component,EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -15,6 +15,7 @@ import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 export class CrmSettingsComponent implements OnInit {
   @Input() integrationDetails: any;
   @Input() integrationType: String;
+  @Output() notifySubmitSuccess = new EventEmitter<any>();
 
   loggedInUserId:any;
   showLeadPipeline:boolean = false;
@@ -73,13 +74,16 @@ export class CrmSettingsComponent implements OnInit {
         if (data.statusCode == 200) {
           this.referenceService.goToTop();
           this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+          this.notifySubmitSuccess.emit(this.customResponse);
         } else {
           this.referenceService.goToTop();
           this.customResponse = new CustomResponse('ERROR', data.message, true);
+          this.notifySubmitSuccess.emit(this.customResponse);
         }
       },
       error => {
         this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        this.notifySubmitSuccess.emit(this.customResponse);
       })
   }
 

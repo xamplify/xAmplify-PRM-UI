@@ -1,5 +1,5 @@
 <div>
-  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+  <!-- <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message> -->
   
   <!-- Leads & Stage Details Start -->
   <div class="row m0">
@@ -16,32 +16,32 @@
           <div class="portlet-title leads-bgcolor mb0">
             <div class="row m0">
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <form class="form-inlines">
-                  <div class="form-group mb0">
+                <div class="form-inlines">
+                  <div class="form-group mb0 mr-20">
                     <span class="lead-label">Show Lead Pipeline</span>
                     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
-                    title=""></i>
+                    title="Enabling this option will allow you to view the select pipeline option in the lead registration form"></i>
                   </div>
                   <app-custom-ui-switch [customSwitch]="showLeadPipeline" (customUiSwitchEventEmitter)="onChangeLeadPipelines($event)"
                 [isSwitchOptionDisabled]="!showLeadPipelineStage"></app-custom-ui-switch>
-                </form>
+                </div>
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <form class="form-inlines">
-                  <div class="form-group mb0">
+                <div class="form-inlines">
+                  <div class="form-group mb0 mr-20">
                     <span class="lead-label">Show Lead Stage</span>
                     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
-                    title=""></i>
+                    title="Enabling this option will allow you to view the select stage option in the lead registration form"></i>
                   </div>
                   <app-custom-ui-switch [customSwitch]="showLeadPipelineStage" (customUiSwitchEventEmitter)="onChangeLeadPipelineStage($event)">
                   </app-custom-ui-switch>
-                </form>
+                </div>
               </div>
             </div>
           </div>
-          <div class="row m0">
+          <div class="row m0" *ngIf="!showLeadPipeline">
             <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10">
-              <div class="form-group" *ngIf="!showLeadPipeline">
+              <div class="form-group">
                 <label>Lead Pipeline
                   <strong class="required">*</strong>
                 </label>
@@ -53,9 +53,11 @@
                     {{pipeline.name}}</option>
                 </select>
               </div>
+              <div class="alert alert-info"><span>
+                Please select the pipeline, in order to synchronize the data into the CRM system. You can not view the 'Select Pipeline' option in the lead registration form.</span></div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10">
-              <div class="form-group" *ngIf="!showLeadPipelineStage">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10" *ngIf="!showLeadPipelineStage">
+              <div class="form-group">
                 <label>Lead Pipeline Stage
                   <strong class="required">*</strong>
                 </label>
@@ -67,6 +69,8 @@
                     {{stage.stageName}}</option>
                 </select>
               </div>
+              <div class="alert alert-info"><span>
+                Please select the stage, in order to synchronize the data into the CRM system. You can not view the 'Select Stage' option in the lead registration form.</span></div>
             </div>
           </div>
         </div>
@@ -89,33 +93,33 @@
           <div class="portlet-title leads-bgcolor mb0">
             <div class="row m0">
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <form class="form-inlines">
-                  <div class="form-group mb0">
+                <div class="form-inlines">
+                  <div class="form-group mb0 mr-20">
                     <span class="lead-label">Show Deal Pipeline</span>
                     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
-                    title=""></i>
+                    title="Enabling this option will allow you to view the select pipeline option in the deal registration form"></i>
                   </div>
                   <app-custom-ui-switch [customSwitch]="showDealPipeline" (customUiSwitchEventEmitter)="onChangeDealPipelines($event)"
                   [isSwitchOptionDisabled]="!showDealPipelineStage"></app-custom-ui-switch>
-                </form>
+                </div>
   
               </div>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <form class="form-inlines">
-                  <div class="form-group mb0">
+                <div class="form-inlines">
+                  <div class="form-group mb0 mr-20">
                     <span class="lead-label">Show Deal Stage</span>
                     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
-                    title=""></i>
+                    title="Enabling this option will allow you to view the select stage option in the deal registration form"></i>
                   </div>
                   <app-custom-ui-switch [customSwitch]="showDealPipelineStage" (customUiSwitchEventEmitter)="onChangeDealPipelineStage($event)">
                   </app-custom-ui-switch>
-                </form>
+                </div>
               </div>
             </div>
           </div>
-          <div class="row m0">
+          <div class="row m0" *ngIf="!showDealPipeline">
             <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10">
-              <div class="form-group" *ngIf="!showDealPipeline">
+              <div class="form-group">
                 <label>Deal Pipeline
                   <strong class="required">*</strong>
                 </label>
@@ -127,9 +131,11 @@
                     {{pipeline.name}}</option>
                 </select>
               </div>
+              <div class="alert alert-info"><span>
+                Please select the pipeline, in order to synchronize the data into the CRM system. You can not view the 'Select Pipeline' option in the deal registration form.</span></div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10">
-              <div class="form-group" *ngIf="!showDealPipelineStage">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10" *ngIf="!showDealPipelineStage">
+              <div class="form-group">
                 <label>Deal Pipeline Stage
                   <strong class="required">*</strong>
                 </label>
@@ -141,6 +147,8 @@
                     {{stage.stageName}}</option>
                 </select>
               </div>
+              <div class="alert alert-info"><span>
+                Please select the stage, in order to synchronize the data into the CRM system. You can not view the 'Select Stage' option in the deal registration form.</span></div>
             </div>
           </div>
         </div>
@@ -157,19 +165,22 @@
           <div class="portlet-title leads-bgcolor mb0">
             <div class="row m0">
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <form class="form-inlines">
-                  <div class="form-group mb0">
+                <div class="form-inlines">
+                  <div class="form-group mb10 mr-20">
                     <span class="lead-label">Show Register Deal</span>
                     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
-                    title=""></i>
+                    title="Enabling this option will allow you to view the 'Register Deal' option"></i>
                   </div>
                   <app-custom-ui-switch [customSwitch]="showRegisterDeal" (customUiSwitchEventEmitter)="onChangeRegisterDeal($event)">
                   </app-custom-ui-switch>
-                </form>
-  
+                </div>
               </div>
             </div>
           </div>
+        </div>
+        <div class="alert alert-info">
+          <p *ngIf="showRegisterDeal">'Register Deal' option will be shown at the opportunities module.</p>
+          <p *ngIf="!showRegisterDeal">'Register Deal' option will not be shown at the opportunities module.</p>
         </div>
       </div>
     </fieldset>

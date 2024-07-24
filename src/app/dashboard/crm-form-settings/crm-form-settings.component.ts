@@ -329,7 +329,8 @@ export class CrmFormSettingsComponent {
 						});
 						const missingFieldsMessage = missingFields.join(', ');
 						this.referenceService.goToTop();
-						return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);	
+						this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);
+						return this.notifySubmitSuccess.emit(this.customFieldsResponse);	
             
 			}
 			this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, 'isalesforce', this.opportunityType)
@@ -386,7 +387,8 @@ export class CrmFormSettingsComponent {
 				 }
 				 const missingFieldsMessage = missingFields.join(', ');
 				 this.referenceService.goToTop();
-				 return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);	
+				 this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);	
+				 return this.notifySubmitSuccess.emit(this.customFieldsResponse);
 			}
 			if((this.integrationType === 'HUBSPOT' || this.integrationType === 'PIPEDRIVE' || this.integrationType === 'CONNECTWISE' || this.integrationType === 'HALOPSA' || this.integrationType === 'ZOHO') && displayName)
 			{
@@ -399,7 +401,8 @@ export class CrmFormSettingsComponent {
 						});
 						const missingFieldsMessage = missingFields.join(', ');
 						this.referenceService.goToTop();
-						return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);	
+						this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);
+						return this.notifySubmitSuccess.emit(this.customFieldsResponse);
 			}
 		 	this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, this.integrationType.toLowerCase(), this.opportunityType)
 				.subscribe(
