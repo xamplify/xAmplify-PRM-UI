@@ -68,7 +68,9 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-6" [hidden]="!socialConnection" >
-        <section *ngIf="socialConnection.emailId === null"><app-facebook-analytics></app-facebook-analytics></section>
+        <!-- <section *ngIf="socialConnection.emailId === null">
+          <app-facebook-analytics></app-facebook-analytics>
+        </section> -->
         <section *ngIf="socialConnection.emailId !== null">
         	<div class="portlet light block rounded-0">
 				<h4 class="text-center" style="padding: 3em;">Blank Space</h4>
