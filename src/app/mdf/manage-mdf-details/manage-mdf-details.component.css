@@ -23,3 +23,8 @@
 @media only screen and (min-width: 991px) and (max-width: 1088px) { 
 .table thead tr th {font-size: 11px;}
 }
+/* Sudha Sri(24-07-2024) */
+a.dashboard-stat.dashboard-stat-lighter.blue-soft.min-h.default-cursor.tiles_bradius,
+a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor.tiles_bradius,
+a.dashboard-stat.dashboard-stat-lighter.purple-soft.min-h.default-cursor.tiles_bradius,
+a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor.tiles_bradius{border-radius: 10px !important;}
