@@ -97,7 +97,7 @@ export class CustomAddLeadComponent implements OnInit {
   pipelineIdError: boolean = true;
   pipelineStageId: string;
   pipelineStageIdError: boolean = true;
-  isDealRegistrationFormValid: boolean = true;
+  isLeadRegistrationFormValid: boolean = true;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   property: DealDynamicProperties = new DealDynamicProperties();
   ownDeal: boolean = false;
@@ -680,7 +680,7 @@ export class CustomAddLeadComponent implements OnInit {
       this.getStages();
       this.pipelineStageId = "form-group has-error has-feedback";
       this.pipelineStageIdError = true;
-      this.isDealRegistrationFormValid = false;
+      this.isLeadRegistrationFormValid = false;
     }
   }
 
@@ -690,7 +690,7 @@ export class CustomAddLeadComponent implements OnInit {
       this.getStages();
       this.createdForPipelineStageId = "form-group has-error has-feedback";
       this.createdForPipelineStageIdError = true;
-      this.isDealRegistrationFormValid = false;
+      this.isLeadRegistrationFormValid = false;
     }
   }
 
@@ -745,8 +745,7 @@ export class CustomAddLeadComponent implements OnInit {
       );
   }
 
-  validateField(fieldId: any, isFormElement: boolean) {
-    this.validateAllFields();
+	validateField(fieldId: any, isFormElement: boolean) {
     var errorClass = "form-group has-error has-feedback";
     var successClass = "form-group has-success has-feedback";
     if (isFormElement && fieldId.key != null && fieldId.key != undefined) {
@@ -754,8 +753,12 @@ export class CustomAddLeadComponent implements OnInit {
       if (fieldValue.length > 0) {
         fieldId.class = successClass;
         fieldId.error = false;
-      } 
-    
+      } else {
+        fieldId.class = errorClass;
+        fieldId.error = true;
+      }
+    } else {
+      let fieldValue = $.trim($('#' + fieldId).val());
       if (fieldId == "createdForCompanyId") {
         if (fieldValue.length > 0 && fieldValue != "0") {
           this.createdForCompanyId = successClass;
@@ -874,74 +877,76 @@ export class CustomAddLeadComponent implements OnInit {
       let cCount = 0;
       this.propertiesQuestions.forEach(propery => {
         if (propery.error) {
-          this.isDealRegistrationFormValid = false;
+          this.isLeadRegistrationFormValid = false;
           qCount++;
         }
       })
       this.propertiesComments.forEach(propery => {
         if (propery.error) {
-          this.isDealRegistrationFormValid = false;
+          this.isLeadRegistrationFormValid = false;
           cCount++;
         }
       })
       if (qCount == 0 && cCount == 0)
-        this.isDealRegistrationFormValid = true;
+        this.isLeadRegistrationFormValid = true;
       else
-        this.isDealRegistrationFormValid = false;
+        this.isLeadRegistrationFormValid = false;
     } else {
 
-      this.isDealRegistrationFormValid = false;
+      this.isLeadRegistrationFormValid = false;
     }
   }
 
   setFieldErrorStates() {
-    /****************close Date *******************/
-    if (this.deal.closeDateString != null && this.deal.closeDateString.length > 0)
-      this.estimatedCloseDateError = false
-    else
-      this.estimatedCloseDateError = true;
+    // /****************close Date *******************/
+    // if (this.lead.closeDateString != null && this.lead.closeDateString.length > 0)
+    //   this.estimatedCloseDateError = false
+    // else
+    //   this.estimatedCloseDateError = true;
     /**************** Title *******************/
-    if (this.deal.title != null && this.deal.title.length > 0)
+    if (this.lead.title != null && this.lead.title.length > 0)
       this.titleError = false
     else
       this.titleError = true;
     /**************** Amount *******************/
-    if (this.deal.amount != null
-      && parseFloat(this.deal.amount) > 0)
-      this.opportunityAmountError = false
-    else
-      this.opportunityAmountError = true;
+    // if (this.lead.amount != null
+    //   && parseFloat(this.lead.amount) > 0)
+    //   this.opportunityAmountError = false
+    // else
+    //   this.opportunityAmountError = true;
     /**************** DealType *******************/
-    if (this.deal.dealType != null && this.deal.dealType.length > 0
-      && this.deal.dealType != 'Select Dealtype')
-      this.dealTypeError = false
-    else
-      this.dealTypeError = true;
+    // if (this.lead.leadType != null && this.lead.dealType.length > 0
+    //   && this.lead.dealType != 'Select Dealtype')
+    //   this.dealTypeError = false
+    // else
+    //   this.dealTypeError = true;
     /**************** Created For Company *******************/
-    if (this.deal.createdForCompanyId != null && this.deal.createdForCompanyId > 0)
+    if (this.lead.createdForCompanyId != null && this.lead.createdForCompanyId > 0)
       this.createdForCompanyIdError = false
     else
       this.createdForCompanyIdError = true;
      /**************** Pipeline Id *******************/
-     if (this.deal.createdByPipelineId != null && this.deal.createdByPipelineId > 0)
+     if (this.lead.createdByPipelineId != null && this.lead.createdByPipelineId > 0)
       this.pipelineIdError = false
     else
       this.pipelineIdError = true;
     /**************** Pipeline Id *******************/
-    if (this.deal.createdForPipelineId != null && this.deal.createdForPipelineId > 0)
+    if ((this.lead.createdForPipelineId != null && this.lead.createdForPipelineId > 0) || !this.activeCRMDetails.showLeadPipeline)
       this.createdForPipelineIdError = false
     else
       this.createdForPipelineIdError = true;
     /**************** Pipeline Stage Id *******************/
-    if (this.deal.createdByPipelineStageId != null && this.deal.createdByPipelineStageId > 0)
+    if (this.lead.createdByPipelineStageId != null && this.lead.createdByPipelineStageId > 0)
       this.pipelineStageIdError = false
     else
       this.pipelineStageIdError = true;
      /**************** Pipeline Stage Id *******************/
-     if (this.deal.createdForPipelineStageId != null && this.deal.createdForPipelineStageId > 0)
-     this.createdForPipelineStageIdError = false
-
-
+    if ((this.lead.createdForPipelineStageId != null && this.lead.createdForPipelineStageId > 0) || !this.activeCRMDetails.showLeadPipelineStage)
+      this.createdForPipelineStageIdError = false
+    else
+      this.createdForPipelineStageIdError = true;
+    
+    
     this.submitButtonStatus();
   }
 
@@ -1087,7 +1092,7 @@ export class CustomAddLeadComponent implements OnInit {
           console.log(error);
         },
         () => {
-
+          this.setFieldErrorStates();
         });
   }
   getActiveCRMPipeline() {
@@ -1172,7 +1177,7 @@ export class CustomAddLeadComponent implements OnInit {
             if (createdForPipelines !== undefined && createdForPipelines !== null) {
               this.handleCreatedForPipelines(createdForPipelines);
             }
-
+            this.setFieldErrorStates();
           } else if (data.statusCode == 404) {
             this.lead.createdForPipelineId = 0;
             this.lead.createdByPipelineId = 0;

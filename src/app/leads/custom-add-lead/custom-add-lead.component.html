@@ -209,7 +209,7 @@
                             <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                               id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
-                              (ngModelChange)="validateAllFields()">
+                              (input)="validateField('createdForPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
                               <option *ngIf="!isVendorVersion && lead.currentStagePrivate"
                                 [value]="lead.currentStageId">
@@ -323,9 +323,9 @@
         </div>
         <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
           <ng-container *ngIf="!showLoadingButton">
-            <button type="button" id="saveDeal" [disabled]="!isValid" (click)="save()" class="button bgcolor-unset"
+            <button type="button" id="saveLead" [disabled]="!isValid" (click)="save()" class="button bgcolor-unset"
               *ngIf="!edit"><span class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
-            <button type="button" id="saveDeal" (click)="save()" class="button bgcolor-unset"
+            <button type="button" id="saveLead" (click)="save()" class="button bgcolor-unset"
               *ngIf="edit"><span class="btn Btn-Green transition txt_pd-top3">Update Lead</span></button>
           </ng-container>
           <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
@@ -335,10 +335,10 @@
         </div>
         <div class="pull-right mr10" *ngIf="!preview && showCustomForm">
           <ng-container *ngIf="!showLoadingButton">
-            <button type="button" id="saveDeal" [disabled]="sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
+            <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
                 class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
-            <button type="button" id="saveDeal"
-              [disabled]="sfDealComponent?.isDealRegistrationFormInvalid"
+            <button type="button" id="saveLead"
+              [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid"
               (click)="save()" class="button bgcolor-unset" *ngIf="edit"><span
                 class="btn Btn-Green transition txt_pd-top3">Update Lead</span></button>
           </ng-container>
@@ -623,9 +623,9 @@
       </div>
       <div class="pull-right" *ngIf="!preview && !showCustomForm && showDefaultForm">
         <ng-container *ngIf="!showLoadingButton">
-          <button type="button" id="saveDeal" [disabled]="!isValid" (click)="save()" class="button bgcolor-unset"
+          <button type="button" id="saveLead" [disabled]="!isValid" (click)="save()" class="button bgcolor-unset"
             *ngIf="!edit"><span class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
-          <button type="button" id="saveDeal" [disabled]="!isValid" (click)="save()" class="button bgcolor-unset"
+          <button type="button" id="saveLead" [disabled]="!isValid" (click)="save()" class="button bgcolor-unset"
             *ngIf="edit"><span class="btn Btn-Green transition txt_pd-top3">Update Lead</span></button>
         </ng-container>
         <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
@@ -635,9 +635,9 @@
       </div>
       <div class="pull-right" *ngIf="!preview && showCustomForm">
         <ng-container *ngIf="!showLoadingButton">
-          <button type="button" id="saveDeal" [disabled]="sfDealComponent?.isDealRegistrationFormInvalid || !isValidPipeplineAndStage" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
+          <button type="button" id="saveLead" [disabled]="sfDealComponent?.isDealRegistrationFormInvalid || !isValidPipeplineAndStage" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
               class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
-          <button type="button" id="saveDeal"
+          <button type="button" id="saveLead"
             [disabled]="sfDealComponent?.isDealRegistrationFormInvalid || !isValidPipeplineAndStage"
             (click)="save()" class="button bgcolor-unset" *ngIf="edit"><span
               class="btn Btn-Green transition txt_pd-top3">Update Lead</span></button>
