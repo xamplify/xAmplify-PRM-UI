@@ -142,7 +142,8 @@ tr > td > h6 {
   bottom: 25px !important;
   margin-left: -29px !important;
 }
-.dashboard-stat {
+.dashboard-stat,
+a.dashboard-stat.totalBoxFlex.dashboard-stat-lighter.red-soft.forbidden {
   height: auto !important;
   border-radius: 3px !important;
   margin-bottom: 9px !important;

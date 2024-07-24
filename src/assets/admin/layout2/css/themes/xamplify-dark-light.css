@@ -792,6 +792,7 @@ span.ui-column-resize {
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
   color: white !important;
+  border-bottom-color: transparent !important;
 }
 .nav-tabs,
 .def-player-border {
@@ -1463,6 +1464,9 @@ a.dropdown-toggle.circlebg-none-v:hover {
     > li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
     background-color: transparent !important;
   }
+  .page-header.navbar {
+    background: #22313a!important;
+}
 }
 
 /* 27-06-2023 */

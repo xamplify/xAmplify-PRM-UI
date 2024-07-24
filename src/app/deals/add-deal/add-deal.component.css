@@ -8,27 +8,34 @@
   margin-bottom: 0px;
   width: 50%;
 }
+
 #question-icons {
   margin-top: 5px;
 }
+
 .colorBlue {
   background: #808080;
 }
+
 .colorRed {
   background: #5bb1d4;
 }
+
 .row {
   margin-left: 0px;
 }
+
 .deal-box {
   margin-bottom: 50px;
   border: 1px solid #ddd;
   margin: 10px;
   padding: 10px;
 }
+
 .amount-border {
   border: 1px solid #e5e5e5;
 }
+
 /* 8-6-2023 sudha sri */
 .cont-info {
   font-size: 21px;
@@ -39,42 +46,87 @@
   width: 100%;
   border-bottom: 1px solid #e5e5e5;
 }
+
 /* prt */
-.card-bgcolors{
+.card-bgcolors {
   border-radius: 5px;
   padding: 10px 15px;
 }
-.deal-heading{
+
+.deal-heading {
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
 }
-.h-260{
+
+.h-260 {
   min-height: 100px;
 }
-.panel-title > a {
+
+.panel-title>a {
   display: block;
   position: relative;
   font-size: 16px;
 }
-.panel-title > a:hover {
-  color:unset!important;
+
+.panel-title>a:hover {
+  color: unset !important;
 }
+
 .panel-heading {
   padding: 10px 15px;
 }
-.br-unset{
-  border-radius: unset!important;
+
+.br-unset {
+  border-radius: unset !important;
   margin: 0px 15px;
-  border-top:1px solid #ddd;
+  border-top: 1px solid #ddd;
 }
-@media only screen and (max-width:600px){
-  .card-bgcolors{
-   margin-bottom:14px;
+
+@media only screen and (max-width:600px) {
+  .card-bgcolors {
+    margin-bottom: 14px;
   }
-  .mb_pr0{
+
+  .mb_pr0 {
     padding-right: 0px;
   }
 }
-.mr-3{
-margin-right: 3px;
+
+.mr-3 {
+  margin-right: 3px;
+}
+
+.deal-title-css {
+  padding: 7px 0px 10px 5px !important;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.mb-20{
+  margin-bottom: 20px;
+}
+
+.frame {
+  height: 100px;
+  /* equals max image height */
+  line-height: 100px;
+  width: 100%;
+}
+.deal-details {
+  margin: auto;
+  width: 87%;
+  padding: 0px;
+  background-color: white;
+}
+.bg-color {
+  background: #f1f1f1;
+}
+.lead-details-border{
+  border: 2px solid #fff;
+  border-radius: 5px;
+}
+@media only screen and (min-width:768px) and (max-width:1135px) { 
+  .modal-dialog {
+    width: 70% !important;
+}
 }

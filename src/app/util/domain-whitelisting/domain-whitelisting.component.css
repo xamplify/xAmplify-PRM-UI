@@ -1,8 +1,15 @@
 @media only screen and (max-width:578px){
 .TotalSearchBoxWidth{
- width:60%!important;
+ width:55%!important;
 }
 .nav-tabs > li > a{
     font-size: 12px;
 }
+}
+.tab-bg {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0px !important;
+    padding-bottom: 0px;
 }

@@ -108,7 +108,6 @@ export class FacebookAnalyticsComponent implements OnInit {
     }
 
     getInsight( socialConnection: SocialConnection, ownerId: string, metrics: string, period: string ) {
-        console.log( metrics );
         this.facebookService.getInsight( socialConnection, ownerId, metrics, period )
             .subscribe(
             data => {
