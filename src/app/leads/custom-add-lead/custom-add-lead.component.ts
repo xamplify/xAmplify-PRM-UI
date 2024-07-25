@@ -408,14 +408,15 @@ export class CustomAddLeadComponent implements OnInit {
   }
 
   getCampaignLeadPipeline() {
-    this.ngxloading = true;
+    this.isLoading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
     let self = this;
     if (this.lead.campaignId > 0) {
       this.leadsService.getCampaignLeadPipeline(this.lead.campaignId, this.loggedInUserId)
         .subscribe(
           data => {
-            this.ngxloading = false;
             this.referenceService.loading(this.httpRequestLoader, false);
+            this.isLoading = false;
             if (data.statusCode == 200) {
               let campaignLeadPipeline = data.data;
               if (campaignLeadPipeline.createdForCampaignPipelines != undefined) {
@@ -443,7 +444,8 @@ export class CustomAddLeadComponent implements OnInit {
             }
           },
           error => {
-            this.ngxloading = false;
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.isLoading = false;
             this.httpRequestLoader.isServerError = true;
           },
           () => { }
@@ -773,7 +775,8 @@ export class CustomAddLeadComponent implements OnInit {
       let fieldValue = $.trim($('#' + fieldId).val());
 
       if (fieldId == "lastName") {
-        if (fieldValue.length > 0 && fieldValue != '') {
+        let lastName = this.lead.lastName; 
+        if (lastName.length > 0 && lastName != '') {
           this.lastNameDivClass = successClass;
           this.lastNameError = false;
         } else {
@@ -783,7 +786,8 @@ export class CustomAddLeadComponent implements OnInit {
       }
 
       if (fieldId == "company") {
-        if (fieldValue.length > 0 && fieldValue != '') {
+        let company = this.lead.company;
+        if (company.length > 0 && company != '') {
           this.companyDivClass = successClass;
           this.companyError = false;
         } else {
@@ -793,7 +797,8 @@ export class CustomAddLeadComponent implements OnInit {
       }
 
       if (fieldId == "email") {
-        if (fieldValue.length > 0 && fieldValue != '' && this.regularExpressions.EMAIL_ID_PATTERN.test(fieldValue)) {
+        let email = this.lead.email;
+        if (email.length > 0 && email != '' && this.regularExpressions.EMAIL_ID_PATTERN.test(email)) {
           this.emailDivClass = successClass;
           this.emailError = false;
           this.isValid = true;
@@ -826,7 +831,8 @@ export class CustomAddLeadComponent implements OnInit {
         }
       }
       if (fieldId == "createdByPipelineId") {
-        if (fieldValue.length > 0 && fieldValue != "0") {
+        let createdByPipelineId = this.lead.createdByPipelineId;
+        if (createdByPipelineId > 0) {
           this.pipelineId = successClass;
           this.pipelineIdError = false;
         } else {
@@ -837,7 +843,8 @@ export class CustomAddLeadComponent implements OnInit {
         }
       }
       if (fieldId == "createdForPipelineId") {
-        if (fieldValue.length > 0 && fieldValue != "0") {
+        let createdForPipelineId = this.lead.createdForPipelineId;
+        if (createdForPipelineId > 0) {
           this.createdForPipelineId = successClass;
           this.createdForPipelineIdError = false;
         } else {
@@ -848,7 +855,8 @@ export class CustomAddLeadComponent implements OnInit {
         }
       }
       if (fieldId == "createdByPipelineStageId") {
-        if (fieldValue.length > 0 && fieldValue != "0") {
+        let createdByPipelineStageId = this.lead.createdByPipelineStageId;
+        if (createdByPipelineStageId > 0) {
           this.pipelineStageId = successClass;
           this.pipelineStageIdError = false;
         } else {
@@ -857,7 +865,8 @@ export class CustomAddLeadComponent implements OnInit {
         }
       }
       if (fieldId == "createdForPipelineStageId") {
-        if (fieldValue.length > 0 && fieldValue != "0") {
+        let createdForPipelineStageId = this.lead.createdForPipelineStageId;
+        if (createdForPipelineStageId > 0) {
           this.createdForPipelineStageId = successClass;
           this.createdForPipelineStageIdError = false;
         } else {
@@ -1404,12 +1413,7 @@ export class CustomAddLeadComponent implements OnInit {
       this.ngxloading = false;
       if (data.statusCode == 200) {
         this.halopsaTicketTypes = data.data;
-      } else if (data.statusCode == 401) {
-        this.customResponse = new CustomResponse('ERROR', data.message, true);
       }
-    },
-    error => {
-      this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try after sometime', true);
     })
   }
 

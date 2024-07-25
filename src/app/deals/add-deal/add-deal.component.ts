@@ -650,14 +650,17 @@ export class AddDealComponent implements OnInit {
           self.createdForStages = p.stages;
         }
       });
-    } else if (this.deal.createdByPipelineId > 0) {
+    } else {
+      self.createdForStages = [];
+    }
+    if (this.deal.createdByPipelineId > 0) {
       this.createdByPipelines.forEach(p => {
         if (p.id == this.deal.createdByPipelineId) {
           self.createdByStages = p.stages;
         }
       });
     } else {
-      self.stages = [];
+      self.createdByStages = [];
     }
 
   }
