@@ -84,6 +84,48 @@
                 </div>
               </div>
             </div>
+            <!--Contact Info-->
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+              <div class="panel panel-default deal-bgcolor">
+                <div class="panel-heading deal-bgcolor">
+                  <h4 class="panel-title">
+                    <a href="ContactInfo" (click)="toggleCollapsecontact($event)"> <i
+                        [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed1, 'fa-chevron-down collapseIn': isCollapsed1}"
+                        class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;"></i>
+                      Contact Info</a>
+                  </h4>
+                </div>
+                <div [ngClass]="{'collapse': isCollapsed1, '': !isCollapsed1}" id="ContactInfo">
+                  <div class="panel-body br-unset pl0 pr0 pt0 pb0">
+                    <div class="card-bgcolors h-260 pl0 pr0">
+                      <fieldset class="border-none">
+                        <div>
+                          <app-user-info *ngIf="showContactInfo" [userInfo]="contact"
+                            [isLeadInfo]="true"></app-user-info>
+                          <span *ngIf="!showContactInfo">Not Available</span>
+                          <span *ngIf="showAttachLeadButton" class="pull-right">
+                            <a style="padding-left: 4px;">
+                              <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                                <span (click)="openSelectLeadModel()" class="btn btn-primary transition d-inline"><i
+                                    class="fa fa-user-circle-o mb-btns" aria-hidden="true"></i>
+                                  {{attachLeadText}}</span>
+                              </button>
+                            </a>
+                            <a *ngIf="showDetachLeadButton" style="padding-left: 4px;">
+                              <button class="btn Btn-Gray neg_mrg_top4" translate>
+                                <span (click)="resetAttachedLeadInfo()"><i class="fa fa-user-circle-o mb-btns"
+                                    aria-hidden="true"></i> Detach
+                                  Lead</span>
+                              </button>
+                            </a>
+                          </span>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!--Campaign Info-->
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"  *ngIf="deal?.campaignId > 0">
               <div class="panel panel-default deal-bgcolor">
