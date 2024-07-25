@@ -245,14 +245,14 @@
         </div>
 
         <!--Custom Deal Form-->
-        <div *ngIf="showCustomForm && deal.createdForCompanyId">
+        <div *ngIf="showCustomForm && deal.createdForCompanyId" [ngClass]="preview?'width-50':''">
           <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [activeCRM]="activeCRMDetails"
             [dealId]="deal.id" [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson"
             [ticketTypeId]="deal.haloPSATickettypeId" [opportunityType]="'DEAL'"></app-sf-deal>
         </div>
          <!--Default Form-->
-        <div *ngIf="!showCustomForm && showDefaultForm">
-          <div class=" row portlet light deal-box">
+        <div *ngIf="!showCustomForm && showDefaultForm" [ngClass]="preview?'col-sm-6 col-xs-12 px-10 pl0':''">
+          <div  class="row portlet light deal-box" [ngClass]="preview?'margin-0px':''">
             <h4 class="caption" class="portlet-title">Deal Details</h4>
             <div class="col-sm-12 col-xs-12">
               <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
@@ -273,8 +273,6 @@
                   <option *ngFor="let dt of dealTypes" [value]="dt.dealType">{{dt.dealType}}</option>
                 </select>
               </div>
-
-
               <div class="form-group " [attr.class]="opportunityAmount" style="margin-bottom: 20px">
                 <label class="control-label">Amount
                   <span class="required"><strong>*</strong></span>
@@ -310,12 +308,12 @@
 
           </div>
           <div class="form-group" *ngIf="!preview && propertiesComments?.length===0">
-            <a class="dashboard-stat yellow-gold" style="padding: 9px 0;margin-top: 10px;margin-left: 10px"
-              (click)="addProperties()">
+            <a class="dashboard-stat yellow-gold" style="padding: 9px 0;margin-top: 10px;margin-left: 10px" (click)="addProperties()">
               <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>Add Your Comments
             </a>
           </div>
-          <div class=" row portlet light deal-box" *ngIf="propertiesComments?.length>0">
+          <!--Comments-->
+          <div *ngIf="propertiesComments?.length>0" class="row portlet light deal-box" [ngClass]="preview?'margin-0px mt5':''" >
             <h4 class="caption" class="portlet-title" *ngIf="!preview">Add Your Comments</h4>
             <h4 class="caption" class="portlet-title" *ngIf="preview">Comments</h4>
             <div *ngFor="let property of propertiesComments;let i=index">
@@ -375,7 +373,6 @@
               </div>
             </div>
           </div>
-
         </div>
         <!--Buttons--->
         <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
