@@ -10,7 +10,7 @@
         </h4>
       </div>
       <div [ngClass]="{'collapse': isCollapsed2, '': !isCollapsed2}" id="DealDetails">
-        <div class="panel-body br-unset pl0 pr0 mrg">
+        <div class="panel-body br-unset pl0 pr0" [ngClass]="isPreview?'':'mrg'">
           <div class="row m0 deal-bgcolors border-unset error-css">
             <div class="alert alert-danger" id="company-profile-error-div" *ngIf="showSFFormError">
               <strong>{{sfFormError}}</strong>
