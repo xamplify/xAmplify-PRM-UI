@@ -268,10 +268,9 @@ getStageNamesForCampaign(campaignId:number, userId:number){
     .catch(this.handleError);
  }
 
- findDealAndLeadInfoForComments(dealId: any,isVendorVersion:boolean) {
+ findDealAndLeadInfoForComments(dealId: any) {
   let convertedDealId = dealId!=undefined ? dealId:0;
-  let urlSuffix = isVendorVersion ? '':'findDealAndLeadInfoForCommentsForPartnerView';
-  let url = this.authenticationService.REST_URL+"deal/"+urlSuffix+"/"+convertedDealId+"?access_token="+this.authenticationService.access_token;
+  let url = this.authenticationService.REST_URL+"deal/findDealAndLeadInfoAndComments/"+convertedDealId+"?access_token="+this.authenticationService.access_token;
   return this.authenticationService.callGetMethod(url);
 }
  

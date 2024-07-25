@@ -217,7 +217,7 @@ export class AddDealComponent implements OnInit {
     if (this.preview) {
       this.commentsLoader = true;
       this.commentsCustomResponse = new CustomResponse();
-      this.dealsService.findDealAndLeadInfoForComments(this.dealId, this.isVendorVersion).
+      this.dealsService.findDealAndLeadInfoForComments(this.dealId).
         subscribe(
           response => {
             let statusCode = response.statusCode;
