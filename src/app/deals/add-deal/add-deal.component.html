@@ -243,11 +243,14 @@
             </div>
           </ng-container>
         </div>
+
+        <!--Custom Deal Form-->
         <div *ngIf="showCustomForm && deal.createdForCompanyId">
           <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [activeCRM]="activeCRMDetails"
             [dealId]="deal.id" [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson"
             [ticketTypeId]="deal.haloPSATickettypeId" [opportunityType]="'DEAL'"></app-sf-deal>
         </div>
+         <!--Default Form-->
         <div *ngIf="!showCustomForm && showDefaultForm">
           <div class=" row portlet light deal-box">
             <h4 class="caption" class="portlet-title">Deal Details</h4>
@@ -374,7 +377,7 @@
           </div>
 
         </div>
-
+        <!--Buttons--->
         <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
           <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
             class="button bgcolor-unset" *ngIf="!edit"><span class="btn Btn-Green transition txt_pd-top3">Register
@@ -382,7 +385,6 @@
           <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
             class="button bgcolor-unset" *ngIf="edit"><span class="btn Btn-Green transition txt_pd-top3">Update
               Deal</span></button>
-
         </div>
         <div class="pull-right mr10" *ngIf="!preview && showCustomForm">
           <ng-container *ngIf="!showLoadingButton">
