@@ -160,8 +160,12 @@
             <ng-container *ngIf="preview">
               <ng-template [ngTemplateOutlet]="defaultDealFormTemplate"></ng-template>
             </ng-container>
+             <!--Custom Deal Form-->
+            <ng-container *ngIf="preview">
+              <ng-template [ngTemplateOutlet]="customCRMFormTemplate"></ng-template>
+            </ng-container>
           </div>
-          <!--Second Div-->
+          <!--Right Side Div-->
           <!--Deal Layout And PipeLine Details-->
           <div *ngIf="!preview" class="col-sm-6 col-xs-12 px-10 pl0">
             <ng-template [ngTemplateOutlet]="dealLayoutAndPipeLineTemplate"></ng-template>
@@ -247,14 +251,10 @@
             </div>
           </ng-container>
         </div>
-
         <!--Custom Deal Form-->
-        <div *ngIf="showCustomForm && deal.createdForCompanyId" [ngClass]="preview?'width-50':''">
-          <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [activeCRM]="activeCRMDetails"
-            [dealId]="deal.id" [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson"
-            [ticketTypeId]="deal.haloPSATickettypeId" [opportunityType]="'DEAL'"></app-sf-deal>
-        </div>
-        <!--Add Here-->
+        <ng-container *ngIf="!preview">
+          <ng-template [ngTemplateOutlet]="customCRMFormTemplate"></ng-template>
+        </ng-container>
         <!--Default Form-->
         <ng-container *ngIf="!preview">
           <ng-template [ngTemplateOutlet]="defaultDealFormTemplate"></ng-template>
@@ -593,3 +593,13 @@
     </div>
   </div>
 </ng-template>
+
+<!--Custom CRM Form-->
+<ng-template #customCRMFormTemplate>
+  <div  *ngIf="showCustomForm && deal.createdForCompanyId">
+    <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [activeCRM]="activeCRMDetails"
+      [dealId]="deal.id" [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson"
+      [ticketTypeId]="deal.haloPSATickettypeId" [opportunityType]="'DEAL'"></app-sf-deal>
+  </div>
+</ng-template>
+<app-scroll-top></app-scroll-top>
