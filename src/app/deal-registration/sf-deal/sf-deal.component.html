@@ -1,5 +1,6 @@
 <div class="row m0" id="dealDetailsDiv" >
-  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel-group" [ngClass]="isPreview ? 'col-sm-6 col-xs-12 px-10 pl0 mb_pr0':''"
+     id="accordion" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default deal-bgcolor">
       <div class="panel-heading deal-bgcolor">
         <h4 class="panel-title">
@@ -10,8 +11,7 @@
       </div>
       <div [ngClass]="{'collapse': isCollapsed2, '': !isCollapsed2}" id="DealDetails">
         <div class="panel-body br-unset pl0 pr0 mrg">
-          <div class="row m0 deal-bgcolors border-unset"
-            style="margin-bottom: 50px;border: 1px solid #ddd;margin: 10px;padding: 10px">
+          <div class="row m0 deal-bgcolors border-unset error-css">
             <div class="alert alert-danger" id="company-profile-error-div" *ngIf="showSFFormError">
               <strong>{{sfFormError}}</strong>
             </div>
@@ -22,13 +22,22 @@
             <!---XNFR-403-->
             <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-              <div *ngIf="formDescription?.length>1 && isOnlyPartner && !isPreview"><div class="alert alert-info">{{formDescription}}</div></div>
+            <!--Add/Edit-->
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="!isPreview">
+              <div *ngIf="formDescription?.length>1 && isOnlyPartner && !isPreview">
+                <div class="alert alert-info">{{formDescription}}</div>
+              </div>
               <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
                 <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="formFields"
                   [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
                 <ng-template *ngIf="(0 != i % 2)" [ngTemplateOutlet]="formFields"
                   [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
+              </ng-container>
+            </div>
+            <!--Preview-->
+            <div *ngIf="isPreview">
+              <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
+                <ng-template  [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
               </ng-container>
             </div>
           </div>
@@ -107,16 +116,10 @@
 
 <!--Added On 11/12/2023-->
 <ng-template #formFields let-columnInfo="columnInfo">
-  
-  <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" *ngIf="!isLoading">
-    <!-- <label *ngIf ="this.activeCRM.createdForActiveCRMType != 'HUBSPOT' && this.activeCRM.createdForActiveCRMType != 'PIPEDRIVE' && this.activeCRM.createdForActiveCRMType != 'CONNECTWISE' && this.activeCRM.createdForActiveCRMType != 'SALESFORCE'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0 control-label">{{columnInfo.labelName}} <span class="required" *ngIf="columnInfo.required">*</span>
-      <span
-        *ngIf="!(columnInfo.labelType=='textarea' || columnInfo.labelType=='text' || columnInfo.labelType=='number' || columnInfo.labelType=='email' || columnInfo.labelType=='percent' || columnInfo.labelType=='geolocation' || columnInfo.labelType=='phone' || columnInfo.labelType=='url') && columnInfo.placeHolder?.length > 0">({{columnInfo.placeHolder}})
-      </span>
-    </label> -->
-    <label class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0 control-label">{{columnInfo.displayName}} <span class="required" *ngIf="columnInfo.required">*</span>
-      <span
-        *ngIf="!(columnInfo.labelType=='textarea' || columnInfo.labelType=='text' || columnInfo.labelType=='number' || columnInfo.labelType=='email' || columnInfo.labelType=='percent' || columnInfo.labelType=='geolocation' || columnInfo.labelType=='phone' || columnInfo.labelType=='url') && columnInfo.placeHolder?.length > 0">({{columnInfo.placeHolder}})
+  <div class="form-group" [ngClass]="isPreview ? '' : 'col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0'"  *ngIf="!isLoading">
+    <label class="control-label" [ngClass]="isPreview ? '' : 'col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0'" class="">{{columnInfo.displayName}} 
+      <span class="required" *ngIf="columnInfo.required">*</span>
+      <span *ngIf="!(columnInfo.labelType=='textarea' || columnInfo.labelType=='text' || columnInfo.labelType=='number' || columnInfo.labelType=='email' || columnInfo.labelType=='percent' || columnInfo.labelType=='geolocation' || columnInfo.labelType=='phone' || columnInfo.labelType=='url') && columnInfo.placeHolder?.length > 0">({{columnInfo.placeHolder}})
       </span>
     </label>
     <!-- ---------------------------TextBox & Email & Number----------------------------- -->

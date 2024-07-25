@@ -70,6 +70,7 @@ export class SfDealComponent implements OnInit {
   }
 
   addLoader() {
+    this.isLoading = true;
     if(this.opportunityType === 'DEAL'){
       this.referenceService.showSweetAlertProceesor('We are fetching the deal form');
     }
@@ -118,11 +119,7 @@ export class SfDealComponent implements OnInit {
         this.addLoader();
         this.getActiveCRMCustomForm();
       }
-      // if ("SALESFORCE" === this.activeCRM) {
-      //   this.getSalesforceCustomForm();
-      // } else {
-        this.getActiveCRMCustomForm();
-      // }
+      this.getActiveCRMCustomForm();
     }
 
     if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType)) {
