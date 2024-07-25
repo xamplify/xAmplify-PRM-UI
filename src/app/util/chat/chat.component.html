@@ -1,4 +1,4 @@
-<div class="comment-area comment-div" id="comment-area">
+<div class="comment-area" id="comment-area" [ngClass]="isPreviewDealOrLeadComponent ? '':'comment-div'">
     <ul class="comment-section" *ngFor="let c of commentList" style="margin: 0px;"> <!--xnfr-426-->
         <li [attr.class]="c.userId != loggedInUserId ? 'comment author-comment':'comment user-comment'"
             [ngStyle]="{'margin-top':((c?.activityType == 'LEAD_APPROVED') || (c?.activityType == 'LEAD_REJECTED') || (c?.activityType == 'STAGE_UPDATED') ||  (c?.activityType == 'LEAD_STAGE_UPDATED') || (c?.activityType == 'DEAL_STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') || (c?.activityType == 'LEAD_CREATED') || (c?.activityType == 'COMMENT_UPDATED'))? '-18px' : '0px'}">

@@ -20,6 +20,7 @@ export class ChatComponent implements OnInit {
   @Input() leadId: any = null;
   /*****XNFR-426*****/
   @Input() editTextArea: boolean;
+  @Input() isPreviewDealOrLeadComponent:boolean;
 
   loggedInUserId: number;
   commentList: DealComments[] = [];
@@ -46,8 +47,8 @@ export class ChatComponent implements OnInit {
     }
 
     getConversationForProperty(){
-      this.dealService.getConversationByProperty(this.propertyId, this.loggedInUserId).subscribe(response =>
-        {
+      this.dealService.getConversationByProperty(this.propertyId, this.loggedInUserId).
+      subscribe(response =>{
           if (response.statusCode == 200) {
             this.commentList = response.data;        
             this.scrollBottom();
@@ -57,15 +58,17 @@ export class ChatComponent implements OnInit {
         error => console.log(error),
         () => {
           this.updateChatStatistics();
-         })
+         });
     }
 
     getConversationForDeal(){
-      this.dealService.getConversation(this.dealId, this.loggedInUserId).subscribe(response =>
-        {
+      this.dealService.getConversation(this.dealId, this.loggedInUserId).
+      subscribe(response =>{
           if (response.statusCode == 200) {
-            this.commentList = response.data;        
-            this.scrollBottom();
+            this.commentList = response.data; 
+            if(!this.isPreviewDealOrLeadComponent){
+              this.scrollBottom();
+            }       
             this.comment = new DealComments();
           }
         },
