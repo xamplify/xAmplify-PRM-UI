@@ -589,7 +589,7 @@
             [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="0"></app-sf-deal>
         </div>
       </div>
-      <div class="pull-right" *ngIf="!preview && !showCustomForm && showDefaultForm">
+      <div class="pull-right" *ngIf="!preview && !showCustomForm && showDefaultForm" style="padding-top: 13px;padding-right: 39px;">
         <ng-container *ngIf="!showLoadingButton">
           <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid" (click)="save()" class="button bgcolor-unset"
             *ngIf="!edit"><span class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
@@ -601,7 +601,7 @@
           Please Wait.....
         </button>
       </div>
-      <div class="pull-right" *ngIf="!preview && showCustomForm">
+      <div class="pull-right" *ngIf="!preview && showCustomForm" style="padding-top: 13px;padding-right: 39px;">
         <ng-container *ngIf="!showLoadingButton">
           <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
               class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
