@@ -1,3 +1,4 @@
+import { CommentDealAndLeadDto } from './../models/comment-deal-and-lead-dto';
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -23,14 +24,8 @@ import { Properties } from 'app/common/models/properties';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { IntegrationService } from 'app/core/services/integration.service';
-import { ConnectwiseProductsDto } from '../models/connectwise-products-dto';
-import { ConnectwiseProductsRequestDto } from '../models/connectwise-products-request-dto';
-import { ConnectwiseCatalogItemDto } from '../models/connectwise-catalog-item-dto';
-import { ConnectwiseOpportunityDto } from '../models/connectwise-opportunity-dto';
-import { ConnectwiseStatusDto } from '../models/connectwise-status-dto';
-import { DealComments } from 'app/deal-registration/models/deal-comments';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
-declare var flatpickr: any, $: any, swal: any;
+declare var $: any, swal: any;
 
 
 @Component({
@@ -151,7 +146,12 @@ export class AddDealComponent implements OnInit {
   isZohoLeadAttachedWithoutSelectingDealFor: boolean = false;
   vendorCompanyName:string = '';
 
-
+  /***XNFR-623***/
+  commentsCustomResponse:CustomResponse = new CustomResponse();
+  commentsLoader = true;
+  commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
+  readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
+  /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public userService: UserService, private integrationService: IntegrationService) {
@@ -205,6 +205,40 @@ export class AddDealComponent implements OnInit {
       }
     }
     this.getVendorList();
+
+    /***XNFR-623***/
+    this.loadComments();
+  }
+
+  private loadComments() {
+    if (this.preview) {
+      this.commentsLoader = true;
+      this.commentsCustomResponse = new CustomResponse();
+      this.dealsService.findDealAndLeadInfoForComments(this.dealId, this.isVendorVersion).
+        subscribe(
+          response => {
+            let statusCode = response.statusCode;
+            if (statusCode == 200) {
+              let data = response.data;
+              this.commentDealAndLeadDto = data;
+              let associatedContact = data['associatedContact'];
+              let showLeadInfo = associatedContact != undefined;
+              this.commentDealAndLeadDto.showLeadInfo = showLeadInfo;
+              if(showLeadInfo){
+                this.commentDealAndLeadDto.associatedContact = associatedContact;
+                this.commentDealAndLeadDto.associatedContact['company'] = associatedContact['contactCompany'];
+              }
+              this.commentsLoader = false;
+            } else {
+              this.commentsLoader = false;
+              this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments for this deal.");
+            }
+          }, error => {
+            this.commentsLoader = false;
+            this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.");
+          }
+        );
+    }
   }
 
   setCreatedForCompanyId() {

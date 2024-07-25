@@ -11,6 +11,7 @@ import { UtilService } from 'app/core/services/util.service';
 
 @Injectable()
 export class DealsService {
+ 
   
 	URL = this.authenticationService.REST_URL + "deal/";
 
@@ -266,6 +267,13 @@ getStageNamesForCampaign(campaignId:number, userId:number){
     .map(this.extractData)
     .catch(this.handleError);
  }
+
+ findDealAndLeadInfoForComments(dealId: any,isVendorVersion:boolean) {
+  let convertedDealId = dealId!=undefined ? dealId:0;
+  let urlSuffix = isVendorVersion ? '':'findDealAndLeadInfoForCommentsForPartnerView';
+  let url = this.authenticationService.REST_URL+"deal/"+urlSuffix+"/"+convertedDealId+"?access_token="+this.authenticationService.access_token;
+  return this.authenticationService.callGetMethod(url);
+}
  
 
 }
