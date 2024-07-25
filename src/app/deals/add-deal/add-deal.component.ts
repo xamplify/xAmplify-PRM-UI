@@ -152,6 +152,7 @@ export class AddDealComponent implements OnInit {
   commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
   readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
   isCommentAndHistoryCollapsed = false;
+  editTextArea = true;
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,

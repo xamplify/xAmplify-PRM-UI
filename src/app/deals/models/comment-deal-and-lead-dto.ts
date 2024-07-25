@@ -1,4 +1,5 @@
 export class CommentDealAndLeadDto {
+    id = 0;
     campaignName = "";
     title = "";
     referenceId = "";
