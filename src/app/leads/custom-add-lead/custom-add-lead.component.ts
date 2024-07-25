@@ -970,7 +970,7 @@ export class CustomAddLeadComponent implements OnInit {
     else
       this.pipelineIdError = true;
 
-    if ((this.lead.createdForPipelineId != null && this.lead.createdForPipelineId > 0) || !this.activeCRMDetails.showLeadPipeline)
+    if ((this.lead.createdForPipelineId != null && this.lead.createdForPipelineId > 0) || (!this.activeCRMDetails.showLeadPipeline && "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType))
       this.createdForPipelineIdError = false
     else
       this.createdForPipelineIdError = true;
@@ -980,7 +980,7 @@ export class CustomAddLeadComponent implements OnInit {
     else
       this.pipelineStageIdError = true;
 
-    if ((this.lead.createdForPipelineStageId != null && this.lead.createdForPipelineStageId > 0) || !this.activeCRMDetails.showLeadPipelineStage)
+    if ((this.lead.createdForPipelineStageId != null && this.lead.createdForPipelineStageId > 0) || (!this.activeCRMDetails.showLeadPipelineStage && "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType))
       this.createdForPipelineStageIdError = false
     else
       this.createdForPipelineStageIdError = true;
@@ -1404,7 +1404,12 @@ export class CustomAddLeadComponent implements OnInit {
       this.ngxloading = false;
       if (data.statusCode == 200) {
         this.halopsaTicketTypes = data.data;
+      } else if (data.statusCode == 401) {
+        this.customResponse = new CustomResponse('ERROR', data.message, true);
       }
+    },
+    error => {
+      this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try after sometime', true);
     })
   }
 

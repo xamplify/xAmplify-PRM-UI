@@ -23,13 +23,15 @@ fieldset.scheduler-borders {
     display: flex;
     flex-flow: row wrap;
     align-items: baseline;
-    justify-content: space-between;
   }
   .leads-bgcolor {
     background-color: #f1f5f9;
   }
   .mb-15 {
     margin-bottom: 15px;
+  }
+  .mr-20 {
+    margin-right: 20px;
   }
   .row.m0 {
     padding: 6px 5px;

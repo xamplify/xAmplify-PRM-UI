@@ -567,7 +567,7 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
     // header navbar end
 
   getVendorRegisterDealValue() {
-    if (this.authenticationService.vanityURLEnabled) {
+    if (this.authenticationService.vanityURLEnabled && !this.authenticationService.module.isOrgAdmin && !this.authenticationService.module.isMarketing) {
       this.integrationService.getVendorRegisterDealValue(this.userId,this.vanityLoginDto.vendorCompanyProfileName).subscribe(
         data => {
           if (data.statusCode == 200) {
