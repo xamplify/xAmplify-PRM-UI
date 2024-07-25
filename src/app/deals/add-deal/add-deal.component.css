@@ -102,7 +102,7 @@
   font-weight: 500;
 }
 
-.mb-20{
+.mb-20 {
   margin-bottom: 20px;
 }
 
@@ -112,21 +112,42 @@
   line-height: 100px;
   width: 100%;
 }
+
 .deal-details {
   margin: auto;
   width: 87%;
   padding: 0px;
   background-color: white;
 }
+
 .bg-color {
   background: #f1f1f1;
 }
-.lead-details-border{
+
+.lead-details-border {
   border: 2px solid #fff;
   border-radius: 5px;
 }
-@media only screen and (min-width:768px) and (max-width:1135px) { 
+
+@media only screen and (min-width:768px) and (max-width:1135px) {
   .modal-dialog {
     width: 70% !important;
+  }
 }
+
+.pl-30 {
+  padding-left: 30px;
+  text-align: left;
+}
+
+.width-50 {
+  width: 50%;
+}
+
+.margin-0px {
+  margin: 0px !important;
+}
+
+.mt5 {
+  margin-top: 5px !important;
 }
