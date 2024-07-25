@@ -162,70 +162,86 @@
           <div *ngIf="!preview" class="col-sm-6 col-xs-12 px-10 pl0">
             <ng-template [ngTemplateOutlet]="dealLayoutAndPipeLineTemplate"></ng-template>
           </div>
-          <!--Comments & History-->
+          <!--Comments & History XNFR-623-->
           <ng-container *ngIf="preview">
             <div class="col-sm-6 col-xs-12 px-10 pl0">
               <app-modal-popup-loader *ngIf="commentsLoader"></app-modal-popup-loader>
-              <ng-container *ngIf="!commentsLoader">
-                <div *ngIf="!commentsLoader"  class="deal-details">
-                  <div class="row mix-grid p10 bg-color">
-                    <div class="col-md-3 col-lg-2">
-                      <div class="frame card-template">
-                        <img style="height: 80px;width: 80px;" class="img-circle img-templates"
-                          src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
-                      </div>
-                    </div>
-                    <div class="col-md-9 col-lg-10" style="text-align: left;">
-                        <div *ngIf="commentDealAndLeadDto?.campaignName != null && commentDealAndLeadDto?.campaignName != undefined">
-                          <h5 class="mt10 mb0" title="{{commentDealAndLeadDto?.campaignName}}">
-                            <span><strong>Campaign Name </strong></span>: {{commentDealAndLeadDto?.campaignName | slice:0:25}}
-                            <span *ngIf="commentDealAndLeadDto?.campaignName?.length>25">..</span>
-                          </h5>
-                        </div>
-                        <div *ngIf="commentDealAndLeadDto?.title != null && commentDealAndLeadDto?.title != undefined">
-                          <h5 class="mt10 mb0" title="{{commentDealAndLeadDto?.title}}">
-                            <span><strong>Deal Title </strong></span>: {{commentDealAndLeadDto?.title | slice:0:25}}
-                            <span *ngIf="commentDealAndLeadDto?.title?.length>25">..</span>
-                          </h5>
-                        </div>
-                        <div *ngIf="commentDealAndLeadDto?.referenceId != null && commentDealAndLeadDto?.referenceId != undefined && isVendorVersion">
-                          <h5 class="mt10 mb0" title="{{commentDealAndLeadDto?.referenceId}}">
-                            <span><strong>Deal ID </strong></span>: {{commentDealAndLeadDto?.referenceId}}
-                          </h5>
-                        </div>
-                      <!--Registered Details-->
-                        <div class="underline mt5"><strong>{{DEAL_CONSTANTS?.addedBy}}:</strong></div>
-                        <h5 class="mt10 mb0" *ngIf="commentDealAndLeadDto?.createdByName" [title]="commentDealAndLeadDto?.createdByName">
-                          <span><strong>Name</strong></span>: {{commentDealAndLeadDto?.createdByName | slice:0:25}}
-                          <span *ngIf="commentDealAndLeadDto?.createdByName.length>25">..</span>
-                        </h5>
-                        <h5 class="mt10 mb0" *ngIf="commentDealAndLeadDto?.createdByEmail" [title]="createdByEmail">
-                          <span><strong>Email</strong></span>: {{commentDealAndLeadDto?.createdByEmail | slice:0:30}}
-                          <span *ngIf="commentDealAndLeadDto?.createdByEmail.length>30">..</span>
-                        </h5>
-                        <h5 class="mt10">
-                          <span><strong>Created On </strong></span>
-                          <span title="Created On">: 
-                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="commentDealAndLeadDto?.createdTime"></app-timestamp>
-                          </span>
-                        </h5>
-                      <!--Lead Created Details-->
-                      <div *ngIf="commentDealAndLeadDto?.showLeadInfo" class="lead-details-border mt5">
-                        <h5 class="mt10">
-                          <span class="ml5 underline"><strong>Lead Details:</strong></span>
-                          <div style="padding:5px">
-                            <app-user-info [userInfo]="commentDealAndLeadDto?.associatedContact" [isLeadInfo]="true"></app-user-info>
+              <app-response-message [customResponse]="commentsCustomResponse" *ngIf="commentsCustomResponse?.isVisible" [showCloseIcon]="false"></app-response-message>
+              <div *ngIf="!commentsLoader && !commentsCustomResponse?.isVisible" class="panel-group" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default deal-bgcolor">
+                  <div class="panel-heading deal-bgcolor">
+                    <h4 class="panel-title">
+                      <a href="commentsAndHistory" (click)="toggleCommentsHistory($event)">
+                        <i [ngClass]="{'fa-chevron-up collapseOut': !isCommentAndHistoryCollapsed, 'fa-chevron-down collapseIn': isCommentAndHistoryCollapsed}"
+                          class="arrowpositinon fa collapseIconColorCu float-right" aria-hidden="false"></i>
+                        Comments/History</a>
+                    </h4>
+                  </div>
+                  <div [ngClass]="{'collapse': isCommentAndHistoryCollapsed, '': !isCommentAndHistoryCollapsed}" id="commentsAndHistory">
+                    <div class="panel-body br-unset pl0 pr0 pt0 pb0">
+                      <div class="card-bgcolors h-260 pl0 pr0">
+                        <div *ngIf="!commentsLoader"  class="deal-details">
+                          <div class="row mix-grid p10 bg-color">
+                            <div class="col-md-3 col-lg-2">
+                              <div class="frame card-template">
+                                <img style="height: 80px;width: 80px;" class="img-circle img-templates"
+                                  src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
+                              </div>
+                            </div>
+                            <div class="col-md-9 col-lg-10 pl-30">
+                                <div *ngIf="commentDealAndLeadDto?.campaignName != null && commentDealAndLeadDto?.campaignName != undefined">
+                                  <h5 class="mt10 mb0" title="{{commentDealAndLeadDto?.campaignName}}">
+                                    <span><strong>Campaign Name </strong></span>: {{commentDealAndLeadDto?.campaignName | slice:0:25}}
+                                    <span *ngIf="commentDealAndLeadDto?.campaignName?.length>25">..</span>
+                                  </h5>
+                                </div>
+                                <div *ngIf="commentDealAndLeadDto?.title != null && commentDealAndLeadDto?.title != undefined">
+                                  <h5 class="mt10 mb0" title="{{commentDealAndLeadDto?.title}}">
+                                    <span><strong>Deal Title </strong></span>: {{commentDealAndLeadDto?.title | slice:0:25}}
+                                    <span *ngIf="commentDealAndLeadDto?.title?.length>25">..</span>
+                                  </h5>
+                                </div>
+                                <div *ngIf="commentDealAndLeadDto?.referenceId != null && commentDealAndLeadDto?.referenceId != undefined && isVendorVersion">
+                                  <h5 class="mt10 mb0" title="{{commentDealAndLeadDto?.referenceId}}">
+                                    <span><strong>Deal ID </strong></span>: {{commentDealAndLeadDto?.referenceId}}
+                                  </h5>
+                                </div>
+                              <!--Registered Details-->
+                                <div class="underline mt5"><strong>{{DEAL_CONSTANTS?.addedBy}}:</strong></div>
+                                <h5 class="mt10 mb0" *ngIf="commentDealAndLeadDto?.createdByName" [title]="commentDealAndLeadDto?.createdByName">
+                                  <span><strong>Name</strong></span>: {{commentDealAndLeadDto?.createdByName | slice:0:25}}
+                                  <span *ngIf="commentDealAndLeadDto?.createdByName.length>25">..</span>
+                                </h5>
+                                <h5 class="mt10 mb0" *ngIf="commentDealAndLeadDto?.createdByEmail" [title]="createdByEmail">
+                                  <span><strong>Email</strong></span>: {{commentDealAndLeadDto?.createdByEmail | slice:0:30}}
+                                  <span *ngIf="commentDealAndLeadDto?.createdByEmail.length>30">..</span>
+                                </h5>
+                                <h5 class="mt10">
+                                  <span><strong>Created On </strong></span>
+                                  <span title="Created On">: 
+                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="commentDealAndLeadDto?.createdTime"></app-timestamp>
+                                  </span>
+                                </h5>
+                              <!--Lead Created Details-->
+                              <div *ngIf="commentDealAndLeadDto?.showLeadInfo" class="lead-details-border mt5">
+                                <h5 class="mt10">
+                                  <span class="ml5 underline"><strong>Lead Details:</strong></span>
+                                  <div style="padding:5px">
+                                    <app-user-info [userInfo]="commentDealAndLeadDto?.associatedContact" [isLeadInfo]="true"></app-user-info>
+                                  </div>
+                                </h5>
+                              </div>
+                            </div>
                           </div>
-                        </h5>
+                        </div>
+                        <app-chat [dealId]="deal?.id" [editTextArea]="editTextArea"  [moduleType]="moduleType" [enableWrite]="true"></app-chat>
                       </div>
                     </div>
                   </div>
                 </div>
-                <app-chat [dealId]="deal?.id" [leadId]="lead?.id" [editTextArea]="editTextArea"  [moduleType]="moduleType" [enableWrite]="true"></app-chat>
-              </ng-container>
+              </div>
             </div>
           </ng-container>
-          
         </div>
         <div *ngIf="showCustomForm && deal.createdForCompanyId">
           <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [activeCRM]="activeCRMDetails"

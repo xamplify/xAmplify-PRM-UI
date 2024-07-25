@@ -151,6 +151,7 @@ export class AddDealComponent implements OnInit {
   commentsLoader = true;
   commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
   readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
+  isCommentAndHistoryCollapsed = false;
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -210,6 +211,7 @@ export class AddDealComponent implements OnInit {
     this.loadComments();
   }
 
+  /***XNFR-623***/
   private loadComments() {
     if (this.preview) {
       this.commentsLoader = true;
@@ -231,7 +233,7 @@ export class AddDealComponent implements OnInit {
               this.commentsLoader = false;
             } else {
               this.commentsLoader = false;
-              this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments for this deal.");
+              this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments for this deal.",true);
             }
           }, error => {
             this.commentsLoader = false;
@@ -239,6 +241,12 @@ export class AddDealComponent implements OnInit {
           }
         );
     }
+  }
+
+  /***XNFR-623***/
+  toggleCommentsHistory(event:any){
+    event.preventDefault();
+    this.isCommentAndHistoryCollapsed = !this.isCommentAndHistoryCollapsed;
   }
 
   setCreatedForCompanyId() {
