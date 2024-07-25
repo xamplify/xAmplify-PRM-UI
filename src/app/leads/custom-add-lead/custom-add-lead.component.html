@@ -125,7 +125,7 @@
                       <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
                         ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket
                         Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
-                        ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}<span
+                        ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}<span
                           class="required"><strong>*</strong></span></label>
                       <select class="form-control" [(ngModel)]="lead.halopsaTicketTypeId"
                         [ngModelOptions]="{standalone: true}" placeholder="opportunityTypeId" id="opportunityTypeId"
@@ -163,8 +163,7 @@
                             <select class="form-control" [(ngModel)]="lead.createdByPipelineId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdByPipelineId"
                               [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasCreatedByPipeline"
-                              (ngModelChange)="resetCreatedByPipelineStages()"
-                              (input)="validateField('createdByPipelineId',false)">
+                              (ngModelChange)="validateField('createdByPipelineId',false);resetCreatedByPipelineStages()">
                               <option [value]="0">Select Pipeline</option>
                               <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">
                                 {{pipeline.name}}</option>
@@ -178,7 +177,7 @@
                             <select class="form-control" [(ngModel)]="lead.createdByPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                               id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
-                              (input)="validateField('createdByPipelineStageId',false)">
+                              (ngModelChange)="validateField('createdByPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
                               <option *ngIf="!isVendorVersion && lead.currentStagePrivate"
                                 [value]="lead.currentStageId">
@@ -193,8 +192,7 @@
                             <select class="form-control" [(ngModel)]="lead.createdForPipelineId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
                               [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedForPipeline"
-                              (ngModelChange)="resetCreatedForPipelineStages()"
-                              (input)="validateField('createdForPipelineId',false)">
+                              (ngModelChange)="validateField('createdForPipelineId',false);resetCreatedForPipelineStages()">
                               <option [value]="0">Select Pipeline</option>
                               <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">
                                 {{pipeline.name}}</option>
@@ -209,7 +207,7 @@
                             <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                               id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
-                              (input)="validateField('createdForPipelineStageId',false)">
+                              (ngModelChange)="validateField('createdForPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
                               <option *ngIf="!isVendorVersion && lead.currentStagePrivate"
                                 [value]="lead.currentStageId">
@@ -227,8 +225,7 @@
                             <select class="form-control" [(ngModel)]="lead.createdForPipelineId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
                               [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedForPipeline"
-                              (ngModelChange)="resetCreatedForPipelineStages()"
-                              (input)="validateField('createdForPipelineId',false)">
+                              (ngModelChange)="validateField('createdForPipelineId',false);resetCreatedForPipelineStages()">
                               <option [value]="0">Select Pipeline</option>
                               <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">
                                 {{pipeline.name}}</option>
@@ -241,7 +238,7 @@
                             <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                               id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
-                              (input)="validateField('createdForPipelineStageId',false)">
+                              (ngModelChange)="validateField('createdForPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
                               <option *ngIf="!isVendorVersion && lead.currentStagePrivate"
                                 [value]="lead.currentStageId">
@@ -257,8 +254,7 @@
                             <select class="form-control" [(ngModel)]="lead.createdByPipelineId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdByPipelineId"
                               [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasCreatedByPipeline"
-                              (ngModelChange)="resetCreatedByPipelineStages()"
-                              (input)="validateField('createdByPipelineId',false)">
+                              (ngModelChange)="validateField('createdByPipelineId',false);resetCreatedByPipelineStages()">
                               <option [value]="0">Select Pipeline</option>
                               <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">
                                 {{pipeline.name}}</option>
@@ -272,7 +268,7 @@
                             <select class="form-control" [(ngModel)]="lead.createdByPipelineStageId"
                               [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                               id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
-                              (input)="validateField('createdByPipelineStageId',false)">
+                              (ngModelChange)="validateField('createdByPipelineStageId',false)">
                               <option [value]="0">Select Stage</option>
                               <option *ngIf="!isVendorVersion && lead.currentStagePrivate"
                                 [value]="lead.currentStageId">
@@ -425,7 +421,7 @@
                     <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
                       ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket
                       Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
-                      ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}<font> <b
+                      ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}<font> <b
                           style="color: #f55d7a !important">*</b>
                       </font>
                     </label>
@@ -435,7 +431,7 @@
                       <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
                         ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket
                         Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
-                        ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}</option>
+                        ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}</option>
                       <option *ngFor="let ticketType of halopsaTicketTypes" [value]="ticketType.id">
                         {{ticketType.name}}</option>
                     </select>
@@ -450,9 +446,9 @@
                     </label>
 
                     <select class="form-control" [(ngModel)]="lead.createdByPipelineId"
-                      [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="pipelineId"
+                      [ngModelOptions]="{standalone: true}" placeholder="createdByPipelineId" id="createdByPipelineId"
                       [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedByPipeline"
-                      (ngModelChange)="resetStages()">
+                      (ngModelChange)="validateField('createdByPipelineId',false);resetStages()">
                       <option [value]="0">Select Pipeline</option>
                       <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">{{pipeline.name}}
                       </option>
@@ -464,7 +460,8 @@
                     *ngIf="showCreatedByPipelineAndStage">
                     <label class="control-label">Stage<font> <b style="color: #f55d7a !important">*</b></font></label>
                     <select class="form-control" [(ngModel)]="lead.createdByPipelineStageId"
-                      [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="pipelineStageId"
+                      [ngModelOptions]="{standalone: true}" placeholder="createdByPipelineStageId" id="createdByPipelineStageId"
+                      (ngModelChange)="validateField('createdByPipelineStageId',false)"
                       [disabled]="preview || isCreatedByStageIdDisable">
                       <option [value]="0">Select Stage</option>
                       <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">
@@ -482,7 +479,7 @@
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineId"
                       [ngModelOptions]="{standalone: true}" placeholder="createdForPipelineId" id="createdForPipelineId"
                       [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedForPipeline"
-                      (ngModelChange)="resetCreatedForPipelineStages()" (input)="validateField('createdForPipelineId',false)">
+                      (ngModelChange)="validateField('createdForPipelineId',false);resetCreatedForPipelineStages()">
                       <option [value]="0">Select Pipeline</option>
                       <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">{{pipeline.name}}
                       </option>
@@ -494,7 +491,7 @@
                           style="color: #f55d7a !important">*</b></font>
                     </label>
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId"
-                      [ngModelOptions]="{standalone: true}"  (input)="validateField('createdForPipelineStageId',false)"
+                      [ngModelOptions]="{standalone: true}" (ngModelChange)="validateField('createdForPipelineStageId',false)"
                        placeholder="createdForPipelineStageId" id="createdForPipelineStageId"
                       [disabled]="preview || isCreatedForStageIdDisable">
                       <option [value]="0">Select Stage</option>
@@ -513,7 +510,7 @@
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineId"
                       [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="pipelineId"
                       [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedForPipeline"
-                      (ngModelChange)="resetStages()" (input)="validateField('createdForPipelineStageId',false)">
+                      (ngModelChange)="validateField('createdForPipelineId',false);resetStages()">
                       <option [value]="0">Select Pipeline</option>
                       <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">{{pipeline.name}}
                       </option>
@@ -524,8 +521,8 @@
                     <label class="control-label">Stage<font> <b style="color: #f55d7a !important">*</b></font>
                     </label>
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId"
-                      [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="pipelineStageId"
-                      [disabled]="preview || isCreatedForStageIdDisable">
+                      [ngModelOptions]="{standalone: true}" placeholder="createdForPipelineStageId" id="createdForPipelineStageId"
+                      [disabled]="preview || isCreatedForStageIdDisable" (ngModelChange)="validateField('createdForPipelineStageId',false)">
                       <option [value]="0">Select Stage</option>
                       <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">
                         {{lead.currentStageName}}</option>
@@ -541,9 +538,9 @@
                     </label>
 
                     <select class="form-control" [(ngModel)]="lead.createdByPipelineId"
-                      [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="pipelineId"
+                      [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdByPipelineId"
                       [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasCreatedByPipeline"
-                      (ngModelChange)="resetStages()">
+                      (ngModelChange)="validateField('createdByPipelineId',false);resetStages()">
 
                       <option [value]="0">Select Pipeline</option>
                       <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">{{pipeline.name}}
@@ -557,9 +554,9 @@
                           style="color: #f55d7a !important">*</b></font>
                     </label>
                     <select class="form-control" [(ngModel)]="lead.createdByPipelineStageId"
-                      [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="pipelineStageId"
-                      [disabled]="preview || isCreatedByStageIdDisable">
-
+                      [ngModelOptions]="{standalone: true}" placeholder="createdByPipelineStageId" id="createdByPipelineStageId"
+                      [disabled]="preview || isCreatedByStageIdDisable"
+                      (ngModelChange)="validateField('createdByPipelineStageId',false)">
                       <option [value]="0">Select Stage</option>
                       <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">
                         {{lead.currentStageName}}</option>

@@ -155,6 +155,29 @@
           </div>
           <!--Second Div-->
           <div class="col-sm-6 col-xs-12 px-10 pl0">
+            <!--Deal Layout-->
+            <div *ngIf="showOpportunityTypes">
+              <div class="panel panel-default deal-bgcolor" >
+                <div class="panel-body">
+                  <div class="card-bgcolors h-260 pl0 pr0">
+                    <div class="form-group" [attr.class]="opportunityTypeId" style="margin-bottom: 20px" id="dealStageDiv">
+                      <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
+                        ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
+                        ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}<span class="required"><strong>*</strong></span></label>
+                      <select class="form-control" [(ngModel)]="deal.haloPSATickettypeId"
+                        [ngModelOptions]="{standalone: true}" placeholder="opportunityTypeId" id="opportunityTypeId"
+                        [disabled]="preview || isCampaignTicketTypeSelected || isZohoLeadAttached" (ngModelChange)="onChangeTicketType()"
+                        (input)="validateField('opportunityTypeId',false)">
+                        <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
+                          ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
+                          ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}</option>
+                        <option *ngFor="let type of halopsaTicketTypes" [value]="type.id">{{type.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!--Pipe Line Details-->
             <div class="panel-group" role="tablist" aria-multiselectable="true" 
             *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showDealPipeline || activeCRMDetails?.showDealPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm">
@@ -294,29 +317,6 @@
                           placeholder="Write your comment here" id="dealComment"
                           [(ngModel)]="deal.dealComment"></textarea>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!--Deal Layout-->
-            <div *ngIf="showOpportunityTypes">
-              <div class="panel panel-default deal-bgcolor" >
-                <div class="panel-body">
-                  <div class="card-bgcolors h-260 pl0 pr0">
-                    <div class="form-group" [attr.class]="opportunityTypeId" style="margin-bottom: 20px" id="dealStageDiv">
-                      <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
-                        ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
-                        ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}<span class="required"><strong>*</strong></span></label>
-                      <select class="form-control" [(ngModel)]="deal.haloPSATickettypeId"
-                        [ngModelOptions]="{standalone: true}" placeholder="opportunityTypeId" id="opportunityTypeId"
-                        [disabled]="preview || isCampaignTicketTypeSelected || isZohoLeadAttached" (ngModelChange)="onChangeTicketType()"
-                        (input)="validateField('opportunityTypeId',false)">
-                        <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
-                          ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
-                          ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}</option>
-                        <option *ngFor="let type of halopsaTicketTypes" [value]="type.id">{{type.name}}</option>
-                      </select>
                     </div>
                   </div>
                 </div>
