@@ -1413,7 +1413,12 @@ export class CustomAddLeadComponent implements OnInit {
       this.ngxloading = false;
       if (data.statusCode == 200) {
         this.halopsaTicketTypes = data.data;
+      } else if (data.statusCode == 401) {
+        this.customResponse = new CustomResponse('ERROR', data.message, true);
       }
+    },
+    error => {
+      this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try after sometime', true);
     })
   }
 
