@@ -156,6 +156,10 @@
                 </div>
               </div>
             </div>
+            <!--Default Form-->
+            <ng-container *ngIf="preview">
+              <ng-template [ngTemplateOutlet]="defaultDealFormTemplate"></ng-template>
+            </ng-container>
           </div>
           <!--Second Div-->
           <!--Deal Layout And PipeLine Details-->
@@ -250,130 +254,11 @@
             [dealId]="deal.id" [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson"
             [ticketTypeId]="deal.haloPSATickettypeId" [opportunityType]="'DEAL'"></app-sf-deal>
         </div>
-         <!--Default Form-->
-        <div *ngIf="!showCustomForm && showDefaultForm" [ngClass]="preview?'col-sm-6 col-xs-12 px-10 pl0':''">
-          <div  class="row portlet light deal-box" [ngClass]="preview?'margin-0px':''">
-            <h4 class="caption" class="portlet-title">Deal Details</h4>
-            <div class="col-sm-12 col-xs-12">
-              <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
-                <label class="control-label">Title
-                  <span class="required"><strong>*</strong></span>
-                </label>
-                <input type="text" maxlength="100" name="titleName" class="form-control" [(ngModel)]=" deal.title"
-                  [ngModelOptions]="{standalone: true}" id="title" (input)="validateField('title',false)"
-                  [disabled]="preview" />
-              </div>
-              <div class="form-group" [attr.class]="dealType" style="margin-bottom: 20px">
-                <label class="control-label">Deal Type
-                  <span class="required"><strong>*</strong></span>
-                </label>
-                <select class="form-control" [(ngModel)]="deal.dealType" [ngModelOptions]="{standalone: true}"
-                  id="dealType" (input)="validateField('dealType',false)" [disabled]="preview">
-                  <option *ngFor="let dt of defaultDealTypes" [value]="dt">{{dt!='Select Dealtype'?dt:'-- Select Deal Type --'}}</option>
-                  <option *ngFor="let dt of dealTypes" [value]="dt.dealType">{{dt.dealType}}</option>
-                </select>
-              </div>
-              <div class="form-group " [attr.class]="opportunityAmount" style="margin-bottom: 20px">
-                <label class="control-label">Amount
-                  <span class="required"><strong>*</strong></span>
-                </label>
-                <div class="input-group amount-border">
-                  <input type="text" currencyMask [options]="{align :'left',allowNegative :false }"
-                    class="form-control currency" [(ngModel)]="deal.amount" [ngModelOptions]="{standalone: true}"
-                    id="amount" (input)="validateField('amount',false)" (ngModelChange)="validateField('amount',false)"
-                    [disabled]="preview" maxlength="20" autocomplete="off" />
-                </div>
-              </div>
-              <div class="form-group" [attr.class]="estimatedCloseDate" style="margin-bottom: 20px">
-                <label class="control-label">Estimated Close date
-                  <span class="required"><strong>*</strong></span>
-                </label>
-                <app-flatpickr [type]="'date'" [dateFormat]="'Y-m-d'" [enableTime]="false"
-                  [(dataField)]="deal.closeDateString" [class.disabled]="preview"
-                  (input)="validateField('estimatedCloseDate',false)"></app-flatpickr>
-              </div>
-
-              <div *ngFor="let property of propertiesQuestions;let i=index">
-                <div class="form-group" [attr.class]="property.class" *ngIf="property.propType == 'QUESTION'"
-                  style="margin-bottom: 20px">
-                  <label class="control-label">{{property.key}}
-                    <span class="required"><strong>*</strong></span>
-                  </label>
-                  <input type="text" maxlength="1000" name="{{property.value}}" class="form-control"
-                    [(ngModel)]="property.value" [ngModelOptions]="{standalone: true}" id="question_{{property.id}}"
-                    (input)="validateField(property,true)" [disabled]="preview" />
-                </div>
-              </div>
-            </div>
-
-          </div>
-          <div class="form-group" *ngIf="!preview && propertiesComments?.length===0">
-            <a class="dashboard-stat yellow-gold" style="padding: 9px 0;margin-top: 10px;margin-left: 10px" (click)="addProperties()">
-              <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>Add Your Comments
-            </a>
-          </div>
-          <!--Comments-->
-          <div *ngIf="propertiesComments?.length>0" class="row portlet light deal-box" [ngClass]="preview?'margin-0px mt5':''" >
-            <h4 class="caption" class="portlet-title" *ngIf="!preview">Add Your Comments</h4>
-            <h4 class="caption" class="portlet-title" *ngIf="preview">Comments</h4>
-            <div *ngFor="let property of propertiesComments;let i=index">
-              <div class="portlet light dashboard-stat2" *ngIf="property.propType == 'PROPERTY'"
-                style="margin-bottom: 50px;border: 1px solid rgb(176, 177, 177);margin: 10px;padding: 10px">
-                <div class="portlet-title custom-change-css"
-                  [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
-                  <div class="col-xs-6">
-                    <h4 class="text-left" style="color:#fff">Comment-{{i+1}}</h4>
-                  </div>
-                  <div class="col-xs-6">
-                    <div class="pull-right" id="question-icons">
-                      <button type="button" class="btn-danger button-blue" (click)="showAlert(i+1,property)"
-                        *ngIf="showCommentActions">
-                        <span class="glyphicon glyphicon-trash"></span>
-                      </button>
-                      <button type="button" class="btn-primary button-blue" (click)="addProperties()"
-                        *ngIf="showCommentActions">
-                        <span class="glyphicon glyphicon-plus"></span>
-                      </button>
-                      <button type="button" class="btn-primary button-blue" (click)="commentsection(property)"
-                        *ngIf="property.isSaved">
-                        <span class="glyphicon glyphicon-comment" style="margin-right: 5px"></span><span
-                          *ngIf="property.unReadPropertyChatCount > 0">{{property.unReadPropertyChatCount}}</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <form class="role add-reply" id="form-{{property.divId}}">
-                    <div class="col-xs-10" style="padding:0">
-                      <div class="form-group" [attr.class]="property.validationStausKey">
-                        <label class="control-label">Comment Title
-                          <span class="required"><strong>*</strong></span>
-                        </label>
-                        <input type="text" maxlength="100" class="form-control" [(ngModel)]=" property.key"
-                          [ngModelOptions]="{standalone: true}" id="question" (input)="validateComment(property)"
-                          [disabled]="property.isDisabled || !showCommentActions || preview" />
-                      </div>
-                      <div class="form-group" [attr.class]="property.validationStausValue">
-                        <label class="control-label">Comment
-                          <span class="required"><strong>*</strong></span>
-                        </label>
-                        <textarea type="text" maxlength="1000" class="form-control" [(ngModel)]=" property.value"
-                          [ngModelOptions]="{standalone: true}" id="comment" (input)="validateComment(property)"
-                          [disabled]="property.isDisabled || !showCommentActions || preview"></textarea>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                <div class="row" *ngIf=" property.isCommentSection ">
-                  <div *ngIf="property.isCommentSection" style="width:95%">
-                    <app-chat [propertyId]="property.id" [moduleType]="'property'"
-                      [enableWrite]="isVendorVersion || deal.canUpdate"></app-chat>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!--Add Here-->
+        <!--Default Form-->
+        <ng-container *ngIf="!preview">
+          <ng-template [ngTemplateOutlet]="defaultDealFormTemplate"></ng-template>
+        </ng-container>
         <!--Buttons--->
         <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
           <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
@@ -574,6 +459,133 @@
               <textarea type="text" maxlength="250" rows="3" class="form-control" name="dealComment"
                 placeholder="Write your comment here" id="dealComment"
                 [(ngModel)]="deal.dealComment"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!--Default Form-->
+<ng-template #defaultDealFormTemplate>
+  <div *ngIf="!showCustomForm && showDefaultForm">
+    <div  class="row portlet light deal-box" [ngClass]="preview?'margin-0px':''">
+      <h4 class="caption" class="portlet-title">Deal Details</h4>
+      <div class="col-sm-12 col-xs-12">
+        <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
+          <label class="control-label">Title
+            <span class="required"><strong>*</strong></span>
+          </label>
+          <input type="text" maxlength="100" name="titleName" class="form-control" [(ngModel)]=" deal.title"
+            [ngModelOptions]="{standalone: true}" id="title" (input)="validateField('title',false)"
+            [disabled]="preview" />
+        </div>
+        <div class="form-group" [attr.class]="dealType" style="margin-bottom: 20px">
+          <label class="control-label">Deal Type
+            <span class="required"><strong>*</strong></span>
+          </label>
+          <select class="form-control" [(ngModel)]="deal.dealType" [ngModelOptions]="{standalone: true}"
+            id="dealType" (input)="validateField('dealType',false)" [disabled]="preview">
+            <option *ngFor="let dt of defaultDealTypes" [value]="dt">{{dt!='Select Dealtype'?dt:'-- Select Deal Type --'}}</option>
+            <option *ngFor="let dt of dealTypes" [value]="dt.dealType">{{dt.dealType}}</option>
+          </select>
+        </div>
+        <div class="form-group " [attr.class]="opportunityAmount" style="margin-bottom: 20px">
+          <label class="control-label">Amount
+            <span class="required"><strong>*</strong></span>
+          </label>
+          <div class="input-group amount-border">
+            <input type="text" currencyMask [options]="{align :'left',allowNegative :false }"
+              class="form-control currency" [(ngModel)]="deal.amount" [ngModelOptions]="{standalone: true}"
+              id="amount" (input)="validateField('amount',false)" (ngModelChange)="validateField('amount',false)"
+              [disabled]="preview" maxlength="20" autocomplete="off" />
+          </div>
+        </div>
+        <div class="form-group" [attr.class]="estimatedCloseDate" style="margin-bottom: 20px">
+          <label class="control-label">Estimated Close date
+            <span class="required"><strong>*</strong></span>
+          </label>
+          <app-flatpickr [type]="'date'" [dateFormat]="'Y-m-d'" [enableTime]="false"
+            [(dataField)]="deal.closeDateString" [class.disabled]="preview"
+            (input)="validateField('estimatedCloseDate',false)"></app-flatpickr>
+        </div>
+
+        <div *ngFor="let property of propertiesQuestions;let i=index">
+          <div class="form-group" [attr.class]="property.class" *ngIf="property.propType == 'QUESTION'"
+            style="margin-bottom: 20px">
+            <label class="control-label">{{property.key}}
+              <span class="required"><strong>*</strong></span>
+            </label>
+            <input type="text" maxlength="1000" name="{{property.value}}" class="form-control"
+              [(ngModel)]="property.value" [ngModelOptions]="{standalone: true}" id="question_{{property.id}}"
+              (input)="validateField(property,true)" [disabled]="preview" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="form-group" *ngIf="!preview && propertiesComments?.length===0">
+      <a class="dashboard-stat yellow-gold" style="padding: 9px 0;margin-top: 10px;margin-left: 10px" (click)="addProperties()">
+        <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>Add Your Comments
+      </a>
+    </div>
+    <!--Comments-->
+    <div *ngIf="propertiesComments?.length>0" class="row portlet light deal-box" [ngClass]="preview?'margin-0px mt5':''" >
+      <h4 class="caption" class="portlet-title" *ngIf="!preview">Add Your Comments</h4>
+      <h4 class="caption" class="portlet-title" *ngIf="preview">Comments</h4>
+      <div *ngFor="let property of propertiesComments;let i=index">
+        <div class="portlet light dashboard-stat2" *ngIf="property.propType == 'PROPERTY'"
+          style="margin-bottom: 50px;border: 1px solid rgb(176, 177, 177);margin: 10px;padding: 10px">
+          <div class="portlet-title custom-change-css"
+            [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
+            <div class="col-xs-6">
+              <h4 class="text-left" style="color:#fff">Comment-{{i+1}}</h4>
+            </div>
+            <div class="col-xs-6">
+              <div class="pull-right" id="question-icons">
+                <button type="button" class="btn-danger button-blue" (click)="showAlert(i+1,property)"
+                  *ngIf="showCommentActions">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <button type="button" class="btn-primary button-blue" (click)="addProperties()"
+                  *ngIf="showCommentActions">
+                  <span class="glyphicon glyphicon-plus"></span>
+                </button>
+                <button type="button" class="btn-primary button-blue" (click)="commentsection(property)"
+                  *ngIf="property.isSaved">
+                  <span class="glyphicon glyphicon-comment" style="margin-right: 5px"></span><span
+                    *ngIf="property.unReadPropertyChatCount > 0">{{property.unReadPropertyChatCount}}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <form class="role add-reply" id="form-{{property.divId}}">
+              <div class="col-xs-10" style="padding:0">
+                <div class="form-group" [attr.class]="property.validationStausKey">
+                  <label class="control-label">Comment Title
+                    <span class="required"><strong>*</strong></span>
+                  </label>
+                  <input type="text" maxlength="100" class="form-control" [(ngModel)]=" property.key"
+                    [ngModelOptions]="{standalone: true}" id="question" (input)="validateComment(property)"
+                    [disabled]="property.isDisabled || !showCommentActions || preview" />
+                </div>
+                <div class="form-group" [attr.class]="property.validationStausValue">
+                  <label class="control-label">Comment
+                    <span class="required"><strong>*</strong></span>
+                  </label>
+                  <textarea type="text" maxlength="1000" class="form-control" [(ngModel)]=" property.value"
+                    [ngModelOptions]="{standalone: true}" id="comment" (input)="validateComment(property)"
+                    [disabled]="property.isDisabled || !showCommentActions || preview"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="row" *ngIf=" property.isCommentSection ">
+            <div *ngIf="property.isCommentSection" style="width:95%">
+              <app-chat [propertyId]="property.id" [moduleType]="'property'"
+                [enableWrite]="isVendorVersion || deal.canUpdate"></app-chat>
             </div>
           </div>
         </div>
