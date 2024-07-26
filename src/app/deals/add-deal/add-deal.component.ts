@@ -238,7 +238,7 @@ export class AddDealComponent implements OnInit {
             }
           }, error => {
             this.commentsLoader = false;
-            this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.");
+            this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.",true);
           }
         );
     }
