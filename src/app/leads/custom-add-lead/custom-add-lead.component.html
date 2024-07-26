@@ -125,15 +125,15 @@
                 </div>
               </div>
             </div>
-            <!--Default Lead Form-->
-            <ng-container *ngIf="preview">
-              <ng-template [ngTemplateOutlet]="defaultLeadFormTemplate"></ng-template>
-            </ng-container>
-            <!--Custom Lead Form-->
-            <ng-container *ngIf="preview">
-              <ng-template [ngTemplateOutlet]="customCRMFormTemplate"></ng-template>
-            </ng-container>
           </div>
+          <!--Custom Lead Form-->
+          <ng-container *ngIf="preview">
+            <ng-template [ngTemplateOutlet]="customCRMFormTemplate"></ng-template>
+          </ng-container>
+          <!--Default Form-->
+          <ng-container *ngIf="preview">
+            <ng-template [ngTemplateOutlet]="defaultLeadFormTemplate"></ng-template>
+          </ng-container>
           <!--RightSide Div-->
           <!--Lead Layout And PipeLine Details-->
           <div *ngIf="!preview" class="col-sm-6 col-xs-12 px-10 pl0">
@@ -732,5 +732,23 @@
 
 <!--Default Form-->
 <ng-template #defaultLeadFormTemplate>
-
+  <div class="panel-group" *ngIf="!showCustomForm && showDefaultForm && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
+    <!--Lead Details-->
+    <div class=" row portlet light m0">
+      <div class="panel-heading deal-bgcolor">
+        <h4 class="panel-title">Lead Details
+        </h4>
+      </div>
+      <div class="panel-body br-unset pl0 pr0 mrg">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+          <ng-container *ngFor="let leadCustomField of leadCustomFields;let i = index">
+            <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="leadFields"
+              [ngTemplateOutletContext]="{leadCustomField:leadCustomField}"></ng-template>
+            <ng-template *ngIf="(0 != i % 2)" [ngTemplateOutlet]="leadFields"
+              [ngTemplateOutletContext]="{leadCustomField:leadCustomField}"></ng-template>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
 </ng-template>
