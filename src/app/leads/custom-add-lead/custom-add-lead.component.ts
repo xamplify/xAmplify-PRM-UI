@@ -1106,6 +1106,8 @@ export class CustomAddLeadComponent implements OnInit {
 
   getActiveCRMDetails() {
     this.ngxloading = true;
+    this.showCustomForm = false;
+    this.showDefaultForm = false;
     this.integrationService.getActiveCRMDetails(this.lead.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         response => {
