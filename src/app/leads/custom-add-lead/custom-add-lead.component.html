@@ -125,15 +125,15 @@
                 </div>
               </div>
             </div>
+            <!--Custom Lead Form-->
+            <ng-container *ngIf="preview">
+              <ng-template [ngTemplateOutlet]="customCRMFormTemplate"></ng-template>
+            </ng-container>
+            <!--Default Form-->
+            <ng-container *ngIf="preview">
+              <ng-template [ngTemplateOutlet]="defaultLeadFormTemplate"></ng-template>
+            </ng-container>
           </div>
-          <!--Custom Lead Form-->
-          <ng-container *ngIf="preview">
-            <ng-template [ngTemplateOutlet]="customCRMFormTemplate"></ng-template>
-          </ng-container>
-          <!--Default Form-->
-          <ng-container *ngIf="preview">
-            <ng-template [ngTemplateOutlet]="defaultLeadFormTemplate"></ng-template>
-          </ng-container>
           <!--RightSide Div-->
           <!--Lead Layout And PipeLine Details-->
           <div *ngIf="!preview" class="col-sm-6 col-xs-12 px-10 pl0">
