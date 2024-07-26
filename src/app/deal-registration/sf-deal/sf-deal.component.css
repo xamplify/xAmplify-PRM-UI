@@ -42,8 +42,12 @@ input[type='radio']:checked:after {
   float: right;
 }
 
-.px-10 {
-  padding: 0px 10px;
+.px-0-19 {
+  padding: 0px 19px;
+}
+
+.px-0{
+  padding: 0px 0px;
 }
 
 .w-100 {
