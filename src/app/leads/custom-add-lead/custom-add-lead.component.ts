@@ -10,7 +10,6 @@ import { UserService } from 'app/core/services/user.service';
 import { UtilService } from 'app/core/services/util.service';
 import { Pipeline } from 'app/dashboard/models/pipeline';
 import { PipelineStage } from 'app/dashboard/models/pipeline-stage';
-import { DealAnswer } from 'app/deal-registration/models/deal-answers';
 import { DealDynamicProperties } from 'app/deal-registration/models/deal-dynamic-properties';
 import { DealQuestions } from 'app/deal-registration/models/deal-questions';
 import { DealType } from 'app/deal-registration/models/deal-type';
@@ -28,6 +27,7 @@ import { LeadCustomFieldDto } from '../models/lead-custom-field';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CountryNames } from 'app/common/models/country-names';
 import { CommentDealAndLeadDto } from 'app/deals/models/comment-deal-and-lead-dto';
+import { EnvService } from 'app/env.service';
 declare var $: any;
 @Component({
   selector: 'app-custom-add-lead',
@@ -202,7 +202,8 @@ export class CustomAddLeadComponent implements OnInit {
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
-    public utilService: UtilService, private leadsService: LeadsService, public regularExpressions: RegularExpressions, public userService: UserService, public countryNames: CountryNames, private integrationService: IntegrationService) {
+    public utilService: UtilService, private leadsService: LeadsService, public regularExpressions: RegularExpressions, public userService: UserService,
+     public countryNames: CountryNames, private integrationService: IntegrationService,public envService:EnvService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isMarketingCompany = this.authenticationService.module.isMarketingCompany;
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -215,6 +216,23 @@ export class CustomAddLeadComponent implements OnInit {
 
   ngOnInit() {
     this.getDefaultLeadCustomFields();
+    this.resetLeadData();
+    if (this.actionType === "view") {
+      this.loadDataForViewLead();
+    } else if (this.actionType === "edit") {
+      this.loadDataForEditLead();
+    } else if (this.actionType === "add") {
+      this.loadDataForAddLead();
+    }
+    if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
+      this.disableCreatedFor = true;
+    }
+    this.getVendorList();
+    this.loadComments();
+  }
+
+
+  private resetLeadData() {
     this.errorMessage = "";
     this.lead.createdForCompanyId = 0;
     this.lead.pipelineId = 0;
@@ -224,55 +242,58 @@ export class CustomAddLeadComponent implements OnInit {
     this.lead.createdForPipelineStageId = 0;
     this.lead.createdByPipelineStageId = 0;
     this.lead.halopsaTicketTypeId = 0;
-    if (this.actionType === "view") {
-      this.preview = true;
-      this.leadFormTitle = "View Lead";
-      if (this.leadId > 0) {
-        this.getLead(this.leadId);
-      }
+  }
+
+  private loadDataForEditLead() {
+    this.edit = true;
+    this.leadFormTitle = "Edit Lead";
+    if (this.leadId > 0) {
+      this.getLead(this.leadId);
+    }
+  }
+
+  private loadDataForViewLead() {
+    this.preview = true;
+    this.leadFormTitle = "View Lead";
+    if (this.leadId > 0) {
+      this.getLead(this.leadId);
+    }
+    if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
+      $('#leadFormModel').modal('show');
+      this.showAttachLeadPopUp = true;
+    }
+  }
+
+  private loadDataForAddLead() {
+    this.leadFormTitle = LEAD_CONSTANTS.registerALead;
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.setCreatedForCompanyId();
       if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
         $('#leadFormModel').modal('show');
         this.showAttachLeadPopUp = true;
       }
-    } else if (this.actionType === "edit") {
-      this.edit = true;
-      this.leadFormTitle = "Edit Lead";
-      if (this.leadId > 0) {
-        this.getLead(this.leadId);
+    } else if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
+      $('#leadFormModel').modal('show');
+      this.showAttachLeadPopUp = true;
+      if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
+        this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
+        this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
+        this.getActiveCRMDetails();
       }
-    } else if (this.actionType === "add") {
-      this.leadFormTitle = LEAD_CONSTANTS.registerALead;
-      if (this.vanityLoginDto.vanityUrlFilter) {
-        this.setCreatedForCompanyId();
-        if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
-          $('#leadFormModel').modal('show');
-          this.showAttachLeadPopUp = true;
-        }
-      } else if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
-        $('#leadFormModel').modal('show');
-        this.showAttachLeadPopUp = true;
-        if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
-          this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
-          this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
-          this.getActiveCRMDetails();
-        }
-      } else {
-        if (this.campaignId > 0) {
-          this.lead.campaignId = this.campaignId;
-          this.lead.campaignName = this.campaignName;
-          this.lead.associatedUserId = this.selectedContact.userId;
-          this.getCreatedForCompanyIdByCampaignId();
-          this.getContactInfo();
-        }
-      }
+    } else {
+      this.getCampaignInfoForAddLead();
     }
-    if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
-      this.disableCreatedFor = true;
-    }
-    this.getVendorList();
-    this.loadComments();
   }
 
+  private getCampaignInfoForAddLead() {
+    if (this.campaignId > 0) {
+      this.lead.campaignId = this.campaignId;
+      this.lead.campaignName = this.campaignName;
+      this.lead.associatedUserId = this.selectedContact.userId;
+      this.getCreatedForCompanyIdByCampaignId();
+      this.getContactInfo();
+    }
+  }
 
    /***XNFR-623***/
    private loadComments() {
@@ -593,17 +614,18 @@ export class CustomAddLeadComponent implements OnInit {
   }
 
   getVendorList() {
-    let self = this;
+    this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.getVendorList(this.loggedInUserId)
       .subscribe(
         data => {
-          this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
-            self.vendorList = data.data;
+            this.vendorList = data.data;
           }
+          this.referenceService.loading(this.httpRequestLoader, false);
         },
         error => {
           this.httpRequestLoader.isServerError = true;
+          this.referenceService.loading(this.httpRequestLoader, false);
         },
         () => { }
       );
@@ -1430,20 +1452,7 @@ export class CustomAddLeadComponent implements OnInit {
     this.isCollapsed3 = !this.isCollapsed3;
   }
 
-  /********XNFR-426********/
-  // showComments(lead: any) {
-  //   this.selectedLead = lead;
-  //   this.isCommentSection = !this.isCommentSection;
-  //   this.editTextArea = !this.editTextArea;
-  // }
-
-  // addCommentModalClose(event: any) {
-  //   this.selectedLead.unReadChatCount = 0;
-  //   // console.log(this.selectedLead.unReadChatCount)
-  //   this.isCommentSection = !this.isCommentSection;
-  //   this.editTextArea = !this.editTextArea;
-  // }
-
+  
   halopsaTicketTypeId: number = 0;
   halopsaTicketTypes: any;
   getHaloPSATicketTypes(companyId: number, integrationType: string) {
