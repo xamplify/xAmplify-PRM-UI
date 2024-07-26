@@ -186,6 +186,7 @@ import { OauthSsoConfigurationComponent } from 'app/dashboard/oauth-sso-configur
 import { CrmSettingsComponent } from 'app/dashboard/crm-settings/crm-settings.component'; 
 import { ShareDashboardButtonsComponent } from './share-dashboard-buttons/share-dashboard-buttons.component';
 import { DropdownLoaderComponent } from 'app/util/dropdown-loader/dropdown-loader.component';
+import { DisplayErrorMessageComponent } from 'app/util/display-error-message/display-error-message.component';
 
 
 @NgModule({
@@ -224,7 +225,7 @@ import { DropdownLoaderComponent } from 'app/util/dropdown-loader/dropdown-loade
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,DropdownLoaderComponent
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,DropdownLoaderComponent,DisplayErrorMessageComponent
 	],
 
 
@@ -261,7 +262,7 @@ import { DropdownLoaderComponent } from 'app/util/dropdown-loader/dropdown-loade
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,DropdownLoaderComponent
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,DropdownLoaderComponent,DisplayErrorMessageComponent
 
 	]
 

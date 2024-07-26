@@ -197,6 +197,7 @@ export class CustomAddLeadComponent implements OnInit {
     readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
     isCommentAndHistoryCollapsed = false;
     editTextArea = false;
+    vendorListLoader:HttpRequestLoader = new HttpRequestLoader();
     /***XNFR-623***/
   
 
@@ -513,7 +514,6 @@ export class CustomAddLeadComponent implements OnInit {
 
   onChangeCreatedFor() {
     if (this.lead.createdForCompanyId > 0) {
-      //this.isSalesForceEnabled(); 
       let vendorCompany;
       vendorCompany = this.vendorList.find(vendor => vendor.companyId == this.lead.createdForCompanyId);
       this.vendorCompanyName = vendorCompany.companyName + "'s";
@@ -614,18 +614,18 @@ export class CustomAddLeadComponent implements OnInit {
   }
 
   getVendorList() {
-    this.referenceService.loading(this.httpRequestLoader, true);
+    this.referenceService.loading(this.vendorListLoader, true);
     this.leadsService.getVendorList(this.loggedInUserId)
       .subscribe(
         data => {
           if (data.statusCode == 200) {
             this.vendorList = data.data;
           }
-          this.referenceService.loading(this.httpRequestLoader, false);
+          this.referenceService.loading(this.vendorListLoader, false);
         },
         error => {
-          this.httpRequestLoader.isServerError = true;
-          this.referenceService.loading(this.httpRequestLoader, false);
+          this.referenceService.loading(this.vendorListLoader, false);
+          this.referenceService.showServerError(this.vendorListLoader);
         },
         () => { }
       );

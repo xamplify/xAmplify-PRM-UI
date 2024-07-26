@@ -43,8 +43,9 @@
                       <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
                         *ngIf="(!vanityLoginDto.vanityUrlFilter) && (!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany))) && !(lead.campaignId > 0)">
                         <label class="control-label">Lead For<span class="required"><strong>*</strong></span></label>
-                        <app-dropdown-loader [text]="'Companies'"></app-dropdown-loader>
-                        <select class="form-control" [(ngModel)]="lead.createdForCompanyId" [ngModelOptions]="{standalone: true}"
+                        <app-dropdown-loader *ngIf="vendorListLoader?.isLoading"  [text]="'Companies'"></app-dropdown-loader>
+                        <app-display-error-message *ngIf="!vendorListLoader?.isLoading && vendorListLoader?.isServerError" [text]="'companies'"></app-display-error-message>
+                        <select *ngIf="!vendorListLoader?.isLoading && !vendorListLoader?.isServerError" class="form-control" [(ngModel)]="lead.createdForCompanyId" [ngModelOptions]="{standalone: true}"
                           placeholder="createdForCompanyId" id="createdForCompanyId"
                           [disabled]="disableCreatedFor || disableCreatedForVendor" (ngModelChange)="onChangeCreatedFor()"
                           (input)="validateField('createdForCompanyId',false)">
