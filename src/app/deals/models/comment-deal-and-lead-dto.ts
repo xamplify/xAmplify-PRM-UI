@@ -10,4 +10,9 @@ export class CommentDealAndLeadDto {
     moduleType = "";
     showLeadInfo = false;
     associatedContact:any;
+    firstName="";
+    lastName="";
+    email="";
+    company="";
+    phone="";
 }

@@ -286,13 +286,6 @@ export class CustomAddLeadComponent implements OnInit {
             if (statusCode == 200) {
               let data = response.data;
               this.commentDealAndLeadDto = data;
-              let associatedContact = data['associatedContact'];
-              let showLeadInfo = associatedContact != undefined;
-              this.commentDealAndLeadDto.showLeadInfo = showLeadInfo;
-              if(showLeadInfo){
-                this.commentDealAndLeadDto.associatedContact = associatedContact;
-                this.commentDealAndLeadDto.associatedContact['company'] = associatedContact['contactCompany'];
-              }
               this.commentsLoader = false;
             } else {
               this.commentsLoader = false;

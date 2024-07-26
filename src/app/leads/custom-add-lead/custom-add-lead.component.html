@@ -184,7 +184,7 @@
                                   </h5>
                                 </div>
                               <!--Registered Details-->
-                                <div class="underline mt5"><strong>{{DEAL_CONSTANTS?.addedBy}}:</strong></div>
+                                <div class="underline mt5"><strong>{{LEAD_CONSTANTS?.addedBy}}:</strong></div>
                                 <h5 class="mt10 mb0" *ngIf="commentDealAndLeadDto?.createdByName" [title]="commentDealAndLeadDto?.createdByName">
                                   <span><strong>Name</strong></span>: {{commentDealAndLeadDto?.createdByName | slice:0:25}}
                                   <span *ngIf="commentDealAndLeadDto?.createdByName.length>25">..</span>
@@ -200,11 +200,11 @@
                                   </span>
                                 </h5>
                               <!--Lead Created Details-->
-                              <div *ngIf="commentDealAndLeadDto?.showLeadInfo" class="lead-details-border mt5">
+                              <div class="lead-details-border mt5">
                                 <h5 class="mt10">
                                   <span class="ml5 underline"><strong>Lead Details:</strong></span>
                                   <div style="padding:5px">
-                                    <app-user-info [userInfo]="commentDealAndLeadDto?.associatedContact" [isLeadInfo]="true"></app-user-info>
+                                    <app-user-info [userInfo]="commentDealAndLeadDto" [isLeadInfo]="true"></app-user-info>
                                   </div>
                                 </h5>
                               </div>
