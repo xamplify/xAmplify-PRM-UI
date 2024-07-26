@@ -81,3 +81,36 @@
   .modal-dialog{
     width: 70% !important;
   }
+
+  .frame {
+    height: 100px;
+    line-height: 100px;
+    width: 100%;
+  }
+  
+  .deal-details {
+    margin: auto;
+    width: 87%;
+    padding: 0px;
+    background-color: white;
+  }
+  
+  .bg-color {
+    background: #f1f1f1;
+  }
+  
+  .lead-details-border {
+    border: 2px solid #fff;
+    border-radius: 5px;
+  }
+
+  .pl-30 {
+    padding-left: 30px;
+    text-align: left;
+  }
+  
+  @media only screen and (min-width:768px) and (max-width:1135px) {
+    .modal-dialog {
+      width: 70% !important;
+    }
+  }

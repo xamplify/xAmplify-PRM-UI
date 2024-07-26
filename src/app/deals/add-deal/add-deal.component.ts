@@ -238,7 +238,7 @@ export class AddDealComponent implements OnInit {
             }
           }, error => {
             this.commentsLoader = false;
-            this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.");
+            this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.",true);
           }
         );
     }
@@ -599,6 +599,9 @@ export class AddDealComponent implements OnInit {
       this.propertiesQuestions = [];
       this.hasCampaignPipeline = false;
       this.vendorCompanyName = '';
+      this.deal.createdForPipelineId = 0;
+      this.createdForPipelines = [];
+      this.createdForStages = [];
     }
   }
 
@@ -1267,6 +1270,7 @@ export class AddDealComponent implements OnInit {
 
   getActiveCRMDetails() {
     this.showCustomForm = false;
+    this.showDefaultForm = false;
     this.integrationService.getActiveCRMDetails(this.deal.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         response => {
@@ -1591,6 +1595,7 @@ export class AddDealComponent implements OnInit {
       if (!createdForPipelineExist) {
         self.deal.createdForPipelineId = 0;
         self.deal.createdForPipelineStageId = 0;
+        self.createdForStages = [];
         this.setFieldErrorStates();
       }
       self.activeCRMDetails.hasCreatedForPipeline = false;
