@@ -12,6 +12,7 @@ import { LeadCustomFieldDto } from '../models/lead-custom-field';
 
 @Injectable()
 export class LeadsService {
+  
 
   URL = this.authenticationService.REST_URL + "lead/";
   constructor(private http: Http, private authenticationService: AuthenticationService,
@@ -349,6 +350,12 @@ export class LeadsService {
     return this.http.get(this.authenticationService.REST_URL + `/lead/vendor/custom/fields/${vendorCompanyId}?access_token=${this.authenticationService.access_token}`)
       .map(this.extractData)
       .catch(this.handleError);
+  }
+
+  findLeadAndLeadInfoForComments(leadId: any) {
+    let convertedLeadId = leadId!=undefined ? leadId:0;
+    let url = this.authenticationService.REST_URL+"lead/findLeadAndLeadInfoAndComments/"+convertedLeadId+"?access_token="+this.authenticationService.access_token;
+   return this.authenticationService.callGetMethod(url);
   }
 
 

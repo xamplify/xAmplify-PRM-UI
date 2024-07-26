@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
-import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { User } from 'app/core/models/user';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -28,7 +27,8 @@ import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
 import { LeadCustomFieldDto } from '../models/lead-custom-field';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CountryNames } from 'app/common/models/country-names';
-declare var flatpickr: any, $: any, swal: any;
+import { CommentDealAndLeadDto } from 'app/deals/models/comment-deal-and-lead-dto';
+declare var $: any;
 @Component({
   selector: 'app-custom-add-lead',
   templateUrl: './custom-add-lead.component.html',
@@ -189,6 +189,15 @@ export class CustomAddLeadComponent implements OnInit {
   emailError: boolean = true;
   companyError: boolean = true;
   lastNameError: boolean = true;
+
+    /***XNFR-623***/
+    commentsCustomResponse:CustomResponse = new CustomResponse();
+    commentsLoader = true;
+    commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
+    readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
+    isCommentAndHistoryCollapsed = false;
+    editTextArea = false;
+    /***XNFR-623***/
   
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -224,11 +233,6 @@ export class CustomAddLeadComponent implements OnInit {
       if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
         $('#leadFormModel').modal('show');
         this.showAttachLeadPopUp = true;
-        // if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
-        //   this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
-        //   this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
-        //   this.getActiveCRMDetails();
-        // }
       }
     } else if (this.actionType === "edit") {
       this.edit = true;
@@ -266,6 +270,46 @@ export class CustomAddLeadComponent implements OnInit {
       this.disableCreatedFor = true;
     }
     this.getVendorList();
+    this.loadComments();
+  }
+
+
+   /***XNFR-623***/
+   private loadComments() {
+    if (this.preview) {
+      this.commentsLoader = true;
+      this.commentsCustomResponse = new CustomResponse();
+      this.leadsService.findLeadAndLeadInfoForComments(this.leadId).
+        subscribe(
+          response => {
+            let statusCode = response.statusCode;
+            if (statusCode == 200) {
+              let data = response.data;
+              this.commentDealAndLeadDto = data;
+              let associatedContact = data['associatedContact'];
+              let showLeadInfo = associatedContact != undefined;
+              this.commentDealAndLeadDto.showLeadInfo = showLeadInfo;
+              if(showLeadInfo){
+                this.commentDealAndLeadDto.associatedContact = associatedContact;
+                this.commentDealAndLeadDto.associatedContact['company'] = associatedContact['contactCompany'];
+              }
+              this.commentsLoader = false;
+            } else {
+              this.commentsLoader = false;
+              this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments for this lead.",true);
+            }
+          }, error => {
+            this.commentsLoader = false;
+            this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.");
+          }
+        );
+    }
+  }
+
+  /***XNFR-623***/
+  toggleCommentsHistory(event:any){
+    event.preventDefault();
+    this.isCommentAndHistoryCollapsed = !this.isCommentAndHistoryCollapsed;
   }
 
   setCreatedForCompanyId() {
