@@ -35,6 +35,7 @@
                       Lead Details</a>
                   </h4>
                 </div>
+                <!--Lead Details-->
                 <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="leadDetails">
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
@@ -89,6 +90,10 @@
                 </div>
               </div>
             </div>
+            <!--Lead Layout & PipeLine Details-->
+            <div *ngIf="preview">
+              <ng-template [ngTemplateOutlet]="leadLayoutAndPipeLineTemplate"></ng-template>
+            </div>
             <!--Campaign Info-->
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" *ngIf="lead.campaignId > 0">
               <div class="panel panel-default deal-bgcolor">
@@ -120,39 +125,29 @@
                 </div>
               </div>
             </div>
+            <!--Default Lead Form-->
+            <ng-container *ngIf="preview">
+              <ng-template [ngTemplateOutlet]="defaultLeadFormTemplate"></ng-template>
+            </ng-container>
+            <!--Custom Lead Form-->
+            <ng-container *ngIf="preview">
+              <ng-template [ngTemplateOutlet]="customCRMFormTemplate"></ng-template>
+            </ng-container>
           </div>
           <!--RightSide Div-->
-          <!--Deal Layout And PipeLine Details-->
+          <!--Lead Layout And PipeLine Details-->
           <div *ngIf="!preview" class="col-sm-6 col-xs-12 px-10 pl0">
             <ng-template [ngTemplateOutlet]="leadLayoutAndPipeLineTemplate"></ng-template>
           </div>
         </div>
-
-        <!--Custom Form-->
-        <div *ngIf="showCustomForm && !showDefaultForm && !showAttachLeadPopUp && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
-          <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
-            [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="lead.halopsaTicketTypeId"></app-sf-deal>
-        </div>
+        <!--Custom Lead Form-->
+        <ng-container *ngIf="!preview">
+          <ng-template [ngTemplateOutlet]="customCRMFormTemplate"></ng-template>
+        </ng-container>
         <!--Default Form-->
-        <div class="panel-group" *ngIf="!showCustomForm && showDefaultForm && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
-          <!--Lead Details-->
-          <div class=" row portlet light m0">
-            <div class="panel-heading deal-bgcolor">
-              <h4 class="panel-title">Lead Details
-              </h4>
-            </div>
-            <div class="panel-body br-unset pl0 pr0 mrg">
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-                <ng-container *ngFor="let leadCustomField of leadCustomFields;let i = index">
-                  <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="leadFields"
-                    [ngTemplateOutletContext]="{leadCustomField:leadCustomField}"></ng-template>
-                  <ng-template *ngIf="(0 != i % 2)" [ngTemplateOutlet]="leadFields"
-                    [ngTemplateOutletContext]="{leadCustomField:leadCustomField}"></ng-template>
-                </ng-container>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ng-container *ngIf="!preview">
+          <ng-template [ngTemplateOutlet]="defaultLeadFormTemplate"></ng-template>
+        </ng-container>
         <!--Button-->
         <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
           <ng-container *ngIf="!showLoadingButton">
@@ -216,7 +211,6 @@
           </app-response-message>
           <div class="portlet-body clearfix" *ngIf="!httpRequestLoader.isLoading">
             <div>
-              <!-- <form role="form" id="lead-form"> -->
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                 <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0">
                   <div class="form-group" style="margin-bottom: 10px" *ngIf="lead.campaignId > 0">
@@ -726,4 +720,17 @@
       </div>
     </div>
   </div>
+</ng-template>
+
+<!--Custom Form-->
+<ng-template #customCRMFormTemplate>
+  <div *ngIf="showCustomForm && !showDefaultForm && !showAttachLeadPopUp && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
+    <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
+      [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="lead.halopsaTicketTypeId"></app-sf-deal>
+  </div>
+</ng-template>
+
+<!--Default Form-->
+<ng-template #defaultLeadFormTemplate>
+
 </ng-template>
