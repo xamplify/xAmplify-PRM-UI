@@ -81,5 +81,6 @@
 
 	/******Video Player******/
 	window.__env.loadLatestVideoJsFiles = true;
+	window.__env.loadLatestPipeLineApi = true;
 
 }(this));
