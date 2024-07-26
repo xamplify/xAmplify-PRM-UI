@@ -21,6 +21,7 @@
     <div>
       <form role="form" id="deal-registration-form">
         <div class="row mr-3">
+          <!--Left Side Div-->
           <div class="col-sm-6 col-xs-12 px-10 pl0 mb_pr0">
             <div class="panel-group" role="tablist" aria-multiselectable="true"
               *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany)))
@@ -28,8 +29,8 @@
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
-                    <a href="leadDetails" (click)="toggleDealpipepline($event)"> <i
-                        [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed, 'fa-chevron-down collapseIn': isCollapsed}"
+                    <a href="leadDetails" (click)="toggleDealpipepline($event)">
+                      <i [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed, 'fa-chevron-down collapseIn': isCollapsed}"
                         class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;"></i>
                       Lead Details</a>
                   </h4>
@@ -37,6 +38,7 @@
                 <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="leadDetails">
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
+                      <!--Select Company-->
                       <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
                         *ngIf="(!vanityLoginDto.vanityUrlFilter) && (!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany))) && !(lead.campaignId > 0)">
                         <label class="control-label">Lead For<span class="required"><strong>*</strong></span></label>
@@ -50,6 +52,7 @@
                           </option>
                         </select>
                       </div>
+                      <!--Lead By-->
                       <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
                         *ngIf="actionType === 'view' && isVendorVersion">
                         <label class="control-label">Lead By<span class="required"><strong>*</strong></span></label>
@@ -59,6 +62,7 @@
                           </option>
                         </select>
                       </div>
+                      <!--Lead Id-->
                       <div [ngStyle]="{ 'margin-bottom': isCopiedToClipboard ? '2px' : '20px' }"
                         *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
                         <div> <label class="control-label">Lead ID</label></div>
@@ -85,6 +89,7 @@
                 </div>
               </div>
             </div>
+            <!--Campaign Info-->
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" *ngIf="lead.campaignId > 0">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
@@ -116,16 +121,17 @@
               </div>
             </div>
           </div>
+          <!--RightSide Div-->
           <div class="col-sm-6 col-xs-12 px-10 pl0">
             <div class="row">
+               <!--Lead Layout-->
               <div class="panel panel-default deal-bgcolor" *ngIf="showTicketTypesDropdown">
                 <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                   <div class="card-bgcolors h-260 pl0 pr0">
                     <div class="form-group" [attr.class]="opportunityTypeId" style="margin-bottom: 20px"
                       id="dealStageDiv" *ngIf="showTicketTypesDropdown">
                       <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
-                        ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket
-                        Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
+                        ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
                         ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}<span
                           class="required"><strong>*</strong></span></label>
                       <select class="form-control" [(ngModel)]="lead.halopsaTicketTypeId"
@@ -133,8 +139,7 @@
                         [disabled]="preview || isCampaignTicketTypeSelected || isZohoLeadAttached"
                         (ngModelChange)="onChangeTicketType()" (input)="validateField('opportunityTypeId',false)">
                         <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
-                          ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket
-                          Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
+                          ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
                           ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}</option>
                         <option *ngFor="let type of halopsaTicketTypes" [value]="type.id">{{type.name}}</option>
                       </select>
@@ -142,9 +147,11 @@
                   </div>
                 </div>
               </div>
+               <!--Pipeline Details-->
               <div class="panel-group" role="tablist" aria-multiselectable="true"
               *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showLeadPipeline || activeCRMDetails?.showLeadPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm">
                 <div class="panel panel-default deal-bgcolor">
+                  <!--Pipeline Details-->
                   <div class="panel-heading deal-bgcolor">
                     <h4 class="panel-title">
                       <a href="pipelineDetails" (click)="toggleCollapsepipepline($event)"> <i
@@ -153,6 +160,7 @@
                         Pipeline Details</a>
                     </h4>
                   </div>
+                  <!--Pipeline-->
                   <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="pipelineDetails">
                     <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                       <div class="card-bgcolors h-260 pl0 pr0">
@@ -168,7 +176,7 @@
                                 {{pipeline.name}}</option>
                             </select>
                           </div>
-
+                          <!--Select Stage-->
                           <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px" id="dealStageDiv"
                             *ngIf="showCreatedByPipelineAndStage">
                             <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
@@ -182,6 +190,7 @@
                               </option>
                             </select>
                           </div>
+                          <!--Select PipeLine-->
                           <div *ngIf="activeCRMDetails?.showLeadPipeline || isOrgAdmin || isMarketingCompany || showDefaultForm"
                             class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
                             <label class="control-label">{{vendorCompanyName}} Pipeline<span class="required"><strong>*</strong></span></label>
@@ -194,7 +203,7 @@
                                 {{pipeline.name}}</option>
                             </select>
                           </div>
-
+                          <!--Select Stage-->
                           <div *ngIf="activeCRMDetails?.showLeadPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm"
                             class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px" id="dealStageDiv">
                             <label class="control-label">{{vendorCompanyName}} Stage<span class="required"><strong>*</strong></span></label>
@@ -211,6 +220,7 @@
                         </div>
 
                         <div *ngIf="!showCreatedByPipelineAndStageOnTop">
+                          <!--Select PipeLine-->
                           <div class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
                             <label class="control-label">Pipeline<span
                                 class="required"><strong>*</strong></span></label>
@@ -223,7 +233,7 @@
                                 {{pipeline.name}}</option>
                             </select>
                           </div>
-
+                          <!--Select Stage-->
                           <div class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
                             id="dealStageDiv">
                             <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
@@ -239,6 +249,7 @@
                               </option>
                             </select>
                           </div>
+                          <!--Select PipeLine-->
                           <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px"
                             *ngIf="showCreatedByPipelineAndStage">
                             <label class="control-label">Partner's xAmplify Pipeline<span
@@ -252,7 +263,7 @@
                                 {{pipeline.name}}</option>
                             </select>
                           </div>
-
+                          <!--Select Stage-->
                           <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px"
                             id="dealStageDiv" *ngIf="showCreatedByPipelineAndStage">
                             <label class="control-label">Partner's xAmplify Stage<span
@@ -269,9 +280,9 @@
                               </option>
                             </select>
                           </div>
-                        </div>
 
-                        <!--xnfr-426----->
+                        </div>
+                        <!--Add Comment XNFR-426----->
                         <div class="form-group" *ngIf="actionType!=='view'" [attr.class]="leadComment"
                           style="margin-bottom: 20px">
                           <label class="control-label">Add Comment</label>
@@ -287,11 +298,15 @@
             </div>
           </div>
         </div>
+
+        <!--Custom Form-->
         <div *ngIf="showCustomForm && !showDefaultForm && !showAttachLeadPopUp && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
           <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
             [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="lead.halopsaTicketTypeId"></app-sf-deal>
         </div>
+        <!--Default Form-->
         <div class="panel-group" *ngIf="!showCustomForm && showDefaultForm && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
+          <!--Lead Details-->
           <div class=" row portlet light m0">
             <div class="panel-heading deal-bgcolor">
               <h4 class="panel-title">Lead Details
@@ -309,6 +324,7 @@
             </div>
           </div>
         </div>
+        <!--Button-->
         <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
           <ng-container *ngIf="!showLoadingButton">
             <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid" (click)="save()" class="button bgcolor-unset"
@@ -321,6 +337,7 @@
             Please Wait.....
           </button>
         </div>
+        <!--Button-->
         <div class="pull-right mr10" *ngIf="!preview && showCustomForm">
           <ng-container *ngIf="!showLoadingButton">
             <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
