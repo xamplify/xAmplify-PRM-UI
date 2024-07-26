@@ -1792,6 +1792,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			if (!isDuplicate && !this.isEmailExist) {
 				this.saveClipboardValidEmails();
 			} else if (this.isEmailExist) {
+				this.isEmailExist = false;
 				this.customResponse = new CustomResponse('ERROR', "These email(s) are already added " + this.existedEmailIds, true);
 			} else {
 				this.dublicateEmailId = true;
@@ -2115,7 +2116,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 		if (this.selectedAddContactsOption == 1) {
 			this.updateContactListFromClipBoard(this.contactListId);
-		}
+					}
 
 		if (this.selectedAddContactsOption == 2) {
 			this.updateCsvContactList(this.contactListId);
