@@ -28,6 +28,7 @@ import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CountryNames } from 'app/common/models/country-names';
 import { CommentDealAndLeadDto } from 'app/deals/models/comment-deal-and-lead-dto';
 import { EnvService } from 'app/env.service';
+import { Http } from '@angular/http';
 declare var $: any;
 @Component({
   selector: 'app-custom-add-lead',
@@ -200,6 +201,7 @@ export class CustomAddLeadComponent implements OnInit {
   /***XNFR-623***/
   isLatestPipelineApiEnabled = true;
   pipelineLoader:HttpRequestLoader = new HttpRequestLoader();
+  stagesLoader:HttpRequestLoader = new HttpRequestLoader();
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -590,7 +592,31 @@ export class CustomAddLeadComponent implements OnInit {
     this.getStages();
   }
 
+  /****Updated On 27/07/2024 */
   getStages() {
+    if(this.isLatestPipelineApiEnabled){
+      this.createdForStages = [];
+      this.referenceService.loading(this.stagesLoader,true);
+      let createdForPipeLineId = this.lead.createdForPipelineId;
+      let createdByPipelineId = this.lead.createdByPipelineId;
+      if(createdForPipeLineId!=undefined && createdForPipeLineId>0){
+        this.leadsService.findPipelineStagesByPipelineId(createdForPipeLineId).subscribe(
+          response=>{
+            let data = response.data;
+            this.createdForStages = data.list;
+            this.referenceService.loading(this.stagesLoader,false);
+          },error=>{
+            this.referenceService.loading(this.stagesLoader,false);
+            this.referenceService.showServerError(this.stagesLoader);
+          })
+      }
+
+    }else{
+      this.addCreatedForOrCreatedByStages();
+    }
+
+  }
+  private addCreatedForOrCreatedByStages() {
     let self = this;
     if (this.lead.createdForPipelineId > 0) {
       this.createdForPipelines.forEach(p => {
@@ -600,7 +626,7 @@ export class CustomAddLeadComponent implements OnInit {
       });
     } else {
       self.createdForStages = [];
-    } 
+    }
     if (this.lead.createdByPipelineId > 0) {
       this.createdByPipelines.forEach(p => {
         if (p.id == this.lead.createdByPipelineId) {
@@ -610,7 +636,6 @@ export class CustomAddLeadComponent implements OnInit {
     } else {
       self.createdByStages = [];
     }
-
   }
 
   getVendorList() {
@@ -1191,28 +1216,35 @@ export class CustomAddLeadComponent implements OnInit {
         },
         () => {
           if(this.isLatestPipelineApiEnabled){
-            let activeCRMDetails = this.activeCRMDetails;
-            if(activeCRMDetails!=undefined){
-              let showLeadPipeline = activeCRMDetails.showLeadPipeline;
-              let showLeadPipelineStage = activeCRMDetails.showLeadPipelineStage;
-              if(showLeadPipeline){
-                  this.referenceService.loading(this.pipelineLoader,true);
-                  this.leadsService.findPipelineStages(this.lead.createdForCompanyId).subscribe(
-                    response=>{
-                      console.log(response);
-                    },error=>{
-                      this.referenceService.loading(this.pipelineLoader,false);
-                      this.referenceService.showServerError(this.pipelineLoader);
-                    });
-              }else{
-              }
-              
-            }
+            this.findPipeLinesAndStages();
           }else{
             this.setFieldErrorStates();
           }
         });
   }
+  /***Added On 27/07/2024 By Sravan */
+  private findPipeLinesAndStages() {
+    let activeCRMDetails = this.activeCRMDetails;
+    if (activeCRMDetails != undefined) {
+      let showLeadPipeline = activeCRMDetails.showLeadPipeline;
+      let showLeadPipelineStage = activeCRMDetails.showLeadPipelineStage;
+      if (showLeadPipeline) {
+        this.referenceService.loading(this.pipelineLoader, true);
+        this.leadsService.findLeadPipeLines(this.lead.createdForCompanyId).subscribe(
+          response => {
+            let data = response.data;
+            let totalRecords = data.totalRecords;
+            this.createdForPipelines = data.list;
+            this.referenceService.loading(this.pipelineLoader, false);
+          }, error => {
+            this.referenceService.loading(this.pipelineLoader, false);
+            this.referenceService.showServerError(this.pipelineLoader);
+          });
+      } else {
+      }
+    }
+  }
+
   private findActiveCRMDetailsAndCustomFormVariable(response: any) {
     if (response.statusCode == 200) {
       this.activeCRMDetails = response.data;
