@@ -1,5 +1,5 @@
 <div class="page-content"
-    *ngIf="isOnlyUser && !authenticationService?.module?.deletedPartner && !showDealForm && !authenticationService?.module?.contentLoader">
+    *ngIf="isOnlyUser && !authenticationService?.module?.deletedPartner && !showDealForm && !showLeadForm && !authenticationService?.module?.contentLoader">
     <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
     </div>
@@ -19,7 +19,7 @@
     </div>
 </div>
 <div class="page-content"
-    *ngIf="!playVideo && !editVideo && ((!showDealForm && !isOnlyUser) || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard">
+    *ngIf="!playVideo && !editVideo && ((!showDealForm && !showLeadForm && !isOnlyUser) || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard">
     <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
     </div>
@@ -80,7 +80,7 @@
                 <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
                 </app-response-message>
                 <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
-                <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true"
+                <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true" (notifyShowLeadForm) = "showLeadForm=true"
                     (notifyLeadSuccess)="showSubmitLeadSuccess()" [applyFilter]="applyFilter"></app-module-analytics>
             </div>
 
@@ -379,6 +379,20 @@
         <app-add-deal [actionType]="'add'" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
     </div>
 </section>
+
+<!-- Lead Form -->
+<ng-container *ngIf="showLeadForm">
+    <section>
+        <div class="page-content">
+            <a (click)="closeLeadForm()" class="pull-right close-circle"
+                style="margin: 9px 14px; padding-top: 3px; padding-left: 5px;">
+                <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px; padding-top: 7px;"
+                    aria-hidden="true"></span></a>
+            <app-custom-add-lead [actionType]="'add'" [isVendorVersion]="false"
+                (notifySubmitSuccess)="showSubmitLeadSuccess()"></app-custom-add-lead>
+        </div>
+    </section>
+</ng-container>
 
 <!-- Customize Campaign Modal -->
 <div class="modal fade right" id="customizeCampaignModal" tabindex="-1" role="dialog"

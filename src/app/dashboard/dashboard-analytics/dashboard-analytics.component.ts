@@ -64,6 +64,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
    hasCampaignRole: boolean;
    showDealForm: boolean = false;
+   showLeadForm: boolean = false;
    customResponse: CustomResponse = new CustomResponse();
    showSandboxText = false;
    applyFilter = true;
@@ -515,7 +516,12 @@ showCampaignDetails(campaign:any){
   }
 
   showSubmitLeadSuccess() {
-   // this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+    this.showLeadForm = false;
+    this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+  }
+
+  closeLeadForm() {
+    this.showLeadForm = false;
   }
 
   getSelectedIndexFromPopup(event:any){

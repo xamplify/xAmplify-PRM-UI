@@ -81,13 +81,7 @@ export class ModuleAnalyticsComponent implements OnInit {
       }
     }
     }
-    
-    addLead() {      
-      //  this.showLeadForm = true;
-      //  this.actionType = "add";
-      //  this.leadId = 0;
-      this.notifyShowLeadForm.emit();    
-     }
+
    
      resetValues(){
        this.showLeadForm = false;
@@ -107,6 +101,10 @@ export class ModuleAnalyticsComponent implements OnInit {
       //this.showDealForm = true;
       //this.actionType = "add";
       this.notifyShowDealForm.emit();
+    }
+
+    addLead() {      
+      this.notifyShowLeadForm.emit();    
     }
 
 
