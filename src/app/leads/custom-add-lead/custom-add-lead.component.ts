@@ -613,16 +613,7 @@ export class CustomAddLeadComponent implements OnInit {
       let createdForPipeLineId = this.lead.createdForPipelineId;
       let createdByPipelineId = this.lead.createdByPipelineId;
       if(createdForPipeLineId!=undefined && createdForPipeLineId>0){
-        this.referenceService.loading(this.stagesLoader,true);
-        this.leadsService.findPipelineStagesByPipelineId(createdForPipeLineId).subscribe(
-          response=>{
-            let data = response.data;
-            this.createdForStages = data.list;
-            this.referenceService.loading(this.stagesLoader,false);
-          },error=>{
-            this.referenceService.loading(this.stagesLoader,false);
-            this.referenceService.showServerError(this.stagesLoader);
-          })
+        this.findPipelineStagesByPipelineId(createdForPipeLineId);
       }
 
     }else{
@@ -630,6 +621,19 @@ export class CustomAddLeadComponent implements OnInit {
     }
 
   }
+  private findPipelineStagesByPipelineId(createdForPipeLineId: number) {
+    this.referenceService.loading(this.stagesLoader, true);
+    this.leadsService.findPipelineStagesByPipelineId(createdForPipeLineId).subscribe(
+      response => {
+        let data = response.data;
+        this.createdForStages = data.list;
+        this.referenceService.loading(this.stagesLoader, false);
+      }, error => {
+        this.referenceService.loading(this.stagesLoader, false);
+        this.referenceService.showServerError(this.stagesLoader);
+      });
+  }
+
   private addCreatedForOrCreatedByStages() {
     let self = this;
     if (this.lead.createdForPipelineId > 0) {
@@ -1250,12 +1254,23 @@ export class CustomAddLeadComponent implements OnInit {
         this.leadsService.findLeadPipeLines(this.lead.createdForCompanyId).subscribe(
           response => {
             let data = response.data;
-            let totalRecords = data.totalRecords;
             this.createdForPipelines = data.list;
-            this.referenceService.loading(this.pipelineLoader, false);
+            let totalRecords = data.totalRecords;
+            this.activeCRMDetails.hasCreatedForPipeline = totalRecords==1;
+            if(this.activeCRMDetails.hasCreatedForPipeline){
+              let pipelineId = this.createdForPipelines.map(function (pipeline) { return pipeline['id'] });
+              this.lead.createdForPipelineId = pipelineId[0];
+            }else{
+              this.referenceService.loading(this.pipelineLoader, false);
+            }
           }, error => {
             this.referenceService.loading(this.pipelineLoader, false);
             this.referenceService.showServerError(this.pipelineLoader);
+          },()=>{
+              if(this.activeCRMDetails.hasCreatedForPipeline){
+                this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
+                this.referenceService.loading(this.pipelineLoader, false);
+              }
           });
       } else {
 
