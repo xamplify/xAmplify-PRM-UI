@@ -158,6 +158,10 @@ export class SfDealComponent implements OnInit {
       this.removeLoader();
       if (result.statusCode == 200) {
         this.form = result.data;
+        if(this.form.formLabelDTOs.length==0){
+          this.showSFFormError = true;
+          this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
+        }
         this.formDescription = result.data.description;
         this.form.formLabelDTOs.forEach((columnInfo: ColumnInfo) => {
           if (columnInfo.nonInteractive) {
@@ -214,6 +218,7 @@ export class SfDealComponent implements OnInit {
         }
         this.searchableDropDownDtoForLookup.placeHolder = "Please Select Account";
         /*********XNFR-403*********/
+
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") {
         this.showSFFormError = true;
         this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
