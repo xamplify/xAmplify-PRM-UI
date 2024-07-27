@@ -511,6 +511,7 @@ export class CustomAddLeadComponent implements OnInit {
   }
 
   onChangeCreatedFor() {
+    this.resetPipeLineAndStageData();
     if (this.lead.createdForCompanyId > 0) {
       let vendorCompany;
       vendorCompany = this.vendorList.find(vendor => vendor.companyId == this.lead.createdForCompanyId);
@@ -527,6 +528,18 @@ export class CustomAddLeadComponent implements OnInit {
       this.getDefaultLeadCustomFields();
       this.vendorCompanyName = '';
     }
+  }
+
+  private resetPipeLineAndStageData() {
+    this.lead.createdForPipelineId = 0;
+    this.lead.createdByPipelineId = 0;
+    this.lead.createdByPipelineStageId = 0;
+    this.lead.createdForPipelineStageId = 0;
+    this.lead.halopsaTicketTypeId = 0;
+    this.createdForStages = [];
+    this.createdByStages = [];
+    this.createdForPipelines = [];
+    this.createdByPipelines = [];
   }
 
   private resetLeadPipeLineVariables() {
@@ -596,10 +609,10 @@ export class CustomAddLeadComponent implements OnInit {
   getStages() {
     if(this.isLatestPipelineApiEnabled){
       this.createdForStages = [];
-      this.referenceService.loading(this.stagesLoader,true);
       let createdForPipeLineId = this.lead.createdForPipelineId;
       let createdByPipelineId = this.lead.createdByPipelineId;
       if(createdForPipeLineId!=undefined && createdForPipeLineId>0){
+        this.referenceService.loading(this.stagesLoader,true);
         this.leadsService.findPipelineStagesByPipelineId(createdForPipeLineId).subscribe(
           response=>{
             let data = response.data;
@@ -1216,16 +1229,19 @@ export class CustomAddLeadComponent implements OnInit {
         },
         () => {
           if(this.isLatestPipelineApiEnabled){
-            this.findPipeLinesAndStages();
+            this.findPipeLines();
           }else{
             this.setFieldErrorStates();
           }
         });
   }
   /***Added On 27/07/2024 By Sravan */
-  private findPipeLinesAndStages() {
+  private findPipeLines() {
     let activeCRMDetails = this.activeCRMDetails;
     if (activeCRMDetails != undefined) {
+      this.createdForPipelines = [];
+      this.createdForPipelineId = 0;
+      this.createdForPipelineStageId = 0;
       let showLeadPipeline = activeCRMDetails.showLeadPipeline;
       let showLeadPipelineStage = activeCRMDetails.showLeadPipelineStage;
       if (showLeadPipeline) {
@@ -1241,6 +1257,7 @@ export class CustomAddLeadComponent implements OnInit {
             this.referenceService.showServerError(this.pipelineLoader);
           });
       } else {
+
       }
     }
   }
