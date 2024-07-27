@@ -510,11 +510,12 @@ export class CustomAddLeadComponent implements OnInit {
     }
   }
 
+  /***Get PipeLine & Stages */
   onChangeCreatedFor() {
     this.resetPipeLineAndStageData();
+    this.isLeadRegistrationFormValid = false;
     if (this.lead.createdForCompanyId > 0) {
-      let vendorCompany;
-      vendorCompany = this.vendorList.find(vendor => vendor.companyId == this.lead.createdForCompanyId);
+      let vendorCompany = this.vendorList.find(vendor => vendor.companyId == this.lead.createdForCompanyId);
       this.vendorCompanyName = vendorCompany.companyName + "'s";
       this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
       this.getActiveCRMDetails();
