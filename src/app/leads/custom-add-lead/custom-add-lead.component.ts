@@ -512,6 +512,7 @@ export class CustomAddLeadComponent implements OnInit {
 
   /***Get PipeLine & Stages */
   onChangeCreatedFor() {
+    this.pipelineLoader.isServerError = false;
     this.resetPipeLineAndStageData();
     this.isLeadRegistrationFormValid = false;
     if (this.lead.createdForCompanyId > 0) {
@@ -1267,10 +1268,10 @@ export class CustomAddLeadComponent implements OnInit {
             this.referenceService.loading(this.pipelineLoader, false);
             this.referenceService.showServerError(this.pipelineLoader);
           },()=>{
-              if(this.activeCRMDetails.hasCreatedForPipeline){
-                this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
-                this.referenceService.loading(this.pipelineLoader, false);
-              }
+            if (this.activeCRMDetails!=undefined && this.activeCRMDetails.hasCreatedForPipeline) {
+              this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
+              this.referenceService.loading(this.pipelineLoader, false);
+            }
           });
       } else {
 

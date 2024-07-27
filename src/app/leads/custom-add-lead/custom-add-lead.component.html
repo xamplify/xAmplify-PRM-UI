@@ -669,7 +669,7 @@
       <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="pipelineDetails">
         <div class="panel-body pl0 pr0 pt0 pb0" [ngClass]="!pipelineLoader?.isLoading? 'br-unset':''">
           <app-modal-popup-loader *ngIf="pipelineLoader?.isLoading" [height]="300"></app-modal-popup-loader>
-          <div class="card-bgcolors h-260 pl0 pr0" *ngIf="!pipelineLoader?.isLoading && !pipelineLoader?.serverError">
+          <div class="card-bgcolors h-260 pl0 pr0" *ngIf="!pipelineLoader?.isLoading && !pipelineLoader?.isServerError">
             <!--showCreatedByPipelineAndStageOnTop-->
             <div *ngIf="showCreatedByPipelineAndStageOnTop">
               <!--Select Created By Pipeline-->
@@ -716,7 +716,7 @@
                 class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px" id="dealStageDiv">
                 <label class="control-label">{{vendorCompanyName}} Stage<span class="required"><strong>*</strong></span></label>
                 <app-dropdown-loader *ngIf="stagesLoader?.isLoading" [text]="'stages'"></app-dropdown-loader>
-                <select *ngIf="!stagesLoader?.isLoading && !stagesLoader?.serverError" class="form-control" [(ngModel)]="lead.createdForPipelineStageId" [ngModelOptions]="{standalone: true}"
+                <select *ngIf="!stagesLoader?.isLoading && !stagesLoader?.isServerError" class="form-control" [(ngModel)]="lead.createdForPipelineStageId" [ngModelOptions]="{standalone: true}"
                   placeholder="pipelineStageId" id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
                   (ngModelChange)="validateField('createdForPipelineStageId',false)">
                   <option [value]="0">Select Stage</option>
@@ -743,7 +743,7 @@
               <div  class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px" id="dealStageDiv">
                 <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
                 <app-dropdown-loader *ngIf="stagesLoader?.isLoading" [text]="'stages'"></app-dropdown-loader>
-                <select *ngIf="!stagesLoader?.isLoading && !stagesLoader?.serverError"  class="form-control" [(ngModel)]="lead.createdForPipelineStageId" [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
+                <select *ngIf="!stagesLoader?.isLoading && !stagesLoader?.isServerError"  class="form-control" [(ngModel)]="lead.createdForPipelineStageId" [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                   id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable" (ngModelChange)="validateField('createdForPipelineStageId',false)">
                   <option [value]="0">Select Stage</option>
                   <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">{{lead.currentStageName}}</option>
@@ -787,6 +787,8 @@
                 [(ngModel)]="lead.leadComment"></textarea>
             </div>
           </div>
+          <!--Error Div-->
+          <app-display-error-message *ngIf="!pipelineLoader?.isLoading && pipelineLoader?.isServerError"></app-display-error-message>
         </div>
       </div>
     </div>
