@@ -179,8 +179,8 @@ export class SfDealComponent implements OnInit {
           if (dropDownObj !== undefined && dropDownObj.value !== undefined) {
             let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(dropDownObj.id);
             if (haveChildrenDropDown) {
-              let selectedValueId = this.getIdOfSelectedParentChoice(dropDownObj);
-              this.populateDependentChildValues(dropDownObj.id, selectedValueId);
+              let selectedParentValue = dropDownObj.value;
+              this.populateDependentChildValues(dropDownObj.id, selectedParentValue);
             }
           }
         }
@@ -275,8 +275,8 @@ export class SfDealComponent implements OnInit {
   selectOnChangeEvent(columnInfo: any) {
     let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(columnInfo.id);
     if (haveChildrenDropDown) {
-      let selectedValueId = this.getIdOfSelectedParentChoice(columnInfo);
-      this.populateDependentChildValues(columnInfo.id, selectedValueId);
+      let selectedValue = columnInfo.value;
+      this.populateDependentChildValues(columnInfo.id, selectedValue);
     }
     this.validateAllFields();
   }
@@ -302,10 +302,12 @@ export class SfDealComponent implements OnInit {
     return false;
   }
 
-  populateDependentChildValues(parentId: any, selectedValueId: number) {
+  populateDependentChildValues(parentId: any, selectedValue: string) {
     this.form.formLabelDTOs.forEach(column => {
       if (column.parentLabelId === parentId) {
-        column.dropDownChoices = column.dependentDropDownChoices.filter(choice => choice.parentChoiceId == selectedValueId);
+        column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
+          Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
+        );
       }
     });
   }

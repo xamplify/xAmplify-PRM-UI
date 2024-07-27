@@ -17,4 +17,6 @@ export class CustomFieldsDto {
     picklistValues : Array<PicklistValues> = new Array<PicklistValues>();
     originalCRMType = '';
     order: number;
+    dependentPicklist = false;
+    controllerName = '';
 }
