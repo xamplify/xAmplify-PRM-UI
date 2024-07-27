@@ -50,9 +50,7 @@
                           [disabled]="disableCreatedFor || disableCreatedForVendor" (ngModelChange)="onChangeCreatedFor()"
                           (input)="validateField('createdForCompanyId',false)">
                           <option [value]="0">Select Company</option>
-                          <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">
-                            {{vendor.companyName}}
-                          </option>
+                          <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">{{vendor.companyName}}</option>
                         </select>
                       </div>
                       <!--Lead By-->
@@ -714,11 +712,11 @@
                 </select>
               </div>
               <!--Select Created For Stages-->
-              <app-dropdown-loader *ngIf="stagesLoader?.isLoading" [text]="'stages'"></app-dropdown-loader>
-              <div *ngIf="(activeCRMDetails?.showLeadPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm) && !stagesLoader?.isLoading && !stagesLoader?.serverError"
+              <div *ngIf="activeCRMDetails?.showLeadPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm "
                 class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px" id="dealStageDiv">
                 <label class="control-label">{{vendorCompanyName}} Stage<span class="required"><strong>*</strong></span></label>
-                <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId" [ngModelOptions]="{standalone: true}"
+                <app-dropdown-loader *ngIf="stagesLoader?.isLoading" [text]="'stages'"></app-dropdown-loader>
+                <select *ngIf="!stagesLoader?.isLoading && !stagesLoader?.serverError" class="form-control" [(ngModel)]="lead.createdForPipelineStageId" [ngModelOptions]="{standalone: true}"
                   placeholder="pipelineStageId" id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
                   (ngModelChange)="validateField('createdForPipelineStageId',false)">
                   <option [value]="0">Select Stage</option>
@@ -742,10 +740,10 @@
                 </select>
               </div>
               <!--Select Created For Stages-->
-              <app-dropdown-loader *ngIf="stagesLoader?.isLoading" [text]="'stages'"></app-dropdown-loader>
-              <div *ngIf="!stagesLoader?.isLoading && !stagesLoader?.serverError" class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px" id="dealStageDiv">
+              <div  class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px" id="dealStageDiv">
                 <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
-                <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId" [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
+                <app-dropdown-loader *ngIf="stagesLoader?.isLoading" [text]="'stages'"></app-dropdown-loader>
+                <select *ngIf="!stagesLoader?.isLoading && !stagesLoader?.serverError"  class="form-control" [(ngModel)]="lead.createdForPipelineStageId" [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                   id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable" (ngModelChange)="validateField('createdForPipelineStageId',false)">
                   <option [value]="0">Select Stage</option>
                   <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">{{lead.currentStageName}}</option>
