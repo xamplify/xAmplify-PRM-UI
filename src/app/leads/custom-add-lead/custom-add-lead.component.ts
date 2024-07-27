@@ -819,145 +819,193 @@ export class CustomAddLeadComponent implements OnInit {
     var errorClass = "form-group has-error has-feedback";
     var successClass = "form-group has-success has-feedback";
     if (isFormElement && fieldId.key != null && fieldId.key != undefined) {
-      let fieldValue = $.trim($('#question_' + fieldId.id).val());
-      if (fieldValue.length > 0) {
-        fieldId.class = successClass;
-        fieldId.error = false;
-      } else {
-        fieldId.class = errorClass;
-        fieldId.error = true;
-      }
+      this.addErrorOrSuccessClass(fieldId, successClass, errorClass);
     } else {
       let fieldValue = $.trim($('#' + fieldId).val());
 
-      if (fieldId == "lastName") {
-        let lastName = this.lead.lastName; 
-        if (lastName.length > 0 && lastName != '') {
-          this.lastNameDivClass = successClass;
-          this.lastNameError = false;
-        } else {
-          this.lastNameDivClass = errorClass;
-          this.lastNameError = true;
-        }
-      }
+      this.validateLastName(fieldId, successClass, errorClass);
 
-      if (fieldId == "company") {
-        let company = this.lead.company;
-        if (company.length > 0 && company != '') {
-          this.companyDivClass = successClass;
-          this.companyError = false;
-        } else {
-          this.companyDivClass = errorClass;
-          this.companyError = true;
-        }
-      }
+      this.validateCompany(fieldId, successClass, errorClass);
 
-      if (fieldId == "email") {
-        let email = this.lead.email;
-        if (email.length > 0 && email != '' && this.regularExpressions.EMAIL_ID_PATTERN.test(email)) {
-          this.emailDivClass = successClass;
-          this.emailError = false;
-          this.isValid = true;
-          this.inValidEmailId = false;
-        } else {
-          this.emailDivClass = errorClass;
-          this.emailError = true;
-          this.inValidEmailId = true;
-          this.isValid = false;
-          this.errorMessage = "Please enter a valid email address";
-        }
-      }
+      this.validateEmail(fieldId, successClass, errorClass);
 
+      this.validateCreatedForCompanyId(fieldId, fieldValue, successClass, errorClass);
 
-      if (fieldId == "createdForCompanyId") {
-        if (fieldValue.length > 0 && fieldValue != "0") {
-          this.createdForCompanyId = successClass;
-          this.createdForCompanyIdError = false;
-        } else {
-          this.createdForCompanyId = errorClass;
-          this.createdForCompanyIdError = true;
-          this.pipelineId = errorClass;
-          this.pipelineIdError = true;
-          this.pipelineStageId = errorClass;
-          this.pipelineStageIdError = true;
-          this.createdForPipelineId = errorClass;
-          this.createdForPipelineIdError = true;
-          this.createdForPipelineStageId = errorClass;
-          this.createdForPipelineStageIdError = true;
-        }
-      }
-      if (fieldId == "createdByPipelineId") {
-        let createdByPipelineId = this.lead.createdByPipelineId;
-        if (createdByPipelineId > 0) {
-          this.pipelineId = successClass;
-          this.pipelineIdError = false;
-        } else {
-          this.pipelineId = errorClass;
-          this.pipelineIdError = true;
-          this.pipelineStageId = errorClass;
-          this.pipelineStageIdError = true;
-        }
-      }
-      if (fieldId == "createdForPipelineId") {
-        let createdForPipelineId = this.lead.createdForPipelineId;
-        if (createdForPipelineId > 0) {
-          this.createdForPipelineId = successClass;
-          this.createdForPipelineIdError = false;
-        } else {
-          this.createdForPipelineId = errorClass;
-          this.createdForPipelineIdError = true;
-          this.createdForPipelineStageId = errorClass;
-          this.createdForPipelineStageIdError = true;
-        }
-      }
-      if (fieldId == "createdByPipelineStageId") {
-        let createdByPipelineStageId = this.lead.createdByPipelineStageId;
-        if (createdByPipelineStageId > 0) {
-          this.pipelineStageId = successClass;
-          this.pipelineStageIdError = false;
-        } else {
-          this.pipelineStageId = errorClass;
-          this.pipelineStageIdError = true;
-        }
-      }
-      if (fieldId == "createdForPipelineStageId") {
-        let createdForPipelineStageId = this.lead.createdForPipelineStageId;
-        if (createdForPipelineStageId > 0) {
-          this.createdForPipelineStageId = successClass;
-          this.createdForPipelineStageIdError = false;
-        } else {
-          this.createdForPipelineStageId = errorClass;
-          this.createdForPipelineStageIdError = true;
-        }
-      }
-      if (this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
-        if (fieldId == "opportunityTypeId") {
-          if (fieldValue.length > 0 && fieldValue != "0") {
-            this.opportunityTypeId = successClass;
-            this.opportunityTypeIdError = false;
-            if (this.actionType == 'add' || this.existingHalopsaDealTicketTypeId == this.deal.haloPSATickettypeId) {
-              this.createdForPipelineStageIdError = false;
-              this.pipelineStageIdError = false;
-            } else {
-              this.createdForPipelineStageIdError = true;
-              this.pipelineStageIdError = true;
-            }
-            this.createdForPipelineIdError = false;
-          } else {
-            this.opportunityTypeId = errorClass;
-            this.opportunityTypeIdError = true;
-            this.createdForPipelineStageIdError = true;
-            this.pipelineStageIdError = false;
-          }
-        }
-      } else {
-        this.opportunityTypeId = successClass;
-        this.opportunityTypeIdError = false;
-      }
+      this.validateCreatedByPipelineId(fieldId, successClass, errorClass);
+
+      this.validateCreatedForPipelineId(fieldId, successClass, errorClass);
+
+      this.validateCreatedByPipelineStageId(fieldId, successClass, errorClass);
+
+      this.validateCreatedForPipelineStageId(fieldId, successClass, errorClass);
+
+      this.checkOpportunityTypeIdAndError(fieldId, fieldValue, successClass, errorClass);
     }
     this.submitButtonStatus();
   }
 
+
+  private checkOpportunityTypeIdAndError(fieldId: any, fieldValue: any, successClass: string, errorClass: string) {
+    if (this.activeCRMDetails != undefined && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
+      this.validateOpportunityTypeId(fieldId, fieldValue, successClass, errorClass);
+    } else {
+      this.opportunityTypeId = successClass;
+      this.opportunityTypeIdError = false;
+    }
+  }
+
+  private validateOpportunityTypeId(fieldId: any, fieldValue: any, successClass: string, errorClass: string) {
+    if (fieldId == "opportunityTypeId") {
+      if (fieldValue.length > 0 && fieldValue != "0") {
+        this.opportunityTypeId = successClass;
+        this.opportunityTypeIdError = false;
+        if (this.actionType == 'add' || this.existingHalopsaDealTicketTypeId == this.deal.haloPSATickettypeId) {
+          this.createdForPipelineStageIdError = false;
+          this.pipelineStageIdError = false;
+        } else {
+          this.createdForPipelineStageIdError = true;
+          this.pipelineStageIdError = true;
+        }
+        this.createdForPipelineIdError = false;
+      } else {
+        this.opportunityTypeId = errorClass;
+        this.opportunityTypeIdError = true;
+        this.createdForPipelineStageIdError = true;
+        this.pipelineStageIdError = false;
+      }
+    }
+  }
+
+  private validateCreatedForPipelineStageId(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "createdForPipelineStageId") {
+      let createdForPipelineStageId = this.lead.createdForPipelineStageId;
+      if (createdForPipelineStageId > 0) {
+        this.createdForPipelineStageId = successClass;
+        this.createdForPipelineStageIdError = false;
+      } else {
+        this.createdForPipelineStageId = errorClass;
+        this.createdForPipelineStageIdError = true;
+      }
+    }
+  }
+
+  private validateCreatedByPipelineStageId(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "createdByPipelineStageId") {
+      let createdByPipelineStageId = this.lead.createdByPipelineStageId;
+      if (createdByPipelineStageId > 0) {
+        this.pipelineStageId = successClass;
+        this.pipelineStageIdError = false;
+      } else {
+        this.pipelineStageId = errorClass;
+        this.pipelineStageIdError = true;
+      }
+    }
+  }
+
+  private validateCreatedForPipelineId(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "createdForPipelineId") {
+      let createdForPipelineId = this.lead.createdForPipelineId;
+      if (createdForPipelineId > 0) {
+        this.createdForPipelineId = successClass;
+        this.createdForPipelineIdError = false;
+      } else {
+        this.createdForPipelineId = errorClass;
+        this.createdForPipelineIdError = true;
+        this.createdForPipelineStageId = errorClass;
+        this.createdForPipelineStageIdError = true;
+      }
+    }
+  }
+
+  private validateCreatedByPipelineId(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "createdByPipelineId") {
+      let createdByPipelineId = this.lead.createdByPipelineId;
+      if (createdByPipelineId > 0) {
+        this.pipelineId = successClass;
+        this.pipelineIdError = false;
+      } else {
+        this.pipelineId = errorClass;
+        this.pipelineIdError = true;
+        this.pipelineStageId = errorClass;
+        this.pipelineStageIdError = true;
+      }
+    }
+  }
+
+  private validateCreatedForCompanyId(fieldId: any, fieldValue: any, successClass: string, errorClass: string) {
+    if (fieldId == "createdForCompanyId") {
+      if (fieldValue.length > 0 && fieldValue != "0") {
+        this.createdForCompanyId = successClass;
+        this.createdForCompanyIdError = false;
+      } else {
+        this.createdForCompanyId = errorClass;
+        this.createdForCompanyIdError = true;
+        this.pipelineId = errorClass;
+        this.pipelineIdError = true;
+        this.pipelineStageId = errorClass;
+        this.pipelineStageIdError = true;
+        this.createdForPipelineId = errorClass;
+        this.createdForPipelineIdError = true;
+        this.createdForPipelineStageId = errorClass;
+        this.createdForPipelineStageIdError = true;
+      }
+    }
+  }
+
+  private validateEmail(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "email") {
+      let email = this.lead.email;
+      if (email.length > 0 && email != '' && this.regularExpressions.EMAIL_ID_PATTERN.test(email)) {
+        this.emailDivClass = successClass;
+        this.emailError = false;
+        this.isValid = true;
+        this.inValidEmailId = false;
+      } else {
+        this.emailDivClass = errorClass;
+        this.emailError = true;
+        this.inValidEmailId = true;
+        this.isValid = false;
+        this.errorMessage = "Please enter a valid email address";
+      }
+    }
+  }
+
+  private validateCompany(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "company") {
+      let company = this.lead.company;
+      if (company.length > 0 && company != '') {
+        this.companyDivClass = successClass;
+        this.companyError = false;
+      } else {
+        this.companyDivClass = errorClass;
+        this.companyError = true;
+      }
+    }
+  }
+
+  private validateLastName(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "lastName") {
+      let lastName = this.lead.lastName;
+      if (lastName.length > 0 && lastName != '') {
+        this.lastNameDivClass = successClass;
+        this.lastNameError = false;
+      } else {
+        this.lastNameDivClass = errorClass;
+        this.lastNameError = true;
+      }
+    }
+  }
+
+  private addErrorOrSuccessClass(fieldId: any, successClass: string, errorClass: string) {
+    let fieldValue = $.trim($('#question_' + fieldId.id).val());
+    if (fieldValue.length > 0) {
+      fieldId.class = successClass;
+      fieldId.error = false;
+    } else {
+      fieldId.class = errorClass;
+      fieldId.error = true;
+    }
+  }
 
   submitButtonStatus() {
     let self = this;
@@ -1118,6 +1166,7 @@ export class CustomAddLeadComponent implements OnInit {
 
   getActiveCRMDetails() {
     this.ngxloading = true;
+    this.isLoading = true;
     this.showCustomForm = false;
     this.showDefaultForm = false;
     this.integrationService.getActiveCRMDetails(this.lead.createdForCompanyId, this.loggedInUserId)
@@ -1127,11 +1176,13 @@ export class CustomAddLeadComponent implements OnInit {
             this.findActiveCRMDetailsAndCustomFormVariable(response);
           }else{
             this.ngxloading = false;
+            this.isLoading = false;
             this.loadAllApis(response);
           }
         },
         error => {
           this.ngxloading = false;
+          this.isLoading = false;
           this.showCustomForm = false;
           this.showDefaultForm = false;
         },
@@ -1154,6 +1205,7 @@ export class CustomAddLeadComponent implements OnInit {
       }
     }
     this.ngxloading = false;
+    this.isLoading = false;
   }
 
   private loadAllApis(response: any) {
