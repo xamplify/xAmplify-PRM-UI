@@ -10,6 +10,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
 import { LeadsService } from 'app/leads/services/leads.service';
+import { Roles } from 'app/core/models/roles';
 
 
 @Component({
@@ -48,6 +49,11 @@ export class UserLevelTimelineComponent implements OnInit {
   leadId = 0;
   registerLeadButtonError = false;
   campaignName: any;
+  showLeadForm: boolean = false;
+  showUserLevelTimeLine: boolean = true;
+  roleName: Roles = new Roles();
+  isOrgAdmin: boolean = false;
+
   constructor(private dealRegistrationService:DealRegistrationService,private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, private leadsService: LeadsService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -68,6 +74,10 @@ export class UserLevelTimelineComponent implements OnInit {
       this.analyticsCampaignId = parseInt(analyticsCampaignIdParam);
     }
     this.validateCampaignIdAndUserId(this.campaignId,this.selectedUserId);
+    const roles = this.authenticationService.getRoles();
+    if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
+      this.isOrgAdmin = true;
+    }
   }
 
   validateCampaignIdAndUserId(campaignId:number,userId:number){
@@ -268,8 +278,10 @@ export class UserLevelTimelineComponent implements OnInit {
       this.isDealRegistration = false;
       this.isDealPreview = true;
     } else {
-      this.isDealRegistration = true;
-      this.isDealPreview = false;
+      //this.isDealRegistration = false;
+      //this.isDealPreview = false;
+      this.showUserLevelTimeLine = false;
+      this.showLeadForm = true;
     }
   }
   previeDeal() {
@@ -279,7 +291,17 @@ export class UserLevelTimelineComponent implements OnInit {
   showTimeLineView(){
     this.isDealRegistration = false;
     this.isDealPreview = false;
+    this.showLeadForm = false;
+    this.showUserLevelTimeLine = true;
     this.getDealState();
   }
 
+  closeLeadForm(){
+    this.isDealRegistration = false;
+    this.isDealPreview = false;
+    this.showLeadForm = false;
+    this.showUserLevelTimeLine = true;
+    this.getDealState();
+  }
+  
 }
