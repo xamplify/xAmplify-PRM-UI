@@ -966,7 +966,7 @@ export class AddDealComponent implements OnInit {
           this.createdForPipelineStageIdError = true;
         }
       }
-      if (this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown !== undefined 
+      if (this.activeCRMDetails!=undefined && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown !== undefined 
         && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
         if (fieldId == "opportunityTypeId") {
           if (fieldValue.length > 0 && fieldValue != "0") {

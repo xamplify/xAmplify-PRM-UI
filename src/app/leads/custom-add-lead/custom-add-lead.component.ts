@@ -510,9 +510,10 @@ export class CustomAddLeadComponent implements OnInit {
     }
   }
 
-  /***Get PipeLine & Stages */
+  /***Get PipeLine & Stages****/
   onChangeCreatedFor() {
     this.pipelineLoader.isServerError = false;
+    this.activeCRMDetails = {};
     this.resetPipeLineAndStageData();
     this.isLeadRegistrationFormValid = false;
     if (this.lead.createdForCompanyId > 0) {
@@ -1273,8 +1274,12 @@ export class CustomAddLeadComponent implements OnInit {
               this.referenceService.loading(this.pipelineLoader, false);
             }
           });
-      } else {
-
+      }
+      if(!showLeadPipeline && showLeadPipelineStage){
+        this.referenceService.loading(this.stagesLoader, true);
+        this.lead.createdForPipelineId = this.activeCRMDetails.leadPipelineId;
+        this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
+        this.referenceService.loading(this.pipelineLoader, false);
       }
     }
   }
