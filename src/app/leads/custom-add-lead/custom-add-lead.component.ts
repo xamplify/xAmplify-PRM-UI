@@ -189,17 +189,17 @@ export class CustomAddLeadComponent implements OnInit {
   emailError: boolean = true;
   companyError: boolean = true;
   lastNameError: boolean = true;
-
-    /***XNFR-623***/
-    commentsCustomResponse:CustomResponse = new CustomResponse();
-    commentsLoader = true;
-    commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
-    readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
-    isCommentAndHistoryCollapsed = false;
-    editTextArea = false;
-    vendorListLoader:HttpRequestLoader = new HttpRequestLoader();
-    /***XNFR-623***/
-    isLatestPipelineApiEnabled = true;
+  /***XNFR-623***/
+  commentsCustomResponse:CustomResponse = new CustomResponse();
+  commentsLoader = true;
+  commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
+  readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
+  isCommentAndHistoryCollapsed = false;
+  editTextArea = false;
+  vendorListLoader:HttpRequestLoader = new HttpRequestLoader();
+  /***XNFR-623***/
+  isLatestPipelineApiEnabled = true;
+  pipelineLoader:HttpRequestLoader = new HttpRequestLoader();
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -495,7 +495,6 @@ export class CustomAddLeadComponent implements OnInit {
               self.lead.pipelineId = 0;
               self.stages = [];
               self.getPipelines();
-              // this.getActiveCRMPipeline();
               self.hasCampaignPipeline = false;
             }
           },
@@ -1192,7 +1191,23 @@ export class CustomAddLeadComponent implements OnInit {
         },
         () => {
           if(this.isLatestPipelineApiEnabled){
-            //I will call new Api PipeLine.
+            let activeCRMDetails = this.activeCRMDetails;
+            if(activeCRMDetails!=undefined){
+              let showLeadPipeline = activeCRMDetails.showLeadPipeline;
+              let showLeadPipelineStage = activeCRMDetails.showLeadPipelineStage;
+              if(showLeadPipeline){
+                  this.referenceService.loading(this.pipelineLoader,true);
+                  this.leadsService.findPipelineStages(this.lead.createdForCompanyId).subscribe(
+                    response=>{
+                      console.log(response);
+                    },error=>{
+                      this.referenceService.loading(this.pipelineLoader,false);
+                      this.referenceService.showServerError(this.pipelineLoader);
+                    });
+              }else{
+              }
+              
+            }
           }else{
             this.setFieldErrorStates();
           }
@@ -1201,7 +1216,6 @@ export class CustomAddLeadComponent implements OnInit {
   private findActiveCRMDetailsAndCustomFormVariable(response: any) {
     if (response.statusCode == 200) {
       this.activeCRMDetails = response.data;
-      console.log(this.activeCRMDetails);
       if ("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType) {
         this.showCustomForm = true;
       } else {

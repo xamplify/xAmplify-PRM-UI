@@ -12,9 +12,9 @@ import { LeadCustomFieldDto } from '../models/lead-custom-field';
 
 @Injectable()
 export class LeadsService {
-  
 
   URL = this.authenticationService.REST_URL + "lead/";
+  ACCESS_TOKEN_SUFFIX_URL = "?access_token="+this.authenticationService.access_token;
   constructor(private http: Http, private authenticationService: AuthenticationService,
     private logger: XtremandLogger, private utilService: UtilService) { }
 
@@ -357,6 +357,16 @@ export class LeadsService {
     let url = this.authenticationService.REST_URL+"lead/findLeadAndLeadInfoAndComments/"+convertedLeadId+"?access_token="+this.authenticationService.access_token;
    return this.authenticationService.callGetMethod(url);
   }
+
+  findPipelineStages(createdForCompanyId: number) {
+    let loggedInUserId = this.authenticationService.getUserId();
+    let vendorCompanyId = createdForCompanyId!=undefined && createdForCompanyId>0 ? "&vendorCompanyId="+createdForCompanyId:0;
+    let url = this.authenticationService.REST_URL+"/pipeline/findLeadPipeLines"+this.ACCESS_TOKEN_SUFFIX_URL;
+    alert(url);
+    return this.authenticationService.callGetMethod(url);
+  
+  }
+  
 
 
 }

@@ -660,17 +660,21 @@
       <!--Pipeline Details-->
       <div class="panel-heading deal-bgcolor">
         <h4 class="panel-title">
-          <a href="pipelineDetails" (click)="toggleCollapsepipepline($event)"> <i
-              [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed3, 'fa-chevron-down collapseIn': isCollapsed3}"
-              class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;"></i>
+          <a href="pipelineDetails" (click)="toggleCollapsepipepline($event)">
+            <i [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed3, 'fa-chevron-down collapseIn': isCollapsed3}"
+              class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;">
+            </i>
             Pipeline Details</a>
         </h4>
       </div>
       <!--Pipeline-->
       <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="pipelineDetails">
         <div class="panel-body br-unset pl0 pr0 pt0 pb0">
-          <div class="card-bgcolors h-260 pl0 pr0">
+          <app-modal-popup-loader *ngIf="pipelineLoader?.isLoading"></app-modal-popup-loader>
+          <div class="card-bgcolors h-260 pl0 pr0" *ngIf="!pipelineLoader?.isLoading && !pipelineLoader?.serverError">
+            <!--showCreatedByPipelineAndStageOnTop-->
             <div *ngIf="showCreatedByPipelineAndStageOnTop">
+              <!--Select Created By Pipeline-->
               <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px" *ngIf="showCreatedByPipelineAndStage">
                 <label class="control-label">Pipeline<span class="required"><strong>*</strong></span></label>
                 <select class="form-control" [(ngModel)]="lead.createdByPipelineId" [ngModelOptions]="{standalone: true}"
@@ -682,7 +686,7 @@
                     {{pipeline.name}}</option>
                 </select>
               </div>
-              <!--Select Stage-->
+              <!--Select  Created By Stage-->
               <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px" id="dealStageDiv"
                 *ngIf="showCreatedByPipelineAndStage">
                 <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
@@ -696,7 +700,7 @@
                   </option>
                 </select>
               </div>
-              <!--Select PipeLine-->
+              <!--Select Created For PipeLine-->
               <div *ngIf="activeCRMDetails?.showLeadPipeline || isOrgAdmin || isMarketingCompany || showDefaultForm"
                 class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
                 <label class="control-label">{{vendorCompanyName}} Pipeline<span class="required"><strong>*</strong></span></label>
@@ -709,7 +713,7 @@
                     {{pipeline.name}}</option>
                 </select>
               </div>
-              <!--Select Stage-->
+              <!--Select Created For Stages-->
               <div *ngIf="activeCRMDetails?.showLeadPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm"
                 class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px" id="dealStageDiv">
                 <label class="control-label">{{vendorCompanyName}} Stage<span class="required"><strong>*</strong></span></label>
@@ -724,6 +728,7 @@
                 </select>
               </div>
             </div>
+            <!--!showCreatedByPipelineAndStageOnTop-->
             <div *ngIf="!showCreatedByPipelineAndStageOnTop">
               <!--Select PipeLine-->
               <div class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
@@ -754,37 +759,33 @@
                   </option>
                 </select>
               </div>
-              <!--Select PipeLine-->
-              <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px"
-                *ngIf="showCreatedByPipelineAndStage">
-                <label class="control-label">Partner's xAmplify Pipeline<span
-                    class="required"><strong>*</strong></span></label>
-                <select class="form-control" [(ngModel)]="lead.createdByPipelineId"
-                  [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdByPipelineId"
-                  [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasCreatedByPipeline"
-                  (ngModelChange)="validateField('createdByPipelineId',false);resetCreatedByPipelineStages()">
-                  <option [value]="0">Select Pipeline</option>
-                  <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">
-                    {{pipeline.name}}</option>
-                </select>
-              </div>
-              <!--Select Stage-->
-              <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px"
-                id="dealStageDiv" *ngIf="showCreatedByPipelineAndStage">
-                <label class="control-label">Partner's xAmplify Stage<span
-                    class="required"><strong>*</strong></span></label>
-                <select class="form-control" [(ngModel)]="lead.createdByPipelineStageId"
-                  [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
-                  id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
-                  (ngModelChange)="validateField('createdByPipelineStageId',false)">
-                  <option [value]="0">Select Stage</option>
-                  <option *ngIf="!isVendorVersion && lead.currentStagePrivate"
-                    [value]="lead.currentStageId">
-                    {{deal.currentStageName}}</option>
-                  <option *ngFor="let stage of createdByStages" [value]="stage.id">{{stage.stageName}}
-                  </option>
-                </select>
-              </div>
+              <!--Select PipeLine For Multi CRM-->
+              <ng-container *ngIf="showCreatedByPipelineAndStage">
+                <!--Select PipeLine-->
+                <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px">
+                  <label class="control-label">Partner's xAmplify Pipeline<span
+                      class="required"><strong>*</strong></span></label>
+                  <select class="form-control" [(ngModel)]="lead.createdByPipelineId"
+                    [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdByPipelineId"
+                    [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasCreatedByPipeline"
+                    (ngModelChange)="validateField('createdByPipelineId',false);resetCreatedByPipelineStages()">
+                    <option [value]="0">Select Pipeline</option>
+                    <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">
+                      {{pipeline.name}}</option>
+                  </select>
+                </div>
+                <!--Select Stage-->
+                <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px" id="dealStageDiv">
+                  <label class="control-label">Partner's xAmplify Stage<span class="required"><strong>*</strong></span></label>
+                  <select class="form-control" [(ngModel)]="lead.createdByPipelineStageId" [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
+                    id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable" (ngModelChange)="validateField('createdByPipelineStageId',false)">
+                    <option [value]="0">Select Stage</option>
+                    <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">{{deal.currentStageName}}</option>
+                    <option *ngFor="let stage of createdByStages" [value]="stage.id">{{stage.stageName}}</option>
+                  </select>
+                </div>
+              </ng-container>
+              
             </div>
             <!--Add Comment XNFR-426----->
             <div class="form-group" *ngIf="actionType!=='view'" [attr.class]="leadComment"
