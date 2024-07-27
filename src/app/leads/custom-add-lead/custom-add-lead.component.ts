@@ -199,7 +199,7 @@ export class CustomAddLeadComponent implements OnInit {
     editTextArea = false;
     vendorListLoader:HttpRequestLoader = new HttpRequestLoader();
     /***XNFR-623***/
-  
+    isLatestPipelineApiEnabled = true;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -211,8 +211,8 @@ export class CustomAddLeadComponent implements OnInit {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.vanityLoginDto.userId = this.loggedInUserId;
       this.vanityLoginDto.vanityUrlFilter = true;
-
     }
+    this.isLatestPipelineApiEnabled = this.envService.loadLatestPipeLineApi;
   }
 
   ngOnInit() {
@@ -334,14 +334,12 @@ export class CustomAddLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             this.lead.createdForCompanyId = data.data;
-
             if (this.campaignId > 0) {
               this.lead.campaignId = this.campaignId;
               this.lead.campaignName = this.campaignName;
               this.lead.associatedUserId = this.selectedContact.userId;
               this.getCreatedForCompanyIdByCampaignId();
               this.getContactInfo();
-              
             } else {
               this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
               this.getActiveCRMDetails();
@@ -427,7 +425,6 @@ export class CustomAddLeadComponent implements OnInit {
             if (data.statusCode == 200) {
               self.lead.createdForCompanyId = data.data;
               this.getLeadCustomFieldsByVendorCompany(self.lead.createdForCompanyId);
-              //this.isSalesForceEnabled();
               this.getActiveCRMDetails();
             }
           },
@@ -1127,84 +1124,104 @@ export class CustomAddLeadComponent implements OnInit {
       .subscribe(
         response => {
           this.ngxloading = false;
-          if (response.statusCode == 200) {
-            this.activeCRMDetails = response.data;
-            if("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType){
-              this.showCustomForm = true;
-            } else{
-              this.showDefaultForm = true;
-            }
-            if (("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType
-              || "ZOHO" === this.activeCRMDetails.createdForActiveCRMType) && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
-              this.showTicketTypesDropdown = true;
-              this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
-              if (this.actionType === 'add') {
-                this.lead.createdForPipelineId = 0;
-                this.lead.createdByPipelineId = 0;
-                this.lead.createdForPipelineStageId = 0;
-                this.lead.createdByPipelineStageId = 0;
-                this.lead.halopsaTicketTypeId = 0;
-              }
-            } else if ("HALOPSA" === this.activeCRMDetails.createdByActiveCRMType && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
-              this.showTicketTypesDropdown = true;
-              this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
-                (result: any) => {
-                  this.getHaloPSATicketTypes(result, this.activeCRMDetails.createdByActiveCRMType);
-                });
-              if (this.actionType === 'add') {
-                this.lead.createdForPipelineId = 0;
-                this.lead.createdByPipelineId = 0;
-                this.lead.createdForPipelineStageId = 0;
-                this.lead.createdByPipelineStageId = 0;
-                this.lead.halopsaTicketTypeId = 0;
-              }
-            } else {
-              this.showTicketTypesDropdown = false;
-            }
-            if (!this.activeCRMDetails.activeCRM) {
-              if (this.edit || this.preview) {
-                if (this.lead.campaignId > 0) {
-                  this.getCampaignLeadPipeline();
-                } else {
-                  this.getPipelines();
-                }
-              } else {
-                if (this.campaignId > 0) {
-                  this.getCampaignLeadPipeline();
-                } else {
-                  this.resetPipelines();
-                }
-              }
-            } else {
-              //this.getSalesforcePipeline();
-              if (this.lead.campaignId > 0) {
-                this.getCampaignLeadPipeline();
-              } else {
-                this.getActiveCRMPipeline();
-              }
-            }
-            if (this.actionType === "view") {
-              this.getLeadPipelinesForView();
-            }
-            else {
-              if (!this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown || this.actionType === "edit" || this.lead.campaignId > 0) {
-                this.getLeadPipelines();
-              }
-            }
+          if(this.isLatestPipelineApiEnabled){
+            this.findActiveCRMDetailsAndCustomFormVariable(response);
+          }else{
+            this.loadAllApis(response);
           }
         },
         error => {
           this.ngxloading = false;
           this.showCustomForm = false;
           this.showDefaultForm = false;
-          console.log(error);
         },
         () => {
-          this.setFieldErrorStates();
+          if(this.isLatestPipelineApiEnabled){
+            //I will call new Api PipeLine.
+          }else{
+            this.setFieldErrorStates();
+          }
         });
   }
-  getActiveCRMPipeline() {
+  private findActiveCRMDetailsAndCustomFormVariable(response: any) {
+    if (response.statusCode == 200) {
+      this.activeCRMDetails = response.data;
+      if ("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType) {
+        this.showCustomForm = true;
+      } else {
+        this.showDefaultForm = true;
+      }
+    }
+  }
 
+  private loadAllApis(response: any) {
+    if (response.statusCode == 200) {
+      this.activeCRMDetails = response.data;
+      if ("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType) {
+        this.showCustomForm = true;
+      } else {
+        this.showDefaultForm = true;
+      }
+      if (("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType
+        || "ZOHO" === this.activeCRMDetails.createdForActiveCRMType) && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
+        this.showTicketTypesDropdown = true;
+        this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
+        if (this.actionType === 'add') {
+          this.lead.createdForPipelineId = 0;
+          this.lead.createdByPipelineId = 0;
+          this.lead.createdForPipelineStageId = 0;
+          this.lead.createdByPipelineStageId = 0;
+          this.lead.halopsaTicketTypeId = 0;
+        }
+      } else if ("HALOPSA" === this.activeCRMDetails.createdByActiveCRMType && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
+        this.showTicketTypesDropdown = true;
+        this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+          (result: any) => {
+            this.getHaloPSATicketTypes(result, this.activeCRMDetails.createdByActiveCRMType);
+          });
+        if (this.actionType === 'add') {
+          this.lead.createdForPipelineId = 0;
+          this.lead.createdByPipelineId = 0;
+          this.lead.createdForPipelineStageId = 0;
+          this.lead.createdByPipelineStageId = 0;
+          this.lead.halopsaTicketTypeId = 0;
+        }
+      } else {
+        this.showTicketTypesDropdown = false;
+      }
+      if (!this.activeCRMDetails.activeCRM) {
+        if (this.edit || this.preview) {
+          if (this.lead.campaignId > 0) {
+            this.getCampaignLeadPipeline();
+          } else {
+            this.getPipelines();
+          }
+        } else {
+          if (this.campaignId > 0) {
+            this.getCampaignLeadPipeline();
+          } else {
+            this.resetPipelines();
+          }
+        }
+      } else {
+        if (this.lead.campaignId > 0) {
+          this.getCampaignLeadPipeline();
+        } else {
+          this.getActiveCRMPipeline();
+        }
+      }
+      if (this.actionType === "view") {
+        this.getLeadPipelinesForView();
+      }
+      else {
+        if (!this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown || this.actionType === "edit" || this.lead.campaignId > 0) {
+          this.getLeadPipelines();
+        }
+      }
+    }
+  }
+
+  getActiveCRMPipeline() {
     let self = this;
     let halopsaTicketTypeId = 0;
     self.isLoading = true;

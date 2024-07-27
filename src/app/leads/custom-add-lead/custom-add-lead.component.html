@@ -475,8 +475,7 @@
                     [disabled]="preview"></textarea>
                 </div>
               </div>
-              <div
-                *ngIf="!showCustomForm && showDefaultForm && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0"
+              <div *ngIf="!showCustomForm && showDefaultForm && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0"
                 class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                 <ng-container *ngFor="let leadCustomField of leadCustomFields;let i = index">
                   <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="leadFields"
