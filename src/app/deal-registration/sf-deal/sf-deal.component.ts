@@ -115,15 +115,12 @@ export class SfDealComponent implements OnInit {
       if (isCreatedByActiveTypeNotHALOPSA && isCreatedForActiveCRMTypeNotHALOPSA && isCreatedForActiveCRMTypeNotZOHO) {
         this.setTicketTypeIdAsZero();
         this.addLoader();
-        alert("I am in On InIt() at 118");
         this.getActiveCRMCustomForm();
       }
     }
-
     if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType)) {
       this.isConnectWiseEnabledAsActiveCRM = true;
     }
-
   }
 
   private setTicketTypeIdAsZero() {

@@ -11,6 +11,9 @@ export class DropdownLoaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if(this.text==undefined){
+      this.text="";
+    }
   }
 
 }

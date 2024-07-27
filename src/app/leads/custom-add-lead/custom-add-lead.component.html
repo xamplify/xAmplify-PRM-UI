@@ -487,7 +487,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="showCustomForm && !showDefaultForm && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
+        <div *ngIf="showCustomForm && !showDefaultForm && showAttachLeadPopUp && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
           <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
             [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="0"></app-sf-deal>
         </div>
