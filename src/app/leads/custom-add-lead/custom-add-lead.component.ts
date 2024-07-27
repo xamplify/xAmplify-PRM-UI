@@ -518,11 +518,7 @@ export class CustomAddLeadComponent implements OnInit {
       this.getActiveCRMDetails();
     } else {
       this.resetPipelines();
-      this.lead.createdForPipelineId = 0;
-      this.lead.createdByPipelineId = 0;
-      this.lead.createdForPipelineStageId = 0;
-      this.lead.createdByPipelineStageId = 0;
-      this.lead.halopsaTicketTypeId = 0;
+      this.resetLeadPipeLineVariables();
       this.activeCRMDetails.hasCreatedForPipeline = false;
       this.activeCRMDetails.hasCreatedByPipeline = false;
       this.showTicketTypesDropdown = false;
@@ -530,6 +526,14 @@ export class CustomAddLeadComponent implements OnInit {
       this.getDefaultLeadCustomFields();
       this.vendorCompanyName = '';
     }
+  }
+
+  private resetLeadPipeLineVariables() {
+    this.lead.createdForPipelineId = 0;
+    this.lead.createdByPipelineId = 0;
+    this.lead.createdForPipelineStageId = 0;
+    this.lead.createdByPipelineStageId = 0;
+    this.lead.halopsaTicketTypeId = 0;
   }
 
   resetPipelines() {

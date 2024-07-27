@@ -106,26 +106,36 @@ export class SfDealComponent implements OnInit {
         classes: "myclass custom-class"
       };
     }
-
-    if (this.createdForCompanyId != undefined && this.createdForCompanyId > 0) {
-      if (this.dealId == undefined || this.dealId <= 0) {
-        this.dealId = 0;
-      }
-      if ("HALOPSA" !== this.activeCRM.createdByActiveCRMType && "HALOPSA" !== this.activeCRM.createdForActiveCRMType 
-        && "ZOHO" !== this.activeCRM.createdForActiveCRMType) {
-        if (this.ticketTypeId == undefined || this.ticketTypeId <= 0) {
-          this.ticketTypeId = 0;
-        }
+    let isValidCreatedForComapnyId = this.createdForCompanyId != undefined && this.createdForCompanyId > 0;
+    if (isValidCreatedForComapnyId) {
+      this.setDealIdAsZero();
+      let isCreatedByActiveTypeNotHALOPSA = "HALOPSA" !== this.activeCRM.createdByActiveCRMType;
+      let isCreatedForActiveCRMTypeNotHALOPSA = "HALOPSA" !== this.activeCRM.createdForActiveCRMType;
+      let isCreatedForActiveCRMTypeNotZOHO = "ZOHO" !== this.activeCRM.createdForActiveCRMType;
+      if (isCreatedByActiveTypeNotHALOPSA && isCreatedForActiveCRMTypeNotHALOPSA && isCreatedForActiveCRMTypeNotZOHO) {
+        this.setTicketTypeIdAsZero();
         this.addLoader();
+        alert("I am in On InIt() at 118");
         this.getActiveCRMCustomForm();
       }
-      this.getActiveCRMCustomForm();
     }
 
     if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType)) {
       this.isConnectWiseEnabledAsActiveCRM = true;
     }
 
+  }
+
+  private setTicketTypeIdAsZero() {
+    if (this.ticketTypeId == undefined || this.ticketTypeId <= 0) {
+      this.ticketTypeId = 0;
+    }
+  }
+
+  private setDealIdAsZero() {
+    if (this.dealId == undefined || this.dealId <= 0) {
+      this.dealId = 0;
+    }
   }
 
   ngOnChanges(){
