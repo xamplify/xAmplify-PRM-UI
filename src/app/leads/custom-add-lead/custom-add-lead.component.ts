@@ -1123,10 +1123,10 @@ export class CustomAddLeadComponent implements OnInit {
     this.integrationService.getActiveCRMDetails(this.lead.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         response => {
-          this.ngxloading = false;
           if(this.isLatestPipelineApiEnabled){
             this.findActiveCRMDetailsAndCustomFormVariable(response);
           }else{
+            this.ngxloading = false;
             this.loadAllApis(response);
           }
         },
@@ -1146,12 +1146,14 @@ export class CustomAddLeadComponent implements OnInit {
   private findActiveCRMDetailsAndCustomFormVariable(response: any) {
     if (response.statusCode == 200) {
       this.activeCRMDetails = response.data;
+      console.log(this.activeCRMDetails);
       if ("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType) {
         this.showCustomForm = true;
       } else {
         this.showDefaultForm = true;
       }
     }
+    this.ngxloading = false;
   }
 
   private loadAllApis(response: any) {
