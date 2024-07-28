@@ -1673,6 +1673,8 @@ export class CustomAddLeadComponent implements OnInit {
   findPipeLinesAndStagesByTicketId() {
     this.lead.createdForPipelineId = 0;
     this.lead.createdForPipelineStageId = 0;
+    this.createdForStages = [];
+    this.createdForPipelines = [];
     if (this.actionType === 'edit') {
       this.lead.createdForPipelineStageId = 0;
     }
