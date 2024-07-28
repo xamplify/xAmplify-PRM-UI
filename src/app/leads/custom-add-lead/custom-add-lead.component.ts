@@ -617,7 +617,6 @@ export class CustomAddLeadComponent implements OnInit {
       if(createdForPipeLineId!=undefined && createdForPipeLineId>0){
         this.findPipelineStagesByPipelineId(createdForPipeLineId);
       }
-
     }else{
       this.addCreatedForOrCreatedByStages();
     }
@@ -1249,37 +1248,51 @@ export class CustomAddLeadComponent implements OnInit {
       this.createdForPipelineStageId = 0;
       let showLeadPipeline = activeCRMDetails.showLeadPipeline;
       let showLeadPipelineStage = activeCRMDetails.showLeadPipelineStage;
-      if (showLeadPipeline) {
-        this.referenceService.loading(this.pipelineLoader, true);
-        this.leadsService.findLeadPipeLines(this.lead.createdForCompanyId).subscribe(
-          response => {
-            let data = response.data;
-            this.createdForPipelines = data.list;
-            let totalRecords = data.totalRecords;
-            this.activeCRMDetails.hasCreatedForPipeline = totalRecords==1;
-            if(this.activeCRMDetails.hasCreatedForPipeline){
-              let pipelineId = this.createdForPipelines.map(function (pipeline) { return pipeline['id'] });
-              this.lead.createdForPipelineId = pipelineId[0];
-            }else{
-              this.referenceService.loading(this.pipelineLoader, false);
-            }
-          }, error => {
+      this.getPipelinesAndStages(showLeadPipeline);
+      this.getStagesBySelectedPipeLineId(showLeadPipeline, showLeadPipelineStage);
+    }
+  }
+
+  private getPipelinesAndStages(showLeadPipeline: any) {
+    if (showLeadPipeline) {
+      this.referenceService.loading(this.pipelineLoader, true);
+      this.leadsService.findLeadPipeLines(this.lead.createdForCompanyId).subscribe(
+        response => {
+          let data = response.data;
+          this.createdForPipelines = data.list;
+          let totalRecords = data.totalRecords;
+          this.activeCRMDetails.hasCreatedForPipeline = totalRecords == 1;
+          if (this.activeCRMDetails.hasCreatedForPipeline) {
+            let pipelineId = this.createdForPipelines.map(function (pipeline) { return pipeline['id']; });
+            this.lead.createdForPipelineId = pipelineId[0];
+          } else {
             this.referenceService.loading(this.pipelineLoader, false);
-            this.referenceService.showServerError(this.pipelineLoader);
-          },()=>{
-            if (this.activeCRMDetails!=undefined && this.activeCRMDetails.hasCreatedForPipeline) {
-              this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
-              this.referenceService.loading(this.pipelineLoader, false);
-            }
-            this.setFieldErrorStates();
-          });
-      }
-      if(!showLeadPipeline && showLeadPipelineStage){
-        this.referenceService.loading(this.stagesLoader, true);
-        this.lead.createdForPipelineId = this.activeCRMDetails.leadPipelineId;
-        this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
-        this.referenceService.loading(this.pipelineLoader, false);
-      }
+          }
+        }, error => {
+          this.referenceService.loading(this.pipelineLoader, false);
+          this.referenceService.showServerError(this.pipelineLoader);
+        }, () => {
+          this.setFieldErrorStatusAndGetStages();
+        });
+    }
+  }
+
+  private setFieldErrorStatusAndGetStages() {
+    let isOnlyOnePipeLineExists = this.activeCRMDetails != undefined && this.activeCRMDetails.hasCreatedForPipeline;
+    let isShowingStagesForEditOrView = (this.edit || this.preview) && this.lead.createdForPipelineId != undefined && this.lead.createdForPipelineId > 0;
+    if (isOnlyOnePipeLineExists || isShowingStagesForEditOrView) {
+      this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
+      this.referenceService.loading(this.pipelineLoader, false);
+    }
+    this.setFieldErrorStates();
+  }
+
+  private getStagesBySelectedPipeLineId(showLeadPipeline: any, showLeadPipelineStage: any) {
+    if (!showLeadPipeline && showLeadPipelineStage) {
+      this.referenceService.loading(this.stagesLoader, true);
+      this.lead.createdForPipelineId = this.activeCRMDetails.leadPipelineId;
+      this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
+      this.referenceService.loading(this.pipelineLoader, false);
     }
   }
 
