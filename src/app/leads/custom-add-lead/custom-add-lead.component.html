@@ -486,7 +486,7 @@
           </div>
         </div>
         <div *ngIf="showCustomForm && !showDefaultForm && showAttachLeadPopUp && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
-          <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
+          <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails" (isFormValid) = checkCustomLeadFormValid($event)
             [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="0"></app-sf-deal>
         </div>
       </div>
@@ -798,7 +798,7 @@
 <!--Custom Form-->
 <ng-template #customCRMFormTemplate>
   <div *ngIf="showCustomForm && !showDefaultForm && !showAttachLeadPopUp && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
-    <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails"
+    <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails" (isFormValid) = checkCustomLeadFormValid($event)
       [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="lead.halopsaTicketTypeId"></app-sf-deal>
   </div>
 </ng-template>

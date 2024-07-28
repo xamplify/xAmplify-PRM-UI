@@ -1080,7 +1080,7 @@ export class CustomAddLeadComponent implements OnInit {
     }
 
     if (!this.lastNameError && !this.companyError && !this.emailError && !this.createdForCompanyIdError && !this.createdForPipelineIdError
-      && !this.pipelineStageIdError && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError) {
+      && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError) {
       let qCount = 0;
       let cCount = 0;
       this.propertiesQuestions.forEach(propery => {
@@ -1235,7 +1235,6 @@ export class CustomAddLeadComponent implements OnInit {
           this.showDefaultForm = false;
         },
         () => {
-          this.setFieldErrorStates();
           if(this.isLatestPipelineApiEnabled){
             this.findPipeLines();
           }
@@ -1272,6 +1271,7 @@ export class CustomAddLeadComponent implements OnInit {
               this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
               this.referenceService.loading(this.pipelineLoader, false);
             }
+            this.setFieldErrorStates();
           });
       }
       if(!showLeadPipeline && showLeadPipelineStage){
@@ -1667,35 +1667,35 @@ export class CustomAddLeadComponent implements OnInit {
     $('#leadFormModel').modal('hide');
   }
 
-  validateAllFields() {
+  // validateAllFields() {
 
-    this.isValid = true;
-    this.isValidPipeplineAndStage = true;
-    if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
-      this.isValid = false;
-    } else if ((this.lead.createdForPipelineId == undefined || this.lead.createdForPipelineId <= 0) && (this.activeCRMDetails.showLeadPipeline)) {
-      this.isValid = false;
-      this.isValidPipeplineAndStage = false;
-    } else if ((this.lead.createdForPipelineStageId == undefined || this.lead.createdForPipelineStageId <= 0) && (this.activeCRMDetails.showLeadPipelineStage)) {
-      this.isValid = false;
-      this.isValidPipeplineAndStage = false;
-    } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineId == undefined || this.lead.createdByPipelineId <= 0)) {
-      this.isValid = false;
-      this.isValidPipeplineAndStage = false;
-    } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineStageId == undefined || this.lead.createdByPipelineStageId <= 0)) {
-      this.isValid = false;
-      this.isValidPipeplineAndStage = false;
-    } else if (this.lead.lastName == undefined || this.lead.lastName == "") {
-      this.isValid = false;
-    } else if (this.lead.company == undefined || this.lead.company == "") {
-      this.isValid = false;
-    } else if (this.lead.email == undefined || this.lead.email == "") {
-      this.isValid = false;
-    } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)) {
-      this.isValid = false;
-    }
+  //   this.isValid = true;
+  //   this.isValidPipeplineAndStage = true;
+  //   if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
+  //     this.isValid = false;
+  //   } else if ((this.lead.createdForPipelineId == undefined || this.lead.createdForPipelineId <= 0) && (this.activeCRMDetails.showLeadPipeline)) {
+  //     this.isValid = false;
+  //     this.isValidPipeplineAndStage = false;
+  //   } else if ((this.lead.createdForPipelineStageId == undefined || this.lead.createdForPipelineStageId <= 0) && (this.activeCRMDetails.showLeadPipelineStage)) {
+  //     this.isValid = false;
+  //     this.isValidPipeplineAndStage = false;
+  //   } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineId == undefined || this.lead.createdByPipelineId <= 0)) {
+  //     this.isValid = false;
+  //     this.isValidPipeplineAndStage = false;
+  //   } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineStageId == undefined || this.lead.createdByPipelineStageId <= 0)) {
+  //     this.isValid = false;
+  //     this.isValidPipeplineAndStage = false;
+  //   } else if (this.lead.lastName == undefined || this.lead.lastName == "") {
+  //     this.isValid = false;
+  //   } else if (this.lead.company == undefined || this.lead.company == "") {
+  //     this.isValid = false;
+  //   } else if (this.lead.email == undefined || this.lead.email == "") {
+  //     this.isValid = false;
+  //   } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)) {
+  //     this.isValid = false;
+  //   }
 
-  }
+  // }
 
 
   validateEmailId() {
@@ -1706,7 +1706,7 @@ export class CustomAddLeadComponent implements OnInit {
     } else {
       this.inValidEmailId = false;
       this.isValid = true;
-      this.validateAllFields();
+      //this.validateAllFields();
     }
   }
 
@@ -1718,6 +1718,10 @@ copyReferenceId(inputElement: any) {
   inputElement.setSelectionRange(0, 0);
   $('#copy-reference-id').show(500);
   this.isCopiedToClipboard = true;
+}
+
+checkCustomLeadFormValid(event:any){
+  this.sfDealComponent.isDealRegistrationFormInvalid = event;
 }
 
 }

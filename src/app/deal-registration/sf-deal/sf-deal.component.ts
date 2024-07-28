@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { ContactService } from 'app/contacts/services/contact.service';
 import { Form } from 'app/forms/models/form';
 import { ColumnInfo } from 'app/forms/models/column-info';
@@ -27,6 +27,8 @@ export class SfDealComponent implements OnInit {
   @Input() activeCRM: any;
   @Input() public ticketTypeId: any;
   @Input() public opportunityType: any;
+  @Input() public selectedContact: any;
+  @Output() isFormValid = new EventEmitter();
   form: Form = new Form();
   errorMessage: string;
   isDealRegistrationFormInvalid: boolean = true;
@@ -142,6 +144,7 @@ export class SfDealComponent implements OnInit {
       }
       if (this.ticketTypeId != undefined && this.ticketTypeId > 0) {
         this.isDealRegistrationFormInvalid = true;
+        this.isFormValid.emit(this.isDealRegistrationFormInvalid);
         this.addLoader();
         this.getActiveCRMCustomForm();
       }
@@ -197,6 +200,15 @@ export class SfDealComponent implements OnInit {
         let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
         if (reqFieldsCheck.length === 0) {
           this.isDealRegistrationFormInvalid = false;
+        }
+        if (this.opportunityType === 'LEAD' && this.selectedContact !== undefined) {
+          for (let column of this.form.formLabelDTOs) {
+            if (column.labelName === 'Company') {
+              column.value = this.selectedContact.companyName;
+            } else if (column.labelName === 'Email') {
+              column.value = this.selectedContact.emailId;
+            }
+          }
         }
         /*********XNFR-403*********/
         if (this.dealId > 0) {
@@ -377,7 +389,7 @@ export class SfDealComponent implements OnInit {
     this.isDealRegistrationFormInvalid = this.isRequiredNotFilled || this.isInvalidEmailId || this.isInvalidAmount || this.isInvalidGeoLocation ||
       this.isInvalidPercentage || this.isInvalidPhoneNumber || this.isInvalidRepValues || this.isInvalidTextAreaFields ||
       this.isInvalidTextFields || this.isInvalidWebsiteURL;
-      
+    this.isFormValid.emit(this.isDealRegistrationFormInvalid);
   }
   validateAmount(columnInfo: ColumnInfo) {
     let amount = columnInfo.value;
