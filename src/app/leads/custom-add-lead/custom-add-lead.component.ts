@@ -218,6 +218,7 @@ export class CustomAddLeadComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.referenceService.scrollSmoothToTop();
     this.getDefaultLeadCustomFields();
     this.resetLeadData();
     if (this.actionType === "view") {
