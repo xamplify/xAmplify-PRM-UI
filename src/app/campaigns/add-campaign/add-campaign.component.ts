@@ -1020,7 +1020,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     listCampaignPipelines() {
         if (this.campaignAccess.enableLeads) {
             this.showConfigurePipelines = true;
-            this.ngxLoading = true;
             this.campaignService.listCampaignPipelines(this.loggedInUserId)
                 .subscribe(
                     response => {
