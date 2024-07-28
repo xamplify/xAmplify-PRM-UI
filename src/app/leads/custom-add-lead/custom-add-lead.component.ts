@@ -1235,10 +1235,9 @@ export class CustomAddLeadComponent implements OnInit {
           this.showDefaultForm = false;
         },
         () => {
+          this.setFieldErrorStates();
           if(this.isLatestPipelineApiEnabled){
             this.findPipeLines();
-          }else{
-            this.setFieldErrorStates();
           }
         });
   }
