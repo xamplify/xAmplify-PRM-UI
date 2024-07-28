@@ -203,6 +203,8 @@ export class CustomAddLeadComponent implements OnInit {
   pipelineLoader:HttpRequestLoader = new HttpRequestLoader();
   stagesLoader:HttpRequestLoader = new HttpRequestLoader();
   leadLayoutLoader:HttpRequestLoader = new HttpRequestLoader();
+  leadLayoutModalPopUpLoader:HttpRequestLoader = new HttpRequestLoader();
+  pipeLineModalPopUpLoader:HttpRequestLoader = new HttpRequestLoader();
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -1284,10 +1286,12 @@ export class CustomAddLeadComponent implements OnInit {
             this.lead.createdForPipelineId = pipelineId[0];
           } else {
             this.referenceService.loading(this.pipelineLoader, false);
+            this.referenceService.loading(this.leadLayoutModalPopUpLoader,false);
           }
           this.logger.info(totalRecords+" Lead PipeLines Loaded");
         }, error => {
           this.referenceService.loading(this.pipelineLoader, false);
+          this.referenceService.loading(this.leadLayoutModalPopUpLoader,false);
           this.referenceService.showServerError(this.pipelineLoader);
         }, () => {
           this.setFieldErrorStatusAndGetStages();
@@ -1300,8 +1304,9 @@ export class CustomAddLeadComponent implements OnInit {
     let isShowingStagesForEditOrView = (this.edit || this.preview) && this.lead.createdForPipelineId != undefined && this.lead.createdForPipelineId > 0;
     if (isOnlyOnePipeLineExists || isShowingStagesForEditOrView) {
       this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
-      this.referenceService.loading(this.pipelineLoader, false);
     }
+    this.referenceService.loading(this.pipelineLoader, false);
+    this.referenceService.loading(this.leadLayoutModalPopUpLoader,false);
     this.setFieldErrorStates();
   }
 
@@ -1680,6 +1685,7 @@ export class CustomAddLeadComponent implements OnInit {
     }
     if(this.isLatestPipelineApiEnabled){
       this.referenceService.loading(this.pipelineLoader, true);
+      this.referenceService.loading(this.leadLayoutModalPopUpLoader,true);
       this.getPipelinesAndStages();
       this.getStagesBySelectedPipeLineId();
     }else{

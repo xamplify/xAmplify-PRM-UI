@@ -316,7 +316,8 @@
                     <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
                       ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
                       ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}<span><strong class="required">*</strong></span></label>
-                    <select class="form-control" [(ngModel)]="lead.halopsaTicketTypeId"
+                    <app-modal-popup-loader *ngIf="leadLayoutModalPopUpLoader?.isLoading" [height]="130"></app-modal-popup-loader> 
+                    <select *ngIf="!leadLayoutModalPopUpLoader?.isLoading && !leadLayoutModalPopUpLoader?.isServerError" [height]="130" class="form-control" [(ngModel)]="lead.halopsaTicketTypeId"
                       [ngModelOptions]="{standalone: true}" placeholder="halopsaTicketTypeId" id="halopsaTicketTypeId"
                       [disabled]="preview || isCampaignTicketTypeSelected" (ngModelChange)="findPipeLinesAndStagesByTicketId()">
                       <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
@@ -377,7 +378,8 @@
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="!showCreatedByPipelineAndStageOnTop">
                   <div *ngIf="activeCRMDetails?.showLeadPipeline || isOrgAdmin || isMarketingCompany || showDefaultForm" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px">
                     <label class="control-label">Pipeline<span><strong class="required">*</strong></span></label>
-                    <select  class="form-control" [(ngModel)]="lead.createdForPipelineId" [ngModelOptions]="{standalone: true}"
+                    <app-dropdown-loader *ngIf="pipeLineModalPopUpLoader?.isLoading" [text]="'pipelines'"></app-dropdown-loader>
+                    <select *ngIf="!pipeLineModalPopUpLoader?.isLoading && !pipeLineModalPopUpLoader?.isServerError" class="form-control" [(ngModel)]="lead.createdForPipelineId" [ngModelOptions]="{standalone: true}"
                       placeholder="pipelineId" id="pipelineId"
                       [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedForPipeline"
                       (ngModelChange)="validateField('createdForPipelineId',false);resetStages()">
