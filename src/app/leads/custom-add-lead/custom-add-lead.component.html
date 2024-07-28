@@ -382,7 +382,7 @@
                 </div>
                 <!--PipeLine--> 
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="!showCreatedByPipelineAndStageOnTop">
-                  <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px">
+                  <div *ngIf="activeCRMDetails?.showLeadPipeline" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px">
                     <label class="control-label">Pipeline<span><strong class="required">*</strong></span></label>
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineId" [ngModelOptions]="{standalone: true}"
                       placeholder="pipelineId" id="pipelineId"

@@ -272,6 +272,7 @@ export class CustomAddLeadComponent implements OnInit {
     if (this.vanityLoginDto.vanityUrlFilter) {
       this.setCreatedForCompanyId();
       if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
+        alert("275");
         $('#leadFormModel').modal('show');
         this.showAttachLeadPopUp = true;
       }
@@ -631,6 +632,7 @@ export class CustomAddLeadComponent implements OnInit {
         let data = response.data;
         this.createdForStages = data.list;
         this.referenceService.loading(this.stagesLoader, false);
+        this.logger.info(this.createdForStages.length+"Stages Loaded For Selected PipeLine");
       }, error => {
         this.referenceService.loading(this.stagesLoader, false);
         this.referenceService.showServerError(this.stagesLoader);
@@ -1273,7 +1275,7 @@ export class CustomAddLeadComponent implements OnInit {
           } else {
             this.referenceService.loading(this.pipelineLoader, false);
           }
-          this.logger.info("Lead PipeLines Loaded");
+          this.logger.info(totalRecords+"Lead PipeLines Loaded");
         }, error => {
           this.referenceService.loading(this.pipelineLoader, false);
           this.referenceService.showServerError(this.pipelineLoader);
@@ -1288,7 +1290,6 @@ export class CustomAddLeadComponent implements OnInit {
     let isShowingStagesForEditOrView = (this.edit || this.preview) && this.lead.createdForPipelineId != undefined && this.lead.createdForPipelineId > 0;
     if (isOnlyOnePipeLineExists || isShowingStagesForEditOrView) {
       this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
-      this.logger.info("Lead PipeLine Stages Loaded By PipeLine Id");
       this.referenceService.loading(this.pipelineLoader, false);
     }
     this.setFieldErrorStates();

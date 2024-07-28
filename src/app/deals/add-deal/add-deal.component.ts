@@ -1007,10 +1007,10 @@ export class AddDealComponent implements OnInit {
       this.propertiesQuestions.length = 0;
     }
 
-    if (!this.activeCRMDetails.showDealPipeline  && !this.isOrgAdmin && !this.isMarketingCompany) {
+    if (this.activeCRMDetails!=undefined && !this.activeCRMDetails.showDealPipeline  && !this.isOrgAdmin && !this.isMarketingCompany) {
       this.pipelineIdError = false;
     }
-    if (!this.activeCRMDetails.showDealPipelineStage  && !this.isOrgAdmin && !this.isMarketingCompany) {
+    if (this.activeCRMDetails!=undefined && !this.activeCRMDetails.showDealPipelineStage  && !this.isOrgAdmin && !this.isMarketingCompany) {
       this.pipelineStageIdError = false;
       this.createdForPipelineStageIdError = false;
     }
