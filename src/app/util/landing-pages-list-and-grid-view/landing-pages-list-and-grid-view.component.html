@@ -586,7 +586,13 @@
 </ng-template>
 <!---Share-->
 <ng-template #shareIcon let-landingPage="landingPage">
-    <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && (vendorJourney )" data-toggle="tooltip"
+    <a class="Iconhover custom-grid-icon" *ngIf="landingPage.publishingOrWhiteLabelingInProgress && !isPartnerLandingPage && (vendorJourney )" data-toggle="tooltip"
+        id="share-cursor-not-allowed"
+        data-placement="top" title="Share is Inprogress Please Refresh" >
+        <i class="fa fa-share" aria-hidden="true"></i>
+        <div class="clickicons"></div>
+    </a>
+    <a class="Iconhover custom-grid-icon" *ngIf="!landingPage.publishingOrWhiteLabelingInProgress && !isPartnerLandingPage && (vendorJourney )" data-toggle="tooltip"
         data-placement="top" title="Share" (click)="openShareListPopup(landingPage.id)">
         <i class="fa fa-share" aria-hidden="true"></i>
         <div class="clickicons"></div>
@@ -618,16 +624,14 @@ data-backdrop="static" data-keyboard="false">
                   [selectedPartnerGroupIds]="landingPageSharedDetails?.partnerGroupIds" [vendorJourney]="true"
                   [selectedPartnerIdAndPartnerStatus] = "landingPageSharedDetails?.partnerIdAndPartnerStatus"
                   [selectedPartnerGroupPartnerIdAndPartnerStatus] = "landingPageSharedDetails?.partnerGroupPartnerIdAndPartnerStatus"
-                  [inputId]="selectedLandingPageId" (closePopup)=closeShareListPopup()>
+                  [inputId]="selectedLandingPageId" (closePopup)=closeShareListPopup($event)>
               </app-partner-company-and-groups>
                </div>
             </div>
          </div>
       </div>
       <div class="modal-footer cmr" style="border:none;border-top:none !important" >
-         <button class="btn Btn-Gray neg_mrg_top4" type="reset" (click)="closeShareListPopup();" translate>Close</button>
-         
-         
+         <button class="btn Btn-Gray neg_mrg_top4" type="reset" (click)="closeShareListPopup()" translate>Close</button>
          <button type="button" class="button_blue bgcolor-unset" 
             (click)="publishVendorJourney()" translate><span
                class="btn btn-primary transition txt_pd-top3">Publish</span>
@@ -636,7 +640,4 @@ data-backdrop="static" data-keyboard="false">
    </div>
 </div>
 </div>
-<!--<app-partner-company-modal-popup [companyId]="loggedInUserCompanyId" [vendorJourney] = "vendorJourney" [vendorJourneyLandingPageId] = "selectedLandingPageId"
-   *ngIf="showShareListPopup" (notifyOtherComponent)="closeShareListPopup()">
-</app-partner-company-modal-popup>-->
 <app-scroll-top></app-scroll-top>

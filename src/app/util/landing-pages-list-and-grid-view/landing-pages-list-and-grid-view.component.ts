@@ -496,6 +496,7 @@ copy(landingPage:any){
   }
     
     openShareListPopup(landingPageId:any) {
+        this.customResponse = new CustomResponse();
         this.selectedLandingPageId = landingPageId;
             this.ngxloading = true;
             let self = this;
@@ -515,12 +516,17 @@ copy(landingPage:any){
                 this.logger.errorPage(error);
               });
     }
-    closeShareListPopup() {
+    closeShareListPopup(event:any) {
         this.showShareListPopup = false;
         $("#shareVendorDetailsPopup").modal("hide");
         this.ngxloading = false;
         $('#partnerCompaniesPopup').modal('hide');
         this.partnerCompanyAndGroupsComponent.resetFields();
+        this.listLandingPages(this.pagination);
+        if(event != undefined && event != null && event != ""){
+            this.customResponse = new CustomResponse('SUCCESS', event, true);
+        }
+
     }
 
     findPartnerVendorJourneyLandingPages(pagination: Pagination) {

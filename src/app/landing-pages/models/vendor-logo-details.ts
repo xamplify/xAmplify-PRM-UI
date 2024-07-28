@@ -13,6 +13,7 @@ export class VendorLogoDetails {
 	teamMembers:LogoTeamMembers[] = [];
 	expand:boolean = false;
 	vendorJourneyId:number;
+	categoryIds:number[]=[];
 }
 
 export class LogoTeamMembers{
@@ -24,5 +25,8 @@ export class LogoTeamMembers{
 	lastName:string;
 	emailId:string
 	vendorJourneyId:number;
+	categoryIds:number[]=[];
+	dropdownSettings={};
+	selectedCategories = [];
 
 }

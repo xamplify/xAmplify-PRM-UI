@@ -132,5 +132,8 @@ export class Module {
     isPaymentOverDueModalPopUpDisplayed = false;
     ssoEnabled = false;
 
+    /****XNFR-583****/
+    vendorPagesEnabled= false;
+
 
 }

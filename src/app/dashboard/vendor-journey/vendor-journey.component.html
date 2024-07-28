@@ -15,7 +15,7 @@
       <app-preview-popup #previewPopUpComponent></app-preview-popup>
       <app-merge-tags [input]="mergeTagsInput"></app-merge-tags>
       <app-add-vendor-logos *ngIf = "isMasterLandingPages" [vendorLogoDetails] = "vendorLogoDetails"
-      [sharedVendorLogoDetails] = "sharedVendorLogoDetails" [input]="mergeTagsInput"></app-add-vendor-logos>
+      [sharedVendorLogoDetails] = "sharedVendorLogoDetails" [input]="mergeTagsInput" [dropdownList] = "categoryDropDownOptions"></app-add-vendor-logos>
       <div>
         <button class="button_blue bgcolor-unset" (click)="checkOrUncheckOpenLinksInNewTabOption()"
           style="float:right;padding-right:5px;">
