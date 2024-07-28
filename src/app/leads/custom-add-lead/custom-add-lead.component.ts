@@ -202,6 +202,7 @@ export class CustomAddLeadComponent implements OnInit {
   isLatestPipelineApiEnabled = true;
   pipelineLoader:HttpRequestLoader = new HttpRequestLoader();
   stagesLoader:HttpRequestLoader = new HttpRequestLoader();
+  leadLayoutLoader:HttpRequestLoader = new HttpRequestLoader();
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -1270,7 +1271,7 @@ export class CustomAddLeadComponent implements OnInit {
     let showLeadPipeline = this.activeCRMDetails.showLeadPipeline;
     if (showLeadPipeline) {
       this.referenceService.loading(this.pipelineLoader, true);
-      this.leadsService.findLeadPipeLines(this.lead.createdForCompanyId).subscribe(
+      this.leadsService.findLeadPipeLines(this.lead).subscribe(
         response => {
           let data = response.data;
           this.createdForPipelines = data.list;
@@ -1650,6 +1651,7 @@ export class CustomAddLeadComponent implements OnInit {
   halopsaTicketTypes: any;
 
   getHaloPSATicketTypes(companyId: number, integrationType: string) {
+    this.referenceService.loading(this.leadLayoutLoader,true);
     this.ngxloading = true;
     this.integrationService.getHaloPSATicketTypes(companyId, integrationType.toLowerCase(), 'LEAD').subscribe(data => {
       if (data.statusCode == 200) {
@@ -1658,9 +1660,11 @@ export class CustomAddLeadComponent implements OnInit {
         this.customResponse = new CustomResponse('ERROR', data.message, true);
       }
       this.ngxloading = false;
+      this.referenceService.loading(this.leadLayoutLoader,false);
     },
     error => {
       this.ngxloading = false;
+      this.referenceService.loading(this.leadLayoutLoader,false);
       this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try after sometime', true);
     })
   }
@@ -1674,7 +1678,6 @@ export class CustomAddLeadComponent implements OnInit {
     }
     if(this.isLatestPipelineApiEnabled){
       this.referenceService.loading(this.pipelineLoader, true);
-      this.referenceService.loading(this.stagesLoader, true);
       this.getPipelinesAndStages();
       this.getStagesBySelectedPipeLineId();
     }else{
