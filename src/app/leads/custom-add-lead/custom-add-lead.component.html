@@ -136,7 +136,7 @@
           </div>
           <!--RightSide Div-->
           <!--Lead Layout And PipeLine Details-->
-          <div *ngIf="!preview" class="col-sm-6 col-xs-12 px-10 pl0">
+          <div *ngIf="!preview" class=" col-xs-12 px-10 pl0" [ngClass]="vanityLoginDto.vanityUrlFilter? 'col-sm-12':'col-sm-6'" >
             <ng-template [ngTemplateOutlet]="leadLayoutAndPipeLineTemplate"></ng-template>
           </div>
           <!--Comments & History XNFR-624-->
