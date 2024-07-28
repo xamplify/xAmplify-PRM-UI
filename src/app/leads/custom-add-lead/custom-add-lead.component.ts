@@ -547,6 +547,7 @@ export class CustomAddLeadComponent implements OnInit {
     this.showCreatedByPipelineAndStage = false;
     this.showCreatedByPipelineAndStageOnTop = false;
     this.showTicketTypesDropdown = false;
+    this.halopsaTicketTypes = [];
   }
 
   private resetLeadPipeLineVariables() {
@@ -1255,6 +1256,12 @@ export class CustomAddLeadComponent implements OnInit {
       this.createdForPipelineStageId = 0;
       let showLeadPipeline = activeCRMDetails.showLeadPipeline;
       let showLeadPipelineStage = activeCRMDetails.showLeadPipelineStage;
+      let isHaloPSAAsActiveCRM = "HALOPSA" === this.activeCRMDetails.createdForActiveCRMType;
+      let isZohoAsActiveCRM = "ZOHO" === this.activeCRMDetails.createdForActiveCRMType;
+      this.showTicketTypesDropdown = this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown && (isHaloPSAAsActiveCRM || isZohoAsActiveCRM);
+      if(this.showTicketTypesDropdown){
+        this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
+      }
       this.getPipelinesAndStages(showLeadPipeline);
       this.getStagesBySelectedPipeLineId(showLeadPipeline, showLeadPipelineStage);
     }
@@ -1314,9 +1321,7 @@ export class CustomAddLeadComponent implements OnInit {
         this.showCustomForm = true;
       } else {
         this.showDefaultForm = true;
-        let isHaloPSAAsActiveCRM = "HALOPSA" === this.activeCRMDetails.createdForActiveCRMType;
-        let isZohoAsActiveCRM = "ZOHO" === this.activeCRMDetails.createdForActiveCRMType;
-        this.showTicketTypesDropdown = this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown && (isHaloPSAAsActiveCRM || isZohoAsActiveCRM);
+       
       }
     }
     this.ngxloading = false;
@@ -1641,26 +1646,34 @@ export class CustomAddLeadComponent implements OnInit {
   
   halopsaTicketTypeId: number = 0;
   halopsaTicketTypes: any;
+
   getHaloPSATicketTypes(companyId: number, integrationType: string) {
     this.ngxloading = true;
     this.integrationService.getHaloPSATicketTypes(companyId, integrationType.toLowerCase(), 'LEAD').subscribe(data => {
-      this.ngxloading = false;
       if (data.statusCode == 200) {
         this.halopsaTicketTypes = data.data;
       } else if (data.statusCode == 401) {
         this.customResponse = new CustomResponse('ERROR', data.message, true);
       }
+      this.ngxloading = false;
     },
     error => {
+      this.ngxloading = false;
       this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try after sometime', true);
     })
   }
 
-  onChangeTicketType() {
+  findPipeLinesAndStagesByTicketId() {
+    this.lead.createdForPipelineId = 0;
+    this.lead.createdForPipelineStageId = 0;
     if (this.actionType === 'edit') {
       this.lead.createdForPipelineStageId = 0;
     }
-    this.getLeadPipelines();
+    if(this.isLatestPipelineApiEnabled){
+    }else{
+        this.getLeadPipelines();
+    }
+    
   }
 
   getDefaultLeadCustomFields() {

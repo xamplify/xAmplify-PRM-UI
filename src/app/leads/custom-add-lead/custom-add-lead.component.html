@@ -318,7 +318,7 @@
                       ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}<span><strong class="required">*</strong></span></label>
                     <select class="form-control" [(ngModel)]="lead.halopsaTicketTypeId"
                       [ngModelOptions]="{standalone: true}" placeholder="halopsaTicketTypeId" id="halopsaTicketTypeId"
-                      [disabled]="preview || isCampaignTicketTypeSelected" (ngModelChange)="onChangeTicketType()">
+                      [disabled]="preview || isCampaignTicketTypeSelected" (ngModelChange)="findPipeLinesAndStagesByTicketId()">
                       <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
                         ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
                         ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}</option>
@@ -585,7 +585,7 @@
             ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}
             <span class="required"><strong>*</strong></span></label>
           <select class="form-control" [(ngModel)]="lead.halopsaTicketTypeId" [ngModelOptions]="{standalone: true}" placeholder="opportunityTypeId" id="opportunityTypeId"
-            [disabled]="preview || isCampaignTicketTypeSelected || isZohoLeadAttached" (ngModelChange)="onChangeTicketType()" (input)="validateField('opportunityTypeId',false)">
+            [disabled]="preview || isCampaignTicketTypeSelected || isZohoLeadAttached" (ngModelChange)="findPipeLinesAndStagesByTicketId()" (input)="validateField('opportunityTypeId',false)">
             <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
               ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
               ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}</option>
