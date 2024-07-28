@@ -1243,31 +1243,31 @@ export class CustomAddLeadComponent implements OnInit {
         },
         () => {
           if(this.isLatestPipelineApiEnabled){
-            this.callPipeLinesApi();
+            this.callPipeLinesOrLeadLayoutsApi();
           }
         });
   }
   /***Added On 27/07/2024 By Sravan */
-  private callPipeLinesApi() {
+  private callPipeLinesOrLeadLayoutsApi() {
     let activeCRMDetails = this.activeCRMDetails;
     if (activeCRMDetails != undefined) {
       this.createdForPipelines = [];
       this.createdForPipelineId = 0;
       this.createdForPipelineStageId = 0;
-      let showLeadPipeline = activeCRMDetails.showLeadPipeline;
-      let showLeadPipelineStage = activeCRMDetails.showLeadPipelineStage;
       let isHaloPSAAsActiveCRM = "HALOPSA" === this.activeCRMDetails.createdForActiveCRMType;
       let isZohoAsActiveCRM = "ZOHO" === this.activeCRMDetails.createdForActiveCRMType;
       this.showTicketTypesDropdown = this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown && (isHaloPSAAsActiveCRM || isZohoAsActiveCRM);
       if(this.showTicketTypesDropdown){
         this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
+      }else{
+        this.getPipelinesAndStages();
+        this.getStagesBySelectedPipeLineId();
       }
-      this.getPipelinesAndStages(showLeadPipeline);
-      this.getStagesBySelectedPipeLineId(showLeadPipeline, showLeadPipelineStage);
     }
   }
 
-  private getPipelinesAndStages(showLeadPipeline: any) {
+  private getPipelinesAndStages() {
+    let showLeadPipeline = this.activeCRMDetails.showLeadPipeline;
     if (showLeadPipeline) {
       this.referenceService.loading(this.pipelineLoader, true);
       this.leadsService.findLeadPipeLines(this.lead.createdForCompanyId).subscribe(
@@ -1304,7 +1304,9 @@ export class CustomAddLeadComponent implements OnInit {
     this.setFieldErrorStates();
   }
 
-  private getStagesBySelectedPipeLineId(showLeadPipeline: any, showLeadPipelineStage: any) {
+  private getStagesBySelectedPipeLineId() {
+    let showLeadPipeline = this.activeCRMDetails.showLeadPipeline;
+    let showLeadPipelineStage = this.activeCRMDetails.showLeadPipelineStage;
     if (!showLeadPipeline && showLeadPipelineStage) {
       this.referenceService.loading(this.stagesLoader, true);
       this.lead.createdForPipelineId = this.activeCRMDetails.leadPipelineId;
@@ -1663,6 +1665,7 @@ export class CustomAddLeadComponent implements OnInit {
     })
   }
 
+  /***Added On 29/07/2024****/
   findPipeLinesAndStagesByTicketId() {
     this.lead.createdForPipelineId = 0;
     this.lead.createdForPipelineStageId = 0;
@@ -1670,6 +1673,10 @@ export class CustomAddLeadComponent implements OnInit {
       this.lead.createdForPipelineStageId = 0;
     }
     if(this.isLatestPipelineApiEnabled){
+      this.referenceService.loading(this.pipelineLoader, true);
+      this.referenceService.loading(this.stagesLoader, true);
+      this.getPipelinesAndStages();
+      this.getStagesBySelectedPipeLineId();
     }else{
         this.getLeadPipelines();
     }
