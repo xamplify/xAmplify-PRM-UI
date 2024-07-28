@@ -546,6 +546,7 @@ export class CustomAddLeadComponent implements OnInit {
     this.createdByPipelines = [];
     this.showCreatedByPipelineAndStage = false;
     this.showCreatedByPipelineAndStageOnTop = false;
+    this.showTicketTypesDropdown = false;
   }
 
   private resetLeadPipeLineVariables() {
@@ -1308,10 +1309,14 @@ export class CustomAddLeadComponent implements OnInit {
   private findActiveCRMDetailsAndCustomFormVariable(response: any) {
     if (response.statusCode == 200) {
       this.activeCRMDetails = response.data;
-      if ("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType) {
+      let isSalesforceAsActiveCRM = "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType;
+      if (isSalesforceAsActiveCRM) {
         this.showCustomForm = true;
       } else {
         this.showDefaultForm = true;
+        let isHaloPSAAsActiveCRM = "HALOPSA" === this.activeCRMDetails.createdForActiveCRMType;
+        let isZohoAsActiveCRM = "ZOHO" === this.activeCRMDetails.createdForActiveCRMType;
+        this.showTicketTypesDropdown = this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown && (isHaloPSAAsActiveCRM || isZohoAsActiveCRM);
       }
     }
     this.ngxloading = false;

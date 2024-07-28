@@ -579,16 +579,13 @@
    <div class="panel panel-default deal-bgcolor" *ngIf="showTicketTypesDropdown">
     <div class="panel-body">
       <div class="card-bgcolors h-260 pl0 pr0">
-        <div class="form-group" [attr.class]="opportunityTypeId" style="margin-bottom: 20px"
-          id="dealStageDiv" *ngIf="showTicketTypesDropdown">
+        <div class="form-group" [attr.class]="opportunityTypeId" style="margin-bottom: 20px" id="dealStageDiv" *ngIf="showTicketTypesDropdown">
           <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
             ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
-            ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}<span
-              class="required"><strong>*</strong></span></label>
-          <select class="form-control" [(ngModel)]="lead.halopsaTicketTypeId"
-            [ngModelOptions]="{standalone: true}" placeholder="opportunityTypeId" id="opportunityTypeId"
-            [disabled]="preview || isCampaignTicketTypeSelected || isZohoLeadAttached"
-            (ngModelChange)="onChangeTicketType()" (input)="validateField('opportunityTypeId',false)">
+            ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}
+            <span class="required"><strong>*</strong></span></label>
+          <select class="form-control" [(ngModel)]="lead.halopsaTicketTypeId" [ngModelOptions]="{standalone: true}" placeholder="opportunityTypeId" id="opportunityTypeId"
+            [disabled]="preview || isCampaignTicketTypeSelected || isZohoLeadAttached" (ngModelChange)="onChangeTicketType()" (input)="validateField('opportunityTypeId',false)">
             <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
               ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
               ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}</option>
