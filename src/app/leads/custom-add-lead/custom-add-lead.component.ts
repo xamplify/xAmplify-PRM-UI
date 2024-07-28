@@ -272,7 +272,6 @@ export class CustomAddLeadComponent implements OnInit {
     if (this.vanityLoginDto.vanityUrlFilter) {
       this.setCreatedForCompanyId();
       if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
-        alert("275");
         $('#leadFormModel').modal('show');
         this.showAttachLeadPopUp = true;
       }
@@ -632,7 +631,7 @@ export class CustomAddLeadComponent implements OnInit {
         let data = response.data;
         this.createdForStages = data.list;
         this.referenceService.loading(this.stagesLoader, false);
-        this.logger.info(this.createdForStages.length+"Stages Loaded For Selected PipeLine");
+        this.logger.info(this.createdForStages.length+" Stages Loaded For Selected PipeLine");
       }, error => {
         this.referenceService.loading(this.stagesLoader, false);
         this.referenceService.showServerError(this.stagesLoader);
@@ -703,6 +702,7 @@ export class CustomAddLeadComponent implements OnInit {
             self.existingHalopsaLeadTicketTypeId = self.lead.halopsaTicketTypeId;
             if (self.lead.createdForCompanyId > 0) {
             }
+            this.logger.info("Lead Data Found");
             self.getActiveCRMDetails();
           }
         },
@@ -1275,7 +1275,7 @@ export class CustomAddLeadComponent implements OnInit {
           } else {
             this.referenceService.loading(this.pipelineLoader, false);
           }
-          this.logger.info(totalRecords+"Lead PipeLines Loaded");
+          this.logger.info(totalRecords+" Lead PipeLines Loaded");
         }, error => {
           this.referenceService.loading(this.pipelineLoader, false);
           this.referenceService.showServerError(this.pipelineLoader);
@@ -1661,11 +1661,11 @@ export class CustomAddLeadComponent implements OnInit {
     this.ngxloading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.getLeadCustomFields().subscribe(data => {
-      this.ngxloading = false;
-      this.referenceService.loading(this.httpRequestLoader, false);
       if (data.statusCode == 200) {
         this.leadCustomFields = data.data;
       }
+      this.ngxloading = false;
+      this.referenceService.loading(this.httpRequestLoader, false);
     });
   }
 
@@ -1676,6 +1676,8 @@ export class CustomAddLeadComponent implements OnInit {
       if (data.statusCode == 200) {
         this.leadCustomFields = data.data;
       }
+      this.ngxloading = false;
+      this.referenceService.loading(this.httpRequestLoader, false);
     });
   }
 
