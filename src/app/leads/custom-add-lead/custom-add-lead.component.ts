@@ -1001,7 +1001,7 @@ export class CustomAddLeadComponent implements OnInit {
 
   private validateEmail(fieldId: any, successClass: string, errorClass: string) {
     if (fieldId == "email") {
-      let email = this.lead.email;
+      let email = $.trim(this.lead.email);
       if (email.length > 0 && email != '' && this.regularExpressions.EMAIL_ID_PATTERN.test(email)) {
         this.emailDivClass = successClass;
         this.emailError = false;
@@ -1019,7 +1019,7 @@ export class CustomAddLeadComponent implements OnInit {
 
   private validateCompany(fieldId: any, successClass: string, errorClass: string) {
     if (fieldId == "company") {
-      let company = this.lead.company;
+      let company = $.trim(this.lead.company);
       if (company.length > 0 && company != '') {
         this.companyDivClass = successClass;
         this.companyError = false;
@@ -1032,7 +1032,7 @@ export class CustomAddLeadComponent implements OnInit {
 
   private validateLastName(fieldId: any, successClass: string, errorClass: string) {
     if (fieldId == "lastName") {
-      let lastName = this.lead.lastName;
+      let lastName = $.trim(this.lead.lastName);
       if (lastName.length > 0 && lastName != '') {
         this.lastNameDivClass = successClass;
         this.lastNameError = false;
@@ -1680,37 +1680,6 @@ export class CustomAddLeadComponent implements OnInit {
     $('#leadFormModel').modal('hide');
   }
 
-  // validateAllFields() {
-
-  //   this.isValid = true;
-  //   this.isValidPipeplineAndStage = true;
-  //   if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
-  //     this.isValid = false;
-  //   } else if ((this.lead.createdForPipelineId == undefined || this.lead.createdForPipelineId <= 0) && (this.activeCRMDetails.showLeadPipeline)) {
-  //     this.isValid = false;
-  //     this.isValidPipeplineAndStage = false;
-  //   } else if ((this.lead.createdForPipelineStageId == undefined || this.lead.createdForPipelineStageId <= 0) && (this.activeCRMDetails.showLeadPipelineStage)) {
-  //     this.isValid = false;
-  //     this.isValidPipeplineAndStage = false;
-  //   } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineId == undefined || this.lead.createdByPipelineId <= 0)) {
-  //     this.isValid = false;
-  //     this.isValidPipeplineAndStage = false;
-  //   } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineStageId == undefined || this.lead.createdByPipelineStageId <= 0)) {
-  //     this.isValid = false;
-  //     this.isValidPipeplineAndStage = false;
-  //   } else if (this.lead.lastName == undefined || this.lead.lastName == "") {
-  //     this.isValid = false;
-  //   } else if (this.lead.company == undefined || this.lead.company == "") {
-  //     this.isValid = false;
-  //   } else if (this.lead.email == undefined || this.lead.email == "") {
-  //     this.isValid = false;
-  //   } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)) {
-  //     this.isValid = false;
-  //   }
-
-  // }
-
-
   validateEmailId() {
     if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.regularExpressions.EMAIL_ID_PATTERN.test(this.lead.email)) {
       this.inValidEmailId = true;
@@ -1719,7 +1688,6 @@ export class CustomAddLeadComponent implements OnInit {
     } else {
       this.inValidEmailId = false;
       this.isValid = true;
-      //this.validateAllFields();
     }
   }
 
