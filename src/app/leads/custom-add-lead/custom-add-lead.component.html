@@ -268,8 +268,7 @@
   <div class="modal-dialog modal-css" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close-circle pull-right" [disabled]="httpRequestLoader.isLoading"
-          (click)="closeLeadModal()">
+        <button type="button" class="close-circle pull-right" [disabled]="httpRequestLoader.isLoading"  (click)="closeLeadModal()">
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
         <button type="button" class="close-circle pull-right mrg1" *ngIf="actionType == 'edit'" data-toggle="tooltip"
@@ -344,13 +343,10 @@
                     </select>
                   </div>
                   <!--Stage-->
-                  <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px"
-                    *ngIf="showCreatedByPipelineAndStage">
+                  <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px" *ngIf="showCreatedByPipelineAndStage">
                     <label class="control-label">Stage<span><strong class="required">*</strong></span></label>
-                    <select class="form-control" [(ngModel)]="lead.createdByPipelineStageId"
-                      [ngModelOptions]="{standalone: true}" placeholder="createdByPipelineStageId"
-                      id="createdByPipelineStageId" (ngModelChange)="validateField('createdByPipelineStageId',false)"
-                      [disabled]="preview || isCreatedByStageIdDisable">
+                    <select class="form-control" [(ngModel)]="lead.createdByPipelineStageId" [ngModelOptions]="{standalone: true}" placeholder="createdByPipelineStageId"
+                      id="createdByPipelineStageId" (ngModelChange)="validateField('createdByPipelineStageId',false)" [disabled]="preview || isCreatedByStageIdDisable">
                       <option [value]="0">Select Stage</option>
                       <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">{{lead.currentStageName}}</option>
                       <option *ngFor="let stage of createdByStages" [value]="stage.id">{{stage.stageName}}</option>
@@ -384,7 +380,7 @@
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="!showCreatedByPipelineAndStageOnTop">
                   <div *ngIf="activeCRMDetails?.showLeadPipeline" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px">
                     <label class="control-label">Pipeline<span><strong class="required">*</strong></span></label>
-                    <select class="form-control" [(ngModel)]="lead.createdForPipelineId" [ngModelOptions]="{standalone: true}"
+                    <select  class="form-control" [(ngModel)]="lead.createdForPipelineId" [ngModelOptions]="{standalone: true}"
                       placeholder="pipelineId" id="pipelineId"
                       [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedForPipeline"
                       (ngModelChange)="validateField('createdForPipelineId',false);resetStages()">
@@ -395,14 +391,15 @@
                   <!--Select Stage-->
                   <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px">
                     <label class="control-label">Stage<span><strong class="required">*</strong></span></label>
-                    <select class="form-control" [(ngModel)]="lead.createdForPipelineStageId" [ngModelOptions]="{standalone: true}"
-                      placeholder="createdForPipelineStageId" id="createdForPipelineStageId"
-                      [disabled]="preview || isCreatedForStageIdDisable"
+                    <app-dropdown-loader *ngIf="stagesLoader?.isLoading" [text]="'stages'"></app-dropdown-loader>
+                    <select *ngIf="!stagesLoader?.isLoading && !stagesLoader?.isServerError" class="form-control" [(ngModel)]="lead.createdForPipelineStageId" [ngModelOptions]="{standalone: true}"
+                      placeholder="createdForPipelineStageId" id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
                       (ngModelChange)="validateField('createdForPipelineStageId',false)">
                       <option [value]="0">Select Stage</option>
                       <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">{{lead.currentStageName}}</option>
                       <option *ngFor="let stage of createdForStages" [value]="stage.id">{{stage.stageName}}</option>
                     </select>
+                    <app-display-error-message *ngIf="!stagesLoader?.isLoading && stagesLoader?.isServerError" [text]="'stages'"></app-display-error-message>
                   </div>
                   <!--Partner's xAmplify Pipeline-->
                   <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px" *ngIf="showCreatedByPipelineAndStage">
@@ -636,8 +633,7 @@
                 </select>
               </div>
               <!--Select Created By Stage-->
-              <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px" id="dealStageDiv"
-                *ngIf="showCreatedByPipelineAndStage">
+              <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px" id="dealStageDiv" *ngIf="showCreatedByPipelineAndStage">
                 <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
                 <select class="form-control" [(ngModel)]="lead.createdByPipelineStageId" [ngModelOptions]="{standalone: true}"
                   placeholder="pipelineStageId" id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
