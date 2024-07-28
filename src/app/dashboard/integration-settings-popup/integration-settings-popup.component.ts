@@ -51,9 +51,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     this.customFields.nonInteractive = this.customField.nonInteractive;
     this.customFields.options = this.customField.options.map(option => new PicklistValues(option.label, option.value));
     this.customFields.picklistValues = this.customField.picklistValues;
-    if (this.customFields.picklistValues.length > 0) {
-      this.selectedPicklistValue = this.customFields.picklistValues[0].label;
-    }
+    this.customFields.defaultChoiceLabel = this.customField.defaultChoiceLabel;
   }
   hideIntegrationSettingForm() {
     $("#integrationSettingsForm").modal('hide');
@@ -95,6 +93,11 @@ export class IntegrationSettingsPopupComponent implements OnInit {
           return false;
         }
       });
+    } 
+    if (this.customFields.type === 'picklist' && this.customFields.nonInteractive && (this.customFields.defaultChoiceLabel === null || this.customFields.defaultChoiceLabel === 'null')) {
+      this.isValid = false;
+      this.errorMessage = 'Please select Picklist value.';
+      return;
     }
     if (this.isValid) {
       this.customField.required = this.customFields.required;
@@ -112,6 +115,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.customField.selected = this.customFields.selected;
       this.customField.nonInteractive = this.customFields.nonInteractive;
       this.customField.options = this.customFields.options.map(option => new PicklistValues(option.label, option.value));
+      this.customField.defaultChoiceLabel = this.customFields.defaultChoiceLabel;
       this.hideIntegrationSettingForm();
     }
   }
