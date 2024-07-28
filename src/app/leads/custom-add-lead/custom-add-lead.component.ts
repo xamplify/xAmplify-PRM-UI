@@ -510,7 +510,7 @@ export class CustomAddLeadComponent implements OnInit {
     }
   }
 
-  /***Get PipeLine & Stages****/
+  /***Find PipeLine & Stages By Selected Vendor Company****/
   findPipeLinesAndStagesBySelectedVendorCompany() {
     this.pipelineLoader.isServerError = false;
     this.activeCRMDetails = {};
@@ -1213,6 +1213,7 @@ export class CustomAddLeadComponent implements OnInit {
     }
   }
 
+  /***Get Active CRM Details */
   getActiveCRMDetails() {
     this.ngxloading = true;
     this.isLoading = true;
@@ -1237,12 +1238,12 @@ export class CustomAddLeadComponent implements OnInit {
         },
         () => {
           if(this.isLatestPipelineApiEnabled){
-            this.findPipeLines();
+            this.callPipeLinesApi();
           }
         });
   }
   /***Added On 27/07/2024 By Sravan */
-  private findPipeLines() {
+  private callPipeLinesApi() {
     let activeCRMDetails = this.activeCRMDetails;
     if (activeCRMDetails != undefined) {
       this.createdForPipelines = [];
@@ -1272,6 +1273,7 @@ export class CustomAddLeadComponent implements OnInit {
           } else {
             this.referenceService.loading(this.pipelineLoader, false);
           }
+          this.logger.info("Lead PipeLines Loaded");
         }, error => {
           this.referenceService.loading(this.pipelineLoader, false);
           this.referenceService.showServerError(this.pipelineLoader);
@@ -1286,6 +1288,7 @@ export class CustomAddLeadComponent implements OnInit {
     let isShowingStagesForEditOrView = (this.edit || this.preview) && this.lead.createdForPipelineId != undefined && this.lead.createdForPipelineId > 0;
     if (isOnlyOnePipeLineExists || isShowingStagesForEditOrView) {
       this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
+      this.logger.info("Lead PipeLine Stages Loaded By PipeLine Id");
       this.referenceService.loading(this.pipelineLoader, false);
     }
     this.setFieldErrorStates();
