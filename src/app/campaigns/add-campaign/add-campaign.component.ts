@@ -1020,6 +1020,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     listCampaignPipelines() {
         if (this.campaignAccess.enableLeads) {
             this.showConfigurePipelines = true;
+            this.ngxLoading = true;
             this.campaignService.listCampaignPipelines(this.loggedInUserId)
                 .subscribe(
                     response => {
@@ -1086,7 +1087,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                             }
 
                         }
-                        this.ngxLoading = true;
+                        this.ngxLoading = false;
                     },
                     error => {
                         this.ngxLoading = false;
