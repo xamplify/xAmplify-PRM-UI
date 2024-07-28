@@ -511,7 +511,7 @@ export class CustomAddLeadComponent implements OnInit {
   }
 
   /***Get PipeLine & Stages****/
-  onChangeCreatedFor() {
+  findPipeLinesAndStagesBySelectedVendorCompany() {
     this.pipelineLoader.isServerError = false;
     this.activeCRMDetails = {};
     this.resetPipeLineAndStageData();
@@ -543,6 +543,8 @@ export class CustomAddLeadComponent implements OnInit {
     this.createdByStages = [];
     this.createdForPipelines = [];
     this.createdByPipelines = [];
+    this.showCreatedByPipelineAndStage = false;
+    this.showCreatedByPipelineAndStageOnTop = false;
   }
 
   private resetLeadPipeLineVariables() {
@@ -1261,6 +1263,8 @@ export class CustomAddLeadComponent implements OnInit {
           let data = response.data;
           this.createdForPipelines = data.list;
           let totalRecords = data.totalRecords;
+          this.showCreatedByPipelineAndStage = data['showCreatedByLeadPipelineAndStage'];
+          this.showCreatedByPipelineAndStageOnTop = data['showCreatedByLeadPipelineAndStageOnTop'];
           this.activeCRMDetails.hasCreatedForPipeline = totalRecords == 1;
           if (this.activeCRMDetails.hasCreatedForPipeline) {
             let pipelineId = this.createdForPipelines.map(function (pipeline) { return pipeline['id']; });
