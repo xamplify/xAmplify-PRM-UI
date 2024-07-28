@@ -203,7 +203,6 @@ export class CustomAddLeadComponent implements OnInit {
   pipelineLoader:HttpRequestLoader = new HttpRequestLoader();
   stagesLoader:HttpRequestLoader = new HttpRequestLoader();
   leadLayoutLoader:HttpRequestLoader = new HttpRequestLoader();
-  leadLayoutModalPopUpLoader:HttpRequestLoader = new HttpRequestLoader();
   pipeLineModalPopUpLoader:HttpRequestLoader = new HttpRequestLoader();
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -1285,13 +1284,11 @@ export class CustomAddLeadComponent implements OnInit {
             let pipelineId = this.createdForPipelines.map(function (pipeline) { return pipeline['id']; });
             this.lead.createdForPipelineId = pipelineId[0];
           } else {
-            this.referenceService.loading(this.pipelineLoader, false);
-            this.referenceService.loading(this.leadLayoutModalPopUpLoader,false);
+            this.stopPipelineLoaders();
           }
           this.logger.info(totalRecords+" Lead PipeLines Loaded");
         }, error => {
-          this.referenceService.loading(this.pipelineLoader, false);
-          this.referenceService.loading(this.leadLayoutModalPopUpLoader,false);
+          this.stopPipelineLoaders();
           this.referenceService.showServerError(this.pipelineLoader);
         }, () => {
           this.setFieldErrorStatusAndGetStages();
@@ -1305,9 +1302,13 @@ export class CustomAddLeadComponent implements OnInit {
     if (isOnlyOnePipeLineExists || isShowingStagesForEditOrView) {
       this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
     }
-    this.referenceService.loading(this.pipelineLoader, false);
-    this.referenceService.loading(this.leadLayoutModalPopUpLoader,false);
+    this.stopPipelineLoaders();
     this.setFieldErrorStates();
+  }
+
+  private stopPipelineLoaders() {
+    this.referenceService.loading(this.pipelineLoader, false);
+    this.referenceService.loading(this.pipeLineModalPopUpLoader, false);
   }
 
   private getStagesBySelectedPipeLineId() {
@@ -1317,7 +1318,7 @@ export class CustomAddLeadComponent implements OnInit {
       this.referenceService.loading(this.stagesLoader, true);
       this.lead.createdForPipelineId = this.activeCRMDetails.leadPipelineId;
       this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
-      this.referenceService.loading(this.pipelineLoader, false);
+      this.stopPipelineLoaders();
     }
   }
 
@@ -1685,7 +1686,7 @@ export class CustomAddLeadComponent implements OnInit {
     }
     if(this.isLatestPipelineApiEnabled){
       this.referenceService.loading(this.pipelineLoader, true);
-      this.referenceService.loading(this.leadLayoutModalPopUpLoader,true);
+      this.referenceService.loading(this.pipeLineModalPopUpLoader,true);
       this.getPipelinesAndStages();
       this.getStagesBySelectedPipeLineId();
     }else{

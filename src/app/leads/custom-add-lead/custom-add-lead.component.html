@@ -316,8 +316,7 @@
                     <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
                       ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
                       ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Lead Layout':'')}}<span><strong class="required">*</strong></span></label>
-                    <app-modal-popup-loader *ngIf="leadLayoutModalPopUpLoader?.isLoading" [height]="130"></app-modal-popup-loader> 
-                    <select *ngIf="!leadLayoutModalPopUpLoader?.isLoading && !leadLayoutModalPopUpLoader?.isServerError" class="form-control" [(ngModel)]="lead.halopsaTicketTypeId"
+                    <select  class="form-control" [(ngModel)]="lead.halopsaTicketTypeId"
                       [ngModelOptions]="{standalone: true}" placeholder="halopsaTicketTypeId" id="halopsaTicketTypeId"
                       [disabled]="preview || isCampaignTicketTypeSelected" (ngModelChange)="findPipeLinesAndStagesByTicketId()">
                       <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
