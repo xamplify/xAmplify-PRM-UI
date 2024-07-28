@@ -799,7 +799,7 @@
 <ng-template #customCRMFormTemplate>
   <div *ngIf="showCustomForm && !showDefaultForm && !showAttachLeadPopUp && lead?.createdForCompanyId!=undefined && lead?.createdForCompanyId>0">
     <app-sf-deal [createdForCompanyId]="lead.createdForCompanyId" [activeCRM]="activeCRMDetails" (isFormValid) = checkCustomLeadFormValid($event)
-      [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [ticketTypeId]="lead.halopsaTicketTypeId"></app-sf-deal>
+      [dealId]="lead.id" [isPreview]="preview" [opportunityType]="'LEAD'" [selectedContact]="selectedContact" [ticketTypeId]="lead.halopsaTicketTypeId"></app-sf-deal>
   </div>
 </ng-template>
 

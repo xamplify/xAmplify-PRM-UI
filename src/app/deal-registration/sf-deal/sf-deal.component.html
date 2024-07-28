@@ -123,7 +123,7 @@
     </label>
     <!-- ---------------------------TextBox & Email & Number----------------------------- -->
     <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
-      <input type="{{columnInfo.labelType}}" [disabled]="isPreview || isVendor" class="form-control"
+      <input type="{{columnInfo.labelType}}" [disabled]="isPreview || isVendor || columnInfo.columnDisable" class="form-control"
         placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value"
         maxlength="{{columnInfo.labelLength}}" (input)="validateField(columnInfo)" autocomplete="off">
       <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>

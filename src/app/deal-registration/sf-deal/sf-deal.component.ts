@@ -168,7 +168,7 @@ export class SfDealComponent implements OnInit {
         this.formDescription = result.data.description;
         this.form.formLabelDTOs.forEach((columnInfo: ColumnInfo) => {
           if (columnInfo.nonInteractive) {
-            columnInfo.value = columnInfo.dropDownChoices.length > 0 ? columnInfo.dropDownChoices[0].labelId : null;
+            columnInfo.value = columnInfo.defaultChoiceLabel;
           }
         });
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
@@ -203,10 +203,15 @@ export class SfDealComponent implements OnInit {
         }
         if (this.opportunityType === 'LEAD' && this.selectedContact !== undefined) {
           for (let column of this.form.formLabelDTOs) {
-            if (column.labelName === 'Company') {
+            if (column.labelId === 'Company') {
               column.value = this.selectedContact.companyName;
-            } else if (column.labelName === 'Email') {
+            } else if (column.labelId === 'Email') {
               column.value = this.selectedContact.emailId;
+              column.columnDisable = true;
+            } else if (column.labelId === 'FirstName'){
+              column.value = this.selectedContact.firstName;
+            } else if (column.labelId === 'LastName') {
+              column.value = this.selectedContact.lastName;
             }
           }
         }

@@ -54,4 +54,5 @@ export class ColumnInfo {
     dependentDropDownChoices: Array<FormOption> = new Array<FormOption>();
     nonInteractive = false;
     defaultChoiceLabel: any;
+    columnDisable: boolean;
 }
