@@ -388,6 +388,6 @@ export class Properties {
 	showLeadPipeLineCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Pipeline' option in the lead registration form because \"Show Lead Pipeline\" is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
 	showLeadPipeLineStageCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Stage' option in the lead registration form because \"Show Lead Pipeline\" is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
 	showRegisterDealOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, your "+this.partnersMergeTag+" will not see the 'Register Deal' button in the opportunities section.";
-	showRegisterDealOnMessage = "Since \"Show Register Deal\" option is toggled ON, your "+this.partnersMergeTag+" will see the 'Register Deal' option button in the opportunities section.";
+	showRegisterDealOnMessage = "Since the \"Show Register Deal\" option is toggled ON, your "+this.partnersMergeTag+" will see the 'Register Deal' option button in the opportunities section.";
 }
 
