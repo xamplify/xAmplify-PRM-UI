@@ -229,6 +229,9 @@ export class CustomAddLeadComponent implements OnInit {
     if (this.actionType === "view") {
       this.loadDataForViewLead();
     } else if (this.actionType === "edit") {
+      this.referenceService.loading(this.leadLayoutLoader,true);
+      this.referenceService.loading(this.pipelineLoader, true);
+      this.referenceService.loading(this.pipeLineModalPopUpLoader,true);
       this.loadDataForEditLead();
     } else if (this.actionType === "add") {
       this.loadDataForAddLead();
@@ -1263,6 +1266,7 @@ export class CustomAddLeadComponent implements OnInit {
       let isZohoAsActiveCRM = "ZOHO" === this.activeCRMDetails.createdForActiveCRMType;
       this.showTicketTypesDropdown = this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown && (isHaloPSAAsActiveCRM || isZohoAsActiveCRM);
       if(this.showTicketTypesDropdown){
+        this.logger.info("Loading Pipelines for "+this.activeCRMDetails.createdForActiveCRMType);
         this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
       }else{
         this.getPipelinesAndStages();
@@ -1663,6 +1667,11 @@ export class CustomAddLeadComponent implements OnInit {
 
   getHaloPSATicketTypes(companyId: number, integrationType: string) {
     this.referenceService.loading(this.leadLayoutLoader,true);
+    let isEdit = this.actionType === "edit" && this.lead.createdForPipelineId!=undefined && this.lead.createdForPipelineId>0;
+    if(isEdit){
+      this.referenceService.loading(this.pipelineLoader, true);
+      this.referenceService.loading(this.pipeLineModalPopUpLoader,true);
+    }
     this.ngxloading = true;
     this.integrationService.getHaloPSATicketTypes(companyId, integrationType.toLowerCase(), 'LEAD').subscribe(data => {
       if (data.statusCode == 200) {
@@ -1672,12 +1681,19 @@ export class CustomAddLeadComponent implements OnInit {
       }
       this.ngxloading = false;
       this.referenceService.loading(this.leadLayoutLoader,false);
+      this.logger.info("Ticket Types Found");
     },
     error => {
       this.ngxloading = false;
       this.referenceService.loading(this.leadLayoutLoader,false);
       this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try after sometime', true);
-    })
+    },()=>{
+      if(isEdit){
+        this.getPipelinesAndStages();
+        this.getStagesBySelectedPipeLineId();
+      }
+      
+    });
   }
 
   /***Added On 29/07/2024****/
