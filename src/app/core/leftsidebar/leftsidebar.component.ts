@@ -270,6 +270,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.emailNotificationSettings = data.emailNotificationSettings;
 		module.showWorkFlow = data.createWorkflow;
 		module.ssoEnabled = data.ssoEnabled;
+		/****XNFR-583****/
+		module.vendorPagesEnabled = data.vendorPagesEnabled
 	}
 
 	setContentMenu(data: any, module: any) {

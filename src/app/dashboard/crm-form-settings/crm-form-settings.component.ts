@@ -457,6 +457,24 @@ export class CrmFormSettingsComponent {
 			sfCustomField.required = false;
 		}
 		this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
+
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined && isChecked) {
+			let cfParentName = sfCustomField.controllerName;
+			$('#' + cfParentName).prop('checked', isChecked);
+			this.setParentFieldSelected(sfCustomField);
+		}
+
+	}
+
+
+	setParentFieldSelected(sfCustomField: any) {
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
+			let sfParentName = sfCustomField.controllerName;
+			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
+			for (let sfParentfield of sfParentFields) {
+				this.selectCf(sfParentfield);
+			}
+		}
 	}
 
 	reloadCustomFields() {

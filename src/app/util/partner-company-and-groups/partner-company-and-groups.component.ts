@@ -632,7 +632,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 					} else {
 						this.responseMessage = data.message;
 					}
-					this.resetFields();
+					this.closePopupEmit(this.responseMessage)
 				} else {
 					this.ngxLoading = false;
 					this.authenticationService.forceToLogout();
@@ -645,8 +645,8 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			});
 		}
 
-		closePopupEmit() {
-			this.closePopup.emit();
+		closePopupEmit(message) {
+			this.closePopup.emit(message);
 			this.resetFields();
 		}
 

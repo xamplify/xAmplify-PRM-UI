@@ -185,6 +185,8 @@ import { VendorJourneyFormAnalyticsComponent } from '../util/vendor-journey-form
 import { OauthSsoConfigurationComponent } from 'app/dashboard/oauth-sso-configuration/oauth-sso-configuration.component';
 import { CrmSettingsComponent } from 'app/dashboard/crm-settings/crm-settings.component'; 
 import { ShareDashboardButtonsComponent } from './share-dashboard-buttons/share-dashboard-buttons.component';
+import { DropdownLoaderComponent } from 'app/util/dropdown-loader/dropdown-loader.component';
+import { DisplayErrorMessageComponent } from 'app/util/display-error-message/display-error-message.component';
 
 
 @NgModule({
@@ -223,7 +225,7 @@ import { ShareDashboardButtonsComponent } from './share-dashboard-buttons/share-
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,DropdownLoaderComponent,DisplayErrorMessageComponent
 	],
 
 
@@ -260,7 +262,7 @@ import { ShareDashboardButtonsComponent } from './share-dashboard-buttons/share-
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,DropdownLoaderComponent,DisplayErrorMessageComponent
 
 	]
 

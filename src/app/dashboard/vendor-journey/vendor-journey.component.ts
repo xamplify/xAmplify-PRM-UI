@@ -36,13 +36,15 @@ export class VendorJourneyComponent implements OnInit {
   isEditVendorOrMasterForm:boolean = false;
   selectedFrom:any;
   importedObject:any={};
+  categoryDropDownOptions=[];
   constructor(public landingPageService: LandingPageService, public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
     this.resetVendorJourney();
     this.vendorJourney = this.moduleType == "Vendor Journey";
     this.isLandingPages = this.moduleType == "Vendor Pages";
-    this.isMasterLandingPages = this.moduleType == "Master Landing Pages";
+    this.isMasterLandingPages = this.moduleType == "Marketplace Pages";
+   
   }
 
   editVendorLandingPage(event){
@@ -132,12 +134,20 @@ export class VendorJourneyComponent implements OnInit {
   getVendorLogoDetailsByPartnerDetails() {
     let userId = this.authenticationService.getUserId();
     let landingPageId = this.landingPageService.id;
-    this.landingPageService.getVendorLogoDetailsByPartnerDetails(userId, this.loggedInUserCompanyId, landingPageId).subscribe(
+    let self = this;
+    self.landingPageService.getVendorLogoDetailsByPartnerDetails(userId, this.loggedInUserCompanyId, landingPageId).subscribe(
     (data: any) => {
              if(data.statusCode==200){
               var logoDetails:VendorLogoDetails[] = data.data;
-              this.vendorLogoDetails = logoDetails;
-              this.populateSharedVendorDetails(logoDetails);
+              self.vendorLogoDetails = logoDetails;
+              let categoryDetails = data.map.categoryDetails
+              if(categoryDetails != null ){
+                for(let category of categoryDetails){
+                  self.categoryDropDownOptions.push({"id":category.marketPlaceCategoryId, "itemName":category.categoryName })
+                }
+              }
+              this.populateSharedVendorDetails(logoDetails, self.categoryDropDownOptions);
+
             }
     }, (error: any) => {
       console.log(error);
@@ -145,35 +155,57 @@ export class VendorJourneyComponent implements OnInit {
 );
 }
 
-populateSharedVendorDetails(data:VendorLogoDetails[]){
-  var companyIds:any[]=[];
-  var details:any;
-  this.sharedVendorLogoDetails = [];
-  for(let logo of data){
-    if(companyIds.length == 0 || !companyIds.some(id=>id == logo.companyId)){
-      companyIds.push(logo.companyId)
-      if(details != null ){
-        this.sharedVendorLogoDetails.push(details);
+  populateSharedVendorDetails(data: VendorLogoDetails[], categoryDropDownOptions) {
+    var companyIds: any[] = [];
+    var details: any;
+    this.sharedVendorLogoDetails = [];
+    
+    if (data != undefined && data != null) {
+      for (let logo of data) {
+        var dropdownSettings = {
+          text: "Please select",
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          enableSearchFilter: true,
+          classes: "myclass custom-class",
+          disabled: !logo.selected,
+        };
+        if (companyIds.length == 0 || !companyIds.some(id => id == logo.companyId)) {
+          companyIds.push(logo.companyId)
+          if (details != null) {
+            this.sharedVendorLogoDetails.push(details);
+          }
+          details = [];
+          details.companyId = logo.companyId;
+          details.companyLogo = logo.companyLogo;
+          details.companyName = logo.companyName;
+          details.expand = false;
+          details.teamMembers = [];
+          details.vendorJourneyId = logo.vendorJourneyId
+        }
+        let memberDetails = {
+          'selected': logo.selected,
+          'partnerId': logo.partnerId,
+          'firstName': logo.firstName,
+          'lastName': logo.lastName,
+          'emailId': logo.emailId,
+          'vendorJourneyId': logo.vendorJourneyId,
+          'categoryIds': logo.categoryIds,
+          'dropdownSettings': { ...dropdownSettings }
+        }
+        if (logo.categoryIds != null && logo.categoryIds.length > 0) {
+          memberDetails['selectedCategories'] =[];
+          for (let item of logo.categoryIds) {
+            memberDetails['selectedCategories'].push({ 'id': item, 'itemName': categoryDropDownOptions.find(option => option.id == item).itemName })
+          }
+        }
+        details.teamMembers.push(memberDetails);
       }
-      details=[];
-      details.companyId = logo.companyId;
-      details.companyLogo = logo.companyLogo;
-      details.companyName = logo.companyName;
-      details.expand = false;
-      details.teamMembers =[];  
-      details.vendorJourneyId = logo.vendorJourneyId 
     }
-    details.teamMembers.push({'selected' :logo.selected,
-    'partnerId' : logo.partnerId,
-    'firstName' : logo.firstName,
-    'lastName' : logo.lastName,
-    'emailId' : logo.emailId,
-    'vendorJourneyId' : logo.vendorJourneyId});
+    if (details != undefined && details != null) {
+      this.sharedVendorLogoDetails.push(details);
+    }
   }
-  if(details != null ){
-    this.sharedVendorLogoDetails.push(details);
-  }
-}
 landingPageOpenInNewTabChecked(){
   $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", this.openInNewTabChecked);
 }

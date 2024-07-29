@@ -966,7 +966,7 @@ export class AddDealComponent implements OnInit {
           this.createdForPipelineStageIdError = true;
         }
       }
-      if (this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown !== undefined 
+      if (this.activeCRMDetails!=undefined && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown !== undefined 
         && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
         if (fieldId == "opportunityTypeId") {
           if (fieldValue.length > 0 && fieldValue != "0") {
@@ -1007,10 +1007,10 @@ export class AddDealComponent implements OnInit {
       this.propertiesQuestions.length = 0;
     }
 
-    if (!this.activeCRMDetails.showDealPipeline  && !this.isOrgAdmin && !this.isMarketingCompany) {
+    if (this.activeCRMDetails!=undefined && !this.activeCRMDetails.showDealPipeline  && !this.isOrgAdmin && !this.isMarketingCompany) {
       this.pipelineIdError = false;
     }
-    if (!this.activeCRMDetails.showDealPipelineStage  && !this.isOrgAdmin && !this.isMarketingCompany) {
+    if (this.activeCRMDetails!=undefined && !this.activeCRMDetails.showDealPipelineStage  && !this.isOrgAdmin && !this.isMarketingCompany) {
       this.pipelineStageIdError = false;
       this.createdForPipelineStageIdError = false;
     }

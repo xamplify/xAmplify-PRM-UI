@@ -571,7 +571,7 @@
               : 'Contain Within Aspect Ratio'
               }}
             </button>
-            <button class="btn-info aspect_ratio" (click)="zoomOut()" [disabled]="!showCropper"><i
+            <button class="btn-info aspect_ratio" (click)="zoomOut()" [disabled]="!showCropper || scale <= minScale"><i
                 class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
             <button class="btn-info aspect_ratio" (click)="zoomIn()" [disabled]="!showCropper"><i
                 class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>

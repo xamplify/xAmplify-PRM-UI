@@ -10,7 +10,6 @@ import { UserService } from 'app/core/services/user.service';
 import { UtilService } from 'app/core/services/util.service';
 import { Pipeline } from 'app/dashboard/models/pipeline';
 import { PipelineStage } from 'app/dashboard/models/pipeline-stage';
-import { DealAnswer } from 'app/deal-registration/models/deal-answers';
 import { DealDynamicProperties } from 'app/deal-registration/models/deal-dynamic-properties';
 import { DealQuestions } from 'app/deal-registration/models/deal-questions';
 import { DealType } from 'app/deal-registration/models/deal-type';
@@ -28,6 +27,8 @@ import { LeadCustomFieldDto } from '../models/lead-custom-field';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CountryNames } from 'app/common/models/country-names';
 import { CommentDealAndLeadDto } from 'app/deals/models/comment-deal-and-lead-dto';
+import { EnvService } from 'app/env.service';
+import { Http } from '@angular/http';
 declare var $: any;
 @Component({
   selector: 'app-custom-add-lead',
@@ -189,32 +190,55 @@ export class CustomAddLeadComponent implements OnInit {
   emailError: boolean = true;
   companyError: boolean = true;
   lastNameError: boolean = true;
-
-    /***XNFR-623***/
-    commentsCustomResponse:CustomResponse = new CustomResponse();
-    commentsLoader = true;
-    commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
-    readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
-    isCommentAndHistoryCollapsed = false;
-    editTextArea = false;
-    /***XNFR-623***/
-  
+  /***XNFR-623***/
+  commentsCustomResponse:CustomResponse = new CustomResponse();
+  commentsLoader = true;
+  commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
+  readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
+  isCommentAndHistoryCollapsed = false;
+  editTextArea = false;
+  vendorListLoader:HttpRequestLoader = new HttpRequestLoader();
+  /***XNFR-623***/
+  isLatestPipelineApiEnabled = true;
+  pipelineLoader:HttpRequestLoader = new HttpRequestLoader();
+  stagesLoader:HttpRequestLoader = new HttpRequestLoader();
+  leadLayoutLoader:HttpRequestLoader = new HttpRequestLoader();
+  pipeLineModalPopUpLoader:HttpRequestLoader = new HttpRequestLoader();
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
-    public utilService: UtilService, private leadsService: LeadsService, public regularExpressions: RegularExpressions, public userService: UserService, public countryNames: CountryNames, private integrationService: IntegrationService) {
+    public utilService: UtilService, private leadsService: LeadsService, public regularExpressions: RegularExpressions, public userService: UserService,
+     public countryNames: CountryNames, private integrationService: IntegrationService,public envService:EnvService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isMarketingCompany = this.authenticationService.module.isMarketingCompany;
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.vanityLoginDto.userId = this.loggedInUserId;
       this.vanityLoginDto.vanityUrlFilter = true;
-
     }
+    this.isLatestPipelineApiEnabled = this.envService.loadLatestPipeLineApi;
   }
 
   ngOnInit() {
+    this.referenceService.scrollSmoothToTop();
     this.getDefaultLeadCustomFields();
+    this.resetLeadData();
+    if (this.actionType === "view") {
+      this.loadDataForViewLead();
+    } else if (this.actionType === "edit") {
+      this.loadDataForEditLead();
+    } else if (this.actionType === "add") {
+      this.loadDataForAddLead();
+    }
+    if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
+      this.disableCreatedFor = true;
+    }
+    this.getVendorList();
+    this.loadComments();
+  }
+
+
+  private resetLeadData() {
     this.errorMessage = "";
     this.lead.createdForCompanyId = 0;
     this.lead.pipelineId = 0;
@@ -224,55 +248,58 @@ export class CustomAddLeadComponent implements OnInit {
     this.lead.createdForPipelineStageId = 0;
     this.lead.createdByPipelineStageId = 0;
     this.lead.halopsaTicketTypeId = 0;
-    if (this.actionType === "view") {
-      this.preview = true;
-      this.leadFormTitle = "View Lead";
-      if (this.leadId > 0) {
-        this.getLead(this.leadId);
-      }
+  }
+
+  private loadDataForEditLead() {
+    this.edit = true;
+    this.leadFormTitle = "Edit Lead";
+    if (this.leadId > 0) {
+      this.getLead(this.leadId);
+    }
+  }
+
+  private loadDataForViewLead() {
+    this.preview = true;
+    this.leadFormTitle = "View Lead";
+    if (this.leadId > 0) {
+      this.getLead(this.leadId);
+    }
+    if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
+      $('#leadFormModel').modal('show');
+      this.showAttachLeadPopUp = true;
+    }
+  }
+
+  private loadDataForAddLead() {
+    this.leadFormTitle = LEAD_CONSTANTS.registerALead;
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.setCreatedForCompanyId();
       if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
         $('#leadFormModel').modal('show');
         this.showAttachLeadPopUp = true;
       }
-    } else if (this.actionType === "edit") {
-      this.edit = true;
-      this.leadFormTitle = "Edit Lead";
-      if (this.leadId > 0) {
-        this.getLead(this.leadId);
+    } else if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
+      $('#leadFormModel').modal('show');
+      this.showAttachLeadPopUp = true;
+      if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
+        this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
+        this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
+        this.getActiveCRMDetails();
       }
-    } else if (this.actionType === "add") {
-      this.leadFormTitle = LEAD_CONSTANTS.registerALead;
-      if (this.vanityLoginDto.vanityUrlFilter) {
-        this.setCreatedForCompanyId();
-        if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
-          $('#leadFormModel').modal('show');
-          this.showAttachLeadPopUp = true;
-        }
-      } else if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
-        $('#leadFormModel').modal('show');
-        this.showAttachLeadPopUp = true;
-        if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
-          this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
-          this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
-          this.getActiveCRMDetails();
-        }
-      } else {
-        if (this.campaignId > 0) {
-          this.lead.campaignId = this.campaignId;
-          this.lead.campaignName = this.campaignName;
-          this.lead.associatedUserId = this.selectedContact.userId;
-          this.getCreatedForCompanyIdByCampaignId();
-          this.getContactInfo();
-        }
-      }
+    } else {
+      this.getCampaignInfoForAddLead();
     }
-    if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
-      this.disableCreatedFor = true;
-    }
-    this.getVendorList();
-    this.loadComments();
   }
 
+  private getCampaignInfoForAddLead() {
+    if (this.campaignId > 0) {
+      this.lead.campaignId = this.campaignId;
+      this.lead.campaignName = this.campaignName;
+      this.lead.associatedUserId = this.selectedContact.userId;
+      this.getCreatedForCompanyIdByCampaignId();
+      this.getContactInfo();
+    }
+  }
 
    /***XNFR-623***/
    private loadComments() {
@@ -312,14 +339,12 @@ export class CustomAddLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             this.lead.createdForCompanyId = data.data;
-
             if (this.campaignId > 0) {
               this.lead.campaignId = this.campaignId;
               this.lead.campaignName = this.campaignName;
               this.lead.associatedUserId = this.selectedContact.userId;
               this.getCreatedForCompanyIdByCampaignId();
               this.getContactInfo();
-              
             } else {
               this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
               this.getActiveCRMDetails();
@@ -405,7 +430,6 @@ export class CustomAddLeadComponent implements OnInit {
             if (data.statusCode == 200) {
               self.lead.createdForCompanyId = data.data;
               this.getLeadCustomFieldsByVendorCompany(self.lead.createdForCompanyId);
-              //this.isSalesForceEnabled();
               this.getActiveCRMDetails();
             }
           },
@@ -476,7 +500,6 @@ export class CustomAddLeadComponent implements OnInit {
               self.lead.pipelineId = 0;
               self.stages = [];
               self.getPipelines();
-              // this.getActiveCRMPipeline();
               self.hasCampaignPipeline = false;
             }
           },
@@ -490,21 +513,20 @@ export class CustomAddLeadComponent implements OnInit {
     }
   }
 
-  onChangeCreatedFor() {
+  /***Find PipeLine & Stages By Selected Vendor Company****/
+  findPipeLinesAndStagesBySelectedVendorCompany() {
+    this.pipelineLoader.isServerError = false;
+    this.activeCRMDetails = {};
+    this.resetPipeLineAndStageData();
+    this.isLeadRegistrationFormValid = false;
     if (this.lead.createdForCompanyId > 0) {
-      //this.isSalesForceEnabled(); 
-      let vendorCompany;
-      vendorCompany = this.vendorList.find(vendor => vendor.companyId == this.lead.createdForCompanyId);
+      let vendorCompany = this.vendorList.find(vendor => vendor.companyId == this.lead.createdForCompanyId);
       this.vendorCompanyName = vendorCompany.companyName + "'s";
       this.getLeadCustomFieldsByVendorCompany(this.lead.createdForCompanyId);
       this.getActiveCRMDetails();
     } else {
       this.resetPipelines();
-      this.lead.createdForPipelineId = 0;
-      this.lead.createdByPipelineId = 0;
-      this.lead.createdForPipelineStageId = 0;
-      this.lead.createdByPipelineStageId = 0;
-      this.lead.halopsaTicketTypeId = 0;
+      this.resetLeadPipeLineVariables();
       this.activeCRMDetails.hasCreatedForPipeline = false;
       this.activeCRMDetails.hasCreatedByPipeline = false;
       this.showTicketTypesDropdown = false;
@@ -512,6 +534,30 @@ export class CustomAddLeadComponent implements OnInit {
       this.getDefaultLeadCustomFields();
       this.vendorCompanyName = '';
     }
+  }
+
+  private resetPipeLineAndStageData() {
+    this.lead.createdForPipelineId = 0;
+    this.lead.createdByPipelineId = 0;
+    this.lead.createdByPipelineStageId = 0;
+    this.lead.createdForPipelineStageId = 0;
+    this.lead.halopsaTicketTypeId = 0;
+    this.createdForStages = [];
+    this.createdByStages = [];
+    this.createdForPipelines = [];
+    this.createdByPipelines = [];
+    this.showCreatedByPipelineAndStage = false;
+    this.showCreatedByPipelineAndStageOnTop = false;
+    this.showTicketTypesDropdown = false;
+    this.halopsaTicketTypes = [];
+  }
+
+  private resetLeadPipeLineVariables() {
+    this.lead.createdForPipelineId = 0;
+    this.lead.createdByPipelineId = 0;
+    this.lead.createdForPipelineStageId = 0;
+    this.lead.createdByPipelineStageId = 0;
+    this.lead.halopsaTicketTypeId = 0;
   }
 
   resetPipelines() {
@@ -569,7 +615,35 @@ export class CustomAddLeadComponent implements OnInit {
     this.getStages();
   }
 
+  /****Updated On 27/07/2024 */
   getStages() {
+    if(this.isLatestPipelineApiEnabled){
+      this.createdForStages = [];
+      let createdForPipeLineId = this.lead.createdForPipelineId;
+      let createdByPipelineId = this.lead.createdByPipelineId;
+      if(createdForPipeLineId!=undefined && createdForPipeLineId>0){
+        this.findPipelineStagesByPipelineId(createdForPipeLineId);
+      }
+    }else{
+      this.addCreatedForOrCreatedByStages();
+    }
+
+  }
+  private findPipelineStagesByPipelineId(createdForPipeLineId: number) {
+    this.referenceService.loading(this.stagesLoader, true);
+    this.leadsService.findPipelineStagesByPipelineId(createdForPipeLineId).subscribe(
+      response => {
+        let data = response.data;
+        this.createdForStages = data.list;
+        this.referenceService.loading(this.stagesLoader, false);
+        this.logger.info(this.createdForStages.length+" Stages Loaded For Selected PipeLine");
+      }, error => {
+        this.referenceService.loading(this.stagesLoader, false);
+        this.referenceService.showServerError(this.stagesLoader);
+      });
+  }
+
+  private addCreatedForOrCreatedByStages() {
     let self = this;
     if (this.lead.createdForPipelineId > 0) {
       this.createdForPipelines.forEach(p => {
@@ -579,7 +653,7 @@ export class CustomAddLeadComponent implements OnInit {
       });
     } else {
       self.createdForStages = [];
-    } 
+    }
     if (this.lead.createdByPipelineId > 0) {
       this.createdByPipelines.forEach(p => {
         if (p.id == this.lead.createdByPipelineId) {
@@ -589,21 +663,21 @@ export class CustomAddLeadComponent implements OnInit {
     } else {
       self.createdByStages = [];
     }
-
   }
 
   getVendorList() {
-    let self = this;
+    this.referenceService.loading(this.vendorListLoader, true);
     this.leadsService.getVendorList(this.loggedInUserId)
       .subscribe(
         data => {
-          this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
-            self.vendorList = data.data;
+            this.vendorList = data.data;
           }
+          this.referenceService.loading(this.vendorListLoader, false);
         },
         error => {
-          this.httpRequestLoader.isServerError = true;
+          this.referenceService.loading(this.vendorListLoader, false);
+          this.referenceService.showServerError(this.vendorListLoader);
         },
         () => { }
       );
@@ -633,6 +707,7 @@ export class CustomAddLeadComponent implements OnInit {
             self.existingHalopsaLeadTicketTypeId = self.lead.halopsaTicketTypeId;
             if (self.lead.createdForCompanyId > 0) {
             }
+            this.logger.info("Lead Data Found");
             self.getActiveCRMDetails();
           }
         },
@@ -800,145 +875,193 @@ export class CustomAddLeadComponent implements OnInit {
     var errorClass = "form-group has-error has-feedback";
     var successClass = "form-group has-success has-feedback";
     if (isFormElement && fieldId.key != null && fieldId.key != undefined) {
-      let fieldValue = $.trim($('#question_' + fieldId.id).val());
-      if (fieldValue.length > 0) {
-        fieldId.class = successClass;
-        fieldId.error = false;
-      } else {
-        fieldId.class = errorClass;
-        fieldId.error = true;
-      }
+      this.addErrorOrSuccessClass(fieldId, successClass, errorClass);
     } else {
       let fieldValue = $.trim($('#' + fieldId).val());
 
-      if (fieldId == "lastName") {
-        let lastName = this.lead.lastName; 
-        if (lastName.length > 0 && lastName != '') {
-          this.lastNameDivClass = successClass;
-          this.lastNameError = false;
-        } else {
-          this.lastNameDivClass = errorClass;
-          this.lastNameError = true;
-        }
-      }
+      this.validateLastName(fieldId, successClass, errorClass);
 
-      if (fieldId == "company") {
-        let company = this.lead.company;
-        if (company.length > 0 && company != '') {
-          this.companyDivClass = successClass;
-          this.companyError = false;
-        } else {
-          this.companyDivClass = errorClass;
-          this.companyError = true;
-        }
-      }
+      this.validateCompany(fieldId, successClass, errorClass);
 
-      if (fieldId == "email") {
-        let email = this.lead.email;
-        if (email.length > 0 && email != '' && this.regularExpressions.EMAIL_ID_PATTERN.test(email)) {
-          this.emailDivClass = successClass;
-          this.emailError = false;
-          this.isValid = true;
-          this.inValidEmailId = false;
-        } else {
-          this.emailDivClass = errorClass;
-          this.emailError = true;
-          this.inValidEmailId = true;
-          this.isValid = false;
-          this.errorMessage = "Please enter a valid email address";
-        }
-      }
+      this.validateEmail(fieldId, successClass, errorClass);
 
+      this.validateCreatedForCompanyId(fieldId, fieldValue, successClass, errorClass);
 
-      if (fieldId == "createdForCompanyId") {
-        if (fieldValue.length > 0 && fieldValue != "0") {
-          this.createdForCompanyId = successClass;
-          this.createdForCompanyIdError = false;
-        } else {
-          this.createdForCompanyId = errorClass;
-          this.createdForCompanyIdError = true;
-          this.pipelineId = errorClass;
-          this.pipelineIdError = true;
-          this.pipelineStageId = errorClass;
-          this.pipelineStageIdError = true;
-          this.createdForPipelineId = errorClass;
-          this.createdForPipelineIdError = true;
-          this.createdForPipelineStageId = errorClass;
-          this.createdForPipelineStageIdError = true;
-        }
-      }
-      if (fieldId == "createdByPipelineId") {
-        let createdByPipelineId = this.lead.createdByPipelineId;
-        if (createdByPipelineId > 0) {
-          this.pipelineId = successClass;
-          this.pipelineIdError = false;
-        } else {
-          this.pipelineId = errorClass;
-          this.pipelineIdError = true;
-          this.pipelineStageId = errorClass;
-          this.pipelineStageIdError = true;
-        }
-      }
-      if (fieldId == "createdForPipelineId") {
-        let createdForPipelineId = this.lead.createdForPipelineId;
-        if (createdForPipelineId > 0) {
-          this.createdForPipelineId = successClass;
-          this.createdForPipelineIdError = false;
-        } else {
-          this.createdForPipelineId = errorClass;
-          this.createdForPipelineIdError = true;
-          this.createdForPipelineStageId = errorClass;
-          this.createdForPipelineStageIdError = true;
-        }
-      }
-      if (fieldId == "createdByPipelineStageId") {
-        let createdByPipelineStageId = this.lead.createdByPipelineStageId;
-        if (createdByPipelineStageId > 0) {
-          this.pipelineStageId = successClass;
-          this.pipelineStageIdError = false;
-        } else {
-          this.pipelineStageId = errorClass;
-          this.pipelineStageIdError = true;
-        }
-      }
-      if (fieldId == "createdForPipelineStageId") {
-        let createdForPipelineStageId = this.lead.createdForPipelineStageId;
-        if (createdForPipelineStageId > 0) {
-          this.createdForPipelineStageId = successClass;
-          this.createdForPipelineStageIdError = false;
-        } else {
-          this.createdForPipelineStageId = errorClass;
-          this.createdForPipelineStageIdError = true;
-        }
-      }
-      if (this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
-        if (fieldId == "opportunityTypeId") {
-          if (fieldValue.length > 0 && fieldValue != "0") {
-            this.opportunityTypeId = successClass;
-            this.opportunityTypeIdError = false;
-            if (this.actionType == 'add' || this.existingHalopsaDealTicketTypeId == this.deal.haloPSATickettypeId) {
-              this.createdForPipelineStageIdError = false;
-              this.pipelineStageIdError = false;
-            } else {
-              this.createdForPipelineStageIdError = true;
-              this.pipelineStageIdError = true;
-            }
-            this.createdForPipelineIdError = false;
-          } else {
-            this.opportunityTypeId = errorClass;
-            this.opportunityTypeIdError = true;
-            this.createdForPipelineStageIdError = true;
-            this.pipelineStageIdError = false;
-          }
-        }
-      } else {
-        this.opportunityTypeId = successClass;
-        this.opportunityTypeIdError = false;
-      }
+      this.validateCreatedByPipelineId(fieldId, successClass, errorClass);
+
+      this.validateCreatedForPipelineId(fieldId, successClass, errorClass);
+
+      this.validateCreatedByPipelineStageId(fieldId, successClass, errorClass);
+
+      this.validateCreatedForPipelineStageId(fieldId, successClass, errorClass);
+
+      this.checkOpportunityTypeIdAndError(fieldId, fieldValue, successClass, errorClass);
     }
     this.submitButtonStatus();
   }
 
+
+  private checkOpportunityTypeIdAndError(fieldId: any, fieldValue: any, successClass: string, errorClass: string) {
+    if (this.activeCRMDetails != undefined && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
+      this.validateOpportunityTypeId(fieldId, fieldValue, successClass, errorClass);
+    } else {
+      this.opportunityTypeId = successClass;
+      this.opportunityTypeIdError = false;
+    }
+  }
+
+  private validateOpportunityTypeId(fieldId: any, fieldValue: any, successClass: string, errorClass: string) {
+    if (fieldId == "opportunityTypeId") {
+      if (fieldValue.length > 0 && fieldValue != "0") {
+        this.opportunityTypeId = successClass;
+        this.opportunityTypeIdError = false;
+        if (this.actionType == 'add' || this.existingHalopsaDealTicketTypeId == this.deal.haloPSATickettypeId) {
+          this.createdForPipelineStageIdError = false;
+          this.pipelineStageIdError = false;
+        } else {
+          this.createdForPipelineStageIdError = true;
+          this.pipelineStageIdError = true;
+        }
+        this.createdForPipelineIdError = false;
+      } else {
+        this.opportunityTypeId = errorClass;
+        this.opportunityTypeIdError = true;
+        this.createdForPipelineStageIdError = true;
+        this.pipelineStageIdError = false;
+      }
+    }
+  }
+
+  private validateCreatedForPipelineStageId(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "createdForPipelineStageId") {
+      let createdForPipelineStageId = this.lead.createdForPipelineStageId;
+      if (createdForPipelineStageId > 0) {
+        this.createdForPipelineStageId = successClass;
+        this.createdForPipelineStageIdError = false;
+      } else {
+        this.createdForPipelineStageId = errorClass;
+        this.createdForPipelineStageIdError = true;
+      }
+    }
+  }
+
+  private validateCreatedByPipelineStageId(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "createdByPipelineStageId") {
+      let createdByPipelineStageId = this.lead.createdByPipelineStageId;
+      if (createdByPipelineStageId > 0) {
+        this.pipelineStageId = successClass;
+        this.pipelineStageIdError = false;
+      } else {
+        this.pipelineStageId = errorClass;
+        this.pipelineStageIdError = true;
+      }
+    }
+  }
+
+  private validateCreatedForPipelineId(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "createdForPipelineId") {
+      let createdForPipelineId = this.lead.createdForPipelineId;
+      if (createdForPipelineId > 0) {
+        this.createdForPipelineId = successClass;
+        this.createdForPipelineIdError = false;
+      } else {
+        this.createdForPipelineId = errorClass;
+        this.createdForPipelineIdError = true;
+        this.createdForPipelineStageId = errorClass;
+        this.createdForPipelineStageIdError = true;
+      }
+    }
+  }
+
+  private validateCreatedByPipelineId(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "createdByPipelineId") {
+      let createdByPipelineId = this.lead.createdByPipelineId;
+      if (createdByPipelineId > 0) {
+        this.pipelineId = successClass;
+        this.pipelineIdError = false;
+      } else {
+        this.pipelineId = errorClass;
+        this.pipelineIdError = true;
+        this.pipelineStageId = errorClass;
+        this.pipelineStageIdError = true;
+      }
+    }
+  }
+
+  private validateCreatedForCompanyId(fieldId: any, fieldValue: any, successClass: string, errorClass: string) {
+    if (fieldId == "createdForCompanyId") {
+      if (fieldValue.length > 0 && fieldValue != "0") {
+        this.createdForCompanyId = successClass;
+        this.createdForCompanyIdError = false;
+      } else {
+        this.createdForCompanyId = errorClass;
+        this.createdForCompanyIdError = true;
+        this.pipelineId = errorClass;
+        this.pipelineIdError = true;
+        this.pipelineStageId = errorClass;
+        this.pipelineStageIdError = true;
+        this.createdForPipelineId = errorClass;
+        this.createdForPipelineIdError = true;
+        this.createdForPipelineStageId = errorClass;
+        this.createdForPipelineStageIdError = true;
+      }
+    }
+  }
+
+  private validateEmail(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "email") {
+      let email = $.trim(this.lead.email);
+      if (email.length > 0 && email != '' && this.regularExpressions.EMAIL_ID_PATTERN.test(email)) {
+        this.emailDivClass = successClass;
+        this.emailError = false;
+        this.isValid = true;
+        this.inValidEmailId = false;
+      } else {
+        this.emailDivClass = errorClass;
+        this.emailError = true;
+        this.inValidEmailId = true;
+        this.isValid = false;
+        this.errorMessage = "Please enter a valid email address";
+      }
+    }
+  }
+
+  private validateCompany(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "company") {
+      let company = $.trim(this.lead.company);
+      if (company.length > 0 && company != '') {
+        this.companyDivClass = successClass;
+        this.companyError = false;
+      } else {
+        this.companyDivClass = errorClass;
+        this.companyError = true;
+      }
+    }
+  }
+
+  private validateLastName(fieldId: any, successClass: string, errorClass: string) {
+    if (fieldId == "lastName") {
+      let lastName = $.trim(this.lead.lastName);
+      if (lastName.length > 0 && lastName != '') {
+        this.lastNameDivClass = successClass;
+        this.lastNameError = false;
+      } else {
+        this.lastNameDivClass = errorClass;
+        this.lastNameError = true;
+      }
+    }
+  }
+
+  private addErrorOrSuccessClass(fieldId: any, successClass: string, errorClass: string) {
+    let fieldValue = $.trim($('#question_' + fieldId.id).val());
+    if (fieldValue.length > 0) {
+      fieldId.class = successClass;
+      fieldId.error = false;
+    } else {
+      fieldId.class = errorClass;
+      fieldId.error = true;
+    }
+  }
 
   submitButtonStatus() {
     let self = this;
@@ -965,7 +1088,7 @@ export class CustomAddLeadComponent implements OnInit {
     }
 
     if (!this.lastNameError && !this.companyError && !this.emailError && !this.createdForCompanyIdError && !this.createdForPipelineIdError
-      && !this.pipelineStageIdError && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError) {
+      && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError) {
       let qCount = 0;
       let cCount = 0;
       this.propertiesQuestions.forEach(propery => {
@@ -1097,92 +1220,191 @@ export class CustomAddLeadComponent implements OnInit {
     }
   }
 
+  /***Get Active CRM Details */
   getActiveCRMDetails() {
     this.ngxloading = true;
+    this.isLoading = true;
     this.showCustomForm = false;
     this.showDefaultForm = false;
     this.integrationService.getActiveCRMDetails(this.lead.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         response => {
-          this.ngxloading = false;
-          if (response.statusCode == 200) {
-            this.activeCRMDetails = response.data;
-            if("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType){
-              this.showCustomForm = true;
-            } else{
-              this.showDefaultForm = true;
-            }
-            if (("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType
-              || "ZOHO" === this.activeCRMDetails.createdForActiveCRMType) && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
-              this.showTicketTypesDropdown = true;
-              this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
-              if (this.actionType === 'add') {
-                this.lead.createdForPipelineId = 0;
-                this.lead.createdByPipelineId = 0;
-                this.lead.createdForPipelineStageId = 0;
-                this.lead.createdByPipelineStageId = 0;
-                this.lead.halopsaTicketTypeId = 0;
-              }
-            } else if ("HALOPSA" === this.activeCRMDetails.createdByActiveCRMType && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
-              this.showTicketTypesDropdown = true;
-              this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
-                (result: any) => {
-                  this.getHaloPSATicketTypes(result, this.activeCRMDetails.createdByActiveCRMType);
-                });
-              if (this.actionType === 'add') {
-                this.lead.createdForPipelineId = 0;
-                this.lead.createdByPipelineId = 0;
-                this.lead.createdForPipelineStageId = 0;
-                this.lead.createdByPipelineStageId = 0;
-                this.lead.halopsaTicketTypeId = 0;
-              }
-            } else {
-              this.showTicketTypesDropdown = false;
-            }
-            if (!this.activeCRMDetails.activeCRM) {
-              if (this.edit || this.preview) {
-                if (this.lead.campaignId > 0) {
-                  this.getCampaignLeadPipeline();
-                } else {
-                  this.getPipelines();
-                }
-              } else {
-                if (this.campaignId > 0) {
-                  this.getCampaignLeadPipeline();
-                } else {
-                  this.resetPipelines();
-                }
-              }
-            } else {
-              //this.getSalesforcePipeline();
-              if (this.lead.campaignId > 0) {
-                this.getCampaignLeadPipeline();
-              } else {
-                this.getActiveCRMPipeline();
-              }
-            }
-            if (this.actionType === "view") {
-              this.getLeadPipelinesForView();
-            }
-            else {
-              if (!this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown || this.actionType === "edit" || this.lead.campaignId > 0) {
-                this.getLeadPipelines();
-              }
-            }
+          if(this.isLatestPipelineApiEnabled){
+            this.findActiveCRMDetailsAndCustomFormVariable(response);
+          }else{
+            this.ngxloading = false;
+            this.isLoading = false;
+            this.loadAllApis(response);
           }
         },
         error => {
           this.ngxloading = false;
+          this.isLoading = false;
           this.showCustomForm = false;
           this.showDefaultForm = false;
-          console.log(error);
         },
         () => {
-          this.setFieldErrorStates();
+          if(this.isLatestPipelineApiEnabled){
+            this.callPipeLinesOrLeadLayoutsApi();
+          }
         });
   }
-  getActiveCRMPipeline() {
+  /***Added On 27/07/2024 By Sravan */
+  private callPipeLinesOrLeadLayoutsApi() {
+    let activeCRMDetails = this.activeCRMDetails;
+    if (activeCRMDetails != undefined) {
+      this.createdForPipelines = [];
+      this.createdForPipelineId = 0;
+      this.createdForPipelineStageId = 0;
+      let isHaloPSAAsActiveCRM = "HALOPSA" === this.activeCRMDetails.createdForActiveCRMType;
+      let isZohoAsActiveCRM = "ZOHO" === this.activeCRMDetails.createdForActiveCRMType;
+      this.showTicketTypesDropdown = this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown && (isHaloPSAAsActiveCRM || isZohoAsActiveCRM);
+      if(this.showTicketTypesDropdown){
+        this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
+      }else{
+        this.getPipelinesAndStages();
+        this.getStagesBySelectedPipeLineId();
+      }
+    }
+  }
 
+  private getPipelinesAndStages() {
+    let showLeadPipeline = this.activeCRMDetails.showLeadPipeline;
+    if (showLeadPipeline) {
+      this.referenceService.loading(this.pipelineLoader, true);
+      this.leadsService.findLeadPipeLines(this.lead).subscribe(
+        response => {
+          let data = response.data;
+          this.createdForPipelines = data.list;
+          let totalRecords = data.totalRecords;
+          this.showCreatedByPipelineAndStage = data['showCreatedByLeadPipelineAndStage'];
+          this.showCreatedByPipelineAndStageOnTop = data['showCreatedByLeadPipelineAndStageOnTop'];
+          this.activeCRMDetails.hasCreatedForPipeline = totalRecords == 1;
+          if (this.activeCRMDetails.hasCreatedForPipeline) {
+            let pipelineId = this.createdForPipelines.map(function (pipeline) { return pipeline['id']; });
+            this.lead.createdForPipelineId = pipelineId[0];
+          } else {
+            this.stopPipelineLoaders();
+          }
+          this.logger.info(totalRecords+" Lead PipeLines Loaded");
+        }, error => {
+          this.stopPipelineLoaders();
+          this.referenceService.showServerError(this.pipelineLoader);
+        }, () => {
+          this.setFieldErrorStatusAndGetStages();
+        });
+    }
+  }
+
+  private setFieldErrorStatusAndGetStages() {
+    let isOnlyOnePipeLineExists = this.activeCRMDetails != undefined && this.activeCRMDetails.hasCreatedForPipeline;
+    let isShowingStagesForEditOrView = (this.edit || this.preview) && this.lead.createdForPipelineId != undefined && this.lead.createdForPipelineId > 0;
+    if (isOnlyOnePipeLineExists || isShowingStagesForEditOrView) {
+      this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
+    }
+    this.stopPipelineLoaders();
+    this.setFieldErrorStates();
+  }
+
+  private stopPipelineLoaders() {
+    this.referenceService.loading(this.pipelineLoader, false);
+    this.referenceService.loading(this.pipeLineModalPopUpLoader, false);
+  }
+
+  private getStagesBySelectedPipeLineId() {
+    let showLeadPipeline = this.activeCRMDetails.showLeadPipeline;
+    let showLeadPipelineStage = this.activeCRMDetails.showLeadPipelineStage;
+    if (!showLeadPipeline && showLeadPipelineStage) {
+      this.referenceService.loading(this.stagesLoader, true);
+      this.lead.createdForPipelineId = this.activeCRMDetails.leadPipelineId;
+      this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
+      this.stopPipelineLoaders();
+    }
+  }
+
+  private findActiveCRMDetailsAndCustomFormVariable(response: any) {
+    if (response.statusCode == 200) {
+      this.activeCRMDetails = response.data;
+      let isSalesforceAsActiveCRM = "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType;
+      if (isSalesforceAsActiveCRM) {
+        this.showCustomForm = true;
+      } else {
+        this.showDefaultForm = true;
+       
+      }
+    }
+    this.ngxloading = false;
+    this.isLoading = false;
+  }
+
+  private loadAllApis(response: any) {
+    if (response.statusCode == 200) {
+      this.activeCRMDetails = response.data;
+      if ("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType) {
+        this.showCustomForm = true;
+      } else {
+        this.showDefaultForm = true;
+      }
+      if (("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType
+        || "ZOHO" === this.activeCRMDetails.createdForActiveCRMType) && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
+        this.showTicketTypesDropdown = true;
+        this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
+        if (this.actionType === 'add') {
+          this.lead.createdForPipelineId = 0;
+          this.lead.createdByPipelineId = 0;
+          this.lead.createdForPipelineStageId = 0;
+          this.lead.createdByPipelineStageId = 0;
+          this.lead.halopsaTicketTypeId = 0;
+        }
+      } else if ("HALOPSA" === this.activeCRMDetails.createdByActiveCRMType && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
+        this.showTicketTypesDropdown = true;
+        this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+          (result: any) => {
+            this.getHaloPSATicketTypes(result, this.activeCRMDetails.createdByActiveCRMType);
+          });
+        if (this.actionType === 'add') {
+          this.lead.createdForPipelineId = 0;
+          this.lead.createdByPipelineId = 0;
+          this.lead.createdForPipelineStageId = 0;
+          this.lead.createdByPipelineStageId = 0;
+          this.lead.halopsaTicketTypeId = 0;
+        }
+      } else {
+        this.showTicketTypesDropdown = false;
+      }
+      if (!this.activeCRMDetails.activeCRM) {
+        if (this.edit || this.preview) {
+          if (this.lead.campaignId > 0) {
+            this.getCampaignLeadPipeline();
+          } else {
+            this.getPipelines();
+          }
+        } else {
+          if (this.campaignId > 0) {
+            this.getCampaignLeadPipeline();
+          } else {
+            this.resetPipelines();
+          }
+        }
+      } else {
+        if (this.lead.campaignId > 0) {
+          this.getCampaignLeadPipeline();
+        } else {
+          this.getActiveCRMPipeline();
+        }
+      }
+      if (this.actionType === "view") {
+        this.getLeadPipelinesForView();
+      }
+      else {
+        if (!this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown || this.actionType === "edit" || this.lead.campaignId > 0) {
+          this.getLeadPipelines();
+        }
+      }
+    }
+  }
+
+  getActiveCRMPipeline() {
     let self = this;
     let halopsaTicketTypeId = 0;
     self.isLoading = true;
@@ -1430,53 +1652,58 @@ export class CustomAddLeadComponent implements OnInit {
     this.isCollapsed3 = !this.isCollapsed3;
   }
 
-  /********XNFR-426********/
-  // showComments(lead: any) {
-  //   this.selectedLead = lead;
-  //   this.isCommentSection = !this.isCommentSection;
-  //   this.editTextArea = !this.editTextArea;
-  // }
-
-  // addCommentModalClose(event: any) {
-  //   this.selectedLead.unReadChatCount = 0;
-  //   // console.log(this.selectedLead.unReadChatCount)
-  //   this.isCommentSection = !this.isCommentSection;
-  //   this.editTextArea = !this.editTextArea;
-  // }
-
+  
   halopsaTicketTypeId: number = 0;
   halopsaTicketTypes: any;
+
   getHaloPSATicketTypes(companyId: number, integrationType: string) {
+    this.referenceService.loading(this.leadLayoutLoader,true);
     this.ngxloading = true;
     this.integrationService.getHaloPSATicketTypes(companyId, integrationType.toLowerCase(), 'LEAD').subscribe(data => {
-      this.ngxloading = false;
       if (data.statusCode == 200) {
         this.halopsaTicketTypes = data.data;
       } else if (data.statusCode == 401) {
         this.customResponse = new CustomResponse('ERROR', data.message, true);
       }
+      this.ngxloading = false;
+      this.referenceService.loading(this.leadLayoutLoader,false);
     },
     error => {
+      this.ngxloading = false;
+      this.referenceService.loading(this.leadLayoutLoader,false);
       this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try after sometime', true);
     })
   }
 
-  onChangeTicketType() {
+  /***Added On 29/07/2024****/
+  findPipeLinesAndStagesByTicketId() {
+    this.lead.createdForPipelineId = 0;
+    this.lead.createdForPipelineStageId = 0;
+    this.createdForStages = [];
+    this.createdForPipelines = [];
     if (this.actionType === 'edit') {
       this.lead.createdForPipelineStageId = 0;
     }
-    this.getLeadPipelines();
+    if(this.isLatestPipelineApiEnabled){
+      this.referenceService.loading(this.pipelineLoader, true);
+      this.referenceService.loading(this.pipeLineModalPopUpLoader,true);
+      this.getPipelinesAndStages();
+      this.getStagesBySelectedPipeLineId();
+    }else{
+        this.getLeadPipelines();
+    }
+    
   }
 
   getDefaultLeadCustomFields() {
     this.ngxloading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.leadsService.getLeadCustomFields().subscribe(data => {
-      this.ngxloading = false;
-      this.referenceService.loading(this.httpRequestLoader, false);
       if (data.statusCode == 200) {
         this.leadCustomFields = data.data;
       }
+      this.ngxloading = false;
+      this.referenceService.loading(this.httpRequestLoader, false);
     });
   }
 
@@ -1487,6 +1714,8 @@ export class CustomAddLeadComponent implements OnInit {
       if (data.statusCode == 200) {
         this.leadCustomFields = data.data;
       }
+      this.ngxloading = false;
+      this.referenceService.loading(this.httpRequestLoader, false);
     });
   }
 
@@ -1499,37 +1728,6 @@ export class CustomAddLeadComponent implements OnInit {
     $('#leadFormModel').modal('hide');
   }
 
-  validateAllFields() {
-
-    this.isValid = true;
-    this.isValidPipeplineAndStage = true;
-    if (this.lead.campaignId <= 0 && (this.lead.createdForCompanyId == undefined || this.lead.createdForCompanyId <= 0)) {
-      this.isValid = false;
-    } else if ((this.lead.createdForPipelineId == undefined || this.lead.createdForPipelineId <= 0) && (this.activeCRMDetails.showLeadPipeline)) {
-      this.isValid = false;
-      this.isValidPipeplineAndStage = false;
-    } else if ((this.lead.createdForPipelineStageId == undefined || this.lead.createdForPipelineStageId <= 0) && (this.activeCRMDetails.showLeadPipelineStage)) {
-      this.isValid = false;
-      this.isValidPipeplineAndStage = false;
-    } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineId == undefined || this.lead.createdByPipelineId <= 0)) {
-      this.isValid = false;
-      this.isValidPipeplineAndStage = false;
-    } else if (this.showCreatedByPipelineAndStage && (this.lead.createdByPipelineStageId == undefined || this.lead.createdByPipelineStageId <= 0)) {
-      this.isValid = false;
-      this.isValidPipeplineAndStage = false;
-    } else if (this.lead.lastName == undefined || this.lead.lastName == "") {
-      this.isValid = false;
-    } else if (this.lead.company == undefined || this.lead.company == "") {
-      this.isValid = false;
-    } else if (this.lead.email == undefined || this.lead.email == "") {
-      this.isValid = false;
-    } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)) {
-      this.isValid = false;
-    }
-
-  }
-
-
   validateEmailId() {
     if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.regularExpressions.EMAIL_ID_PATTERN.test(this.lead.email)) {
       this.inValidEmailId = true;
@@ -1538,7 +1736,6 @@ export class CustomAddLeadComponent implements OnInit {
     } else {
       this.inValidEmailId = false;
       this.isValid = true;
-      this.validateAllFields();
     }
   }
 
@@ -1550,6 +1747,10 @@ copyReferenceId(inputElement: any) {
   inputElement.setSelectionRange(0, 0);
   $('#copy-reference-id').show(500);
   this.isCopiedToClipboard = true;
+}
+
+checkCustomLeadFormValid(event:any){
+  this.sfDealComponent.isDealRegistrationFormInvalid = event;
 }
 
 }

@@ -495,6 +495,9 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                             logoDetails.selected = self.sharedVendorLogoDetails
                             .filter(company=> company.companyId == logoDetails.companyId)[0].teamMembers
                             .filter(member=>member.partnerId == logoDetails.partnerId)[0].selected;
+                            logoDetails.categoryIds = self.sharedVendorLogoDetails
+                            .filter(company=> company.companyId == logoDetails.companyId)[0].teamMembers
+                            .filter(member=>member.partnerId == logoDetails.partnerId)[0].categoryIds;
                           }
                         }
                         if((self.vendorLogoDetails.length == 0 || self.vendorLogoDetails == null  ||(self.vendorLogoDetails != null && self.vendorLogoDetails.length != 0 && self.vendorLogoDetails.every(logo=>!logo.selected)))){

@@ -36,4 +36,5 @@ export class LandingPage {
     vendorLogoDetails :VendorLogoDetails[];
     /*XNFR-583*/
     previousLandingPageId = 0;
+    publishingOrWhiteLabelingInProgress:boolean = false;
 }

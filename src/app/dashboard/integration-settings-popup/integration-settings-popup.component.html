@@ -71,11 +71,11 @@
             </div>
             <div class="col-sm-6" *ngIf="customFields.selected && customFields.type === 'picklist' && customFields.nonInteractive">
               <label class="control-label">PickList Values<span class="required"><strong>*</strong></span></label>
-              <select class="form-control" [(ngModel)]="selectedPicklistValue"
-              [ngModelOptions]="{standalone: true}">
-                <option [value]="0">Select value</option>
-                <option *ngFor="let value of customFields.picklistValues" [value]="value.label">{{value.label}}
-                </option>
+              <select class="form-control" [(ngModel)]="customFields.defaultChoiceLabel"
+              [ngModelOptions]="{standalone: true}" placeholder="defaultChoiceId" id="defaultChoiceId">
+              <option *ngIf="customFields.picklistValues.length > 0" [value]="null">Select value</option>
+              <option *ngFor="let value of customFields.picklistValues" [value]="value.label">{{value.label}}
+              </option>
               </select>
             </div>
           </div>
