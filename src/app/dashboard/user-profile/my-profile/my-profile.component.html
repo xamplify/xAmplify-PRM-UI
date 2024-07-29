@@ -2580,6 +2580,10 @@
                                             [ngClass]="{'active': activeTabName == properties?.addDomainsText}"
                                             [isMyProfileAndDomainWhitelisting]='true'>
                                         </app-domain-whitelisting>
+                                        
+                                        <app-market-place-categories *ngIf="isMasterLandingPageCategories" class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'masterLandingPageCategories'}">
+                                        </app-market-place-categories>
 
                                         <!--XNFR-459 News & Announcements-->
                                         <div class="tab-pane" *ngIf="isNewsAndAnnouncementsOptionClicked"
