@@ -1,0 +1,16 @@
+.disable-click {
+  pointer-events: none;
+  opacity: 0.3;
+}
+/* 12-6-2023 sudha sri */
+.border-top-bottom {
+  border-bottom: 0px !important;
+  border-top: 0px !important;
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1075px) {  
+  select.selectTagTextCu{
+    font-size: 10px;
+    padding: 6px 5px;
+  }
+} 
