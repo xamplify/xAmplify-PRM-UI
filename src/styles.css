@@ -284,7 +284,9 @@ nav a.active {
 .mt5 {
   margin-top: 5px !important;
 }
-
+.mb4{
+  margin-bottom: 4px !important;
+}
 .mb5 {
   margin-bottom: 5px !important;
 }
@@ -2567,7 +2569,7 @@ div#bubble-chart {
   background: #1c84ff;
 }
 .mix-filter-li-selected {
-  background-color: #0276ff !important;
+  background-color: #0276ff;
   color:#fff;
 }
 .portlet.light.cpad.hover-effect.pointer.card-radius {
@@ -3013,6 +3015,8 @@ span.btn.Btn-Green.transition.secondary_btn_width{
 .grid-box img{
   border-top-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
+  border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important;
 }
 .grid-box.zero-margin{
   border: 1px solid #d0d5db;
@@ -3184,4 +3188,31 @@ button#cancel_button {
 .mrg_rgt8{
   margin-right: 6px;
 
+}
+.mb-star.star{
+  color: #f55d7a !important;
+}
+.submit_txt_align{margin-top: -6px !important;}
+.neg_mrg_top5{margin-top: -5px !important;}
+/***** Sudha Sri(22-07-2024) *****/
+.page-bar, .portlet.light, .portlet{border-radius: 8px !important;}
+/***** Sudha Sri(24-07-2024) *****/
+/* a.dashboard-stat.red-soft, 
+a.dashboard-stat.purple-soft, 
+.dashboard-stat.green-soft,
+a.dashboard-stat.blue-sharp, 
+.dashboard-stat.blue-soft, 
+a.dashboard-stat.green-soft.greay,  
+.dashboard-stat.yellow-gold,
+a.dashboard-stat.green-soft.min-h.default-cursor,
+a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor,
+a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor.tiles_bradius{border-radius: 10px !important;}
+
+a.dashboard-stat.dashboard-stat-lighter.purple-soft.min-h.default-cursor,
+a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor.tiles_bradius,
+a.dashboard-stat.dashboard-stat-lighter.blue-soft.min-h.default-cursor.tiles_bradius,
+a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor.mdf_border{border-radius: 3px !important;} */
+
+.mb20 {
+  margin-bottom: 20px !important;
 }

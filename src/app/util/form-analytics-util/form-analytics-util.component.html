@@ -73,8 +73,9 @@
 							</tr>
 						</thead>
 						<tbody>
-							<ng-container *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
-								<tr id="form-data-row-{{rowIndex}}" class="form-data-row">
+							<ng-container *ngIf="!isVendorJourney">
+							<ng-container  *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
+								<tr  id="form-data-row-{{rowIndex}}" class="form-data-row">
 									<ng-container
 										*ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
 										<td *ngIf="columnIndex<=3">
@@ -132,6 +133,88 @@
 									</td>
 								</tr>
 							</ng-container>
+						</ng-container>
+							<ng-container *ngIf="isVendorJourney">
+							<ng-container  *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
+								<tr  id="form-data-row-{{rowIndex}}" class="form-data-row">
+									<td>
+										<h5  data-toggle="tooltip" data-placement="bottom"
+										  title="{{formDataRow.partnerCompanyName}}">{{formDataRow.partnerCompanyName | slice:0:30}}
+										  <span *ngIf="formDataRow.partnerCompanyName?.length>20">...</span>
+										</h5>
+<!-- 										<h5 class='m_t_view' data-toggle="tooltip" data-placement="bottom"
+										  title="{{formDataRow.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
+										  {{formDataRow.createdByName | slice:0:20}}
+										  <span *ngIf="formDataRow.createdByName?.length>20">...</span>
+										</h5> -->
+										<h6 class='m0' style="font-weight: 400;">
+										  <a data-toggle="tooltip" data-placement="bottom"
+											title="{{formDataRow.partnerEmailId}}">{{formDataRow.partnerEmailId | slice:0:30}}</a>
+										  <span *ngIf="formDataRow.partnerEmailId?.length>30">...</span>
+										</h6>
+										<h5 style="font-weight: 600; color: #676767;">
+										  <app-timestamp [isOnlyDate]="false" [dateAndTime]="formDataRow.submittedOn">
+										  </app-timestamp>
+										</h5>
+									  </td>
+									<ng-container
+										*ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
+										<td *ngIf="columnIndex<=2">
+											<ng-container *ngIf="columnValue.downloadable">
+												<a href="{{columnValue.downloadLink}}">
+													{{columnValue.value}}
+												</a>
+											</ng-container>
+											<ng-container *ngIf="!columnValue.downloadable">
+												{{columnValue.value}}
+											</ng-container>
+										</td>
+									</ng-container>
+									<td *ngIf="columns?.length>2">
+										<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)"
+											data-toggle="tooltip" title="View More Columns" *ngIf="columns.length>4">
+											<i class="fa"
+												[ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"
+												aria-hidden="true"></i>
+										</a>
+									</td>
+									<td *ngIf="isEventCheckIn">
+										<switch [status]="formDataRow.checkedInForEvent"
+											[onText]="callActionSwitch.onTextValue"
+											[offText]="callActionSwitch.offTextValue"
+											[onColor]="callActionSwitch.onGreenColorSwitch"
+											[offColor]="callActionSwitch.onDefaultColorSwitch"
+											[size]="callActionSwitch.bsize"
+											(statusChange)="checkIn($event,formDataRow)">
+										</switch>
+									</td>
+								</tr>
+								<tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">
+									<td colspan="5">
+										<table id="expanded-table" class="table tgrid table-bordered"
+											aria-describedby="form-analytics-table" style="margin-bottom: 1px;">
+											<tr *ngFor="let column of columns;let i  = index;">
+												<th *ngIf="i>=4" scope="row">
+													{{column.labelName}}<span class="required"
+														*ngIf="column.required">*</span>
+												</th>
+												<td *ngIf="i>=4">
+													<ng-container *ngIf="formDataRow.values[i].downloadable">
+														<a href="{{formDataRow.values[i].downloadLink}}">
+															{{formDataRow.values[i].value}}
+														</a>
+													</ng-container>
+													<ng-container *ngIf="!formDataRow.values[i].downloadable">
+														{{formDataRow.values[i].value}}
+													</ng-container>
+
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</ng-container>
+						</ng-container>
 						</tbody>
 					</table>
 				</div>

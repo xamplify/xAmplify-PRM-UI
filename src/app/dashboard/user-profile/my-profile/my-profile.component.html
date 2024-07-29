@@ -367,7 +367,8 @@
                                             activeTabName == 'categories' ? 'show':'',
                                             activeTabName == 'team-group' ? 'show':'',
                                             activeTabName == properties?.emailNotificationSettings ? 'show':'',
-                                            activeTabName == properties?.addDomainsText ? 'show':'']">
+                                            activeTabName == properties?.addDomainsText ? 'show':'',
+                                            activeTabName == 'masterLandingPageCategories' ? 'show':'']">
                                         Admin
                                         <a data-toggle="collapse" style="float: right;"
                                             href="javascript:;#adminDropdown" (click)="toggleClass('admin-icon')">
@@ -451,7 +452,7 @@
                                             </ng-container>
                                             <!--Landing Pages-->
                                             <ng-container
-                                                *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
+                                                *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember && authenticationService?.module?.vendorPagesEnabled)  || authenticationService?.module?.adminOrSuperVisor)">
                                                 <li [ngClass]="{'active-tab': activeTabName == 'landingPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'landingPages'}"
                                                         (click)="activateTab('landingPages');clearCustomResponse()">
@@ -465,7 +466,7 @@
                                             <!--Master Landing Pages-->
 
                                             <ng-container
-                                                *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || authenticationService?.isPartnerTeamMember)">
+                                                *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember && authenticationService?.module?.vendorPagesEnabled)|| authenticationService?.module?.adminOrSuperVisor)">
 
                                                 <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPages'}"
@@ -505,6 +506,19 @@
                                                     [ngTemplateOutletContext]="{'moduleName':properties?.emailNotificationSettings}"></ng-template>
                                             </a>
                                         </li>
+                                        <!--  Adding masterLandingPageCategories  -->
+                                        <ng-container
+                                            *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember && authenticationService?.module?.vendorPagesEnabled)|| authenticationService?.module?.adminOrSuperVisor)">
+                                            <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPageCategories'}">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPageCategories'}"
+                                                    (click)="activateTab('masterLandingPageCategories');clearCustomResponse()">
+                                                    {{properties.masterLandingPageCategories}}
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':'masterLandingPageCategories'}"></ng-template>
+                                                </a>
+                                            </li>
+                                        </ng-container>
+                                        <!-- Adding masterLandingPageCategories  end -->
                                         <!--Adding Domains XNFR-454-->
                                         <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
                                             [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}"
@@ -1087,7 +1101,7 @@
                                                                 <div class="col-md-3 col-lg-3 text-right"
                                                                     style="padding-top:10px">
                                                                     <section>
-                                                                        <switch [(status)]="leadApprovalStatus"
+                                                                        <switch class="switchbtns" [(status)]="leadApprovalStatus"
                                                                             [onText]="callActionSwitch.onTextValue"
                                                                             [offText]="callActionSwitch.offTextValue"
                                                                             [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -2130,7 +2144,7 @@
                                                                     <div class="col-md-3 col-lg-3 text-right"
                                                                         style="padding-top:10px">
                                                                         <section>
-                                                                            <switch [(status)]="gdprSetting.gdprStatus"
+                                                                            <switch class="switchbtns" [(status)]="gdprSetting.gdprStatus"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
                                                                                 [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -2567,6 +2581,10 @@
                                             [ngClass]="{'active': activeTabName == properties?.addDomainsText}"
                                             [isMyProfileAndDomainWhitelisting]='true'>
                                         </app-domain-whitelisting>
+                                        
+                                        <app-market-place-categories *ngIf="isMasterLandingPageCategories" class="tab-pane"
+                                            [ngClass]="{'active': activeTabName == 'masterLandingPageCategories'}">
+                                        </app-market-place-categories>
 
                                         <!--XNFR-459 News & Announcements-->
                                         <div class="tab-pane" *ngIf="isNewsAndAnnouncementsOptionClicked"
@@ -2629,7 +2647,7 @@
                                                                             translate}}:</label>
                                                                         <div
                                                                             class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.enableVideoController"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2720,7 +2738,7 @@
                                                                             Sharing' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowSharing"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2736,7 +2754,7 @@
                                                                             Fullscreen' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowFullscreen"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2754,7 +2772,7 @@
                                                                             Likes' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowLikes"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2770,7 +2788,7 @@
                                                                             Embed' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowEmbed"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2791,7 +2809,7 @@
                                                                             Settings' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.enableSettings"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2807,7 +2825,7 @@
                                                                             Comments' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowComments"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2825,7 +2843,7 @@
                                                                             Casting' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.enableCasting"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -2841,7 +2859,7 @@
                                                                             video' | translate}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch
+                                                                            <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.is360video"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
@@ -3590,7 +3608,7 @@
                             : 'Contain Within Aspect Ratio'
                             }}
                         </button>
-                        <button class="btn-info aspect_ratio" (click)="zoomOut()" [disabled]="!showCropper"><i
+                        <button class="btn-info aspect_ratio" (click)="zoomOut()" [disabled]="!showCropper || scale <= minScale"><i
                                 class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i>
                         </button>
                         <button class="btn-info aspect_ratio" (click)="zoomIn()" [disabled]="!showCropper"><i

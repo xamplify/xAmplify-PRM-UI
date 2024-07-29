@@ -1,3 +1,4 @@
+<ng-container  *ngIf="showUserLevelTimeLine">
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <section>
    <div id="timeline-view" class="page-content">
@@ -222,10 +223,21 @@
       </div>
    </div>
 </section>
-<ng-container *ngIf="isDealRegistration && !isDealPreview">
-   <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaignId"
-      [campaignName]="campaignName" [actionType]="leadActionType" (notifyOtherComponent)="showTimeLineView()">
-   </app-add-lead>
+</ng-container>
+<ng-container  *ngIf="showLeadForm">
+   <section>
+      <div class="page-content">
+         <div>
+            <a (click)="closeLeadForm()" class="pull-right close-circle"
+               style="margin: 9px 14px; padding-top: 3px; padding-left: 5px;">
+               <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px; padding: 2px;"
+                  aria-hidden="true"></span>
+            </a>
+         </div>
+         <app-custom-add-lead [leadId]="leadId" [actionType]="leadActionType" [isVendorVersion]="false" [selectedContact]="selectedRow"
+            [isOrgAdmin]="isOrgAdmin" [campaignId]="campaignId" [campaignName]="campaignName" (notifySubmitSuccess)="showTimeLineView()"></app-custom-add-lead>
+      </div>
+   </section>
 </ng-container>
 <!-- --Lead Registration -->
 <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

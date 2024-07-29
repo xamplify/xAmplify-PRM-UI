@@ -1,99 +1,107 @@
-<div class="row m0" id="dealDetailsDiv" >
-  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-    <div class="panel panel-default deal-bgcolor">
-      <div class="panel-heading deal-bgcolor">
-        <h4 class="panel-title">
-          <a class="collapsed" href="DealDetails" (click)="toggleCollapseDeal($event)"> <i
-              [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed2, 'fa-chevron-down collapseIn': isCollapsed2}"
-              class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;"></i>Deal
-            Details</a>
-        </h4>
-      </div>
-      <div [ngClass]="{'collapse': isCollapsed2, '': !isCollapsed2}" id="DealDetails">
-        <div class="panel-body br-unset pl0 pr0 mrg">
-          <div class="row m0 deal-bgcolors border-unset"
-            style="margin-bottom: 50px;border: 1px solid #ddd;margin: 10px;padding: 10px">
-            <div class="alert alert-danger" id="company-profile-error-div" *ngIf="showSFFormError">
-              <strong>{{sfFormError}}</strong>
-            </div>
-            <!---XNFR-403-->
-            <div [@slowAnimate]  class="alert alert-danger" *ngIf="!isValidRepValues">
-              <strong>Sales Rep & Inside Rep values cannot be same</strong>
-            </div>
-            <!---XNFR-403-->
-            <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-            <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-              <div *ngIf="dealHeader?.length>1 && isOnlyPartner && !isPreview"><div class="alert alert-info">{{dealHeader}}</div></div>
-              <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
-                <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="formFields"
-                  [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
-                <ng-template *ngIf="(0 != i % 2)" [ngTemplateOutlet]="formFields"
-                  [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
-              </ng-container>
+<div class="row m0" id="dealDetailsDiv">
+  <div class="col-sm-12 col-xs-12 pl0 mb_pr0" [ngClass]="isPreview ? 'px-0':'px-0-19'">
+    <div class="panel-group"  id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default deal-bgcolor">
+        <div class="panel-heading deal-bgcolor">
+          <h4 class="panel-title">
+            <a class="collapsed" href="DealDetails" (click)="toggleCollapseDeal($event)"> <i
+                [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed2, 'fa-chevron-down collapseIn': isCollapsed2}"
+                class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;"></i>{{ opportunityType === 'DEAL' ? 'Deal Details' : 'Lead Details' }}</a>
+          </h4>
+        </div>
+        <div [ngClass]="{'collapse': isCollapsed2, '': !isCollapsed2}" id="DealDetails">
+          <div class="panel-body br-unset pl0 pr0" [ngClass]="isPreview?'':'mrg'">
+            <div class="row m0 deal-bgcolors border-unset error-css">
+              <div class="alert alert-danger" id="company-profile-error-div" *ngIf="showSFFormError">
+                <strong>{{sfFormError}}</strong>
+              </div>
+              <!---XNFR-403-->
+              <div [@slowAnimate]  class="alert alert-danger" *ngIf="!isValidRepValues">
+                <strong>Sales Rep & Inside Rep values cannot be same</strong>
+              </div>
+              <!---XNFR-403-->
+              <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+              <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
+              <!--Add/Edit-->
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="!isPreview">
+                <div *ngIf="formDescription?.length>1 && isOnlyPartner && !isPreview">
+                  <div class="alert alert-info">{{formDescription}}</div>
+                </div>
+                <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
+                  <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="formFields"
+                    [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
+                  <ng-template *ngIf="(0 != i % 2)" [ngTemplateOutlet]="formFields"
+                    [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
+                </ng-container>
+              </div>
+              <!--Preview-->
+              <div *ngIf="isPreview">
+                <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
+                  <ng-template  [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
+                </ng-container>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-<!-- Add product start -->
-<div *ngIf="showConnectWiseProducts && selectOnChangeEvent" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-  <div class="panel panel-default deal-bgcolor">
-    <div class="panel-heading deal-bgcolor">
-      <h4 class="panel-title">
-        <a class="collapsed" href="Products" (click)="toggleCollapseProduct($event)">
-          <i [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed3, 'fa-chevron-down collapseIn': isCollapsed3}"
-            class="arrowpositinon fa collapseIconColorCu" aria-hidden="true" style="float: right;"></i>
-          Products
-        </a>
-      </h4>
-    </div>
-    <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="Products">
-      <div class="panel-body" *ngIf="isLoading">
-        <app-modal-popup-loader></app-modal-popup-loader>
+    <!-- Add product start -->
+    <div *ngIf="showConnectWiseProducts && selectOnChangeEvent" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default deal-bgcolor">
+      <div class="panel-heading deal-bgcolor">
+        <h4 class="panel-title">
+          <a class="collapsed" href="Products" (click)="toggleCollapseProduct($event)">
+            <i [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed3, 'fa-chevron-down collapseIn': isCollapsed3}"
+              class="arrowpositinon fa collapseIconColorCu" aria-hidden="true" style="float: right;"></i>
+            Products
+          </a>
+        </h4>
       </div>
-      <div *ngIf="!isLoading">
-        <div  class="br-unset pb15">
-          <div class="alert alert-info text-center mt5" *ngIf="forecastItems?.length==0">
-              <strong *ngIf="isPreview">No products found</strong>
-              <strong *ngIf="!isPreview">Please <a (click)="addProduct()">Click here</a> to add a product</strong>
-          </div>
-          <div [@slowAnimate]  class="panel-body pl0 pr0 pb0" *ngFor="let product of forecastItems;let i=index"
-            id="{i}">
-            <div class="row portlet light m0 deal-bgcolors">
-              <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 mb10 pr0">
-                <label>Name</label>
-                <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto" [id]="product.catalogItem.id" [disableDropDown]="isPreview"
-                  (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event,i)"></app-searchable-dropdown>
-              </div>
-              <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 mb10  pr0">
-                <label>Price</label>
-                <input type="number" [(ngModel)]="product.price" class="form-control" min="0"
-                  placeholder="Enter the Price" [disabled]="isPreview">
-              </div>
-              <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 mb10  pr0">
-                <label>Cost</label>
-                <input type="number" [(ngModel)]="product.cost" class="form-control" min="0"
-                  placeholder="Enter the Cost" [disabled]="isPreview">
-              </div>
-              <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 mb10  pr0">
-                <label>Quantity</label>
-                <input type="number" [(ngModel)]="product.quantity" class="form-control" min="0"
-                  placeholder="Enter the Quantity" [disabled]="isPreview">
-              </div>
-              <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2  pr0" *ngIf="!isPreview">
-                <div class="row Add-Icon">
-                  <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 Add-Icon">
-                    <button (click)="addProduct()" class="btn btn-primary add-btn" data-placement="top"
-                      data-toggle="tooltip" title="Add" aria-hidden="false">
-                      <i class="fa fa-plus add-prdt"></i>
-                    </button>
-                    <button  class="btn btn-danger add-btn"  (click)="removeProduct(i)" data-placement="top"
-                      data-toggle="tooltip" title="Delete" aria-hidden="false">
-                      <i class="fa fa-trash-o p0 add-prdt"></i>
-                    </button>
+      <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="Products">
+        <div class="panel-body" *ngIf="isLoading">
+          <app-modal-popup-loader></app-modal-popup-loader>
+        </div>
+        <div *ngIf="!isLoading">
+          <div  class="br-unset pb15">
+            <div class="alert alert-info text-center mt5" *ngIf="forecastItems?.length==0">
+                <strong *ngIf="isPreview">No products found</strong>
+                <strong *ngIf="!isPreview">Please <a (click)="addProduct()">Click here</a> to add a product</strong>
+            </div>
+            <div [@slowAnimate]  class="panel-body pl0 pr0 pb0" *ngFor="let product of forecastItems;let i=index"
+              id="{i}">
+              <div class="row portlet light m0 deal-bgcolors">
+                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 mb10 pr0">
+                  <label>Name</label>
+                  <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto" [id]="product.catalogItem.id" [disableDropDown]="isPreview"
+                    (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event,i)"></app-searchable-dropdown>
+                </div>
+                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 mb10  pr0">
+                  <label>Price</label>
+                  <input type="number" [(ngModel)]="product.price" class="form-control" min="0"
+                    placeholder="Enter the Price" [disabled]="isPreview">
+                </div>
+                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 mb10  pr0">
+                  <label>Cost</label>
+                  <input type="number" [(ngModel)]="product.cost" class="form-control" min="0"
+                    placeholder="Enter the Cost" [disabled]="isPreview">
+                </div>
+                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 mb10  pr0">
+                  <label>Quantity</label>
+                  <input type="number" [(ngModel)]="product.quantity" class="form-control" min="0"
+                    placeholder="Enter the Quantity" [disabled]="isPreview">
+                </div>
+                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2  pr0" *ngIf="!isPreview">
+                  <div class="row Add-Icon">
+                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 Add-Icon">
+                      <button (click)="addProduct()" class="btn btn-primary add-btn" data-placement="top"
+                        data-toggle="tooltip" title="Add" aria-hidden="false">
+                        <i class="fa fa-plus add-prdt"></i>
+                      </button>
+                      <button  class="btn btn-danger add-btn"  (click)="removeProduct(i)" data-placement="top"
+                        data-toggle="tooltip" title="Delete" aria-hidden="false">
+                        <i class="fa fa-trash-o p0 add-prdt"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -102,29 +110,22 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 </div>
-<!-- Add product end -->
-
 <!--Added On 11/12/2023-->
 <ng-template #formFields let-columnInfo="columnInfo">
-  
-  <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" *ngIf="!isLoading">
-    <!-- <label *ngIf ="this.activeCRM.createdForActiveCRMType != 'HUBSPOT' && this.activeCRM.createdForActiveCRMType != 'PIPEDRIVE' && this.activeCRM.createdForActiveCRMType != 'CONNECTWISE' && this.activeCRM.createdForActiveCRMType != 'SALESFORCE'" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0 control-label">{{columnInfo.labelName}} <span class="required" *ngIf="columnInfo.required">*</span>
-      <span
-        *ngIf="!(columnInfo.labelType=='textarea' || columnInfo.labelType=='text' || columnInfo.labelType=='number' || columnInfo.labelType=='email' || columnInfo.labelType=='percent' || columnInfo.labelType=='geolocation' || columnInfo.labelType=='phone' || columnInfo.labelType=='url') && columnInfo.placeHolder?.length > 0">({{columnInfo.placeHolder}})
-      </span>
-    </label> -->
-    <label class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0 control-label">{{columnInfo.displayName}} <span class="required" *ngIf="columnInfo.required">*</span>
-      <span
-        *ngIf="!(columnInfo.labelType=='textarea' || columnInfo.labelType=='text' || columnInfo.labelType=='number' || columnInfo.labelType=='email' || columnInfo.labelType=='percent' || columnInfo.labelType=='geolocation' || columnInfo.labelType=='phone' || columnInfo.labelType=='url') && columnInfo.placeHolder?.length > 0">({{columnInfo.placeHolder}})
+  <div class="form-group" [ngClass]="isPreview ? '' : 'col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0'"  *ngIf="!isLoading">
+    <label class="control-label" [ngClass]="isPreview ? '' : 'col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0'" class="">{{columnInfo.displayName}} 
+      <span class="required" *ngIf="columnInfo.required">*</span>
+      <span *ngIf="!(columnInfo.labelType=='textarea' || columnInfo.labelType=='text' || columnInfo.labelType=='number' || columnInfo.labelType=='email' || columnInfo.labelType=='percent' || columnInfo.labelType=='geolocation' || columnInfo.labelType=='phone' || columnInfo.labelType=='url') && columnInfo.placeHolder?.length > 0">({{columnInfo.placeHolder}})
       </span>
     </label>
     <!-- ---------------------------TextBox & Email & Number----------------------------- -->
     <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
-      <input type="{{columnInfo.labelType}}" [disabled]="isPreview || isVendor" class="form-control"
+      <input type="{{columnInfo.labelType}}" [disabled]="isPreview || isVendor || columnInfo.columnDisable" class="form-control"
         placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value"
-        maxlength="{{columnInfo.labelLength}}" (input)="validateField(columnInfo)" autocomplete="off">
+        maxlength="{{columnInfo.labelLength}}" (input)="validateField(columnInfo)" autocomplete="off" aria-autocomplete="none">
       <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
     </ng-container>
 
@@ -239,8 +240,8 @@
       </ng-container>
       <!-- ---------------------------DropDown Menu----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='select'">
-        <select class="form-control" [(ngModel)]="columnInfo.value" [disabled]="isVendor || isPreview"
-          (ngModelChange)="selectOnChangeEvent($event)">
+        <select class="form-control" [(ngModel)]="columnInfo.value" [disabled]="isVendor || isPreview || !(columnInfo?.dropDownChoices?.length > 0) || columnInfo.nonInteractive"
+          (ngModelChange)="selectOnChangeEvent(columnInfo)">
           <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [ngValue]="dropDownValue.labelId">
             {{dropDownValue.name}}</option>
         </select>

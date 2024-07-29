@@ -723,6 +723,11 @@ export class ManageLeadsComponent implements OnInit {
     this.showLeads();
   }
 
+  closeLeadForm(){
+    this.showLeadForm = false;
+    this.showLeads();
+  }
+
   showSubmitDealSuccess() {
     this.leadsResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
     this.showDealForm = false;
@@ -1455,5 +1460,5 @@ export class ManageLeadsComponent implements OnInit {
 		}
   }
 
-
+  
 }

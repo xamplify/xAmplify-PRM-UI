@@ -64,3 +64,8 @@
 .mrg_l0{
 margin-left: 0px;
 }
+/* Sudha Sri(24-07-2024) */
+a.dashboard-stat.dashboard-stat-lighter.blue-soft.min-h.default-cursor,
+a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor,
+a.dashboard-stat.dashboard-stat-lighter.purple-soft.min-h.default-cursor,
+a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor{border-radius: 10px !important;}

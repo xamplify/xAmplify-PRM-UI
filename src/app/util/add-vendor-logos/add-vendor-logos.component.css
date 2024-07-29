@@ -73,3 +73,27 @@
   .toggleOnOff input:checked~.labels::before {
     opacity: 1;
   }
+
+  /* Ensure parent div does not clip the dropdown */
+
+.table-responsive.x-hidden {
+  position: relative;
+  overflow: visible;
+}
+.actions-block {
+  float: unset;
+}
+
+/* Override the dropdown styles */
+::ng-deep angular4-multiselect .dropdown-list {
+  position: absolute !important;
+  z-index: 1050 !important;
+  max-height: 150px; /* Optional: Adjust the height as needed */
+  overflow-y: auto;  /* Optional: Add scroll if the dropdown is too long */
+}
+
+
+.modal-dialog, .modal-content, .modal-body, .model-footer {
+  overflow: auto !important;
+}
+

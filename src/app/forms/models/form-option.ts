@@ -9,5 +9,5 @@ export class FormOption {
     isValid = true;
     defaultColumn = false;
     correct = false;
-
+    parentChoices: Array<FormOption> = new Array<FormOption>();
 }

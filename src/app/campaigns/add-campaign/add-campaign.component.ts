@@ -757,41 +757,34 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     /*****Pages*****/
 
     private findCampaignPipeLines() {
-        if (this.activeCRMDetails.activeCRM) {
-            if ("SALESFORCE" === this.activeCRMDetails.type) {
-                this.listCampaignPipelines();
-                this.integrationService
-                    .checkSfCustomFields(this.authenticationService.getUserId())
-                    .subscribe(
-                        (data) => {
-                            let cfResponse = data;
-                            if (cfResponse.statusCode === 400) {
-                                swal(
-                                    "Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.",
-                                    "",
-                                    "error"
-                                );
-                            } else if (cfResponse.statusCode === 401 &&
-                                cfResponse.message === "Expired Refresh Token") {
-                                swal(
-                                    "Your Salesforce Integration was expired. Please re-configure.",
-                                    "",
-                                    "error"
-                                );
-                            }
-                        },
-                        (error) => {
-                            this.xtremandLogger.error(
-                                error,
-                                "Error in salesforce checkIntegrations()"
-                            );
-                        }
+        this.listCampaignPipelines();
+        if (this.activeCRMDetails.activeCRM && "SALESFORCE" === this.activeCRMDetails.type) {
+            this.integrationService.checkSfCustomFields(this.authenticationService.getUserId())
+            .subscribe(
+                (data) => {
+                    let cfResponse = data;
+                    if (cfResponse.statusCode === 400) {
+                        swal(
+                            "Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.",
+                            "",
+                            "error"
+                        );
+                    } else if (cfResponse.statusCode === 401 &&
+                        cfResponse.message === "Expired Refresh Token") {
+                        swal(
+                            "Your Salesforce Integration was expired. Please re-configure.",
+                            "",
+                            "error"
+                        );
+                    }
+                },
+                (error) => {
+                    this.xtremandLogger.error(
+                        error,
+                        "Error in salesforce checkIntegrations()"
                     );
-            } else {
-                this.listCampaignPipelines();
-            }
-        } else {
-            this.listCampaignPipelines();
+                }
+            );
         }
     }
 
@@ -1027,7 +1020,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     listCampaignPipelines() {
         if (this.campaignAccess.enableLeads) {
             this.showConfigurePipelines = true;
-            this.referenceService.startLoader(this.pipelineLoader);
+            this.ngxLoading = true;
             this.campaignService.listCampaignPipelines(this.loggedInUserId)
                 .subscribe(
                     response => {
@@ -1045,7 +1038,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                                 this.getZohoLeadLayouts();
                             }
                             if (!this.activeCRMDetails.activeCRM) {
-
                                 this.leadTicketTypes.forEach(leadTicketType => {
                                     if (leadTicketType.defaultLeadTicketType) {
                                         this.defaultLeadTicketTypeId = leadTicketType.id;
@@ -1095,10 +1087,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                             }
 
                         }
-                        this.referenceService.stopLoader(this.pipelineLoader);
+                        this.ngxLoading = false;
                     },
                     error => {
-                        this.referenceService.stopLoader(this.pipelineLoader);
+                        this.ngxLoading = false;
                         this.xtremandLogger.error(error);
                     });
         }
@@ -2541,8 +2533,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                  if (response.statusCode == 200) {
                      let data = response.data;                            
                      this.dealPipelines = data;
-                     this.defaultDealPipelineId = this.dealPipelines[0].id;
-                     this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                     if(this.dealPipelines!=undefined && this.dealPipelines.length>0){
+                        this.defaultDealPipelineId = this.dealPipelines[0].id;
+                        this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                     }
                  }
              },
              error => {
@@ -2651,7 +2645,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 this.ngxLoading = false;
                 if (data.statusCode == 200) {
                     this.campaign.dealTicketTypeId = data.data;
-                    this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                    if(this.dealTicketTypes!=undefined && this.dealTicketTypes.length>0){
+                        this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                    }
                     this.getHalopsaDealPipelines();
                 }
             }

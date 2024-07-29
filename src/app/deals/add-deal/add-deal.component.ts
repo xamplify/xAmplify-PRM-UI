@@ -1,3 +1,4 @@
+import { CommentDealAndLeadDto } from './../models/comment-deal-and-lead-dto';
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -23,14 +24,8 @@ import { Properties } from 'app/common/models/properties';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { IntegrationService } from 'app/core/services/integration.service';
-import { ConnectwiseProductsDto } from '../models/connectwise-products-dto';
-import { ConnectwiseProductsRequestDto } from '../models/connectwise-products-request-dto';
-import { ConnectwiseCatalogItemDto } from '../models/connectwise-catalog-item-dto';
-import { ConnectwiseOpportunityDto } from '../models/connectwise-opportunity-dto';
-import { ConnectwiseStatusDto } from '../models/connectwise-status-dto';
-import { DealComments } from 'app/deal-registration/models/deal-comments';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
-declare var flatpickr: any, $: any, swal: any;
+declare var $: any, swal: any;
 
 
 @Component({
@@ -149,8 +144,17 @@ export class AddDealComponent implements OnInit {
   isZohoLeadAttached: boolean = false;
   isCreatedByStageIdDisable: boolean = false;
   isZohoLeadAttachedWithoutSelectingDealFor: boolean = false;
+  vendorCompanyName:string = '';
 
-
+  /***XNFR-623***/
+  commentsCustomResponse:CustomResponse = new CustomResponse();
+  commentsLoader = true;
+  commentDealAndLeadDto:CommentDealAndLeadDto = new CommentDealAndLeadDto();
+  readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
+  isCommentAndHistoryCollapsed = false;
+  editTextArea = false;
+  isDealDetailsTabDisplayed: boolean = true;
+  /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public userService: UserService, private integrationService: IntegrationService) {
@@ -166,6 +170,9 @@ export class AddDealComponent implements OnInit {
 
   ngOnInit() {
     this.utilService.getJSONLocation().subscribe(response => console.log(response));
+    if(this.vanityLoginDto.vanityUrlFilter){
+      this.isDealDetailsTabDisplayed = this.actionType!="add";
+    }
     this.deal.createdForCompanyId = 0;
     this.deal.pipelineId = 0;
     this.deal.pipelineStageId = 0;
@@ -204,6 +211,47 @@ export class AddDealComponent implements OnInit {
       }
     }
     this.getVendorList();
+
+    /***XNFR-623***/
+    this.loadComments();
+  }
+
+  /***XNFR-623***/
+  private loadComments() {
+    if (this.preview) {
+      this.commentsLoader = true;
+      this.commentsCustomResponse = new CustomResponse();
+      this.dealsService.findDealAndLeadInfoForComments(this.dealId).
+        subscribe(
+          response => {
+            let statusCode = response.statusCode;
+            if (statusCode == 200) {
+              let data = response.data;
+              this.commentDealAndLeadDto = data;
+              let associatedContact = data['associatedContact'];
+              let showLeadInfo = associatedContact != undefined;
+              this.commentDealAndLeadDto.showLeadInfo = showLeadInfo;
+              if(showLeadInfo){
+                this.commentDealAndLeadDto.associatedContact = associatedContact;
+                this.commentDealAndLeadDto.associatedContact['company'] = associatedContact['contactCompany'];
+              }
+              this.commentsLoader = false;
+            } else {
+              this.commentsLoader = false;
+              this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments for this deal.",true);
+            }
+          }, error => {
+            this.commentsLoader = false;
+            this.commentsCustomResponse = new CustomResponse('ERROR', "Unable to load comments.Please contact admin.",true);
+          }
+        );
+    }
+  }
+
+  /***XNFR-623***/
+  toggleCommentsHistory(event:any){
+    event.preventDefault();
+    this.isCommentAndHistoryCollapsed = !this.isCommentAndHistoryCollapsed;
   }
 
   setCreatedForCompanyId() {
@@ -523,7 +571,9 @@ export class AddDealComponent implements OnInit {
         error => {
           this.httpRequestLoader.isServerError = true;
         },
-        () => { }
+        () => {
+          this.getFilteredVendorList();
+         }
       );
   }
 
@@ -540,6 +590,9 @@ export class AddDealComponent implements OnInit {
   onChangeCreatedFor() {
     this.holdCreatedForCompanyId = this.deal.createdForCompanyId;
     if (this.deal.createdForCompanyId > 0) {
+      let vendorCompany;
+      vendorCompany = this.vendorList.find(vendor => vendor.companyId == this.deal.createdForCompanyId);
+      this.vendorCompanyName = vendorCompany.companyName + "'s";
       this.getActiveCRMDetails();
     } else {
       this.deal.pipelineId = 0;
@@ -549,6 +602,10 @@ export class AddDealComponent implements OnInit {
       this.showDefaultForm = false;
       this.propertiesQuestions = [];
       this.hasCampaignPipeline = false;
+      this.vendorCompanyName = '';
+      this.deal.createdForPipelineId = 0;
+      this.createdForPipelines = [];
+      this.createdForStages = [];
     }
   }
 
@@ -643,14 +700,17 @@ export class AddDealComponent implements OnInit {
           self.createdForStages = p.stages;
         }
       });
-    } else if (this.deal.createdByPipelineId > 0) {
+    } else {
+      self.createdForStages = [];
+    }
+    if (this.deal.createdByPipelineId > 0) {
       this.createdByPipelines.forEach(p => {
         if (p.id == this.deal.createdByPipelineId) {
           self.createdByStages = p.stages;
         }
       });
     } else {
-      self.stages = [];
+      self.createdByStages = [];
     }
 
   }
@@ -731,6 +791,12 @@ export class AddDealComponent implements OnInit {
     //   this.deal.createdForPipelineId = this.deal.createdByPipelineId;
     //   this.deal.createdForPipelineStageId = this.deal.createdByPipelineStageId;
     // }
+    if (!this.activeCRMDetails.showDealPipeline && !this.isOrgAdmin && !this.isMarketingCompany) {
+      this.deal.createdForPipelineId = this.activeCRMDetails.dealPipelineId;
+    }
+    if (!this.activeCRMDetails.showDealPipelineStage && !this.isOrgAdmin && !this.isMarketingCompany) {
+      this.deal.createdForPipelineStageId = this.activeCRMDetails.dealPipelineStageId;
+    }
     if(this.deal.createdForPipelineId > 0 && this.deal.createdForPipelineStageId > 0){
       this.deal.pipelineId = this.deal.createdForPipelineId;
       this.deal.pipelineStageId = this.deal.createdForPipelineStageId;
@@ -904,7 +970,8 @@ export class AddDealComponent implements OnInit {
           this.createdForPipelineStageIdError = true;
         }
       }
-      if (this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
+      if (this.activeCRMDetails!=undefined && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown !== undefined 
+        && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
         if (fieldId == "opportunityTypeId") {
           if (fieldValue.length > 0 && fieldValue != "0") {
             this.opportunityTypeId = successClass;
@@ -942,6 +1009,14 @@ export class AddDealComponent implements OnInit {
       this.dealTypeError = false;
       this.properties.length = 0;
       this.propertiesQuestions.length = 0;
+    }
+
+    if (this.activeCRMDetails!=undefined && !this.activeCRMDetails.showDealPipeline  && !this.isOrgAdmin && !this.isMarketingCompany) {
+      this.pipelineIdError = false;
+    }
+    if (this.activeCRMDetails!=undefined && !this.activeCRMDetails.showDealPipelineStage  && !this.isOrgAdmin && !this.isMarketingCompany) {
+      this.pipelineStageIdError = false;
+      this.createdForPipelineStageIdError = false;
     }
 
     if (!this.showCreatedByPipelineAndStage && !this.createdForPipelineStageIdError) {
@@ -1199,6 +1274,7 @@ export class AddDealComponent implements OnInit {
 
   getActiveCRMDetails() {
     this.showCustomForm = false;
+    this.showDefaultForm = false;
     this.integrationService.getActiveCRMDetails(this.deal.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         response => {
@@ -1523,6 +1599,7 @@ export class AddDealComponent implements OnInit {
       if (!createdForPipelineExist) {
         self.deal.createdForPipelineId = 0;
         self.deal.createdForPipelineStageId = 0;
+        self.createdForStages = [];
         this.setFieldErrorStates();
       }
       self.activeCRMDetails.hasCreatedForPipeline = false;
@@ -1656,7 +1733,11 @@ export class AddDealComponent implements OnInit {
       this.isLoading = false;
       if (data.statusCode == 200) {
         this.halopsaTicketTypes = data.data;
+      } else if (data.statusCode == 401) {
+        this.customResponse = new CustomResponse('ERROR', data.message, true);
       }
+    },error => {
+      this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try after sometime', true);
     })
   }
 
@@ -1685,6 +1766,25 @@ export class AddDealComponent implements OnInit {
           this.getDealPipelines();
         }
       });
+  }
+
+  getFilteredVendorList(){
+    this.integrationService.getVendorRegisterDealValue(this.loggedInUserId,' ').subscribe(
+      data => {
+        if (data.statusCode == 200) {
+          let resultMap = new Map<string,object>();
+          resultMap = data.map;
+          let filteredVendorList = [];
+          for (let vendor of this.vendorList) {
+            let vendorFromMap = resultMap[String(vendor.companyId)];
+            if (vendorFromMap || vendorFromMap == undefined) {
+              filteredVendorList.push(vendor);
+            }
+          }
+          this.vendorList = filteredVendorList;
+        }
+      }
+    )
   }
 
 }

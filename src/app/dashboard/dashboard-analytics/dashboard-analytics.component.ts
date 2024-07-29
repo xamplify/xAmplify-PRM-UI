@@ -64,6 +64,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
    hasCampaignRole: boolean;
    showDealForm: boolean = false;
+   showLeadForm: boolean = false;
    customResponse: CustomResponse = new CustomResponse();
    showSandboxText = false;
    applyFilter = true;
@@ -183,11 +184,11 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
 
   getDefaultPage(userId: number) {
     this.ngxLoading = true;
-    this.userService.getUserDefaultPage(userId)
+    this.userService.loadUserDefaultPage(userId, this.authenticationService.companyProfileName)
         .subscribe(
             data => {
-                if (data.includes('dashboard')) {
-                    this.userDefaultPage.isCurrentPageDefaultPage = true;
+                if (data.dashboardType.includes('dashboard')) {
+                    this.userDefaultPage.isCurrentPageDefaultPage = data.isCurrentPageDefaultPage;
                     this.referenceService.userDefaultPage = 'DASHBOARD';
                 }
                 this.ngxLoading = false;
@@ -515,7 +516,12 @@ showCampaignDetails(campaign:any){
   }
 
   showSubmitLeadSuccess() {
-   // this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+    this.showLeadForm = false;
+    this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+  }
+
+  closeLeadForm() {
+    this.showLeadForm = false;
   }
 
   getSelectedIndexFromPopup(event:any){

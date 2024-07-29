@@ -117,7 +117,7 @@
                                                  <div *ngIf="contacts?.formList">Contacts, Form Contact List</div>
                                                  <div *ngIf="contacts?.companyList">Contacts, Company Contact List</div>
                                                  <span *ngIf="contactsPagination.filterBy == 'SHARED-LEADS'">Leads</span>
-                                                 <span *ngIf="contactsPagination.filterBy == 'MY-CONTACTS'">Contacts</span>
+                                                 <span *ngIf="contactsPagination.filterBy == 'MY-CONTACTS' || !contacts.partnerUserList">Contacts</span>
                                               </td>
                                               <td class="text-center sorting_1">
                                                  <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>

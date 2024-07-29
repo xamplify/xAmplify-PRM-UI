@@ -1,0 +1,137 @@
+<app-response-message class="pg8" [customResponse]="marketPlaceCategoryResponse" *ngIf="marketPlaceCategoryResponse.isVisible">
+</app-response-message>
+<div class="portlet-title" style="border-bottom: none;">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-lg-12">
+            <div class="col-xs-12 col-sm-5 col-lg-5 col-md-4 p0 mb_10">
+                <button class="button_blue bgcolor-unset pd_lft2" (click)="addCategory()" translate><span
+                        class="btn btn-primary transition txt_pd-top3">Create
+                        a Category</span></button>
+            </div>
+            <div class="col-xs-12 col-sm-7 col-lg-7 col-md-8 p0">
+                <div class="page-toolbar">
+                    <div class="btn-group pull-right">
+                        <div class="inputs float-right" style="display: inline-flex;">
+                            <div id="left">
+                               <!--  search -->
+                            </div>
+                            <div class="portlet-input input-inline" id="search-div" style="padding-left: 5px;">
+                                <div class="input-icon right" id="icon">
+                                   <!--  sort -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+<ng-container *ngIf="!httpRequestLoader.isLoading">
+    <div class="table-responsive">
+        <table class='table tgrid table-hover table-sm' id="category-list" *ngIf="categoryPagination.pagedItems?.length>0">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width: 30%" id="border-bottom">
+                        <span class="ui-column-resizer gray"
+                            (mousedown)="referenceService.onMouseDown($event,'category-list',2)">
+                        </span>
+                        <span class="gridHeader" translate>Name</span>
+                    </th>
+                    <th class="text-center" id="border-bottom" translate>Description</th>
+                    <th class="text-center" id="border-bottom" translate>Created On</th>
+                    <th class="text-center float-right border-top-bottom" id="border-bottom">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let category of categoryPagination.pagedItems ;let i =index" id="CategoryList_{{category.id}}">
+                    <td>
+                        <h4 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{category.name}}">
+                            <span>{{category.name}}</span>
+                        </h4>
+                        <h6 class="moreipsis">
+                            <span translate> Created By <b>{{category.createdBy}}</b></span>
+                        </h6>
+                    </td>
+                       <td class="text-center">
+                        <h4 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{category.description}}">
+                            <span>{{category.description}}</span>
+                        </h4>
+                    </td>
+                    <td class="text-center">
+                        <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
+                            [dateAndTime]="category.displayTime">
+                        </app-timestamp>
+                        <span *ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
+                    </td>
+                    <td>
+                        <div class="actions-block override-actions">
+                            <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
+                                (click)="getCategoryById(category)">
+                                <i class="fa fa-pencil-square-o IconCustomization"></i>
+                                <div class="clickicons"></div>
+                            </a>
+                            <a class="custom-icon" id="template-delete"
+                                [ngClass]="{'disable-click' : !authenticationService?.module?.isAnyAdminOrSupervisor}"
+                                (click)="confirmDeleteCategory(category.id)" data-toggle="tooltip" data-placement="top"
+                                title="Delete">
+                                <i class="fa fa-trash-o trashIconCustomization"></i>
+                                <div class="del-icon"></div>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-container>
+<div *ngIf="categoryPagination.pagedItems.length !== 0" class="pg8">
+    <app-pagination [pagination]="categoryPagination" (notifyParent)="setCategoryPage($event)"
+        (notifyParentDropDown)="listMasterPlaceCategories($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+</div>
+
+<div *ngIf="categoryPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+    <strong translate>No Category Found.</strong>
+</div>
+
+
+<!------------------------------Add/Edit Category----------->
+<div class="modal fade right" id="addCategoryModalPopup" tabindex="-1" role="dialog"
+    aria-labelledby="addCategoryModalPopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" (click)="closeCategoryModal()">
+                    <i class="fa fa-times"></i>
+                </button>
+                <h4 class="modal-title text-center">{{categoryModalTitle}}</h4>
+            </div>
+            <div class="modal-body">
+                <app-dashboard-loader *ngIf="addCategoryLoader.isLoading"></app-dashboard-loader>
+                <ng-container *ngIf="!addCategoryLoader.isLoading">
+                    <div class="form-group" id="categoryNameDiv">
+                        <label>Name <span class="required">*</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="marketPlaceCategory.name" id="categoryName"
+                            placeholder="Enter Name" maxlength="55" 
+                            >
+                        <span *ngIf="!marketPlaceCategory.isValid" class="required">{{categoryNameErrorMessage}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" placeholder="Enter Description"
+                            [(ngModel)]="marketPlaceCategory.description" id="description" maxlength="1000"></textarea>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" 
+                    class="button_blue bgcolor-unset" (click)="saveOrUpdateCategory()"><span
+                        class="btn btn-primary transition txt_pd-top3">{{categoyButtonSubmitText}}</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

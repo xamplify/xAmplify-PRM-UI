@@ -1,5 +1,3 @@
-import { ChangeEmailAddressRequestDto } from './models/change-email-address-request-dto';
-import { DownloadRequestDto } from 'app/util/models/download-request-dto';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -15,18 +13,15 @@ import { Pipeline } from './models/pipeline';
 import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 import { LoginAsPartnerDto } from './models/login-as-partner-dto';
-
+import { DownloadRequestDto } from 'app/util/models/download-request-dto';
 import { CompanyThemeActivate } from './models/company-theme-activate';
 import { ThemeDto } from './models/theme-dto';
-
 import { UtilService } from 'app/core/services/util.service';
 import { EmailNotificationSettingsDto } from './user-profile/models/email-notification-settings-dto';
 import { GodaddyDetailsDto } from './user-profile/models/godaddy-details-dto';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { DomainRequestDto } from './models/domain-request-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-
-
 @Injectable()
 export class DashboardService {
     url = this.authenticationService.REST_URL + "admin/";

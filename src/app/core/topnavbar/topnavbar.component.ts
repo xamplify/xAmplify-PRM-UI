@@ -24,6 +24,7 @@ import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
+import { IntegrationService } from '../services/integration.service';
 
 @Component({
   selector: 'app-topnavbar',
@@ -76,6 +77,7 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
   guideHomeUrl: any;
 
   isScrolled: boolean = false;
+  isRegisterDealEnabled:boolean = true;
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -86,7 +88,7 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger, public properties: Properties, private translateService: TranslateService,
-    private vanityServiceURL: VanityURLService) {
+    private vanityServiceURL: VanityURLService, private integrationService: IntegrationService) {
     try {
       if (this.authenticationService.isLocalHost() || this.authenticationService.isQADomain()) {
         // this.connectToWebSocket();
@@ -308,6 +310,7 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
       this.isAddedByVendor();
       //this.getTopNavigationColor(this.userId);
       this.guideHomeUrl = this.authenticationService.DOMAIN_URL + 'home/help/guides';
+      this.getVendorRegisterDealValue();
     } catch (error) { this.logger.error('error' + error); }
   }
   getDashboardType() {
@@ -562,4 +565,16 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
     this.isNavbarBackgroundVisible = scrollY > 50;
   }
     // header navbar end
+
+  getVendorRegisterDealValue() {
+    if (this.authenticationService.vanityURLEnabled && !this.authenticationService.module.isOrgAdmin && !this.authenticationService.module.isMarketing) {
+      this.integrationService.getVendorRegisterDealValue(this.userId,this.vanityLoginDto.vendorCompanyProfileName).subscribe(
+        data => {
+          if (data.statusCode == 200) {
+            this.isRegisterDealEnabled = data.data;
+          }
+        }
+      )
+    }
+  }
 }

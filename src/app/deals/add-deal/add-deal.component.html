@@ -6,24 +6,24 @@
   webshims.polyfill('forms forms-ext');
 </script>
 
-<div class="" id="del-profile-div">
-  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div id="del-profile-div">
+   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="portlet-title">
-    <div class="caption" style="padding: 7px 0px 10px 5px !important; font-size: 16px;
-    font-weight: 500;">{{dealFormTitle}}
+    <div class="caption deal-title-css">{{dealFormTitle}}
     </div>
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <div class="alert alert-danger" id="company-profile-error-div" style="display: none;">
     <a class="close" aria-label="close">x</a>
-    <strong>Please complete the required (*) fields. </strong>
+    <strong>Please complete the required (*) fields.</strong>
   </div>
-  <div class="portlet-body clearfix">
+  <div class="portlet-body clearfix"  >
     <div>
       <form role="form" id="deal-registration-form">
         <div class="row mr-3">
           <div class="col-sm-6 col-xs-12 px-10 pl0 mb_pr0">
-            <div class="panel-group" role="tablist" aria-multiselectable="true">
+            <!--Deal Details-->
+            <div class="panel-group" role="tablist" aria-multiselectable="true" *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany))) && isDealDetailsTabDisplayed">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
@@ -36,24 +36,8 @@
                 <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="dealDetails">
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
-                      <!-- <div class="form-group" style="margin-bottom: 20px" *ngIf="!isVendorVersion && deal.campaignId > 0">
-                      <label class="control-label">Campaign Name
-                        <span class="required"><strong>*</strong></span>
-                      </label>
-                      <input type="text" disabled="disabled" name="campaignName" value="{{deal.campaignName}}"
-                        class="form-control" id="campaignName" />
-                      </div>
-        
-                      <div class="form-group" style="margin-bottom: 20px" *ngIf="isVendorVersion && deal.parentCampaignId > 0">
-                      <label class="control-label">Campaign Name
-                        <span class="required"><strong>*</strong></span>
-                      </label>
-                      <input type="text" disabled="disabled" name="parentCampaignName" value="{{deal.parentCampaignName}}"
-                        class="form-control" id="parentCampaignName" />
-                     </div> -->
-
                       <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
-                        *ngIf="actionType === 'add' || actionType === 'edit' || (actionType === 'view' && !isVendorVersion)">
+                        *ngIf="(!vanityLoginDto.vanityUrlFilter) && actionType === 'add' || actionType === 'edit' || (actionType === 'view' && !isVendorVersion)">
                         <label class="control-label">Deal For<span class="required"><strong>*</strong></span></label>
                         <select class="form-control" [(ngModel)]="deal.createdForCompanyId"
                           [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId"
@@ -100,7 +84,11 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="col-sm-6 col-xs-12 px-10 pl0"> -->
+            <!--Deal Layout & PipeLine Details-->
+            <div *ngIf="preview">
+              <ng-template [ngTemplateOutlet]="dealLayoutAndPipeLineTemplate"></ng-template>
+            </div>
+            <!--Contact Info-->
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
@@ -122,16 +110,16 @@
                           <span *ngIf="showAttachLeadButton" class="pull-right">
                             <a style="padding-left: 4px;">
                               <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
-                                <span (click)="openSelectLeadModel()" class="btn btn-primary transition d-inline"><i
-                                    class="fa fa-user-circle-o mb-btns" aria-hidden="true"></i>
-                                  {{attachLeadText}}</span>
+                                <span (click)="openSelectLeadModel()" class="btn btn-primary transition d-inline">
+                                  <i class="fa fa-user-circle-o mb-btns" aria-hidden="true"></i>{{attachLeadText}}
+                                </span>
                               </button>
                             </a>
                             <a *ngIf="showDetachLeadButton" style="padding-left: 4px;">
                               <button class="btn Btn-Gray neg_mrg_top4" translate>
-                                <span (click)="resetAttachedLeadInfo()"><i class="fa fa-user-circle-o mb-btns"
-                                    aria-hidden="true"></i> Detach
-                                  Lead</span>
+                                <span (click)="resetAttachedLeadInfo()"><i class="fa fa-user-circle-o mb-btns" aria-hidden="true"></i>
+                                   Detach Lead
+                                </span>
                               </button>
                             </a>
                           </span>
@@ -142,8 +130,8 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="col-sm-12 col-xs-12 col-lg-12 px-10 pl0"> -->
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <!--Campaign Info-->
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"  *ngIf="deal?.campaignId > 0">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
@@ -156,26 +144,11 @@
                 <div [ngClass]="{'collapse': isCollapsed2, '': !isCollapsed2}" id="CampaignInfo">
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
-                      <div class="form-group" style="margin-bottom: 20px" data-toggle="tooltip" data-placement="bottom" title="{{deal.campaignName}}"
-                        *ngIf="deal.campaignId > 0">
-                        <label class="control-label">Campaign Name
-                          <span class="required"><strong>*</strong></span>
-                        </label>
-                        <input type="text" disabled="disabled" name="campaignName" value="{{deal.campaignName}}"
-                          class="form-control" id="campaignName" />
+                      <div class="form-group" style="margin-bottom: 20px" data-toggle="tooltip" data-placement="bottom" title="{{deal.campaignName}}">
+                        <label class="control-label">Campaign Name<span class="required"><strong>*</strong></span></label>
+                        <input type="text" disabled="disabled" name="campaignName" value="{{deal.campaignName}}"  class="form-control" id="campaignName" />
                       </div>
-
-                      <!-- <div class="form-group" style="margin-bottom: 20px"
-                        *ngIf="isVendorVersion && deal.parentCampaignId > 0">
-                        <label class="control-label">Campaign Name
-                          <span class="required"><strong>*</strong></span>
-                        </label>
-                        <input type="text" disabled="disabled" name="parentCampaignName"
-                          value="{{deal.parentCampaignName}}" class="form-control" id="parentCampaignName" />
-                      </div> -->
-
-                      <div class="form-group" style="margin-bottom: 20px"
-                        *ngIf="!(deal.campaignId > 0) && !(deal.parentCampaignId > 0)">
+                      <div class="form-group" style="margin-bottom: 20px" *ngIf="!(deal?.campaignId > 0) && !(deal?.parentCampaignId > 0)">
                         <label class="control-label">No Campaign Info</label>
                       </div>
                     </div>
@@ -183,327 +156,110 @@
                 </div>
               </div>
             </div>
-            <!-- </div> -->
+            <!--Default Form-->
+            <ng-container *ngIf="preview">
+              <ng-template [ngTemplateOutlet]="defaultDealFormTemplate"></ng-template>
+            </ng-container>
+            <!--Custom Deal Form-->
+            <ng-container *ngIf="preview">
+              <ng-template [ngTemplateOutlet]="customCRMFormTemplate"></ng-template>
+            </ng-container>
           </div>
-          <div class="col-sm-6 col-xs-12 px-10 pl0">
-            <div class="row">
-              <div class="panel panel-default deal-bgcolor" *ngIf="showOpportunityTypes">
-                <div class="panel-body br-unset pl0 pr0 pt0 pb0">
-                  <div class="card-bgcolors h-260 pl0 pr0">
-                    <div class="form-group" [attr.class]="opportunityTypeId" style="margin-bottom: 20px"
-                      id="dealStageDiv" *ngIf="showOpportunityTypes">
-                      <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
-                        ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
-                        ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}<span class="required"><strong>*</strong></span></label>
-                      <select class="form-control" [(ngModel)]="deal.haloPSATickettypeId"
-                        [ngModelOptions]="{standalone: true}" placeholder="opportunityTypeId" id="opportunityTypeId"
-                        [disabled]="preview || isCampaignTicketTypeSelected || isZohoLeadAttached" (ngModelChange)="onChangeTicketType()"
-                        (input)="validateField('opportunityTypeId',false)">
-                        <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
-                          ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
-                          ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}</option>
-                        <!-- <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">
-                          {{deal.currentStageName}}</option> -->
-                        <option *ngFor="let type of halopsaTicketTypes" [value]="type.id">{{type.name}}</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="panel-group" role="tablist" aria-multiselectable="true">
+          <!--Right Side Div-->
+          <!--Deal Layout And PipeLine Details-->
+          <div *ngIf="!preview" class="col-sm-6 col-xs-12 px-10 pl0">
+            <ng-template [ngTemplateOutlet]="dealLayoutAndPipeLineTemplate"></ng-template>
+          </div>
+          <!--Comments & History XNFR-623-->
+          <ng-container *ngIf="preview">
+            <div class="col-sm-6 col-xs-12 px-10 pl0">
+              <app-modal-popup-loader *ngIf="commentsLoader"></app-modal-popup-loader>
+              <app-response-message [customResponse]="commentsCustomResponse" *ngIf="commentsCustomResponse?.isVisible" [showCloseIcon]="false"></app-response-message>
+              <div *ngIf="!commentsLoader && !commentsCustomResponse?.isVisible" class="panel-group" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default deal-bgcolor">
                   <div class="panel-heading deal-bgcolor">
                     <h4 class="panel-title">
-                      <a href="pipelineDetails" (click)="toggleCollapsepipepline($event)"> <i
-                          [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed3, 'fa-chevron-down collapseIn': isCollapsed3}"
-                          class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;"></i>
-                        Pipeline Details</a>
+                      <a href="commentsAndHistory" (click)="toggleCommentsHistory($event)">
+                        <i [ngClass]="{'fa-chevron-up collapseOut': !isCommentAndHistoryCollapsed, 'fa-chevron-down collapseIn': isCommentAndHistoryCollapsed}"
+                          class="arrowpositinon fa collapseIconColorCu float-right" aria-hidden="false"></i>
+                        Comments/History</a>
                     </h4>
                   </div>
-                  <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="pipelineDetails">
+                  <div [ngClass]="{'collapse': isCommentAndHistoryCollapsed, '': !isCommentAndHistoryCollapsed}" id="commentsAndHistory">
                     <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                       <div class="card-bgcolors h-260 pl0 pr0">
-                        <div *ngIf="showCreatedByPipelineAndStageOnTop">
-                          <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px"
-                            *ngIf="showCreatedByPipelineAndStage">
-                            <label class="control-label">Pipeline<span
-                                class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdByPipelineId"
-                              [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdByPipelineId"
-                              [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasCreatedByPipeline"
-                              (ngModelChange)="resetCreatedByPipelineStages()"
-                              (input)="validateField('createdByPipelineId',false)">
-                              <option [value]="0">Select Pipeline</option>
-                              <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">
-                                {{pipeline.name}}</option>
-                            </select>
-
-                          </div>
-
-                          <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px"
-                            id="dealStageDiv" *ngIf="showCreatedByPipelineAndStage">
-                            <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
-                              [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
-                              id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
-                              (input)="validateField('createdByPipelineStageId',false)">
-                              <option [value]="0">Select Stage</option>
-                              <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
-                                [value]="deal.currentStageId">
-                                {{deal.currentStageName}}</option>
-                              <option *ngFor="let stage of createdByStages" [value]="stage.id">{{stage.stageName}}
-                              </option>
-                            </select>
-                          </div>
-                          <div class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
-                            <label class="control-label">Vendor's xAmplify Pipeline<span
-                                class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdForPipelineId"
-                              [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
-                              [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline"
-                              (ngModelChange)="resetCreatedForPipelineStages()"
-                              (input)="validateField('createdForPipelineId',false)">
-                              <option [value]="0">Select Pipeline</option>
-                              <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">
-                                {{pipeline.name}}</option>
-                            </select>
-
-                          </div>
-
-                          <div class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
-                            id="dealStageDiv">
-                            <label class="control-label">Vendor's xAmplify Stage<span
-                                class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
-                              [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
-                              id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
-                              (input)="validateField('createdForPipelineStageId',false)">
-                              <option [value]="0">Select Stage</option>
-                              <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
-                                [value]="deal.currentStageId">
-                                {{deal.currentStageName}}</option>
-                              <option *ngFor="let stage of createdForStages" [value]="stage.id">{{stage.stageName}}
-                              </option>
-                            </select>
+                        <div *ngIf="!commentsLoader"  class="deal-details">
+                          <div class="row mix-grid p10 bg-color">
+                            <div class="col-md-3 col-lg-2">
+                              <div class="frame card-template">
+                                <img style="height: 80px;width: 80px;" class="img-circle img-templates"
+                                  src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
+                              </div>
+                            </div>
+                            <div class="col-md-9 col-lg-10 pl-30">
+                                <div *ngIf="commentDealAndLeadDto?.campaignName != null && commentDealAndLeadDto?.campaignName != undefined">
+                                  <h5 class="mt10 mb0" title="{{commentDealAndLeadDto?.campaignName}}">
+                                    <span><strong>Campaign Name </strong></span>: {{commentDealAndLeadDto?.campaignName | slice:0:25}}
+                                    <span *ngIf="commentDealAndLeadDto?.campaignName?.length>25">..</span>
+                                  </h5>
+                                </div>
+                                <div *ngIf="commentDealAndLeadDto?.title != null && commentDealAndLeadDto?.title != undefined">
+                                  <h5 class="mt10 mb0" title="{{commentDealAndLeadDto?.title}}">
+                                    <span><strong>Deal Title </strong></span>: {{commentDealAndLeadDto?.title | slice:0:25}}
+                                    <span *ngIf="commentDealAndLeadDto?.title?.length>25">..</span>
+                                  </h5>
+                                </div>
+                                <div *ngIf="commentDealAndLeadDto?.referenceId != null && commentDealAndLeadDto?.referenceId != undefined && isVendorVersion">
+                                  <h5 class="mt10 mb0" title="{{commentDealAndLeadDto?.referenceId}}">
+                                    <span><strong>Deal ID </strong></span>: {{commentDealAndLeadDto?.referenceId}}
+                                  </h5>
+                                </div>
+                              <!--Registered Details-->
+                                <div class="underline mt5"><strong>{{DEAL_CONSTANTS?.addedBy}}:</strong></div>
+                                <h5 class="mt10 mb0" *ngIf="commentDealAndLeadDto?.createdByName" [title]="commentDealAndLeadDto?.createdByName">
+                                  <span><strong>Name</strong></span>: {{commentDealAndLeadDto?.createdByName | slice:0:25}}
+                                  <span *ngIf="commentDealAndLeadDto?.createdByName.length>25">..</span>
+                                </h5>
+                                <h5 class="mt10 mb0" *ngIf="commentDealAndLeadDto?.createdByEmail" [title]="createdByEmail">
+                                  <span><strong>Email</strong></span>: {{commentDealAndLeadDto?.createdByEmail | slice:0:30}}
+                                  <span *ngIf="commentDealAndLeadDto?.createdByEmail.length>30">..</span>
+                                </h5>
+                                <h5 class="mt10">
+                                  <span><strong>Created On </strong></span>
+                                  <span title="Created On">: 
+                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="commentDealAndLeadDto?.createdTime"></app-timestamp>
+                                  </span>
+                                </h5>
+                              <!--Lead Created Details-->
+                              <div *ngIf="commentDealAndLeadDto?.showLeadInfo" class="lead-details-border mt5">
+                                <h5 class="mt10">
+                                  <span class="ml5 underline"><strong>Lead Details:</strong></span>
+                                  <div style="padding:5px">
+                                    <app-user-info [userInfo]="commentDealAndLeadDto?.associatedContact" [isLeadInfo]="true"></app-user-info>
+                                  </div>
+                                </h5>
+                              </div>
+                            </div>
                           </div>
                         </div>
-
-                        <div *ngIf="!showCreatedByPipelineAndStageOnTop">
-                          <div class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
-                            <label class="control-label">Pipeline<span
-                                class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdForPipelineId"
-                              [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
-                              [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline"
-                              (ngModelChange)="resetCreatedForPipelineStages()"
-                              (input)="validateField('createdForPipelineId',false)">
-                              <option [value]="0">Select Pipeline</option>
-                              <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">
-                                {{pipeline.name}}</option>
-                            </select>
-                          </div>
-
-                          <div class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
-                            id="dealStageDiv">
-                            <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
-                              [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
-                              id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
-                              (input)="validateField('createdForPipelineStageId',false)">
-                              <option [value]="0">Select Stage</option>
-                              <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
-                                [value]="deal.currentStageId">
-                                {{deal.currentStageName}}</option>
-                              <option *ngFor="let stage of createdForStages" [value]="stage.id">{{stage.stageName}}
-                              </option>
-                            </select>
-                          </div>
-                          <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px"
-                            *ngIf="showCreatedByPipelineAndStage">
-                            <label class="control-label">Partner's xAmplify Pipeline<span
-                                class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdByPipelineId"
-                              [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdByPipelineId"
-                              [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasCreatedByPipeline"
-                              (ngModelChange)="resetCreatedByPipelineStages()"
-                              (input)="validateField('createdByPipelineId',false)">
-                              <option [value]="0">Select Pipeline</option>
-                              <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">
-                                {{pipeline.name}}</option>
-                            </select>
-                          </div>
-
-                          <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px"
-                            id="dealStageDiv" *ngIf="showCreatedByPipelineAndStage">
-                            <label class="control-label">Partner's xAmplify Stage<span
-                                class="required"><strong>*</strong></span></label>
-                            <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
-                              [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
-                              id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
-                              (input)="validateField('createdByPipelineStageId',false)">
-                              <option [value]="0">Select Stage</option>
-                              <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
-                                [value]="deal.currentStageId">
-                                {{deal.currentStageName}}</option>
-                              <option *ngFor="let stage of createdByStages" [value]="stage.id">{{stage.stageName}}
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <!--    xnfr-426----->
-                        <div class="form-group" *ngIf="actionType!=='view'" [attr.class]="dealComment"
-                          style="margin-bottom: 20px">
-                          <label class="control-label">Add Comment</label>
-                          <textarea type="text" maxlength="250" rows="3" class="form-control" name="dealComment"
-                            placeholder="Write your comment here" id="dealComment"
-                            [(ngModel)]="deal.dealComment"></textarea>
-                        </div>
+                        <app-chat [dealId]="commentDealAndLeadDto?.id" [isPreviewDealOrLeadComponent]="true" [editTextArea]="false"  [moduleType]="'deal'" [enableWrite]="true"></app-chat>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ng-container>
         </div>
-        <div *ngIf="showCustomForm && deal.createdForCompanyId">
-          <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [activeCRM]="activeCRMDetails"
-            [dealId]="deal.id" [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson"
-            [ticketTypeId]="deal.haloPSATickettypeId"></app-sf-deal>
-        </div>
-        <div *ngIf="!showCustomForm && showDefaultForm">
-          <div class=" row portlet light deal-box">
-            <h4 class="caption" class="portlet-title">Deal Details</h4>
-            <div class="col-sm-12 col-xs-12">
-              <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
-                <label class="control-label">Title
-                  <span class="required"><strong>*</strong></span>
-                </label>
-                <input type="text" maxlength="100" name="titleName" class="form-control" [(ngModel)]=" deal.title"
-                  [ngModelOptions]="{standalone: true}" id="title" (input)="validateField('title',false)"
-                  [disabled]="preview" />
-              </div>
-
-
-
-              <div class="form-group" [attr.class]="dealType" style="margin-bottom: 20px">
-                <label class="control-label">Deal Type
-                  <span class="required"><strong>*</strong></span>
-                </label>
-                <select class="form-control" [(ngModel)]="deal.dealType" [ngModelOptions]="{standalone: true}"
-                  id="dealType" (input)="validateField('dealType',false)" [disabled]="preview">
-                  <option *ngFor="let dt of defaultDealTypes" [value]="dt">{{dt!='Select Dealtype'?dt:'-- Select Deal
-                    Type --'}}
-                  </option>
-                  <option *ngFor="let dt of dealTypes" [value]="dt.dealType">{{dt.dealType}}</option>
-                </select>
-              </div>
-
-
-              <div class="form-group " [attr.class]="opportunityAmount" style="margin-bottom: 20px">
-                <label class="control-label">Amount
-                  <span class="required"><strong>*</strong></span>
-                </label>
-                <div class="input-group amount-border">
-                  <input type="text" currencyMask [options]="{align :'left',allowNegative :false }"
-                    class="form-control currency" [(ngModel)]="deal.amount" [ngModelOptions]="{standalone: true}"
-                    id="amount" (input)="validateField('amount',false)" (ngModelChange)="validateField('amount',false)"
-                    [disabled]="preview" maxlength="20" autocomplete="off" />
-                </div>
-              </div>
-              <div class="form-group" [attr.class]="estimatedCloseDate" style="margin-bottom: 20px">
-                <label class="control-label">Estimated Close date
-                  <span class="required"><strong>*</strong></span>
-                </label>
-                <app-flatpickr [type]="'date'" [dateFormat]="'Y-m-d'" [enableTime]="false"
-                  [(dataField)]="deal.closeDateString" [class.disabled]="preview"
-                  (input)="validateField('estimatedCloseDate',false)"></app-flatpickr>
-              </div>
-
-              <div *ngFor="let property of propertiesQuestions;let i=index">
-                <div class="form-group" [attr.class]="property.class" *ngIf="property.propType == 'QUESTION'"
-                  style="margin-bottom: 20px">
-                  <label class="control-label">{{property.key}}
-                    <span class="required"><strong>*</strong></span>
-                  </label>
-                  <input type="text" maxlength="1000" name="{{property.value}}" class="form-control"
-                    [(ngModel)]="property.value" [ngModelOptions]="{standalone: true}" id="question_{{property.id}}"
-                    (input)="validateField(property,true)" [disabled]="preview" />
-                </div>
-              </div>
-            </div>
-
-          </div>
-          <div class="form-group" *ngIf="!preview && propertiesComments?.length===0">
-            <a class="dashboard-stat yellow-gold" style="padding: 9px 0;margin-top: 10px;margin-left: 10px"
-              (click)="addProperties()">
-              <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>Add Your Comments
-            </a>
-          </div>
-          <div class=" row portlet light deal-box" *ngIf="propertiesComments?.length>0">
-            <h4 class="caption" class="portlet-title" *ngIf="!preview">Add Your Comments</h4>
-            <h4 class="caption" class="portlet-title" *ngIf="preview">Comments</h4>
-            <div *ngFor="let property of propertiesComments;let i=index">
-              <div class="portlet light dashboard-stat2" *ngIf="property.propType == 'PROPERTY'"
-                style="margin-bottom: 50px;border: 1px solid rgb(176, 177, 177);margin: 10px;padding: 10px">
-                <div class="portlet-title custom-change-css"
-                  [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
-                  <div class="col-xs-6">
-                    <h4 class="text-left" style="color:#fff">Comment-{{i+1}}</h4>
-                  </div>
-                  <div class="col-xs-6">
-                    <div class="pull-right" id="question-icons">
-                      <button type="button" class="btn-danger button-blue" (click)="showAlert(i+1,property)"
-                        *ngIf="showCommentActions">
-                        <span class="glyphicon glyphicon-trash"></span>
-                      </button>
-                      <button type="button" class="btn-primary button-blue" (click)="addProperties()"
-                        *ngIf="showCommentActions">
-                        <span class="glyphicon glyphicon-plus"></span>
-                      </button>
-                      <button type="button" class="btn-primary button-blue" (click)="commentsection(property)"
-                        *ngIf="property.isSaved">
-                        <span class="glyphicon glyphicon-comment" style="margin-right: 5px"></span><span
-                          *ngIf="property.unReadPropertyChatCount > 0">{{property.unReadPropertyChatCount}}</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <form class="role add-reply" id="form-{{property.divId}}">
-                    <div class="col-xs-10" style="padding:0">
-                      <div class="form-group" [attr.class]="property.validationStausKey">
-                        <label class="control-label">Comment Title
-                          <span class="required"><strong>*</strong></span>
-                        </label>
-                        <input type="text" maxlength="100" class="form-control" [(ngModel)]=" property.key"
-                          [ngModelOptions]="{standalone: true}" id="question" (input)="validateComment(property)"
-                          [disabled]="property.isDisabled || !showCommentActions || preview" />
-                      </div>
-                      <div class="form-group" [attr.class]="property.validationStausValue">
-                        <label class="control-label">Comment
-                          <span class="required"><strong>*</strong></span>
-                        </label>
-                        <textarea type="text" maxlength="1000" class="form-control" [(ngModel)]=" property.value"
-                          [ngModelOptions]="{standalone: true}" id="comment" (input)="validateComment(property)"
-                          [disabled]="property.isDisabled || !showCommentActions || preview"></textarea>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                <div class="row" *ngIf=" property.isCommentSection ">
-                  <div *ngIf="property.isCommentSection" style="width:95%">
-                    <app-chat [propertyId]="property.id" [moduleType]="'property'"
-                      [enableWrite]="isVendorVersion || deal.canUpdate"></app-chat>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
+        <!--Custom Deal Form-->
+        <ng-container *ngIf="!preview">
+          <ng-template [ngTemplateOutlet]="customCRMFormTemplate"></ng-template>
+        </ng-container>
+        <!--Default Form-->
+        <ng-container *ngIf="!preview">
+          <ng-template [ngTemplateOutlet]="defaultDealFormTemplate"></ng-template>
+        </ng-container>
+        <!--Buttons--->
         <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
           <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
             class="button bgcolor-unset" *ngIf="!edit"><span class="btn Btn-Green transition txt_pd-top3">Register
@@ -511,7 +267,6 @@
           <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
             class="button bgcolor-unset" *ngIf="edit"><span class="btn Btn-Green transition txt_pd-top3">Update
               Deal</span></button>
-
         </div>
         <div class="pull-right mr10" *ngIf="!preview && showCustomForm">
           <ng-container *ngIf="!showLoadingButton">
@@ -534,10 +289,6 @@
   </div>
 </div>
 
-<!-- Add Lead Model-->
-<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="dealToLead.leadActionType" [dealToLead]="dealToLead"
-  (notifySubmitSuccess)="leadCreated($event)" (notifyClose)="closeLeadForm()" [isVendorVersion]="isVendorVersion"
-  [isOrgAdmin]="isOrgAdmin"></app-add-lead>
 
 <!-- Select Lead Model-->
 <app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead"
@@ -545,3 +296,310 @@
 
 
 <!-- END CONTENT -->
+
+<ng-template #dealLayoutAndPipeLineTemplate>
+   <!--Deal Layout-->
+   <div *ngIf="showOpportunityTypes">
+    <div class="panel panel-default deal-bgcolor" >
+      <div class="panel-body">
+        <div class="card-bgcolors h-260 pl0 pr0">
+          <div class="form-group" [attr.class]="opportunityTypeId" style="margin-bottom: 20px" id="dealStageDiv">
+            <label class="control-label">{{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
+              ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
+              ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}<span class="required"><strong>*</strong></span></label>
+            <select class="form-control" [(ngModel)]="deal.haloPSATickettypeId"
+              [ngModelOptions]="{standalone: true}" placeholder="opportunityTypeId" id="opportunityTypeId"
+              [disabled]="preview || isCampaignTicketTypeSelected || isZohoLeadAttached" (ngModelChange)="onChangeTicketType()"
+              (input)="validateField('opportunityTypeId',false)">
+              <option [value]="0">Select {{((activeCRMDetails?.createdForActiveCRMType === 'HALOPSA')
+                ||(activeCRMDetails?.createdByActiveCRMType === 'HALOPSA'))?'Ticket Type':(((activeCRMDetails?.createdForActiveCRMType === 'ZOHO')
+                ||(activeCRMDetails?.createdByActiveCRMType === 'ZOHO'))?'Deal Layout':'')}}</option>
+              <option *ngFor="let type of halopsaTicketTypes" [value]="type.id">{{type.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Pipe Line Details-->
+  <div class="panel-group" role="tablist" aria-multiselectable="true" 
+  *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showDealPipeline || activeCRMDetails?.showDealPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm">
+    <div class="panel panel-default deal-bgcolor">
+      <div class="panel-heading deal-bgcolor">
+        <h4 class="panel-title">
+          <a href="pipelineDetails" (click)="toggleCollapsepipepline($event)">
+            <i [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed3, 'fa-chevron-down collapseIn': isCollapsed3}"
+              class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;"></i>
+            Pipeline Details</a>
+        </h4>
+      </div>
+      <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="pipelineDetails">
+        <div class="panel-body br-unset pl0 pr0 pt0 pb0">
+          <div class="card-bgcolors h-260 pl0 pr0">
+            <div *ngIf="showCreatedByPipelineAndStageOnTop">
+              <div *ngIf="showCreatedByPipelineAndStage" class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px">
+                <label class="control-label">Pipeline<span class="required"><strong>*</strong></span></label>
+                <select class="form-control" [(ngModel)]="deal.createdByPipelineId"
+                  [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdByPipelineId"
+                  [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasCreatedByPipeline"
+                  (ngModelChange)="resetCreatedByPipelineStages()"
+                  (input)="validateField('createdByPipelineId',false)">
+                  <option [value]="0">Select Pipeline</option>
+                  <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">
+                    {{pipeline.name}}</option>
+                </select>
+              </div>
+              <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px" id="dealStageDiv" *ngIf="showCreatedByPipelineAndStage">
+                <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
+                <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
+                  [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
+                  id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable" (input)="validateField('createdByPipelineStageId',false)">
+                  <option [value]="0">Select Stage</option>
+                  <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">{{deal.currentStageName}}</option>
+                  <option *ngFor="let stage of createdByStages" [value]="stage.id">{{stage.stageName}}</option>
+                </select>
+              </div>
+              <div *ngIf="activeCRMDetails?.showDealPipeline || isOrgAdmin || isMarketingCompany || showDefaultForm" class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
+                <label class="control-label">{{vendorCompanyName}} Pipeline<span class="required"><strong>*</strong></span></label>
+                <select class="form-control" [(ngModel)]="deal.createdForPipelineId"
+                  [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
+                  [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline"
+                  (ngModelChange)="resetCreatedForPipelineStages()"
+                  (input)="validateField('createdForPipelineId',false)">
+                  <option [value]="0">Select Pipeline</option>
+                  <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                </select>
+              </div>
+
+              <div *ngIf="activeCRMDetails?.showDealPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm" class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
+                id="dealStageDiv">
+                <label class="control-label">{{vendorCompanyName}} Stage<span
+                    class="required"><strong>*</strong></span></label>
+                <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
+                  [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
+                  id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
+                  (input)="validateField('createdForPipelineStageId',false)">
+                  <option [value]="0">Select Stage</option>
+                  <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
+                    [value]="deal.currentStageId">
+                    {{deal.currentStageName}}</option>
+                  <option *ngFor="let stage of createdForStages" [value]="stage.id">{{stage.stageName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div *ngIf="!showCreatedByPipelineAndStageOnTop">
+              <div class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
+                <label class="control-label">Pipeline<span
+                    class="required"><strong>*</strong></span></label>
+                <select class="form-control" [(ngModel)]="deal.createdForPipelineId"
+                  [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
+                  [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline"
+                  (ngModelChange)="resetCreatedForPipelineStages()"
+                  (input)="validateField('createdForPipelineId',false)">
+                  <option [value]="0">Select Pipeline</option>
+                  <option *ngFor="let pipeline of createdForPipelines" [value]="pipeline.id">
+                    {{pipeline.name}}</option>
+                </select>
+              </div>
+
+              <div class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
+                id="dealStageDiv">
+                <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
+                <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
+                  [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
+                  id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
+                  (input)="validateField('createdForPipelineStageId',false)">
+                  <option [value]="0">Select Stage</option>
+                  <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
+                    [value]="deal.currentStageId">
+                    {{deal.currentStageName}}</option>
+                  <option *ngFor="let stage of createdForStages" [value]="stage.id">{{stage.stageName}}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px"
+                *ngIf="showCreatedByPipelineAndStage">
+                <label class="control-label">Partner's xAmplify Pipeline<span
+                    class="required"><strong>*</strong></span></label>
+                <select class="form-control" [(ngModel)]="deal.createdByPipelineId"
+                  [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdByPipelineId"
+                  [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasCreatedByPipeline"
+                  (ngModelChange)="resetCreatedByPipelineStages()"
+                  (input)="validateField('createdByPipelineId',false)">
+                  <option [value]="0">Select Pipeline</option>
+                  <option *ngFor="let pipeline of createdByPipelines" [value]="pipeline.id">
+                    {{pipeline.name}}</option>
+                </select>
+              </div>
+
+              <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px"
+                id="dealStageDiv" *ngIf="showCreatedByPipelineAndStage">
+                <label class="control-label">Partner's xAmplify Stage<span
+                    class="required"><strong>*</strong></span></label>
+                <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
+                  [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
+                  id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable"
+                  (input)="validateField('createdByPipelineStageId',false)">
+                  <option [value]="0">Select Stage</option>
+                  <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
+                    [value]="deal.currentStageId">
+                    {{deal.currentStageName}}</option>
+                  <option *ngFor="let stage of createdByStages" [value]="stage.id">{{stage.stageName}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!--XNFR-426----->
+            <div class="form-group" *ngIf="actionType!=='view'" [attr.class]="dealComment"
+              style="margin-bottom: 20px">
+              <label class="control-label">Add Comment</label>
+              <textarea type="text" maxlength="250" rows="3" class="form-control" name="dealComment"
+                placeholder="Write your comment here" id="dealComment"
+                [(ngModel)]="deal.dealComment"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!--Default Form-->
+<ng-template #defaultDealFormTemplate>
+  <div *ngIf="!showCustomForm && showDefaultForm">
+    <div  class="row portlet light deal-box" [ngClass]="preview?'margin-0px':''">
+      <h4 class="caption" class="portlet-title">Deal Details</h4>
+      <div class="col-sm-12 col-xs-12">
+        <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
+          <label class="control-label">Title
+            <span class="required"><strong>*</strong></span>
+          </label>
+          <input type="text" maxlength="100" name="titleName" class="form-control" [(ngModel)]=" deal.title"
+            [ngModelOptions]="{standalone: true}" id="title" (input)="validateField('title',false)"
+            [disabled]="preview" />
+        </div>
+        <div class="form-group" [attr.class]="dealType" style="margin-bottom: 20px">
+          <label class="control-label">Deal Type
+            <span class="required"><strong>*</strong></span>
+          </label>
+          <select class="form-control" [(ngModel)]="deal.dealType" [ngModelOptions]="{standalone: true}"
+            id="dealType" (input)="validateField('dealType',false)" [disabled]="preview">
+            <option *ngFor="let dt of defaultDealTypes" [value]="dt">{{dt!='Select Dealtype'?dt:'-- Select Deal Type --'}}</option>
+            <option *ngFor="let dt of dealTypes" [value]="dt.dealType">{{dt.dealType}}</option>
+          </select>
+        </div>
+        <div class="form-group " [attr.class]="opportunityAmount" style="margin-bottom: 20px">
+          <label class="control-label">Amount
+            <span class="required"><strong>*</strong></span>
+          </label>
+          <div class="input-group amount-border">
+            <input type="text" currencyMask [options]="{align :'left',allowNegative :false }"
+              class="form-control currency" [(ngModel)]="deal.amount" [ngModelOptions]="{standalone: true}"
+              id="amount" (input)="validateField('amount',false)" (ngModelChange)="validateField('amount',false)"
+              [disabled]="preview" maxlength="20" autocomplete="off" />
+          </div>
+        </div>
+        <div class="form-group" [attr.class]="estimatedCloseDate" style="margin-bottom: 20px">
+          <label class="control-label">Estimated Close date
+            <span class="required"><strong>*</strong></span>
+          </label>
+          <app-flatpickr [type]="'date'" [dateFormat]="'Y-m-d'" [enableTime]="false"
+            [(dataField)]="deal.closeDateString" [class.disabled]="preview"
+            (input)="validateField('estimatedCloseDate',false)"></app-flatpickr>
+        </div>
+
+        <div *ngFor="let property of propertiesQuestions;let i=index">
+          <div class="form-group" [attr.class]="property.class" *ngIf="property.propType == 'QUESTION'"
+            style="margin-bottom: 20px">
+            <label class="control-label">{{property.key}}
+              <span class="required"><strong>*</strong></span>
+            </label>
+            <input type="text" maxlength="1000" name="{{property.value}}" class="form-control"
+              [(ngModel)]="property.value" [ngModelOptions]="{standalone: true}" id="question_{{property.id}}"
+              (input)="validateField(property,true)" [disabled]="preview" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="form-group" *ngIf="!preview && propertiesComments?.length===0">
+      <a class="dashboard-stat yellow-gold" style="padding: 9px 0;margin-top: 10px;margin-left: 10px" (click)="addProperties()">
+        <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>Add Your Comments
+      </a>
+    </div>
+    <!--Comments-->
+    <div *ngIf="propertiesComments?.length>0" class="row portlet light deal-box" [ngClass]="preview?'margin-0px mt5':''" >
+      <h4 class="caption" class="portlet-title" *ngIf="!preview">Add Your Comments</h4>
+      <h4 class="caption" class="portlet-title" *ngIf="preview">Comments</h4>
+      <div *ngFor="let property of propertiesComments;let i=index">
+        <div class="portlet light dashboard-stat2" *ngIf="property.propType == 'PROPERTY'"
+          style="margin-bottom: 50px;border: 1px solid rgb(176, 177, 177);margin: 10px;padding: 10px">
+          <div class="portlet-title custom-change-css"
+            [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
+            <div class="col-xs-6">
+              <h4 class="text-left" style="color:#fff">Comment-{{i+1}}</h4>
+            </div>
+            <div class="col-xs-6">
+              <div class="pull-right" id="question-icons">
+                <button type="button" class="btn-danger button-blue" (click)="showAlert(i+1,property)"
+                  *ngIf="showCommentActions">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <button type="button" class="btn-primary button-blue" (click)="addProperties()"
+                  *ngIf="showCommentActions">
+                  <span class="glyphicon glyphicon-plus"></span>
+                </button>
+                <button type="button" class="btn-primary button-blue" (click)="commentsection(property)"
+                  *ngIf="property.isSaved">
+                  <span class="glyphicon glyphicon-comment" style="margin-right: 5px"></span><span
+                    *ngIf="property.unReadPropertyChatCount > 0">{{property.unReadPropertyChatCount}}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <form class="role add-reply" id="form-{{property.divId}}">
+              <div class="col-xs-10" style="padding:0">
+                <div class="form-group" [attr.class]="property.validationStausKey">
+                  <label class="control-label">Comment Title
+                    <span class="required"><strong>*</strong></span>
+                  </label>
+                  <input type="text" maxlength="100" class="form-control" [(ngModel)]=" property.key"
+                    [ngModelOptions]="{standalone: true}" id="question" (input)="validateComment(property)"
+                    [disabled]="property.isDisabled || !showCommentActions || preview" />
+                </div>
+                <div class="form-group" [attr.class]="property.validationStausValue">
+                  <label class="control-label">Comment
+                    <span class="required"><strong>*</strong></span>
+                  </label>
+                  <textarea type="text" maxlength="1000" class="form-control" [(ngModel)]=" property.value"
+                    [ngModelOptions]="{standalone: true}" id="comment" (input)="validateComment(property)"
+                    [disabled]="property.isDisabled || !showCommentActions || preview"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="row" *ngIf=" property.isCommentSection ">
+            <div *ngIf="property.isCommentSection" style="width:95%">
+              <app-chat [propertyId]="property.id" [moduleType]="'property'"
+                [enableWrite]="isVendorVersion || deal.canUpdate"></app-chat>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!--Custom CRM Form-->
+<ng-template #customCRMFormTemplate>
+  <div  *ngIf="showCustomForm && deal.createdForCompanyId">
+    <app-sf-deal [createdForCompanyId]="deal.createdForCompanyId" [activeCRM]="activeCRMDetails"
+      [dealId]="deal.id" [isPreview]="preview" [forecastItemsJson]="deal.forecastItemsJson"
+      [ticketTypeId]="deal.haloPSATickettypeId" [opportunityType]="'DEAL'"></app-sf-deal>
+  </div>
+</ng-template>
+<app-scroll-top></app-scroll-top>

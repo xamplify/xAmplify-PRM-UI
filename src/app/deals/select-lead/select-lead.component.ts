@@ -24,6 +24,7 @@ export class SelectLeadComponent implements OnInit {
   @Input() public dealToLead: any;
   @Output() notifyClose = new EventEmitter();
   @Output() notifyLeadSelected = new EventEmitter();
+  @Output() notifyShowLeadForm = new EventEmitter();
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   selectLeadModalResponse: CustomResponse = new CustomResponse();

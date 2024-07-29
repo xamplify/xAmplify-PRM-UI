@@ -238,5 +238,6 @@ img.brand-logo-custom {
 .disable-tile-pj{
   cursor: not-allowed;
 }
- 
+/* Sudha Sri(24-07-2024) */
+.dashboard-stat{border-radius: 10px !important;} 
 

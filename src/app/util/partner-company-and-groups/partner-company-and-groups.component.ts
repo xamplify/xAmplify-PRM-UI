@@ -168,7 +168,11 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 	findPartnerCompanies(pagination: Pagination) { 
 		this.selectedTab = 1;
 		this.referenceService.startLoader(this.httpRequestLoader);
-		pagination.campaignId = this.inputId;//This is asset id
+		if(this.vendorJourney){
+			pagination.landingPageId = this.inputId;
+		}else{
+			pagination.campaignId = this.inputId;//This is asset id
+		}
 		pagination.userId = this.loggedInUserId;
 		pagination.type = this.moduleName;
 		this.partnerService.findPartnerCompanies(pagination).subscribe((result: any) => {
@@ -470,7 +474,11 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 		this.selectedTab = 2
 		this.customResponse = new CustomResponse();
 		this.referenceService.startLoader(this.httpRequestLoader);
-		pagination.campaignId = this.inputId;
+		if(this.vendorJourney){
+			pagination.landingPageId = this.inputId;
+		}else{
+			pagination.campaignId = this.inputId;//This is asset id
+		}
 		pagination.userId = this.loggedInUserId;
 		pagination.type = this.moduleName;
 		this.partnerService.findPartnerGroups(pagination).subscribe((result: any) => {
@@ -624,7 +632,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 					} else {
 						this.responseMessage = data.message;
 					}
-					this.resetFields();
+					this.closePopupEmit(this.responseMessage)
 				} else {
 					this.ngxLoading = false;
 					this.authenticationService.forceToLogout();
@@ -637,14 +645,14 @@ export class PartnerCompanyAndGroupsComponent implements OnInit, AfterViewInit {
 			});
 		}
 
-		closePopupEmit() {
-			this.closePopup.emit();
+		closePopupEmit(message) {
+			this.closePopup.emit(message);
 			this.resetFields();
 		}
 
 		getUserStatus(userId: number) {
 			 let status = "N/A";
-			if (this.selectedPartnerIdAndPartnerStatus.some(e => e.partnerId ===  userId)) {
+			if (this.selectedPartnerIdAndPartnerStatus != null &&  this.selectedPartnerIdAndPartnerStatus.some(e => e.partnerId ===  userId)) {
 				status = this.selectedPartnerIdAndPartnerStatus.filter(e => e.partnerId === userId)[0].status;
 			} 
 			return status;

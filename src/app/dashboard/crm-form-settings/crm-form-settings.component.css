@@ -1,0 +1,306 @@
+.activate-btn {
+    border-radius: 20px 0px 0px 20px !important;
+    padding: 11px 30px;
+  }
+  .activated-btn {
+    border-radius: 20px 0px 0px 20px !important;
+    padding: 11px 20px;
+    background-color: #29dd50 !important;
+    cursor: no-drop;
+  }
+  .unlink-btn {
+    border-radius: 0px 20px 20px 0px !important;
+    padding: 11px 35px;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .border-none {
+    border: none !important;
+  }
+  .user-profile {
+    display: flex;
+    margin-bottom: 12px;
+    border: none;
+    margin-left: 20px;
+  }
+  .tab-bg {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    margin-bottom: 10px;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 0 10px;
+  }
+  .pt-top {
+    padding-top: 8px;
+  }
+  .pt-5 {
+    padding-top: 25px;
+  }
+  .profile-image {
+    border-radius: 50% !important;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  .profile-image-wrapper-color {
+    display: block;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    position: relative;
+  }
+  .active-btns {
+    height: 60px;
+    margin: 20px 10px;
+  }
+  .user-info {
+    width: 50%;
+  }
+  .closebtn {
+    float: right;
+  }
+  .disable-btn-text-color {
+    color: #000000;
+  }
+  .reload-btn {
+    color: #488fd6;
+    border: 1px solid #eaeaea;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  @media only screen and (min-width: 990px) and (max-width:1240px) {  
+    .activated-btn {padding: 9px 9px !important;}
+    .activate-btn {padding: 9px 9px !important;}
+    .unlink-btn {padding: 9px 9px !important;}
+    .user-profile { margin-left: 10px;}
+    .active-btns {margin: 20px 5px;}
+    .profile-image-wrapper-color {width: 60px;height: 60px;}
+  }
+  @media only screen and (min-width:768px) and (max-width:991px) {  
+    .mb_right0{
+      margin: 20px 0px;
+    }
+  }
+  .toggleOnOff {
+    --width: 60px;
+    --height: calc(var(--width) / 3);
+    position: relative;
+    top: 11px;
+    display: inline-block;
+    width: var(--width);
+    height: var(--height);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+    border-radius: var(--height);
+    cursor: pointer;
+  }
+  .toggleOnOff input {display: none;}
+  .toggleOnOff .sliderOnOff {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--height);
+    background-color: #cccccc69;
+    transition: all 0.4s ease-in-out;
+  }
+  .toggleOnOff .sliderOnOff::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(var(--height));
+    height: calc(var(--height));
+    border-radius: calc(var(--height) / 2);
+    background-color: #fff;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s ease-in-out;
+  }
+  .toggleOnOff input:checked+.sliderOnOff {
+    background-color: #2196F3;
+  }
+  .toggleOnOff input:checked+.sliderOnOff::before {
+    transform: translateX(calc(var(--width) - var(--height)));
+  }
+  .toggleOnOff .labels {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 10px;
+    font-family: sans-serif;
+    transition: all 0.4s ease-in-out;
+  }
+  .toggleOnOff .labels::after {
+    content: attr(data-off);
+    position: absolute;
+    right: 5px;
+    color: #4d4d4d;
+    opacity: 1;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    transition: all 0.4s ease-in-out;
+  }
+  .toggleOnOff .labels::before {
+    content: attr(data-on);
+    position: absolute;
+    left: 5px;
+    color: #ffffff;
+    opacity: 0;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
+    transition: all 0.4s ease-in-out;
+  }
+  .toggleOnOff input:checked~.labels::after {
+    opacity: 0;
+  }
+  .toggleOnOff input:checked~.labels::before {
+    opacity: 1;
+  }
+  .custom-fields-items-count{
+    width: max-content;
+    margin-top: 7px;
+    float: right;
+    /* padding-right: 10px; */
+  }
+  
+  .disabled-opacity{
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  a.disabled {
+    pointer-events: none;
+    }
+  @media (min-width: 992px) and (max-width: 1300px) {
+    button.btn.ActivatedBtn {
+      font-size: 14px !important;
+    }
+  }
+  
+  .EditDetailCu{
+    background: #f1f5f9;
+    margin: 0px;
+    border: 1px solid #ddd;
+  }
+  .SingleIconCu{
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 26px;
+    vertical-align: middle;
+    margin-right: 5px;
+    margin-bottom: 2px;
+    font-size: 14px!important;
+  }
+  .formSelectCustomization {
+    padding: 3px 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+  .alignMiddle{vertical-align: top !important; position: relative; bottom: 4px;}
+  .textDecoration{list-style-type: none;list-style-type: none;padding: 0px;margin: 0px;}
+  i.GreenCheckMark{Color:green;}
+  ul.textDecoration li {
+    display: inline;
+    /* float: left; */
+    /* width: 33%; */
+    padding-right: 10px;
+  }
+  span.FieldName {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 3px;
+  }
+  .ml-9{
+  margin-left:10px;
+  }
+  .fs-16{
+    font-size: 16px;
+  }
+  @media screen and (max-width:578px){
+    .integration-profile{
+     overflow-x: auto;
+    }
+    .user-profile{
+      width: max-content;
+    }
+    .active-btns{
+      width: 46%;
+    }
+    .navtabs_flex{
+      display: flex;
+      white-space: nowrap;
+    }
+    .ml-auto{
+      margin-left: auto;
+    }
+    .scrollbar-x{
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    .width100{
+    width: 100px;
+    }
+    .justify-content-end{
+      justify-content: flex-start!important;
+    }
+    .ml_15{
+     margin-left: 15px;
+    }
+    .ml_10{
+      margin-left: 10px;
+    }
+    .mb-flex-wrap{
+     flex-wrap: wrap;
+    }
+    .pl-left0{
+     padding-left: 0px!important;
+    }
+    .my-10{
+      margin:10px 0px;
+    }
+  }
+  .align-item-left{
+    float: left;
+  }
+  
+  .align-width {
+    width: 160px;
+  }
+  .justify-content-end{
+    justify-content: end;
+  }
+  .btn-groups{
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .btn-groups>.btn{
+    position: relative;
+    float: left;
+  }
+  .btn-groups .btn+.btn{
+    margin-left: -1px;
+  }
+
+  .sortAlign{
+    margin-left: 35px;
+    margin-top: 5px;
+  }
+
+.searhAlign{
+    margin-top: 5px;
+}
+@media only screen and (min-width:768px) and (max-width:1078px) { 
+  .tabview-fields{
+    margin: 12px 0px;
+  }
+}

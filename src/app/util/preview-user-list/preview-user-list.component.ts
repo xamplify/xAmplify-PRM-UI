@@ -103,7 +103,7 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
   
   getUserStatus(userId: number) {
     let status = "N/A";
-   if (this.selectedPartnerGroupPartnerIdAndPartnerStatus.some(e => e.partnerId ===  userId)) {
+   if (this.selectedPartnerGroupPartnerIdAndPartnerStatus != null && this.selectedPartnerGroupPartnerIdAndPartnerStatus.some(e => e.partnerId ===  userId)) {
      status = this.selectedPartnerGroupPartnerIdAndPartnerStatus.filter(e => e.partnerId === userId)[0].status;
    } 
    return status;

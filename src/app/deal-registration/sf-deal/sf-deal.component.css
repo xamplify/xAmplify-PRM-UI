@@ -1,21 +1,27 @@
-.disabled{
+.disabled {
   cursor: not-allowed !important;
   pointer-events: none;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  -webkit-appearance: none;
+  margin: 0;
+  /* <-- Apparently some margin are still there even though it's hidden */
 }
 
 input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
+  -moz-appearance: textfield;
+  /* Firefox */
 }
 
-.deal-box{
-  margin-bottom: 50px;border: 1px solid #ddd;margin: 10px;padding: 10px
+.deal-box {
+  margin-bottom: 50px;
+  border: 1px solid #ddd;
+  margin: 10px;
+  padding: 10px
 }
+
 input[type='radio']:checked:after {
   width: 13px;
   height: 13px;
@@ -29,36 +35,48 @@ input[type='radio']:checked:after {
   visibility: visible;
   border: 2px solid #ddd;
 }
+
 /* prdt */
-.product-add{
+.product-add {
   padding: 4px 5px;
   float: right;
 }
-.px-10{
-padding: 0px 10px;
+
+.px-0-19 {
+  padding: 0px 19px;
 }
-.w-100{
-width:100%;
-padding: 10px 0px!important;
+
+.px-0{
+  padding: 0px 0px;
 }
-.add-prdt{
-margin: 0 5px;
-font-size: 14px;
+
+.w-100 {
+  width: 100%;
+  padding: 10px 0px !important;
 }
-.add-prdts{
+
+.add-prdt {
+  margin: 0 5px;
+  font-size: 14px;
+}
+
+.add-prdts {
   font-size: 12px;
 }
-.Add-Icon{
-display: flex;
-justify-content: end;
-padding-top:13px;
+
+.Add-Icon {
+  display: flex;
+  justify-content: end;
+  padding-top: 13px;
 }
-.add-btn{
-padding: 4px 5px;
-margin: 0px 3px;
-border-radius: 4px;
+
+.add-btn {
+  padding: 4px 5px;
+  margin: 0px 3px;
+  border-radius: 4px;
 }
-.add-btns{
+
+.add-btns {
   position: relative;
   top: -2px;
   padding: 0px 6px;
@@ -67,50 +85,63 @@ border-radius: 4px;
   right: 10px;
   border-radius: 4px;
 }
-.panel-title > a {
+
+.panel-title>a {
   display: block;
   position: relative;
   font-size: 16px;
 }
-.panel-title > a:hover {
-  color:unset!important;
+
+.panel-title>a:hover {
+  color: unset !important;
 }
-.dropdown-menu{
-position: relative;
+
+.dropdown-menu {
+  position: relative;
 }
-.dropdown-border{
+
+.dropdown-border {
   border: 1px solid#ddd;
 }
-.dropdown-border:hover{
- background-color: unset;
+
+.dropdown-border:hover {
+  background-color: unset;
 }
+
 .dropdown-border:focus {
   border-color: #999;
   outline: 0;
   box-shadow: none;
 }
-.full-widthc{
-width: 100%;
+
+.full-widthc {
+  width: 100%;
 }
-.br-unset{
-  border-radius: unset!important;
+
+.br-unset {
+  border-radius: unset !important;
   margin: 0px 15px;
-  border-top:1px solid #ddd;
+  border-top: 1px solid #ddd;
 }
-.card-bgcolors{
+
+.card-bgcolors {
   border-radius: 5px;
   padding: 10px 15px;
 }
-.deal-heading{
+
+.deal-heading {
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
 }
+
 .panel-heading {
   padding: 10px 15px;
 }
-.h-300{
+
+.h-300 {
   min-height: 308px;
 }
+
 #myInput {
   box-sizing: border-box;
   border: none;
@@ -131,6 +162,7 @@ width: 100%;
   display: inline-block;
   width: 100%;
 }
+
 .xamplify-dropdown-content {
   position: absolute;
   background-color: #ffffff;
@@ -138,6 +170,7 @@ width: 100%;
   z-index: 1;
   width: 100%;
 }
+
 .xamplify-dropdown-option {
   color: black;
   padding: 10px;
@@ -166,27 +199,33 @@ width: 100%;
   padding: 10px 10px;
   font-size: medium !important;
 }
-.cursor-pointer{
+
+.cursor-pointer {
   cursor: pointer;
 }
-.text-dropdown{
+
+.text-dropdown {
   cursor: auto;
   display: inline-block;
   background-color: #fff;
 }
-.disabled-dropdown{
+
+.disabled-dropdown {
   pointer-events: none;
   opacity: 0.4;
 }
+
 /* 12/12/03 */
-.border-unset{
-  border:unset!important;
-  padding: 0px!important;
+.border-unset {
+  border: unset !important;
+  padding: 0px !important;
 }
-.mrg{
-margin: 0px 5px 0px 15px!important;
+
+.mrg {
+  margin: 0px 5px 0px 15px !important;
 }
-.radiobtn-card{
+
+.radiobtn-card {
   border: 1px solid #ddd;
   padding: 0px;
   width: 100%;
@@ -196,15 +235,22 @@ margin: 0px 5px 0px 15px!important;
   max-height: 87px;
 }
 
-.radiobtn{
+.radiobtn {
   border: 1px solid #ddd;
 }
 
-.pb15{
+.pb15 {
   padding-bottom: 15px;
 }
 
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;
+}
+
+.error-css {
+  margin-bottom: 50px;
+  border: 1px solid #ddd;
+  margin: 10px;
+  padding: 10px
 }

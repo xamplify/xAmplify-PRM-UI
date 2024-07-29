@@ -14,6 +14,7 @@ import { LeadCustomFieldDto } from '../models/lead-custom-field';
 export class LeadsService {
 
   URL = this.authenticationService.REST_URL + "lead/";
+  ACCESS_TOKEN_SUFFIX_URL = "?access_token="+this.authenticationService.access_token;
   constructor(private http: Http, private authenticationService: AuthenticationService,
     private logger: XtremandLogger, private utilService: UtilService) { }
 
@@ -350,6 +351,33 @@ export class LeadsService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+  findLeadAndLeadInfoForComments(leadId: any) {
+    let convertedLeadId = leadId!=undefined ? leadId:0;
+    let url = this.authenticationService.REST_URL+"lead/findLeadAndLeadInfoAndComments/"+convertedLeadId+"?access_token="+this.authenticationService.access_token;
+   return this.authenticationService.callGetMethod(url);
+  }
+
+  findLeadPipeLines(lead: Lead) {
+    let createdForCompanyId = lead.createdForCompanyId;
+    let ticketId = lead.halopsaTicketTypeId;
+    let campaignId = lead.campaignId;
+    let loggedInUserId = this.authenticationService.getUserId();
+    let vendorCompanyIdRequestParam = createdForCompanyId!=undefined && createdForCompanyId>0 ? "&vendorCompanyId="+createdForCompanyId:"&vendorCompanyId=0";
+    let ticketIdParameter = ticketId!=undefined && ticketId>0 ? "&ticketTypeId="+ticketId:"&ticketTypeId=0";
+    let loggedInUserIdRequestParam = loggedInUserId!=undefined && loggedInUserId>0 ? "&loggedInUserId="+loggedInUserId:"&loggedInUserId=0";
+    let campaignIdRequestParam = campaignId!=undefined && campaignId>0 ? "&campaignId="+campaignId:"&campaignId=0";
+    let url = this.authenticationService.REST_URL+"pipeline/findLeadPipeLines"+this.ACCESS_TOKEN_SUFFIX_URL+vendorCompanyIdRequestParam+loggedInUserIdRequestParam+ticketIdParameter+campaignIdRequestParam;
+    return this.authenticationService.callGetMethod(url);
+  
+  }
+
+  findPipelineStagesByPipelineId(pipelineId:number){
+    let url = this.authenticationService.REST_URL+"pipeline/findPipelineStages/"+pipelineId+this.ACCESS_TOKEN_SUFFIX_URL;
+    return this.authenticationService.callGetMethod(url);
+
+  }
+  
 
 
 }

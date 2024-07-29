@@ -1,4 +1,4 @@
-<div class="comment-area comment-div" id="comment-area">
+<div class="comment-area" id="comment-area" [ngClass]="isPreviewDealOrLeadComponent ? '':'comment-div'">
     <ul class="comment-section" *ngFor="let c of commentList" style="margin: 0px;"> <!--xnfr-426-->
         <li [attr.class]="c.userId != loggedInUserId ? 'comment author-comment':'comment user-comment'"
             [ngStyle]="{'margin-top':((c?.activityType == 'LEAD_APPROVED') || (c?.activityType == 'LEAD_REJECTED') || (c?.activityType == 'STAGE_UPDATED') ||  (c?.activityType == 'LEAD_STAGE_UPDATED') || (c?.activityType == 'DEAL_STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') || (c?.activityType == 'LEAD_CREATED') || (c?.activityType == 'COMMENT_UPDATED'))? '-18px' : '0px'}">
@@ -49,13 +49,12 @@
         </li>
     </ul>
 </div>
-
 <div class="write-new comment-text-area" *ngIf="enableWrite && !authenticationService?.module?.deletedPartner">
     <textarea *ngIf="!editTextArea" placeholder="Write your comment here" name="comment" [(ngModel)]="comment.comment"
         [ngModelOptions]="{standalone: true}" maxlength="1000" (input)="validateComment(comment.comment)"></textarea>
     <div>
-        <button (click)="postComment(comment)" *ngIf="comment.comment" class="btn btn-primary transition"
-            [disabled]="!comment.comment || isError "
-            [style.pointer-events]="comment.comment.length>0 ? 'auto' : 'none' ">Submit</button>
+    <button (click)="postComment(comment)" *ngIf="comment.comment" class="btn btn-primary transition mb5"
+        [disabled]="!comment.comment || isError "
+        [style.pointer-events]="comment.comment.length>0 ? 'auto' : 'none'">Submit</button>
     </div>
 </div>

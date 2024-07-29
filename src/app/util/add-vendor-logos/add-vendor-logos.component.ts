@@ -18,6 +18,10 @@ export class AddVendorLogosComponent implements OnInit {
 	@Input()  vendorLogoDetails:VendorLogoDetails[];
 
 	@Input() sharedVendorLogoDetails:VendorLogoDetails[]=[];
+	responseMessage="";
+	dropdownSettings={};
+	selectedItems = [];
+	@Input() dropdownList;
 	constructor(public authenticationService: AuthenticationService) { }
 
 	ngOnInit() {
@@ -40,8 +44,15 @@ export class AddVendorLogosComponent implements OnInit {
 	}
 
 	hideModal() {
-		this.notifyComponent.emit();
-		$('#' + this.modalPopupId).modal('hide');
+		this.responseMessage = "";
+		if ( (this.authenticationService.module.isTeamMember &&  (this.sharedVendorLogoDetails.every(logo=>!logo.selected || (logo.selected && logo.categoryIds!= null && logo.categoryIds.length>0))))
+		 || (this.authenticationService.module.isAnyAdminOrSupervisor && (this.sharedVendorLogoDetails.every(logo=>logo.teamMembers.every(member=>!member.selected 
+		||(member.selected && member.categoryIds != null && member.categoryIds.length>0)))))){
+			this.notifyComponent.emit();
+			$('#' + this.modalPopupId).modal('hide');				
+		}else{
+			this.responseMessage = "Please Select The Catogory('s) for the selected Vendors";
+		}
 	}
 
 	viewTeamMembers(item: any) {
@@ -57,17 +68,44 @@ export class AddVendorLogosComponent implements OnInit {
 	}	
 
 	selctectLandingPageForCompany(companyId:number, partnerId:number){
-
 		for (let company of this.sharedVendorLogoDetails) {
 			if (company.companyId == companyId) {
 				for (let member of company.teamMembers) {
 					if (member.partnerId != partnerId) {
 						member.selected = false;
 					}
+					if(!member.selected){
+						member.categoryIds = [];
+						member.selectedCategories =[];
+					}
+					var dropdownSettings  = {
+						text: "Please select",
+						selectAllText: 'Select All',
+						unSelectAllText: 'UnSelect All',
+						enableSearchFilter: true,
+						classes: "myclass custom-class",
+						disabled: !member.selected,
+						};
+						member.dropdownSettings = {...dropdownSettings };
 				}
 			}
 		}
-		console.log(this.sharedVendorLogoDetails)
+	}
+
+	setSelectedCategories(companyId:number, partnerId:number){
+		for (let company of this.sharedVendorLogoDetails) {
+			if (company.companyId == companyId) {
+				for (let member of company.teamMembers) {
+					if (member.partnerId == partnerId ) {
+						if(member.selectedCategories != null && member.selectedCategories.length > 0){
+							member.categoryIds = member.selectedCategories.map(category=>category.id);
+						}else{
+							member.categoryIds=[];
+						}
+					}
+				}
+			}
+		}
 	}
 
 

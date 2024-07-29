@@ -17,7 +17,7 @@ declare var swal:any, $:any;
 export class IntegrationSettingsComponent implements OnInit {
 
 	loggedInUserId: any;
-	@Input() integrationType: String;
+	@Input() integrationType: string;
 	@Output() closeEvent = new EventEmitter<any>();
 	@Output() unlinkEvent = new EventEmitter<any>();
 	@Output() refreshEvent = new EventEmitter<any>();
@@ -61,6 +61,9 @@ export class IntegrationSettingsComponent implements OnInit {
 	selectedCustomFields: Array<CustomFieldsDto> = new Array<CustomFieldsDto>();
 	showHeaderTextArea: boolean = false;
 	dealHeader = '';
+	opportunityType: any;
+	isSalesForceType = false;
+	isCRMSettingsModelPopUp:boolean = false;
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
@@ -80,6 +83,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	}
 	
 	ngOnInit() {
+		this.isSalesForceType = this.integrationType!=undefined && (this.integrationType=='SALESFORCE' || this.integrationType=='salesforce');
 		this.getIntegrationDetails();
 	}
 	
@@ -101,11 +105,11 @@ export class IntegrationSettingsComponent implements OnInit {
 		);
 	}
 
-	listSalesforceCustomFields() {
+	listSalesforceCustomFields(opportunityType: any) {
 		this.ngxloading = true;
 		let self = this;
 		this.customFieldsDtosLoader = true;
-		self.integrationService.listSalesforceCustomFields(this.loggedInUserId)
+		self.integrationService.listSalesforceCustomFields(this.loggedInUserId, opportunityType)
 			.subscribe(
 				data => {
 					this.ngxloading = false;
@@ -327,7 +331,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						this.referenceService.goToTop();
 						return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);	
 			}
-			this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, 'isalesforce')
+			this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, 'isalesforce', this.opportunityType)
 		 		.subscribe(
 		 			data => {
 		 				this.ngxloading = false;
@@ -335,7 +339,7 @@ export class IntegrationSettingsComponent implements OnInit {
 							this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
 							this.isFilterApplied = false;
 							this.isSortApplied = false;
-							this.listSalesforceCustomFields();
+							this.listSalesforceCustomFields(this.opportunityType);
 		 				}
 		 			},
 					error => {
@@ -395,7 +399,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						this.referenceService.goToTop();
 						return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);	
 			}
-		 	this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, this.integrationType.toLowerCase())
+		 	this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, this.integrationType.toLowerCase(), this.opportunityType)
 				.subscribe(
 		 			data => {
 	 				this.ngxloading = false;
@@ -458,7 +462,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		this.isSortApplied = false;
 		this.customFieldsResponse.isVisible = false;
 		if (this.integrationType.toLowerCase() === 'salesforce') {
-			this.listSalesforceCustomFields();
+			this.listSalesforceCustomFields(this.opportunityType);
 		} else {
 			this.listExternalCustomFields();
 		}
@@ -632,7 +636,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				() => {
 					this.getDealHeader();
 					if (this.integrationType.toLowerCase() === 'salesforce') {
-						this.listSalesforceCustomFields();
+						// this.listSalesforceCustomFields(this.opportunityType);
 					} else {						
 						if (this.integrationType.toLowerCase() === 'hubspot' || this.integrationType.toLowerCase() === 'pipedrive') {
 							this.getIntegrationDealPipelines();
@@ -761,11 +765,28 @@ export class IntegrationSettingsComponent implements OnInit {
 	searchFields() {
 		this.getAllFilteredResultsFields();
 	}
+	setActiveTab(tabName: string) {
+		this.activeTab = tabName;
+		if(tabName === 'menu1'){
+			this.opportunityType = 'DEAL';
+			// this.listSalesforceCustomFields(this.opportunityType);
+		}
+		if(tabName === 'menu2'){
+			this.opportunityType = 'LEAD';
+			// this.listSalesforceCustomFields(this.opportunityType);
+		}
+		if (tabName === 'menu3') {
+			this.isCRMSettingsModelPopUp = true;
+		}
+		if (tabName !== 'menu3') {
+			this.isCRMSettingsModelPopUp = false;
+		}
+	}
 
 	getAllFilteredResultsFields() {
 		this.isFilterApplied = true;
 		if (this.integrationType.toLowerCase() === 'salesforce') {
-			this.listSalesforceCustomFields();
+			this.listSalesforceCustomFields(this.opportunityType);
 		} else {
 			this.listExternalCustomFields();
 		}
@@ -774,7 +795,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	clearFieldSearch() {
 		this.searchKey = '';
 		if (this.integrationType.toLowerCase() === 'salesforce') {
-			this.listSalesforceCustomFields();
+			this.listSalesforceCustomFields(this.opportunityType);
 		} else {
 			this.listExternalCustomFields();
 		}
@@ -783,14 +804,10 @@ export class IntegrationSettingsComponent implements OnInit {
 	sortFieldsByOption() {
 		this.isSortApplied = true;
 		if (this.integrationType.toLowerCase() === 'salesforce') {
-			this.listSalesforceCustomFields();
+			this.listSalesforceCustomFields(this.opportunityType);
 		} else {
 			this.listExternalCustomFields();
 		}
-	}
-
-	setActiveTab(tabName: string) {
-		this.activeTab = tabName;
 	}
 
 	//XNFR-576
@@ -848,6 +865,10 @@ export class IntegrationSettingsComponent implements OnInit {
 						this.getDealHeader();
 					}
 				});
+	}
+
+	setCustomResponse(event: any) {
+		this.customFieldsResponse = event;
 	}
 
 

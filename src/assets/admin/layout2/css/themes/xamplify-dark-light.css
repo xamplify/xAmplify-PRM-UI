@@ -271,7 +271,7 @@ ul.alt-row-style1 li:hover,
   border: 1px solid #2f4857 !important;
 }
 .form-body label,
-.form-group label {
+.form-group label,.lead-label {
   color: white !important;
 }
 .form-group label.color {
@@ -792,6 +792,7 @@ span.ui-column-resize {
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
   color: white !important;
+  border-bottom-color: transparent !important;
 }
 .nav-tabs,
 .def-player-border {
@@ -1463,6 +1464,9 @@ a.dropdown-toggle.circlebg-none-v:hover {
     > li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
     background-color: transparent !important;
   }
+  .page-header.navbar {
+    background: #22313a!important;
+}
 }
 
 /* 27-06-2023 */
@@ -1845,7 +1849,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   background: #22313a54;
 }
 .nav-tabs.dcTheme > li.active > a,
-.nav-tabs.dcTheme > li > a:hover {
+.nav-tabs.dcTheme > li > a:hover,.leads-bgcolor {
   border: none !important;
   color: #fff !important;
   background: #22313a !important ;
@@ -2584,3 +2588,7 @@ i.fa.fa-check-circle-o.check-icons{
 /***** Sudha Sri(08-07-2024) *****/
 .copy_text_area_border{border: 1px solid #2f4857 !important;}
 button.filter.btn-hvr-text.emailtemplate-selected, button.filter.btn-hvr-text{color: #000 !important;}
+legend.scheduler-borders{
+  color: #fff !important;
+  background: #22313a !important ;
+}

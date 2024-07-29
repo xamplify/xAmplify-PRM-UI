@@ -120,7 +120,7 @@
                                                 <div class="col-sm-8 col-xs-6">
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div>
-                                                            <switch [status]="campaign.channelCampaign"
+                                                            <switch class="switchControls" [status]="campaign.channelCampaign"
                                                                 [onText]="callActionSwitch.onTextValue"
                                                                 [offText]="callActionSwitch.onTextValue"
                                                                 [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -157,7 +157,7 @@
                                                 <label class="control-label col-sm-4"
                                                     translate>{{whiteLabeledBannerText}}</label>
                                                 <div class="col-sm-8">
-                                                    <switch class="pull-left" [status]="campaign?.whiteLabeled"
+                                                    <switch class="pull-left switchControl" [status]="campaign?.whiteLabeled"
                                                         [onText]="callActionSwitch.onTextValue"
                                                         [offText]="callActionSwitch.offTextValue"
                                                         [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -182,7 +182,7 @@
                                                     <label class="control-label col-sm-4" translate>View In
                                                         Browser</label>
                                                     <div class="col-sm-8">
-                                                        <switch class="pull-left" [status]="campaign?.viewInBrowserTag"
+                                                        <switch class="pull-left switchControl" [status]="campaign?.viewInBrowserTag"
                                                             [onText]="callActionSwitch.onTextValue"
                                                             [offText]="callActionSwitch.offTextValue"
                                                             [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -204,7 +204,7 @@
                                                     <label class="control-label col-sm-4" translate>Unsubscribe
                                                         Link</label>
                                                     <div class="col-sm-8">
-                                                        <switch class="pull-left" [status]="campaign?.unsubscribeLink"
+                                                        <switch class="pull-left switchControl" [status]="campaign?.unsubscribeLink"
                                                             [onText]="callActionSwitch.onTextValue"
                                                             [offText]="callActionSwitch.offTextValue"
                                                             [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -227,7 +227,7 @@
                                                 *ngIf="campaign?.channelCampaign && campaignAccess?.oneClickLaunch && !isPageCampaign">
                                                 <label class="control-label col-sm-4" translate>One-Click Launch</label>
                                                 <div class="col-sm-8">
-                                                    <switch class="pull-left" [status]="campaign?.oneClickLaunch"
+                                                    <switch class="pull-left switchControl" [status]="campaign?.oneClickLaunch"
                                                         [onText]="callActionSwitch.onTextValue"
                                                         [offText]="callActionSwitch.offTextValue"
                                                         [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -248,7 +248,7 @@
                                                 *ngIf="!authenticationService?.module?.isMarketingCompany &&(campaign?.channelCampaign || isPageCampaign)">
                                                 <label class="control-label col-sm-4" translate>Co-Branding Logo</label>
                                                 <div class="col-sm-8">
-                                                    <switch class="pull-left" [status]="campaign.enableCoBrandingLogo"
+                                                    <switch class="pull-left switchControl" [status]="campaign.enableCoBrandingLogo"
                                                         [onText]="callActionSwitch.onTextValue"
                                                         [offText]="callActionSwitch.offTextValue"
                                                         [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -271,7 +271,7 @@
                                                 <label
                                                     class="control-label col-sm-4">{{notifyPartnersLabelText}}</label>
                                                 <div class="col-sm-8">
-                                                    <switch class="pull-left" [status]="campaign.emailNotification"
+                                                    <switch class="pull-left switchControl" [status]="campaign.emailNotification"
                                                         [onText]="callActionSwitch.yesTextValue"
                                                         [offText]="callActionSwitch.noTextValue"
                                                         [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -293,7 +293,7 @@
                                                 *ngIf="campaign?.channelCampaign && !isPageCampaign && campaign.emailNotification ">
                                                 <label class="control-label col-sm-4">Notify Workflows</label>
                                                 <div class="col-sm-8">
-                                                    <switch class="pull-left"
+                                                    <switch class="pull-left switchControl"
                                                         [status]="campaign.notifyChannelCampaignWorkflows"
                                                         [onText]="callActionSwitch.yesTextValue"
                                                         [offText]="callActionSwitch.noTextValue"
@@ -395,7 +395,7 @@
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
                                                             <div>
-                                                                <switch [status]="campaign.emailOpened"
+                                                                <switch class="switchControl" [status]="campaign.emailOpened"
                                                                     [onText]="callActionSwitch.onTextValue"
                                                                     [offText]="callActionSwitch.offTextValue"
                                                                     [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -411,7 +411,7 @@
 
                                                         <div class="email-options-checkbox clearfix mt10">
                                                             <div>
-                                                                <switch [status]="campaign.linkOpened"
+                                                                <switch class="switchControl" [status]="campaign.linkOpened"
                                                                     [onText]="callActionSwitch.onTextValue"
                                                                     [offText]="callActionSwitch.offTextValue"
                                                                     [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -428,7 +428,7 @@
                                                         <div class="email-options-checkbox clearfix mt10"
                                                             *ngIf="campaignType=='video'">
                                                             <div>
-                                                                <switch [status]="campaign.videoPlayed"
+                                                                <switch class="switchControl" [status]="campaign.videoPlayed"
                                                                     [onText]="callActionSwitch.onTextValue"
                                                                     [offText]="callActionSwitch.offTextValue"
                                                                     [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -451,7 +451,7 @@
                                                 <label class="control-label col-sm-4 tab_p0" translate>Configure
                                                     Pipelines</label>
                                                 <div class="col-sm-8">
-                                                    <switch class="pull-left" [status]="campaign.configurePipelines"
+                                                    <switch class="pull-left switchControl" [status]="campaign.configurePipelines"
                                                         [onText]="callActionSwitch.onTextValue"
                                                         [offText]="callActionSwitch.offTextValue"
                                                         [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -1271,6 +1271,10 @@
                                                                             src="{{properties?.connectwiseImage}}"
                                                                             alt="ConnectWise"
                                                                             class="img-class-list image_effect">
+                                                                        <img *ngIf="contacts?.socialNetwork=='HALOPSA' && contacts.synchronisedList"
+                                                                            src="{{properties?.halopsaImage}}"
+                                                                            alt="HaloPSA"
+                                                                            class="img-class-list image_effect" style="height: 54px;">
 
 
                                                                     </td>
@@ -1462,7 +1466,7 @@
                                                             <div class="pull-right">
                                                                 <label class="switch-choose" translate>Choose
                                                                     Template</label>
-                                                                <switch class="switch-choose"
+                                                                <switch class="switch-choose switchControl"
                                                                     [status]="reply.defaultTemplate"
                                                                     [onText]="callActionSwitch.onTextValue"
                                                                     [offText]="callActionSwitch.offTextValue"
@@ -1778,7 +1782,7 @@
                                                             <div class="pull-right">
                                                                 <label class="switch-choose" translate>Choose Template
                                                                 </label>
-                                                                <switch class="switch-choose"
+                                                                <switch class="switch-choose switchControl"
                                                                     [status]="url.defaultTemplate"
                                                                     [onText]="callActionSwitch.onTextValue"
                                                                     [offText]="callActionSwitch.offTextValue"

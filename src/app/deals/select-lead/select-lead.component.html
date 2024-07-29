@@ -188,8 +188,8 @@
 </div>
 
 <!-- Add Lead Model-->
-<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="dealToLead.leadActionType" [dealToLead]="dealToLead"
+<app-custom-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="dealToLead.leadActionType" [dealToLead]="dealToLead"
   (notifySubmitSuccess)="leadCreated($event)" (notifyClose)="closeLeadForm()" [disableCreatedForVendor]="disableCreatedForVendor"
-  [isVendorVersion]="dealToLead.isVendorVersion" [isOrgAdmin]="dealToLead.isOrgAdmin"></app-add-lead>
+  [isVendorVersion]="dealToLead.isVendorVersion" [isOrgAdmin]="dealToLead.isOrgAdmin"></app-custom-add-lead>
 
 <!-- END CONTENT -->

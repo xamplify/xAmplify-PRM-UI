@@ -271,6 +271,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	containWithinAspectRatio = false;
 	transform: ImageTransform = {};
 	scale = 1;
+	minScale: number = 0.1;
 	canvasRotation = 0;
 	rotation = 0;
 	imageChangedEvent: any = '';
@@ -358,6 +359,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showleadFieldSettings : boolean = false;
 	showOauthSSOConfiguration: boolean = false;
 	isCampaignAnalyticsOptionClicked = false;
+	/** XNFR-583 **/
+	isMasterLandingPageCategories: boolean = false;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -387,19 +391,28 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.showCropper = false;
 		}
 	}
-	zoomOut() {
-		if (this.croppedImage != "") {
-			this.scale -= .1;
-			this.transform = {
-				...this.transform,
-				scale: this.scale
-			};
-		} else {
-			//this.errorUploadCropper = true;
-			this.showCropper = false;
-		}
-	}
-
+	// zoomOut() {
+	// 	if (this.croppedImage != "") {
+	// 		this.scale -= .1;
+	// 		this.transform = {
+	// 			...this.transform,
+	// 			scale: this.scale
+	// 		};
+	// 	} else {
+	// 		this.showCropper = false;
+	// 	}
+	// }
+    zoomOut() {
+        if(this.croppedImage != ""){
+            this.scale = Math.max(this.scale - 0.1, this.minScale);
+            this.transform = {
+                ...this.transform,
+                scale: this.scale
+            };
+        }else{
+            this.showCropper = false; 
+        }
+    }
 	zoomIn() {
 		if (this.croppedImage != '') {
 			this.scale += .1;
@@ -2116,7 +2129,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.masterLandingPages;
-		}
+		}else if (this.activeTabName == "masterLandingPageCategories") {
+            this.ngxloading = true;
+            this.isMasterLandingPageCategories = false;
+            let self = this;
+            setTimeout(() => {
+                self.isMasterLandingPageCategories = true;
+                self.ngxloading = false;
+            }, 500);
+            this.activeTabHeader = this.properties.masterLandingPageCategories;
+        }
 		/*****XNFR-592 ******/
 		else if (this.activeTabName == "leadFieldSettings") {
 			this.activeTabHeader = this.properties.leadFieldSettings;
@@ -3095,7 +3117,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	listSalesforceCustomFields() {
 		let self = this;
 		self.selectedCfIds = [];
-		self.integrationService.listSalesforceCustomFields(this.loggedInUserId)
+		self.integrationService.listSalesforceCustomFields(this.loggedInUserId, 'DEAL')
 			.subscribe(
 				data => {
 					this.ngxloading = false;
@@ -3137,7 +3159,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			self.selectedCustomFieldIds.push(id);
 		});
 
-		this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCfIds, type)
+		this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCfIds, type, 'DEAL')
 			.subscribe(
 				data => {
 					this.ngxloading = false;

@@ -1,18 +1,25 @@
 <div>
 	<button class="button_blue float-right btn-select-templates mb_10 btn-mb bgcolor-unset px-0"
 		style="padding-top: 6px;" *ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate><span
-			class="btn btn-primary transition">Add Vendor Logos</span></button>
+			class="btn btn-primary transition">Pick Your Vendors</span></button>
 </div>
+
 <div class="modal fade right" id="add-vendor-logo-popup" tabindex="-1" role="dialog" data-backdrop="static"
 	data-keyboard="false">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-css" role="document" style="width: 75% !important;">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close-circle" (click)="hideModal()">
 					<i class="fa fa-times" aria-hidden="true"></i>
 				</button>
-				<h4 class="modal-title text-center" translate>Vendor Logos</h4>
+				<h4 class="modal-title text-center" translate>Pick Your Vendors</h4>
 			</div>
+			<div class="thank-you-pop" *ngIf="responseMessage">
+				<ng-container>
+				   <i class="fa fa-info-circle" id="font-size-info" aria-hidden="true"></i>
+				   <h4 class="event-info">{{responseMessage}}</h4>
+				</ng-container>
+			  </div>
 			<div class="modal-body" *ngIf = "!(authenticationService?.module?.isAnyAdminOrSupervisor) && authenticationService?.module?.isTeamMember">
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
@@ -76,17 +83,16 @@
 						<tr *ngIf="vendorLogo?.expand">
 							<td colspan="4">
 							  <div class="table-responsive x-hidden">
-								
 								<div>
-
 								  <ng-container>
 									<table class="table tgrid table-condensed table-bordered child-table-xamp"
 									  aria-describedby="team-members-info"
 									  id="admin-and-team-members-{{vendorLogo?.companyId}}">
 									  <thead>
 										<tr>
-										  <th scope="row">Entity Info</th>
-										  <th scope="row" class="text-center">Select</th>
+										  <th style="width:45%" scope="row">Entity Info</th>
+										  <th style="width:45%" scope="row">Select Category</th>
+										  <th style="width:10%" scope="row" class="text-center">Select</th>
 										</tr>
 									  </thead>
 									  <tbody>
@@ -97,14 +103,18 @@
 											<app-user-info [isPartnerEntityInfo]="false" [userInfo]="adminAndTeamMember">
 											</app-user-info>
 										  </td>
+										  <td>
+											<angular4-multiselect  [data]="dropdownList" [(ngModel)]="adminAndTeamMember.selectedCategories"  
+											[settings]="adminAndTeamMember.dropdownSettings" (onClose) = 'setSelectedCategories(vendorLogo.companyId,adminAndTeamMember.partnerId)'>
+										  </angular4-multiselect>
+										  </td>
 										  <td class="text-center">
 											<label class="toggleOnOff">
 												<input class="checkBox_shadow" type="checkbox" [(ngModel)]="adminAndTeamMember.selected" name="Select"
-												(click) = "selctectLandingPageForCompany(vendorLogo.companyId,adminAndTeamMember.partnerId)">
+												(ngModelChange) = "selctectLandingPageForCompany(vendorLogo.companyId,adminAndTeamMember.partnerId)">
 												<span class="sliderOnOff"></span>
 												<span class="labels" data-on="Selected" data-off=""></span>
 											</label>
-			
 										  </td>
 										</tr>
 									  </tbody>
@@ -116,11 +126,6 @@
 							</td>
 						  </tr>
 						</ng-container>
-	
-
-
-
-
 					</tbody>
 				</table>
 			</div>

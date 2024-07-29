@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { ContactService } from 'app/contacts/services/contact.service';
 import { Form } from 'app/forms/models/form';
 import { ColumnInfo } from 'app/forms/models/column-info';
@@ -20,11 +20,16 @@ declare var $: any, swal: any;
 export class SfDealComponent implements OnInit {
   @Input() public createdForCompanyId: any;
   @Input() public dealId: any;
+  @Input() public leadId: any;
   @Input() campaign: any;
   @Input() public isPreview = false;
   @Input() isVendor = false;
   @Input() activeCRM: any;
   @Input() public ticketTypeId: any;
+  @Input() public opportunityType: any;
+  @Input() public selectedContact: any;
+  @Input() public actionType: any;
+  @Output() isFormValid = new EventEmitter();
   form: Form = new Form();
   errorMessage: string;
   isDealRegistrationFormInvalid: boolean = true;
@@ -59,7 +64,7 @@ export class SfDealComponent implements OnInit {
   isInvalidPhoneNumber: boolean = false;
   isInvalidGeoLocation: boolean = false;
   searchableDropDownDtoForLookup: SearchableDropdownDto = new SearchableDropdownDto();
-  dealHeader: any;
+  formDescription: any;
   isOnlyPartner: boolean = false;
 
 
@@ -69,7 +74,12 @@ export class SfDealComponent implements OnInit {
 
   addLoader() {
     this.isLoading = true;
-    this.referenceService.showSweetAlertProceesor('We are fetching the deal form');
+    if(this.opportunityType === 'DEAL'){
+      this.referenceService.showSweetAlertProceesor('We are fetching the deal form');
+    }
+    if(this.opportunityType === 'LEAD'){
+      this.referenceService.showSweetAlertProceesor('We are fetching the lead form');
+    }
   }
 
   removeLoader() {
@@ -99,30 +109,33 @@ export class SfDealComponent implements OnInit {
         classes: "myclass custom-class"
       };
     }
-
-    if (this.createdForCompanyId != undefined && this.createdForCompanyId > 0) {
-      if (this.dealId == undefined || this.dealId <= 0) {
-        this.dealId = 0;
-      }
-      if ("HALOPSA" !== this.activeCRM.createdByActiveCRMType && "HALOPSA" !== this.activeCRM.createdForActiveCRMType 
-        && "ZOHO" !== this.activeCRM.createdForActiveCRMType) {
-        if (this.ticketTypeId == undefined || this.ticketTypeId <= 0) {
-          this.ticketTypeId = 0;
-        }
+    let isValidCreatedForComapnyId = this.createdForCompanyId != undefined && this.createdForCompanyId > 0;
+    if (isValidCreatedForComapnyId) {
+      this.setDealIdAsZero();
+      let isCreatedByActiveTypeNotHALOPSA = "HALOPSA" !== this.activeCRM.createdByActiveCRMType;
+      let isCreatedForActiveCRMTypeNotHALOPSA = "HALOPSA" !== this.activeCRM.createdForActiveCRMType;
+      let isCreatedForActiveCRMTypeNotZOHO = "ZOHO" !== this.activeCRM.createdForActiveCRMType;
+      if (isCreatedByActiveTypeNotHALOPSA && isCreatedForActiveCRMTypeNotHALOPSA && isCreatedForActiveCRMTypeNotZOHO) {
+        this.setTicketTypeIdAsZero();
         this.addLoader();
         this.getActiveCRMCustomForm();
       }
-      // if ("SALESFORCE" === this.activeCRM) {
-      //   this.getSalesforceCustomForm();
-      // } else {
-      //   this.getActiveCRMCustomForm();
-      // }
     }
-
     if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType)) {
       this.isConnectWiseEnabledAsActiveCRM = true;
     }
+  }
 
+  private setTicketTypeIdAsZero() {
+    if (this.ticketTypeId == undefined || this.ticketTypeId <= 0) {
+      this.ticketTypeId = 0;
+    }
+  }
+
+  private setDealIdAsZero() {
+    if (this.dealId == undefined || this.dealId <= 0) {
+      this.dealId = 0;
+    }
   }
 
   ngOnChanges(){
@@ -132,6 +145,7 @@ export class SfDealComponent implements OnInit {
       }
       if (this.ticketTypeId != undefined && this.ticketTypeId > 0) {
         this.isDealRegistrationFormInvalid = true;
+        this.isFormValid.emit(this.isDealRegistrationFormInvalid);
         this.addLoader();
         this.getActiveCRMCustomForm();
       }
@@ -139,13 +153,27 @@ export class SfDealComponent implements OnInit {
   }
 
   getActiveCRMCustomForm() {
-    this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId, this.ticketTypeId).subscribe(result => {
+    let ticketTypeId = 0;
+    if (this.ticketTypeId != undefined && this.ticketTypeId > 0) {
+      ticketTypeId = this.ticketTypeId;
+    }
+    this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId, ticketTypeId, this.opportunityType).subscribe(result => {
       this.showSFFormError = false;
       this.removeLoader();
       if (result.statusCode == 200) {
         this.form = result.data;
-        this.dealHeader = result.data.dealFormHeader;
+        if(this.form.formLabelDTOs.length==0){
+          this.showSFFormError = true;
+          this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
+        }
+        this.formDescription = result.data.description;
+        this.form.formLabelDTOs.forEach((columnInfo: ColumnInfo) => {
+          if (columnInfo.nonInteractive) {
+            columnInfo.value = columnInfo.defaultChoiceLabel;
+          }
+        });
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
+        let allDropdowns = this.form.formLabelDTOs.filter(column => column.labelType === "select");
         for (let multiSelectObj of allMultiSelects) {
           if (multiSelectObj !== undefined && multiSelectObj.value !== undefined) {
             let selectedOptions = multiSelectObj.value.split(';');
@@ -159,9 +187,36 @@ export class SfDealComponent implements OnInit {
           }
         }
 
+        for (let dropDownObj of allDropdowns) {
+          if (dropDownObj !== undefined && dropDownObj.value !== undefined) {
+            let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(dropDownObj.id);
+            if (haveChildrenDropDown) {
+              let selectedParentValue = dropDownObj.value;
+              this.populateDependentChildValuesByParentValue(dropDownObj.id, selectedParentValue);
+            }
+          }
+        }
+
+
         let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
         if (reqFieldsCheck.length === 0) {
           this.isDealRegistrationFormInvalid = false;
+        }
+        if (this.opportunityType === 'LEAD' && this.selectedContact !== undefined) {
+          for (let column of this.form.formLabelDTOs) {
+            let addActionType = this.actionType === 'add';
+            if (column.labelId === 'Company' && addActionType) {
+              column.value = this.selectedContact.companyName;
+            } else if (column.labelId === 'Email') {
+              column.value = this.selectedContact.emailId;
+              column.columnDisable = true;
+            } else if (column.labelId === 'FirstName' && addActionType) {
+              column.value = this.selectedContact.firstName;
+            } else if (column.labelId === 'LastName' && addActionType) {
+              column.value = this.selectedContact.lastName;
+            }
+          }
+          this.validateAllFields();
         }
         /*********XNFR-403*********/
         if (this.dealId > 0) {
@@ -183,6 +238,7 @@ export class SfDealComponent implements OnInit {
         }
         this.searchableDropDownDtoForLookup.placeHolder = "Please Select Account";
         /*********XNFR-403*********/
+
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") {
         this.showSFFormError = true;
         this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
@@ -245,8 +301,47 @@ export class SfDealComponent implements OnInit {
     this.validateAllFields();
   }
 
-  selectOnChangeEvent() {
+  selectOnChangeEvent(columnInfo: any) {
+    let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(columnInfo.id);
+    if (haveChildrenDropDown) {
+      let selectedValue = columnInfo.value;
+      this.populateDependentChildValues(columnInfo.id, selectedValue);
+    }
     this.validateAllFields();
+  }
+
+  populateDependentChildValuesByParentValue(parentId: any, selectedValue: string) {
+    this.form.formLabelDTOs.forEach(column => {
+      if (column.parentLabelId === parentId) {
+        column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
+          Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
+        );
+      }
+    });
+  }
+
+  checkIfHaveChildrenDropdown(id: any): boolean {
+    let dependentChildPickList = this.form.formLabelDTOs.filter(column => column.parentLabelId == id);
+    if (dependentChildPickList != undefined && dependentChildPickList.length != 0) {
+      return true;
+    }
+    return false;
+  }
+
+  populateDependentChildValues(parentId: any, selectedValue: string) {
+    this.form.formLabelDTOs.forEach(column => {
+      if (column.parentLabelId === parentId) {
+        column.value = "";
+        column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
+          Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
+        );
+        let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(column.id);
+        if (haveChildrenDropDown) {
+          let selectedValue = column.value;
+          this.populateDependentChildValues(column.id, selectedValue);
+        }
+      }
+    });
   }
 
   validateAllFields() {
@@ -302,7 +397,7 @@ export class SfDealComponent implements OnInit {
     this.isDealRegistrationFormInvalid = this.isRequiredNotFilled || this.isInvalidEmailId || this.isInvalidAmount || this.isInvalidGeoLocation ||
       this.isInvalidPercentage || this.isInvalidPhoneNumber || this.isInvalidRepValues || this.isInvalidTextAreaFields ||
       this.isInvalidTextFields || this.isInvalidWebsiteURL;
-      
+    this.isFormValid.emit(this.isDealRegistrationFormInvalid);
   }
   validateAmount(columnInfo: ColumnInfo) {
     let amount = columnInfo.value;

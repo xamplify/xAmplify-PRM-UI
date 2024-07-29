@@ -545,5 +545,16 @@ export class UserService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    
+
+    loadUserDefaultPage(loggedInUserId: number, companyProfileName: string) {
+        let url = this.URL + 'admin/loadUserDefaultPage/' + loggedInUserId;
+        if (companyProfileName != undefined && companyProfileName != '') {
+            url = url + '/'+companyProfileName + '?access_token=' + this.authenticationService.access_token;
+        } else {
+            url = url + '?access_token=' + this.authenticationService.access_token;
+        }
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

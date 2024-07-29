@@ -50,6 +50,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
   isPublishingToPartnerList = false;
   trackOrPlayBooksSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   isTrackOrPlayBooksSweetAlertComponentCalled = false;
+  isDashboardButtonsComponentCalled = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,private router: Router,private campaignService:CampaignService) { }
 
@@ -101,6 +102,9 @@ export class ShareUnpublishedContentComponent implements OnInit {
     if(this.hasPlaybookAccess) {
       this.filterOptions.push(this.properties.playBooksHeaderText);
     }
+    if(this.authenticationService.isLocalHost()){
+      this.filterOptions.push(this.properties.dashboardButtons);
+    }
   }
 
   private resetValues() {
@@ -141,6 +145,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
       this.isAssetChildComponentCalled = this.hasDamAccess && filterOption==this.properties.assetsHeaderText;
       this.isTrackChildComponentCalled = this.hasLmsAccess && filterOption==this.properties.tracksHeaderText;
       this.isPlayBookChildComponentCalled = this.hasPlaybookAccess && filterOption==this.properties.playBooksHeaderText;
+      this.isDashboardButtonsComponentCalled = filterOption==this.properties.dashboardButtons;
       this.ngxLoading = false;
     }, 500);
    

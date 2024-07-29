@@ -51,7 +51,7 @@
   cursor: pointer;
   display: inline-block !important;
   height: 100%;
-  padding: 5px 12px;
+  padding: 6px 12px;
   font-size: 14px;
   line-height: 20px;
 }
@@ -2148,4 +2148,8 @@ margin-left: 10px;
   .video-sidepadding {
     padding: 0px!important;
   }
+}
+button.btn-info.aspect_ratio:disabled {
+  opacity: .5; /* Change the opacity to make the button look disabled */
+  cursor: not-allowed; /* Change the cursor to indicate it's disabled */
 }

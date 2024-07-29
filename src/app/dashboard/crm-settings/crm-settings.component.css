@@ -1,0 +1,52 @@
+fieldset.scheduler-borders {
+    border: 1px solid silver;
+    padding: 0.5em 1.4em 1.4em 1.4em !important;
+    margin: 0 0 10px 0 !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+  }
+  legend.scheduler-borders {
+    width: auto;
+    padding: 3px 15px;
+    color: #000;
+    font-weight: 500;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    background-color: #f1f5f9;
+  }
+  legend {
+    margin-bottom: 14px;
+  }
+  
+  .form-inlines {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: baseline;
+  }
+  .leads-bgcolor {
+    background-color: #f1f5f9;
+  }
+  .mb-15 {
+    margin-bottom: 15px;
+  }
+  .mr-20 {
+    margin-right: 20px;
+  }
+  .row.m0 {
+    padding: 6px 5px;
+  }
+  .info_circle {
+    font-size: 15px;
+    top: 1px;
+    position: relative;
+    margin-left: 3px;
+  }
+  .lead-label{
+    display: inline-block;
+     max-width: 100%;
+     margin-bottom: 5px;
+     font-weight: 500 !important;
+     color: #333;
+     font-size: 14px;
+  }

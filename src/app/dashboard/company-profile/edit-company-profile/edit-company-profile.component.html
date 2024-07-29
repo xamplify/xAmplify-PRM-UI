@@ -603,6 +603,16 @@
 													style="color: #f55d7a">{{websiteErrorMessage}}</span>
 											</div>
 										</div>
+										<div class="col-md-6 col-lg-6 mPadCompanyProfile" style="padding-left: 15px;">
+											<div class="form-group" [attr.class]="supportEmailIdDivClass">
+												<label class="control-label" translate>Support Email Id </label>
+												<input type="text" id="supportEmailId" name="supportEmailId" placeholder="Enter Support Email Id"
+													maxlength="240" class="form-control" [(ngModel)]="companyProfile.supportEmailId" autocomplete="off"
+													(input)="validatePattern('supportEmailId')" (blur)="validatePattern('supportEmailId')" /> <span
+													*ngIf="supportEmailIdError" style="color: #f55d7a">{{supportEmailIdErrorMessage}}</span>
+											</div>
+										</div>
+
 										<div class="col-md-12 col-lg-12">
 											<div class="form-group" [attr.class]="aboutUsDivClass">
 												<label class="control-label" translate>About Us <font><b
@@ -846,7 +856,7 @@
 							: 'Contain Within Aspect Ratio'
 							}}
 						</button>
-						<button class="btn-info aspect_ratio" (click)="zoomOut()" [disabled]="!showCropper"><i
+						<button class="btn-info aspect_ratio" (click)="zoomOut()" [disabled]="!showCropper || scale <= minScale"><i
 								class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i>
 						</button>
 						<button class="btn-info aspect_ratio" (click)="zoomIn()" [disabled]="!showCropper"><i

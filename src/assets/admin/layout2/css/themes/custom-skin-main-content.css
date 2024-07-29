@@ -920,7 +920,7 @@ textarea:focus {
 .mix-filter li:hover,
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected {
+.mix-filter li.emailtemplate-selected,.mix-filter-li-selected {
   background: var(--page-content) !important;
 }
 .filter-box-selected {
@@ -2458,4 +2458,17 @@ button.btn.btn-secondary.unlink-btn.disable-btn-text-color.deactivate-btn{
 .panel-heading.panel-heading-custom.panel-bg {
   border-top-left-radius: 1px !important;
   border-top-right-radius: 1px !important;
+}
+button.btn.Btn-Gray.btn-hvr-text.neg_mrg_top4 {
+  color: #fff !important;
+}
+.leads-bgcolor{
+  background-color: var(--page-content) !important;
+  border-radius: 3px!important;
+}
+.lead-label{
+  color: var(---text-color) !important;
+}
+legend.scheduler-borders{
+ background-color: var(--page-content) !important;
 }

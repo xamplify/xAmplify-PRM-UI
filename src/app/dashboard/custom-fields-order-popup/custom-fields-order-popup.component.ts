@@ -10,6 +10,7 @@ declare var $;
 export class CustomFieldsOrderPopupComponent implements OnInit {
   @Output() closeEvent = new EventEmitter<any>();
   @Input() customFieldsList: any;
+  @Input() opportunityType: any;
   constructor(private dragulaService: DragulaService) {
     dragulaService.setOptions('customFieldsDragula', {})
     dragulaService.dropModel.subscribe((value) => {

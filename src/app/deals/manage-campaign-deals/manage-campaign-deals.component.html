@@ -185,7 +185,7 @@
               <!-- xnfr-426-->
               <span class="comment-color" translate>
                 {{deal.currentStageName}}</span>
-              <a data-rel="fancybox-button"
+              <a data-rel="fancybox-button" *ngIf="deal?.showDealActions"
                 (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)" data-toggle="tooltip"
                 data-placement="bottom" title="Edit Deal Stage">
                 <span class="fa fa-edit IconCustomization" aria-hidden="true"></span>
@@ -201,15 +201,15 @@
                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                   <a class="custom-icon" data-rel="fancybox-button"
                     *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
-                    (click)="editDeal(deal)" data-toggle="tooltip" data-placement="bottom" title="Edit Deal" id="deal">
-                    <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+                    (click)="deal?.showDealActions?editDeal(deal):''" data-toggle="tooltip" data-placement="bottom" title="Edit Deal" id="deal">
+                    <i [ngClass]="deal?.showDealActions? '':'disabled gray'" class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
                     <div class="clickicons"></div>
                   </a>
                   <a class="custom-icon" data-rel="fancybox-button"
                     *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
-                    (click)="confirmDeleteDeal(deal)" data-toggle="tooltip" data-placement="bottom" title="Delete Deal"
+                    (click)="deal?.showDealActions ? confirmDeleteDeal(deal):''" data-toggle="tooltip" data-placement="bottom" title="Delete Deal"
                     id="deal">
-                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                    <i [ngClass]="deal?.showDealActions? '':'disabled gray'" class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                     <div class="del-icon"></div>
                   </a>
                 </ng-container>

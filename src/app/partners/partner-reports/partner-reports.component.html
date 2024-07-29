@@ -573,14 +573,16 @@
                           alt="{{campaign.campaignType}} Campaign">
                       </td>
                       <td>
-                        <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">
-                          {{campaign.campaignName
+                        <h4 class="ellipsis mt5 mb4 f-w-600" style="font-size: 14px;padding-left: 0px !important;" title="{{campaign.campaignName}}">
+                          <b>Campaign Name:</b> {{campaign.campaignName
                           | slice:0:25}}
                           <span *ngIf="campaign.campaignName?.length>25">...</span>
                         </h4>
-                        <h5 class='m0' style="float:left">{{campaign.companyName | slice:0:15}}
-                          <span class='f-w-300'>{{campaign.createdBy | slice:0:25}}<span
-                              *ngIf="campaign.createdBy?.length>25">...</span></span>
+                        <h5 class='m0'><b>From:</b> {{campaign.companyName | slice:0:15}}
+                         <span *ngIf="campaign.companyName?.length>25">...</span>
+                        </h5>
+                        <h5 class='f-w-300 mt5'><b>By:</b> {{campaign.createdBy | slice:0:25}}
+                          <span *ngIf="campaign.createdBy?.length>25">...</span>
                         </h5>
                       </td>
                       <td class="center hidden-xs" style="text-align: center">
@@ -635,8 +637,8 @@
                         </h4>
                         <h6 class="GridViewCotent xamplify-ellipsis mt10 mb0" [title]="campaign.createdBy"><b>By:</b> {{campaign.createdBy | slice:0:15}}<span
                             *ngIf="campaign.createdBy?.length>15">...</span></h6>
-                        <h6 class="mt0 GridViewCotent xamplify-ellipsis"><b>{{campaign.companyName | slice:0:15}}<span
-                              *ngIf="campaign.companyName?.length>15">...</span></b></h6>
+                        <h6 class="mt0 GridViewCotent xamplify-ellipsis"><b>From:</b> {{campaign.companyName | slice:0:15}}<span
+                              *ngIf="campaign.companyName?.length>15">...</span></h6>
                         <h6 class="GridViewCotent">
                           <span>
                             <span *ngIf="campaign.launched"> <b>Launched On:</b></span>

@@ -11,7 +11,7 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
               </li>
               <li>
-                <a translate>Deals</a>
+                <a>Deals</a>
               </li>
             </ul>
           </div>
@@ -161,7 +161,7 @@
                         (click)="downloadDeals(dealsPagination)">
                         <i _ngcontent-c17="" aria-hidden="true" class="fas fa-file-export p10"></i>
                       </button>
-                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
+                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled"
                         (click)="addDeal()" style="padding-left: 11px;">
                         <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
                           <span class="btn btn-primary transition d-inline"><i class="fa fa-plus"
@@ -406,7 +406,7 @@
                                 {{deal.currentStageName}}</span>
 
                               <!-- xnfr-426-->
-                              <a data-rel="fancybox-button"
+                              <a *ngIf="deal?.showDealActions" data-rel="fancybox-button"
                                 (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
                                 data-toggle="tooltip" data-placement="bottom" title="Edit Deal Stage">
                                 <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
@@ -425,16 +425,17 @@
                                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                   <a class="custom-icon" data-rel="fancybox-button"
                                     *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
-                                    (click)="editDeal(deal)" data-toggle="tooltip" data-placement="bottom"
+                                    (click)="deal?.showDealActions?editDeal(deal):''" data-toggle="tooltip" data-placement="bottom"
                                     title="Edit Deal" id="deal">
-                                    <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+                                    <i [ngClass]="deal?.showDealActions? '':'disabled gray'" aria-hidden="true"
+                                    class="fa fa-edit mr5 IconCustomization"></i>
                                     <div class="clickicons"></div>
                                   </a>
                                   <a class="custom-icon" data-rel="fancybox-button"
                                     *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
-                                    (click)="confirmDeleteDeal(deal)" data-toggle="tooltip" data-placement="bottom"
+                                    (click)="deal?.showDealActions ? confirmDeleteDeal(deal):''" data-toggle="tooltip" data-placement="bottom"
                                     title="Delete Deal" id="deal">
-                                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                                    <i [ngClass]="deal?.showDealActions ? '':'disabled gray'" aria-hidden="true" class="fa fa-trash-o trashIconCustomization"></i>
                                     <div class="del-icon"></div>
                                   </a>
                                 </ng-container>
@@ -714,9 +715,8 @@
 <section *ngIf="showDealForm">
   <div class="page-content">
     <div>
-      <a (click)="closeDealForm()" class="pull-right close-circle mrg1"
-        style="margin: 14px 20px;padding-top: 3px;padding-left: 5px;">
-        <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span>
+      <a (click)="closeDealForm()" class="pull-right close-circle mrg1">        
+        <i class="fa fa-times" aria-hidden="true"></i>
       </a>
       <a class="pull-right close-circle" *ngIf="actionType === 'edit'" data-rel="fancybox-button"
         (click)="showComments(selectedDeal)" data-toggle="tooltip" data-placement="bottom" title="Comments/History"

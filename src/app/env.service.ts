@@ -74,6 +74,8 @@ export class EnvService {
   loadLatestVideoJsFiles = false;
   xamplifyCustomerSupportContactNumber= "";
 
+  loadLatestPipeLineApi = true;
+
   constructor() {
   }
 
