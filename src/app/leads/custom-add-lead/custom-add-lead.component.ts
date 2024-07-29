@@ -1293,6 +1293,8 @@ export class CustomAddLeadComponent implements OnInit {
         }, () => {
           this.setFieldErrorStatusAndGetStages();
         });
+    } else {
+      this.setFieldErrorStates();
     }
   }
 
