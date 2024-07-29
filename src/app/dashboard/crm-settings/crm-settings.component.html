@@ -41,37 +41,31 @@
           </div>
           <div class="row m0" *ngIf="!showLeadPipeline">
             <app-response-message [customResponse]="pipelineResponse" *ngIf="pipelineResponse.isVisible"></app-response-message>
+            <!--Lead Pipeline-->
             <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10" *ngIf="!pipelineResponse.isVisible">
               <div class="form-group">
-                <label>Lead Pipeline
-                  <strong class="required">*</strong>
-                </label>
+                <label>Lead Pipeline<strong class="required">*</strong></label>
                 <select class="form-control" [(ngModel)]="integrationDetails.leadPipelineId"
                   [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="leadPipelineId" [disabled]="false"
                   (ngModelChange)="onChangeLeadPipeline();validateField()">
                   <option [value]="0">Select Lead Pipeline</option>
-                  <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">
-                    {{pipeline.name}}</option>
+                  <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                 </select>
               </div>
-              <div class="alert alert-info"><span>
-                Please select the pipeline, in order to synchronize the data into the CRM system. You can not view the 'Select Pipeline' option in the lead registration form.</span></div>
+              <div class="alert alert-info"><span>{{showLeadPipeLineCRMIntegrationMessage}}</span></div>
             </div>
+            <!--Lead Pipeline Stage-->
             <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10" *ngIf="!showLeadPipelineStage && !pipelineResponse.isVisible">
               <div class="form-group">
-                <label>Lead Pipeline Stage
-                  <strong class="required">*</strong>
-                </label>
+                <label>Lead Pipeline Stage<strong class="required">*</strong></label>
                 <select class="form-control" [(ngModel)]="integrationDetails.leadPipelineStageId"
                   [ngModelOptions]="{standalone: true}" placeholder="leadPipelineStageId" id="leadPipelineStageId"
                   [disabled]="false" (ngModelChange)="validateField()">
                   <option [value]="0">Select Stage</option>
-                  <option *ngFor="let stage of leadPipelineStages" [value]="stage.id">
-                    {{stage.stageName}}</option>
+                  <option *ngFor="let stage of leadPipelineStages" [value]="stage.id">{{stage.stageName}}</option>
                 </select>
               </div>
-              <div class="alert alert-info"><span>
-                Please select the stage, in order to synchronize the data into the CRM system. You can not view the 'Select Stage' option in the lead registration form.</span></div>
+              <div class="alert alert-info"><span>{{showLeadPipeLineStageCRMIntegrationMessage}}</span></div>
             </div>
           </div>
         </div>
@@ -93,6 +87,7 @@
         <div class="portlet light mb0" style="padding: 0px !important;">
           <div class="portlet-title leads-bgcolor mb0">
             <div class="row m0">
+              <!--Show Deal Pipeline-->
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="form-inlines">
                   <div class="form-group mb0 mr-20">
@@ -103,8 +98,8 @@
                   <app-custom-ui-switch [customSwitch]="showDealPipeline" (customUiSwitchEventEmitter)="onChangeDealPipelines($event)"
                   [isSwitchOptionDisabled]="!showDealPipelineStage"></app-custom-ui-switch>
                 </div>
-  
               </div>
+              <!--Show Deal Stage-->
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="form-inlines">
                   <div class="form-group mb0 mr-20">
@@ -112,30 +107,27 @@
                     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
                     title="Enabling this option will allow you to view the select stage option in the deal registration form"></i>
                   </div>
-                  <app-custom-ui-switch [customSwitch]="showDealPipelineStage" (customUiSwitchEventEmitter)="onChangeDealPipelineStage($event)">
-                  </app-custom-ui-switch>
+                  <app-custom-ui-switch [customSwitch]="showDealPipelineStage" (customUiSwitchEventEmitter)="onChangeDealPipelineStage($event)"></app-custom-ui-switch>
                 </div>
               </div>
             </div>
           </div>
           <div class="row m0" *ngIf="!showDealPipeline">
             <app-response-message [customResponse]="pipelineResponse" *ngIf="pipelineResponse.isVisible"></app-response-message>
+            <!--Deal PipeLine-->
             <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10" *ngIf="!pipelineResponse.isVisible">
               <div class="form-group">
-                <label>Deal Pipeline
-                  <strong class="required">*</strong>
-                </label>
-                <select class="form-control" [(ngModel)]="integrationDetails.dealPipelineId"
-                  [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="dealPipelineId" [disabled]="false"
+                <label>Deal Pipeline<strong class="required">*</strong></label>
+                <select class="form-control" [(ngModel)]="integrationDetails.dealPipelineId" [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="dealPipelineId" [disabled]="false"
                   (ngModelChange)="onChangeDealPipeline();validateField()">
                   <option [value]="0">Select Deal Pipeline</option>
-                  <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">
-                    {{pipeline.name}}</option>
+                  <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                 </select>
               </div>
-              <div class="alert alert-info"><span>
-                Please select the pipeline, in order to synchronize the data into the CRM system. You can not view the 'Select Pipeline' option in the deal registration form.</span></div>
+              <div class="alert alert-info">
+                <span>{{showDealPipeLineCRMIntegrationMessage}}</span></div>
             </div>
+            <!--Deal PipeLine Stage-->
             <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10" *ngIf="!showDealPipelineStage && !pipelineResponse.isVisible">
               <div class="form-group">
                 <label>Deal Pipeline Stage
@@ -145,12 +137,10 @@
                   [ngModelOptions]="{standalone: true}" placeholder="dealPipelineStageId" id="dealPipelineStageId"
                   [disabled]="false" (ngModelChange)="validateField()">
                   <option [value]="0">Select Stage</option>
-                  <option *ngFor="let stage of dealPipelineStages" [value]="stage.id">
-                    {{stage.stageName}}</option>
+                  <option *ngFor="let stage of dealPipelineStages" [value]="stage.id">{{stage.stageName}}</option>
                 </select>
               </div>
-              <div class="alert alert-info"><span>
-                Please select the stage, in order to synchronize the data into the CRM system. You can not view the 'Select Stage' option in the deal registration form.</span></div>
+              <div class="alert alert-info"><span>{{showDealPipeLineStageCRMIntegrationMessage}}</span></div>
             </div>
           </div>
         </div>
@@ -173,16 +163,15 @@
                     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
                     title="Enabling this option will allow you to view the 'Register Deal' option"></i>
                   </div>
-                  <app-custom-ui-switch [customSwitch]="showRegisterDeal" (customUiSwitchEventEmitter)="onChangeRegisterDeal($event)">
-                  </app-custom-ui-switch>
+                  <app-custom-ui-switch [customSwitch]="showRegisterDeal" (customUiSwitchEventEmitter)="onChangeRegisterDeal($event)"></app-custom-ui-switch>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="alert alert-info">
-          <p *ngIf="showRegisterDeal">'Register Deal' option will be shown at the opportunities module.</p>
-          <p *ngIf="!showRegisterDeal">'Register Deal' option will not be shown at the opportunities module.</p>
+          <p *ngIf="showRegisterDeal">{{showRegisterDealOnMessage}}</p>
+          <p *ngIf="!showRegisterDeal">{{showRegisterDealOffMessage}}</p>
         </div>
       </div>
     </fieldset>
