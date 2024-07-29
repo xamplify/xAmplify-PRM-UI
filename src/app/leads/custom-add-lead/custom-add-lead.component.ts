@@ -202,6 +202,8 @@ export class CustomAddLeadComponent implements OnInit {
   isLatestPipelineApiEnabled = true;
   pipelineLoader:HttpRequestLoader = new HttpRequestLoader();
   stagesLoader:HttpRequestLoader = new HttpRequestLoader();
+  leadLayoutLoader:HttpRequestLoader = new HttpRequestLoader();
+  pipeLineModalPopUpLoader:HttpRequestLoader = new HttpRequestLoader();
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -547,6 +549,7 @@ export class CustomAddLeadComponent implements OnInit {
     this.showCreatedByPipelineAndStage = false;
     this.showCreatedByPipelineAndStageOnTop = false;
     this.showTicketTypesDropdown = false;
+    this.halopsaTicketTypes = [];
   }
 
   private resetLeadPipeLineVariables() {
@@ -1242,28 +1245,34 @@ export class CustomAddLeadComponent implements OnInit {
         },
         () => {
           if(this.isLatestPipelineApiEnabled){
-            this.callPipeLinesApi();
+            this.callPipeLinesOrLeadLayoutsApi();
           }
         });
   }
   /***Added On 27/07/2024 By Sravan */
-  private callPipeLinesApi() {
+  private callPipeLinesOrLeadLayoutsApi() {
     let activeCRMDetails = this.activeCRMDetails;
     if (activeCRMDetails != undefined) {
       this.createdForPipelines = [];
       this.createdForPipelineId = 0;
       this.createdForPipelineStageId = 0;
-      let showLeadPipeline = activeCRMDetails.showLeadPipeline;
-      let showLeadPipelineStage = activeCRMDetails.showLeadPipelineStage;
-      this.getPipelinesAndStages(showLeadPipeline);
-      this.getStagesBySelectedPipeLineId(showLeadPipeline, showLeadPipelineStage);
+      let isHaloPSAAsActiveCRM = "HALOPSA" === this.activeCRMDetails.createdForActiveCRMType;
+      let isZohoAsActiveCRM = "ZOHO" === this.activeCRMDetails.createdForActiveCRMType;
+      this.showTicketTypesDropdown = this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown && (isHaloPSAAsActiveCRM || isZohoAsActiveCRM);
+      if(this.showTicketTypesDropdown){
+        this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
+      }else{
+        this.getPipelinesAndStages();
+        this.getStagesBySelectedPipeLineId();
+      }
     }
   }
 
-  private getPipelinesAndStages(showLeadPipeline: any) {
+  private getPipelinesAndStages() {
+    let showLeadPipeline = this.activeCRMDetails.showLeadPipeline;
     if (showLeadPipeline) {
       this.referenceService.loading(this.pipelineLoader, true);
-      this.leadsService.findLeadPipeLines(this.lead.createdForCompanyId).subscribe(
+      this.leadsService.findLeadPipeLines(this.lead).subscribe(
         response => {
           let data = response.data;
           this.createdForPipelines = data.list;
@@ -1275,11 +1284,11 @@ export class CustomAddLeadComponent implements OnInit {
             let pipelineId = this.createdForPipelines.map(function (pipeline) { return pipeline['id']; });
             this.lead.createdForPipelineId = pipelineId[0];
           } else {
-            this.referenceService.loading(this.pipelineLoader, false);
+            this.stopPipelineLoaders();
           }
           this.logger.info(totalRecords+" Lead PipeLines Loaded");
         }, error => {
-          this.referenceService.loading(this.pipelineLoader, false);
+          this.stopPipelineLoaders();
           this.referenceService.showServerError(this.pipelineLoader);
         }, () => {
           this.setFieldErrorStatusAndGetStages();
@@ -1292,17 +1301,24 @@ export class CustomAddLeadComponent implements OnInit {
     let isShowingStagesForEditOrView = (this.edit || this.preview) && this.lead.createdForPipelineId != undefined && this.lead.createdForPipelineId > 0;
     if (isOnlyOnePipeLineExists || isShowingStagesForEditOrView) {
       this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
-      this.referenceService.loading(this.pipelineLoader, false);
     }
+    this.stopPipelineLoaders();
     this.setFieldErrorStates();
   }
 
-  private getStagesBySelectedPipeLineId(showLeadPipeline: any, showLeadPipelineStage: any) {
+  private stopPipelineLoaders() {
+    this.referenceService.loading(this.pipelineLoader, false);
+    this.referenceService.loading(this.pipeLineModalPopUpLoader, false);
+  }
+
+  private getStagesBySelectedPipeLineId() {
+    let showLeadPipeline = this.activeCRMDetails.showLeadPipeline;
+    let showLeadPipelineStage = this.activeCRMDetails.showLeadPipelineStage;
     if (!showLeadPipeline && showLeadPipelineStage) {
       this.referenceService.loading(this.stagesLoader, true);
       this.lead.createdForPipelineId = this.activeCRMDetails.leadPipelineId;
       this.findPipelineStagesByPipelineId(this.lead.createdForPipelineId);
-      this.referenceService.loading(this.pipelineLoader, false);
+      this.stopPipelineLoaders();
     }
   }
 
@@ -1314,9 +1330,7 @@ export class CustomAddLeadComponent implements OnInit {
         this.showCustomForm = true;
       } else {
         this.showDefaultForm = true;
-        let isHaloPSAAsActiveCRM = "HALOPSA" === this.activeCRMDetails.createdForActiveCRMType;
-        let isZohoAsActiveCRM = "ZOHO" === this.activeCRMDetails.createdForActiveCRMType;
-        this.showTicketTypesDropdown = this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown && (isHaloPSAAsActiveCRM || isZohoAsActiveCRM);
+       
       }
     }
     this.ngxloading = false;
@@ -1641,26 +1655,44 @@ export class CustomAddLeadComponent implements OnInit {
   
   halopsaTicketTypeId: number = 0;
   halopsaTicketTypes: any;
+
   getHaloPSATicketTypes(companyId: number, integrationType: string) {
+    this.referenceService.loading(this.leadLayoutLoader,true);
     this.ngxloading = true;
     this.integrationService.getHaloPSATicketTypes(companyId, integrationType.toLowerCase(), 'LEAD').subscribe(data => {
-      this.ngxloading = false;
       if (data.statusCode == 200) {
         this.halopsaTicketTypes = data.data;
       } else if (data.statusCode == 401) {
         this.customResponse = new CustomResponse('ERROR', data.message, true);
       }
+      this.ngxloading = false;
+      this.referenceService.loading(this.leadLayoutLoader,false);
     },
     error => {
+      this.ngxloading = false;
+      this.referenceService.loading(this.leadLayoutLoader,false);
       this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try after sometime', true);
     })
   }
 
-  onChangeTicketType() {
+  /***Added On 29/07/2024****/
+  findPipeLinesAndStagesByTicketId() {
+    this.lead.createdForPipelineId = 0;
+    this.lead.createdForPipelineStageId = 0;
+    this.createdForStages = [];
+    this.createdForPipelines = [];
     if (this.actionType === 'edit') {
       this.lead.createdForPipelineStageId = 0;
     }
-    this.getLeadPipelines();
+    if(this.isLatestPipelineApiEnabled){
+      this.referenceService.loading(this.pipelineLoader, true);
+      this.referenceService.loading(this.pipeLineModalPopUpLoader,true);
+      this.getPipelinesAndStages();
+      this.getStagesBySelectedPipeLineId();
+    }else{
+        this.getLeadPipelines();
+    }
+    
   }
 
   getDefaultLeadCustomFields() {

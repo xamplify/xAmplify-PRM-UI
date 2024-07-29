@@ -358,11 +358,16 @@ export class LeadsService {
    return this.authenticationService.callGetMethod(url);
   }
 
-  findLeadPipeLines(createdForCompanyId: number) {
+  findLeadPipeLines(lead: Lead) {
+    let createdForCompanyId = lead.createdForCompanyId;
+    let ticketId = lead.halopsaTicketTypeId;
+    let campaignId = lead.campaignId;
     let loggedInUserId = this.authenticationService.getUserId();
     let vendorCompanyIdRequestParam = createdForCompanyId!=undefined && createdForCompanyId>0 ? "&vendorCompanyId="+createdForCompanyId:0;
+    let ticketIdParameter = ticketId!=undefined && ticketId>0 ? "&ticketTypeId="+ticketId:0;
     let loggedInUserIdRequestParam = loggedInUserId!=undefined && loggedInUserId>0 ? "&loggedInUserId="+loggedInUserId:0;
-    let url = this.authenticationService.REST_URL+"pipeline/findLeadPipeLines"+this.ACCESS_TOKEN_SUFFIX_URL+vendorCompanyIdRequestParam+loggedInUserIdRequestParam;
+    let campaignIdRequestParam = campaignId!=undefined && campaignId>0 ? "&campaignId="+campaignId:0;
+    let url = this.authenticationService.REST_URL+"pipeline/findLeadPipeLines"+this.ACCESS_TOKEN_SUFFIX_URL+vendorCompanyIdRequestParam+loggedInUserIdRequestParam+ticketIdParameter+campaignIdRequestParam;
     return this.authenticationService.callGetMethod(url);
   
   }
