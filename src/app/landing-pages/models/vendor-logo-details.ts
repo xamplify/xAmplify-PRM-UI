@@ -14,6 +14,8 @@ export class VendorLogoDetails {
 	expand:boolean = false;
 	vendorJourneyId:number;
 	categoryIds:number[]=[];
+	dropdownSettings={};
+	selectedCategories = [];
 }
 
 export class LogoTeamMembers{
