@@ -23,7 +23,7 @@
         <div class="row mr-3">
           <div class="col-sm-6 col-xs-12 px-10 pl0 mb_pr0">
             <!--Deal Details-->
-            <div class="panel-group" role="tablist" aria-multiselectable="true" *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany)))">
+            <div class="panel-group" role="tablist" aria-multiselectable="true" *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany))) && isDealDetailsTabDisplayed">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">

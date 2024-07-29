@@ -381,5 +381,13 @@ export class Properties {
 	OAUTH_SSO_HELP_TEXT1 = "Please fill the following URLs to set up OAuth Single Sign-On (SSO). These URLs facilitate secure authentication and access to user data.";
 	OAUTH_SSO_HELP_TEXT2 = "Make sure to register below Redirect URI with your oAuth Athourization server and ensure all URLs are accurate and accessible for seamless integration.";
 
+	partnersMergeTag = "{{partnersMergeTag}}";
+	/**Lead And Deal PipeLine Properties****/
+	showDealPipeLineCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Pipeline' option in the deal registration form because \"Show Deal Pipeline\" is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showDealPipeLineStageCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Stage' option in the deal registration form because \"Show Deal Stage\" is turned off. Therefore, Please pick the stage to synchronize the data with the CRM system.";
+	showLeadPipeLineCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Pipeline' option in the lead registration form because \"Show Lead Pipeline\" is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showLeadPipeLineStageCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Stage' option in the lead registration form because \"Show Lead Pipeline\" is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showRegisterDealOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, your "+this.partnersMergeTag+" will not see the 'Register Deal' button in the opportunities section.";
+	showRegisterDealOnMessage = "Since \"Show Register Deal\" option is toggled ON, your "+this.partnersMergeTag+" will see the 'Register Deal' option button in the opportunities section.";
 }
 

@@ -80,6 +80,11 @@ export class IntegrationSettingsPopupComponent implements OnInit {
         }
       }
     }
+
+    if (this.customField.controllerName != null && this.customField.controllerName != undefined && this.customFields.required) {
+      this.setParentFieldRequired(this.customField);
+    }
+
     if (this.customFields.originalCRMType === 'select') {
       const label = new Set<string>();
       const duplicates = this.customFields.options.some(option => {
@@ -118,6 +123,14 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.customField.defaultChoiceLabel = this.customFields.defaultChoiceLabel;
       this.hideIntegrationSettingForm();
     }
+  }
+
+  setParentFieldRequired(customField: any) {
+    this.customFieldsList.forEach(field => {
+      if (field.name === customField.controllerName) {
+        field.required = true;
+      }
+    });
   }
 
   onFieldTypeChange(selectedField: any) {

@@ -472,7 +472,15 @@ export class CrmFormSettingsComponent {
 			let sfParentName = sfCustomField.controllerName;
 			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
 			for (let sfParentfield of sfParentFields) {
-				this.selectCf(sfParentfield);
+				let cfName = sfParentfield.name;
+				if (this.selectedCfIds.indexOf(cfName) == -1) {
+					this.selectedCfIds.push(cfName);
+					this.selectedCustomFieldsDtos.push(sfParentfield);
+				}
+				if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
+					this.paginatedSelectedIds.push(cfName);
+				}
+				sfParentfield.selected = true;
 			}
 		}
 	}

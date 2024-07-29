@@ -38,13 +38,19 @@ export class CrmSettingsComponent implements OnInit {
   isDealPipelineStageValid:boolean = false;
   showRegisterDeal:boolean = false;
   pipelineResponse: CustomResponse = new CustomResponse();
-
+  showDealPipeLineCRMIntegrationMessage = "";
+	showDealPipeLineStageCRMIntegrationMessage = "";
+	showLeadPipeLineCRMIntegrationMessage = "";
+	showLeadPipeLineStageCRMIntegrationMessage = "";
+	showRegisterDealOffMessage = "";
+	showRegisterDealOnMessage = "";
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
 
   ngOnInit() {
+    this.setTitles();
     this.showLeadPipeline = this.integrationDetails.showLeadPipeline;
     this.showLeadPipelineStage = this.integrationDetails.showLeadPipelineStage;
     this.showDealPipeline = this.integrationDetails.showDealPipeline;
@@ -59,6 +65,17 @@ export class CrmSettingsComponent implements OnInit {
       && (this.integrationDetails.dealPipelineId == undefined || this.integrationDetails.dealPipelineId <= 0)) {
       this.pipelineResponse = new CustomResponse('ERROR', 'Something went wrong. Please unlink and configure your account.', true);
     }
+  }
+
+  private setTitles() {
+    let partnerModuleCustomName = this.authenticationService.getPartnerModuleCustomName();
+    let partnersMergeTag = this.properties.partnersMergeTag;
+    this.showDealPipeLineCRMIntegrationMessage = this.properties.showDealPipeLineCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showDealPipeLineStageCRMIntegrationMessage = this.properties.showDealPipeLineStageCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showLeadPipeLineCRMIntegrationMessage = this.properties.showLeadPipeLineCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showLeadPipeLineStageCRMIntegrationMessage = this.properties.showLeadPipeLineStageCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealOffMessage = this.properties.showRegisterDealOffMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealOnMessage = this.properties.showRegisterDealOnMessage.replace(partnersMergeTag, partnerModuleCustomName);
   }
 
   updateCRMSettings() {

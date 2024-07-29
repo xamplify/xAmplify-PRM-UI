@@ -153,6 +153,7 @@ export class AddDealComponent implements OnInit {
   readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
   isCommentAndHistoryCollapsed = false;
   editTextArea = false;
+  isDealDetailsTabDisplayed: boolean = true;
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -169,6 +170,9 @@ export class AddDealComponent implements OnInit {
 
   ngOnInit() {
     this.utilService.getJSONLocation().subscribe(response => console.log(response));
+    if(this.vanityLoginDto.vanityUrlFilter){
+      this.isDealDetailsTabDisplayed = this.actionType!="add";
+    }
     this.deal.createdForCompanyId = 0;
     this.deal.pipelineId = 0;
     this.deal.pipelineStageId = 0;
