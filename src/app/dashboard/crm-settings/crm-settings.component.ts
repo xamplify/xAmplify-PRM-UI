@@ -37,6 +37,7 @@ export class CrmSettingsComponent implements OnInit {
   isLeadPipelineStageValid:boolean = false;
   isDealPipelineStageValid:boolean = false;
   showRegisterDeal:boolean = false;
+  pipelineResponse: CustomResponse = new CustomResponse();
 
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public properties: Properties) {
@@ -56,8 +57,7 @@ export class CrmSettingsComponent implements OnInit {
     if (!this.showLeadPipeline && !this.showDealPipeline 
       && (this.integrationDetails.leadPipelineId == undefined || this.integrationDetails.leadPipelineId <= 0)
       && (this.integrationDetails.dealPipelineId == undefined || this.integrationDetails.dealPipelineId <= 0)) {
-        this.customResponse = new CustomResponse('ERROR', 'Please unlink and configure your account', true);
-        this.notifySubmitSuccess.emit(this.customResponse);
+      this.pipelineResponse = new CustomResponse('ERROR', 'Something went wrong. Please unlink and configure your account.', true);
     }
   }
 

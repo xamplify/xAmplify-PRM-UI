@@ -40,7 +40,8 @@
             </div>
           </div>
           <div class="row m0" *ngIf="!showLeadPipeline">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10">
+            <app-response-message [customResponse]="pipelineResponse" *ngIf="pipelineResponse.isVisible"></app-response-message>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10" *ngIf="!pipelineResponse.isVisible">
               <div class="form-group">
                 <label>Lead Pipeline
                   <strong class="required">*</strong>
@@ -56,7 +57,7 @@
               <div class="alert alert-info"><span>
                 Please select the pipeline, in order to synchronize the data into the CRM system. You can not view the 'Select Pipeline' option in the lead registration form.</span></div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10" *ngIf="!showLeadPipelineStage">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10" *ngIf="!showLeadPipelineStage && !pipelineResponse.isVisible">
               <div class="form-group">
                 <label>Lead Pipeline Stage
                   <strong class="required">*</strong>
@@ -118,7 +119,8 @@
             </div>
           </div>
           <div class="row m0" *ngIf="!showDealPipeline">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10">
+            <app-response-message [customResponse]="pipelineResponse" *ngIf="pipelineResponse.isVisible"></app-response-message>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10" *ngIf="!pipelineResponse.isVisible">
               <div class="form-group">
                 <label>Deal Pipeline
                   <strong class="required">*</strong>
@@ -134,7 +136,7 @@
               <div class="alert alert-info"><span>
                 Please select the pipeline, in order to synchronize the data into the CRM system. You can not view the 'Select Pipeline' option in the deal registration form.</span></div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10" *ngIf="!showDealPipelineStage">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-xs-12  pt10" *ngIf="!showDealPipelineStage && !pipelineResponse.isVisible">
               <div class="form-group">
                 <label>Deal Pipeline Stage
                   <strong class="required">*</strong>
