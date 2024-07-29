@@ -2533,8 +2533,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                  if (response.statusCode == 200) {
                      let data = response.data;                            
                      this.dealPipelines = data;
-                     this.defaultDealPipelineId = this.dealPipelines[0].id;
-                     this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                     if(this.dealPipelines!=undefined && this.dealPipelines.length>0){
+                        this.defaultDealPipelineId = this.dealPipelines[0].id;
+                        this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                     }
                  }
              },
              error => {
