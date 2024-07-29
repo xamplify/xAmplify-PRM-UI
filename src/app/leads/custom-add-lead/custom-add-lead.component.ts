@@ -227,6 +227,9 @@ export class CustomAddLeadComponent implements OnInit {
     this.getDefaultLeadCustomFields();
     this.resetLeadData();
     if (this.actionType === "view") {
+      this.referenceService.loading(this.leadLayoutLoader,true);
+      this.referenceService.loading(this.pipelineLoader, true);
+      this.referenceService.loading(this.pipeLineModalPopUpLoader,true);
       this.loadDataForViewLead();
     } else if (this.actionType === "edit") {
       this.referenceService.loading(this.leadLayoutLoader,true);
@@ -1667,8 +1670,8 @@ export class CustomAddLeadComponent implements OnInit {
 
   getHaloPSATicketTypes(companyId: number, integrationType: string) {
     this.referenceService.loading(this.leadLayoutLoader,true);
-    let isEdit = this.actionType === "edit" && this.lead.createdForPipelineId!=undefined && this.lead.createdForPipelineId>0;
-    if(isEdit){
+    let isEditOrView = (this.actionType === "edit" || this.actionType=="view") && this.lead.createdForPipelineId!=undefined && this.lead.createdForPipelineId>0;
+    if(isEditOrView){
       this.referenceService.loading(this.pipelineLoader, true);
       this.referenceService.loading(this.pipeLineModalPopUpLoader,true);
     }
@@ -1688,7 +1691,7 @@ export class CustomAddLeadComponent implements OnInit {
       this.referenceService.loading(this.leadLayoutLoader,false);
       this.customResponse = new CustomResponse('ERROR', 'Oops!Somethig went wrong.Please try after sometime', true);
     },()=>{
-      if(isEdit){
+      if(isEditOrView){
         this.getPipelinesAndStages();
         this.getStagesBySelectedPipeLineId();
       }
