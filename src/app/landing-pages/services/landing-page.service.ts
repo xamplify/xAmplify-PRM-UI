@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { GeoLocationAnalytics } from "../../util/geo-location-analytics";
 import { UtilService } from 'app/core/services/util.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { MarketPlaceCategory } from '../../dashboard/models/market-place-category';
 declare var  $: any;
 @Injectable()
 export class LandingPageService {
@@ -251,4 +252,24 @@ export class LandingPageService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+      listMarketPlaceCategories(pagination: any) {
+        let userId = this.authenticationService.getUserId();
+        return this.http.post(this.URL + userId +"/list-market-place-categories?access_token=" + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    } 
+    
+    saveOrUpdateCategory( marketPlaceCategory: MarketPlaceCategory ) {
+        return this.http.post( this.URL + "save-or-update-market-place-category?access_token=" + this.authenticationService.access_token, marketPlaceCategory )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+      deleteMarketPlaceCategory( categoryId: number) {
+        return this.http.get( this.URL + "delete/" + categoryId +"?access_token=" + this.authenticationService.access_token, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
 }
