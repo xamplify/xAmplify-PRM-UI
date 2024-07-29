@@ -463,7 +463,7 @@
     <app-custom-fields-order-popup (closeEvent)="closeCustomFielsOrderModal($event)" [customFieldsList]="customFieldsList"></app-custom-fields-order-popup>
   </div>
 
-  <div id="menu3" class="tab-pane fade pt-top" *ngIf="integrationDetails != undefined">
+  <div id="menu3" class="tab-pane fade pt-top" *ngIf="isCRMSettingsModelPopUp">
     <!-- <div>
       <app-list-loader *ngIf="ngxloading"></app-list-loader>
       <h4>Deal Form Description</h4>

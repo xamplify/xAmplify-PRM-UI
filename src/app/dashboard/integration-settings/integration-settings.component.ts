@@ -63,6 +63,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	dealHeader = '';
 	opportunityType: any;
 	isSalesForceType = false;
+	isCRMSettingsModelPopUp:boolean = false;
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
@@ -767,12 +768,18 @@ export class IntegrationSettingsComponent implements OnInit {
 	setActiveTab(tabName: string) {
 		this.activeTab = tabName;
 		if(tabName === 'menu1'){
-			this.opportunityType = 'DEAL'
+			this.opportunityType = 'DEAL';
 			// this.listSalesforceCustomFields(this.opportunityType);
 		}
 		if(tabName === 'menu2'){
-			this.opportunityType = 'LEAD'
+			this.opportunityType = 'LEAD';
 			// this.listSalesforceCustomFields(this.opportunityType);
+		}
+		if (tabName === 'menu3') {
+			this.isCRMSettingsModelPopUp = true;
+		}
+		if (tabName !== 'menu3') {
+			this.isCRMSettingsModelPopUp = false;
 		}
 	}
 

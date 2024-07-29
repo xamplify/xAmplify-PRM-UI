@@ -53,6 +53,12 @@ export class CrmSettingsComponent implements OnInit {
     this.showRegisterDeal = this.integrationDetails.showRegisterDeal;
     this.getLeadPipelines();
     this.getDealPipelines();
+    if (!this.showLeadPipeline && !this.showDealPipeline 
+      && (this.integrationDetails.leadPipelineId == undefined || this.integrationDetails.leadPipelineId <= 0)
+      && (this.integrationDetails.dealPipelineId == undefined || this.integrationDetails.dealPipelineId <= 0)) {
+        this.customResponse = new CustomResponse('ERROR', 'Please unlink and configure your account', true);
+        this.notifySubmitSuccess.emit(this.customResponse);
+    }
   }
 
   updateCRMSettings() {
