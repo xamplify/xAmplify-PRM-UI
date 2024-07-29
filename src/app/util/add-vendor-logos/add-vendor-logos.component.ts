@@ -104,8 +104,9 @@ export class AddVendorLogosComponent implements OnInit {
 						}
 					}
 				}
-				console.log(this.sharedVendorLogoDetails)
 			}
 		}
 	}
+
+
 }

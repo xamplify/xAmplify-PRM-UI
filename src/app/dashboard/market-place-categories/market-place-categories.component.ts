@@ -114,7 +114,9 @@ export class MarketPlaceCategoriesComponent implements OnInit {
 						this.marketPlaceCategoryResponse = new CustomResponse('SUCCESS', result.message, true);
               			this.categoryPagination.pageIndex = 1;
               			 this.listMasterPlaceCategories(this.categoryPagination);
-					}
+					}else if(result.statusCode == 400){
+						this.marketPlaceCategoryResponse = new CustomResponse('ERROR', result.message, true);
+          }
 				},
 				(error: string) => {
 					this.referenceService.stopLoader(this.httpRequestLoader);

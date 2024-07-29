@@ -507,16 +507,17 @@
                                             </a>
                                         </li>
                                         <!--  Adding masterLandingPageCategories  -->
-                                        
-                                        <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPageCategories'}">
-                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPageCategories'}"
-                                                (click)="activateTab('masterLandingPageCategories');clearCustomResponse()">
-                                                {{properties.masterLandingPageCategories}}
-                                                <ng-template [ngTemplateOutlet]="activeIcon"
-                                                    [ngTemplateOutletContext]="{'moduleName':'masterLandingPageCategories'}"></ng-template>
-                                            </a>
-                                        </li>
-                                        
+                                        <ng-container
+                                            *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember && authenticationService?.module?.vendorPagesEnabled)|| authenticationService?.module?.adminOrSuperVisor)">
+                                            <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPageCategories'}">
+                                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPageCategories'}"
+                                                    (click)="activateTab('masterLandingPageCategories');clearCustomResponse()">
+                                                    {{properties.masterLandingPageCategories}}
+                                                    <ng-template [ngTemplateOutlet]="activeIcon"
+                                                        [ngTemplateOutletContext]="{'moduleName':'masterLandingPageCategories'}"></ng-template>
+                                                </a>
+                                            </li>
+                                        </ng-container>
                                         <!-- Adding masterLandingPageCategories  end -->
                                         <!--Adding Domains XNFR-454-->
                                         <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
