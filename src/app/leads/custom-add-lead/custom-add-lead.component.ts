@@ -221,7 +221,9 @@ export class CustomAddLeadComponent implements OnInit {
 
   ngOnInit() {
     this.referenceService.scrollSmoothToTop();
-    this.isLeadDetailsTabDisplayed = this.actionType!="add" && this.vanityLoginDto.vanityUrlFilter;
+    if(this.vanityLoginDto.vanityUrlFilter){
+      this.isLeadDetailsTabDisplayed = this.actionType!="add";
+    }
     this.getDefaultLeadCustomFields();
     this.resetLeadData();
     if (this.actionType === "view") {
