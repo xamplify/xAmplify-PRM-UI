@@ -88,12 +88,12 @@
 ::ng-deep angular4-multiselect .dropdown-list {
   position: absolute !important;
   z-index: 1050 !important;
-  max-height: 300px; /* Optional: Adjust the height as needed */
+  max-height: 150px; /* Optional: Adjust the height as needed */
   overflow-y: auto;  /* Optional: Add scroll if the dropdown is too long */
 }
 
 
 .modal-dialog, .modal-content, .modal-body, .model-footer {
-  overflow: visible !important;
+  overflow: auto !important;
 }
 

@@ -142,6 +142,7 @@ export class VendorJourneyComponent implements OnInit {
               self.vendorLogoDetails = logoDetails;
               let categoryDetails = data.map.categoryDetails
               if(categoryDetails != null ){
+                self.categoryDropDownOptions = [];
                 for(let category of categoryDetails){
                   self.categoryDropDownOptions.push({"id":category.marketPlaceCategoryId, "itemName":category.categoryName })
                 }
