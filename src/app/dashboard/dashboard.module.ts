@@ -110,6 +110,7 @@ import { SuperAdminServiceService } from './super-admin-service.service';
 import { CampaignAnalyticsSettingsComponent } from './campaign-analytics-settings/campaign-analytics-settings.component';
 import { MyProfileService } from './my-profile.service';
 import { CrmFormSettingsComponent } from './crm-form-settings/crm-form-settings.component';
+import { MarketPlaceCategoriesComponent } from './market-place-categories/market-place-categories.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule ],
@@ -191,6 +192,7 @@ import { CrmFormSettingsComponent } from './crm-form-settings/crm-form-settings.
         CustomFieldsOrderPopupComponent,
         CampaignAnalyticsSettingsComponent,
         CrmFormSettingsComponent,
+        MarketPlaceCategoriesComponent,
 
             
 

@@ -29,7 +29,6 @@ export class TagsComponent implements OnInit {
   tagResponse: CustomResponse = new CustomResponse();
   tagButtonSubmitText = "Save";
   tagModalTitle = "Enter Tag Details";
-  //tagErrorMessage = "";
   tagNames: string[] = [];
   loggedInUserId = 0;
   customResponse: CustomResponse = new CustomResponse();
@@ -108,140 +107,23 @@ export class TagsComponent implements OnInit {
   }
   tagEventHandler(keyCode: any) { if (keyCode === 13) { this.searchTags(); } }
 
-  // public startsWithAt(control: FormControl) {
-  //   try {
-  //     let checkTag: string;
-  //     if (control.value.charAt(0) === ' ' && checkTag.length === 0) {
-  //       return { 'startsWithAt': true };
-  //     }
-  //     return null;
-  //   } catch (error) { console.log('empty tag'); }
-  // }
-
-  // public validatorsTag = [this.startsWithAt];
-
-  // validateTagName(keyCode: any) {
-  //   this.removeTagErrorClass();
-  //   if (keyCode === 13) {
-  //     if (this.isAddTag) {
-  //       let names = [];
-  //       $.each(this.tagNames, function (index: number, tagName: any) {
-  //         let name: string;
-  //         name = tagName['value'].toLowerCase();
-  //         names.push(name);
-  //       });
-  //       let lastEntry = names[names.length - 1];
-  //       if (names.length > 1) {
-  //         let index = names.indexOf(lastEntry);
-  //         if(index != names.length-1){
-  //           this.tagNames.pop();
-  //         }
-  //       }
-  //       this.tag.isTagNameValid = true;
-  //     } else {
-  //       this.saveOrUpdateTag();
-  //     }
-  //   } else {
-  //     if (this.isAddTag) {
-  //       if (this.tagNames == undefined || this.tagNames.length < 1) {
-  //         this.tag.isTagNameValid = false;
-  //       } else {
-  //         this.tag.isTagNameValid = true;
-  //       }
-  //     } else {
-  //       if (this.tag.tagName == undefined || this.tag.tagName.length < 1) {
-  //         this.tag.isTagNameValid = false;
-  //       } else {
-  //         this.tag.isTagNameValid = true;
-  //       }
-  //     }
-  //   }
-  // }
 
   addTag() {
     this.isAddTag = true;
-    // this.tag = new Tag();
-    // this.tagModalTitle = 'Enter Tag Details';
-    // this.tagButtonSubmitText = "Save";
-    // this.tagNames = [];
-    // this.tag.isValid = true;
+   
     this.openAddTagPopup = true;
-    //$('#addTagModalPopup').modal('show');
   }
 
-  // closeTagModal() {
-  //   $('#addTagModalPopup').modal('hide');
-  //   this.referenceService.stopLoader(this.addTagLoader);
-  //   this.tag = new Tag();
-  //   this.removeTagErrorClass();
-  //   this.tagResponse = new CustomResponse();
-  //   this.isAddTag = false;
-  //   this.tagNames = [];
-  //   this.tag.isTagNameValid = false;
-  // }
+ 
 
-  // addTagErrorMessage(errorMessage: string) {
-  //   this.tag.isValid = false;
-  //   //this.tagErrorMessage = errorMessage;
-  // }
-
-  // removeTagErrorClass() {
-  //   this.tag.isValid = true;
-  //   this.tagResponse = new CustomResponse();
-  //   //this.tagErrorMessage = "";
-  // }
-
-  // saveOrUpdateTag() {
-  //   this.referenceService.startLoader(this.addTagLoader);
-  //   if (this.tag.id > 0) {
-  //     this.tag.updatedBy = this.loggedInUserId;
-  //   } else {
-  //     this.tag.createdBy = this.loggedInUserId;
-  //     var list = [];
-  //     $.each(this.tagNames, function (index: number, val: any) {
-  //       list.push(val['value']);
-  //     });
-  //     this.tag.tagNames = list;
-  //   }
-  //   this.userService.saveOrUpdateTag(this.tag)
-  //     .subscribe(
-  //       (result: any) => {
-  //         //this.closeTagModal();
-  //         this.openAddTagPopup = false;
-  //         if (result.access) {
-  //           this.referenceService.stopLoader(this.addTagLoader);
-  //           this.tagResponse = new CustomResponse('SUCCESS', result.message, true);
-  //           this.tagPagination = new Pagination();
-  //           this.listTags(this.tagPagination);
-  //         } else {
-  //           this.authenticationService.forceToLogout();
-  //         }
-
-  //       },
-  //       (error: string) => {
-  //         this.referenceService.stopLoader(this.addTagLoader);
-  //         let statusCode = JSON.parse(error['status']);
-  //         if (statusCode == 409 || statusCode == 400) {
-  //           this.addTagErrorMessage(JSON.parse(error['_body']).message);
-  //         } else {
-  //           this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
-  //         }
-  //       });
-  // }
 
 
   getTagById(tag: Tag) {
      this.selectedTag = new Tag();
-    // this.tag.id = tag.id;
-    // this.tag.tagName = tag.tagName;
-    // this.tag.isValid = true;
-    // this.tag.isTagNameValid = true;
-    // this.tagButtonSubmitText = "Update";
-    // this.tagModalTitle = 'Edit Tag Details';
+   
     this.isAddTag = false;
     this.selectedTag = tag;
     this.openAddTagPopup = true;
-    //$('#addTagModalPopup').modal('show');
   }
 
 
