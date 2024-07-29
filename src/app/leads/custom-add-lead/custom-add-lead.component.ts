@@ -204,7 +204,7 @@ export class CustomAddLeadComponent implements OnInit {
   stagesLoader:HttpRequestLoader = new HttpRequestLoader();
   leadLayoutLoader:HttpRequestLoader = new HttpRequestLoader();
   pipeLineModalPopUpLoader:HttpRequestLoader = new HttpRequestLoader();
-
+  isLeadDetailsTabDisplayed = true;
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public regularExpressions: RegularExpressions, public userService: UserService,
@@ -220,6 +220,7 @@ export class CustomAddLeadComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLeadDetailsTabDisplayed = this.actionType!="add";
     this.referenceService.scrollSmoothToTop();
     this.getDefaultLeadCustomFields();
     this.resetLeadData();

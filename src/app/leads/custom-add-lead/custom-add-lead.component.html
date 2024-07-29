@@ -23,10 +23,11 @@
         <div class="row mr-3">
           <!--Left Side Div-->
           <div class="col-sm-6 col-xs-12 px-10 pl0 mb_pr0">
+            <!--Lead Details-->
             <div class="panel-group" role="tablist" aria-multiselectable="true"
               *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany)))
                        && ((lead.campaignId == null || lead.campaignId == 0) || (lead.campaignId != 0 && lead.campaignId != null && isVendorVersion))">
-              <div class="panel panel-default deal-bgcolor">
+              <div class="panel panel-default deal-bgcolor" *ngIf="isLeadDetailsTabDisplayed">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
                     <a href="leadDetails" (click)="toggleDealpipepline($event)">
@@ -35,7 +36,6 @@
                       Lead Details</a>
                   </h4>
                 </div>
-                <!--Lead Details-->
                 <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="leadDetails">
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
