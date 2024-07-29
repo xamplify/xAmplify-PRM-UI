@@ -215,12 +215,12 @@ export class CustomAddLeadComponent implements OnInit {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.vanityLoginDto.userId = this.loggedInUserId;
       this.vanityLoginDto.vanityUrlFilter = true;
+      this.isLeadDetailsTabDisplayed = this.actionType!="add" ;
     }
     this.isLatestPipelineApiEnabled = this.envService.loadLatestPipeLineApi;
   }
 
   ngOnInit() {
-    this.isLeadDetailsTabDisplayed = this.actionType!="add";
     this.referenceService.scrollSmoothToTop();
     this.getDefaultLeadCustomFields();
     this.resetLeadData();
