@@ -359,6 +359,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showleadFieldSettings : boolean = false;
 	showOauthSSOConfiguration: boolean = false;
 	isCampaignAnalyticsOptionClicked = false;
+	/** XNFR-583 **/
+	isMasterLandingPageCategories: boolean = false;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -2126,7 +2129,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 			}, 500);
 			this.activeTabHeader = this.properties.masterLandingPages;
-		}
+		}else if (this.activeTabName == "masterLandingPageCategories") {
+            this.ngxloading = true;
+            this.isMasterLandingPageCategories = false;
+            let self = this;
+            setTimeout(() => {
+                self.isMasterLandingPageCategories = true;
+                self.ngxloading = false;
+            }, 500);
+            this.activeTabHeader = this.properties.masterLandingPageCategories;
+        }
 		/*****XNFR-592 ******/
 		else if (this.activeTabName == "leadFieldSettings") {
 			this.activeTabHeader = this.properties.leadFieldSettings;

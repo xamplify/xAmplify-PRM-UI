@@ -367,7 +367,8 @@
                                             activeTabName == 'categories' ? 'show':'',
                                             activeTabName == 'team-group' ? 'show':'',
                                             activeTabName == properties?.emailNotificationSettings ? 'show':'',
-                                            activeTabName == properties?.addDomainsText ? 'show':'']">
+                                            activeTabName == properties?.addDomainsText ? 'show':'',
+                                            activeTabName == 'masterLandingPageCategories' ? 'show':'']">
                                         Admin
                                         <a data-toggle="collapse" style="float: right;"
                                             href="javascript:;#adminDropdown" (click)="toggleClass('admin-icon')">
@@ -505,6 +506,18 @@
                                                     [ngTemplateOutletContext]="{'moduleName':properties?.emailNotificationSettings}"></ng-template>
                                             </a>
                                         </li>
+                                        <!--  Adding masterLandingPageCategories  -->
+                                        
+                                        <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPageCategories'}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPageCategories'}"
+                                                (click)="activateTab('masterLandingPageCategories');clearCustomResponse()">
+                                                {{properties.masterLandingPageCategories}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon"
+                                                    [ngTemplateOutletContext]="{'moduleName':'masterLandingPageCategories'}"></ng-template>
+                                            </a>
+                                        </li>
+                                        
+                                        <!-- Adding masterLandingPageCategories  end -->
                                         <!--Adding Domains XNFR-454-->
                                         <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
                                             [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}"
