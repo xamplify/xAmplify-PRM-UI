@@ -28,6 +28,7 @@ export class SfDealComponent implements OnInit {
   @Input() public ticketTypeId: any;
   @Input() public opportunityType: any;
   @Input() public selectedContact: any;
+  @Input() public actionType: any;
   @Output() isFormValid = new EventEmitter();
   form: Form = new Form();
   errorMessage: string;
@@ -203,17 +204,19 @@ export class SfDealComponent implements OnInit {
         }
         if (this.opportunityType === 'LEAD' && this.selectedContact !== undefined) {
           for (let column of this.form.formLabelDTOs) {
-            if (column.labelId === 'Company') {
+            let addActionType = this.actionType === 'add';
+            if (column.labelId === 'Company' && addActionType) {
               column.value = this.selectedContact.companyName;
             } else if (column.labelId === 'Email') {
               column.value = this.selectedContact.emailId;
               column.columnDisable = true;
-            } else if (column.labelId === 'FirstName'){
+            } else if (column.labelId === 'FirstName' && addActionType) {
               column.value = this.selectedContact.firstName;
-            } else if (column.labelId === 'LastName') {
+            } else if (column.labelId === 'LastName' && addActionType) {
               column.value = this.selectedContact.lastName;
             }
           }
+          this.validateAllFields();
         }
         /*********XNFR-403*********/
         if (this.dealId > 0) {
