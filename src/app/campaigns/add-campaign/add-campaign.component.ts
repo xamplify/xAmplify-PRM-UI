@@ -2643,7 +2643,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 this.ngxLoading = false;
                 if (data.statusCode == 200) {
                     this.campaign.dealTicketTypeId = data.data;
-                    this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                    if(this.dealTicketTypes!=undefined && this.dealTicketTypes.length>0){
+                        this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                    }
                     this.getHalopsaDealPipelines();
                 }
             }
