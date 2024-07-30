@@ -227,14 +227,8 @@ export class CustomAddLeadComponent implements OnInit {
     this.getDefaultLeadCustomFields();
     this.resetLeadData();
     if (this.actionType === "view") {
-      this.referenceService.loading(this.leadLayoutLoader,true);
-      this.referenceService.loading(this.pipelineLoader, true);
-      this.referenceService.loading(this.pipeLineModalPopUpLoader,true);
       this.loadDataForViewLead();
     } else if (this.actionType === "edit") {
-      this.referenceService.loading(this.leadLayoutLoader,true);
-      this.referenceService.loading(this.pipelineLoader, true);
-      this.referenceService.loading(this.pipeLineModalPopUpLoader,true);
       this.loadDataForEditLead();
     } else if (this.actionType === "add") {
       this.loadDataForAddLead();
