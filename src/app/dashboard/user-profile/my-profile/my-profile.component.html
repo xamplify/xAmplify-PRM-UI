@@ -343,7 +343,7 @@
                                             </a>
                                         </li>
 
-
+                                        <!--Support-->
                                         <li *ngIf="authenticationService?.vanityURLEnabled && authenticationService?.module?.showSupportSettingOption && !isLoggedInAsPartner"
                                             [ngClass]="{'active-tab': activeTabName == 'support'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'support'}"
@@ -464,10 +464,8 @@
                                             </ng-container>
 
                                             <!--Master Landing Pages-->
-
                                             <ng-container
                                                 *ngIf="masterLandingPageOrVendorPages && (authenticationService?.isPartner() || (authenticationService?.module?.isTeamMember && authenticationService?.module?.vendorPagesEnabled)|| authenticationService?.module?.adminOrSuperVisor)">
-
                                                 <li [ngClass]="{'active-tab': activeTabName == 'masterLandingPages'}">
                                                     <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'masterLandingPages'}"
                                                         (click)="activateTab('masterLandingPages');clearCustomResponse()">
@@ -531,68 +529,9 @@
                                         </li>
                                     </ul>
                                 </ng-container>
-
                             </ul>
                         </div>
                         <!-- END MENU -->
-                    </div>
-                    <!-- co -->
-                    <div class="portlet light" *ngIf="false">
-                        <div>
-                            <div class="margin-top-20 profile-desc-link">
-                                <div class="col-xs-12">
-                                    <div class="col-xs-6">
-                                        <h4 style="position: relative;left:-27px;font-size: 17px;font-weight: 500;">
-                                            Projects
-                                        </h4>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <h4 style="position: relative;right: -17px;font-size: 17px;font-weight: 500;">
-                                            (33/10000) </h4>
-                                    </div>
-                                </div>
-                                <div class="progress" style="width:100%;height: 7px;border-radius: 0">
-                                    <div class="progress-bar" role="progressbar" style="width:3%" aria-valuenow="70"
-                                        aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="margin-top-20 profile-desc-link">
-                                <div class="col-xs-12">
-                                    <div class="col-xs-6">
-                                        <h4 style="position: relative;left:-27px;font-size: 17px;font-weight: 500;">
-                                            Tasks(Min) </h4>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <h4 style="position: relative;right: -26px;font-size: 17px;font-weight: 500;">
-                                            (83/9999) </h4>
-                                    </div>
-                                </div>
-                                <div class="progress" style="width:100%;height: 7px;border-radius: 0">
-                                    <div class="progress-bar" role="progressbar" style="width:8%" aria-valuenow="70"
-                                        aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="margin-top-20 profile-desc-link">
-                                <div class="col-xs-12">
-                                    <div class="col-xs-6">
-                                        <h4 style="position: relative;left:-27px;font-size: 17px;font-weight: 500;">
-                                            Uploads(Min) </h4>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <h4 style="position: relative;right:-43px;font-size: 17px;font-weight: 500;">
-                                            (2/999)
-                                        </h4>
-                                    </div>
-                                </div>
-                                <div class="progress" style="width:100%; height: 7px;border-radius: 0">
-                                    <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="70"
-                                        aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <!-- END PORTLET MAIN -->
                 </div>
@@ -604,50 +543,33 @@
                                 <div class="portlet-title tabbable-line" *ngIf="!vendorJourneyEditOrViewAnalytics">
                                     <div class="caption caption-md col-xs-12">
                                         <i class="icon-globe theme-font hide" aria-hidden="true"></i>
-                                        <span class="caption-subject font-blue-madison bold"
-                                            *ngIf="activeTabName=='notifyPartners'">{{authenticationService?.partnerModule?.customName
-                                            | translate}} Invitation</span>
-                                        <span class="caption-subject font-blue-madison bold"
-                                            *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader |
-                                            translate}}</span>
-                                        <div class="btn-toolbar" style="float: right;"
-                                            *ngIf="activeTabName == 'customTheme'|| activeTabName == 'lightTheme'
+                                        <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">{{authenticationService?.partnerModule?.customName}} Invitation</span>
+                                        <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader}}</span>
+                                        <div class="btn-toolbar" style="float: right;" *ngIf="activeTabName == 'customTheme'|| activeTabName == 'lightTheme'
                                         || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
                                             <div class="btn-group" style="padding-top: 7px;">
-                                                <button class="button_blue padding align bgcolor-unset"
-                                                    style="border-radius: 3px;"
-                                                    *ngIf="activeTabName == 'lightTheme' && themeDto?.id != activeThemeDetails?.themeId"
-                                                    (click)="activateThemeForCompanyWithAlert(themeDto.id)"><span
-                                                        class="btn btn-primary transition text_pd-top1">Activate
-                                                        Theme</span></button>
-
+                                                <button class="button_blue padding align bgcolor-unset" style="border-radius: 3px;"
+                                                    *ngIf="activeTabName == 'lightTheme' && themeDto?.id != activeThemeDetails?.themeId" (click)="activateThemeForCompanyWithAlert(themeDto.id)">
+                                                <span class="btn btn-primary transition text_pd-top1">Activate Theme</span></button>
                                             </div>
-
-                                            <a class="close-circle xamp-margin-left-icon" (click)="closeTheme()"
-                                                aria-hidden="true">
+                                            <a class="close-circle xamp-margin-left-icon" (click)="closeTheme()" aria-hidden="true">
                                                 <i class="fa fa-times" aria-hidden="true"></i>
                                             </a>
-
                                         </div>
                                     </div>
                                 </div>
                                 <div class="portlet body" *ngIf="activeTabName == 'customskin' ">
-                                    <app-response-message class="pg8" [customResponse]="themeResponse"
-                                        *ngIf="themeResponse.isVisible">
-                                    </app-response-message>
+                                    <app-response-message class="pg8" [customResponse]="themeResponse" *ngIf="themeResponse.isVisible"></app-response-message>
                                     {{properties?.customThemeDescription}}
                                     <br><br>
                                     <div class="div thembgc">
                                         <div class="row">
-                                            <div class="themePaddings col-lg-6 col-md-6 col-sm-6"
-                                                *ngFor="let dto of defaultThemes">
+                                            <div class="themePaddings col-lg-6 col-md-6 col-sm-6"  *ngFor="let dto of defaultThemes">
                                                 <div>
                                                     <div class="img_padding">
                                                         <div class="lightTheme">
-                                                            <img alt="" class="img-custome"
-                                                                src="{{getThemeImage(dto?.name)}}">
+                                                            <img alt="" class="img-custome" src="{{getThemeImage(dto?.name)}}">
                                                         </div>
-
                                                     </div>
                                                     <div class="card-bg topcard-padding">
                                                         <div class="card-body centerAlignProperty">
@@ -704,7 +626,6 @@
                                     </div>
                                 </div>
                                 <div class="row div table-color" *ngIf="activeTabName == 'customskin' ">
-
                                     <table class="table tgrid table-responsive table-hover" id="manage-assets-table">
                                         <thead class="table-bgcolor">
                                             <tr>
@@ -777,8 +698,6 @@
                                             <strong>No Theme(s) Found</strong>
                                         </div>
                                     </div>
-
-
                                 </div>
                                 <div class="portlet-body clearfix">
                                     <app-response-message class="pg8" [customResponse]="customResponse"
@@ -1681,7 +1600,6 @@
                                                         <tbody>
                                                             <ng-container *ngFor="let sfCustomField of sfcfPagedItems ">
                                                                 <tr>
-
                                                                     <td align="center"><input class="checkBox_shadow"
                                                                             type="checkbox"
                                                                             value="{{sfCustomField.name}}"
@@ -2551,55 +2469,36 @@
                                             *ngIf="activeTabName == 'customTheme'"
                                             (closeEvent)="showThemeAlert($event)">
                                         </app-custom-skin>
-
-                                        <!-- <app-button-customization class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'buttonCustom'}"
-                                            *ngIf="activeTabName == 'buttonCustom'"></app-button-customization> -->
-
-                                        <app-tags class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
-                                        <app-spf class="tab-pane" *ngIf="showSpfConfigurationDiv"
-                                            [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
-                                        <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
-                                        <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
+                                        <!--Tags-->
+                                        <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
+                                        <!--SPF-->
+                                        <app-spf class="tab-pane" *ngIf="showSpfConfigurationDiv" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
+                                        <!--Unsubscribe Reasons-->
+                                        <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
+                                        <!--Team Member Groups-->
+                                        <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane" [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
                                         <!--Notify Partners-->
-                                        <app-notify-partners
-                                            *ngIf="showNotifyPartnersOption && authenticationService?.module.notifyPartners"
-                                            class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'notifyPartners'}"></app-notify-partners>
+                                        <app-notify-partners *ngIf="showNotifyPartnersOption && authenticationService?.module.notifyPartners"
+                                            class="tab-pane" [ngClass]="{'active': activeTabName == 'notifyPartners'}"></app-notify-partners>
                                         <!--XNFR-326 Email Notification Settings-->
-                                        <app-email-notification-settings
-                                            *ngIf="showEmailNotificationSettingsOption && authenticationService?.module?.emailNotificationSettings"
-                                            class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
+                                        <app-email-notification-settings *ngIf="showEmailNotificationSettingsOption && authenticationService?.module?.emailNotificationSettings"
+                                            class="tab-pane" [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
                                         </app-email-notification-settings>
-
                                         <!--XNFR-454 Domain Configuration-->
                                         <app-domain-whitelisting *ngIf="isAddDomainsOptionClicked" class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == properties?.addDomainsText}"
-                                            [isMyProfileAndDomainWhitelisting]='true'>
+                                            [ngClass]="{'active': activeTabName == properties?.addDomainsText}" [isMyProfileAndDomainWhitelisting]='true'>
                                         </app-domain-whitelisting>
-                                        
-                                        <app-market-place-categories *ngIf="isMasterLandingPageCategories" class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == 'masterLandingPageCategories'}">
+                                        <!--Market Place-->
+                                        <app-market-place-categories *ngIf="isMasterLandingPageCategories" class="tab-pane"  [ngClass]="{'active': activeTabName == 'masterLandingPageCategories'}">
                                         </app-market-place-categories>
-
                                         <!--XNFR-459 News & Announcements-->
-                                        <div class="tab-pane" *ngIf="isNewsAndAnnouncementsOptionClicked"
-                                            [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
-                                            <app-custom-links-util
-                                                [moduleType]="properties?.newsAndAnnouncements"></app-custom-links-util>
+                                        <div class="tab-pane" *ngIf="isNewsAndAnnouncementsOptionClicked" [ngClass]="{'active': activeTabName == properties?.newsAndAnnouncements}">
+                                            <app-custom-links-util [moduleType]="properties?.newsAndAnnouncements"></app-custom-links-util>
                                         </div>
-
                                         <!--XNFR-459 Dashboard Banners-->
-                                        <div class="tab-pane" *ngIf="isDashboardBannersOptionClicked"
-                                            [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
-                                            <app-custom-links-util
-                                                [moduleType]="properties?.dashboardBanners"></app-custom-links-util>
+                                        <div class="tab-pane" *ngIf="isDashboardBannersOptionClicked"  [ngClass]="{'active': activeTabName == properties?.dashboardBanners}">
+                                            <app-custom-links-util [moduleType]="properties?.dashboardBanners"></app-custom-links-util>
                                         </div>
-
                                         <!--video default player settings-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
                                             <div>
@@ -2729,17 +2628,12 @@
                                                         <!-- removed bg-color white and shadow white (ss) -->
                                                         <div class="col-xs-12" style="padding:0;">
                                                             <fieldset class="fild-custome-borders-none">
-                                                                <legend class="leg-custome-borders-bot" translate>
-                                                                    Controls of the player</legend>
+                                                                <legend class="leg-custome-borders-bot">Controls of the player</legend>
                                                                 <div class="col-xs-12">
                                                                     <div class="form-group">
-                                                                        <label
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow
-                                                                            Sharing' | translate}}:</label>
-                                                                        <div
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
-                                                                            <switch class="switchbtns"
-                                                                                [(status)]="defaultVideoPlayer.allowSharing"
+                                                                        <label  class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Sharing'}}:</label>
+                                                                        <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
+                                                                            <switch class="switchbtns"  [(status)]="defaultVideoPlayer.allowSharing"
                                                                                 [onText]="callActionSwitch.onTextValue"
                                                                                 [offText]="callActionSwitch.offTextValue"
                                                                                 [onColor]="callActionSwitch.onSkyBlueColorSwitch"
@@ -2749,11 +2643,8 @@
                                                                                 [disabled]="hasVideoRole">
                                                                             </switch>
                                                                         </div>
-                                                                        <label
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow
-                                                                            Fullscreen' | translate}}:</label>
-                                                                        <div
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
+                                                                        <label  class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Fullscreen'}}:</label>
+                                                                        <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                             <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowFullscreen"
                                                                                 [onText]="callActionSwitch.onTextValue"
@@ -2767,11 +2658,8 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group" style="margin-top: 38px;">
-                                                                        <label
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow
-                                                                            Likes' | translate}}:</label>
-                                                                        <div
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
+                                                                        <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow  Likes'}}:</label>
+                                                                        <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                             <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowLikes"
                                                                                 [onText]="callActionSwitch.onTextValue"
@@ -2783,11 +2671,8 @@
                                                                                 [disabled]="hasVideoRole">
                                                                             </switch>
                                                                         </div>
-                                                                        <label
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow
-                                                                            Embed' | translate}}:</label>
-                                                                        <div
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
+                                                                        <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Embed'}}:</label>
+                                                                        <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                             <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowEmbed"
                                                                                 [onText]="callActionSwitch.onTextValue"
@@ -2804,11 +2689,8 @@
 
                                                                 <div class="col-xs-12" style="margin-top: 4px;">
                                                                     <div class="form-group">
-                                                                        <label
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Enable
-                                                                            Settings' | translate}}:</label>
-                                                                        <div
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
+                                                                        <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Enable Settings'}}:</label>
+                                                                        <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                             <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.enableSettings"
                                                                                 [onText]="callActionSwitch.onTextValue"
@@ -2820,11 +2702,8 @@
                                                                                 [disabled]="hasVideoRole">
                                                                             </switch>
                                                                         </div>
-                                                                        <label
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow
-                                                                            Comments' | translate}}:</label>
-                                                                        <div
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
+                                                                        <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Comments'}}:</label>
+                                                                        <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                             <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.allowComments"
                                                                                 [onText]="callActionSwitch.onTextValue"
@@ -2838,11 +2717,8 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group" style="margin-top: 37px;">
-                                                                        <label
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Enable
-                                                                            Casting' | translate}}:</label>
-                                                                        <div
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
+                                                                        <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Enable Casting'}}:</label>
+                                                                        <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                             <switch class="switchbtns"
                                                                                 [(status)]="defaultVideoPlayer.enableCasting"
                                                                                 [onText]="callActionSwitch.onTextValue"
@@ -2854,9 +2730,7 @@
                                                                                 [disabled]="hasVideoRole">
                                                                             </switch>
                                                                         </div>
-                                                                        <label
-                                                                            class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'360
-                                                                            video' | translate}}:</label>
+                                                                        <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'360 video'}}:</label>
                                                                         <div
                                                                             class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                             <switch class="switchbtns"
@@ -2872,17 +2746,9 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-xs-12 button-align"
-                                                                    style="padding-left: 10px;">
-                                                                    <button type="submit"
-                                                                        class="button bgcolor-unset pd_lft2"
-                                                                        [disabled]="hasVideoRole" translate><span
-                                                                            class="btn Btn-Green transition txt_pd-top3">Save
-                                                                            Changes</span></button>
-                                                                    <button type="button"
-                                                                        class="btn Btn-Gray neg_mrg_top4"
-                                                                        (click)="resetForm()" [disabled]="hasVideoRole"
-                                                                        translate>Cancel</button>
+                                                                <div class="col-xs-12 button-align" style="padding-left: 10px;">
+                                                                    <button type="submit" class="button bgcolor-unset pd_lft2"  [disabled]="hasVideoRole"><span class="btn Btn-Green transition txt_pd-top3">Save Changes</span></button>
+                                                                    <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="resetForm()" [disabled]="hasVideoRole">Cancel</button>
                                                                 </div>
                                                             </fieldset>
                                                         </div>
@@ -3357,9 +3223,6 @@
                                                     <br>
                                                 </tbody>
                                             </table>
-
-
-
                                         </div>
                                         <!-- Vendor Journey -->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'vendorJourney'}">
@@ -3387,30 +3250,22 @@
                                                 [moduleType]="properties.masterLandingPages"></app-vendor-journey>
                                         </div>
                                         <!-- Support Settings -->
-                                        <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption"
-                                            class="tab-pane"
+                                        <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption" class="tab-pane"
                                             [ngClass]="{'active': activeTabName == 'support'}"></app-enable-support-access-to-vendor>
-
                                         <!--XNFR-386-->
-                                        <app-custom-login-screen-settings [isTemplatesListDiv]="isTemplatesListDiv"
-                                            (editLoginTemplate)="openBeeEditorForLoginTemplate($event)"
-                                            *ngIf="isCustomLoginScreenSettingsOptionClicked" class="tab-pane"
-                                            [ngClass]="{'active': activeTabName == properties?.customLoginScreen}"></app-custom-login-screen-settings>
-
-                                        <!--XNFR-609-->
-                                        <app-modal-popup-loader *ngIf="ngxloading"></app-modal-popup-loader>
-                                            <app-campaign-analytics-settings *ngIf="isCampaignAnalyticsOptionClicked" class="tab-pane"
-                                                [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}">
-                                        </app-campaign-analytics-settings>
+                                        <app-custom-login-screen-settings [isTemplatesListDiv]="isTemplatesListDiv"(editLoginTemplate)="openBeeEditorForLoginTemplate($event)"
+                                            *ngIf="isCustomLoginScreenSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == properties?.customLoginScreen}">
+                                        </app-custom-login-screen-settings>
+                                        <!--XNFR-609 Campaign Analytics Settings-->
+                                        <app-campaign-analytics-settings *ngIf="isCampaignAnalyticsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"></app-campaign-analytics-settings>
+                                        <!--XNFR-628 Chat GPT-->
+                                        <app-chat-gpt-integration-settings *ngIf="isChatGptSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CHAT_GPT_SETTIGNS_MENU_HEADER}"></app-chat-gpt-integration-settings>
+                                        <app-modal-popup-loader *ngIf="ngxloading && activeTabName != properties?.personalInfo && activeTabName != properties?.changePassword"></app-modal-popup-loader>
                                     </div>
                                 </div>
                             </div>
-
-
-
                             <!--  XNFR-415 -->
-                            <div
-                                *ngIf="  (((( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany) &&  !authenticationService?.module?.isTeamMember || authenticationService?.module?.adminOrSuperVisor )  && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing))">
+                            <div *ngIf="(((( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany) &&  !authenticationService?.module?.isTeamMember || authenticationService?.module?.adminOrSuperVisor )  && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing))">
                                 <div *ngIf="activeTabName === 'settings'"
                                     [ngClass]="{'active-tab': activeTabName === 'settings'}">
                                     <div class="portlet light">
