@@ -413,5 +413,9 @@ setSSOValue(event){
   this.campaignAccess.ssoEnabled = event;
 }
 
+updateChatGptValue(event:any){
+  this.campaignAccess.chatGpt = event;
+}
+
 
 }

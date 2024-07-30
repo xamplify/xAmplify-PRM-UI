@@ -389,6 +389,13 @@
 									<app-custom-ui-switch [customSwitch]="campaignAccess.paymentOverDue" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
 								</td>
 							</tr>
+							<!--XNFR-628-->
+							<tr>
+								<th scope="row">ChatGPT/th>
+								<td class="pt0">
+									<app-custom-ui-switch [customSwitch]="campaignAccess.chatGpt" (customUiSwitchEventEmitter)="updateChatGptValue($event)"></app-custom-ui-switch>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
