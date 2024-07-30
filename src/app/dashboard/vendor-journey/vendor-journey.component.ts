@@ -148,7 +148,7 @@ export class VendorJourneyComponent implements OnInit {
                 }
               }
               this.populateSharedVendorDetails(logoDetails, self.categoryDropDownOptions);
-
+              this.populateVendorDetailsForTeamMember(logoDetails, self.categoryDropDownOptions);
             }
     }, (error: any) => {
       console.log(error);
@@ -205,6 +205,28 @@ export class VendorJourneyComponent implements OnInit {
     }
     if (details != undefined && details != null) {
       this.sharedVendorLogoDetails.push(details);
+    }
+  }
+
+  populateVendorDetailsForTeamMember(data: VendorLogoDetails[], categoryDropDownOptions){
+    if ( !this.authenticationService.module.isAnyAdminOrSupervisor &&data != undefined && data != null) {
+      for (let logo of data) {
+        var dropdownSettings = {
+          text: "Please select",
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          enableSearchFilter: true,
+          classes: "myclass custom-class",
+          disabled: !logo.selected,
+        };
+        logo.dropdownSettings=  { ...dropdownSettings };
+        if (logo.categoryIds != null && logo.categoryIds.length > 0) {
+          logo.selectedCategories = [];
+          for (let item of logo.categoryIds) {
+            logo.selectedCategories.push({ 'id': item, 'itemName': categoryDropDownOptions.find(option => option.id == item).itemName })
+          }
+        }
+      }
     }
   }
 landingPageOpenInNewTabChecked(){
