@@ -14,19 +14,16 @@
 				</button>
 				<h4 class="modal-title text-center" translate>Pick Your Vendors</h4>
 			</div>
-			<div class="thank-you-pop" *ngIf="responseMessage">
-				<ng-container>
-				   <i class="fa fa-info-circle" id="font-size-info" aria-hidden="true"></i>
-				   <h4 class="event-info">{{responseMessage}}</h4>
-				</ng-container>
-			  </div>
+			<app-response-message class="pg8" [customResponse]="marketPlaceCategoryResponse" *ngIf="marketPlaceCategoryResponse.isVisible">
+			</app-response-message>
 			<div class="modal-body" *ngIf = "!(authenticationService?.module?.isAnyAdminOrSupervisor) && authenticationService?.module?.isTeamMember">
 				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
 					<thead>
 						<tr>
-							<th scope="row" translate>Logo</th>
-							<th scope="row" class="text-center" translate>Company Name</th>
-							<th scope="row" class="text-center" translate>Action</th>
+							<th style="width:30%" scope="row" translate>Logo</th>
+							<th style="width:30%" scope="row" class="text-center" translate>Company Name</th>
+							<th style="width:30%" scope="row">Select Category</th>
+							<th style="width:10%" scope="row" class="text-center" translate>Action</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -39,9 +36,15 @@
 								</div>
 							</td>
 							<td class="text-center">{{vendorLogo.companyName}}</td>
+							<td>
+								<angular4-multiselect  [data]="dropdownList" [(ngModel)]="vendorLogo.selectedCategories"  
+								[settings]="vendorLogo.dropdownSettings" (onClose) = 'setSelectedCategoryForTeamMember(vendorLogo.companyId)'>
+							  </angular4-multiselect>
+							</td>
 							<td class="text-center">
 								<label class="toggleOnOff">
-									<input class="checkBox_shadow" type="checkbox" [(ngModel)]="vendorLogo.selected" name="Select">
+									<input class="checkBox_shadow" type="checkbox" [(ngModel)]="vendorLogo.selected" 
+									(ngModelChange) = "selctectLandingPageForTeamMember(vendorLogo.companyId)" name="Select">
 									<span class="sliderOnOff"></span>
 									<span class="labels" data-on="Selected" data-off=""></span>
 								</label>

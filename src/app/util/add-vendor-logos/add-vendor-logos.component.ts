@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter,OnDestroy } from '@angular/core';
+import { CustomResponse } from 'app/common/models/custom-response';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { VendorLogoDetails } from 'app/landing-pages/models/vendor-logo-details';
 declare var $: any;
@@ -22,6 +23,7 @@ export class AddVendorLogosComponent implements OnInit {
 	dropdownSettings={};
 	selectedItems = [];
 	@Input() dropdownList;
+	marketPlaceCategoryResponse:CustomResponse = new CustomResponse();
 	constructor(public authenticationService: AuthenticationService) { }
 
 	ngOnInit() {
@@ -44,14 +46,15 @@ export class AddVendorLogosComponent implements OnInit {
 	}
 
 	hideModal() {
-		this.responseMessage = "";
-		if ( (this.authenticationService.module.isTeamMember &&  (this.sharedVendorLogoDetails.every(logo=>!logo.selected || (logo.selected && logo.categoryIds!= null && logo.categoryIds.length>0))))
+		this.marketPlaceCategoryResponse = new CustomResponse();
+		if ( ((this.authenticationService.module.isTeamMember && !this.authenticationService.module.isAnyAdminOrSupervisor) &&  (this.vendorLogoDetails.every(logo=>!logo.selected || (logo.selected && logo.categoryIds!= null && logo.categoryIds.length>0))))
 		 || (this.authenticationService.module.isAnyAdminOrSupervisor && (this.sharedVendorLogoDetails.every(logo=>logo.teamMembers.every(member=>!member.selected 
 		||(member.selected && member.categoryIds != null && member.categoryIds.length>0)))))){
 			this.notifyComponent.emit();
 			$('#' + this.modalPopupId).modal('hide');				
 		}else{
 			this.responseMessage = "Please Select The Catogory('s) for the selected Vendors";
+			this.marketPlaceCategoryResponse = new CustomResponse('ERROR', this.responseMessage, true);
 		}
 	}
 
@@ -108,5 +111,35 @@ export class AddVendorLogosComponent implements OnInit {
 		}
 	}
 
+	setSelectedCategoryForTeamMember(companyId: number) {
+		for (let company of this.vendorLogoDetails) {
+			if (company.companyId == companyId) {
+				if (company.selectedCategories != null && company.selectedCategories.length > 0) {
+					company.categoryIds = company.selectedCategories.map(category => category.id);
+				} else {
+					company.categoryIds = [];
+				}
+			}
+		}
+	}
 
+	selctectLandingPageForTeamMember(companyId: number) {
+		for (let company of this.vendorLogoDetails) {
+			if (company.companyId == companyId) {
+				if (!company.selected) {
+					company.categoryIds = [];
+					company.selectedCategories = [];
+				}
+				var dropdownSettings = {
+					text: "Please select",
+					selectAllText: 'Select All',
+					unSelectAllText: 'UnSelect All',
+					enableSearchFilter: true,
+					classes: "myclass custom-class",
+					disabled: !company.selected,
+				};
+				company.dropdownSettings = { ...dropdownSettings };
+			}
+		}
+	}
 }
