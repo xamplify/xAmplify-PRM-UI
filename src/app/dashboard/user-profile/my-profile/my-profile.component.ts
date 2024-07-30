@@ -2147,7 +2147,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.updateChatGptSettingsOption(false);
 			let self = this;
 			setTimeout(() => {
-				self.updateChatGptSettingsOption(false);
+				self.updateChatGptSettingsOption(true);
 				self.stopNgxLoader();
 			}, 500);
 			this.activeTabHeader = this.chatGptSettingsMenuHeader;
