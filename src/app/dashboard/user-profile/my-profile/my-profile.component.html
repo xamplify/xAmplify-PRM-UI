@@ -181,15 +181,21 @@
                                                     [ngTemplateOutletContext]="{'moduleName':'customskin'}"></ng-template>
                                             </a>
                                         </li>
-                                        <!--XNFR-609-->
-                                         <!---Campaign Analytics-->
+                                        <!--XNFR-609 Campaign Analytics-->
                                          <li *ngIf="authenticationService?.module?.isCampaign" [ngClass]="{'active-tab': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"
                                                 (click)="activateTab(MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER);clearCustomResponse()">
                                                 {{MY_PROFILE_MENU_CONSTANTS.CAMPAIGN_ANALYTICS_MENU_HEADER}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"></ng-template>
                                             </a>
-                                        </li>
+                                         </li>
+                                        <!--XNFR-628 ChatGPT Settings-->
+                                        <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor" [ngClass]="{'active-tab': activeTabName == chatGptSettingsMenuHeader}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == chatGptSettingsMenuHeader}" (click)="activateTab(chatGptSettingsMenuHeader);clearCustomResponse()">
+                                                {{MY_PROFILE_MENU_CONSTANTS.CHAT_GPT_SETTIGNS_MENU_HEADER}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':chatGptSettingsMenuHeader}"></ng-template>
+                                            </a>
+                                         </li>
                                         <!--XNFR-386--->
                                         <!--Custom Login Screen Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == properties?.customLoginScreen}"
@@ -3259,7 +3265,7 @@
                                         <!--XNFR-609 Campaign Analytics Settings-->
                                         <app-campaign-analytics-settings *ngIf="isCampaignAnalyticsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"></app-campaign-analytics-settings>
                                         <!--XNFR-628 Chat GPT-->
-                                        <app-chat-gpt-integration-settings *ngIf="isChatGptSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CHAT_GPT_SETTIGNS_MENU_HEADER}"></app-chat-gpt-integration-settings>
+                                        <app-chat-gpt-integration-settings *ngIf="isChatGptSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == chatGptSettingsMenuHeader}"></app-chat-gpt-integration-settings>
                                         <app-modal-popup-loader *ngIf="ngxloading && activeTabName != properties?.personalInfo && activeTabName != properties?.changePassword"></app-modal-popup-loader>
                                     </div>
                                 </div>

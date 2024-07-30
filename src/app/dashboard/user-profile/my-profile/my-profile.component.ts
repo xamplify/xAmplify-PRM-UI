@@ -358,6 +358,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/** XNFR-583 **/
 	isMasterLandingPageCategories: boolean = false;
 	isChatGptSettingsOptionClicked = false;
+	chatGptSettingsMenuHeader = MY_PROFILE_MENU_CONSTANTS.CHAT_GPT_SETTIGNS_MENU_HEADER;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -388,17 +389,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.showCropper = false;
 		}
 	}
-	// zoomOut() {
-	// 	if (this.croppedImage != "") {
-	// 		this.scale -= .1;
-	// 		this.transform = {
-	// 			...this.transform,
-	// 			scale: this.scale
-	// 		};
-	// 	} else {
-	// 		this.showCropper = false;
-	// 	}
-	// }
+
     zoomOut() {
         if(this.croppedImage != ""){
             this.scale = Math.max(this.scale - 0.1, this.minScale);
@@ -420,7 +411,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		} else {
 			this.showCropper = false;
-			//  this.errorUploadCropper = true;
 		}
 	}
 	resetImage() {
@@ -431,7 +421,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.transform = {};
 		} else {
 			this.showCropper = false;
-			// this.errorUploadCropper = true;
 		}
 	}
 	imageCroppedMethod(event: ImageCroppedEvent) {
@@ -2152,10 +2141,30 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 500);
 			this.activeTabHeader = this.MY_PROFILE_MENU_CONSTANTS.CAMPAIGN_ANALYTICS_MENU_HEADER;
 		}
+		/*****XNFR-628******/
+		else if (this.activeTabName == this.chatGptSettingsMenuHeader) {
+			this.startNgxLoader();
+			this.updateChatGptSettingsOption(false);
+			let self = this;
+			setTimeout(() => {
+				self.updateChatGptSettingsOption(false);
+				self.stopNgxLoader();
+			}, 500);
+			this.activeTabHeader = this.chatGptSettingsMenuHeader;
+		}
 		this.referenceService.scrollSmoothToTop();
 	}
+	/*****XNFR-628******/
+	updateChatGptSettingsOption(option:boolean){
+		this.isChatGptSettingsOptionClicked = option;
+	}
 
-
+	startNgxLoader(){
+		this.ngxloading = true;
+	}
+	stopNgxLoader(){
+		this.ngxloading = false;
+	}
 
 	ngOnDestroy() {
 		if (this.isPlayed === true) { this.videoJSplayer.dispose(); }
