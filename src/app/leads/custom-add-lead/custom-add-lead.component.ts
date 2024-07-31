@@ -1278,7 +1278,7 @@ export class CustomAddLeadComponent implements OnInit {
 
   private getPipelinesAndStages() {
     let showLeadPipeline = this.activeCRMDetails.showLeadPipeline;
-    if (showLeadPipeline) {
+    if (showLeadPipeline || this.isOrgAdmin || this.isMarketingCompany) {
       this.referenceService.loading(this.pipelineLoader, true);
       this.leadsService.findLeadPipeLines(this.lead).subscribe(
         response => {
