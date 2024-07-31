@@ -111,6 +111,7 @@ import { CampaignAnalyticsSettingsComponent } from './campaign-analytics-setting
 import { MyProfileService } from './my-profile.service';
 import { CrmFormSettingsComponent } from './crm-form-settings/crm-form-settings.component';
 import { MarketPlaceCategoriesComponent } from './market-place-categories/market-place-categories.component';
+import { ChatGptIntegrationSettingsComponent } from './chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule ],
@@ -193,6 +194,7 @@ import { MarketPlaceCategoriesComponent } from './market-place-categories/market
         CampaignAnalyticsSettingsComponent,
         CrmFormSettingsComponent,
         MarketPlaceCategoriesComponent,
+        ChatGptIntegrationSettingsComponent,
 
             
 

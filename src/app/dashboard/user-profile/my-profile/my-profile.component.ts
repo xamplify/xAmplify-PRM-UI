@@ -1,9 +1,10 @@
-import { MY_PROFILE_MENU_CONSTANTS } from './../../../constants/my-profile-menu-constants';
-import { SweetAlertParameterDto } from './../../../common/models/sweet-alert-parameter-dto';
+
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, Renderer } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { matchingPasswords, noWhiteSpaceValidator } from '../../../form-validator';
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
 import { UserService } from '../../../core/services/user.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
@@ -52,18 +53,13 @@ import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-propertie
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { CompanyThemeActivate } from 'app/dashboard/models/company-theme-activate';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
-import { LeftsidenavbarCustomComponent } from 'app/dashboard/leftsidenavbar-custom/leftsidenavbar-custom.component';
 import { CustomLoginTemplate } from 'app/email-template/models/custom-login-template';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
-import { CompanyLoginTemplateActive } from 'app/email-template/models/company-login-template-active';
+import { MY_PROFILE_MENU_CONSTANTS } from './../../../constants/my-profile-menu-constants';
+import { SweetAlertParameterDto } from './../../../common/models/sweet-alert-parameter-dto';
 import { CompanyProfileService } from 'app/dashboard/company-profile/services/company-profile.service';
-
 import { DefaultDashBoardForPartners } from 'app/dashboard/models/default-dashboard-for-partners';
-import { PreviewPopupComponent } from 'app/forms/preview-popup/preview-popup.component';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
-import { LandingPage } from 'app/landing-pages/models/landing-page';
-declare var swal, $, videojs: any, Papa: any;
+declare var swal:any, $:any, videojs: any, Papa: any;
 
 @Component({
 	selector: 'app-my-profile',
@@ -361,6 +357,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isCampaignAnalyticsOptionClicked = false;
 	/** XNFR-583 **/
 	isMasterLandingPageCategories: boolean = false;
+	isChatGptSettingsOptionClicked = false;
+	chatGptSettingsMenuHeader = MY_PROFILE_MENU_CONSTANTS.CHAT_GPT_SETTIGNS_MENU_HEADER;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -391,17 +389,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.showCropper = false;
 		}
 	}
-	// zoomOut() {
-	// 	if (this.croppedImage != "") {
-	// 		this.scale -= .1;
-	// 		this.transform = {
-	// 			...this.transform,
-	// 			scale: this.scale
-	// 		};
-	// 	} else {
-	// 		this.showCropper = false;
-	// 	}
-	// }
+
     zoomOut() {
         if(this.croppedImage != ""){
             this.scale = Math.max(this.scale - 0.1, this.minScale);
@@ -423,7 +411,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		} else {
 			this.showCropper = false;
-			//  this.errorUploadCropper = true;
 		}
 	}
 	resetImage() {
@@ -434,7 +421,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.transform = {};
 		} else {
 			this.showCropper = false;
-			// this.errorUploadCropper = true;
 		}
 	}
 	imageCroppedMethod(event: ImageCroppedEvent) {
@@ -2155,10 +2141,30 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 500);
 			this.activeTabHeader = this.MY_PROFILE_MENU_CONSTANTS.CAMPAIGN_ANALYTICS_MENU_HEADER;
 		}
+		/*****XNFR-628******/
+		else if (this.activeTabName == this.chatGptSettingsMenuHeader) {
+			this.startNgxLoader();
+			this.updateChatGptSettingsOption(false);
+			let self = this;
+			setTimeout(() => {
+				self.updateChatGptSettingsOption(true);
+				self.stopNgxLoader();
+			}, 500);
+			this.activeTabHeader = this.chatGptSettingsMenuHeader;
+		}
 		this.referenceService.scrollSmoothToTop();
 	}
+	/*****XNFR-628******/
+	updateChatGptSettingsOption(option:boolean){
+		this.isChatGptSettingsOptionClicked = option;
+	}
 
-
+	startNgxLoader(){
+		this.ngxloading = true;
+	}
+	stopNgxLoader(){
+		this.ngxloading = false;
+	}
 
 	ngOnDestroy() {
 		if (this.isPlayed === true) { this.videoJSplayer.dispose(); }

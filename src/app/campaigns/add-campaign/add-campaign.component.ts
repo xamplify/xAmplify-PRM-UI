@@ -1070,15 +1070,29 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                                         }                                     }
                                 });
                             } else {
-                                this.defaultLeadPipelineId = this.leadPipelines[0].id;
-                                this.campaign.leadPipelineId = this.leadPipelines[0].id;
-                                this.defaultDealPipelineId = this.dealPipelines[0].id;
-                                if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
+                                if(this.leadPipelines!=undefined && this.leadPipelines.length>0){
+                                    this.defaultLeadPipelineId = this.leadPipelines[0].id;
+                                    this.campaign.leadPipelineId = this.leadPipelines[0].id;
+                                }else{
+                                    this.defaultLeadPipelineId = 0;
+                                }
+                                if(this.dealPipelines!=undefined && this.dealPipelines.length>0){
+                                    this.defaultDealPipelineId = this.dealPipelines[0].id;
                                     this.campaign.dealPipelineId = this.dealPipelines[0].id;
-                                }                                
+                                }else{
+                                    this.defaultDealPipelineId = 0;
+                                    this.campaign.dealPipelineId = 0;
+                                }
+                                                           
                                 if ("HALOPSA" === this.activeCRMDetails.type) {
-                                    this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
-                                    this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                                    if(this.leadTicketTypes!=undefined && this.leadTicketTypes.length>0){
+                                        this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                                        this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                                    }else{
+                                        this.defaultLeadTicketTypeId = 0;
+                                        this.defaultDealTicketTypeId = 0;
+                                    }
+                                   
                                 }
                                 
                             }
@@ -2512,8 +2526,14 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                         if (response.statusCode == 200) {
                             let data = response.data;                            
                             this.leadPipelines = data;
-                            this.defaultLeadPipelineId = this.leadPipelines[0].id;
-                            this.campaign.leadPipelineId = this.leadPipelines[0].id;
+                            if(this.leadPipelines!=undefined && this.leadPipelines.length>0){
+                                this.defaultLeadPipelineId = this.leadPipelines[0].id;
+                                this.campaign.leadPipelineId = this.leadPipelines[0].id;
+                            }else{
+                                this.defaultLeadPipelineId = 0;
+                                this.campaign.leadPipelineId = 0;
+                            }
+                            
                         }
                     },
                     error => {
@@ -2536,6 +2556,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                      if(this.dealPipelines!=undefined && this.dealPipelines.length>0){
                         this.defaultDealPipelineId = this.dealPipelines[0].id;
                         this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                     }else{
+                        this.defaultDealPipelineId = 0;
+                        this.campaign.dealPipelineId = 0;
                      }
                  }
              },
@@ -2560,11 +2583,19 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     let data = response.data;
                     let ticketTypesMap = response.map;                      
                     this.dealTicketTypes = data;
-                    this.campaign.leadTicketTypeId = ticketTypesMap.leadTicketTypeId;
-                    this.campaign.dealTicketTypeId = ticketTypesMap.dealTicketTypeId;
-                    this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                    this.campaign.leadTicketTypeId = ticketTypesMap['leadTicketTypeId'];
+                    this.campaign.dealTicketTypeId = ticketTypesMap['dealTicketTypeId'];
+                    if(this.dealTicketTypes!=undefined && this.dealTicketTypes.length>0){
+                        this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                    }else{
+                        this.defaultDealTicketTypeId = 0;
+                    }
                     this.leadTicketTypes = data;
-                    this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                    if(this.leadTicketTypes!=undefined && this.leadTicketTypes.length>0){
+                        this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                    }else{
+                        this.defaultLeadTicketTypeId = 0;
+                    }
                     this.getHalopsaLeadPipelines();
                     this.getHalopsaDealPipelines();
                 }
@@ -2601,7 +2632,11 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     let ticketTypesMap = response.map;
                     this.campaign.leadTicketTypeId = ticketTypesMap.leadTicketTypeId;
                     this.leadTicketTypes = data;
-                    this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                    if(this.leadTicketTypes!=undefined && this.leadTicketTypes.length>0){
+                        this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                    }else{
+                        this.defaultLeadTicketTypeId = 0;
+                    }
                     this.isDealLayoutSelected = true;
                     this.getZohoDealTicketTypesById(companyId);
                     this.getMappedDealLayoutIdByLeadLayoutId(companyId, this.campaign.leadTicketTypeId);
