@@ -1070,15 +1070,29 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                                         }                                     }
                                 });
                             } else {
-                                this.defaultLeadPipelineId = this.leadPipelines[0].id;
-                                this.campaign.leadPipelineId = this.leadPipelines[0].id;
-                                this.defaultDealPipelineId = this.dealPipelines[0].id;
-                                if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
+                                if(this.leadPipelines!=undefined && this.leadPipelines.length>0){
+                                    this.defaultLeadPipelineId = this.leadPipelines[0].id;
+                                    this.campaign.leadPipelineId = this.leadPipelines[0].id;
+                                }else{
+                                    this.defaultLeadPipelineId = 0;
+                                }
+                                if(this.dealPipelines!=undefined && this.dealPipelines.length>0){
+                                    this.defaultDealPipelineId = this.dealPipelines[0].id;
                                     this.campaign.dealPipelineId = this.dealPipelines[0].id;
-                                }                                
+                                }else{
+                                    this.defaultDealPipelineId = 0;
+                                    this.campaign.dealPipelineId = 0;
+                                }
+                                                           
                                 if ("HALOPSA" === this.activeCRMDetails.type) {
-                                    this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
-                                    this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                                    if(this.leadTicketTypes!=undefined && this.leadTicketTypes.length>0){
+                                        this.defaultLeadTicketTypeId = this.leadTicketTypes[0].id;
+                                        this.defaultDealTicketTypeId = this.dealTicketTypes[0].id;
+                                    }else{
+                                        this.defaultLeadTicketTypeId = 0;
+                                        this.defaultDealTicketTypeId = 0;
+                                    }
+                                   
                                 }
                                 
                             }

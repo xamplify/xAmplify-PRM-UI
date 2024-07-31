@@ -118,10 +118,10 @@ export class ModuleAnalyticsComponent implements OnInit {
     this.ngxLoading = true;
     this.integrationService.getVendorRegisterDealValue(this.authenticationService.getUserId(), this.authenticationService.companyProfileName).subscribe(
       data => {
-        this.ngxLoading = false;
         if (data.statusCode == 200) {
           this.isRegisterDealEnabled = data.data
         }
+        this.ngxLoading = false;
       }, error => {
         this.ngxLoading = false;
       }
