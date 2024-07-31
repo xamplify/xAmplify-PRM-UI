@@ -1,12 +1,16 @@
+import { ChatGptSettingsService } from './../chat-gpt-settings.service';
 import { Component, OnInit } from '@angular/core';
 import { ChatGptIntegrationSettingsDto } from './../models/chat-gpt-integration-settings-dto';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { Properties } from 'app/common/models/properties';
+
 
 @Component({
   selector: 'app-chat-gpt-integration-settings',
   templateUrl: './chat-gpt-integration-settings.component.html',
-  styleUrls: ['./chat-gpt-integration-settings.component.css']
+  styleUrls: ['./chat-gpt-integration-settings.component.css'],
+  providers:[Properties]
 })
 export class ChatGptIntegrationSettingsComponent implements OnInit {
   chatGptSettingsLoader = false;
@@ -15,14 +19,23 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
   isSwitchOptionDisabled = false;
   description = "To enable ChatGPT integration, access the settings, enter your API key, and activate the relevant options. To disable it, simply toggle the setting off and remove the API key if desired";
 
-  constructor(public referenceService:ReferenceService) { }
+  constructor(public referenceService:ReferenceService,
+    public chatGptSettingsService:ChatGptSettingsService,public properties:Properties) { }
 
   ngOnInit() {
 
   }
 
   updateSettings(){
-    
+    this.customResponse = new CustomResponse();
+    this.chatGptSettingsLoader = true;
+    this.chatGptSettingsService.updateChatGptSettings(this.chatGptIntegrationSettingsDto).subscribe(
+      response=>{
+        this.customResponse = new CustomResponse('SUCCESS',"Settings updated successfully.",true);
+      },error=>{
+        this.chatGptSettingsLoader = false;
+        this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage);
+      });
   }
 
   validateForm(){
