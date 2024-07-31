@@ -23,7 +23,19 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     public chatGptSettingsService:ChatGptSettingsService,public properties:Properties) { }
 
   ngOnInit() {
+    this.getSettings();
+  }
 
+  getSettings(){
+    this.chatGptSettingsLoader = true;
+    this.chatGptSettingsService.getChatGptSettingsByLoggedInUserId().subscribe(
+      response=>{
+        this.chatGptIntegrationSettingsDto = response.data;
+        this.chatGptSettingsLoader = false;
+      },error=>{
+        this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+        this.chatGptSettingsLoader = false;
+      });
   }
 
   updateSettings(){
@@ -32,9 +44,10 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     this.chatGptSettingsService.updateChatGptSettings(this.chatGptIntegrationSettingsDto).subscribe(
       response=>{
         this.customResponse = new CustomResponse('SUCCESS',"Settings updated successfully.",true);
+        this.chatGptSettingsLoader = false;
       },error=>{
         this.chatGptSettingsLoader = false;
-        this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage);
+        this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
       });
   }
 

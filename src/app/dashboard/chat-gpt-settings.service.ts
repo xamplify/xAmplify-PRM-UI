@@ -12,10 +12,13 @@ export class ChatGptSettingsService {
 
   updateChatGptSettings(chatGptSettings:ChatGptIntegrationSettingsDto){
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
-    const url = this.chatGptSettingsUrl + 'updateSettings?access_token=' + this.authenticationService.access_token;
+    const url = this.chatGptSettingsUrl + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url,chatGptSettings);
+  }
 
-
+  getChatGptSettingsByLoggedInUserId(){
+    const url = this.chatGptSettingsUrl + '/loggedInUserId/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
   }
 
 }
