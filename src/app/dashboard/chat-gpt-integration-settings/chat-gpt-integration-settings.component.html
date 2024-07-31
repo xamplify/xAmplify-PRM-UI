@@ -2,13 +2,18 @@
 <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
 <div *ngIf="!chatGptSettingsLoader">
   <div class="portlet light">
-    <h4 class="bold-font-weight">Turn ChatGPT Settings ON or OFF</h4>
-    <div>
-      <h5 class="bold-font-weight h5-custom-font">{{description}}
-        <br><br>
-        <app-custom-ui-switch [customSwitch]="chatGptIntegrationSettingsDto?.chatGptIntegrationSettingsEnabled" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
-      </h5>
+    <h5 class="bold-font-weight h5-custom-font">{{description}}</h5>
+    <!--ApI Key-->
+    <div class="form-group">
+      <input type="text" maxlength="255" placeholder="Enter Your ChatGPT API key" [(ngModel)]="chatGptIntegrationSettingsDto.chatGptApiKey"
+        [ngModelOptions]="{standalone: true}" class="form-control" (input)="validateForm()" />
     </div>
+    <!--On/Off-->
+    <div class="form-group">
+      <label class="control-label">Turn ChatGPT Settings ON or OFF</label>
+      <app-custom-ui-switch [isSwitchOptionDisabled]="isSwitchOptionDisabled" [customSwitch]="chatGptIntegrationSettingsDto?.chatGptIntegrationSettingsEnabled" (customUiSwitchEventEmitter)="setChatGptSettingsOption($event)"></app-custom-ui-switch>
+    </div>
+
   </div>
   <!--Update Button-->
   <div id="right">
