@@ -64,6 +64,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	opportunityType: any;
 	isSalesForceType = false;
 	isCRMSettingsModelPopUp:boolean = false;
+	isZohoOrHaloPSAIntegrationValid: boolean = true;
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
@@ -210,6 +211,10 @@ export class IntegrationSettingsComponent implements OnInit {
 				error => {
 					this.ngxloading = false;
 					this.haveCustomFields = false;
+					let isZohoOrHaloPSACRM = this.integrationType.toLowerCase() === 'zoho' || this.integrationType.toLowerCase() === 'halopsa';
+					if (isZohoOrHaloPSACRM) {
+						this.isZohoOrHaloPSAIntegrationValid = false;
+					}
 					let errorMessage = this.referenceService.getApiErrorMessage(error);
                     this.customFieldsResponse = new CustomResponse('ERROR',errorMessage,true);
 					this.customFieldsDtosLoader = false;
