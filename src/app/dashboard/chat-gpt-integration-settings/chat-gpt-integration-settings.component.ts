@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ChatGptIntegrationSettingsDto } from './../models/chat-gpt-integration-settings-dto';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
+
 @Component({
   selector: 'app-chat-gpt-integration-settings',
   templateUrl: './chat-gpt-integration-settings.component.html',
   styleUrls: ['./chat-gpt-integration-settings.component.css']
 })
 export class ChatGptIntegrationSettingsComponent implements OnInit {
-
-
   chatGptSettingsLoader = false;
   chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
   customResponse:CustomResponse = new CustomResponse();
@@ -31,12 +30,13 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     let isInvalidChatGptKey = trimmedChatGptKey==undefined || trimmedChatGptKey.length==0;
     this.isSwitchOptionDisabled = isInvalidChatGptKey;
     if(isInvalidChatGptKey){
-      this.chatGptIntegrationSettingsDto.chatGptIntegrationSettingsEnabled = false;
+      this.enableOrDisableChatGptSettings(false);
     }
   }
+ 
 
-  setChatGptSettingsOption(event:boolean){
-    this.chatGptIntegrationSettingsDto.chatGptIntegrationSettingsEnabled = event;
+  enableOrDisableChatGptSettings(value:boolean){
+    this.chatGptIntegrationSettingsDto.chatGptIntegrationEnabled = value;
   }
 
 }

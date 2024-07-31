@@ -1,5 +1,5 @@
 export class ChatGptIntegrationSettingsDto {
-    chatGptIntegrationSettingsEnabled = false;
+    chatGptIntegrationEnabled = false;
     loggedInUserId = 0;
     chatGptApiKey = "";
 }

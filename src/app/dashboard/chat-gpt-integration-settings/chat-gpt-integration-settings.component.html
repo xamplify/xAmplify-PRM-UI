@@ -11,7 +11,7 @@
     <!--On/Off-->
     <div class="form-group">
       <label class="control-label">Turn ChatGPT Settings ON or OFF</label>
-      <app-custom-ui-switch [isSwitchOptionDisabled]="isSwitchOptionDisabled" [customSwitch]="chatGptIntegrationSettingsDto?.chatGptIntegrationSettingsEnabled" (customUiSwitchEventEmitter)="setChatGptSettingsOption($event)"></app-custom-ui-switch>
+      <app-custom-ui-switch [isSwitchOptionDisabled]="isSwitchOptionDisabled" [customSwitch]="chatGptIntegrationSettingsDto?.chatGptIntegrationEnabled" (customUiSwitchEventEmitter)="enableOrDisableChatGptSettings($event)"></app-custom-ui-switch>
     </div>
 
   </div>
