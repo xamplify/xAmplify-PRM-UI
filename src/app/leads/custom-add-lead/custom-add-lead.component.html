@@ -292,7 +292,7 @@
                   </div>
                   <!--Lead For-->
                   <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 10px"
-                    *ngIf="(!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany))) && !(lead.campaignId > 0)">
+                    *ngIf="(!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany))) && !(lead.campaignId > 0) && isLeadDetailsTabDisplayed">
                     <label class="control-label">Lead For<span><strong class="required">*</strong></span></label>
                     <select class="form-control" [(ngModel)]="lead.createdForCompanyId"
                       [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId" id="createdForCompanyId"
