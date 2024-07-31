@@ -69,7 +69,7 @@ export class VendorJourneyComponent implements OnInit {
     this.isMasterLandingPages = false;
     this.vendorJourney = this.moduleType == "Vendor Journey";
     this.isLandingPages = this.moduleType == "Vendor Pages";
-    this.isMasterLandingPages = this.moduleType == "Master Landing Pages";
+    this.isMasterLandingPages = this.moduleType == "Marketplace Pages";
     this.isFormAnalytics = false;
     this.isManageForms = false;
     this.isEditVendorOrMasterForm = false;
