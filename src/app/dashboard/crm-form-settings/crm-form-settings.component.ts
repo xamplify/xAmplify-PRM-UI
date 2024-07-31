@@ -458,29 +458,44 @@ export class CrmFormSettingsComponent {
 		}
 		this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
 
-		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined && isChecked) {
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
 			let cfParentName = sfCustomField.controllerName;
-			$('#' + cfParentName).prop('checked', isChecked);
-			this.setParentFieldSelected(sfCustomField);
+			$('#' + cfParentName).prop('checked', true);
+			this.setParentFieldSelected(sfCustomField, isChecked);
 		}
 
 	}
 
 
-	setParentFieldSelected(sfCustomField: any) {
+	setParentFieldSelected(sfCustomField: any, isChildChecked: any) {
 		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
 			let sfParentName = sfCustomField.controllerName;
 			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
 			for (let sfParentfield of sfParentFields) {
-				let cfName = sfParentfield.name;
-				if (this.selectedCfIds.indexOf(cfName) == -1) {
-					this.selectedCfIds.push(cfName);
-					this.selectedCustomFieldsDtos.push(sfParentfield);
+				if (isChildChecked) {
+					let cfName = sfParentfield.name;
+					if (this.selectedCfIds.indexOf(cfName) == -1) {
+						this.selectedCfIds.push(cfName);
+						this.selectedCustomFieldsDtos.push(sfParentfield);
+					}
+					if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
+						this.paginatedSelectedIds.push(cfName);
+					}
+					sfParentfield.canUnselect = false;
+				} else {
+					sfParentfield.canUnselect = true;
+					sfParentfield.selected = true;
 				}
-				if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
-					this.paginatedSelectedIds.push(cfName);
+
+				if (sfParentfield.controllerName != null && sfParentfield.controllerName != undefined) {
+					let cfParentName = sfParentfield.controllerName;
+					$('#' + cfParentName).prop('checked', true);
+					let isChecked = false;
+					if (sfParentfield.selected || !(sfParentfield.canUnselect)) {
+						isChecked = true;
+					}
+					this.setParentFieldSelected(sfParentfield, isChecked);
 				}
-				sfParentfield.selected = true;
 			}
 		}
 	}
