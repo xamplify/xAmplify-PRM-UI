@@ -387,7 +387,7 @@ export class AddDealComponent implements OnInit {
                         }
                         self.isCreatedForStageIdDisable = true;
                       }
-                      self.submitButtonStatus();
+                      self.setFieldErrorStates();
                     }
                     self.isCampaignTicketTypeSelected = true;
                   } else {
@@ -668,7 +668,7 @@ export class AddDealComponent implements OnInit {
       this.createdForPipelineStageId = "form-group has-error has-feedback";
       this.pipelineStageIdError = true;
       this.createdForPipelineStageIdError = true;
-      this.isDealRegistrationFormValid = false;
+      //this.isDealRegistrationFormValid = false;
     }
   }
 
@@ -678,7 +678,7 @@ export class AddDealComponent implements OnInit {
       this.getStages();
       this.pipelineStageId = "form-group has-error has-feedback";
       this.pipelineStageIdError = true;
-      this.isDealRegistrationFormValid = false;
+      //this.isDealRegistrationFormValid = false;
     }
   }
 
@@ -996,7 +996,7 @@ export class AddDealComponent implements OnInit {
         this.opportunityTypeIdError = false;
       }
     }
-    this.submitButtonStatus();
+    this.setFieldErrorStates();
   }
 
 
@@ -1009,14 +1009,6 @@ export class AddDealComponent implements OnInit {
       this.dealTypeError = false;
       this.properties.length = 0;
       this.propertiesQuestions.length = 0;
-    }
-
-    if (this.activeCRMDetails!=undefined && !this.activeCRMDetails.showDealPipeline  && !this.isOrgAdmin && !this.isMarketingCompany) {
-      this.pipelineIdError = false;
-    }
-    if (this.activeCRMDetails!=undefined && !this.activeCRMDetails.showDealPipelineStage  && !this.isOrgAdmin && !this.isMarketingCompany) {
-      this.pipelineStageIdError = false;
-      this.createdForPipelineStageIdError = false;
     }
 
     if (!this.showCreatedByPipelineAndStage && !this.createdForPipelineStageIdError) {
@@ -1088,13 +1080,13 @@ export class AddDealComponent implements OnInit {
       this.createdForCompanyIdError = false
     else
       this.createdForCompanyIdError = true;
-     /**************** Pipeline Id *******************/
-     if (this.deal.createdByPipelineId != null && this.deal.createdByPipelineId > 0)
+    /**************** Pipeline Id *******************/
+    if (this.deal.createdByPipelineId != null && this.deal.createdByPipelineId > 0)
       this.pipelineIdError = false
     else
       this.pipelineIdError = true;
     /**************** Pipeline Id *******************/
-    if (this.deal.createdForPipelineId != null && this.deal.createdForPipelineId > 0)
+    if ((this.deal.createdForPipelineId != null && this.deal.createdForPipelineId > 0) || (!this.activeCRMDetails.showDealPipeline && "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType && !this.isOrgAdmin && !this.isMarketingCompany))
       this.createdForPipelineIdError = false
     else
       this.createdForPipelineIdError = true;
@@ -1103,11 +1095,11 @@ export class AddDealComponent implements OnInit {
       this.pipelineStageIdError = false
     else
       this.pipelineStageIdError = true;
-     /**************** Pipeline Stage Id *******************/
-     if (this.deal.createdForPipelineStageId != null && this.deal.createdForPipelineStageId > 0)
-     this.createdForPipelineStageIdError = false
-   else
-     this.createdForPipelineStageIdError = true;
+    /**************** Pipeline Stage Id *******************/
+    if ((this.deal.createdForPipelineStageId != null && this.deal.createdForPipelineStageId > 0) || (!this.activeCRMDetails.showDealPipelineStage && "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType && !this.isOrgAdmin && !this.isMarketingCompany))
+      this.createdForPipelineStageIdError = false
+    else
+      this.createdForPipelineStageIdError = true;
 
     this.propertiesQuestions.forEach(property => {
       this.validateQuestion(property);
@@ -1333,7 +1325,6 @@ export class AddDealComponent implements OnInit {
           console.log(error);
         },
         () => {
-          this.setFieldErrorStates();
           if (!this.showCustomForm && !(this.activeCRMDetails.type !== undefined && "HALOPSA" === this.activeCRMDetails.type 
             && "ZOHO" === this.activeCRMDetails.type)) {
             this.showDefaultForm = true;
@@ -1361,6 +1352,7 @@ export class AddDealComponent implements OnInit {
           if (this.isZohoLeadAttachedWithoutSelectingDealFor) {
             this.getConvertMappingLayout(this.lead.halopsaTicketTypeId);
           }
+          this.setFieldErrorStates();
         });
   }
 
