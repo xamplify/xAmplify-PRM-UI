@@ -1287,7 +1287,9 @@ export class CustomAddLeadComponent implements OnInit {
           let totalRecords = data.totalRecords;
           this.showCreatedByPipelineAndStage = data['showCreatedByLeadPipelineAndStage'];
           this.showCreatedByPipelineAndStageOnTop = data['showCreatedByLeadPipelineAndStageOnTop'];
-          this.lead.halopsaTicketTypeId = data['ticketTypeId'];
+          if (this.lead.campaignId != undefined && this.lead.campaignId > 0) {
+            this.lead.halopsaTicketTypeId = data['ticketTypeId'];
+          }
           this.activeCRMDetails.hasCreatedForPipeline = totalRecords == 1;
           if (this.activeCRMDetails.hasCreatedForPipeline) {
             let pipelineId = this.createdForPipelines.map(function (pipeline) { return pipeline['id']; });
