@@ -54,6 +54,9 @@
                         <h6 class="moreipsis">
                             <span translate> Created By <b>{{category.createdBy}}</b></span>
                         </h6>
+                        <h5 class="view-banner green-btn-cu" *ngIf="category.defaultCategory" >
+                         <span  data-toggle="tooltip" data-placement="top" translate>Default Category</span>
+                        </h5>
                     </td>
                        <td class="text-center">
                         <h4 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{category.description}}">
@@ -68,12 +71,22 @@
                     </td>
                     <td>
                         <div class="actions-block override-actions">
-                            <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
+                          <a *ngIf="category.defaultCategory" [class.disabled]="category.defaultCategory"  class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit">
+                                <i class="fa fa-pencil-square-o IconCustomization"></i>
+                                <div class="clickicons"></div>
+                            </a>
+                            <a *ngIf="!category.defaultCategory"  class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
                                 (click)="getCategoryById(category)">
                                 <i class="fa fa-pencil-square-o IconCustomization"></i>
                                 <div class="clickicons"></div>
                             </a>
-                            <a class="custom-icon" id="template-delete"
+                             <a  *ngIf="category.defaultCategory" [class.disabled]="category.defaultCategory" class="custom-icon" id="template-delete"
+                                 data-toggle="tooltip" data-placement="top"
+                                title="Delete">
+                                <i class="fa fa-trash-o trashIconCustomization"></i>
+                                <div class="del-icon"></div>
+                            </a>
+                            <a  *ngIf="!category.defaultCategory" class="custom-icon" id="template-delete"
                                 [ngClass]="{'disable-click' : !authenticationService?.module?.isAnyAdminOrSupervisor}"
                                 (click)="confirmDeleteCategory(category.id)" data-toggle="tooltip" data-placement="top"
                                 title="Delete">

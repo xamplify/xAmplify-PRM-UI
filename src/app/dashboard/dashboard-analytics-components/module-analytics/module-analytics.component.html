@@ -38,7 +38,7 @@
           </button>
         </a>
       </div>
-      <div>
+      <div *ngIf="isRegisterDealEnabled">
         <a (click)="addDeal()" style="padding-left: 11px;">
           <button class="button btn btn-primary transition" style="width:200px; border-radius: 3px !important;"
             translate>

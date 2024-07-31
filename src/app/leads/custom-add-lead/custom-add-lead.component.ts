@@ -1265,6 +1265,10 @@ export class CustomAddLeadComponent implements OnInit {
       if(this.showTicketTypesDropdown){
         this.logger.info("Loading Pipelines for "+this.activeCRMDetails.createdForActiveCRMType);
         this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
+        if (this.lead.campaignId != undefined && this.lead.campaignId > 0) {
+          this.isCampaignTicketTypeSelected = true;
+          this.getPipelinesAndStages();
+        }
       }else{
         this.getPipelinesAndStages();
         this.getStagesBySelectedPipeLineId();
@@ -1283,6 +1287,7 @@ export class CustomAddLeadComponent implements OnInit {
           let totalRecords = data.totalRecords;
           this.showCreatedByPipelineAndStage = data['showCreatedByLeadPipelineAndStage'];
           this.showCreatedByPipelineAndStageOnTop = data['showCreatedByLeadPipelineAndStageOnTop'];
+          this.lead.halopsaTicketTypeId = data['ticketTypeId'];
           this.activeCRMDetails.hasCreatedForPipeline = totalRecords == 1;
           if (this.activeCRMDetails.hasCreatedForPipeline) {
             let pipelineId = this.createdForPipelines.map(function (pipeline) { return pipeline['id']; });

@@ -10,6 +10,7 @@ import {DashboardModuleAnalyticsViewDto} from "app/dashboard/models/dashboard-mo
 import {VanityURLService} from "app/vanity-url/services/vanity.url.service";
 import { LeadsService } from 'app/leads/services/leads.service';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { IntegrationService } from 'app/core/services/integration.service';
 
 @Component({
   selector: 'app-module-analytics',
@@ -27,12 +28,14 @@ export class ModuleAnalyticsComponent implements OnInit {
   leadId: number = 0;
   customResponse: CustomResponse = new CustomResponse();
   showDealForm: boolean;
+  isRegisterDealEnabled:boolean = true;
   @Output() notifyShowDealForm = new EventEmitter();
   @Output() notifyShowLeadForm = new EventEmitter();
   @Output() notifyLeadSuccess = new EventEmitter();
   @Input() applyFilter:boolean;
   constructor(public router: Router,public xtremandLogger:XtremandLogger,public dashboardService: DashboardService,
-    public authenticationService: AuthenticationService,public referenceService:ReferenceService,private route: ActivatedRoute,private vanityUrlService:VanityURLService) { 
+    public authenticationService: AuthenticationService,public referenceService:ReferenceService,private route: ActivatedRoute,private vanityUrlService:VanityURLService,
+    public integrationService:IntegrationService) { 
 
     }
 
@@ -50,7 +53,11 @@ export class ModuleAnalyticsComponent implements OnInit {
         this.loader = false;
       },
       error => this.xtremandLogger.log(error),
-      () => { }
+      () => {
+        if (this.authenticationService.module.showAddLeadsAndDealsOptionInTheDashboard && this.authenticationService.vanityURLEnabled) {
+          this.getVendorRegisterDealValue();
+        }
+       }
   );
   }
 
@@ -107,5 +114,18 @@ export class ModuleAnalyticsComponent implements OnInit {
       this.notifyShowLeadForm.emit();    
     }
 
+  getVendorRegisterDealValue() {
+    this.ngxLoading = true;
+    this.integrationService.getVendorRegisterDealValue(this.authenticationService.getUserId(), this.authenticationService.companyProfileName).subscribe(
+      data => {
+        if (data.statusCode == 200) {
+          this.isRegisterDealEnabled = data.data
+        }
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
 
 }

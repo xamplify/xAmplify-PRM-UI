@@ -48,4 +48,6 @@ export class CampaignAccess {
   paymentOverDue =  false;
   ssoEnabled = false;
 
+  chatGpt = false;
+
 }

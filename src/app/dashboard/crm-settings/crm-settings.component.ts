@@ -44,6 +44,7 @@ export class CrmSettingsComponent implements OnInit {
 	showLeadPipeLineStageCRMIntegrationMessage = "";
 	showRegisterDealOffMessage = "";
 	showRegisterDealOnMessage = "";
+  ngxLoading:boolean = false;
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -126,10 +127,12 @@ export class CrmSettingsComponent implements OnInit {
   }
 
   getLeadPipelines(){
+    this.ngxLoading = true;
     this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
       data => {
         this.integrationService.getCRMPipelinesForCRMSettings(data,this.loggedInUserId,this.integrationType,0,'LEAD').subscribe(
           data => {
+            this.ngxLoading = false;
             if (data.statusCode == 200) {
               this.leadPipelines = data.data;
               for (let leadPipeline of this.leadPipelines) {
@@ -158,10 +161,12 @@ export class CrmSettingsComponent implements OnInit {
   }
 
   getDealPipelines(){
+    this.ngxLoading = true;
     this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
       data => {
         this.integrationService.getCRMPipelinesForCRMSettings(data,this.loggedInUserId,this.integrationType,0,'DEAL').subscribe(
           data => {
+            this.ngxLoading = false;
             if (data.statusCode == 200) {
               this.dealPipelines = data.data;
               for (let dealPipeline of this.dealPipelines) {
