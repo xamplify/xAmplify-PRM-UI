@@ -468,7 +468,7 @@ export class CustomAddLeadComponent implements OnInit {
     this.lead.postalCode = data.zipCode;
     this.lead.company = data.contactCompany;
     this.lead.city = data.city;
-    this.lead.email = this.selectedContact.emailId;
+    this.lead.email = data.emailId;
   }
 
   getCampaignLeadPipeline() {
