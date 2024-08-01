@@ -1851,10 +1851,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.logListName = 'All_' + csvNameSuffix + suffix + '.csv';
 			}
 			else if (this.contactsByType.selectedCategory === 'active') {
-				this.logListName = 'All_Active_' + csvNameSuffix + suffix + '.csv';
+				this.logListName = 'All_Registered_' + csvNameSuffix + suffix + '.csv';
 				//this.logListName = 'All_Registered_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'non-active') {
-				this.logListName = 'All_Inactive_' + csvNameSuffix + suffix + '.csv';
+				this.logListName = 'All_Unregistered_' + csvNameSuffix + suffix + '.csv';
 			} else if (this.contactsByType.selectedCategory === 'invalid') {
 				this.logListName = 'All_Undeliverable_' + csvNameSuffix + suffix + '.csv';
 			} else if (this.contactsByType.selectedCategory === 'unsubscribed') {

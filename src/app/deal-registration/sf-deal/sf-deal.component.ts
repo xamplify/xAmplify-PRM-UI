@@ -208,7 +208,9 @@ export class SfDealComponent implements OnInit {
             if (column.labelId === 'Company' && addActionType) {
               column.value = this.selectedContact.companyName;
             } else if (column.labelId === 'Email') {
-              column.value = this.selectedContact.emailId;
+              if (addActionType) {
+                column.value = this.selectedContact.emailId;
+              }
               column.columnDisable = true;
             } else if (column.labelId === 'FirstName' && addActionType) {
               column.value = this.selectedContact.firstName;

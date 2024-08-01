@@ -468,7 +468,7 @@ export class CustomAddLeadComponent implements OnInit {
     this.lead.postalCode = data.zipCode;
     this.lead.company = data.contactCompany;
     this.lead.city = data.city;
-    this.lead.email = this.selectedContact.emailId;
+    this.lead.email = data.emailId;
   }
 
   getCampaignLeadPipeline() {
@@ -1278,7 +1278,7 @@ export class CustomAddLeadComponent implements OnInit {
 
   private getPipelinesAndStages() {
     let showLeadPipeline = this.activeCRMDetails.showLeadPipeline;
-    if (showLeadPipeline) {
+    if (showLeadPipeline || this.isOrgAdmin || this.isMarketingCompany) {
       this.referenceService.loading(this.pipelineLoader, true);
       this.leadsService.findLeadPipeLines(this.lead).subscribe(
         response => {

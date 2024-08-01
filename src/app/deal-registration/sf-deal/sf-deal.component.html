@@ -24,7 +24,7 @@
               <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
               <!--Add/Edit-->
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="!isPreview">
-                <div *ngIf="formDescription?.length>1 && isOnlyPartner && !isPreview">
+                <div *ngIf="formDescription?.length>1 && authenticationService?.module.isPartnerCompany && !isPreview">
                   <div class="alert alert-info">{{formDescription}}</div>
                 </div>
                 <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">

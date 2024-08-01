@@ -43,7 +43,6 @@ import { DragulaService } from 'ng2-dragula';
 import { Pipeline } from '../../models/pipeline';
 import { PipelineStage } from '../../models/pipeline-stage';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-import { ExcludeUser } from "../../models/exclude-user";
 import { FileUtil } from '../../../core/models//file-util';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
@@ -359,7 +358,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isMasterLandingPageCategories: boolean = false;
 	isChatGptSettingsOptionClicked = false;
 	chatGptSettingsMenuHeader = MY_PROFILE_MENU_CONSTANTS.CHAT_GPT_SETTIGNS_MENU_HEADER;
-
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,

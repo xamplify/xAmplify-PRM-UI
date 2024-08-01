@@ -481,6 +481,7 @@ export class CrmFormSettingsComponent {
 					if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
 						this.paginatedSelectedIds.push(cfName);
 					}
+					sfParentfield.selected = true;
 					sfParentfield.canUnselect = false;
 				} else {
 					sfParentfield.canUnselect = true;

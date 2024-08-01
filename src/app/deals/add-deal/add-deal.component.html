@@ -353,7 +353,7 @@
                 <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
                 <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
                   [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
-                  id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable" (input)="validateField('createdByPipelineStageId',false)">
+                  id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable" (ngModelChange)="validateField('createdByPipelineStageId',false)">
                   <option [value]="0">Select Stage</option>
                   <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">{{deal.currentStageName}}</option>
                   <option *ngFor="let stage of createdByStages" [value]="stage.id">{{stage.stageName}}</option>
@@ -378,7 +378,7 @@
                 <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
                   [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                   id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
-                  (input)="validateField('createdForPipelineStageId',false)">
+                  (ngModelChange)="validateField('createdForPipelineStageId',false)">
                   <option [value]="0">Select Stage</option>
                   <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
                     [value]="deal.currentStageId">
