@@ -126,7 +126,7 @@ a.social-stats {
 }
 .df-mt5 {
   display: flex;
-  margin-top: 5px;
+  margin-top: 4px;
 }
 @media screen and (max-width: 600px) {
   .modal-customize {
@@ -140,7 +140,7 @@ a.social-stats {
 }
 /****** Tharak *******/
 .welcome-header {
-  padding: 10px 0px 0px 0px;
+  padding: 8px 0px 0px 0px;
 }
 
 .msg-color{

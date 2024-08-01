@@ -2472,3 +2472,6 @@ button.btn.Btn-Gray.btn-hvr-text.neg_mrg_top4 {
 legend.scheduler-borders{
  background-color: var(--page-content) !important;
 }
+button.button_blue.btn-abjustmentin-breadcrumbs.bgcolor-unset{margin-top: -1px;margin-right: 1px;}
+.createFolderAlignment{padding-top: 5px !important;}
+#folder-margin-xamp{margin-top: 5px !important;}

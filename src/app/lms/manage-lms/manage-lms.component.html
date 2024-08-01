@@ -1,6 +1,6 @@
 <div class="page-content">
     <!-- --------------Heading -->
-    <div class="page-bar">
+    <div class="page-bar" style="height: 48px;">
         <ul class="page-breadcrumb">
             <li>
                 <i class="fa fa-home" aria-hidden="true"></i>
@@ -12,7 +12,9 @@
                 <a *ngIf="isPartnerView" [routerLink]="['/home/tracks/shared']">Shared Tracks</a>
             </li>
         </ul>
+        <div style="padding: 3px 3px 0px 0px;">
         <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+    </div>
     </div>
     <app-manage-tracks-play-book [type]="type"></app-manage-tracks-play-book>
 </div>

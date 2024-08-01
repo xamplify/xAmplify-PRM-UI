@@ -1,7 +1,7 @@
 <ngx-loading [show]="campaignLoader" [config]="{ backdropBorderRadius: '14px' }"
    style="padding-bottom:20px"></ngx-loading>
 <div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
-   <div class="page-bar" *ngIf="!showEdit">
+   <div class="page-bar" *ngIf="!showEdit" style="height: 48px;">
       <ul class="page-breadcrumb">
          <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i> <a
                [routerLink]="referenceService.homeRouter" translate>Home</a>
@@ -72,7 +72,9 @@
             </span>
          </li>
       </ul>
+      <div style="padding: 3px 3px 0px 0px;">
       <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+   </div>
    </div>
    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
    <div id="manageContacts">
