@@ -630,7 +630,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		self.integrationService.getIntegrationDetails(this.integrationType.toLowerCase(), this.loggedInUserId)
 			.subscribe(
 				data => {
-					this.ngxloading = false;
+					// this.ngxloading = false;
 					if (data.statusCode == 200) {
 						this.integrationDetails = data.data;
 					}
@@ -639,10 +639,10 @@ export class IntegrationSettingsComponent implements OnInit {
 					this.ngxloading = false;
 				},
 				() => {
-					this.getDealHeader();
 					if (this.integrationType.toLowerCase() === 'salesforce') {
+						this.getDealHeader();
 						// this.listSalesforceCustomFields(this.opportunityType);
-					} else {						
+					} else {
 						if (this.integrationType.toLowerCase() === 'hubspot' || this.integrationType.toLowerCase() === 'pipedrive') {
 							this.getIntegrationDealPipelines();
 						}
@@ -849,7 +849,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		this.integrationService.getDealHeaderByUserId(this.loggedInUserId)
 			.subscribe(
 				data => {
-					this.ngxloading = false;
+					 this.ngxloading = false;
 					if(data.data != undefined && data.data!=null && data.data!="")
 					this.dealHeader = data.data;
 				});

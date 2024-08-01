@@ -4740,7 +4740,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		const selectedCount = this.pipeline.stages.filter(item => item && item.private).length;
 		let remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
 		if (this.pipeline.integrationType === "PIPEDRIVE") {
-			remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 2;
+			remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
 		}
 		if (remainingUnselectedCount === 0 && !this.pipeline.stages[index].private) {
 			this.pipeline.stages[index].canDelete = false;
