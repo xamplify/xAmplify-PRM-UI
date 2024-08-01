@@ -375,7 +375,7 @@
                 </div>
                 <!--PipeLine--> 
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="!showCreatedByPipelineAndStageOnTop">
-                  <div *ngIf="activeCRMDetails?.showLeadPipeline || isOrgAdmin || isMarketingCompany || showDefaultForm" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px">
+                  <div *ngIf="activeCRMDetails?.showLeadPipeline || showDefaultForm" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px">
                     <label class="control-label">Pipeline<span><strong class="required">*</strong></span></label>
                     <app-dropdown-loader *ngIf="pipeLineModalPopUpLoader?.isLoading" [text]="'pipelines'"></app-dropdown-loader>
                     <select *ngIf="!pipeLineModalPopUpLoader?.isLoading && !pipeLineModalPopUpLoader?.isServerError" class="form-control" [(ngModel)]="lead.createdForPipelineId" [ngModelOptions]="{standalone: true}"
@@ -387,7 +387,7 @@
                     </select>
                   </div>
                   <!--Select Stage-->
-                  <div *ngIf="activeCRMDetails?.showLeadPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px">
+                  <div *ngIf="activeCRMDetails?.showLeadPipelineStage || showDefaultForm" class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px">
                     <label class="control-label">Stage<span><strong class="required">*</strong></span></label>
                     <app-dropdown-loader *ngIf="stagesLoader?.isLoading" [text]="'stages'"></app-dropdown-loader>
                     <select *ngIf="!stagesLoader?.isLoading && !stagesLoader?.isServerError" class="form-control" [(ngModel)]="lead.createdForPipelineStageId" [ngModelOptions]="{standalone: true}"
@@ -599,7 +599,7 @@
   </div>
    <!--Pipeline Details-->
   <div class="panel-group" role="tablist" aria-multiselectable="true"
-  *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showLeadPipeline || activeCRMDetails?.showLeadPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm">
+  *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showLeadPipeline || activeCRMDetails?.showLeadPipelineStage || showDefaultForm">
     <div class="panel panel-default deal-bgcolor">
       <!--Pipeline Details-->
       <div class="panel-heading deal-bgcolor">
@@ -640,7 +640,7 @@
                 </select>
               </div>
               <!--Select Created For PipeLine-->
-              <div *ngIf="activeCRMDetails?.showLeadPipeline || isOrgAdmin || isMarketingCompany || showDefaultForm"
+              <div *ngIf="activeCRMDetails?.showLeadPipeline || showDefaultForm"
                 class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
                 <label class="control-label">{{vendorCompanyName}} Pipeline<span class="required"><strong>*</strong></span></label>
                 <select class="form-control" [(ngModel)]="lead.createdForPipelineId" [ngModelOptions]="{standalone: true}"
@@ -652,7 +652,7 @@
                 </select>
               </div>
               <!--Select Created For Stages-->
-              <div *ngIf="activeCRMDetails?.showLeadPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm "
+              <div *ngIf="activeCRMDetails?.showLeadPipelineStage || showDefaultForm "
                 class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px" id="dealStageDiv">
                 <label class="control-label">{{vendorCompanyName}} Stage<span class="required"><strong>*</strong></span></label>
                 <app-dropdown-loader *ngIf="stagesLoader?.isLoading" [text]="'stages'"></app-dropdown-loader>
@@ -669,7 +669,7 @@
             <!--!showCreatedByPipelineAndStageOnTop-->
             <div *ngIf="!showCreatedByPipelineAndStageOnTop">
               <!--Select Created For PipeLine-->
-              <div *ngIf="activeCRMDetails?.showLeadPipeline || isOrgAdmin || isMarketingCompany || showDefaultForm"  class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
+              <div *ngIf="activeCRMDetails?.showLeadPipeline || showDefaultForm"  class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
                 <label class="control-label">{{vendorCompanyName}} Pipeline<span class="required"><strong>*</strong></span></label>
                 <select class="form-control" [(ngModel)]="lead.createdForPipelineId"
                   [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
@@ -680,7 +680,7 @@
                 </select>
               </div>
               <!--Select Created For Stages-->
-              <div *ngIf="activeCRMDetails?.showLeadPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm"  class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px" id="dealStageDiv">
+              <div *ngIf="activeCRMDetails?.showLeadPipelineStage || showDefaultForm"  class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px" id="dealStageDiv">
                 <label class="control-label">{{vendorCompanyName}} Stage<span class="required"><strong>*</strong></span></label>
                 <app-dropdown-loader *ngIf="stagesLoader?.isLoading" [text]="'stages'"></app-dropdown-loader>
                 <select *ngIf="!stagesLoader?.isLoading && !stagesLoader?.isServerError"  class="form-control" [(ngModel)]="lead.createdForPipelineStageId" [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"

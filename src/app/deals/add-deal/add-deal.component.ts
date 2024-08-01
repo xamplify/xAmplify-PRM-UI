@@ -600,6 +600,7 @@ export class AddDealComponent implements OnInit {
       this.activeCRMDetails.hasDealPipeline = false;
       this.stages = [];
       this.showDefaultForm = false;
+      this.showCustomForm = false;
       this.propertiesQuestions = [];
       this.hasCampaignPipeline = false;
       this.vendorCompanyName = '';
@@ -791,10 +792,10 @@ export class AddDealComponent implements OnInit {
     //   this.deal.createdForPipelineId = this.deal.createdByPipelineId;
     //   this.deal.createdForPipelineStageId = this.deal.createdByPipelineStageId;
     // }
-    if (!this.activeCRMDetails.showDealPipeline && !this.isOrgAdmin && !this.isMarketingCompany) {
+    if (!this.activeCRMDetails.showDealPipeline) {
       this.deal.createdForPipelineId = this.activeCRMDetails.dealPipelineId;
     }
-    if (!this.activeCRMDetails.showDealPipelineStage && !this.isOrgAdmin && !this.isMarketingCompany) {
+    if (!this.activeCRMDetails.showDealPipelineStage) {
       this.deal.createdForPipelineStageId = this.activeCRMDetails.dealPipelineStageId;
     }
     if(this.deal.createdForPipelineId > 0 && this.deal.createdForPipelineStageId > 0){
@@ -1059,7 +1060,7 @@ export class AddDealComponent implements OnInit {
     else
       this.estimatedCloseDateError = true;
     /**************** Title *******************/
-    if (this.deal.title != null && this.deal.title.length > 0)
+    if (this.deal.title != null && $.trim(this.deal.title).length > 0)
       this.titleError = false
     else
       this.titleError = true;
@@ -1086,7 +1087,7 @@ export class AddDealComponent implements OnInit {
     else
       this.pipelineIdError = true;
     /**************** Pipeline Id *******************/
-    if ((this.deal.createdForPipelineId != null && this.deal.createdForPipelineId > 0) || (!this.activeCRMDetails.showDealPipeline && "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType && !this.isOrgAdmin && !this.isMarketingCompany))
+    if ((this.deal.createdForPipelineId != null && this.deal.createdForPipelineId > 0) || (!this.activeCRMDetails.showDealPipeline && "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType))
       this.createdForPipelineIdError = false
     else
       this.createdForPipelineIdError = true;
@@ -1096,7 +1097,7 @@ export class AddDealComponent implements OnInit {
     else
       this.pipelineStageIdError = true;
     /**************** Pipeline Stage Id *******************/
-    if ((this.deal.createdForPipelineStageId != null && this.deal.createdForPipelineStageId > 0) || (!this.activeCRMDetails.showDealPipelineStage && "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType && !this.isOrgAdmin && !this.isMarketingCompany))
+    if ((this.deal.createdForPipelineStageId != null && this.deal.createdForPipelineStageId > 0) || (!this.activeCRMDetails.showDealPipelineStage && "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType))
       this.createdForPipelineStageIdError = false
     else
       this.createdForPipelineStageIdError = true;
