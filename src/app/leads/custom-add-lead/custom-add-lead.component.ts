@@ -834,10 +834,10 @@ export class CustomAddLeadComponent implements OnInit {
       this.setSfFormFieldValues();
     }
 
-    if (!this.activeCRMDetails.showLeadPipeline && !this.isOrgAdmin && !this.isMarketingCompany) {
+    if (!this.activeCRMDetails.showLeadPipeline) {
       this.lead.createdForPipelineId = this.activeCRMDetails.leadPipelineId;
     }
-    if (!this.activeCRMDetails.showLeadPipelineStage && !this.isOrgAdmin && !this.isMarketingCompany) {
+    if (!this.activeCRMDetails.showLeadPipelineStage) {
       this.lead.createdForPipelineStageId = this.activeCRMDetails.leadPipelineStageId;
     }
     if (this.lead.createdForPipelineId > 0 && this.lead.createdForPipelineStageId > 0) {
@@ -1278,7 +1278,7 @@ export class CustomAddLeadComponent implements OnInit {
 
   private getPipelinesAndStages() {
     let showLeadPipeline = this.activeCRMDetails.showLeadPipeline;
-    if (showLeadPipeline || this.isOrgAdmin || this.isMarketingCompany) {
+    if (showLeadPipeline) {
       this.referenceService.loading(this.pipelineLoader, true);
       this.leadsService.findLeadPipeLines(this.lead).subscribe(
         response => {
