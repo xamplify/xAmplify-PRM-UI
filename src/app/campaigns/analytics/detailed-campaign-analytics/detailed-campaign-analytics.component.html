@@ -3843,7 +3843,7 @@
           </a> 
         </div>
         <app-custom-add-lead [leadId]="leadId" [selectedContact]="selectedRow" [campaignId]="campaign.campaignId" [actionType]="leadActionType" 
-        [campaignName]="campaign.campaignName" (notifySubmitSuccess)="showTimeLineView()"></app-custom-add-lead>
+        [campaignName]="campaign.campaignName" [isVendorVersion]="!campaign.nurtureCampaign" (notifySubmitSuccess)="showTimeLineView()"></app-custom-add-lead>
       </div>
     </section>
 </ng-container>
@@ -3861,7 +3861,7 @@
           </a> 
         </div>
         <app-custom-add-lead [leadId]="leadId" [selectedContact]="selectedRow" [campaignId]="campaign.campaignId" [actionType]="leadActionType" 
-        [campaignName]="campaign.campaignName" [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitLeadSuccess()"></app-custom-add-lead>
+        [campaignName]="campaign.campaignName" [isOrgAdmin]="isOrgAdmin" [isVendorVersion]="!campaign.nurtureCampaign" (notifySubmitSuccess)="showSubmitLeadSuccess()"></app-custom-add-lead>
       </div>
     </section>
 
