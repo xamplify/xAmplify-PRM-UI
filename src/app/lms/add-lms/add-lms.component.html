@@ -1,5 +1,5 @@
 <div class="page-content">
-    <div class="page-bar">
+    <div class="page-bar" style="height:48px;">
         <ul class="page-breadcrumb">
             <li>
                 <i class="fa fa-home" aria-hidden="true"></i>
@@ -13,11 +13,13 @@
                 <a *ngIf="!isAdd">Edit Tracks</a>
             </li>
         </ul>
-        <div id="folder-margin-xamp">
+        <div>
             <button class="button_blue btn-abjustmentin-breadcrumbs bgcolor-unset" (click)="openCreateFolderPopup()"
-                translate><span class="btn btn-primary transition text_pd5">Create a Folder</span></button>
+                translate><span class="btn btn-primary transition text_pd5 txt_update">Create a Folder</span></button>
         </div>
+        <div style="padding-top: 1px;">
         <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+    </div>
     </div>
     <app-add-tracks-play-book #addTracksPlayBookComponent [type]="type"></app-add-tracks-play-book>
 </div>

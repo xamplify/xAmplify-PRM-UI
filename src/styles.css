@@ -2683,7 +2683,7 @@ display: inline-flex;
 }
 .p-rgt_p-top{
   padding-right: 3px;
-  padding-top: 2px;
+  padding-top: 1px;
 }
 .bgcolor-unset{
   background-color: unset;
@@ -2897,7 +2897,7 @@ button.button:disabled{
 }
 /* sudha sri(20-12-2023) */
 .btn-abjustmentin-breadcrumbs{
-  padding-top: 3px;
+  padding-top: 4px;
   padding-right: 3px;
 }
 .neg_mrg_rgt8{

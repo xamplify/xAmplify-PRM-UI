@@ -25,7 +25,7 @@
             <a translate>Manage Campaigns</a>
          </li>
       </ul>
-      <div class="pull-right" style="padding: 1px 1px 1px;">
+      <div class="pull-right" style="padding: 4px 4px 4px;">
          <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="!archived"
             (click)="showArchivedCampaigns()"><i class="fa fa-archive" aria-hidden="true"></i> Archived
             Campaigns</button>
@@ -34,7 +34,9 @@
                class="fa fa-bullhorn"></i>
             Active Campaigns</button>
       </div>
+      <div style="padding: 3px 3px 3px 0px;">
       <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+   </div>
    </div>
    <ngx-loading [show]="isloading || refService.loadingPreview" [config]="{ backdropBorderRadius: '14px' }">
    </ngx-loading>

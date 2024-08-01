@@ -17,10 +17,12 @@
         <a>Add/Manage Team Members</a>
       </li>
     </ul>
+    <div style="padding: 3px 3px 3px 0px;">
     <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+  </div>
     <div
       *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember && authenticationService?.module?.isAdminAndPartnerCompany && !authenticationService.vanityURLEnabled">
-      <ul class="mix-filter p0 m0" style="float: right">
+      <ul class="mix-filter p0 m0" style="float: right;margin-top: -4px !important;">
         <li class="filter" style="float: right; margin-top: 5px;" (click)="showPartnerView()"
           [class.campaign-type-selected]="!isVendorVersion" translate>
           {{authenticationService?.partnerModule?.customName}} View </li>
