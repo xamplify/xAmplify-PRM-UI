@@ -292,7 +292,7 @@
                   </div>
                   <!--Lead For-->
                   <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 10px"
-                    *ngIf="(!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany))) && !(lead.campaignId > 0) && isLeadDetailsTabDisplayed">
+                    *ngIf="(!vanityLoginDto.vanityUrlFilter) && (!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany))) && !(lead.campaignId > 0) && isLeadDetailsTabDisplayed">
                     <label class="control-label">Lead For<span><strong class="required">*</strong></span></label>
                     <select class="form-control" [(ngModel)]="lead.createdForCompanyId"
                       [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId" id="createdForCompanyId"
@@ -303,7 +303,7 @@
                   </div>
                   <!--Lead By-->
                   <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
-                    *ngIf="actionType === 'view' && isVendorVersion">
+                    *ngIf="!vanityLoginDto.vanityUrlFilter && actionType === 'view' && isVendorVersion">
                     <label class="control-label">Lead By<span class="required"><strong>*</strong></span></label>
                     <select class="form-control" [disabled]="preview || edit || leadId > 0 || vanityLoginDto?.vanityUrlFilter">
                       <option [value]="lead?.createdByCompanyId">{{lead?.createdByCompanyName}}</option>
