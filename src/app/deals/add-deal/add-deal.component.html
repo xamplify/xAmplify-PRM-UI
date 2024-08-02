@@ -410,7 +410,7 @@
                 <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
                   [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                   id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
-                  (input)="validateField('createdForPipelineStageId',false)">
+                  (ngModelChange)="validateField('createdForPipelineStageId',false)">
                   <option [value]="0">Select Stage</option>
                   <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
                     [value]="deal.currentStageId">
@@ -508,7 +508,7 @@
           </label>
           <app-flatpickr [type]="'date'" [dateFormat]="'Y-m-d'" [enableTime]="false"
             [(dataField)]="deal.closeDateString" [class.disabled]="preview"
-            (ngModelChange)="validateField('estimatedCloseDate',false)"></app-flatpickr>
+            (input)="validateField('estimatedCloseDate',false)"></app-flatpickr>
         </div>
 
         <div *ngFor="let property of propertiesQuestions;let i=index">
