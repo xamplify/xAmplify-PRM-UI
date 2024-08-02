@@ -420,7 +420,7 @@
                                   <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
                                   <div class="clickicons"></div>
                                 </a>
-                                <span *ngIf="deal.unReadPropertyChatCount > 0" class="badge badge-default notify-badge"
+                                <span *ngIf="deal.unReadPropertyChatCount > 0 && dealsCount" class="badge badge-default notify-badge"
                                   style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
                                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                   <a class="custom-icon" data-rel="fancybox-button"
