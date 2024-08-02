@@ -508,7 +508,7 @@
           </label>
           <app-flatpickr [type]="'date'" [dateFormat]="'Y-m-d'" [enableTime]="false"
             [(dataField)]="deal.closeDateString" [class.disabled]="preview"
-            (ngModelChange)="validateField('estimatedCloseDate',false)"></app-flatpickr>
+            (input)="validateField('estimatedCloseDate',false)"></app-flatpickr>
         </div>
 
         <div *ngFor="let property of propertiesQuestions;let i=index">
