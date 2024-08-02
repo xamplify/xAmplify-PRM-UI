@@ -3246,7 +3246,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			const self = this;
 			swal({
 				title: 'Salesforce Re-configuration?',
-				text: 'Are you sure? All data related to existing Salesforce account will be deleted by clicking Yes.',
+				text: 'Make sure you are reconfiguring the existing Salesforce account. Configuring a new account will delete all data from the current account, and this action cannot be undone.',
 				type: 'warning',
 				showCancelButton: true,
 				confirmButtonColor: '#54a7e9',
