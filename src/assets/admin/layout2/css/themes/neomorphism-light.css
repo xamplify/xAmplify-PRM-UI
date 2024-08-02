@@ -3185,10 +3185,13 @@ top:-3px;
     height: 122% !important;
 }
 /* btn-green position alignmnet */
+/* 31-7-2024 (start) */
 .dwnload-csv_btn{
-  margin-top: 3px !important;
+  margin-top: 4px !important;
   margin-bottom: 4px !important;
+  padding-right: 6px !important;
 }
+/* 31-7-2024 (end) */
 .text_pd5{
   padding-top:5px !important;
 }
@@ -4377,3 +4380,13 @@ padding:10px;
   background-color: #e2e5e8 !important;
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #e5e9ee;
 }
+/* 31-7-2024 */
+.refresh-margin, .xamp-margin-left-icon{margin: 7px 7px 5px 5px !important;}
+.csv_btn{margin-top:5px !important;padding-right: 2px;}
+.folder_btn{margin-top: 0px !important;padding-right: 3px;}
+#folder_cross{padding-top: 3px;}
+.primary_btn_align{margin-right: 6px !important;padding-top: 0px !important;}
+#folder-margin-xamp{margin-top: 5px !important;margin-right: 6px !important;}
+.portlet.light.remove_cardBgcolor.glass_Bgcolor{background: #f0f5fa !important;box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;}
+button.button_blue.btn-abjustmentin-breadcrumbs.bgcolor-unset{margin-top: 5px;margin-right: 5px;}
+span.btn.btn-primary.transition.text_pd5.txt_update {padding-top: 2px !important;}

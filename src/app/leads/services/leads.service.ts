@@ -372,12 +372,9 @@ export class LeadsService {
   
   }
 
-  findPipelineStagesByPipelineId(pipelineId:number){
-    let url = this.authenticationService.REST_URL+"pipeline/findPipelineStages/"+pipelineId+this.ACCESS_TOKEN_SUFFIX_URL;
+  findPipelineStagesByPipelineId(pipelineId:number, loggedInUserId: number){
+    let url = this.authenticationService.REST_URL+"pipeline/findPipelineStages/"+pipelineId+"/"+loggedInUserId+this.ACCESS_TOKEN_SUFFIX_URL;
     return this.authenticationService.callGetMethod(url);
-
   }
-  
-
 
 }

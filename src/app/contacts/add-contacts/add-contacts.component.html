@@ -77,7 +77,7 @@
 				{{checkingContactTypeName}}s
 			</li>
 		</ul>
-		<div align="right" style="margin-top: 3px;float: right;" class="hidden-xs" *ngIf="!assignLeads">
+		<div align="right" style="margin-top: 4px;float: right;" class="hidden-xs csv_btn" *ngIf="!assignLeads">
 			<a (click)="downloadEmptyCsv()">
 				<button type="button" class="button p-rgt_p-top bgcolor-unset" download
 					style="color: #ffffff;margin-right: 3px;"
@@ -87,7 +87,9 @@
 				</button>
 			</a>
 		</div>
+		<div style="padding: 3px 3px 0px 0px;">
 		<app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+	</div>
 	</div>
 	<div *ngIf="masterContactListSync" class="alert alert-dismissible alert-info mt-10 mb10">
 		<span><img alt="" src="assets/images/loadbar.gif" class="loader-image-customize"></span>

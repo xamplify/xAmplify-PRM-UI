@@ -634,7 +634,7 @@ export class CustomAddLeadComponent implements OnInit {
   }
   private findPipelineStagesByPipelineId(createdForPipeLineId: number) {
     this.referenceService.loading(this.stagesLoader, true);
-    this.leadsService.findPipelineStagesByPipelineId(createdForPipeLineId).subscribe(
+    this.leadsService.findPipelineStagesByPipelineId(createdForPipeLineId, this.loggedInUserId).subscribe(
       response => {
         let data = response.data;
         this.createdForStages = data.list;

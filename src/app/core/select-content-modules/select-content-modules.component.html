@@ -1,6 +1,6 @@
 <div class="page-content" *ngIf="!authenticationService?.module?.prmDashboard">
    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-   <div class="page-bar mPageBar">
+   <div class="page-bar mPageBar" style="height:48px;">
       <ul class="page-breadcrumb">
          <li>
             <i class="fa fa-home" aria-hidden="true"></i>
@@ -9,8 +9,9 @@
          </li>
          <li><a translate>Select Module</a></li>
       </ul>
+      <div style="padding: 3px 3px 0px 0px;">
       <app-user-guide-help-button [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
-
+   </div>
    </div>
    <div *ngIf="authenticationService?.module?.contentLoader">
       <app-modal-popup-loader></app-modal-popup-loader>
