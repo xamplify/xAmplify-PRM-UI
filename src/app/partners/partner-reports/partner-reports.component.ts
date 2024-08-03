@@ -710,6 +710,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.findRedistributedCampaignsCount();
                 this.findThroughCampaignsCount();
                 this.findInActivePartnersCount();
+                this.findApprovePartnersCount();
             if(tabIndex != undefined){
                 if(tabIndex == 1){
                 this.goToInActivePartnersDiv()
