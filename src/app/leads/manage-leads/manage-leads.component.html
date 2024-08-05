@@ -374,7 +374,12 @@
                                   </span>
                                 </h5>
                               </div>
-
+                              <div *ngIf="isVendorVersion" style="margin-left: 60px;">
+                                <h5 class="m0"><strong>Lead Id:</strong>
+                                  <span>{{lead.referenceId}}
+                                  </span>
+                                </h5>
+                              </div>
                             </td>
                             <td>
                               <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"
