@@ -235,4 +235,10 @@ export class FormService {
        .catch( this.handleError );
      }
 
+     listAllFormAnalyticsByLandingPageId( pagination: Pagination ): Observable<any> {
+        return this.http.post( this.URL + "listAllFormAnalyticsByLandingPageId?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
 }
