@@ -2714,7 +2714,7 @@ hr.swal2-spacer {
   top: 0%;
 }
 
-i.fa.fa-trash-o:hover,
+i.fa.fa-trash-o:hover{color: #cb5a5e !important;}
 i.fa.fa-pencil-square-o:hover,
 i.fa.fa-files-o:hover,
 i.fa.fa-bullhorn:hover,
@@ -2751,7 +2751,7 @@ a.delete.custom-icon {
 }
 /* manikanta */
 a.delete.custom-icon:hover {
-  color: #fff !important;
+  color: #cb5a5e !important;
   z-index: 99;
   position: relative;
 }
@@ -4390,3 +4390,18 @@ padding:10px;
 .portlet.light.remove_cardBgcolor.glass_Bgcolor{background: #f0f5fa !important;box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;}
 button.button_blue.btn-abjustmentin-breadcrumbs.bgcolor-unset{margin-top: 5px;margin-right: 5px;}
 span.btn.btn-primary.transition.text_pd5.txt_update {padding-top: 2px !important;}
+.text-color{border: 1px solid #d0d5db !important;}
+.view-type-css{
+  margin-top: 8px !important;
+  margin-right: 8px !important;
+}
+.view-type-css2{
+  margin-top: 8px !important;
+}
+.deal_view_type_css{
+  margin-top: 6px !important;
+  margin-right: 17px !important;
+}
+.deal_view_type_css2{
+  margin-top: 6px !important;
+}

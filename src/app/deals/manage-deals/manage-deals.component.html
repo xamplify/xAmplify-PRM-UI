@@ -1,7 +1,7 @@
 <div class="page-content" *ngIf="!showDealForm">
   <div id="deals-page-content-div">
     <div>
-      <div class="page-bar">
+      <div class="page-bar" style="height: 48px;">
         <div class="col-xs-12 col-sm-12 col-lg-12 p0-neo-dark">
           <div class="col-xs-12 col-sm-5 col-lg-6">
             <ul class="page-breadcrumb pbc-m3">
@@ -16,10 +16,10 @@
             </ul>
           </div>
           <div class="col-xs-12 col-sm-7 col-lg-6 p0">
-            <ul class="mix-filter p0 m0" style="float: right"
+            <ul class="mix-filter p0 m0" style="float: right;padding-top:1.5px !important;margin-right: -9px !important;"
               *ngIf="!authenticationService.vanityURLEnabled && authenticationService?.module?.isAdminAndPartnerCompany">
               <!--Partner View-->
-              <li class="filter float-right mt5" (click)="showPartner()"
+              <li class="filter float-right mt5 deal_view_type_css" (click)="showPartner()"
                 [class.campaign-type-selected]="isPartnerVersion">
                 {{authenticationService?.partnerModule?.customName}} View
                 <i *ngIf="isPartnerVersion" class="fa fa-check-circle-o check-icons"></i>
@@ -31,7 +31,9 @@
               </li>
               <p class="filter float-right m10">Opportunities as: </p>
             </ul>
+            <div style="padding: 3px 3px 3px 0px;">
             <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+          </div>
           </div>
         </div>
       </div>

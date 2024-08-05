@@ -1593,6 +1593,9 @@ div.switch5 > input.switch:focus ~ label:before {
 .xamp-margin-left-icon {
   margin: 0px 5px 5px 5px;
 }
+a.close-circle.xamp-margin-left-icon.only_themes{
+  margin: 0px 5px 5px 5px !important;
+}
 .margin {
   margin-right: 12px;
 }

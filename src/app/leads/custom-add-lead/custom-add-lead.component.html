@@ -549,11 +549,14 @@
         placeholder="{{leadCustomField.placeholder}}" [ngModelOptions]="{standalone: true}" id="city"
         [disabled]="preview" aria-autocomplete="none" autocomplete="off" />
     </div>
-    <div class="form-group" *ngIf="leadCustomField.labelId =='state'" [attr.class]="leadState">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='state'" [attr.class]="leadState" style="margin-bottom: 20px">
       <label class="control-label">{{leadCustomField.displayName}}</label>
-      <input type="text" maxlength="100" class="form-control" name="lead state" [(ngModel)]=" lead.state"
-        [ngModelOptions]="{standalone: true}" id="state" placeholder="{{leadCustomField.placeholder}}"
-        [disabled]="preview" aria-autocomplete="none" autocomplete="off" />
+      <span *ngIf="leadCustomField.placeholder?.length > 0">({{leadCustomField.placeholder}})
+      </span>
+      <select class="form-control" [(ngModel)]="lead.state" [ngModelOptions]="{standalone: true}" id="state"
+        [disabled]="preview || hasNoStates">
+        <option *ngFor="let state of filteredStates" [value]="state">{{state}}</option>
+      </select>
     </div>
     <div class="form-group" *ngIf="leadCustomField.labelId =='postalCode'" [attr.class]="leadPostalCode">
       <label class="control-label">{{leadCustomField.displayName}}</label>
@@ -567,10 +570,21 @@
       <span *ngIf="leadCustomField.placeholder?.length > 0">({{leadCustomField.placeholder}})
       </span>
       <select class="form-control" [(ngModel)]="lead.country" [ngModelOptions]="{standalone: true}" id="country"
-        [disabled]="preview">
-        <option *ngFor="let country of countryNames.countries" [value]="country">{{country}}</option>
+        [disabled]="preview" (ngModelChange)="onChangeCountry($event)">
+        <option *ngFor="let country of filteredCountries" [value]="country">{{country}}</option>
       </select>
     </div>
+
+    <div class="form-group" *ngIf="leadCustomField.labelId =='region'" [attr.class]="region" style="margin-bottom: 20px">
+      <label class="control-label">{{leadCustomField.displayName}}</label>
+      <span *ngIf="leadCustomField.placeholder?.length > 0">({{leadCustomField.placeholder}})
+      </span>
+      <select class="form-control" [(ngModel)]="lead.region" [ngModelOptions]="{standalone: true}" id="region"
+        [disabled]="preview" (ngModelChange)="onChangeRegion($event)">
+        <option *ngFor="let region of regions.regions" [value]="region.name">{{region.name}}</option>
+      </select>
+    </div>
+
   </div>
 </ng-template>
 <!-- END CONTENT -->
