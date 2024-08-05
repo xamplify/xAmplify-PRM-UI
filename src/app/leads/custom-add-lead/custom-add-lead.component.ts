@@ -28,13 +28,14 @@ import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { CountryNames } from 'app/common/models/country-names';
 import { CommentDealAndLeadDto } from 'app/deals/models/comment-deal-and-lead-dto';
 import { EnvService } from 'app/env.service';
+import { RegionNames } from 'app/common/models/region-names';
 import { Http } from '@angular/http';
 declare var $: any;
 @Component({
   selector: 'app-custom-add-lead',
   templateUrl: './custom-add-lead.component.html',
   styleUrls: ['./custom-add-lead.component.css'],
-  providers: [HttpRequestLoader, DealsService, LeadsService, Properties, RegularExpressions, CountryNames],
+  providers: [HttpRequestLoader, DealsService, LeadsService, Properties, RegularExpressions, CountryNames,RegionNames],
 })
 export class CustomAddLeadComponent implements OnInit {
   @Input() public dealId: any;
@@ -205,10 +206,17 @@ export class CustomAddLeadComponent implements OnInit {
   leadLayoutLoader:HttpRequestLoader = new HttpRequestLoader();
   pipeLineModalPopUpLoader:HttpRequestLoader = new HttpRequestLoader();
   isLeadDetailsTabDisplayed = true;
+  regionBasedCountries : any;
+  filteredCountries = ['Select Country'];
+  filteredStates = ['Select State'];
+  states: any[];
+  countryBasedStates : any;
+  hasNoStates: boolean = false;
+
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public regularExpressions: RegularExpressions, public userService: UserService,
-     public countryNames: CountryNames, private integrationService: IntegrationService,public envService:EnvService) {
+     public countryNames: CountryNames, private integrationService: IntegrationService,public envService:EnvService,public regions: RegionNames) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isMarketingCompany = this.authenticationService.module.isMarketingCompany;
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -707,6 +715,29 @@ export class CustomAddLeadComponent implements OnInit {
             if (self.lead.industry == null || self.lead.industry == undefined || self.lead.industry == '') {
               self.lead.industry = self.industries[0];
             }
+
+            if (self.lead.region == null || self.lead.region == undefined || self.lead.region == '') {
+              self.lead.region = "Select Region";
+              self.lead.country = 'Select Country';
+              self.lead.state = 'Select State';
+            } else {
+              if (self.lead.country == null || self.lead.country == '') {
+                self.lead.country = 'Select Country';
+                self.lead.state = 'Select State';
+              }
+              this.getRegionBasedCountries(self.lead.region);
+            }
+
+            if (self.lead.country == null || self.lead.country == 'Select Country' || self.lead.country == null) {
+              self.lead.country = 'Select Country';
+              self.lead.state = 'Select State';
+            } else {
+              if (self.lead.state == null || self.lead.state == '') {
+                self.lead.state = 'Select State';
+              }
+              this.getCountriesBasedCites(self.lead.country);
+            }
+
             self.existingHalopsaLeadTicketTypeId = self.lead.halopsaTicketTypeId;
             if (self.lead.createdForCompanyId > 0) {
             }
@@ -1765,17 +1796,62 @@ export class CustomAddLeadComponent implements OnInit {
   }
 
   
-copyReferenceId(inputElement: any) {
-  inputElement.select();
-  $('#copy-reference-id').hide();
-  document.execCommand('copy');
-  inputElement.setSelectionRange(0, 0);
-  $('#copy-reference-id').show(500);
-  this.isCopiedToClipboard = true;
-}
+  copyReferenceId(inputElement: any) {
+    inputElement.select();
+    $('#copy-reference-id').hide();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copy-reference-id').show(500);
+    this.isCopiedToClipboard = true;
+  }
 
-checkCustomLeadFormValid(event:any){
-  this.sfDealComponent.isDealRegistrationFormInvalid = event;
-}
+  checkCustomLeadFormValid(event: any) {
+    this.sfDealComponent.isDealRegistrationFormInvalid = event;
+  }
+
+  onChangeRegion(event: any) {
+    let selectedRegion = event;
+    this.hasNoStates = false;
+    this.lead.country = 'Select Country';
+    this.lead.state = 'Select State';
+    this.filteredStates = ['Select State'];
+    this.filteredCountries = ['Select Country'];
+    this.getRegionBasedCountries(selectedRegion);
+  }
+
+  onChangeCountry(event: any) {
+    let selectedCountry = event;
+    this.filteredStates = ['Select State'];
+    this.lead.state = 'Select State';
+    this.hasNoStates = false;
+    this.getCountriesBasedCites(selectedCountry);
+  }
+
+  getCountriesBasedCites(selectedCountry: any) {
+    this.countryBasedStates = this.countryNames.countriesAndStates.filter(country => country.name === selectedCountry);
+    this.countryBasedStates.forEach(countryStates => {
+      this.states = countryStates.states;
+      if (this.states.length > 0) {
+        this.hasNoStates = false;
+        this.states.sort((a, b) => a.name.localeCompare(b.name));
+        this.states.forEach(state => {
+          this.filteredStates.push(state.name)
+        });
+      } else {
+        if (this.lead.country != 'Select Country') {
+          this.hasNoStates = true;
+          this.lead.state = 'Select State';
+        }
+      }
+    });
+  }
+
+  getRegionBasedCountries(selectedRegion: any) {
+    this.regionBasedCountries = this.countryNames.regionBasedCountries.filter(country => country.region === selectedRegion);
+    this.regionBasedCountries.forEach(country => {
+      this.filteredCountries.push(country.name);
+    });
+  }
+
 
 }

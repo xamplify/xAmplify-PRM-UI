@@ -10,7 +10,7 @@ export class Lead {
     website: string;
     street: string;
     city: string;
-    state:string = '';
+    state:string = 'Select State';
     country = 'Select Country';
     postalCode: any;
     campaignId: number;
