@@ -59,9 +59,9 @@ export class CrmSettingsComponent implements OnInit {
   dealFormColumnLayout:any;
   leadFormLayoutPreviewImagePath = "";
   dealFormLayoutPreviewImagePath = "";
-  singleColumnLeadLayoutImagePath = "../../../assets/images/Singe-Column-Lead-Layout.png";
+  singleColumnLeadLayoutImagePath = "../../../assets/images/Single-Column-Lead-Layout.png";
   twoColumnLeadLayoutImagePath = "../../../assets/images/Two-Column-Lead-Layout.png";
-  singleColumnDealLayoutImagePath = "../../../assets/images/Singe-Column-Deal-Layout.png";
+  singleColumnDealLayoutImagePath = "../../../assets/images/Single-Column-Deal-Layout.png";
   twoColumnDealLayoutImagePath = "../../../assets/images/Two-Column-Deal-Layout.png";
   isLocalHost = false;
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
