@@ -851,13 +851,13 @@
                         [class.pointer]="campaignReport.emailSentCount>0"
                         [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
                         <h1>{{campaignReport.totalRecipients}}</h1>
-                        <h5>Total Recipients</h5>
+                        <h5>Total Analytics</h5>
                      </div>
                      <div *ngIf="campaignType!='SOCIAL'" (click)="showAnalyticsModal('Active Recipients')"
                         class="text-center p0" [class.pointer]="campaignReport.emailOpenCount>0"
                         [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
                         <h1>{{campaignReport.emailOpenCount}}</h1>
-                        <h5>Active Recipients</h5>
+                        <h5>Active Analytics</h5>
                      </div>
                      <div (click)="showAnalyticsModal('Clicked URL')" class="text-center p0"
                         [class.pointer]="campaignReport.emailClickedCount>0"
