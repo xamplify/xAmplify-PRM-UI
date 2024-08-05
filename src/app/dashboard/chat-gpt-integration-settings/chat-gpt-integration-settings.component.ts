@@ -43,7 +43,12 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     this.chatGptSettingsLoader = true;
     this.chatGptSettingsService.updateChatGptSettings(this.chatGptIntegrationSettingsDto).subscribe(
       response=>{
-        this.customResponse = new CustomResponse('SUCCESS',"Settings updated successfully.",true);
+        let statusCode = response.statusCode;
+        if(statusCode==200){
+          this.customResponse = new CustomResponse('SUCCESS',"Settings updated successfully.",true);
+        }else{
+          this.customResponse = new CustomResponse('ERROR',response.message,true);
+        }
         this.chatGptSettingsLoader = false;
       },error=>{
         this.chatGptSettingsLoader = false;

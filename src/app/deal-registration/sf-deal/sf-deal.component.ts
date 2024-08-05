@@ -164,7 +164,7 @@ export class SfDealComponent implements OnInit {
         this.form = result.data;
         if(this.form.formLabelDTOs.length==0){
           this.showSFFormError = true;
-          this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
+          this.sfFormError = "Your Salesforce integration is not valid. Re-configure with valid credentials";
         }
         this.formDescription = result.data.description;
         this.form.formLabelDTOs.forEach((columnInfo: ColumnInfo) => {
