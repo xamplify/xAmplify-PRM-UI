@@ -179,7 +179,12 @@ select .e-input::-ms-input-placeholder {
 }
 .view-type-css{
   float: right;
-  margin-top: 5px;
+  margin-top: 6px;
+  margin-right: -8px;
+}
+.view-type-css2{
+  float: right;
+  margin-top: 6px;
 }
 /* Sudha Sri(24-07-2024) */
 .dashboard-stat{border-radius: 10px !important;}
