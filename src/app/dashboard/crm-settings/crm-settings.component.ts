@@ -57,6 +57,10 @@ export class CrmSettingsComponent implements OnInit {
   ];
   leadFormColumnLayout:any;
   dealFormColumnLayout:any;
+  leadFormLayoutPreviewImagePath = "";
+  dealFormLayoutPreviewImagePath = "";
+  singleColumnLeadLayoutImagePath = "../../../assets/images/Singe-Column-Lead-Layout.png";
+  twoColumnLeadLayoutImagePath = "../../../assets/images/Two-Column-Lead-Layout.png";
   isLocalHost = false;
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public properties: Properties) {
@@ -75,12 +79,23 @@ export class CrmSettingsComponent implements OnInit {
     this.showRegisterDeal = this.integrationDetails.showRegisterDeal;
     this.leadFormColumnLayout = this.integrationDetails.leadFormColumnLayout;
     this.dealFormColumnLayout = this.integrationDetails.dealFormColumnLayout;
+
+    this.setLeadFormLayoutPreviewImages();
+
     this.getLeadPipelines();
     this.getDealPipelines();
     if (!this.showLeadPipeline && !this.showDealPipeline 
       && (this.integrationDetails.leadPipelineId == undefined || this.integrationDetails.leadPipelineId <= 0)
       && (this.integrationDetails.dealPipelineId == undefined || this.integrationDetails.dealPipelineId <= 0)) {
       this.pipelineResponse = new CustomResponse('ERROR', 'Something went wrong. Please unlink and configure your account.', true);
+    }
+  }
+
+  private setLeadFormLayoutPreviewImages() {
+    if (this.leadFormColumnLayout == "SINGLE_COLUMN_LAYOUT") {
+      this.leadFormLayoutPreviewImagePath = this.singleColumnLeadLayoutImagePath;
+    } else {
+      this.leadFormLayoutPreviewImagePath = this.twoColumnLeadLayoutImagePath;
     }
   }
 
@@ -299,6 +314,8 @@ export class CrmSettingsComponent implements OnInit {
 
   onChangeLeadFormType(leadFormColumnLayout) {
     this.leadFormColumnLayout = leadFormColumnLayout;
+    this.setLeadFormLayoutPreviewImages();
+
   }
 
   onChangeDealFormType(dealFormColumnLayout) {
