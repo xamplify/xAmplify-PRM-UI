@@ -66,7 +66,7 @@ export class SfDealComponent implements OnInit {
   searchableDropDownDtoForLookup: SearchableDropdownDto = new SearchableDropdownDto();
   formDescription: any;
   isOnlyPartner: boolean = false;
-
+  formLayOut = "";
 
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
     this.isOnlyPartner = this.authenticationService.isOnlyPartner();
@@ -89,6 +89,14 @@ export class SfDealComponent implements OnInit {
 
   ngOnInit() {
     this.showSFFormError = false;
+    if(this.opportunityType === 'DEAL'){
+      this.formLayOut = this.activeCRM['dealFormColumnLayout'];
+    }else if(this.opportunityType === 'LEAD'){
+      this.formLayOut = this.activeCRM['leadFormColumnLayout'];
+    }
+    if(this.formLayOut==undefined){
+      this.formLayOut = "TWO_COLUMN_LAYOUT";
+    }
     if (("HALOPSA" === this.activeCRM.createdByActiveCRMType || "HALOPSA" === this.activeCRM.createdForActiveCRMType)) {
       this.dropdownSettings = {
         singleSelection: false,
