@@ -61,6 +61,8 @@ export class CrmSettingsComponent implements OnInit {
   dealFormLayoutPreviewImagePath = "";
   singleColumnLeadLayoutImagePath = "../../../assets/images/Singe-Column-Lead-Layout.png";
   twoColumnLeadLayoutImagePath = "../../../assets/images/Two-Column-Lead-Layout.png";
+  singleColumnDealLayoutImagePath = "../../../assets/images/Singe-Column-Deal-Layout.png";
+  twoColumnDealLayoutImagePath = "../../../assets/images/Two-Column-Deal-Layout.png";
   isLocalHost = false;
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public properties: Properties) {
@@ -80,7 +82,8 @@ export class CrmSettingsComponent implements OnInit {
     this.leadFormColumnLayout = this.integrationDetails.leadFormColumnLayout;
     this.dealFormColumnLayout = this.integrationDetails.dealFormColumnLayout;
 
-    this.setLeadFormLayoutPreviewImages();
+    this.setLeadFormLayoutPreviewImage();
+    this.setDealFormLayoutPreviewImage();
 
     this.getLeadPipelines();
     this.getDealPipelines();
@@ -91,11 +94,19 @@ export class CrmSettingsComponent implements OnInit {
     }
   }
 
-  private setLeadFormLayoutPreviewImages() {
+  private setLeadFormLayoutPreviewImage() {
     if (this.leadFormColumnLayout == "SINGLE_COLUMN_LAYOUT") {
       this.leadFormLayoutPreviewImagePath = this.singleColumnLeadLayoutImagePath;
-    } else {
+    } else if(this.leadFormColumnLayout == "TWO_COLUMN_LAYOUT") {
       this.leadFormLayoutPreviewImagePath = this.twoColumnLeadLayoutImagePath;
+    }
+  }
+
+  private setDealFormLayoutPreviewImage(){
+    if (this.dealFormColumnLayout == "SINGLE_COLUMN_LAYOUT") {
+      this.dealFormLayoutPreviewImagePath = this.singleColumnDealLayoutImagePath;
+    } else if(this.dealFormColumnLayout == "TWO_COLUMN_LAYOUT") {
+      this.dealFormLayoutPreviewImagePath = this.twoColumnDealLayoutImagePath;
     }
   }
 
@@ -314,12 +325,13 @@ export class CrmSettingsComponent implements OnInit {
 
   onChangeLeadFormType(leadFormColumnLayout) {
     this.leadFormColumnLayout = leadFormColumnLayout;
-    this.setLeadFormLayoutPreviewImages();
+    this.setLeadFormLayoutPreviewImage();
 
   }
 
   onChangeDealFormType(dealFormColumnLayout) {
     this.dealFormColumnLayout = dealFormColumnLayout;
+    this.setDealFormLayoutPreviewImage();
   }
 
 }

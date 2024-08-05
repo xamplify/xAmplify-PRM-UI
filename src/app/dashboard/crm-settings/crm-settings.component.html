@@ -93,6 +93,7 @@
           (ngModelChange)="onChangeDealFormType($event)">
           <option *ngFor="let formLayoutType of formLayoutTypes" [value]="formLayoutType.id">{{formLayoutType.name}}</option>
         </select>
+        <img class="layout-css" src="{{dealFormLayoutPreviewImagePath}}" alt="No Image Found">
       </div>
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 mb-15">
         <div class="form-group mb0">
