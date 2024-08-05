@@ -45,6 +45,18 @@ export class CrmSettingsComponent implements OnInit {
 	showRegisterDealOffMessage = "";
 	showRegisterDealOnMessage = "";
   ngxLoading:boolean = false;
+  formLayoutTypes = [
+    {
+      id:'SINGLE_COLUMN_LAYOUT',
+      name:'Single Column Layout'
+    },
+    {
+      id:'TWO_COLUMN_LAYOUT',
+      name:'Two Column Layout'
+    }
+  ];
+  leadFormColumnLayout:any;
+  dealFormColumnLayout:any;
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -59,6 +71,8 @@ export class CrmSettingsComponent implements OnInit {
     this.leadDescription = this.integrationDetails.leadDescription;
     this.dealDescription = this.integrationDetails.dealDescription;
     this.showRegisterDeal = this.integrationDetails.showRegisterDeal;
+    this.leadFormColumnLayout = this.integrationDetails.leadFormColumnLayout;
+    this.dealFormColumnLayout = this.integrationDetails.dealFormColumnLayout;
     this.getLeadPipelines();
     this.getDealPipelines();
     if (!this.showLeadPipeline && !this.showDealPipeline 
@@ -87,6 +101,8 @@ export class CrmSettingsComponent implements OnInit {
     this.integrationDetails.leadDescription = this.leadDescription;
     this.integrationDetails.dealDescription = this.dealDescription;
     this.integrationDetails.showRegisterDeal = this.showRegisterDeal;
+    this.integrationDetails.leadFormColumnLayout = this.leadFormColumnLayout;
+    this.integrationDetails.dealFormColumnLayout = this.dealFormColumnLayout;
     if (this.integrationDetails.showLeadPipeline) {
       this.integrationDetails.leadPipelineId = 0;
     }
@@ -277,6 +293,14 @@ export class CrmSettingsComponent implements OnInit {
 
   onChangeRegisterDeal(showRegisterDeal){
     this.showRegisterDeal = showRegisterDeal;
+  }
+
+  onChangeLeadFormType(leadFormColumnLayout) {
+    this.leadFormColumnLayout = leadFormColumnLayout;
+  }
+
+  onChangeDealFormType(dealFormColumnLayout) {
+    this.dealFormColumnLayout = dealFormColumnLayout;
   }
 
 }
