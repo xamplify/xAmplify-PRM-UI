@@ -57,9 +57,11 @@ export class CrmSettingsComponent implements OnInit {
   ];
   leadFormColumnLayout:any;
   dealFormColumnLayout:any;
+  isLocalHost = false;
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
+    this.isLocalHost = this.authenticationService.isLocalHost();
    }
 
   ngOnInit() {

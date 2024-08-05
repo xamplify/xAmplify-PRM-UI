@@ -7,7 +7,6 @@
           <div style="margin-bottom:20px">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 p0">
             <h3 class="fs-16 mt10">{{ opportunityType }} custom fields
-              <!-- <span><a class="fa fa-edit mr5 IconCustomization SingleIconCu" (click)="toggleHeaderSettings()"></a></span> -->
               <span class="reload-btn">
                 <a (click)="reloadCustomFields()" data-toggle="tooltip" data-placement="top" title="Refresh Custom Fields"><i
                     class="fa fa-refresh" style="font-size: 14px !important;"></i>
@@ -38,8 +37,7 @@
               </div>
             </div>
             <button *ngIf="integrationType === 'SALESFORCE'" type="button" class="btn btn-primary ml5 my-10"
-              (click)="addCustomFielsdOrderModalOpen()">Order Custom
-                Fields</button>
+              (click)="addCustomFielsdOrderModalOpen()">Order Custom Fields</button>
               </div> 
             </div> 
           </div>
