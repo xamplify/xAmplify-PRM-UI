@@ -652,6 +652,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						this.isCompanyDetails = true;
 					} else {
 						this.isCompanyDetails = false;
+						break;
 					}
 				} else {
 					this.isCompanyDetails = true;
