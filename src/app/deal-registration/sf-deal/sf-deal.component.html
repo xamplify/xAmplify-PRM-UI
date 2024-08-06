@@ -28,10 +28,10 @@
                   <div class="alert alert-info">{{formDescription}}</div>
                 </div>
                 <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
-                  <ng-container *ngIf="formLayOut=='SINGLE_COLUMN_LAYOUT'">
+                  <ng-container *ngIf="formLayOut==singleColumnLayout">
                     <ng-template  [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
                   </ng-container>
-                  <ng-container *ngIf="formLayOut=='TWO_COLUMN_LAYOUT'">
+                  <ng-container *ngIf="formLayOut==twoColumnLayout">
                     <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
                     <ng-template *ngIf="(0 != i % 2)" [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
                   </ng-container>
@@ -118,8 +118,8 @@
 </div>
 <!--Added On 11/12/2023-->
 <ng-template #formFields let-columnInfo="columnInfo">
-  <div class="form-group" [ngClass]="isPreview ? '' : !isPreview && formLayOut=='SINGLE_COLUMN_LAYOUT'? 'col-md-6 col-md-offset-3 text-center':'col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0'"  *ngIf="!isLoading">
-    <label class="control-label" [ngClass]="isPreview ? '' : !isPreview && formLayOut=='SINGLE_COLUMN_LAYOUT'? 'float-left': 'col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0'">{{columnInfo.displayName}} 
+  <div class="form-group" [ngClass]="isPreview ? '' : !isPreview && formLayOut==singleColumnLayout? 'col-md-6 col-md-offset-3 text-center':'col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0'"  *ngIf="!isLoading">
+    <label class="control-label" [ngClass]="isPreview ? '' : !isPreview && formLayOut==singleColumnLayout? 'float-left': 'col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0'">{{columnInfo.displayName}} 
       <span class="required" *ngIf="columnInfo.required">*</span>
       <span *ngIf="!(columnInfo.labelType=='textarea' || columnInfo.labelType=='text' || columnInfo.labelType=='number' || columnInfo.labelType=='email' || columnInfo.labelType=='percent' || columnInfo.labelType=='geolocation' || columnInfo.labelType=='phone' || columnInfo.labelType=='url') && columnInfo.placeHolder?.length > 0">({{columnInfo.placeHolder}})
       </span>

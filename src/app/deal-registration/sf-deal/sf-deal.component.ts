@@ -8,6 +8,7 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { FadeAnimation } from 'app/core/animations/fade-animation';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $: any, swal: any;
 
@@ -67,7 +68,8 @@ export class SfDealComponent implements OnInit {
   formDescription: any;
   isOnlyPartner: boolean = false;
   formLayOut = "";
-
+  singleColumnLayout = XAMPLIFY_CONSTANTS.singleColumnLayout;
+  twoColumnLayout = XAMPLIFY_CONSTANTS.twoColumnLayout;
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
     this.isOnlyPartner = this.authenticationService.isOnlyPartner();
   }
@@ -95,7 +97,7 @@ export class SfDealComponent implements OnInit {
       this.formLayOut = this.activeCRM['leadFormColumnLayout'];
     }
     if(this.formLayOut==undefined){
-      this.formLayOut = "TWO_COLUMN_LAYOUT";
+      this.formLayOut = this.twoColumnLayout;
     }
     if (("HALOPSA" === this.activeCRM.createdByActiveCRMType || "HALOPSA" === this.activeCRM.createdForActiveCRMType)) {
       this.dropdownSettings = {

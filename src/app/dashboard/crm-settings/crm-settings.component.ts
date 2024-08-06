@@ -1,6 +1,7 @@
 import { Component,EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -45,16 +46,7 @@ export class CrmSettingsComponent implements OnInit {
 	showRegisterDealOffMessage = "";
 	showRegisterDealOnMessage = "";
   ngxLoading:boolean = false;
-  formLayoutTypes = [
-    {
-      id:'SINGLE_COLUMN_LAYOUT',
-      name:'Single Column Layout'
-    },
-    {
-      id:'TWO_COLUMN_LAYOUT',
-      name:'Two Column Layout'
-    }
-  ];
+  formLayoutTypes =[];
   leadFormColumnLayout:any;
   dealFormColumnLayout:any;
   leadFormLayoutPreviewImagePath = "";
@@ -64,6 +56,9 @@ export class CrmSettingsComponent implements OnInit {
   singleColumnDealLayoutImagePath = "../../../assets/images/Single-Column-Deal-Layout.png";
   twoColumnDealLayoutImagePath = "../../../assets/images/Two-Column-Deal-Layout.png";
   isLocalHost = false;
+  singleColumnLayout = XAMPLIFY_CONSTANTS.singleColumnLayout;
+  twoColumnLayout = XAMPLIFY_CONSTANTS.twoColumnLayout;
+  
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -71,6 +66,16 @@ export class CrmSettingsComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.formLayoutTypes = [
+      {
+        id:XAMPLIFY_CONSTANTS.singleColumnLayout,
+        name:'Single Column Layout'
+      },
+      {
+        id:XAMPLIFY_CONSTANTS.twoColumnLayout,
+        name:'Two Column Layout'
+      }
+    ];
     this.setTitles();
     this.showLeadPipeline = this.integrationDetails.showLeadPipeline;
     this.showLeadPipelineStage = this.integrationDetails.showLeadPipelineStage;
@@ -95,17 +100,17 @@ export class CrmSettingsComponent implements OnInit {
   }
 
   private setLeadFormLayoutPreviewImage() {
-    if (this.leadFormColumnLayout == "SINGLE_COLUMN_LAYOUT") {
+    if (this.leadFormColumnLayout == this.singleColumnLayout) {
       this.leadFormLayoutPreviewImagePath = this.singleColumnLeadLayoutImagePath;
-    } else if(this.leadFormColumnLayout == "TWO_COLUMN_LAYOUT") {
+    } else if(this.leadFormColumnLayout == this.twoColumnLayout) {
       this.leadFormLayoutPreviewImagePath = this.twoColumnLeadLayoutImagePath;
     }
   }
 
   private setDealFormLayoutPreviewImage(){
-    if (this.dealFormColumnLayout == "SINGLE_COLUMN_LAYOUT") {
+    if (this.dealFormColumnLayout == this.singleColumnLayout) {
       this.dealFormLayoutPreviewImagePath = this.singleColumnDealLayoutImagePath;
-    } else if(this.dealFormColumnLayout == "TWO_COLUMN_LAYOUT") {
+    } else if(this.dealFormColumnLayout ==  this.twoColumnLayout) {
       this.dealFormLayoutPreviewImagePath = this.twoColumnDealLayoutImagePath;
     }
   }

@@ -2017,8 +2017,7 @@
          </div>
       </div>
       <div class="portlet light clearfix" *ngIf="showLeads">
-         <app-response-message [customResponse]="customResponse"
-            *ngIf="customResponse.isVisible"></app-response-message>
+         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
          <div class="portlet-body">
             <a (click)="closeCampaignLeads()" class="pull-right close-circle"
                style="margin: 9px 14px; padding-top: 3px; padding-left: 5px">
@@ -2028,13 +2027,12 @@
                [showTeamMemberFilter]="campaign.channelCampaign" (viewCampaignLeadForm)="viewCampaignLeadForm($event)"
                (editCampaignLeadForm)="editCampaignLeadForm($event)" (registerDealForm)="registerDealForm($event)"
                (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)"
-               [refreshCampaignLeadsSubject]="
-        refreshCampaignLeadsSubject.asObservable()
-        ">
+               [refreshCampaignLeadsSubject]="refreshCampaignLeadsSubject.asObservable()">
             </app-manage-campaign-leads>
          </div>
       </div>
       <div class="portlet light clearfix" *ngIf="showDeals">
+         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
          <div class="portlet-body">
             <a (click)="closeCampaignDeals()" class="pull-right close-circle"
                style="margin: 9px 14px; padding-top: 3px; padding-left: 5px">
@@ -2043,9 +2041,8 @@
             <app-manage-campaign-deals [campaignId]="campaignId" [isDataShare]="isDataShare"
                [fromAnalytics]="!isNavigatedThroughAnalytics" [showTeamMemberFilter]="campaign.channelCampaign"
                [isVendorVersion]="!campaign.nurtureCampaign" [isPartnerVersion]="campaign.nurtureCampaign"
-               (viewCampaignDealForm)="viewCampaignDealForm($event)"
-               (editCampaignDealForm)="editCampaignDealForm($event)" (refreshCounts)="refreshCounts()"
-               (showCommentsPopUp)="showDealComments($event)">
+               (viewCampaignDealForm)="viewCampaignDealForm($event)" (editCampaignDealForm)="editCampaignDealForm($event)"
+               (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showDealComments($event)">
             </app-manage-campaign-deals>
          </div>
       </div>

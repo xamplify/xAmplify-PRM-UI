@@ -187,7 +187,8 @@
                             <div class="grid-box grid-box-height" id="landingPageListDiv_{{landingPage.id}}">
                                 <ng-container *ngIf="!isPartnerLandingPage">
                                     <span class="ribbon1" *ngIf="landingPage.coBranded"><span>Co-Branded</span></span>
-                                    <span class="ribbon1" *ngIf="!landingPage.coBranded"><span>Regular</span></span>
+                                    <span class="ribbon1" *ngIf="!landingPage.coBranded && (!(vendorJourney || isMasterLandingPages) || ((vendorJourney || isMasterLandingPages) &&!landingPage.defaultLandingPage)) "><span>Regular</span></span>
+                                    <span class="ribbon1" *ngIf="!landingPage.coBranded && ((vendorJourney || isMasterLandingPages)&& landingPage.defaultLandingPage) "><span>Default</span></span>
                                 </ng-container>
                                 <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"
                                     alt="No Image Found">
