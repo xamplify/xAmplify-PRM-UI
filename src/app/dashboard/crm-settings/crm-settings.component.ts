@@ -1,6 +1,7 @@
 import { Component,EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -47,11 +48,11 @@ export class CrmSettingsComponent implements OnInit {
   ngxLoading:boolean = false;
   formLayoutTypes = [
     {
-      id:'SINGLE_COLUMN_LAYOUT',
+      id:XAMPLIFY_CONSTANTS.singleLayout,
       name:'Single Column Layout'
     },
     {
-      id:'TWO_COLUMN_LAYOUT',
+      id:XAMPLIFY_CONSTANTS.twoColumnLayout,
       name:'Two Column Layout'
     }
   ];
@@ -95,17 +96,17 @@ export class CrmSettingsComponent implements OnInit {
   }
 
   private setLeadFormLayoutPreviewImage() {
-    if (this.leadFormColumnLayout == "SINGLE_COLUMN_LAYOUT") {
+    if (this.leadFormColumnLayout == XAMPLIFY_CONSTANTS.singleLayout) {
       this.leadFormLayoutPreviewImagePath = this.singleColumnLeadLayoutImagePath;
-    } else if(this.leadFormColumnLayout == "TWO_COLUMN_LAYOUT") {
+    } else if(this.leadFormColumnLayout == XAMPLIFY_CONSTANTS.twoColumnLayout) {
       this.leadFormLayoutPreviewImagePath = this.twoColumnLeadLayoutImagePath;
     }
   }
 
   private setDealFormLayoutPreviewImage(){
-    if (this.dealFormColumnLayout == "SINGLE_COLUMN_LAYOUT") {
+    if (this.dealFormColumnLayout == XAMPLIFY_CONSTANTS.singleLayout) {
       this.dealFormLayoutPreviewImagePath = this.singleColumnDealLayoutImagePath;
-    } else if(this.dealFormColumnLayout == "TWO_COLUMN_LAYOUT") {
+    } else if(this.dealFormColumnLayout ==  XAMPLIFY_CONSTANTS.twoColumnLayout) {
       this.dealFormLayoutPreviewImagePath = this.twoColumnDealLayoutImagePath;
     }
   }
