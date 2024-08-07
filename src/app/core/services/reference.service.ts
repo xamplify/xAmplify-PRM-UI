@@ -362,7 +362,7 @@ export class ReferenceService {
   }
 
   validateEmail(text: string) {
-    return this.regularExpressions.EMAIL_ID_PATTERN.test(text);
+    return this.validateEmailId(text);
   }
 
   validateWebsiteURL(url: string) {
