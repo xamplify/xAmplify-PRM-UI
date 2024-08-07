@@ -362,8 +362,7 @@ export class ReferenceService {
   }
 
   validateEmail(text: string) {
-    var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
-    return (text && EMAIL_REGEXP.test(text));
+    return this.validateEmailId(text);
   }
 
   validateWebsiteURL(url: string) {
