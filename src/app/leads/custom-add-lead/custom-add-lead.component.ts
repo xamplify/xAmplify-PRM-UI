@@ -29,7 +29,7 @@ import { CountryNames } from 'app/common/models/country-names';
 import { CommentDealAndLeadDto } from 'app/deals/models/comment-deal-and-lead-dto';
 import { EnvService } from 'app/env.service';
 import { RegionNames } from 'app/common/models/region-names';
-import { Http } from '@angular/http';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $: any;
 @Component({
   selector: 'app-custom-add-lead',
@@ -213,6 +213,8 @@ export class CustomAddLeadComponent implements OnInit {
   countryBasedStates : any;
   hasNoStates: boolean = false;
 
+  isLeadForDivCenterAligned = false;
+
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public regularExpressions: RegularExpressions, public userService: UserService,
@@ -259,6 +261,7 @@ export class CustomAddLeadComponent implements OnInit {
     this.lead.createdForPipelineStageId = 0;
     this.lead.createdByPipelineStageId = 0;
     this.lead.halopsaTicketTypeId = 0;
+    this.isLeadForDivCenterAligned = false;
   }
 
   private loadDataForEditLead() {
@@ -561,6 +564,7 @@ export class CustomAddLeadComponent implements OnInit {
     this.showCreatedByPipelineAndStageOnTop = false;
     this.showTicketTypesDropdown = false;
     this.halopsaTicketTypes = [];
+    this.isLeadForDivCenterAligned = false;
   }
 
   private resetLeadPipeLineVariables() {
@@ -1260,16 +1264,11 @@ export class CustomAddLeadComponent implements OnInit {
     this.isLoading = true;
     this.showCustomForm = false;
     this.showDefaultForm = false;
+    this.isLeadForDivCenterAligned = false;
     this.integrationService.getActiveCRMDetails(this.lead.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         response => {
-          if(this.isLatestPipelineApiEnabled){
-            this.findActiveCRMDetailsAndCustomFormVariable(response);
-          }else{
-            this.ngxloading = false;
-            this.isLoading = false;
-            this.loadAllApis(response);
-          }
+          this.findActiveCRMDetailsAndCustomFormVariable(response);
         },
         error => {
           this.ngxloading = false;
@@ -1278,15 +1277,17 @@ export class CustomAddLeadComponent implements OnInit {
           this.showDefaultForm = false;
         },
         () => {
-          if(this.isLatestPipelineApiEnabled){
-            this.callPipeLinesOrLeadLayoutsApi();
-          }
+          this.callPipeLinesOrLeadLayoutsApi();
         });
   }
   /***Added On 27/07/2024 By Sravan */
   private callPipeLinesOrLeadLayoutsApi() {
     let activeCRMDetails = this.activeCRMDetails;
     if (activeCRMDetails != undefined) {
+      let showLeadPipeline = this.activeCRMDetails.showLeadPipeline;
+      let showLeadPipelineStage = this.activeCRMDetails.showLeadPipelineStage;
+      this.isLeadForDivCenterAligned = !showLeadPipeline && !showLeadPipelineStage && !this.preview 
+        && this.activeCRMDetails['leadFormColumnLayout']==XAMPLIFY_CONSTANTS.singleColumnLayout;
       this.createdForPipelines = [];
       this.createdForPipelineId = 0;
       this.createdForPipelineStageId = 0;
@@ -1381,73 +1382,7 @@ export class CustomAddLeadComponent implements OnInit {
     this.isLoading = false;
   }
 
-  private loadAllApis(response: any) {
-    if (response.statusCode == 200) {
-      this.activeCRMDetails = response.data;
-      if ("SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType) {
-        this.showCustomForm = true;
-      } else {
-        this.showDefaultForm = true;
-      }
-      if (("HALOPSA" === this.activeCRMDetails.createdForActiveCRMType
-        || "ZOHO" === this.activeCRMDetails.createdForActiveCRMType) && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
-        this.showTicketTypesDropdown = true;
-        this.getHaloPSATicketTypes(this.lead.createdForCompanyId, this.activeCRMDetails.createdForActiveCRMType);
-        if (this.actionType === 'add') {
-          this.lead.createdForPipelineId = 0;
-          this.lead.createdByPipelineId = 0;
-          this.lead.createdForPipelineStageId = 0;
-          this.lead.createdByPipelineStageId = 0;
-          this.lead.halopsaTicketTypeId = 0;
-        }
-      } else if ("HALOPSA" === this.activeCRMDetails.createdByActiveCRMType && this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown) {
-        this.showTicketTypesDropdown = true;
-        this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
-          (result: any) => {
-            this.getHaloPSATicketTypes(result, this.activeCRMDetails.createdByActiveCRMType);
-          });
-        if (this.actionType === 'add') {
-          this.lead.createdForPipelineId = 0;
-          this.lead.createdByPipelineId = 0;
-          this.lead.createdForPipelineStageId = 0;
-          this.lead.createdByPipelineStageId = 0;
-          this.lead.halopsaTicketTypeId = 0;
-        }
-      } else {
-        this.showTicketTypesDropdown = false;
-      }
-      if (!this.activeCRMDetails.activeCRM) {
-        if (this.edit || this.preview) {
-          if (this.lead.campaignId > 0) {
-            this.getCampaignLeadPipeline();
-          } else {
-            this.getPipelines();
-          }
-        } else {
-          if (this.campaignId > 0) {
-            this.getCampaignLeadPipeline();
-          } else {
-            this.resetPipelines();
-          }
-        }
-      } else {
-        if (this.lead.campaignId > 0) {
-          this.getCampaignLeadPipeline();
-        } else {
-          this.getActiveCRMPipeline();
-        }
-      }
-      if (this.actionType === "view") {
-        this.getLeadPipelinesForView();
-      }
-      else {
-        if (!this.activeCRMDetails.showHaloPSAOpportunityTypesDropdown || this.actionType === "edit" || this.lead.campaignId > 0) {
-          this.getLeadPipelines();
-        }
-      }
-    }
-  }
-
+ 
   getActiveCRMPipeline() {
     let self = this;
     let halopsaTicketTypeId = 0;
