@@ -4262,3 +4262,6 @@ span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !im
 .track_cross_align{margin: 6px -7px 2px 0px !important;}
 .asset_cross_align{top: 5px !important;right: -1px !important;}
 .track-selected{margin-right: 1px !important;}
+button.filter.btn-hvr-text.emailtemplate-selected{
+  border: 1px solid #3d94c5;
+}

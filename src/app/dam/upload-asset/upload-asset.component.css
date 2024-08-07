@@ -190,4 +190,8 @@
 .add-btn{
 border-radius: 4px;
 }
-
+@media only screen and (max-width: 1199px) {
+  .mb-height_auto {
+      height: auto !important;
+    }
+}

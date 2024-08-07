@@ -2477,3 +2477,6 @@ button.button_blue.btn-abjustmentin-breadcrumbs.bgcolor-unset{margin-top: -1px;m
 #folder-margin-xamp{margin-top: 5px !important;}
 .btn_custom_bg{margin-top: 0px !important;}
 .lead-details-border{border: 1px solid var(--border-color) !important;}
+button.filter.btn-hvr-text.emailtemplate-selected{
+  border: 1px solid #3d94c5;
+}
