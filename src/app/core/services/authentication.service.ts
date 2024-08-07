@@ -668,6 +668,17 @@ export class AuthenticationService {
   logout(): void {
     this.module.logoutButtonClicked = true;
     $("body").addClass("logout-loader");
+    this.logoutByUserId().subscribe(
+      reponse=>{
+        this.resetDataAndRemoveTokens();
+      },error=>{
+        this.resetDataAndRemoveTokens();
+      }
+    );
+    
+  }
+
+  private resetDataAndRemoveTokens() {
     this.resetData();
     this.access_token = null;
     this.refresh_token = null;
@@ -679,19 +690,22 @@ export class AuthenticationService {
         if (this.envService.CLIENT_URL === 'https://xamplify.io/') {
           window.location.href = 'https://www.xamplify.com/';
         } else {
-          this.closeSwal();
-          let self = this;
-          if (this.envService.CLIENT_URL == "http://localhost:4200/") {
-            // window.location.href = 'http://localhost:4200/login';
-            setTimeout(() => {
-              self.router.navigate(['/']);
-              $("body").removeClass("logout-loader");
-            }, 1500);
-          } else {
-            window.location.href = this.envService.CLIENT_URL + "login";
-          }
+          this.logoutFormLocalOrVanity();
         }
       }
+    }
+  }
+
+  private logoutFormLocalOrVanity() {
+    this.closeSwal();
+    let self = this;
+    if (this.envService.CLIENT_URL == "http://localhost:4200/") {
+      setTimeout(() => {
+        self.router.navigate(['/']);
+        $("body").removeClass("logout-loader");
+      }, 1500);
+    } else {
+      window.location.href = this.envService.CLIENT_URL + "login";
     }
   }
 
@@ -1388,6 +1402,11 @@ findDashboardButtonPublishEmailNotificationOption() {
   }
   let apiUrl = url + "?access_token=" + this.access_token;
   return this.callGetMethod(apiUrl);
+}
+
+logoutByUserId(){
+  let url = this.REST_URL+"logout/"+this.getUserId();
+  return this.callGetMethod(url);
 }
 
 

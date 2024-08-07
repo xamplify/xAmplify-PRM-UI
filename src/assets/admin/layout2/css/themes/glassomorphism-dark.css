@@ -3097,8 +3097,9 @@ top:-3px;
 }
 /* btn-green position alignmnet */
 .dwnload-csv_btn{
-  margin-top: 3px !important;
+  margin-top: 4px !important;
   margin-bottom: 4px !important;
+  padding-right: 6px !important;
 }
 .text_pd5{
   padding-top:5px !important;
@@ -4068,4 +4069,25 @@ switch.switchON .bootstrap-switch.bootstrap-switch-wrapper.bootstrap-switch-anim
 }
 .lead-label{
   color: #fff !important;
+}
+/* 31-7-2024 */
+.xamp-margin-left-icon{margin: 6px 6px 5px 5px !important;}
+.csv_btn{margin-top:5px !important;padding-right: 2px;}
+.folder_btn{margin-top: 2px !important;padding-right: 3px;}
+#folder_cross{padding-top: 3px;}
+.primary_btn_align{margin-right: 6px !important;padding-top: 0px !important;}
+button.button_blue.btn-abjustmentin-breadcrumbs.bgcolor-unset{margin-top: 5px;margin-right: 5px;}
+span.btn.btn-primary.transition.text_pd5.txt_update {padding-top: 2px !important;}
+.edit-mdf-form-margin{margin-right: 6px !important;}
+.view-type-css{
+  margin-top: 7px !important;
+}
+.view-type-css2{
+  margin-top: 7px !important;
+}
+.deal_view_type_css{
+  margin-top: 6px !important;
+}
+.deal_view_type_css2{
+  margin-top: 6px !important;
 }

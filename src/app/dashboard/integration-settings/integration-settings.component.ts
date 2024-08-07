@@ -64,6 +64,8 @@ export class IntegrationSettingsComponent implements OnInit {
 	opportunityType: any;
 	isSalesForceType = false;
 	isCRMSettingsModelPopUp:boolean = false;
+	isZohoOrHaloPSAIntegrationValid: boolean = true;
+	isLoading : boolean = false;
 
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '' },
@@ -210,6 +212,10 @@ export class IntegrationSettingsComponent implements OnInit {
 				error => {
 					this.ngxloading = false;
 					this.haveCustomFields = false;
+					let isZohoOrHaloPSACRM = this.integrationType.toLowerCase() === 'zoho' || this.integrationType.toLowerCase() === 'halopsa';
+					if (isZohoOrHaloPSACRM) {
+						this.isZohoOrHaloPSAIntegrationValid = false;
+					}
 					let errorMessage = this.referenceService.getApiErrorMessage(error);
                     this.customFieldsResponse = new CustomResponse('ERROR',errorMessage,true);
 					this.customFieldsDtosLoader = false;
@@ -504,6 +510,7 @@ export class IntegrationSettingsComponent implements OnInit {
 
 	getIntegrationDealPipelines() {
 		this.ngxloading = true;
+		this.isLoading  = true;
 		this.integrationService.getCRMPipelines(this.loggedInUserId, this.integrationType)
 		.subscribe(
 		  data => {
@@ -512,9 +519,11 @@ export class IntegrationSettingsComponent implements OnInit {
 				this.integrationPipelines = data.data;
 		    }
 			this.ngxloading = false;
+			this.isLoading  = false;
 		  },
 		  error => {
 			this.ngxloading = false;
+			this.isLoading  = false;
 		    this.httpRequestLoader.isServerError = true;
 		  },
 		  () => { }
@@ -634,10 +643,10 @@ export class IntegrationSettingsComponent implements OnInit {
 					this.ngxloading = false;
 				},
 				() => {
-					this.getDealHeader();
 					if (this.integrationType.toLowerCase() === 'salesforce') {
+						this.getDealHeader();
 						// this.listSalesforceCustomFields(this.opportunityType);
-					} else {						
+					} else {
 						if (this.integrationType.toLowerCase() === 'hubspot' || this.integrationType.toLowerCase() === 'pipedrive') {
 							this.getIntegrationDealPipelines();
 						}
@@ -844,7 +853,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		this.integrationService.getDealHeaderByUserId(this.loggedInUserId)
 			.subscribe(
 				data => {
-					this.ngxloading = false;
+					 this.ngxloading = false;
 					if(data.data != undefined && data.data!=null && data.data!="")
 					this.dealHeader = data.data;
 				});

@@ -2,43 +2,18 @@
 <app-response-message class="pg8" [customResponse]="customFieldsResponse" *ngIf="customFieldsResponse.isVisible  ">
 </app-response-message>
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="scrollbar-x">
-<ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
+  <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
     <li class="active"><a (click)="setActiveTab('home')" data-toggle="tab" href="#home">User Info</a></li>
-    <li *ngIf="isSalesForceType"><a (click)="setActiveTab('menu2')"
-        data-toggle="tab" href="#menu2">Lead Custom fields</a>
+    <li *ngIf="isSalesForceType"><a (click)="setActiveTab('menu2')" data-toggle="tab" href="#menu2">Lead Custom
+        fields</a>
     </li>
-    <li><a (click)="setActiveTab('menu1')"
-      data-toggle="tab" href="#menu1">Deal Custom fields</a>
-  </li>
-    <li *ngIf="isSalesForceType"><a (click)="setActiveTab('menu3')"
-      data-toggle="tab" href="#menu3">Settings</a></li>
+    <li><a (click)="setActiveTab('menu1')" data-toggle="tab" href="#menu1">Deal Custom fields</a>
+    </li>
+    <li *ngIf="isSalesForceType"><a (click)="setActiveTab('menu3')" data-toggle="tab" href="#menu3">Settings</a></li>
     <div class="d-flex justify-content-end">
-      <li *ngIf="(activeTab == 'menu1' || activeTab == 'menu2') && haveCustomFields && !isSalesForceType" class ="ml_15">
-        <div class="inputs mr10 width100">
-          <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
-            (ngModelChange)="sortFieldsByOption()">
-            <ng-container *ngFor="let sort of sortOptions">
-              <option [ngValue]="sort.value">{{sort.name}}</option>
-            </ng-container>
-          </select>
-        </div>
-      </li>
-      <li *ngIf="(activeTab == 'menu1' || activeTab == 'menu2') && haveCustomFields ">
-        <div class="inputs mr10">
-          <div class="portlet-input input-inline align-width">
-            <div class="input-icon right">
-              <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-                placeholder="Search.." (keypress)="searchFieldsKeyPress($event.keyCode)">
-              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
-                (click)="clearFieldSearch()"></button>
-              <button type="submit" class="search-box-item-click" (click)="searchFields()"><i
-                  class="fa fa-search"></i></button>
-            </div>
-          </div>
-        </div>
-      </li>
-      <li class ="ml_15"><button type="button" class="btn btn-warning" (click)="closeSfSettings()">Close</button></li>
+      <li class="ml_15"><button type="button" class="btn btn-warning" (click)="closeSfSettings()">Close</button></li>
     </div>
   </ul>
 </div>
@@ -57,7 +32,7 @@
         <span>Organization: {{integrationDetails?.externalOrganizationName}}</span>
       </div>
       <div class="btn-groups active-btns mb_right0" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-primary activate-btn integration-btn"
+        <button type="button" class="btn btn-primary activate-btn integration-btn" [disabled]="!isZohoOrHaloPSAIntegrationValid"
           *ngIf="!(integrationDetails?.activeCRM)" (click)="activateCRM()">Activate</button>
         <button type="button" class="btn btn-primary inetgrations_activate_bgcolor activated-btn ActivatedBtn"
           *ngIf="integrationDetails?.activeCRM"><i class="fa fa-star"

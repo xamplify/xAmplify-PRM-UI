@@ -332,6 +332,7 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
                     pagination.totalRecords = data.totalRecords;
                     this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);
                     var html = "";
+                    if( pagination.totalRecords>0){
                     html+= '<table  style="margin:0" class="table table-striped table-hover table-bordered" id="sample_editable_1">'+
                             '<thead>'+
                                 '<tr>'+
@@ -364,6 +365,10 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
                      html+='</tbody>';
                      html+='</table>';
                      $('#users-modal-body').append(html);
+                }else{
+                    html += '<td class="alert alert-info" style="padding-left: 261px;padding-right: 261px;">' + this.properties.NO_RESULTS_FOUND + '</td>';
+                    $('#users-modal-body').append(html);
+                }
                    this.referenceService.loading(this.contactListDetailLoader, false);
                 },
                 error => {

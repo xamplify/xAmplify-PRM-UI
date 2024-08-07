@@ -8,6 +8,7 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { FadeAnimation } from 'app/core/animations/fade-animation';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $: any, swal: any;
 
@@ -66,8 +67,9 @@ export class SfDealComponent implements OnInit {
   searchableDropDownDtoForLookup: SearchableDropdownDto = new SearchableDropdownDto();
   formDescription: any;
   isOnlyPartner: boolean = false;
-
-
+  formLayOut = "";
+  singleColumnLayout = XAMPLIFY_CONSTANTS.singleColumnLayout;
+  twoColumnLayout = XAMPLIFY_CONSTANTS.twoColumnLayout;
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
     this.isOnlyPartner = this.authenticationService.isOnlyPartner();
   }
@@ -89,6 +91,14 @@ export class SfDealComponent implements OnInit {
 
   ngOnInit() {
     this.showSFFormError = false;
+    if(this.opportunityType === 'DEAL'){
+      this.formLayOut = this.activeCRM['dealFormColumnLayout'];
+    }else if(this.opportunityType === 'LEAD'){
+      this.formLayOut = this.activeCRM['leadFormColumnLayout'];
+    }
+    if(this.formLayOut==undefined){
+      this.formLayOut = this.twoColumnLayout;
+    }
     if (("HALOPSA" === this.activeCRM.createdByActiveCRMType || "HALOPSA" === this.activeCRM.createdForActiveCRMType)) {
       this.dropdownSettings = {
         singleSelection: false,
@@ -164,7 +174,7 @@ export class SfDealComponent implements OnInit {
         this.form = result.data;
         if(this.form.formLabelDTOs.length==0){
           this.showSFFormError = true;
-          this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
+          this.sfFormError = "Your Salesforce integration is not valid. Re-configure with valid credentials";
         }
         this.formDescription = result.data.description;
         this.form.formLabelDTOs.forEach((columnInfo: ColumnInfo) => {
@@ -208,7 +218,9 @@ export class SfDealComponent implements OnInit {
             if (column.labelId === 'Company' && addActionType) {
               column.value = this.selectedContact.companyName;
             } else if (column.labelId === 'Email') {
-              column.value = this.selectedContact.emailId;
+              if (addActionType) {
+                column.value = this.selectedContact.emailId;
+              }
               column.columnDisable = true;
             } else if (column.labelId === 'FirstName' && addActionType) {
               column.value = this.selectedContact.firstName;

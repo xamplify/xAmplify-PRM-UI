@@ -2410,15 +2410,6 @@ export class CountryNames {
           "states": []
         },
         {
-          "code2": "AQ",
-          "code3": "ATA",
-          "name": "Antarctica",
-          "capital": "",
-          "region": "Polar",
-          "subregion": "",
-          "states": []
-        },
-        {
           "code2": "AG",
           "code3": "ATG",
           "name": "Antigua and Barbuda",
@@ -6760,7 +6751,28 @@ export class CountryNames {
           "capital": "Papeetē",
           "region": "Oceania",
           "subregion": "Polynesia",
-          "states": []
+          "states": [
+            {
+              "code": "1",
+              "name": "Tuamotu Archipelago",
+              "subdivision": null
+            },
+            {
+              "code": "2",
+              "name": "Gambier Islands",
+              "subdivision": null
+            },
+            {
+              "code": "2",
+              "name": "Marquesas Islands",
+              "subdivision": null
+            },
+            {
+              "code": "2",
+              "name": "Austral Islands",
+              "subdivision": null
+            }
+          ]
         },
         {
           "code2": "TF",
@@ -22941,6 +22953,125 @@ export class CountryNames {
             {
               "code": "MI",
               "name": "Midlands",
+              "subdivision": null
+            }
+          ]
+        },
+        {
+          "code2": "WF",
+          "code3": "WLF",
+          "name": "Wallis and Futuna",
+          "capital": "Mata-Utu",
+          "region": "Oceania",
+          "subregion": "Polynesia",
+          "states": []
+        },
+        {
+          "code2": "WF",
+          "code3": "WLF",
+          "name": "Korea, Democratic People's Republic of",
+          "capital": "Mata-Utu",
+          "region": "Oceania",
+          "subregion": "Polynesia",
+          "states": [
+            {
+              "code": "BU",
+              "name": "Chagang",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "North Hamgyong",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "South Hamgyong",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "North Hwanghae",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "South Hwanghae",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "Kangwon",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "North Pyongan",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "South Pyongan",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "Ryanggang",
+              "subdivision": null
+            }
+          ]
+        },
+        {
+          "code2": "WF",
+          "code3": "WLF",
+          "name": "Korea, Republic of",
+          "capital": "Mata-Utu",
+          "region": "Oceania",
+          "subregion": "Polynesia",
+          "states": [
+            {
+              "code": "BU",
+              "name": "North Chungcheong",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "South Chungcheong",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "Gangwon",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "Gyeonggi",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "North Gyeongsang",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "South Gyeongsang",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "Jeonbuk",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "South Jeolla",
+              "subdivision": null
+            },
+            {
+              "code": "HA",
+              "name": "Jeju",
               "subdivision": null
             }
           ]

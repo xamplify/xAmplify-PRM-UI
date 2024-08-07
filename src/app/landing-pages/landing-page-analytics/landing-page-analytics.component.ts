@@ -54,7 +54,7 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     @Input() vendorPages = false;
     @Input() vendorLandingPageId;
     @Input() vendorPageAlias;
-    
+    @Input() masterLandingPages= false;
     constructor(public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public pagerService: PagerService, public authenticationService: AuthenticationService, 
         public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService,private campaignService:CampaignService) {
@@ -69,7 +69,7 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
         this.landingPageAlias = this.route.snapshot.params['alias'];
         this.partnerId = this.route.snapshot.params['partnerId'];
         let categoryId = this.route.snapshot.params['categoryId'];
-        if(this.vendorJourney){
+        if(this.vendorJourney || this.masterLandingPages){
             this.landingPageId = this.vendorLandingPageId;
         }
         if(this.vendorPages){

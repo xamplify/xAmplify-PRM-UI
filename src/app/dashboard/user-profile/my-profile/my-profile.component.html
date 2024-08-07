@@ -20,7 +20,9 @@
                 <a translate>User Account</a>
             </li>
         </ul>
+        <div style="padding: 3px 3px 3px 0px;">
         <app-user-guide-help-button [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
+    </div>
     </div>
     <div>
         <div id="org-admin-info" class="alert alert-info" style="display: none;">
@@ -190,7 +192,7 @@
                                             </a>
                                          </li>
                                         <!--XNFR-628 ChatGPT Settings-->
-                                        <li style="display:none" *ngIf="authenticationService.module.isAnyAdminOrSupervisor" [ngClass]="{'active-tab': activeTabName == chatGptSettingsMenuHeader}">
+                                        <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor && isLocalHost" [ngClass]="{'active-tab': activeTabName == chatGptSettingsMenuHeader}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == chatGptSettingsMenuHeader}" (click)="activateTab(chatGptSettingsMenuHeader);clearCustomResponse()">
                                                 {{MY_PROFILE_MENU_CONSTANTS.CHAT_GPT_SETTIGNS_MENU_HEADER}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':chatGptSettingsMenuHeader}"></ng-template>

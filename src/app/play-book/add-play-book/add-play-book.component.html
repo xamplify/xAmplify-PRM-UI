@@ -1,5 +1,5 @@
 <div class="page-content">
-    <div class="page-bar">
+    <div class="page-bar" style="height: 48px;">
         <ul class="page-breadcrumb">
             <li>
                 <i class="fa fa-home" aria-hidden="true"></i>
@@ -14,8 +14,8 @@
             </li>
         </ul>
         <div id="folder-margin-xamp">
-            <button class="btn btn custom btn-abjustmentin-breadcrumbs btn_custom_bg" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
-        </div>
+            <button class="btn btn custom btn-abjustmentin-breadcrumbs btn_custom_bg" style="margin-top: 3px;" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+        </div>      
         <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     </div>
     <app-add-tracks-play-book #addTracksPlayBookComponent [type]="type"></app-add-tracks-play-book>

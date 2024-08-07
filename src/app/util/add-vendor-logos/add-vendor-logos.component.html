@@ -38,7 +38,11 @@
 							<td class="text-center">{{vendorLogo.companyName}}</td>
 							<td>
 								<angular4-multiselect  [data]="dropdownList" [(ngModel)]="vendorLogo.selectedCategories"  
-								[settings]="vendorLogo.dropdownSettings" (onClose) = 'setSelectedCategoryForTeamMember(vendorLogo.companyId)'>
+								[settings]="vendorLogo.dropdownSettings" (onClose) = 'setSelectedCategoryForTeamMember(vendorLogo.companyId)'
+								(onSelect)="setSelectedCategoryForTeamMember(vendorLogo.companyId)" 
+								(onDeSelect)="setSelectedCategoryForTeamMember(vendorLogo.companyId)"
+								(onSelectAll)="setSelectedCategoryForTeamMember(vendorLogo.companyId)" 
+								(onDeSelectAll)="setSelectedCategoryForTeamMember(vendorLogo.companyId)">
 							  </angular4-multiselect>
 							</td>
 							<td class="text-center">
@@ -108,7 +112,11 @@
 										  </td>
 										  <td>
 											<angular4-multiselect  [data]="dropdownList" [(ngModel)]="adminAndTeamMember.selectedCategories"  
-											[settings]="adminAndTeamMember.dropdownSettings" (onClose) = 'setSelectedCategories(vendorLogo.companyId,adminAndTeamMember.partnerId)'>
+											(onSelect)="setSelectedCategories(vendorLogo.companyId,adminAndTeamMember.partnerId)" 
+											(onDeSelect)="setSelectedCategories(vendorLogo.companyId,adminAndTeamMember.partnerId)"
+          									(onSelectAll)="setSelectedCategories(vendorLogo.companyId,adminAndTeamMember.partnerId)" 
+		  									(onDeSelectAll)="setSelectedCategories(vendorLogo.companyId,adminAndTeamMember.partnerId)"
+											[settings]="adminAndTeamMember.dropdownSettings"  (onClose) = 'setSelectedCategories(vendorLogo.companyId,adminAndTeamMember.partnerId)'>
 										  </angular4-multiselect>
 										  </td>
 										  <td class="text-center">

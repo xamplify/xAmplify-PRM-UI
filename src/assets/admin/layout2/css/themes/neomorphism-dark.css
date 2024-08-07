@@ -3448,10 +3448,13 @@ top:-3px;
     box-shadow: unset!important;
 }
 /* btn-green position alignmnet */
+/* 31-7-2024 (start) */
 .dwnload-csv_btn{
-  margin-top: 3px !important;
+  margin-top: 4px !important;
   margin-bottom: 4px !important;
+  padding-right: 6px !important;
 }
+/* 31-7-2024 (end) */
 .text_pd5{
   padding-top:5px !important;
 }
@@ -4227,4 +4230,29 @@ box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 .lead-label{
   color: #fff!important;
+}
+/* 31-7-2024 */
+.refresh-margin, .xamp-margin-left-icon{margin: 7px 7px 5px 5px !important;}
+.csv_btn{margin-top:5px !important;padding-right: 2px;}
+.folder_btn{margin-top: 0px !important;padding-right: 3px;}
+#folder_cross{padding-top: 3px;}
+.primary_btn_align{margin-right: 6px !important;padding-top: 0px !important;}
+#folder-margin-xamp{margin-top: 5px !important;margin-right: 6px !important;}
+button.button_blue.btn-abjustmentin-breadcrumbs.bgcolor-unset{margin-top: 5px;margin-right: 5px;}
+span.btn.btn-primary.transition.text_pd5.txt_update {padding-top: 2px !important;}
+button.btn.btn.custom.btn-abjustmentin-breadcrumbs.btn_custom_bg{margin-top: 1px !important;}
+.portlet.light.remove_cardBgcolor.glass_Bgcolor{background: #2c2f33 !important;box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;}
+.view-type-css{
+  margin-top: 8px !important;
+  margin-right: 8px !important;
+}
+.view-type-css2{
+  margin-top: 8px !important;
+}
+.deal_view_type_css{
+  margin-top: 6px !important;
+  margin-right: 17px !important;
+}
+.deal_view_type_css2{
+  margin-top: 6px !important;
 }

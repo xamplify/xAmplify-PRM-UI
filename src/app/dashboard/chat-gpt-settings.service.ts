@@ -1,0 +1,24 @@
+import { ChatGptIntegrationSettingsDto } from './models/chat-gpt-integration-settings-dto';
+import { Injectable } from '@angular/core';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+
+@Injectable()
+export class ChatGptSettingsService {
+  chatGptSettingsUrl =  this.authenticationService.REST_URL+RouterUrlConstants.chatGptSettings;
+  constructor(public authenticationService:AuthenticationService) { 
+
+  }
+
+  updateChatGptSettings(chatGptSettings:ChatGptIntegrationSettingsDto){
+    chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
+    const url = this.chatGptSettingsUrl + '?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callPutMethod(url,chatGptSettings);
+  }
+
+  getChatGptSettingsByLoggedInUserId(){
+    const url = this.chatGptSettingsUrl + '/loggedInUserId/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
+    return this.authenticationService.callGetMethod(url);
+  }
+
+}

@@ -43,7 +43,6 @@ import { DragulaService } from 'ng2-dragula';
 import { Pipeline } from '../../models/pipeline';
 import { PipelineStage } from '../../models/pipeline-stage';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-import { ExcludeUser } from "../../models/exclude-user";
 import { FileUtil } from '../../../core/models//file-util';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
@@ -359,7 +358,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isMasterLandingPageCategories: boolean = false;
 	isChatGptSettingsOptionClicked = false;
 	chatGptSettingsMenuHeader = MY_PROFILE_MENU_CONSTANTS.CHAT_GPT_SETTIGNS_MENU_HEADER;
-
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -3248,7 +3246,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			const self = this;
 			swal({
 				title: 'Salesforce Re-configuration?',
-				text: 'Are you sure? All data related to existing Salesforce account will be deleted by clicking Yes.',
+				text: 'Make sure you are reconfiguring the existing Salesforce account. Configuring a new account will delete all data from the current account, and this action cannot be undone.',
 				type: 'warning',
 				showCancelButton: true,
 				confirmButtonColor: '#54a7e9',
@@ -4742,7 +4740,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		const selectedCount = this.pipeline.stages.filter(item => item && item.private).length;
 		let remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
 		if (this.pipeline.integrationType === "PIPEDRIVE") {
-			remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 2;
+			remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
 		}
 		if (remainingUnselectedCount === 0 && !this.pipeline.stages[index].private) {
 			this.pipeline.stages[index].canDelete = false;

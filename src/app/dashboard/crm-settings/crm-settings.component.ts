@@ -1,6 +1,7 @@
 import { Component,EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -45,12 +46,36 @@ export class CrmSettingsComponent implements OnInit {
 	showRegisterDealOffMessage = "";
 	showRegisterDealOnMessage = "";
   ngxLoading:boolean = false;
+  formLayoutTypes =[];
+  leadFormColumnLayout:any;
+  dealFormColumnLayout:any;
+  leadFormLayoutPreviewImagePath = "";
+  dealFormLayoutPreviewImagePath = "";
+  singleColumnLeadLayoutImagePath = "../../../assets/images/Single-Column-Lead-Layout.png";
+  twoColumnLeadLayoutImagePath = "../../../assets/images/Two-Column-Lead-Layout.png";
+  singleColumnDealLayoutImagePath = "../../../assets/images/Single-Column-Deal-Layout.png";
+  twoColumnDealLayoutImagePath = "../../../assets/images/Two-Column-Deal-Layout.png";
+  isLocalHost = false;
+  singleColumnLayout = XAMPLIFY_CONSTANTS.singleColumnLayout;
+  twoColumnLayout = XAMPLIFY_CONSTANTS.twoColumnLayout;
+  
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
+    this.isLocalHost = this.authenticationService.isLocalHost();
    }
 
   ngOnInit() {
+    this.formLayoutTypes = [
+      {
+        id:XAMPLIFY_CONSTANTS.singleColumnLayout,
+        name:'Single Column Layout'
+      },
+      {
+        id:XAMPLIFY_CONSTANTS.twoColumnLayout,
+        name:'Two Column Layout'
+      }
+    ];
     this.setTitles();
     this.showLeadPipeline = this.integrationDetails.showLeadPipeline;
     this.showLeadPipelineStage = this.integrationDetails.showLeadPipelineStage;
@@ -59,12 +84,34 @@ export class CrmSettingsComponent implements OnInit {
     this.leadDescription = this.integrationDetails.leadDescription;
     this.dealDescription = this.integrationDetails.dealDescription;
     this.showRegisterDeal = this.integrationDetails.showRegisterDeal;
+    this.leadFormColumnLayout = this.integrationDetails.leadFormColumnLayout;
+    this.dealFormColumnLayout = this.integrationDetails.dealFormColumnLayout;
+
+    this.setLeadFormLayoutPreviewImage();
+    this.setDealFormLayoutPreviewImage();
+
     this.getLeadPipelines();
     this.getDealPipelines();
     if (!this.showLeadPipeline && !this.showDealPipeline 
       && (this.integrationDetails.leadPipelineId == undefined || this.integrationDetails.leadPipelineId <= 0)
       && (this.integrationDetails.dealPipelineId == undefined || this.integrationDetails.dealPipelineId <= 0)) {
       this.pipelineResponse = new CustomResponse('ERROR', 'Something went wrong. Please unlink and configure your account.', true);
+    }
+  }
+
+  private setLeadFormLayoutPreviewImage() {
+    if (this.leadFormColumnLayout == this.singleColumnLayout) {
+      this.leadFormLayoutPreviewImagePath = this.singleColumnLeadLayoutImagePath;
+    } else if(this.leadFormColumnLayout == this.twoColumnLayout) {
+      this.leadFormLayoutPreviewImagePath = this.twoColumnLeadLayoutImagePath;
+    }
+  }
+
+  private setDealFormLayoutPreviewImage(){
+    if (this.dealFormColumnLayout == this.singleColumnLayout) {
+      this.dealFormLayoutPreviewImagePath = this.singleColumnDealLayoutImagePath;
+    } else if(this.dealFormColumnLayout ==  this.twoColumnLayout) {
+      this.dealFormLayoutPreviewImagePath = this.twoColumnDealLayoutImagePath;
     }
   }
 
@@ -87,6 +134,8 @@ export class CrmSettingsComponent implements OnInit {
     this.integrationDetails.leadDescription = this.leadDescription;
     this.integrationDetails.dealDescription = this.dealDescription;
     this.integrationDetails.showRegisterDeal = this.showRegisterDeal;
+    this.integrationDetails.leadFormColumnLayout = this.leadFormColumnLayout;
+    this.integrationDetails.dealFormColumnLayout = this.dealFormColumnLayout;
     if (this.integrationDetails.showLeadPipeline) {
       this.integrationDetails.leadPipelineId = 0;
     }
@@ -277,6 +326,17 @@ export class CrmSettingsComponent implements OnInit {
 
   onChangeRegisterDeal(showRegisterDeal){
     this.showRegisterDeal = showRegisterDeal;
+  }
+
+  onChangeLeadFormType(leadFormColumnLayout) {
+    this.leadFormColumnLayout = leadFormColumnLayout;
+    this.setLeadFormLayoutPreviewImage();
+
+  }
+
+  onChangeDealFormType(dealFormColumnLayout) {
+    this.dealFormColumnLayout = dealFormColumnLayout;
+    this.setDealFormLayoutPreviewImage();
   }
 
 }

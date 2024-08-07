@@ -344,7 +344,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.invalidContactNameError = this.checkingContactTypeName + " List name cannot be added";
         } else {
             $(".ng-valid[required], .ng-valid.required").css("color", "Black");
-            this.isValidContactName = false;
+            if (this.selectedAddContactsOption == 8) {
+                this.isValidContactName = true;
+            } else {
+                this.isValidContactName = false;
+            }
             this.invalidContactNameError = "";
             this.validateLegalBasisOptions();
         }
@@ -1306,6 +1310,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 $('#sample_editable_1_new').prop("disabled", false);
             }
         }
+        this.isValidContactName = false;
     }
 
     saveContacts() {
@@ -1483,6 +1488,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.selectedAddContactsOption = 0;
         this.noOptionsClickError = false;
         $("#sample_editable_1").show();
+        $('#sample_editable_1_new').prop("disabled", false);
         $("button#cancel_button").prop('disabled', false);
         $('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
         $('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');

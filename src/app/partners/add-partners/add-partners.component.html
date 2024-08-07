@@ -47,7 +47,7 @@
             <li><a translate>Onboarding
                     {{authenticationService?.partnerModule?.customName}}</a></li>
         </ul>
-        <div id="download-partners-csv" class="hidden-xs dwnload-csv_btn" style="padding-right: 3px;padding-top:1px;">
+        <div id="download-partners-csv" class="hidden-xs dwnload-csv_btn " style="padding-right: 3px;padding-top:2px;">
             <a (click)="downloadEmptyCsv()">
                 <button type="button" class="button p-rgt_p-top bgcolor-unset" download
                     [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
@@ -56,7 +56,9 @@
                 </button>
             </a>
         </div>
+        <div style="padding: 3px 0px 0px 0px;">
         <app-user-guide-help-button [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
+    </div>
     </div>
     <!-- Partner Domain Whitelisting #XNFR-549 -->
     <app-domain-whitelisting *ngIf="isPartner && authenticationService?.module?.adminOrSuperVisor"

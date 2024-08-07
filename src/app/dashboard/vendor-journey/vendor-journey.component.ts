@@ -69,7 +69,7 @@ export class VendorJourneyComponent implements OnInit {
     this.isMasterLandingPages = false;
     this.vendorJourney = this.moduleType == "Vendor Journey";
     this.isLandingPages = this.moduleType == "Vendor Pages";
-    this.isMasterLandingPages = this.moduleType == "Master Landing Pages";
+    this.isMasterLandingPages = this.moduleType == "Marketplace Pages";
     this.isFormAnalytics = false;
     this.isManageForms = false;
     this.isEditVendorOrMasterForm = false;
@@ -233,11 +233,11 @@ landingPageOpenInNewTabChecked(){
   $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", this.openInNewTabChecked);
 }
 
-goToFormAnalytics(event){
-  let data = event;
-  this.importedObject['formAlias'] = data.formAlias;
-  this.importedObject['partnerLandingPageId'] = data.partnerLandingPageId
-  this.isManageForms = false;
-  this.isFormAnalytics = true;
-}
+  goToFormAnalytics(event) {
+    let data = event;
+    this.importedObject['formAlias'] = data.formAlias;
+    this.importedObject['partnerLandingPageId'] = data.partnerLandingPageId
+    this.isManageForms = false;
+    this.isFormAnalytics = true;
+  }
 }

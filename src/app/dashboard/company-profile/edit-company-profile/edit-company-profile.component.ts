@@ -618,7 +618,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.checkValidations();
         if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
             && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
-            !this.zipError && !this.logoError && !this.aboutUsError) {
+            !this.zipError && !this.logoError && !this.aboutUsError && !this.supportEmailIdError) {
             this.processor.set(this.processor);
 
             if( this.companyProfile.phone.length < 6){
@@ -719,7 +719,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         let errorLength = $('div.form-group.has-error.has-feedback').length;
         if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
             && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
-            !this.zipError && !this.logoError && !this.aboutUsError) {
+            !this.zipError && !this.logoError && !this.aboutUsError && !this.supportEmailIdError) {
             this.processor.set(this.processor);
 
             if ( this.companyProfile.phone ) {
@@ -787,6 +787,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       this.validatePattern('state');
       this.validatePattern('eventUrl');
       this.validateCompanyLogo();
+      this.validateSupportEmailId();
     }
 
     saveCompanyProfileOnDestroy(){
@@ -795,7 +796,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       let errorLength = $('div.form-group.has-error.has-feedback').length;
       if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
           && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
-          !this.zipError && !this.logoError && !this.twitterLinkError && !this.instagramLinkError) {
+          !this.zipError && !this.logoError && !this.twitterLinkError && !this.instagramLinkError && !this.supportEmailIdError) {
         if(this.companyProfile.phone) { this.companyProfile.phone = this.companyProfile.phone.length <6 ? "": this.companyProfile.phone;}
        this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
         .subscribe(

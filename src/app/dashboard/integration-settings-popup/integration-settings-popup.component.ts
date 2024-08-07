@@ -129,6 +129,9 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     this.customFieldsList.forEach(field => {
       if (field.name === customField.controllerName) {
         field.required = true;
+        if (field.controllerName != null && field.controllerName != undefined) {
+          this.setParentFieldRequired(field);
+        }
       }
     });
   }

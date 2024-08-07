@@ -323,7 +323,7 @@
   </div>
   <!--Pipe Line Details-->
   <div class="panel-group" role="tablist" aria-multiselectable="true" 
-  *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showDealPipeline || activeCRMDetails?.showDealPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm">
+  *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showDealPipeline || activeCRMDetails?.showDealPipelineStage || showDefaultForm">
     <div class="panel panel-default deal-bgcolor">
       <div class="panel-heading deal-bgcolor">
         <h4 class="panel-title">
@@ -353,13 +353,13 @@
                 <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
                 <select class="form-control" [(ngModel)]="deal.createdByPipelineStageId"
                   [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
-                  id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable" (input)="validateField('createdByPipelineStageId',false)">
+                  id="createdByPipelineStageId" [disabled]="preview || isCreatedByStageIdDisable" (ngModelChange)="validateField('createdByPipelineStageId',false)">
                   <option [value]="0">Select Stage</option>
                   <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">{{deal.currentStageName}}</option>
                   <option *ngFor="let stage of createdByStages" [value]="stage.id">{{stage.stageName}}</option>
                 </select>
               </div>
-              <div *ngIf="activeCRMDetails?.showDealPipeline || isOrgAdmin || isMarketingCompany || showDefaultForm" class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
+              <div *ngIf="activeCRMDetails?.showDealPipeline || showDefaultForm" class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
                 <label class="control-label">{{vendorCompanyName}} Pipeline<span class="required"><strong>*</strong></span></label>
                 <select class="form-control" [(ngModel)]="deal.createdForPipelineId"
                   [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
@@ -371,14 +371,14 @@
                 </select>
               </div>
 
-              <div *ngIf="activeCRMDetails?.showDealPipelineStage || isOrgAdmin || isMarketingCompany || showDefaultForm" class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
+              <div *ngIf="activeCRMDetails?.showDealPipelineStage || showDefaultForm" class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
                 id="dealStageDiv">
                 <label class="control-label">{{vendorCompanyName}} Stage<span
                     class="required"><strong>*</strong></span></label>
                 <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
                   [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                   id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
-                  (input)="validateField('createdForPipelineStageId',false)">
+                  (ngModelChange)="validateField('createdForPipelineStageId',false)">
                   <option [value]="0">Select Stage</option>
                   <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
                     [value]="deal.currentStageId">
@@ -410,7 +410,7 @@
                 <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
                   [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                   id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"
-                  (input)="validateField('createdForPipelineStageId',false)">
+                  (ngModelChange)="validateField('createdForPipelineStageId',false)">
                   <option [value]="0">Select Stage</option>
                   <option *ngIf="!isVendorVersion && deal.currentStagePrivate"
                     [value]="deal.currentStageId">
@@ -478,7 +478,7 @@
             <span class="required"><strong>*</strong></span>
           </label>
           <input type="text" maxlength="100" name="titleName" class="form-control" [(ngModel)]=" deal.title"
-            [ngModelOptions]="{standalone: true}" id="title" (input)="validateField('title',false)"
+            [ngModelOptions]="{standalone: true}" id="title" (ngModelChange)="validateField('title',false)"
             [disabled]="preview" />
         </div>
         <div class="form-group" [attr.class]="dealType" style="margin-bottom: 20px">
@@ -486,7 +486,7 @@
             <span class="required"><strong>*</strong></span>
           </label>
           <select class="form-control" [(ngModel)]="deal.dealType" [ngModelOptions]="{standalone: true}"
-            id="dealType" (input)="validateField('dealType',false)" [disabled]="preview">
+            id="dealType" (ngModelChange)="validateField('dealType',false)" [disabled]="preview">
             <option *ngFor="let dt of defaultDealTypes" [value]="dt">{{dt!='Select Dealtype'?dt:'-- Select Deal Type --'}}</option>
             <option *ngFor="let dt of dealTypes" [value]="dt.dealType">{{dt.dealType}}</option>
           </select>
@@ -498,7 +498,7 @@
           <div class="input-group amount-border">
             <input type="text" currencyMask [options]="{align :'left',allowNegative :false }"
               class="form-control currency" [(ngModel)]="deal.amount" [ngModelOptions]="{standalone: true}"
-              id="amount" (input)="validateField('amount',false)" (ngModelChange)="validateField('amount',false)"
+              id="amount" (ngModelChange)="validateField('amount',false)"
               [disabled]="preview" maxlength="20" autocomplete="off" />
           </div>
         </div>
@@ -552,8 +552,10 @@
                   *ngIf="showCommentActions">
                   <span class="glyphicon glyphicon-plus"></span>
                 </button>
-                <button type="button" class="btn-primary button-blue" (click)="commentsection(property)"
-                  *ngIf="property.isSaved">
+                <button type="button" [disabled]="property.isDisabled || !showCommentActions || preview " class="btn-primary button-blue" (click)="commentsection(property)"
+                  *ngIf="property.isSaved" [ngStyle]="{
+                    'cursor': (property.isDisabled || !showCommentActions || preview) ? 'not-allowed' : 'pointer'
+                  }">
                   <span class="glyphicon glyphicon-comment" style="margin-right: 5px"></span><span
                     *ngIf="property.unReadPropertyChatCount > 0">{{property.unReadPropertyChatCount}}</span>
                 </button>

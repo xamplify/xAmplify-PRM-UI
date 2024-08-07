@@ -6,3 +6,7 @@
 .btn-abjustmentin-breadcrumbs {
   float: right;
 }
+.btn-abjustmentin-breadcrumbs {
+  padding-top: 6px !important;
+  padding-right: 5px !important;
+}

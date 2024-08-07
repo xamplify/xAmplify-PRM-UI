@@ -360,21 +360,21 @@
                            </div>
                            <div>
                               <span class="camp-title"
-                                 *ngIf="!campaign?.oneClickLaunch && ((authenticationService.isOrgAdmin() && campaign?.channelCampaign) || (authenticationService.isVendorPartner() && !authenticationService.isOrgAdmin()) || authenticationService.isVendor() || (authenticationService?.module?.isTeamMember && campaign?.channelCampaign)) && !authenticationService.module.isPrmAndPartner">
+                                 *ngIf="!campaign?.oneClickLaunch && ((authenticationService.isOrgAdmin() && campaign?.channelCampaign) || (authenticationService.isVendorPartner() && !authenticationService.isOrgAdmin()) || authenticationService.isVendor() || (authenticationService?.module?.isTeamMember && campaign?.channelCampaign)) && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isMarketingCompany">
                                  {{ 'Group Info' }}
                               </span>
                               <span class="camp-title"
-                                 *ngIf="!campaign?.oneClickLaunch &&((!authenticationService.isVendor() && !campaign?.channelCampaign)  && authenticationService.isOrgAdmin() || authenticationService.isOnlyPartner() && !campaign?.oneClickLaunch) || (authenticationService?.module?.isTeamMember  && !campaign?.channelCampaign) || (authenticationService.module.isPrmAndPartner &&  !campaign?.oneClickLaunch) ">
+                                 *ngIf="!campaign?.oneClickLaunch &&((!authenticationService.isVendor() && !campaign?.channelCampaign)  && authenticationService.isOrgAdmin() || authenticationService.isOnlyPartner() && !campaign?.oneClickLaunch) || (authenticationService?.module?.isTeamMember  && !campaign?.channelCampaign) || (authenticationService.module.isPrmAndPartner &&  !campaign?.oneClickLaunch) || authenticationService?.module?.isMarketingCompany ">
                                  {{ 'List Info' }}
                               </span>
                            </div>
                            <div class="camp-number">
                               <strong class="m0 StongTextdc"
-                                 *ngIf="!campaign?.oneClickLaunch &&((!authenticationService.isVendor() && !campaign?.channelCampaign)  && authenticationService.isOrgAdmin() || authenticationService.isOnlyPartner() && !campaign?.oneClickLaunch) || (authenticationService?.module?.isTeamMember  && !campaign?.channelCampaign) || (authenticationService.module.isPrmAndPartner &&  !campaign?.oneClickLaunch)">{{
+                                 *ngIf="!campaign?.oneClickLaunch &&((!authenticationService.isVendor() && !campaign?.channelCampaign)  && authenticationService.isOrgAdmin() || authenticationService.isOnlyPartner() && !campaign?.oneClickLaunch) || (authenticationService?.module?.isTeamMember  && !campaign?.channelCampaign) || (authenticationService.module.isPrmAndPartner &&  !campaign?.oneClickLaunch) || authenticationService?.module?.isMarketingCompany">{{
                                  campaingContactLists?.length }}
                                  List(s)</strong>
                               <strong class="m0 StongTextdc"
-                              *ngIf="!campaign?.oneClickLaunch && ((authenticationService.isOrgAdmin() && campaign?.channelCampaign) || (authenticationService.isVendorPartner() && !authenticationService.isOrgAdmin()) || authenticationService.isVendor() || (authenticationService?.module?.isTeamMember && campaign?.channelCampaign)) && !authenticationService.module.isPrmAndPartner">{{
+                              *ngIf="!campaign?.oneClickLaunch && ((authenticationService.isOrgAdmin() && campaign?.channelCampaign) || (authenticationService.isVendorPartner() && !authenticationService.isOrgAdmin()) || authenticationService.isVendor() || (authenticationService?.module?.isTeamMember && campaign?.channelCampaign)) && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isMarketingCompany">{{
                               campaingContactLists?.length }}
                                  Group(s)</strong>
                               <strong class="m0" *ngIf="campaign?.oneClickLaunch">{{ campaingContactLists?.length }}
@@ -2017,8 +2017,7 @@
          </div>
       </div>
       <div class="portlet light clearfix" *ngIf="showLeads">
-         <app-response-message [customResponse]="customResponse"
-            *ngIf="customResponse.isVisible"></app-response-message>
+         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
          <div class="portlet-body">
             <a (click)="closeCampaignLeads()" class="pull-right close-circle"
                style="margin: 9px 14px; padding-top: 3px; padding-left: 5px">
@@ -2028,13 +2027,12 @@
                [showTeamMemberFilter]="campaign.channelCampaign" (viewCampaignLeadForm)="viewCampaignLeadForm($event)"
                (editCampaignLeadForm)="editCampaignLeadForm($event)" (registerDealForm)="registerDealForm($event)"
                (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)"
-               [refreshCampaignLeadsSubject]="
-        refreshCampaignLeadsSubject.asObservable()
-        ">
+               [refreshCampaignLeadsSubject]="refreshCampaignLeadsSubject.asObservable()">
             </app-manage-campaign-leads>
          </div>
       </div>
       <div class="portlet light clearfix" *ngIf="showDeals">
+         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
          <div class="portlet-body">
             <a (click)="closeCampaignDeals()" class="pull-right close-circle"
                style="margin: 9px 14px; padding-top: 3px; padding-left: 5px">
@@ -2043,9 +2041,8 @@
             <app-manage-campaign-deals [campaignId]="campaignId" [isDataShare]="isDataShare"
                [fromAnalytics]="!isNavigatedThroughAnalytics" [showTeamMemberFilter]="campaign.channelCampaign"
                [isVendorVersion]="!campaign.nurtureCampaign" [isPartnerVersion]="campaign.nurtureCampaign"
-               (viewCampaignDealForm)="viewCampaignDealForm($event)"
-               (editCampaignDealForm)="editCampaignDealForm($event)" (refreshCounts)="refreshCounts()"
-               (showCommentsPopUp)="showDealComments($event)">
+               (viewCampaignDealForm)="viewCampaignDealForm($event)" (editCampaignDealForm)="editCampaignDealForm($event)"
+               (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showDealComments($event)">
             </app-manage-campaign-deals>
          </div>
       </div>
@@ -3843,7 +3840,7 @@
           </a> 
         </div>
         <app-custom-add-lead [leadId]="leadId" [selectedContact]="selectedRow" [campaignId]="campaign.campaignId" [actionType]="leadActionType" 
-        [campaignName]="campaign.campaignName" (notifySubmitSuccess)="showTimeLineView()"></app-custom-add-lead>
+        [campaignName]="campaign.campaignName" [isVendorVersion]="!campaign.nurtureCampaign" (notifySubmitSuccess)="showTimeLineView()"></app-custom-add-lead>
       </div>
     </section>
 </ng-container>
@@ -3861,7 +3858,7 @@
           </a> 
         </div>
         <app-custom-add-lead [leadId]="leadId" [selectedContact]="selectedRow" [campaignId]="campaign.campaignId" [actionType]="leadActionType" 
-        [campaignName]="campaign.campaignName" [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitLeadSuccess()"></app-custom-add-lead>
+        [campaignName]="campaign.campaignName" [isOrgAdmin]="isOrgAdmin" [isVendorVersion]="!campaign.nurtureCampaign" (notifySubmitSuccess)="showSubmitLeadSuccess()"></app-custom-add-lead>
       </div>
     </section>
 

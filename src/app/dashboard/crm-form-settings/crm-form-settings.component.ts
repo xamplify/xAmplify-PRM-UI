@@ -194,6 +194,7 @@ export class CrmFormSettingsComponent {
 
 								if (customField.required) {
 									self.requiredCfIds.push(customField.name);
+									self.checkIfhasParentField(customField, true);
 									if (!customField.selected) {
 										self.selectedCfIds.push(customField.name);
 									}
@@ -262,7 +263,7 @@ export class CrmFormSettingsComponent {
 			this.referenceService.goToTop();
 			if (this.searchKey !== undefined && this.searchKey !== '') {
 				this.FilteredCustomFields = this.sfCustomFieldsResponse.filter(customField =>
-					customField.label.toLowerCase().includes(this.searchKey.trim().toLowerCase())
+					(customField.label.toLowerCase().includes(this.searchKey.trim().toLowerCase()) || customField.name.toLowerCase().includes(this.searchKey.trim().toLowerCase()))
 				);
 				this.sfcfPager = this.socialPagerService.getPager(this.FilteredCustomFields.length, page, this.pageSize);
 				this.sfcfPagedItems = this.FilteredCustomFields.slice(this.sfcfPager.startIndex, this.sfcfPager.endIndex + 1);
@@ -458,29 +459,110 @@ export class CrmFormSettingsComponent {
 		}
 		this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
 
-		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined && isChecked) {
-			let cfParentName = sfCustomField.controllerName;
-			$('#' + cfParentName).prop('checked', isChecked);
-			this.setParentFieldSelected(sfCustomField);
-		}
+		this.setAllParentFieldsSelected(sfCustomField,isChecked);
 
 	}
 
 
-	setParentFieldSelected(sfCustomField: any) {
+	setAllParentFieldsSelected(sfCustomField: any, isChildChecked: any) {
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
+			let cfParentName = sfCustomField.controllerName;
+			if (isChildChecked) {
+				$('#' + cfParentName).prop('checked', true);
+			}
+			let sfParentName = sfCustomField.controllerName;
+			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
+			for (let sfParentfield of sfParentFields) {
+				if (isChildChecked) {
+					let cfName = sfParentfield.name;
+					if (this.selectedCfIds.indexOf(cfName) == -1) {
+						this.selectedCfIds.push(cfName);
+						this.selectedCustomFieldsDtos.push(sfParentfield);
+					}
+					if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
+						this.paginatedSelectedIds.push(cfName);
+					}
+					sfParentfield.selected = true;
+					sfParentfield.canUnselect = false;
+					this.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
+				} else {
+					let cfParentName = sfCustomField.controllerName;
+					$('#' + cfParentName).prop('checked', true);
+					sfParentfield.canUnselect = true;
+					sfParentfield.selected = true;
+				}
+
+				if (sfParentfield.controllerName != null && sfParentfield.controllerName != undefined) {
+					let cfParentName = sfParentfield.controllerName;
+					let isChecked = false;
+					if (sfParentfield.selected || !(sfParentfield.canUnselect)) {
+						$('#' + cfParentName).prop('checked', true);
+						isChecked = true;
+					}
+					this.setAllParentFieldsSelected(sfParentfield, isChecked);
+				}
+			}
+		}
+	}
+
+	checkIfhasParentField(sfCustomField: any, isChecked: any) {
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
+			let cfParentName = sfCustomField.controllerName;
+			if (isChecked) {
+				$('#' + cfParentName).prop('checked', true);
+			}
+			this.setParentFieldSelected(sfCustomField, isChecked);
+		}
+	}
+
+	checkIParentFieldisUnChecked(sfCustomField: any) {
 		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
 			let sfParentName = sfCustomField.controllerName;
 			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
 			for (let sfParentfield of sfParentFields) {
-				let cfName = sfParentfield.name;
-				if (this.selectedCfIds.indexOf(cfName) == -1) {
-					this.selectedCfIds.push(cfName);
-					this.selectedCustomFieldsDtos.push(sfParentfield);
+				let hasParentLabel = this.sfcfPagedItems.some(field => field.name === sfParentName);
+				if (sfCustomField.canUnselect) {
+					if (hasParentLabel || !(sfParentfield.canUnselect)) {
+						sfParentfield.selected = false;
+						sfParentfield.canUnselect = true;
+						this.checkIParentFieldisUnChecked(sfParentfield);
+					}
+				} else {
+					let cfParentName = sfCustomField.controllerName;
+					$('#' + cfParentName).prop('checked', true);
+					sfCustomField.selected = true;
+					sfCustomField.canUnselect = false;
+					sfParentfield.selected = true;
+					sfParentfield.canUnselect = false;
 				}
-				if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
-					this.paginatedSelectedIds.push(cfName);
+			}
+		}
+	}
+
+
+	setParentFieldSelected(sfCustomField: any, isChildChecked: any) {
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
+			let sfParentName = sfCustomField.controllerName;
+			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
+			for (let sfParentfield of sfParentFields) {
+				if (isChildChecked) {
+					let cfName = sfParentfield.name;
+					if (this.selectedCfIds.indexOf(cfName) == -1) {
+						this.selectedCfIds.push(cfName);
+						this.selectedCustomFieldsDtos.push(sfParentfield);
+					}
+					if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
+						this.paginatedSelectedIds.push(cfName);
+					}
+					sfParentfield.selected = true;
+					sfParentfield.canUnselect = false;
+					this.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
+				} else {
+					let cfParentName = sfParentfield.controllerName;
+					$('#' + cfParentName).prop('checked', true);
+					sfParentfield.canUnselect = true;
+					sfParentfield.selected = true;
 				}
-				sfParentfield.selected = true;
 			}
 		}
 	}
@@ -567,9 +649,10 @@ export class CrmFormSettingsComponent {
 			});
 			this.selectedCfIds = this.referenceService.removeDuplicates(this.selectedCfIds);
 			this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
-			$.each(this.sfcfPagedItems,function(index:number,value:any){
+			$.each(this.sfcfPagedItems, function (index: number, value: any) {
 				value.selected = true;
 				self.selectedCustomFieldsDtos.push(value);
+				self.setAllParentFieldsSelected(value, true);
 			});
 			self.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(self.selectedCustomFieldsDtos);
 		} else {
@@ -590,10 +673,14 @@ export class CrmFormSettingsComponent {
 				this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
 				this.selectedCfIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedCfIds, currentPageCfIds);
 			}
-			$.each(self.sfcfPagedItems,function(index:number,value:any){
-				if(value.canUnselect){
+			$.each(self.sfcfPagedItems, function (index: number, value: any) {
+				if (value.canUnselect) {
 					value.selected = false;
 					self.selectedCustomFieldsDtos.splice(self.selectedCustomFieldsDtos.indexOf(value), 1);
+					if (value.controllerName != null && value.controllerName != undefined) {
+						self.checkIfhasParentField(value, false);
+						self.checkIParentFieldisUnChecked(value);
+					}
 				}
 			});
 			self.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
