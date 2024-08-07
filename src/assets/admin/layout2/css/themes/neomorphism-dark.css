@@ -4256,3 +4256,9 @@ button.btn.btn.custom.btn-abjustmentin-breadcrumbs.btn_custom_bg{margin-top: 1px
 .deal_view_type_css2{
   margin-top: 6px !important;
 }
+.btn_for_only_themes{margin-top: -1px !important;}
+.lead_copy_id_btn_blue{background: none !important;border: none !important;margin-left:0px !important;}
+span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !important;border: 1px solid #026deb !important;}
+.track_cross_align{margin: 6px -7px 2px 0px !important;}
+.asset_cross_align{top: 5px !important;right: -1px !important;}
+.track-selected{margin-right: 1px !important;}
