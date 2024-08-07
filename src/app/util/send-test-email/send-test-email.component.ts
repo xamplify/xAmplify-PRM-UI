@@ -56,7 +56,7 @@ export class SendTestEmailComponent implements OnInit {
     let subject = $.trim(this.sendTestEmailDto.subject);
     this.isValidSubject = subject.length > 0;
     this.isValidEmailLength = email.length > 0;
-    this.isValidEmailFormat = this.isValidEmailLength && this.referenceService.validateEmail(email);
+    this.isValidEmailFormat = this.isValidEmailLength && this.referenceService.validateEmailId(email);
     let isValidEmail = this.isValidEmailLength && this.isValidEmailFormat;
     this.isValidForm = isValidEmail && this.isValidSubject;
   }
