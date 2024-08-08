@@ -178,8 +178,11 @@ export class SfDealComponent implements OnInit {
         }
         this.formDescription = result.data.description;
         this.form.formLabelDTOs.forEach((columnInfo: ColumnInfo) => {
-          if (columnInfo.nonInteractive) {
+          if (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany)) {
             columnInfo.value = columnInfo.defaultChoiceLabel;
+            if (columnInfo.private) {
+              columnInfo.hideFieldInfo = true;
+            }
           }
         });
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
@@ -622,4 +625,12 @@ export class SfDealComponent implements OnInit {
     this.referenceService.removeRowWithAnimation(index);
 
   }
+
+  searchableDropDownDtoForLookupField(columnInfo: any) {
+    let searchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+    searchableDropDownDto.data = columnInfo.lookupDropDownChoices;
+    searchableDropDownDto.placeHolder = `Please Select ${columnInfo.labelName}`;
+    return searchableDropDownDto;
+  }
+
 }

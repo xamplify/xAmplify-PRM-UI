@@ -67,6 +67,7 @@ img.active {
 
 .campaign-name-padding {
   padding-left: 5px;
+  display:inline-block;
 }
 
 .campaign-filter-option {

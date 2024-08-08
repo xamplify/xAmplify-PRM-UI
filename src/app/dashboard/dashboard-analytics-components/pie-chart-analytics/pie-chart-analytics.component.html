@@ -16,7 +16,7 @@
                <div>      
                   <app-box-loader [countLoader]=3 *ngIf="statisticsLoader"></app-box-loader>
 
-                  <div *ngIf="!statisticsLoader"  class="row" style="display: flex">
+                  <div *ngIf="!statisticsLoader"  class="row mbflex_unset" style="display: flex">
                     <div  class="col-xs-12 col-sm-4 col-md-4 p10 white-co" *ngFor="let request of stastisticsOfPieChart; let  i = index">
                       <div class="portlet light cards_btns_shadows" *ngIf="request.nameOfPie === 'Contact to Lead Ratio' || request.nameOfPie === 'Opportunity Amount' ">
                         <b>{{request.nameOfPie}}</b>

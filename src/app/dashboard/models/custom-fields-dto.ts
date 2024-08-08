@@ -20,4 +20,5 @@ export class CustomFieldsDto {
     dependentPicklist = false;
     controllerName = '';
     defaultChoiceLabel: any;
+    private = false;
 }
