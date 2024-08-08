@@ -62,8 +62,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	clickedMergeTag: string;
 	constructor(private renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document:any,public location: Location, public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router
-		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
-	) {
+		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService) {
 		this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		this.sourceType = this.authenticationService.getSource();
