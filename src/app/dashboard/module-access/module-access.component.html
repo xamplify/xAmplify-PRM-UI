@@ -263,7 +263,7 @@
 								</tr>
 								<!--Refer Vendor-->
 								<tr>
-									<th scope="row">Refer A Vendor</th>
+									<th scope="row">{{properties?.inviteAVendor}}</th>
 									<td class="pt0">
 										<app-custom-ui-switch [customSwitch]="campaignAccess.referVendor" (customUiSwitchEventEmitter)="setReferVendorValue($event)"></app-custom-ui-switch>
 									</td>

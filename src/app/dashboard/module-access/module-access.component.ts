@@ -10,6 +10,7 @@ import { MdfService } from 'app/mdf/services/mdf.service';
 import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
 import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
+import { Properties } from 'app/common/models/properties';
 
 
 declare var $;
@@ -17,7 +18,7 @@ declare var $;
   selector: 'app-module-access',
   templateUrl: './module-access.component.html',
   styleUrls: ['./module-access.component.css'],
-  providers: [HttpRequestLoader,MdfService,RegularExpressions]
+  providers: [HttpRequestLoader,MdfService,RegularExpressions,Properties]
 })
 export class ModuleAccessComponent implements OnInit {
 
@@ -53,7 +54,7 @@ export class ModuleAccessComponent implements OnInit {
   companyProfileNameErrorMessage = "";
   companyProfileName = "";
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, 
-    public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions) { }
+    public referenceService: ReferenceService, private mdfService: MdfService,public regularExpressions:RegularExpressions,public properties:Properties) { }
   ngOnInit() {
     this.isDashboardStats = this.referenceService.getCurrentRouteUrl().indexOf("dashboard-stats")>-1;
     if(this.isDashboardStats){

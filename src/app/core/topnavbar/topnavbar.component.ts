@@ -77,10 +77,10 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
 
   isScrolled: boolean = false;
   isRegisterDealEnabled:boolean = true;
+  isReferVendorOptionEnabledForVanity = false;
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    // Adjust this value according to when you want the color change to occur
     this.isScrolled = scrollPosition > 100;
   }
 
@@ -114,7 +114,6 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
       }
       if (userName != undefined) {
         this.sourceType = this.authenticationService.getSource();
-
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
           this.refService.topNavbarUserService = true;
           this.utilService.topnavBareLoading = true;
@@ -308,7 +307,20 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
       this.isAddedByVendor();
       this.guideHomeUrl = this.authenticationService.DOMAIN_URL + 'home/help/guides';
       this.getVendorRegisterDealValue();
+      this.getReferVendorOption();
     } catch (error) { this.logger.error('error' + error); }
+  }
+  getReferVendorOption() {
+    if(this.vanityLoginDto.vanityUrlFilter){
+      this.dashboardService.isReferVendorOptionEnabled(this.vanityLoginDto).subscribe(
+        response=>{
+            this.isReferVendorOptionEnabledForVanity = response.data;
+            alert(this.isReferVendorOptionEnabledForVanity);
+        },error=>{
+          this.isReferVendorOptionEnabledForVanity = false;
+        });
+    }
+   
   }
   getDashboardType() {
     this.userService.getDashboardType().
