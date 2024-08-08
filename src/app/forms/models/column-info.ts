@@ -55,4 +55,6 @@ export class ColumnInfo {
     nonInteractive = false;
     defaultChoiceLabel: any;
     columnDisable: boolean;
+    hideFieldInfo: boolean = false;
+    private = false;
 }

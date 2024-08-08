@@ -94,10 +94,13 @@
                           aria-hidden="true"></i>
                         Required
                       </li>
-                      <li *ngIf="sfCustomField.nonInteractive"><i class="fa fa-check-circle-o GreenCheckMark"
-                        aria-hidden="true"></i>
+                      <li *ngIf="sfCustomField.nonInteractive"><i class="fa fa-check-circle-o GreenCheckMark" aria-hidden="true"></i>
                         Non Interactive
-                    </li>
+                      </li>
+                      <li *ngIf="sfCustomField.nonInteractive && sfCustomField.private"><i class="fa fa-check-circle-o GreenCheckMark"
+                          aria-hidden="true"></i>
+                        Private
+                      </li>
                     </ul>
                     <span *ngIf="integrationType === 'HALOPSA'"><b>TicketType(s)</b>:
                       {{sfCustomField.halopsaTicketTypeName}}</span>
