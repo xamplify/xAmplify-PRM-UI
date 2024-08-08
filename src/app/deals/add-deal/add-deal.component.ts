@@ -1281,8 +1281,6 @@ export class AddDealComponent implements OnInit {
               this.isDealForAndContactInfoDivCenterAligned = !showDealPipeline && !showDealPipelineStage && !this.preview 
                 && this.activeCRMDetails['dealFormColumnLayout']==XAMPLIFY_CONSTANTS.singleColumnLayout;
             }
-
-
             if (this.activeCRMDetails.hasCustomForm
               && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
                 || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type)) {

@@ -151,3 +151,7 @@
 .mt5 {
   margin-top: 5px !important;
 }
+
+.justify-content-end{
+  justify-content: end;
+}
