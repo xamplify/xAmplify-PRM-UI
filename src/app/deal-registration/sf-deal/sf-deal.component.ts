@@ -70,6 +70,9 @@ export class SfDealComponent implements OnInit {
   formLayOut = "";
   singleColumnLayout = XAMPLIFY_CONSTANTS.singleColumnLayout;
   twoColumnLayout = XAMPLIFY_CONSTANTS.twoColumnLayout;
+  formHeaderClass = "";
+  formGroupClass: string;
+  formLabelGroupClass: string;
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
     this.isOnlyPartner = this.authenticationService.isOnlyPartner();
   }
@@ -99,6 +102,8 @@ export class SfDealComponent implements OnInit {
     if(this.formLayOut==undefined){
       this.formLayOut = this.twoColumnLayout;
     }
+    /***Added By Sravan On 08/08/2024 */
+    this.updateFormAlignments();
     if (("HALOPSA" === this.activeCRM.createdByActiveCRMType || "HALOPSA" === this.activeCRM.createdForActiveCRMType)) {
       this.dropdownSettings = {
         singleSelection: false,
@@ -133,6 +138,31 @@ export class SfDealComponent implements OnInit {
     }
     if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType)) {
       this.isConnectWiseEnabledAsActiveCRM = true;
+    }
+  }
+  /***Added By Sravan 08/08/2024****/
+  private updateFormAlignments() {
+    if (this.isPreview) {
+      this.formHeaderClass = "col-sm-12 col-xs-12 pl0 mb_pr0 px-0";
+      this.formGroupClass = "form-group";
+      this.formLabelGroupClass = "control-label";
+    } else {
+      this.formHeaderClass = "col-sm-12 col-xs-12 pl0 mb_pr0 px-0-19";
+      this.formGroupClass = "form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0";
+      this.formLabelGroupClass = "control-label col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0";
+      if (this.formLayOut == XAMPLIFY_CONSTANTS.singleColumnLayout) {
+        this.formHeaderClass = "col-md-6 col-lg-6 col-md-6 col-xs-6 col-md-offset-3";
+        this.formGroupClass = "form-group col-md-6 col-lg-6 col-md-6 col-xs-6 col-md-offset-3 text-center";
+        this.formLabelGroupClass = "control-label float-left";
+        let showLeadPipeline = this.activeCRM['showLeadPipeline'];
+        let showLeadPipelineStage = this.activeCRM['showLeadPipelineStage'];
+        let isLeadForDivCenterAligned = !showLeadPipeline && !showLeadPipelineStage;
+        if (isLeadForDivCenterAligned) {
+          this.formGroupClass = "form-group col-xs-12 col-sm-12 col-md-6 col-lg-12 pl0";
+        } else {
+          this.formHeaderClass = "col-sm-12 col-xs-12 pl0 mb_pr0 px-0-19";
+        }
+      }
     }
   }
 
