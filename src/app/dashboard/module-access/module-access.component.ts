@@ -260,6 +260,8 @@ export class ModuleAccessComponent implements OnInit {
       this.campaignAccess.campaignPartnerTemplateOpenedAnalytics = false;
       this.campaignAccess.salesEnablement = false;
       this.campaignAccess.dataShare = false;
+      this.campaignAccess.referVendor = false;
+      this.campaignAccess.ssoEnabled = false;
     }else if(this.roleId==18){
       this.campaignAccess.loginAsPartner = false;
       this.campaignAccess.shareWhiteLabeledContent = false;
@@ -409,8 +411,12 @@ startCompanyProfileLoader(){
   this.campaignAccess.paymentOverDue = event;
 }
 
-setSSOValue(event){
+setSSOValue(event:boolean){
   this.campaignAccess.ssoEnabled = event;
+}
+
+setReferVendorValue(event:boolean){
+  this.campaignAccess.referVendor = event;
 }
 
 
