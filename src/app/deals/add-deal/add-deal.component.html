@@ -9,7 +9,7 @@
 <div id="del-profile-div">
    <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="portlet-title">
-    <div class="caption deal-title-css">{{dealFormTitle}}
+    <div class="caption deal-title-css" [ngClass]="isDealForAndContactInfoDivCenterAligned ? 'text-center':''">{{dealFormTitle}}
     </div>
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -21,7 +21,7 @@
     <div>
       <form role="form" id="deal-registration-form">
         <div class="row mr-3">
-          <div class="col-sm-6 col-xs-12 px-10 pl0 mb_pr0">
+          <div [ngClass]="isDealForAndContactInfoDivCenterAligned ? ' col-md-6 col-md-offset-3' :'col-sm-6 col-xs-12 px-10 pl0 mb_pr0'">
             <!--Deal Details-->
             <div class="panel-group" role="tablist" aria-multiselectable="true" *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany))) && isDealDetailsTabDisplayed">
               <div class="panel panel-default deal-bgcolor">
@@ -268,7 +268,7 @@
             class="button bgcolor-unset" *ngIf="edit"><span class="btn Btn-Green transition txt_pd-top3">Update
               Deal</span></button>
         </div>
-        <div class="pull-right mr10" *ngIf="!preview && showCustomForm">
+        <div *ngIf="!preview && showCustomForm" [ngClass]="isDealForAndContactInfoDivCenterAligned ? 'col-xs-9 col-sm-9 col-md-9 col-lg-9 col-mr10 d-flex justify-content-end':'pull-right mr10'">
           <ng-container *ngIf="!showLoadingButton">
             <button type="button" id="saveDeal"
               [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid"

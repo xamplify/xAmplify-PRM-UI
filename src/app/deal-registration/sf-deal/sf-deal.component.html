@@ -1,5 +1,5 @@
 <div class="row m0" id="dealDetailsDiv">
-  <div class="col-sm-12 col-xs-12 pl0 mb_pr0" [ngClass]="isPreview ? 'px-0':'px-0-19'">
+  <div class="{{formHeaderClass}}">
     <div class="panel-group"  id="accordion" role="tablist" aria-multiselectable="true">
       <div class="panel panel-default deal-bgcolor">
         <div class="panel-heading deal-bgcolor">
@@ -118,9 +118,10 @@
 </div>
 <!--Added On 11/12/2023-->
 <ng-template #formFields let-columnInfo="columnInfo">
-  <div class="form-group" [ngClass]="(isPreview || columnInfo.hideFieldInfo) ? '' : !isPreview && formLayOut==singleColumnLayout? 'col-md-6 col-md-offset-3 text-center':'col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0'"  *ngIf="!isLoading">
-    <label class="control-label" [ngClass]="(isPreview || columnInfo.hideFieldInfo) ? '' : !isPreview && formLayOut==singleColumnLayout? 'float-left': 'col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0'" *ngIf="!columnInfo.hideFieldInfo">{{columnInfo.displayName}} 
-      <span class="required" *ngIf="columnInfo.required">*</span>
+  <ng-container *ngIf="!columnInfo?.hideFieldInfo">
+  <div *ngIf="!isLoading"  class="{{formGroupClass}}"  >
+    <label class="{{formLabelGroupClass}}">{{columnInfo?.displayName}} 
+      <span class="required" *ngIf="columnInfo?.required">*</span>
       <span *ngIf="!(columnInfo.labelType=='textarea' || columnInfo.labelType=='text' || columnInfo.labelType=='number' || columnInfo.labelType=='email' || columnInfo.labelType=='percent' || columnInfo.labelType=='geolocation' || columnInfo.labelType=='phone' || columnInfo.labelType=='url') && columnInfo.placeHolder?.length > 0">({{columnInfo.placeHolder}})
       </span>
     </label>
@@ -265,6 +266,7 @@
           [(account)]="columnInfo.value" [disableDropDown]="false" 
           (searchableDropdownEventEmitter)="onItemSelect($event)"></app-searchable-dropdown></span>
       </ng-container>
-    </div>
+  </div>
+</ng-container>
 </ng-template>
 

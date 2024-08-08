@@ -1284,8 +1284,8 @@ export class CustomAddLeadComponent implements OnInit {
   private callPipeLinesOrLeadLayoutsApi() {
     let activeCRMDetails = this.activeCRMDetails;
     if (activeCRMDetails != undefined) {
-      let showLeadPipeline = this.activeCRMDetails.showLeadPipeline;
-      let showLeadPipelineStage = this.activeCRMDetails.showLeadPipelineStage;
+      let showLeadPipeline = this.activeCRMDetails['showLeadPipeline'];
+      let showLeadPipelineStage = this.activeCRMDetails['showLeadPipelineStage'];
       this.isLeadForDivCenterAligned = !showLeadPipeline && !showLeadPipelineStage && !this.preview 
         && this.activeCRMDetails['leadFormColumnLayout']==XAMPLIFY_CONSTANTS.singleColumnLayout;
       this.createdForPipelines = [];
