@@ -1438,6 +1438,11 @@ saveOrUpdateDefaultImages(themeDto:ThemeDto) {
         return this.authenticationService.callPutMethod(url,integrationDetails);
     }
 
+    isReferVendorOptionEnabled(vanityUrlPostDto: any) {
+        const url = this.moduleUrl + 'getReferVendorOption?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, vanityUrlPostDto).map(this.extractData).catch(this.handleError);
+    }
+
   
     
 }

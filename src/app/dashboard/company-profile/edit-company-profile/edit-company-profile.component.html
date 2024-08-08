@@ -258,84 +258,67 @@
 												</tr>
 												<ng-container *ngIf="!prm">
 													<tr>
-														<th scope="col">Sales Enablement (View In Browser In Create
-															Campaign)</th>
-														<td><input type="checkbox"
-																[(ngModel)]="campaignAccess.salesEnablement"
-																[ngModelOptions]="{standalone: true}"></td>
+														<th scope="col">Sales Enablement (View In Browser In Create	Campaign)</th>
+														<td><input type="checkbox"[(ngModel)]="campaignAccess.salesEnablement" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Data Share</th>
-														<td><input type="checkbox"
-																[(ngModel)]="campaignAccess.dataShare"
-																[ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="campaignAccess.dataShare"[ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Email Campaign</th>
-														<td><input type="checkbox"
-																[(ngModel)]="campaignAccess.emailCampaign"
-																[ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="campaignAccess.emailCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Video Campaign</th>
-														<td><input type="checkbox"
-																[(ngModel)]="campaignAccess.videoCampaign"
-																[ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="campaignAccess.videoCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Social Campaign</th>
-														<td><input type="checkbox"
-																[(ngModel)]="campaignAccess.socialCampaign"
-																[ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="campaignAccess.socialCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Event Campaign</th>
-														<td><input type="checkbox"
-																[(ngModel)]="campaignAccess.eventCampaign"
-																[ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="campaignAccess.eventCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Survey Campaign</th>
-														<td><input type="checkbox" [(ngModel)]="campaignAccess.survey"
-																[ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="campaignAccess.survey" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Form Builder</th>
-														<td><input type="checkbox"
-																[(ngModel)]="campaignAccess.formBuilder"
-																[ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="campaignAccess.formBuilder" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Page</th>
-														<td><input type="checkbox"
-																[(ngModel)]="campaignAccess.landingPage"
-																[ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPage" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="col">Page Campaign</th>
-														<td><input type="checkbox"
-																[(ngModel)]="campaignAccess.landingPageCampaign"
-																[ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 
 													<tr *ngIf="campaignAccess?.shareLeads">
 														<th scope="col">One-Click Launch</th>
 														<td>
-															<input type="checkbox"
-																[(ngModel)]="campaignAccess.oneClickLaunch"
-																[ngModelOptions]="{standalone: true}">
+															<input type="checkbox" [(ngModel)]="campaignAccess.oneClickLaunch" [ngModelOptions]="{standalone: true}">
 														</td>
 													</tr>
 													<tr>
 														<th scope="col">Partner Template Opened Tracking Analytics</th>
-														<td><input type="checkbox"
-																[(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics"
-																[ngModelOptions]="{standalone: true}"></td>
+														<td><input type="checkbox" [(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics" [ngModelOptions]="{standalone: true}"></td>
 													</tr>
 													<tr>
 														<th scope="row">SSO Enabled</th>
 														<td class="pt0">
 															<app-custom-ui-switch [customSwitch]="campaignAccess.ssoEnabled" (customUiSwitchEventEmitter)="setSSOValue($event)"></app-custom-ui-switch>
+														</td>
+													</tr>
+													<!--Refer Vendor-->
+													<tr>
+														<th scope="row">{{properties?.inviteAVendor}}</th>
+														<td class="pt0">
+															<app-custom-ui-switch [customSwitch]="campaignAccess.referVendor" (customUiSwitchEventEmitter)="setReferVendorValue($event)"></app-custom-ui-switch>
 														</td>
 													</tr>
 												</ng-container>

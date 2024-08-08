@@ -1,5 +1,10 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import "rxjs/add/observable/of";
+import { tap} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import {  FormControl } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../services/user.service';
 import { SocialService } from '../../social/services/social.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -10,21 +15,15 @@ import { Roles } from '../../core/models/roles';
 import { Properties } from '../../common/models/properties';
 import { CustomResponse } from '../../common/models/custom-response';
 import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
-import { RegularExpressions } from '../../common/models/regular-expressions';
 import { DashboardService } from "../../dashboard/dashboard.service";
-import { FormGroup, FormBuilder, Validators, FormControl, NgModel } from '@angular/forms';
-declare var $, CKEDITOR, ckInstance: any;
 import { TagInputComponent as SourceTagInput } from 'ngx-chips';
-import "rxjs/add/observable/of";
-import { tap, filter } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { LEAD_CONSTANTS } from 'app/constants/lead.constants';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
 import { IntegrationService } from '../services/integration.service';
+declare var $:any, CKEDITOR:any;
 
 @Component({
   selector: 'app-topnavbar',
@@ -78,10 +77,10 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
 
   isScrolled: boolean = false;
   isRegisterDealEnabled:boolean = true;
+  isReferVendorOptionEnabledForVanity = false;
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    // Adjust this value according to when you want the color change to occur
     this.isScrolled = scrollPosition > 100;
   }
 
@@ -91,7 +90,6 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
     private vanityServiceURL: VanityURLService, private integrationService: IntegrationService) {
     try {
       if (this.authenticationService.isLocalHost() || this.authenticationService.isQADomain()) {
-        // this.connectToWebSocket();
       }
       this.isLoggedInFromAdminSection = this.utilService.isLoggedInFromAdminPortal();
       this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
@@ -116,7 +114,6 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
       }
       if (userName != undefined) {
         this.sourceType = this.authenticationService.getSource();
-
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
           this.refService.topNavbarUserService = true;
           this.utilService.topnavBareLoading = true;
@@ -308,10 +305,22 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
       this.getUnreadNotificationsCount();
       this.getRoles();
       this.isAddedByVendor();
-      //this.getTopNavigationColor(this.userId);
       this.guideHomeUrl = this.authenticationService.DOMAIN_URL + 'home/help/guides';
       this.getVendorRegisterDealValue();
+      this.getReferVendorOption();
     } catch (error) { this.logger.error('error' + error); }
+  }
+  getReferVendorOption() {
+    if(this.vanityLoginDto.vanityUrlFilter){
+      this.dashboardService.isReferVendorOptionEnabled(this.vanityLoginDto).subscribe(
+        response=>{
+            this.isReferVendorOptionEnabledForVanity = response.data;
+            alert(this.isReferVendorOptionEnabledForVanity);
+        },error=>{
+          this.isReferVendorOptionEnabledForVanity = false;
+        });
+    }
+   
   }
   getDashboardType() {
     this.userService.getDashboardType().

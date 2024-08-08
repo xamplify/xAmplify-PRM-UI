@@ -1844,8 +1844,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.campaignAccess.salesEnablement = false;
             this.campaignAccess.dataShare = false;
             this.campaignAccess.oneClickLaunch = false;
-          }else if(this.vendorTier){
-              this.campaignAccess.shareLeads = false;
+            this.campaignAccess.referVendor = false;
+            this.campaignAccess.ssoEnabled = false;
           }else if(this.marketing){
               this.campaignAccess.loginAsPartner = false;
               this.campaignAccess.shareWhiteLabeledContent = false;
@@ -1965,6 +1965,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.supportEmailIdDivClass = this.refService.successClass;
         this.supportEmailIdErrorMessage = "";
         this.enableOrDisableButton();
+    }
+
+    setReferVendorValue(event:boolean){
+        this.campaignAccess.referVendor = event;
     }
   
 }
