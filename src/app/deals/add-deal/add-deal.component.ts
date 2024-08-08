@@ -25,6 +25,7 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { DEAL_CONSTANTS } from 'app/constants/deal.constants';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 declare var $: any, swal: any;
 
 
@@ -154,6 +155,7 @@ export class AddDealComponent implements OnInit {
   isCommentAndHistoryCollapsed = false;
   editTextArea = false;
   isDealDetailsTabDisplayed: boolean = true;
+  isDealForAndContactInfoDivCenterAligned = false;
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -261,7 +263,6 @@ export class AddDealComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             this.deal.createdForCompanyId = data.data;
-            //this.isSalesForceEnabled();
             this.getActiveCRMDetails();
           }
         },
@@ -284,7 +285,6 @@ export class AddDealComponent implements OnInit {
         this.propertiesQuestions.push(property);
         if (property.value == null || property.value.length == 0) {
           property.error = true;
-          //property.class = this.errorClass;
         }
 
       });
@@ -588,6 +588,7 @@ export class AddDealComponent implements OnInit {
   }
 
   onChangeCreatedFor() {
+    this.isDealForAndContactInfoDivCenterAligned = false;
     this.holdCreatedForCompanyId = this.deal.createdForCompanyId;
     if (this.deal.createdForCompanyId > 0) {
       let vendorCompany;
@@ -1273,6 +1274,15 @@ export class AddDealComponent implements OnInit {
         response => {
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
+            /***Added By Sravan On 08/08/2024****/
+            if(!this.preview){
+              let showDealPipeline = this.activeCRMDetails['showDealPipeline'];
+              let showDealPipelineStage = this.activeCRMDetails['showDealPipelineStage'];
+              this.isDealForAndContactInfoDivCenterAligned = !showDealPipeline && !showDealPipelineStage && !this.preview 
+                && this.activeCRMDetails['dealFormColumnLayout']==XAMPLIFY_CONSTANTS.singleColumnLayout;
+            }
+
+
             if (this.activeCRMDetails.hasCustomForm
               && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
                 || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type)) {

@@ -154,15 +154,26 @@ export class SfDealComponent implements OnInit {
         this.formHeaderClass = "col-md-6 col-lg-6 col-md-6 col-xs-6 col-md-offset-3";
         this.formGroupClass = "form-group col-md-6 col-lg-6 col-md-6 col-xs-6 col-md-offset-3 text-center";
         this.formLabelGroupClass = "control-label float-left";
-        let showLeadPipeline = this.activeCRM['showLeadPipeline'];
-        let showLeadPipelineStage = this.activeCRM['showLeadPipelineStage'];
-        let isLeadForDivCenterAligned = !showLeadPipeline && !showLeadPipelineStage;
-        if (isLeadForDivCenterAligned) {
-          this.formGroupClass = "form-group col-xs-12 col-sm-12 col-md-6 col-lg-12 pl0";
-        } else {
-          this.formHeaderClass = "col-sm-12 col-xs-12 pl0 mb_pr0 px-0-19";
-        }
+        this.updateDivClassesByIntegrationSettings();
       }
+    }
+  }
+
+  private updateDivClassesByIntegrationSettings() {
+    let isLeadForOrDealForDivCenterAligned = false;
+    if (this.opportunityType === 'LEAD') {
+      let showLeadPipeline = this.activeCRM['showLeadPipeline'];
+      let showLeadPipelineStage = this.activeCRM['showLeadPipelineStage'];
+      isLeadForOrDealForDivCenterAligned = !showLeadPipeline && !showLeadPipelineStage;
+    } else {
+      let showDealPipeLine = this.activeCRM['showDealPipeline'];
+      let showDealPipelineStage = this.activeCRM['showDealPipelineStage'];
+      isLeadForOrDealForDivCenterAligned = !showDealPipeLine && !showDealPipelineStage;
+    }
+    if (isLeadForOrDealForDivCenterAligned) {
+      this.formGroupClass = "form-group col-xs-12 col-sm-12 col-md-6 col-lg-12 pl0";
+    } else {
+      this.formHeaderClass = "col-sm-12 col-xs-12 pl0 mb_pr0 px-0-19";
     }
   }
 
