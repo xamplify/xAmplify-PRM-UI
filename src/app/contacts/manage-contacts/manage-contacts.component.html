@@ -520,6 +520,12 @@
                                                       <b>By:</b> {{contactList.uploadedBy}}
                                                    </span>
                                                 </h5>
+                                                <h5 class='mb0 moreipsis' *ngIf="contactList?.formList && contactList.sharedCompanyName">
+                                                   <span class='f-w-400' data-toggle="tooltip" data-placement="top"
+                                                      title="{{contactList?.sharedCompanyName}}">
+                                                      <b>For:</b> {{contactList.sharedCompanyName}}
+                                                   </span>
+                                                </h5>
                                                 <h5 class="mb0 moreipsis" style="padding: 0px;">
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList?.associatedCompany}}"
@@ -867,6 +873,12 @@
                                        data-placement="top" title="{{contactList.uploadedBy}}">
                                        <span>
                                           <b>By:</b> {{contactList.uploadedBy}}</span>
+                                    </h6>
+                                    <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip"
+                                       data-placement="top" title="{{contactList.sharedCompanyName}}"
+                                       *ngIf="contactList?.formList && contactList.sharedCompanyName" >
+                                       <span>
+                                          <b>For:</b> {{contactList.sharedCompanyName}}</span>
                                     </h6>
                                     <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip"
                                        data-placement="top" title="{{contactList.companyName}}"
