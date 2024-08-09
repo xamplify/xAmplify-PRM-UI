@@ -26,15 +26,15 @@
              <div class="row">
                <div class="page-toolbar col-xs-12">
                 <!--All/My Partners-->
-                <div  class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0">
+                <div  class="col-xs-12 col-sm-6 col-md-6 col-lg-6 p0">
                   <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany && isPublished"
                   (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                 </div>
                 <!--Search / Sort / Refresh-->
-                <div  class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0">
+                <div  class="col-xs-12 col-sm-6 col-md-6 col-lg-6 p0">
                   <div class="btn-group pull-right">
                     <div class="d-flex">
-                      <div class="inputs mDamTop alignline-m-flex float-right">
+                      <div class="inputs mDamTop alignline-m-flex float-right tflex_inline">
                           <!--Refresh-->
                           <a class="close-circle ref-mar"  (click)="refreshList()" data-toggle="tooltip" data-placement="bottom" title="Refresh">
                             <i class="fa fa-refresh" aria-hidden="true"></i>
