@@ -13,19 +13,19 @@
   </div>
 
   <!--CHATGPT ICON-->
-  <div *ngIf="isLocalHost" class="chatgpt-card override" data-toggle="modal" data-target="#myModal">
+  <div *ngIf="isLocalHost && isChatGptIconDisplayed && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="chatgpt-card override" data-toggle="modal" data-target="#xAmplifyChatGPTModal">
     <a class="javascript:void(0)"><img src="../assets/images/chatgpt.svg" height="32px" width="32px"></a>
   </div>
   <!--ICON END -->
   
-  <!-- modal poup start -->
-  <div class="modal fade right" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <!--ChatGPT Modal-->
+  <div *ngIf="isLocalHost && isChatGptIconDisplayed && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" aria-labelledby="xAmplifyChatGPTModalLabel">
     <div class="modal-dialog w85-per" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close"><i
               class="fa fa-times"></i></button>
-          <h4 class="modal-title text-center">chatbox</h4>
+          <h4 class="modal-title text-center">xAmplify AI</h4>
         </div>
         <div class="modal-body">
           <div classs="row">
@@ -65,7 +65,6 @@
                   </div>
                   <!-- End -->
                 </div>
-                 <!-- upload file start -->
                 <div class="sticky_btn">
                   <div class="upload_files">
                     <button class="para_btn btn btn-primary" type="button">Paraphrase</button>
