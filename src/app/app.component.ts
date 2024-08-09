@@ -32,10 +32,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   xamplifygif = "assets/images/xamplify-icon.gif";
   socket;
   numberOfOnlineUsers: number;
-   
+  isLocalHost = false;
 constructor(private versionCheckService:VersionCheckService,private idle: Idle, private keepalive: Keepalive,public userService: UserService,
   public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService,
    private router: Router,private utilService:UtilService) {
+    this.isLocalHost = this.authenticationService.isLocalHost();
     //this.socket = io();
       //this.checkIdleState(idle,keepalive);
     this.addLoaderForAuthGuardService();
@@ -263,7 +264,6 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
   
       resetIdleState() {
         this.idle.watch();
-        //xthis.idleState = 'Started.';
         this.timedOut = false;
       }
 
