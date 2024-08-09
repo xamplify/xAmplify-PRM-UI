@@ -315,7 +315,6 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
       this.dashboardService.isReferVendorOptionEnabled(this.vanityLoginDto).subscribe(
         response=>{
             this.isReferVendorOptionEnabledForVanity = response.data;
-            alert(this.isReferVendorOptionEnabledForVanity);
         },error=>{
           this.isReferVendorOptionEnabledForVanity = false;
         });
