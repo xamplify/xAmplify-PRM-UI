@@ -117,54 +117,11 @@
 
 										</div>
 										<div class="col-md-12" style="text-align: center;padding-top:16px;">
-											<p style="color:#949090;"> upload 2:1 ratio logo only</p>
+											<p style="color:#949090;">Upload 2:1 ratio logo only</p>
 										</div>
-										<!-- <hr class="divider" /> -->
 										<div class="clearfix"></div>
-										<!-- <section class="percentage-circle"
-											style="display: grid;    margin: 0px 0 10px 0px;">
-											<svg width="120" height="100" viewBox="0 0 120 120"
-												style="transform: rotate(-90deg)">
-												<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
-													stroke-width="5" />
-												<circle cx="60" cy="60" r="54" fill="none" stroke-width="5"
-													stroke="#00a6e8" stroke-dasharray="339.292006588"
-													[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - profileCompleted/100)}" />
-											</svg>
-											<h2 class="percentage-value" style="margin: -67px 0 0 0;">{{profileCompleted}}%</h2>
-										</section>
-										<h5
-											style="margin-top: -55px; font-weight: 400; margin-bottom: 3em;">complete</h5> -->
-										<!-- <ng-container *ngIf="!isFromAdminPanel">
-										<h4
-											[title]="authenticationService.user.firstName+authenticationService.user.lastName"
-											class="control-label">
-											{{authenticationService.user.firstName | slice:0:15}}<span
-												*ngIf="authenticationService.user.firstName?.length>15">...</span>&nbsp;{{authenticationService.user.lastName
-											| slice:0:10}}<span
-												*ngIf="authenticationService.user.lastName?.length>10">..</span>
-										</h4>
-										<h5 class="responsive-screen-wordwrap">{{authenticationService.user.emailId}}</h5>
-										</ng-container> -->
-										<!-- modal pop up-->
-
-										<!-- <ng-container *ngIf="isFromAdminPanel">
-										<h4 [title]="companyProfile.firstName+companyProfile.lastName"
-											class="control-label">
-											{{companyProfile.firstName | slice:0:15}}<span
-												*ngIf="companyProfile.firstName?.length>15">...</span>&nbsp;{{companyProfile.lastName
-											| slice:0:10}}<span
-												*ngIf="companyProfile.lastName?.length>10">..</span>
-										</h4>
-										<h5 class="responsive-screen-wordwrap">{{companyProfile.userEmailId}}</h5>
-										</ng-container> -->
-
-
-
 										<!-- Fav Icon -->
-										<!-- *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" removed this condition-->
-										<div
-											*ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
+										<div *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
 											<hr class="divider" />
 											<label class="control-label">Upload Fav Icon</label>
 											<div class="profile-image-wrapper dotted-image-border fav-icon-image-profile-wrapper"

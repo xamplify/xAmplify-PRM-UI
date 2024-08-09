@@ -311,9 +311,7 @@
                                             </a>
                                         </li>
                                         <!--Integrations-->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
-                                                authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() ||
-                                                authenticationService.superiorRole != 'Partner'">
+                                        <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}"
                                                 (click)="activateTab('integrations');clearCustomResponse()">
                                                 {{properties.integrations}}
