@@ -91,12 +91,13 @@ export class CompanyProfileService {
             let formData: FormData = new FormData();
             formData.append('favIconFile', file, file.name);
             let headers = new Headers();
-            //headers.append('Accept', 'multipart/form-data');
             let options = new RequestOptions({ headers: headers });
             const url = this.URL + "company-profile/saveFavIcon/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
             return this.http.post(url, formData, options)
                 .map(this.extractData)
                 .catch(this.handleError);
+        }else{
+            console.error("Error In uploadFavIconFile() from company-profile-service.ts");
         }
     }
 

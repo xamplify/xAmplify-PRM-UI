@@ -1731,7 +1731,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     processFavIconFile(event: any){
         const file:File = event.target.files[0];
         if(file){
+            this.isLoading = true;
             const isSupportfile = file.type;
+            console.log(file.type);
             if (isSupportfile === 'image/x-icon') {
                 this.errorUploadCropper = false;
                 this.imageChangedEvent = event;
@@ -1739,16 +1741,24 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                   if(result.statusCode === 200){
                       this.companyProfile.favIconLogoPath = result.data;
                       this.companyFavIconPath = result.data;
+                  }else{
+                    this.refService.showSweetAlertErrorMessage("Server is not responding.");
                   }
+                  this.isLoading = false;
               }, error => {
-                  console.log(error);
+                this.refService.showSweetAlertErrorMessage("Unable to upload the ico file. Please try again.");
+                this.isLoading = false;
               });
             } else {
               this.errorUploadCropper = true;
               this.showCropper = false;
+              this.refService.showSweetAlertErrorMessage("Uploaded File Type :"+file.type+" is not supported");
+              this.isLoading = true;
             }       
             this.closeModal(); 
-        }        
+        } else{
+            this.refService.showSweetAlertErrorMessage("Unable to read the image file");
+        }       
     }
 
     openFavIconFileId(){
