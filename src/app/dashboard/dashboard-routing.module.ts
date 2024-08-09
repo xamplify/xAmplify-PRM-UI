@@ -36,6 +36,7 @@ const routes: Routes = [
   { path: "vanity/:vendorCompanyProfileName", component: DashboardAnalyticsComponent },
   { path: "table_advance", component: TableAdvanceComponent },
   { path: "myprofile", component: MyProfileComponent },
+  { path: "myprofile/:selectedMenuOption", component: MyProfileComponent },
   { path: "customskin", component: CustomSkinComponent },
   { path: "views_report", component: ViewsReportComponent },
   { path: "extrafaq", component: ExtraFaqComponent },
