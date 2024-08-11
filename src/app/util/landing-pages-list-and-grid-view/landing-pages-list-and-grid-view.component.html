@@ -395,6 +395,14 @@
                             <li class="filter" (click)="showAllLandingPages('PRIVATE',6)"
                                 [class.landing-page-selected]="6 == selectedLandingPageTypeIndex">Private</li>
                         </ng-container>
+                        <ng-container *ngIf="isMasterLandingPages || vendorJourney">
+                            <li class="filter" (click)="showAllLandingPages('All',0)"
+                                [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>ALL</li>
+                            <li class="filter" (click)="showAllLandingPages('REGULAR',1)"
+                                [class.landing-page-selected]="1 == selectedLandingPageTypeIndex" translate>REGULAR</li>
+                            <li class="filter" (click)="showAllLandingPages('DEFAULT',2)"
+                                [class.landing-page-selected]="2 == selectedLandingPageTypeIndex" translate>DEFAULT</li>
+                        </ng-container>
                     </ul>
                 </div>
             </div>
@@ -463,14 +471,13 @@
 
                         <div class="portlet-input input-inline input-small" style="width: 198px !important;">
                             <div class="input-icon right" style="position: relative;right: -5px;">
-                                <input type="text" autocomplete="off" id="sort-text" class="form-control"
-                                    [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                                    placeholder="Search for a page" (keypress)="eventHandler($event.keyCode)">
-                                <button class="glyphicon glyphicon-remove search-box-item-clear"
-                                    *ngIf="sortOption.searchKey"
+                                <input type="text" autocomplete="off" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                                    [ngModelOptions]="{standalone: true}" placeholder="Search for a page"
+                                    (keypress)="eventHandler($event.keyCode)">
+                                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
                                     (click)="sortOption.searchKey='';searchLandingPages();"></button>
-                                <button type="submit" class="search-box-item-click" (click)="searchLandingPages()"><i
-                                        class="fa fa-search" aria-hidden="true"></i></button>
+                                <button type="submit" class="search-box-item-click" (click)="searchLandingPages()"><i class="fa fa-search"
+                                        aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
