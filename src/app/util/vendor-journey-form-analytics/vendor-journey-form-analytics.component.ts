@@ -50,6 +50,8 @@ export class VendorJourneyFormAnalyticsComponent implements OnInit {
   campaignPartnerFormAnalyticsDownload: boolean;
   @Input() isVendorJourney: boolean;
   @Input() isMasterLandingPage: boolean;
+  @Input() isMasterLandingPageAnalytics:boolean;
+  @Input() masterLandingPageId:number;
   analyticsObject:any={};
 
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
@@ -71,9 +73,13 @@ export class VendorJourneyFormAnalyticsComponent implements OnInit {
           //this.partnerId = this.importedObject['partnerId'];
           //this.title = this.importedObject['title'];
           
-              this.formAnalyticsDownload = true;
+        this.formAnalyticsDownload = true;
           
-          this.listSubmittedData(this.pagination);
+        if(this.isMasterLandingPageAnalytics){
+            this.listPageAnalyticsSubmittedData(this.pagination);
+        }else{
+            this.listSubmittedData(this.pagination);
+        }
       }
 
   }
@@ -82,7 +88,7 @@ export class VendorJourneyFormAnalyticsComponent implements OnInit {
   listSubmittedData(pagination: Pagination) {
     pagination.searchKey = this.searchKey;
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.formService.getVendorJourneyFormAnalytics(pagination, this.alias, false).subscribe(
+    this.formService.getVendorJourneyFormAnalytics(pagination, this.alias).subscribe(
         (response: any) => {
             const data = response.data;
             this.isTotalLeadsData = this.pagination.totalLeads;
@@ -106,8 +112,14 @@ search() {
 }
 
 viewLandingPageFormAnalytics(landingPage:any,selectedIndex:number){
-  this.analyticsObject['formAlias'] = this.importedObject['formAlias'];
-  this.analyticsObject['masterLandingPageId'] = landingPage.partnerMasterLandingPageId;
+  if(this.isMasterLandingPageAnalytics){
+    this.analyticsObject['formAlias'] = landingPage.vendorFormAlias;
+    this.analyticsObject['masterLandingPageId'] = this.masterLandingPageId;
+    this.analyticsObject['vendorLandingPageId'] = landingPage.vendorLandingPageId;
+  }else{
+    this.analyticsObject['formAlias'] = this.importedObject['formAlias'];
+    this.analyticsObject['masterLandingPageId'] = landingPage.partnerMasterLandingPageId;
+  }
   
   $.each(this.pagination.pagedItems, function (index:number, row:any) {
       if (selectedIndex != index) {
@@ -123,6 +135,28 @@ viewLandingPageFormAnalytics(landingPage:any,selectedIndex:number){
   } else {
       $('#folder-row-' + selectedIndex).css("background-color", "#fff");
   }
+}
+
+listPageAnalyticsSubmittedData(pagination: Pagination) {
+    pagination.searchKey = this.searchKey;
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.formService.getVendorJourneyFormAnalyticsByMasterLandingPage(pagination, this.masterLandingPageId).subscribe(
+        (response: any) => {
+            const data = response.data;
+            this.isTotalLeadsData = this.pagination.totalLeads;
+            this.isTotalAttendees = this.pagination.totalAttendees;
+            this.statusCode = response.statusCode;
+            if (response.statusCode == 200) {
+                this.title = data.formName;
+                this.formDataRows = data.submittedData;
+                pagination.totalRecords = data.totalRecords;
+                pagination = this.pagerService.getPagedItems(pagination, this.formDataRows);
+            } else {
+                this.referenceService.goToPageNotFound();
+            }
+            this.referenceService.loading(this.httpRequestLoader, false);
+        },
+        (error: any) => { this.logger.errorPage(error); });
 }
 
 }
