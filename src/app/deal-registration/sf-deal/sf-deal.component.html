@@ -243,7 +243,7 @@
         </ng-container>
       </ng-container>
       <!-- ---------------------------DropDown Menu----------------------------- -->
-      <ng-container *ngIf="columnInfo.labelType=='select' && !columnInfo.hideFieldInfo">
+      <ng-container *ngIf="columnInfo.labelType=='select'">
         <select class="form-control" [(ngModel)]="columnInfo.value" [disabled]="isVendor || isPreview || !(columnInfo?.dropDownChoices?.length > 0) || (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany))"
           (ngModelChange)="selectOnChangeEvent(columnInfo)">
           <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [ngValue]="dropDownValue.labelId">
