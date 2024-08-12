@@ -200,7 +200,7 @@
         </div>
       </div>
 
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="authenticationService?.module?.isOrgAdmin || authenticationService?.module?.isMarketing || authenticationService?.module?.isOrgAdminSuperVisor 
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="authenticationService?.module?.isOrgAdmin || authenticationService?.module?.isMarketing || authenticationService?.isOrgAdminSuperVisor 
       || (authenticationService?.module?.isMarketingTeamMember && authenticationService?.module?.adminOrSuperVisor)">
         <div class="portlet light mb-2" style="padding: 0px !important;">
           <div class="portlet-title leads-bgcolor mb0">
