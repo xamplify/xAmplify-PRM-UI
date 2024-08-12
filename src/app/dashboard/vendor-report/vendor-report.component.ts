@@ -245,4 +245,14 @@ export class VendorReportComponent implements OnInit {
    
    } 
 
+   copyVendorReportEmailAddress(inputElement:any,index:number){
+    $(".success").hide();
+    $('#copied-vendor-report-users-email-address-' + index).hide();
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copied-vendor-report-users-email-address-' + index).show(600);
+}
+
+
 }

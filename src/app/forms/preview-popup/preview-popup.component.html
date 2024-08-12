@@ -117,26 +117,18 @@
                                             <td [hidden]="!showEmbedLink || authenticationService.isShowForms">
                                                 <div style="display:flex">
                                                     <span>
-                                                        <textarea id="text-area" class="video abjusttextarea-width"
-                                                            rows="1" cols="50" readonly="readonly" spellcheck="false"
-                                                            #iframeUrlInput>{{form.embedUrl}}</textarea>
+                                                        <textarea id="text-area" class="video abjusttextarea-width" rows="1" cols="50" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
                                                     </span>
                                                     <span class="modal-icon cmif ml10" id="cmif-{{i}}">
-                                                        <a class="custom-icon"
-                                                            [hidden]="authenticationService.isShowForms"
-                                                            data-toggle="tooltip" data-placement="top" title="Copy"
-                                                            (click)="copyInputMessage(iframeUrlInput,'Embed Link',i)">
-                                                            <i class="fa fa-copy IconCustomization campaignViewIcon"
-                                                                aria-hidden="true"></i>
+                                                        <a class="custom-icon" [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(iframeUrlInput,'Embed Link',i)">
+                                                            <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
                                                             <div class="clickicons"></div>
                                                         </a>
                                                     </span>
                                                 </div>
                                                 <div>
-                                                    <span class="success" id="embed-copied-message-{{i}}"
-                                                        style="display:none;">
-                                                        <strong>Embed link copied successfully<i class="fa fa-check"
-                                                                aria-hidden="true"></i></strong>
+                                                    <span class="success" id="embed-copied-message-{{i}}" style="display:none;">
+                                                        <strong>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
                                                     </span>
                                                 </div>
                                             </td>

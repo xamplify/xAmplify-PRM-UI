@@ -21,7 +21,7 @@
                     </select>
                   </div>
                 </div>
-                 <!--Search Input && Refresh Icon-->
+                 <!--Search Input-->
                  <div class="col-xs-12  col-sm-12 col-md-6 col-lg-6">
                   <div class="input-icon right mDamSearch rSearch display-inline-box" id="alignline-m-serch">
                     <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search"
@@ -52,11 +52,14 @@
                   </thead>
                   <tbody>
                     <ng-container *ngFor="let report of vendorsDetails;let i = index">
-                      <!-- this div for ngFor -->
                       <tr (click)="navigateToDashboardStats(report)" class="highletedRow">
                         <td>
-                          <app-user-info [userInfo]="report">
-                          </app-user-info>
+                          <app-user-info [userInfo]="report"></app-user-info>
+                          <input type="text" class="form-control"  readonly="readonly" value="{{report?.emailId}}" #vendorReportEmailAddressText><br>
+                           <button class="btn-xs primary" (click)="$event.stopPropagation();copyVendorReportEmailAddress(vendorReportEmailAddressText,i)">Copy</button>
+                           <span id="copied-vendor-report-users-email-address-{{i}}" class="success" style="display:none;">
+                            <strong>Email Address copied successfully.<i class="fa fa-check" aria-hidden="true"></i></strong>
+                          </span>
                         </td>
                         <td>{{report.companyName}}</td>
                         <td>
