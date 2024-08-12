@@ -39,14 +39,14 @@
     <ul class="page-breadcrumb">
        <!--Approved Users-->
       <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#all-approved-users', name:SUPER_ADMIN_MODULE_CONTSTANTS.allApprovedUsers}"></ng-template>
+      <!--Vendor Report-->
+      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#vendor-report', name:SUPER_ADMIN_MODULE_CONTSTANTS.vendorReport}"></ng-template>
       <!--Processing User Lists-->
       <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#processing-user-lists', name:SUPER_ADMIN_MODULE_CONTSTANTS.processingUserLists}"></ng-template>
       <!--Demo Requests-->
       <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#demo-requests', name:SUPER_ADMIN_MODULE_CONTSTANTS.demoRequests}"></ng-template>
       <!--Top 10-->
       <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#top10-registered-and-logged-in-users', name:SUPER_ADMIN_MODULE_CONTSTANTS.top10recentRegisteredAndLoggedInUsers}"></ng-template>
-      <!--Vendor Report-->
-      <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#vendor-report', name:SUPER_ADMIN_MODULE_CONTSTANTS.vendorReport}"></ng-template>
       <!--Partner Companies-->
       <ng-template [ngTemplateOutlet]="listItemTemplateButton" [ngTemplateOutletContext]="{id:'#partner-companies', name:SUPER_ADMIN_MODULE_CONTSTANTS.partnerCompanies}"></ng-template>
       <!--Vendor Invitation Reports-->
@@ -67,6 +67,8 @@
     <button class="btn btn-success full-width uppercase-text" (click)="expandOrCollpase()"><span>Expand / Collapse All</span></button>
     <!--List All Users-->
     <app-list-all-users></app-list-all-users> 
+     <!---Vendor Report-->
+     <app-vendor-report></app-vendor-report>
     <!--Processing User Lists-->
     <app-processing-user-lists></app-processing-user-lists>
     <!--Demo Requests-->
@@ -86,8 +88,6 @@
         </div>
       </div>
     </section>
-    <!---Vendor Report-->
-    <app-vendor-report></app-vendor-report>
     <!-----------Partner Companies------->
     <app-admin-partner-companies></app-admin-partner-companies>
     <!------Vendor Invitation Reports-->

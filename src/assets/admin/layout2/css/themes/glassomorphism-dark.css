@@ -1745,7 +1745,7 @@ p.addhrtosvg {
 }
 .cardfotter-toggleon {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background: #2c2f33 !important;
+  background:  rgb(0 0 0 / 18%) !important;
 }
 /* design Manage Forms  Analytics table borders */
 table.table.table-allsideboders {
@@ -4111,7 +4111,23 @@ span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !im
 .lead-details-border{border: 2px solid rgba(255, 255, 255, 0.3 ) !important;}
 .page-bar.border_only_glass{border:1px solid #ffffff33 !important;}
 .asset_cross_align{top: 5px !important;right: 0px !important;}
-.card1, .sticky_btn{
+/* .card1, .sticky_btn{
   background: rgba(16 18 27 / 20%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  } */
+  .card1 {
+    padding: 0px !important;
+   background: rgba(16 18 27 / 20%) !important;
+   border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  .sticky_btn {
+    backdrop-filter: blur(10px);
+    background: rgba(16 18 27 / 20%) !important;
+    bottom: 0px;
+  }
+  .upload_files {
+    height: 55px !important;
+  }
+  .border_0 {
+    padding-top: 14px!important;
   }

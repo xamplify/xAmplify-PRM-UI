@@ -123,15 +123,19 @@ export class AccessAccountComponent implements OnInit {
     ngOnInit() {
         try {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            this.isPartnerSignUpPage = this.referenceService.getCurrentRouteUrl().indexOf("pSignUp")>-1;
+            this.isTeamMemberSignUpPage = this.referenceService.getCurrentRouteUrl().indexOf("tSignUp")>-1;
             if (currentUser != undefined) {
                 this.anotherUserLoggedIn = true;
-                this.customResponse = new CustomResponse('ERROR', "The user is currently logged in on this browser. To access this page, please log out or use another browser.", true );
+                if(this.isPartnerSignUpPage || this.isTeamMemberSignUpPage){
+                    this.customResponse = new CustomResponse('ERROR', "The user is currently logged in on this browser.please click on Logout button below.", true );
+                }else{
+                    this.customResponse = new CustomResponse('ERROR', "The user is currently logged in on this browser. To access this page, please log out or use another browser.", true );
+                }
             }else{
                 this.anotherUserLoggedIn = false;
                 this.mainLoader = true;
                 this.isActivateAccountPage = this.referenceService.getCurrentRouteUrl().indexOf("axAa")>-1;
-                this.isPartnerSignUpPage = this.referenceService.getCurrentRouteUrl().indexOf("pSignUp")>-1;
-                this.isTeamMemberSignUpPage = this.referenceService.getCurrentRouteUrl().indexOf("tSignUp")>-1;
                 /***XNFR-454*******/
                 if(this.isActivateAccountPage){
                     let alias = this.route.snapshot.params['alias']; 
@@ -527,6 +531,23 @@ export class AccessAccountComponent implements OnInit {
         this.anotherUserLoggedIn = false;
         this.teamMemberAccountCreated = false;
         this.userNotFound = false;
+    }
+
+    logoutAndReloadThePage(){
+        $("body").addClass("logout-loader");
+        this.authenticationService.logoutByUserId().subscribe(
+            reponse=>{
+                this.authenticationService.resetData();
+                this.authenticationService.access_token = null;
+                this.authenticationService.redirectUrl = null;
+                window.location.reload();
+            },error=>{
+                this.authenticationService.resetData();
+                this.authenticationService.access_token = null;
+                this.authenticationService.redirectUrl = null;
+                window.location.reload();
+            }
+          );
     }
 
 }

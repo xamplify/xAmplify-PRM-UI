@@ -344,4 +344,13 @@ export class ListAllUsersComponent implements OnInit {
 
 	}
 
+	copyApprovedUserEmailAddress(inputElement:any,index:number){
+		$(".success").hide();
+		$('#copied-apporved-users-email-address-' + index).hide();
+		inputElement.select();
+        document.execCommand('copy');
+        inputElement.setSelectionRange(0, 0);
+		$('#copied-apporved-users-email-address-' + index).show(600);
+	}
+
 }

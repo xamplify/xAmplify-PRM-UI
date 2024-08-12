@@ -113,9 +113,17 @@ export class FormService {
             .catch( this.handleError );
     }
 
-    getVendorJourneyFormAnalytics( pagination: Pagination,alias:string,campaignFormAnalytics:boolean): Observable<any> {
+    getVendorJourneyFormAnalytics( pagination: Pagination,alias:string): Observable<any> {
         let url = "";
                 url = this.URL + "vendorJourneyAnalytics/"+alias;
+        return this.http.post(url+"?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    getVendorJourneyFormAnalyticsByMasterLandingPage( pagination: Pagination,id:number): Observable<any> {
+        let url = "";
+                url = this.URL + "vendorJourneyAnalyticsByMasterLandingPage/"+id;
         return this.http.post(url+"?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );

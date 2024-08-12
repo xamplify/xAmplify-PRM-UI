@@ -96,6 +96,9 @@ export class VendorJourneyAnalyticsComponent implements OnInit {
           this.modulesDisplayType.isFolderListView = false;
           this.modulesDisplayType.isFolderGridView = false;
           this.listForms(this.pagination);
+          if(this.isMasterLandingPages){
+            this.exportObject['landingPageId']= this.vendorLandingPageId;
+          }
       }
   }
 
