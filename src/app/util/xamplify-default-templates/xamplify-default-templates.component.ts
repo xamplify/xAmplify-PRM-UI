@@ -113,109 +113,143 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         emailTemplate.jsonBody = jsonContent;
         emailTemplate.htmlBody = htmlContent;
         emailTemplate.userId = self.loggedInUserId;
-        if(!self.vendorJourney && !self.isMasterLandingPages){
-        if(!emailTemplate.subject){
-          swal( "", "Whoops! We are unable to save this template because subject line is empty", "error" );
-          return false;
+        let emailTemplateType = emailTemplate.typeInString;
+        let addLeadTemplate = "ADD_LEAD" == emailTemplateType;
+        let addDealTemplate = "ADD_DEAL" == emailTemplateType;
+        let requiredTags = [];
+        if (addLeadTemplate) {
+          requiredTags = [
+            '{{partnerModuleCustomName}}',
+            '{{partnerName}}',
+            '{{partnerCompany}}',
+            '{{leadName}}',
+            '{{leadAssociatedCampaign}}',
+            '{{leadStage}}',
+            '{{leadComment}}',
+          ];
+        } else if (addDealTemplate) {
+          requiredTags = [
+            '{{partnerModuleCustomName}}',
+            '{{partnerName}}',
+            '{{partnerCompany}}',
+            '{{leadName}}',
+            '{{leadCompany}}',
+            '{{dealDescription}}',
+            '{{dealAmount}}',
+            '{{dealStage}}',
+            '{{dealComment}}',
+          ];
         }
+        if (!self.vendorJourney && !self.isMasterLandingPages) {
+          if (!emailTemplate.subject) {
+            swal("", "Whoops! We are unable to save this template because subject line is empty", "error");
+            return false;
+          }
 
-      if(("JOIN_MY_TEAM"==emailTemplate['typeInString'] || "FORGOT_PASSWORD"==emailTemplate['typeInString'] || "ACCOUNT_ACTIVATION"==emailTemplate['typeInString']) && jsonContent.indexOf("_CUSTOMER_FULL_NAME") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error" );
-        return false;
-      }
-      if(("TRACK_PUBLISH"==emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH"==emailTemplate['typeInString'] || "ASSET_PUBLISH"==emailTemplate['typeInString'] || "SHARE_LEAD"==emailTemplate['typeInString'] || "ONE_CLICK_LAUNCH"==emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER"==emailTemplate['typeInString'] || "PAGE_CAMPAIGN_CONTACT"==emailTemplate['typeInString'] || "SOCIAL_CAMPAIGN"==emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN"==emailTemplate['typeInString']) && jsonContent.indexOf('{{customerFullName}}') < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag.", "error" );
-        return false;
-      }
-      if("JOIN_VENDOR_COMPANY"==emailTemplate['typeInString'] && jsonContent.indexOf("{{PARTNER_NAME}}") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag.", "error" );
-        return false;
-      }
-      if("TRACK_PUBLISH"==emailTemplate['typeInString'] && jsonContent.indexOf("{{trackTitle}}") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '{{trackTitle}}' tag.", "error" );
-        return false;
-      }
-      if("PLAYBOOK_PUBLISH"==emailTemplate['typeInString'] && jsonContent.indexOf("{{playbookTitle}}") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '{{playbookTitle}}' tag.", "error" );
-        return false;
-      }
-      if("ASSET_PUBLISH"==emailTemplate['typeInString'] && jsonContent.indexOf("{{assetName}}") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '{{assetName}}' tag.", "error" );
-        return false;
-      }
-      if("SHARE_LEAD"==emailTemplate['typeInString'] && jsonContent.indexOf("{{shareLeadListName}}") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '{{shareLeadListName}}' tag.", "error" );
-        return false;
-      }
-      if("ONE_CLICK_LAUNCH"==emailTemplate['typeInString'] && jsonContent.indexOf("{{campaignName}}") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '{{campaignName}}' tag.", "error" );
-        return false;
-      }
-      if("ONE_CLICK_LAUNCH"==emailTemplate['typeInString'] && jsonContent.indexOf("{{campaignType}}") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '{{campaignType}}' tag.", "error" );
-        return false;
-      }
-      if("PAGE_CAMPAIGN_PARTNER"==emailTemplate['typeInString'] && jsonContent.indexOf("{{pageName}}") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '{{pageName}}' tag.", "error" );
-        return false;
-      }
-      if(("TRACK_PUBLISH"==emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH"==emailTemplate['typeInString']) && jsonContent.indexOf("{{publishedDate}}") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '{{publishedDate}}' tag.", "error" );
-        return false;
-      }
-      if(("ASSET_PUBLISH"==emailTemplate['typeInString'] || "SHARE_LEAD"==emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER"==emailTemplate['typeInString']) && jsonContent.indexOf("{{sharedDate}}") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '{{sharedDate}}' tag.", "error" );
-        return false;
-      }
-      if(("SOCIAL_CAMPAIGN"==emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN"==emailTemplate['typeInString']) && jsonContent.indexOf("{{socialStatusContent}}") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '{{socialStatusContent}}' tag.", "error" );
-        return false;
-      }
-      if(("TRACK_PUBLISH"==emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH"==emailTemplate['typeInString'] || "ASSET_PUBLISH"==emailTemplate['typeInString'] || "SHARE_LEAD"==emailTemplate['typeInString'] || "ONE_CLICK_LAUNCH"==emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER"==emailTemplate['typeInString'] || "PAGE_CAMPAIGN_CONTACT"==emailTemplate['typeInString'] || "SOCIAL_CAMPAIGN"==emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN"==emailTemplate['typeInString']) && jsonContent.indexOf('{{senderCompanyName}}') < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '{{senderCompanyName}}' tag.", "error" );
-        return false;
-      }
-      if(jsonContent.indexOf("<Vanity_Company_Logo_Href>") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.", "error" );
-        return false;
-      }
-      let emailTemplateType = emailTemplate.typeInString;
-      if(jsonContent.indexOf("<<LoginLink>>")<0 && "JOIN_MY_TEAM"==emailTemplateType){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'LoginLink' tag.", "error" );
-        return false;
-      }
+          if (("JOIN_MY_TEAM" == emailTemplate['typeInString'] || "FORGOT_PASSWORD" == emailTemplate['typeInString'] || "ACCOUNT_ACTIVATION" == emailTemplate['typeInString']) && jsonContent.indexOf("_CUSTOMER_FULL_NAME") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error");
+            return false;
+          }
+          if (("TRACK_PUBLISH" == emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH" == emailTemplate['typeInString'] || "ASSET_PUBLISH" == emailTemplate['typeInString'] || "SHARE_LEAD" == emailTemplate['typeInString'] || "ONE_CLICK_LAUNCH" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_CONTACT" == emailTemplate['typeInString'] || "SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || addLeadTemplate || addDealTemplate) && jsonContent.indexOf('{{customerFullName}}') < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag.", "error");
+            return false;
+          }
+          if ("JOIN_VENDOR_COMPANY" == emailTemplate['typeInString'] && jsonContent.indexOf("{{PARTNER_NAME}}") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag.", "error");
+            return false;
+          }
+          if ("TRACK_PUBLISH" == emailTemplate['typeInString'] && jsonContent.indexOf("{{trackTitle}}") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{trackTitle}}' tag.", "error");
+            return false;
+          }
+          if ("PLAYBOOK_PUBLISH" == emailTemplate['typeInString'] && jsonContent.indexOf("{{playbookTitle}}") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{playbookTitle}}' tag.", "error");
+            return false;
+          }
+          if ("ASSET_PUBLISH" == emailTemplate['typeInString'] && jsonContent.indexOf("{{assetName}}") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{assetName}}' tag.", "error");
+            return false;
+          }
+          if ("SHARE_LEAD" == emailTemplate['typeInString'] && jsonContent.indexOf("{{shareLeadListName}}") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{shareLeadListName}}' tag.", "error");
+            return false;
+          }
+          if ("ONE_CLICK_LAUNCH" == emailTemplate['typeInString'] && jsonContent.indexOf("{{campaignName}}") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{campaignName}}' tag.", "error");
+            return false;
+          }
+          if ("ONE_CLICK_LAUNCH" == emailTemplate['typeInString'] && jsonContent.indexOf("{{campaignType}}") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{campaignType}}' tag.", "error");
+            return false;
+          }
+          if ("PAGE_CAMPAIGN_PARTNER" == emailTemplate['typeInString'] && jsonContent.indexOf("{{pageName}}") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{pageName}}' tag.", "error");
+            return false;
+          }
+          if (("TRACK_PUBLISH" == emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH" == emailTemplate['typeInString']) && jsonContent.indexOf("{{publishedDate}}") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{publishedDate}}' tag.", "error");
+            return false;
+          }
+          if (("ASSET_PUBLISH" == emailTemplate['typeInString'] || "SHARE_LEAD" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER" == emailTemplate['typeInString']) && jsonContent.indexOf("{{sharedDate}}") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{sharedDate}}' tag.", "error");
+            return false;
+          }
+          if (("SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN" == emailTemplate['typeInString']) && jsonContent.indexOf("{{socialStatusContent}}") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{socialStatusContent}}' tag.", "error");
+            return false;
+          }
+          if (("TRACK_PUBLISH" == emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH" == emailTemplate['typeInString'] || "ASSET_PUBLISH" == emailTemplate['typeInString'] || "SHARE_LEAD" == emailTemplate['typeInString'] || "ONE_CLICK_LAUNCH" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_CONTACT" == emailTemplate['typeInString'] || "SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN" == emailTemplate['typeInString']) && jsonContent.indexOf('{{senderCompanyName}}') < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{senderCompanyName}}' tag.", "error");
+            return false;
+          }
+          if (jsonContent.indexOf("<Vanity_Company_Logo_Href>") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.", "error");
+            return false;
+          }
+          if (addDealTemplate || addLeadTemplate) {
+            for (let tag of requiredTags) {
+              if (jsonContent.indexOf(tag) < 0) {
+                swal("", `Whoops! We are unable to save this template because you deleted '${tag}' tag.`, "error");
+                return false;
+              }
+            }
+          }
+          if (jsonContent.indexOf("<<LoginLink>>") < 0 && "JOIN_MY_TEAM" == emailTemplateType) {
+            swal("", "Whoops! We are unable to save this template because you deleted 'LoginLink' tag.", "error");
+            return false;
+          }
 
-      if(jsonContent.indexOf("<login_url>")<0 && "JOIN_VENDOR_COMPANY"==emailTemplateType){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'login_url' tag.", "error" );
-        return false;
-      }
+          if (jsonContent.indexOf("<login_url>") < 0 && "JOIN_VENDOR_COMPANY" == emailTemplateType) {
+            swal("", "Whoops! We are unable to save this template because you deleted 'login_url' tag.", "error");
+            return false;
+          }
 
-      if(jsonContent.indexOf("pageLink")<0 && ("SOCIAL_CAMPAIGN"==emailTemplateType || "PAGE_CAMPAIGN_CONTACT"==emailTemplateType)){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'Button' tag.", "error" );
-        return false;
-      }
+          if (jsonContent.indexOf("pageLink") < 0 && ("SOCIAL_CAMPAIGN" == emailTemplateType || "PAGE_CAMPAIGN_CONTACT" == emailTemplateType || "ADD_DEAL" == emailTemplateType)) {
+            swal("", "Whoops! We are unable to save this template because you deleted 'Button' tag.", "error");
+            return false;
+          }
 
-      if("FORGOT_PASSWORD"==emailTemplateType){
-        var count = (jsonContent.match(/<Vanity_Company_Logo_Href>/g) || []).length;
-        let errorMessage = "";
-        if(jsonContent.indexOf('_TEMPORARY_PASSWORD')<0){
-          errorMessage=  "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag.";
-          swal( "", errorMessage, "error" );
-          return false;
-        }else if(count<2){
-          errorMessage = "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.";
-          swal( "", errorMessage, "error" );
-          return false;
+          if ("FORGOT_PASSWORD" == emailTemplateType) {
+            var count = (jsonContent.match(/<Vanity_Company_Logo_Href>/g) || []).length;
+            let errorMessage = "";
+            if (jsonContent.indexOf('_TEMPORARY_PASSWORD') < 0) {
+              errorMessage = "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag.";
+              swal("", errorMessage, "error");
+              return false;
+            } else if (count < 2) {
+              errorMessage = "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.";
+              swal("", errorMessage, "error");
+              return false;
+            }
+
+          }
+          if ("ACCOUNT_ACTIVATION" == emailTemplateType && jsonContent.indexOf('<VerifyEmailLink>') < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted 'VerifyEmailLink' tag.", "error");
+            return false;
+          }
+          self.updateTemplate(emailTemplate);
         }
-       
-      }
-      if("ACCOUNT_ACTIVATION"==emailTemplateType && jsonContent.indexOf('<VerifyEmailLink>')<0){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'VerifyEmailLink' tag.", "error" );
-        return false;
-      }
-      self.updateTemplate(emailTemplate);
-    } 
-   };
+      };
       
       let emailTemplateType = emailTemplate.typeInString
 
@@ -309,6 +343,30 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
         { name: 'Customer Full Name', value: '{{customerFullName}}' },
         { name: 'Social Status Content', value: '{{socialStatusContent}}' },
+        ];
+      }
+      if("ADD_LEAD"==emailTemplateType){
+        mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
+        { name: 'Partner Name', value: '{{partnerName}}' },
+        { name: 'Partner Company', value: '{{partnerCompany}}' },
+        { name: 'Lead Name', value: '{{leadName}}' },
+        { name: 'Associated Lead Campaign', value: '{{leadAssociatedCampaign}}' },
+        { name: 'Lead Stage', value: '{{leadStage}}' },
+        { name: 'Lead Comment', value: '{{leadComment}}' },
+        ];
+      }
+      if("ADD_DEAL"==emailTemplateType){
+        mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+          { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
+          { name: 'Partner Name', value: '{{partnerName}}' },
+          { name: 'Partner Company', value: '{{partnerCompany}}' },
+          { name: 'Lead Name', value: '{{leadName}}' },
+          { name: 'Lead Company', value: '{{leadCompany}}'},
+          { name: 'Deal Name', value: '{{dealDescription}}' },
+          { name: 'Deal Amount', value: '{{dealAmount}}' },
+          { name: 'Deal Stage', value: '{{dealStage}}' },
+          { name: 'Deal Comment', value: '{{dealComment}}' },
         ];
       }
       var beeUserId = "bee-"+emailTemplate.companyId;
