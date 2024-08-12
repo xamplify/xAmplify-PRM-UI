@@ -23,7 +23,7 @@
         <div class="row mr-3">
           <div class="col-sm-6 col-xs-12 px-10 pl0 mb_pr0">
             <!--Deal Details-->
-            <div class="panel-group" role="tablist" aria-multiselectable="true" *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany))) && isDealDetailsTabDisplayed">
+            <div class="panel-group" role="tablist" aria-multiselectable="true" *ngIf="!hideDealDetailsForSelfDeal && (!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany))) && isDealDetailsTabDisplayed">
               <div class="panel panel-default deal-bgcolor">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
@@ -37,7 +37,7 @@
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                     <div class="card-bgcolors h-260 pl0 pr0">
                       <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
-                        *ngIf="(!vanityLoginDto.vanityUrlFilter) && actionType === 'add' || actionType === 'edit' || (actionType === 'view' && !isVendorVersion)">
+                        *ngIf="!hideDealForInEditSelfDeal && ((!vanityLoginDto.vanityUrlFilter) && actionType === 'add' || actionType === 'edit' || (actionType === 'view' && !isVendorVersion))">
                         <label class="control-label">Deal For<span class="required"><strong>*</strong></span></label>
                         <select class="form-control" [(ngModel)]="deal.createdForCompanyId"
                           [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId"
@@ -390,8 +390,8 @@
             </div>
 
             <div *ngIf="!showCreatedByPipelineAndStageOnTop">
-              <div class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
-                <label class="control-label">Pipeline<span
+              <div *ngIf="activeCRMDetails?.showDealPipeline || showDefaultForm" class="form-group" [attr.class]="createdForPipelineId" style="margin-bottom: 20px">
+                <label class="control-label">{{vendorCompanyName}} Pipeline<span
                     class="required"><strong>*</strong></span></label>
                 <select class="form-control" [(ngModel)]="deal.createdForPipelineId"
                   [ngModelOptions]="{standalone: true}" placeholder="pipelineId" id="createdForPipelineId"
@@ -404,9 +404,9 @@
                 </select>
               </div>
 
-              <div class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
+              <div *ngIf="activeCRMDetails?.showDealPipelineStage || showDefaultForm" class="form-group" [attr.class]="createdForPipelineStageId" style="margin-bottom: 20px"
                 id="dealStageDiv">
-                <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
+                <label class="control-label">{{vendorCompanyName}} Stage<span class="required"><strong>*</strong></span></label>
                 <select class="form-control" [(ngModel)]="deal.createdForPipelineStageId"
                   [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId"
                   id="createdForPipelineStageId" [disabled]="preview || isCreatedForStageIdDisable"

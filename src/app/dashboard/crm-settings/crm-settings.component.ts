@@ -36,15 +36,22 @@ export class CrmSettingsComponent implements OnInit {
   isDealPipelineValid:boolean = false;
   isLeadPipelineStageValid:boolean = false;
   isDealPipelineStageValid:boolean = false;
-  showRegisterDeal:boolean = false;
+  dealByPartner:boolean = false;
   pipelineResponse: CustomResponse = new CustomResponse();
   showDealPipeLineCRMIntegrationMessage = "";
 	showDealPipeLineStageCRMIntegrationMessage = "";
 	showLeadPipeLineCRMIntegrationMessage = "";
 	showLeadPipeLineStageCRMIntegrationMessage = "";
-	showRegisterDealOffMessage = "";
-	showRegisterDealOnMessage = "";
+	showRegisterDealToPartnerOffMessage = "";
+	showRegisterDealToPartnerOnMessage = "";
   ngxLoading:boolean = false;
+  showRegisterDealForPartnerLeadsOffMessage: string = "";
+  showRegisterDealForPartnerLeadsOnMessage: string = "";
+  showRegisterDealToVendor:boolean = false;
+  dealByVendor:boolean ;
+  dealBySelfLead:boolean;
+  showRegisterDealToSelfLeadsOffMessage: string;
+  showRegisterDealToSelfLeadsOnMessage: string;
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -58,7 +65,9 @@ export class CrmSettingsComponent implements OnInit {
     this.showDealPipelineStage = this.integrationDetails.showDealPipelineStage;
     this.leadDescription = this.integrationDetails.leadDescription;
     this.dealDescription = this.integrationDetails.dealDescription;
-    this.showRegisterDeal = this.integrationDetails.showRegisterDeal;
+    this.dealByPartner = this.integrationDetails.dealByPartnerEnabled;
+    this.dealByVendor = this.integrationDetails.dealByVendorEnabled;
+    this.dealBySelfLead = this.integrationDetails.dealBySelfLeadEnabled;
     this.getLeadPipelines();
     this.getDealPipelines();
     if (!this.showLeadPipeline && !this.showDealPipeline 
@@ -75,8 +84,12 @@ export class CrmSettingsComponent implements OnInit {
     this.showDealPipeLineStageCRMIntegrationMessage = this.properties.showDealPipeLineStageCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
     this.showLeadPipeLineCRMIntegrationMessage = this.properties.showLeadPipeLineCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
     this.showLeadPipeLineStageCRMIntegrationMessage = this.properties.showLeadPipeLineStageCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
-    this.showRegisterDealOffMessage = this.properties.showRegisterDealOffMessage.replace(partnersMergeTag, partnerModuleCustomName);
-    this.showRegisterDealOnMessage = this.properties.showRegisterDealOnMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealToPartnerOffMessage = this.properties.showRegisterDealOffMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealToPartnerOnMessage = this.properties.showRegisterDealOnMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealForPartnerLeadsOffMessage = this.properties.showRegisterDealForPartnerLeadsOffMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealForPartnerLeadsOnMessage = this.properties.showRegisterDealForPartnerLeadsOnMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealToSelfLeadsOffMessage = this.properties.showRegisterDealToSelfLeadsOffMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealToSelfLeadsOnMessage = this.properties.showRegisterDealToSelfLeadsOnMessage.replace(partnersMergeTag, partnerModuleCustomName);
   }
 
   updateCRMSettings() {
@@ -86,7 +99,9 @@ export class CrmSettingsComponent implements OnInit {
     this.integrationDetails.showDealPipelineStage = this.showDealPipelineStage;
     this.integrationDetails.leadDescription = this.leadDescription;
     this.integrationDetails.dealDescription = this.dealDescription;
-    this.integrationDetails.showRegisterDeal = this.showRegisterDeal;
+    this.integrationDetails.dealByPartnerEnabled = this.dealByPartner;
+    this.integrationDetails.dealByVendorEnabled = this.dealByVendor;
+    this.integrationDetails.dealBySelfLeadEnabled = this.dealBySelfLead;
     if (this.integrationDetails.showLeadPipeline) {
       this.integrationDetails.leadPipelineId = 0;
     }
@@ -275,8 +290,22 @@ export class CrmSettingsComponent implements OnInit {
     }
   }
 
-  onChangeRegisterDeal(showRegisterDeal){
-    this.showRegisterDeal = showRegisterDeal;
+  onChangeRegisterDeal(dealByPartner){
+    if (dealByPartner) {
+      this.dealByVendor = false;
+    }
+    this.dealByPartner = dealByPartner;
+  }
+
+  onChangeVendorRegisterDeal(dealByVendor){
+    if (dealByVendor) {
+      this.dealByPartner = false;
+    }
+    this.dealByVendor = dealByVendor;
+  }
+
+  onChangeSelfRegisterDeal(dealBySelfLead) {
+    this.dealBySelfLead = dealBySelfLead;
   }
 
 }
