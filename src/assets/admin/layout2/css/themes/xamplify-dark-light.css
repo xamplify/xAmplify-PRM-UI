@@ -2602,7 +2602,10 @@ a.title.padding_bottom.text-color.content-bg.m0,
 .col-md-6.col-lg-6.track-title.text-color.content-bg.remove_unwanted_shadow,
 a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
 .asset_cross_align{top: 5px !important;right: -1px !important;}
-.card1, .sticky_btn{
-  background-color: #2b3c46 !important;
+.card1{
+  background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
+}
+.sticky_btn{
+  background-color: #22313a !important;
 }

@@ -4389,7 +4389,19 @@ span.btn.btn-primary.transition.text_pd5.txt_update {padding-top: 2px !important
 span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !important;border: 1px solid #026deb !important;}
 .track-selected{margin-right: 1px !important;}
 .asset_cross_align{top: 5px !important;right: 0px !important;}
-.card1, .sticky_btn{
-background: rgb(255 255 255 / 15%) !important;
-border: 1px solid rgb(255 255 255 / 35%);
+.card1 {
+  padding: 0px !important;
+  background: rgb(255 255 255 / 15%) !important;
+  border: 1px solid rgb(255 255 255 / 35%);
+}
+.sticky_btn {
+  backdrop-filter: blur(10px);
+  background-color: rgb(255 255 255 / 31%) !important;
+  bottom: 0px;
+}
+.upload_files {
+  height: 55px !important;
+}
+.border_0 {
+  padding-top: 14px!important;
 }
