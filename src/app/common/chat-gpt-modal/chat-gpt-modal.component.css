@@ -1,0 +1,177 @@
+
+
+.icon-s-w{
+  height:32px;
+   width:32px;
+}
+
+.svg-w-h{
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+}
+
+#router-loader {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: white;
+  }
+  
+  p {
+    display: inline-block;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 4em;
+    font-family: arial;
+    font-weight: 600;
+    transform: scale(.5);
+    color: #121212;
+    -webkit-text-stroke: 2px gray;
+  }
+  
+  
+  .chatgpt-card {
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    padding:2px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0px 1px 5px 2px #00000059;
+    z-index: 100001;
+  }
+  .card1 {
+    padding: 16px;
+    text-align: center;
+    background-color: #f4f4f5;
+    border-radius: 7px;
+    border: 1px solid #ddd;
+    height: 436px;
+    margin: 10px 0px;
+  }
+  .border_0 {
+    border: 0;
+    background-color: #f4f4f5;
+  }
+  .copy_text {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    position: absolute;
+    top: 40%;
+    margin-bottom: 20px;
+    gap: 12px;
+    transform: translateX(-50%);
+    left: 50%;
+    flex-wrap: nowrap;
+    width: auto;
+  }
+  .sample-text {
+    box-sizing: border-box;
+    flex-direction: row;
+    font-style: italic;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    padding: 10px;
+    width: 130px;
+    height: 74px;
+    cursor: pointer;
+  }
+  .sample-text:hover {
+    background-color: rgba(73, 149, 87, 0.04);
+  }
+  .copy_btns{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    background-color: transparent;
+    outline: 0;
+    margin: 0;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.75;
+    text-transform: uppercase;
+    color: #499557;
+    min-width: 64px;
+    border: 1px solid rgba(73, 149, 87, 0.5);
+    box-shadow: none !important;
+    text-transform: none;
+    border: 1px solid #308140;
+    padding: 0px;
+    border-radius: 8px;
+  }
+  .gap-12{
+  display: flex;
+  gap:12px
+  }
+  .sticky_btn {
+    position: sticky;
+    bottom: 5px;
+    z-index: 8;
+    background-color: #f4f4f5;
+  }
+  .para-phrase {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    flex-direction: row;
+    height: 45px;
+    justify-content: end;
+    align-items: center;
+    padding: 0px 22px;
+  }
+  .center-align {
+    box-sizing: border-box;
+    margin: 0;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+  }
+  .form-control:not(:placeholder-shown) ~ .copy_text {
+    display: none;
+  }
+    .fa-long-arrow-right {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      font-size: 25px;
+    }
+    .card_pr15{
+      padding-right: 15px;
+    }
+    .card_pl15{
+      padding-left: 15px;
+    }
+  @media only screen and (max-width:578px){
+    .w85-per {
+      width: 95% !important;
+  }
+  }
+  @media only screen and (min-width: 768px) and (max-width: 992px) { 
+    .sample-text {
+      width: 115px;
+    }
+  }
+
+  .close-button{
+    margin-right: 50px;
+    margin-top: 10px;
+  }

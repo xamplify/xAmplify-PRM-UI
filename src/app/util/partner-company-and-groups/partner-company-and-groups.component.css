@@ -290,3 +290,9 @@
     float: right !important;
     padding-left: 10px;
 }
+.table_bottom{
+    margin-bottom: 15px;
+}
+.justify-end{
+    justify-content: end;
+}

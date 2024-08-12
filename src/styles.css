@@ -1843,7 +1843,7 @@ h5.view-banner-green.white-labeled-cu1 {
 .img1 {
   background: #34495a;
   text-align: center;
-  border-radius: 10px 10px 0px 0px;
+  border-radius: 8px 8px 0px 0px;
   background: linear-gradient(358deg, #0c86cc, #06beb8) !important;;
   background-size: 1090px;
   background-repeat: no-repeat;
@@ -3217,3 +3217,8 @@ a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor.mdf_bord
   margin-bottom: 20px !important;
 }
 .oppo_align{padding-top: 3px;}
+@media only screen and (max-width: 1199px) {
+  .mb-height_auto {
+      height: auto !important;
+    }
+}

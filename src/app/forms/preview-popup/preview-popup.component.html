@@ -98,25 +98,19 @@
                                             <td [hidden]="authenticationService.isShowForms">
                                                 <div style="display:flex; height:45px">
                                                     <span>
-                                                        <input type="text" id="copy-link" readonly="readonly"
-                                                            value="{{form.ailasUrl}}" #userinput><br>
+                                                        <input type="text" id="copy-link" readonly="readonly" value="{{form.ailasUrl}}" #userinput><br>
                                                     </span>
                                                     <span class="modal-icon ml10" id="custom-margin-{{i}}">
-                                                        <a class="custom-icon"
-                                                            [hidden]="authenticationService.isShowForms"
-                                                            data-toggle="tooltip" data-placement="top" title="Copy"
-                                                            (click)="copyInputMessage(userinput,'Page Link',i)">
-                                                            <i class="fa fa-copy IconCustomization campaignViewIcon"
-                                                                aria-hidden="true"></i>
+                                                        <a class="custom-icon" [hidden]="authenticationService.isShowForms"
+                                                            data-toggle="tooltip" data-placement="top" title="Copy"  (click)="copyInputMessage(userinput,'Page Link',i)">
+                                                            <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
                                                             <div class="clickicons"></div>
                                                         </a>
                                                     </span>
                                                 </div>
                                                 <div>
-                                                    <span class="success" id="copied-message-{{i}}"
-                                                        style="display: none;">
-                                                        <strong>Link copied successfully<i class="fa fa-check"
-                                                                aria-hidden="true"></i></strong>
+                                                    <span class="success" id="copied-message-{{i}}" style="display: none;">
+                                                        <strong>Link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
                                                     </span>
                                                 </div>
                                             </td>

@@ -196,7 +196,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
 					//XNFR-276
 					this.menuItems = data.menuItems;
-					
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
@@ -270,7 +269,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.showWorkFlow = data.createWorkflow;
 		module.ssoEnabled = data.ssoEnabled;
 		/****XNFR-583****/
-		module.vendorPagesEnabled = data.vendorPagesEnabled
+		module.vendorPagesEnabled = data.vendorPagesEnabled;
+		module.chatGptIntegrationEnabled = data.chatGptIntegrationEnabled;
 	}
 
 	setContentMenu(data: any, module: any) {

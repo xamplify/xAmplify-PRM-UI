@@ -669,6 +669,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (this.authenticationService.module.navigateToSPFConfigurationSection) {
 				this.activateTab('spf');
 			}
+			
 		} catch (error) {
 			this.hasClientErrors = true;
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
@@ -4878,6 +4879,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				(result: any) => {
 					if (result !== "") {
 						this.loggedInUserCompanyId = result;
+						let selectedMenuOption = this.route.snapshot.params['selectedMenuOption'];
+						if("chatGPT"==selectedMenuOption){
+							this.activateTab(this.chatGptSettingsMenuHeader);
+						}
 						this.referenceService.loading(this.httpRequestLoader, false);
 					}
 				}, (error: any) => {

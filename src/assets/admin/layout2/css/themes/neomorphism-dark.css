@@ -4265,3 +4265,8 @@ span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !im
 button.filter.btn-hvr-text.emailtemplate-selected{
   border: 1px solid #3d94c5;
 }
+.card1, .sticky_btn{
+background: #2c2f33 !important;
+box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+border: 1px solid #191b1e !important
+}

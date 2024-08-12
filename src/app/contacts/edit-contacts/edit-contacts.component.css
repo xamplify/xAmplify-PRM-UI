@@ -256,6 +256,12 @@ a.disabled {
   .field-names{
    margin-left:13px!important;
   }
+  .mWidthSort{
+    width: 83.33333333%!important;
+  }
+  .mWidth{
+    width: 16.66666667%!important;
+  }
 }
 @media only screen and (min-width: 992px) and (max-width:1220px) { 
   .filter-delete {

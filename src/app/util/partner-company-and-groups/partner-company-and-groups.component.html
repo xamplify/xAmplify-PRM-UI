@@ -49,12 +49,12 @@
       <div>
         <div class="col-xs-12">
           <!--Team Member Filter-->
-          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0">
+          <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 p0">
             <app-team-member-filter-option *ngIf="showFilter && !authenticationService?.module?.isMarketingCompany"
               (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
           </div>
           <!--Search Bar-->
-          <div class="page-toolbar col-xs-6 col-sm-6 col-lg-6 col-md-6 pr0">
+          <div class="page-toolbar col-xs-12 col-sm-7 col-lg-7 col-md-7 pr0 d-flex justify-end">
             <div class="left-float clear-all-prop">
               <button class="btn btn-danger" *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0)" (click)="clearAll()">Clear All</button>
             </div>
@@ -90,7 +90,7 @@
 
   <!---List-->
   <ng-container *ngIf="!httpRequestLoader.isLoading">
-    <div class="table-responsive">
+    <div class="table-responsive table_bottom">
       <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0"
         aria-describedby="">
         <thead>

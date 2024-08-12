@@ -611,7 +611,7 @@ table.table-bordered.dataTable {
 
 .template-selected-border {
   box-shadow: 0 0 0 0.5px #54a7e9;
-  border-radius: 5px;
+  border-radius: 15px;
 }
 .grid-box.imgage-paddings.template-selected-border {
   border: none !important;
@@ -818,3 +818,16 @@ button.btn.mBtnAlign.f-w-600.w-10em.prev-btn:hover {
 .float_right{
   float: right;
 }
+@media only screen and (min-width:768px) and (max-width:1023px) {
+  .bar.hover-bar {
+      width: 100% !important;
+    }
+   span.icon-alignments {
+      top: 21px !important;
+      right: 21px !important;
+    }
+  span.select-check-box {
+      top: 17px;
+      left: 17px;
+    }
+  }
