@@ -187,6 +187,7 @@ import { CrmSettingsComponent } from 'app/dashboard/crm-settings/crm-settings.co
 import { ShareDashboardButtonsComponent } from './share-dashboard-buttons/share-dashboard-buttons.component';
 import { DropdownLoaderComponent } from 'app/util/dropdown-loader/dropdown-loader.component';
 import { DisplayErrorMessageComponent } from 'app/util/display-error-message/display-error-message.component';
+import { ChatGptModalComponent } from './chat-gpt-modal/chat-gpt-modal.component';
 
 
 @NgModule({
@@ -225,7 +226,7 @@ import { DisplayErrorMessageComponent } from 'app/util/display-error-message/dis
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,DropdownLoaderComponent,DisplayErrorMessageComponent
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent
 	],
 
 
@@ -262,7 +263,7 @@ import { DisplayErrorMessageComponent } from 'app/util/display-error-message/dis
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,DropdownLoaderComponent,DisplayErrorMessageComponent
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent
 
 	]
 

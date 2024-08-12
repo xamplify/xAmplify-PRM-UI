@@ -134,6 +134,7 @@ export class Module {
 
     /****XNFR-583****/
     vendorPagesEnabled= false;
+    chatGptIntegrationEnabled = false;
 
 
 }
