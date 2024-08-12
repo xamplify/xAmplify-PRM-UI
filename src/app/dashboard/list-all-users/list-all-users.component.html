@@ -9,11 +9,6 @@
          <div class="portlet light">
            <div class="portlet-title mb10">
             <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                <h4 class="pull-left m10 text-primary">
-                  <span>All Approved Users</span>
-                </h4>
-              </div>
               <div class="col-xs-12  col-sm-12 col-md-12 col-lg-12">
                 <!--Searchable DropDown-->
                 <div class="col-xs-12  col-sm-12 col-md-4 col-lg-4">
@@ -56,20 +51,20 @@
             <ng-container *ngIf="!httpRequestLoader.isLoading && !isVanityUrlEnabled">
               <div class="col-xs-12  col-sm-12 col-md-12 col-lg-12">
                 <!--Download Admins-->
-                <div class="col-xs-12 mt5 col-sm-12 col-md-12 col-lg-3">
-                  <button class="btn btn-xs btn-primary" (click)="download('Admins.csv')">Download Admins</button>
+                <div class="col-xs-3  mt5 col-sm-3 col-md-3 col-lg-3 overflow-hidden text-center">
+                  <button class="btn btn-xs btn-primary" (click)="download('Admins.csv')">Admins</button>
                 </div>
                 <!--Download Admin Team Members-->
-                <div class="col-xs-12 mt5 col-sm-12 col-md-12 col-lg-3">
-                  <button class="btn btn-xs btn-primary" (click)="download('Admin-Team-Members.csv')">Download Admin Team Members</button>
+                <div class="col-xs-3  mt5 col-sm-3 col-md-3 col-lg-3 overflow-hidden text-center">
+                  <button class="btn btn-xs btn-primary" (click)="download('Admin-Team-Members.csv')">Admin Team Members</button>
                 </div>
                 <!--Download Partners-->
-                <div class="col-xs-12 mt5 col-sm-12 col-md-12 col-lg-3">
-                  <button class="btn btn-xs btn-primary" (click)="download('Partners.csv')">Download Partners</button>
+                <div class="col-xs-3  mt5 col-sm-3 col-md-3 col-lg-3 overflow-hidden text-center">
+                  <button class="btn btn-xs btn-primary" (click)="download('Partners.csv')">Partners</button>
                 </div>
                 <!--Download Partner Team Members-->
-                <div class="col-xs-12 mt5 col-sm-12 col-md-12 col-lg-3">
-                  <button class="btn btn-xs btn-primary" (click)="download('Partner-Team-Members.csv')">Download Partner Team Members</button>
+                <div class="col-xs-3  mt5 col-sm-3 col-md-3 col-lg-3 overflow-hidden text-center">
+                  <button class="btn btn-xs btn-primary" (click)="download('Partner-Team-Members.csv')">Partner Team Members</button>
                 </div>
               </div>
             </ng-container>

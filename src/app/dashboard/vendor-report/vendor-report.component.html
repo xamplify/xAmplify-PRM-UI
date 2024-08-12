@@ -9,22 +9,26 @@
         <app-list-loader [rowsCount]="12" *ngIf="isListLoading"></app-list-loader>
         <div class="portlet light">
           <div class="portlet-title">
-            <div class="caption">Vendor Report</div>
-            <div class="inputs sort-class col-xs-5" style="float: right; margin-top: 2px;">
-              <div class="col-xs-6" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-                <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
-              <ng-container *ngFor="let sort of sortOptions; let i = index">
-                <option [ngValue]="sort">{{sort.name}}</option>
-              </ng-container>
-            </select>
-              </div>
-              <div class="col-xs-6 portlet-input input-inline search-class" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-                <div class="input-icon right" style="width: 230px; margin-left: -22px;">
-                  <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search"
+            <div class="row">
+              <div class="col-xs-12  col-sm-12 col-md-12 col-lg-12">
+                 <!--Sort Drop Down-->
+                 <div class="col-xs-12  col-sm-12 col-md-6 col-lg-6">
+                  <div>
+                    <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+                      <ng-container *ngFor="let sort of sortOptions; let i = index">
+                        <option [ngValue]="sort">{{sort.name}}</option>
+                      </ng-container>
+                    </select>
+                  </div>
+                </div>
+                 <!--Search Input && Refresh Icon-->
+                 <div class="col-xs-12  col-sm-12 col-md-6 col-lg-6">
+                  <div class="input-icon right mDamSearch rSearch display-inline-box" id="alignline-m-serch">
+                    <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search"
                     (keypress)="eventHandler($event.keyCode)">
-
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
                   <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -98,11 +102,11 @@
                     </ng-container>
                   </tbody>
                 </table>
+                <app-pagination [pagination]="pagination" [type]="'admin-reports'" (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
               </div>
             </div>
           </div>
         </div>
-        <app-pagination [pagination]="pagination" [type]="'admin-reports'" (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
       </div>
     </div>
   </div>
