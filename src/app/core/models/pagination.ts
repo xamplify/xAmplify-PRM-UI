@@ -141,7 +141,9 @@ export class Pagination {
 	/*** XNFR-583 ***/
 	vendorPages:boolean = false;
 	campaignAnalyticsSettingsOptionEnabled = false;
+	masterLandingPageAnalytics:boolean  = false;
 
+	vendorLandingPageId:number;
 
 
 }

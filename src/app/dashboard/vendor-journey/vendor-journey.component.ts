@@ -236,7 +236,8 @@ landingPageOpenInNewTabChecked(){
   goToFormAnalytics(event) {
     let data = event;
     this.importedObject['formAlias'] = data.formAlias;
-    this.importedObject['partnerLandingPageId'] = data.partnerLandingPageId
+    this.importedObject['partnerLandingPageId'] = data.partnerLandingPageId;
+    this.importedObject['selectedLandingPageId'] = this.selectedLandingPageId;
     this.isManageForms = false;
     this.isFormAnalytics = true;
   }

@@ -18,3 +18,16 @@
     </div>
   </div>
 </div>
+
+<div class="col-xs-12" *ngIf = "isMasterLandingPages">
+  <div class="portlet light">
+    <div class="portlet-title">
+      <div class="caption">
+        <span class="caption-subject font-red-sunglo uppercase">Vendor Page Analytics</span>
+      </div>
+    </div>
+        <app-vendor-journey-form-analytics *ngIf="isMasterLandingPages" [isMasterLandingPageAnalytics]="isMasterLandingPages"
+        [importedObject]="exportObject"
+        [masterLandingPageId] = "vendorLandingPageId"></app-vendor-journey-form-analytics>
+  </div>
+</div>

@@ -49,5 +49,6 @@ export class CampaignAccess {
   ssoEnabled = false;
 
   chatGpt = false;
+  referVendor = false;
 
 }

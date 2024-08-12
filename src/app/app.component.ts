@@ -32,12 +32,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   xamplifygif = "assets/images/xamplify-icon.gif";
   socket;
   numberOfOnlineUsers: number;
-   
+  isLocalHost = false;
+  isChatGptIconDisplayed = false;
 constructor(private versionCheckService:VersionCheckService,private idle: Idle, private keepalive: Keepalive,public userService: UserService,
   public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService,
    private router: Router,private utilService:UtilService) {
-    //this.socket = io();
-      //this.checkIdleState(idle,keepalive);
+    this.isLocalHost = this.authenticationService.isLocalHost();
     this.addLoaderForAuthGuardService();
 		this.addLoaderForLazyLoadingModules(router);
     }
@@ -106,9 +106,6 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
     
     
     ngOnInit() {
-      // this.socket.on('numberOfOnlineUsers', (numberOfOnlineUsers) => {
-      //   this.numberOfOnlineUsers = numberOfOnlineUsers;
-      // });
         this.versionCheckService.initVersionCheck();
         this.router.routeReuseStrategy.shouldReuseRoute = function () {
             return false;
@@ -117,6 +114,7 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
             if (evt instanceof NavigationEnd) {
                 this.router.navigated = false;
                 let currentUrl = evt.url;
+                this.isChatGptIconDisplayed = currentUrl.indexOf("/home/")>-1;
                 let loginUrl = currentUrl.indexOf('/login')>-1;
                 let logoutUrl = currentUrl.indexOf('/logout')>-1;
                 let expiredUrl = currentUrl.indexOf('/expired')>-1;
@@ -263,7 +261,6 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
   
       resetIdleState() {
         this.idle.watch();
-        //xthis.idleState = 'Started.';
         this.timedOut = false;
       }
 

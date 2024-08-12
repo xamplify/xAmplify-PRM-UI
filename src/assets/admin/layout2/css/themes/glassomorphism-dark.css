@@ -15,7 +15,7 @@ body{
   color: white !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: cover;
+  background-size: cover!important;
 }
 /*** MainContent ***/
 .page-bar,
@@ -708,7 +708,7 @@ select {
 .panel-success > .panel-heading,
 .deal-details,
 .bg-color {
-  background-color: #2e3033 !important;
+  background-color: rgb(0 0 0 / 18%) !important;
 }
 .setting_icon_color {
   color: #5b9bd1 !important;
@@ -1026,7 +1026,7 @@ input#copy-link {
 .comment.user-comment p,
 .comment.author-comment p,
 .author-comment p:after {
-  background-color: #2e3033 !important;
+  background-color: rgb(0 0 0 / 18%) !important;  
   border: 2px solid rgba(255, 255, 255, 0.1) !important;
 }
 .salesforce-btn {
@@ -1662,7 +1662,7 @@ tag {
   background-color: transparent !important;
 }
 select.form-control.same-bgcolor-for-select {
-  background: #2e3033 !important;
+  background: rgb(146 151 179 / 22%) !important;  
 }
 
 /* 19-07-2023 Custom Theme Settings bg colors */
@@ -1745,7 +1745,7 @@ p.addhrtosvg {
 }
 .cardfotter-toggleon {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background: #2c2f33 !important;
+  background:  rgb(0 0 0 / 18%) !important;
 }
 /* design Manage Forms  Analytics table borders */
 table.table.table-allsideboders {
@@ -1788,11 +1788,12 @@ input#copy-link {
 #download-template {
   border: 0px solid #fff !important;
   color: #fff !important;
-  background: rgba(16 18 27 / 40%) !important;
+  /* background: rgba(16 18 27 / 40%) !important; */
+  background: rgb(146 151 179 / 13%) !important;
 }
 #download-template:hover {
   background: rgb(146 151 179 / 8%) !important;
-  color: #262626 !important;
+  color: #ffffff !important;
   transition: .5s;
 }
 ul.dropdown-menu.pull-right.custome-dropdown-changs li a:hover{
@@ -1908,7 +1909,7 @@ i.IconCustomization{
 .setting-icon-cu {
   border: none !important;
   color: #fff !important;
-  background: rgba(16 18 27 / 40%) !important;
+  background: rgb(146 151 179 / 13%);
 }
 .dropdown-listicon{
   border: none !important;
@@ -2164,7 +2165,7 @@ i.fa.fa-expand.fa-fa-consistency.IconCustomization {
   background-color: rgba(16 18 27 / 40%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: 15px !important;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px); */
 }
 .pricing-head h4#image-style {
   background-color: #2c2f33 !important;
@@ -2263,6 +2264,11 @@ a.UserguideBtnCustomization:hover {
   background: rgb(16 18 27 / 59%) !important;
   border-right: 1px solid rgb(255 255 255 / 35%) !important;
 }
+@media screen and (max-width: 1024px) {
+  .left-menu-color{
+    backdrop-filter: blur(5px);
+  }
+  }
 .neumorphismDark li a:hover {
   outline: none !important;
   background-color: rgba(16 18 27 / 40%) !important;
@@ -2854,10 +2860,10 @@ span.btn.btn-primary.transition{
   border: none!important;
   width: 32px!important;
   height: 32px!important;
-  background-color: #1c313a !important;
+  background-color: rgba(16 18 27 / 40%) !important;
 }
 .downloadicon-align{
-top: 6px !important;
+top: 7px !important;
 }
 .bar a{
   width: 32px;
@@ -3454,7 +3460,7 @@ a.Iconhover.custom-grid-icon.icon_margin{
   transform: unset!important;
   }
 i.download_file:hover {
- background-color: #5bb2f5!important;
+  background-color: #788086 !important;
 }
 .IconCustomizationcondition i.fa.fa-trash.trashIconCustomization {
   color: #cb5a5e !important;
@@ -3623,7 +3629,8 @@ table.table.table-bordered {
   margin-right: 5px !important;
 }
 .gridViewImgBg{
-  background: rgb(146 151 179 / 8%)!important;
+  /* background: rgb(146 151 179 / 8%)!important; */
+  background: rgba(16 18 27 / 40%) !important;
   backdrop-filter: blur(5px);
   border-top-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
@@ -3686,14 +3693,16 @@ button.btn.btn-primary.activate-btn:hover {
 /***** Grid View Icon Changes *****/
 .bar.gridIconCustomization {
     background: rgb(146 151 179 / 65%)!important;
+    backdrop-filter: blur(10px);
+    z-index: 99;
 }
 .gridViewImgpositioning {
   border-bottom: 1px solid #181b1e;
 }
-.img-grid-track {
+/* .img-grid-track {
   border-bottom-left-radius: 15px !important;
   border-bottom-right-radius: 15px !important;
-}
+} */
 .icons_align a{
   padding: 4px !important;
 }
@@ -3940,7 +3949,7 @@ button.btn.btn-primary.shareVideoButton:hover{
 .number.NumberFontDecrease {
   color:#fff !important;
 }
-.page-bar{border:1px solid rgba(255, 255, 255, 0.1) !important}
+.vendor-details-tiles{border:1px solid rgba(255, 255, 255, 0.1) !important}
 button.btn.btn-xs.hidden-xs.l-g-view{
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background: rgb(146 151 179 / 13%) !important;
@@ -3967,25 +3976,6 @@ button.btn.btn-xs.hidden-xs.l-g-view {
   background: rgb(146 151 179 / 13%) !important;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu .dropdown-menu-list > li > a:hover, ul.alt-row-style1 li:hover{background: rgb(146 151 179 / 13%) !important;}
-
-/**** 27 -06 -2024 (Tharak)******/
-/* .selectRecord,
-button#save\&delete_button {
-  background-color: #0276FF !important;
-  color: #fff !important;
-  border: 1px solid #026deb !important;
-}
-button#cancel_button {
-  border-radius: 3px !important;
-  border: none !important;
-}
-.color-flow-button {
-  border:1px solid #026deb !important ;
-}
-
-.help-iconbgadd a {
-  color: #fff !important;
-} */
 .dynamic_tbl_btn {
   margin-right: 6px !important;
 }
@@ -4091,3 +4081,53 @@ span.btn.btn-primary.transition.text_pd5.txt_update {padding-top: 2px !important
 .deal_view_type_css2{
   margin-top: 6px !important;
 }
+.flex-none{
+  flex: unset!important;
+  display: block;
+  padding: 0px;
+  }
+  .px-13{
+    padding: 0px 8px;
+    display: block;
+  }
+  /* folder view card */
+  .folder-height{
+    margin-top: 1px;
+    border-radius: 0px 15px 15px 15px !important;
+  }
+  .ffolder.big{
+    border-radius: 0 15px 15px 15px!important;
+  }
+  .ffolder.gray{
+    background-color: rgba(16 18 27 / 20%) !important;
+}
+.ffolder.big.gray.folder-cheight {
+  height: 178px!important;
+}
+/* 07-08-24 */
+.btn_for_only_themes{margin-top: -1px !important;}
+.lead_copy_id_btn_blue{background: none !important;border: none !important;margin-left:0px !important;}
+span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !important;border: 1px solid #026deb !important;}
+.lead-details-border{border: 2px solid rgba(255, 255, 255, 0.3 ) !important;}
+.page-bar.border_only_glass{border:1px solid #ffffff33 !important;}
+.asset_cross_align{top: 5px !important;right: 0px !important;}
+/* .card1, .sticky_btn{
+  background: rgba(16 18 27 / 20%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  } */
+  .card1 {
+    padding: 0px !important;
+   background: rgba(16 18 27 / 20%) !important;
+   border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  .sticky_btn {
+    backdrop-filter: blur(10px);
+    background: rgba(16 18 27 / 20%) !important;
+    bottom: 0px;
+  }
+  .upload_files {
+    height: 55px !important;
+  }
+  .border_0 {
+    padding-top: 14px!important;
+  }

@@ -54,6 +54,7 @@ fieldset.scheduler-borders {
     width: 100%;
     height: 100%;
     border: 1px solid #8080804f;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-top: 5px;
+    padding: 3px 6px 6px 6px;
   }

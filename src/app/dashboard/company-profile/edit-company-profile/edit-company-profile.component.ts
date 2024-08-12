@@ -1731,7 +1731,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     processFavIconFile(event: any){
         const file:File = event.target.files[0];
         if(file){
+            this.isLoading = true;
             const isSupportfile = file.type;
+            console.log(file.type);
             if (isSupportfile === 'image/x-icon') {
                 this.errorUploadCropper = false;
                 this.imageChangedEvent = event;
@@ -1739,16 +1741,24 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                   if(result.statusCode === 200){
                       this.companyProfile.favIconLogoPath = result.data;
                       this.companyFavIconPath = result.data;
+                  }else{
+                    this.refService.showSweetAlertErrorMessage("Server is not responding.");
                   }
+                  this.isLoading = false;
               }, error => {
-                  console.log(error);
+                this.refService.showSweetAlertErrorMessage("Unable to upload the ico file. Please try again.");
+                this.isLoading = false;
               });
             } else {
               this.errorUploadCropper = true;
               this.showCropper = false;
+              this.refService.showSweetAlertErrorMessage("Uploaded File Type :"+file.type+" is not supported");
+              this.isLoading = true;
             }       
             this.closeModal(); 
-        }        
+        } else{
+            this.refService.showSweetAlertErrorMessage("Unable to read the image file");
+        }       
     }
 
     openFavIconFileId(){
@@ -1844,8 +1854,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.campaignAccess.salesEnablement = false;
             this.campaignAccess.dataShare = false;
             this.campaignAccess.oneClickLaunch = false;
-          }else if(this.vendorTier){
-              this.campaignAccess.shareLeads = false;
+            this.campaignAccess.referVendor = false;
+            this.campaignAccess.ssoEnabled = false;
           }else if(this.marketing){
               this.campaignAccess.loginAsPartner = false;
               this.campaignAccess.shareWhiteLabeledContent = false;
@@ -1965,6 +1975,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.supportEmailIdDivClass = this.refService.successClass;
         this.supportEmailIdErrorMessage = "";
         this.enableOrDisableButton();
+    }
+
+    setReferVendorValue(event:boolean){
+        this.campaignAccess.referVendor = event;
     }
   
 }

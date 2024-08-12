@@ -22,6 +22,7 @@
 			</div>
 			<div *ngIf="userNotFound || teamMemberAccountCreated || anotherUserLoggedIn">
 				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" [showCloseIcon]="false"></app-response-message>
+				<button class="btn btn-danger float-right" *ngIf="isPartnerSignUpPage || isTeamMemberSignUpPage" (click)="logoutAndReloadThePage()">Logout</button>
 			</div>
 		</div>
 		<ng-container *ngIf="!isActivateAccountPage">
@@ -52,6 +53,7 @@
 							</div>
 							<div *ngIf="userNotFound || teamMemberAccountCreated || anotherUserLoggedIn">
 								<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" [showCloseIcon]="false"></app-response-message>
+								<button class="btn btn-danger float-right" *ngIf="isPartnerSignUpPage || isTeamMemberSignUpPage" (click)="logoutAndReloadThePage()">Logout</button>
 							</div>
 						</div>
 				</div>

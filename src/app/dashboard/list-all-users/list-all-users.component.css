@@ -24,3 +24,7 @@
   width: 500px;
 }
 
+.display-inline-box{
+  display: -webkit-inline-box;
+  width: 95%;
+}
