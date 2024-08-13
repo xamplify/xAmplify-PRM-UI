@@ -1333,9 +1333,7 @@
      let item of campaignViewsPagination.pagedItems;
      let i = index
      ">
-                                                <tr (click)="userTimeline(item)" data-toggle="tooltip"
-                                                   data-placement="bottom"
-                                                   title="Click here to see all campaigns analytics">
+                                                <tr (click)="userTimeline(item)" data-placement="bottom" data-toggle="tooltip" title="Click here to see all campaigns analytics">
                                                    <td>
                                                       <i data-toggle="tooltip" data-placement="bottom"
                                                          title="This user is unsubscribed"
@@ -1446,54 +1444,19 @@
                                                    </td>
                                                    <td class="td-chart" *ngIf="campaignType !== 'EVENT'">
                                                       <div class="progress" *ngIf="campaignType !== 'SOCIAL'">
-                                                         <div class="progress-bar progress-bar-success" [ngClass]="{
-  'special-progress-bar':
-  item.viewsCount === 0
-  }" role="progressbar" [style.width.%]="
-  (item.viewsCount / maxViewsValue) *
-  100
-  ">
-                                                            <span *ngIf="campaignType === 'VIDEO'">{{
-                                                               item.emailOpenedCount }}</span>
-                                                            <span *ngIf="
-     campaignType === 'REGULAR' ||
-     campaignType === 'SURVEY' ||
-     campaignType === 'SOCIAL' ||
-     campaignType === 'LANDINGPAGE' ||
-     campaignType === 'EVENT'
-     ">{{ item.viewsCount }}</span>
+                                                         <div class="progress-bar progress-bar-success" [ngClass]="{'special-progress-bar':item.viewsCount === 0}" role="progressbar" [style.width.%]="(item.viewsCount / maxViewsValue) *100">
+                                                            <span *ngIf="campaignType === 'VIDEO'">{{item.emailOpenedCount }}</span>
+                                                            <span *ngIf="campaignType === 'REGULAR' ||campaignType === 'SURVEY' ||campaignType === 'SOCIAL' ||campaignType === 'LANDINGPAGE' ||campaignType === 'EVENT'">{{ item.viewsCount }}</span>
                                                          </div>
                                                       </div>
                                                       <ng-container *ngIf="campaignType == 'SOCIAL'">
-                                                         <ng-container *ngFor="
-     let socialStatus of socialCampaign.socialStatusList
-     ">
-                                                            <ng-container *ngFor="
-     let socialStatus of socialStatus.socialStatusList
-     ">
-                                                               <ng-container *ngIf="
-     socialStatus.userId ===
-     item.userId
-     ">
-                                                                  <div class="social-profile" [ngStyle]="{
-     'background-image':
-     'url(' +
-     socialStatus
-     .socialStatusProvider
-     .socialConnection
-     .profileImage +
-     ')'
-     }" data-toggle="tooltip" data-placement="top" title="{{
-     socialStatus
-     .socialStatusProvider
-     .socialConnection.profileName
-     }}">
-                                                                     <ng-container *ngIf="
-     socialStatus
-     .socialStatusProvider
-     .socialConnection.source ===
-     'TWITTER'
-     ">
+                                                         <ng-container *ngFor="let socialStatus of socialCampaign.socialStatusList">
+                                                            <ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+                                                               <ng-container *ngIf="socialStatus.userId ===item.userId">
+                                                                  <div class="social-profile" [ngStyle]="{'background-image':'url(' +socialStatus
+                                                                     .socialStatusProvider.socialConnection.profileImage +')'}" data-toggle="tooltip" data-placement="top" title="{{
+                                                                       socialStatus.socialStatusProvider.socialConnection.profileName}}">
+                                                                     <ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source ==='TWITTER'">
                                                                         <img class="img-circle" alt="{{
      socialStatus
      .socialStatusProvider
@@ -1546,20 +1509,10 @@
                                                          </ng-container>
                                                       </ng-container>
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'VIDEO' ||
-     campaignType === 'REGULAR' ||
-     campaignType === 'SURVEY'
-     ">
+                                                   <td class="text-center" *ngIf="campaignType === 'VIDEO' ||campaignType === 'REGULAR' ||campaignType === 'SURVEY'">
                                                       {{ item.urlsClickedCount }}
                                                    </td>
-                                                   <td (click)="
-  $event.stopPropagation();
-  goToCampaignAnaltyics(item)
-  " class="text-center" *ngIf="
-  campaignType === 'VIDEO' ||
-  campaignType === 'REGULAR'
-  ">
+                                                   <td (click)="$event.stopPropagation();goToCampaignAnaltyics(item)" class="text-center" *ngIf="campaignType === 'VIDEO' ||campaignType === 'REGULAR'">
                                                       <div class="actions-block override-actions"
                                                          style="margin-right: 100px">
                                                          <a [className]="showUserLevelCampaignAnalytics ? 'custom-icon': 'inactive custom-icon'"

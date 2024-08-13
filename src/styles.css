@@ -3179,7 +3179,7 @@ button#save\&delete_button {
   border-radius: 3px;
 }
 button#cancel_button {
-  border-radius: 3px !important;
+  border-radius: 7px !important;
   border: none !important;
 }
 .btn{
