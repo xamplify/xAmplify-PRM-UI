@@ -987,6 +987,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.referenceService.loading(this.httpRequestLoader, true);
 			this.httpRequestLoader.isHorizontalCss = true;
 			this.contactListObj = new ContactList;
+			pagination.userId = this.partnerListId;
 			this.userListPaginationWrapper.pagination = pagination;
 			this.contactListObj.id = this.partnerListId;
 			this.contactListObj.isPartnerUserList = this.isPartner;

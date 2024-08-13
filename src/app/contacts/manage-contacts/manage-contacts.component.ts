@@ -1942,6 +1942,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.contactPagination.sortingOrder = this.sortingOrder;
 
 			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
+			this.userListPaginationWrapper.userList.editList = false;
 			this.userListPaginationWrapper.userList.contactType = contactType;
 			this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
 			this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
@@ -2871,6 +2872,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	downloadUserListCsv() {
+		this.userListPaginationWrapper.userList.isDownload = true;
 		try {
 			this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
 				.subscribe(
