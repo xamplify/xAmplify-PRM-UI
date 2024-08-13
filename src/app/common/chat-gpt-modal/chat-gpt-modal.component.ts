@@ -12,7 +12,6 @@ declare var $:any;
   providers:[Properties]
 })
 export class ChatGptModalComponent implements OnInit {
-  isLocalHost = false;
   @Input() isChatGptIconDisplayed:boolean;
   @Input() isShowingRouteLoadIndicator:boolean;
   @Input() showLoaderForAuthGuard:boolean;
@@ -28,7 +27,6 @@ export class ChatGptModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isLocalHost = this.authenticationService.isLocalHost();
   }
 
 
