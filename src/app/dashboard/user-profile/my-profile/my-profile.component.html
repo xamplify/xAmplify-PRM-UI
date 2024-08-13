@@ -340,8 +340,9 @@
                                         </li> -->
 
                                         <!-- Oauth SSO Settings-->
+                                         <!--authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.ssoEnabled-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'oauthSSOConfiguration'}"
-                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing && authenticationService?.module?.ssoEnabled">
+                                            *ngIf="!authenticationService?.module?.isMarketing">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'oauthSSOConfiguration'}"
                                                 (click)="activateTab('oauthSSOConfiguration');clearCustomResponse()">{{properties.oauthSSOConfiguration}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"
