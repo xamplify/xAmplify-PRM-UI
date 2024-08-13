@@ -154,6 +154,7 @@ export class ContactService {
             userListPaginationWrapper.pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
             userListPaginationWrapper.pagination.vanityUrlFilter = userListPaginationWrapper.pagination.loginAsUserId > 0;
         }
+        userListPaginationWrapper.pagination.vendorCompanyProfileName = companyProfileName;
         /****XNFR-252****/
         var requestoptions = new RequestOptions({
             body: userListPaginationWrapper
