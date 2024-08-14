@@ -139,13 +139,11 @@
                     </div>
                     <!---Top 4 Campaigns--------->
                     <div class="portlet-body clearfix">
-                        <app-dynamic-grid-loader *ngIf="topFourCampaignsLoader.isLoading" [gridCount]=4>
-                        </app-dynamic-grid-loader>
+                        <app-dynamic-grid-loader *ngIf="topFourCampaignsLoader.isLoading" [gridCount]=4></app-dynamic-grid-loader>
                         <div style="position: relative; top:-4px;">
-                            <app-response-message [customResponse]="topFourCampaignErrorResponse"
-                                *ngIf="topFourCampaignErrorResponse.isVisible"></app-response-message>
+                            <app-response-message [customResponse]="topFourCampaignErrorResponse" *ngIf="topFourCampaignErrorResponse.isVisible"></app-response-message>
                         </div>
-                        <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
+                        <ng-container *ngIf="!topFourCampaignsLoader?.isLoading">
                             <section *ngFor="let campaign of campaigns; let i=index">
                                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 campaign_card" *ngIf="i<4">
                                     <div class="portlet light border-radius-0 campaign-box"
@@ -175,10 +173,9 @@
                                         </div>
                                         <div class="portlet-title">
                                             <div class="caption">
-                                                <h3 class="caption-subject camp-title-color" style="margin: 0;"
-                                                    title="{{campaign[1]}}">
-                                                    {{campaign[1] | slice: 0: 23}}<span
-                                                        *ngIf="campaign[1]?.length>23">...</span>
+                                                <h3 class="caption-subject camp-title-color" style="margin: 0;" title="{{campaign[1]}}">
+                                                    {{campaign[1] | slice: 0: 23}}
+                                                    <span *ngIf="campaign[1]?.length>23">...</span>
                                                 </h3>
                                             </div>
                                         </div>
