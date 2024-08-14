@@ -1983,7 +1983,8 @@ export class ReferenceService {
   goToCampaignAnalytics(campaign:any) {
     let campaignId = campaign.campaignId;
    // let encodedCampaignId = this.encodePathVariable(campaignId);
-    this.router.navigate(["/home/campaigns/" + campaignId + "/"+campaign.campaignTitle+ "/details"]);
+    //this.router.navigate(["/home/campaigns/" + campaignId + "/"+campaign.campaignTitle+ "/details"]);
+    this.router.navigate(["/home/campaigns/" + campaignId + "/details"]);
   }
 
   previewEmailTemplate(emailTemplate: EmailTemplate, campaign: any) {
