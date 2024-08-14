@@ -156,6 +156,7 @@ export class AddDealComponent implements OnInit {
   editTextArea = false;
   isDealDetailsTabDisplayed: boolean = true;
   isDealForAndContactInfoDivCenterAligned = false;
+  showDealFor: boolean = false;
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -452,7 +453,9 @@ export class AddDealComponent implements OnInit {
         error => {
           this.httpRequestLoader.isServerError = true;
         },
-        () => { }
+        () => {
+          this.setShowDealFor(this.vendorList);
+         }
       );
   }
 
@@ -1787,6 +1790,12 @@ export class AddDealComponent implements OnInit {
         }
       }
     )
+  }
+
+  setShowDealFor(filteredVendorList){
+    if (this.deal != undefined && this.deal.createdForCompanyId != undefined && filteredVendorList.some(vendor => (vendor.companyId === this.deal.createdForCompanyId)) && this.actionType == 'view') {
+      this.showDealFor = true;
+    }
   }
 
 }
