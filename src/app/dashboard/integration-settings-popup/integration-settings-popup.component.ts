@@ -111,6 +111,11 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     if (!this.customFields.nonInteractive) {
       this.customFields.private = false;
     }
+    if ($.trim(this.customFields.displayName).length <= 0) {
+      this.isValid = false;
+      this.errorMessage = 'Please add display name.';
+      return;
+    }
     if (this.isValid) {
       this.customField.required = this.customFields.required;
       this.customField.displayName = this.customFields.displayName;

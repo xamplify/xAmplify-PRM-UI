@@ -208,6 +208,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
   /****XNFR-125****/
   @Input() campaignId = 0;
   @Input() hidePageContent = false;
+  @Input() campaignTitle:any;
   constructor(private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,

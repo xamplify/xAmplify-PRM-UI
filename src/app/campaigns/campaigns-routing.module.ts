@@ -16,11 +16,7 @@ import { EventCheckInComponent } from './event-check-in/event-check-in.component
 import { UserLevelTimelineComponent } from './user-level-timeline/user-level-timeline.component';
 import { UserCampaignsListUtilComponent } from '../util/user-campaigns-list-util/user-campaigns-list-util.component';
 import { AddCampaignComponent } from "./add-campaign/add-campaign.component";
-import { ManageCampaignsComponent } from "./manage-campaigns/manage-campaigns.component";
 import { PendingChangesGuard } from "app/component-can-deactivate";
-
-
-
 export const campaignRoutes: Routes = [
   { path: "", redirectTo: "manage", pathMatch: "full" },
   { path: "select", component: SelectCampaignTypeComponent },
@@ -34,6 +30,7 @@ export const campaignRoutes: Routes = [
   { path: "manage/tm/:teamMemberId/", component: ManagePublishComponent },
   { path: "manage/:categoryId/:teamMemberId", component: ManagePublishComponent },
   { path: ":campaignId/details", component: AnalyticsComponent },
+  { path: ":campaignId/:campaignTitle/details", component: AnalyticsComponent },
   { path: ":campaignId/checkin", component: EventCheckInComponent },
   { path: ":campaignId/re-distributed", component: ReDistributedComponent },
   { path: "partner", component: PartnerCampaignsComponent },
