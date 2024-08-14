@@ -24,7 +24,7 @@
             <!--Lead Details-->
             <div class="panel-group" role="tablist" aria-multiselectable="true"
               *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany)))
-                       && ((lead.campaignId == null || lead.campaignId == 0) || (lead.campaignId != 0 && lead.campaignId != null && isVendorVersion))">
+                       && ((lead.campaignId == null || lead.campaignId == 0) || (lead.campaignId != 0 && lead.campaignId != null && isVendorVersion && actionType != 'add'))">
               <div class="panel panel-default deal-bgcolor" *ngIf="isLeadDetailsTabDisplayed">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
@@ -421,7 +421,8 @@
                   </div>
                 </div>
                 <!--Comments-->
-                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0" style="margin-bottom: 20px">
+                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0" style="margin-bottom: 20px"
+                  *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showLeadPipelineStage || showDefaultForm">
                   <label class="control-label">Comments</label>
                   <textarea type="text" maxlength="100" class="form-control" name="leadComment" [(ngModel)]=" lead.leadComment" [ngModelOptions]="{standalone: true}" id="leadComment"
                     [disabled]="preview" aria-autocomplete="none" autocomplete="off"></textarea>
