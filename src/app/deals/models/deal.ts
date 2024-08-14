@@ -51,5 +51,4 @@ export class Deal {
     createdForPipelineStageId: number;
     haloPSATickettypeId: any;
     showDealActions:boolean;
-    vanityEnabled: boolean = false;
 }
