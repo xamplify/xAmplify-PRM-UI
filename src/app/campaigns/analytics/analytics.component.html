@@ -2,7 +2,7 @@
   <app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
   <!---XNFR-125-->
   <ng-container *ngIf="!loader.isLoading && !oneClickLaunchChannelCampaign">
-     <app-detailed-campaign-analytics [campaignId]="campaignId" [hidePageContent]="false"></app-detailed-campaign-analytics>
+     <app-detailed-campaign-analytics [campaignId]="campaignId" [campaignTitle]="campaignTitle" [hidePageContent]="false"></app-detailed-campaign-analytics>
   </ng-container>
   <!---One Click Launch Campaign Analytics-->
   <ng-container *ngIf="!loader.isLoading && oneClickLaunchChannelCampaign">

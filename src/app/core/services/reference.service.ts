@@ -1980,11 +1980,11 @@ export class ReferenceService {
     }
   }
 
-  goToCampaignAnalytics(campaign) {
+  goToCampaignAnalytics(campaign:any) {
     this.campaignType = this.campaignType ? this.campaignType : "VIDEO";
-    this.router.navigate([
-      "/home/campaigns/" + campaign.campaignId + "/details",
-    ]);
+    let campaignId = campaign.campaignId;
+   // let encodedCampaignId = this.encodePathVariable(campaignId);
+    this.router.navigate(["/home/campaigns/" + campaignId + "/"+campaign.campaignTitle+ "/details"]);
   }
 
   previewEmailTemplate(emailTemplate: EmailTemplate, campaign: any) {
@@ -3668,7 +3668,6 @@ preivewAssetForPartnerOnNewHost(id: any) {
     } else {
       completeIconPath += this.envService.PREVIEW_HOST + "favicon.ico";
     }
-    console.log(completeIconPath);
     let encodedIcon = btoa(completeIconPath);
     return encodedIcon;
   }
@@ -3714,6 +3713,7 @@ preivewAssetForPartnerOnNewHost(id: any) {
     }
     this.goToRouter(router);
   }
+  
 
   
 }

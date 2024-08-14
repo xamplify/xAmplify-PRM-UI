@@ -769,7 +769,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     campaginRouter(campaign: any) {
         if (campaign.channelCampaign) {
             this.refService.campaignType = campaign.campaignType;
-            this.router.navigate(['/home/campaigns/' + campaign.campaignId + '/details']);
+            this.refService.goToCampaignAnalytics(campaign);
         } else {
             this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
                 .subscribe(
@@ -779,7 +779,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                             if (campaign.hasAccess) {
                                 campaign.showGearIconOptions = data.data.showGearIconOptions;
                                 this.refService.campaignType = campaign.campaignType;
-                                this.router.navigate(['/home/campaigns/' + campaign.campaignId + '/details']);
+                                this.refService.goToCampaignAnalytics(campaign);
                             } else {
                                 this.customResponse = new CustomResponse('ERROR', "You don't have access for this campaign", true);
                             }
