@@ -1981,7 +1981,6 @@ export class ReferenceService {
   }
 
   goToCampaignAnalytics(campaign:any) {
-    this.campaignType = this.campaignType ? this.campaignType : "VIDEO";
     let campaignId = campaign.campaignId;
    // let encodedCampaignId = this.encodePathVariable(campaignId);
     this.router.navigate(["/home/campaigns/" + campaignId + "/"+campaign.campaignTitle+ "/details"]);

@@ -481,12 +481,8 @@ generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) 
     this.referenceService.loading(this.emailStatisticsLoader,false);
 }
 
-// refreshCampaignBarcharts() {
-//     this.getCampaignsEamailBarChartReports();
-// }
 
 filterByCompanyProfileName(){
-	
     if(this.vendorCompanyProfileName!=undefined &&this.vendorCompanyProfileName!=""){
 	localStorage.setItem('vanityUrlCompanyProfielName', JSON.stringify(this.vendorCompanyProfileName));
         this.router.navigate(['/home/dashboard/vanity/'+this.vendorCompanyProfileName]);
