@@ -1042,6 +1042,8 @@ export class CustomAddLeadComponent implements OnInit {
         this.createdForPipelineIdError = true;
         this.createdForPipelineStageId = errorClass;
         this.createdForPipelineStageIdError = true;
+        this.showDefaultForm = false;
+        this.showCustomForm = false;
       }
     }
   }
