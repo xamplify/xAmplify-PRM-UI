@@ -349,7 +349,7 @@
                   </div>
                   <!--Vendor's xAmplify Pipeline-->
                   <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px">
-                    <label class="control-label">Vendor's xAmplify Pipeline<span><strong class="required">*</strong></span></label>
+                    <label class="control-label">{{vendorCompanyName}} Pipeline<span><strong class="required">*</strong></span></label>
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineId" [ngModelOptions]="{standalone: true}"
                       placeholder="createdForPipelineId" id="createdForPipelineId"
                       [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedForPipeline"

@@ -625,7 +625,6 @@ export class CrmFormSettingsComponent {
 					this.ngxloading = false;
 				},
 				() => {
-					this.getDealHeader();
 					if (this.integrationType.toLowerCase() === 'salesforce') {
 						// this.listSalesforceCustomFields(this.opportunityType);
 					} else {						
@@ -817,33 +816,6 @@ export class CrmFormSettingsComponent {
 	//XNFR-611
 	toggleHeaderSettings(){
 		this.showHeaderTextArea = !this.showHeaderTextArea;
-	}
-      
-	getDealHeader(){
-		this.integrationService.getDealHeaderByUserId(this.loggedInUserId)
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					if(data.data != undefined && data.data!=null && data.data!="")
-					this.dealHeader = data.data;
-				});
-	}
-
-	setDealHeader() {
-		this.ngxloading = true;
-		if (this.dealHeader == undefined || this.dealHeader.length == 0 || this.dealHeader == '') {
-			this.ngxloading = false;
-			return this.customFieldsResponse = new CustomResponse('ERROR', `Please Enter Description.`, true);
-		}
-		this.integrationService.setDealHeader(this.loggedInUserId, this.dealHeader)
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					if (data.statusCode == 200) {
-						this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-						this.getDealHeader();
-					}
-				});
 	}
 
 

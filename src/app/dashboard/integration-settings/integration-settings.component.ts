@@ -219,6 +219,7 @@ export class IntegrationSettingsComponent implements OnInit {
 					let errorMessage = this.referenceService.getApiErrorMessage(error);
                     this.customFieldsResponse = new CustomResponse('ERROR',errorMessage,true);
 					this.customFieldsDtosLoader = false;
+					this.referenceService.goToTop();
 				},
 				() => {
 					// this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
@@ -644,7 +645,6 @@ export class IntegrationSettingsComponent implements OnInit {
 				},
 				() => {
 					if (this.integrationType.toLowerCase() === 'salesforce') {
-						this.getDealHeader();
 						// this.listSalesforceCustomFields(this.opportunityType);
 					} else {
 						if (this.integrationType.toLowerCase() === 'hubspot' || this.integrationType.toLowerCase() === 'pipedrive') {
@@ -847,33 +847,6 @@ export class IntegrationSettingsComponent implements OnInit {
 	//XNFR-611
 	toggleHeaderSettings(){
 		this.showHeaderTextArea = !this.showHeaderTextArea;
-	}
-      
-	getDealHeader(){
-		this.integrationService.getDealHeaderByUserId(this.loggedInUserId)
-			.subscribe(
-				data => {
-					 this.ngxloading = false;
-					if(data.data != undefined && data.data!=null && data.data!="")
-					this.dealHeader = data.data;
-				});
-	}
-
-	setDealHeader() {
-		this.ngxloading = true;
-		if (this.dealHeader == undefined || this.dealHeader.length == 0 || this.dealHeader == '') {
-			this.ngxloading = false;
-			return this.customFieldsResponse = new CustomResponse('ERROR', `Please Enter Description.`, true);
-		}
-		this.integrationService.setDealHeader(this.loggedInUserId, this.dealHeader)
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					if (data.statusCode == 200) {
-						this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-						this.getDealHeader();
-					}
-				});
 	}
 
 	setCustomResponse(event: any) {

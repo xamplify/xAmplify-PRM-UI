@@ -722,7 +722,7 @@ export class AddDealComponent implements OnInit {
     this.ngxloading = true;
     this.isLoading = true;
     this.deal.userId = this.loggedInUserId;
-    this.deal.vanityEnabled = this.vanityLoginDto.vanityUrlFilter;
+
     var obj = [];
     let answers: DealAnswer[] = [];
 

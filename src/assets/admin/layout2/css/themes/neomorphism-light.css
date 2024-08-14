@@ -2714,7 +2714,7 @@ hr.swal2-spacer {
   top: 0%;
 }
 
-i.fa.fa-trash-o:hover{color: #cb5a5e !important;}
+i.fa.fa-trash-o:hover,
 i.fa.fa-pencil-square-o:hover,
 i.fa.fa-files-o:hover,
 i.fa.fa-bullhorn:hover,
@@ -2727,7 +2727,7 @@ i.fa.fa-rocket:hover{
   background-color: unset;
   z-index: 999;
   position: relative;
-  color: #fff !important;
+  color: #000 !important;
 }
 i.fa.fa-download:hover,
 i.fa.IconCustomization.fa-angle-right:hover,
@@ -4417,3 +4417,5 @@ span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !im
 .border_0{
   background: #f4f4f5 !important;
 }
+.text_pd5.only_neo{margin-top: -5px !important;}
+a.close-circle.xamp-margin-left-icon.not_light{margin: 0px 7px 5px 5px !important;}

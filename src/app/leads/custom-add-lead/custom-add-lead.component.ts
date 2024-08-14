@@ -863,8 +863,7 @@ export class CustomAddLeadComponent implements OnInit {
     this.ngxloading = true;
     this.isLoading = true;
     this.lead.userId = this.loggedInUserId;
-    this.lead.vanityEnabled = this.vanityLoginDto.vanityUrlFilter;
-
+    
     if (this.showCustomForm) {
       this.showLoadingButton = true;
       this.setSfFormFieldValues();
@@ -1043,6 +1042,8 @@ export class CustomAddLeadComponent implements OnInit {
         this.createdForPipelineIdError = true;
         this.createdForPipelineStageId = errorClass;
         this.createdForPipelineStageIdError = true;
+        this.showDefaultForm = false;
+        this.showCustomForm = false;
       }
     }
   }

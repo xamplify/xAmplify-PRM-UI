@@ -73,6 +73,8 @@ export class SfDealComponent implements OnInit {
   formHeaderClass = "";
   formGroupClass: string;
   formLabelGroupClass: string;
+  isInvalidLookupField: boolean = false;
+
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
     this.isOnlyPartner = this.authenticationService.isOnlyPartner();
   }
@@ -450,9 +452,14 @@ export class SfDealComponent implements OnInit {
     this.validateRepValues();
     /*******XNFR-403*******/
 
+    let allLookupFields = this.form.formLabelDTOs.filter(column => column.labelType === "lookup");
+    for (let lookupField of allLookupFields) {
+      this.validateLookupField(lookupField);
+    }
+
     this.isDealRegistrationFormInvalid = this.isRequiredNotFilled || this.isInvalidEmailId || this.isInvalidAmount || this.isInvalidGeoLocation ||
       this.isInvalidPercentage || this.isInvalidPhoneNumber || this.isInvalidRepValues || this.isInvalidTextAreaFields ||
-      this.isInvalidTextFields || this.isInvalidWebsiteURL;
+      this.isInvalidTextFields || this.isInvalidWebsiteURL || this.isInvalidLookupField;
     this.isFormValid.emit(this.isDealRegistrationFormInvalid);
   }
   validateAmount(columnInfo: ColumnInfo) {
@@ -503,6 +510,8 @@ export class SfDealComponent implements OnInit {
       } else {
         this.isInvalidEmailId = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidEmailId = false;
     }
   }
 
@@ -516,6 +525,8 @@ export class SfDealComponent implements OnInit {
       } else {
         this.isInvalidTextFields = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidTextFields = false;
     }
   }
 
@@ -529,6 +540,8 @@ export class SfDealComponent implements OnInit {
       } else {
         this.isInvalidTextAreaFields = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidTextAreaFields = false;
     }
   }
 
@@ -549,6 +562,8 @@ export class SfDealComponent implements OnInit {
         columnInfo.divClass = "success";
         this.isInvalidPercentage = false;
       }
+    }  else if (!columnInfo.required) {
+      this.isInvalidPercentage = false;
     }
   }
 
@@ -562,6 +577,8 @@ export class SfDealComponent implements OnInit {
       } else {
         this.isInvalidWebsiteURL = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidWebsiteURL = false;
     }
   }
 
@@ -576,6 +593,8 @@ export class SfDealComponent implements OnInit {
         columnInfo.divClass = "success";
         this.isInvalidPhoneNumber = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidPhoneNumber = false;
     }
   }
 
@@ -610,8 +629,26 @@ export class SfDealComponent implements OnInit {
         columnInfo.divClass = "success";
         this.isInvalidGeoLocation = false;
       }
+    } else if (!columnInfo.required){
+      this.isInvalidGeoLocation = false;
     }
   }
+
+  validateLookupField(columnInfo: ColumnInfo) {
+    columnInfo.divClass = "success";
+    if (columnInfo.labelType == 'lookup' && columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
+      if (columnInfo.value == 0 && columnInfo.required) {
+        columnInfo.errorMessage = "Please select "+ columnInfo.labelName;
+        columnInfo.divClass = "error";
+        this.isInvalidLookupField = true;
+      } else {
+        this.isInvalidLookupField = false;
+      }      
+    } else if (!columnInfo.required && columnInfo.labelType == 'lookup') {
+      this.isInvalidLookupField = false;
+    }
+  }
+
 
   numericOnly(event): boolean { // restrict e,+,-,E characters in  input type number    
     const charCode = (event.which) ? event.which : event.keyCode;
