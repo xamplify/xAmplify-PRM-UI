@@ -1946,7 +1946,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.userListPaginationWrapper.userList.contactType = contactType;
 			this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
 			this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
-
+			this.userListPaginationWrapper.userList.isDownload = true;
 			this.contactService.listContactsByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {

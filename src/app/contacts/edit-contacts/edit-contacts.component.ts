@@ -2206,6 +2206,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.pagination.searchKey = this.searchKey;
 			this.userListPaginationWrapper.pagination = pagination;
 			this.contactListObject = new ContactList;
+			this.contactListObject.editList = true;
 			this.contactListObject.contactType = this.currentContactType;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.sharedLeads = pagination.sharedLeads;
@@ -3446,6 +3447,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObject.id = this.selectedContactListId;
 			this.contactListObject.isPartnerUserList = this.isPartner;
 			this.contactListObject.moduleName = this.module;
+			this.contactListObject.isDownload = true;
 			this.userListPaginationWrapper.userList = this.contactListObject;
 			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
 				.subscribe(
@@ -4191,6 +4193,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObj.assignedLeadsList = this.assignLeads;
 			this.contactListObj.contactType = this.contactsByType.selectedCategory;
 			this.contactListObj.editList = true;
+			this.contactListObj.isDownload = true;
 			this.userListPaginationWrapper.userList = this.contactListObj;
 			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
 				this.refService.setTeamMemberFilterForPagination(this.userListPaginationWrapper.pagination, this.selectedFilterIndex);
