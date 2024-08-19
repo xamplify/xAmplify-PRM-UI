@@ -196,7 +196,7 @@
                 Rejected
               </div>
               <div
-                *ngIf="lead?.showRegisterDeal && (lead?.canRegisterDeal  && lead.enableRegisterDealButton && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType !== 'REJECTED') || (lead?.selfLead && lead?.associatedDealId == undefined)">
+                *ngIf="(lead?.selfLead && lead?.dealBySelfLead && (authenticationService?.module?.isOrgAdmin || authenticationService?.module?.isMarketingCompany) && lead?.associatedDealId == undefined) || (((((lead?.dealByVendor && isVendorVersion || lead?.canRegisterDeal && lead?.dealByPartner) && !lead?.selfLead)) && lead?.associatedDealId == undefined) && ((lead.enableRegisterDealButton && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType !== 'REJECTED')))">
                 <button class="button_blue bgcolor-unset" (click)="registerDeal(lead)" [disabled]="lead?.associatedCampaignDeleted" 
                   data-toggle="tooltip" data-placement="bottom" title="{{lead?.associatedCampaignDeleted ? 'You can not register a deal for a deleted campaign' : ''}}" translate>
                   <span class="btn btn-primary transition d-inline"> Register Deal</span>
@@ -217,7 +217,7 @@
                       style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                     Rejected
                   </div>
-                  <div *ngIf="lead?.canRegisterDeal  && lead.enableRegisterDealButton && lead?.showRegisterDeal">
+                  <div *ngIf="(lead?.dealByVendor && isVendorVersion && lead?.leadApprovalStatusType != undefined || (lead?.dealByPartner && lead?.canRegisterDeal)) && lead.enableRegisterDealButton && lead?.associatedDealId == undefined">
                     <button class="button_blue bgcolor-unset" data-toggle="tooltip" data-placement="bottom"
                       title="{{(lead?.leadApprovalStatusType ? (lead?.leadApprovalStatusType === 'REJECTED' ? 'You can not register a deal for a rejected lead' : (lead?.associatedCampaignDeleted ? 'You can not register a deal for a deleted campaign' : '')) : (!lead?.leadApprovalStatusType && !lead?.associatedCampaignDeleted ? 'You can not register a deal for an unapproved lead' : (lead?.associatedCampaignDeleted ? 'You can not register a deal for a deleted campaign' : '')))}}"
                       [disabled]="(lead?.leadApprovalStatusType == 'REJECTED' || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection) || lead?.associatedCampaignDeleted)"

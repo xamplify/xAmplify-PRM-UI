@@ -408,7 +408,7 @@
                                 {{deal.currentStageName}}</span>
 
                               <!-- xnfr-426-->
-                              <a *ngIf="deal?.showDealActions" data-rel="fancybox-button"
+                              <a *ngIf="(deal?.showDealActions && deal?.showEditDealStage) || (isVendorVersion && deal?.showEditDealStage)" data-rel="fancybox-button"
                                 (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
                                 data-toggle="tooltip" data-placement="bottom" title="Edit Deal Stage">
                                 <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>

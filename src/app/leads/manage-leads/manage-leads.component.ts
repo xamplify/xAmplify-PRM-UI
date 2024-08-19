@@ -1460,5 +1460,16 @@ export class ManageLeadsComponent implements OnInit {
 		}
   }
 
+  showRegisterDealButton(lead):boolean {
+    let showRegisterDeal = false;
+    if (lead.selfLead && lead.dealBySelfLead && (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) && lead.associatedDealId == undefined) {
+      showRegisterDeal = true;
+    } else if (((((lead.dealByVendor && this.isVendor || lead.canRegisterDeal && lead.dealByPartner) && !lead.selfLead)) && lead.associatedDealId == undefined) 
+      && ((lead.enableRegisterDealButton && !lead.leadApprovalOrRejection && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED'))) {
+      showRegisterDeal = true;
+    }
+    return showRegisterDeal;
+  }
+
   
 }

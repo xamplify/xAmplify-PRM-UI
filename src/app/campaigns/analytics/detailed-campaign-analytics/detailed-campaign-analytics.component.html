@@ -1954,7 +1954,8 @@
                <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px; padding-top: 4px"
                   aria-hidden="true"></span></a>
             <app-manage-campaign-leads [campaignId]="campaignId" [fromAnalytics]="!isNavigatedThroughAnalytics"
-               [showTeamMemberFilter]="campaign.channelCampaign" (viewCampaignLeadForm)="viewCampaignLeadForm($event)"
+               [showTeamMemberFilter]="campaign.channelCampaign" (viewCampaignLeadForm)="viewCampaignLeadForm($event)" 
+               [isVendorVersion]="!campaign.nurtureCampaign" [isPartnerVersion]="campaign.nurtureCampaign"
                (editCampaignLeadForm)="editCampaignLeadForm($event)" (registerDealForm)="registerDealForm($event)"
                (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)"
                [refreshCampaignLeadsSubject]="refreshCampaignLeadsSubject.asObservable()">

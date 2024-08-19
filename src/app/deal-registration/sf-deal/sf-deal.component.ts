@@ -75,6 +75,7 @@ export class SfDealComponent implements OnInit {
   formLabelGroupClass: string;
   isInvalidLookupField: boolean = false;
 
+
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
     this.isOnlyPartner = this.authenticationService.isOnlyPartner();
   }
@@ -363,7 +364,8 @@ export class SfDealComponent implements OnInit {
     let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(columnInfo.id);
     if (haveChildrenDropDown) {
       let selectedValue = columnInfo.value;
-      this.populateDependentChildValues(columnInfo.id, selectedValue);
+      let parentLabelType = columnInfo.labelType;
+      this.populateDependentChildValues(columnInfo.id, selectedValue,parentLabelType);
     }
     this.validateAllFields();
   }
@@ -374,6 +376,11 @@ export class SfDealComponent implements OnInit {
         column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
           Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
         );
+        if (!(column.dropDownChoices.length > 0) && (selectedValue != "")) {
+          column.labelType = "text";
+        } else {
+          column.labelType = "select";
+        }
       }
     });
   }
@@ -386,17 +393,23 @@ export class SfDealComponent implements OnInit {
     return false;
   }
 
-  populateDependentChildValues(parentId: any, selectedValue: string) {
+  populateDependentChildValues(parentId: any, selectedValue: string, parentLabelType: any) {
     this.form.formLabelDTOs.forEach(column => {
       if (column.parentLabelId === parentId) {
         column.value = "";
         column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
           Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
         );
+        if (!(column.dropDownChoices.length > 0) && (selectedValue != "" || parentLabelType === "text")) {
+          column.labelType = "text";
+        } else {
+          column.labelType = "select";
+        }
         let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(column.id);
         if (haveChildrenDropDown) {
           let selectedValue = column.value;
-          this.populateDependentChildValues(column.id, selectedValue);
+          let parentLabelType = column.labelType;
+          this.populateDependentChildValues(column.id, selectedValue, parentLabelType);
         }
       }
     });
