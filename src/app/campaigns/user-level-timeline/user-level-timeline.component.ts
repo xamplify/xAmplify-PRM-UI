@@ -22,8 +22,8 @@ export class UserLevelTimelineComponent implements OnInit {
 
   campaignType:string = "";
   userType:string;
-  campaignId:number;
-  selectedUserId:number;
+  campaignId:any;
+  selectedUserId:any;
   redistributedAccountsBySelectedUserId = [];
   loading = false;
   dataLoader = false;
@@ -68,11 +68,11 @@ export class UserLevelTimelineComponent implements OnInit {
 		if(this.userType=="pa" || this.userType=="pm"){
 			this.userType = "p";
 		}
-    this.selectedUserId = parseInt(this.route.snapshot.params['userId']);
-    this.campaignId = parseInt(this.route.snapshot.params['campaignId']);
+    this.selectedUserId = this.referenceService.decodePathVariable(this.route.snapshot.params['userId']);
+    this.campaignId = this.referenceService.decodePathVariable(this.route.snapshot.params['campaignId']);
 	  let analyticsCampaignIdParam = this.route.snapshot.params['analyticsCampaignId'];
     if(analyticsCampaignIdParam!=undefined){
-      this.analyticsCampaignId = parseInt(analyticsCampaignIdParam);
+      this.analyticsCampaignId = this.referenceService.decodePathVariable(analyticsCampaignIdParam);
     }
     this.validateCampaignIdAndUserId(this.campaignId,this.selectedUserId);
     const roles = this.authenticationService.getRoles();
@@ -105,7 +105,6 @@ export class UserLevelTimelineComponent implements OnInit {
      this.campaignDetails = timeLineData['campaignDetais'];     
      let launchTimeInUtcString = this.campaignDetails['launchTimeInUTCString'];
      if(launchTimeInUtcString!=""){
-       console.log(launchTimeInUtcString);
       this.campaignDetails['displayTime'] = new Date(launchTimeInUtcString);
      }else{
       this.campaignDetails['displayTime'] = "-";
@@ -154,11 +153,13 @@ export class UserLevelTimelineComponent implements OnInit {
 
   goBack(){
     this.loading = true;
-    let url = "/home/campaigns/user-campaigns/"+this.previousRouterAlias+"/"+this.selectedUserId;
-    if(this.navigatedFrom!=undefined && this.analyticsCampaignId==undefined){
+    let encodedUserId = this.referenceService.encodePathVariable(this.selectedUserId);
+    let encodedCampaignId = this.referenceService.encodePathVariable(this.analyticsCampaignId);
+    let url = "/home/campaigns/user-campaigns/"+this.previousRouterAlias+"/"+encodedUserId;
+    if(this.navigatedFrom!=undefined && encodedCampaignId==undefined){
       this.referenceService.goToRouter(url+"/"+this.navigatedFrom);
-    }else if(this.analyticsCampaignId!=undefined && this.navigatedFrom!=undefined ){
-      this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+this.analyticsCampaignId);
+    }else if(encodedCampaignId!=undefined && this.navigatedFrom!=undefined ){
+      this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+encodedCampaignId+"/"+this.campaignTitle);
     }
     else{
       this.referenceService.goToRouter(url);

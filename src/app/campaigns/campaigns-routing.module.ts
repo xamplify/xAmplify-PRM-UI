@@ -57,11 +57,9 @@ export const campaignRoutes: Routes = [
   { path: "sms", component: CreateSmsCampaignComponent },
   { path: "timeline/:type/:campaignId/:userId", component: UserLevelTimelineComponent },
   { path: "timeline/:type/:campaignId/:userId/:navigatedFrom", component: UserLevelTimelineComponent },
-  { path: "timeline/:type/:campaignId/:userId/:navigatedFrom/:analyticsCampaignId", component: UserLevelTimelineComponent },
   { path: "timeline/:type/:campaignId/:userId/:navigatedFrom/:analyticsCampaignId/:campaignTitle", component: UserLevelTimelineComponent },
   { path: 'user-campaigns/:type/:userId',component:UserCampaignsListUtilComponent},
   { path: 'user-campaigns/:type/:userId/:navigatedFrom',component:UserCampaignsListUtilComponent},
-  { path: 'user-campaigns/:type/:userId/:navigatedFrom/:analyticsCampaignId',component:UserCampaignsListUtilComponent},
   { path: 'user-campaigns/:type/:userId/:navigatedFrom/:analyticsCampaignId/:campaignTitle',component:UserCampaignsListUtilComponent},
 
 ];

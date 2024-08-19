@@ -45,6 +45,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	analyticsCampaignId: number;
 	campaignTitle = "";
 	statusCode = 0;
+	userIdParameter = "";
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -52,7 +53,10 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	ngOnInit() {
 		this.tilesLoader = true;
 		this.startLoaders();
-		this.pagination.userId = this.referenceService.decodePathVariable(this.route.snapshot.params['userId']);
+		this.userIdParameter = this.referenceService.decodePathVariable(this.route.snapshot.params['userId']);
+		if(this.userIdParameter!=undefined){
+			this.pagination.userId = parseInt(this.userIdParameter);
+		}
 		let analyticsCampaignIdParam = this.referenceService.decodePathVariable(this.route.snapshot.params['analyticsCampaignId']);
 		this.campaignTitle = this.route.snapshot.params['campaignTitle'];
 		if(analyticsCampaignIdParam!=undefined){
@@ -305,11 +309,14 @@ setAutoResponsesPage(event: any,campaign:any) {
 	
 	viewTimeLine(campaignAnalytics:any){
 		this.loading = true;
-		let url  = "/home/campaigns/timeline/"+this.previousRouterAlias+"/"+campaignAnalytics.campaignId+"/"+this.pagination.userId;
+		let encodedCampaignId = this.referenceService.encodePathVariable(campaignAnalytics.campaignId);
+		let encodedUserId = this.referenceService.encodePathVariable(this.userIdParameter);
+		let url  = "/home/campaigns/timeline/"+this.previousRouterAlias+"/"+encodedCampaignId+"/"+encodedUserId;
 		if(this.navigatedFrom!=undefined&& this.analyticsCampaignId==undefined){
 			this.referenceService.goToRouter(url+"/"+this.navigatedFrom);
 		}else if(this.analyticsCampaignId!=undefined && this.navigatedFrom!=undefined){
-			this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+this.analyticsCampaignId);
+			let campaignUrl = url+"/"+this.navigatedFrom+"/"+encodedCampaignId+"/"+this.campaignTitle;
+			this.referenceService.goToRouter(campaignUrl);
 		}else{
 			this.referenceService.goToRouter(url);
 		}
