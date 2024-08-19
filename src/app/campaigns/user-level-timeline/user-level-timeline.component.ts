@@ -154,6 +154,7 @@ export class UserLevelTimelineComponent implements OnInit {
   goBack(){
     this.loading = true;
     let encodedUserId = this.referenceService.encodePathVariable(this.selectedUserId);
+    alert("Exiting Campaign Id "+this.analyticsCampaignId);
     let encodedCampaignId = this.referenceService.encodePathVariable(this.analyticsCampaignId);
     let url = "/home/campaigns/user-campaigns/"+this.previousRouterAlias+"/"+encodedUserId;
     if(this.navigatedFrom!=undefined && encodedCampaignId==undefined){

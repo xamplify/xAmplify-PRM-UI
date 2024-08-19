@@ -309,7 +309,7 @@ setAutoResponsesPage(event: any,campaign:any) {
 	
 	viewTimeLine(campaignAnalytics:any){
 		this.loading = true;
-		let encodedCampaignId = this.referenceService.encodePathVariable(campaignAnalytics.campaignId);
+		let encodedCampaignId = this.referenceService.encodePathVariable(this.analyticsCampaignId);
 		let encodedUserId = this.referenceService.encodePathVariable(this.userIdParameter);
 		let url  = "/home/campaigns/timeline/"+this.previousRouterAlias+"/"+encodedCampaignId+"/"+encodedUserId;
 		if(this.navigatedFrom!=undefined&& this.analyticsCampaignId==undefined){
@@ -330,8 +330,7 @@ setAutoResponsesPage(event: any,campaign:any) {
 		let encodedCampaignId = this.referenceService.encodePathVariable(this.analyticsCampaignId);
 		let campaignAnalyticsUrl = "";
 		if(this.campaignTitle!=undefined && this.campaignTitle.length>0){
-			let encodedTitle = this.referenceService.getEncodedUri(this.campaignTitle);
-			campaignAnalyticsUrl = url+"/campaigns/"+ encodedCampaignId + "/"+encodedTitle+ "/details";
+			campaignAnalyticsUrl = url+"/campaigns/"+ encodedCampaignId + "/"+this.campaignTitle+ "/details";
 		}else{
 			campaignAnalyticsUrl = url+"/campaigns/"+ encodedCampaignId + "/details";
 		}
