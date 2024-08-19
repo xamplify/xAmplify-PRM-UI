@@ -389,5 +389,9 @@ export class Properties {
 	showLeadPipeLineStageCRMIntegrationMessage = "You and your "+this.partnersMergeTag+" will not be able to see the 'Select Stage' option in the lead registration form because \"Show Lead Pipeline\" is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
 	showRegisterDealOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, your "+this.partnersMergeTag+" will not see the 'Register Deal' button in the opportunities section.";
 	showRegisterDealOnMessage = "Since the \"Show Register Deal\" option is toggled ON, your "+this.partnersMergeTag+" will see the 'Register Deal' option button in the opportunities section.";
+	showRegisterDealForPartnerLeadsOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, you will not see the 'Register Deal' button in the opportunities section for partner leads.";
+	showRegisterDealForPartnerLeadsOnMessage = "Since the \"Show Register Deal\" option is toggled ON, you will see the 'Register Deal' option button in the opportunities section for partner leads.";
+	showRegisterDealToSelfLeadsOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, you will not see the 'Register Deal' button in the opportunities section for self leads.";
+	showRegisterDealToSelfLeadsOnMessage = "Since the \"Show Register Deal\" option is toggled ON, you will see the 'Register Deal' option button in the opportunities section for self leads.";
 }
 
