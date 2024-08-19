@@ -336,7 +336,7 @@ export class AddDealComponent implements OnInit {
               this.hasCampaignPipeline = false;
               //self.getPipelines();
             }
-            if ("ZOHO" == this.activeCRMDetails.createdForActiveCRMType) {
+            if (this.activeCRMDetails != undefined && "ZOHO" == this.activeCRMDetails.createdForActiveCRMType) {
               self.getConvertMappingLayout(self.lead.halopsaTicketTypeId);
             }
           }
