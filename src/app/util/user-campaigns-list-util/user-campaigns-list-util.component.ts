@@ -292,9 +292,12 @@ setAutoResponsesPage(event: any,campaign:any) {
   }
 
 
-	goToCampaignAnalytics(campaignId:number){
+	goToCampaignAnalytics(campaignId:number,campaignTitle:any){
 		this.loading = true;
-		this.referenceService.goToRouter("home/campaigns/"+campaignId+"/details");
+		let campaign = {};
+		campaign['campaignId'] = campaignId;
+		campaign['campaignTitle']=campaignTitle;
+		this.referenceService.goToCampaignAnalytics(campaign);
 	}
 	
 	viewTimeLine(campaignAnalytics:any){

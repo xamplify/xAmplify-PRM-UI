@@ -1983,7 +1983,8 @@ export class ReferenceService {
   goToCampaignAnalytics(campaign:any) {
     let campaignId = campaign.campaignId;
     let encodedCampaignId = this.encodePathVariable(campaignId);
-    this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+campaign.campaignTitle+ "/details"]);
+    let encodedTitle = this.getEncodedUri(campaign.campaignTitle);
+    this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+encodedTitle+ "/details"]);
   }
 
   previewEmailTemplate(emailTemplate: EmailTemplate, campaign: any) {
@@ -3552,7 +3553,14 @@ encodePathVariable(input:any){
 }
 
 decodePathVariable(value:any){
-  return atob(value);
+  let finalValue:any;
+  try{
+    finalValue = atob(value);
+  }catch(error){
+    finalValue = value;
+  }
+  return finalValue;
+  
 }
 
 previewEmailTemplateInNewTab(id:any){
@@ -3711,6 +3719,10 @@ preivewAssetForPartnerOnNewHost(id: any) {
       }
     }
     this.goToRouter(router);
+  }
+
+  isNumber(value:any){
+    return typeof value === 'number';
   }
   
 
