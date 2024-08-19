@@ -321,8 +321,13 @@ setAutoResponsesPage(event: any,campaign:any) {
 		let url = "/home/";
 		let manageCampaignsUrl = url+"campaigns/manage";
 		let encodedCampaignId = this.referenceService.encodePathVariable(this.analyticsCampaignId);
-   		let encodedTitle = this.referenceService.getEncodedUri(this.campaignTitle);
-		let campaignAnalyticsUrl = url+"/campaigns/"+ encodedCampaignId + "/"+encodedTitle+ "/details";
+		let campaignAnalyticsUrl = "";
+		if(this.campaignTitle!=undefined && this.campaignTitle.length>0){
+			let encodedTitle = this.referenceService.getEncodedUri(this.campaignTitle);
+			campaignAnalyticsUrl = url+"/campaigns/"+ encodedCampaignId + "/"+encodedTitle+ "/details";
+		}else{
+			campaignAnalyticsUrl = url+"/campaigns/"+ encodedCampaignId + "/details";
+		}
 		if(this.previousRouterAlias=="pa"){
 			url = url+"partners/add";
 			this.referenceService.goToRouter(url);
