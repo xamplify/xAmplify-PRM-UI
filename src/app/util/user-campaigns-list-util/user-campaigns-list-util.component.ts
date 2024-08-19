@@ -43,6 +43,8 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	previousRouterAlias = "";
 	navigatedFrom = "";
 	analyticsCampaignId: number;
+	campaignTitle = "";
+	statusCode = 0;
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -51,7 +53,8 @@ export class UserCampaignsListUtilComponent implements OnInit {
 		this.tilesLoader = true;
 		this.startLoaders();
 		this.pagination.userId = parseInt(this.route.snapshot.params['userId']);
-		let analyticsCampaignIdParam = this.route.snapshot.params['analyticsCampaignId'];
+		let analyticsCampaignIdParam = this.referenceService.decodePathVariable(this.route.snapshot.params['analyticsCampaignId']);
+		this.campaignTitle = this.route.snapshot.params['campaignTitle'];
 		if(analyticsCampaignIdParam!=undefined){
 			this.analyticsCampaignId = parseInt(analyticsCampaignIdParam);
 		}
@@ -62,11 +65,28 @@ export class UserCampaignsListUtilComponent implements OnInit {
 			this.userType = "p";
 		}
 		if(this.analyticsCampaignId!=undefined){
-			this.validateCampaignIdAndUserId(this.analyticsCampaignId,this.pagination.userId);
+			this.validateCampaignIdAndCampaignTitle();
 		}else{
 			this.validatePartnerOrContactIdForCampaignAnalytics();
 		}
 	}
+
+	validateCampaignIdAndCampaignTitle(){
+		this.campaignService.validateCampaignIdAndCampaignTitle(this.analyticsCampaignId,this.campaignTitle).subscribe(
+			response=>{
+				this.statusCode = response.statusCode;
+			},error=>{
+			  this.xtremandLogger.errorPage(error);
+			},()=>{
+			  if(this.statusCode==200){
+				this.validateCampaignIdAndUserId(this.analyticsCampaignId,this.pagination.userId);
+			  }else{
+				this.referenceService.goToPageNotFound();
+			  }
+			}
+		  );
+	}
+	
 
 	validatePartnerOrContactIdForCampaignAnalytics(){
 		this.campaignService.validatePartnerOrContactIdForCampaignAnalytics(this.pagination.userId,this.userType).
@@ -317,7 +337,9 @@ setAutoResponsesPage(event: any,campaign:any) {
 		this.loading = true;
 		let url = "/home/";
 		let manageCampaignsUrl = url+"campaigns/manage";
-		let campaignAnalyticsUrl = url+"/campaigns/"+this.analyticsCampaignId+"/details";
+		let encodedCampaignId = this.referenceService.encodePathVariable(this.analyticsCampaignId);
+   		let encodedTitle = this.referenceService.getEncodedUri(this.campaignTitle);
+		let campaignAnalyticsUrl = url+"/campaigns/"+ encodedCampaignId + "/"+encodedTitle+ "/details";
 		if(this.previousRouterAlias=="pa"){
 			url = url+"partners/add";
 			this.referenceService.goToRouter(url);

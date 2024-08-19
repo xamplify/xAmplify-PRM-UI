@@ -61,6 +61,7 @@ export const campaignRoutes: Routes = [
   { path: 'user-campaigns/:type/:userId',component:UserCampaignsListUtilComponent},
   { path: 'user-campaigns/:type/:userId/:navigatedFrom',component:UserCampaignsListUtilComponent},
   { path: 'user-campaigns/:type/:userId/:navigatedFrom/:analyticsCampaignId',component:UserCampaignsListUtilComponent},
+  { path: 'user-campaigns/:type/:userId/:navigatedFrom/:analyticsCampaignId/:campaignTitle',component:UserCampaignsListUtilComponent},
 
 ];
 
