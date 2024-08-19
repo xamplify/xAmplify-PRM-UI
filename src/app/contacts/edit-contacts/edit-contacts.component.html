@@ -1290,7 +1290,8 @@
 					</div>
 					<div class="valid-list" id="hidingListOfUsersTable">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
-						<div class="portlet light remove_cardBgcolor share_leads_mrgn">
+						<div class="portlet light remove_cardBgcolor share_leads_mrgn"
+						*ngIf ="this.contactsByType.pagination.pagedItems.length > 0 || this.contactsByType.pagination.totalRecords > 0">
 							<div class="portlet-title">
 								<div class="caption" style="padding-top: 8px !important;">
 									<span class="capitalize"
@@ -1807,7 +1808,7 @@
 					<input class="checkBox_shadow" type="checkbox" [(ngModel)]="isCheckTC"
 						[ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc"
 						checked><!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
-					By adding a contact you confirm that you have read and agree to the <a
+					By adding a {{assignLeads ? 'Lead(s)':'contact(s)'}} you confirm that you have read and agree to the <a
 						(click)="navigateToTermsOfUse()">xAmplify Terms of Use</a> and agree to the processing of your
 					personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>.
 					Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and
