@@ -26,7 +26,7 @@
 			</ng-template>
 		</ul>
 		<div id="folder-margin-xamp">
-			<button class="button_blue bgcolor-unset pos_pd_top_rgt1" id="right" style="padding-bottom: 5px;"
+			<button class="button_blue bgcolor-unset pos_pd_top_rgt1 btn_for_only_themes" id="right" style="margin-top: 0px;"
 				(click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition ">Create
 					a
 					Folder</span></button>
@@ -837,7 +837,24 @@
 				<div class="row setup-content" id="step-4" *ngIf="recipientsTab ">
 					<div class="col-xs-12">
 						<fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
-							<legend class="scheduler-border">Selected {{reDistributeEvent?'Contact(s) list':'Partner(s) Group / Recipients List' }} </legend>
+							<legend class="scheduler-border"> 
+								<ng-container *ngIf="reDistributeEvent">
+									Select Contact(s) list
+								</ng-container>
+								<ng-container *ngIf="!reDistributeEvent">
+									Select
+									{{
+									(authenticationService.isVendor() || authenticationService.isVendorPartner() ||
+									authenticationService?.isVendorAndPartnerTeamMember || authenticationService?.isVendorTeamMember)
+									? 'Partner(s) Group'
+									: ((authenticationService?.module?.isMarketingCompany || authenticationService.module.isMarketingTeamMember||
+									authenticationService.module.isMarektingAndPartner ||
+									authenticationService.module.isMarketingAndPartnerTeamMember) ? 'Recipients List' : 'Partner(s) Group / Recipients
+									List')
+									}}
+								</ng-container>
+								  
+							</legend>
 								
 							<div class="row d-flex align-items-center">
 								<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">

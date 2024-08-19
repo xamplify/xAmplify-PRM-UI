@@ -988,6 +988,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				}
 				else if (isDuplicate) {
 					this.customResponse = new CustomResponse('ERROR', "Please remove duplicate email ids " + this.duplicateEmailIds, true);
+					this.duplicateEmailIds = [];
 				} else {
 					this.inValidCsvContacts = true;
 				}
@@ -1287,9 +1288,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			if (!this.isPartner) {
 				$("#clipBoardValidationMessage").append("<h4 style='color:#f68a55;'>" + "Please enter the valid data." + "</h4>");
 				isValidData = false;
+				this.users = [];
 			} else {
 				this.customResponse = new CustomResponse('ERROR', "Please enter the valid data.", true);
 				isValidData = false;
+				this.users = [];
 			}
 		}
 

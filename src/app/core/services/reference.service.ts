@@ -362,8 +362,7 @@ export class ReferenceService {
   }
 
   validateEmail(text: string) {
-    var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
-    return (text && EMAIL_REGEXP.test(text));
+    return this.validateEmailId(text);
   }
 
   validateWebsiteURL(url: string) {
@@ -1981,11 +1980,11 @@ export class ReferenceService {
     }
   }
 
-  goToCampaignAnalytics(campaign) {
-    this.campaignType = this.campaignType ? this.campaignType : "VIDEO";
-    this.router.navigate([
-      "/home/campaigns/" + campaign.campaignId + "/details",
-    ]);
+  goToCampaignAnalytics(campaign:any) {
+    let campaignId = campaign.campaignId;
+   // let encodedCampaignId = this.encodePathVariable(campaignId);
+    //this.router.navigate(["/home/campaigns/" + campaignId + "/"+campaign.campaignTitle+ "/details"]);
+    this.router.navigate(["/home/campaigns/" + campaignId + "/details"]);
   }
 
   previewEmailTemplate(emailTemplate: EmailTemplate, campaign: any) {
@@ -3669,7 +3668,6 @@ preivewAssetForPartnerOnNewHost(id: any) {
     } else {
       completeIconPath += this.envService.PREVIEW_HOST + "favicon.ico";
     }
-    console.log(completeIconPath);
     let encodedIcon = btoa(completeIconPath);
     return encodedIcon;
   }
@@ -3715,6 +3713,7 @@ preivewAssetForPartnerOnNewHost(id: any) {
     }
     this.goToRouter(router);
   }
+  
 
   
 }

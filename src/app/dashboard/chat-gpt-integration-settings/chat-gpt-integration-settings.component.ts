@@ -17,6 +17,7 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
   chatGptIntegrationSettingsDto = new ChatGptIntegrationSettingsDto();
   customResponse:CustomResponse = new CustomResponse();
   isSwitchOptionDisabled = false;
+  chatGptIntegrationEnabledPreviousState = false;
   description = "To enable ChatGPT integration, access the settings, enter your API key, and activate the relevant options. To disable it, simply toggle the setting off and remove the API key if desired";
 
   constructor(public referenceService:ReferenceService,
@@ -31,6 +32,7 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     this.chatGptSettingsService.getChatGptSettingsByLoggedInUserId().subscribe(
       response=>{
         this.chatGptIntegrationSettingsDto = response.data;
+        this.chatGptIntegrationEnabledPreviousState = this.chatGptIntegrationSettingsDto.chatGptIntegrationEnabled;
         this.chatGptSettingsLoader = false;
       },error=>{
         this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
@@ -43,11 +45,25 @@ export class ChatGptIntegrationSettingsComponent implements OnInit {
     this.chatGptSettingsLoader = true;
     this.chatGptSettingsService.updateChatGptSettings(this.chatGptIntegrationSettingsDto).subscribe(
       response=>{
-        this.customResponse = new CustomResponse('SUCCESS',"Settings updated successfully.",true);
+        let statusCode = response.statusCode;
+        if(statusCode==200){
+          if(this.chatGptIntegrationEnabledPreviousState!=this.chatGptIntegrationSettingsDto.chatGptIntegrationEnabled){
+            this.referenceService.showSweetAlertProcessingLoader("Settings updated successfully.");
+						setTimeout(() => {
+							this.referenceService.goToRouter('/home/dashboard/myprofile/chatGPT');
+              this.referenceService.closeSweetAlert();
+						}, 3000);
+          }else{
+            this.customResponse = new CustomResponse('SUCCESS',"Settings updated successfully.",true);
+          }
+        }else{
+          this.customResponse = new CustomResponse('ERROR',response.message,true);
+        }
         this.chatGptSettingsLoader = false;
       },error=>{
         this.chatGptSettingsLoader = false;
-        this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+        let message = this.referenceService.getApiErrorMessage(error);
+        this.customResponse = new CustomResponse('ERROR',message,true);
       });
   }
 

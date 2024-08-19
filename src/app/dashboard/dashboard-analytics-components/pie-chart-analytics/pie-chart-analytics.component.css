@@ -6,7 +6,7 @@
   max-width: 800px;
 }
 .mix-filter {
-  margin: 5px;
+  margin: 5px -1px;
 }
 .mix-filter li {
   font-size: 11px;
@@ -29,9 +29,17 @@
 .fa-4x {
   font-size: 4em;
 }
-.emailtemplate-selected {
-  background-color: #6dcff6;
+.btn-hvr-text{
+  background: #eaeff4;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-weight: 500;
 }
+.emailtemplate-selected {
+  background-color: #0276ff;
+  color: #fff!important;
+}
+
 [type="checkbox"] {
   vertical-align: sub;
   width: 16px;
@@ -52,6 +60,12 @@
 }
 
 }
-.btn-hvr-text{
-  border-radius: 3px;
+@media screen and (max-width:578px){
+.mbflex_unset{
+   display: unset!important;
+  }
+  .white-co{
+  display: unset !important;
+  padding: 2px 0px !important;
+  }
 }

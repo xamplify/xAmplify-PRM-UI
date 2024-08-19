@@ -23,55 +23,34 @@
 <ngx-loading [show]="loading" [config]="{ fullScreenBackdrop: true, backdropBorderRadius: '14px' }"></ngx-loading>
 <!---XNFR-125-->
 <ng-container>
-   <div [ngClass]="hidePageContent ? '' : 'page-content'" *ngIf="
-  !isTimeLineView &&
-  !showRsvpDetails &&
-  !isShowPartnerLeads &&
-  !showDealForm && !showLeadForm
-  " [class.ml0]="authenticationService.isSuperAdmin()">
+   <div [ngClass]="hidePageContent ? '' : 'page-content'" *ngIf="!isTimeLineView &&!showRsvpDetails &&!isShowPartnerLeads && !showDealForm && !showLeadForm" [class.ml0]="authenticationService.isSuperAdmin()">
       <div class="page-bar square-box" style="margin: 0 0px 15px">
          <ng-template [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
-         <button routerLink="/home/campaigns/{{ campaign.campaignId }}/checkin" *ngIf="
-        campaignType == 'EVENT' &&
-        !campaign.nurtureCampaign &&
-        campaign.publicEventCampaign
-        " class="btn btn-primary" id="check-in-css">
-            <b>Check In</b>
-            <img src="assets/images/attendees.png" id="custom-width-button" />
+         <button routerLink="/home/campaigns/{{ campaign.campaignId }}/checkin" *ngIf="campaignType == 'EVENT' && !campaign.nurtureCampaign && campaign.publicEventCampaign" class="btn btn-primary" id="check-in-css">
+            <strong>Check In</strong><img src="assets/images/attendees.png" id="custom-width-button" />
          </button>
-         <a class="close-circle mb_dwl" *ngIf="
-     campaignType != 'EVENT' &&
-     campaignType != 'SOCIAL' &&
-     !isDataShare &&
-     !mainLoader
-     " id="check-in-css" (click)="downloadReport()">
+         <a class="close-circle mb_dwl" *ngIf="campaignType != 'EVENT' && campaignType != 'SOCIAL' && !isDataShare && !mainLoader" id="check-in-css" (click)="downloadReport()">
             <i class="fa fa-download" aria-hidden="true"></i>
          </a>
       </div>
       <div class="portlet light clearfix remove_cardBgcolor" *ngIf="!isShowPartnerLeads && !showLeads && !showDeals">
          <div class="portlet-body">
-            <div *ngIf="
-           campaign?.campaignEmailNotificationStatusInString == 'IN_PROGRESS'
-           " class="alert alert-info">
-               <strong translate>Email is currently being transmitted to recipents. To view the most
-                  recent information, please click the refresh icon.
-                  <a (click)="checkParentAndRedistributedCampaignAccess()"><i class="fa fa-refresh float-right"
-                        aria-hidden="true"></i></a>
+            <div *ngIf="campaign?.campaignEmailNotificationStatusInString == 'IN_PROGRESS'" class="alert alert-info">
+               <strong translate>Email is currently being transmitted to recipents. To view the most recent information, please click the refresh icon.
+                  <a (click)="checkParentAndRedistributedCampaignAccess()"><i class="fa fa-refresh float-right" aria-hidden="true"></i></a>
                </strong>
             </div>
             <div *ngIf="hasClientError && !mainLoader" class="client-error">
-               Something went wrong, Please refresh the page
+               Something went wrong, Please refresh the page.
             </div>
             <div *ngIf="customResponse.responseType === 'ERROR'; else NOERROR" class="m10">
-               <app-response-message [customResponse]="customResponse"
-                  *ngIf="customResponse.isVisible"></app-response-message>
+               <app-response-message [customResponse]="customResponse"  *ngIf="customResponse.isVisible"></app-response-message>
             </div>
             <ng-template #NOERROR>
                <app-analytics-loader *ngIf="mainLoader"></app-analytics-loader>
                <div class="row campaign_type" [hidden]="mainLoader || hasClientError">
                   <div class="alert alert-danger alert-dismissible" *ngIf="contactListDeleteError">
-                     <a (click)="contactListDeleteError = false" class="close" data-dismiss="alert"
-                        aria-label="close">&times;</a>
+                     <a (click)="contactListDeleteError = false" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                      No contacts found.
                   </div>
                   <div class="alert alert-danger alert-dismissible cancel-alert-class" *ngIf="isCancelledEvent">
@@ -1022,7 +1001,7 @@
                   <div class="col-xs-12 col-sm-12 p-5x">
                      <div class="col-xs-12 p-5x">
                         <div class="row" *ngIf="!campaignViews || totalCampaignViewsLoader">
-                           <div class="porlet light" style="background: white">
+                           <div class="porlet light">
                               <div class="portlet-body clearfix">
                                  <app-list-loader></app-list-loader>
                               </div>
@@ -1139,9 +1118,7 @@
                                                 <div class="portlet-body text-center">
                                                    <i class="fa fa-check-circle fs30"></i>
                                                    <h1 class="fs14">
-                                                      <b>{{
-                                                         this.campaignReport.allPartnersYesCount
-                                                         }}</b>
+                                                      <b>{{this.campaignReport.allPartnersYesCount}}</b>
                                                       <span>Yes (
                                                          {{
                                                          this.campaignReport
@@ -1333,9 +1310,7 @@
      let item of campaignViewsPagination.pagedItems;
      let i = index
      ">
-                                                <tr (click)="userTimeline(item)" data-toggle="tooltip"
-                                                   data-placement="bottom"
-                                                   title="Click here to see all campaigns analytics">
+                                                <tr (click)="userTimeline(item)" data-placement="bottom" data-toggle="tooltip" title="Click here to see all campaigns analytics">
                                                    <td>
                                                       <i data-toggle="tooltip" data-placement="bottom"
                                                          title="This user is unsubscribed"
@@ -1446,54 +1421,19 @@
                                                    </td>
                                                    <td class="td-chart" *ngIf="campaignType !== 'EVENT'">
                                                       <div class="progress" *ngIf="campaignType !== 'SOCIAL'">
-                                                         <div class="progress-bar progress-bar-success" [ngClass]="{
-  'special-progress-bar':
-  item.viewsCount === 0
-  }" role="progressbar" [style.width.%]="
-  (item.viewsCount / maxViewsValue) *
-  100
-  ">
-                                                            <span *ngIf="campaignType === 'VIDEO'">{{
-                                                               item.emailOpenedCount }}</span>
-                                                            <span *ngIf="
-     campaignType === 'REGULAR' ||
-     campaignType === 'SURVEY' ||
-     campaignType === 'SOCIAL' ||
-     campaignType === 'LANDINGPAGE' ||
-     campaignType === 'EVENT'
-     ">{{ item.viewsCount }}</span>
+                                                         <div class="progress-bar progress-bar-success" [ngClass]="{'special-progress-bar':item.viewsCount === 0}" role="progressbar" [style.width.%]="(item.viewsCount / maxViewsValue) *100">
+                                                            <span *ngIf="campaignType === 'VIDEO'">{{item.emailOpenedCount }}</span>
+                                                            <span *ngIf="campaignType === 'REGULAR' ||campaignType === 'SURVEY' ||campaignType === 'SOCIAL' ||campaignType === 'LANDINGPAGE' ||campaignType === 'EVENT'">{{ item.viewsCount }}</span>
                                                          </div>
                                                       </div>
                                                       <ng-container *ngIf="campaignType == 'SOCIAL'">
-                                                         <ng-container *ngFor="
-     let socialStatus of socialCampaign.socialStatusList
-     ">
-                                                            <ng-container *ngFor="
-     let socialStatus of socialStatus.socialStatusList
-     ">
-                                                               <ng-container *ngIf="
-     socialStatus.userId ===
-     item.userId
-     ">
-                                                                  <div class="social-profile" [ngStyle]="{
-     'background-image':
-     'url(' +
-     socialStatus
-     .socialStatusProvider
-     .socialConnection
-     .profileImage +
-     ')'
-     }" data-toggle="tooltip" data-placement="top" title="{{
-     socialStatus
-     .socialStatusProvider
-     .socialConnection.profileName
-     }}">
-                                                                     <ng-container *ngIf="
-     socialStatus
-     .socialStatusProvider
-     .socialConnection.source ===
-     'TWITTER'
-     ">
+                                                         <ng-container *ngFor="let socialStatus of socialCampaign.socialStatusList">
+                                                            <ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+                                                               <ng-container *ngIf="socialStatus.userId ===item.userId">
+                                                                  <div class="social-profile" [ngStyle]="{'background-image':'url(' +socialStatus
+                                                                     .socialStatusProvider.socialConnection.profileImage +')'}" data-toggle="tooltip" data-placement="top" title="{{
+                                                                       socialStatus.socialStatusProvider.socialConnection.profileName}}">
+                                                                     <ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source ==='TWITTER'">
                                                                         <img class="img-circle" alt="{{
      socialStatus
      .socialStatusProvider
@@ -1546,20 +1486,10 @@
                                                          </ng-container>
                                                       </ng-container>
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'VIDEO' ||
-     campaignType === 'REGULAR' ||
-     campaignType === 'SURVEY'
-     ">
+                                                   <td class="text-center" *ngIf="campaignType === 'VIDEO' ||campaignType === 'REGULAR' ||campaignType === 'SURVEY'">
                                                       {{ item.urlsClickedCount }}
                                                    </td>
-                                                   <td (click)="
-  $event.stopPropagation();
-  goToCampaignAnaltyics(item)
-  " class="text-center" *ngIf="
-  campaignType === 'VIDEO' ||
-  campaignType === 'REGULAR'
-  ">
+                                                   <td (click)="$event.stopPropagation();goToCampaignAnaltyics(item)" class="text-center" *ngIf="campaignType === 'VIDEO' ||campaignType === 'REGULAR'">
                                                       <div class="actions-block override-actions"
                                                          style="margin-right: 100px">
                                                          <a [className]="showUserLevelCampaignAnalytics ? 'custom-icon': 'inactive custom-icon'"
@@ -2017,8 +1947,7 @@
          </div>
       </div>
       <div class="portlet light clearfix" *ngIf="showLeads">
-         <app-response-message [customResponse]="customResponse"
-            *ngIf="customResponse.isVisible"></app-response-message>
+         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
          <div class="portlet-body">
             <a (click)="closeCampaignLeads()" class="pull-right close-circle"
                style="margin: 9px 14px; padding-top: 3px; padding-left: 5px">
@@ -2029,13 +1958,12 @@
                [isVendorVersion]="!campaign.nurtureCampaign" [isPartnerVersion]="campaign.nurtureCampaign"
                (editCampaignLeadForm)="editCampaignLeadForm($event)" (registerDealForm)="registerDealForm($event)"
                (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)"
-               [refreshCampaignLeadsSubject]="
-        refreshCampaignLeadsSubject.asObservable()
-        ">
+               [refreshCampaignLeadsSubject]="refreshCampaignLeadsSubject.asObservable()">
             </app-manage-campaign-leads>
          </div>
       </div>
       <div class="portlet light clearfix" *ngIf="showDeals">
+         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
          <div class="portlet-body">
             <a (click)="closeCampaignDeals()" class="pull-right close-circle"
                style="margin: 9px 14px; padding-top: 3px; padding-left: 5px">
@@ -2044,9 +1972,8 @@
             <app-manage-campaign-deals [campaignId]="campaignId" [isDataShare]="isDataShare"
                [fromAnalytics]="!isNavigatedThroughAnalytics" [showTeamMemberFilter]="campaign.channelCampaign"
                [isVendorVersion]="!campaign.nurtureCampaign" [isPartnerVersion]="campaign.nurtureCampaign"
-               (viewCampaignDealForm)="viewCampaignDealForm($event)"
-               (editCampaignDealForm)="editCampaignDealForm($event)" (refreshCounts)="refreshCounts()"
-               (showCommentsPopUp)="showDealComments($event)">
+               (viewCampaignDealForm)="viewCampaignDealForm($event)" (editCampaignDealForm)="editCampaignDealForm($event)"
+               (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showDealComments($event)">
             </app-manage-campaign-deals>
          </div>
       </div>

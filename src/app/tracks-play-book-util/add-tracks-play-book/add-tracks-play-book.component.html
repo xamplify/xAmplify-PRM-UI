@@ -604,7 +604,7 @@
 
 <!-- --------------List Of Forms Popup--------------- -->
 <div class="modal right" id="formsList" data-backdrop="static">
-  <div class="modal-dialog modal-lg " style="width: 75%;right:0">
+  <div class="modal-dialog modal-lg modal_52" style="width: 75%;right:0">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal">
@@ -855,7 +855,7 @@
 
 <!-- --------------List Of Quiz Forms Popup--------------- -->
 <div class="modal right" id="quiz-list" data-backdrop="static">
-  <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+  <div class="modal-dialog modal-lg modal_52" style="width: 75%;right:0">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal">
@@ -1001,7 +1001,7 @@
                     <div *ngIf="rowInfo.formLabelDTOs !== undefined && rowInfo.formLabelDTOs.length > 0" class="row">
                       <ng-container *ngFor="let columnInfo of rowInfo.formLabelDTOs;let columnIndex=index">
                         <div *ngIf="columnIndex<3" id="form-div" class="padding-10px-lt-rgt"
-                          [ngClass]="{'col-lg-4 col-md-4 col-sm-4 col-xs-4':  rowInfo.formLabelDTOs.length == 3, 'col-lg-6 col-md-6 col-sm-6 col-xs-6': rowInfo.formLabelDTOs.length == 2, 'col-lg-12 col-md-12 col-sm-12 col-xs-12': rowInfo.formLabelDTOs.length == 1}">
+                          [ngClass]="{'col-lg-4 col-md-12 col-sm-12 col-xs-12':  rowInfo.formLabelDTOs.length == 3, 'col-lg-6 col-md-12 col-sm-12 col-xs-12': rowInfo.formLabelDTOs.length == 2, 'col-lg-12 col-md-12 col-sm-12 col-xs-12': rowInfo.formLabelDTOs.length == 1}">
                           <ng-template [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfoData:columnInfo}">
                           </ng-template>
                         </div>

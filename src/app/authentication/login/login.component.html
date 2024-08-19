@@ -91,6 +91,12 @@
 			 </ul>
 		  </div>
 		  <ng-template [ngTemplateOutlet]="vendorSSOLoginButton"></ng-template>
+		<div class="text-center mt10" *ngIf="authenticationService.companyProfileName == 'versa-networks'">
+			<label class="check">Don’t have an account yet?
+				<a class="agree-link" href="https://iam.versa-networks.com/register/partner" target="_blank">Request an
+					account</a>
+			</label>
+		</div>
 		  <div class="text-center mt10">
 			 <label class="check">
 			 <a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&
@@ -199,6 +205,11 @@
 							</ul>
 						</div>
 						<ng-template [ngTemplateOutlet]="vendorSSOLoginButton"></ng-template>
+						<div class="text-center mt10" *ngIf="authenticationService.companyProfileName == 'versa-networks'">
+							<label class="check">Don’t have an account yet?
+								<a class="agree-link" href="https://iam.versa-networks.com/register/partner" target="_blank">Request an account</a>
+							</label>
+						</div>
 						<div class="text-center mt10">
 							<label class="check">
 								<a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of

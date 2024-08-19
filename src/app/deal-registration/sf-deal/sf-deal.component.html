@@ -1,5 +1,5 @@
 <div class="row m0" id="dealDetailsDiv">
-  <div class="col-sm-12 col-xs-12 pl0 mb_pr0" [ngClass]="isPreview ? 'px-0':'px-0-19'">
+  <div class="{{formHeaderClass}}">
     <div class="panel-group"  id="accordion" role="tablist" aria-multiselectable="true">
       <div class="panel panel-default deal-bgcolor">
         <div class="panel-heading deal-bgcolor">
@@ -24,14 +24,17 @@
               <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
               <!--Add/Edit-->
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="!isPreview">
-                <div *ngIf="formDescription?.length>1 && authenticationService?.module.isPartnerCompany && !isPreview">
+                <div *ngIf="formDescription?.length>1 && authenticationService?.module?.isPartnerCompany && !isPreview">
                   <div class="alert alert-info">{{formDescription}}</div>
                 </div>
                 <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
-                  <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="formFields"
-                    [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
-                  <ng-template *ngIf="(0 != i % 2)" [ngTemplateOutlet]="formFields"
-                    [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
+                  <ng-container *ngIf="formLayOut==singleColumnLayout">
+                    <ng-template  [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
+                  </ng-container>
+                  <ng-container *ngIf="formLayOut==twoColumnLayout">
+                    <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
+                    <ng-template *ngIf="(0 != i % 2)" [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
+                  </ng-container>
                 </ng-container>
               </div>
               <!--Preview-->
@@ -115,9 +118,10 @@
 </div>
 <!--Added On 11/12/2023-->
 <ng-template #formFields let-columnInfo="columnInfo">
-  <div class="form-group" [ngClass]="isPreview ? '' : 'col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0'"  *ngIf="!isLoading">
-    <label class="control-label" [ngClass]="isPreview ? '' : 'col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0'" class="">{{columnInfo.displayName}} 
-      <span class="required" *ngIf="columnInfo.required">*</span>
+  <ng-container *ngIf="!columnInfo?.hideFieldInfo">
+  <div *ngIf="!isLoading"  class="{{formGroupClass}}"  >
+    <label class="{{formLabelGroupClass}}">{{columnInfo?.displayName}} 
+      <span class="required" *ngIf="columnInfo?.required">*</span>
       <span *ngIf="!(columnInfo.labelType=='textarea' || columnInfo.labelType=='text' || columnInfo.labelType=='number' || columnInfo.labelType=='email' || columnInfo.labelType=='percent' || columnInfo.labelType=='geolocation' || columnInfo.labelType=='phone' || columnInfo.labelType=='url') && columnInfo.placeHolder?.length > 0">({{columnInfo.placeHolder}})
       </span>
     </label>
@@ -240,7 +244,7 @@
       </ng-container>
       <!-- ---------------------------DropDown Menu----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='select'">
-        <select class="form-control" [(ngModel)]="columnInfo.value" [disabled]="isVendor || isPreview || !(columnInfo?.dropDownChoices?.length > 0) || columnInfo.nonInteractive"
+        <select class="form-control" [(ngModel)]="columnInfo.value" [disabled]="isVendor || isPreview || !(columnInfo?.dropDownChoices?.length > 0) || (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany))"
           (ngModelChange)="selectOnChangeEvent(columnInfo)">
           <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [ngValue]="dropDownValue.labelId">
             {{dropDownValue.name}}</option>
@@ -258,10 +262,11 @@
       <!-- ---------------------------Searchable DropDown For Lookup----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='lookup'">
         <span [class.disabled]="isVendor || isPreview">
-          <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDtoForLookup"
+          <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDtoForLookupField(columnInfo)"
           [(account)]="columnInfo.value" [disableDropDown]="false" 
           (searchableDropdownEventEmitter)="onItemSelect($event)"></app-searchable-dropdown></span>
       </ng-container>
-    </div>
+  </div>
+</ng-container>
 </ng-template>
 

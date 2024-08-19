@@ -1843,7 +1843,7 @@ h5.view-banner-green.white-labeled-cu1 {
 .img1 {
   background: #34495a;
   text-align: center;
-  border-radius: 10px 10px 0px 0px;
+  border-radius: 8px 8px 0px 0px;
   background: linear-gradient(358deg, #0c86cc, #06beb8) !important;;
   background-size: 1090px;
   background-repeat: no-repeat;
@@ -3015,8 +3015,8 @@ span.btn.Btn-Green.transition.secondary_btn_width{
 .grid-box img{
   border-top-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
-  border-bottom-left-radius: 15px !important;
-  border-bottom-right-radius: 15px !important;
+  /* border-bottom-left-radius: 15px !important;
+  border-bottom-right-radius: 15px !important; */
 }
 .grid-box.zero-margin{
   border: 1px solid #d0d5db;
@@ -3179,7 +3179,7 @@ button#save\&delete_button {
   border-radius: 3px;
 }
 button#cancel_button {
-  border-radius: 3px !important;
+  border-radius: 7px !important;
   border: none !important;
 }
 .btn{
@@ -3215,4 +3215,10 @@ a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor.mdf_bord
 
 .mb20 {
   margin-bottom: 20px !important;
+}
+.oppo_align{padding-top: 3px;}
+@media only screen and (max-width: 1199px) {
+  .mb-height_auto {
+      height: auto !important;
+    }
 }

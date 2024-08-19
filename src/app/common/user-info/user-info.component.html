@@ -49,11 +49,11 @@
 					title="{{userInfo?.jobTitle}}"><span>{{userInfo?.jobTitle | slice:0:25}}</span><span *ngIf="userInfo?.jobTitle?.length>25">..</span>
 				</p>
 			</ng-container>
-			<span class="mobile_no" *ngIf="userInfo?.mobileNumber">
+			<p class="mobile_no" *ngIf="userInfo?.mobileNumber">
 				<a href="tel:{{userInfo?.mobileNumber}}"><i class="fa fa-phone" aria-hidden="true" style="padding-right: 4px;"></i>
 					<b>Mobile no:</b> {{userInfo?.mobileNumber}}
 				</a>
-			</span>
+			</p>
 		</h6>
 		<h6 class='m0' *ngIf="isLeadInfo">
 			<a *ngIf="userInfo?.email?.length>0" style="display: table;" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.email}}">
@@ -62,9 +62,9 @@
 			<p *ngIf="userInfo?.company?.length>0" class="user-company" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.company}}">
 				<span><b>Company Name:</b> {{userInfo?.company |slice:0:25}}</span><span *ngIf="userInfo?.company?.length>25">..</span>
 			</p>
-			<span *ngIf="userInfo?.phone" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;position: relative !important;">
+			<p *ngIf="userInfo?.phone" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;position: relative !important;">
 				<b>Mobile No:</b> {{userInfo?.phone}}
-			</span>
+			</p>
 		</h6>
 	</span>
 	<span class="margin-left" *ngIf="isPartnerEntityInfo">
@@ -104,9 +104,9 @@
 			<a *ngIf="userInfo?.emailId?.length>0" style="display: table;" data-toggle="tooltip" data-placement="right" title="{{userInfo?.emailId}}">
 				<b>Email Id:</b> {{userInfo?.emailId | slice:0:30}}<span *ngIf="userInfo?.emailId?.length>30">...</span>
 			</a>
-			<span *ngIf="userInfo?.mobileNumber">
+			<p *ngIf="userInfo?.mobileNumber">
 				<a href="tel:{{userInfo?.mobileNumber}}"><i class="fa fa-phone" aria-hidden="true" style="padding-right: 4px;"></i><b>Mobile No:</b>{{userInfo?.mobileNumber}}</a>
-			</span>
+			</p>
 		</td>
 	</span>
 </div>

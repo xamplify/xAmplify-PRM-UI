@@ -11,7 +11,7 @@
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <ng-container *ngIf="!addWorkflows">
-    <div class="col-md-12 tab_gridfolder">
+    <div class="col-md-12 tab_gridfolder table_p0">
         <div class="portlet light clearfix tab_folderscroll">
             <div class="portlet-title" style="border-bottom: none">
                 <div class="row">
@@ -1387,7 +1387,6 @@
                                         data-placement="right" title="Show Redistributed Campaigns">
                                         <strong>{{campaign.redistributedCount}}</strong>
                                         <!-- <b style="color: white">{{campaign.redistributedCount}}</b> -->
-                                        <strong>{{campaign.redistributedCount}}</strong>
                                         <div class="clickicons"></div>
                                     </a>
                                     <a class="Iconhover custom-grid-icon"

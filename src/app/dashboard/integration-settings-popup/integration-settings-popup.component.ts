@@ -52,6 +52,10 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     this.customFields.options = this.customField.options.map(option => new PicklistValues(option.label, option.value));
     this.customFields.picklistValues = this.customField.picklistValues;
     this.customFields.defaultChoiceLabel = this.customField.defaultChoiceLabel;
+    if (this.customField.nonInteractive) {
+      this.customFields.private = this.customField.private;
+    }
+    this.customFields.controllerName = this.customField.controllerName;
   }
   hideIntegrationSettingForm() {
     $("#integrationSettingsForm").modal('hide');
@@ -98,10 +102,18 @@ export class IntegrationSettingsPopupComponent implements OnInit {
           return false;
         }
       });
-    } 
+    }
     if (this.customFields.type === 'picklist' && this.customFields.nonInteractive && (this.customFields.defaultChoiceLabel === null || this.customFields.defaultChoiceLabel === 'null')) {
       this.isValid = false;
-      this.errorMessage = 'Please select Picklist value.';
+      this.errorMessage = 'Please select the default value for the picklist.';
+      return;
+    }
+    if (!this.customFields.nonInteractive) {
+      this.customFields.private = false;
+    }
+    if ($.trim(this.customFields.displayName).length <= 0) {
+      this.isValid = false;
+      this.errorMessage = 'Please add display name.';
       return;
     }
     if (this.isValid) {
@@ -121,6 +133,9 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.customField.nonInteractive = this.customFields.nonInteractive;
       this.customField.options = this.customFields.options.map(option => new PicklistValues(option.label, option.value));
       this.customField.defaultChoiceLabel = this.customFields.defaultChoiceLabel;
+      if (this.customFields.nonInteractive) {
+        this.customField.private = this.customFields.private;
+      }
       this.hideIntegrationSettingForm();
     }
   }

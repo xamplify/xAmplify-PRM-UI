@@ -8,9 +8,7 @@
 <div class="" id="del-profile-div">
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="portlet-title">
-    <div class="caption" style="padding: 7px 0px 10px 5px !important; font-size: 16px;
-    font-weight: 500;">{{leadFormTitle}}
-    </div>
+    <div class="caption header-padding"  [ngClass]="isLeadForDivCenterAligned ? 'text-center':''" >{{leadFormTitle}}</div>
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <div class="alert alert-danger" id="company-profile-error-div" style="display: none;">
@@ -22,11 +20,11 @@
       <form role="form" id="deal-registration-form">
         <div class="row mr-3">
           <!--Left Side Div-->
-          <div class="col-sm-6 col-xs-12 px-10 pl0 mb_pr0">
+          <div [ngClass]="isLeadForDivCenterAligned ? ' col-md-6 col-md-offset-3' :'col-sm-6 col-xs-12 px-10 pl0 mb_pr0'">
             <!--Lead Details-->
             <div class="panel-group" role="tablist" aria-multiselectable="true"
               *ngIf="(!vanityLoginDto.vanityUrlFilter || (vanityLoginDto.vanityUrlFilter && (isVendorVersion || isOrgAdmin || authenticationService?.module.isMarketingCompany)))
-                       && ((lead.campaignId == null || lead.campaignId == 0) || (lead.campaignId != 0 && lead.campaignId != null && isVendorVersion))">
+                       && ((lead.campaignId == null || lead.campaignId == 0) || (lead.campaignId != 0 && lead.campaignId != null && isVendorVersion && actionType != 'add'))">
               <div class="panel panel-default deal-bgcolor" *ngIf="isLeadDetailsTabDisplayed">
                 <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
@@ -72,8 +70,8 @@
                             [(ngModel)]="lead.referenceId" [ngModelOptions]="{standalone: true}" readonly="readonly"
                             #referenceIdInput>
                           <div>
-                            <a class="button_blue" (click)="copyReferenceId(referenceIdInput)">
-                              <span class="btn btn-primary transition copy_link" data-toggle="tooltip" data-placement="top"
+                            <a class="button_blue lead_copy_id_btn_blue" (click)="copyReferenceId(referenceIdInput)">
+                              <span class="btn btn-primary transition copy_link btn_primary_lead_copy_id" data-toggle="tooltip" data-placement="top"
                                 title="Copy ID"><i class="fa fa-copy"></i></span>
                             </a>
                           </div>
@@ -229,7 +227,7 @@
           <ng-template [ngTemplateOutlet]="defaultLeadFormTemplate"></ng-template>
         </ng-container>
         <!--Button-->
-        <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
+        <div  class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
           <ng-container *ngIf="!showLoadingButton">
             <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid" (click)="save()" class="button bgcolor-unset"
               *ngIf="!edit"><span class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
@@ -242,14 +240,14 @@
           </button>
         </div>
         <!--Button-->
-        <div class="pull-right mr10" *ngIf="!preview && showCustomForm">
+        <div [ngClass]="isLeadForDivCenterAligned ? 'col-xs-9 col-sm-9 col-md-9 col-lg-9 col-mr10 d-flex justify-content-end':'pull-right mr10'" *ngIf="!preview && showCustomForm">
           <ng-container *ngIf="!showLoadingButton">
-            <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
-                class="btn Btn-Green transition txt_pd-top3">Add Lead</span></button>
-            <button type="button" id="saveLead"
-              [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid"
-              (click)="save()" class="button bgcolor-unset" *ngIf="edit"><span
-                class="btn Btn-Green transition txt_pd-top3">Update Lead</span></button>
+            <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()" class="button bgcolor-unset" *ngIf="!edit">
+              <span class="btn Btn-Green transition txt_pd-top3">Add Lead</span>
+            </button>
+            <button type="button" id="saveLead" [disabled]="!isLeadRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()" class="button bgcolor-unset" *ngIf="edit">
+              <span class="btn Btn-Green transition txt_pd-top3">Update Lead</span>
+            </button>
           </ng-container>
           <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -288,11 +286,11 @@
                   <div class="form-group" style="margin-bottom: 10px" *ngIf="lead.campaignId > 0">
                     <label class="control-label">Campaign Name <span><strong class="required">*</strong></span></label>
                     <input type="text" disabled="disabled" name="campaignName" value="{{lead.campaignName}}"
-                      class="form-control" id="campaignName" aria-autocomplete="none" auto-complete="off" />
+                      class="form-control" id="campaignName" aria-autocomplete="none" autocomplete="off" />
                   </div>
                   <!--Lead For-->
                   <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 10px"
-                    *ngIf="(!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany))) && !(lead.campaignId > 0) && isLeadDetailsTabDisplayed">
+                    *ngIf="(!vanityLoginDto.vanityUrlFilter) && (!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany))) && !(lead.campaignId > 0) && isLeadDetailsTabDisplayed">
                     <label class="control-label">Lead For<span><strong class="required">*</strong></span></label>
                     <select class="form-control" [(ngModel)]="lead.createdForCompanyId"
                       [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId" id="createdForCompanyId"
@@ -303,7 +301,7 @@
                   </div>
                   <!--Lead By-->
                   <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
-                    *ngIf="actionType === 'view' && isVendorVersion">
+                    *ngIf="!vanityLoginDto.vanityUrlFilter && actionType === 'view' && isVendorVersion">
                     <label class="control-label">Lead By<span class="required"><strong>*</strong></span></label>
                     <select class="form-control" [disabled]="preview || edit || leadId > 0 || vanityLoginDto?.vanityUrlFilter">
                       <option [value]="lead?.createdByCompanyId">{{lead?.createdByCompanyName}}</option>
@@ -351,7 +349,7 @@
                   </div>
                   <!--Vendor's xAmplify Pipeline-->
                   <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0" style="margin-bottom: 20px">
-                    <label class="control-label">Vendor's xAmplify Pipeline<span><strong class="required">*</strong></span></label>
+                    <label class="control-label">{{vendorCompanyName}} Pipeline<span><strong class="required">*</strong></span></label>
                     <select class="form-control" [(ngModel)]="lead.createdForPipelineId" [ngModelOptions]="{standalone: true}"
                       placeholder="createdForPipelineId" id="createdForPipelineId"
                       [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasLeadPipeline || activeCRMDetails?.hasCreatedForPipeline"
@@ -423,7 +421,8 @@
                   </div>
                 </div>
                 <!--Comments-->
-                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0" style="margin-bottom: 20px">
+                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0" style="margin-bottom: 20px"
+                  *ngIf="showCreatedByPipelineAndStage || activeCRMDetails?.showLeadPipelineStage || showDefaultForm">
                   <label class="control-label">Comments</label>
                   <textarea type="text" maxlength="100" class="form-control" name="leadComment" [(ngModel)]=" lead.leadComment" [ngModelOptions]="{standalone: true}" id="leadComment"
                     [disabled]="preview" aria-autocomplete="none" autocomplete="off"></textarea>
@@ -549,11 +548,14 @@
         placeholder="{{leadCustomField.placeholder}}" [ngModelOptions]="{standalone: true}" id="city"
         [disabled]="preview" aria-autocomplete="none" autocomplete="off" />
     </div>
-    <div class="form-group" *ngIf="leadCustomField.labelId =='state'" [attr.class]="leadState">
+    <div class="form-group" *ngIf="leadCustomField.labelId =='state'" [attr.class]="leadState" style="margin-bottom: 20px">
       <label class="control-label">{{leadCustomField.displayName}}</label>
-      <input type="text" maxlength="100" class="form-control" name="lead state" [(ngModel)]=" lead.state"
-        [ngModelOptions]="{standalone: true}" id="state" placeholder="{{leadCustomField.placeholder}}"
-        [disabled]="preview" aria-autocomplete="none" autocomplete="off" />
+      <span *ngIf="leadCustomField.placeholder?.length > 0">({{leadCustomField.placeholder}})
+      </span>
+      <select class="form-control" [(ngModel)]="lead.state" [ngModelOptions]="{standalone: true}" id="state"
+        [disabled]="preview || hasNoStates">
+        <option *ngFor="let state of filteredStates" [value]="state">{{state}}</option>
+      </select>
     </div>
     <div class="form-group" *ngIf="leadCustomField.labelId =='postalCode'" [attr.class]="leadPostalCode">
       <label class="control-label">{{leadCustomField.displayName}}</label>
@@ -567,10 +569,21 @@
       <span *ngIf="leadCustomField.placeholder?.length > 0">({{leadCustomField.placeholder}})
       </span>
       <select class="form-control" [(ngModel)]="lead.country" [ngModelOptions]="{standalone: true}" id="country"
-        [disabled]="preview">
-        <option *ngFor="let country of countryNames.countries" [value]="country">{{country}}</option>
+        [disabled]="preview" (ngModelChange)="onChangeCountry($event)">
+        <option *ngFor="let country of filteredCountries" [value]="country">{{country}}</option>
       </select>
     </div>
+
+    <div class="form-group" *ngIf="leadCustomField.labelId =='region'" [attr.class]="region" style="margin-bottom: 20px">
+      <label class="control-label">{{leadCustomField.displayName}}</label>
+      <span *ngIf="leadCustomField.placeholder?.length > 0">({{leadCustomField.placeholder}})
+      </span>
+      <select class="form-control" [(ngModel)]="lead.region" [ngModelOptions]="{standalone: true}" id="region"
+        [disabled]="preview" (ngModelChange)="onChangeRegion($event)">
+        <option *ngFor="let region of regions.regions" [value]="region.name">{{region.name}}</option>
+      </select>
+    </div>
+
   </div>
 </ng-template>
 <!-- END CONTENT -->
@@ -749,8 +762,7 @@
     <!--Lead Details-->
     <div class=" row portlet light m0">
       <div class="panel-heading deal-bgcolor">
-        <h4 class="panel-title">Lead Details
-        </h4>
+        <h4 class="panel-title">Lead Details</h4>
       </div>
       <div class="panel-body br-unset pl0 pr0 mrg">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">

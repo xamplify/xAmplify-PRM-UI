@@ -2121,7 +2121,7 @@ a.title.padding_bottom.text-color.content-bg{
 }
 i.IconCustomization:hover {
   background-color: #22313a !important;
-  color: #fff !important;
+  color: #000 !important;
 }
 i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
 i.fa.fa-plus.fa-fa-consistency.IconCustomization,
@@ -2727,7 +2727,7 @@ i.fa.fa-rocket:hover{
   background-color: unset;
   z-index: 999;
   position: relative;
-  color: #fff !important;
+  color: #000 !important;
 }
 i.fa.fa-download:hover,
 i.fa.IconCustomization.fa-angle-right:hover,
@@ -2751,7 +2751,7 @@ a.delete.custom-icon {
 }
 /* manikanta */
 a.delete.custom-icon:hover {
-  color: #fff !important;
+  color: #cb5a5e !important;
   z-index: 99;
   position: relative;
 }
@@ -4390,3 +4390,32 @@ padding:10px;
 .portlet.light.remove_cardBgcolor.glass_Bgcolor{background: #f0f5fa !important;box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;}
 button.button_blue.btn-abjustmentin-breadcrumbs.bgcolor-unset{margin-top: 5px;margin-right: 5px;}
 span.btn.btn-primary.transition.text_pd5.txt_update {padding-top: 2px !important;}
+.text-color{border: 1px solid #d0d5db !important;}
+.view-type-css{
+  margin-top: 8px !important;
+  margin-right: 8px !important;
+}
+.view-type-css2{
+  margin-top: 8px !important;
+}
+.deal_view_type_css{
+  margin-top: 6px !important;
+  margin-right: 17px !important;
+}
+.deal_view_type_css2{
+  margin-top: 6px !important;
+}
+.btn_for_only_themes{margin-top: -1px !important;}
+.lead_copy_id_btn_blue{background: none !important;border: none !important;margin-left:0px !important;}
+span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !important;border: 1px solid #026deb !important;}
+.asset_cross_align{top: 5px !important;right: -1px !important;}
+.track-selected{margin-right: -1px !important;}
+/* .card1, .sticky_btn{
+  background: #f0f5fa !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+} */
+.border_0{
+  background: #f4f4f5 !important;
+}
+.text_pd5.only_neo{margin-top: -5px !important;}
+a.close-circle.xamp-margin-left-icon.not_light{margin: 0px 7px 5px 5px !important;}

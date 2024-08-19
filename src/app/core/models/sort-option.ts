@@ -126,6 +126,7 @@ export class SortOption {
 	];
 
 	manageFormsSortOptions = [
+		{ 'name': 'Sort By', 'value': '' },
 		{ 'name': 'Name (A-Z)', 'value': 'name-ASC' },
 		{ 'name': 'Name (Z-A)', 'value': 'name-DESC' },
 		{ 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
@@ -447,7 +448,7 @@ export class SortOption {
 	public dealCampaignSortOption: any = this.dealCampaignsSortDropDown[0];
 	public leadCampaignSortOption: any = this.leadCampaignsSortDropDown[0];
 	public campaignPartnersRemoveAccessDefaultSortOption: any = this.campaignPartnersRemoveAccessSortDropDown[0];
-	public formsSortOption: any = this.manageFormsSortOptions[3];
+	public formsSortOption: any = this.manageFormsSortOptions[0];
 	public partnerLandingPageSortOption: any = this.partnerLandingPageSortOptions[3];
 	public selectedDemoRequestSortOption:  any = this.demoRequestSortOptions[7];
 	public selectedCategoryDropDownOption: any = this.categorySortDropDownOptions[0];

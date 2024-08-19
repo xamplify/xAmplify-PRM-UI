@@ -212,14 +212,22 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   /********************Pagaination&Search Code*****************/
 
   /*************************Sort********************** */
-  sortBy(text: any) {
-      this.sortOption.formsSortOption = text;
-      if(this.isLandingPages){
-        this.findPartnerVendorJourneyLandingPages(this.pagination)
-      }else{
-        this.getAllFilteredResults(this.pagination);
-      }
-  }
+    sortBy(text: any) {
+        const sortedValue = text.value;
+        if (sortedValue !== '') {
+            const options: string[] = sortedValue.split('-');
+            this.pagination.sortcolumn = options[0];
+            this.pagination.sortingOrder = options[1];
+        } else {
+            this.pagination.sortcolumn = null;
+            this.pagination.sortingOrder = null;
+        }
+        if (this.isLandingPages) {
+            this.findPartnerVendorJourneyLandingPages(this.pagination)
+        } else {
+            this.getAllFilteredResults(this.pagination);
+        }
+    }
 
 
   /*************************Search********************** */

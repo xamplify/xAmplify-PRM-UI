@@ -2475,3 +2475,28 @@ legend.scheduler-borders{
 button.button_blue.btn-abjustmentin-breadcrumbs.bgcolor-unset{margin-top: -1px;margin-right: 1px;}
 .createFolderAlignment{padding-top: 5px !important;}
 #folder-margin-xamp{margin-top: 5px !important;}
+.btn_custom_bg{margin-top: 0px !important;}
+.lead-details-border{border: 1px solid var(--border-color) !important;}
+button.filter.btn-hvr-text.emailtemplate-selected{
+  border: 1px solid #3d94c5;
+}
+/* .card1, .sticky_btn{
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  } */
+  .card1 {
+    padding: 0px !important;
+    background-color: var(--page-content) !important;
+    border: 1px solid var(--border-color) !important;
+  }
+  .sticky_btn {
+    background-color: var(--page-content) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    bottom: 0px;
+  }
+  .upload_files {
+    height: 55px !important;
+  }
+  .border_0 {
+    padding-top: 14px!important;
+  }

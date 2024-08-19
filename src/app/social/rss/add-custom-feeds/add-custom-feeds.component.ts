@@ -190,7 +190,7 @@ export class AddCustomFeedsComponent implements OnInit {
       	let duplicateName = false;		
       	if (this.customFeedCollections !== undefined && this.customFeedCollections.length > 0) {
       		$.each(this.customFeedCollections, function (_index:number, customFeedCollection) {
-                 if(customFeedCollection.title.toLowerCase() === collectionName.toLowerCase()) {
+                 if(customFeedCollection.title.toLowerCase() === collectionName.toLowerCase().trim()) {
                  	duplicateName = true;
                  }
             });

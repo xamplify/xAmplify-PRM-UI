@@ -8,6 +8,7 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { FadeAnimation } from 'app/core/animations/fade-animation';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $: any, swal: any;
 
@@ -66,6 +67,13 @@ export class SfDealComponent implements OnInit {
   searchableDropDownDtoForLookup: SearchableDropdownDto = new SearchableDropdownDto();
   formDescription: any;
   isOnlyPartner: boolean = false;
+  formLayOut = "";
+  singleColumnLayout = XAMPLIFY_CONSTANTS.singleColumnLayout;
+  twoColumnLayout = XAMPLIFY_CONSTANTS.twoColumnLayout;
+  formHeaderClass = "";
+  formGroupClass: string;
+  formLabelGroupClass: string;
+  isInvalidLookupField: boolean = false;
 
 
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
@@ -89,6 +97,16 @@ export class SfDealComponent implements OnInit {
 
   ngOnInit() {
     this.showSFFormError = false;
+    if(this.opportunityType === 'DEAL'){
+      this.formLayOut = this.activeCRM['dealFormColumnLayout'];
+    }else if(this.opportunityType === 'LEAD'){
+      this.formLayOut = this.activeCRM['leadFormColumnLayout'];
+    }
+    if(this.formLayOut==undefined){
+      this.formLayOut = this.twoColumnLayout;
+    }
+    /***Added By Sravan On 08/08/2024 */
+    this.updateFormAlignments();
     if (("HALOPSA" === this.activeCRM.createdByActiveCRMType || "HALOPSA" === this.activeCRM.createdForActiveCRMType)) {
       this.dropdownSettings = {
         singleSelection: false,
@@ -123,6 +141,42 @@ export class SfDealComponent implements OnInit {
     }
     if (("CONNECTWISE" === this.activeCRM.createdByActiveCRMType || "CONNECTWISE" === this.activeCRM.createdForActiveCRMType)) {
       this.isConnectWiseEnabledAsActiveCRM = true;
+    }
+  }
+  /***Added By Sravan 08/08/2024****/
+  private updateFormAlignments() {
+    if (this.isPreview) {
+      this.formHeaderClass = "col-sm-12 col-xs-12 pl0 mb_pr0 px-0";
+      this.formGroupClass = "form-group";
+      this.formLabelGroupClass = "control-label";
+    } else {
+      this.formHeaderClass = "col-sm-12 col-xs-12 pl0 mb_pr0 px-0-19";
+      this.formGroupClass = "form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0";
+      this.formLabelGroupClass = "control-label col-xs-12 col-sm-12 col-md-12 col-lg-12 pl0";
+      if (this.formLayOut == XAMPLIFY_CONSTANTS.singleColumnLayout) {
+        this.formHeaderClass = "col-md-6 col-lg-6 col-md-6 col-xs-6 col-md-offset-3";
+        this.formGroupClass = "form-group col-md-6 col-lg-6 col-md-6 col-xs-6 col-md-offset-3 text-center";
+        this.formLabelGroupClass = "control-label float-left";
+        this.updateDivClassesByIntegrationSettings();
+      }
+    }
+  }
+
+  private updateDivClassesByIntegrationSettings() {
+    let isLeadForOrDealForDivCenterAligned = false;
+    if (this.opportunityType === 'LEAD') {
+      let showLeadPipeline = this.activeCRM['showLeadPipeline'];
+      let showLeadPipelineStage = this.activeCRM['showLeadPipelineStage'];
+      isLeadForOrDealForDivCenterAligned = !showLeadPipeline && !showLeadPipelineStage;
+    } else {
+      let showDealPipeLine = this.activeCRM['showDealPipeline'];
+      let showDealPipelineStage = this.activeCRM['showDealPipelineStage'];
+      isLeadForOrDealForDivCenterAligned = !showDealPipeLine && !showDealPipelineStage;
+    }
+    if (isLeadForOrDealForDivCenterAligned) {
+      this.formGroupClass = "form-group col-xs-12 col-sm-12 col-md-6 col-lg-12 pl0";
+    } else {
+      this.formHeaderClass = "col-sm-12 col-xs-12 pl0 mb_pr0 px-0-19";
     }
   }
 
@@ -164,12 +218,15 @@ export class SfDealComponent implements OnInit {
         this.form = result.data;
         if(this.form.formLabelDTOs.length==0){
           this.showSFFormError = true;
-          this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
+          this.sfFormError = "Your Salesforce integration is not valid. Re-configure with valid credentials";
         }
         this.formDescription = result.data.description;
         this.form.formLabelDTOs.forEach((columnInfo: ColumnInfo) => {
-          if (columnInfo.nonInteractive) {
+          if (columnInfo.nonInteractive && (this.isOnlyPartner || !this.activeCRM.createdForSelfCompany)) {
             columnInfo.value = columnInfo.defaultChoiceLabel;
+            if (columnInfo.private) {
+              columnInfo.hideFieldInfo = true;
+            }
           }
         });
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
@@ -307,7 +364,8 @@ export class SfDealComponent implements OnInit {
     let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(columnInfo.id);
     if (haveChildrenDropDown) {
       let selectedValue = columnInfo.value;
-      this.populateDependentChildValues(columnInfo.id, selectedValue);
+      let parentLabelType = columnInfo.labelType;
+      this.populateDependentChildValues(columnInfo.id, selectedValue,parentLabelType);
     }
     this.validateAllFields();
   }
@@ -318,6 +376,11 @@ export class SfDealComponent implements OnInit {
         column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
           Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
         );
+        if (!(column.dropDownChoices.length > 0) && (selectedValue != "")) {
+          column.labelType = "text";
+        } else {
+          column.labelType = "select";
+        }
       }
     });
   }
@@ -330,17 +393,23 @@ export class SfDealComponent implements OnInit {
     return false;
   }
 
-  populateDependentChildValues(parentId: any, selectedValue: string) {
+  populateDependentChildValues(parentId: any, selectedValue: string, parentLabelType: any) {
     this.form.formLabelDTOs.forEach(column => {
       if (column.parentLabelId === parentId) {
         column.value = "";
         column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
           Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
         );
+        if (!(column.dropDownChoices.length > 0) && (selectedValue != "" || parentLabelType === "text")) {
+          column.labelType = "text";
+        } else {
+          column.labelType = "select";
+        }
         let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(column.id);
         if (haveChildrenDropDown) {
           let selectedValue = column.value;
-          this.populateDependentChildValues(column.id, selectedValue);
+          let parentLabelType = column.labelType;
+          this.populateDependentChildValues(column.id, selectedValue, parentLabelType);
         }
       }
     });
@@ -396,9 +465,14 @@ export class SfDealComponent implements OnInit {
     this.validateRepValues();
     /*******XNFR-403*******/
 
+    let allLookupFields = this.form.formLabelDTOs.filter(column => column.labelType === "lookup");
+    for (let lookupField of allLookupFields) {
+      this.validateLookupField(lookupField);
+    }
+
     this.isDealRegistrationFormInvalid = this.isRequiredNotFilled || this.isInvalidEmailId || this.isInvalidAmount || this.isInvalidGeoLocation ||
       this.isInvalidPercentage || this.isInvalidPhoneNumber || this.isInvalidRepValues || this.isInvalidTextAreaFields ||
-      this.isInvalidTextFields || this.isInvalidWebsiteURL;
+      this.isInvalidTextFields || this.isInvalidWebsiteURL || this.isInvalidLookupField;
     this.isFormValid.emit(this.isDealRegistrationFormInvalid);
   }
   validateAmount(columnInfo: ColumnInfo) {
@@ -449,6 +523,8 @@ export class SfDealComponent implements OnInit {
       } else {
         this.isInvalidEmailId = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidEmailId = false;
     }
   }
 
@@ -462,6 +538,8 @@ export class SfDealComponent implements OnInit {
       } else {
         this.isInvalidTextFields = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidTextFields = false;
     }
   }
 
@@ -475,6 +553,8 @@ export class SfDealComponent implements OnInit {
       } else {
         this.isInvalidTextAreaFields = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidTextAreaFields = false;
     }
   }
 
@@ -495,6 +575,8 @@ export class SfDealComponent implements OnInit {
         columnInfo.divClass = "success";
         this.isInvalidPercentage = false;
       }
+    }  else if (!columnInfo.required) {
+      this.isInvalidPercentage = false;
     }
   }
 
@@ -508,6 +590,8 @@ export class SfDealComponent implements OnInit {
       } else {
         this.isInvalidWebsiteURL = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidWebsiteURL = false;
     }
   }
 
@@ -522,6 +606,8 @@ export class SfDealComponent implements OnInit {
         columnInfo.divClass = "success";
         this.isInvalidPhoneNumber = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidPhoneNumber = false;
     }
   }
 
@@ -556,8 +642,26 @@ export class SfDealComponent implements OnInit {
         columnInfo.divClass = "success";
         this.isInvalidGeoLocation = false;
       }
+    } else if (!columnInfo.required){
+      this.isInvalidGeoLocation = false;
     }
   }
+
+  validateLookupField(columnInfo: ColumnInfo) {
+    columnInfo.divClass = "success";
+    if (columnInfo.labelType == 'lookup' && columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
+      if (columnInfo.value == 0 && columnInfo.required) {
+        columnInfo.errorMessage = "Please select "+ columnInfo.labelName;
+        columnInfo.divClass = "error";
+        this.isInvalidLookupField = true;
+      } else {
+        this.isInvalidLookupField = false;
+      }      
+    } else if (!columnInfo.required && columnInfo.labelType == 'lookup') {
+      this.isInvalidLookupField = false;
+    }
+  }
+
 
   numericOnly(event): boolean { // restrict e,+,-,E characters in  input type number    
     const charCode = (event.which) ? event.which : event.keyCode;
@@ -612,4 +716,12 @@ export class SfDealComponent implements OnInit {
     this.referenceService.removeRowWithAnimation(index);
 
   }
+
+  searchableDropDownDtoForLookupField(columnInfo: any) {
+    let searchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
+    searchableDropDownDto.data = columnInfo.lookupDropDownChoices;
+    searchableDropDownDto.placeHolder = `Please Select ${columnInfo.labelName}`;
+    return searchableDropDownDto;
+  }
+
 }

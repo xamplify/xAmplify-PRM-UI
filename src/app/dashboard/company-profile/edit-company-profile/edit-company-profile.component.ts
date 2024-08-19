@@ -618,7 +618,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.checkValidations();
         if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
             && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
-            !this.zipError && !this.logoError && !this.aboutUsError) {
+            !this.zipError && !this.logoError && !this.aboutUsError && !this.supportEmailIdError) {
             this.processor.set(this.processor);
 
             if( this.companyProfile.phone.length < 6){
@@ -719,7 +719,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         let errorLength = $('div.form-group.has-error.has-feedback').length;
         if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
             && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
-            !this.zipError && !this.logoError && !this.aboutUsError) {
+            !this.zipError && !this.logoError && !this.aboutUsError && !this.supportEmailIdError) {
             this.processor.set(this.processor);
 
             if ( this.companyProfile.phone ) {
@@ -787,6 +787,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       this.validatePattern('state');
       this.validatePattern('eventUrl');
       this.validateCompanyLogo();
+      this.validateSupportEmailId();
     }
 
     saveCompanyProfileOnDestroy(){
@@ -795,7 +796,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       let errorLength = $('div.form-group.has-error.has-feedback').length;
       if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
           && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
-          !this.zipError && !this.logoError && !this.twitterLinkError && !this.instagramLinkError) {
+          !this.zipError && !this.logoError && !this.twitterLinkError && !this.instagramLinkError && !this.supportEmailIdError) {
         if(this.companyProfile.phone) { this.companyProfile.phone = this.companyProfile.phone.length <6 ? "": this.companyProfile.phone;}
        this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
         .subscribe(
@@ -1730,7 +1731,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     processFavIconFile(event: any){
         const file:File = event.target.files[0];
         if(file){
+            this.isLoading = true;
             const isSupportfile = file.type;
+            console.log(file.type);
             if (isSupportfile === 'image/x-icon') {
                 this.errorUploadCropper = false;
                 this.imageChangedEvent = event;
@@ -1738,16 +1741,24 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                   if(result.statusCode === 200){
                       this.companyProfile.favIconLogoPath = result.data;
                       this.companyFavIconPath = result.data;
+                  }else{
+                    this.refService.showSweetAlertErrorMessage("Server is not responding.");
                   }
+                  this.isLoading = false;
               }, error => {
-                  console.log(error);
+                this.refService.showSweetAlertErrorMessage("Unable to upload the ico file. Please try again.");
+                this.isLoading = false;
               });
             } else {
               this.errorUploadCropper = true;
               this.showCropper = false;
+              this.refService.showSweetAlertErrorMessage("Uploaded File Type :"+file.type+" is not supported");
+              this.isLoading = true;
             }       
             this.closeModal(); 
-        }        
+        } else{
+            this.refService.showSweetAlertErrorMessage("Unable to read the image file");
+        }       
     }
 
     openFavIconFileId(){
@@ -1843,8 +1854,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.campaignAccess.salesEnablement = false;
             this.campaignAccess.dataShare = false;
             this.campaignAccess.oneClickLaunch = false;
-          }else if(this.vendorTier){
-              this.campaignAccess.shareLeads = false;
+            this.campaignAccess.referVendor = false;
+            this.campaignAccess.ssoEnabled = false;
           }else if(this.marketing){
               this.campaignAccess.loginAsPartner = false;
               this.campaignAccess.shareWhiteLabeledContent = false;
@@ -1964,6 +1975,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.supportEmailIdDivClass = this.refService.successClass;
         this.supportEmailIdErrorMessage = "";
         this.enableOrDisableButton();
+    }
+
+    setReferVendorValue(event:boolean){
+        this.campaignAccess.referVendor = event;
     }
   
 }

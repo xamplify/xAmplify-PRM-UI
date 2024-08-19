@@ -198,14 +198,14 @@
 													{{column.labelName}}<span class="required"
 														*ngIf="column.required">*</span>
 												</th>
-												<td *ngIf="i>=4">
-													<ng-container *ngIf="formDataRow.values[i].downloadable">
-														<a href="{{formDataRow.values[i].downloadLink}}">
-															{{formDataRow.values[i].value}}
+												<td *ngIf="i-1>=3">
+													<ng-container *ngIf="formDataRow.values[i-1].downloadable">
+														<a href="{{formDataRow.values[i-1].downloadLink}}">
+															{{formDataRow.values[i-1].value}}
 														</a>
 													</ng-container>
-													<ng-container *ngIf="!formDataRow.values[i].downloadable">
-														{{formDataRow.values[i].value}}
+													<ng-container *ngIf="!formDataRow.values[i-1].downloadable">
+														{{formDataRow.values[i-1].value}}
 													</ng-container>
 
 												</td>

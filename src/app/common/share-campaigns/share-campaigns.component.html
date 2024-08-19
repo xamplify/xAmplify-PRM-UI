@@ -64,7 +64,8 @@
             {{campaign.campaign | slice:0:25}} <span *ngIf="campaign.campaign?.length>25">...</span>
           </td>
           <td class="text-center">
-            <span>{{campaign.campaignTypeInString}}</span>
+            <span>{{(campaign.campaignTypeInString === 'REGULAR') ? 'EMAIL' : campaign.campaignTypeInString }}</span>
+            <h5 *ngIf = "type =='Partner'">{{campaign.channelCampaign   ? 'Through Campaign': 'To Campaign'}}</h5>
           </td>
           <td class="text-center">
             <span>{{campaign.createdBy}}</span>

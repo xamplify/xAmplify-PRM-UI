@@ -34,7 +34,7 @@ import { Properties } from 'app/common/models/properties';
 
 @Injectable()
 export class AuthenticationService {
-  
+ 
 
 
   access_token: string;
@@ -1408,6 +1408,5 @@ logoutByUserId(){
   let url = this.REST_URL+"logout/"+this.getUserId();
   return this.callGetMethod(url);
 }
-
 
 }

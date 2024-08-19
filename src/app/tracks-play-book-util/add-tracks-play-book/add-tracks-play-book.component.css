@@ -1384,3 +1384,13 @@ button.btn-info.aspect_ratio:disabled {
   opacity: .5; /* Change the opacity to make the button look disabled */
   cursor: not-allowed; /* Change the cursor to indicate it's disabled */
 }
+@media screen and (min-width: 601px) {
+  .modal-dialog.modal_52 {
+      width: 52% !important;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .vertical-center{
+    margin: 10px 15px 0px 15px;
+  }
+}

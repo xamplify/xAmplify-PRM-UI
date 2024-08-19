@@ -15,7 +15,7 @@ body{
   color: white !important;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: cover;
+  background-size: cover!important;
 }
 body.light-mode::before{
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.45) 100%);
@@ -1812,25 +1812,26 @@ input#copy-link {
 #download-template {
   border: 0px solid #fff !important;
   color: #fff !important;
-  background: rgba(16 18 27 / 40%) !important;
+  background: rgb(0 0 0 / 17%) !important;
 }
 #download-template:hover {
-  background: rgb(146 151 179 / 8%) !important;
+  /* background: rgb(146 151 179 / 8%) !important; */
+  background: rgb(255 253 253 / 57%) !important;
   color: #262626 !important;
   transition: .5s;
 }
 ul.dropdown-menu.pull-right.custome-dropdown-changs li a:hover{
-  border: 1px solid #00a7c3!important;
-  background-color: #5bb2f5!important;
-  color: #fff !important;
+  background: rgb(0 0 0 / 37%) !important;
+  color: #000000 !important;
 }
 ul.dropdown-menu.pull-right.custome-dropdown-changs li a {
-  border: 1px solid #2b2f33 !important;
-  color: #ffffff !important;
+  border:1px solid #cfc7ca!important;
+  color: #000000 !important;
+  background: rgb(0 0 0 / 37%) !important;
 }
 
 .custome-dropdown-changs li a {
-  border: 1px solid #fff !important;
+  border: 1px solid #000000 !important;
 }
 .custome-dropdown-changs li a i {
   color: #fff !important;
@@ -1843,7 +1844,7 @@ i.singleIconCustomization {
 
 #download-template-grid {
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #fff !important;
+  color: #000000 !important;
 }
 #download-template-grid:hover {
   background: rgb(255 253 253 / 57%) !important;
@@ -1960,7 +1961,8 @@ i.IconCustomization :hover,
 .setting-icon-cu:hover,
 .IconCustomizationcondition a i:hover {
   border:  0px solid rgba(255, 255, 255, 0.1) !important; 
-  background: rgb(146 151 179 / 8%) !important;
+  background: rgb(255 253 253 / 57%) !important;
+  /* background: rgb(146 151 179 / 8%) !important; */
 }
 
 i.fa.fa-trash.trashIconCustomization {
@@ -2191,7 +2193,7 @@ i.fa.fa-expand.fa-fa-consistency.IconCustomization {
   background-color: rgb(255 255 255 / 31%) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: 15px !important;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px); */
 }
 .pricing-head h4#image-style {
   background-color: #2c2f33 !important;
@@ -3316,7 +3318,7 @@ span.btn.btn-primary.transition.merge_tag_text{
 }
 b,
 td.pt10.pb10.bold.mr_10{
-  color: #787878 !important;
+  color: #000 !important;
 }
 a.tabColorOne b,
 h1 b,
@@ -3710,7 +3712,8 @@ table.table.table-bordered {
   margin-right: 5px !important;
 }
 .gridViewImgBg{
-  background: rgb(146 151 179 / 8%)!important;
+  /* background: rgb(146 151 179 / 8%)!important; */
+  background: rgb(255 255 255 / 31%) !important;
   backdrop-filter: blur(5px);
   border-top-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
@@ -4345,3 +4348,64 @@ button.button_blue.btn-abjustmentin-breadcrumbs.bgcolor-unset{margin-top: 5px;ma
 span.btn.btn-primary.transition.text_pd5.txt_update {padding-top: 2px !important;}
 .createFolderAlignment{padding-top: 7px !important;}
 .edit-mdf-form-margin{margin-right: 6px !important;}
+.view-type-css{
+  margin-top: 7px !important;
+}
+.view-type-css2{
+  margin-top: 7px !important;
+}
+.deal_view_type_css{
+  margin-top: 6px !important;
+}
+.deal_view_type_css2{
+  margin-top: 6px !important;
+}
+.flex-none{
+  flex: unset!important;
+  display: block;
+  padding: 0px;
+  }
+  .px-13{
+    padding: 0px 8px;
+    display: block;
+  }
+   /* folder view card */
+   .folder-height{
+    margin-top: 1px;
+    border-radius: 0px 15px 15px 15px !important;
+  }
+  .ffolder.big{
+    border-radius: 0 15px 15px 15px!important;
+  }
+  .ffolder.gray{
+    background: rgb(255 255 255 / 31%) !important;
+  }
+  .ffolder.big.gray.folder-cheight {
+  height: 178px!important;
+  }
+  /* 07-08-24 */
+  .btn_for_only_themes{margin-top: -1px !important;}
+.lead_copy_id_btn_blue{background: none !important;border: none !important;margin-left:0px !important;}
+span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !important;border: 1px solid #026deb !important;}
+.track-selected{margin-right: 1px !important;}
+.asset_cross_align{top: 5px !important;right: 0px !important;}
+.card1 {
+  padding: 0px !important;
+  background: rgb(255 255 255 / 15%) !important;
+  border: 1px solid rgb(255 255 255 / 35%);
+}
+.sticky_btn {
+  backdrop-filter: blur(10px);
+  background-color: rgb(255 255 255 / 31%) !important;
+  bottom: 0px;
+}
+.upload_files {
+  height: 55px !important;
+}
+.border_0 {
+  padding-top: 14px!important;
+}
+.text_pd5.only_neo {
+  margin-top: -3px !important;
+}
+a.close-circle.xamp-margin-left-icon.not_light{margin: 0px 7px 5px 5px !important;}

@@ -8,5 +8,11 @@ export class SubmittedFormData {
     masterLandingPageName:string;
     partnerCompanyName:string;
     partnerMailId:string;
+    vendorLandingPageId:number;
+	vendorLandingPageName:string;
+	vendorCompanyName:string;
+	vendorMailId:string;
+    vendorFormAlias:string;
+
     
 }

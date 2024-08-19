@@ -33,7 +33,7 @@
     </div>
   </div>
 </div>
-<app-landing-page-analytics *ngIf = "isViewAnalytics" [vendorJourney] = 'vendorJourney || isMasterLandingPages' [vendorLandingPageId] = "selectedLandingPageId"
+<app-landing-page-analytics *ngIf = "isViewAnalytics" [vendorJourney] = 'vendorJourney' [masterLandingPages]='isMasterLandingPages' [vendorLandingPageId] = "selectedLandingPageId"
 [vendorPageAlias] = "selectedVendorPageAlias" [vendorPages] = 'isLandingPages'>
 </app-landing-page-analytics>
 <app-add-form-util *ngIf = "isEditVendorOrMasterForm" [isMdfForm]="false" [selectedForm]="selectedFrom"  [isCopyForm]="false"

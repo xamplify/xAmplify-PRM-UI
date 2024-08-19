@@ -3,6 +3,7 @@
   background-size: 800px 104px;
   position: relative;
   border-radius: 5px;
+  
 }
 .circle-loader-css {
   width: 300px;
@@ -22,4 +23,7 @@
 }
 #loading-bg-image{
   background: transparent url(../../../../assets/images/loading-popup.gif) no-repeat center center;
+}
+.timeline-wrapper{
+  border-radius: 7px;
 }

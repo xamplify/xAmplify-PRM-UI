@@ -14,7 +14,8 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
   providers: [HttpRequestLoader]
 })
 export class AnalyticsComponent implements OnInit, OnDestroy {
-  @Input() campaignId= 0;
+  @Input() campaignId:any;
+  @Input() campaignTitle:any;
   campaignName:string = "";
   notifyPartners = false;
   loader:HttpRequestLoader = new HttpRequestLoader();
@@ -29,7 +30,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.referenceService.loading(this.loader, true);
-    this.campaignId= this.route.snapshot.params['campaignId'];
+    //this.campaignId = this.referenceService.decodePathVariable(this.route.snapshot.params['campaignId']);
+    this.campaignId = this.route.snapshot.params['campaignId'];
+    this.campaignTitle = this.route.snapshot.params['campaignTitle'];
     this.campaignService.isOneClickLaunchChannelCampaign(this.campaignId).
     subscribe(
         response=>{

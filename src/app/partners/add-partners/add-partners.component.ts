@@ -652,6 +652,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						this.isCompanyDetails = true;
 					} else {
 						this.isCompanyDetails = false;
+						break;
 					}
 				} else {
 					this.isCompanyDetails = true;
@@ -676,7 +677,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					}
 				}
 			}
-			this.newPartnerUser = this.validateSocialContacts(this.newPartnerUser);
+			if (!(this.invalidPatternEmails.length == this.newPartnerUser.length)) {
+				this.newPartnerUser = this.validateSocialContacts(this.newPartnerUser);
+			}
 			if (existedEmails.length === 0) {
 				if (this.isCompanyDetails) {
 					if (this.validCsvContacts) {
@@ -2818,7 +2821,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					data => {
 						if (data.access) {
 							this.loading = false;
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+							if (data.statusCode == 200) {
+								this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+							} else if (data.statusCode == 400) {
+								this.customResponse = new CustomResponse('ERROR', data.message, true);
+							}
 							this.referenceService.goToTop();
 							this.loadPartnerList(this.pagination);
 						} else {
@@ -4301,6 +4308,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					socialContact.accountName = this.getGoogleConatacts.contacts[i].accountName;
 					socialContact.postalCode = this.getGoogleConatacts.contacts[i].postalCode;
 					socialContact.country = this.getGoogleConatacts.contacts[i].country;
+					socialContact.website = this.getGoogleConatacts.contacts[i].website;
 					this.socialPartnerUsers.push(socialContact);
 				}
 

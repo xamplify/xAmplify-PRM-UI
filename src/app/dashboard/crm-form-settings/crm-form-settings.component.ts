@@ -459,8 +459,50 @@ export class CrmFormSettingsComponent {
 		}
 		this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
 
-		this.checkIfhasParentField(sfCustomField,isChecked);
+		this.setAllParentFieldsSelected(sfCustomField,isChecked);
 
+	}
+
+
+	setAllParentFieldsSelected(sfCustomField: any, isChildChecked: any) {
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
+			let cfParentName = sfCustomField.controllerName;
+			if (isChildChecked) {
+				$('#' + cfParentName).prop('checked', true);
+			}
+			let sfParentName = sfCustomField.controllerName;
+			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
+			for (let sfParentfield of sfParentFields) {
+				if (isChildChecked) {
+					let cfName = sfParentfield.name;
+					if (this.selectedCfIds.indexOf(cfName) == -1) {
+						this.selectedCfIds.push(cfName);
+						this.selectedCustomFieldsDtos.push(sfParentfield);
+					}
+					if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
+						this.paginatedSelectedIds.push(cfName);
+					}
+					sfParentfield.selected = true;
+					sfParentfield.canUnselect = false;
+					this.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
+				} else {
+					let cfParentName = sfCustomField.controllerName;
+					$('#' + cfParentName).prop('checked', true);
+					sfParentfield.canUnselect = true;
+					sfParentfield.selected = true;
+				}
+
+				if (sfParentfield.controllerName != null && sfParentfield.controllerName != undefined) {
+					let cfParentName = sfParentfield.controllerName;
+					let isChecked = false;
+					if (sfParentfield.selected || !(sfParentfield.canUnselect)) {
+						$('#' + cfParentName).prop('checked', true);
+						isChecked = true;
+					}
+					this.setAllParentFieldsSelected(sfParentfield, isChecked);
+				}
+			}
+		}
 	}
 
 	checkIfhasParentField(sfCustomField: any, isChecked: any) {
@@ -468,10 +510,32 @@ export class CrmFormSettingsComponent {
 			let cfParentName = sfCustomField.controllerName;
 			if (isChecked) {
 				$('#' + cfParentName).prop('checked', true);
-			} else {
-				$('#' + cfParentName).prop('checked', false);
 			}
 			this.setParentFieldSelected(sfCustomField, isChecked);
+		}
+	}
+
+	checkIParentFieldisUnChecked(sfCustomField: any) {
+		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
+			let sfParentName = sfCustomField.controllerName;
+			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
+			for (let sfParentfield of sfParentFields) {
+				let hasParentLabel = this.sfcfPagedItems.some(field => field.name === sfParentName);
+				if (sfCustomField.canUnselect) {
+					if (hasParentLabel || !(sfParentfield.canUnselect)) {
+						sfParentfield.selected = false;
+						sfParentfield.canUnselect = true;
+						this.checkIParentFieldisUnChecked(sfParentfield);
+					}
+				} else {
+					let cfParentName = sfCustomField.controllerName;
+					$('#' + cfParentName).prop('checked', true);
+					sfCustomField.selected = true;
+					sfCustomField.canUnselect = false;
+					sfParentfield.selected = true;
+					sfParentfield.canUnselect = false;
+				}
+			}
 		}
 	}
 
@@ -494,18 +558,10 @@ export class CrmFormSettingsComponent {
 					sfParentfield.canUnselect = false;
 					this.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
 				} else {
+					let cfParentName = sfParentfield.controllerName;
+					$('#' + cfParentName).prop('checked', true);
 					sfParentfield.canUnselect = true;
 					sfParentfield.selected = true;
-				}
-
-				if (sfParentfield.controllerName != null && sfParentfield.controllerName != undefined) {
-					let cfParentName = sfParentfield.controllerName;
-					let isChecked = false;
-					if (sfParentfield.selected || !(sfParentfield.canUnselect)) {
-						$('#' + cfParentName).prop('checked', true);
-						isChecked = true;
-					}
-					this.setParentFieldSelected(sfParentfield, isChecked);
 				}
 			}
 		}
@@ -569,7 +625,6 @@ export class CrmFormSettingsComponent {
 					this.ngxloading = false;
 				},
 				() => {
-					this.getDealHeader();
 					if (this.integrationType.toLowerCase() === 'salesforce') {
 						// this.listSalesforceCustomFields(this.opportunityType);
 					} else {						
@@ -596,7 +651,7 @@ export class CrmFormSettingsComponent {
 			$.each(this.sfcfPagedItems, function (index: number, value: any) {
 				value.selected = true;
 				self.selectedCustomFieldsDtos.push(value);
-				self.checkIfhasParentField(value, true);
+				self.setAllParentFieldsSelected(value, true);
 			});
 			self.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(self.selectedCustomFieldsDtos);
 		} else {
@@ -621,7 +676,10 @@ export class CrmFormSettingsComponent {
 				if (value.canUnselect) {
 					value.selected = false;
 					self.selectedCustomFieldsDtos.splice(self.selectedCustomFieldsDtos.indexOf(value), 1);
-					self.checkIfhasParentField(value, false);
+					if (value.controllerName != null && value.controllerName != undefined) {
+						self.checkIfhasParentField(value, false);
+						self.checkIParentFieldisUnChecked(value);
+					}
 				}
 			});
 			self.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
@@ -758,33 +816,6 @@ export class CrmFormSettingsComponent {
 	//XNFR-611
 	toggleHeaderSettings(){
 		this.showHeaderTextArea = !this.showHeaderTextArea;
-	}
-      
-	getDealHeader(){
-		this.integrationService.getDealHeaderByUserId(this.loggedInUserId)
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					if(data.data != undefined && data.data!=null && data.data!="")
-					this.dealHeader = data.data;
-				});
-	}
-
-	setDealHeader() {
-		this.ngxloading = true;
-		if (this.dealHeader == undefined || this.dealHeader.length == 0 || this.dealHeader == '') {
-			this.ngxloading = false;
-			return this.customFieldsResponse = new CustomResponse('ERROR', `Please Enter Description.`, true);
-		}
-		this.integrationService.setDealHeader(this.loggedInUserId, this.dealHeader)
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					if (data.statusCode == 200) {
-						this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-						this.getDealHeader();
-					}
-				});
 	}
 
 

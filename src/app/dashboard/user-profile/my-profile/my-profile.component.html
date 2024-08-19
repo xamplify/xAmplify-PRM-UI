@@ -192,7 +192,7 @@
                                             </a>
                                          </li>
                                         <!--XNFR-628 ChatGPT Settings-->
-                                        <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor && isLocalHost" [ngClass]="{'active-tab': activeTabName == chatGptSettingsMenuHeader}">
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor" [ngClass]="{'active-tab': activeTabName == chatGptSettingsMenuHeader}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == chatGptSettingsMenuHeader}" (click)="activateTab(chatGptSettingsMenuHeader);clearCustomResponse()">
                                                 {{MY_PROFILE_MENU_CONSTANTS.CHAT_GPT_SETTIGNS_MENU_HEADER}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':chatGptSettingsMenuHeader}"></ng-template>
@@ -311,9 +311,7 @@
                                             </a>
                                         </li>
                                         <!--Integrations-->
-                                        <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
-                                                authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() ||
-                                                authenticationService.superiorRole != 'Partner'">
+                                        <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}"
                                                 (click)="activateTab('integrations');clearCustomResponse()">
                                                 {{properties.integrations}}
