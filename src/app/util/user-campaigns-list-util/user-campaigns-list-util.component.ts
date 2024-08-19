@@ -14,7 +14,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { UtilService } from '../../core/services/util.service';
 
-declare var $,swal:any;
+declare var $:any,swal:any;
 @Component({
 	selector: 'app-user-campaigns-list-util',
 	templateUrl: './user-campaigns-list-util.component.html',
@@ -52,7 +52,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	ngOnInit() {
 		this.tilesLoader = true;
 		this.startLoaders();
-		this.pagination.userId = parseInt(this.route.snapshot.params['userId']);
+		this.pagination.userId = this.referenceService.decodePathVariable(this.route.snapshot.params['userId']);
 		let analyticsCampaignIdParam = this.referenceService.decodePathVariable(this.route.snapshot.params['analyticsCampaignId']);
 		this.campaignTitle = this.route.snapshot.params['campaignTitle'];
 		if(analyticsCampaignIdParam!=undefined){
@@ -65,28 +65,11 @@ export class UserCampaignsListUtilComponent implements OnInit {
 			this.userType = "p";
 		}
 		if(this.analyticsCampaignId!=undefined){
-			this.validateCampaignIdAndCampaignTitle();
+			this.validateCampaignIdAndUserId(this.analyticsCampaignId,this.pagination.userId);
 		}else{
 			this.validatePartnerOrContactIdForCampaignAnalytics();
 		}
 	}
-
-	validateCampaignIdAndCampaignTitle(){
-		this.campaignService.validateCampaignIdAndCampaignTitle(this.analyticsCampaignId,this.campaignTitle).subscribe(
-			response=>{
-				this.statusCode = response.statusCode;
-			},error=>{
-			  this.xtremandLogger.errorPage(error);
-			},()=>{
-			  if(this.statusCode==200){
-				this.validateCampaignIdAndUserId(this.analyticsCampaignId,this.pagination.userId);
-			  }else{
-				this.referenceService.goToPageNotFound();
-			  }
-			}
-		  );
-	}
-	
 
 	validatePartnerOrContactIdForCampaignAnalytics(){
 		this.campaignService.validatePartnerOrContactIdForCampaignAnalytics(this.pagination.userId,this.userType).

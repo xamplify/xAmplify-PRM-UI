@@ -32,7 +32,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.referenceService.loading(this.loader, true);
     this.campaignId = this.referenceService.decodePathVariable(this.route.snapshot.params['campaignId']);
-    this.campaignTitle = this.route.snapshot.params['campaignTitle'];
+    this.campaignTitle = this.referenceService.getDecodedUri(this.route.snapshot.params['campaignTitle']);
     if(this.campaignTitle!=undefined && this.campaignTitle.length>0){
       this.campaignService.validateCampaignIdAndCampaignTitle(this.campaignId,this.campaignTitle).subscribe(
         response=>{

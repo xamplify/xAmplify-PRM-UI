@@ -3004,9 +3004,9 @@ goToCampaignAnaltyics(item:any){
     this.loading = true;
     let campaignTitle = this.route.snapshot.params['campaignTitle'];
     let encodedCampaignId = this.referenceService.encodePathVariable(item.campaignId);
-    let encodedTitle = this.referenceService.getEncodedUri(campaignTitle);
     let prefixUrl = "/home/campaigns/user-campaigns/";
-    let suffixUrl =  item.userId+"/b"+"/"+encodedCampaignId+"/"+encodedTitle;
+    let encodedUserId = this.referenceService.encodePathVariable(item.userId);
+    let suffixUrl =  encodedUserId+"/b"+"/"+encodedCampaignId+"/"+campaignTitle;
     if(this.campaign.channelCampaign){
       this.referenceService.goToRouter(prefixUrl + "/p/" +suffixUrl);
     }else{

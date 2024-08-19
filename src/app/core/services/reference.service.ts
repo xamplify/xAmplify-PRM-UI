@@ -3496,6 +3496,14 @@ getEncodedUri(input:string){
   }
 }
 
+getDecodedUri(input:string){
+  if(input!=undefined && $.trim(input).length>0){
+    return decodeURIComponent(input);
+  }else{
+    return input;
+  }
+}
+
 removeCssStyles(){
   var hs = document.getElementsByTagName('style');
     for (var i=0, max = hs.length; i < max; i++) {

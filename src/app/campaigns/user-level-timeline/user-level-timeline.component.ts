@@ -54,7 +54,7 @@ export class UserLevelTimelineComponent implements OnInit {
   roleName: Roles = new Roles();
   isOrgAdmin: boolean = false;
 
-  constructor(private dealRegistrationService:DealRegistrationService,private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, private leadsService: LeadsService) {
+  constructor(private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, private leadsService: LeadsService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
