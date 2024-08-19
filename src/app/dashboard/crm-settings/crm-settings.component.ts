@@ -93,7 +93,6 @@ export class CrmSettingsComponent implements OnInit {
     this.dealByPartner = this.integrationDetails.dealByPartnerEnabled;
     this.dealByVendor = this.integrationDetails.dealByVendorEnabled;
     this.dealBySelfLead = this.integrationDetails.dealBySelfLeadEnabled;
-    this.showRegisterDeal = this.integrationDetails.showRegisterDeal;
     this.leadFormColumnLayout = this.integrationDetails.leadFormColumnLayout;
     this.dealFormColumnLayout = this.integrationDetails.dealFormColumnLayout;
 
@@ -150,7 +149,6 @@ export class CrmSettingsComponent implements OnInit {
     this.integrationDetails.dealByPartnerEnabled = this.dealByPartner;
     this.integrationDetails.dealByVendorEnabled = this.dealByVendor;
     this.integrationDetails.dealBySelfLeadEnabled = this.dealBySelfLead;
-    this.integrationDetails.showRegisterDeal = this.showRegisterDeal;
     this.integrationDetails.leadFormColumnLayout = this.leadFormColumnLayout;
     this.integrationDetails.dealFormColumnLayout = this.dealFormColumnLayout;
     if (this.integrationDetails.showLeadPipeline) {
