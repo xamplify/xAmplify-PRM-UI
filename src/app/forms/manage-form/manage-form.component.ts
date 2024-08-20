@@ -18,7 +18,7 @@ import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { FormSubType } from '../models/form-sub-type.enum';
 
-declare var swal, $: any;
+declare var swal:any, $: any;
 
 @Component({
     selector: 'app-manage-form',
@@ -38,9 +38,9 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     
     private dom: Document;
     message = "";
-    campaignId = 0;
+    campaignId:any;
     landingPageId = 0;
-    landingPageCampaignId = 0;
+    landingPageCampaignId:any;
     partnerLandingPageAlias = "";
     partnerId = 0;
     statusCode = 200;
@@ -69,6 +69,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     @Input() vendorLandingPageId:number;
     @Output() vendorJourneyOrMasterLandingPageEdit: EventEmitter<any> = new EventEmitter();
     @Output() formAnalytics: EventEmitter<any> = new EventEmitter();
+    campaignTitle = "";
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -128,7 +129,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         } else {
             this.campaignId = this.route.snapshot.params['alias'];
             this.landingPageId = this.route.snapshot.params['landingPageId'];
-            this.landingPageCampaignId = this.route.snapshot.params['landingPageCampaignId'];
+            this.landingPageCampaignId = this.referenceService.decodePathVariable(this.route.snapshot.params['landingPageCampaignId']);
+            this.campaignTitle = this.route.snapshot.params['campaignTitle'];
             this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
             this.partnerId = this.route.snapshot.params['partnerId'];
             this.surveyCampaignId = this.route.snapshot.params['surveyCampaignId'];
@@ -409,7 +411,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             if (this.partnerId > 0) {
                 this.router.navigate(['/home/forms/' + form.alias + '/' + this.landingPageCampaignId + '/' + this.partnerId + '/analytics/cfa']);
             } else {
-                this.router.navigate(['/home/forms/' + form.alias + '/' + this.landingPageCampaignId + '/analytics']);
+                let encodedLandingPageCampaignId = this.referenceService.encodePathVariable(this.landingPageCampaignId);
+                this.router.navigate(['/home/forms/' + form.alias + '/' + encodedLandingPageCampaignId + '/'+this.campaignTitle+'/analytics']);
             }
         } else if (this.pagination.landingPageForm) {
             if(this.categoryId>0){
@@ -445,7 +448,10 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         if (this.pagination.surveyCampaignForm) {
             campaignId = this.surveyCampaignId;
         }
-        this.router.navigate(['home/campaigns/' + campaignId + '/details']);
+        let campaign = {};
+        campaign['campaignId'] = campaignId;
+        campaign['campaignTitle']=this.campaignTitle;
+        this.referenceService.goToCampaignAnalytics(campaign);
     }
 
     ngAfterViewInit() {
@@ -453,7 +459,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
 
     setViewType(viewType: string) {
-        
         if ("List" == viewType) {
             this.modulesDisplayType.isListView = true;
             this.modulesDisplayType.isGridView = false;

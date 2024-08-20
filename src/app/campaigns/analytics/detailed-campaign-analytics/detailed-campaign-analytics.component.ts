@@ -3155,7 +3155,8 @@ viewCampaignLeadForm(leadId: any) {
     }
 
     goToFormAnalytics(campaign:any){
-
+      let encodedCampaignId = this.referenceService.encodePathVariable(campaign.campaignId);
+      this.referenceService.goToRouter("/home/forms/clpf/"+encodedCampaignId+"/"+campaign.campaignTitle);
     }
 
 

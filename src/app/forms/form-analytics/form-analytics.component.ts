@@ -30,6 +30,7 @@ export class FormAnalyticsComponent implements OnInit {
     routerLink = "/home/forms/manage";
     isPartnerNavigation = false;
     exportingObject: any = {};
+    campaignTitle = "";
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public router: Router
     ) { }
@@ -37,6 +38,7 @@ export class FormAnalyticsComponent implements OnInit {
     ngOnInit() {
         this.alias = this.route.snapshot.params['alias'];
         this.campaignAlias = this.route.snapshot.params['campaignAlias'];
+        this.campaignTitle = this.route.snapshot.params['campaignTitle'];
         this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
         this.partnerId = this.route.snapshot.params['partnerId'];
         this.formId = this.route.snapshot.params['formId'];
