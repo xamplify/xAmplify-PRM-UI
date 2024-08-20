@@ -23,7 +23,9 @@ export const routes: Routes = [
     { path: ":landingPageId/analytics", component: LandingPageAnalyticsComponent },
     { path: "partner/:alias/analytics", component: LandingPageAnalyticsComponent },
     { path: ":campaignId/campaign/analytics", component: LandingPageAnalyticsComponent },
+    { path: ":campaignId/:campaignTitle/campaign/analytics", component: LandingPageAnalyticsComponent },
     { path: ":campaignId/:partnerId/campaign/analytics", component: LandingPageAnalyticsComponent },
+    { path: ":campaignId/:partnerId/:campaignTitle/campaign/analytics", component: LandingPageAnalyticsComponent },
     { path: ":landingPageId/category/:categoryId/analytics", component: LandingPageAnalyticsComponent }
 
 

@@ -22,8 +22,8 @@ export class UserLevelTimelineComponent implements OnInit {
 
   campaignType:string = "";
   userType:string;
-  campaignId:number;
-  selectedUserId:number;
+  campaignId:any;
+  selectedUserId:any;
   redistributedAccountsBySelectedUserId = [];
   loading = false;
   dataLoader = false;
@@ -53,8 +53,8 @@ export class UserLevelTimelineComponent implements OnInit {
   showUserLevelTimeLine: boolean = true;
   roleName: Roles = new Roles();
   isOrgAdmin: boolean = false;
-
-  constructor(private dealRegistrationService:DealRegistrationService,private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, private leadsService: LeadsService) {
+  campaignTitle = "";
+  constructor(private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, private leadsService: LeadsService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
@@ -63,15 +63,16 @@ export class UserLevelTimelineComponent implements OnInit {
     this.dataLoader = true;
     this.userType = this.route.snapshot.params['type'];
     this.navigatedFrom = this.route.snapshot.params['navigatedFrom'];
+    this.campaignTitle = this.route.snapshot.params['campaignTitle'];
     this.previousRouterAlias = this.userType;
 		if(this.userType=="pa" || this.userType=="pm"){
 			this.userType = "p";
 		}
-    this.selectedUserId = parseInt(this.route.snapshot.params['userId']);
-    this.campaignId = parseInt(this.route.snapshot.params['campaignId']);
+    this.selectedUserId = this.referenceService.decodePathVariable(this.route.snapshot.params['userId']);
+    this.campaignId = this.referenceService.decodePathVariable(this.route.snapshot.params['campaignId']);
 	  let analyticsCampaignIdParam = this.route.snapshot.params['analyticsCampaignId'];
     if(analyticsCampaignIdParam!=undefined){
-      this.analyticsCampaignId = parseInt(analyticsCampaignIdParam);
+      this.analyticsCampaignId = this.referenceService.decodePathVariable(analyticsCampaignIdParam);
     }
     this.validateCampaignIdAndUserId(this.campaignId,this.selectedUserId);
     const roles = this.authenticationService.getRoles();
@@ -104,7 +105,6 @@ export class UserLevelTimelineComponent implements OnInit {
      this.campaignDetails = timeLineData['campaignDetais'];     
      let launchTimeInUtcString = this.campaignDetails['launchTimeInUTCString'];
      if(launchTimeInUtcString!=""){
-       console.log(launchTimeInUtcString);
       this.campaignDetails['displayTime'] = new Date(launchTimeInUtcString);
      }else{
       this.campaignDetails['displayTime'] = "-";
@@ -153,89 +153,20 @@ export class UserLevelTimelineComponent implements OnInit {
 
   goBack(){
     this.loading = true;
-    let url = "/home/campaigns/user-campaigns/"+this.previousRouterAlias+"/"+this.selectedUserId;
-    if(this.navigatedFrom!=undefined && this.analyticsCampaignId==undefined){
+    let encodedUserId = this.referenceService.encodePathVariable(this.selectedUserId);
+    let encodedCampaignId = this.referenceService.encodePathVariable(this.analyticsCampaignId);
+    let url = "/home/campaigns/user-campaigns/"+this.previousRouterAlias+"/"+encodedUserId;
+    if(this.navigatedFrom!=undefined && encodedCampaignId==undefined){
       this.referenceService.goToRouter(url+"/"+this.navigatedFrom);
-    }else if(this.analyticsCampaignId!=undefined && this.navigatedFrom!=undefined ){
-      this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+this.analyticsCampaignId);
+    }else if(encodedCampaignId!=undefined && this.navigatedFrom!=undefined ){
+      this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+encodedCampaignId+"/"+this.campaignTitle);
     }
     else{
       this.referenceService.goToRouter(url);
     }
   }
 
-  /****************Deal Registration***************************/
-  // getDealState() {
-  //   this.loading = true;
-  //     this.dataLoader = true;
-  //   if (this.campaignId>0) {
-  //     const obj = { "campaignId": this.campaignId };
-  //     this.campaignService.getCampaignById(obj).subscribe(data => {
-  //       if (data.nurtureCampaign) {
-  //         this.campaignService.getCampaignById({ "campaignId": data.parentCampaignId }).subscribe(parent_campaign => {
-  //           if(parent_campaign.userId!=undefined){
-  //             this.referenceService.getCompanyIdByUserId(parent_campaign.userId).subscribe(response => {
-  //               this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
-  //                 this.enableLeads = data.enableLeads;
-  //                 this.disabled = false;
-  //               });
-  //             })
-  //           }else{
-  //               this.disabled = true;
-  //           }
-            
-  //         }, error => console.log(error))
-  //       } else {
-  //         if (this.authenticationService.loggedInUserRole != "Team Member") {
-  //           if (data.userId == this.authenticationService.getUserId()) {
-  //             this.createdBySelf = true;
-  //             console.log(this.createdBySelf)
-  //           }
-  //         } else {
-  //           this.dealRegistrationService.getSuperorId(this.authenticationService.getUserId()).subscribe(response => {
-  //             if (response.includes(data.userId)) {
-  //               this.createdBySelf = true;
-  //               console.log(this.createdBySelf)
-  //             }
-  //           })
-  //         }
-  //         this.referenceService.getCompanyIdByUserId(data.userId).subscribe(response => {
-  //           this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
-  //             this.enableLeads = data.enableLeads;
-  //             console.log(data)
-  //           });
-  //         })
-  //       }
-  //     });
-  //     this.loading = false;
-  //     this.dataLoader = false;
-  //   }
-
-  //   this.dealRegistrationService.getDeal(this.campaignId, this.selectedUserId).subscribe(data => {
-  //     this.dealId = data;
-  //     if (data == -1) {
-  //       this.dealButtonText = "Register Lead";
-  //       this.isDeal = false;
-  //     } else {
-  //       this.dealRegistrationService.getDealById(data, this.selectedUserId).subscribe(response => {
-  //         let isDeal = response.data.deal;
-  //         if(this.campaignDetails['showRegisterLeadButton'] && !isDeal ){
-  //           this.isDeal = false;
-  //         }else{
-  //           this.isDeal = isDeal;
-  //         }
-  //         if (this.isDeal) {
-  //           this.dealButtonText = "Preview Deal";
-  //         } else {
-  //           this.dealButtonText = "Update Lead";
-  //         }
-  //         this.leadData = response.data;
-          
-  //       })
-  //     }
-  //   })
-  // }
-
+ 
   getDealState() {
     this.registerLeadButtonError = false;
     if (this.campaignId != null) {
@@ -278,8 +209,6 @@ export class UserLevelTimelineComponent implements OnInit {
       this.isDealRegistration = false;
       this.isDealPreview = true;
     } else {
-      //this.isDealRegistration = false;
-      //this.isDealPreview = false;
       this.showUserLevelTimeLine = false;
       this.showLeadForm = true;
     }

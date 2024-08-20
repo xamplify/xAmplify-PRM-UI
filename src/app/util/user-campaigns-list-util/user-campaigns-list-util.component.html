@@ -172,7 +172,7 @@
                                                 src="assets/images/video-email.svg" alt="Video Campaign Logo Not Found">
                                              <a class="campaign-name-padding" data-toggle="tooltip"
                                                 data-placement="bottom" title="{{campaignAnalytics?.campaignName}}"
-                                                (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">
+                                                (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId,campaignAnalytics?.campaignTitle)">
                                                 {{campaignAnalytics?.campaignName | slice:0:15}}
                                                 <span *ngIf="campaignAnalytics?.campaignName?.length>15">...</span>
                                              </a>

@@ -498,8 +498,8 @@ showCampaignDetails(campaign:any){
     this.referenceService.campaignType = campaign[7];
     let campaignId = campaign[0];
     let campaignTitle = campaign[8];
-    this.router.navigate(['/home/campaigns/'+campaignId+'/details']);
-   // this.router.navigate(['/home/campaigns/'+campaignId+'/'+campaignTitle+'/details']);
+    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
+    this.router.navigate(['/home/campaigns/'+encodedCampaignId+'/'+campaignTitle+'/details']);
   }
 
   showSubmitDealSuccess() {
