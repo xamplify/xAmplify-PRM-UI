@@ -130,7 +130,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	loggedInUserCompanyId: any;
 	masterContactListSync: boolean = false;
 	contactsCompanyListSync: boolean = false;
-	isPartnerUserList: boolean;
+	isPartnerUserList: boolean = false;
 
 	public currentContactType: string = "valid";
 
@@ -1445,7 +1445,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	contactsCount() {
 		try {
-
 			this.contactListObject = new ContactList;
 			this.contactListObject.isPartnerUserList = this.isPartner;
 			if (this.assignLeads) {
@@ -1520,10 +1519,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactListObject.contactType = contactType;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.sharedLeads = this.sharedLeads;
+			this.contactListObject.isPartnerUserList = this.isPartner;
 			this.contactListObject.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
 			this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 			this.contactListObject.moduleName = this.module;
-
 			this.userListPaginationWrapper.userList = this.contactListObject;
 
 			this.contactService.listContactsByType(this.userListPaginationWrapper)
@@ -1943,10 +1942,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.contactPagination.sortingOrder = this.sortingOrder;
 
 			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
+			this.userListPaginationWrapper.userList.editList = false;
 			this.userListPaginationWrapper.userList.contactType = contactType;
 			this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
 			this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
-
+			this.userListPaginationWrapper.userList.isDownload = true;
 			this.contactService.listContactsByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
@@ -2758,6 +2758,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.pagination.pageIndex = 1;
 		this.pagination.filterBy = filterType;
 		this.loadContactLists(this.pagination);
+		this.contactsCount();
 	}
 
 	getCompanyId() {
@@ -2880,6 +2881,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	downloadUserListCsv() {
+		this.userListPaginationWrapper.userList.isDownload = true;
 		try {
 			this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
 				.subscribe(

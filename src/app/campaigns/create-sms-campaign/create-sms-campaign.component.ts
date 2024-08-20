@@ -33,6 +33,7 @@ import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import { Roles } from '../../core/models/roles';
 import { Properties } from '../../common/models/properties';
+import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
 
@@ -238,6 +239,8 @@ export class CreateSmsCampaignComponent implements OnInit,OnDestroy{
     smsText: any;
     enableSmsText: boolean;
     smsTextDivClass: string;
+    contactListObject: ContactList;
+    userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
 
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
@@ -993,69 +996,74 @@ export class CreateSmsCampaignComponent implements OnInit,OnDestroy{
 
 
     /*******************************Preview*************************************/
-    contactListItems:any[];
-      loadUsers(id:number,pagination:Pagination, ListName){
-         //this.loading = true;
-         if(id==undefined){
-              id=this.previewContactListId;
-          }else{
-              this.previewContactListId = id;
-          }
-          this.listName = ListName;
-          this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
-                  (data:any) => {
-                      console.log(data);
-                      //this.loading = false;
-                      console.log(pagination);
-                      this.contactListItems = data.listOfUsers;
-                      console.log(this.contactListItems);
-                      pagination.totalRecords = data.totalRecords;
-                      this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);
-                      $('#users-modal-body').html('');
-                      var html = "";
-                      html+= '<table  style="margin:0" class="table table-striped table-hover table-bordered" id="sample_editable_1">'+
-                              '<thead>'+
-                                  '<tr>'+
-                                      '<th>EMAIL ID</th>'+
-                                      '<th>FIRST NAME</th>'+
-                                      '<th>LAST NAME</th>'+
-                                  '</tr>'+
-                              '</thead>'+
-                               '<tbody>';
-                      $.each(this.contactsUsersPagination.pagedItems,function(index,value){
-                          var firstName = value.firstName;
-                          var lastName = value.lastName;
-                          if(firstName==null || firstName=="null"){
-                              firstName="";
-                          }
-                         if(lastName==null || lastName=="null"){
-                             lastName = "";
-                         }
-                          html+= '<tr>'+
-                                      '<td>'+value.emailId+'</td>'+
-                                      '<td>'+firstName+'</td>'+
-                                      '<td>'+lastName+'</td>'+
-                                  '</tr>';
-                      });
-                       html+='</tbody>';
-                       html+='</table>';
-                      $('#users-modal-body').append(html);
-                      $('#usersModal').modal({backdrop: 'static', keyboard: false});
-                  },
-                  error => { this.loading = false; },
-                  () => console.log( "MangeContactsComponent loadUsersOfContactList() finished" )
-              )
-      }
+    contactListItems: any[];
+    loadUsers(id: number, pagination: Pagination, ListName) {
+        //this.loading = true;
+        if (id == undefined) {
+            id = this.previewContactListId;
+        } else {
+            this.previewContactListId = id;
+        }
+        this.listName = ListName;
+        this.contactListObject = new ContactList;
+        this.userListPaginationWrapper.pagination = pagination;
+        this.contactListObject.id = id;
+        this.contactListObject.name = this.listName;
+        this.userListPaginationWrapper.userList = this.contactListObject;
+        this.contactService.loadUsersOfContactList(this.userListPaginationWrapper).subscribe(
+            (data: any) => {
+                console.log(data);
+                //this.loading = false;
+                console.log(pagination);
+                this.contactListItems = data.listOfUsers;
+                console.log(this.contactListItems);
+                pagination.totalRecords = data.totalRecords;
+                this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);
+                $('#users-modal-body').html('');
+                var html = "";
+                html += '<table  style="margin:0" class="table table-striped table-hover table-bordered" id="sample_editable_1">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th>EMAIL ID</th>' +
+                    '<th>FIRST NAME</th>' +
+                    '<th>LAST NAME</th>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+                $.each(this.contactsUsersPagination.pagedItems, function (index, value) {
+                    var firstName = value.firstName;
+                    var lastName = value.lastName;
+                    if (firstName == null || firstName == "null") {
+                        firstName = "";
+                    }
+                    if (lastName == null || lastName == "null") {
+                        lastName = "";
+                    }
+                    html += '<tr>' +
+                        '<td>' + value.emailId + '</td>' +
+                        '<td>' + firstName + '</td>' +
+                        '<td>' + lastName + '</td>' +
+                        '</tr>';
+                });
+                html += '</tbody>';
+                html += '</table>';
+                $('#users-modal-body').append(html);
+                $('#usersModal').modal({ backdrop: 'static', keyboard: false });
+            },
+            error => { this.loading = false; },
+            () => console.log("MangeContactsComponent loadUsersOfContactList() finished")
+        )
+    }
 
-      closeModelPopup(){
-          this.contactsUsersPagination = new Pagination();
-      }
-      showContactsAlert(count:number){
-          this.emptyContactsMessage = "";
-          if(count==0){
-              this.emptyContactsMessage = "No Contacts Found For This Contact List";
-          }
-      }
+    closeModelPopup() {
+        this.contactsUsersPagination = new Pagination();
+    }
+    showContactsAlert(count: number) {
+        this.emptyContactsMessage = "";
+        if (count == 0) {
+            this.emptyContactsMessage = "No Contacts Found For This Contact List";
+        }
+    }
 
     /*************************************************************Email Template***************************************************************************************/
     loadEmailTemplates(pagination:Pagination){

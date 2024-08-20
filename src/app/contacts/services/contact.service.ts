@@ -61,10 +61,18 @@ export class ContactService {
 
 
 
-    loadUsersOfContactList(contactListId: number, pagination: Pagination) {
+    loadUsersOfContactList(userListPaginationWrapper: UserListPaginationWrapper){
         let userId = this.authenticationService.user.id;
         userId = this.authenticationService.checkLoggedInUserId(userId);
-        return this._http.post(this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token + "&userId=" + userId, pagination)
+        var requestoptions = new RequestOptions({
+            body: userListPaginationWrapper
+        })
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        var options = {
+            headers: headers
+        };
+        return this._http.post(this.contactsUrl + "/" + userId + "/contacts?access_token=" + this.authenticationService.access_token, options, requestoptions)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -191,12 +199,22 @@ export class ContactService {
             .catch(this.handleError);
     }
 
-    listOfSelectedContactListByType(contactListId: number, contactType: string, pagination: Pagination) {
-        this.logger.info("ContactService listContactsByType():  contactType=" + contactType);
-        return this._http.post(this.contactsUrl + contactListId + "/contacts?contactType=" + contactType + "&access_token=" + this.authenticationService.access_token
-            + '&userId=' + this.authenticationService.getUserId(), pagination)
+    listOfSelectedContactListByType(userListPaginationWrapper: UserListPaginationWrapper) {
+        this.logger.info("ContactService listContactsByType():  contactType=" + userListPaginationWrapper.userList.contactType);
+        let userId = this.authenticationService.user.id;
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+        var requestoptions = new RequestOptions({
+            body: userListPaginationWrapper
+        })
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        var options = {
+            headers: headers
+        };
+        return this._http.post(this.contactsUrl + "/" + userId + "/contacts?access_token=" + this.authenticationService.access_token, options, requestoptions)
             .map(this.extractData)
             .catch(this.handleError);
+
     }
 
     contactListAssociatedCampaigns(contactListId: number, pagination: Pagination) {
@@ -894,6 +912,21 @@ export class ContactService {
             .map(this.extractData)
             .catch(this.handleError);
 
+    }
+    loadUsersOfContactLists(userListPaginationWrapper: UserListPaginationWrapper){
+        let userId = this.authenticationService.user.id;
+        userId = this.authenticationService.checkLoggedInUserId(userId);
+        var requestoptions = new RequestOptions({
+            body: userListPaginationWrapper
+        })
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        var options = {
+            headers: headers
+        };
+        return this._http.post(this.contactsUrl + "/" + userId + "/contacts?access_token=" + this.authenticationService.access_token, options, requestoptions)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     vanityConfigZoho() {
