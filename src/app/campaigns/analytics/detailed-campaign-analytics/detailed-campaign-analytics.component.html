@@ -269,29 +269,20 @@
                               (click)="openPageInNewTab(campaign?.landingPage?.id)">
                               <i class="fa fa-eye" aria-hidden="true"></i>
                            </a>
-                           <a class="mr-2" *ngIf="campaign.formsCount > 0"
-                              routerLink="/home/forms/clpf/{{ campaign.campaignId }}" data-rel="fancybox-button"
+                           <a class="mr-2" *ngIf="campaign.formsCount > 0" routerLink="/home/forms/clpf/{{campaign.campaignId}}" data-rel="fancybox-button"
                               data-toggle="tooltip" data-placement="top" title="Form Count">
                               <i class="fa fa-wpforms" aria-hidden="true"></i>
-                              <span class="badge" id="notification-color">{{
-                                 campaign.formsCount
-                                 }}</span>
+                              <span class="badge" id="notification-color">{{campaign.formsCount}}</span>
                            </a>
-                           <a *ngIf="campaign.campaignLandingPageAnalyticsCount > 0" (click)="
-  goToCampaignLandingPageAnalytics(campaign.campaignId)
-  " data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Page Analytics">
+                           <a *ngIf="campaign.campaignLandingPageAnalyticsCount > 0" (click)="goToCampaignLandingPageAnalytics(campaign.campaignId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Page Analytics">
                               <i class="fa fa-line-chart" aria-hidden="true"></i>
-                              <span class="badge" id="notification-color">{{
-                                 campaign.campaignLandingPageAnalyticsCount
-                                 }}</span>
+                              <span class="badge" id="notification-color">{{campaign.campaignLandingPageAnalyticsCount}}</span>
                            </a>
                            <a class="disabled " *ngIf="campaign.campaignLandingPageAnalyticsCount == 0"
                               data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                               title="Page Analytics">
                               <i class="fa fa-line-chart" aria-hidden="true"></i>
-                              <span class="badge" id="notification-color">{{
-                                 campaign.campaignLandingPageAnalyticsCount
-                                 }}</span>
+                              <span class="badge" id="notification-color">{{campaign.campaignLandingPageAnalyticsCount}}</span>
                            </a>
                         </div>
                      </a>

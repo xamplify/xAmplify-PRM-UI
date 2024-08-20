@@ -2387,7 +2387,8 @@ checkParentAndRedistributedCampaignAccess(){
     this.previewLandingPageComponent.showPreview(campaign.landingPage);
   }
   goToCampaignLandingPageAnalytics(campaignId: number) {
-    this.router.navigate(['home/pages/' + campaignId + '/campaign/analytics']);
+    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
+    this.router.navigate(['home/pages/' + encodedCampaignId + '/'+this.campaignTitle+'/campaign/analytics']);
   }
 
   showAutoResponseAnalytics(campaign: any, selectedIndex: number) {
@@ -3151,6 +3152,10 @@ viewCampaignLeadForm(leadId: any) {
 
     openPageInNewTab(id:number){
       this.referenceService.previewPageInNewTab(id);
+    }
+
+    goToFormAnalytics(campaign:any){
+
     }
 
 
