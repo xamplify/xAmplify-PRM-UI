@@ -75,6 +75,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
             this.partnerId = this.importedObject['partnerId'];
             this.title = this.importedObject['title'];
             if (this.campaignAlias != undefined) {
+                alert("In Line number 78");
                 this.campaignFormAnalyticsDownload = true;
                 this.pagination.campaignId = parseInt(this.campaignAlias);
                 this.pagination.partnerId = this.partnerId;
@@ -93,6 +94,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
                 this.isEventCheckIn = this.pagination.checkInLeads;
                 this.publicEventAlias = this.importedObject['publicEventAlias'];
             } else if (this.partnerLandingPageAlias != undefined) {
+                alert("In Line number 97");
                 this.pagination.landingPageAlias = this.partnerLandingPageAlias;
                 this.pagination.formId = this.formId;
                 this.alias = "";

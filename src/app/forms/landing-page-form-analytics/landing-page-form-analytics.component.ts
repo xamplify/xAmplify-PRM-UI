@@ -7,7 +7,6 @@ import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { FormService } from '../services/form.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { SubmittedFormRow } from '../models/submitted-form-row';
 import { SubmittedFormData } from '../models/submitted-form-data';
 declare var $: any, swal: any;
 
