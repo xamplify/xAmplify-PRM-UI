@@ -189,12 +189,14 @@ import { DropdownLoaderComponent } from 'app/util/dropdown-loader/dropdown-loade
 import { DisplayErrorMessageComponent } from 'app/util/display-error-message/display-error-message.component';
 import { ChatGptModalComponent } from './chat-gpt-modal/chat-gpt-modal.component';
 import { MultiSelectDropdownComponent } from 'app/util/multi-select-dropdown/multi-select-dropdown.component';
+import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/angular4-multiselect-dropdown';
 
 
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
-		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule,DropDownListModule,ScrollToModule.forRoot()],
+		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule,DropDownListModule,
+		 ScrollToModule.forRoot(),AngularMultiSelectModule],
 	declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
 		BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
 		PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
