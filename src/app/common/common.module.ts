@@ -188,6 +188,8 @@ import { ShareDashboardButtonsComponent } from './share-dashboard-buttons/share-
 import { DropdownLoaderComponent } from 'app/util/dropdown-loader/dropdown-loader.component';
 import { DisplayErrorMessageComponent } from 'app/util/display-error-message/display-error-message.component';
 import { ChatGptModalComponent } from './chat-gpt-modal/chat-gpt-modal.component';
+import { MultiSelectDropdownComponent } from 'app/util/multi-select-dropdown/multi-select-dropdown.component';
+
 
 
 @NgModule({
@@ -226,7 +228,8 @@ import { ChatGptModalComponent } from './chat-gpt-modal/chat-gpt-modal.component
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
+		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent
 	],
 
 
@@ -263,7 +266,8 @@ import { ChatGptModalComponent } from './chat-gpt-modal/chat-gpt-modal.component
 		ShareLeadDetailsComponent,RedistributedCampaignDetailsComponent,PartnerJourneyLeadDetailsComponent,PartnerJourneyDealDetailsComponent,MdfDetailAnalyticsComponent,
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
-		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent
+		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
+		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent
 
 	]
 
