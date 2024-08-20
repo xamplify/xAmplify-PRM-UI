@@ -989,7 +989,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.isLoadingList = true;
 			this.referenceService.loading(this.httpRequestLoader, true);
 			this.httpRequestLoader.isHorizontalCss = true;
-			this.contactService.loadUsersOfContactList(this.partnerListId, pagination).subscribe(
+			this.contactListObj = new ContactList;
+			pagination.userId = this.partnerListId;
+			this.userListPaginationWrapper.pagination = pagination;
+			this.contactListObj.id = this.partnerListId;
+			this.contactListObj.isPartnerUserList = this.isPartner;
+			this.userListPaginationWrapper.userList = this.contactListObj;
+			this.contactService.loadUsersOfContactList(this.userListPaginationWrapper).subscribe(
 				(data: any) => {
 					this.partners = data.listOfUsers;
 					this.totalRecords = data.totalRecords;
@@ -1027,7 +1033,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	loadAllPartnerInList(totalRecords: number) {
 		try {
 			this.allPartnersPagination.maxResults = totalRecords;
-			this.contactService.loadUsersOfContactList(this.partnerListId, this.allPartnersPagination).subscribe(
+			this.contactListObj = new ContactList;
+			this.userListPaginationWrapper.pagination.maxResults = this.allPartnersPagination.maxResults;
+			this.contactListObj.id = this.partnerListId;
+			this.userListPaginationWrapper.userList = this.contactListObj;
+			this.contactService.loadUsersOfContactList(this.userListPaginationWrapper).subscribe(
 				(data: any) => {
 					this.contactService.allPartners = data.listOfUsers;
 					this.pageLoader = false;

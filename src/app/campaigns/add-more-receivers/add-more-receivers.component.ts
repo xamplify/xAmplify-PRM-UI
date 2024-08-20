@@ -13,6 +13,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import { Properties } from '../../common/models/properties';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
 
 declare var swal, $: any;
 
@@ -66,6 +67,8 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
     campaign:Campaign = new Campaign();
     expandedUserList: any;
 	showExpandButton = false;
+    contactListObject: ContactList;
+    userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
           public pagination: Pagination, private pagerService: PagerService,public authenticationService: AuthenticationService,public referenceService:ReferenceService,private contactService:ContactService,public properties:Properties,private renderer:Renderer) {
               this.referenceService.renderer = this.renderer;
@@ -326,7 +329,13 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
             this.previewContactListId = id;
         }
         this.listName = ListName;
-        this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
+        this.contactListObject = new ContactList;
+			this.userListPaginationWrapper.pagination = pagination;
+			this.contactListObject.id = id;
+            this.contactListObject.name = this.listName;
+			this.userListPaginationWrapper.userList = this.contactListObject;
+
+        this.contactService.loadUsersOfContactList(this.userListPaginationWrapper).subscribe(
                 (data:any) => {
                     this.contactListItems = data.listOfUsers;
                     pagination.totalRecords = data.totalRecords;
