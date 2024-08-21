@@ -2391,6 +2391,12 @@ checkParentAndRedistributedCampaignAccess(){
     this.router.navigate(['home/pages/' + encodedCampaignId + '/'+this.campaignTitle+'/campaign/analytics']);
   }
 
+  goToPageAnalyticsByPartnerId(campaignId:number,userId:number){
+    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
+    let encodedUserId = this.referenceService.encodePathVariable(userId);
+    this.router.navigate(['home/pages/' + encodedCampaignId + '/'+encodedUserId+'/'+this.campaignTitle+'/campaign/analytics']);
+  }
+
   showAutoResponseAnalytics(campaign: any, selectedIndex: number) {
     this.autoResponseAnalyticsPagination = new Pagination();
     $.each(this.campaignViews, function (index, row) {

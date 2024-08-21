@@ -69,7 +69,7 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
         this.campaignTitle = this.route.snapshot.params['campaignTitle'];
         this.campaignId = this.referenceService.decodePathVariable(this.route.snapshot.params['campaignId']);
         this.landingPageAlias = this.route.snapshot.params['alias'];
-        this.partnerId = this.route.snapshot.params['partnerId'];
+        this.partnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
         let categoryId = this.route.snapshot.params['categoryId'];
         if(this.vendorJourney || this.masterLandingPages){
             this.landingPageId = this.vendorLandingPageId;

@@ -1554,11 +1554,7 @@
                                                       <td class="text-center" (click)="$event.stopPropagation()">
                                                          <div class="actions-block override-actions"
                                                             id="landing-page-icons">
-                                                            <a *ngIf="item.pageAnalyticsCount > 0" routerLink="/home/pages/{{
-     campaign.campaignId
-     }}/{{
-     item.userId
-     }}/campaign/analytics" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
+                                                            <a *ngIf="item.pageAnalyticsCount > 0" (click)="goToPageAnalyticsByPartnerId(campaign.campaignId,item.userId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                                                                title="Page Analytics">
                                                                <i class="fa fa-line-chart chart-hover"></i>
                                                                <span class="badge" id="notification-color">{{
