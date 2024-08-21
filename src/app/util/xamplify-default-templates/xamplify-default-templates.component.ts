@@ -116,8 +116,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         let emailTemplateType = emailTemplate.typeInString;
         let addLeadTemplate = "ADD_LEAD" == emailTemplateType;
         let addDealTemplate = "ADD_DEAL" == emailTemplateType;
+        let updateLeadTemplate = "LEAD_UPDATE" == emailTemplateType;
+        let updateDealTemplate = "DEAL_UPDATE" == emailTemplateType;
         let requiredTags = [];
-        if (addLeadTemplate) {
+        if (addLeadTemplate && updateLeadTemplate) {
           requiredTags = [
             '{{partnerModuleCustomName}}',
             '{{partnerName}}',
@@ -127,7 +129,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             '{{leadStage}}',
             '{{leadComment}}',
           ];
-        } else if (addDealTemplate) {
+        } else if (addDealTemplate && updateDealTemplate ) {
           requiredTags = [
             '{{partnerModuleCustomName}}',
             '{{partnerName}}',
@@ -150,7 +152,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             swal("", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error");
             return false;
           }
-          if (("TRACK_PUBLISH" == emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH" == emailTemplate['typeInString'] || "ASSET_PUBLISH" == emailTemplate['typeInString'] || "SHARE_LEAD" == emailTemplate['typeInString'] || "ONE_CLICK_LAUNCH" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_CONTACT" == emailTemplate['typeInString'] || "SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || addLeadTemplate || addDealTemplate) && jsonContent.indexOf('{{customerFullName}}') < 0) {
+          if (("TRACK_PUBLISH" == emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH" == emailTemplate['typeInString'] || "ASSET_PUBLISH" == emailTemplate['typeInString'] || "SHARE_LEAD" == emailTemplate['typeInString'] || "ONE_CLICK_LAUNCH" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_CONTACT" == emailTemplate['typeInString'] || "SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || addLeadTemplate || addDealTemplate || updateLeadTemplate || updateDealTemplate) && jsonContent.indexOf('{{customerFullName}}') < 0) {
             swal("", "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag.", "error");
             return false;
           }
@@ -206,7 +208,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             swal("", "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.", "error");
             return false;
           }
-          if (addDealTemplate || addLeadTemplate) {
+          if (addDealTemplate || addLeadTemplate || updateLeadTemplate || updateDealTemplate ) {
             for (let tag of requiredTags) {
               if (jsonContent.indexOf(tag) < 0) {
                 swal("", `Whoops! We are unable to save this template because you deleted '${tag}' tag.`, "error");
