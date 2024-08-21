@@ -173,7 +173,21 @@ export class MarketPlaceCategoriesComponent implements OnInit {
 	}
  }
   
-  
-  
+  eventHandler(keyCode: any) { if (keyCode === 13) { this.searchMarketplaceCategories(); } }
+
+  searchMarketplaceCategories() { this.listMasterPlaceCategories(this.categoryPagination); }
+
+  sortBy(text: any) {
+    const sortedValue = text.value;
+    if (sortedValue !== '') {
+      const options: string[] = sortedValue.split('-');
+      this.categoryPagination.sortcolumn = options[0];
+      this.categoryPagination.sortingOrder = options[1];
+    } else {
+      this.categoryPagination.sortcolumn = null;
+      this.categoryPagination.sortingOrder = null;
+    }
+    this.listMasterPlaceCategories(this.categoryPagination)
+  }
 
 }
