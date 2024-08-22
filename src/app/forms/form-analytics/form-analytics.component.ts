@@ -38,8 +38,10 @@ export class FormAnalyticsComponent implements OnInit {
     ngOnInit() {
         this.alias = this.route.snapshot.params['alias'];
         this.campaignAlias = this.referenceService.decodePathVariable(this.route.snapshot.params['campaignAlias']);
-        this.campaignAlias = this.route.snapshot.params['campaignAlias'];
+        alert("Form Alias"+this.alias);
+        alert("Campaign Alias : "+this.campaignAlias);
         this.campaignTitle = this.route.snapshot.params['campaignTitle'];
+        alert("Campaign Title : "+this.campaignTitle);
         this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
         this.partnerId = this.route.snapshot.params['partnerId'];
         this.formId = this.route.snapshot.params['formId'];
