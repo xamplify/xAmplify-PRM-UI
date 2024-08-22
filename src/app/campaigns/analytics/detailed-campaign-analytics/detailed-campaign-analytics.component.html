@@ -1557,27 +1557,21 @@
                                                             <a *ngIf="item.pageAnalyticsCount > 0" (click)="goToPageAnalyticsByPartnerId(campaign.campaignId,item.userId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                                                                title="Page Analytics">
                                                                <i class="fa fa-line-chart chart-hover"></i>
-                                                               <span class="badge" id="notification-color">{{
-                                                                  item.pageAnalyticsCount }}</span>
+                                                               <span class="badge" id="notification-color">{{item.pageAnalyticsCount}}</span>
                                                             </a>
                                                             <a *ngIf="item.pageAnalyticsCount == 0"
                                                                data-rel="fancybox-button" data-toggle="tooltip"
                                                                data-placement="top" title="Page Analytics">
                                                                <i class="fa fa-line-chart chart-hover"></i>
-                                                               <span class="badge" id="notification-color">{{
-                                                                  item.pageAnalyticsCount }}</span>
+                                                               <span class="badge" id="notification-color">{{item.pageAnalyticsCount}}</span>
                                                             </a>
                                                          </div>
                                                       </td>
                                                       <td class="text-center" *ngIf="campaign.formsCount > 0">
-                                                         <div class="actions-block override-actions"
-                                                            id="landing-page-icons">
-                                                            <a routerLink="/home/forms/clpf/{{
-     campaign.campaignId
-     }}/{{ item.userId }}" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
+                                                         <div class="actions-block override-actions" id="landing-page-icons">
+                                                            <a (click)="goToPageFormAnalyticsByPartnerId(campaign.campaignId,item.userId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
                                                                <i class="fa fa-wpforms chart-hover"></i>
-                                                               <span class="badge" id="notification-color">{{
-                                                                  campaign.formsCount }}</span>
+                                                               <span class="badge" id="notification-color">{{campaign.formsCount}}</span>
                                                             </a>
                                                          </div>
                                                       </td>
@@ -1617,17 +1611,9 @@
                                                                </tr>
                                                             </thead>
                                                             <tbody>
-                                                               <app-auto-response-loader *ngIf="
-     autoResponeAnalyticsLoader.isLoading
-     ">
-                                                               </app-auto-response-loader>
-                                                               <ng-container *ngIf="
-     !autoResponeAnalyticsLoader.isLoading
-     ">
-                                                                  <tr *ngFor="
-     let autoResponseAnalytics of autoResponseAnalyticsPagination.pagedItems;
-     let i = index
-     ">
+                                                               <app-auto-response-loader *ngIf="autoResponeAnalyticsLoader.isLoading"></app-auto-response-loader>
+                                                               <ng-container *ngIf="!autoResponeAnalyticsLoader.isLoading">
+                                                                  <tr *ngFor="let autoResponseAnalytics of autoResponseAnalyticsPagination.pagedItems;let i = index">
                                                                      <td class="center-aligned">
                                                                         {{
                                                                         autoResponseAnalytics.autoResponseType
