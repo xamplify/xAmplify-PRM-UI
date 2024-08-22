@@ -91,7 +91,7 @@
                          <td>
                            <app-user-info [userInfo]="request" [isFromAdminList]="true"></app-user-info>
                            <input type="text" class="form-control"  readonly="readonly" value="{{request?.emailId}}" #approvedUserEmailAddressText><br>
-                           <button class="btn-xs primary" (click)="copyApprovedUserEmailAddress(approvedUserEmailAddressText,i)">Copy</button>
+                           <button class="btn-xs btn-info" (click)="copyApprovedUserEmailAddress(approvedUserEmailAddressText,i)">Copy</button>
                            <span id="copied-apporved-users-email-address-{{i}}-{{showPartners}}" class="success" style="display:none;">
                             <strong>Email Address copied successfully.<i class="fa fa-check" aria-hidden="true"></i></strong>
                           </span>
