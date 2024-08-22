@@ -1457,5 +1457,10 @@ export class CampaignService {
         return this.authenticationService.callGetMethod(url);
     }
 
+    validateCampaignIdAndCampaignTitle(campaignId: number,campaignTitle:string) {
+        let url = this.URL + "campaign/validateCampaignIdAndCampaignTitle?campaignId=" + campaignId + "&campaignTitle="+campaignTitle+"&access_token=" + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
 
 }

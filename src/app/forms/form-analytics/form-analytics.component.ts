@@ -5,12 +5,12 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { Pagination } from '../../core/models/pagination';
 import { Router } from '@angular/router';
 declare var $: any, swal: any;
-@Component( {
+@Component({
     selector: 'app-form-analytics',
     templateUrl: './form-analytics.component.html',
     styleUrls: ['./form-analytics.component.css'],
     providers: [Pagination]
-} )
+})
 export class FormAnalyticsComponent implements OnInit {
     formId: any;
     partnerLandingPageAlias: any;
@@ -30,13 +30,16 @@ export class FormAnalyticsComponent implements OnInit {
     routerLink = "/home/forms/manage";
     isPartnerNavigation = false;
     exportingObject: any = {};
-    constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
+    campaignTitle = "";
+    constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public router: Router
     ) { }
 
     ngOnInit() {
         this.alias = this.route.snapshot.params['alias'];
+        this.campaignAlias = this.referenceService.decodePathVariable(this.route.snapshot.params['campaignAlias']);
         this.campaignAlias = this.route.snapshot.params['campaignAlias'];
+        this.campaignTitle = this.route.snapshot.params['campaignTitle'];
         this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
         this.partnerId = this.route.snapshot.params['partnerId'];
         this.formId = this.route.snapshot.params['formId'];
@@ -47,24 +50,26 @@ export class FormAnalyticsComponent implements OnInit {
         this.exportingObject['isPublicEventLeads'] = false;
         this.exportingObject['partnerId'] = this.partnerId;
 
-        if ( this.campaignAlias != undefined ) {
+        if (this.campaignAlias != undefined) {
             this.campaignForms = true;
         }
-        if(this.partnerId!=undefined){
+        if (this.partnerId != undefined) {
             this.campaignPartnerAnalytics = true;
         }
-        if ( this.router.url.includes( 'home/forms/partner' ) ) {
+        if (this.router.url.includes('home/forms/partner')) {
             this.isPartnerNavigation = true;
             this.routerLink = "/home/forms/partner/lf/" + this.partnerLandingPageAlias;
-        }else if(this.campaignForms){
-            if(this.campaignPartnerAnalytics){
-                this.routerLink = "/home/forms/clpf/" + this.campaignAlias+"/"+this.partnerId;
-            }else{
-                this.routerLink = "/home/forms/clpf/" + this.campaignAlias;
+        } else if (this.campaignForms) {
+            if (this.campaignPartnerAnalytics) {
+                let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignAlias);
+                this.routerLink = "/home/forms/clpf/" + encodedCampaignId + "/" + this.partnerId;
+            } else {
+                let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignAlias);
+                this.routerLink = "/home/forms/clpf/" + encodedCampaignId + "/" + this.campaignTitle;
             }
-        }else if(this.router.url.indexOf("/category/")>-1){
+        } else if (this.router.url.indexOf("/category/") > -1) {
             this.categoryId = this.route.snapshot.params['categoryId'];
-            this.routerLink = "/home/forms/manage/"+this.categoryId;
+            this.routerLink = "/home/forms/manage/" + this.categoryId;
         }
         else {
             this.isPartnerNavigation = false;
@@ -74,8 +79,9 @@ export class FormAnalyticsComponent implements OnInit {
 
 
 
-    goToCampaignAnalytics() { 
-        this.router.navigate( ['home/campaigns/' + parseInt( this.campaignAlias ) + '/details'] );
-        }
+    goToCampaignAnalytics() {
+        let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignAlias);
+        this.router.navigate(['home/campaigns/' + encodedCampaignId + '/' + this.campaignTitle + '/details']);
+    }
 
 }

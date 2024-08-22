@@ -141,7 +141,7 @@ viewShareLeads(partner:any){
 				pagination.totalRecords = data.totalRecords;
 				pagination = this.pagerService.getPagedItems(pagination, data.listOfUserLists);
         /* XBI-1988 */
-        if(pagination.totalRecords==0){
+        if(pagination.totalRecords==0 && $.trim(pagination.searchKey).length == 0){
           this.emptyShareLeadsInfoMessage = new CustomResponse('INFO','Share Leads associated with this campaign has been deleted',true);
         }else{
           this.emptyShareLeadsInfoMessage = new CustomResponse();

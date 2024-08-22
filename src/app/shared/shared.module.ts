@@ -22,8 +22,6 @@ import { AddDealComponent } from '../deals/add-deal/add-deal.component';
 import { SfDealComponent } from 'app/deal-registration/sf-deal/sf-deal.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/angular4-multiselect-dropdown';
-import { ChatComponent } from 'app/util/chat/chat.component';
-import { DealChatPopupComponent } from 'app/deals/deal-chat-popup/deal-chat-popup.component';
 import { EditVideoComponent } from 'app/videos/manage-video/edit-video/edit-video.component';
 import { PlayVideoComponent } from 'app/videos/manage-video/play-video/play-video.component';
 import { LandingPageAnalyticsComponent } from 'app/landing-pages/landing-page-analytics/landing-page-analytics.component';

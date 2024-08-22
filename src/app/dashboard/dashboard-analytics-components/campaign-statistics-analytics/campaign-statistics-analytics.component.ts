@@ -46,7 +46,6 @@ export class CampaignStatisticsAnalyticsComponent implements OnInit {
       this.referenceService.loading(this.heatMapLoader,true);
       this.dashboardService.getCampaignsHeatMapDetailsForVanityURL(this.heatMapSort.value,this.dashboardAnalyticsDto).
         subscribe(result => {
-          this.xtremandLogger.log(result.heatMapData);
           if (result) {
             this.heatMapData = result.heatMapData;
             this.heatMapData.forEach(element => {
@@ -66,12 +65,11 @@ export class CampaignStatisticsAnalyticsComponent implements OnInit {
     }
   }
 
-  generatHeatMap(heatMapData, heatMapId) {
+  generatHeatMap(heatMapData:any, heatMapId:any) {
     this.referenceService.loading(this.heatMapLoader,true);
     const self = this;
     if (true) {
       const data = heatMapData;
-      this.xtremandLogger.log(data);
       Highcharts.chart(heatMapId, {
         colorAxis: {
           minColor: '#FFFFFF',
@@ -106,10 +104,13 @@ export class CampaignStatisticsAnalyticsComponent implements OnInit {
               }
             },
             events: {
-              click: function (event) {
+              click: function (event:any) {
                 self.loading = true;
                 self.referenceService.campaignType = event.point.campaignType;
-                self.router.navigate(['./home/campaigns/' + event.point.campaignId + '/details']);
+                let campaign = {};
+                campaign['campaignId'] = event.point.campaignId;
+                campaign['campaignTitle'] = event.point.campaignTitle;
+                self.referenceService.goToCampaignAnalytics(campaign);
               }
             }
           }

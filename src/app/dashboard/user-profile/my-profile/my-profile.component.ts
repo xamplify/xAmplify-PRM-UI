@@ -1955,11 +1955,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.leadPipelines;
 			this.pipelinePagination = new Pagination();
 			this.pipelineResponse = new CustomResponse();
+			this.pipelineSortOption.searchKey = "";
 			this.listAllPipelines(this.pipelinePagination);
 		} else if (this.activeTabName == "dealPipelines") {
 			this.activeTabHeader = this.properties.dealPipelines;
 			this.pipelinePagination = new Pagination();
 			this.pipelineResponse = new CustomResponse();
+			this.pipelineSortOption.searchKey = "";
 			this.listAllPipelines(this.pipelinePagination);
 		}
 		/*****XNFR-426 ******/

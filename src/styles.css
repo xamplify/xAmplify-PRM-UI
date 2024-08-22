@@ -2055,7 +2055,7 @@ button.glyphicon.glyphicon-remove.search-box-item-clear:before {
 }
 .actions-block i.fa.fa-pencil-square-o {
   line-height: 26px !important;
-  padding-left: 2px;
+  padding-left: 2px !important;
 }
 .actions-block i.fa.fa-envelope {
   font-size: 13px !important;
@@ -3222,3 +3222,4 @@ a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor.mdf_bord
       height: auto !important;
     }
 }
+i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization{padding: 7px !important;}

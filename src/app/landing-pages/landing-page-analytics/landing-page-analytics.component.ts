@@ -55,6 +55,7 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     @Input() vendorLandingPageId;
     @Input() vendorPageAlias;
     @Input() masterLandingPages= false;
+    campaignTitle = "";
     constructor(public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public pagerService: PagerService, public authenticationService: AuthenticationService, 
         public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService,private campaignService:CampaignService) {
@@ -65,9 +66,10 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     ngOnInit() {
         this.pageLoader = true;
         this.landingPageId = this.route.snapshot.params['landingPageId'];
-        this.campaignId = this.route.snapshot.params['campaignId'];
+        this.campaignTitle = this.route.snapshot.params['campaignTitle'];
+        this.campaignId = this.referenceService.decodePathVariable(this.route.snapshot.params['campaignId']);
         this.landingPageAlias = this.route.snapshot.params['alias'];
-        this.partnerId = this.route.snapshot.params['partnerId'];
+        this.partnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
         let categoryId = this.route.snapshot.params['categoryId'];
         if(this.vendorJourney || this.masterLandingPages){
             this.landingPageId = this.vendorLandingPageId;
@@ -322,6 +324,9 @@ export class LandingPageAnalyticsComponent implements OnInit,OnDestroy {
     }
 
     goToCampaignAnalytics(){
-        this.router.navigate(['home/campaigns/'+this.campaignId+'/details']);
+        let campaign = {};
+        campaign['campaignId'] = this.campaignId;
+        campaign['campaignTitle'] = this.campaignTitle;
+        this.referenceService.goToCampaignAnalytics(campaign);
     }
 }

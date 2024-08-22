@@ -2001,7 +2001,7 @@ i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization :hover,
 i.fa.fa-history.fa-fa-consistency.IconCustomization :hover,
 i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover {
   background: #22313a !important;
-  line-height: 17px !important;
+  line-height: 20px !important;
 }
 i.fa.fa-trash-o.trashIconCustomization {
   border: none;
@@ -2238,7 +2238,7 @@ i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
 i.fa.fa-plus.fa-fa-consistency.IconCustomization,
 i.fa.fa-history.fa-fa-consistency.IconCustomization,
 i.fa.fa-comment.fa-fa-consistency.IconCustomization {
-  line-height: 17px;
+  line-height: 20px;
 }
 i.fa.fa-user-plus.fa-fa-consistency.IconCustomization {
   line-height: 17px;
@@ -4275,3 +4275,8 @@ button.filter.btn-hvr-text.emailtemplate-selected{
 }
 .text_pd5.only_neo{margin-top: -5px !important;}
 a.close-circle.xamp-margin-left-icon.not_light{margin: 0px 7px 5px 5px !important;}
+i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
+i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization.only_neo{padding-left: 9px !important;}
+.pos_pd_lft9{
+  padding-left: 0px !important;
+}
