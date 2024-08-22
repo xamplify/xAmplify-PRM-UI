@@ -886,6 +886,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		try {
 			this.newUserDetails.length = 0;
 			let existedEmails = [];
+			this.duplicateEmailIds = [];
 			if (this.users.length > 0) {
 				for (let i = 0; i < this.users.length; i++) {
 					if (!this.validateEmailAddress(this.users[i].emailId)) {
@@ -2642,6 +2643,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 			this.refService.loading(this.httpRequestLoader, true);
 			this.httpRequestLoader.isHorizontalCss = true;
+			this.previewLoader = true;
 			this.contactsByType.pagination.criterias = this.criterias;
 			this.contactsByType.pagination.searchKey = this.searchKey;
 			this.userListPaginationWrapper.pagination = this.contactsByType.pagination;
@@ -2677,6 +2679,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						}
 						this.refService.loading(this.httpRequestLoader, false);
 						this.contactsByType.isLoading = false;
+						this.previewLoader = false;
 
 					},
 					error => console.log(error),

@@ -2343,7 +2343,9 @@ checkParentAndRedistributedCampaignAccess(){
         if (this.isTimeLineView === true) {
           this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
         }
-        setTimeout(() => { this.mainLoader = false; }, 3000);
+        setTimeout(() => { 
+          this.mainLoader = false; 
+        }, 3000);
       }else{
         this.referenceService.goToPageNotFound();
       }
@@ -2391,17 +2393,27 @@ checkParentAndRedistributedCampaignAccess(){
     this.router.navigate(['home/pages/' + encodedCampaignId + '/'+this.campaignTitle+'/campaign/analytics']);
   }
 
-  goToPageAnalyticsByPartnerId(campaignId:number,userId:number){
+  goToPageAnalyticsByPartnerId(campaignId:number,partnerId:number){
     let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
-    let encodedUserId = this.referenceService.encodePathVariable(userId);
+    let encodedUserId = this.referenceService.encodePathVariable(partnerId);
     this.router.navigate(['home/pages/' + encodedCampaignId + '/'+encodedUserId+'/'+this.campaignTitle+'/campaign/analytics']);
   }
 
-  goToPageFormAnalyticsByPartnerId(campaignId:number,userId:number){
+  goToPageFormAnalyticsByPartnerId(campaignId:number,partnerId:number){
     let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
-    let encodedUserId = this.referenceService.encodePathVariable(userId);
+    let encodedUserId = this.referenceService.encodePathVariable(partnerId);
     this.router.navigate(['home/forms/clpf/' + encodedCampaignId + '/'+encodedUserId+'/'+this.campaignTitle]);
+  }
 
+  goToSurveyCampaignForms(campaignId:number){
+    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
+    this.router.navigate(['home/forms/csf/' + encodedCampaignId +'/'+this.campaignTitle]);
+  }
+
+  goToSurveyCampaignFormsByPartnerId(campaignId:number,partnerId:number){
+    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
+    let encodedPartnerId = this.referenceService.encodePathVariable(partnerId);
+    this.router.navigate(['home/forms/csf/' + encodedCampaignId +'/'+encodedPartnerId+'/'+this.campaignTitle]);
   }
 
   showAutoResponseAnalytics(campaign: any, selectedIndex: number) {

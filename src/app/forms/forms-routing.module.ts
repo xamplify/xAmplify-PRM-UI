@@ -20,8 +20,8 @@ export const routes: Routes = [
     { path: "manage/:categoryId", component: ManageFormComponent },
     { path: ":alias/analytics", component: FormAnalyticsComponent},
     { path: ":alias/survey/analytics", component: SurveyAnalyticsComponent},
-    { path: ":alias/:campaignId/survey/analytics", component: SurveyAnalyticsComponent},
-    { path: ":alias/:campaignId/:partnerId/survey/analytics", component: SurveyAnalyticsComponent},
+    { path: ":alias/:campaignId/:campaignTitle/survey/analytics", component: SurveyAnalyticsComponent},//New
+    { path: ":alias/:campaignId/:partnerId/:campaignTitle/survey/analytics", component: SurveyAnalyticsComponent},//New
     { path: ":alias/:campaignAlias/analytics", component: FormAnalyticsComponent},
     { path: "lpf/:alias/:campaignAlias/:campaignTitle/analytics", component: FormAnalyticsComponent},
     { path: "category/:alias/:categoryId/analytics", component: FormAnalyticsComponent},
@@ -36,8 +36,8 @@ export const routes: Routes = [
     {path: "clpf/:landingPageCampaignId/:campaignTitle",component:CampaignLandingPageFormsComponent},
     {path: "clpf/:landingPageCampaignId/:partnerId",component:CampaignLandingPageFormsComponent},
     {path: "clpf/:landingPageCampaignId/:partnerId/:campaignTitle",component:CampaignLandingPageFormsComponent},
-    {path: "csf/:surveyCampaignId",component:CampaignSurveyFormsComponent},
-    {path: "csf/:surveyCampaignId/:partnerId",component:CampaignSurveyFormsComponent},
+    {path: "csf/:surveyCampaignId/:campaignTitle",component:CampaignSurveyFormsComponent},
+    {path: "csf/:surveyCampaignId/:partnerId/:campaignTitle",component:CampaignSurveyFormsComponent},
     {path: "category/:categoryId/lf/:landingPageId",component:LandingPageFormsComponent},
     { path: "category/:categoryId/lf/:alias/:landingPageAlias/analytics", component: LandingPageFormAnalyticsComponent},
     { path: "select", component: SelectFormComponent},   

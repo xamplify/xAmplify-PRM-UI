@@ -133,7 +133,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.campaignTitle = this.route.snapshot.params['campaignTitle'];
             this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
             this.partnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
-            this.surveyCampaignId = this.route.snapshot.params['surveyCampaignId'];
+            this.surveyCampaignId = this.referenceService.decodePathVariable(this.route.snapshot.params['surveyCampaignId']);
             if (this.categoryId>0 && (this.landingPageId==undefined||this.landingPageId==0)) {
                 this.pagination.categoryId = this.categoryId;
                 this.pagination.categoryType = 'f';
@@ -425,10 +425,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         } else if (this.pagination.partnerLandingPageForm) {
             this.router.navigate(['/home/forms/partner/f/' + form.id + '/' + this.partnerLandingPageAlias + '/analytics']);
         }  else if (this.pagination.surveyCampaignForm) {
+            let encodedSurveyCampaignId = this.referenceService.encodePathVariable(this.surveyCampaignId);
             if (this.partnerId > 0) {
-                this.router.navigate(['/home/forms/' + form.alias + '/' + this.surveyCampaignId + '/' + this.partnerId + '/survey/analytics']);
+                let encodePartnerId = this.referenceService.encodePathVariable(this.partnerId);
+                this.router.navigate(['/home/forms/' + form.alias + '/' + encodedSurveyCampaignId + '/' + encodePartnerId +  '/'+this.campaignTitle+'/survey/analytics']);
             } else {
-                this.router.navigate(['/home/forms/' + form.alias + '/' + this.surveyCampaignId + '/survey/analytics']);
+                this.router.navigate(['/home/forms/' + form.alias + '/' + encodedSurveyCampaignId + '/'+this.campaignTitle+ '/survey/analytics']);
             }
         }else {
             if (form.formSubType.toString() === FormSubType[FormSubType.SURVEY]) {
