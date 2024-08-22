@@ -119,7 +119,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         let updateLeadTemplate = "LEAD_UPDATE" == emailTemplateType;
         let updateDealTemplate = "DEAL_UPDATE" == emailTemplateType;
         let requiredTags = [];
-        if (addLeadTemplate && updateLeadTemplate) {
+        if (addLeadTemplate || updateLeadTemplate) {
           requiredTags = [
             '{{partnerModuleCustomName}}',
             '{{partnerName}}',
@@ -129,7 +129,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             '{{leadStage}}',
             '{{leadComment}}',
           ];
-        } else if (addDealTemplate && updateDealTemplate ) {
+        } else if (addDealTemplate || updateDealTemplate ) {
           requiredTags = [
             '{{partnerModuleCustomName}}',
             '{{partnerName}}',
@@ -226,7 +226,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             return false;
           }
 
-          if (jsonContent.indexOf("pageLink") < 0 && ("SOCIAL_CAMPAIGN" == emailTemplateType || "PAGE_CAMPAIGN_CONTACT" == emailTemplateType || "ADD_DEAL" == emailTemplateType)) {
+          if (jsonContent.indexOf("pageLink") < 0 && ("SOCIAL_CAMPAIGN" == emailTemplateType || "PAGE_CAMPAIGN_CONTACT" == emailTemplateType || "ADD_DEAL" == emailTemplateType || "DEAL_UPDATE" == emailTemplateType)) {
             swal("", "Whoops! We are unable to save this template because you deleted 'Button' tag.", "error");
             return false;
           }
@@ -347,7 +347,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Social Status Content', value: '{{socialStatusContent}}' },
         ];
       }
-      if("ADD_LEAD"==emailTemplateType){
+      if("ADD_LEAD"==emailTemplateType || "LEAD_UPDATE"==emailTemplateType){
         mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
         { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
         { name: 'Partner Name', value: '{{partnerName}}' },
@@ -358,7 +358,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Lead Comment', value: '{{leadComment}}' },
         ];
       }
-      if("ADD_DEAL"==emailTemplateType){
+      if("ADD_DEAL"==emailTemplateType || "DEAL_UPDATE"==emailTemplateType){
         mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
           { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
           { name: 'Partner Name', value: '{{partnerName}}' },
