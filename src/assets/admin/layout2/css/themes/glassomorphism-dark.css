@@ -1945,7 +1945,7 @@ i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization :hover,
 i.fa.fa-history.fa-fa-consistency.IconCustomization :hover,
 i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover {
   background: #22313a !important;
-  line-height: 17px !important;
+  line-height: 19px !important;
 }
 i.fa.fa-trash-o.trashIconCustomization {
   border: none;
@@ -2151,7 +2151,7 @@ i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
 i.fa.fa-plus.fa-fa-consistency.IconCustomization,
 i.fa.fa-history.fa-fa-consistency.IconCustomization,
 i.fa.fa-comment.fa-fa-consistency.IconCustomization {
-  line-height: 17px;
+  line-height: 19px;
 }
 i.fa.fa-user-plus.fa-fa-consistency.IconCustomization {
   line-height: 17px;
@@ -2182,6 +2182,7 @@ button.btn.btn-white {
 }
 .actions-block i.fa.fa-pencil-square-o {
   line-height: 32px !important;
+  padding-left: 4px !important;
 }
 .actions-block i.fa.fa-trash-o {
   line-height: 34px !important;
@@ -3949,7 +3950,7 @@ button.btn.btn-primary.shareVideoButton:hover{
 .number.NumberFontDecrease {
   color:#fff !important;
 }
-.vendor-details-tiles{border:1px solid rgba(255, 255, 255, 0.1) !important}
+.vendor-details-tiles,.form-group.label-box{border:1px solid rgba(255, 255, 255, 0.1) !important}
 button.btn.btn-xs.hidden-xs.l-g-view{
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background: rgb(146 151 179 / 13%) !important;
@@ -4139,3 +4140,5 @@ span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !im
   .pos_pd_lft9{
     padding-left: 0px !important;
   }
+  span.gearicon-font-cu{top:5px !important;}
+  i.fa.fa-eye{padding-left: 2px;}

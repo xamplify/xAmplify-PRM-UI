@@ -1251,7 +1251,8 @@ div#box-dark-defalut-clr {
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff;
 }
 .border-cls,
-.inline {
+.inline,
+.item__actions.abjustPosition {
   border: none !important;
 }
 /* 29/05/2023 */
@@ -1898,11 +1899,9 @@ i.IconCustomization{
   background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important;
 }
 i.fa.fa-plus.fa-fa-consistency.IconCustomization :hover,
-i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization :hover,
-i.fa.fa-history.fa-fa-consistency.IconCustomization :hover,
-i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover {
+i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization :hover{
   background: #22313a !important;
-  line-height: 17px !important;
+  line-height: 21px !important;
 }
 i.fa.fa-trash-o.trashIconCustomization{
   border: none;
@@ -2124,10 +2123,8 @@ i.IconCustomization:hover {
   color: #000 !important;
 }
 i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
-i.fa.fa-plus.fa-fa-consistency.IconCustomization,
-i.fa.fa-history.fa-fa-consistency.IconCustomization,
-i.fa.fa-comment.fa-fa-consistency.IconCustomization {
-  line-height: 17px;
+i.fa.fa-plus.fa-fa-consistency.IconCustomization {
+  line-height: 21px;
 }
 i.fa.fa-user-plus.fa-fa-consistency.IconCustomization {
   line-height: 17px;
@@ -3019,7 +3016,7 @@ border:0px!important;
 .campaignViewIcon{
   width: 32px;
   height: 32px;
-  line-height: 28px!important;
+  line-height: 32px!important;
 }
 .bar{
   border: 1px solid #cfd6de !important;
@@ -4423,3 +4420,9 @@ i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization.only_neo{padding: 6p
 .pos_pd_lft9{
   padding-left: 0px !important;
 }
+i.fa.fa-minus.fa-fa-consistency.IconCustomization{padding: 9px !important;}
+i.fa.fa-history.fa-fa-consistency.IconCustomization :hover,
+i.fa.fa-history.fa-fa-consistency.IconCustomization,
+i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover,
+i.fa.fa-comment.fa-fa-consistency.IconCustomization{line-height: 15px !important;}
+i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
