@@ -230,13 +230,10 @@
                         </div>
                         <div class="actions-block override-actions" id="email-icons"
                            *ngIf="campaignType === 'SURVEY' && campaign.formsCount > 0">
-                           <a *ngIf="campaignType === 'SURVEY' && campaign.formsCount > 0"
-                              routerLink="/home/forms/csf/{{ campaign.campaignId }}" data-rel="fancybox-button"
+                           <a *ngIf="campaignType === 'SURVEY' && campaign.formsCount > 0" (click)="goToSurveyCampaignForms(campaign.campaignId)"    data-rel="fancybox-button"
                               data-toggle="tooltip" data-placement="top" title="Survey Forms Count">
                               <i class="fa fa-wpforms" aria-hidden="true"></i>
-                              <span class="badge" id="notification-color">{{
-                                 campaign.formsCount
-                                 }}</span>
+                              <span class="badge" id="notification-color">{{campaign.formsCount}}</span>
                            </a>
                         </div>
                      </a>
@@ -1493,30 +1490,19 @@
                                                          </a>
                                                       </div>
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'SURVEY' &&
-     campaign.formsCount > 0 &&
-     isChannelCampaign
-     ">
-                                                      <div class="actions-block override-actions"
-                                                         id="landing-page-icons">
-                                                         <a routerLink="/home/forms/csf/{{
-     campaign.campaignId
-     }}/{{ item.userId }}" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
+                                                   <td class="text-center" *ngIf="campaignType === 'SURVEY' && campaign.formsCount > 0 && isChannelCampaign">
+                                                      <div class="actions-block override-actions" id="landing-page-icons">
+                                                         <a (click)="goToSurveyCampaignForms(campaign.campaignId,item.userId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                                                             title="Survey Forms Count">
                                                             <i class="fa fa-wpforms" aria-hidden="true"></i>
-                                                            <span class="badge" id="notification-color">{{
-                                                               campaign.formsCount }}</span>
+                                                            <span class="badge" id="notification-color">{{campaign.formsCount }}</span>
                                                          </a>
                                                       </div>
                                                    </td>
                                                    <td *ngIf="campaign.dipCampaign">
                                                       <div class="actions-block" (click)="$event.stopPropagation()">
                                                          <i class="circled-number IconCustomization fontStyleNormal"
-                                                            *ngIf="item.autoResponsesCount == 0" style="
-     margin-right: 50px;
-     cursor: not-allowed;
-     ">{{ item.autoResponsesCount }}</i>
+                                                            *ngIf="item.autoResponsesCount == 0" style="margin-right: 50px;cursor: not-allowed;">{{ item.autoResponsesCount }}</i>
                                                          <i class="circled-number IconCustomization fontStyleNormal"
                                                             *ngIf="item.autoResponsesCount > 0">
                                                             {{ item.autoResponsesCount }}</i>

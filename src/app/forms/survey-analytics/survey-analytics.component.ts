@@ -30,20 +30,23 @@ export class SurveyAnalyticsComponent implements OnInit {
   routerLink: string;
   campaignAlias: string;  
   loggedInUser: any;
-
+  campaignTitle:any;
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
     public authenticationService: AuthenticationService, public router: Router,
     public formService: FormService, public logger: XtremandLogger) { }
 
   ngOnInit() {
     this.alias = this.route.snapshot.params['alias'];
-    this.campaignId = this.route.snapshot.params['campaignId'];
-    this.partnerId = this.route.snapshot.params['partnerId'];
+    this.campaignId = this.referenceService.decodePathVariable(this.route.snapshot.params['campaignId']);
+    this.partnerId =  this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
+    this.campaignTitle = this.route.snapshot.params['campaignTitle'];
     if(this.campaignId != undefined && this.campaignId > 0){      
+      let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignId);
       if(this.partnerId != undefined && this.partnerId > 0){
-          this.routerLink = "/home/forms/csf/" + this.campaignId+"/"+this.partnerId;
+        let encodedPartnerId = this.referenceService.encodePathVariable(this.partnerId);
+          this.routerLink = "/home/forms/csf/" + encodedCampaignId+"/"+encodedPartnerId+"/"+this.campaignTitle;
       }else{
-          this.routerLink = "/home/forms/csf/" + this.campaignId;
+          this.routerLink = "/home/forms/csf/" + encodedCampaignId+"/"+this.campaignTitle;
       }
     } else{
       this.routerLink = "/home/forms/manage";
