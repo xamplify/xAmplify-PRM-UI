@@ -2343,7 +2343,9 @@ checkParentAndRedistributedCampaignAccess(){
         if (this.isTimeLineView === true) {
           this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
         }
-        setTimeout(() => { this.mainLoader = false; }, 3000);
+        setTimeout(() => { 
+          this.mainLoader = false; 
+        }, 3000);
       }else{
         this.referenceService.goToPageNotFound();
       }

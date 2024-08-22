@@ -20,8 +20,8 @@ export const routes: Routes = [
     { path: "manage/:categoryId", component: ManageFormComponent },
     { path: ":alias/analytics", component: FormAnalyticsComponent},
     { path: ":alias/survey/analytics", component: SurveyAnalyticsComponent},
-    { path: ":alias/:campaignId/survey/analytics", component: SurveyAnalyticsComponent},
-    { path: ":alias/:campaignId/:partnerId/survey/analytics", component: SurveyAnalyticsComponent},
+    { path: ":alias/:campaignId/:campaignTitle/survey/analytics", component: SurveyAnalyticsComponent},//New
+    { path: ":alias/:campaignId/:partnerId/:campaignTitle/survey/analytics", component: SurveyAnalyticsComponent},//New
     { path: ":alias/:campaignAlias/analytics", component: FormAnalyticsComponent},
     { path: "lpf/:alias/:campaignAlias/:campaignTitle/analytics", component: FormAnalyticsComponent},
     { path: "category/:alias/:categoryId/analytics", component: FormAnalyticsComponent},

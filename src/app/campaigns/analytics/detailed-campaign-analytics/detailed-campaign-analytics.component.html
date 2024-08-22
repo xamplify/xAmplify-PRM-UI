@@ -13,7 +13,7 @@
       color: #fff;
    }
 </style>
-<ngx-loading [show]="ngxloading" [config]="{ fullScreenBackdrop: true, backdropBorderRadius: '14px' }"></ngx-loading>
+<ngx-loading [show]="ngxloading || mainLoader" [config]="{ fullScreenBackdrop: true, backdropBorderRadius: '14px' }"></ngx-loading>
 <app-event-send-reminder *ngIf="isOpenNotificationModal" (notifyParent)="emailNotOpenReminderDate($event)"
    [selectedEventCampaignId]="campaign.campaignId" [selectedUserId]="selectedEmailNotOpenUserId">
 </app-event-send-reminder>
@@ -34,7 +34,6 @@
          </a>
       </div>
       <div class="portlet light clearfix remove_cardBgcolor" *ngIf="!isShowPartnerLeads && !showLeads && !showDeals">
-         <app-analytics-loader *ngIf="mainLoader"></app-analytics-loader>
          <div class="portlet-body">
             <div *ngIf="campaign?.campaignEmailNotificationStatusInString == 'IN_PROGRESS'" class="alert alert-info">
                <strong translate>Email is currently being transmitted to recipents. To view the most recent information, please click the refresh icon.
@@ -355,20 +354,16 @@
                      </a>
                   </div>
                </div>
+               <!--Event Campaign-->
                <section *ngIf="campaignType === 'EVENT'" [hidden]="mainLoader">
                   <fieldset class="m10">
                      <div class="col-xs-12 caption-subject font-red-sunglo">
                         <h4 class="pull-left">Your Campaign Response</h4>
                      </div>
                      <div class="col-xs-12 emails-info" id="campaignreportvendor" [hidden]="mainLoader">
-                        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" [ngClass]="{
-  'eight-tile-width': campaign.publicEventCampaign
-  }">
-                           <button class="portlet light color1-invert crcb"
-                              (click)="getRsvpInvitiesDetails(); searchKey = ''" [disabled]="
-  campaignReport.totalInvitiesCount < 1 ||
-  !isPartnerEnabledAnalyticsAccess
-  ">
+                        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
+                           <button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails(); searchKey = ''" 
+                           [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
                               <div class="portlet-body text-center">
                                  <i class="fa fa-envelope" aria-hidden="true"></i>
                                  <h1>
@@ -582,6 +577,7 @@
                      </div>
                   </div>
                </section>
+               <!--Other Campaigns-->
                <section *ngIf="campaignType !== 'EVENT'">
                   <div class="col-xs-12 col-sm-12 p-5x emails-info flex-wrap"
                      [hidden]="mainLoader || hasClientError || !campaign.emailNotification">
@@ -996,29 +992,16 @@
                               </div>
                            </div>
                         </div>
-                        <div class="portlet light remove_cardBgcolor" [hidden]="
-                           mainLoader ||
-                           hasClientError ||
-                           !campaignViews ||
-                           totalCampaignViewsLoader ||
-                           !campaign.emailNotification
-                           ">
+                        <div class="portlet light remove_cardBgcolor" [hidden]="mainLoader ||hasClientError ||!campaignViews ||totalCampaignViewsLoader || !campaign.emailNotification">
                            <div class="portlet-title col-xs-12" style="border-bottom: none !important">
                               <div class="caption col-xs-12 col-sm-7" style="padding-top: 4px !important">
                                  <span class="caption-subject font-red-sunglo" style="font-size: 13px !important">
                                     <span *ngIf="campaignType === 'VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
-                                    <span *ngIf="campaignType === 'SOCIAL' && isChannelCampaign">TOTAL REDISTRIBUTED FOR
-                                       THIS CAMPAIGN</span>
-                                    <span *ngIf="
-                                       campaignType === 'SOCIAL' && !isChannelCampaign
-                                       ">TOTAL RECIPIENTS FOR THIS CAMPAIGN</span>
+                                    <span *ngIf="campaignType === 'SOCIAL' && isChannelCampaign">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
+                                    <span *ngIf="campaignType === 'SOCIAL' && !isChannelCampaign">TOTAL RECIPIENTS FOR THIS CAMPAIGN</span>
                                     <span *ngIf="campaignType === 'REGULAR'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
-                                    <span *ngIf="campaignType === 'EVENT' && isChannelCampaign">{{
-                                       authenticationService?.partnerModule?.customName
-                                       }}
-                                       REDISTRIBUTED CAMPAIGN ANALYTICS</span>
-                                    <span *ngIf="campaignType === 'EVENT' && !isChannelCampaign">CAMPAIGN
-                                       ANALYTICS</span>
+                                    <span *ngIf="campaignType === 'EVENT' && isChannelCampaign">{{authenticationService?.partnerModule?.customName}}REDISTRIBUTED CAMPAIGN ANALYTICS</span>
+                                    <span *ngIf="campaignType === 'EVENT' && !isChannelCampaign">CAMPAIGN ANALYTICS</span>
                                     <span *ngIf="campaignType === 'SURVEY'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
                                  </span>
                               </div>
@@ -1715,8 +1698,8 @@
             </ng-template>
          </div>
       </div>
-      <div class="portlet light" style="background: white; padding: 2px 0px"
-         *ngIf="campaign.publicEventCampaign && !isShowPartnerLeads">
+      <!--Event Campaign Lead Details-->
+      <div class="portlet light" style="background: white; padding: 2px 0px"  *ngIf="campaign.publicEventCampaign && !isShowPartnerLeads">
          <div class="col-xs-12 p0">
             <div class="portlet-title col-xs-12 header">
                <div class="caption col-xs-12 col-sm-8" style="padding-top: 4px; padding-left: 3px">
@@ -1906,6 +1889,7 @@
             <app-scroll-top></app-scroll-top>
          </div>
       </div>
+      <!--Leads-->
       <div class="portlet light clearfix" *ngIf="showLeads">
          <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
          <div class="portlet-body">
@@ -1922,6 +1906,7 @@
             </app-manage-campaign-leads>
          </div>
       </div>
+      <!--Deals-->
       <div class="portlet light clearfix" *ngIf="showDeals">
          <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
          <div class="portlet-body">
@@ -1958,6 +1943,7 @@
       </app-add-deal>
    </div>
 </section>
+<!--Event Campaign-->
 <section *ngIf="campaignType === 'EVENT' && isChannelCampaign">
    <div id="timeline-view" [ngClass]="hidePageContent ? '' : 'page-content'" *ngIf="isTimeLineView">
       <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -2310,6 +2296,7 @@
       </div>
    </div>
 </section>
+<!--Time Line View-->
 <section *ngIf="(!isChannelCampaign || campaignType != 'EVENT') && !isDealRegistration">
    <div [ngClass]="hidePageContent ? '' : 'page-content'" id="timeline-view" *ngIf="isTimeLineView"
       [class.ml0]="authenticationService.isSuperAdmin()">
@@ -3719,9 +3706,6 @@
    </div>
 </div>
 <ng-container *ngIf="isDealRegistration && !isDealPreview">
-   <!-- <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaign.campaignId"
-      [campaignName]="campaign.campaignName" [actionType]="leadActionType" (notifyOtherComponent)="showTimeLineView()">
-   </app-add-lead> -->
    <section>
       <div class="page-content">
         <div>
@@ -3736,10 +3720,6 @@
     </section>
 </ng-container>
 <ng-container *ngIf="showLeadForm">
-   <!-- <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaign.campaignId"
-      [campaignName]="campaign.campaignName" [actionType]="leadActionType"
-      (notifyAnalyticsComponentToHidePopup)="closeLeadsForm()" (notifySubmitSuccess)="showSubmitLeadSuccess()">
-   </app-add-lead> -->
    <section>
       <div class="page-content">
         <div>
