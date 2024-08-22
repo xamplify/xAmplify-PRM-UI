@@ -61,7 +61,8 @@ export class FormAnalyticsComponent implements OnInit {
         } else if (this.campaignForms) {
             if (this.campaignPartnerAnalytics) {
                 let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignAlias);
-                this.routerLink = "/home/forms/clpf/" + encodedCampaignId + "/" + this.partnerId;
+                let encodedPartnerId = this.referenceService.encodePathVariable(this.partnerId);
+                this.routerLink = "/home/forms/clpf/" + encodedCampaignId + "/" + encodedPartnerId+"/"+this.campaignTitle;
             } else {
                 let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignAlias);
                 this.routerLink = "/home/forms/clpf/" + encodedCampaignId + "/" + this.campaignTitle;
