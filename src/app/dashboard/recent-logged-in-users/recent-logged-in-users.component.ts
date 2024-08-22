@@ -121,4 +121,12 @@ export class RecentLoggedInUsersComponent implements OnInit {
     this.referenceService.goToRouter('/home/dashboard/dashboard-stats/'+report.userId+"/"+report.companyId);
    } 
 
+   copyRecentUserEmailAddress(inputElement:any,index:number){
+		$(".success").hide();
+		$('#copied-recent-users-email-address-' + index+"-"+this.type).hide();
+		inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+		$('#copied-recent-users-email-address-' + index+"-"+this.type).show(600);
+	}
 }
