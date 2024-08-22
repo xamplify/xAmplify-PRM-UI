@@ -1569,7 +1569,7 @@
                                                       </td>
                                                       <td class="text-center" *ngIf="campaign.formsCount > 0">
                                                          <div class="actions-block override-actions" id="landing-page-icons">
-                                                            <a (click)="goToPageFormAnalyticsByPartnerId(campaign.campaignId,item.userId)" routerLink="/home/forms/clpf/{{campaign.campaignId}}/{{item.userId}}/{{campaign.campaignTitle}}" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
+                                                            <a (click)="goToPageFormAnalyticsByPartnerId(campaign.campaignId,item.userId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
                                                                <i class="fa fa-wpforms chart-hover"></i>
                                                                <span class="badge" id="notification-color">{{campaign.formsCount}}</span>
                                                             </a>
