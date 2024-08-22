@@ -52,7 +52,7 @@
                   <td>
                     <app-user-info [userInfo]="user" [isCompanyInfo]="true"></app-user-info>
                     <input type="text" class="form-control"  readonly="readonly" value="{{user?.emailId}}" #recentUser><br>
-                      <button class="btn-xs btn-info" (click)="$event.stopPropagation();copyRecentUserEmailAddress(recentUser,i)">Copy</button>
+                      <button class="btn-xs btn-info mt5" (click)="$event.stopPropagation();copyRecentUserEmailAddress(recentUser,i)">Copy</button>
                       <span id="copied-recent-users-email-address-{{i}}-{{copyIconButtonId}}" class="copied-item-success" style="display:none;">
                         <strong>Email Address copied successfully.<i class="fa fa-check" aria-hidden="true"></i></strong>
                       </span>

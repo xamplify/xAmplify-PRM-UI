@@ -153,7 +153,6 @@ import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-po
 import { AddCompanyComponent } from 'app/company/add-company/add-company.component';
 import { LandingPagesListAndGridViewComponent } from 'app/util/landing-pages-list-and-grid-view/landing-pages-list-and-grid-view.component';
 import { BrowseContentComponent } from 'app/util/browse-content/browse-content.component';
-import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component';
 import { UploadImageUtilComponent } from 'app/util/upload-image-util/upload-image-util.component';
 import { PreviewEmailTemplateComponent } from 'app/util/preview-email-template/preview-email-template.component';
 import { PreviewPageComponent } from 'app/util/preview-page/preview-page.component';
@@ -190,6 +189,7 @@ import { DisplayErrorMessageComponent } from 'app/util/display-error-message/dis
 import { ChatGptModalComponent } from './chat-gpt-modal/chat-gpt-modal.component';
 import { MultiSelectDropdownComponent } from 'app/util/multi-select-dropdown/multi-select-dropdown.component';
 import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/angular4-multiselect-dropdown';
+import { CopyTextComponent } from './copy-text/copy-text.component';
 
 
 
@@ -231,7 +231,7 @@ import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/angular4
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
 		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
-		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent
+		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent
 	],
 
 
@@ -269,7 +269,7 @@ import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/angular4
 		RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,TeamMemberwiseAssetAnalyticsComponent,
 		TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
 		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent,CrmSettingsComponent,ShareDashboardButtonsComponent,
-		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent
+		DropdownLoaderComponent,DisplayErrorMessageComponent,ChatGptModalComponent,MultiSelectDropdownComponent,CopyTextComponent
 
 	]
 
