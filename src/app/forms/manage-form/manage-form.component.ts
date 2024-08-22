@@ -408,10 +408,11 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         if (this.pagination.campaignForm) {
             this.router.navigate(['/home/forms/' + form.alias + '/' + this.campaignId + '/analytics']);
         } else if (this.pagination.landingPageCampaignForm) {
+            let encodedLandingPageCampaignId = this.referenceService.encodePathVariable(this.landingPageCampaignId);
             if (this.partnerId > 0) {
-                this.router.navigate(['/home/forms/' + form.alias + '/' + this.landingPageCampaignId + '/' + this.partnerId + '/analytics/cfa']);
+                let encodedPartnerId = this.referenceService.encodePathVariable(this.partnerId);
+                this.router.navigate(['/home/forms/cpfp/' + form.alias + '/' + encodedLandingPageCampaignId + '/' + encodedPartnerId + '/'+this.campaignTitle+ '/analytics/cfa']);
             } else {
-                let encodedLandingPageCampaignId = this.referenceService.encodePathVariable(this.landingPageCampaignId);
                 this.router.navigate(['/home/forms/lpf/' + form.alias + '/' + encodedLandingPageCampaignId + '/'+this.campaignTitle+'/analytics']);
             }
         } else if (this.pagination.landingPageForm) {

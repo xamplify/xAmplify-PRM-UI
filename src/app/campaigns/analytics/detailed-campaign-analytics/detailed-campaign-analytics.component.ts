@@ -2398,7 +2398,6 @@ checkParentAndRedistributedCampaignAccess(){
   }
 
   goToPageFormAnalyticsByPartnerId(campaignId:number,userId:number){
-    alert("Going TO Page Form Analytics");
     let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
     let encodedUserId = this.referenceService.encodePathVariable(userId);
     this.router.navigate(['home/forms/clpf/' + encodedCampaignId + '/'+encodedUserId+'/'+this.campaignTitle]);
