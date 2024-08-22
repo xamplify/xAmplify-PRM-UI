@@ -132,7 +132,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.landingPageCampaignId = this.referenceService.decodePathVariable(this.route.snapshot.params['landingPageCampaignId']);
             this.campaignTitle = this.route.snapshot.params['campaignTitle'];
             this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
-            this.partnerId = this.route.snapshot.params['partnerId'];
+            this.partnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
             this.surveyCampaignId = this.route.snapshot.params['surveyCampaignId'];
             if (this.categoryId>0 && (this.landingPageId==undefined||this.landingPageId==0)) {
                 this.pagination.categoryId = this.categoryId;
