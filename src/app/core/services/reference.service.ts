@@ -2440,12 +2440,7 @@ export class ReferenceService {
     }
   }
 
-  copyInputMessage(
-    inputElement,
-    index: number,
-    successMessageClass: string,
-    id: string
-  ) {
+  copyInputMessage(inputElement:any,index: number,successMessageClass: string,id: string) {
     let messageId = id + index;
     $("." + successMessageClass).hide();
     $("#" + messageId).hide();
@@ -3733,7 +3728,14 @@ preivewAssetForPartnerOnNewHost(id: any) {
     return typeof value === 'number';
   }
   
-
+copySelectedElement(inputElement:any,id:string){
+  $(".copied-item-success").hide();
+  $('#'+id).hide();
+  inputElement.select();
+  document.execCommand('copy');
+  inputElement.setSelectionRange(0, 0);
+  $('#'+id).show(600);
+}
   
 }
 

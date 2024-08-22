@@ -25,6 +25,7 @@ export class RecentLoggedInUsersComponent implements OnInit {
   hasError: boolean;
   loading = false;
   @Output() notifyAdminReportComponent = new EventEmitter();
+  copyIconButtonId = "";
   constructor(public dashboardService: DashboardService, public pagerService: PagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public router: Router,
     public xtremandLogger: XtremandLogger, public utilService: UtilService, public sortOption: SortOption, public httpRequestLoader: HttpRequestLoader, ) {
     if (this.authenticationService.getUserId() != 1) {
@@ -33,7 +34,8 @@ export class RecentLoggedInUsersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tableHeaderText = "registered" == this.type ? ' Registered On ' : ' Last Login'
+    this.tableHeaderText = "registered" == this.type ? ' Registered On ' : ' Last Login';
+    this.copyIconButtonId = "registered" == this.type ? 'registered' : 'loggedIn';
     this.listUsersByType(this.pagination);
   }
 
@@ -122,11 +124,7 @@ export class RecentLoggedInUsersComponent implements OnInit {
    } 
 
    copyRecentUserEmailAddress(inputElement:any,index:number){
-		$(".success").hide();
-		$('#copied-recent-users-email-address-' + index+"-"+this.type).hide();
-		inputElement.select();
-    document.execCommand('copy');
-    inputElement.setSelectionRange(0, 0);
-		$('#copied-recent-users-email-address-' + index+"-"+this.type).show(600);
+    let id = 'copied-recent-users-email-address-' + index+"-"+this.copyIconButtonId;
+    this.referenceService.copySelectedElement(inputElement,id);
 	}
 }
