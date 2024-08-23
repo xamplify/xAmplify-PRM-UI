@@ -1403,7 +1403,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
   navigateCampaignAnalytics(campaign: any) {
     $('#myModal').modal('hide');
     this.referenceService.campaignType = this.previewCampaignType;
-    this.router.navigate(['/home/campaigns/' + this.previewCampaignId + '/details']);
+    let campaignRouterParams = {};
+    campaignRouterParams['campaignId'] = this.previewCampaignId;
+    campaignRouterParams['campaignTitle'] = campaign.campaignTitle;
+    this.referenceService.goToCampaignAnalytics(campaignRouterParams);
   }
   navigateRedistributedCampaigns(campaign: any) {
     $('#myModal').modal('hide');
