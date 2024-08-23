@@ -3184,6 +3184,11 @@ viewCampaignLeadForm(leadId: any) {
       this.referenceService.goToRouter("/home/forms/clpf/"+encodedCampaignId+"/"+this.campaignTitle);
     }
 
+    goToCampaignCheckIn(campaign:any){
+      let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignId);
+      this.referenceService.goToRouter("/home/campaigns/"+encodedCampaignId+"/"+this.campaignTitle+"/checkin");
+    }
+
 
 }
 

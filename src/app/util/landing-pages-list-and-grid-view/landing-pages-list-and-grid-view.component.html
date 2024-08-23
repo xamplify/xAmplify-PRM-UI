@@ -190,6 +190,12 @@
                                     <span class="ribbon1" *ngIf="!landingPage.coBranded && (!(vendorJourney || isMasterLandingPages) || ((vendorJourney || isMasterLandingPages) &&!landingPage.defaultLandingPage)) "><span>Regular</span></span>
                                     <span class="ribbon1" *ngIf="!landingPage.coBranded && ((vendorJourney || isMasterLandingPages)&& landingPage.defaultLandingPage) "><span>Default</span></span>
                                 </ng-container>
+                                <div class="ribbon tab-ribbon" *ngIf = "vendorJourney">
+                                    <span
+                                        *ngIf="landingPage?.published && !landingPage?.publishingOrWhiteLabelingInProgress">Published</span>
+                                    <span
+                                        *ngIf="landingPage?.publishingOrWhiteLabelingInProgress">Processing</span>
+                                </div>
                                 <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"
                                     alt="No Image Found">
                                 <div>
@@ -212,16 +218,20 @@
                                                 {{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}
                                             </h6>
                                             <span
-                                                class="view-banner-white-labeled LabeledmarginLeft">White-Labeled</span>
+                                                class="view-banner-white-labeled LabeledmarginLeft">White-Labeled</span>        
                                         </ng-container>
-                                        <span
+                                        <span *ngIf="!isLandingPages"
                                             class="view-banner green-btn-cu LabeledmarginLeft">{{landingPage.type}}</span>
+                                        <span *ngIf="isLandingPages && !isPartnerLandingPage && landingPage.status =='ACTIVE'" 
+                                            class="view-banner blue-btn-cu LabeledmarginLeft">{{landingPage.status}}</span>
+                                        <span *ngIf="isLandingPages && !isPartnerLandingPage && landingPage.status =='INACTIVE'" 
+                                            class="view-banner red-btn-cu LabeledmarginLeft">{{landingPage.status}}</span>
+
                                     </div>
                                     <!---XNFR-255-->
                                     <h6 *ngIf="!isPartnerLandingPage" class="GridViewCotent"> <b>Created On:</b>
                                         <app-timestamp [isOnlyDate]="true"
                                             [dateAndTime]="landingPage.displayTime"></app-timestamp>
-                                            {{landingPage.status}}
                                     </h6>
                                     <h6 *ngIf="isPartnerLandingPage" class="GridViewCotent"><b>Shared On:</b>
                                         <app-timestamp [isOnlyDate]="true"

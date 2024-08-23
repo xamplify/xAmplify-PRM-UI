@@ -9,7 +9,7 @@
 				   [routerLink]="referenceService.homeRouter">Home</a> <i
 				   class="fa fa-angle-right" aria-hidden="true"></i></li>
 				<li>
-				   <a routerLink = "/home/campaigns/{{campaignId}}/details">Campaign Analytics</a> <i class="fa fa-angle-right"></i>
+				   <a (click)="goToCampaignAnalytics()">Campaign Analytics</a> <i class="fa fa-angle-right"></i>
 				</li>
 				<li>Check-in</li>
 			 </ul>
