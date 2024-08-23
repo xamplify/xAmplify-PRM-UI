@@ -768,7 +768,7 @@ export class ContactService {
     }
 
     getSfForm(companyId: number, dealId: number) {
-        return this._http.get(this.authenticationService.REST_URL + "/salesforce/ui/form/" + companyId + "/" + dealId + "?access_token=" + this.authenticationService.access_token)
+        return this._http.get(this.authenticationService.REST_URL + "/salesforce/ui/form/" + companyId + "/" + dealId + "/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }

@@ -32,7 +32,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     if(this.customField.originalCRMType === 'select'){
       this.canDisableSelect = true;
     }
-    if(this.customField.formDefaultFieldType === 'DEAL_ID' || this.customField.formDefaultFieldType === 'LEAD_ID'){
+    if(this.customField.formDefaultFieldType === 'DEAL_ID' || this.customField.formDefaultFieldType === 'LEAD_ID' || this.customField.formDefaultFieldType === 'CREATED_BY'){
       this.canDisableType = true;
     }
     this.customFields.required = this.customField.required;
@@ -152,28 +152,35 @@ export class IntegrationSettingsPopupComponent implements OnInit {
   }
 
   onFieldTypeChange(selectedField: any) {
+    let countSelectedType = 1;
+    const selectedFieldType = selectedField.formDefaultFieldType;
+
     this.customFieldsList.forEach(field => {
-      if (field.label === selectedField.label && selectedField.formDefaultFieldType === 'DEAL_ID') {
-        this.customFields.formDefaultFieldType = 'DEAL_ID';
+      if (
+        field.label === selectedField.label &&
+        (selectedFieldType === 'DEAL_ID' ||
+          selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY')) {
+        countSelectedType++;
+        field.formDefaultFieldType = selectedFieldType;
         this.canDisableType = true;
-      }  else {
-        field.formDefaultFieldType = null;
-        if (field.name === 'xAmplify_Deal_ID__c') {
-          field.canUnselect = true;
-        }
       }
-      if (field.label === selectedField.label && selectedField.formDefaultFieldType === 'LEAD_ID') {
-        this.customFields.formDefaultFieldType = 'LEAD_ID';
-        this.canDisableType = true;
-      }  else {
-        field.formDefaultFieldType = null;
-        if (field.name === 'xAmplify_Lead_ID__c') {
-          field.canUnselect = true;
-        }
-      }
-     
     });
-    if(selectedField.formDefaultFieldType === null){
+
+    if (countSelectedType > 1) {
+      this.customFieldsList.forEach(field => {
+        if (
+          field.formDefaultFieldType === selectedFieldType && (selectedFieldType === 'DEAL_ID' ||
+            selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY') &&
+          field !== selectedField
+        ) {
+          field.formDefaultFieldType = null;
+          if (field.name === 'xAmplify_Deal_ID__c' || field.name === 'xAmplify_Lead_ID__c') {
+            field.canUnselect = true;
+          }
+        }
+      });
+    }
+    if (selectedFieldType === null) {
       this.canDisableType = false;
     }
   }
