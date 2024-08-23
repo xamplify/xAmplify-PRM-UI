@@ -1676,7 +1676,7 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
     $('#myModal').modal('hide');
     this.ngxloading = true;
     let prefixUrl = "/home/campaigns/user-campaigns/";
-    let suffixUrl =  user.userId+"/a";
+    let suffixUrl =  this.referenceService.encodePathVariable(user.userId)+"/a";
     if(campaign.nurtureCampaign){
       this.referenceService.goToRouter(prefixUrl + "/c/" +suffixUrl);
     }else{
