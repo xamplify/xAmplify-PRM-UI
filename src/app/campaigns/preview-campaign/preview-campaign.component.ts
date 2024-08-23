@@ -1403,7 +1403,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
   navigateCampaignAnalytics(campaign: any) {
     $('#myModal').modal('hide');
     this.referenceService.campaignType = this.previewCampaignType;
-    this.router.navigate(['/home/campaigns/' + this.previewCampaignId + '/details']);
+    let campaignRouterParams = {};
+    campaignRouterParams['campaignId'] = this.previewCampaignId;
+    campaignRouterParams['campaignTitle'] = campaign.campaignTitle;
+    this.referenceService.goToCampaignAnalytics(campaignRouterParams);
   }
   navigateRedistributedCampaigns(campaign: any) {
     $('#myModal').modal('hide');
@@ -1673,7 +1676,7 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
     $('#myModal').modal('hide');
     this.ngxloading = true;
     let prefixUrl = "/home/campaigns/user-campaigns/";
-    let suffixUrl =  user.userId+"/a";
+    let suffixUrl =  this.referenceService.encodePathVariable(user.userId)+"/a";
     if(campaign.nurtureCampaign){
       this.referenceService.goToRouter(prefixUrl + "/c/" +suffixUrl);
     }else{

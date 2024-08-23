@@ -138,7 +138,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		{ 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
 		{ 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
 		{ 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
-		{ 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' }
+		{ 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
+		{ 'name': 'Added(ASC)', 'value': 'id-ASC' },
+		{ 'name': 'Added(DESC)', 'value': 'id-DESC' },
 	];
 	public sortOption: any = this.sortOptions[0];
 	public searchKey: string;
@@ -4353,8 +4355,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	goToCampaigns(contact: any) {
 		this.loading = true;
 		let self = this;
+		let encodedId = this.referenceService.encodePathVariable(contact.id);
 		setTimeout(function () {
-			self.router.navigate(["/home/campaigns/user-campaigns/pa/" + contact.id]);
+			self.router.navigate(["/home/campaigns/user-campaigns/pa/" + encodedId]);
 		}, 250);
 	}
 

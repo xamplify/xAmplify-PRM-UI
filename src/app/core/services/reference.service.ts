@@ -1987,6 +1987,12 @@ export class ReferenceService {
     this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+encodedTitle+ "/details"]);
   }
 
+  navigateBackToCampaignAnalytics(campaign:any) {
+    let campaignId = campaign.campaignId;
+    let encodedCampaignId = this.encodePathVariable(campaignId);
+    this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+campaign.campaignTitle+ "/details"]);
+  }
+
   previewEmailTemplate(emailTemplate: EmailTemplate, campaign: any) {
     const body = emailTemplate.body;
     let userProfile = this.authenticationService.userProfile;

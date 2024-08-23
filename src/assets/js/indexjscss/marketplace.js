@@ -39,7 +39,7 @@ function showAllCategories() {
     let buttons = document.querySelectorAll('.category-button');
     buttons.forEach(function(button) {
         let buttonContent = button.textContent.trim();
-        if(buttonContent.includes('AllCategories')){
+        if(buttonContent.includes('All Categories')){
             button.classList.add('active')
         }else{
             button.classList.remove('active')
@@ -70,7 +70,9 @@ function searchCards() {
 
         columns.forEach(function(col) {
         let title = col.querySelector('.card-title').textContent.toLowerCase();
-        if (title.includes(input)) {
+        let description = col.querySelector('.company-text').textContent.toLowerCase();
+        
+        if (title.includes(input) ||description.includes(input) ) {
             col.style.display = '';
         } else {
             col.style.display = 'none';
@@ -78,7 +80,8 @@ function searchCards() {
     });
             cards.forEach(function(card) {
                 let title = card.querySelector('.card-title').textContent.toLowerCase();
-                if (title.includes(input)) {
+                let description = card.querySelector('.company-text').textContent.toLowerCase();
+                if (title.includes(input) ||description.includes(input)) {
                     card.style.display = '';
                     containerHidden = false
                 } else {

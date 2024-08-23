@@ -5,6 +5,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { DealsService } from 'app/deals/services/deals.service';
 import { Lead } from 'app/leads/models/lead';
 import { LeadsService } from 'app/leads/services/leads.service';
+import { PipelineStage } from 'app/dashboard/models/pipeline-stage';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -20,6 +21,7 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
   isApprovalStatusCommentValid:boolean = false;
   comment:string="";
   isDescriptionValid:boolean=false;
+  createdForStages = new Array<PipelineStage>();
   
   @Input()
   deal: Deal;
@@ -49,6 +51,7 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
     public dealsService: DealsService, public referenceService: ReferenceService) { }
 
   ngOnInit() {
+    this.findPipelineStagesByPipelineId(this.deal.pipelineId);
     this.referenceService.openModalPopup('changeDealPipelineStageModel');
   }
 
@@ -126,6 +129,19 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
         this.closePopup();
       }
     });
+  }
+
+  /*** XNFR-650 ***/
+  private findPipelineStagesByPipelineId(createdForPipeLineId: number) {
+    this.ngxloading = true;
+    this.leadsService.findPipelineStagesByPipelineId(createdForPipeLineId, this.loggedInUserId).subscribe(
+      response => {
+        this.ngxloading = false;
+        let data = response.data;
+        this.createdForStages = data.list;
+      }, error => {
+        this.ngxloading = false;
+      });
   }
 
 }
