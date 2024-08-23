@@ -499,7 +499,8 @@ showCampaignDetails(campaign:any){
     let campaignId = campaign[0];
     let campaignTitle = campaign[8];
     let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
-    this.router.navigate(['/home/campaigns/'+encodedCampaignId+'/'+campaignTitle+'/details']);
+    let encodedTitle = this.referenceService.getEncodedUri(campaignTitle);
+    this.router.navigate(['/home/campaigns/'+encodedCampaignId+'/'+encodedTitle+'/details']);
   }
 
   showSubmitDealSuccess() {

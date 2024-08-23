@@ -80,8 +80,10 @@ export class FormAnalyticsComponent implements OnInit {
 
 
     goToCampaignAnalytics() {
-        let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignAlias);
-        this.router.navigate(['home/campaigns/' + encodedCampaignId + '/' + this.campaignTitle + '/details']);
+        let campaign = {};
+        campaign['campaignId'] = this.campaignAlias;
+        campaign['campaignTitle'] = this.campaignTitle;
+        this.referenceService.goToCampaignAnalytics(campaign);
     }
 
 }

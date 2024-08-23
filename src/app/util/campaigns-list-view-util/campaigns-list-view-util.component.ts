@@ -695,7 +695,10 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     campaginRouter(campaign: any) {
         if (campaign.channelCampaign) {
             this.refService.campaignType = campaign.campaignType;
-            this.router.navigate(['/home/campaigns/' + campaign.campaignId + '/details']);
+            let campaignRouterParams = {};
+            campaignRouterParams['campaignId'] = campaign.campaignId;
+            campaignRouterParams['campaignTitle'] = campaign.campaignTitle;
+            this.refService.goToCampaignAnalytics(campaignRouterParams);
         } else {
             this.campaignService.hasCampaignAccess(campaign, this.loggedInUserId)
                 .subscribe(
