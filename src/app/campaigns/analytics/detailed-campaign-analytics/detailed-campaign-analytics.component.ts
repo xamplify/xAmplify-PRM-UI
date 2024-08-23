@@ -3037,8 +3037,7 @@ goToCampaignAnaltyics(item:any){
     let encodedCampaignId = this.referenceService.encodePathVariable(item.campaignId);
     let prefixUrl = "/home/campaigns/user-campaigns/";
     let encodedUserId = this.referenceService.encodePathVariable(item.userId);
-    let encodedCampaignTitle =  this.referenceService.getEncodedUri(campaignTitle);
-    let suffixUrl =  encodedUserId+"/b"+"/"+encodedCampaignId+"/"+encodedCampaignTitle;
+    let suffixUrl =  encodedUserId+"/b"+"/"+encodedCampaignId+"/"+this.campaignTitle;
     if(this.campaign.channelCampaign){
       this.referenceService.goToRouter(prefixUrl + "/p/" +suffixUrl);
     }else{
