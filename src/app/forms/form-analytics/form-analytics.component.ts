@@ -62,10 +62,12 @@ export class FormAnalyticsComponent implements OnInit {
             if (this.campaignPartnerAnalytics) {
                 let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignAlias);
                 let encodedPartnerId = this.referenceService.encodePathVariable(this.partnerId);
-                this.routerLink = "/home/forms/clpf/" + encodedCampaignId + "/" + encodedPartnerId+"/"+this.campaignTitle;
+                let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
+                this.routerLink = "/home/forms/clpf/" + encodedCampaignId + "/" + encodedPartnerId+"/"+encodedCampaignTitle;
             } else {
                 let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignAlias);
-                this.routerLink = "/home/forms/clpf/" + encodedCampaignId + "/" + this.campaignTitle;
+                let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
+                this.routerLink = "/home/forms/clpf/" + encodedCampaignId + "/" + encodedCampaignTitle;
             }
         } else if (this.router.url.indexOf("/category/") > -1) {
             this.categoryId = this.route.snapshot.params['categoryId'];

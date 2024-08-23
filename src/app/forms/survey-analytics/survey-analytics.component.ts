@@ -42,11 +42,12 @@ export class SurveyAnalyticsComponent implements OnInit {
     this.campaignTitle = this.route.snapshot.params['campaignTitle'];
     if(this.campaignId != undefined && this.campaignId > 0){      
       let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignId);
+      let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
       if(this.partnerId != undefined && this.partnerId > 0){
         let encodedPartnerId = this.referenceService.encodePathVariable(this.partnerId);
-          this.routerLink = "/home/forms/csf/" + encodedCampaignId+"/"+encodedPartnerId+"/"+this.campaignTitle;
+          this.routerLink = "/home/forms/csf/" + encodedCampaignId+"/"+encodedPartnerId+"/"+encodedCampaignTitle;
       }else{
-          this.routerLink = "/home/forms/csf/" + encodedCampaignId+"/"+this.campaignTitle;
+          this.routerLink = "/home/forms/csf/" + encodedCampaignId+"/"+encodedCampaignTitle;
       }
     } else{
       this.routerLink = "/home/forms/manage";

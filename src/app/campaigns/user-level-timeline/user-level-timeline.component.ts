@@ -159,7 +159,8 @@ export class UserLevelTimelineComponent implements OnInit {
     if(this.navigatedFrom!=undefined && encodedCampaignId==undefined){
       this.referenceService.goToRouter(url+"/"+this.navigatedFrom);
     }else if(encodedCampaignId!=undefined && this.navigatedFrom!=undefined ){
-      this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+encodedCampaignId+"/"+this.campaignTitle);
+      let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
+      this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+encodedCampaignId+"/"+encodedCampaignTitle);
     }
     else{
       this.referenceService.goToRouter(url);
