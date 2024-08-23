@@ -31,7 +31,7 @@ export const campaignRoutes: Routes = [
   { path: "manage/:categoryId/:teamMemberId", component: ManagePublishComponent },
   { path: ":campaignId/details", component: AnalyticsComponent },
   { path: ":campaignId/:campaignTitle/details", component: AnalyticsComponent },
-  { path: ":campaignId/checkin", component: EventCheckInComponent },
+  { path: ":campaignId/:campaignTitle/checkin", component: EventCheckInComponent },
   { path: ":campaignId/re-distributed", component: ReDistributedComponent },
   { path: "partner", component: PartnerCampaignsComponent },
   { path: "partner/:type", component: PartnerCampaignsComponent },

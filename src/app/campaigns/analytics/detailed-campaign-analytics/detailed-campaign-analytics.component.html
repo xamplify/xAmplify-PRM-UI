@@ -26,7 +26,7 @@
    <div [ngClass]="hidePageContent ? '' : 'page-content'" *ngIf="!isTimeLineView &&!showRsvpDetails &&!isShowPartnerLeads && !showDealForm && !showLeadForm" [class.ml0]="authenticationService.isSuperAdmin()">
       <div class="page-bar square-box" style="margin: 0 0px 15px">
          <ng-template [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
-         <button routerLink="/home/campaigns/{{ campaign.campaignId }}/checkin" *ngIf="campaignType == 'EVENT' && !campaign.nurtureCampaign && campaign.publicEventCampaign" class="btn btn-primary" id="check-in-css">
+         <button *ngIf="campaignType == 'EVENT' && !campaign.nurtureCampaign && campaign.publicEventCampaign" (click)="goToCampaignCheckIn(campaign.campaignId)"  class="btn btn-primary" id="check-in-css">
             <strong>Check In</strong><img src="assets/images/attendees.png" id="custom-width-button" />
          </button>
          <a class="close-circle mb_dwl" *ngIf="campaignType != 'EVENT' && campaignType != 'SOCIAL' && !isDataShare && !mainLoader" id="check-in-css" (click)="downloadReport()">
