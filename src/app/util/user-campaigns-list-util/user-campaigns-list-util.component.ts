@@ -309,18 +309,14 @@ setAutoResponsesPage(event: any,campaign:any) {
 	
 	viewTimeLine(campaignAnalytics:any){
 		this.loading = true;
-		let encodedCampaignId = this.referenceService.encodePathVariable(this.analyticsCampaignId);
-		let encodedUserId = this.referenceService.encodePathVariable(this.userIdParameter);
-		let url  = "/home/campaigns/timeline/"+this.previousRouterAlias+"/"+encodedCampaignId+"/"+encodedUserId;
+		let url  = "/home/campaigns/timeline/"+this.previousRouterAlias+"/"+this.referenceService.encodePathVariable(campaignAnalytics.campaignId)+"/"+this.referenceService.encodePathVariable(this.pagination.userId);
 		if(this.navigatedFrom!=undefined&& this.analyticsCampaignId==undefined){
 			this.referenceService.goToRouter(url+"/"+this.navigatedFrom);
 		}else if(this.analyticsCampaignId!=undefined && this.navigatedFrom!=undefined){
-			let campaignUrl = url+"/"+this.navigatedFrom+"/"+encodedCampaignId+"/"+this.campaignTitle;
-			this.referenceService.goToRouter(campaignUrl);
+			this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+this.referenceService.encodePathVariable(this.analyticsCampaignId));
 		}else{
 			this.referenceService.goToRouter(url);
 		}
-		
 		
 	}
 	goBack(){
