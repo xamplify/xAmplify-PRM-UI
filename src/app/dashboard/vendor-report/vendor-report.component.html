@@ -55,8 +55,8 @@
                       <tr (click)="navigateToDashboardStats(report)" class="highletedRow">
                         <td>
                           <app-user-info [userInfo]="report"></app-user-info>
-                          <input type="text" class="form-control mt5"  readonly="readonly" value="{{report?.emailId}}" #vendorReportEmailAddressText><br>
-                           <button class="btn-xs primary" (click)="$event.stopPropagation();copyVendorReportEmailAddress(vendorReportEmailAddressText,i)">Copy</button>
+                          <input type="text" class="form-control mt5"  readonly="readonly" value="{{report?.emailId}}" #vendorReportEmailAddressText>
+                           <button class="btn-xs btn-info mt5" (click)="$event.stopPropagation();copyVendorReportEmailAddress(vendorReportEmailAddressText,i)">Copy</button>
                            <span id="copied-vendor-report-users-email-address-{{i}}" class="success" style="display:none;">
                             <strong>Email Address copied successfully.<i class="fa fa-check" aria-hidden="true"></i></strong>
                           </span>

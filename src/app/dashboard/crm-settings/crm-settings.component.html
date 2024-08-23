@@ -171,7 +171,8 @@
     <fieldset class="scheduler-borders">
       <legend class="scheduler-borders campaign_boxes">Deal Registration</legend>
 
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="authenticationService?.module?.isOrgAdmin || authenticationService?.module?.isVendor || authenticationService?.module?.isPrm">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" 
+      *ngIf="isVendorAndPartnerLeadsRegisterDealToggleVisible">
         <div class="portlet light mb-2" style="padding: 0px !important;">
           <div class="portlet-title leads-bgcolor mb0">
             <div class="row m0">
@@ -195,7 +196,7 @@
       </div>
 
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" 
-      *ngIf="authenticationService?.module?.isOrgAdmin || authenticationService?.module?.isVendor || authenticationService?.module?.isPrm || (authenticationService?.module?.adminOrSuperVisor && !authenticationService?.module?.isMarketingCompany)">
+      *ngIf="isVendorAndPartnerLeadsRegisterDealToggleVisible">
         <div class="portlet light mb-2" style="padding: 0px !important;">
           <div class="portlet-title leads-bgcolor mb0">
             <div class="row m0">
@@ -218,8 +219,7 @@
         </div>
       </div>
 
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="authenticationService?.module?.isOrgAdmin || authenticationService?.module?.isMarketing || authenticationService?.isOrgAdminSuperVisor 
-      || (authenticationService?.module?.isMarketingTeamMember && authenticationService?.module?.adminOrSuperVisor)">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="isSelfLeadsRegisterDealToggleVisible">
         <div class="portlet light mb-2" style="padding: 0px !important;">
           <div class="portlet-title leads-bgcolor mb0">
             <div class="row m0">

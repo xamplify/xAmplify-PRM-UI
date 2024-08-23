@@ -3223,3 +3223,7 @@ a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor.mdf_bord
     }
 }
 i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization{padding: 7px !important;}
+
+.copied-item-success{
+  color: green;
+}

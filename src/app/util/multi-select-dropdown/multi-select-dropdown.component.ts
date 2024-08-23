@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 
 @Component({
   selector: 'app-multi-select-dropdown',
@@ -7,13 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MultiSelectDropdownComponent implements OnInit {
 
-  dropdownList = [];
+  @Input() dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
+  @Input() displayText="";
+  @Input() singleSelection = false;
+
 
   constructor() { }
 
   ngOnInit() {
+
+    if(this.displayText==undefined){
+      this.displayText = "Select Items";
+    }
+    if(this.singleSelection==undefined){
+      this.singleSelection = false;
+    }
 
     this.dropdownList = [
       { "id": 1, "itemName": "India" },
@@ -34,8 +44,8 @@ export class MultiSelectDropdownComponent implements OnInit {
       { "id": 5, "itemName": "South Korea" }
     ];
     this.dropdownSettings = {
-      singleSelection: true,
-      text: "Select Countries",
+      singleSelection: this.singleSelection,
+      text: this.displayText,
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       enableSearchFilter: true,

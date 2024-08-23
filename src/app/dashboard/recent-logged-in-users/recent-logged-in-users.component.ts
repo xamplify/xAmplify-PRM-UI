@@ -25,6 +25,7 @@ export class RecentLoggedInUsersComponent implements OnInit {
   hasError: boolean;
   loading = false;
   @Output() notifyAdminReportComponent = new EventEmitter();
+  copyIconButtonId = "";
   constructor(public dashboardService: DashboardService, public pagerService: PagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public router: Router,
     public xtremandLogger: XtremandLogger, public utilService: UtilService, public sortOption: SortOption, public httpRequestLoader: HttpRequestLoader, ) {
     if (this.authenticationService.getUserId() != 1) {
@@ -33,7 +34,8 @@ export class RecentLoggedInUsersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tableHeaderText = "registered" == this.type ? ' Registered On ' : ' Last Login'
+    this.tableHeaderText = "registered" == this.type ? ' Registered On ' : ' Last Login';
+    this.copyIconButtonId = "registered" == this.type ? 'registered' : 'loggedIn';
     this.listUsersByType(this.pagination);
   }
 
@@ -121,4 +123,8 @@ export class RecentLoggedInUsersComponent implements OnInit {
     this.referenceService.goToRouter('/home/dashboard/dashboard-stats/'+report.userId+"/"+report.companyId);
    } 
 
+   copyRecentUserEmailAddress(inputElement:any,index:number){
+    let id = 'copied-recent-users-email-address-' + index+"-"+this.copyIconButtonId;
+    this.referenceService.copySelectedElement(inputElement,id);
+	}
 }

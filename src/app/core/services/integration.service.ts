@@ -208,4 +208,15 @@ export class IntegrationService {
           .map(this.extractData)
           .catch(this.handleError);
     }
+
+    findPipelinesForCRMSettings(loggedInUserId:number, integrationType:any, pipelineType:any, ticketId:any) {
+        let ACCESS_TOKEN_SUFFIX_URL = "?access_token="+this.authenticationService.access_token;
+        let ticketIdParameter = ticketId!=undefined && ticketId>0 ? "&ticketTypeId="+ticketId:"&ticketTypeId=0";
+        let loggedInUserIdRequestParam = loggedInUserId!=undefined && loggedInUserId>0 ? "&loggedInUserId="+loggedInUserId:"&loggedInUserId=0";
+        let integrationTypeRequestParam = integrationType!=undefined ? "&integrationType="+integrationType:"&integrationType="+'';
+        let pipelineTypeRequestParam = pipelineType!=undefined ? "&pipelineType="+pipelineType:"&pipelineType="+'';
+        let url = this.authenticationService.REST_URL+"pipeline/findPipelinesForCRMSettings"+ACCESS_TOKEN_SUFFIX_URL+loggedInUserIdRequestParam+ticketIdParameter+integrationTypeRequestParam+pipelineTypeRequestParam;
+        return this.authenticationService.callGetMethod(url);
+      
+      }
 }

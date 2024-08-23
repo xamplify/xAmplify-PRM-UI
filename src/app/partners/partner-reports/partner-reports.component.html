@@ -203,8 +203,8 @@
     *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-count-tiles>
 
   <!-- --------------------Active Partners Analytics-------- -->
-  <div id="active-partner-div"
-    *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
+  <div 
+    *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember && isActivePartnerDiv"
     style="padding-right: 12px;">
     <div class="row">
       <div class="">
@@ -250,7 +250,7 @@
   </div>
 
   <!-- --------------------Inactive Partners Analytics-------- -->
-  <div id="inactive-partners-div" style="display: none;">
+  <div *ngIf="isInactivePartnersDiv">
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-lg-12 p5">
         <div class="portlet light" style="padding: 10px !important;">
@@ -317,7 +317,7 @@
   </div>
 
   <!-- --------------------Approve Partners Analytics-------- -->
-  <div id="approve-partners-div" style="display: none;">
+  <div *ngIf="isApprovePartnersDiv">
     <div class="row">
       <div class="col-xs-12 p5">
         <div class="portlet light">
@@ -379,14 +379,14 @@
   </div>
 
   <!-- ------****************Redistribute Partner Analytics************************** -->
-  <div id="redistribute-partners-div" style="display: none;">
+  <div *ngIf="isRedistributePartnersDiv">
     <app-modal-popup-loader *ngIf="!reloadRedistributeCampaigns"></app-modal-popup-loader>
     <app-redistributed-campaigns *ngIf="selectedTabIndex==2 && reloadRedistributeCampaigns" [selectedIndex]="2"
       [applyFilter]="applyFilter"></app-redistributed-campaigns>
   </div>
 
   <!-- ------****************Through Partner Analytics************************** -->
-  <div id="through-partner-div" style="display: none;">
+  <div *ngIf="isThroughPartnerDiv">
     <div class="row">
       <div class="col-md-12">
         <!--tabbable tabbable-custom tabbable-noborder-->
