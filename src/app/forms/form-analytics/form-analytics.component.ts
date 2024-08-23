@@ -83,7 +83,7 @@ export class FormAnalyticsComponent implements OnInit {
         let campaign = {};
         campaign['campaignId'] = this.campaignAlias;
         campaign['campaignTitle'] = this.campaignTitle;
-        this.referenceService.goToCampaignAnalytics(campaign);
+        this.referenceService.navigateBackToCampaignAnalytics(campaign);
     }
 
 }

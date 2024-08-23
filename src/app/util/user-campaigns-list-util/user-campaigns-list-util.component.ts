@@ -304,7 +304,7 @@ setAutoResponsesPage(event: any,campaign:any) {
 		let campaign = {};
 		campaign['campaignId'] = campaignId;
 		campaign['campaignTitle']=campaignTitle;
-		this.referenceService.goToCampaignAnalytics(campaign);
+		this.referenceService.navigateBackToCampaignAnalytics(campaign);
 	}
 	
 	viewTimeLine(campaignAnalytics:any){
