@@ -315,8 +315,7 @@ setAutoResponsesPage(event: any,campaign:any) {
 		if(this.navigatedFrom!=undefined&& this.analyticsCampaignId==undefined){
 			this.referenceService.goToRouter(url+"/"+this.navigatedFrom);
 		}else if(this.analyticsCampaignId!=undefined && this.navigatedFrom!=undefined){
-			let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
-			let campaignUrl = url+"/"+this.navigatedFrom+"/"+encodedCampaignId+"/"+encodedCampaignTitle;
+			let campaignUrl = url+"/"+this.navigatedFrom+"/"+encodedCampaignId+"/"+this.campaignTitle;
 			this.referenceService.goToRouter(campaignUrl);
 		}else{
 			this.referenceService.goToRouter(url);

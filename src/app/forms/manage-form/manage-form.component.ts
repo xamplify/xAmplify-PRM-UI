@@ -411,11 +411,9 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             let encodedLandingPageCampaignId = this.referenceService.encodePathVariable(this.landingPageCampaignId);
             if (this.partnerId > 0) {
                 let encodedPartnerId = this.referenceService.encodePathVariable(this.partnerId);
-                let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
-                this.router.navigate(['/home/forms/cpfp/' + form.alias + '/' + encodedLandingPageCampaignId + '/' + encodedPartnerId + '/'+encodedCampaignTitle+ '/analytics/cfa']);
+                this.router.navigate(['/home/forms/cpfp/' + form.alias + '/' + encodedLandingPageCampaignId + '/' + encodedPartnerId + '/'+this.campaignTitle+ '/analytics/cfa']);
             } else {
-                let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
-                this.router.navigate(['/home/forms/lpf/' + form.alias + '/' + encodedLandingPageCampaignId + '/'+encodedCampaignTitle+'/analytics']);
+                this.router.navigate(['/home/forms/lpf/' + form.alias + '/' + encodedLandingPageCampaignId + '/'+this.campaignTitle+'/analytics']);
             }
         } else if (this.pagination.landingPageForm) {
             if(this.categoryId>0){
@@ -430,11 +428,9 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             let encodedSurveyCampaignId = this.referenceService.encodePathVariable(this.surveyCampaignId);
             if (this.partnerId > 0) {
                 let encodePartnerId = this.referenceService.encodePathVariable(this.partnerId);
-                let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
-                this.router.navigate(['/home/forms/' + form.alias + '/' + encodedSurveyCampaignId + '/' + encodePartnerId +  '/'+encodedCampaignTitle+'/survey/analytics']);
+                this.router.navigate(['/home/forms/' + form.alias + '/' + encodedSurveyCampaignId + '/' + encodePartnerId +  '/'+this.campaignTitle+'/survey/analytics']);
             } else {
-                let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
-                this.router.navigate(['/home/forms/' + form.alias + '/' + encodedSurveyCampaignId + '/'+encodedCampaignTitle+ '/survey/analytics']);
+                this.router.navigate(['/home/forms/' + form.alias + '/' + encodedSurveyCampaignId + '/'+this.campaignTitle+ '/survey/analytics']);
             }
         }else {
             if (form.formSubType.toString() === FormSubType[FormSubType.SURVEY]) {

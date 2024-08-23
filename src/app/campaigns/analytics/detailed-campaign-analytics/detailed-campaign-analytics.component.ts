@@ -2390,35 +2390,30 @@ checkParentAndRedistributedCampaignAccess(){
   }
   goToCampaignLandingPageAnalytics(campaignId: number) {
     let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
-    let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
-    this.router.navigate(['home/pages/' + encodedCampaignId + '/'+encodedCampaignTitle+'/campaign/analytics']);
+    this.router.navigate(['home/pages/' + encodedCampaignId + '/'+this.campaignTitle+'/campaign/analytics']);
   }
 
   goToPageAnalyticsByPartnerId(campaignId:number,partnerId:number){
     let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
     let encodedUserId = this.referenceService.encodePathVariable(partnerId);
-    let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
-    this.router.navigate(['home/pages/' + encodedCampaignId + '/'+encodedUserId+'/'+encodedCampaignTitle+'/campaign/analytics']);
+    this.router.navigate(['home/pages/' + encodedCampaignId + '/'+encodedUserId+'/'+this.campaignTitle+'/campaign/analytics']);
   }
 
   goToPageFormAnalyticsByPartnerId(campaignId:number,partnerId:number){
     let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
     let encodedUserId = this.referenceService.encodePathVariable(partnerId);
-    let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
-    this.router.navigate(['home/forms/clpf/' + encodedCampaignId + '/'+encodedUserId+'/'+encodedCampaignTitle]);
+    this.router.navigate(['home/forms/clpf/' + encodedCampaignId + '/'+encodedUserId+'/'+this.campaignTitle]);
   }
 
   goToSurveyCampaignForms(campaignId:number){
     let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
-    let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
-    this.router.navigate(['home/forms/csf/' + encodedCampaignId +'/'+encodedCampaignTitle]);
+    this.router.navigate(['home/forms/csf/' + encodedCampaignId +'/'+this.campaignTitle]);
   }
 
   goToSurveyCampaignFormsByPartnerId(campaignId:number,partnerId:number){
     let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
     let encodedPartnerId = this.referenceService.encodePathVariable(partnerId);
-    let encodedCampaignTitle = this.referenceService.getEncodedUri(this.campaignTitle);
-    this.router.navigate(['home/forms/csf/' + encodedCampaignId +'/'+encodedPartnerId+'/'+encodedCampaignTitle]);
+    this.router.navigate(['home/forms/csf/' + encodedCampaignId +'/'+encodedPartnerId+'/'+this.campaignTitle]);
   }
 
   showAutoResponseAnalytics(campaign: any, selectedIndex: number) {
@@ -3037,7 +3032,7 @@ goToCampaignAnaltyics(item:any){
     let encodedCampaignId = this.referenceService.encodePathVariable(item.campaignId);
     let prefixUrl = "/home/campaigns/user-campaigns/";
     let encodedUserId = this.referenceService.encodePathVariable(item.userId);
-    let suffixUrl =  encodedUserId+"/b"+"/"+encodedCampaignId+"/"+this.campaignTitle;
+    let suffixUrl =  encodedUserId+"/b"+"/"+encodedCampaignId+"/"+campaignTitle;
     if(this.campaign.channelCampaign){
       this.referenceService.goToRouter(prefixUrl + "/p/" +suffixUrl);
     }else{
@@ -3186,8 +3181,7 @@ viewCampaignLeadForm(leadId: any) {
 
     goToFormAnalytics(campaign:any){
       let encodedCampaignId = this.referenceService.encodePathVariable(campaign.campaignId);
-      let encodedCampaignTitle = this.referenceService.getEncodedUri(campaign.campaignTitle);
-      this.referenceService.goToRouter("/home/forms/clpf/"+encodedCampaignId+"/"+encodedCampaignTitle);
+      this.referenceService.goToRouter("/home/forms/clpf/"+encodedCampaignId+"/"+campaign.campaignTitle);
     }
 
 
