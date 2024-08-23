@@ -627,7 +627,7 @@
                            </div>
                         </button>
                      </div>
-                     <div *ngIf="campaignType != 'SOCIAL'" class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
+                     <div *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE'" class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         [hidden]="mainLoader || hasClientError" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
                         <button class="portlet light color1-invert crcb vlt-blue-c detail_card"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -659,16 +659,10 @@
                         </button>
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
-                        [ngClass]="{'hidden': campaignType === 'SOCIAL','forbidden' :!isDataShare ?true:null}">
+                        [ngClass]="{'hidden': (campaignType === 'SOCIAL' ||campaignType === 'LANDINGPAGE'),'forbidden' :!isDataShare ?true:null}">
                         <!----This is For Vendor/Partner------->
                         <ng-container *ngIf="!isNavigatedThroughAnalytics">
-                           <button class="portlet light color1-invert crcb black-blue-c detail_card" (click)="
-  emailActionList(
-  campaign.campaignId,
-  'click',
-  emailActionListPagination
-  )
-  " [ngClass]="{ forbidden: !isDataShare ? true : null }" [disabled]="campaignReport.emailClickedCount < 1">
+                           <button class="portlet light color1-invert crcb black-blue-c detail_card" (click)="emailActionList(campaign.campaignId,'click',emailActionListPagination)" [ngClass]="{ forbidden: !isDataShare ? true : null }" [disabled]="campaignReport.emailClickedCount < 1">
                               <div class="portlet-body text-center">
                                  <i class="fa fa-globe"></i>
                                  <h1>
@@ -1252,21 +1246,13 @@
      ">
                                                    User Level Campaign Analytics
                                                 </th>
-                                                <th id="table-header" *ngIf="
-     campaignType === 'SURVEY' &&
-     campaign.formsCount > 0 &&
-     isChannelCampaign
-     ">
+                                                <th id="table-header" *ngIf="campaignType === 'SURVEY' && campaign.formsCount > 0 &&isChannelCampaign">
                                                    Survey Analytics
                                                 </th>
                                                 <th id="table-header" *ngIf="campaign.dipCampaign">
                                                    Auto Responses
                                                 </th>
-                                                <th id="table-header" *ngIf="
-     campaignType === 'EVENT' &&
-     isChannelCampaign &&
-     campaign.publicEventCampaign
-     ">
+                                                <th id="table-header" *ngIf="campaignType === 'EVENT' && isChannelCampaign && campaign.publicEventCampaign">
                                                    Leads Info
                                                 </th>
                                                 <ng-container *ngIf="campaignType === 'LANDINGPAGE'">
@@ -1278,11 +1264,8 @@
                                              </tr>
                                           </thead>
                                           <tbody>
-                                             <ng-container *ngFor="
-     let item of campaignViewsPagination.pagedItems;
-     let i = index
-     ">
-                                                <tr (click)="userTimeline(item)" data-placement="bottom" data-toggle="tooltip" title="Click here to see all campaigns analytics">
+                                             <ng-container *ngFor="let item of campaignViewsPagination?.pagedItems;let i = index">
+                                                <tr (click)="userTimeline(item)" data-placement="bottom" data-toggle="tooltip">
                                                    <td>
                                                       <i data-toggle="tooltip" data-placement="bottom"
                                                          title="This user is unsubscribed"
@@ -1528,8 +1511,7 @@
                                                                <i class="fa fa-line-chart chart-hover"></i>
                                                                <span class="badge" id="notification-color">{{item.pageAnalyticsCount}}</span>
                                                             </a>
-                                                            <a *ngIf="item.pageAnalyticsCount == 0"
-                                                               data-rel="fancybox-button" data-toggle="tooltip"
+                                                            <a  *ngIf="item.pageAnalyticsCount == 0" data-rel="fancybox-button" data-toggle="tooltip"
                                                                data-placement="top" title="Page Analytics">
                                                                <i class="fa fa-line-chart chart-hover"></i>
                                                                <span class="badge" id="notification-color">{{item.pageAnalyticsCount}}</span>
