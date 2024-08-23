@@ -3922,7 +3922,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.selectedUser = null;
 		if (this.contactsByType.selectedCategory === 'unsubscribed') {
 			this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
-		} else if (this.currentContactType == "all_contacts") {
+		} else if (this.currentContactType == "all_contacts"|| this.currentContactType == 'all') {
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 		}
 		this.contactsCount(this.selectedContactListId);
