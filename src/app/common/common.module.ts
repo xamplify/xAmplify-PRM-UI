@@ -191,6 +191,7 @@ import { MultiSelectDropdownComponent } from 'app/util/multi-select-dropdown/mul
 import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/angular4-multiselect-dropdown';
 import { CopyTextComponent } from './copy-text/copy-text.component';
 import { TopNavigationBarUtilComponent } from './top-navigation-bar-util/top-navigation-bar-util.component';
+import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 
 
 
@@ -232,7 +233,7 @@ import { TopNavigationBarUtilComponent } from './top-navigation-bar-util/top-nav
 		MdfDetailAnalyticsComponent,RedistributedCampaignsAndLeadsBarChartComponent,TeamMemberAnalyticsContactDetailsComponent,TeamMemberAnalyticsAllPartnersDetailsComponent,
 		TeamMemberwiseAssetAnalyticsComponent,TeamMemberwiseAssetsDetailedReportComponent,TeamMemberAnalyticsCompanyDetailsComponent,FilePreviewComponent,DomainWhitelistingComponent,BackgroundImageUploadComponent,SamlSsoLoginComponent,LeadCustomFieldsSettingsComponent,
 		VendorJourneyFormAnalyticsComponent, OauthSsoConfigurationComponent, ShareDashboardButtonsComponent,CrmSettingsComponent,
-		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, TopNavigationBarUtilComponent
+		DropdownLoaderComponent,DisplayErrorMessageComponent, ChatGptModalComponent,MultiSelectDropdownComponent, CopyTextComponent, TopNavigationBarUtilComponent, WelcomePageComponent
 	],
 
 

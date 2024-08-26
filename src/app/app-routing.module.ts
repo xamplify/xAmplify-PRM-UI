@@ -47,6 +47,7 @@ import { PreviewLoginComponent } from './common/preview-login/preview-login.comp
 import { PreviewEmailTemplateComponent } from './util/preview-email-template/preview-email-template.component';
 import { PreviewPageComponent } from './util/preview-page/preview-page.component';
 import { PreviewAssetPdfComponent } from './common/preview-asset-pdf/preview-asset-pdf.component';
+import { WelcomePageComponent } from './common/welcome-page/welcome-page.component';
 
 
 export const routes: Routes = [
@@ -181,6 +182,7 @@ export const routes: Routes = [
 	{ path: 'pv/v/pdf/:id', component: PreviewAssetPdfComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/p/pdf/:id', component: PreviewAssetPdfComponent,canActivate: [AuthGuard], data: { preload: true } },
 	{ path: 'pv/ptp/pdf/:id', component: PreviewAssetPdfComponent,canActivate: [AuthGuard], data: { preload: true } },
+	{path:'welcome-page',component:WelcomePageComponent,canActivate: [AuthGuard], data: { preload: true }},
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },
 	{ path: '**', component: PageNotFoundComponent },
