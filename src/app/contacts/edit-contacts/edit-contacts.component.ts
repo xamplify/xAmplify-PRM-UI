@@ -210,6 +210,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		{ 'name': 'state', 'value': 'State' },
 		/* { 'name': 'notes', 'value': 'Notes' },*/
 	];
+	partnerFilterOptions = [
+		{ 'name': 'vertical', 'value': 'Vertical'  },
+		{ 'name': 'region', 'value': 'Region'  },
+		{ 'name': 'type', 'value': 'Type'  },
+		{ 'name': 'category', 'value': 'Category'  },
+		{ 'name': 'accountName', 'value': 'Account Name'  },
+		{ 'name': 'accountSubType', 'value': 'Account Sub Type'  },
+		{ 'name': 'territory', 'value': 'Territory'  },
+		{ 'name': 'companyDomain', 'value': 'Company Domain'  },
+		{ 'name': 'accountOwner', 'value': 'Account Owner'  },
+		{ 'name': 'website', 'value': 'Website' },
+	]
 	filterOption = this.filterOptions[0];
 
 	filterConditions = [
@@ -2964,6 +2976,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	modelForSeg() {
 		this.resetResponse();
 		this.addNewRow();
+		if(this.isPartner){
+			this.filterOptions = [...this.filterOptions, ...this.partnerFilterOptions];
+		}
 		this.criteria.property = this.filterOptions[0].value;
 		this.criteria.operation = this.filterConditions[0].value;
 	}
