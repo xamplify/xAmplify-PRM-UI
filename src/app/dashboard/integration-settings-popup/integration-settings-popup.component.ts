@@ -32,7 +32,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     if(this.customField.originalCRMType === 'select'){
       this.canDisableSelect = true;
     }
-    if(this.customField.formDefaultFieldType === 'DEAL_ID' || this.customField.formDefaultFieldType === 'LEAD_ID' || this.customField.formDefaultFieldType === 'CREATED_BY'){
+    if(this.customField.formDefaultFieldType === 'DEAL_ID' || this.customField.formDefaultFieldType === 'LEAD_ID' || this.customField.formDefaultFieldType === 'CREATED_BY_NAME'){
       this.canDisableType = true;
     }
     this.customFields.required = this.customField.required;
@@ -159,7 +159,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       if (
         field.label === selectedField.label &&
         (selectedFieldType === 'DEAL_ID' ||
-          selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY')) {
+          selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY_NAME')) {
         countSelectedType++;
         field.formDefaultFieldType = selectedFieldType;
         this.canDisableType = true;
@@ -170,7 +170,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.customFieldsList.forEach(field => {
         if (
           field.formDefaultFieldType === selectedFieldType && (selectedFieldType === 'DEAL_ID' ||
-            selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY') &&
+            selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY_NAME') &&
           field !== selectedField
         ) {
           field.formDefaultFieldType = null;

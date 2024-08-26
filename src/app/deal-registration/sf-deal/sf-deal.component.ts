@@ -228,7 +228,7 @@ export class SfDealComponent implements OnInit {
               columnInfo.hideFieldInfo = true;
             }
           }
-          if(columnInfo.formDefaultFieldType === 'CREATED_BY' && this.actionType === 'add'){
+          if(columnInfo.formDefaultFieldType === 'CREATED_BY_NAME' && this.actionType === 'add'){
             columnInfo.value = columnInfo.dropDownChoices[0].labelId;
           }
         });
