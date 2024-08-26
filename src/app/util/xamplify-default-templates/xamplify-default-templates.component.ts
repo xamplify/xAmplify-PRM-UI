@@ -143,11 +143,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
           ];
         }
         if (!self.vendorJourney && !self.isMasterLandingPages) {
-          if (!emailTemplate.subject) {
+          if (!emailTemplate.subject.trim()) {
             swal("", "Whoops! We are unable to save this template because subject line is empty", "error");
             return false;
-          }
-
+          }          
           if (("JOIN_MY_TEAM" == emailTemplate['typeInString'] || "FORGOT_PASSWORD" == emailTemplate['typeInString'] || "ACCOUNT_ACTIVATION" == emailTemplate['typeInString']) && jsonContent.indexOf("_CUSTOMER_FULL_NAME") < 0) {
             swal("", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error");
             return false;
