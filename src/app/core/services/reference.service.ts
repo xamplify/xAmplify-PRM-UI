@@ -3528,7 +3528,6 @@ clearHeadScriptFiles(){
   $("#xamplify-index-head").html("");
   this.setTitleAndFavIcon();
   $('#page-loader-index-html').css({'display':'block'});
-  $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
 
 }
 
