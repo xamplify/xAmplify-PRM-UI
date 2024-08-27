@@ -56,6 +56,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.customFields.private = this.customField.private;
     }
     this.customFields.controllerName = this.customField.controllerName;
+    this.customFields.formLookUpDefaultFieldType = this.customField.formLookUpDefaultFieldType;
   }
   hideIntegrationSettingForm() {
     $("#integrationSettingsForm").modal('hide');
@@ -108,6 +109,11 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.errorMessage = 'Please select the default value for the picklist.';
       return;
     }
+    if (this.customFields.type === 'reference' && this.customFields.nonInteractive && (this.customFields.formLookUpDefaultFieldType === null || this.customFields.formLookUpDefaultFieldType === 'null')) {
+      this.isValid = false;
+      this.errorMessage = 'Please select the default type.';
+      return;
+    }
     if (!this.customFields.nonInteractive) {
       this.customFields.private = false;
     }
@@ -131,6 +137,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.customField.canEditRequired = this.customFields.canEditRequired;
       this.customField.selected = this.customFields.selected;
       this.customField.nonInteractive = this.customFields.nonInteractive;
+      this.customField.formLookUpDefaultFieldType = this.customFields.formLookUpDefaultFieldType;
       this.customField.options = this.customFields.options.map(option => new PicklistValues(option.label, option.value));
       this.customField.defaultChoiceLabel = this.customFields.defaultChoiceLabel;
       if (this.customFields.nonInteractive) {
