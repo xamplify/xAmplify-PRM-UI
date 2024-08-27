@@ -1,0 +1,64 @@
+.xamplify-welcome-page-header.navbar.navbar-fixed-top {
+    z-index: 9995;
+}
+
+.xamplify-welcome-page-header.navbar {
+    width: 100%;
+    padding: 0 20px 0 20px;
+    margin: 0;
+    border: 0px;
+    padding: 0px;
+    box-shadow: none;
+    height: 68px;
+    min-height: 68px;
+    filter: none;
+    background-image: none;
+    top: 0;
+    border-radius: 0;
+    position: fixed;
+    right: 0;
+    left: 0;
+    padding-right: 0px !important;
+}
+
+.xamplify-welcome-page-logo{
+    float: left;
+    display: block;
+    width: 195px;
+    height: 68px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 2px !important;
+}
+
+.xamplify-company-logo-thumbnail-wrapper {
+    float: left;
+    width: 150px;
+    height: 65px;
+    background-color: #f1f1f1;
+    text-align: center;
+    position: relative;
+    background-color: transparent;
+}
+.xamplify-welcome-page-image-c{
+    height: 42px;
+    width: auto;
+    margin: 10px 10px 10px 10px;
+}
+.xamplify-welcome-page-top{
+    box-shadow: 0px 1px 10px 0px rgba(50, 50, 50, 0.2);
+    background: #fff;
+    height: 68px;
+}
+.xamplify-welcome-page-top-menu{
+    margin: 0;
+    padding: 0;
+    float: right;
+}
+
+.xamplify-welcome-page-ul{
+    padding: 0;
+    margin-right: 20px;
+    float: right;
+}
+

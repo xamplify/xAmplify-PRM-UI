@@ -3528,6 +3528,7 @@ clearHeadScriptFiles(){
   $("#xamplify-index-head").html("");
   this.setTitleAndFavIcon();
   $('#page-loader-index-html').css({'display':'block'});
+
 }
 
   private setTitleAndFavIcon() {
