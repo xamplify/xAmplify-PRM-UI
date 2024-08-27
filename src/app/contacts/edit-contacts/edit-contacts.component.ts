@@ -2724,7 +2724,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.sortingOrder = null;
 			}
 
-			if (this.currentContactType == "all_contacts") {
+			if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 				this.pagination.pageIndex = 1;
 				this.pagination.sortcolumn = this.sortcolumn;
 				this.pagination.sortingOrder = this.sortingOrder;
@@ -2744,7 +2744,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		this.searchContactType = this.searchContactType;
 		try {
-			if (this.currentContactType == "all_contacts") {
+			if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 				this.pagination.searchKey = this.searchKey;
 				this.pagination.pageIndex = 1;
 				this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
@@ -2988,7 +2988,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.criterias.length = 0;
 		this.checkingLoadContactsCount = true;
 		this.selectedAddContactsOption = 8;
-		if (this.currentContactType == "all_contacts") {
+		if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 		} else {
 			this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
@@ -3080,7 +3080,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				}
 			}
 			if (!this.isSegmentationErrorMessage) {
-				if (this.currentContactType == "all_contacts") {
+				if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 					this.checkingLoadContactsCount = true;
 					this.pagination.pageIndex = 1;
 					this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
