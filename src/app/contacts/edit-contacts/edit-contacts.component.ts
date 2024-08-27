@@ -197,7 +197,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	showGDPR: boolean;
 
 
-	filterOptions = [
+	commonFilterOptions = [
 		{ 'name': '', 'value': 'Field Name*' },
 		{ 'name': 'firstName', 'value': 'First Name' },
 		{ 'name': 'lastName', 'value': 'Last Name' },
@@ -221,9 +221,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		{ 'name': 'companyDomain', 'value': 'Company Domain'  },
 		{ 'name': 'accountOwner', 'value': 'Account Owner'  },
 		{ 'name': 'website', 'value': 'Website' },
+		{ 'name': 'zipCode', 'value': 'Zip Code' },
 	]
-	filterOption = this.filterOptions[0];
-
+	filterOptions:any=[];
+    filterOption = this.commonFilterOptions[0];
+	
 	filterConditions = [
 		{ 'name': '', 'value': 'Condition*' },
 		{ 'name': 'eq', 'value': '=' },
@@ -2974,14 +2976,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	modelForSeg() {
-		this.resetResponse();
-		this.addNewRow();
-		if(this.isPartner){
-			this.filterOptions = [...this.filterOptions, ...this.partnerFilterOptions];
-		}
-		this.criteria.property = this.filterOptions[0].value;
-		this.criteria.operation = this.filterConditions[0].value;
-	}
+        this.resetResponse(); 
+        this.filterOptions=[];
+        this.addNewRow();
+        if(this.isPartner){
+            this.filterOptions = [...this.commonFilterOptions, ...this.partnerFilterOptions];
+        }else{
+        this.filterOptions=this.commonFilterOptions;
+        }
+        this.criteria.property = this.filterOptions[0].value;
+        this.criteria.operation = this.filterConditions[0].value;
+    }
 
 	removeSegmentation() {
 		this.isSegmentation = false;
