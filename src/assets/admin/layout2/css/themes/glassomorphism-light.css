@@ -3470,7 +3470,7 @@ button.btn.custom:hover,
 }
 /* QA issues start*/
 .FieldName{
-  color:#ffffff!important;
+  color: #000!important;
 }
 /* Qa issues end */
 /* Sudha Sri(5-1-2024) */
@@ -4424,3 +4424,6 @@ i.fa.fa-history.fa-fa-consistency.IconCustomization,
 i.fa.fa-comment.fa-fa-consistency.IconCustomization{line-height: 18px !important;}
 i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 4px;}
 i.fa.fa-eye{padding-left: 2px;}
+i.fa.fa-gear.mr5.IconCustomization.SingleIconCu.icon_place {
+  margin-left: 0px !important;
+}

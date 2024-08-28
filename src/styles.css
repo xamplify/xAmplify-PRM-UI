@@ -2473,7 +2473,7 @@ i.singleIconCustomization {
 }
 
 i.fa.fa-trash-o.trashIconCustomization {
-  border: 1px solid #cb5a5e;
+  /* border: 1px solid #cb5a5e; */
   color: #cb5a5e;
 }
 i.fa.fa-trash-o.trashIconCustomization:hover {
@@ -3227,3 +3227,4 @@ i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization{padding: 7px !import
 .copied-item-success{
   color: green;
 }
+i.fa.fa-gear.mr5.IconCustomization.SingleIconCu.icon_place{margin-left: 1px !important;}
