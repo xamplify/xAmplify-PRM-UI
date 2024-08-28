@@ -54,12 +54,14 @@
                 </option>
                 <option *ngIf="opportunityType === 'LEAD'" [ngValue]="'LEAD_ID'">Lead Id
                 </option>
+                <option [ngValue]="'CREATED_BY_NAME'">Created By Name
+                </option>
               </select>
             </div>
           </div>
           <div class="row" style="margin-top: 10px;">
             <div class="col-sm-6">
-              <div *ngIf="customFields.selected && customFields.type === 'picklist'">
+              <div *ngIf="customFields.selected && (customFields.type === 'picklist' || customFields.type === 'reference')">
                 <label for="required">Non Interactive</label>
                 <span class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"
                   title="Enabling this option will restrict your partner from selecting the picklist value."></span>
@@ -70,7 +72,7 @@
                   <span class="labels" data-on="ON" data-off="OFF"></span>
                 </label>
               </div>
-              <div *ngIf="customFields.selected && customFields.type === 'picklist' && customFields.nonInteractive">
+              <div *ngIf="customFields.selected && (customFields.type === 'picklist' || customFields.type === 'reference') && customFields.nonInteractive">
                 <label for="required" class="ml50">Private</label>
                 <span class="fa fa-info-circle" data-toggle="tooltip" data-placement="right"
                   title="Enabling this option will restrict your partner from accessing this picklist."></span>
@@ -82,15 +84,25 @@
                 </label>
               </div>
             </div>
-            <div class="col-sm-6"
-              *ngIf="customFields.selected && customFields.type === 'picklist' && customFields.nonInteractive">
-              <label class="control-label">Select Default Value<span class="required"><strong>*</strong></span></label>
-              <select class="form-control" [(ngModel)]="customFields.defaultChoiceLabel" [ngModelOptions]="{standalone: true}"
-                placeholder="defaultChoiceId" id="defaultChoiceId">
-                <option *ngIf="customFields.picklistValues.length > 0" [value]="null">Select value</option>
-                <option *ngFor="let value of customFields.picklistValues" [value]="value.label">{{value.label}}
+            <div class="col-sm-6">
+              <div *ngIf="customFields.selected && customFields.type === 'picklist' && customFields.nonInteractive">
+                <label class="control-label">Select Default Value<span class="required"><strong>*</strong></span></label>
+                <select class="form-control" [(ngModel)]="customFields.defaultChoiceLabel" [ngModelOptions]="{standalone: true}"
+                  placeholder="defaultChoiceId" id="defaultChoiceId">
+                  <option *ngIf="customFields.picklistValues.length > 0" [value]="null">Select value</option>
+                  <option *ngFor="let value of customFields.picklistValues" [value]="value.label">{{value.label}}
+                  </option>
+                </select>
+              </div>
+              <div *ngIf="customFields.selected && customFields.type === 'reference' && customFields.nonInteractive">
+                <label class="control-label">Select Default Type<span class="required"><strong>*</strong></span></label>
+                <select class="form-control" [(ngModel)]="customFields.formLookUpDefaultFieldType"
+                [ngModelOptions]="{standalone: true}">
+                <option [ngValue]="null">Select value</option>
+                <option  [ngValue]="'AUTO_SELECT_USING_COMPANY_NAME'">Auto Select Using Company Name
                 </option>
               </select>
+              </div>
             </div>
           </div>
           <div class="row" style="margin-top: 10px;">

@@ -32,7 +32,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
     if(this.customField.originalCRMType === 'select'){
       this.canDisableSelect = true;
     }
-    if(this.customField.formDefaultFieldType === 'DEAL_ID' || this.customField.formDefaultFieldType === 'LEAD_ID'){
+    if(this.customField.formDefaultFieldType === 'DEAL_ID' || this.customField.formDefaultFieldType === 'LEAD_ID' || this.customField.formDefaultFieldType === 'CREATED_BY_NAME'){
       this.canDisableType = true;
     }
     this.customFields.required = this.customField.required;
@@ -56,6 +56,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.customFields.private = this.customField.private;
     }
     this.customFields.controllerName = this.customField.controllerName;
+    this.customFields.formLookUpDefaultFieldType = this.customField.formLookUpDefaultFieldType;
   }
   hideIntegrationSettingForm() {
     $("#integrationSettingsForm").modal('hide');
@@ -108,6 +109,11 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.errorMessage = 'Please select the default value for the picklist.';
       return;
     }
+    if (this.customFields.type === 'reference' && this.customFields.nonInteractive && (this.customFields.formLookUpDefaultFieldType === null || this.customFields.formLookUpDefaultFieldType === 'null')) {
+      this.isValid = false;
+      this.errorMessage = 'Please select the default type.';
+      return;
+    }
     if (!this.customFields.nonInteractive) {
       this.customFields.private = false;
     }
@@ -131,6 +137,7 @@ export class IntegrationSettingsPopupComponent implements OnInit {
       this.customField.canEditRequired = this.customFields.canEditRequired;
       this.customField.selected = this.customFields.selected;
       this.customField.nonInteractive = this.customFields.nonInteractive;
+      this.customField.formLookUpDefaultFieldType = this.customFields.formLookUpDefaultFieldType;
       this.customField.options = this.customFields.options.map(option => new PicklistValues(option.label, option.value));
       this.customField.defaultChoiceLabel = this.customFields.defaultChoiceLabel;
       if (this.customFields.nonInteractive) {
@@ -152,28 +159,35 @@ export class IntegrationSettingsPopupComponent implements OnInit {
   }
 
   onFieldTypeChange(selectedField: any) {
+    let countSelectedType = 1;
+    const selectedFieldType = selectedField.formDefaultFieldType;
+
     this.customFieldsList.forEach(field => {
-      if (field.label === selectedField.label && selectedField.formDefaultFieldType === 'DEAL_ID') {
-        this.customFields.formDefaultFieldType = 'DEAL_ID';
+      if (
+        field.label === selectedField.label &&
+        (selectedFieldType === 'DEAL_ID' ||
+          selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY_NAME')) {
+        countSelectedType++;
+        field.formDefaultFieldType = selectedFieldType;
         this.canDisableType = true;
-      }  else {
-        field.formDefaultFieldType = null;
-        if (field.name === 'xAmplify_Deal_ID__c') {
-          field.canUnselect = true;
-        }
       }
-      if (field.label === selectedField.label && selectedField.formDefaultFieldType === 'LEAD_ID') {
-        this.customFields.formDefaultFieldType = 'LEAD_ID';
-        this.canDisableType = true;
-      }  else {
-        field.formDefaultFieldType = null;
-        if (field.name === 'xAmplify_Lead_ID__c') {
-          field.canUnselect = true;
-        }
-      }
-     
     });
-    if(selectedField.formDefaultFieldType === null){
+
+    if (countSelectedType > 1) {
+      this.customFieldsList.forEach(field => {
+        if (
+          field.formDefaultFieldType === selectedFieldType && (selectedFieldType === 'DEAL_ID' ||
+            selectedFieldType === 'LEAD_ID' || selectedFieldType === 'CREATED_BY_NAME') &&
+          field !== selectedField
+        ) {
+          field.formDefaultFieldType = null;
+          if (field.name === 'xAmplify_Deal_ID__c' || field.name === 'xAmplify_Lead_ID__c') {
+            field.canUnselect = true;
+          }
+        }
+      });
+    }
+    if (selectedFieldType === null) {
       this.canDisableType = false;
     }
   }

@@ -7,6 +7,7 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { LeadsService } from 'app/leads/services/leads.service';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
+declare var swal, $, videojs: any;
 
 @Component({
   selector: 'app-crm-settings',
@@ -151,8 +152,8 @@ export class CrmSettingsComponent implements OnInit {
     this.integrationDetails.showLeadPipelineStage = this.showLeadPipelineStage;
     this.integrationDetails.showDealPipeline = this.showDealPipeline;
     this.integrationDetails.showDealPipelineStage = this.showDealPipelineStage;
-    this.integrationDetails.leadDescription = this.leadDescription;
-    this.integrationDetails.dealDescription = this.dealDescription;
+    this.integrationDetails.leadDescription = $.trim(this.leadDescription);
+    this.integrationDetails.dealDescription = $.trim(this.dealDescription);
     this.integrationDetails.dealByPartnerEnabled = this.dealByPartner;
     this.integrationDetails.dealByVendorEnabled = this.dealByVendor;
     this.integrationDetails.dealBySelfLeadEnabled = this.dealBySelfLead;

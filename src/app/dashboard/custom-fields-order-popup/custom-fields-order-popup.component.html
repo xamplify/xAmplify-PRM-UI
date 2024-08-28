@@ -24,7 +24,7 @@
             </thead>
             <tbody [dragula]='"customFieldsDragula"' [dragulaModel]='customFieldsList'>
               <tr *ngFor="let customField of customFieldsList; let i = index" style="cursor: move;">
-                <ng-container>
+                <ng-container *ngIf="!(customField.formDefaultFieldType === 'LEAD_ID' || customField.formDefaultFieldType === 'DEAL_ID')">
                   <td>
                     <h4 class="mt5 mb5 f-w-600" translate>
                       <span data-toggle="tooltip" data-placement="bottom"
