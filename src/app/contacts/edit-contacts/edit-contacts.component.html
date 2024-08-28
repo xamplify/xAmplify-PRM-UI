@@ -1274,10 +1274,6 @@
 				</div>
 				<div class="" *ngIf="showAllContactData">
 					<div class="col-xs-12">
-						<div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0"
-							class="alert alert-info">
-							<strong translate>No results found</strong>
-						</div>
 						<div class="alert alert-success alert-dismissable col-xs-12" style="padding: 15px 10px 12px;"
 							*ngIf="invalidDeleteSuccessMessage">
 							<strong translate>Success!</strong> your
@@ -1290,8 +1286,7 @@
 					</div>
 					<div class="valid-list" id="hidingListOfUsersTable">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
-						<div class="portlet light remove_cardBgcolor share_leads_mrgn"
-						*ngIf ="this.contactsByType.pagination.pagedItems.length > 0 || this.contactsByType.pagination.totalRecords > 0">
+						<div class="portlet light remove_cardBgcolor share_leads_mrgn">
 							<div class="portlet-title">
 								<div class="caption" style="padding-top: 8px !important;">
 									<span class="capitalize"
@@ -1421,7 +1416,7 @@
 									<div class="col-xs-12 col-md-12 col-sm-12 p0">
 									</div>
 								</div>
-								<div class="table-responsive">
+								<div class="table-responsive" *ngIf="contactsByType.contacts?.length > 0">
 									<app-loader [model]="httpRequestLoader.isHorizontalCss"
 										*ngIf="httpRequestLoader.isLoading"></app-loader>
 									<table class='table tgrid' id="sample_editable_1" style="overflow: hidden;"
@@ -1678,6 +1673,9 @@
 											</ng-container>
 										</tbody>
 									</table>
+								</div>
+								<div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="alert alert-info">
+									<strong translate>No results found</strong>
 								</div>
 								<app-pagination [pagination]="contactsByType.pagination"
 									[type]="contactsByType.selectedCategory" (notifyParent)="setPage($event)"
