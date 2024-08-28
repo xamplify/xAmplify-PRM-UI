@@ -934,15 +934,29 @@
 											<thead>
 												<tr>
 													<ng-container *ngFor="let column of customCsvHeaders;let i  = index">
-														<ng-container *ngIf="i<=2">
+														<ng-container *ngIf="i<=3">
 															<th>{{column}}</th>
 														</ng-container>
 													</ng-container>
-													<th *ngIf="customCsvHeaders?.length>2">More</th>
+													<th *ngIf="customCsvHeaders?.length>3">More</th>
 												</tr>
 											</thead>
 											<tbody>
-
+												<ng-container  *ngFor="let parsedCsvDto of parsedCsvDtos;let rowIndex = index">
+													<tr  id="form-data-row-{{rowIndex}}" class="form-data-row">
+														<ng-container *ngFor="let csvRow of  parsedCsvDto.csvRows;let columnIndex = index">
+															<td *ngIf="columnIndex<=3">
+																{{csvRow.value}}
+															</td>
+														</ng-container>
+														<td *ngIf="customCsvHeaders?.length>3">
+															<a class="close-circle" (click)="expandRows(parsedCsvDto,rowIndex)"
+																data-toggle="tooltip" title="View More Columns" *ngIf="customCsvHeaders.length>4">
+																<i class="fa" [ngClass]="{'fa-plus': !parsedCsvDto.expanded, 'fa-minus': parsedCsvDto.expanded}" aria-hidden="true"></i>
+															</a>
+														</td>
+													</tr>
+												</ng-container>
 											</tbody>
 										</table>
 									</div>

@@ -29,8 +29,9 @@ import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
-import { UserGuideHelpButtonComponent } from 'app/common/user-guide-help-button/user-guide-help-button.component';
-declare var swal, $, Papa: any;
+import { ParsedCsvDto } from '../models/parsed-csv-dto';
+import { CsvRowDto } from '../models/csv-row-dto';
+declare var swal:any, $:any, Papa: any;
 
 @Component({
     selector: 'app-add-contacts',
@@ -252,7 +253,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     /*****XNFR-671*******/
     isXamplifyCsvFormatUploaded = false;
     customCsvHeaders = [];
-    constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
+    parsedCsvDtos:Array<ParsedCsvDto> = new Array<ParsedCsvDto>();
+        constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, private hubSpotService: HubSpotService, public userService: UserService,
@@ -479,12 +481,25 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
         } else {
             /***XNFR-671 */
+            this.parsedCsvDtos = [];
             var csvResult = Papa.parse(contents);
             var csvRows = csvResult.data;
             this.customCsvHeaders = headers;
-          for (var i = 1; i < csvRows.length; i++) {
-                let csvRow = csvRows[i];
-                console.log(csvRow);
+            let csvRowsLength = csvRows.length;
+            for (var i = 1; i < csvRowsLength; i++) {
+                let rows = csvRows[i];
+                let parsedCsvDto = new ParsedCsvDto();
+                parsedCsvDto.expanded = false;
+              $.each(rows,function(index:number,value:any){
+                let csvRowDto = new CsvRowDto();
+                let rowIndex = "R"+(index+1);
+                let columnIndex = "C"+i;
+                let rowAndColumnIndex = rowIndex+":"+columnIndex;
+                csvRowDto.rowAndColumnInfo = rowAndColumnIndex;
+                csvRowDto.value = value;
+                parsedCsvDto.csvRows.push(csvRowDto);
+              });
+              this.parsedCsvDtos.push(parsedCsvDto);
             }
             this.isListLoader = false;
         }
@@ -1727,13 +1742,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     setPage(page: number) {
         try {
-
             this.paginatedSelectedIds = [];
-
             if (page < 1 || page > this.pager.totalPages) {
                 return;
             }
-
             if (this.paginationType == "csvContacts") {
                 this.pager = this.socialPagerService.getPager(this.contacts.length, page, this.pageSize);
                 this.pagedItems = this.contacts.slice(this.pager.startIndex, this.pager.endIndex + 1);
