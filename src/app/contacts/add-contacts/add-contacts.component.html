@@ -950,10 +950,10 @@
 															</td>
 														</ng-container>
 														<td *ngIf="customCsvHeaders?.length>3">
-															<a class="close-circle" (click)="expandRows(parsedCsvDto,rowIndex)"
-																data-toggle="tooltip" title="View More" *ngIf="customCsvHeaders.length>4">
-																<i class="fa" [ngClass]="{'fa-plus': !parsedCsvDto.expanded, 'fa-minus': parsedCsvDto.expanded}" aria-hidden="true"></i>
-															</a>
+															<button *ngIf="customCsvHeaders?.length>4" class="lightgray-btn" id='more_less_button_{{rowIndex}}' (click)="expandRows(parsedCsvDto,rowIndex)">
+																<span *ngIf="!parsedCsvDto.expanded">More</span>
+																<span *ngIf="parsedCsvDto.expanded">Less</span>
+															</button>
 														</td>
 													</tr>
 													<tr [ngClass]="{'hidden': !parsedCsvDto.expanded}" id="child-table">
