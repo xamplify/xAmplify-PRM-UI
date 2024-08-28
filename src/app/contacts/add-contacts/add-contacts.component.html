@@ -951,9 +951,23 @@
 														</ng-container>
 														<td *ngIf="customCsvHeaders?.length>3">
 															<a class="close-circle" (click)="expandRows(parsedCsvDto,rowIndex)"
-																data-toggle="tooltip" title="View More Columns" *ngIf="customCsvHeaders.length>4">
+																data-toggle="tooltip" title="View More" *ngIf="customCsvHeaders.length>4">
 																<i class="fa" [ngClass]="{'fa-plus': !parsedCsvDto.expanded, 'fa-minus': parsedCsvDto.expanded}" aria-hidden="true"></i>
 															</a>
+														</td>
+													</tr>
+													<tr [ngClass]="{'hidden': !parsedCsvDto.expanded}" id="child-table">
+														<td colspan="5">
+															<table id="expanded-table" class="table tgrid table-bordered" style="margin-bottom: 1px;">
+																<tr *ngFor="let csvHeader of customCsvHeaders;let i  = index;">
+																	<th *ngIf="i>=4" scope="row">
+																		{{csvHeader}}
+																	</th>
+																	<td *ngIf="i>=4">
+																		{{parsedCsvDto?.csvRows[i].value}}
+																	</td>
+																</tr>
+															</table>
 														</td>
 													</tr>
 												</ng-container>

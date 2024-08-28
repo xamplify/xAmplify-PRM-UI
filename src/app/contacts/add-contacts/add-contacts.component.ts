@@ -485,26 +485,51 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             var csvResult = Papa.parse(contents);
             var csvRows = csvResult.data;
             this.customCsvHeaders = headers;
+            let headersLength = this.customCsvHeaders.length;
             let csvRowsLength = csvRows.length;
             for (var i = 1; i < csvRowsLength; i++) {
                 let rows = csvRows[i];
                 let parsedCsvDto = new ParsedCsvDto();
                 parsedCsvDto.expanded = false;
+                let emptyValues = [];
               $.each(rows,function(index:number,value:any){
                 let csvRowDto = new CsvRowDto();
                 let rowIndex = "R"+(index+1);
                 let columnIndex = "C"+i;
                 let rowAndColumnIndex = rowIndex+":"+columnIndex;
                 csvRowDto.rowAndColumnInfo = rowAndColumnIndex;
-                csvRowDto.value = value;
+                csvRowDto.value = $.trim(value);
                 parsedCsvDto.csvRows.push(csvRowDto);
               });
-              this.parsedCsvDtos.push(parsedCsvDto);
+              let parsedCsvDtoRowsLength = parsedCsvDto.csvRows.length;
+              if(parsedCsvDtoRowsLength==headersLength){
+                let csvRowsValues = parsedCsvDto.csvRows;
+                $.each(csvRowsValues,function(index:number,csvRow:CsvRowDto){
+                    let csvRowValue = csvRow.value;
+                    if(csvRowValue.length==0){
+                        emptyValues.push(csvRowValue);
+                    }
+                    let isEmptyRow = emptyValues.length==headersLength;
+                    parsedCsvDto.isEmptyRow = isEmptyRow;
+                });
+                if(!parsedCsvDto.isEmptyRow){
+                    this.parsedCsvDtos.push(parsedCsvDto);
+                }
+              }
             }
             this.isListLoader = false;
         }
     }
 
+    expandRows(selectedFormDataRow: any, selectedIndex: number) {
+        selectedFormDataRow.expanded = !selectedFormDataRow.expanded;
+        if (selectedFormDataRow.expanded) {
+            $('#form-data-row-' + selectedIndex).css("background-color", "#d3d3d357");
+        } else {
+            $('#form-data-row-' + selectedIndex).css("background-color", "#fff");
+        }
+
+    }
     validateHeaders(headers) {
         return (this.removeDoubleQuotes(headers[0]) == "FIRSTNAME" &&
             this.removeDoubleQuotes(headers[1]) == "LASTNAME" &&
