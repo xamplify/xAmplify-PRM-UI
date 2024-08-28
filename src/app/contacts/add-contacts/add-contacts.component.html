@@ -845,96 +845,79 @@
 						</div>
 					</div>
 					<div class="row" id="file_preview">
+						<!--File Preview-->
 						<div class="col-md-12">
-							<!-- BEGIN EXAMPLE TABLE PORTLET-->
 							<div class="portlet light remove_cardBgcolor share_leads_mrgn">
 								<div class="portlet-title">
-									<div class="caption" style="padding-top: 7px !important; font-size: 20px;"
-										translate>
-										<i class="fa fa-edit" style="font-size: 19px;"></i>File
-										Preview
+									<div class="caption" style="padding-top: 7px !important; font-size: 20px;">
+										<i class="fa fa-edit" style="font-size: 19px;"></i>File	Preview
 									</div>
 								</div>
 								<div class="portlet-body">
 									<app-list-loader *ngIf="isListLoader"></app-list-loader>
-									<div class="table-responsive">
+									<!--xAmplify CSV Format-->
+									<div class="table-responsive" *ngIf="isXamplifyCsvFormatUploaded && !isListLoader">
 										<table class="table tgrid" id="sample_editable_2">
 											<thead>
 												<tr>
-													<th translate>FIRST NAME</th>
-													<th translate>LAST NAME</th>
-													<th translate>EMAILID</th>
-													<th translate>MORE</th>
+													<th>First Name</th>
+													<th>Last Name</th>
+													<th>Email Address</th>
+													<th>More</th>
 												</tr>
 											</thead>
 											<tbody>
 												<ng-container *ngFor="let user of pagedItems;let i=index">
 													<tr>
-														<!-- data-toggle="tooltip" data-placement="bottom" title="{{user.firstName}}" -->
-														<td>{{user.firstName |
-															slice:0:30}} <span
-																*ngIf="user.firstName?.length>30">...</span>
-														</td>
-														<!-- data-toggle="tooltip" data-placement="bottom" title="{{user.lastName}}" -->
-														<td>{{user.lastName |
-															slice:0:25}} <span
-																*ngIf="user.lastName?.length>25">...</span>
-														</td>
-														<!-- data-toggle="tooltip" data-placement="bottom" title="{{user.emailId}}" -->
-														<td>{{user.emailId |
-															slice:0:35}} <span
-																*ngIf="user.emailId?.length>35">...</span>
-														</td>
+														<td>{{user.firstName |slice:0:30}}<span	*ngIf="user.firstName?.length>30">...</span></td>
+														<td>{{user.lastName | slice:0:25}} <span *ngIf="user.lastName?.length>25">...</span></td>
+														<td>{{user.emailId | slice:0:35}} <span	*ngIf="user.emailId?.length>35">...</span></td>
 														<td>
-															<button class="lightgray-btn" id='more_less_button_{{i}}'
-																(click)="user.isShowDetails = ! user.isShowDetails">
+															<button class="lightgray-btn" id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
 																<span *ngIf="!user.isShowDetails" translate>More</span>
 																<span *ngIf="user.isShowDetails" translate>Less</span>
 															</button>
 														</td>
 													</tr>
-													<tr
-														[ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
+													<tr [ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
 														<td colspan="6">
-															<table cellpadding="5" cellspacing="0" class="border"
-																style="border:none !important;">
+															<table cellpadding="5" cellspacing="0" class="border"	style="border:none !important;">
 																<tbody>
-																	<tr style="">
+																	<tr>
 																		<td class='bold' translate>Company:</td>
-																		<td class=''>{{user.contactCompany}}</td>
+																		<td>{{user.contactCompany}}</td>
 																	</tr>
-																	<tr style="">
+																	<tr>
 																		<td class='bold' translate>Job Title:</td>
-																		<td class=''>{{user.jobTitle}}</td>
+																		<td>{{user.jobTitle}}</td>
 																	</tr>
-																	<tr style="">
+																	<tr>
 																		<td class='bold' translate>Address:</td>
-																		<td class=''>{{user.address}}</td>
+																		<td>{{user.address}}</td>
 																	</tr>
-																	<tr style="">
+																	<tr>
 																		<td class='bold' translate>City:</td>
-																		<td class=''>{{user.city}}</td>
+																		<td>{{user.city}}</td>
 																	</tr>
-																	<tr style="">
+																	<tr>
 																		<td class='bold' translate>State:</td>
-																		<td class=''>{{user.state}}</td>
+																		<td>{{user.state}}</td>
 																	</tr>
-																	<tr style="">
+																	<tr>
 																		<td class='bold' translate>Zip Code:</td>
-																		<td class=''>{{user.zipCode}}</td>
+																		<td>{{user.zipCode}}</td>
 																	</tr>
-																	<tr style="">
+																	<tr>
 																		<td class='bold' translate>Country:</td>
-																		<td class=''>{{user.country}}</td>
+																		<td>{{user.country}}</td>
 																	</tr>
-																	<tr style="">
+																	<tr>
 																		<td class='bold' translate>Phone Number:</td>
-																		<td class=''>
-																			<!-- <div *ngIf="user.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
-															 <int-phone-prefix [(ngModel)]="user.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-															 </div> --> <!-- {{user.mobileNumber}} --> <a href="tel:{{user.mobileNumber}}"><i class="fa fa-phone"
-																					aria-hidden="true"
-																					style="padding-right: 4px;"></i>{{user?.mobileNumber}}</a>
+																		<td>
+																			<a href="tel:{{user.mobileNumber}}">
+																			<i class="fa fa-phone" aria-hidden="true" style="padding-right: 4px;"></i>
+																			{{user?.mobileNumber}}
+																			</a>
 																		</td>
 																	</tr>
 																</tbody>
@@ -945,7 +928,25 @@
 											</tbody>
 										</table>
 									</div>
-									<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+									<!--Customer Uploaded CSV Data XNFR-671-->
+									<div class="table-responsive" *ngIf="!isXamplifyCsvFormatUploaded">
+										<table class="table tgrid">
+											<thead>
+												<tr>
+													<ng-container *ngFor="let column of customCsvHeaders;let i  = index">
+														<ng-container *ngIf="i<=2">
+															<th>{{column}}</th>
+														</ng-container>
+													</ng-container>
+													<th *ngIf="customCsvHeaders?.length>2">More</th>
+												</tr>
+											</thead>
+											<tbody>
+
+											</tbody>
+										</table>
+									</div>
+									<ul *ngIf="pager?.pages && pager?.pages?.length" class="pagination">
 										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
 												(click)="setPage(1)">First</a></li>
 										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
@@ -962,9 +963,10 @@
 									</ul>
 								</div>
 							</div>
-							<!-- END EXAMPLE TABLE PORTLET-->
 						</div>
 					</div>
+					<!--End Of CSV Preview-->
+
 					<!-- END PAGE CONTENT -->
 					<div class="panel panel-success mt10 notes_box pos_mrg_top16" style="border-radius: 10px;">
 						<div class="panel-heading note_card_align">

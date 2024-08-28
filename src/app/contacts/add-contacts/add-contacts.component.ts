@@ -249,6 +249,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     /**** user guide ****** */
     mergeTagForGuide: any;
     socialContactsNames: string[] = ['HUBSPOT', 'MARKETO', 'microsoft', 'pipedrive', 'connectWise', 'halopsa'];
+    /*****XNFR-671*******/
+    isXamplifyCsvFormatUploaded = false;
+    customCsvHeaders = [];
     constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -419,68 +422,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             $('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
             let reader = new FileReader();
             reader.readAsText(files[0]);
-            this.xtremandLogger.info(files[0]);
-            var lines = new Array();
             var self = this;
             reader.onload = function (e: any) {
                 var contents = e.target.result;
-
                 let csvData = reader.result;
                 let csvRecordsArray = csvData.split(/\r|\n/);
                 let headersRow = self.fileUtil
                     .getHeaderArray(csvRecordsArray);
                 let headers = headersRow[0].split(',');
-                if ((headers.length == 11)) {
-                    if (self.validateHeaders(headers)) {
-                        var csvResult = Papa.parse(contents);
-
-                        var allTextLines = csvResult.data;
-                        for (var i = 1; i < allTextLines.length; i++) {
-                            // var data = allTextLines[i].split( ',' );
-                            if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
-                                let user = new User();
-                                user.emailId = allTextLines[i][4].trim();
-                                user.firstName = allTextLines[i][0].trim();
-                                user.lastName = allTextLines[i][1].trim();
-                                user.contactCompany = allTextLines[i][2].trim();
-                                user.jobTitle = allTextLines[i][3].trim();
-                                user.address = allTextLines[i][5].trim();
-                                user.city = allTextLines[i][6].trim();
-                                user.state = allTextLines[i][7].trim();
-                                user.zipCode = allTextLines[i][8].trim();
-                                user.country = allTextLines[i][9].trim();
-                                user.mobileNumber = allTextLines[i][10].trim();
-                                /*user.description = allTextLines[i][9];*/
-                                self.contacts.push(user);
-                            }
-                        }
-                        self.setPage(1);
-                        self.isListLoader = false;
-                        if (allTextLines.length == 2) {
-                            self.customResponse = new CustomResponse('ERROR', "No records found.", true);
-                            self.cancelContacts();
-                        } else if (allTextLines.length > 2 && self.contacts.length === 0) {
-                            self.isValidLegalOptions = true;
-                            self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
-                            self.cancelContacts();
-                        }  else  if (self.contacts.length === 0) {
-                            self.isValidLegalOptions = true;
-                            self.customResponse = new CustomResponse('ERROR', "No contacts found.", true);
-                        }
-
-
-
-
-                    } else {
-                        self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
-                        self.isListLoader = false;
-                        self.cancelContacts();
-                    }
-                } else {
-                    self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
-                    self.isListLoader = false;
-                    self.cancelContacts();
-                }
+                self.validateHeadersAndReadRows(headers, self, contents);
 
             }
         } else {
@@ -492,6 +442,54 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.selectedAddContactsOption = 8;
         }
     }
+    private validateHeadersAndReadRows(headers: any, self: this, contents: any) {
+        self.isXamplifyCsvFormatUploaded = headers.length == 11 && self.validateHeaders(headers);
+        if (this.isXamplifyCsvFormatUploaded) {
+            var csvResult = Papa.parse(contents);
+            var allTextLines = csvResult.data;
+            for (var i = 1; i < allTextLines.length; i++) {
+                if (allTextLines[i][4] && allTextLines[i][4].trim().length > 0) {
+                    let user = new User();
+                    user.emailId = allTextLines[i][4].trim();
+                    user.firstName = allTextLines[i][0].trim();
+                    user.lastName = allTextLines[i][1].trim();
+                    user.contactCompany = allTextLines[i][2].trim();
+                    user.jobTitle = allTextLines[i][3].trim();
+                    user.address = allTextLines[i][5].trim();
+                    user.city = allTextLines[i][6].trim();
+                    user.state = allTextLines[i][7].trim();
+                    user.zipCode = allTextLines[i][8].trim();
+                    user.country = allTextLines[i][9].trim();
+                    user.mobileNumber = allTextLines[i][10].trim();
+                    self.contacts.push(user);
+                }
+            }
+            self.setPage(1);
+            self.isListLoader = false;
+            if (allTextLines.length == 2) {
+                self.customResponse = new CustomResponse('ERROR', "No records found.", true);
+                self.cancelContacts();
+            } else if (allTextLines.length > 2 && self.contacts.length === 0) {
+                self.isValidLegalOptions = true;
+                self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
+                self.cancelContacts();
+            } else if (self.contacts.length === 0) {
+                self.isValidLegalOptions = true;
+                self.customResponse = new CustomResponse('ERROR', "No contacts found.", true);
+            }
+        } else {
+            /***XNFR-671 */
+            var csvResult = Papa.parse(contents);
+            var csvRows = csvResult.data;
+            this.customCsvHeaders = headers;
+          for (var i = 1; i < csvRows.length; i++) {
+                let csvRow = csvRows[i];
+                console.log(csvRow);
+            }
+            this.isListLoader = false;
+        }
+    }
+
     validateHeaders(headers) {
         return (this.removeDoubleQuotes(headers[0]) == "FIRSTNAME" &&
             this.removeDoubleQuotes(headers[1]) == "LASTNAME" &&
