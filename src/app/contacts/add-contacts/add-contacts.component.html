@@ -942,7 +942,7 @@
 												</tr>
 											</thead>
 											<tbody>
-												<ng-container  *ngFor="let parsedCsvDto of parsedCsvDtos;let rowIndex = index">
+												<ng-container  *ngFor="let parsedCsvDto of pagedItems;let rowIndex = index">
 													<tr  id="form-data-row-{{rowIndex}}" class="form-data-row">
 														<ng-container *ngFor="let csvRow of  parsedCsvDto.csvRows;let columnIndex = index">
 															<td *ngIf="columnIndex<=3">

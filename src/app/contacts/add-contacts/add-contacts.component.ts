@@ -395,7 +395,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.isListLoader = true;
             var outputstring = files[0].name.substring(0, files[0].name.lastIndexOf("."));
             this.selectedAddContactsOption = 2;
-            this.paginationType = "csvContacts";
+            
             this.noOptionsClickError = false;
             this.uploadedCsvFileName = files[0].name;
             if (!this.model.contactListName) {
@@ -447,6 +447,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     private validateHeadersAndReadRows(headers: any, self: this, contents: any) {
         self.isXamplifyCsvFormatUploaded = headers.length == 11 && self.validateHeaders(headers);
         if (this.isXamplifyCsvFormatUploaded) {
+            this.paginationType = "csvContacts";
             var csvResult = Papa.parse(contents);
             var allTextLines = csvResult.data;
             for (var i = 1; i < allTextLines.length; i++) {
@@ -481,13 +482,17 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
         } else {
             /***XNFR-671 */
+            this.paginationType = "customCsvContacts";
             this.parsedCsvDtos = [];
             var csvResult = Papa.parse(contents);
             var csvRows = csvResult.data;
-            this.customCsvHeaders = headers;
+            $.each(headers,function(index:number,header:any){
+                let updatedHeader = self.removeDoubleQuotes(header);
+                self.customCsvHeaders.push(updatedHeader);
+            });
+            console.log(self.customCsvHeaders);
             let headersLength = this.customCsvHeaders.length;
-            let csvRowsLength = csvRows.length;
-            for (var i = 1; i < csvRowsLength; i++) {
+            for (var i = 1; i < csvRows.length; i++) {
                 let rows = csvRows[i];
                 let parsedCsvDto = new ParsedCsvDto();
                 parsedCsvDto.expanded = false;
@@ -517,6 +522,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 }
               }
             }
+            self.setPage(1);
             this.isListLoader = false;
         }
     }
@@ -1774,10 +1780,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             if (this.paginationType == "csvContacts") {
                 this.pager = this.socialPagerService.getPager(this.contacts.length, page, this.pageSize);
                 this.pagedItems = this.contacts.slice(this.pager.startIndex, this.pager.endIndex + 1);
-            } else {
+            }else if(this.paginationType == "customCsvContacts"){
+                this.pager = this.socialPagerService.getPager(this.parsedCsvDtos.length, page, this.pageSize);
+                this.pagedItems = this.parsedCsvDtos.slice(this.pager.startIndex, this.pager.endIndex + 1);
+            }else {
                 this.pager = this.socialPagerService.getPager(this.socialContactUsers.length, page, this.pageSize);
                 this.pagedItems = this.socialContactUsers.slice(this.pager.startIndex, this.pager.endIndex + 1);
-
                 var contactIds1 = this.pagedItems.map(function (a) { return a.id; });
                 var items = $.grep(this.selectedContactListIds, function (element) {
                     return $.inArray(element, contactIds1) !== -1;
@@ -1787,7 +1795,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 } else {
                     this.isHeaderCheckBoxChecked = false;
                 }
-
                 for (let i = 0; i < items.length; i++) {
                     if (items) {
                         this.paginatedSelectedIds.push(items[i]);
