@@ -484,13 +484,13 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             /***XNFR-671 */
             this.paginationType = "customCsvContacts";
             this.parsedCsvDtos = [];
+            this.customCsvHeaders = [];
             var csvResult = Papa.parse(contents);
             var csvRows = csvResult.data;
             $.each(headers,function(index:number,header:any){
                 let updatedHeader = self.removeDoubleQuotes(header);
                 self.customCsvHeaders.push(updatedHeader);
             });
-            console.log(self.customCsvHeaders);
             let headersLength = this.customCsvHeaders.length;
             for (var i = 1; i < csvRows.length; i++) {
                 let rows = csvRows[i];
