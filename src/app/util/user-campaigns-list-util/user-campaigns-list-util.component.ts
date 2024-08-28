@@ -313,7 +313,7 @@ setAutoResponsesPage(event: any,campaign:any) {
 		if(this.navigatedFrom!=undefined&& this.analyticsCampaignId==undefined){
 			this.referenceService.goToRouter(url+"/"+this.navigatedFrom);
 		}else if(this.analyticsCampaignId!=undefined && this.navigatedFrom!=undefined){
-			this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+this.referenceService.encodePathVariable(this.analyticsCampaignId));
+			this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+this.referenceService.encodePathVariable(this.analyticsCampaignId)+"/"+this.referenceService.getEncodedUri(campaignAnalytics.campaignTitle));
 		}else{
 			this.referenceService.goToRouter(url);
 		}

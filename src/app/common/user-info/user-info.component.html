@@ -49,7 +49,7 @@
 					title="{{userInfo?.jobTitle}}"><span>{{userInfo?.jobTitle | slice:0:25}}</span><span *ngIf="userInfo?.jobTitle?.length>25">..</span>
 				</p>
 			</ng-container>
-			<p class="mobile_no" *ngIf="userInfo?.mobileNumber">
+			<p class="mobile_no" style="float:left;" *ngIf="userInfo?.mobileNumber">
 				<a href="tel:{{userInfo?.mobileNumber}}"><i class="fa fa-phone" aria-hidden="true" style="padding-right: 4px;"></i>
 					<b>Mobile no:</b> {{userInfo?.mobileNumber}}
 				</a>
@@ -101,7 +101,7 @@
 		<p class="user-company" *ngIf="isPartnerEntityInfo && !hideJobTitle && userInfo?.jobTitle?.length>0"><span><b>Job Title:</b>
 				{{userInfo?.jobTitle |slice:0:25}}</span><span *ngIf="userInfo?.jobTitle?.length>25">..</span></p>
 		<td>
-			<a *ngIf="userInfo?.emailId?.length>0" style="display: table;" data-toggle="tooltip" data-placement="right" title="{{userInfo?.emailId}}">
+			<a *ngIf="userInfo?.emailId?.length>0" style="white-space: nowrap;margin-right: 3px;line-height: 1.6;" data-toggle="tooltip" data-placement="right" title="{{userInfo?.emailId}}">
 				<b>Email Id:</b> {{userInfo?.emailId | slice:0:30}}<span *ngIf="userInfo?.emailId?.length>30">...</span>
 			</a>
 			<p *ngIf="userInfo?.mobileNumber">

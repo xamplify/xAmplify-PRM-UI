@@ -197,7 +197,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	showGDPR: boolean;
 
 
-	filterOptions = [
+	commonFilterOptions = [
 		{ 'name': '', 'value': 'Field Name*' },
 		{ 'name': 'firstName', 'value': 'First Name' },
 		{ 'name': 'lastName', 'value': 'Last Name' },
@@ -221,9 +221,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		{ 'name': 'companyDomain', 'value': 'Company Domain'  },
 		{ 'name': 'accountOwner', 'value': 'Account Owner'  },
 		{ 'name': 'website', 'value': 'Website' },
+		{ 'name': 'zipCode', 'value': 'Zip Code' },
 	]
-	filterOption = this.filterOptions[0];
-
+	filterOptions:any=[];
+    filterOption = this.commonFilterOptions[0];
+	
 	filterConditions = [
 		{ 'name': '', 'value': 'Condition*' },
 		{ 'name': 'eq', 'value': '=' },
@@ -2724,7 +2726,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.sortingOrder = null;
 			}
 
-			if (this.currentContactType == "all_contacts") {
+			if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 				this.pagination.pageIndex = 1;
 				this.pagination.sortcolumn = this.sortcolumn;
 				this.pagination.sortingOrder = this.sortingOrder;
@@ -2744,7 +2746,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		this.searchContactType = this.searchContactType;
 		try {
-			if (this.currentContactType == "all_contacts") {
+			if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 				this.pagination.searchKey = this.searchKey;
 				this.pagination.pageIndex = 1;
 				this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
@@ -2974,21 +2976,24 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	modelForSeg() {
-		this.resetResponse();
-		this.addNewRow();
-		if(this.isPartner){
-			this.filterOptions = [...this.filterOptions, ...this.partnerFilterOptions];
-		}
-		this.criteria.property = this.filterOptions[0].value;
-		this.criteria.operation = this.filterConditions[0].value;
-	}
+        this.resetResponse(); 
+        this.filterOptions=[];
+        this.addNewRow();
+        if(this.isPartner){
+            this.filterOptions = [...this.commonFilterOptions, ...this.partnerFilterOptions];
+        }else{
+        this.filterOptions=this.commonFilterOptions;
+        }
+        this.criteria.property = this.filterOptions[0].value;
+        this.criteria.operation = this.filterConditions[0].value;
+    }
 
 	removeSegmentation() {
 		this.isSegmentation = false;
 		this.criterias.length = 0;
 		this.checkingLoadContactsCount = true;
 		this.selectedAddContactsOption = 8;
-		if (this.currentContactType == "all_contacts") {
+		if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 		} else {
 			this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
@@ -3080,7 +3085,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				}
 			}
 			if (!this.isSegmentationErrorMessage) {
-				if (this.currentContactType == "all_contacts") {
+				if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 					this.checkingLoadContactsCount = true;
 					this.pagination.pageIndex = 1;
 					this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);

@@ -21,4 +21,5 @@ export class CustomFieldsDto {
     controllerName = '';
     defaultChoiceLabel: any;
     private = false;
+    formLookUpDefaultFieldType= '';
 }
