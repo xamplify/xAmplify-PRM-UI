@@ -1545,19 +1545,40 @@
 <app-share-leads *ngIf="authenticationService.isSharePartnerModal" (notifyParent)="selectedSharePartner($event)"></app-share-leads>
 
 <!--Csv Column Mapping-->
-<div class="modal fade right" id="csv-column-mapping-modal-popup" data-backdrop="static">
-	<div class="modal-dialog full-width">
+<div class="modal fade right" id="csv-column-mapping-modal-popup" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
 	  <div class="modal-content">
 		<div class="modal-header">
-		  <button type="button" class="close-circle" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+		  <button type="button" class="close-circle" data-dismiss="modal">
+			<i class="fa fa-times" aria-hidden="true"></i></button>
 		  <h4 class="modal-title text-center">Map Columns</h4>
 		</div>
 		<div class="modal-body">
-			<p>Moal Oppp</p>
+			<table class='table tgrid table-hover table-sm'>
+				<thead>
+					<tr>
+						<th scope="row" class="text-center">Default Columns</th>
+						<th scope="row" class="text-center">Uploaded CSV Columns</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let defaultCsvHeader of xAmplifyDefaultCsvHeaders;let i = index">
+						<td class="text-center">{{defaultCsvHeader}}<span *ngIf="defaultCsvHeader=='Email Address'" class="required">*</span></td>
+						<td class="text-center">
+							<select class="form-control">
+								<option>--Please Select Column To Map--</option>
+								<option *ngFor="let customCsvHeader of customCsvHeaders">
+									{{customCsvHeader}}
+								</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		  </div>
 		</div>
 		<div class="modal-footer">
-		  <button (click)="closeCsvColumnMappingModalPopUp()"  class="btn btn-danger float-right">Close</button>
+		  <button (click)="closeCsvColumnMappingModalPopUp()"  class="btn btn-danger">Close</button>
 		</div>
 	  </div>
 	</div>

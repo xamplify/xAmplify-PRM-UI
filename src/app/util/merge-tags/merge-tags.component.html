@@ -1,12 +1,8 @@
 <div>
-	<button class="button_blue float-right btn-select-templates mb_10 btn-mb bgcolor-unset px-0"
-		style="padding-top: 2px;" *ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate><span
-			class="btn btn-primary transition">Insert
-			Merge
-			Tags</span></button>
+	<button class="button_blue float-right btn-select-templates mb_10 btn-mb bgcolor-unset px-0" style="padding-top: 2px;" *ngIf="!hideButton" (click)="showMergeTagsPopUp()">
+		<span class="btn btn-primary transition">Insert	Merge Tags</span></button>
 </div>
-<div class="modal fade right" id="merge-tags-popup" tabindex="-1" role="dialog" data-backdrop="static"
-	data-keyboard="false">
+<div class="modal fade right" id="merge-tags-popup" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
