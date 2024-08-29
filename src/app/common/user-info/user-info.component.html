@@ -3,7 +3,7 @@
 		<span class='uppercase'> {{highlightLetter}} </span>
 	</span>
 	<span class="ml10" *ngIf="(userInfo?.firstName |slice:0:1)==null && (userInfo?.emailId |slice:0:1)==null 
-	   && (userInfo?.email |slice:0:1)==null">-
+	   && (userInfo?.email |slice:0:1)==null && !hideEmptyBar">-
 	</span>
 	<span class="margin-left" *ngIf="!isPartnerEntityInfo">
 

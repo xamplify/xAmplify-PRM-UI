@@ -119,6 +119,8 @@ export class ManageDealsComponent implements OnInit {
   statusLoader = false;
   isStatusLoadedSuccessfully = true;
   isRegisterDealEnabled:boolean = true;
+  vendorSelfDealsWithCountList:any = [];
+  vendorSelfDealsRequestLoader: boolean = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -806,6 +808,7 @@ export class ManageDealsComponent implements OnInit {
           this.partnerPagination.filterKey = this.campaignPagination.filterKey;
           this.partnerPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
           this.partnerSortOption.searchKey = "";
+          this.findVendorDetailsWithSelfDealsCount(this.selectedCampaignId);
           this.listPartnersForCampaign(this.partnerPagination);
         }
       } else {
@@ -1494,6 +1497,27 @@ export class ManageDealsComponent implements OnInit {
 			this.statusFilter = "";
 		}
    
+  }
+
+  findVendorDetailsWithSelfDealsCount(campaignId:number) {
+    this.vendorSelfDealsRequestLoader = true;
+    this.dealsService.findVendorDetailsWithSelfDealsCount(campaignId,this.loggedInUserId).subscribe(
+      data => {
+        this.vendorSelfDealsRequestLoader = false;
+        if (data.statusCode == 200) {
+          this.vendorSelfDealsWithCountList = data.data;
+        }
+      }, error => {
+        this.vendorSelfDealsRequestLoader = false;
+      }
+    )
+  }
+
+  showCampaignDealsByVendor(vendor: any) {
+    if (vendor.companyId > 0  && this.selectedCampaignId) {
+      this.selectedPartnerCompanyId = vendor.companyId;
+      this.showCampaignDeals = true;
+    }
   }
 
 }
