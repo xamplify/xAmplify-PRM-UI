@@ -253,9 +253,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     /*****XNFR-671*******/
     isXamplifyCsvFormatUploaded = false;
     customCsvHeaders = [];
+    customCsvHeadersForMapping = [];
     parsedCsvDtos:Array<ParsedCsvDto> = new Array<ParsedCsvDto>();
-    xAmplifyDefaultCsvHeaders = ['First Name','Last Name','Company','Job Title','Email Address','City','State','Zip Code','Country','Mobile Number'];
-
+    xAmplifyDefaultCsvHeaders = ['First Name','Last Name','Company','Job Title','Email ID','City','State','Zip Code','Country','Mobile Number'];
         constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -483,11 +483,13 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.paginationType = "customCsvContacts";
             this.parsedCsvDtos = [];
             this.customCsvHeaders = [];
+            this.customCsvHeadersForMapping = [];
             var csvResult = Papa.parse(contents);
             var csvRows = csvResult.data;
             $.each(headers,function(index:number,header:any){
                 let updatedHeader = self.removeDoubleQuotes(header);
                 self.customCsvHeaders.push(updatedHeader);
+                self.customCsvHeadersForMapping.push(updatedHeader);
             });
             let headersLength = this.customCsvHeaders.length;
             for (var i = 1; i < csvRows.length; i++) {
@@ -530,10 +532,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.referenceService.openModalPopup("csv-column-mapping-modal-popup");
     }
 
+     /****XNFR-671******/
     closeCsvColumnMappingModalPopUp(){
         this.referenceService.closeModalPopup("csv-column-mapping-modal-popup");
     }
 
+     /****XNFR-671******/
     expandRows(selectedFormDataRow: any, selectedIndex: number) {
         selectedFormDataRow.expanded = !selectedFormDataRow.expanded;
         if (selectedFormDataRow.expanded) {
@@ -541,8 +545,17 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else {
             $('#form-data-row-' + selectedIndex).css("background-color", "#fff");
         }
-
     }
+
+    /****XNFR-671******/
+    updateCustomCsvHeadersForMapping(index:number){
+        let id = "mapped-column-"+index;
+        let mappedColumn = $('#'+id+' option:selected').val();
+        this.customCsvHeadersForMapping = this.referenceService.removeAnItemFromArray(this.customCsvHeadersForMapping,mappedColumn);
+    }
+
+
+
     validateHeaders(headers) {
         return (this.removeDoubleQuotes(headers[0]) == "FIRSTNAME" &&
             this.removeDoubleQuotes(headers[1]) == "LASTNAME" &&

@@ -1565,9 +1565,9 @@
 					<tr *ngFor="let defaultCsvHeader of xAmplifyDefaultCsvHeaders;let i = index">
 						<td class="text-center">{{defaultCsvHeader}}<span *ngIf="defaultCsvHeader=='Email Address'" class="required">*</span></td>
 						<td class="text-center">
-							<select class="form-control">
-								<option>--Please Select Column To Map--</option>
-								<option *ngFor="let customCsvHeader of customCsvHeaders">
+							<select class="form-control" (change)="updateCustomCsvHeadersForMapping(i)" id="mapped-column-{{i}}">
+								<option>--Map a column--</option>
+								<option *ngFor="let customCsvHeader of customCsvHeadersForMapping" [ngValue]="customCsvHeader">
 									{{customCsvHeader}}
 								</option>
 							</select>

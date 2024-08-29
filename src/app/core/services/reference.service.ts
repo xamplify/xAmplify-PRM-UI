@@ -3380,6 +3380,13 @@ export class ReferenceService {
     });
     return arr;
   }
+
+  removeAnItemFromArray(arr:any,itemToRemove:any){
+    arr = $.grep(arr, function(value:any) {
+      return value != itemToRemove;
+    });
+    return arr;
+  }
   
   iterateNamesAndGetErrorMessage(response:any){
     let names = "";
