@@ -930,7 +930,11 @@
 									</div>
 									<!--Customer Uploaded CSV Data XNFR-671-->
 									<div class="table-responsive" *ngIf="!isXamplifyCsvFormatUploaded">
-										<app-response-message class="pg8" [customResponse]="csvInfoMessage"	*ngIf="csvInfoMessage.isVisible"></app-response-message>
+										<div class="alert alert-info">
+											<strong>
+												The uploaded CSV does not match the xAmplify CSV. Please <a (click)="arrangeHeaders()">Click here</a> to rearrange the headers.
+											</strong>
+										</div>
 										<table class="table tgrid">
 											<thead>
 												<tr>
@@ -1538,5 +1542,4 @@
 	</div>
 </div>
 
-<app-share-leads *ngIf="authenticationService.isSharePartnerModal"
-	(notifyParent)="selectedSharePartner($event)"></app-share-leads>
+<app-share-leads *ngIf="authenticationService.isSharePartnerModal" (notifyParent)="selectedSharePartner($event)"></app-share-leads>
