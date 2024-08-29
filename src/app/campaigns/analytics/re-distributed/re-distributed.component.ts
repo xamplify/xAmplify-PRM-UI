@@ -89,9 +89,9 @@ export class ReDistributedComponent implements OnInit {
         this.pagination.searchKey = this.searchKey;
         this.listRedistributedCampaigns();
     }
-    goToCampaignAnalytics(campaign) {
+    goToCampaignAnalytics(campaign:any) {
         this.referenceService.campaignType = campaign.campaignType;
-        this.router.navigate(["/home/campaigns/" + campaign.campaignId + "/details"]);
+        this.referenceService.goToCampaignAnalytics(campaign);
     }
 
     partnerCampaignUISearch(keyCode: any) { if (keyCode === 13) { this.searchInListRedistributedThroughPartnerCampaign(); } }

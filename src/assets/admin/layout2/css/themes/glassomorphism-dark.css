@@ -913,8 +913,8 @@ i.IconCustomization:hover{
   color: #fff !important;
 }
 .reload-btn {
-  background-color: #22313a !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: rgb(0 0 0 / 18%) !important;
+  border: 1px solid #ffffff33 !important;
 }
 .gear-icon,
 .e-multi-select-wrapper .e-delim-values .e-remain,
@@ -4136,7 +4136,7 @@ span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !im
   i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization {
     padding: 7px 0px 0px 3px !important;
   }
-  i.fa.fa-power-off.IconCustomization{padding-left: 2px !important;}
+  i.fa.fa-power-off.IconCustomization{padding-left: 1px !important;}
   .pos_pd_lft9{
     padding-left: 0px !important;
   }
