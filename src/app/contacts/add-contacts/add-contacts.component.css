@@ -212,3 +212,29 @@ i.fa.fa-file-excel-o.IconTopMargin {
 .cards_align{
   padding: 5px 8px!important;
 }
+
+.alert-danger {
+  background-color: #f2dede !important;
+  border-radius: 3px !important;
+  color: #a94442 !important;
+}
+.alert {
+  padding: 10px;
+  margin: 10px 0 !important;
+}
+.alert-success,
+.alert-danger,
+.alert-warning > h5 {
+  font-size: 14px;
+}
+.text {
+  padding-top: 12px;
+}
+.alert-message-fw {
+  font-weight: 600 !important;
+}
+
+.alert-danger .close {
+  position: relative;
+  top: 10px !important;
+}

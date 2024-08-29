@@ -930,9 +930,9 @@
 									</div>
 									<!--Customer Uploaded CSV Data XNFR-671-->
 									<div class="table-responsive" *ngIf="!isXamplifyCsvFormatUploaded">
-										<div class="alert alert-info">
+										<div class="alert alert-danger">
 											<strong>
-												The uploaded CSV does not match the xAmplify CSV. Please <a (click)="arrangeHeaders()">Click here</a> to rearrange the headers.
+												The uploaded CSV does not match the xAmplify CSV. Please <a class="required" (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange the headers.
 											</strong>
 										</div>
 										<table class="table tgrid">
@@ -1543,3 +1543,21 @@
 </div>
 
 <app-share-leads *ngIf="authenticationService.isSharePartnerModal" (notifyParent)="selectedSharePartner($event)"></app-share-leads>
+
+<!--Csv Column Mapping-->
+<div class="modal fade right" id="csv-column-mapping-modal-popup" data-backdrop="static">
+	<div class="modal-dialog full-width">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close-circle" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i></button>
+		  <h4 class="modal-title text-center">Map Columns</h4>
+		</div>
+		<div class="modal-body">
+			<p>Moal Oppp</p>
+		  </div>
+		</div>
+		<div class="modal-footer">
+		  <button (click)="closeCsvColumnMappingModalPopUp()"  class="btn btn-danger float-right">Close</button>
+		</div>
+	  </div>
+	</div>

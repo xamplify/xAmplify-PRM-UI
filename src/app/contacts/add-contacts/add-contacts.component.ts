@@ -392,12 +392,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     readFiles(files: any, index = 0) {
-        //files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" ||
         if (this.fileUtil.isCSVFile(files[0])) {
             this.isListLoader = true;
             var outputstring = files[0].name.substring(0, files[0].name.lastIndexOf("."));
             this.selectedAddContactsOption = 2;
-            
             this.noOptionsClickError = false;
             this.uploadedCsvFileName = files[0].name;
             if (!this.model.contactListName) {
@@ -406,7 +404,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.validateContactName(this.model.contactListName);
             this.validateLegalBasisOptions();
             this.removeCsvName = true;
-            // $( "button#sample_editable_1_new" ).prop( 'disabled', false );
             $("#file_preview").show();
             $("button#cancel_button").prop('disabled', false);
             $('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -435,7 +432,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     .getHeaderArray(csvRecordsArray);
                 let headers = headersRow[0].split(',');
                 self.validateHeadersAndReadRows(headers, self, contents);
-
             }
         } else {
             this.customResponse = new CustomResponse('ERROR', this.properties.FILE_TYPE_ERROR, true);
@@ -529,8 +525,13 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
 
-    arrangeHeaders(){
-        alert("I Clicked Headers");
+    /****XNFR-671******/
+    openArrageHeadersModalPopUp(){
+        this.referenceService.openModalPopup("csv-column-mapping-modal-popup");
+    }
+
+    closeCsvColumnMappingModalPopUp(){
+        this.referenceService.closeModalPopup("csv-column-mapping-modal-popup");
     }
 
     expandRows(selectedFormDataRow: any, selectedIndex: number) {
