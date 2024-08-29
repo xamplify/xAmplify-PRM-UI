@@ -3387,6 +3387,12 @@ export class ReferenceService {
     });
     return arr;
   }
+
+  removeMultipleItemsFromArray(array:any,itemsToRemove:any){
+    return array.filter(v => { 
+    	return !itemsToRemove.includes(v); 
+    });
+  }
   
   iterateNamesAndGetErrorMessage(response:any){
     let names = "";

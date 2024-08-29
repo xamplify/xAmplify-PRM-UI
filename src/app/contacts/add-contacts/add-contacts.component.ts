@@ -31,6 +31,7 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { ParsedCsvDto } from '../models/parsed-csv-dto';
 import { CsvRowDto } from '../models/csv-row-dto';
+import { DefaultContactsCsvColumnHeaderDto } from '../models/default-contacts-csv-column-header-dto';
 declare var swal:any, $:any, Papa: any;
 
 @Component({
@@ -196,10 +197,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     microsoftRedirectUrl: any;
     microsoftCurrentUser: string;
     microsoftLoading: boolean = false;
-
-    //XNFR-230.
-    //pipedrive
-
     pipedriveImageBlur: boolean = false;
     pipedriveImageNormal: boolean = false;
     pipedriveSelectContactListOption: any;
@@ -211,9 +208,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     pipedriveApiKeyError: boolean;
     pipedriveCurrentUser: string;
     pipedriveLoading: boolean = false;
-
-    //XNFR-403 ConnectWise
-
     connectWiseImageBlur: boolean = false;
     connectWiseImageNormal: boolean = false;
     connectWiseSelectContactListOption: any;
@@ -226,8 +220,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     connectWiseCurrentUser: string;
     connectWiseLoading: boolean = false;
     contactsCompanyListSync: boolean = false;
-
-    //XNFR-502 HaloPSA
 
     haloPSAImageBlur: boolean = false;
     haloPSAImageNormal: boolean = false;
@@ -255,6 +247,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     customCsvHeaders = [];
     customCsvHeadersForMapping = [];
     parsedCsvDtos:Array<ParsedCsvDto> = new Array<ParsedCsvDto>();
+    defaultContactsCsvColumnHeaderDtos:Array<DefaultContactsCsvColumnHeaderDto> = new Array<DefaultContactsCsvColumnHeaderDto>();
+
     xAmplifyDefaultCsvHeaders = ['First Name','Last Name','Company','Job Title','Email ID','City','State','Zip Code','Country','Mobile Number'];
         constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
@@ -491,6 +485,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 self.customCsvHeaders.push(updatedHeader);
                 self.customCsvHeadersForMapping.push(updatedHeader);
             });
+            $.each(this.defaultContactsCsvColumnHeaderDtos,function(index:number,dto:DefaultContactsCsvColumnHeaderDto){
+                dto.index = index;
+                dto.uploadedCsvColumns = self.customCsvHeaders;
+            });
             let headersLength = this.customCsvHeaders.length;
             for (var i = 1; i < csvRows.length; i++) {
                 let rows = csvRows[i];
@@ -548,10 +546,19 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     /****XNFR-671******/
-    updateCustomCsvHeadersForMapping(index:number){
-        let id = "mapped-column-"+index;
-        let mappedColumn = $('#'+id+' option:selected').val();
-        this.customCsvHeadersForMapping = this.referenceService.removeAnItemFromArray(this.customCsvHeadersForMapping,mappedColumn);
+    mapSelectedColumn(defaultContactsCsvColumnHeaderDto:DefaultContactsCsvColumnHeaderDto){
+        defaultContactsCsvColumnHeaderDto.isColumnMapped = this.referenceService.getTrimmedData(defaultContactsCsvColumnHeaderDto.mappedColumn)!="";
+        let mappedColumns = this.defaultContactsCsvColumnHeaderDtos.map(function (dto) { return dto.mappedColumn }).filter(function(v){return v!==''});
+        let self = this;
+        $.each(this.defaultContactsCsvColumnHeaderDtos,function(index:number,dto:DefaultContactsCsvColumnHeaderDto){
+            let uploadedCsvColumns = dto.uploadedCsvColumns;
+            uploadedCsvColumns = self.referenceService.removeMultipleItemsFromArray(uploadedCsvColumns,mappedColumns);
+            dto.uploadedCsvColumns = uploadedCsvColumns;
+            if(defaultContactsCsvColumnHeaderDto.isColumnMapped){
+                dto.uploadedCsvColumns.push(dto.mappedColumn);
+            }
+        });
+        console.log(this.defaultContactsCsvColumnHeaderDtos);
     }
 
 
@@ -3161,43 +3168,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         try {
-            //this.customResponse = new CustomResponse( 'SUCCESS', this.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true );
             this.loggedInUserId = this.authenticationService.getUserId();
             this.partnerEmails();
             this.socialContactImage();
             if(this.router.url.includes('home/contacts')){
 				this.checkSyncStatus();
 			}
-            //this.hideModal();
             if (!this.assignLeads) {
                 this.loadContactListsNames();
             }
-
-            /*if (localStorage.getItem('vanityUrlFilter')) {
-              localStorage.removeItem('vanityUrlFilter');
-              if (this.contactService.vanitySocialProviderName == 'google'
-                  || this.contactService.vanitySocialProviderName == 'salesforce'
-                  || this.contactService.vanitySocialProviderName == 'zoho') {
-                  let message: string = '';
-                  message = localStorage.getItem('oauthCallbackValidationMessage');
-                  localStorage.removeItem('oauthCallbackValidationMessage');
-                  if (message != null && message.length > 0) {
-                      this.customResponse = new CustomResponse('ERROR', message, true);
-                  } else if (this.contactService.vanitySocialProviderName == 'google') {
-                      this.getGoogleContactsUsers();
-                      this.contactService.vanitySocialProviderName = "nothing";
-                  } else if (this.contactService.vanitySocialProviderName == 'salesforce') {
-                      this.showModal();
-                      console.log("AddContactComponent salesforce() Authentication Success");
-                      this.checkingPopupValues();
-                      this.contactService.vanitySocialProviderName = "nothing";
-                  } else if (this.contactService.vanitySocialProviderName == 'zoho' || this.socialContactType == "zoho") {
-                      this.zohoShowModal();
-                      this.contactService.vanitySocialProviderName = "nothing";
-                  }
-              }
-          }else */
-
             if (this.contactService.socialProviderName == 'google') {
                 if (this.contactService.oauthCallbackMessage.length > 0) {
                     let message = this.contactService.oauthCallbackMessage;
@@ -3255,7 +3234,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.contactListName = '';
             $("#Gfile_preview").hide();
             $("#popupForListviews").hide();
-
             $("#sample_editable_1").hide();
             $("#file_preview").hide();
             $("#google contacts file_preview").hide();
@@ -3269,14 +3247,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             /********Check Gdpr Settings******************/
             this.checkTermsAndConditionStatus();
             this.getLegalBasisOptions();
-
             this.checkZohoStatusCode = localStorage.getItem("statusCode");
             if (this.checkZohoStatusCode == 202) {
                 localStorage.setItem("isZohoSynchronization", "yes");
                 localStorage.removeItem("statusCode");
                 this.checkZohoStatusCode = 0;
-
-
                 if (localStorage.getItem('vanityUrlDomain')) {
                     var message = "isZohoSynchronization";
                     let trargetWindow = window.opener;
@@ -3288,7 +3263,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             } else {
                 localStorage.setItem("isZohoSynchronization", "no");
             }
-
             window.addEventListener('message', function (e) {
                 window.removeEventListener('message', function (e) { }, true);
                 if (e.data == 'isGoogleAuth') {
@@ -3310,6 +3284,13 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 }
             }, false);
 
+            /***XNFR-671*****/
+            for(var i=0;i<this.xAmplifyDefaultCsvHeaders.length;i++){
+                let defaultContactsCsvColumnHeaderDto = new DefaultContactsCsvColumnHeaderDto();
+                defaultContactsCsvColumnHeaderDto.defaultColumn = this.xAmplifyDefaultCsvHeaders[i];;
+                this.defaultContactsCsvColumnHeaderDtos.push(defaultContactsCsvColumnHeaderDto);
+            }
+           
         }
         catch (error) {
             this.xtremandLogger.error("addContacts.component error " + error);

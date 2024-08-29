@@ -1562,15 +1562,21 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let defaultCsvHeader of xAmplifyDefaultCsvHeaders;let i = index">
-						<td class="text-center">{{defaultCsvHeader}}<span *ngIf="defaultCsvHeader=='Email Address'" class="required">*</span></td>
+					<tr *ngFor="let defaultContactsCsvColumnHeaderDto of defaultContactsCsvColumnHeaderDtos;let i = index">
+						<td class="text-center">{{defaultContactsCsvColumnHeaderDto.defaultColumn}}
+							<span *ngIf="defaultContactsCsvColumnHeaderDto.defaultColumn=='Email ID'" class="required">*</span>
+						</td>
 						<td class="text-center">
-							<select class="form-control" (change)="updateCustomCsvHeadersForMapping(i)" id="mapped-column-{{i}}">
-								<option>--Map a column--</option>
-								<option *ngFor="let customCsvHeader of customCsvHeadersForMapping" [ngValue]="customCsvHeader">
-									{{customCsvHeader}}
+							<select class="form-control" [(ngModel)]="defaultContactsCsvColumnHeaderDto.mappedColumn" 
+								(change)="mapSelectedColumn(defaultContactsCsvColumnHeaderDto)" id="mapped-column-{{i}}">
+								<option value="">--Map a column--</option>
+								<option *ngFor="let uploadedCsvColumn of defaultContactsCsvColumnHeaderDto.uploadedCsvColumns" [ngValue]="uploadedCsvColumn">
+									{{uploadedCsvColumn}}
 								</option>
 							</select>
+							<!-- <select class="form-control" disabled *ngIf="defaultContactsCsvColumnHeaderDto?.isColumnMapped">
+								<option>{{defaultContactsCsvColumnHeaderDto?.mappedColumn}}</option>
+							</select> -->
 						</td>
 					</tr>
 				</tbody>
