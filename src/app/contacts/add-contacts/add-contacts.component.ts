@@ -254,6 +254,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     isXamplifyCsvFormatUploaded = false;
     customCsvHeaders = [];
     parsedCsvDtos:Array<ParsedCsvDto> = new Array<ParsedCsvDto>();
+    csvInfoMessage:CustomResponse = new CustomResponse();
+
         constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -482,6 +484,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
         } else {
             /***XNFR-671 */
+            this.csvInfoMessage = new CustomResponse();
             this.paginationType = "customCsvContacts";
             this.parsedCsvDtos = [];
             this.customCsvHeaders = [];
@@ -523,6 +526,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
               }
             }
             self.setPage(1);
+            this.csvInfoMessage = new CustomResponse('INFO','The uploaded CSV does not match the xAmplify CSV. Please rearrange the headers.',true);
             this.isListLoader = false;
         }
     }

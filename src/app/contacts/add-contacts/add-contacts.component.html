@@ -930,6 +930,7 @@
 									</div>
 									<!--Customer Uploaded CSV Data XNFR-671-->
 									<div class="table-responsive" *ngIf="!isXamplifyCsvFormatUploaded">
+										<app-response-message class="pg8" [customResponse]="csvInfoMessage"	*ngIf="csvInfoMessage.isVisible"></app-response-message>
 										<table class="table tgrid">
 											<thead>
 												<tr>
