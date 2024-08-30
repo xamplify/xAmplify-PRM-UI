@@ -557,6 +557,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             if(defaultContactsCsvColumnHeaderDto.isColumnMapped){
                 dto.uploadedCsvColumns.push(dto.mappedColumn);
             }
+           dto.uploadedCsvColumns =  dto.uploadedCsvColumns.filter(function(v){return v!==''});
         });
         console.log(this.defaultContactsCsvColumnHeaderDtos);
     }
