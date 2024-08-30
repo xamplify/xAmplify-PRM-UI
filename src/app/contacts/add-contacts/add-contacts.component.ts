@@ -480,7 +480,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             var csvRows = csvResult.data;
             $.each(headers,function(index:number,header:any){
                 let updatedHeader = self.removeDoubleQuotes(header);
-                self.customCsvHeaders.push(updatedHeader);
+                let customCsvHeader = {};
+                customCsvHeader['id'] = index;
+                customCsvHeader['itemName'] = updatedHeader;
+                self.customCsvHeaders.push(customCsvHeader);
             });
             let headersLength = this.customCsvHeaders.length;
             for (var i = 1; i < csvRows.length; i++) {

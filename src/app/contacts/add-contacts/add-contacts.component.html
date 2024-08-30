@@ -938,9 +938,9 @@
 										<table class="table tgrid">
 											<thead>
 												<tr>
-													<ng-container *ngFor="let column of customCsvHeaders;let i  = index">
+													<ng-container *ngFor="let customCsvHeader of customCsvHeaders;let i  = index">
 														<ng-container *ngIf="i<=3">
-															<th>{{column}}</th>
+															<th>{{customCsvHeader?.itemName}}</th>
 														</ng-container>
 													</ng-container>
 													<th *ngIf="customCsvHeaders?.length>3">More</th>
@@ -1567,7 +1567,7 @@
 							<span *ngIf="defaultContactsCsvColumnHeaderDto.defaultColumn=='Email ID'" class="required">*</span>
 						</td>
 						<td class="text-center">
-							
+							<app-multi-select-dropdown [dropdownList]="customCsvHeaders" [displayText]="'--Map a column--'" [singleSelection]="true"></app-multi-select-dropdown>
 						</td>
 					</tr>
 				</tbody>

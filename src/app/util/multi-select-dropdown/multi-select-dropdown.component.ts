@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-multi-select-dropdown',
@@ -12,7 +12,9 @@ export class MultiSelectDropdownComponent implements OnInit {
   dropdownSettings = {};
   @Input() displayText="";
   @Input() singleSelection = false;
-
+  @Output() multiSelectDropdownSingleSelectionEventEmitter =new EventEmitter();
+  @Output() multiSelectDropdownMultiSelectionEventEmitter =new EventEmitter();
+  
 
   constructor() { }
 
@@ -25,24 +27,6 @@ export class MultiSelectDropdownComponent implements OnInit {
       this.singleSelection = false;
     }
 
-    this.dropdownList = [
-      { "id": 1, "itemName": "India" },
-      { "id": 2, "itemName": "Singapore" },
-      { "id": 3, "itemName": "Australia" },
-      { "id": 4, "itemName": "Canada" },
-      { "id": 5, "itemName": "South Korea" },
-      { "id": 6, "itemName": "Germany" },
-      { "id": 7, "itemName": "France" },
-      { "id": 8, "itemName": "Russia" },
-      { "id": 9, "itemName": "Italy" },
-      { "id": 10, "itemName": "Sweden" }
-    ];
-    this.selectedItems = [
-      { "id": 2, "itemName": "Singapore" },
-      { "id": 3, "itemName": "Australia" },
-      { "id": 4, "itemName": "Canada" },
-      { "id": 5, "itemName": "South Korea" }
-    ];
     this.dropdownSettings = {
       singleSelection: this.singleSelection,
       text: this.displayText,
@@ -55,17 +39,19 @@ export class MultiSelectDropdownComponent implements OnInit {
 
   onItemSelect(item: any) {
     console.log(item);
-    console.log(this.selectedItems);
+    this.multiSelectDropdownSingleSelectionEventEmitter.emit(item);
   }
   OnItemDeSelect(item: any) {
     console.log(item);
-    console.log(this.selectedItems);
+    this.multiSelectDropdownSingleSelectionEventEmitter.emit(item);
   }
   onSelectAll(items: any) {
     console.log(items);
+    this.multiSelectDropdownMultiSelectionEventEmitter.emit(items);
   }
   onDeSelectAll(items: any) {
     console.log(items);
+    this.multiSelectDropdownMultiSelectionEventEmitter.emit(items);
   }
 
 }
