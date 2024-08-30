@@ -1516,6 +1516,7 @@ export class ManageDealsComponent implements OnInit {
   showCampaignDealsByVendor(vendor: any) {
     if (vendor.companyId > 0  && this.selectedCampaignId) {
       this.selectedPartnerCompanyId = vendor.companyId;
+      this.selectedPartnerCompanyName = "";
       this.showCampaignDeals = true;
     }
   }
