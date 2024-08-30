@@ -1546,7 +1546,7 @@
 
 <!--Csv Column Mapping-->
 <div class="modal fade right" id="csv-column-mapping-modal-popup" data-backdrop="static" data-keyboard="false">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-css" role="document">
 	  <div class="modal-content">
 		<div class="modal-header">
 		  <button type="button" class="close-circle" data-dismiss="modal">
@@ -1567,24 +1567,16 @@
 							<span *ngIf="defaultContactsCsvColumnHeaderDto.defaultColumn=='Email ID'" class="required">*</span>
 						</td>
 						<td class="text-center">
-							<select class="form-control" [(ngModel)]="defaultContactsCsvColumnHeaderDto.mappedColumn" 
-								(change)="mapSelectedColumn(defaultContactsCsvColumnHeaderDto)" id="mapped-column-{{i}}">
-								<option value="">--Map a column--</option>
-								<option *ngFor="let uploadedCsvColumn of defaultContactsCsvColumnHeaderDto.uploadedCsvColumns" [ngValue]="uploadedCsvColumn">
-									{{uploadedCsvColumn}}
-								</option>
-							</select>
-							<!-- <select class="form-control" disabled *ngIf="defaultContactsCsvColumnHeaderDto?.isColumnMapped">
-								<option>{{defaultContactsCsvColumnHeaderDto?.mappedColumn}}</option>
-							</select> -->
+							
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" id="connectwise_save_button" class="btn btn-primary"	(click)="getConnectWiseData()" data-dismiss="modal" translate>Submit</button>
 		</div>
-		<div class="modal-footer">
-		  <button (click)="closeCsvColumnMappingModalPopUp()"  class="btn btn-danger">Close</button>
 		</div>
 	  </div>
 	</div>

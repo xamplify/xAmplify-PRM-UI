@@ -245,7 +245,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     /*****XNFR-671*******/
     isXamplifyCsvFormatUploaded = false;
     customCsvHeaders = [];
-    customCsvHeadersForMapping = [];
     parsedCsvDtos:Array<ParsedCsvDto> = new Array<ParsedCsvDto>();
     defaultContactsCsvColumnHeaderDtos:Array<DefaultContactsCsvColumnHeaderDto> = new Array<DefaultContactsCsvColumnHeaderDto>();
 
@@ -477,17 +476,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.paginationType = "customCsvContacts";
             this.parsedCsvDtos = [];
             this.customCsvHeaders = [];
-            this.customCsvHeadersForMapping = [];
             var csvResult = Papa.parse(contents);
             var csvRows = csvResult.data;
             $.each(headers,function(index:number,header:any){
                 let updatedHeader = self.removeDoubleQuotes(header);
                 self.customCsvHeaders.push(updatedHeader);
-                self.customCsvHeadersForMapping.push(updatedHeader);
-            });
-            $.each(this.defaultContactsCsvColumnHeaderDtos,function(index:number,dto:DefaultContactsCsvColumnHeaderDto){
-                dto.index = index;
-                dto.uploadedCsvColumns = self.customCsvHeaders;
             });
             let headersLength = this.customCsvHeaders.length;
             for (var i = 1; i < csvRows.length; i++) {
@@ -550,16 +543,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         defaultContactsCsvColumnHeaderDto.isColumnMapped = this.referenceService.getTrimmedData(defaultContactsCsvColumnHeaderDto.mappedColumn)!="";
         let mappedColumns = this.defaultContactsCsvColumnHeaderDtos.map(function (dto) { return dto.mappedColumn }).filter(function(v){return v!==''});
         let self = this;
-        $.each(this.defaultContactsCsvColumnHeaderDtos,function(index:number,dto:DefaultContactsCsvColumnHeaderDto){
-            let uploadedCsvColumns = dto.uploadedCsvColumns;
-            uploadedCsvColumns = self.referenceService.removeMultipleItemsFromArray(uploadedCsvColumns,mappedColumns);
-            dto.uploadedCsvColumns = uploadedCsvColumns;
-            if(defaultContactsCsvColumnHeaderDto.isColumnMapped){
-                dto.uploadedCsvColumns.push(dto.mappedColumn);
-            }
-           dto.uploadedCsvColumns =  dto.uploadedCsvColumns.filter(function(v){return v!==''});
-        });
-        console.log(this.defaultContactsCsvColumnHeaderDtos);
     }
 
 
