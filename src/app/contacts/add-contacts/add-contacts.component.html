@@ -940,7 +940,7 @@
 												<tr>
 													<ng-container *ngFor="let customCsvHeader of customCsvHeaders;let i  = index">
 														<ng-container *ngIf="i<=3">
-															<th>{{customCsvHeader?.itemName}}</th>
+															<th>{{customCsvHeader.itemName}}</th>
 														</ng-container>
 													</ng-container>
 													<th *ngIf="customCsvHeaders?.length>3">More</th>
@@ -964,9 +964,9 @@
 													<tr [ngClass]="{'hidden': !parsedCsvDto.expanded}" id="child-table">
 														<td colspan="5">
 															<table id="expanded-table" class="table tgrid table-bordered" style="margin-bottom: 1px;">
-																<tr *ngFor="let csvHeader of customCsvHeaders;let i  = index;">
+																<tr *ngFor="let customCsvHeader of customCsvHeaders;let i  = index;">
 																	<th *ngIf="i>=4" scope="row">
-																		{{csvHeader}}
+																		{{customCsvHeader?.itemName}}
 																	</th>
 																	<td *ngIf="i>=4">
 																		{{parsedCsvDto?.csvRows[i].value}}
@@ -979,6 +979,7 @@
 											</tbody>
 										</table>
 									</div>
+									<!--Pagination-->
 									<ul *ngIf="pager?.pages && pager?.pages?.length" class="pagination">
 										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
 												(click)="setPage(1)">First</a></li>
@@ -1554,6 +1555,7 @@
 		  <h4 class="modal-title text-center">Map Columns</h4>
 		</div>
 		<div class="modal-body">
+			<app-response-message [customResponse]="duplicateColumnsMappedErrorResponse" *ngIf="duplicateColumnsMappedErrorResponse.isVisible" [showCloseIcon]="false"></app-response-message>
 			<table class='table tgrid table-hover table-sm'>
 				<thead>
 					<tr>
@@ -1562,20 +1564,23 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let defaultContactsCsvColumnHeaderDto of defaultContactsCsvColumnHeaderDtos;let i = index">
-						<td class="text-center">{{defaultContactsCsvColumnHeaderDto.defaultColumn}}
-							<span *ngIf="defaultContactsCsvColumnHeaderDto.defaultColumn=='Email ID'" class="required">*</span>
-						</td>
-						<td class="text-center">
-							<app-multi-select-dropdown [dropdownList]="customCsvHeaders" [displayText]="'--Map a column--'" [singleSelection]="true"></app-multi-select-dropdown>
-						</td>
-					</tr>
+					<ng-container *ngFor="let defaultContactsCsvColumnHeaderDto of defaultContactsCsvColumnHeaderDtos;let i = index">
+						<tr [ngClass]="duplicateMappedColumns?.indexOf(defaultContactsCsvColumnHeaderDto?.mappedColumn)>-1 ?  'alert alert-danger':''">
+							<td class="text-center">{{defaultContactsCsvColumnHeaderDto.defaultColumn}}
+								<span *ngIf="defaultContactsCsvColumnHeaderDto.defaultColumn=='Email ID'" class="required">*</span>
+							</td>
+							<td class="text-center">
+								<app-multi-select-dropdown *ngIf="customCsvHeaders!=undefined && customCsvHeaders.length>0" [dropdownList]="customCsvHeaders" [displayText]="'--Map a column--'" [singleSelection]="true"
+									 (multiSelectDropdownSingleSelectionEventEmitter)="selectedMappedColumn($event,defaultContactsCsvColumnHeaderDto)"></app-multi-select-dropdown>
+							</td>
+						</tr>
+					</ng-container>
 				</tbody>
 			</table>
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button type="button" id="connectwise_save_button" class="btn btn-primary"	(click)="getConnectWiseData()" data-dismiss="modal" translate>Submit</button>
+			<button type="button"  class="btn btn-primary"	(click)="saveMappedColumns()">Submit</button>
 		</div>
 		</div>
 	  </div>

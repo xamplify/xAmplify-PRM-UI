@@ -38,19 +38,15 @@ export class MultiSelectDropdownComponent implements OnInit {
   }
 
   onItemSelect(item: any) {
-    console.log(item);
     this.multiSelectDropdownSingleSelectionEventEmitter.emit(item);
   }
   OnItemDeSelect(item: any) {
-    console.log(item);
-    this.multiSelectDropdownSingleSelectionEventEmitter.emit(item);
+    this.multiSelectDropdownSingleSelectionEventEmitter.emit();
   }
   onSelectAll(items: any) {
-    console.log(items);
     this.multiSelectDropdownMultiSelectionEventEmitter.emit(items);
   }
   onDeSelectAll(items: any) {
-    console.log(items);
     this.multiSelectDropdownMultiSelectionEventEmitter.emit(items);
   }
 

@@ -3756,6 +3756,17 @@ copySelectedElement(inputElement:any,id:string){
   inputElement.setSelectionRange(0, 0);
   $('#'+id).show(600);
 }
+
+  findDuplicateArrayElements(array:any) {
+    var recipientsArray = array.sort();
+    var duplicateElements = [];
+    for (var i = 0; i < recipientsArray.length - 1; i++) {
+      if (recipientsArray[i + 1] == recipientsArray[i]) {
+        duplicateElements.push(recipientsArray[i]);
+      }
+    }
+    return duplicateElements;
+  }
   
 }
 

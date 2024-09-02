@@ -32,6 +32,8 @@ import { DashboardService } from 'app/dashboard/dashboard.service';
 import { ParsedCsvDto } from '../models/parsed-csv-dto';
 import { CsvRowDto } from '../models/csv-row-dto';
 import { DefaultContactsCsvColumnHeaderDto } from '../models/default-contacts-csv-column-header-dto';
+import { defaultUrlMatcher } from '@angular/router/src/shared';
+import { first } from 'rxjs/operators';
 declare var swal:any, $:any, Papa: any;
 
 @Component({
@@ -244,14 +246,17 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     socialContactsNames: string[] = ['HUBSPOT', 'MARKETO', 'microsoft', 'pipedrive', 'connectWise', 'halopsa'];
     /*****XNFR-671*******/
     isXamplifyCsvFormatUploaded = false;
-    customCsvHeaders = [];
     parsedCsvDtos:Array<ParsedCsvDto> = new Array<ParsedCsvDto>();
     defaultContactsCsvColumnHeaderDtos:Array<DefaultContactsCsvColumnHeaderDto> = new Array<DefaultContactsCsvColumnHeaderDto>();
-
     xAmplifyDefaultCsvHeaders = ['First Name','Last Name','Company','Job Title','Email ID','City','State','Zip Code','Country','Mobile Number'];
+    customCsvHeaders: any[];
+    mappedColumns = [];
+    duplicateMappedColumns = [];
+    duplicateColumnsMappedErrorResponse:CustomResponse = new CustomResponse();
+    mappingLoader = false;
         constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
-        private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
+        public properties: Properties,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, private hubSpotService: HubSpotService, public userService: UserService,
         public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService, public integrationService: IntegrationService, private dashBoardService: DashboardService) {
         this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
@@ -498,6 +503,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 let rowAndColumnIndex = rowIndex+":"+columnIndex;
                 csvRowDto.rowAndColumnInfo = rowAndColumnIndex;
                 csvRowDto.value = $.trim(value);
+                csvRowDto.columnHeader = $.trim(self.customCsvHeaders[index]['itemName']);
                 parsedCsvDto.csvRows.push(csvRowDto);
               });
               let parsedCsvDtoRowsLength = parsedCsvDto.csvRows.length;
@@ -523,15 +529,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     /****XNFR-671******/
     openArrageHeadersModalPopUp(){
+        this.referenceService.scrollToModalBodyTopByClass();
+        this.duplicateColumnsMappedErrorResponse = new CustomResponse();
         this.referenceService.openModalPopup("csv-column-mapping-modal-popup");
     }
-
-     /****XNFR-671******/
-    closeCsvColumnMappingModalPopUp(){
-        this.referenceService.closeModalPopup("csv-column-mapping-modal-popup");
-    }
-
-     /****XNFR-671******/
+    
+    /****XNFR-671******/
     expandRows(selectedFormDataRow: any, selectedIndex: number) {
         selectedFormDataRow.expanded = !selectedFormDataRow.expanded;
         if (selectedFormDataRow.expanded) {
@@ -541,14 +544,149 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
 
-    /****XNFR-671******/
-    mapSelectedColumn(defaultContactsCsvColumnHeaderDto:DefaultContactsCsvColumnHeaderDto){
-        defaultContactsCsvColumnHeaderDto.isColumnMapped = this.referenceService.getTrimmedData(defaultContactsCsvColumnHeaderDto.mappedColumn)!="";
-        let mappedColumns = this.defaultContactsCsvColumnHeaderDtos.map(function (dto) { return dto.mappedColumn }).filter(function(v){return v!==''});
-        let self = this;
+   /****XNFR-671******/
+   mapSelectedColumn(defaultContactsCsvColumnHeaderDto:DefaultContactsCsvColumnHeaderDto){
+    let mappedColumn = defaultContactsCsvColumnHeaderDto.mappedColumn;
+    defaultContactsCsvColumnHeaderDto.isColumnMapped = this.referenceService.getTrimmedData(mappedColumn)!="";
+    let mappedColumns = this.defaultContactsCsvColumnHeaderDtos.map(function (dto) { return dto.mappedColumn }).filter(function(v){return v!==''});
+    this.duplicateMappedColumns = this.referenceService.findDuplicateArrayElements(mappedColumns);
+    if(this.duplicateMappedColumns!=undefined && this.duplicateMappedColumns.length>0){
+        this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Duplicate columns have been mapped. Please ensure to check for the specified errors.',true);
+    }else{
+        this.duplicateColumnsMappedErrorResponse = new CustomResponse();
+    }
+   }
+
+    selectedMappedColumn(event:any,defaultContactsCsvColumnHeaderDto:DefaultContactsCsvColumnHeaderDto){
+        if(event!=undefined){
+            defaultContactsCsvColumnHeaderDto.mappedColumn = event['itemName'];
+        }else{
+            defaultContactsCsvColumnHeaderDto.mappedColumn = "";
+        }
+        this.mapSelectedColumn(defaultContactsCsvColumnHeaderDto);
+    }
+
+    saveMappedColumns(){
+        this.mappingLoader = true;
+        try{
+            this.referenceService.scrollToModalBodyTopByClass();
+            this.duplicateColumnsMappedErrorResponse = new CustomResponse();
+            setTimeout(() => {
+                let filteredColumnHeaderDtos = this.defaultContactsCsvColumnHeaderDtos.filter(function(v){return v.isColumnMapped;});
+                if(filteredColumnHeaderDtos!=undefined && filteredColumnHeaderDtos.length>0){
+                    let mappedColumns = this.defaultContactsCsvColumnHeaderDtos.map(function (dto) { return dto.mappedColumn }).filter(function(v){return v!==''});
+                    this.duplicateMappedColumns = this.referenceService.findDuplicateArrayElements(mappedColumns);
+                    let isDuplicateColumnsMapped = this.duplicateMappedColumns!=undefined && this.duplicateMappedColumns.length>0;
+                    if(!isDuplicateColumnsMapped){
+                        let defaultColumns = filteredColumnHeaderDtos.map(function (dto) { return dto.defaultColumn }).filter(function(v){return v!==''});
+                        if(defaultColumns.indexOf('Email ID')>-1){
+                            let self = this.iterateDtoAndAddMappedRows(filteredColumnHeaderDtos);
+    
+                            let firstNameRows = this.getMappedRows(filteredColumnHeaderDtos, self.xAmplifyDefaultCsvHeaders[0]);
+                            let lastNameRows = this.getMappedRows(filteredColumnHeaderDtos, self.xAmplifyDefaultCsvHeaders[1]);
+                            let companyRows = this.getMappedRows(filteredColumnHeaderDtos, self.xAmplifyDefaultCsvHeaders[2]);
+                            let jobTitleRows = this.getMappedRows(filteredColumnHeaderDtos,self.xAmplifyDefaultCsvHeaders[3])
+                            let emailIdRows = this.getMappedRows(filteredColumnHeaderDtos,self.xAmplifyDefaultCsvHeaders[4]);
+                            let rowsLength = 0;
+                            if(emailIdRows!=undefined){
+                                 rowsLength = emailIdRows[0].length;
+                            }else{
+                                rowsLength = 0;
+                            }
+                            let mappedContactUsers = new Array<User>();
+                            for(var i=0;i<rowsLength;i++){
+                                let user = new User();
+                                 /***First Name****/
+                                 this.setFirstName(firstNameRows, user, i);
+                                /***Last Name****/
+                                this.setLastName(lastNameRows, user, i);
+                                /***Company****/
+                                this.setCompanyName(companyRows, user, i);
+                                /***Job Title****/
+                                 if(jobTitleRows!=undefined && jobTitleRows.length>0){
+                                    let jobTitles = jobTitleRows[0];
+                                    user.jobTitle = jobTitles[i];
+                                }
+                                /***Email Id****/
+                                this.setEmailAddress(emailIdRows, user, i);
+                                
+                                mappedContactUsers.push(user);
+                            }
+                            console.log(mappedContactUsers);
+                
+                        }else{
+                            this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Email ID mapping is mandetory.',true);
+                        }
+                    }else{
+                        this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Duplicate columns have been mapped. Please ensure to check for the specified errors.',true);
+                    }
+                }else{
+                    this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Please ensure to map the Email ID column.',true);
+                }
+               
+            this.mappingLoader = false;
+            }, 100);
+        }catch(error){
+            alert("Error");
+        }
+
+       
     }
 
 
+    private setEmailAddress(emailIdRows: any[][], user: User, i: number) {
+        if (emailIdRows != undefined && emailIdRows.length > 0) {
+            let emailIds = emailIdRows[0];
+            user.emailId = emailIds[i];
+        }
+    }
+
+    private setCompanyName(companyRows: any[][], user: User, i: number) {
+        if (companyRows != undefined && companyRows.length > 0) {
+            let companyNames = companyRows[0];
+            user.companyName = companyNames[i];
+        }
+    }
+
+    private setLastName(lastNameRows: any[][], user: User, i: number) {
+        if (lastNameRows != undefined && lastNameRows.length > 0) {
+            let lastNames = lastNameRows[0];
+            user.lastName = lastNames[i];
+        }
+    }
+
+    private setFirstName(firstNameRows: any[][], user: User, i: number) {
+        if (firstNameRows != undefined && firstNameRows.length > 0) {
+            let firstNames = firstNameRows[0];
+            user.firstName = firstNames[i];
+        }
+    }
+
+    private getMappedRows(filteredColumnHeaderDtos: DefaultContactsCsvColumnHeaderDto[], headerColumn: string) {
+        console.log(headerColumn);
+        return filteredColumnHeaderDtos.filter(function (x) {
+            return x != undefined && x.defaultColumn == headerColumn;
+        }).map(function (dto) {
+            return dto != undefined && dto.mappedRows;
+        });
+    }
+
+    private iterateDtoAndAddMappedRows(filteredColumnHeaderDtos: DefaultContactsCsvColumnHeaderDto[]) {
+        let self = this;
+        $.each(filteredColumnHeaderDtos, function (index: number, dto: DefaultContactsCsvColumnHeaderDto) {
+            let mappedColumn = dto.mappedColumn;
+            $.each(self.parsedCsvDtos, function (parsedCsvDtoIndex: number, parsedCsvDto: ParsedCsvDto) {
+                let csvRows = parsedCsvDto.csvRows;
+                $.each(csvRows, function (csvRowIndex: number, csvRowDto: CsvRowDto) {
+                    let column = csvRowDto.columnHeader;
+                    if (column == mappedColumn) {
+                        dto.mappedRows.push(csvRowDto.value);
+                    }
+                });
+            });
+        });
+        return self;
+    }
 
     validateHeaders(headers) {
         return (this.removeDoubleQuotes(headers[0]) == "FIRSTNAME" &&
