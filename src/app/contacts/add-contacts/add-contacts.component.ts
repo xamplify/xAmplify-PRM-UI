@@ -247,11 +247,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     defaultContactsCsvColumnHeaderDtos:Array<DefaultContactsCsvColumnHeaderDto> = new Array<DefaultContactsCsvColumnHeaderDto>();
     xAmplifyDefaultCsvHeaders = ['First Name','Last Name','Company','Job Title','Email ID','City','State','Zip Code','Country','Mobile Number'];
     customCsvHeaders: any[];
-    mappedColumns = [];
     duplicateMappedColumns = [];
     duplicateColumnsMappedErrorResponse:CustomResponse = new CustomResponse();
     mappingLoader = false;
     isResetButtonClicked = false;
+    isColumnMapped = false;
+    /*****XNFR-671*******/
         constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         public properties: Properties,
@@ -613,6 +614,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }
                         this.iterateAndAddToUsers(rowsLength, firstNameRows, lastNameRows, companyRows, jobTitleRows, emailIdRows, cityRows, stateRows, zipCodeRows, countryRows, mobileNumberRows, this.contacts);
                         console.log(this.contacts);
+                        this.isColumnMapped = true;
                     }else{
                         this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Email ID mapping is mandetory.',true);
                     }
@@ -647,6 +649,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 dto.mappedRows = [];
             });
             this.isResetButtonClicked = true;
+            this.isColumnMapped = false;
             this.mappingLoader = false;
         }, 100);
     }

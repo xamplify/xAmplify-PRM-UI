@@ -928,11 +928,61 @@
 											</tbody>
 										</table>
 									</div>
-									<!--Customer Uploaded CSV Data XNFR-671-->
-									<div class="table-responsive" *ngIf="!isXamplifyCsvFormatUploaded">
+									<!--Customer Uploaded UnMapped CSV Data XNFR-671-->
+									<div class="table-responsive" *ngIf="!isXamplifyCsvFormatUploaded && !isColumnMapped && !isListLoader">
 										<div class="alert alert-danger">
 											<strong>
 												The uploaded CSV does not match the xAmplify CSV. Please <a class="required" (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange the headers.
+											</strong>
+										</div>
+										<table class="table tgrid">
+											<thead>
+												<tr>
+													<ng-container *ngFor="let customCsvHeader of customCsvHeaders;let i  = index">
+														<ng-container *ngIf="i<=3">
+															<th>{{customCsvHeader.itemName}}</th>
+														</ng-container>
+													</ng-container>
+													<th *ngIf="customCsvHeaders?.length>3">More</th>
+												</tr>
+											</thead>
+											<tbody>
+												<ng-container  *ngFor="let parsedCsvDto of pagedItems;let rowIndex = index">
+													<tr  id="form-data-row-{{rowIndex}}" class="form-data-row">
+														<ng-container *ngFor="let csvRow of  parsedCsvDto.csvRows;let columnIndex = index">
+															<td *ngIf="columnIndex<=3">
+																{{csvRow.value}}
+															</td>
+														</ng-container>
+														<td *ngIf="customCsvHeaders?.length>3">
+															<button *ngIf="customCsvHeaders?.length>4" class="lightgray-btn" id='more_less_button_{{rowIndex}}' (click)="expandRows(parsedCsvDto,rowIndex)">
+																<span *ngIf="!parsedCsvDto.expanded">More</span>
+																<span *ngIf="parsedCsvDto.expanded">Less</span>
+															</button>
+														</td>
+													</tr>
+													<tr [ngClass]="{'hidden': !parsedCsvDto.expanded}" id="child-table">
+														<td colspan="5">
+															<table id="expanded-table" class="table tgrid table-bordered" style="margin-bottom: 1px;">
+																<tr *ngFor="let customCsvHeader of customCsvHeaders;let i  = index;">
+																	<th *ngIf="i>=4" scope="row">
+																		{{customCsvHeader?.itemName}}
+																	</th>
+																	<td *ngIf="i>=4">
+																		{{parsedCsvDto?.csvRows[i].value}}
+																	</td>
+																</tr>
+															</table>
+														</td>
+													</tr>
+												</ng-container>
+											</tbody>
+										</table>
+									</div>
+									<div class="table-responsive" *ngIf="!isXamplifyCsvFormatUploaded && isColumnMapped && !isListLoader">
+										<div class="alert alert-success">
+											<strong>
+												CSV has been mapped.You can still <a class="required" (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange headers.
 											</strong>
 										</div>
 										<table class="table tgrid">
@@ -1567,7 +1617,7 @@
 				</thead>
 				<tbody>
 					<ng-container *ngFor="let defaultContactsCsvColumnHeaderDto of defaultContactsCsvColumnHeaderDtos;let i = index">
-						<tr [ngClass]="duplicateMappedColumns?.indexOf(defaultContactsCsvColumnHeaderDto?.mappedColumn)>-1 ?  'alert alert-danger' 
+						<tr id="uploaded-csv-tr" [ngClass]="duplicateMappedColumns?.indexOf(defaultContactsCsvColumnHeaderDto?.mappedColumn)>-1 ?  'alert alert-danger' 
 								: (duplicateMappedColumns?.indexOf(defaultContactsCsvColumnHeaderDto?.mappedColumn)<0 && defaultContactsCsvColumnHeaderDto?.mappedColumn.length>0) ? 'alert alert-success' 
 								: defaultContactsCsvColumnHeaderDto?.mappedColumn.length==0 ? '':''">
 							<td class="text-center">{{defaultContactsCsvColumnHeaderDto.defaultColumn}}
