@@ -581,9 +581,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     /****XNFR-671******/
     saveMappedColumns(){
         this.mappingLoader = true;
+        this.contacts = [];
         this.duplicateColumnsMappedErrorResponse = new CustomResponse();
         try{
             this.referenceService.scrollToModalBodyTopByClass();
+            this.resetMappedRows();
             let filteredColumnHeaderDtos = this.defaultContactsCsvColumnHeaderDtos.filter(function(v){return v.isColumnMapped;});
             if(filteredColumnHeaderDtos!=undefined && filteredColumnHeaderDtos.length>0){
                 let mappedColumns = this.defaultContactsCsvColumnHeaderDtos.map(function (dto) { return dto.mappedColumn }).filter(function(v){return v!==''});
@@ -609,9 +611,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }else{
                             rowsLength = 0;
                         }
-                        let mappedContactUsers = new Array<User>();
-                        this.iterateAndAddToUsers(rowsLength, firstNameRows, lastNameRows, companyRows, jobTitleRows, emailIdRows, cityRows, stateRows, zipCodeRows, countryRows, mobileNumberRows, mappedContactUsers);
-                        console.log(mappedContactUsers);
+                        this.iterateAndAddToUsers(rowsLength, firstNameRows, lastNameRows, companyRows, jobTitleRows, emailIdRows, cityRows, stateRows, zipCodeRows, countryRows, mobileNumberRows, this.contacts);
+                        console.log(this.contacts);
                     }else{
                         this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Email ID mapping is mandetory.',true);
                     }
@@ -627,13 +628,23 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     /****XNFR-671******/
+    private resetMappedRows() {
+        $.each(this.defaultContactsCsvColumnHeaderDtos, function (_index: number, dto: DefaultContactsCsvColumnHeaderDto) {
+            dto.mappedRows = [];
+        });
+    }
+
+    /****XNFR-671******/
     resetMappedColumns(){
+        this.duplicateColumnsMappedErrorResponse = new CustomResponse();
         this.mappingLoader = true;
         this.isResetButtonClicked = false;
         setTimeout(() => {
             $.each(this.defaultContactsCsvColumnHeaderDtos,function(_index:number,dto:DefaultContactsCsvColumnHeaderDto){
                 dto.mappedColumn = "";
                 dto.selectedItems = [];
+                dto.isColumnMapped = false;
+                dto.mappedRows = [];
             });
             this.isResetButtonClicked = true;
             this.mappingLoader = false;

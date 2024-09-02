@@ -19,8 +19,7 @@ export class MultiSelectDropdownComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log("Multi Select Component Added");
-
+    
     if(this.displayText==undefined){
       this.displayText = "Select Items";
     }
