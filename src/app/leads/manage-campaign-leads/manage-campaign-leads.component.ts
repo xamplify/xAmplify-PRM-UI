@@ -543,7 +543,7 @@ showRegisterDealButton(lead):boolean {
   let showRegisterDeal = false;
   if (lead.selfLead && lead.dealBySelfLead && (this.authenticationService.module.isOrgAdminCompany || this.authenticationService.module.isMarketingCompany) && lead.associatedDealId == undefined) {
     showRegisterDeal = true;
-  } else if (((((lead.dealByVendor && (this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()) || lead.canRegisterDeal && lead.dealByPartner) && !lead.selfLead)) && lead.associatedDealId == undefined) 
+  } else if (((((lead.dealByVendor && (this.authenticationService.module.isVendor || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()) || lead.canRegisterDeal && lead.dealByPartner) && !lead.selfLead)) && lead.associatedDealId == undefined) 
     && ((lead.enableRegisterDealButton && !lead.leadApprovalOrRejection && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED'))) {
     showRegisterDeal = true;
   }
