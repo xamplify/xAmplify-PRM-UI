@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-multi-select-dropdown',
@@ -8,7 +8,7 @@ import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
 export class MultiSelectDropdownComponent implements OnInit {
 
   @Input() dropdownList = [];
-  selectedItems = [];
+  @Input () selectedItems = [];
   dropdownSettings = {};
   @Input() displayText="";
   @Input() singleSelection = false;
@@ -19,12 +19,16 @@ export class MultiSelectDropdownComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log("Multi Select Component Added");
 
     if(this.displayText==undefined){
       this.displayText = "Select Items";
     }
     if(this.singleSelection==undefined){
       this.singleSelection = false;
+    }
+    if(this.selectedItems==undefined){
+      this.selectedItems = [];
     }
 
     this.dropdownSettings = {
@@ -48,6 +52,10 @@ export class MultiSelectDropdownComponent implements OnInit {
   }
   onDeSelectAll(items: any) {
     this.multiSelectDropdownMultiSelectionEventEmitter.emit(items);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.selectedItems = [];
   }
 
 }

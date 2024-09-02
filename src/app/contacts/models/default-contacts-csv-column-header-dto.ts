@@ -4,4 +4,5 @@ export class DefaultContactsCsvColumnHeaderDto {
     isColumnMapped = false;
     index:number;
     mappedRows = [];
+    selectedItems = [];
 }

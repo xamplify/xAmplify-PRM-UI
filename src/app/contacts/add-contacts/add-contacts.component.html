@@ -1555,8 +1555,10 @@
 		  <h4 class="modal-title text-center">Map Columns</h4>
 		</div>
 		<div class="modal-body">
+			<ngx-loading [show]="mappingLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+			<app-modal-popup-loader *ngIf="mappingLoader"></app-modal-popup-loader>
 			<app-response-message [customResponse]="duplicateColumnsMappedErrorResponse" *ngIf="duplicateColumnsMappedErrorResponse.isVisible" [showCloseIcon]="false"></app-response-message>
-			<table class='table tgrid table-hover table-sm'>
+			<table class='table tgrid table-hover table-sm' *ngIf="!mappingLoader">
 				<thead>
 					<tr>
 						<th scope="row" class="text-center">Default Columns</th>
@@ -1565,12 +1567,15 @@
 				</thead>
 				<tbody>
 					<ng-container *ngFor="let defaultContactsCsvColumnHeaderDto of defaultContactsCsvColumnHeaderDtos;let i = index">
-						<tr [ngClass]="duplicateMappedColumns?.indexOf(defaultContactsCsvColumnHeaderDto?.mappedColumn)>-1 ?  'alert alert-danger':''">
+						<tr [ngClass]="duplicateMappedColumns?.indexOf(defaultContactsCsvColumnHeaderDto?.mappedColumn)>-1 ?  'alert alert-danger' 
+								: (duplicateMappedColumns?.indexOf(defaultContactsCsvColumnHeaderDto?.mappedColumn)<0 && defaultContactsCsvColumnHeaderDto?.mappedColumn.length>0) ? 'alert alert-success' 
+								: defaultContactsCsvColumnHeaderDto?.mappedColumn.length==0 ? '':''">
 							<td class="text-center">{{defaultContactsCsvColumnHeaderDto.defaultColumn}}
 								<span *ngIf="defaultContactsCsvColumnHeaderDto.defaultColumn=='Email ID'" class="required">*</span>
 							</td>
-							<td class="text-center">
-								<app-multi-select-dropdown *ngIf="customCsvHeaders!=undefined && customCsvHeaders.length>0" [dropdownList]="customCsvHeaders" [displayText]="'--Map a column--'" [singleSelection]="true"
+							<td class="text-center" >
+								<app-multi-select-dropdown  *ngIf="(customCsvHeaders!=undefined && customCsvHeaders.length>0) || isResetButtonClicked" 
+									[dropdownList]="customCsvHeaders" [displayText]="'--Map a column--'" [singleSelection]="true" [selectedItems]="defaultContactsCsvColumnHeaderDto.selectedItems"
 									 (multiSelectDropdownSingleSelectionEventEmitter)="selectedMappedColumn($event,defaultContactsCsvColumnHeaderDto)"></app-multi-select-dropdown>
 							</td>
 						</tr>
@@ -1579,9 +1584,10 @@
 			</table>
 		  </div>
 		  <div class="modal-footer">
+			<button type="button" class="btn btn-danger" (click)="!mappingLoader && resetMappedColumns()">Reset</button>
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button type="button"  class="btn btn-primary"	(click)="saveMappedColumns()">Submit</button>
+			<button type="button" class="btn btn-primary" [disabled]="duplicateMappedColumns?.length>0" (click)="duplicateMappedColumns?.length==0 && saveMappedColumns()">Submit</button>
 		</div>
 		</div>
 	  </div>
-	</div>
+</div>
