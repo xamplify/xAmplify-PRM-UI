@@ -781,14 +781,14 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
           pagination.campaignType = "VIDEO";
           this.campaignService.listCampaignInteractiveViews(pagination,false)
            .subscribe(data => {
-               this.listCampaignViewsDataInsert(data.data, campaignId);
+               this.listCampaignInteractiveViewsDataInsert(data.data, campaignId);
                },
            error => console.log(error),
            () => console.log('listCampaignInteractiveViews(): called') )
       } else{
          this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign,false)
            .subscribe(data => { 
-             this.listCampaignViewsDataInsert(data.data, campaignId);
+             this.listCampaignViewsDataInsert(data.data, data.totalRecords);
              },
             error => console.log(error),
             () => console.log('listCampaignViews(); called') )
@@ -796,12 +796,20 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       }catch(error){ this.xtremandLogger.error('error'+error);}
     }
     
-    listCampaignViewsDataInsert(campaignviews: any, campaignId: number){
-      this.campaignViews = campaignviews;
-      this.pagination.totalRecords = this.campaignReport.emailSentCount;
-      this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignViews);
-      this.loading = false;
-      this.referenceService.loading(this.httpRequestLoader, false);
+  listCampaignInteractiveViewsDataInsert(campaignviews: any, campaignId: number) {
+    this.campaignViews = campaignviews;
+    this.pagination.totalRecords = this.campaignReport.emailSentCount;
+    this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignViews);
+    this.loading = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
+  }
+
+  listCampaignViewsDataInsert(campaignviews: any, totalRecords: number) {
+    this.campaignViews = campaignviews;
+    this.pagination.totalRecords = totalRecords;
+    this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignViews);
+    this.loading = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
   }
     
   totalListOfCampaignViews(campaignId: number, totalRecords: number) {
@@ -1395,7 +1403,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
   navigateCampaignAnalytics(campaign: any) {
     $('#myModal').modal('hide');
     this.referenceService.campaignType = this.previewCampaignType;
-    this.router.navigate(['/home/campaigns/' + this.previewCampaignId + '/details']);
+    let campaignRouterParams = {};
+    campaignRouterParams['campaignId'] = this.previewCampaignId;
+    campaignRouterParams['campaignTitle'] = campaign.campaignTitle;
+    this.referenceService.goToCampaignAnalytics(campaignRouterParams);
   }
   navigateRedistributedCampaigns(campaign: any) {
     $('#myModal').modal('hide');
@@ -1665,7 +1676,7 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
     $('#myModal').modal('hide');
     this.ngxloading = true;
     let prefixUrl = "/home/campaigns/user-campaigns/";
-    let suffixUrl =  user.userId+"/a";
+    let suffixUrl =  this.referenceService.encodePathVariable(user.userId)+"/a";
     if(campaign.nurtureCampaign){
       this.referenceService.goToRouter(prefixUrl + "/c/" +suffixUrl);
     }else{

@@ -863,8 +863,7 @@ export class CustomAddLeadComponent implements OnInit {
     this.ngxloading = true;
     this.isLoading = true;
     this.lead.userId = this.loggedInUserId;
-    this.lead.vanityEnabled = this.vanityLoginDto.vanityUrlFilter;
-
+    
     if (this.showCustomForm) {
       this.showLoadingButton = true;
       this.setSfFormFieldValues();
@@ -1043,6 +1042,8 @@ export class CustomAddLeadComponent implements OnInit {
         this.createdForPipelineIdError = true;
         this.createdForPipelineStageId = errorClass;
         this.createdForPipelineStageIdError = true;
+        this.showDefaultForm = false;
+        this.showCustomForm = false;
       }
     }
   }
@@ -1765,21 +1766,26 @@ export class CustomAddLeadComponent implements OnInit {
 
   getCountriesBasedCites(selectedCountry: any) {
     this.countryBasedStates = this.countryNames.countriesAndStates.filter(country => country.name === selectedCountry);
-    this.countryBasedStates.forEach(countryStates => {
-      this.states = countryStates.states;
-      if (this.states.length > 0) {
-        this.hasNoStates = false;
-        this.states.sort((a, b) => a.name.localeCompare(b.name));
-        this.states.forEach(state => {
-          this.filteredStates.push(state.name)
-        });
-      } else {
-        if (this.lead.country != 'Select Country') {
-          this.hasNoStates = true;
-          this.lead.state = 'Select State';
+    if (this.countryBasedStates.length > 0 && this.lead.country != 'Select Country') {
+      this.countryBasedStates.forEach(countryStates => {
+        this.states = countryStates.states;
+        if (this.states.length > 0) {
+          this.hasNoStates = false;
+          this.states.sort((a, b) => a.name.localeCompare(b.name));
+          this.states.forEach(state => {
+            this.filteredStates.push(state.name)
+          });
+        } else {
+          if (this.lead.country != 'Select Country') {
+            this.hasNoStates = true;
+            this.lead.state = 'Select State';
+          }
         }
-      }
-    });
+      });
+    } else {
+      this.hasNoStates = true;
+      this.lead.state = 'Select State';
+    }
   }
 
   getRegionBasedCountries(selectedRegion: any) {

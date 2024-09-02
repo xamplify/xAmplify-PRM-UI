@@ -126,6 +126,7 @@ export class SortOption {
 	];
 
 	manageFormsSortOptions = [
+		{ 'name': 'Sort By', 'value': '' },
 		{ 'name': 'Name (A-Z)', 'value': 'name-ASC' },
 		{ 'name': 'Name (Z-A)', 'value': 'name-DESC' },
 		{ 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
@@ -139,6 +140,14 @@ export class SortOption {
 		{ 'name': 'Name (Z-A)', 'value': 'name-DESC' },
 		{ 'name': 'Shared On (ASC)', 'value': 'createdTime-ASC' },
 		{ 'name': 'Shared On (DESC)', 'value': 'createdTime-DESC' }
+	];
+
+	marketPlaceCategoriesSortOptions = [
+		{ 'name': 'Sort By', 'value': '' },
+		{ 'name': 'Name (A-Z)', 'value': 'name-ASC' },
+		{ 'name': 'Name (Z-A)', 'value': 'name-DESC' },
+		{ 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
 	];
 
 	demoRequestSortOptions = [
@@ -447,8 +456,9 @@ export class SortOption {
 	public dealCampaignSortOption: any = this.dealCampaignsSortDropDown[0];
 	public leadCampaignSortOption: any = this.leadCampaignsSortDropDown[0];
 	public campaignPartnersRemoveAccessDefaultSortOption: any = this.campaignPartnersRemoveAccessSortDropDown[0];
-	public formsSortOption: any = this.manageFormsSortOptions[3];
-	public partnerLandingPageSortOption: any = this.partnerLandingPageSortOptions[3];
+	public formsSortOption: any = this.manageFormsSortOptions[0];
+	public partnerLandingPageSortOption: any = this.partnerLandingPageSortOptions[0];
+	public marketPlaceCategoriesSortOption: any = this.marketPlaceCategoriesSortOptions[0];
 	public selectedDemoRequestSortOption:  any = this.demoRequestSortOptions[7];
 	public selectedCategoryDropDownOption: any = this.categorySortDropDownOptions[0];
 	public selectedShareCampaignDropDownOption: any = this.shareCampaignSortDropDownOptions[3];

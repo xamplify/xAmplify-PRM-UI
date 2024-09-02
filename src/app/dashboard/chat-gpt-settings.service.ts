@@ -15,6 +15,9 @@ export class ChatGptSettingsService {
 
   updateChatGptSettings(chatGptSettings:ChatGptIntegrationSettingsDto){
     chatGptSettings.loggedInUserId = this.authenticationService.getUserId();
+    if(chatGptSettings.chatGptApiKey==null){
+      chatGptSettings.chatGptApiKey = "";
+    }
     const url = this.chatGptSettingsUrl + '?access_token=' + this.authenticationService.access_token;
     return this.authenticationService.callPutMethod(url,chatGptSettings);
   }

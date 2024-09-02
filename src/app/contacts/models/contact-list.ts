@@ -39,4 +39,5 @@ export class ContactList {
     associatedCompany: string;
     companyList:boolean;
     editList = false;
+    isDownload : boolean = false;
 }

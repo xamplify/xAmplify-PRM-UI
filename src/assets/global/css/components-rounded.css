@@ -5625,7 +5625,7 @@ Dashboard Stats
   -moz-border-radius: 0;
   -ms-border-radius: 0;
   -o-border-radius: 0;
-  border-radius: 3px !important;
+  border-radius: 10px !important;
 }
 .dashboard-stat:before,
 .dashboard-stat:after {

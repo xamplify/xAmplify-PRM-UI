@@ -5,13 +5,15 @@ import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { CallActionSwitch } from 'app/videos/models/call-action-switch'; 
+import { LeadsService } from 'app/leads/services/leads.service';
+import { CallActionSwitch } from 'app/videos/models/call-action-switch';
+declare var swal, $, videojs: any;
 
 @Component({
   selector: 'app-crm-settings',
   templateUrl: './crm-settings.component.html',
   styleUrls: ['./crm-settings.component.css'],
-  providers:[CallActionSwitch]
+  providers:[CallActionSwitch,LeadsService]
 })
 export class CrmSettingsComponent implements OnInit {
   @Input() integrationDetails: any;
@@ -37,15 +39,22 @@ export class CrmSettingsComponent implements OnInit {
   isDealPipelineValid:boolean = false;
   isLeadPipelineStageValid:boolean = false;
   isDealPipelineStageValid:boolean = false;
-  showRegisterDeal:boolean = false;
+  dealByPartner:boolean = false;
   pipelineResponse: CustomResponse = new CustomResponse();
   showDealPipeLineCRMIntegrationMessage = "";
 	showDealPipeLineStageCRMIntegrationMessage = "";
 	showLeadPipeLineCRMIntegrationMessage = "";
 	showLeadPipeLineStageCRMIntegrationMessage = "";
-	showRegisterDealOffMessage = "";
-	showRegisterDealOnMessage = "";
+	showRegisterDealToPartnerOffMessage = "";
+	showRegisterDealToPartnerOnMessage = "";
   ngxLoading:boolean = false;
+  showRegisterDealForPartnerLeadsOffMessage: string = "";
+  showRegisterDealForPartnerLeadsOnMessage: string = "";
+  showRegisterDealToVendor:boolean = false;
+  dealByVendor:boolean ;
+  dealBySelfLead:boolean;
+  showRegisterDealToSelfLeadsOffMessage: string;
+  showRegisterDealToSelfLeadsOnMessage: string;
   formLayoutTypes =[];
   leadFormColumnLayout:any;
   dealFormColumnLayout:any;
@@ -58,11 +67,17 @@ export class CrmSettingsComponent implements OnInit {
   isLocalHost = false;
   singleColumnLayout = XAMPLIFY_CONSTANTS.singleColumnLayout;
   twoColumnLayout = XAMPLIFY_CONSTANTS.twoColumnLayout;
+  isVendorAndPartnerLeadsRegisterDealToggleVisible: boolean = false;
+  isSelfLeadsRegisterDealToggleVisible: boolean = false;
   
   constructor(public callActionSwitch: CallActionSwitch,private integrationService: IntegrationService,public authenticationService: AuthenticationService,
-    public referenceService:ReferenceService,public properties: Properties) {
+    public referenceService:ReferenceService,public properties: Properties, public leadSerivce: LeadsService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isLocalHost = this.authenticationService.isLocalHost();
+    this.isVendorAndPartnerLeadsRegisterDealToggleVisible = this.authenticationService.module.isOrgAdmin || this.authenticationService.module.isVendor || this.authenticationService.module.isPrm 
+    || (this.authenticationService.module.adminOrSuperVisor && !this.authenticationService.module.isMarketingCompany);
+    this.isSelfLeadsRegisterDealToggleVisible = this.authenticationService.module.isOrgAdmin || this.authenticationService.module.isMarketing || this.authenticationService.isOrgAdminSuperVisor 
+    || (this.authenticationService.module.isMarketingTeamMember && this.authenticationService.module.adminOrSuperVisor);
    }
 
   ngOnInit() {
@@ -83,7 +98,9 @@ export class CrmSettingsComponent implements OnInit {
     this.showDealPipelineStage = this.integrationDetails.showDealPipelineStage;
     this.leadDescription = this.integrationDetails.leadDescription;
     this.dealDescription = this.integrationDetails.dealDescription;
-    this.showRegisterDeal = this.integrationDetails.showRegisterDeal;
+    this.dealByPartner = this.integrationDetails.dealByPartnerEnabled;
+    this.dealByVendor = this.integrationDetails.dealByVendorEnabled;
+    this.dealBySelfLead = this.integrationDetails.dealBySelfLeadEnabled;
     this.leadFormColumnLayout = this.integrationDetails.leadFormColumnLayout;
     this.dealFormColumnLayout = this.integrationDetails.dealFormColumnLayout;
 
@@ -122,8 +139,12 @@ export class CrmSettingsComponent implements OnInit {
     this.showDealPipeLineStageCRMIntegrationMessage = this.properties.showDealPipeLineStageCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
     this.showLeadPipeLineCRMIntegrationMessage = this.properties.showLeadPipeLineCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
     this.showLeadPipeLineStageCRMIntegrationMessage = this.properties.showLeadPipeLineStageCRMIntegrationMessage.replace(partnersMergeTag, partnerModuleCustomName);
-    this.showRegisterDealOffMessage = this.properties.showRegisterDealOffMessage.replace(partnersMergeTag, partnerModuleCustomName);
-    this.showRegisterDealOnMessage = this.properties.showRegisterDealOnMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealToPartnerOffMessage = this.properties.showRegisterDealOffMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealToPartnerOnMessage = this.properties.showRegisterDealOnMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealForPartnerLeadsOffMessage = this.properties.showRegisterDealForPartnerLeadsOffMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealForPartnerLeadsOnMessage = this.properties.showRegisterDealForPartnerLeadsOnMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealToSelfLeadsOffMessage = this.properties.showRegisterDealToSelfLeadsOffMessage.replace(partnersMergeTag, partnerModuleCustomName);
+    this.showRegisterDealToSelfLeadsOnMessage = this.properties.showRegisterDealToSelfLeadsOnMessage.replace(partnersMergeTag, partnerModuleCustomName);
   }
 
   updateCRMSettings() {
@@ -131,9 +152,11 @@ export class CrmSettingsComponent implements OnInit {
     this.integrationDetails.showLeadPipelineStage = this.showLeadPipelineStage;
     this.integrationDetails.showDealPipeline = this.showDealPipeline;
     this.integrationDetails.showDealPipelineStage = this.showDealPipelineStage;
-    this.integrationDetails.leadDescription = this.leadDescription;
-    this.integrationDetails.dealDescription = this.dealDescription;
-    this.integrationDetails.showRegisterDeal = this.showRegisterDeal;
+    this.integrationDetails.leadDescription = $.trim(this.leadDescription);
+    this.integrationDetails.dealDescription = $.trim(this.dealDescription);
+    this.integrationDetails.dealByPartnerEnabled = this.dealByPartner;
+    this.integrationDetails.dealByVendorEnabled = this.dealByVendor;
+    this.integrationDetails.dealBySelfLeadEnabled = this.dealBySelfLead;
     this.integrationDetails.leadFormColumnLayout = this.leadFormColumnLayout;
     this.integrationDetails.dealFormColumnLayout = this.dealFormColumnLayout;
     if (this.integrationDetails.showLeadPipeline) {
@@ -177,21 +200,53 @@ export class CrmSettingsComponent implements OnInit {
 
   getLeadPipelines(){
     this.ngxLoading = true;
-    this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+    this.integrationService.findPipelinesForCRMSettings(this.loggedInUserId,this.integrationType,'LEAD',0).subscribe(
       data => {
-        this.integrationService.getCRMPipelinesForCRMSettings(data,this.loggedInUserId,this.integrationType,0,'LEAD').subscribe(
-          data => {
-            this.ngxLoading = false;
-            if (data.statusCode == 200) {
-              this.leadPipelines = data.data;
-              for (let leadPipeline of this.leadPipelines) {
-                if (this.integrationDetails.leadPipelineId == leadPipeline.id) {
-                  this.leadPipelineStages = leadPipeline.stages;
-                }
-              }
-            }
-          })
-      })
+        this.ngxLoading = false;
+        if (data.statusCode === 200) {
+          this.leadPipelines = data.data;
+          if (this.integrationDetails.leadPipelineId != undefined && this.integrationDetails.leadPipelineId>0 
+            && !this.integrationDetails.showLeadPipelineStage) {
+            this.findLeadPipelineStagesByPipelineId(this.integrationDetails.leadPipelineId);
+          }
+        }
+      },
+      error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
+
+  findLeadPipelineStagesByPipelineId(pipelineId:any) {
+    this.ngxLoading = true;
+    this.leadSerivce.findPipelineStagesByPipelineId(pipelineId, this.loggedInUserId).subscribe(
+      data => {
+        this.ngxLoading = false;
+        if (data.statusCode === 200) {
+          let response = data.data;
+          this.leadPipelineStages = response.list;
+        }
+      },
+      error => {
+        this.ngxLoading = false;
+      }
+    )
+  }
+
+  findDealPipelineStagesByPipelineId(pipelineId:any) {
+    this.ngxLoading = true;
+    this.leadSerivce.findPipelineStagesByPipelineId(pipelineId, this.loggedInUserId).subscribe(
+      data => {
+        this.ngxLoading = false;
+        if (data.statusCode === 200) {
+          let response = data.data;
+          this.dealPipelineStages = response.list;
+        }
+      },
+      error => {
+        this.ngxLoading = false;
+      }
+    )
   }
 
   onChangeDealPipelines(showDealPipeline) {
@@ -211,21 +266,21 @@ export class CrmSettingsComponent implements OnInit {
 
   getDealPipelines(){
     this.ngxLoading = true;
-    this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+    this.integrationService.findPipelinesForCRMSettings(this.loggedInUserId,this.integrationType,'DEAL',0).subscribe(
       data => {
-        this.integrationService.getCRMPipelinesForCRMSettings(data,this.loggedInUserId,this.integrationType,0,'DEAL').subscribe(
-          data => {
-            this.ngxLoading = false;
-            if (data.statusCode == 200) {
-              this.dealPipelines = data.data;
-              for (let dealPipeline of this.dealPipelines) {
-                if (this.integrationDetails.dealPipelineId == dealPipeline.id) {
-                  this.dealPipelineStages = dealPipeline.stages;
-                }
-              }
-            }
-          })
-      });
+        this.ngxLoading = false;
+        if (data.statusCode === 200) {
+          this.dealPipelines = data.data;
+          if (this.integrationDetails.dealPipelineId != undefined && this.integrationDetails.dealPipelineId>0 
+            && !this.integrationDetails.showDealPipelineStage) {
+            this.findDealPipelineStagesByPipelineId(this.integrationDetails.dealPipelineId);
+          }
+        }
+      },
+      error => {
+        this.ngxLoading = false;
+      }
+    )
   }
 
   onChangeLeadPipelineStage(showLeadPipelineStage){
@@ -234,15 +289,12 @@ export class CrmSettingsComponent implements OnInit {
       if (this.showLeadPipeline && this.integrationDetails.leadPipelineId == '0') {
         this.showLeadPipeline = false;
         this.onChangeLeadPipelines(this.showLeadPipeline);
-      } else {
-        for (let leadPipeline of this.leadPipelines) {
-          if (this.integrationDetails.leadPipelineId == leadPipeline.id) {
-            this.leadPipelineStages = leadPipeline.stages;
-          }
-        }
+      } else if (this.integrationDetails.leadPipelineId != undefined && this.integrationDetails.leadPipelineId > 0) {
+        this.findLeadPipelineStagesByPipelineId(this.integrationDetails.leadPipelineId);
       }
     } else {
       this.integrationDetails.leadPipelineStageId = 0;
+      this.leadPipelineStages = [];
     }
     this.validateField();
   }
@@ -253,15 +305,12 @@ export class CrmSettingsComponent implements OnInit {
       if (this.showDealPipeline && this.integrationDetails.dealPipelineId == '0') {
         this.showDealPipeline = false;
         this.onChangeDealPipelines(this.showDealPipeline);
-      } else {
-        for (let dealPipeline of this.dealPipelines) {
-          if (this.integrationDetails.dealPipelineId == dealPipeline.id) {
-            this.dealPipelineStages = dealPipeline.stages;
-          }
-        }
+      } else if (this.integrationDetails.dealPipelineId != undefined && this.integrationDetails.dealPipelineId > 0) {
+        this.findDealPipelineStagesByPipelineId(this.integrationDetails.dealPipelineId);
       }
     } else {
       this.integrationDetails.dealPipelineStageId = 0;
+      this.dealPipelineStages = [];
     }
     this.validateField();
   }
@@ -297,11 +346,7 @@ export class CrmSettingsComponent implements OnInit {
   onChangeLeadPipeline(){
     if (!this.showLeadPipelineStage) {
       if (this.integrationDetails.leadPipelineId != '0') {
-        for (let leadPipeline of this.leadPipelines) {
-          if (this.integrationDetails.leadPipelineId == leadPipeline.id) {
-            this.leadPipelineStages = leadPipeline.stages;
-          }
-        }
+        this.findLeadPipelineStagesByPipelineId(this.integrationDetails.leadPipelineId);
       } else {
         this.leadPipelineStages = [];
         this.integrationDetails.leadPipelineStageId = 0;
@@ -312,11 +357,7 @@ export class CrmSettingsComponent implements OnInit {
   onChangeDealPipeline(){
     if (!this.showDealPipelineStage) {
       if (this.integrationDetails.dealPipelineId != '0') {
-        for (let dealPipeline of this.dealPipelines) {
-          if (this.integrationDetails.dealPipelineId == dealPipeline.id) {
-            this.dealPipelineStages = dealPipeline.stages;
-          }
-        }
+        this.findDealPipelineStagesByPipelineId(this.integrationDetails.dealPipelineId);
       } else {
         this.dealPipelineStages = [];
         this.integrationDetails.dealPipelineStageId = 0;
@@ -324,8 +365,22 @@ export class CrmSettingsComponent implements OnInit {
     }
   }
 
-  onChangeRegisterDeal(showRegisterDeal){
-    this.showRegisterDeal = showRegisterDeal;
+  onChangeRegisterDeal(dealByPartner){
+    if (dealByPartner) {
+      this.dealByVendor = false;
+    }
+    this.dealByPartner = dealByPartner;
+  }
+
+  onChangeVendorRegisterDeal(dealByVendor){
+    if (dealByVendor) {
+      this.dealByPartner = false;
+    }
+    this.dealByVendor = dealByVendor;
+  }
+
+  onChangeSelfRegisterDeal(dealBySelfLead) {
+    this.dealBySelfLead = dealBySelfLead;
   }
 
   onChangeLeadFormType(leadFormColumnLayout) {

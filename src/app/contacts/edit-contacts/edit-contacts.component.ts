@@ -197,7 +197,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	showGDPR: boolean;
 
 
-	filterOptions = [
+	commonFilterOptions = [
 		{ 'name': '', 'value': 'Field Name*' },
 		{ 'name': 'firstName', 'value': 'First Name' },
 		{ 'name': 'lastName', 'value': 'Last Name' },
@@ -210,8 +210,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		{ 'name': 'state', 'value': 'State' },
 		/* { 'name': 'notes', 'value': 'Notes' },*/
 	];
-	filterOption = this.filterOptions[0];
-
+	partnerFilterOptions = [
+		{ 'name': 'vertical', 'value': 'Vertical'  },
+		{ 'name': 'region', 'value': 'Region'  },
+		{ 'name': 'type', 'value': 'Type'  },
+		{ 'name': 'category', 'value': 'Category'  },
+		{ 'name': 'accountName', 'value': 'Account Name'  },
+		{ 'name': 'accountSubType', 'value': 'Account Sub Type'  },
+		{ 'name': 'territory', 'value': 'Territory'  },
+		{ 'name': 'companyDomain', 'value': 'Company Domain'  },
+		{ 'name': 'accountOwner', 'value': 'Account Owner'  },
+		{ 'name': 'website', 'value': 'Website' },
+		{ 'name': 'zipCode', 'value': 'Zip Code' },
+	]
+	filterOptions:any=[];
+    filterOption = this.commonFilterOptions[0];
+	
 	filterConditions = [
 		{ 'name': '', 'value': 'Condition*' },
 		{ 'name': 'eq', 'value': '=' },
@@ -337,7 +351,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	onChangeAllContactUsers(event: Pagination) {
 		try {
 			this.pagination = event;
-			if (this.currentContactType == "all_contacts") {
+			if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 				this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 			} else {
 				this.contactsByType.pagination = event;
@@ -886,6 +900,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		try {
 			this.newUserDetails.length = 0;
 			let existedEmails = [];
+			this.duplicateEmailIds = [];
 			if (this.users.length > 0) {
 				for (let i = 0; i < this.users.length; i++) {
 					if (!this.validateEmailAddress(this.users[i].emailId)) {
@@ -988,6 +1003,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				}
 				else if (isDuplicate) {
 					this.customResponse = new CustomResponse('ERROR', "Please remove duplicate email ids " + this.duplicateEmailIds, true);
+					this.duplicateEmailIds = [];
 				} else {
 					this.inValidCsvContacts = true;
 				}
@@ -1287,9 +1303,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			if (!this.isPartner) {
 				$("#clipBoardValidationMessage").append("<h4 style='color:#f68a55;'>" + "Please enter the valid data." + "</h4>");
 				isValidData = false;
+				this.users = [];
 			} else {
 				this.customResponse = new CustomResponse('ERROR', "Please enter the valid data.", true);
 				isValidData = false;
+				this.users = [];
 			}
 		}
 
@@ -2206,10 +2224,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.showSelectedCategoryUsers = false;
 			this.xtremandLogger.info("manageContacts editContactList #contactSelectedListId " + contactSelectedListId);
 			this.selectedContactListId = contactSelectedListId;
-			this.currentContactType = "all_contacts";
+			this.currentContactType = "all";
 			pagination.criterias = this.criterias;
 			pagination.sharedLeads = this.sharedLeads;
-			this.contactService.loadUsersOfContactList(contactSelectedListId, pagination).subscribe(
+			this.pagination.searchKey = this.searchKey;
+			this.userListPaginationWrapper.pagination = pagination;
+			this.contactListObject = new ContactList;
+			this.contactListObject.editList = true;
+			this.contactListObject.contactType = this.currentContactType;
+			this.contactListObject.assignedLeadsList = this.assignLeads;
+			this.contactListObject.sharedLeads = pagination.sharedLeads;
+			this.contactListObject.id = this.selectedContactListId;
+			this.contactListObject.isPartnerUserList = this.isPartner;
+			this.contactListObject.moduleName = this.module;
+			this.userListPaginationWrapper.userList = this.contactListObject;
+			this.contactService.loadUsersOfContactLists(this.userListPaginationWrapper).subscribe(
 				(data: any) => {
 					this.xtremandLogger.info("MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify(data));
 					this.contacts = data.listOfUsers;
@@ -2612,7 +2641,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 
 			if (contactType === 'all') {
-				this.currentContactType = "all_contacts";
+				this.currentContactType = "all";
 			} else {
 				this.currentContactType = '';
 			}
@@ -2628,8 +2657,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}
 			this.refService.loading(this.httpRequestLoader, true);
 			this.httpRequestLoader.isHorizontalCss = true;
+			this.previewLoader = true;
 			this.contactsByType.pagination.criterias = this.criterias;
-			this.contactService.listOfSelectedContactListByType(this.selectedContactListId, contactType, this.contactsByType.pagination)
+			this.contactsByType.pagination.searchKey = this.searchKey;
+			this.userListPaginationWrapper.pagination = this.contactsByType.pagination;
+			this.contactListObject = new ContactList;
+			this.contactListObject.contactType = contactType;
+			this.contactListObject.assignedLeadsList = this.assignLeads;
+			this.contactListObject.sharedLeads = this.sharedLeads;
+			this.contactListObject.id = this.selectedContactListId;
+			this.contactListObject.isPartnerUserList = this.isPartner;
+			this.contactListObject.moduleName = this.module;
+			this.userListPaginationWrapper.userList = this.contactListObject;
+			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
 						this.contactsByType.selectedCategory = contactType;
@@ -2653,6 +2693,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						}
 						this.refService.loading(this.httpRequestLoader, false);
 						this.contactsByType.isLoading = false;
+						this.previewLoader = false;
 
 					},
 					error => console.log(error),
@@ -2685,7 +2726,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.sortingOrder = null;
 			}
 
-			if (this.currentContactType == "all_contacts") {
+			if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 				this.pagination.pageIndex = 1;
 				this.pagination.sortcolumn = this.sortcolumn;
 				this.pagination.sortingOrder = this.sortingOrder;
@@ -2705,7 +2746,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.resetResponse();
 		this.searchContactType = this.searchContactType;
 		try {
-			if (this.currentContactType == "all_contacts") {
+			if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 				this.pagination.searchKey = this.searchKey;
 				this.pagination.pageIndex = 1;
 				this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
@@ -2935,18 +2976,24 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	modelForSeg() {
-		this.resetResponse();
-		this.addNewRow();
-		this.criteria.property = this.filterOptions[0].value;
-		this.criteria.operation = this.filterConditions[0].value;
-	}
+        this.resetResponse(); 
+        this.filterOptions=[];
+        this.addNewRow();
+        if(this.isPartner){
+            this.filterOptions = [...this.commonFilterOptions, ...this.partnerFilterOptions];
+        }else{
+        this.filterOptions=this.commonFilterOptions;
+        }
+        this.criteria.property = this.filterOptions[0].value;
+        this.criteria.operation = this.filterConditions[0].value;
+    }
 
 	removeSegmentation() {
 		this.isSegmentation = false;
 		this.criterias.length = 0;
 		this.checkingLoadContactsCount = true;
 		this.selectedAddContactsOption = 8;
-		if (this.currentContactType == "all_contacts") {
+		if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 		} else {
 			this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
@@ -3038,7 +3085,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				}
 			}
 			if (!this.isSegmentationErrorMessage) {
-				if (this.currentContactType == "all_contacts") {
+				if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 					this.checkingLoadContactsCount = true;
 					this.pagination.pageIndex = 1;
 					this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
@@ -3081,7 +3128,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.gettingAllUserspagination.maxResults = totalRecords;
 			this.gettingAllUserspagination.pageIndex = 1;
 			this.gettingAllUserspagination.searchKey = searchKey;
-			this.contactService.loadUsersOfContactList(contactSelectedListId, this.gettingAllUserspagination)
+			this.contactListObject = new ContactList;
+			this.userListPaginationWrapper.pagination = this.gettingAllUserspagination;
+			this.contactListObject.id = this.selectedContactListId;
+			this.userListPaginationWrapper.userList = this.contactListObject;
+			this.contactService.loadUsersOfContactList(this.userListPaginationWrapper)
 				.subscribe(
 					(data: any) => {
 						this.totalListUsers = data.listOfUsers;
@@ -3418,7 +3469,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			// this.resetListContacts();
 			// this.resetResponse();
 			this.contactsByType.contactPagination.maxResults = this.contactsByType.allContactsCount;
-			this.contactService.listOfSelectedContactListByType(this.selectedContactListId, this.contactsByType.selectedCategory, this.contactsByType.contactPagination)
+			this.contactsByType.pagination.searchKey = this.searchKey;
+			this.contactsByType.pagination.criterias = this.criterias;
+			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
+			this.contactListObject = new ContactList;
+			this.contactListObject.contactType = this.contactsByType.selectedCategory;
+			this.contactListObject.assignedLeadsList = this.assignLeads;
+			this.contactListObject.sharedLeads = this.sharedLeads;
+			this.contactListObject.id = this.selectedContactListId;
+			this.contactListObject.isPartnerUserList = this.isPartner;
+			this.contactListObject.moduleName = this.module;
+			this.contactListObject.isDownload = true;
+			this.userListPaginationWrapper.userList = this.contactListObject;
+			this.contactService.listOfSelectedContactListByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
 						//	this.contactsByType.selectedCategory = contactType;
@@ -3695,12 +3758,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.loading = true;
 		let type = this.checkingContactTypeName;
 		let self = this;
+		let encodedParameter = this.refService.encodePathVariable(contact.id);
 		setTimeout(function () {
 			let prefixUrl = "/home/campaigns/user-campaigns/";
 			if ("Partner" == type) {
-				self.refService.goToRouter(prefixUrl + "/pm/" + contact.id);
+				self.refService.goToRouter(prefixUrl + "/pm/" + encodedParameter);
 			} else if ("Contact" == type) {
-				self.refService.goToRouter(prefixUrl + "/c/" + contact.id);
+				self.refService.goToRouter(prefixUrl + "/c/" + encodedParameter);
 			}
 		}, 250);
 
@@ -3810,7 +3874,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	getSelectedIndex(index: number) {
 		this.selectedFilterIndex = index;
-		if (this.currentContactType == "all_contacts") {
+		if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 			this.refService.setTeamMemberFilterForPagination(this.pagination, index);
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 		} else if (this.contactsByType.selectedCategory) {
@@ -3878,7 +3942,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.selectedUser = null;
 		if (this.contactsByType.selectedCategory === 'unsubscribed') {
 			this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
-		} else if (this.currentContactType == "all_contacts") {
+		} else if (this.currentContactType == "all_contacts"|| this.currentContactType == 'all') {
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 		}
 		this.contactsCount(this.selectedContactListId);
@@ -4162,6 +4226,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.contactListObj.assignedLeadsList = this.assignLeads;
 			this.contactListObj.contactType = this.contactsByType.selectedCategory;
 			this.contactListObj.editList = true;
+			this.contactListObj.isDownload = true;
 			this.userListPaginationWrapper.userList = this.contactListObj;
 			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
 				this.refService.setTeamMemberFilterForPagination(this.userListPaginationWrapper.pagination, this.selectedFilterIndex);

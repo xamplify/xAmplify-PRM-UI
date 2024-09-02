@@ -1082,6 +1082,7 @@ export class CampaignService {
     }
 
     analyticsByUserId(pagination: Pagination) {
+        pagination.vendorCompanyProfileName  = this.authenticationService.companyProfileName;
         let url = this.URL + "campaign/analyticsByUserId?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
@@ -1103,7 +1104,12 @@ export class CampaignService {
     }
 
     getActiveAndTotalCampaignsCount(companyId: number, userId: number) {
-        let url = this.URL + "campaign/getTotalAndActiveCampaigns/" + companyId + "/" + userId + "?access_token=" + this.authenticationService.access_token;
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let urlPrefix = "campaign/getTotalAndActiveCampaigns/" + companyId + "/" + userId;
+        if(companyProfileName!=undefined && companyProfileName.length>0){
+            urlPrefix+= "/"+companyProfileName;
+        }
+        let url = this.URL + urlPrefix + "?access_token=" + this.authenticationService.access_token;
         return this.http.get(url, "")
             .map(this.extractData)
             .catch(this.handleError);
@@ -1448,6 +1454,11 @@ export class CampaignService {
     getLeadOrDealAccess(campaignId: number) {
         let userId = this.authenticationService.getUserId();
         const url = this.URL + 'campaign/leadOrDealAccess/' + campaignId + '/'+userId+'?access_token=' + this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    validateCampaignIdAndCampaignTitle(campaignId: number,campaignTitle:string) {
+        let url = this.URL + "campaign/validateCampaignIdAndCampaignTitle?campaignId=" + campaignId + "&campaignTitle="+campaignTitle+"&access_token=" + this.authenticationService.access_token;
         return this.authenticationService.callGetMethod(url);
     }
 

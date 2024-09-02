@@ -18,7 +18,7 @@ import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { FormSubType } from '../models/form-sub-type.enum';
 
-declare var swal, $: any;
+declare var swal:any, $: any;
 
 @Component({
     selector: 'app-manage-form',
@@ -38,9 +38,9 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     
     private dom: Document;
     message = "";
-    campaignId = 0;
+    campaignId:any;
     landingPageId = 0;
-    landingPageCampaignId = 0;
+    landingPageCampaignId:any;
     partnerLandingPageAlias = "";
     partnerId = 0;
     statusCode = 200;
@@ -69,6 +69,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     @Input() vendorLandingPageId:number;
     @Output() vendorJourneyOrMasterLandingPageEdit: EventEmitter<any> = new EventEmitter();
     @Output() formAnalytics: EventEmitter<any> = new EventEmitter();
+    campaignTitle = "";
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -128,10 +129,11 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         } else {
             this.campaignId = this.route.snapshot.params['alias'];
             this.landingPageId = this.route.snapshot.params['landingPageId'];
-            this.landingPageCampaignId = this.route.snapshot.params['landingPageCampaignId'];
+            this.landingPageCampaignId = this.referenceService.decodePathVariable(this.route.snapshot.params['landingPageCampaignId']);
+            this.campaignTitle = this.route.snapshot.params['campaignTitle'];
             this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
-            this.partnerId = this.route.snapshot.params['partnerId'];
-            this.surveyCampaignId = this.route.snapshot.params['surveyCampaignId'];
+            this.partnerId = this.referenceService.decodePathVariable(this.route.snapshot.params['partnerId']);
+            this.surveyCampaignId = this.referenceService.decodePathVariable(this.route.snapshot.params['surveyCampaignId']);
             if (this.categoryId>0 && (this.landingPageId==undefined||this.landingPageId==0)) {
                 this.pagination.categoryId = this.categoryId;
                 this.pagination.categoryType = 'f';
@@ -406,10 +408,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         if (this.pagination.campaignForm) {
             this.router.navigate(['/home/forms/' + form.alias + '/' + this.campaignId + '/analytics']);
         } else if (this.pagination.landingPageCampaignForm) {
+            let encodedLandingPageCampaignId = this.referenceService.encodePathVariable(this.landingPageCampaignId);
             if (this.partnerId > 0) {
-                this.router.navigate(['/home/forms/' + form.alias + '/' + this.landingPageCampaignId + '/' + this.partnerId + '/analytics/cfa']);
+                let encodedPartnerId = this.referenceService.encodePathVariable(this.partnerId);
+                this.router.navigate(['/home/forms/cpfp/' + form.alias + '/' + encodedLandingPageCampaignId + '/' + encodedPartnerId + '/'+this.campaignTitle+ '/analytics/cfa']);
             } else {
-                this.router.navigate(['/home/forms/' + form.alias + '/' + this.landingPageCampaignId + '/analytics']);
+                this.router.navigate(['/home/forms/lpf/' + form.alias + '/' + encodedLandingPageCampaignId + '/'+this.campaignTitle+'/analytics']);
             }
         } else if (this.pagination.landingPageForm) {
             if(this.categoryId>0){
@@ -421,10 +425,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         } else if (this.pagination.partnerLandingPageForm) {
             this.router.navigate(['/home/forms/partner/f/' + form.id + '/' + this.partnerLandingPageAlias + '/analytics']);
         }  else if (this.pagination.surveyCampaignForm) {
+            let encodedSurveyCampaignId = this.referenceService.encodePathVariable(this.surveyCampaignId);
             if (this.partnerId > 0) {
-                this.router.navigate(['/home/forms/' + form.alias + '/' + this.surveyCampaignId + '/' + this.partnerId + '/survey/analytics']);
+                let encodePartnerId = this.referenceService.encodePathVariable(this.partnerId);
+                this.router.navigate(['/home/forms/' + form.alias + '/' + encodedSurveyCampaignId + '/' + encodePartnerId +  '/'+this.campaignTitle+'/survey/analytics']);
             } else {
-                this.router.navigate(['/home/forms/' + form.alias + '/' + this.surveyCampaignId + '/survey/analytics']);
+                this.router.navigate(['/home/forms/' + form.alias + '/' + encodedSurveyCampaignId + '/'+this.campaignTitle+ '/survey/analytics']);
             }
         }else {
             if (form.formSubType.toString() === FormSubType[FormSubType.SURVEY]) {
@@ -445,7 +451,10 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         if (this.pagination.surveyCampaignForm) {
             campaignId = this.surveyCampaignId;
         }
-        this.router.navigate(['home/campaigns/' + campaignId + '/details']);
+        let campaign = {};
+        campaign['campaignId'] = campaignId;
+        campaign['campaignTitle']=this.campaignTitle;
+        this.referenceService.navigateBackToCampaignAnalytics(campaign);
     }
 
     ngAfterViewInit() {
@@ -453,7 +462,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
 
     setViewType(viewType: string) {
-        
         if ("List" == viewType) {
             this.modulesDisplayType.isListView = true;
             this.modulesDisplayType.isGridView = false;

@@ -155,7 +155,10 @@ export class AddDealComponent implements OnInit {
   isCommentAndHistoryCollapsed = false;
   editTextArea = false;
   isDealDetailsTabDisplayed: boolean = true;
+  hideDealDetailsForSelfDeal:boolean = false;
+  hideDealForInEditSelfDeal:boolean = false;
   isDealForAndContactInfoDivCenterAligned = false;
+
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -333,7 +336,7 @@ export class AddDealComponent implements OnInit {
               this.hasCampaignPipeline = false;
               //self.getPipelines();
             }
-            if ("ZOHO" == this.activeCRMDetails.createdForActiveCRMType) {
+            if (this.activeCRMDetails != undefined && "ZOHO" == this.activeCRMDetails.createdForActiveCRMType) {
               self.getConvertMappingLayout(self.lead.halopsaTicketTypeId);
             }
           }
@@ -572,7 +575,9 @@ export class AddDealComponent implements OnInit {
           this.httpRequestLoader.isServerError = true;
         },
         () => {
-          this.getFilteredVendorList();
+          if (this.actionType !== 'view') {
+            this.getFilteredVendorList();
+          }
          }
       );
   }
@@ -722,7 +727,7 @@ export class AddDealComponent implements OnInit {
     this.ngxloading = true;
     this.isLoading = true;
     this.deal.userId = this.loggedInUserId;
-    this.deal.vanityEnabled = this.vanityLoginDto.vanityUrlFilter;
+
     var obj = [];
     let answers: DealAnswer[] = [];
 
@@ -1363,6 +1368,14 @@ export class AddDealComponent implements OnInit {
             this.getConvertMappingLayout(this.lead.halopsaTicketTypeId);
           }
           this.setFieldErrorStates();
+          if (this.actionType === "add" && this.leadId > 0 && this.deal.createdForCompanyId > 0 && this.isVendorVersion) {
+            this.hideDealDetailsForSelfDeal = true;
+          } else if (this.actionType === "edit" && this.deal.createdForCompanyId > 0 && this.isVendorVersion) {
+            this.hideDealForInEditSelfDeal = true;
+          } else {
+            this.hideDealDetailsForSelfDeal = false;
+            this.hideDealForInEditSelfDeal = false;
+          }
         });
   }
 
@@ -1686,6 +1699,7 @@ export class AddDealComponent implements OnInit {
     this.leadId = 0;
     this.isZohoLeadAttached = false;
     this.isZohoLeadAttachedWithoutSelectingDealFor = false;
+    this.vendorCompanyName = '';
     if (this.actionType == 'add' && !this.vanityLoginDto.vanityUrlFilter) {
       this.deal.createdForCompanyId = this.holdCreatedForCompanyId;
       if (this.deal.createdForCompanyId == 0) {

@@ -13,7 +13,7 @@
       color: #fff;
    }
 </style>
-<ngx-loading [show]="ngxloading" [config]="{ fullScreenBackdrop: true, backdropBorderRadius: '14px' }"></ngx-loading>
+<ngx-loading [show]="ngxloading || mainLoader" [config]="{ fullScreenBackdrop: true, backdropBorderRadius: '14px' }"></ngx-loading>
 <app-event-send-reminder *ngIf="isOpenNotificationModal" (notifyParent)="emailNotOpenReminderDate($event)"
    [selectedEventCampaignId]="campaign.campaignId" [selectedUserId]="selectedEmailNotOpenUserId">
 </app-event-send-reminder>
@@ -23,55 +23,34 @@
 <ngx-loading [show]="loading" [config]="{ fullScreenBackdrop: true, backdropBorderRadius: '14px' }"></ngx-loading>
 <!---XNFR-125-->
 <ng-container>
-   <div [ngClass]="hidePageContent ? '' : 'page-content'" *ngIf="
-  !isTimeLineView &&
-  !showRsvpDetails &&
-  !isShowPartnerLeads &&
-  !showDealForm && !showLeadForm
-  " [class.ml0]="authenticationService.isSuperAdmin()">
+   <div [ngClass]="hidePageContent ? '' : 'page-content'" *ngIf="!isTimeLineView &&!showRsvpDetails &&!isShowPartnerLeads && !showDealForm && !showLeadForm" [class.ml0]="authenticationService.isSuperAdmin()">
       <div class="page-bar square-box" style="margin: 0 0px 15px">
          <ng-template [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
-         <button routerLink="/home/campaigns/{{ campaign.campaignId }}/checkin" *ngIf="
-        campaignType == 'EVENT' &&
-        !campaign.nurtureCampaign &&
-        campaign.publicEventCampaign
-        " class="btn btn-primary" id="check-in-css">
-            <b>Check In</b>
-            <img src="assets/images/attendees.png" id="custom-width-button" />
+         <button *ngIf="campaignType == 'EVENT' && !campaign.nurtureCampaign && campaign.publicEventCampaign" (click)="goToCampaignCheckIn(campaign.campaignId)"  class="btn btn-primary" id="check-in-css">
+            <strong>Check In</strong><img src="assets/images/attendees.png" id="custom-width-button" />
          </button>
-         <a class="close-circle mb_dwl" *ngIf="
-     campaignType != 'EVENT' &&
-     campaignType != 'SOCIAL' &&
-     !isDataShare &&
-     !mainLoader
-     " id="check-in-css" (click)="downloadReport()">
+         <a class="close-circle mb_dwl" *ngIf="campaignType != 'EVENT' && campaignType != 'SOCIAL' && !isDataShare && !mainLoader" id="check-in-css" (click)="downloadReport()">
             <i class="fa fa-download" aria-hidden="true"></i>
          </a>
       </div>
       <div class="portlet light clearfix remove_cardBgcolor" *ngIf="!isShowPartnerLeads && !showLeads && !showDeals">
          <div class="portlet-body">
-            <div *ngIf="
-           campaign?.campaignEmailNotificationStatusInString == 'IN_PROGRESS'
-           " class="alert alert-info">
-               <strong translate>Email is currently being transmitted to recipents. To view the most
-                  recent information, please click the refresh icon.
-                  <a (click)="checkParentAndRedistributedCampaignAccess()"><i class="fa fa-refresh float-right"
-                        aria-hidden="true"></i></a>
+            <div *ngIf="campaign?.campaignEmailNotificationStatusInString == 'IN_PROGRESS'" class="alert alert-info">
+               <strong translate>Email is currently being transmitted to recipents. To view the most recent information, please click the refresh icon.
+                  <a (click)="checkParentAndRedistributedCampaignAccess()"><i class="fa fa-refresh float-right" aria-hidden="true"></i></a>
                </strong>
             </div>
             <div *ngIf="hasClientError && !mainLoader" class="client-error">
-               Something went wrong, Please refresh the page
+               Something went wrong, Please refresh the page.
             </div>
             <div *ngIf="customResponse.responseType === 'ERROR'; else NOERROR" class="m10">
-               <app-response-message [customResponse]="customResponse"
-                  *ngIf="customResponse.isVisible"></app-response-message>
+               <app-response-message [customResponse]="customResponse"  *ngIf="customResponse.isVisible"></app-response-message>
             </div>
             <ng-template #NOERROR>
                <app-analytics-loader *ngIf="mainLoader"></app-analytics-loader>
                <div class="row campaign_type" [hidden]="mainLoader || hasClientError">
                   <div class="alert alert-danger alert-dismissible" *ngIf="contactListDeleteError">
-                     <a (click)="contactListDeleteError = false" class="close" data-dismiss="alert"
-                        aria-label="close">&times;</a>
+                     <a (click)="contactListDeleteError = false" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                      No contacts found.
                   </div>
                   <div class="alert alert-danger alert-dismissible cancel-alert-class" *ngIf="isCancelledEvent">
@@ -250,13 +229,10 @@
                         </div>
                         <div class="actions-block override-actions" id="email-icons"
                            *ngIf="campaignType === 'SURVEY' && campaign.formsCount > 0">
-                           <a *ngIf="campaignType === 'SURVEY' && campaign.formsCount > 0"
-                              routerLink="/home/forms/csf/{{ campaign.campaignId }}" data-rel="fancybox-button"
+                           <a *ngIf="campaignType === 'SURVEY' && campaign.formsCount > 0" (click)="goToSurveyCampaignForms(campaign.campaignId)"    data-rel="fancybox-button"
                               data-toggle="tooltip" data-placement="top" title="Survey Forms Count">
                               <i class="fa fa-wpforms" aria-hidden="true"></i>
-                              <span class="badge" id="notification-color">{{
-                                 campaign.formsCount
-                                 }}</span>
+                              <span class="badge" id="notification-color">{{campaign.formsCount}}</span>
                            </a>
                         </div>
                      </a>
@@ -289,29 +265,20 @@
                               (click)="openPageInNewTab(campaign?.landingPage?.id)">
                               <i class="fa fa-eye" aria-hidden="true"></i>
                            </a>
-                           <a class="mr-2" *ngIf="campaign.formsCount > 0"
-                              routerLink="/home/forms/clpf/{{ campaign.campaignId }}" data-rel="fancybox-button"
+                           <a class="mr-2" *ngIf="campaign.formsCount > 0" (click)="goToFormAnalytics(campaign)" data-rel="fancybox-button"
                               data-toggle="tooltip" data-placement="top" title="Form Count">
                               <i class="fa fa-wpforms" aria-hidden="true"></i>
-                              <span class="badge" id="notification-color">{{
-                                 campaign.formsCount
-                                 }}</span>
+                              <span class="badge" id="notification-color">{{campaign.formsCount}}</span>
                            </a>
-                           <a *ngIf="campaign.campaignLandingPageAnalyticsCount > 0" (click)="
-  goToCampaignLandingPageAnalytics(campaign.campaignId)
-  " data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Page Analytics">
+                           <a *ngIf="campaign.campaignLandingPageAnalyticsCount > 0" (click)="goToCampaignLandingPageAnalytics(campaign.campaignId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Page Analytics">
                               <i class="fa fa-line-chart" aria-hidden="true"></i>
-                              <span class="badge" id="notification-color">{{
-                                 campaign.campaignLandingPageAnalyticsCount
-                                 }}</span>
+                              <span class="badge" id="notification-color">{{campaign.campaignLandingPageAnalyticsCount}}</span>
                            </a>
                            <a class="disabled " *ngIf="campaign.campaignLandingPageAnalyticsCount == 0"
                               data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                               title="Page Analytics">
                               <i class="fa fa-line-chart" aria-hidden="true"></i>
-                              <span class="badge" id="notification-color">{{
-                                 campaign.campaignLandingPageAnalyticsCount
-                                 }}</span>
+                              <span class="badge" id="notification-color">{{campaign.campaignLandingPageAnalyticsCount}}</span>
                            </a>
                         </div>
                      </a>
@@ -387,20 +354,16 @@
                      </a>
                   </div>
                </div>
+               <!--Event Campaign-->
                <section *ngIf="campaignType === 'EVENT'" [hidden]="mainLoader">
                   <fieldset class="m10">
                      <div class="col-xs-12 caption-subject font-red-sunglo">
                         <h4 class="pull-left">Your Campaign Response</h4>
                      </div>
                      <div class="col-xs-12 emails-info" id="campaignreportvendor" [hidden]="mainLoader">
-                        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" [ngClass]="{
-  'eight-tile-width': campaign.publicEventCampaign
-  }">
-                           <button class="portlet light color1-invert crcb"
-                              (click)="getRsvpInvitiesDetails(); searchKey = ''" [disabled]="
-  campaignReport.totalInvitiesCount < 1 ||
-  !isPartnerEnabledAnalyticsAccess
-  ">
+                        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
+                           <button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails(); searchKey = ''" 
+                           [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
                               <div class="portlet-body text-center">
                                  <i class="fa fa-envelope" aria-hidden="true"></i>
                                  <h1>
@@ -614,6 +577,7 @@
                      </div>
                   </div>
                </section>
+               <!--Other Campaigns-->
                <section *ngIf="campaignType !== 'EVENT'">
                   <div class="col-xs-12 col-sm-12 p-5x emails-info flex-wrap"
                      [hidden]="mainLoader || hasClientError || !campaign.emailNotification">
@@ -663,7 +627,7 @@
                            </div>
                         </button>
                      </div>
-                     <div *ngIf="campaignType != 'SOCIAL'" class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
+                     <div *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE'" class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         [hidden]="mainLoader || hasClientError" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
                         <button class="portlet light color1-invert crcb vlt-blue-c detail_card"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -695,16 +659,10 @@
                         </button>
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
-                        [ngClass]="{'hidden': campaignType === 'SOCIAL','forbidden' :!isDataShare ?true:null}">
+                        [ngClass]="{'hidden': (campaignType === 'SOCIAL' ||campaignType === 'LANDINGPAGE'),'forbidden' :!isDataShare ?true:null}">
                         <!----This is For Vendor/Partner------->
                         <ng-container *ngIf="!isNavigatedThroughAnalytics">
-                           <button class="portlet light color1-invert crcb black-blue-c detail_card" (click)="
-  emailActionList(
-  campaign.campaignId,
-  'click',
-  emailActionListPagination
-  )
-  " [ngClass]="{ forbidden: !isDataShare ? true : null }" [disabled]="campaignReport.emailClickedCount < 1">
+                           <button class="portlet light color1-invert crcb black-blue-c detail_card" (click)="emailActionList(campaign.campaignId,'click',emailActionListPagination)" [ngClass]="{ forbidden: !isDataShare ? true : null }" [disabled]="campaignReport.emailClickedCount < 1">
                               <div class="portlet-body text-center">
                                  <i class="fa fa-globe"></i>
                                  <h1>
@@ -1022,35 +980,22 @@
                   <div class="col-xs-12 col-sm-12 p-5x">
                      <div class="col-xs-12 p-5x">
                         <div class="row" *ngIf="!campaignViews || totalCampaignViewsLoader">
-                           <div class="porlet light" style="background: white">
+                           <div class="porlet light">
                               <div class="portlet-body clearfix">
                                  <app-list-loader></app-list-loader>
                               </div>
                            </div>
                         </div>
-                        <div class="portlet light remove_cardBgcolor" [hidden]="
-                           mainLoader ||
-                           hasClientError ||
-                           !campaignViews ||
-                           totalCampaignViewsLoader ||
-                           !campaign.emailNotification
-                           ">
+                        <div class="portlet light remove_cardBgcolor" [hidden]="mainLoader ||hasClientError ||!campaignViews ||totalCampaignViewsLoader || !campaign.emailNotification">
                            <div class="portlet-title col-xs-12" style="border-bottom: none !important">
                               <div class="caption col-xs-12 col-sm-7" style="padding-top: 4px !important">
                                  <span class="caption-subject font-red-sunglo" style="font-size: 13px !important">
                                     <span *ngIf="campaignType === 'VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
-                                    <span *ngIf="campaignType === 'SOCIAL' && isChannelCampaign">TOTAL REDISTRIBUTED FOR
-                                       THIS CAMPAIGN</span>
-                                    <span *ngIf="
-                                       campaignType === 'SOCIAL' && !isChannelCampaign
-                                       ">TOTAL RECIPIENTS FOR THIS CAMPAIGN</span>
+                                    <span *ngIf="campaignType === 'SOCIAL' && isChannelCampaign">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
+                                    <span *ngIf="campaignType === 'SOCIAL' && !isChannelCampaign">TOTAL RECIPIENTS FOR THIS CAMPAIGN</span>
                                     <span *ngIf="campaignType === 'REGULAR'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
-                                    <span *ngIf="campaignType === 'EVENT' && isChannelCampaign">{{
-                                       authenticationService?.partnerModule?.customName
-                                       }}
-                                       REDISTRIBUTED CAMPAIGN ANALYTICS</span>
-                                    <span *ngIf="campaignType === 'EVENT' && !isChannelCampaign">CAMPAIGN
-                                       ANALYTICS</span>
+                                    <span *ngIf="campaignType === 'EVENT' && isChannelCampaign">{{authenticationService?.partnerModule?.customName}}REDISTRIBUTED CAMPAIGN ANALYTICS</span>
+                                    <span *ngIf="campaignType === 'EVENT' && !isChannelCampaign">CAMPAIGN ANALYTICS</span>
                                     <span *ngIf="campaignType === 'SURVEY'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
                                  </span>
                               </div>
@@ -1139,9 +1084,7 @@
                                                 <div class="portlet-body text-center">
                                                    <i class="fa fa-check-circle fs30"></i>
                                                    <h1 class="fs14">
-                                                      <b>{{
-                                                         this.campaignReport.allPartnersYesCount
-                                                         }}</b>
+                                                      <b>{{this.campaignReport.allPartnersYesCount}}</b>
                                                       <span>Yes (
                                                          {{
                                                          this.campaignReport
@@ -1275,49 +1218,27 @@
                                                 <th id="table-header" *ngIf="campaignType === 'VIDEO'">
                                                    Latest View
                                                 </th>
-                                                <th id="table-header" *ngIf="campaignType !== 'EVENT'">
+                                                <th id="table-header" *ngIf="campaignType !== 'EVENT' && campaignType!=='LANDINGPAGE'">
                                                    <span *ngIf="campaignType === 'VIDEO'">Views</span>
-                                                   <span *ngIf="
-     campaignType === 'REGULAR' ||
-     campaignType === 'LANDINGPAGE' ||
-     campaignType === 'SURVEY'
-     ">Email Opened</span>
-                                                   <span *ngIf="
-     campaignType === 'SOCIAL' &&
-     isChannelCampaign
-     ">Redistributed</span>
+                                                   <span *ngIf="campaignType === 'REGULAR' || campaignType === 'SURVEY'">Email Opened</span>
+                                                   <span *ngIf="campaignType === 'SOCIAL' && isChannelCampaign">Redistributed</span>
                                                 </th>
                                                 <th id="table-header" *ngIf="campaignType === 'VIDEO'">
                                                    Email Opened
                                                 </th>
-                                                <th id="table-header" *ngIf="
-     campaignType === 'VIDEO' ||
-     campaignType === 'REGULAR' ||
-     campaignType === 'SURVEY'
-     ">
+                                                <th id="table-header" *ngIf=" campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
                                                    URLs Clicked Count
                                                 </th>
-                                                <th id="table-header" *ngIf="
-     campaignType === 'VIDEO' ||
-     campaignType === 'REGULAR'
-     ">
+                                                <th id="table-header" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'">
                                                    User Level Campaign Analytics
                                                 </th>
-                                                <th id="table-header" *ngIf="
-     campaignType === 'SURVEY' &&
-     campaign.formsCount > 0 &&
-     isChannelCampaign
-     ">
+                                                <th id="table-header" *ngIf="campaignType === 'SURVEY' && campaign.formsCount > 0 &&isChannelCampaign">
                                                    Survey Analytics
                                                 </th>
                                                 <th id="table-header" *ngIf="campaign.dipCampaign">
                                                    Auto Responses
                                                 </th>
-                                                <th id="table-header" *ngIf="
-     campaignType === 'EVENT' &&
-     isChannelCampaign &&
-     campaign.publicEventCampaign
-     ">
+                                                <th id="table-header" *ngIf="campaignType === 'EVENT' && isChannelCampaign && campaign.publicEventCampaign">
                                                    Leads Info
                                                 </th>
                                                 <ng-container *ngIf="campaignType === 'LANDINGPAGE'">
@@ -1329,216 +1250,87 @@
                                              </tr>
                                           </thead>
                                           <tbody>
-                                             <ng-container *ngFor="
-     let item of campaignViewsPagination.pagedItems;
-     let i = index
-     ">
-                                                <tr (click)="userTimeline(item)" data-toggle="tooltip"
-                                                   data-placement="bottom"
-                                                   title="Click here to see all campaigns analytics">
+                                             <ng-container *ngFor="let item of campaignViewsPagination?.pagedItems;let i = index">
+                                                <tr (click)="userTimeline(item)" data-placement="bottom" data-toggle="tooltip">
                                                    <td>
-                                                      <i data-toggle="tooltip" data-placement="bottom"
-                                                         title="This user is unsubscribed"
+                                                      <i data-toggle="tooltip" data-placement="bottom"  title="This user is unsubscribed"
                                                          *ngIf="item?.unsubscribedUser" class="fa fa-flag"
                                                          id="unsubscribed-flag" aria-hidden="true"></i>
                                                       <app-user-info [isCompanyInfo]="true" [userInfo]="item">
                                                       </app-user-info>
-                                                      <!-- here emailId coming as userMail -->
                                                    </td>
-                                                   <td class="td-chart" *ngIf="
-     campaignType != 'VIDEO' &&
-     campaignType != 'REGULAR' &&
-     campaignType != 'SURVEY'
-     ">
+                                                   <td class="td-chart" *ngIf="campaignType != 'VIDEO' &&  campaignType != 'REGULAR' && campaignType != 'SURVEY'">
                                                       <h6 data-toggle="tooltip" data-placement="top"
                                                          title="{{ campaign.campaignName }}">
                                                          {{ item.campaignName | slice : 0 : 35 }}
-                                                         <span *ngIf="
-     campaign.campaignName?.length > 35
-     ">...</span>
+                                                         <span *ngIf="campaign.campaignName?.length > 35">...</span>
                                                       </h6>
                                                       <h4 *ngIf="item.campaignName == null">-</h4>
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'EVENT' &&
-     isChannelCampaign
-     ">
+                                                   <td class="text-center" *ngIf="campaignType === 'EVENT' && isChannelCampaign">
                                                       {{ item.rsvpMap.totalInvities }}
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'EVENT' &&
-     isChannelCampaign
-     ">
+                                                   <td class="text-center" *ngIf="campaignType === 'EVENT' && isChannelCampaign">
                                                       {{ item.rsvpMap.emailOpenedCount }}
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'EVENT' &&
-     isChannelCampaign
-     ">
+                                                   <td class="text-center" *ngIf="campaignType === 'EVENT' && isChannelCampaign">
                                                       {{ item.rsvpMap.YES }}
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'EVENT' &&
-     isChannelCampaign &&
-     !campaign.publicEventCampaign
-     ">
+                                                   <td class="text-center" *ngIf="campaignType === 'EVENT' && isChannelCampaign && !campaign.publicEventCampaign">
                                                       {{ item.rsvpMap.NO }}
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'EVENT' &&
-     isChannelCampaign &&
-     !campaign.publicEventCampaign
-     ">
+                                                   <td class="text-center" *ngIf="campaignType === 'EVENT' && isChannelCampaign && !campaign.publicEventCampaign">
                                                       {{ item.rsvpMap.MAYBE }}
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'EVENT' &&
-     isChannelCampaign
-     ">
+                                                   <td class="text-center" *ngIf="campaignType === 'EVENT' && isChannelCampaign">
                                                       {{ item.rsvpMap.notYetResponded }}
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'EVENT' &&
-     !isChannelCampaign
-     ">
+                                                   <td class="text-center" *ngIf="campaignType === 'EVENT' && !isChannelCampaign">
                                                       {{ item.rsvpMap.responseType }}
                                                       <span *ngIf="item.rsvpMap.responseType === null"><b>-</b></span>
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'EVENT' &&
-     !isChannelCampaign
-     ">
-                                                      <span *ngIf="
-     item.rsvpMap.additionalCount?.length !=
-     0 &&
-     item.rsvpMap.responseType === 'YES'
-     ">{{ item.rsvpMap.additionalCount }}</span>
-                                                      <span *ngIf="
-     !item.rsvpMap.additionalCount ||
-     item.rsvpMap.additionalCount?.length ===
-     0 ||
-     item.rsvpMap.responseType != 'YES'
-     "><b>-</b></span>
+                                                   <td class="text-center" *ngIf="campaignType === 'EVENT' && !isChannelCampaign">
+                                                      <span *ngIf="item.rsvpMap.additionalCount?.length != 0 && item.rsvpMap.responseType === 'YES'">{{ item.rsvpMap.additionalCount }}</span>
+                                                      <span *ngIf="!item.rsvpMap.additionalCount || item.rsvpMap.additionalCount?.length === 0 || item.rsvpMap.responseType != 'YES'"><b>-</b></span>
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'EVENT' &&
-     isChannelCampaign
-     ">
-                                                      <span *ngIf="
-     item.rsvpMap.additionalCount != 0 &&
-     item.rsvpMap.additionalCount != null
-     ">{{ item.rsvpMap.additionalCount }}</span>
-                                                      <span *ngIf="
-     item.rsvpMap.additionalCount === 0 ||
-     item.rsvpMap.additionalCount === null
-     "><b>-</b></span>
+                                                   <td class="text-center" *ngIf="campaignType === 'EVENT' && isChannelCampaign">
+                                                      <span *ngIf="item.rsvpMap.additionalCount != 0 && item.rsvpMap.additionalCount != null">{{ item.rsvpMap.additionalCount }}</span>
+                                                      <span *ngIf="item.rsvpMap.additionalCount === 0 || item.rsvpMap.additionalCount === null"><b>-</b></span>
                                                    </td>
                                                    <td class="td-chart" *ngIf="campaignType == 'VIDEO'">
                                                       <h6>
-                                                         <app-timestamp *ngIf="item?.latestView"
-                                                            [dateAndTime]="item.latestView">
-                                                         </app-timestamp>
+                                                         <app-timestamp *ngIf="item?.latestView" [dateAndTime]="item.latestView"></app-timestamp>
                                                          <span *ngIf="!item?.latestView">-</span>
                                                       </h6>
                                                    </td>
                                                    <td class="text-center" *ngIf="campaignType === 'VIDEO'">
                                                       {{ item.viewsCount }}
                                                    </td>
-                                                   <td class="td-chart" *ngIf="campaignType !== 'EVENT'">
-                                                      <div class="progress" *ngIf="campaignType !== 'SOCIAL'">
-                                                         <div class="progress-bar progress-bar-success" [ngClass]="{
-  'special-progress-bar':
-  item.viewsCount === 0
-  }" role="progressbar" [style.width.%]="
-  (item.viewsCount / maxViewsValue) *
-  100
-  ">
-                                                            <span *ngIf="campaignType === 'VIDEO'">{{
-                                                               item.emailOpenedCount }}</span>
-                                                            <span *ngIf="
-     campaignType === 'REGULAR' ||
-     campaignType === 'SURVEY' ||
-     campaignType === 'SOCIAL' ||
-     campaignType === 'LANDINGPAGE' ||
-     campaignType === 'EVENT'
-     ">{{ item.viewsCount }}</span>
+                                                   <td class="td-chart" *ngIf="campaignType !== 'EVENT' && campaignType !== 'LANDINGPAGE'">
+                                                      <div class="progress" *ngIf="campaignType !== 'SOCIAL' && campaignType !== 'LANDINGPAGE'">
+                                                         <div class="progress-bar progress-bar-success" [ngClass]="{'special-progress-bar':item.viewsCount === 0}" role="progressbar" [style.width.%]="(item.viewsCount / maxViewsValue) *100">
+                                                            <span *ngIf="campaignType === 'VIDEO'">{{item.emailOpenedCount}}</span>
+                                                            <span *ngIf="campaignType === 'REGULAR' ||campaignType === 'SURVEY' ||campaignType === 'SOCIAL' ||campaignType === 'LANDINGPAGE' ||campaignType === 'EVENT'">{{ item.viewsCount }}</span>
                                                          </div>
                                                       </div>
                                                       <ng-container *ngIf="campaignType == 'SOCIAL'">
-                                                         <ng-container *ngFor="
-     let socialStatus of socialCampaign.socialStatusList
-     ">
-                                                            <ng-container *ngFor="
-     let socialStatus of socialStatus.socialStatusList
-     ">
-                                                               <ng-container *ngIf="
-     socialStatus.userId ===
-     item.userId
-     ">
-                                                                  <div class="social-profile" [ngStyle]="{
-     'background-image':
-     'url(' +
-     socialStatus
-     .socialStatusProvider
-     .socialConnection
-     .profileImage +
-     ')'
-     }" data-toggle="tooltip" data-placement="top" title="{{
-     socialStatus
-     .socialStatusProvider
-     .socialConnection.profileName
-     }}">
-                                                                     <ng-container *ngIf="
-     socialStatus
-     .socialStatusProvider
-     .socialConnection.source ===
-     'TWITTER'
-     ">
-                                                                        <img class="img-circle" alt="{{
-     socialStatus
-     .socialStatusProvider
-     .socialConnection
-     .profileName
-     }}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png" />
+                                                         <ng-container *ngFor="let socialStatus of socialCampaign.socialStatusList">
+                                                            <ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
+                                                               <ng-container *ngIf="socialStatus.userId ===item.userId">
+                                                                  <div class="social-profile" [ngStyle]="{'background-image':'url(' +socialStatus
+                                                                     .socialStatusProvider.socialConnection.profileImage +')'}" data-toggle="tooltip" data-placement="top" title="{{
+                                                                       socialStatus.socialStatusProvider.socialConnection.profileName}}">
+                                                                     <ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source ==='TWITTER'">
+                                                                        <img class="img-circle" alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png" />
                                                                      </ng-container>
-                                                                     <ng-container *ngIf="
-     socialStatus
-     .socialStatusProvider
-     .socialConnection.source ===
-     'FACEBOOK'
-     ">
-                                                                        <img class="img-circle" alt="{{
-     socialStatus
-     .socialStatusProvider
-     .socialConnection
-     .profileName
-     }}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png" />
+                                                                     <ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source ==='FACEBOOK'">
+                                                                        <img class="img-circle" alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png" />
                                                                      </ng-container>
-                                                                     <ng-container *ngIf="
-     socialStatus
-     .socialStatusProvider
-     .socialConnection.source ===
-     'LINKEDIN'
-     ">
-                                                                        <img class="img-circle" alt="{{
-     socialStatus
-     .socialStatusProvider
-     .socialConnection
-     .profileName
-     }}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png" />
+                                                                     <ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source ==='LINKEDIN'">
+                                                                        <img class="img-circle" alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png" />
                                                                      </ng-container>
-                                                                     <ng-container *ngIf="
-     socialStatus
-     .socialStatusProvider
-     .socialConnection.source ===
-     'GOOGLE'
-     ">
-                                                                        <img class="img-circle" alt="{{
-     socialStatus
-     .socialStatusProvider
-     .socialConnection
-     .profileName
-     }}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/google_circle-20.png" />
+                                                                     <ng-container *ngIf="socialStatus.socialStatusProvider.socialConnection.source ==='GOOGLE'">
+                                                                        <img class="img-circle" alt="{{socialStatus.socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/google_circle-20.png" />
                                                                      </ng-container>
                                                                   </div>
                                                                </ng-container>
@@ -1546,20 +1338,10 @@
                                                          </ng-container>
                                                       </ng-container>
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'VIDEO' ||
-     campaignType === 'REGULAR' ||
-     campaignType === 'SURVEY'
-     ">
+                                                   <td class="text-center" *ngIf="campaignType === 'VIDEO' ||campaignType === 'REGULAR' ||campaignType === 'SURVEY'">
                                                       {{ item.urlsClickedCount }}
                                                    </td>
-                                                   <td (click)="
-  $event.stopPropagation();
-  goToCampaignAnaltyics(item)
-  " class="text-center" *ngIf="
-  campaignType === 'VIDEO' ||
-  campaignType === 'REGULAR'
-  ">
+                                                   <td (click)="$event.stopPropagation();goToCampaignAnaltyics(item)" class="text-center" *ngIf="campaignType === 'VIDEO' ||campaignType === 'REGULAR'">
                                                       <div class="actions-block override-actions"
                                                          style="margin-right: 100px">
                                                          <a [className]="showUserLevelCampaignAnalytics ? 'custom-icon': 'inactive custom-icon'"
@@ -1571,30 +1353,19 @@
                                                          </a>
                                                       </div>
                                                    </td>
-                                                   <td class="text-center" *ngIf="
-     campaignType === 'SURVEY' &&
-     campaign.formsCount > 0 &&
-     isChannelCampaign
-     ">
-                                                      <div class="actions-block override-actions"
-                                                         id="landing-page-icons">
-                                                         <a routerLink="/home/forms/csf/{{
-     campaign.campaignId
-     }}/{{ item.userId }}" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
+                                                   <td class="text-center" *ngIf="campaignType === 'SURVEY' && campaign.formsCount > 0 && isChannelCampaign">
+                                                      <div class="actions-block override-actions" id="landing-page-icons">
+                                                         <a (click)="goToSurveyCampaignForms(campaign.campaignId,item.userId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                                                             title="Survey Forms Count">
                                                             <i class="fa fa-wpforms" aria-hidden="true"></i>
-                                                            <span class="badge" id="notification-color">{{
-                                                               campaign.formsCount }}</span>
+                                                            <span class="badge" id="notification-color">{{campaign.formsCount }}</span>
                                                          </a>
                                                       </div>
                                                    </td>
                                                    <td *ngIf="campaign.dipCampaign">
                                                       <div class="actions-block" (click)="$event.stopPropagation()">
                                                          <i class="circled-number IconCustomization fontStyleNormal"
-                                                            *ngIf="item.autoResponsesCount == 0" style="
-     margin-right: 50px;
-     cursor: not-allowed;
-     ">{{ item.autoResponsesCount }}</i>
+                                                            *ngIf="item.autoResponsesCount == 0" style="margin-right: 50px;cursor: not-allowed;">{{ item.autoResponsesCount }}</i>
                                                          <i class="circled-number IconCustomization fontStyleNormal"
                                                             *ngIf="item.autoResponsesCount > 0">
                                                             {{ item.autoResponsesCount }}</i>
@@ -1632,34 +1403,23 @@
                                                       <td class="text-center" (click)="$event.stopPropagation()">
                                                          <div class="actions-block override-actions"
                                                             id="landing-page-icons">
-                                                            <a *ngIf="item.pageAnalyticsCount > 0" routerLink="/home/pages/{{
-     campaign.campaignId
-     }}/{{
-     item.userId
-     }}/campaign/analytics" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
+                                                            <a *ngIf="item.pageAnalyticsCount > 0" (click)="goToPageAnalyticsByPartnerId(campaign.campaignId,item.userId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                                                                title="Page Analytics">
                                                                <i class="fa fa-line-chart chart-hover"></i>
-                                                               <span class="badge" id="notification-color">{{
-                                                                  item.pageAnalyticsCount }}</span>
+                                                               <span class="badge" id="notification-color">{{item.pageAnalyticsCount}}</span>
                                                             </a>
-                                                            <a *ngIf="item.pageAnalyticsCount == 0"
-                                                               data-rel="fancybox-button" data-toggle="tooltip"
+                                                            <a  *ngIf="item.pageAnalyticsCount == 0" data-rel="fancybox-button" data-toggle="tooltip"
                                                                data-placement="top" title="Page Analytics">
                                                                <i class="fa fa-line-chart chart-hover"></i>
-                                                               <span class="badge" id="notification-color">{{
-                                                                  item.pageAnalyticsCount }}</span>
+                                                               <span class="badge" id="notification-color">{{item.pageAnalyticsCount}}</span>
                                                             </a>
                                                          </div>
                                                       </td>
                                                       <td class="text-center" *ngIf="campaign.formsCount > 0">
-                                                         <div class="actions-block override-actions"
-                                                            id="landing-page-icons">
-                                                            <a routerLink="/home/forms/clpf/{{
-     campaign.campaignId
-     }}/{{ item.userId }}" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
+                                                         <div class="actions-block override-actions" id="landing-page-icons">
+                                                            <a (click)="goToPageFormAnalyticsByPartnerId(campaign.campaignId,item.userId)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
                                                                <i class="fa fa-wpforms chart-hover"></i>
-                                                               <span class="badge" id="notification-color">{{
-                                                                  campaign.formsCount }}</span>
+                                                               <span class="badge" id="notification-color">{{campaign.formsCount}}</span>
                                                             </a>
                                                          </div>
                                                       </td>
@@ -1699,17 +1459,9 @@
                                                                </tr>
                                                             </thead>
                                                             <tbody>
-                                                               <app-auto-response-loader *ngIf="
-     autoResponeAnalyticsLoader.isLoading
-     ">
-                                                               </app-auto-response-loader>
-                                                               <ng-container *ngIf="
-     !autoResponeAnalyticsLoader.isLoading
-     ">
-                                                                  <tr *ngFor="
-     let autoResponseAnalytics of autoResponseAnalyticsPagination.pagedItems;
-     let i = index
-     ">
+                                                               <app-auto-response-loader *ngIf="autoResponeAnalyticsLoader.isLoading"></app-auto-response-loader>
+                                                               <ng-container *ngIf="!autoResponeAnalyticsLoader.isLoading">
+                                                                  <tr *ngFor="let autoResponseAnalytics of autoResponseAnalyticsPagination.pagedItems;let i = index">
                                                                      <td class="center-aligned">
                                                                         {{
                                                                         autoResponseAnalytics.autoResponseType
@@ -1825,8 +1577,8 @@
             </ng-template>
          </div>
       </div>
-      <div class="portlet light" style="background: white; padding: 2px 0px"
-         *ngIf="campaign.publicEventCampaign && !isShowPartnerLeads">
+      <!--Event Campaign Lead Details-->
+      <div class="portlet light" style="background: white; padding: 2px 0px"  *ngIf="campaign.publicEventCampaign && !isShowPartnerLeads">
          <div class="col-xs-12 p0">
             <div class="portlet-title col-xs-12 header">
                <div class="caption col-xs-12 col-sm-8" style="padding-top: 4px; padding-left: 3px">
@@ -2016,6 +1768,7 @@
             <app-scroll-top></app-scroll-top>
          </div>
       </div>
+      <!--Leads-->
       <div class="portlet light clearfix" *ngIf="showLeads">
          <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
          <div class="portlet-body">
@@ -2024,13 +1777,15 @@
                <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px; padding-top: 4px"
                   aria-hidden="true"></span></a>
             <app-manage-campaign-leads [campaignId]="campaignId" [fromAnalytics]="!isNavigatedThroughAnalytics"
-               [showTeamMemberFilter]="campaign.channelCampaign" (viewCampaignLeadForm)="viewCampaignLeadForm($event)"
+               [showTeamMemberFilter]="campaign.channelCampaign" (viewCampaignLeadForm)="viewCampaignLeadForm($event)" 
+               [isVendorVersion]="!campaign.nurtureCampaign" [isPartnerVersion]="campaign.nurtureCampaign"
                (editCampaignLeadForm)="editCampaignLeadForm($event)" (registerDealForm)="registerDealForm($event)"
                (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)"
                [refreshCampaignLeadsSubject]="refreshCampaignLeadsSubject.asObservable()">
             </app-manage-campaign-leads>
          </div>
       </div>
+      <!--Deals-->
       <div class="portlet light clearfix" *ngIf="showDeals">
          <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
          <div class="portlet-body">
@@ -2067,6 +1822,7 @@
       </app-add-deal>
    </div>
 </section>
+<!--Event Campaign-->
 <section *ngIf="campaignType === 'EVENT' && isChannelCampaign">
    <div id="timeline-view" [ngClass]="hidePageContent ? '' : 'page-content'" *ngIf="isTimeLineView">
       <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -2419,6 +2175,7 @@
       </div>
    </div>
 </section>
+<!--Time Line View-->
 <section *ngIf="(!isChannelCampaign || campaignType != 'EVENT') && !isDealRegistration">
    <div [ngClass]="hidePageContent ? '' : 'page-content'" id="timeline-view" *ngIf="isTimeLineView"
       [class.ml0]="authenticationService.isSuperAdmin()">
@@ -3828,9 +3585,6 @@
    </div>
 </div>
 <ng-container *ngIf="isDealRegistration && !isDealPreview">
-   <!-- <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaign.campaignId"
-      [campaignName]="campaign.campaignName" [actionType]="leadActionType" (notifyOtherComponent)="showTimeLineView()">
-   </app-add-lead> -->
    <section>
       <div class="page-content">
         <div>
@@ -3845,10 +3599,6 @@
     </section>
 </ng-container>
 <ng-container *ngIf="showLeadForm">
-   <!-- <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaign.campaignId"
-      [campaignName]="campaign.campaignName" [actionType]="leadActionType"
-      (notifyAnalyticsComponentToHidePopup)="closeLeadsForm()" (notifySubmitSuccess)="showSubmitLeadSuccess()">
-   </app-add-lead> -->
    <section>
       <div class="page-content">
         <div>

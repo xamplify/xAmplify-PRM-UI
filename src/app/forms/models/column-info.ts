@@ -57,4 +57,5 @@ export class ColumnInfo {
     columnDisable: boolean;
     hideFieldInfo: boolean = false;
     private = false;
+    formLookUpDefaultFieldType: any;
 }

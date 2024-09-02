@@ -14,11 +14,13 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
   providers: [HttpRequestLoader]
 })
 export class AnalyticsComponent implements OnInit, OnDestroy {
-  @Input() campaignId= 0;
+  @Input() campaignId:any;
+  @Input() campaignTitle:any;
   campaignName:string = "";
   notifyPartners = false;
   loader:HttpRequestLoader = new HttpRequestLoader();
   oneClickLaunchChannelCampaign = false;
+  statusCode = 0;
   constructor(private route: ActivatedRoute,public campaignService:CampaignService,public authenticationService:AuthenticationService,
     public xtremandLogger:XtremandLogger,public referenceService:ReferenceService){
 
@@ -29,7 +31,30 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.referenceService.loading(this.loader, true);
-    this.campaignId= this.route.snapshot.params['campaignId'];
+    this.campaignId = this.referenceService.decodePathVariable(this.route.snapshot.params['campaignId']);
+    this.campaignTitle = this.route.snapshot.params['campaignTitle'];
+    if(this.campaignTitle!=undefined && this.campaignTitle.length>0){
+      this.campaignService.validateCampaignIdAndCampaignTitle(this.campaignId,this.campaignTitle).subscribe(
+        response=>{
+            this.statusCode = response.statusCode;
+        },error=>{
+          this.xtremandLogger.errorPage(error);
+        },()=>{
+          if(this.statusCode==200){
+            this.isOneClickLaunchCampaign();
+          }else{
+            this.referenceService.goToPageNotFound();
+          }
+        }
+      );
+    }else{
+      this.isOneClickLaunchCampaign();
+    }
+ 
+   
+  }
+
+  isOneClickLaunchCampaign(){
     this.campaignService.isOneClickLaunchChannelCampaign(this.campaignId).
     subscribe(
         response=>{
@@ -42,8 +67,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           this.xtremandLogger.errorPage(error);
         }
     );
-
-   
   }
   
 

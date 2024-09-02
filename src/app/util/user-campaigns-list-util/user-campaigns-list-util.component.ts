@@ -14,7 +14,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { UtilService } from '../../core/services/util.service';
 
-declare var $,swal:any;
+declare var $:any,swal:any;
 @Component({
 	selector: 'app-user-campaigns-list-util',
 	templateUrl: './user-campaigns-list-util.component.html',
@@ -43,6 +43,9 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	previousRouterAlias = "";
 	navigatedFrom = "";
 	analyticsCampaignId: number;
+	campaignTitle = "";
+	statusCode = 0;
+	userIdParameter = "";
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -50,8 +53,12 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	ngOnInit() {
 		this.tilesLoader = true;
 		this.startLoaders();
-		this.pagination.userId = parseInt(this.route.snapshot.params['userId']);
-		let analyticsCampaignIdParam = this.route.snapshot.params['analyticsCampaignId'];
+		this.userIdParameter = this.referenceService.decodePathVariable(this.route.snapshot.params['userId']);
+		if(this.userIdParameter!=undefined){
+			this.pagination.userId = parseInt(this.userIdParameter);
+		}
+		let analyticsCampaignIdParam = this.referenceService.decodePathVariable(this.route.snapshot.params['analyticsCampaignId']);
+		this.campaignTitle = this.route.snapshot.params['campaignTitle'];
 		if(analyticsCampaignIdParam!=undefined){
 			this.analyticsCampaignId = parseInt(analyticsCampaignIdParam);
 		}
@@ -292,29 +299,37 @@ setAutoResponsesPage(event: any,campaign:any) {
   }
 
 
-	goToCampaignAnalytics(campaignId:number){
+	goToCampaignAnalytics(campaignId:number,campaignTitle:any){
 		this.loading = true;
-		this.referenceService.goToRouter("home/campaigns/"+campaignId+"/details");
+		let campaign = {};
+		campaign['campaignId'] = campaignId;
+		campaign['campaignTitle']=campaignTitle;
+		this.referenceService.goToCampaignAnalytics(campaign);
 	}
 	
 	viewTimeLine(campaignAnalytics:any){
 		this.loading = true;
-		let url  = "/home/campaigns/timeline/"+this.previousRouterAlias+"/"+campaignAnalytics.campaignId+"/"+this.pagination.userId;
+		let url  = "/home/campaigns/timeline/"+this.previousRouterAlias+"/"+this.referenceService.encodePathVariable(campaignAnalytics.campaignId)+"/"+this.referenceService.encodePathVariable(this.pagination.userId);
 		if(this.navigatedFrom!=undefined&& this.analyticsCampaignId==undefined){
 			this.referenceService.goToRouter(url+"/"+this.navigatedFrom);
 		}else if(this.analyticsCampaignId!=undefined && this.navigatedFrom!=undefined){
-			this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+this.analyticsCampaignId);
+			this.referenceService.goToRouter(url+"/"+this.navigatedFrom+"/"+this.referenceService.encodePathVariable(this.analyticsCampaignId)+"/"+this.referenceService.getEncodedUri(campaignAnalytics.campaignTitle));
 		}else{
 			this.referenceService.goToRouter(url);
 		}
-		
 		
 	}
 	goBack(){
 		this.loading = true;
 		let url = "/home/";
 		let manageCampaignsUrl = url+"campaigns/manage";
-		let campaignAnalyticsUrl = url+"/campaigns/"+this.analyticsCampaignId+"/details";
+		let encodedCampaignId = this.referenceService.encodePathVariable(this.analyticsCampaignId);
+		let campaignAnalyticsUrl = "";
+		if(this.campaignTitle!=undefined && this.campaignTitle.length>0){
+			campaignAnalyticsUrl = url+"/campaigns/"+ encodedCampaignId + "/"+this.campaignTitle+ "/details";
+		}else{
+			campaignAnalyticsUrl = url+"/campaigns/"+ encodedCampaignId + "/details";
+		}
 		if(this.previousRouterAlias=="pa"){
 			url = url+"partners/add";
 			this.referenceService.goToRouter(url);

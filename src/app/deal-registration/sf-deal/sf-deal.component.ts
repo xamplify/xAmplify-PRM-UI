@@ -73,6 +73,9 @@ export class SfDealComponent implements OnInit {
   formHeaderClass = "";
   formGroupClass: string;
   formLabelGroupClass: string;
+  isInvalidLookupField: boolean = false;
+
+
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService, public authenticationService: AuthenticationService) {
     this.isOnlyPartner = this.authenticationService.isOnlyPartner();
   }
@@ -225,6 +228,9 @@ export class SfDealComponent implements OnInit {
               columnInfo.hideFieldInfo = true;
             }
           }
+          if(columnInfo.formDefaultFieldType === 'CREATED_BY_NAME' && this.actionType === 'add'){
+            columnInfo.value = columnInfo.dropDownChoices[0].labelId;
+          }
         });
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
         let allDropdowns = this.form.formLabelDTOs.filter(column => column.labelType === "select");
@@ -361,7 +367,8 @@ export class SfDealComponent implements OnInit {
     let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(columnInfo.id);
     if (haveChildrenDropDown) {
       let selectedValue = columnInfo.value;
-      this.populateDependentChildValues(columnInfo.id, selectedValue);
+      let parentLabelType = columnInfo.labelType;
+      this.populateDependentChildValues(columnInfo.id, selectedValue,parentLabelType);
     }
     this.validateAllFields();
   }
@@ -372,6 +379,11 @@ export class SfDealComponent implements OnInit {
         column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
           Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
         );
+        if (!(column.dropDownChoices.length > 0) && (selectedValue != "")) {
+          column.labelType = "text";
+        } else {
+          column.labelType = "select";
+        }
       }
     });
   }
@@ -384,17 +396,23 @@ export class SfDealComponent implements OnInit {
     return false;
   }
 
-  populateDependentChildValues(parentId: any, selectedValue: string) {
+  populateDependentChildValues(parentId: any, selectedValue: string, parentLabelType: any) {
     this.form.formLabelDTOs.forEach(column => {
       if (column.parentLabelId === parentId) {
         column.value = "";
         column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
           Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
         );
+        if (!(column.dropDownChoices.length > 0) && (selectedValue != "" || parentLabelType === "text")) {
+          column.labelType = "text";
+        } else {
+          column.labelType = "select";
+        }
         let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(column.id);
         if (haveChildrenDropDown) {
           let selectedValue = column.value;
-          this.populateDependentChildValues(column.id, selectedValue);
+          let parentLabelType = column.labelType;
+          this.populateDependentChildValues(column.id, selectedValue, parentLabelType);
         }
       }
     });
@@ -450,9 +468,14 @@ export class SfDealComponent implements OnInit {
     this.validateRepValues();
     /*******XNFR-403*******/
 
+    let allLookupFields = this.form.formLabelDTOs.filter(column => column.labelType === "lookup");
+    for (let lookupField of allLookupFields) {
+      this.validateLookupField(lookupField);
+    }
+
     this.isDealRegistrationFormInvalid = this.isRequiredNotFilled || this.isInvalidEmailId || this.isInvalidAmount || this.isInvalidGeoLocation ||
       this.isInvalidPercentage || this.isInvalidPhoneNumber || this.isInvalidRepValues || this.isInvalidTextAreaFields ||
-      this.isInvalidTextFields || this.isInvalidWebsiteURL;
+      this.isInvalidTextFields || this.isInvalidWebsiteURL || this.isInvalidLookupField;
     this.isFormValid.emit(this.isDealRegistrationFormInvalid);
   }
   validateAmount(columnInfo: ColumnInfo) {
@@ -503,6 +526,8 @@ export class SfDealComponent implements OnInit {
       } else {
         this.isInvalidEmailId = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidEmailId = false;
     }
   }
 
@@ -516,6 +541,8 @@ export class SfDealComponent implements OnInit {
       } else {
         this.isInvalidTextFields = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidTextFields = false;
     }
   }
 
@@ -529,6 +556,8 @@ export class SfDealComponent implements OnInit {
       } else {
         this.isInvalidTextAreaFields = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidTextAreaFields = false;
     }
   }
 
@@ -549,6 +578,8 @@ export class SfDealComponent implements OnInit {
         columnInfo.divClass = "success";
         this.isInvalidPercentage = false;
       }
+    }  else if (!columnInfo.required) {
+      this.isInvalidPercentage = false;
     }
   }
 
@@ -562,6 +593,8 @@ export class SfDealComponent implements OnInit {
       } else {
         this.isInvalidWebsiteURL = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidWebsiteURL = false;
     }
   }
 
@@ -576,6 +609,9 @@ export class SfDealComponent implements OnInit {
         columnInfo.divClass = "success";
         this.isInvalidPhoneNumber = false;
       }
+    } else if (!columnInfo.required) {
+      this.isInvalidPhoneNumber = false;
+      columnInfo.errorMessage = '';
     }
   }
 
@@ -610,8 +646,26 @@ export class SfDealComponent implements OnInit {
         columnInfo.divClass = "success";
         this.isInvalidGeoLocation = false;
       }
+    } else if (!columnInfo.required){
+      this.isInvalidGeoLocation = false;
     }
   }
+
+  validateLookupField(columnInfo: ColumnInfo) {
+    columnInfo.divClass = "success";
+    if (columnInfo.labelType == 'lookup' && columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
+      if (columnInfo.value == 0 && columnInfo.required) {
+        columnInfo.errorMessage = "Please select "+ columnInfo.labelName;
+        columnInfo.divClass = "error";
+        this.isInvalidLookupField = true;
+      } else {
+        this.isInvalidLookupField = false;
+      }      
+    } else if (!columnInfo.required && columnInfo.labelType == 'lookup') {
+      this.isInvalidLookupField = false;
+    }
+  }
+
 
   numericOnly(event): boolean { // restrict e,+,-,E characters in  input type number    
     const charCode = (event.which) ? event.which : event.keyCode;

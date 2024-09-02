@@ -594,7 +594,7 @@
                                                         <tr>
                                                             <td class='pt10 pb10 bold' translate>Company: </td>
                                                             <td class='pt10 pb10' style="padding-left: 20px;">
-                                                                {{user.company}}</td>
+                                                                {{user.contactCompany}}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class='pt10 pb10 bold' translate>Company Domain: </td>
@@ -645,6 +645,12 @@
                                                             <td class='pt10 pb10 bold' translate>Website:</td>
                                                             <td class='pt10 pb10'>{{user.website}}</td>
                                                         </tr>
+
+                                                        <tr>
+                                                            <td class='pt10 pb10 bold' translate>Category: </td>
+                                                            <td class='pt10 pb10'>{{user.category}}</td>
+                                                        </tr>  
+
                                                     </tbody>
                                                 </table>
                                             </td>
@@ -809,6 +815,12 @@
                                                                     </td>
                                                                     <td class='pt10 pb10'>{{newContact.accountOwner}}
                                                                     </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Company:
+                                                                    </td>
+                                                                    <td class='pt10 pb10' style="padding-left: 20px;">
+                                                                        {{newContact.contactCompany}}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class='pt10 pb10 bold' translate>Company Domain:
@@ -1188,6 +1200,11 @@
                                                                         {{contact.territory}}</td>
                                                                 </tr>
 
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Category: </td>
+                                                                    <td class='pt10 pb10'>{{contact.category}}</td>
+                                                                </tr>
+                                                                
                                                                 <tr class="bg-unset flex-none" *ngIf="gdprStatus">
                                                                     <td class='pt10 pb10 bold mr_10' translate>Legal
                                                                         Basis :</td>

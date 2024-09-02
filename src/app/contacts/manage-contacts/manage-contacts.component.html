@@ -511,22 +511,22 @@
                                                       <b> Group Name:</b> {{contactList?.name}}
                                                    </span>
                                                 </h4>
-                                                <h5 *ngIf="contactList?.defaultPartnerList" class="mb0 moreipsis">
+                                                <h5 *ngIf="contactList?.defaultPartnerList" class="mb0 moreipsis mt5">
                                                    <span class="f-w-400 success"><b>Default Group:</b><i class="fa fa-check ml5"></i></span>
                                                 </h5>
-                                                <h5 class='mb0 moreipsis'>
+                                                <h5 class='mb0 moreipsis mt5'>
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList?.uploadedBy}}">
                                                       <b>By:</b> {{contactList.uploadedBy}}
                                                    </span>
                                                 </h5>
-                                                <h5 class='mb0 moreipsis' *ngIf="contactList?.formList && contactList.sharedCompanyName">
+                                                <h5 class='mb0 moreipsis mt5' *ngIf="contactList?.formList && contactList.sharedCompanyName">
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList?.sharedCompanyName}}">
                                                       <b>For:</b> {{contactList.sharedCompanyName}}
                                                    </span>
                                                 </h5>
-                                                <h5 class="mb0 moreipsis" style="padding: 0px;">
+                                                <h5 class="mb0 moreipsis mt5" style="padding: 0px;">
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList?.associatedCompany}}"
                                                       *ngIf="contactList.companyList">

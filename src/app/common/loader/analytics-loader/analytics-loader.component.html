@@ -1,4 +1,4 @@
-<div class="row m10" style="background: #fff " *ngIf="referenceService.campaignType === 'VIDEO'">
+<div class="row m10" *ngIf="referenceService.campaignType === 'VIDEO'">
   <div class="col-xs-12 p0">
      <div class="col-sm-4" *ngFor="let no of textLoader">
         <div class='text-input__loading--line rect-box box-custom'></div>
@@ -34,7 +34,7 @@
      <app-list-loader></app-list-loader>
   </div>
 </div>
-<div class="row m10" style="background: #fff" *ngIf="referenceService.campaignType === 'REGULAR' || referenceService.campaignType === 'SOCIAL' || referenceService.campaignType === 'EVENT' || referenceService.campaignType === 'LANDINGPAGE'">
+<div class="row m10" *ngIf="referenceService.campaignType === 'REGULAR' || referenceService.campaignType === 'SOCIAL' || referenceService.campaignType === 'EVENT' || referenceService.campaignType === 'LANDINGPAGE'">
   <div class="col-xs-12 p0">
      <div class="col-sm-6" *ngIf="referenceService.campaignType !== 'SOCIAL'">
         <div class='text-input__loading--line rect-box box-custom'></div>

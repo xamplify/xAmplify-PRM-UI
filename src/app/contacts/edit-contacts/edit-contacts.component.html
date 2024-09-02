@@ -426,7 +426,8 @@
 										<div class="col-xs-10 col-md-10 col-sm-10 p0 mWidthSort"
 											style="width: 52.33333333%;">
 											<div class="btn-group pull-right"
-												*ngIf="showEditContactData && selectedAddContactsOption === 8 && !clickBoard && !filePrevew">
+												*ngIf="(showEditContactData && !clickBoard && !filePrevew) 
+												&& (selectedAddContactsOption === 8 || selectedAddContactsOption === 9)">
 												<div class="inputs" align="right" style="float: right">
 													<div class="inputs" align="right"
 														style="float: right;display: inline-flex;">
@@ -1274,10 +1275,6 @@
 				</div>
 				<div class="" *ngIf="showAllContactData">
 					<div class="col-xs-12">
-						<div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0"
-							class="alert alert-info">
-							<strong translate>No results found</strong>
-						</div>
 						<div class="alert alert-success alert-dismissable col-xs-12" style="padding: 15px 10px 12px;"
 							*ngIf="invalidDeleteSuccessMessage">
 							<strong translate>Success!</strong> your
@@ -1362,13 +1359,13 @@
 											data-target="#filterModal">
 											<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Apply a filter"
-												style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
+												style="color: #0095da; font-size: 30px; margin-top: 10px; margin-left: 40px;"></i>
 										</div>
 										<div *ngIf="isSegmentation" (click)="removeSegmentation()"
 											style="float: left; cursor: pointer; padding-right: 20px;">
 											<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Remove a filter"
-												style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
+												style="color: red; font-size: 30px; margin-top: 10px; margin-left: 35px;"></i> <i
 												class="fa fa-times" aria-hidden="true"
 												style="color: red; margin-left: -8px;"></i>
 										</div>
@@ -1420,7 +1417,7 @@
 									<div class="col-xs-12 col-md-12 col-sm-12 p0">
 									</div>
 								</div>
-								<div class="table-responsive">
+								<div class="table-responsive" *ngIf="contactsByType.contacts?.length > 0">
 									<app-loader [model]="httpRequestLoader.isHorizontalCss"
 										*ngIf="httpRequestLoader.isLoading"></app-loader>
 									<table class='table tgrid' id="sample_editable_1" style="overflow: hidden;"
@@ -1678,6 +1675,9 @@
 										</tbody>
 									</table>
 								</div>
+								<div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="alert alert-info">
+									<strong translate>No results found</strong>
+								</div>
 								<app-pagination [pagination]="contactsByType.pagination"
 									[type]="contactsByType.selectedCategory" (notifyParent)="setPage($event)"
 									(notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
@@ -1807,7 +1807,7 @@
 					<input class="checkBox_shadow" type="checkbox" [(ngModel)]="isCheckTC"
 						[ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc"
 						checked><!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
-					By adding a contact you confirm that you have read and agree to the <a
+					By adding a {{assignLeads ? 'Lead(s)':'contact(s)'}} you confirm that you have read and agree to the <a
 						(click)="navigateToTermsOfUse()">xAmplify Terms of Use</a> and agree to the processing of your
 					personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>.
 					Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and

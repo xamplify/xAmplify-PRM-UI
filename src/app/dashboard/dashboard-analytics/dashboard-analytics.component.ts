@@ -283,14 +283,11 @@ if (('CUSTOM' === userCampaignReport.campaignReportOption) && (null != userCampa
 }
 
 listCampaignInteractionsData(userId: number, reportType: string) {
-
 this.campaignService.listCampaignInteractionsDataForVanityURL(this.dashboardAnalyticsDto,reportType)
     .subscribe(
         data => {
             this.topFourCampaignErrorResponse  = new CustomResponse();
-            this.xtremandLogger.info(data);
             this.campaigns = data;
-            this.xtremandLogger.log(data);
             this.referenceService.loading(this.topFourCampaignsLoader,false);
             const campaignIdArray = data.map(function (a) { return a[0]; });
             this.totalCampaignsCount = this.campaigns.length;
@@ -484,12 +481,8 @@ generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) 
     this.referenceService.loading(this.emailStatisticsLoader,false);
 }
 
-// refreshCampaignBarcharts() {
-//     this.getCampaignsEamailBarChartReports();
-// }
 
 filterByCompanyProfileName(){
-	
     if(this.vendorCompanyProfileName!=undefined &&this.vendorCompanyProfileName!=""){
 	localStorage.setItem('vanityUrlCompanyProfielName', JSON.stringify(this.vendorCompanyProfileName));
         this.router.navigate(['/home/dashboard/vanity/'+this.vendorCompanyProfileName]);
@@ -503,7 +496,11 @@ filterByCompanyProfileName(){
 showCampaignDetails(campaign:any){
     this.ngxLoading = true;
     this.referenceService.campaignType = campaign[7];
-    this.router.navigate(['/home/campaigns/'+campaign[0]+'/details']);
+    let campaignId = campaign[0];
+    let campaignTitle = campaign[8];
+    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
+    let encodedTitle = this.referenceService.getEncodedUri(campaignTitle);
+    this.router.navigate(['/home/campaigns/'+encodedCampaignId+'/'+encodedTitle+'/details']);
   }
 
   showSubmitDealSuccess() {

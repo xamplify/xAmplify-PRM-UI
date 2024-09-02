@@ -139,8 +139,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		{ 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
 		{ 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
 		{ 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
-		{ 'name': 'Added(ASC)', 'value': 'id-ASC' },
-		{ 'name': 'Added(DESC)', 'value': 'id-DESC' },
+
+		/* XNFR-556
+		 { 'name': 'Added(ASC)', 'value': 'id-ASC' },
+		 { 'name': 'Added(DESC)', 'value': 'id-DESC' },*/
 	];
 	public sortOption: any = this.sortOptions[0];
 	public searchKey: string;
@@ -677,7 +679,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					}
 				}
 			}
-			this.newPartnerUser = this.validateSocialContacts(this.newPartnerUser);
+			if (!(this.invalidPatternEmails.length == this.newPartnerUser.length)) {
+				this.newPartnerUser = this.validateSocialContacts(this.newPartnerUser);
+			}
 			if (existedEmails.length === 0) {
 				if (this.isCompanyDetails) {
 					if (this.validCsvContacts) {
@@ -987,7 +991,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.isLoadingList = true;
 			this.referenceService.loading(this.httpRequestLoader, true);
 			this.httpRequestLoader.isHorizontalCss = true;
-			this.contactService.loadUsersOfContactList(this.partnerListId, pagination).subscribe(
+			this.contactListObj = new ContactList;
+			pagination.userId = this.partnerListId;
+			this.userListPaginationWrapper.pagination = pagination;
+			this.contactListObj.id = this.partnerListId;
+			this.contactListObj.isPartnerUserList = this.isPartner;
+			this.userListPaginationWrapper.userList = this.contactListObj;
+			this.contactService.loadUsersOfContactList(this.userListPaginationWrapper).subscribe(
 				(data: any) => {
 					this.partners = data.listOfUsers;
 					this.totalRecords = data.totalRecords;
@@ -1025,7 +1035,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	loadAllPartnerInList(totalRecords: number) {
 		try {
 			this.allPartnersPagination.maxResults = totalRecords;
-			this.contactService.loadUsersOfContactList(this.partnerListId, this.allPartnersPagination).subscribe(
+			this.contactListObj = new ContactList;
+			this.userListPaginationWrapper.pagination.maxResults = this.allPartnersPagination.maxResults;
+			this.contactListObj.id = this.partnerListId;
+			this.userListPaginationWrapper.userList = this.contactListObj;
+			this.contactService.loadUsersOfContactList(this.userListPaginationWrapper).subscribe(
 				(data: any) => {
 					this.contactService.allPartners = data.listOfUsers;
 					this.pageLoader = false;
@@ -2819,7 +2833,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					data => {
 						if (data.access) {
 							this.loading = false;
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+							if (data.statusCode == 200) {
+								this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+							} else if (data.statusCode == 400) {
+								this.customResponse = new CustomResponse('ERROR', data.message, true);
+							}
 							this.referenceService.goToTop();
 							this.loadPartnerList(this.pagination);
 						} else {
@@ -4302,6 +4320,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					socialContact.accountName = this.getGoogleConatacts.contacts[i].accountName;
 					socialContact.postalCode = this.getGoogleConatacts.contacts[i].postalCode;
 					socialContact.country = this.getGoogleConatacts.contacts[i].country;
+					socialContact.website = this.getGoogleConatacts.contacts[i].website;
 					this.socialPartnerUsers.push(socialContact);
 				}
 
@@ -4338,8 +4357,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	goToCampaigns(contact: any) {
 		this.loading = true;
 		let self = this;
+		let encodedId = this.referenceService.encodePathVariable(contact.id);
 		setTimeout(function () {
-			self.router.navigate(["/home/campaigns/user-campaigns/pa/" + contact.id]);
+			self.router.navigate(["/home/campaigns/user-campaigns/pa/" + encodedId]);
 		}, 250);
 	}
 

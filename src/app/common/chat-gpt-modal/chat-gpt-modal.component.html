@@ -1,11 +1,11 @@
 <!--CHATGPT ICON-->
-<div *ngIf="isLocalHost && isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="chatgpt-card override" data-toggle="modal" data-target="#xAmplifyChatGPTModal" (click)="resetValues()">
-  <a class="javascript:void(0)"><img src="../assets/images/chatgpt.svg" class="icon-s-w"></a>
+<div *ngIf="isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="chatgpt-card override" data-toggle="modal" data-target="#xAmplifyChatGPTModal" (click)="resetValues()">
+  <a class="javascript:void(0)"><img src="../assets/images/ai.png" class="icon-s-w"></a>
 </div>
 <!--ICON END -->
 
 <!--ChatGPT Modal-->
-<div *ngIf="isLocalHost && isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" aria-labelledby="xAmplifyChatGPTModalLabel">
+<div *ngIf="isChatGptIconDisplayed && authenticationService?.module?.chatGptIntegrationEnabled && !isShowingRouteLoadIndicator && !showLoaderForAuthGuard" class="modal fade right" id="xAmplifyChatGPTModal" tabindex="-1" role="dialog" aria-labelledby="xAmplifyChatGPTModalLabel">
   <div class="modal-dialog w85-per" role="document">
     <div class="modal-content">
       <div class="modal-header">

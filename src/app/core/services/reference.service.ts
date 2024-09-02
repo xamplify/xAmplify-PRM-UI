@@ -1980,11 +1980,17 @@ export class ReferenceService {
     }
   }
 
-  goToCampaignAnalytics(campaign) {
-    this.campaignType = this.campaignType ? this.campaignType : "VIDEO";
-    this.router.navigate([
-      "/home/campaigns/" + campaign.campaignId + "/details",
-    ]);
+  goToCampaignAnalytics(campaign:any) {
+    let campaignId = campaign.campaignId;
+    let encodedCampaignId = this.encodePathVariable(campaignId);
+    let encodedTitle = this.getEncodedUri(campaign.campaignTitle);
+    this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+encodedTitle+ "/details"]);
+  }
+
+  navigateBackToCampaignAnalytics(campaign:any) {
+    let campaignId = campaign.campaignId;
+    let encodedCampaignId = this.encodePathVariable(campaignId);
+    this.router.navigate(["/home/campaigns/" + encodedCampaignId + "/"+campaign.campaignTitle+ "/details"]);
   }
 
   previewEmailTemplate(emailTemplate: EmailTemplate, campaign: any) {
@@ -2440,12 +2446,7 @@ export class ReferenceService {
     }
   }
 
-  copyInputMessage(
-    inputElement,
-    index: number,
-    successMessageClass: string,
-    id: string
-  ) {
+  copyInputMessage(inputElement:any,index: number,successMessageClass: string,id: string) {
     let messageId = id + index;
     $("." + successMessageClass).hide();
     $("#" + messageId).hide();
@@ -3496,6 +3497,14 @@ getEncodedUri(input:string){
   }
 }
 
+getDecodedUri(input:string){
+  if(input!=undefined && $.trim(input).length>0){
+    return decodeURIComponent(input);
+  }else{
+    return input;
+  }
+}
+
 removeCssStyles(){
   var hs = document.getElementsByTagName('style');
     for (var i=0, max = hs.length; i < max; i++) {
@@ -3519,6 +3528,7 @@ clearHeadScriptFiles(){
   $("#xamplify-index-head").html("");
   this.setTitleAndFavIcon();
   $('#page-loader-index-html').css({'display':'block'});
+
 }
 
   private setTitleAndFavIcon() {
@@ -3553,7 +3563,14 @@ encodePathVariable(input:any){
 }
 
 decodePathVariable(value:any){
-  return atob(value);
+  let finalValue:any;
+  try{
+    finalValue = atob(value);
+  }catch(error){
+    finalValue = value;
+  }
+  return finalValue;
+  
 }
 
 previewEmailTemplateInNewTab(id:any){
@@ -3668,7 +3685,6 @@ preivewAssetForPartnerOnNewHost(id: any) {
     } else {
       completeIconPath += this.envService.PREVIEW_HOST + "favicon.ico";
     }
-    console.log(completeIconPath);
     let encodedIcon = btoa(completeIconPath);
     return encodedIcon;
   }
@@ -3715,6 +3731,18 @@ preivewAssetForPartnerOnNewHost(id: any) {
     this.goToRouter(router);
   }
 
+  isNumber(value:any){
+    return typeof value === 'number';
+  }
+  
+copySelectedElement(inputElement:any,id:string){
+  $(".copied-item-success").hide();
+  $('#'+id).hide();
+  inputElement.select();
+  document.execCommand('copy');
+  inputElement.setSelectionRange(0, 0);
+  $('#'+id).show(600);
+}
   
 }
 

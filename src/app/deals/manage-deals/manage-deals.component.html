@@ -408,7 +408,7 @@
                                 {{deal.currentStageName}}</span>
 
                               <!-- xnfr-426-->
-                              <a *ngIf="deal?.showDealActions" data-rel="fancybox-button"
+                              <a *ngIf="(deal?.showDealActions && deal?.showEditDealStage) || (isVendorVersion && deal?.showEditDealStage)" data-rel="fancybox-button"
                                 (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
                                 data-toggle="tooltip" data-placement="bottom" title="Edit Deal Stage">
                                 <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
@@ -563,6 +563,55 @@
                           <tr [ngClass]="{'hidden': !campaign.expand}">
                             <td colspan="8" style="padding-right: 0px !important;">
                               <div class="row" *ngIf="showPartnerList" style="width: 100%;">
+                                <div class="col-xs-12 p5" style="padding-right: 0px !important">
+                                  <div class="portlet light"  *ngIf="vendorSelfDealsWithCountList != undefined && vendorSelfDealsWithCountList.length > 0">
+                                    <div class="caption">
+                                      <span
+                                        class="caption-subject font-red-sunglo uppercase">Vendor</span>
+                                    </div>
+                                    <div class="portlet-title" style="border-bottom: none">
+                                      <!-- <div class="row" id="box" *ngIf="partnerRequestLoader.isServerError">
+                                        Please contact admin for "Campaings"
+                                      </div> -->
+                                      <app-list-loader
+                                        *ngIf="vendorSelfDealsRequestLoader">
+                                      </app-list-loader>
+                                      <div class="portlet-body table-responsive" style="overflow: hidden;"
+                                      [hidden]="vendorSelfDealsWithCountList == undefined || vendorSelfDealsWithCountList.length == 0">
+                                        <div class="table-responsive" [hidden]="vendorSelfDealsRequestLoader">
+                                          <table class="table tgrid">
+                                            <thead>
+                                              <tr>
+                                                <th class="center-aligned width-76">Vendor
+                                                  <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="right"
+                                                    title="Vendor converted deals count"></i>
+                                                </th>
+                                                <th class="center">#Deals Count</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <ng-container *ngFor="let item of vendorSelfDealsWithCountList;let i=index">
+                                                <tr>
+                                                  <td>
+                                                    <app-user-info [userInfo]="item" [isPartnerInfo]="true" [isPartnerEntityInfo]="true" [hideEmptyBar]="true"></app-user-info>
+                                                  </td>
+                                                  <td>
+                                                    <a class="custom-icon" (click)="showCampaignDealsByVendor(item)"
+                                                    data-toggle="tooltip" data-placement="top" title="Number Of Deals">
+                                                    <i
+                                                      class="circled-number IconCustomization fontStyleNormal"><b>{{item.totalDeals}}</b></i>
+                                                    <div class="clickicons"></div>
+                                                  </a>
+                                                  </td>
+                                                </tr>
+                                              </ng-container>
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                                 <div class="col-xs-12 p5" style="padding-right: 0px !important">
                                   <div class="portlet light">
                                     <div class="portlet-title" style="border-bottom: none">

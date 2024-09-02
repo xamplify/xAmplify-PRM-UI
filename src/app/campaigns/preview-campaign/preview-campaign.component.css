@@ -177,3 +177,6 @@ legend.scheduler-border {
   padding-bottom: 5px;
 }
 .status-message {height:auto !important;}
+.popup_width {
+  width: 55% !important;
+}

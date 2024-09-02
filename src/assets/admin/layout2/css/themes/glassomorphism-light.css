@@ -791,7 +791,7 @@ select {
 }
 .preview-edit-color,
 .wrap-asset-name {
-  color: white !important;
+  color: #000 !important;
 }
 /* .custom {
   background: rgb(255 255 255 / 31%) !important;
@@ -926,8 +926,8 @@ i.IconCustomization:hover ,
   color: #000 !important;
 }
 .reload-btn {
-  background-color: #22313a !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: rgb(255 253 253 / 35%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
 /* a, */
 .gear-icon,
@@ -2096,7 +2096,7 @@ tbody {
   border-radius: 5px !important;
 }
 .actions-block i.fa.fa-edit {
-  line-height: 34px !important;
+  line-height: 32px !important;
 }
 .actions-block i.fa.fa-eye {
   line-height: 31px !important;
@@ -2207,13 +2207,14 @@ button.btn.btn-white {
   color: #fff !important;
 }
 .actions-block i.fa.fa-pencil-square-o {
-  line-height: 34px !important;
+  line-height: 32px !important;
+  padding-left: 3px !important;
 }
 .actions-block i.fa.fa-trash-o {
   line-height: 34px !important;
 }
 .actions-block i.fa.fa-files-o {
-  line-height: 34px !important;
+  line-height: 32px !important;
 }
 span.select-check-box {
   background: none !important;
@@ -2362,7 +2363,7 @@ input {
   padding: 1px 0px !important;
 }
 .portlet-title.tabbable-line.bt-zero-px.mh-zero-px {
-  border-bottom: 1px solid #2f4857 !important;
+  border-bottom: 1px solid rgb(255 255 255 / 35%) !important;
 }
 .unsubscribingPopup {
   background-color: transparent !important;
@@ -3469,7 +3470,7 @@ button.btn.custom:hover,
 }
 /* QA issues start*/
 .FieldName{
-  color:#ffffff!important;
+  color: #000!important;
 }
 /* Qa issues end */
 /* Sudha Sri(5-1-2024) */
@@ -4404,4 +4405,25 @@ span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !im
 }
 .border_0 {
   padding-top: 14px!important;
+}
+.text_pd5.only_neo {
+  margin-top: -3px !important;
+}
+a.close-circle.xamp-margin-left-icon.not_light{margin: 0px 7px 5px 5px !important;}
+i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization {
+  padding: 7px 0px 0px 3px !important;
+}
+.pos_pd_lft9{
+  padding-left: 0px !important;
+}
+span.gearicon-font-cu{top:5px !important;}
+.lead-details-border{border: 2px solid rgba(255, 255, 255, 0.1) !important;}
+i.fa.fa-plus.fa-fa-consistency.IconCustomization{line-height: 20px !important;}
+i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
+i.fa.fa-history.fa-fa-consistency.IconCustomization,
+i.fa.fa-comment.fa-fa-consistency.IconCustomization{line-height: 18px !important;}
+i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 4px;}
+i.fa.fa-eye{padding-left: 2px;}
+i.fa.fa-gear.mr5.IconCustomization.SingleIconCu.icon_place {
+  margin-left: 0px !important;
 }

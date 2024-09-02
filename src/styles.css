@@ -2043,19 +2043,19 @@ button.glyphicon.glyphicon-remove.search-box-item-clear:before {
   line-height: 25px !important;
 }
 .actions-block i.fa.fa-files-o {
-  line-height: 24px !important;
+  line-height: 26px !important;
   font-size: 13px !important;
 }
 .actions-block i.fa.fa-trash-o {
   line-height: 26px !important;
 }
 .actions-block i.fa.fa-edit {
-  line-height: 27px !important;
-  padding-left: 1px;
+  line-height: 26px !important;
+  padding-left: 2px;
 }
 .actions-block i.fa.fa-pencil-square-o {
-  line-height: 28px !important;
-  padding-left: 2px;
+  line-height: 26px !important;
+  padding-left: 2px !important;
 }
 .actions-block i.fa.fa-envelope {
   font-size: 13px !important;
@@ -2473,7 +2473,7 @@ i.singleIconCustomization {
 }
 
 i.fa.fa-trash-o.trashIconCustomization {
-  border: 1px solid #cb5a5e;
+  /* border: 1px solid #cb5a5e; */
   color: #cb5a5e;
 }
 i.fa.fa-trash-o.trashIconCustomization:hover {
@@ -3179,7 +3179,7 @@ button#save\&delete_button {
   border-radius: 3px;
 }
 button#cancel_button {
-  border-radius: 3px !important;
+  border-radius: 7px !important;
   border: none !important;
 }
 .btn{
@@ -3222,3 +3222,9 @@ a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor.mdf_bord
       height: auto !important;
     }
 }
+i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization{padding: 7px !important;}
+
+.copied-item-success{
+  color: green;
+}
+i.fa.fa-gear.mr5.IconCustomization.SingleIconCu.icon_place{margin-left: 1px !important;}

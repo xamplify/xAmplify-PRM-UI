@@ -185,7 +185,7 @@
               <!-- xnfr-426-->
               <span class="comment-color" translate>
                 {{deal.currentStageName}}</span>
-              <a data-rel="fancybox-button" *ngIf="deal?.showDealActions"
+              <a data-rel="fancybox-button" *ngIf="(deal?.showDealActions && deal?.showEditDealStage) || (isVendorVersion && deal?.showEditDealStage)"
                 (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)" data-toggle="tooltip"
                 data-placement="bottom" title="Edit Deal Stage">
                 <span class="fa fa-edit IconCustomization" aria-hidden="true"></span>

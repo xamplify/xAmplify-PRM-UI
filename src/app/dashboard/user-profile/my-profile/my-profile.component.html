@@ -192,7 +192,7 @@
                                             </a>
                                          </li>
                                         <!--XNFR-628 ChatGPT Settings-->
-                                        <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor && isLocalHost" [ngClass]="{'active-tab': activeTabName == chatGptSettingsMenuHeader}">
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor" [ngClass]="{'active-tab': activeTabName == chatGptSettingsMenuHeader}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == chatGptSettingsMenuHeader}" (click)="activateTab(chatGptSettingsMenuHeader);clearCustomResponse()">
                                                 {{MY_PROFILE_MENU_CONSTANTS.CHAT_GPT_SETTIGNS_MENU_HEADER}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':chatGptSettingsMenuHeader}"></ng-template>
@@ -341,7 +341,7 @@
 
                                         <!-- Oauth SSO Settings-->
                                         <li [ngClass]="{'active-tab': activeTabName == 'oauthSSOConfiguration'}"
-                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && !authenticationService?.module?.isMarketing && authenticationService?.module?.ssoEnabled">
+                                            *ngIf="authenticationService?.module?.loggedInThroughOwnVanityUrl && authenticationService?.module?.adminOrSuperVisor && authenticationService?.module?.ssoEnabled">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'oauthSSOConfiguration'}"
                                                 (click)="activateTab('oauthSSOConfiguration');clearCustomResponse()">{{properties.oauthSSOConfiguration}}
                                                 <ng-template [ngTemplateOutlet]="activeIcon"

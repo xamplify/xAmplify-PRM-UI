@@ -50,5 +50,4 @@ export class Lead {
     /***XNFR-615***/
     sfCustomFieldsDataDto: Array<SfCustomFieldsDataDTO> = new Array<SfCustomFieldsDataDTO>();
     showRegisterDeal:boolean;
-    vanityEnabled: boolean = false;
 }

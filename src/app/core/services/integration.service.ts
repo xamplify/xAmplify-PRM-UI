@@ -191,18 +191,6 @@ export class IntegrationService {
         .catch(this.handleError);
     }
 
-    getDealHeaderByUserId(loggedInUserId: number) {
-        return this._http.get(this.authenticationService.REST_URL + `crm/active/deal/header/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-    setDealHeader(userId: number, request: any) {
-        return this._http.post(this.authenticationService.REST_URL + `crm/active/save/deal/header/${userId}/${request}?access_token=${this.authenticationService.access_token}`, request)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
     updateCRMSettings(integrationType:string, loggedInUserId:any, integrationDetails:any) {
         return this._http.post(this.authenticationService.REST_URL + `update/${integrationType}/crm/settings/${loggedInUserId}?access_token=${this.authenticationService.access_token}`,integrationDetails)
             .map(this.extractData)
@@ -220,4 +208,15 @@ export class IntegrationService {
           .map(this.extractData)
           .catch(this.handleError);
     }
+
+    findPipelinesForCRMSettings(loggedInUserId:number, integrationType:any, pipelineType:any, ticketId:any) {
+        let ACCESS_TOKEN_SUFFIX_URL = "?access_token="+this.authenticationService.access_token;
+        let ticketIdParameter = ticketId!=undefined && ticketId>0 ? "&ticketTypeId="+ticketId:"&ticketTypeId=0";
+        let loggedInUserIdRequestParam = loggedInUserId!=undefined && loggedInUserId>0 ? "&loggedInUserId="+loggedInUserId:"&loggedInUserId=0";
+        let integrationTypeRequestParam = integrationType!=undefined ? "&integrationType="+integrationType:"&integrationType="+'';
+        let pipelineTypeRequestParam = pipelineType!=undefined ? "&pipelineType="+pipelineType:"&pipelineType="+'';
+        let url = this.authenticationService.REST_URL+"pipeline/findPipelinesForCRMSettings"+ACCESS_TOKEN_SUFFIX_URL+loggedInUserIdRequestParam+ticketIdParameter+integrationTypeRequestParam+pipelineTypeRequestParam;
+        return this.authenticationService.callGetMethod(url);
+      
+      }
 }

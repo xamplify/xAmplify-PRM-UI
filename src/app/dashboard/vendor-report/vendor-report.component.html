@@ -7,7 +7,7 @@
      <!--Vendor Report-->
       <div>
         <app-list-loader [rowsCount]="12" *ngIf="isListLoading"></app-list-loader>
-        <div class="portlet light">
+        <div class="portlet light" *ngIf="!isListLoading">
           <div class="portlet-title">
             <div class="row">
               <div class="col-xs-12  col-sm-12 col-md-12 col-lg-12">
@@ -55,13 +55,13 @@
                       <tr (click)="navigateToDashboardStats(report)" class="highletedRow">
                         <td>
                           <app-user-info [userInfo]="report"></app-user-info>
-                          <input type="text" class="form-control"  readonly="readonly" value="{{report?.emailId}}" #vendorReportEmailAddressText><br>
-                           <button class="btn-xs primary" (click)="$event.stopPropagation();copyVendorReportEmailAddress(vendorReportEmailAddressText,i)">Copy</button>
+                          <input type="text" class="form-control mt5"  readonly="readonly" value="{{report?.emailId}}" #vendorReportEmailAddressText>
+                           <button class="btn-xs btn-info mt5" (click)="$event.stopPropagation();copyVendorReportEmailAddress(vendorReportEmailAddressText,i)">Copy</button>
                            <span id="copied-vendor-report-users-email-address-{{i}}" class="success" style="display:none;">
                             <strong>Email Address copied successfully.<i class="fa fa-check" aria-hidden="true"></i></strong>
                           </span>
                         </td>
-                        <td>{{report.companyName}}</td>
+                        <td class="text-center">{{report.companyName}}</td>
                         <td>
                           <span *ngIf="report.roleId==2">OrgAdmin</span>
                           <span *ngIf="report.roleId==13">Vendor</span>
@@ -78,29 +78,40 @@
                         <td>
                           <app-timestamp [dateAndTime]="report.updatedTime"> </app-timestamp>
                         </td>
-                        <td class="inline-custom-width" (click)="$event.stopPropagation();">
-                          <a title="Company profile details" (click)="getVendorCompanyProfile(report)"> 
-                            <i class="fa fa-building-o" style="font-size: 20px;" aria-hidden="true"></i>
-                          </a>
-                          <a  title="My profile details" (click)="getVendorMyProfile(report)"> 
-                            <i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
-                          </a>
-                          <a  title="Send welcome email" (click)="$event.stopPropagation();sendWelcomeEmail(report)"> 
-                            <i class="fa fa fa-envelope" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
-                          </a>
-                          <a  title="Copy link" (click)="$event.stopPropagation();openLinkInPopup(report)"> 
-                            <i class="fa fa fa-copy" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
-                          </a>
-                          <a  title="Activate/Deactivate" (click)="$event.stopPropagation();activateOrDeactivate(report)"> 
-                              <i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
-                          </a>
-                          <a  title="Edit Modules" (click)="$event.stopPropagation();displayModuleAccess(report)"> 
-                            <i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
-                          </a>
-                          <a  title="Edit Module Names" (click)="$event.stopPropagation();editModuleNames(report)"> 
-                            <i class="fa fa-font" style="font-size: 20px;" aria-hidden="true"></i>
-                          </a>
-                        </td>
+                        <td  (click)="$event.stopPropagation();">
+                          <div class="actions-block override-actions actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition">
+                            <div class="mActionDiv whitespace_nowrap display-inlineflex">
+                              <!--Company Profile-->
+                              <a title="Company profile details" (click)="getVendorCompanyProfile(report)"> 
+                                <i class="fa fa-building-o" style="font-size: 20px;" aria-hidden="true"></i>
+                              </a>
+                              <!--My Profile-->
+                              <a  title="My profile details" (click)="getVendorMyProfile(report)"> 
+                                <i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
+                              </a>
+                              <!--Welcome Email-->
+                              <a  title="Send welcome email" (click)="$event.stopPropagation();sendWelcomeEmail(report)"> 
+                                <i class="fa fa fa-envelope" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
+                              </a>
+                              <!--Copy Link-->
+                              <a  title="Copy link" (click)="$event.stopPropagation();openLinkInPopup(report)"> 
+                                <i class="fa fa fa-copy" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
+                              </a>
+                              <!--Activate / DeActivate-->
+                              <a  title="Activate/Deactivate" (click)="$event.stopPropagation();activateOrDeactivate(report)"> 
+                                <i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
+                              </a>
+                              <!--Edit Modules-->
+                              <a  title="Edit Modules" (click)="$event.stopPropagation();displayModuleAccess(report)"> 
+                                <i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i>
+                              </a>
+                              <!--Edit Partner Module-->
+                              <a  title="Edit Partner Module Name" (click)="$event.stopPropagation();editModuleNames(report)"> 
+                                <i class="fa fa-font" style="font-size: 20px;" aria-hidden="true"></i>
+                              </a>
+                            </div> 
+                          </div>
+                        </td> 
                       </tr>
                     </ng-container>
                   </tbody>

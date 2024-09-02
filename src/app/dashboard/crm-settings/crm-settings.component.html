@@ -170,26 +170,75 @@
   <div class="row m0">
     <fieldset class="scheduler-borders">
       <legend class="scheduler-borders campaign_boxes">Deal Registration</legend>
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-        <div class="portlet light mb10" style="padding: 0px !important;">
+
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" 
+      *ngIf="isVendorAndPartnerLeadsRegisterDealToggleVisible">
+        <div class="portlet light mb-2" style="padding: 0px !important;">
           <div class="portlet-title leads-bgcolor mb0">
             <div class="row m0">
-              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="form-inlines">
                   <div class="form-group mb0 mr-20">
-                    <span class="lead-label">Show Register Deal</span>
+                    <span class="lead-label">Show Register Deal option for partner(s)</span>
                     <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
                     title="Enabling this option will allow your partner to view the 'Register Deal' option"></i>
                   </div>
-                  <app-custom-ui-switch [customSwitch]="showRegisterDeal" (customUiSwitchEventEmitter)="onChangeRegisterDeal($event)"></app-custom-ui-switch>
+                  <app-custom-ui-switch [customSwitch]="dealByPartner" (customUiSwitchEventEmitter)="onChangeRegisterDeal($event)"></app-custom-ui-switch>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="alert alert-info">
-          <p *ngIf="showRegisterDeal">{{showRegisterDealOnMessage}}</p>
-          <p *ngIf="!showRegisterDeal">{{showRegisterDealOffMessage}}</p>
+          <p *ngIf="dealByPartner">{{showRegisterDealToPartnerOnMessage}}</p>
+          <p *ngIf="!dealByPartner">{{showRegisterDealToPartnerOffMessage}}</p>
+        </div>
+      </div>
+
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" 
+      *ngIf="isVendorAndPartnerLeadsRegisterDealToggleVisible">
+        <div class="portlet light mb-2" style="padding: 0px !important;">
+          <div class="portlet-title leads-bgcolor mb0">
+            <div class="row m0">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-inlines">
+                  <div class="form-group mb0 mr-20">
+                    <span class="lead-label">Show Register Deal option for partner submitted leads</span>
+                    <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
+                    title="Enabling this option will allow you to view the 'Register Deal' option for partner submitted leads"></i>
+                  </div>
+                  <app-custom-ui-switch [customSwitch]="dealByVendor" (customUiSwitchEventEmitter)="onChangeVendorRegisterDeal($event)"></app-custom-ui-switch>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-info">
+          <p *ngIf="dealByVendor">{{showRegisterDealForPartnerLeadsOnMessage}}</p>
+          <p *ngIf="!dealByVendor">{{showRegisterDealForPartnerLeadsOffMessage}}</p>
+        </div>
+      </div>
+
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0" *ngIf="isSelfLeadsRegisterDealToggleVisible">
+        <div class="portlet light mb-2" style="padding: 0px !important;">
+          <div class="portlet-title leads-bgcolor mb0">
+            <div class="row m0">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-inlines">
+                  <div class="form-group mb0 mr-20">
+                    <span class="lead-label">Show Register Deal option for self leads</span>
+                    <i class="fa fa-info-circle info_circle"  data-toggle="tooltip" data-placement="top"
+                    title="Enabling this option will allow you to view the 'Register Deal' option for self leads"></i>
+                  </div>
+                  <app-custom-ui-switch [customSwitch]="dealBySelfLead" (customUiSwitchEventEmitter)="onChangeSelfRegisterDeal($event)"></app-custom-ui-switch>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-info">
+          <p *ngIf="dealBySelfLead">{{showRegisterDealToSelfLeadsOnMessage}}</p>
+          <p *ngIf="!dealBySelfLead">{{showRegisterDealToSelfLeadsOffMessage}}</p>
         </div>
       </div>
     </fieldset>

@@ -113,8 +113,7 @@
                                         </td>
                                     </ng-container>
                                     <td id="actions-td-width-xamp">
-                                        <div *ngIf="!(vendorJourney || isLandingPages || isMasterLandingPages)"
-                                        class="actions-block override-actions flex mPadAction IconCustomizationcondition">
+                                        <div class="actions-block override-actions flex mPadAction IconCustomizationcondition">
                                         <div class="mActionDiv whitespace_nowrap display-inlineflex">
                                             <!--Copy Icon-->
                                             <ng-template [ngTemplateOutlet]="copyIcon"
@@ -141,37 +140,6 @@
                                                 [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                         </div>
                                     </div>
-                                        <div *ngIf="(vendorJourney || isLandingPages || isMasterLandingPages)"
-                                            class="actions-block override-actions flex mPadAction IconCustomizationcondition">
-                                            <div class="mActionDiv whitespace_nowrap display-inlineflex">
-                                                <!--Share Icon-->
-                                                <ng-template *ngIf="vendorJourney && !landingPage?.defaultLandingPage" [ngTemplateOutlet]="shareIcon"
-                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                <!--Copy Icon-->
-                                                <ng-template *ngIf="!isLandingPages  || (isMasterLandingPages && !landingPage?.defaultLandingPage )" [ngTemplateOutlet]="copyIcon"
-                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                <!--Edit Icon-->
-                                                <ng-template *ngIf="!isLandingPages" [ngTemplateOutlet]="editIcon"
-                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                <!--Preview Icon-->
-                                                <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="previewIcon"
-                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                <!--Copy/Embed Link Icon-->
-                                                <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="copyOrEmbedLinkIcon"
-                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                <!--Form Icon-->
-                                                <ng-template  *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="formIcon"
-                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                <!--Analytics Icon-->
-                                                <ng-template *ngIf = "vendorJourney || isLandingPages || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="analyticsIcon"
-                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                            </div>
-                                            <div class="mActionDiv whitespace_nowrap">
-                                                <!--Delete Icon-->
-                                                <ng-template  [ngTemplateOutlet]="deleteIcon"
-                                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                            </div>
-                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -190,6 +158,12 @@
                                     <span class="ribbon1" *ngIf="!landingPage.coBranded && (!(vendorJourney || isMasterLandingPages) || ((vendorJourney || isMasterLandingPages) &&!landingPage.defaultLandingPage)) "><span>Regular</span></span>
                                     <span class="ribbon1" *ngIf="!landingPage.coBranded && ((vendorJourney || isMasterLandingPages)&& landingPage.defaultLandingPage) "><span>Default</span></span>
                                 </ng-container>
+                                <div class="ribbon tab-ribbon" *ngIf = "vendorJourney">
+                                    <span
+                                        *ngIf="landingPage?.published && !landingPage?.publishingOrWhiteLabelingInProgress">Published</span>
+                                    <span
+                                        *ngIf="landingPage?.publishingOrWhiteLabelingInProgress">Processing</span>
+                                </div>
                                 <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"
                                     alt="No Image Found">
                                 <div>
@@ -212,16 +186,20 @@
                                                 {{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}
                                             </h6>
                                             <span
-                                                class="view-banner-white-labeled LabeledmarginLeft">White-Labeled</span>
+                                                class="view-banner-white-labeled LabeledmarginLeft">White-Labeled</span>        
                                         </ng-container>
-                                        <span
+                                        <span *ngIf="!isLandingPages"
                                             class="view-banner green-btn-cu LabeledmarginLeft">{{landingPage.type}}</span>
+                                        <span *ngIf="isLandingPages && !isPartnerLandingPage && landingPage.status =='ACTIVE'" 
+                                            class="view-banner blue-btn-cu LabeledmarginLeft">{{landingPage.status}}</span>
+                                        <span *ngIf="isLandingPages && !isPartnerLandingPage && landingPage.status =='INACTIVE'" 
+                                            class="view-banner red-btn-cu LabeledmarginLeft">{{landingPage.status}}</span>
+
                                     </div>
                                     <!---XNFR-255-->
                                     <h6 *ngIf="!isPartnerLandingPage" class="GridViewCotent"> <b>Created On:</b>
                                         <app-timestamp [isOnlyDate]="true"
                                             [dateAndTime]="landingPage.displayTime"></app-timestamp>
-                                            {{landingPage.status}}
                                     </h6>
                                     <h6 *ngIf="isPartnerLandingPage" class="GridViewCotent"><b>Shared On:</b>
                                         <app-timestamp [isOnlyDate]="true"
@@ -242,55 +220,36 @@
                                     </h6>
                                 </div>
                                 <!---Icons-->
-                                <div class="bar gridIconCustomization flex icons-center" id="notificationBarCu"
-                                *ngIf="!(vendorJourney || isLandingPages || isMasterLandingPages)">
-                                    <!--Copy Icon-->
-                                    <ng-template [ngTemplateOutlet]="copyIcon"
-                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                    <!--Edit Icon-->
-                                    <ng-template [ngTemplateOutlet]="editIcon"
-                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                    <!--Preview Icon-->
-                                    <ng-template [ngTemplateOutlet]="previewIcon"
-                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                    <!--Copy/Embed Link Icon-->
-                                    <ng-template [ngTemplateOutlet]="copyOrEmbedLinkIcon"
-                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                    <!--Form Icon-->
-                                    <ng-template [ngTemplateOutlet]="formIcon"
-                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                    <!--Analytics Icon-->
-                                    <ng-template [ngTemplateOutlet]="analyticsIcon"
-                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                    <!--Delete Icon-->
-                                    <ng-template [ngTemplateOutlet]="deleteIcon"
-                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                </div>
-                                <div class="bar gridIconCustomization flex icons-center" id="notificationBarCu"
-                                *ngIf="(vendorJourney || isLandingPages || isMasterLandingPages)">
+                                <div class="bar gridIconCustomization flex icons-center" id="notificationBarCu">
                                     <!--Share Icon-->
                                     <ng-template *ngIf="vendorJourney && !landingPage?.defaultLandingPage " [ngTemplateOutlet]="shareIcon"
-                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>                            
                                     <!--Copy Icon-->
                                     <ng-template *ngIf="!isLandingPages" [ngTemplateOutlet]="copyIcon"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Edit Icon-->
-                                    <ng-template *ngIf="!isLandingPages" [ngTemplateOutlet]="editIcon"
+                                    <ng-template [ngTemplateOutlet]="editIcon"
+                                    *ngIf="!isLandingPages"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Preview Icon-->
-                                    <ng-template *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )" [ngTemplateOutlet]="previewIcon"
+                                    <ng-template [ngTemplateOutlet]="previewIcon"
+                                    *ngIf="!isLandingPages || (isLandingPages && landingPage?.status == 'ACTIVE' )"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Copy/Embed Link Icon-->
-                                    <ng-template *ngIf="(!isLandingPages && !landingPage?.defaultLandingPage) || (isLandingPages && landingPage?.status == 'ACTIVE')" [ngTemplateOutlet]="copyOrEmbedLinkIcon"
+                                    <ng-template [ngTemplateOutlet]="copyOrEmbedLinkIcon"
+                                    *ngIf="(!isLandingPages && !landingPage?.defaultLandingPage) || (isLandingPages && landingPage?.status == 'ACTIVE')"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Form Icon-->
-                                    <ng-template *ngIf="isLandingPages||  (vendorJourney && !landingPage?.defaultLandingPage)  || (isMasterLandingPages)" [ngTemplateOutlet]="formIcon"
+                                    <ng-template [ngTemplateOutlet]="formIcon"
+                                    *ngIf="!vendorJourney||  (vendorJourney && !landingPage?.defaultLandingPage)"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Analytics Icon-->
-                                    <ng-template *ngIf = " (vendorJourney &&  !landingPage?.defaultLandingPage) || isLandingPages || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="analyticsIcon"
+                                    <ng-template [ngTemplateOutlet]="analyticsIcon"
+                                    *ngIf = " !(vendorJourney || isMasterLandingPages)||(vendorJourney &&  !landingPage?.defaultLandingPage) || (isMasterLandingPages && !landingPage?.defaultLandingPage)"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Delete Icon-->
-                                    <ng-template *ngIf="(!isLandingPages && !landingPage?.defaultLandingPage) || (vendorJourney && !landingPage?.defaultLandingPage)  || (isMasterLandingPages && !landingPage?.defaultLandingPage)" [ngTemplateOutlet]="deleteIcon"
+                                    <ng-template [ngTemplateOutlet]="deleteIcon"
+                                    *ngIf="(!isLandingPages && !landingPage?.defaultLandingPage)"
                                         [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                 </div>
                             </div>

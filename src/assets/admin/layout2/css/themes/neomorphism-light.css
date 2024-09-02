@@ -1251,7 +1251,8 @@ div#box-dark-defalut-clr {
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff;
 }
 .border-cls,
-.inline {
+.inline,
+.item__actions.abjustPosition {
   border: none !important;
 }
 /* 29/05/2023 */
@@ -1898,11 +1899,9 @@ i.IconCustomization{
   background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important;
 }
 i.fa.fa-plus.fa-fa-consistency.IconCustomization :hover,
-i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization :hover,
-i.fa.fa-history.fa-fa-consistency.IconCustomization :hover,
-i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover {
+i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization :hover{
   background: #22313a !important;
-  line-height: 17px !important;
+  line-height: 21px !important;
 }
 i.fa.fa-trash-o.trashIconCustomization{
   border: none;
@@ -2124,10 +2123,8 @@ i.IconCustomization:hover {
   color: #000 !important;
 }
 i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
-i.fa.fa-plus.fa-fa-consistency.IconCustomization,
-i.fa.fa-history.fa-fa-consistency.IconCustomization,
-i.fa.fa-comment.fa-fa-consistency.IconCustomization {
-  line-height: 17px;
+i.fa.fa-plus.fa-fa-consistency.IconCustomization {
+  line-height: 21px;
 }
 i.fa.fa-user-plus.fa-fa-consistency.IconCustomization {
   line-height: 17px;
@@ -2714,7 +2711,7 @@ hr.swal2-spacer {
   top: 0%;
 }
 
-i.fa.fa-trash-o:hover{color: #cb5a5e !important;}
+i.fa.fa-trash-o:hover,
 i.fa.fa-pencil-square-o:hover,
 i.fa.fa-files-o:hover,
 i.fa.fa-bullhorn:hover,
@@ -2727,7 +2724,7 @@ i.fa.fa-rocket:hover{
   background-color: unset;
   z-index: 999;
   position: relative;
-  color: #fff !important;
+  color: #000 !important;
 }
 i.fa.fa-download:hover,
 i.fa.IconCustomization.fa-angle-right:hover,
@@ -3019,7 +3016,7 @@ border:0px!important;
 .campaignViewIcon{
   width: 32px;
   height: 32px;
-  line-height: 28px!important;
+  line-height: 32px!important;
 }
 .bar{
   border: 1px solid #cfd6de !important;
@@ -4417,3 +4414,15 @@ span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !im
 .border_0{
   background: #f4f4f5 !important;
 }
+.text_pd5.only_neo{margin-top: -5px !important;}
+a.close-circle.xamp-margin-left-icon.not_light{margin: 0px 7px 5px 5px !important;}
+i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization.only_neo{padding: 6px 0px 0px 3px !important;}
+.pos_pd_lft9{
+  padding-left: 0px !important;
+}
+i.fa.fa-minus.fa-fa-consistency.IconCustomization{padding: 9px !important;}
+i.fa.fa-history.fa-fa-consistency.IconCustomization :hover,
+i.fa.fa-history.fa-fa-consistency.IconCustomization,
+i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover,
+i.fa.fa-comment.fa-fa-consistency.IconCustomization{line-height: 15px !important;}
+i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}

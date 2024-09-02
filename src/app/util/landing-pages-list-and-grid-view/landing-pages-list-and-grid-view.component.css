@@ -331,3 +331,58 @@
 #share-cursor-not-allowed{
   cursor: not-allowed;
 }
+
+.ribbon div {
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 20px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  width: 100px;
+  display: block;
+  background: red;
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 19px;
+  left: -21px;
+}
+
+.ribbon div::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid red !important;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid red !important;
+}
+.ribbon div::after {
+  content: "";
+  position: absolute;
+  right: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid transparent;
+  border-right: 3px solid red !important;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid red !important;
+}
+
+.blue-btn-cu {
+  background-color: blue !important;
+  padding: 4px 8px !important;
+  font-size: 10px !important;
+  color: #fff;
+}
+
+.red-btn-cu {
+  background-color: red !important;
+  padding: 4px 8px !important;
+  font-size: 10px !important;
+  color: #fff;
+}

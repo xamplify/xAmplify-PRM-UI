@@ -24,7 +24,6 @@ import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { UserListPaginationWrapper } from '../models/userlist-pagination-wrapper';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-import { SortOption } from 'app/core/models/sort-option';
 import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
 import { Subject } from 'rxjs';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
@@ -130,7 +129,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	loggedInUserCompanyId: any;
 	masterContactListSync: boolean = false;
 	contactsCompanyListSync: boolean = false;
-	isPartnerUserList: boolean;
+	isPartnerUserList: boolean = false;
 
 	public currentContactType: string = "valid";
 
@@ -689,7 +688,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 
 		else if (contactList.socialNetwork == 'HUBSPOT' || contactList.socialNetwork == 'MICROSOFT'
-			|| contactList.socialNetwork == 'MARKETO' || contactList.socialNetwork == 'PIPEDRIVE' || contactList.socialNetwork == 'CONNECTWISE') {
+			|| contactList.socialNetwork == 'MARKETO' || contactList.socialNetwork == 'PIPEDRIVE' 
+			|| contactList.socialNetwork == 'CONNECTWISE' || contactList.socialNetwork == 'HALOPSA') {
 			this.contactListIdForSyncLocal = contactList.id;
 			this.socialNetworkForSyncLocal = contactList.socialNetwork;
 			this.syncronizeContactList(this.socialContact);
@@ -1445,7 +1445,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	contactsCount() {
 		try {
-
 			this.contactListObject = new ContactList;
 			this.contactListObject.isPartnerUserList = this.isPartner;
 			if (this.assignLeads) {
@@ -1520,10 +1519,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactListObject.contactType = contactType;
 			this.contactListObject.assignedLeadsList = this.assignLeads;
 			this.contactListObject.sharedLeads = this.sharedLeads;
+			this.contactListObject.isPartnerUserList = this.isPartner;
 			this.contactListObject.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
 			this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 			this.contactListObject.moduleName = this.module;
-
 			this.userListPaginationWrapper.userList = this.contactListObject;
 
 			this.contactService.listContactsByType(this.userListPaginationWrapper)
@@ -1943,10 +1942,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactsByType.contactPagination.sortingOrder = this.sortingOrder;
 
 			this.userListPaginationWrapper.pagination = this.contactsByType.contactPagination;
+			this.userListPaginationWrapper.userList.editList = false;
 			this.userListPaginationWrapper.userList.contactType = contactType;
 			this.userListPaginationWrapper.userList.assignedLeadsList = this.assignLeads;
 			this.userListPaginationWrapper.userList.sharedLeads = this.sharedLeads;
-
+			this.userListPaginationWrapper.userList.isDownload = true;
 			this.contactService.listContactsByType(this.userListPaginationWrapper)
 				.subscribe(
 					data => {
@@ -2560,16 +2560,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	showCampaigns(userId: number) {
 		this.campaignLoader = true;
 		let self = this;
+		let encodedUserId = this.referenceService.encodePathVariable(userId);
 		setTimeout(function () {
 			let prefixUrl = "/home/campaigns/user-campaigns/";
 			if (self.isPartner) {
-				self.referenceService.goToRouter(prefixUrl + "/pm/" + userId);
+				self.referenceService.goToRouter(prefixUrl + "/pm/" + encodedUserId);
 			} else {
 				if(!self.sharedLeads){
-					self.referenceService.goToRouter(prefixUrl + "/c/" + userId);
+					self.referenceService.goToRouter(prefixUrl + "/c/" + encodedUserId);
 				}
 				else{
-					self.referenceService.goToRouter(prefixUrl + "/sl/" + userId);
+					self.referenceService.goToRouter(prefixUrl + "/sl/" + encodedUserId);
 				}
 			}
 		}, 250);
@@ -2758,6 +2759,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.pagination.pageIndex = 1;
 		this.pagination.filterBy = filterType;
 		this.loadContactLists(this.pagination);
+		this.contactsCount();
 	}
 
 	getCompanyId() {
@@ -2880,6 +2882,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	downloadUserListCsv() {
+		this.userListPaginationWrapper.userList.isDownload = true;
 		try {
 			this.contactService.downloadUserListCsv(this.loggedInUserId, this.userListPaginationWrapper)
 				.subscribe(

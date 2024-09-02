@@ -83,7 +83,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     selectedTrackType: any = "";
     selectedCampaignType: any = "";
     selectedAssetType: any = "";
-    
+    //XBI-1975
+    isThroughPartnerDiv = false;
+    isInactivePartnersDiv = false;
+    isActivePartnerDiv = false;
+    isRedistributePartnersDiv = false;
+    isApprovePartnersDiv = false;
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -269,11 +274,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.selectedTabIndex = 0;
         this.campaignUserInteractionHttpRequestLoader = new HttpRequestLoader();
         this.pagination = new Pagination();
-        $('#through-partner-div').hide();
-        $('#inactive-partners-div').hide();
-        $('#active-partner-div').show();
-        $("#redistribute-partners-div").hide();
-        $('#approve-partners-div').hide();
+        //XBI-1975
+        this.isThroughPartnerDiv = false;
+        this.isInactivePartnersDiv = false;
+        this.isActivePartnerDiv = true;
+        this.isRedistributePartnersDiv = false;
+        this.isApprovePartnersDiv = false;
+
         this.getActivePartnerReports();
         this.loadCountryData();
         setTimeout(() => {
@@ -291,11 +298,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.getModuleAccess();
         this.sortOption = new SortOption();
         this.selectedTabIndex = 3;
-        $('#active-partner-div').hide();
-        $('#inactive-partners-div').hide()
-        $("#through-partner-div").show();
-        $("#redistribute-partners-div").hide();
-        $('#approve-partners-div').hide();
+        //XBI-1975
+        this.isThroughPartnerDiv = true;
+        this.isInactivePartnersDiv = false;
+        this.isActivePartnerDiv = false;
+        this.isRedistributePartnersDiv = false;
+        this.isApprovePartnersDiv = false;
+        
         this.throughPartnerCampaignPagination.throughPartnerAnalytics = true;
         this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
     }
@@ -305,11 +314,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.sortOption = new SortOption();
         this.selectedTabIndex = 2;
         this.pagination.maxResults = 12;
-        $('#active-partner-div').hide();
-        $('#inactive-partners-div').hide()
-        $("#through-partner-div").hide();
-        $("#redistribute-partners-div").show();
-        $('#approve-partners-div').hide();
+        //XBI-1975
+        this.isThroughPartnerDiv = false;
+        this.isInactivePartnersDiv = false;
+        this.isActivePartnerDiv = false;
+        this.isRedistributePartnersDiv = true;
+        this.isApprovePartnersDiv = false;
+
     }
 
 
@@ -422,11 +433,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.sortOption = new SortOption();
         this.selectedTabIndex = 1;
         this.httpRequestLoader = new HttpRequestLoader();
-        $('#through-partner-div').hide();
-        $('#active-partner-div').hide();
-        $('#inactive-partners-div').show();
-        $("#redistribute-partners-div").hide();
-        $('#approve-partners-div').hide();
+        //XBI-1975
+        this.isThroughPartnerDiv = false;
+        this.isInactivePartnersDiv = true;
+        this.isActivePartnerDiv = false;
+        this.isRedistributePartnersDiv = false;
+        this.isApprovePartnersDiv = false;
+
         this.inActivePartnersPagination.pageIndex = 1;
         this.inActivePartnersPagination.maxResults = 12;
         this.inActivePartnersPagination.partnerTeamMemberGroupFilter = this.applyFilter;
@@ -437,11 +450,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.sortOption = new SortOption();
         this.selectedTabIndex = 5;
         this.httpRequestLoader = new HttpRequestLoader();
-        $('#through-partner-div').hide();
-        $('#active-partner-div').hide();
-        $('#inactive-partners-div').hide();
-        $("#redistribute-partners-div").hide();
-        $('#approve-partners-div').show();
+        //XBI-1975
+        this.isThroughPartnerDiv = false;
+        this.isInactivePartnersDiv = false;
+        this.isActivePartnerDiv = false;
+        this.isRedistributePartnersDiv = false;
+        this.isApprovePartnersDiv = true;
+
         this.approvePartnersPagination.maxResults = 12;
         this.getApprovePartnerReports(this.approvePartnersPagination);
     }

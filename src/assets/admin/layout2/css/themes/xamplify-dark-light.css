@@ -759,6 +759,7 @@ span.ui-column-resize {
   border: 1px solid #2f4857 !important;
 }
 .label-box,
+.form-group.label-box,
 .amount-border,
 .image-preview {
   border: 1px solid #2f4857 !important;
@@ -2609,3 +2610,4 @@ a.title.padding_bottom.text-color.content-bg.row-space{border: none !important;}
 .sticky_btn{
   background-color: #22313a !important;
 }
+.img-wrap{border: 1px solid #2f4857 !important;}

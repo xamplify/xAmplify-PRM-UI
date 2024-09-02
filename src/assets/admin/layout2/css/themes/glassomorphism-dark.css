@@ -913,8 +913,8 @@ i.IconCustomization:hover{
   color: #fff !important;
 }
 .reload-btn {
-  background-color: #22313a !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: rgb(0 0 0 / 18%) !important;
+  border: 1px solid #ffffff33 !important;
 }
 .gear-icon,
 .e-multi-select-wrapper .e-delim-values .e-remain,
@@ -1945,7 +1945,7 @@ i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization :hover,
 i.fa.fa-history.fa-fa-consistency.IconCustomization :hover,
 i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover {
   background: #22313a !important;
-  line-height: 17px !important;
+  line-height: 19px !important;
 }
 i.fa.fa-trash-o.trashIconCustomization {
   border: none;
@@ -2064,7 +2064,7 @@ tbody {
   border-radius: 5px !important;
 }
 .actions-block i.fa.fa-edit {
-  line-height: 34px !important;
+  line-height: 32px !important;
 }
 .actions-block i.fa.fa-eye {
   line-height: 31px !important;
@@ -2151,7 +2151,7 @@ i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
 i.fa.fa-plus.fa-fa-consistency.IconCustomization,
 i.fa.fa-history.fa-fa-consistency.IconCustomization,
 i.fa.fa-comment.fa-fa-consistency.IconCustomization {
-  line-height: 17px;
+  line-height: 19px;
 }
 i.fa.fa-user-plus.fa-fa-consistency.IconCustomization {
   line-height: 17px;
@@ -2181,13 +2181,14 @@ button.btn.btn-white {
   color: #5b9bd1 !important;
 }
 .actions-block i.fa.fa-pencil-square-o {
-  line-height: 34px !important;
+  line-height: 32px !important;
+  padding-left: 4px !important;
 }
 .actions-block i.fa.fa-trash-o {
   line-height: 34px !important;
 }
 .actions-block i.fa.fa-files-o {
-  line-height: 34px !important;
+  line-height: 32px !important;
 }
 span.select-check-box {
   background: none !important;
@@ -2347,7 +2348,7 @@ input {
   padding: 1px 0px !important;
 }
 .portlet-title.tabbable-line.bt-zero-px.mh-zero-px {
-  border-bottom: 1px solid #2f4857 !important;
+  border-bottom: 1px solid #ffffff33 !important;
 }
 .unsubscribingPopup {
   background-color: rgb(146 151 179 / 8%) !important;
@@ -3949,7 +3950,7 @@ button.btn.btn-primary.shareVideoButton:hover{
 .number.NumberFontDecrease {
   color:#fff !important;
 }
-.vendor-details-tiles{border:1px solid rgba(255, 255, 255, 0.1) !important}
+.vendor-details-tiles,.form-group.label-box{border:1px solid rgba(255, 255, 255, 0.1) !important}
 button.btn.btn-xs.hidden-xs.l-g-view{
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   background: rgb(146 151 179 / 13%) !important;
@@ -4131,3 +4132,13 @@ span.btn.btn-primary.transition.btn_primary_lead_copy_id{background: #0276FF !im
   .border_0 {
     padding-top: 14px!important;
   }
+  a.close-circle.xamp-margin-left-icon.not_light{margin: 0px 7px 5px 5px !important;}
+  i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization {
+    padding: 7px 0px 0px 3px !important;
+  }
+  i.fa.fa-power-off.IconCustomization{padding-left: 1px !important;}
+  .pos_pd_lft9{
+    padding-left: 0px !important;
+  }
+  span.gearicon-font-cu{top:5px !important;}
+  i.fa.fa-eye{padding-left: 2px;}

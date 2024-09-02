@@ -102,7 +102,8 @@ h4.header-text-css,
 .black-blue-c:hover,
 .lineplayercontrol,
 .row-space,
-.popup-border-bottom {
+.popup-border-bottom,
+.borderTopcu {
   border-bottom: 1px solid #191b1e !important;
 }
 .portlet > .portlet-title,
@@ -806,7 +807,8 @@ span.ui-column-resize {
   border: 1px solid #2f4857 !important;
   color: white !important;
 }
-.form-border {
+.form-border,
+.form-group.label-box {
   border: 1px solid #191b1e !important;
 }
 /* .label-box, */
@@ -1235,7 +1237,8 @@ div#box-dark-defalut-clr {
 }
 
 .border-cls,
-.inline {
+.inline,
+.item__actions.abjustPosition {
   border: none !important;
 }
 
@@ -2001,7 +2004,7 @@ i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization :hover,
 i.fa.fa-history.fa-fa-consistency.IconCustomization :hover,
 i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover {
   background: #22313a !important;
-  line-height: 17px !important;
+  line-height: 20px !important;
 }
 i.fa.fa-trash-o.trashIconCustomization {
   border: none;
@@ -2238,7 +2241,7 @@ i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
 i.fa.fa-plus.fa-fa-consistency.IconCustomization,
 i.fa.fa-history.fa-fa-consistency.IconCustomization,
 i.fa.fa-comment.fa-fa-consistency.IconCustomization {
-  line-height: 17px;
+  line-height: 18px;
 }
 i.fa.fa-user-plus.fa-fa-consistency.IconCustomization {
   line-height: 17px;
@@ -2839,7 +2842,7 @@ button.btn.custom {
   top: 0%;
 }
 a.Iconhover.custom-icon {
-  line-height: 28px !important;
+  line-height: 25px !important;
 }
 hr.swal2-spacer {
   border-top: none !important;
@@ -4273,3 +4276,17 @@ button.filter.btn-hvr-text.emailtemplate-selected{
 .sticky_btn{
   background-color: #2c2f33!important;
 }
+.text_pd5.only_neo{margin-top: -5px !important;}
+a.close-circle.xamp-margin-left-icon.not_light{margin: 0px 7px 5px 5px !important;}
+i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization,
+i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization.only_neo{padding-left: 9px !important;}
+.pos_pd_lft9{
+  padding-left: 0px !important;
+}
+i.fa.fa-minus.fa-fa-consistency.IconCustomization{padding: 9px !important;}
+i.fa.fa-history.fa-fa-consistency.IconCustomization :hover,
+i.fa.fa-history.fa-fa-consistency.IconCustomization,
+i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover,
+i.fa.fa-comment.fa-fa-consistency.IconCustomization{line-height: 18px !important;}
+i.fa.fa-edit.mr5.IconCustomization.SingleIconCu{padding-left: 3px;}
+i.fa.fa-gear.mr5.IconCustomization.SingleIconCu.icon_place{margin-left: 0px !important;}

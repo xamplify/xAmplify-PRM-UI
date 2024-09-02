@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild,Input } from '@angular/core';
-import { Router } from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
 import { Campaign } from '../../models/campaign';
 import { CampaignReport } from '../../models/campaign-report';
 import { EmailLog } from '../../models/email-log';
@@ -9,7 +8,6 @@ import { SocialCampaign } from '../../../social/models/social-campaign';
 import { SocialStatus } from '../../../social/models/social-status';
 import { CustomResponse } from '../../../common/models/custom-response';
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
-
 import { CampaignService } from '../../services/campaign.service';
 import { UtilService } from '../../../core/services/util.service';
 import { VideoUtilService } from '../../../videos/services/video-util.service';
@@ -17,12 +15,10 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { PagerService } from '../../../core/services/pager.service';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { SocialService } from '../../../social/services/social.service';
-import { TwitterService } from '../../../social/services/twitter.service';
 import { ContactService } from '../../../contacts/services/contact.service';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { Tweet } from '../../../social/models/tweet';
 import { EmailTemplateService } from '../../../email-template/services/email-template.service';
-import { DealRegistrationService } from '../../../deal-registration/services/deal-registration.service';
 import { EventCampaign } from '../../models/event-campaign';
 import { PreviewLandingPageComponent } from '../../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPageService } from '../../../landing-pages/services/landing-page.service';
@@ -208,10 +204,12 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
   /****XNFR-125****/
   @Input() campaignId = 0;
   @Input() hidePageContent = false;
+  @Input() campaignTitle:any;
   constructor(private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
-    public xtremandLogger: XtremandLogger, private twitterService: TwitterService, private emailTemplateService: EmailTemplateService, private dealRegService: DealRegistrationService, private leadsService: LeadsService, public router: Router) {
+    public xtremandLogger: XtremandLogger, private emailTemplateService: EmailTemplateService,
+     private leadsService: LeadsService, public router: Router,private route: ActivatedRoute) {
     try {
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
@@ -2345,7 +2343,9 @@ checkParentAndRedistributedCampaignAccess(){
         if (this.isTimeLineView === true) {
           this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
         }
-        setTimeout(() => { this.mainLoader = false; }, 3000);
+        setTimeout(() => { 
+          this.mainLoader = false; 
+        }, 3000);
       }else{
         this.referenceService.goToPageNotFound();
       }
@@ -2389,7 +2389,31 @@ checkParentAndRedistributedCampaignAccess(){
     this.previewLandingPageComponent.showPreview(campaign.landingPage);
   }
   goToCampaignLandingPageAnalytics(campaignId: number) {
-    this.router.navigate(['home/pages/' + campaignId + '/campaign/analytics']);
+    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
+    this.router.navigate(['home/pages/' + encodedCampaignId + '/'+this.campaignTitle+'/campaign/analytics']);
+  }
+
+  goToPageAnalyticsByPartnerId(campaignId:number,partnerId:number){
+    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
+    let encodedUserId = this.referenceService.encodePathVariable(partnerId);
+    this.router.navigate(['home/pages/' + encodedCampaignId + '/'+encodedUserId+'/'+this.campaignTitle+'/campaign/analytics']);
+  }
+
+  goToPageFormAnalyticsByPartnerId(campaignId:number,partnerId:number){
+    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
+    let encodedUserId = this.referenceService.encodePathVariable(partnerId);
+    this.router.navigate(['home/forms/clpf/' + encodedCampaignId + '/'+encodedUserId+'/'+this.campaignTitle]);
+  }
+
+  goToSurveyCampaignForms(campaignId:number){
+    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
+    this.router.navigate(['home/forms/csf/' + encodedCampaignId +'/'+this.campaignTitle]);
+  }
+
+  goToSurveyCampaignFormsByPartnerId(campaignId:number,partnerId:number){
+    let encodedCampaignId = this.referenceService.encodePathVariable(campaignId);
+    let encodedPartnerId = this.referenceService.encodePathVariable(partnerId);
+    this.router.navigate(['home/forms/csf/' + encodedCampaignId +'/'+encodedPartnerId+'/'+this.campaignTitle]);
   }
 
   showAutoResponseAnalytics(campaign: any, selectedIndex: number) {
@@ -3004,8 +3028,11 @@ checkParentAndRedistributedCampaignAccess(){
 goToCampaignAnaltyics(item:any){
   if(this.showUserLevelCampaignAnalytics){
     this.loading = true;
+    let campaignTitle = this.route.snapshot.params['campaignTitle'];
+    let encodedCampaignId = this.referenceService.encodePathVariable(item.campaignId);
     let prefixUrl = "/home/campaigns/user-campaigns/";
-    let suffixUrl =  item.userId+"/b"+"/"+item.campaignId;
+    let encodedUserId = this.referenceService.encodePathVariable(item.userId);
+    let suffixUrl =  encodedUserId+"/b"+"/"+encodedCampaignId+"/"+campaignTitle;
     if(this.campaign.channelCampaign){
       this.referenceService.goToRouter(prefixUrl + "/p/" +suffixUrl);
     }else{
@@ -3150,6 +3177,16 @@ viewCampaignLeadForm(leadId: any) {
 
     openPageInNewTab(id:number){
       this.referenceService.previewPageInNewTab(id);
+    }
+
+    goToFormAnalytics(campaign:any){
+      let encodedCampaignId = this.referenceService.encodePathVariable(campaign.campaignId);
+      this.referenceService.goToRouter("/home/forms/clpf/"+encodedCampaignId+"/"+this.campaignTitle);
+    }
+
+    goToCampaignCheckIn(campaign:any){
+      let encodedCampaignId = this.referenceService.encodePathVariable(this.campaignId);
+      this.referenceService.goToRouter("/home/campaigns/"+encodedCampaignId+"/"+this.campaignTitle+"/checkin");
     }
 
 

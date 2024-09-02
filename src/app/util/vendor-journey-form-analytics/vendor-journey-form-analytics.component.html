@@ -42,25 +42,29 @@
           </thead>
           <tbody>
             <ng-container *ngFor="let landingPage of pagination.pagedItems ;let i =index">
-              <tr *ngIf = "!isMasterLandingPageAnalytics" id="folder-row-{{i}}" class="child-row-list-view border-cls">
-                <td class="custom-icon-width">
+			<ng-container *ngIf="!isMasterLandingPageAnalytics">
+			<tr id="folder-row-{{i}}" class="child-row-list-view border-cls">
+				<td class="custom-icon-width">
 					<div class="actions-block ">
-					<a (click)="$event.stopPropagation();viewLandingPageFormAnalytics(landingPage,i)"
-                    data-toggle="tooltip" data-placement="bottom" title="View Items"> 
-					
-					<i class="fa IconCustomization"
-					[ngClass]="{'fa-angle-right': !landingPage.expanded, 'fa-angle-down': landingPage.expanded}"
-					aria-hidden="true"></i>
-                  </a>
-				</div>
+						<a (click)="$event.stopPropagation();viewLandingPageFormAnalytics(landingPage,i)" data-toggle="tooltip"
+							data-placement="bottom" title="View Items">
+			
+							<i class="fa IconCustomization"
+								[ngClass]="{'fa-angle-right': !landingPage.expanded, 'fa-angle-down': landingPage.expanded}"
+								aria-hidden="true"></i>
+						</a>
+					</div>
 				</td>
-                <td>
-                  <h4 class="">
-                    <span *ngIf="landingPage.masterLandingPageName != null && landingPage.masterLandingPageName != ''" data-toggle="tooltip" data-placement="bottom" title="{{landingPage.masterLandingPageName}}">
-                      <b>Name:</b> {{landingPage.masterLandingPageName}}</span>
-					<span *ngIf="landingPage.masterLandingPageName == null || landingPage.masterLandingPageName == ''" data-toggle="tooltip" data-placement="bottom" title="{{landingPage.masterLandingPageName}}">
-						<b>Uncategorised</b></span>                  </h4>
-                </td>
+				<td>
+					<h4 class="">
+						<span *ngIf="landingPage.masterLandingPageName != null && landingPage.masterLandingPageName != ''"
+							data-toggle="tooltip" data-placement="bottom" title="{{landingPage.masterLandingPageName}}">
+							<b>Name:</b> {{landingPage.masterLandingPageName}}</span>
+						<span *ngIf="landingPage.masterLandingPageName == null || landingPage.masterLandingPageName == ''"
+							data-toggle="tooltip" data-placement="bottom" title="{{landingPage.masterLandingPageName}}">
+							<b>Uncategorised</b></span>
+					</h4>
+				</td>
 				<td class="text-center">
 					<div class="override-actions">
 						{{landingPage.partnerMailId}}
@@ -71,50 +75,60 @@
 						{{landingPage.partnerCompanyName}}
 					</div>
 				</td>
-              </tr>
-
-
-
-			  <tr  *ngIf ="isMasterLandingPageAnalytics" id="folder-row-{{i}}" class="child-row-list-view border-cls">
-                <td class="custom-icon-width">
-					<div class="actions-block ">
-					<a (click)="$event.stopPropagation();viewLandingPageFormAnalytics(landingPage,i)"
-                    data-toggle="tooltip" data-placement="bottom" title="View Items"> 
-					
-					<i class="fa IconCustomization"
-					[ngClass]="{'fa-angle-right': !landingPage.expanded, 'fa-angle-down': landingPage.expanded}"
-					aria-hidden="true"></i>
-                  </a>
-				</div>
+			</tr>
+			<tr [ngClass]="{'hidden': !landingPage.expanded}" id="list-folder-items">
+				<td class="td-netbg" colspan="5">
+					<ng-container *ngIf="landingPage.expanded">
+						<ng-container>
+							<app-form-analytics-util [importedObject]="analyticsObject"
+								[isVendorJourney]="true"></app-form-analytics-util>
+						</ng-container>
+					</ng-container>
 				</td>
-                <td>
-                  <h4 class="">
-                    <span *ngIf="landingPage.vendorLandingPageName != null && landingPage.vendorLandingPageName != ''" data-toggle="tooltip" data-placement="bottom" title="{{landingPage.masterLandingPageName}}">
-                      <b>Name:</b> {{landingPage.vendorLandingPageName}}</span>
-				  </h4>
-                </td>
-				<td class="text-center">
-					<div class="override-actions">
-						{{landingPage.vendorMailId}}
-					</div>
-				</td>
-				<td class="text-center">
-					<div class="override-actions">
-						{{landingPage.vendorCompanyName}}
-					</div>
-				</td>
-              </tr>
-
-			  <tr [ngClass]="{'hidden': !landingPage.expanded}" id="list-folder-items">
-                <td class="td-netbg" colspan="5">
-                  <ng-container *ngIf="landingPage.expanded">
-                    <ng-container > 
-                      <app-form-analytics-util [importedObject]="analyticsObject" [isVendorJourney]="isVendorJourney"
-					  [isMasterLandingPageAnalytics] = "isMasterLandingPageAnalytics"></app-form-analytics-util>
-                    </ng-container> 
-                  </ng-container>
-                </td>
-              </tr>
+			</tr>
+			</ng-container>
+			<ng-container *ngIf="isMasterLandingPageAnalytics">
+				<tr  id="folder-row-{{i}}" class="child-row-list-view border-cls">
+					<td class="custom-icon-width">
+						<div class="actions-block ">
+							<a (click)="$event.stopPropagation();viewLandingPageFormAnalytics(landingPage,i)" data-toggle="tooltip"
+								data-placement="bottom" title="View Items">
+			
+								<i class="fa IconCustomization"
+									[ngClass]="{'fa-angle-right': !landingPage.expanded, 'fa-angle-down': landingPage.expanded}"
+									aria-hidden="true"></i>
+							</a>
+						</div>
+					</td>
+					<td>
+						<h4 class="">
+							<span *ngIf="landingPage.vendorLandingPageName != null && landingPage.vendorLandingPageName != ''"
+								data-toggle="tooltip" data-placement="bottom" title="{{landingPage.masterLandingPageName}}">
+								<b>Name:</b> {{landingPage.vendorLandingPageName}}</span>
+						</h4>
+					</td>
+					<td class="text-center">
+						<div class="override-actions">
+							{{landingPage.vendorMailId}}
+						</div>
+					</td>
+					<td class="text-center">
+						<div class="override-actions">
+							{{landingPage.vendorCompanyName}}
+						</div>
+					</td>
+				</tr>
+				<tr [ngClass]="{'hidden': !landingPage.expanded}" id="list-folder-items">
+					<td class="td-netbg" colspan="5">
+						<ng-container *ngIf="landingPage.expanded">
+							<ng-container>
+								<app-form-analytics-util [importedObject]="analyticsObject"
+									[isMasterLandingPageAnalytics]="isMasterLandingPageAnalytics"></app-form-analytics-util>
+							</ng-container>
+						</ng-container>
+					</td>
+				</tr>
+			</ng-container>
             </ng-container>
           </tbody>
         </table>
