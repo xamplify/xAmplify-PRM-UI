@@ -8,9 +8,8 @@
           <span *ngIf="loggedInAsUserEmailId?.length>25">...</span>
         </strong>
       </strong>
-      <button class="xAmplify-btn-danger" title="Logout">
-        <i aria-hidden="true" class="fa fa-power-off"></i>
-      </button>
+      <app-login-as-partner [showLogOutButton]="isLoggedInAsPartner || isLoggedInAsTeamMember"
+      [showLoginAsButton]="false"></app-login-as-partner>
     </div>
   </div>
   <!--End  -->
@@ -51,19 +50,26 @@
                   <a (click)="naviagteToWelcomePage('/welcome-page')" [ngClass]="isWelcomePageActive? 'xamplify-active':''">Home</a>
                 </li>
                 <!-- start Show 3 modules-->
-                <ng-container *ngFor="let menu of menuItems | slice:0:3">
+                <ng-container *ngFor="let menu of menuItems | slice:0:4">
                   <li *ngIf="!menu.showSubMenu">
+                    
                     <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''" [routerLink]="menu.angularPath">
+                      <i [className]="menu.angularIcon" aria-hidden="true"></i>
                       {{menu.customName}}
                     </a>
                   </li>
                   <li *ngIf="menu.showSubMenu" >
-                    <a href="javascript:;" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''">{{menu.customName}}
+                
+                    <a href="javascript:;" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''">
+                      <i [className]="menu.angularIcon" aria-hidden="true"></i>
+                      {{menu.customName}}
                     </a>
                     <i class='fa fa-chevron-down js-arrow arrow'></i>
                     <ul class="js-sub-menu sub-menu-bar" *ngIf="menu.showSubMenu">
                       <li *ngFor="let subMenu of menu.subModules">
+                       
                         <a (click) = "navigate(subMenu)"  [routerLink]="subMenu.angularPath">
+                          <i [className]="subMenu.angularIcon" aria-hidden="true"></i>
                           {{subMenu.customName}}
                         </a>
                       </li>
@@ -77,21 +83,28 @@
                   <ul class="htmlCss-sub-menu sub-menu-bar">
                     <ng-container *ngFor="let menu of displayedMoreItems">
                       <li *ngIf="!menu.showSubMenu" >
+                        
                         <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''"
                           [routerLink]="menu.angularPath">
+                          <i [className]="menu.angularIcon" aria-hidden="true"></i>
                           {{menu.customName}}
                         </a>
                       </li>
                       <li class="more" *ngIf="menu.showSubMenu">
                         <!-- <a href="javascript:;" (click)="toggleSubMenu(menu.mergeTag)">{{menu.customName}}
                     </a> -->
-                        <span class="xamplify-submenu-flex"><a [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''">{{menu.customName}}</a>
+                    
+                        <span class="xamplify-submenu-flex"><a [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''">
+                          <i [className]="menu.angularIcon" aria-hidden="true"></i>
+                          {{menu.customName}}</a>
                           <i class='fa fa-chevron-right arrow more-arrow'></i>
                         </span>
                         <!-- <i class='fa fa-chevron-down js-arrow arrow'></i> -->
                         <ul class="more-sub-menu sub-menu-bar" *ngIf="menu.showSubMenu">
                           <li *ngFor="let subMenu of menu.subModules">
+                            
                             <a (click) = "navigate(subMenu)" [routerLink]="subMenu.angularPath">
+                              <i [className]="subMenu.angularIcon" aria-hidden="true"></i>
                               {{subMenu.customName}}
                             </a>
                           </li>
