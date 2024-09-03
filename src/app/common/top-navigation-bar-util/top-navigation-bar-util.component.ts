@@ -775,9 +775,9 @@ private beforeAdd(tag: any) {
 					this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
 					//XNFR-276
           this.menuItems = data.menuItems;
-          this.displayedItems = this.menuItems.slice(0, this.itemsToShow);
+          this.displayedItems = this.menuItems.slice(0, 5);
           console.log(this.displayedItems)
-          this.displayedMoreItems = this.menuItems.slice(3, this.menuItems.length)
+          this.displayedMoreItems = this.menuItems.slice(4, this.menuItems.length)
           console.log(this.displayedMoreItems)
 
 				},
