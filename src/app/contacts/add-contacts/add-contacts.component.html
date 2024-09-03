@@ -984,7 +984,7 @@
 											</tbody>
 										</table>
 									</div>
-									<!--Pagination-->
+									<!--Csv RowsPagination-->
 									<ul *ngIf="pager?.pages && pager?.pages?.length" class="pagination">
 										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
 												(click)="setPage(1)">First</a></li>
@@ -1000,6 +1000,15 @@
 											<a (click)="setPage(pager.totalPages)">Last</a>
 										</li>
 									</ul>
+									<!--XNFR-671-->
+									<span class="success"><strong>Total Records : 
+										<ng-container *ngIf="isColumnMapped">
+											{{contacts?.length}}
+										</ng-container>
+										<ng-container *ngIf="!isColumnMapped">
+											{{parsedCsvDto?.length}}
+										</ng-container>
+									</strong></span>
 								</div>
 							</div>
 						</div>

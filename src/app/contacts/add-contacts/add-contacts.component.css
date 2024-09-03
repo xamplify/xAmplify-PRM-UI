@@ -218,10 +218,10 @@ i.fa.fa-file-excel-o.IconTopMargin {
   border-radius: 3px !important;
   color: #a94442 !important;
 }
-.alert {
+/* .alert {
   padding: 10px;
   margin: 10px 0 !important;
-}
+} */
 .alert-success,
 .alert-danger,
 .alert-warning > h5 {

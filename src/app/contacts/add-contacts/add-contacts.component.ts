@@ -478,11 +478,19 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
         } else {
             /***XNFR-671 */
+            this.isListLoader = true;
             this.paginationType = "customCsvContacts";
             this.parsedCsvDtos = [];
             this.customCsvHeaders = [];
             var csvResult = Papa.parse(contents);
             var csvRows = csvResult.data;
+            this.defaultContactsCsvColumnHeaderDtos = [];
+             /***XNFR-671*****/
+             for(var i=0;i<this.xAmplifyDefaultCsvHeaders.length;i++){
+                let defaultContactsCsvColumnHeaderDto = new DefaultContactsCsvColumnHeaderDto();
+                defaultContactsCsvColumnHeaderDto.defaultColumn = this.xAmplifyDefaultCsvHeaders[i];;
+                this.defaultContactsCsvColumnHeaderDtos.push(defaultContactsCsvColumnHeaderDto);
+            }
             this.addCsvHeadersToMultiSelectDropDown(headers, self);
             let headersLength = this.customCsvHeaders.length;
             for (var i = 1; i < csvRows.length; i++) {
@@ -544,6 +552,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     /****XNFR-671******/
     openArrageHeadersModalPopUp(){
+        console.log(this.xAmplifyDefaultCsvHeaders);
+        console.log(this.customCsvHeaders);
         this.referenceService.scrollToModalBodyTopByClass();
         this.duplicateColumnsMappedErrorResponse = new CustomResponse();
         this.referenceService.openModalPopup("csv-column-mapping-modal-popup");
@@ -1767,6 +1777,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.mappingLoader = false;
         this.isResetButtonClicked = false;
         this.isColumnMapped = false;
+        this.paginationType = "";
+        this.contacts = [];
     }
 
     /*removeCsv() {
@@ -3526,12 +3538,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 }
             }, false);
 
-            /***XNFR-671*****/
-            for(var i=0;i<this.xAmplifyDefaultCsvHeaders.length;i++){
-                let defaultContactsCsvColumnHeaderDto = new DefaultContactsCsvColumnHeaderDto();
-                defaultContactsCsvColumnHeaderDto.defaultColumn = this.xAmplifyDefaultCsvHeaders[i];;
-                this.defaultContactsCsvColumnHeaderDtos.push(defaultContactsCsvColumnHeaderDto);
-            }
            
         }
         catch (error) {
