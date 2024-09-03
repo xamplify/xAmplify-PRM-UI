@@ -932,6 +932,10 @@
 												</ng-container>
 											</tbody>
 										</table>
+										<!--XNFR-671-->
+										<span class="success">
+											<strong>Total Records : {{contacts?.length}}</strong>
+										</span>
 									</div>
 									<!--Customer Uploaded UnMapped CSV Data XNFR-671-->
 									<div class="table-responsive" *ngIf="!isXamplifyCsvFormatUploaded && !isColumnMapped && !isListLoader">
@@ -983,6 +987,13 @@
 												</ng-container>
 											</tbody>
 										</table>
+										<!--XNFR-671-->
+										<span class="success">
+											<strong>Total Records : 
+											<ng-container *ngIf="isColumnMapped">{{contacts?.length}}</ng-container>
+											<ng-container *ngIf="!isColumnMapped">{{parsedCsvDtos?.length}}</ng-container>
+											</strong>
+										</span>
 									</div>
 									<!--Csv RowsPagination-->
 									<ul *ngIf="pager?.pages && pager?.pages?.length" class="pagination">
@@ -1000,15 +1011,6 @@
 											<a (click)="setPage(pager.totalPages)">Last</a>
 										</li>
 									</ul>
-									<!--XNFR-671-->
-									<span class="success"><strong>Total Records : 
-										<ng-container *ngIf="isColumnMapped">
-											{{contacts?.length}}
-										</ng-container>
-										<ng-container *ngIf="!isColumnMapped">
-											{{parsedCsvDto?.length}}
-										</ng-container>
-									</strong></span>
 								</div>
 							</div>
 						</div>

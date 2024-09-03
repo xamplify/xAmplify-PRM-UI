@@ -218,10 +218,9 @@ i.fa.fa-file-excel-o.IconTopMargin {
   border-radius: 3px !important;
   color: #a94442 !important;
 }
-/* .alert {
-  padding: 10px;
+.alert {
   margin: 10px 0 !important;
-} */
+}
 .alert-success,
 .alert-danger,
 .alert-warning > h5 {
@@ -236,5 +235,15 @@ i.fa.fa-file-excel-o.IconTopMargin {
 
 .alert-danger .close {
   position: relative;
+  top: 10px !important;
+}
+
+.alert-success {
+  background-color: #dff0d8 !important;
+  border-radius: 3px !important;
+  color: #3c763d !important;
+}
+
+.alert-success .close  {
   top: 10px !important;
 }
