@@ -242,10 +242,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     mergeTagForGuide: any;
     socialContactsNames: string[] = ['HUBSPOT', 'MARKETO', 'microsoft', 'pipedrive', 'connectWise', 'halopsa'];
     /*****XNFR-671*******/
+    xAmplifyDefaultCsvHeaders = ['First Name','Last Name','Company','Job Title','Email Address','City','State','Zip Code','Country','Mobile Number'];
+    
     isXamplifyCsvFormatUploaded = false;
     parsedCsvDtos:Array<ParsedCsvDto> = new Array<ParsedCsvDto>();
     defaultContactsCsvColumnHeaderDtos:Array<DefaultContactsCsvColumnHeaderDto> = new Array<DefaultContactsCsvColumnHeaderDto>();
-    xAmplifyDefaultCsvHeaders = ['First Name','Last Name','Company','Job Title','Email Address','City','State','Zip Code','Country','Mobile Number'];
     customCsvHeaders: any[];
     duplicateMappedColumns = [];
     duplicateColumnsMappedErrorResponse:CustomResponse = new CustomResponse();
@@ -1752,6 +1753,20 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.filePreview = false;
         this.selectedLegalBasisOptions = [];
         this.isValidLegalOptions = true;
+        this.resetCustomUploadCsvFields();
+    }
+
+    /***XNFR-671****/
+    private resetCustomUploadCsvFields() {
+        this.isXamplifyCsvFormatUploaded = false;
+        this.parsedCsvDtos = [];
+        this.defaultContactsCsvColumnHeaderDtos = [];
+        this.customCsvHeaders = [];
+        this.duplicateMappedColumns = [];
+        this.duplicateColumnsMappedErrorResponse = new CustomResponse();
+        this.mappingLoader = false;
+        this.isResetButtonClicked = false;
+        this.isColumnMapped = false;
     }
 
     /*removeCsv() {
