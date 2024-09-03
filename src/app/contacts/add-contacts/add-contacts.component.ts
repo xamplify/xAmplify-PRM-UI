@@ -641,6 +641,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     /****XNFR-671******/
     resetMappedColumns(){
+        this.isListLoader = true;
         this.duplicateColumnsMappedErrorResponse = new CustomResponse();
         this.mappingLoader = true;
         this.isResetButtonClicked = false;
@@ -655,9 +656,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.isResetButtonClicked = true;
                 this.isColumnMapped = false;
                 this.mappingLoader = false;
-                this.paginationType = "";
+                this.paginationType = "customCsvContacts";
+                this.setPage(1);
+                this.isListLoader = false;
             }catch(error){
-                alert("Eror Occues");
+                this.xtremandLogger.error(error);
             }
             
         }, 100);
