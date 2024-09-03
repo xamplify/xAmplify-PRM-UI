@@ -856,7 +856,12 @@
 								<div class="portlet-body">
 									<app-list-loader *ngIf="isListLoader"></app-list-loader>
 									<!--xAmplify CSV Format-->
-									<div class="table-responsive" *ngIf="isXamplifyCsvFormatUploaded && !isListLoader">
+									<div class="table-responsive" *ngIf="(isXamplifyCsvFormatUploaded || isColumnMapped) && !isListLoader">
+										<div class="alert alert-success" *ngIf="isColumnMapped">
+											<strong>
+												CSV has been mapped. You can still <a (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange headers.
+											</strong>
+										</div>
 										<table class="table tgrid" id="sample_editable_2">
 											<thead>
 												<tr>
@@ -933,56 +938,6 @@
 										<div class="alert alert-danger">
 											<strong>
 												The uploaded CSV does not match the xAmplify CSV. Please <a class="required" (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange the headers.
-											</strong>
-										</div>
-										<table class="table tgrid">
-											<thead>
-												<tr>
-													<ng-container *ngFor="let customCsvHeader of customCsvHeaders;let i  = index">
-														<ng-container *ngIf="i<=3">
-															<th>{{customCsvHeader.itemName}}</th>
-														</ng-container>
-													</ng-container>
-													<th *ngIf="customCsvHeaders?.length>3">More</th>
-												</tr>
-											</thead>
-											<tbody>
-												<ng-container  *ngFor="let parsedCsvDto of pagedItems;let rowIndex = index">
-													<tr  id="form-data-row-{{rowIndex}}" class="form-data-row">
-														<ng-container *ngFor="let csvRow of  parsedCsvDto.csvRows;let columnIndex = index">
-															<td *ngIf="columnIndex<=3">
-																{{csvRow.value}}
-															</td>
-														</ng-container>
-														<td *ngIf="customCsvHeaders?.length>3">
-															<button *ngIf="customCsvHeaders?.length>4" class="lightgray-btn" id='more_less_button_{{rowIndex}}' (click)="expandRows(parsedCsvDto,rowIndex)">
-																<span *ngIf="!parsedCsvDto.expanded">More</span>
-																<span *ngIf="parsedCsvDto.expanded">Less</span>
-															</button>
-														</td>
-													</tr>
-													<tr [ngClass]="{'hidden': !parsedCsvDto.expanded}" id="child-table">
-														<td colspan="5">
-															<table id="expanded-table" class="table tgrid table-bordered" style="margin-bottom: 1px;">
-																<tr *ngFor="let customCsvHeader of customCsvHeaders;let i  = index;">
-																	<th *ngIf="i>=4" scope="row">
-																		{{customCsvHeader?.itemName}}
-																	</th>
-																	<td *ngIf="i>=4">
-																		{{parsedCsvDto?.csvRows[i].value}}
-																	</td>
-																</tr>
-															</table>
-														</td>
-													</tr>
-												</ng-container>
-											</tbody>
-										</table>
-									</div>
-									<div class="table-responsive" *ngIf="!isXamplifyCsvFormatUploaded && isColumnMapped && !isListLoader">
-										<div class="alert alert-success">
-											<strong>
-												CSV has been mapped.You can still <a class="required" (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange headers.
 											</strong>
 										</div>
 										<table class="table tgrid">
@@ -1621,7 +1576,7 @@
 								: (duplicateMappedColumns?.indexOf(defaultContactsCsvColumnHeaderDto?.mappedColumn)<0 && defaultContactsCsvColumnHeaderDto?.mappedColumn.length>0) ? 'alert alert-success' 
 								: defaultContactsCsvColumnHeaderDto?.mappedColumn.length==0 ? '':''">
 							<td class="text-center">{{defaultContactsCsvColumnHeaderDto.defaultColumn}}
-								<span *ngIf="defaultContactsCsvColumnHeaderDto.defaultColumn=='Email ID'" class="required">*</span>
+								<span *ngIf="defaultContactsCsvColumnHeaderDto.defaultColumn==xAmplifyDefaultCsvHeaders[4]" class="required">*</span>
 							</td>
 							<td class="text-center" >
 								<app-multi-select-dropdown  *ngIf="(customCsvHeaders!=undefined && customCsvHeaders.length>0) || isResetButtonClicked" 

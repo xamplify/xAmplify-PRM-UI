@@ -245,7 +245,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     isXamplifyCsvFormatUploaded = false;
     parsedCsvDtos:Array<ParsedCsvDto> = new Array<ParsedCsvDto>();
     defaultContactsCsvColumnHeaderDtos:Array<DefaultContactsCsvColumnHeaderDto> = new Array<DefaultContactsCsvColumnHeaderDto>();
-    xAmplifyDefaultCsvHeaders = ['First Name','Last Name','Company','Job Title','Email ID','City','State','Zip Code','Country','Mobile Number'];
+    xAmplifyDefaultCsvHeaders = ['First Name','Last Name','Company','Job Title','Email Address','City','State','Zip Code','Country','Mobile Number'];
     customCsvHeaders: any[];
     duplicateMappedColumns = [];
     duplicateColumnsMappedErrorResponse:CustomResponse = new CustomResponse();
@@ -583,6 +583,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     saveMappedColumns(){
         this.mappingLoader = true;
         this.contacts = [];
+        this.paginationType = "";
         this.duplicateColumnsMappedErrorResponse = new CustomResponse();
         try{
             this.referenceService.scrollToModalBodyTopByClass();
@@ -594,7 +595,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 let isDuplicateColumnsMapped = this.duplicateMappedColumns!=undefined && this.duplicateMappedColumns.length>0;
                 if(!isDuplicateColumnsMapped){
                     let defaultColumns = filteredColumnHeaderDtos.map(function (dto) { return dto.defaultColumn }).filter(function(v){return v!==''});
-                    if(defaultColumns.indexOf('Email ID')>-1){
+                    if(defaultColumns.indexOf(this.xAmplifyDefaultCsvHeaders[4])>-1){
                         let self = this.iterateDtoAndAddMappedRows(filteredColumnHeaderDtos);
                         let firstNameRows = this.getMappedRows(filteredColumnHeaderDtos, this.xAmplifyDefaultCsvHeaders[0]);
                         let lastNameRows = this.getMappedRows(filteredColumnHeaderDtos, this.xAmplifyDefaultCsvHeaders[1]);
@@ -613,8 +614,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                             rowsLength = 0;
                         }
                         this.iterateAndAddToUsers(rowsLength, firstNameRows, lastNameRows, companyRows, jobTitleRows, emailIdRows, cityRows, stateRows, zipCodeRows, countryRows, mobileNumberRows, this.contacts);
-                        console.log(this.contacts);
+                        this.paginationType = "csvContacts";
+                        self.setPage(1);
                         this.isColumnMapped = true;
+                        this.referenceService.closeModalPopup("csv-column-mapping-modal-popup");
                     }else{
                         this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Email ID mapping is mandetory.',true);
                     }
@@ -642,15 +645,21 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.mappingLoader = true;
         this.isResetButtonClicked = false;
         setTimeout(() => {
-            $.each(this.defaultContactsCsvColumnHeaderDtos,function(_index:number,dto:DefaultContactsCsvColumnHeaderDto){
-                dto.mappedColumn = "";
-                dto.selectedItems = [];
-                dto.isColumnMapped = false;
-                dto.mappedRows = [];
-            });
-            this.isResetButtonClicked = true;
-            this.isColumnMapped = false;
-            this.mappingLoader = false;
+            try{
+                $.each(this.defaultContactsCsvColumnHeaderDtos,function(_index:number,dto:DefaultContactsCsvColumnHeaderDto){
+                    dto.mappedColumn = "";
+                    dto.selectedItems = [];
+                    dto.isColumnMapped = false;
+                    dto.mappedRows = [];
+                });
+                this.isResetButtonClicked = true;
+                this.isColumnMapped = false;
+                this.mappingLoader = false;
+                this.paginationType = "";
+            }catch(error){
+                alert("Eror Occues");
+            }
+            
         }, 100);
     }
     /****XNFR-671******/
