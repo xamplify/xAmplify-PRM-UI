@@ -25,6 +25,7 @@ export class LandingPageService {
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/"
     vendorJourney:boolean = false;
     isMasterLandingPages:boolean = false;
+    welcomePages:boolean = false;
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
          private router: Router,private utilService:UtilService,public referenceService:ReferenceService) { }
 
@@ -117,6 +118,7 @@ export class LandingPageService {
     
     getHtmlContentByAlias( landingPageHtmlDto:any,isPartnerLandingPage:boolean, isMasterLandingPage:boolean) {
         landingPageHtmlDto['vanityUrlFilter']  = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        landingPageHtmlDto['vanityCompnayProfileName'] = this.authenticationService.companyProfileName;
         if(isPartnerLandingPage){
             return this.http.post( this.authenticationService.REST_URL + "/getPartnerHtmlBodyByAlias",landingPageHtmlDto)
             .map( this.extractData )
@@ -271,5 +273,19 @@ export class LandingPageService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+
+    updateWelcomePage(landingPage:LandingPage) {
+        landingPage.userId = this.authenticationService.getUserId();
+        return this.http.post(this.URL +"/update-welcome-page?access_token=" + this.authenticationService.access_token, landingPage)
+            .map(this.extractData)
+            .catch(this.handleError);
+    } 
     
+    getActiveWelcomePageByVanity( landingPageHtmlDto:any) {
+        landingPageHtmlDto['vanityUrlFilter']  = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        landingPageHtmlDto['vanityCompnayProfileName'] = this.authenticationService.companyProfileName;
+            return this.http.post( this.URL + "/getActiveWelcomePageByVanity?access_token=" + this.authenticationService.access_token , landingPageHtmlDto )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 }

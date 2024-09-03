@@ -370,6 +370,7 @@
                                             activeTabName == 'vendorJourney' ? 'show':'',
                                             activeTabName == 'landingPages' ? 'show':'',
                                             activeTabName == 'masterLandingPages' ? 'show':'',
+                                            activeTabName == 'welcomePages' ? 'show':'',
                                             activeTabName == 'categories' ? 'show':'',
                                             activeTabName == 'team-group' ? 'show':'',
                                             activeTabName == properties?.emailNotificationSettings ? 'show':'',
@@ -481,6 +482,18 @@
                                                     </a>
                                                 </li>
                                             </ng-container>
+                                             <!--Welcom-pages-->
+                                             <ng-container
+                                             *ngIf="vendorJourneyAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin())">
+                                             <li [ngClass]="{'active-tab': activeTabName == 'welcomePages'}">
+                                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'welcomePages'}"
+                                                     (click)="activateTab('welcomePages');clearCustomResponse()">
+                                                     {{properties.welcomePages}}
+                                                     <ng-template [ngTemplateOutlet]="activeIcon"
+                                                         [ngTemplateOutletContext]="{'moduleName':'welcomePages'}"></ng-template>
+                                                 </a>
+                                             </li>
+                                         </ng-container>
                                         </ng-container>
                                         <!--Folders-->
                                         <li *ngIf="authenticationService.folders"
@@ -3254,6 +3267,14 @@
                                                 (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
                                                 (goBackToMyProfile)="goBackToMyProfile()"
                                                 [moduleType]="properties.masterLandingPages"></app-vendor-journey>
+                                        </div>
+                                        <!-- Welcome Pages -->
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'welcomePages'}">
+                                            <app-vendor-journey *ngIf="welcomePages"
+                                                [loggedInUserCompanyId]="loggedInUserCompanyId"
+                                                [moduleType]="properties.welcomePages"
+                                                (vendorJourneyEditOrViewAnalytics)="vendorJourneyEditOrViewAnalytics = true"
+                                                (goBackToMyProfile)="goBackToMyProfile()"></app-vendor-journey>
                                         </div>
                                         <!-- Support Settings -->
                                         <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption" class="tab-pane"
