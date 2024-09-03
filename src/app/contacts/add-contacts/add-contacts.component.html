@@ -857,9 +857,15 @@
 									<app-list-loader *ngIf="isListLoader"></app-list-loader>
 									<!--xAmplify CSV Format-->
 									<div class="table-responsive" *ngIf="(isXamplifyCsvFormatUploaded || isColumnMapped) && !isListLoader">
-										<div class="alert alert-success" *ngIf="isColumnMapped">
+										<div class="alert alert-success" *ngIf="isColumnMapped && isValidEmailAddressMapped">
 											<strong>
 												CSV has been mapped. You can still <a (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange the headers or 
+												<a (click)="resetMappedColumns()">Click here</a> to reset.
+											</strong>
+										</div>
+										<div class="alert alert-danger" *ngIf="isColumnMapped && !isValidEmailAddressMapped">
+											<strong>
+												We have found Invalid Data For Email Address. Please <a (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange the headers or 
 												<a (click)="resetMappedColumns()">Click here</a> to reset.
 											</strong>
 										</div>

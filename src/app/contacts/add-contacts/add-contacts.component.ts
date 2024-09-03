@@ -253,6 +253,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     mappingLoader = false;
     isResetButtonClicked = false;
     isColumnMapped = false;
+    isValidEmailAddressMapped = false;
     /*****XNFR-671*******/
         constructor(private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
@@ -625,6 +626,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                             rowsLength = 0;
                         }
                         this.iterateAndAddToUsers(rowsLength, firstNameRows, lastNameRows, companyRows, jobTitleRows, emailIdRows, cityRows, stateRows, zipCodeRows, countryRows, mobileNumberRows, this.contacts);
+                        let invalidEmailIds = this.contacts.filter(function(contact){return contact.isValidEmailIdPattern==false}).map(function (dto) { return dto.isValidEmailIdPattern });
+                        this.isValidEmailAddressMapped = invalidEmailIds!=undefined && invalidEmailIds.length==0;
                         this.paginationType = "csvContacts";
                         self.setPage(1);
                         this.isColumnMapped = true;
@@ -677,7 +680,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }, 100);
     }
     /****XNFR-671******/
-    private iterateAndAddToUsers(rowsLength: number, firstNameRows: any[][], lastNameRows: any[][], companyRows: any[][], jobTitleRows: any[][], emailIdRows: any[][], cityRows: any[][], stateRows: any[][], zipCodeRows: any[][], countryRows: any[][], mobileNumberRows: any[][], mappedContactUsers: User[]) {
+    private iterateAndAddToUsers(rowsLength: number, firstNameRows: any[][], lastNameRows: any[][], companyRows: any[][], jobTitleRows: any[][], 
+        emailIdRows: any[][], cityRows: any[][], stateRows: any[][], zipCodeRows: any[][], countryRows: any[][], mobileNumberRows: any[][],
+         mappedContactUsers: User[]) {
         for (var i = 0; i < rowsLength; i++) {
             let user = new User();
             /***First Name****/
@@ -700,7 +705,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.addCountries(countryRows, user, i);
             /**Mobile Number****/
             this.addMobileNumbers(mobileNumberRows, user, i);
-
             mappedContactUsers.push(user);
         }
     }
@@ -754,7 +758,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             let emailId = emailIds[i];
             user.emailId = emailId;
             if(emailId!=undefined && $.trim(emailId).length>0){
-                user.isValidEmailIdPattern = this.referenceService.validateEmailId(emailId);;
+                user.isValidEmailIdPattern = this.referenceService.validateEmailId(emailId);
             }
         }
     }
@@ -1783,6 +1787,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.isColumnMapped = false;
         this.paginationType = "";
         this.contacts = [];
+        this.isValidEmailAddressMapped = false;
     }
 
     /*removeCsv() {
@@ -3541,7 +3546,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     localStorage.setItem('validationMessage', e.data);
                 }
             }, false);
-
+            this.referenceService.scrollSmoothToTop();
            
         }
         catch (error) {
