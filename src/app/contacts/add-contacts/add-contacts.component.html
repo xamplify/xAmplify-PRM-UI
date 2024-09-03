@@ -860,28 +860,31 @@
 										<div class="alert alert-success" *ngIf="isColumnMapped">
 											<strong>
 												CSV has been mapped. You can still <a (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange the headers or 
-												<a  (click)="resetMappedColumns()">Click here</a> to reset.
+												<a (click)="resetMappedColumns()">Click here</a> to reset.
 											</strong>
 										</div>
 										<table class="table tgrid">
 											<thead>
 												<tr>
-													<th>First Name</th>
-													<th>Last Name</th>
-													<th>Email Address</th>
-													<th>More</th>
+													<th class="text-center">First Name</th>
+													<th class="text-center">Last Name</th>
+													<th class="text-center">Email Address</th>
+													<th class="text-center">More</th>
 												</tr>
 											</thead>
 											<tbody>
 												<ng-container *ngFor="let user of pagedItems;let i=index">
 													<tr>
-														<td>{{user.firstName |slice:0:30}}<span	*ngIf="user.firstName?.length>30">...</span></td>
-														<td>{{user.lastName | slice:0:25}} <span *ngIf="user.lastName?.length>25">...</span></td>
-														<td>{{user.emailId | slice:0:35}} <span	*ngIf="user.emailId?.length>35">...</span></td>
-														<td>
+														<td class="text-center">{{user.firstName |slice:0:30}}<span	*ngIf="user.firstName?.length>30">...</span></td>
+														<td class="text-center">{{user.lastName | slice:0:25}} <span *ngIf="user.lastName?.length>25">...</span></td>
+														<td class="text-center" *ngIf="isXamplifyCsvFormatUploaded">{{user?.emailId | slice:0:35}} <span *ngIf="user?.emailId?.length>35">...</span></td>
+														<td class="text-center" *ngIf="!isXamplifyCsvFormatUploaded && isColumnMapped" [ngClass]="user?.isValidEmailIdPattern ? 'success':'danger'">
+															{{user?.emailId | slice:0:35}} <span *ngIf="user?.emailId?.length>35">...</span>
+														</td>
+														<td class="text-center">
 															<button class="lightgray-btn" id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
-																<span *ngIf="!user.isShowDetails" translate>More</span>
-																<span *ngIf="user.isShowDetails" translate>Less</span>
+																<span *ngIf="!user.isShowDetails">More</span>
+																<span *ngIf="user.isShowDetails">Less</span>
 															</button>
 														</td>
 													</tr>
@@ -890,35 +893,35 @@
 															<table id="expanded-table" class="table tgrid table-bordered" style="margin-bottom: 1px;">
 																<tbody>
 																	<tr>
-																		<td class='bold' translate>Company:</td>
+																		<td class='bold'>Company:</td>
 																		<td>{{user.contactCompany}}</td>
 																	</tr>
 																	<tr>
-																		<td class='bold' translate>Job Title:</td>
+																		<td class='bold'>Job Title:</td>
 																		<td>{{user.jobTitle}}</td>
 																	</tr>
 																	<tr>
-																		<td class='bold' translate>Address:</td>
+																		<td class='bold'>Address:</td>
 																		<td>{{user.address}}</td>
 																	</tr>
 																	<tr>
-																		<td class='bold' translate>City:</td>
+																		<td class='bold'>City:</td>
 																		<td>{{user.city}}</td>
 																	</tr>
 																	<tr>
-																		<td class='bold' translate>State:</td>
+																		<td class='bold'>State:</td>
 																		<td>{{user.state}}</td>
 																	</tr>
 																	<tr>
-																		<td class='bold' translate>Zip Code:</td>
+																		<td class='bold'>Zip Code:</td>
 																		<td>{{user.zipCode}}</td>
 																	</tr>
 																	<tr>
-																		<td class='bold' translate>Country:</td>
+																		<td class='bold'>Country:</td>
 																		<td>{{user.country}}</td>
 																	</tr>
 																	<tr>
-																		<td class='bold' translate>Phone Number:</td>
+																		<td class='bold'>Phone Number:</td>
 																		<td>
 																			<a href="tel:{{user.mobileNumber}}">
 																			<i class="fa fa-phone" aria-hidden="true" style="padding-right: 4px;"></i>

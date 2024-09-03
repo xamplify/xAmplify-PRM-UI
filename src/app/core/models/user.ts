@@ -77,4 +77,6 @@ export class User {
     accountOwner : string;
     website: string;
 
+    isValidEmailIdPattern = false;
+
 }

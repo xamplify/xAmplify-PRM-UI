@@ -751,7 +751,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     private setEmailAddress(emailIdRows: any[][], user: User, i: number) {
         if (emailIdRows != undefined && emailIdRows.length > 0) {
             let emailIds = emailIdRows[0];
-            user.emailId = emailIds[i];
+            let emailId = emailIds[i];
+            user.emailId = emailId;
+            if(emailId!=undefined && $.trim(emailId).length>0){
+                user.isValidEmailIdPattern = this.referenceService.validateEmailId(emailId);;
+            }
         }
     }
     /****XNFR-671******/
