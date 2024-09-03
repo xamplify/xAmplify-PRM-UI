@@ -144,6 +144,6 @@ export class Pagination {
 	masterLandingPageAnalytics:boolean  = false;
 
 	vendorLandingPageId:number;
-
+	welcomePages:boolean = false;
 
 }

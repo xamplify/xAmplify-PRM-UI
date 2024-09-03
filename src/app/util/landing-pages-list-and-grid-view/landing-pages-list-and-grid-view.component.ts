@@ -77,6 +77,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   @Output() viewVendorPageAnalytics = new EventEmitter();
   @Input() isMasterLandingPages =  false;
   @Output() isFormAnalytics = new EventEmitter();
+  @Input() welcomePages = false;
   @ViewChild("partnerCompanyAndGroupsComponent") partnerCompanyAndGroupsComponent:PartnerCompanyAndGroupsComponent;
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
@@ -110,7 +111,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 }
 
   private sefDefaultViewType() {
-    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages){
+    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages || this.welcomePages){
         this.viewType = 'g';
     }else if (this.folderListViewCategoryId != undefined) {
         this.categoryId = this.folderListViewCategoryId;
@@ -176,6 +177,13 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
         this.pagination.loginAsUserId = this.loggedInUserId;
         this.pagination.companyId = this.loggedInUserCompanyId;
         this.pagination.masterLandingPage = true;
+      }else if(this.welcomePages){
+        this.pagination.source = "WELCOME_PAGE";
+        this.pagination.defaultLandingPage = false;
+        this.pagination.loginAsUserId = this.loggedInUserId;
+        this.pagination.companyId = this.loggedInUserCompanyId;
+        this.pagination.welcomePages = true;
+
       }else{
         this.pagination.source = "MANUAL";
       }
@@ -309,7 +317,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 
 
   editLandingPage(id: number) {
-    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages){
+    if(this.vendorJourney || this.isLandingPages || this.isMasterLandingPages || this.welcomePages){
         this.landingPageService.getById(id).subscribe(
             (data: any) => {
                 this.vendorLandingPage.emit(data.data);
@@ -586,4 +594,23 @@ copy(landingPage:any){
     publishVendorJourney(){
         this.partnerCompanyAndGroupsComponent.publish();
     }
+
+    publishWelcomePage(landingPageId:number){
+        this.customResponse = new CustomResponse();
+        this.selectedLandingPageId = landingPageId;
+        let landingPage = new LandingPage();
+        landingPage.id = landingPageId;
+            this.ngxloading = true;
+            let self = this;
+            this.landingPageService.updateWelcomePage(landingPage).subscribe(
+              (response) => {
+                this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+                  self.ngxloading = false;
+              },
+              error => {
+                this.ngxloading = false;
+                this.logger.errorPage(error);
+              });
+    }
 }
+

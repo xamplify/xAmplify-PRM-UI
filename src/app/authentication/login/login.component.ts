@@ -212,7 +212,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.authenticationService.isSuperAdmin()) {
       this.router.navigate(['/home/dashboard/admin-report']);
     } else if (user.hasCompany || roles.length === 1) {
-      this.router.navigate([this.referenceService.homeRouter]);
+      if(this.vanityURLService.isVanityURLEnabled() && user.isVanityWelcomePageRequired){
+        this.router.navigate(['/welcome-page']);
+      }else{
+        this.router.navigate([this.referenceService.homeRouter]);
+      }
     } else {
       this.router.navigate(['/home/dashboard/add-company-profile']);
     }
