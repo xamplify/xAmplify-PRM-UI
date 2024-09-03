@@ -859,7 +859,8 @@
 									<div class="table-responsive" *ngIf="(isXamplifyCsvFormatUploaded || isColumnMapped) && !isListLoader">
 										<div class="alert alert-success" *ngIf="isColumnMapped">
 											<strong>
-												CSV has been mapped. You can still <a (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange headers.
+												CSV has been mapped. You can still <a (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange the headers or 
+												<a  (click)="resetMappedColumns()">Click here</a> to reset.
 											</strong>
 										</div>
 										<table class="table tgrid">
