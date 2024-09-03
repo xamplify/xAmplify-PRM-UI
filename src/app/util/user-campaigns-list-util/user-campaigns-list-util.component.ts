@@ -326,10 +326,13 @@ setAutoResponsesPage(event: any,campaign:any) {
 		let encodedCampaignId = this.referenceService.encodePathVariable(this.analyticsCampaignId);
 		let campaignAnalyticsUrl = "";
 		if(this.campaignTitle!=undefined && this.campaignTitle.length>0){
+			console.log("329");
 			campaignAnalyticsUrl = url+"/campaigns/"+ encodedCampaignId + "/"+this.campaignTitle+ "/details";
 		}else{
+			console.log("322");
 			campaignAnalyticsUrl = url+"/campaigns/"+ encodedCampaignId + "/details";
 		}
+		console.log(this.previousRouterAlias);
 		if(this.previousRouterAlias=="pa"){
 			url = url+"partners/add";
 			this.referenceService.goToRouter(url);
@@ -340,13 +343,15 @@ setAutoResponsesPage(event: any,campaign:any) {
 			if(this.navigatedFrom=="a"){
 				this.referenceService.goToRouter(manageCampaignsUrl);
 			}else if(this.navigatedFrom=="b"){
-				this.referenceService.goToRouter(campaignAnalyticsUrl);
+				this.referenceService.goToRouter(manageCampaignsUrl);
+				//this.referenceService.goToRouter(campaignAnalyticsUrl);
 			}
 		}else if(this.previousRouterAlias=="c"){
 			if(this.navigatedFrom=="a"){
 				this.referenceService.goToRouter(manageCampaignsUrl);
 			}else if(this.navigatedFrom=="b"){
-				this.referenceService.goToRouter(campaignAnalyticsUrl);
+				this.referenceService.goToRouter(manageCampaignsUrl);
+				//this.referenceService.goToRouter(campaignAnalyticsUrl);
 			}else{
 				url = url+"contacts/";
 				this.referenceService.goToRouter(url+"manage");
@@ -355,7 +360,8 @@ setAutoResponsesPage(event: any,campaign:any) {
 		if (this.navigatedFrom == "a") {
 			this.referenceService.goToRouter(manageCampaignsUrl);
 		} else if (this.navigatedFrom == "b") {
-			this.referenceService.goToRouter(campaignAnalyticsUrl);
+			this.referenceService.goToRouter(manageCampaignsUrl);
+			//this.referenceService.goToRouter(campaignAnalyticsUrl); Campaign Title Should Be Get From Campaign Id
 		} else {
 			url = url + "sharedleads/";
 			this.referenceService.goToRouter(url + "manage");
