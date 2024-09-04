@@ -845,96 +845,101 @@
 						</div>
 					</div>
 					<div class="row" id="file_preview">
+						<!--File Preview-->
 						<div class="col-md-12">
-							<!-- BEGIN EXAMPLE TABLE PORTLET-->
 							<div class="portlet light remove_cardBgcolor share_leads_mrgn">
 								<div class="portlet-title">
-									<div class="caption" style="padding-top: 7px !important; font-size: 20px;"
-										translate>
-										<i class="fa fa-edit" style="font-size: 19px;"></i>File
-										Preview
+									<div class="caption" style="padding-top: 7px !important; font-size: 20px;">
+										<i class="fa fa-edit" style="font-size: 19px;"></i>File	Preview
 									</div>
 								</div>
 								<div class="portlet-body">
 									<app-list-loader *ngIf="isListLoader"></app-list-loader>
-									<div class="table-responsive">
-										<table class="table tgrid" id="sample_editable_2">
+									<!--xAmplify CSV Format-->
+									<div class="table-responsive" *ngIf="(isXamplifyCsvFormatUploaded || isColumnMapped) && !isListLoader">
+										<div class="alert alert-success" *ngIf="isColumnMapped && isValidEmailAddressMapped">
+											<strong>
+												The CSV header has been matched with the default header. You can still <a (click)="openArrageHeadersModalPopUp()">click here</a> to remap the header or 
+												<a (click)="resetMappedColumns()">click here</a> to reset.
+											</strong>
+										</div>
+										<div class="alert alert-danger" *ngIf="isColumnMapped && !isValidEmailAddressMapped">
+											<strong>
+												We found invalid data for the email address. Please update or 
+												<a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> to remap the header or <a class="required" (click)="resetMappedColumns()">click here</a> to reset.
+											</strong>
+										</div>
+										<table class="table tgrid">
 											<thead>
 												<tr>
-													<th translate>FIRST NAME</th>
-													<th translate>LAST NAME</th>
-													<th translate>EMAILID</th>
-													<th translate>MORE</th>
+													<th>First Name</th>
+													<th class="text-center">Last Name</th>
+													<th class="text-center">Email Address</th>
+													<th class="text-center">More</th>
+													<th class="text-center" *ngIf="isColumnMapped"></th>
 												</tr>
 											</thead>
 											<tbody>
 												<ng-container *ngFor="let user of pagedItems;let i=index">
-													<tr>
-														<!-- data-toggle="tooltip" data-placement="bottom" title="{{user.firstName}}" -->
-														<td>{{user.firstName |
-															slice:0:30}} <span
-																*ngIf="user.firstName?.length>30">...</span>
+													<tr id="csv-contact-row-{{i}}">
+														<td>{{user.firstName |slice:0:30}}<span	*ngIf="user.firstName?.length>30">...</span></td>
+														<td class="text-center">{{user.lastName | slice:0:25}} <span *ngIf="user.lastName?.length>25">...</span></td>
+														<td class="text-center" *ngIf="isXamplifyCsvFormatUploaded">{{user?.emailId | slice:0:35}} <span *ngIf="user?.emailId?.length>35">...</span></td>
+														<td   class="text-center" *ngIf="!isXamplifyCsvFormatUploaded && isColumnMapped"
+															 [ngClass]="user?.isValidEmailIdPattern ? 'success':'danger'">
+															 <input type="text" class="form-control"  [(ngModel)]="user.emailId" [ngModelOptions]="{standalone: true}" (input)="validateEmailAddressPattern(user)">
 														</td>
-														<!-- data-toggle="tooltip" data-placement="bottom" title="{{user.lastName}}" -->
-														<td>{{user.lastName |
-															slice:0:25}} <span
-																*ngIf="user.lastName?.length>25">...</span>
-														</td>
-														<!-- data-toggle="tooltip" data-placement="bottom" title="{{user.emailId}}" -->
-														<td>{{user.emailId |
-															slice:0:35}} <span
-																*ngIf="user.emailId?.length>35">...</span>
-														</td>
-														<td>
-															<button class="lightgray-btn" id='more_less_button_{{i}}'
-																(click)="user.isShowDetails = ! user.isShowDetails">
-																<span *ngIf="!user.isShowDetails" translate>More</span>
-																<span *ngIf="user.isShowDetails" translate>Less</span>
+														<td class="text-center">
+															<button class="lightgray-btn" id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
+																<span *ngIf="!user.isShowDetails">More</span>
+																<span *ngIf="user.isShowDetails">Less</span>
 															</button>
 														</td>
+														<td class="text-center" *ngIf="isColumnMapped">
+															<div class ="actions-block override-actions">
+																<a  (click)="removeContact(i)"><i class="fa fa-trash-o"></i></a>
+															</div>	
+														</td>
 													</tr>
-													<tr
-														[ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
+													<tr [ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
 														<td colspan="6">
-															<table cellpadding="5" cellspacing="0" class="border"
-																style="border:none !important;">
+															<table id="expanded-table" class="table tgrid table-bordered" style="margin-bottom: 1px;">
 																<tbody>
-																	<tr style="">
-																		<td class='bold' translate>Company:</td>
-																		<td class=''>{{user.contactCompany}}</td>
+																	<tr>
+																		<td class='bold'>Company</td>
+																		<td>{{user.contactCompany}}</td>
 																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>Job Title:</td>
-																		<td class=''>{{user.jobTitle}}</td>
+																	<tr>
+																		<td class='bold'>Job Title</td>
+																		<td>{{user.jobTitle}}</td>
 																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>Address:</td>
-																		<td class=''>{{user.address}}</td>
+																	<tr>
+																		<td class='bold'>Address</td>
+																		<td>{{user.address}}</td>
 																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>City:</td>
-																		<td class=''>{{user.city}}</td>
+																	<tr>
+																		<td class='bold'>City</td>
+																		<td>{{user.city}}</td>
 																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>State:</td>
-																		<td class=''>{{user.state}}</td>
+																	<tr>
+																		<td class='bold'>State</td>
+																		<td>{{user.state}}</td>
 																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>Zip Code:</td>
-																		<td class=''>{{user.zipCode}}</td>
+																	<tr>
+																		<td class='bold'>Zip Code</td>
+																		<td>{{user.zipCode}}</td>
 																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>Country:</td>
-																		<td class=''>{{user.country}}</td>
+																	<tr>
+																		<td class='bold'>Country</td>
+																		<td>{{user.country}}</td>
 																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>Phone Number:</td>
-																		<td class=''>
-																			<!-- <div *ngIf="user.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
-															 <int-phone-prefix [(ngModel)]="user.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-															 </div> --> <!-- {{user.mobileNumber}} --> <a href="tel:{{user.mobileNumber}}"><i class="fa fa-phone"
-																					aria-hidden="true"
-																					style="padding-right: 4px;"></i>{{user?.mobileNumber}}</a>
+																	<tr>
+																		<td class='bold'>Phone Number</td>
+																		<td>
+																			<a href="tel:{{user.mobileNumber}}">
+																			<i *ngIf="user?.mobileNumber?.length>0" class="fa fa-phone" aria-hidden="true" style="padding-right: 4px;"></i>
+																			{{user?.mobileNumber}}
+																			</a>
 																		</td>
 																	</tr>
 																</tbody>
@@ -944,8 +949,71 @@
 												</ng-container>
 											</tbody>
 										</table>
+										<!--XNFR-671-->
+										<span class="success">
+											<strong>Total Records : {{contacts?.length}}</strong>
+										</span>
 									</div>
-									<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+									<!--Customer Uploaded UnMapped CSV Data XNFR-671-->
+									<div class="table-responsive" *ngIf="!isXamplifyCsvFormatUploaded && !isColumnMapped && !isListLoader">
+										<div class="alert alert-danger">
+											<strong>
+												{{properties?.contactsCsvHeaderMisMatchedErrorMessage}} Please <a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.mapCsvHeaderMessage}}
+											</strong>
+										</div>
+										<table class="table tgrid">
+											<thead>
+												<tr>
+													<ng-container *ngFor="let customCsvHeader of customCsvHeaders;let i  = index">
+														<ng-container *ngIf="i<=3">
+															<th>{{customCsvHeader.itemName}}</th>
+														</ng-container>
+													</ng-container>
+													<th *ngIf="customCsvHeaders?.length>3">More</th>
+												</tr>
+											</thead>
+											<tbody>
+												<ng-container  *ngFor="let parsedCsvDto of pagedItems;let rowIndex = index">
+													<tr  id="csv-contacts-row-{{rowIndex}}" class="csv-contacts-row">
+														<ng-container *ngFor="let csvRow of  parsedCsvDto.csvRows;let columnIndex = index">
+															<td *ngIf="columnIndex<=3">
+																{{csvRow.value}}
+															</td>
+														</ng-container>
+														<td *ngIf="customCsvHeaders?.length>3">
+															<button *ngIf="customCsvHeaders?.length>4" class="lightgray-btn" id='more_less_button_{{rowIndex}}' (click)="expandRows(parsedCsvDto,rowIndex)">
+																<span *ngIf="!parsedCsvDto.expanded">More</span>
+																<span *ngIf="parsedCsvDto.expanded">Less</span>
+															</button>
+														</td>
+													</tr>
+													<tr [ngClass]="{'hidden': !parsedCsvDto.expanded}" id="child-table">
+														<td colspan="5">
+															<table id="expanded-table" class="table tgrid table-bordered" style="margin-bottom: 1px;">
+																<tr *ngFor="let customCsvHeader of customCsvHeaders;let i  = index;">
+																	<th *ngIf="i>=4" scope="row">
+																		{{customCsvHeader?.itemName}}
+																	</th>
+																	<td *ngIf="i>=4">
+																		{{parsedCsvDto?.csvRows[i].value}}
+																	</td>
+																</tr>
+															</table>
+														</td>
+													</tr>
+												</ng-container>
+											</tbody>
+										</table>
+										<!--XNFR-671-->
+										<span class="success">
+											<strong>Total Records : 
+											<ng-container *ngIf="isColumnMapped">{{contacts?.length}}</ng-container>
+											<ng-container *ngIf="!isColumnMapped">{{parsedCsvDtos?.length}}</ng-container>
+											</strong>
+										</span>
+									</div>
+									<!--Csv RowsPagination-->
+									<ul *ngIf="pager?.pages && pager?.pages?.length" class="pagination">
 										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
 												(click)="setPage(1)">First</a></li>
 										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
@@ -962,9 +1030,10 @@
 									</ul>
 								</div>
 							</div>
-							<!-- END EXAMPLE TABLE PORTLET-->
 						</div>
 					</div>
+					<!--End Of CSV Preview-->
+
 					<!-- END PAGE CONTENT -->
 					<div class="panel panel-success mt10 notes_box pos_mrg_top16" style="border-radius: 10px;">
 						<div class="panel-heading note_card_align">
@@ -1507,5 +1576,51 @@
 	</div>
 </div>
 
-<app-share-leads *ngIf="authenticationService.isSharePartnerModal"
-	(notifyParent)="selectedSharePartner($event)"></app-share-leads>
+<app-share-leads *ngIf="authenticationService.isSharePartnerModal" (notifyParent)="selectedSharePartner($event)"></app-share-leads>
+
+<!--Csv Column Mapping-->
+<div class="modal fade right" id="csv-column-mapping-modal-popup" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-css" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close-circle" data-dismiss="modal">
+			<i class="fa fa-times" aria-hidden="true"></i></button>
+		  <h4 class="modal-title text-center">Map Columns</h4>
+		</div>
+		<div class="modal-body">
+			<ngx-loading [show]="mappingLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+			<app-modal-popup-loader *ngIf="mappingLoader"></app-modal-popup-loader>
+			<app-response-message [customResponse]="duplicateColumnsMappedErrorResponse" *ngIf="duplicateColumnsMappedErrorResponse.isVisible" [showCloseIcon]="false"></app-response-message>
+			<table class='table tgrid table-hover table-sm' *ngIf="!mappingLoader">
+				<thead>
+					<tr>
+						<th scope="row" class="text-center">Default Columns</th>
+						<th scope="row" class="text-center">Uploaded CSV Columns</th>
+					</tr>
+				</thead>
+				<tbody>
+					<ng-container *ngFor="let defaultContactsCsvColumnHeaderDto of defaultContactsCsvColumnHeaderDtos;let i = index">
+						<tr id="uploaded-csv-tr" [ngClass]="duplicateMappedColumns?.indexOf(defaultContactsCsvColumnHeaderDto?.mappedColumn)>-1 ?  'alert alert-danger' 
+								: (duplicateMappedColumns?.indexOf(defaultContactsCsvColumnHeaderDto?.mappedColumn)<0 && defaultContactsCsvColumnHeaderDto?.mappedColumn.length>0) ? 'alert alert-success' 
+								: defaultContactsCsvColumnHeaderDto?.mappedColumn.length==0 ? '':''">
+							<td class="text-center">{{defaultContactsCsvColumnHeaderDto.defaultColumn}}
+								<span *ngIf="defaultContactsCsvColumnHeaderDto.defaultColumn==xAmplifyDefaultCsvHeaders[4]" class="required">*</span>
+							</td>
+							<td class="text-center" >
+								<app-multi-select-dropdown  *ngIf="(customCsvHeaders!=undefined && customCsvHeaders.length>0) || isResetButtonClicked" 
+									[dropdownList]="customCsvHeaders" [displayText]="'--Map a column--'" [singleSelection]="true" [selectedItems]="defaultContactsCsvColumnHeaderDto.selectedItems"
+									 (multiSelectDropdownSingleSelectionEventEmitter)="selectedMappedColumn($event,defaultContactsCsvColumnHeaderDto)"></app-multi-select-dropdown>
+							</td>
+						</tr>
+					</ng-container>
+				</tbody>
+			</table>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-danger" (click)="!mappingLoader && resetMappedColumns()">Reset</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary" [disabled]="duplicateMappedColumns?.length>0" (click)="duplicateMappedColumns?.length==0 && saveMappedColumns()">Submit</button>
+		</div>
+		</div>
+	  </div>
+</div>

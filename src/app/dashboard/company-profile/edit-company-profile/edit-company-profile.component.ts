@@ -1561,14 +1561,14 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                       this.companyProfile.lastName = user.lastName;
                       this.setCompanyProfileViewData(data.companyProfile.companyName);
                         if(roleIds.indexOf(13)>-1){
-                            this.customResponse = new CustomResponse( 'ERROR', "This user is already vendor and has company profile.So account cannot be created", true );
+                            this.customResponse = new CustomResponse( 'ERROR', "This user is already has vendor role and has company profile.So account cannot be created", true );
                             this.addBlur();
                         }else if(roleIds.indexOf(18)>-1){
-                            this.customResponse = new CustomResponse( 'ERROR', "This user is already vendor tier-1 and has company profile.So account cannot be created", true );
+                            this.customResponse = new CustomResponse( 'ERROR', "This user is already has marketing role and has company profile.So account cannot be created", true );
                             this.addBlur();
                         }
                         else if(roleIds.indexOf(2)>-1){
-                            this.customResponse = new CustomResponse( 'ERROR', "This user is already an orgadmin.So account cannot be created", true );
+                            this.customResponse = new CustomResponse( 'ERROR', "This user is already has an orgadmin role.So account cannot be created", true );
                             this.addBlur();
                         }
                         else if(roleIds.length==2&&roleIds.indexOf(3)>-1 && roleIds.indexOf(12)>-1){

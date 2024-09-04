@@ -394,5 +394,11 @@ export class Properties {
 	showRegisterDealForPartnerLeadsOnMessage = "Since the \"Show Register Deal\" option is toggled ON, you will see the 'Register Deal' option button in the opportunities section for partner leads.";
 	showRegisterDealToSelfLeadsOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, you will not see the 'Register Deal' button in the opportunities section for self leads.";
 	showRegisterDealToSelfLeadsOnMessage = "Since the \"Show Register Deal\" option is toggled ON, you will see the 'Register Deal' option button in the opportunities section for self leads.";
+
+
+	contactsCsvHeaderMisMatchedErrorMessage = "The provided CSV header does not align with the default CSV header.";
+	mapCsvHeaderMessage = " to map the header with the default CSV header.";
+	duplicateColumnsMappedErrorMessage = "Duplicate columns have been mapped. Please ensure to check for the specified errors.";
+	emailAddressMandatoryMessage = "Email Address mapping is mandatory.";
 }
 
