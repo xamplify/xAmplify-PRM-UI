@@ -394,6 +394,18 @@ export class Properties {
 	showRegisterDealForPartnerLeadsOnMessage = "Since the \"Show Register Deal\" option is toggled ON, you will see the 'Register Deal' option button in the opportunities section for partner leads.";
 	showRegisterDealToSelfLeadsOffMessage = "Since the \"Show Register Deal\" option is toggled OFF, you will not see the 'Register Deal' button in the opportunities section for self leads.";
 	showRegisterDealToSelfLeadsOnMessage = "Since the \"Show Register Deal\" option is toggled ON, you will see the 'Register Deal' option button in the opportunities section for self leads.";
+	showLeadPipeLineCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Pipeline' option in the lead registration form because 'Show Lead Pipeline' is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showLeadPipeLineStageCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Stage' option in the lead registration form because 'Show Lead Stage' is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showDealPipeLineCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Pipeline' option in the deal registration form because 'Show Deal Pipeline' is turned off. Therefore, Please pick the pipeline to synchronize the data with the CRM system.";
+	showDealPipeLineStageCRMIntegrationMessageForMarketing = "You will not be able to see the 'Select Stage' option in the deal registration form because 'Show Deal Stage' is turned off. Therefore, Please pick the stage to synchronize the data with the CRM system.";
+	leadPipelineTooltipTitle = "Enabling this option will allow your partner to view the select pipeline option in the lead registration form";
+	leadPipelineStageTooltipTitle = "Enabling this option will allow your partner to view the select stage option in the lead registration form";
+	dealPipelineTooltipTitle = "Enabling this option will allow your partner to view the select pipeline option in the deal registration form";
+	dealPipelineStageTooltipTitle = "Enabling this option will allow your partner to view the select stage option in the deal registration form";
+	leadPipelineTooltipTitleForMarketing = "Enabling this option will allow you to view the select pipeline option in the lead registration form";
+	leadPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the lead registration form";
+	dealPipelineTooltipTitleForMarketing = "Enabling this option will allow you to view the select pipeline option in the deal registration form";
+	dealPipelineStageTooltipTitleForMarketing = "Enabling this option will allow you to view the select stage option in the deal registration form";
 
 
 	contactsCsvHeaderMisMatchedErrorMessage = "The provided CSV header does not align with the default CSV header.";
