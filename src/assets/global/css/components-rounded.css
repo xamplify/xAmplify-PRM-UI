@@ -5625,7 +5625,7 @@ Dashboard Stats
   -moz-border-radius: 0;
   -ms-border-radius: 0;
   -o-border-radius: 0;
-  border-radius: 3px !important;
+  border-radius: 10px !important;
 }
 .dashboard-stat:before,
 .dashboard-stat:after {
@@ -5989,9 +5989,23 @@ Social Icons
   background: url(../img/social/microsoft.svg) no-repeat;
 }
 
-.social-icons li .sso {
-  background: url(../img/social/sso.png) no-repeat;
-  background-size: cover;
+.sso {
+  background: url(../img/social/sso_logo.png);
+  background-size: cover!important;
+  background-repeat: no-repeat!important;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.microsoft-icon {
+  background: url(../img/social/microsoft1.png)!important;
+  background-size: cover!important;
+  background-repeat: no-repeat!important;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  display: block;
+  margin-right: 10px;
 }
 
 .social-icons.social-icons-color > li > a {

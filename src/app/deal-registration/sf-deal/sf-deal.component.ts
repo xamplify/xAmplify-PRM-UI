@@ -611,6 +611,7 @@ export class SfDealComponent implements OnInit {
       }
     } else if (!columnInfo.required) {
       this.isInvalidPhoneNumber = false;
+      columnInfo.errorMessage = '';
     }
   }
 

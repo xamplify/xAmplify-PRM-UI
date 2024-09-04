@@ -1,4 +1,4 @@
-<div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError"
+<div class="page-bar m10 bg-none" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError"
   style="border:none !important;padding-bottom: 8px;">
   <app-response-message class="pg8 col-lg-12 col-md-12 col-sm-12 col-xs-12 p0" [customResponse]="leadsResponse"
     *ngIf="leadsResponse.isVisible"></app-response-message>

@@ -273,6 +273,13 @@ getStageNamesForCampaign(campaignId:number, userId:number){
   let url = this.authenticationService.REST_URL+"deal/findDealAndLeadInfoAndComments/"+convertedDealId+"?access_token="+this.authenticationService.access_token;
   return this.authenticationService.callGetMethod(url);
 }
+
+findVendorDetailsWithSelfDealsCount(campaignId:any, loggedInUserId:any) {
+    let requestCampaignId = (campaignId != undefined && campaignId > 0)? "&campaignId="+campaignId:"&campaignId="+0;
+    let requestLoggedInUserId = "&loggedInUserId="+loggedInUserId;
+    let url = this.authenticationService.REST_URL+"deal/findVendorDetailsWithSelfDealsCount"+"?access_token="+this.authenticationService.access_token+requestCampaignId+requestLoggedInUserId;
+    return this.authenticationService.callGetMethod(url);
+  }
  
 
 }

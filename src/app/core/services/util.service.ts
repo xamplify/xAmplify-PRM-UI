@@ -143,7 +143,8 @@ export class UtilService {
                 'campaignAccessDto':data.campaignAccessDto,
                 'logedInCustomerCompanyNeme':data.companyName,
 				'source':data.source,
-                'secondAdmin': data.secondAdmin
+                'secondAdmin': data.secondAdmin,
+                'isVanityWelcomePageRequired':data.isVanityWelcomePageRequired
             };
             localStorage.setItem('currentUser', JSON.stringify(userToken));
 		    localStorage.setItem('defaultDisplayType',data.modulesDisplayType);

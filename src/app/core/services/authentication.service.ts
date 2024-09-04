@@ -165,7 +165,8 @@ export class AuthenticationService {
 
   /*** XNFR-603 ****/
   showVanityURLError1 = false;
-
+/***** XNFR-669*********** */
+isVanityWelcomePageRequired = false;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -248,6 +249,7 @@ export class AuthenticationService {
       return this.map;
     }).flatMap((map) => this.getVanityURLUserRoles(userName, this.map.access_token).map((response: any) => {
       this.vanityURLUserRoles = response.data;
+      this.isVanityWelcomePageRequired = response.map.isVanityWelcomePageRequired;
     }))
       .flatMap((map) => this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName
         + '&access_token=' + this.map.access_token, '')
@@ -267,6 +269,7 @@ export class AuthenticationService {
 
           if (this.vanityURLEnabled && this.companyProfileName && this.vanityURLUserRoles) {
             userToken['roles'] = this.vanityURLUserRoles;
+            userToken['isVanityWelcomePageRequired'] =  this.isVanityWelcomePageRequired;
           }
 
           if(this.vanityURLEnabled && this.companyProfileName && userName=="admin@xamplify.io"){
@@ -1408,5 +1411,6 @@ logoutByUserId(){
   let url = this.REST_URL+"logout/"+this.getUserId();
   return this.callGetMethod(url);
 }
+
 
 }

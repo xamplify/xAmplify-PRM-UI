@@ -39,6 +39,8 @@ export class HomeComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number;
   serverImageHostUrl = "";
+  /**XNFR-669**/
+  isVanityWelcomePageRequired:boolean;
   constructor(
     private titleService: Title,
     public referenceService: ReferenceService,
@@ -308,6 +310,7 @@ export class HomeComponent implements OnInit {
       this.userId = this.currentUser['userId'];
       this.token = this.currentUser['accessToken'];
       const roleNames = this.currentUser['roles'];
+      this.isVanityWelcomePageRequired = this.currentUser['isVanityWelcomePageRequired'];
       if (
         this.referenceService.defaulgVideoMethodCalled === false &&
         (roleNames.length > 1 && this.authenticationService.hasCompany())

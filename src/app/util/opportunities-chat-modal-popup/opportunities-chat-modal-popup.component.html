@@ -33,7 +33,7 @@
             <option *ngIf="isPartnerVersion && deal.currentStagePrivate" [ngValue]="deal.currentStageId">
               {{deal.currentStageName}}
             </option>
-            <option *ngFor="let stage of createdForStages" [ngValue]="stage.id">
+            <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">
               {{stage.stageName}}</option>
           </select>
         </span>

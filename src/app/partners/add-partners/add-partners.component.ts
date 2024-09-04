@@ -139,8 +139,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		{ 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
 		{ 'name': 'Company Name(ASC)', 'value': 'contactCompany-ASC' },
 		{ 'name': 'Company Name(DESC)', 'value': 'contactCompany-DESC' },
-		{ 'name': 'Added(ASC)', 'value': 'id-ASC' },
-		{ 'name': 'Added(DESC)', 'value': 'id-DESC' },
+
+		/* XNFR-556
+		 { 'name': 'Added(ASC)', 'value': 'id-ASC' },
+		 { 'name': 'Added(DESC)', 'value': 'id-DESC' },*/
 	];
 	public sortOption: any = this.sortOptions[0];
 	public searchKey: string;

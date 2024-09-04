@@ -351,7 +351,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	onChangeAllContactUsers(event: Pagination) {
 		try {
 			this.pagination = event;
-			if (this.currentContactType == "all_contacts") {
+			if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 				this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 			} else {
 				this.contactsByType.pagination = event;
@@ -3874,7 +3874,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	getSelectedIndex(index: number) {
 		this.selectedFilterIndex = index;
-		if (this.currentContactType == "all_contacts") {
+		if (this.currentContactType == "all_contacts" || this.currentContactType == "all") {
 			this.refService.setTeamMemberFilterForPagination(this.pagination, index);
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 		} else if (this.contactsByType.selectedCategory) {

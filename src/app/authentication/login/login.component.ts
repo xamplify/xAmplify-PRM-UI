@@ -59,6 +59,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   //vanityOauthSSOProviders = [];
   vendorSSOProvider: { name: string; iconName: string; value: string; };
   showVendorSSO: boolean;
+  showLoginWithCredentials: boolean = false;
+  hideCloseButton: boolean = false;
 
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer,
@@ -212,7 +214,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.authenticationService.isSuperAdmin()) {
       this.router.navigate(['/home/dashboard/admin-report']);
     } else if (user.hasCompany || roles.length === 1) {
-      this.router.navigate([this.referenceService.homeRouter]);
+      if(this.vanityURLService.isVanityURLEnabled() && user.isVanityWelcomePageRequired){
+        this.router.navigate(['/welcome-page']);
+      }else{
+        this.router.navigate([this.referenceService.homeRouter]);
+      }
     } else {
       this.router.navigate(['/home/dashboard/add-company-profile']);
     }
@@ -376,15 +382,15 @@ bgIMage2:any;
             this.vanityURLService.setVanityURLTitleAndFavIcon();
             if (result.showMicrosoftSSO) {
               this.orLoginWithText = result.showMicrosoftSSO;
-              this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });
+              this.vanitySocialProviders.push({ "name": "Login with Microsoft", "iconName": "microsoft-icon", "value": "microsoft" });
             }            
 
             if (result.showVendorSSO) {
               this.showVendorSSO = result.showVendorSSO;
               if (result.vendorSSOType === "oauth") {
-                this.vendorSSOProvider = { "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "oauthsso" };
+                this.vanitySocialProviders.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "oauthsso" });
               } else if (result.vendorSSOType === "saml") {
-                this.vendorSSOProvider = { "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "samlsso" }
+                this.vanitySocialProviders.push({ "name": "Login with "+ result.vendorSSOName, "iconName": "sso", "value": "samlsso" });
               }              
             }
             
@@ -594,4 +600,16 @@ bgIMage2:any;
       this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
     }
   }
+
+  /** XNFR-658 **/
+  showLoginWithCredentialsForm() {
+    this.showLoginWithCredentials = true;
+    this.hideCloseButton = true;
+  }
+
+  closeLoginWithCredentialsForm() {
+    this.hideCloseButton = false;
+    this.showLoginWithCredentials = false;
+  }
+  
 }

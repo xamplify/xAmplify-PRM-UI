@@ -324,7 +324,6 @@
                           <a data-toggle="tooltip" data-placement="bottom"
                             [title]="teamMember.status=='UNAPPROVED'? 'Not available for inactive team member':'Click here to see anlaytics'"
                             [className]="teamMember.status=='UNAPPROVED'? 'inactive custom-icon':'custom-icon'"
-                            *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService?.module?.deletedPartner && !authenticationService.partnershipEstablishedOnlyWithPrm && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner"
                             (click)="goToAnalytics(teamMember)">
                             <i class="fa fa-line-chart IconCustomization"
                               [ngClass]="teamMember.status=='UNAPPROVED'? 'disabled gray': 'active'"
