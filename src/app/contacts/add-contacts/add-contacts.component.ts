@@ -471,7 +471,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 self.cancelContacts();
             } else if (allTextLines.length > 2 && self.contacts.length === 0) {
                 self.isValidLegalOptions = true;
-                self.customResponse = new CustomResponse('ERROR', "EmailId is mandatory.", true);
+                self.customResponse = new CustomResponse('ERROR', "Email Address is mandatory.", true);
                 self.cancelContacts();
             } else if (self.contacts.length === 0) {
                 self.isValidLegalOptions = true;
@@ -504,6 +504,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.updateParsedCsvDtos(parsedCsvDtoRowsLength, headersLength, parsedCsvDto, emptyValues);
             }
             self.setPage(1);
+            this.referenceService.goToDiv("file_preview");
             this.isListLoader = false;
         }
     }
@@ -633,16 +634,17 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.isColumnMapped = true;
                         this.referenceService.closeModalPopup("csv-column-mapping-modal-popup");
                     }else{
-                        this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Email ID mapping is mandetory.',true);
+                        this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Email Address mapping is mandetory.',true);
                     }
                 }else{
                     this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Duplicate columns have been mapped. Please ensure to check for the specified errors.',true);
                 }
             }else{
-                this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Please ensure to map the Email ID column.',true);
+                this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Please ensure to map the Email Address column.',true);
             }
             this.mappingLoader = false;
         }catch(error){
+            this.mappingLoader = false;
             this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Unable to map columns.Please try after sometime.',true);
         }
     }
@@ -1002,8 +1004,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     validateEmailAddress(emailId: string) {
-        var EMAIL_ID_PATTERN = this.regularExpressions.EMAIL_ID_PATTERN;
-        return EMAIL_ID_PATTERN.test(emailId);
+        return this.referenceService.validateEmailId(emailId);
     }
     validateName(name: string) {
         return (name.trim().length > 0);
@@ -1788,26 +1789,13 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.paginationType = "";
         this.contacts = [];
         this.isValidEmailAddressMapped = false;
+        this.referenceService.goToTop();
     }
 
-    /*removeCsv() {
-        this.selectedAddContactsOption = 8;
-        this.contacts.length = 0;
-        this.model.contactListName = "";
-        this.isValidContactName = false;
-        this.customResponse = new CustomResponse();
-        $( '.mdImageClass' ).attr( 'style', 'opacity: 1;cursor:not-allowed;' );
-        $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);' );
-        $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);' );
-        $( "button#sample_editable_1_new" ).prop( 'disabled', true );
-        $( "#file_preview" ).hide();
-        $( '.salesForceImageClass' ).attr( 'style', 'opacity: 1;' );
-        $( '.googleImageClass' ).attr( 'style', 'opacity: 1;' );
-        $( '.zohoImageClass' ).attr( 'style', 'opacity: 1;' );
-        $( '#SgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 100px;' );
-        $( '#GgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 100px;' );
-        $( '#ZgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -83px;left: 100px;' );
-    }*/
+    /****XNFR-671******/
+    validateEmailAddressPattern(user:User){
+        user.isValidEmailIdPattern = this.validateEmailAddress(user.emailId);
+    }    
 
     addRow(event) {
         if (this.gdprStatus) {
@@ -3546,8 +3534,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     localStorage.setItem('validationMessage', e.data);
                 }
             }, false);
-            this.referenceService.scrollSmoothToTop();
-           
         }
         catch (error) {
             this.xtremandLogger.error("addContacts.component error " + error);

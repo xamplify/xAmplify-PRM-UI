@@ -859,14 +859,13 @@
 									<div class="table-responsive" *ngIf="(isXamplifyCsvFormatUploaded || isColumnMapped) && !isListLoader">
 										<div class="alert alert-success" *ngIf="isColumnMapped && isValidEmailAddressMapped">
 											<strong>
-												CSV has been mapped. You can still <a (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange the headers or 
-												<a (click)="resetMappedColumns()">Click here</a> to reset.
+												CSV has been mapped. You can still <a (click)="openArrageHeadersModalPopUp()">click here</a> to rearrange the headers or 
+												<a (click)="resetMappedColumns()">click here</a> to reset.
 											</strong>
 										</div>
 										<div class="alert alert-danger" *ngIf="isColumnMapped && !isValidEmailAddressMapped">
 											<strong>
-												We have found Invalid Data For Email Address. Please <a (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange the headers or 
-												<a (click)="resetMappedColumns()">Click here</a> to reset.
+												We found invalid data for the email address. Please update it or <a (click)="openArrageHeadersModalPopUp()">click here</a> to rearrange the headers.
 											</strong>
 										</div>
 										<table class="table tgrid">
@@ -884,8 +883,9 @@
 														<td class="text-center">{{user.firstName |slice:0:30}}<span	*ngIf="user.firstName?.length>30">...</span></td>
 														<td class="text-center">{{user.lastName | slice:0:25}} <span *ngIf="user.lastName?.length>25">...</span></td>
 														<td class="text-center" *ngIf="isXamplifyCsvFormatUploaded">{{user?.emailId | slice:0:35}} <span *ngIf="user?.emailId?.length>35">...</span></td>
-														<td class="text-center" *ngIf="!isXamplifyCsvFormatUploaded && isColumnMapped" [ngClass]="user?.isValidEmailIdPattern ? 'success':'danger'">
-															{{user?.emailId | slice:0:35}} <span *ngIf="user?.emailId?.length>35">...</span>
+														<td   class="text-center" *ngIf="!isXamplifyCsvFormatUploaded && isColumnMapped"
+															 [ngClass]="user?.isValidEmailIdPattern ? 'success':'danger'">
+															 <input type="text" class="form-control"  [(ngModel)]="user.emailId" [ngModelOptions]="{standalone: true}" (input)="validateEmailAddressPattern(user)">
 														</td>
 														<td class="text-center">
 															<button class="lightgray-btn" id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
@@ -951,7 +951,7 @@
 									<div class="table-responsive" *ngIf="!isXamplifyCsvFormatUploaded && !isColumnMapped && !isListLoader">
 										<div class="alert alert-danger">
 											<strong>
-												The uploaded CSV does not match the xAmplify CSV. Please <a class="required" (click)="openArrageHeadersModalPopUp()">Click here</a> to rearrange the headers.
+												The uploaded CSV does not match the xAmplify CSV. Please <a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> to rearrange the headers.
 											</strong>
 										</div>
 										<table class="table tgrid">
