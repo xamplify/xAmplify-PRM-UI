@@ -108,9 +108,12 @@ export class LoginAsPartnerComponent implements OnInit {
 
 
   findRolesAndSetLocalStroageDataAndLogInAsPartner(emailId: any, logoutButtonClicked: boolean) {
+
     if (this.isLoggedInThroughVanityUrl) {
       this.teamMemberService.getVanityUrlRoles(emailId)
       .subscribe(response => {
+
+        response.data['isVanityWelcomePageRequired'] = response.map.isVanityWelcomePageRequired;
         this.addOrRemoveVendorAdminDetails(logoutButtonClicked);
         this.setLocalStorageAndRedirectToDashboard(emailId, response.data);
       },
@@ -122,6 +125,7 @@ export class LoginAsPartnerComponent implements OnInit {
     }else{
       this.authenticationService.getUserByUserName(emailId).subscribe
       (response=>{
+        response['isVanityWelcomePageRequired'] = window.localStorage['currentUser'].isVanityWelcomePageRequired;
         this.addOrRemoveVendorAdminDetails(logoutButtonClicked);
         this.setLocalStorageAndRedirectToDashboard(emailId, response);
       },
@@ -159,9 +163,11 @@ export class LoginAsPartnerComponent implements OnInit {
 
   private setLocalStorageAndRedirectToDashboard(emailId: any, data: any) {
     this.utilService.setUserInfoIntoLocalStorage(emailId, data);
+    let isVanityWelcomePageRequired = window.localStorage['currentUser'].isVanityWelcomePageRequired;
     let self = this;
     setTimeout(function () {
-      self.router.navigate(['home/dashboard/'])
+      let routingLink = isVanityWelcomePageRequired? 'welcome-page':'home/dashboard/'
+      self.router.navigate([routingLink])
         .then(() => {
           window.location.reload();
         });
@@ -179,6 +185,7 @@ loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
 getVanityUrlRoles(emailId: string, isLoggedInAsAdmin: boolean) {
   this.teamMemberService.getVanityUrlRoles(emailId)
     .subscribe(response => {
+      response.data['isVanityWelcomePageRequired'] = response.map.isVanityWelcomePageRequired;
       this.setLoggedInTeamMemberData(isLoggedInAsAdmin, emailId, response.data);
     },
       (error: any) => {

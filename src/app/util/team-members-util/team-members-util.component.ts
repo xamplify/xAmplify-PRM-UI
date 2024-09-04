@@ -461,6 +461,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   getVanityUrlRoles(emailId: string, isLoggedInAsAdmin: boolean) {
     this.teamMemberService.getVanityUrlRoles(emailId)
       .subscribe(response => {
+        response.data['isVanityWelcomePageRequired'] = response.map.isVanityWelcomePageRequired;
         this.setLoggedInTeamMemberData(isLoggedInAsAdmin, emailId, response.data);
       },
         (error: any) => {
