@@ -15,13 +15,15 @@ import { UnsubscribeContactModalComponent } from '../contacts/unsubscribe-contac
 import { ResubscribeContactModalComponent } from '../contacts/resubscribe-contact-modal/resubscribe-contact-modal.component';
 import { AddCompanyContactsComponent } from 'app/contacts/add-company-contacts/add-company-contacts.component';
 import { HalopsaauthenticationpopupComponent } from 'app/contacts/halopsaauthenticationpopup/halopsaauthenticationpopup.component';
+import { ContactDetailsComponent } from 'app/contact-details/contact-details.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, SharedModule, CommonComponentModule, SharedLibraryModule ],
         declarations: [AddContactsComponent, ManageContactsComponent,EditContactsComponent,SocialContactsCallbackComponent, AddContactModalComponent,
-        UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent,HalopsaauthenticationpopupComponent],
+        UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent,HalopsaauthenticationpopupComponent, ContactDetailsComponent],
         exports: [FormsModule, CommonModule, RouterModule, AddContactsComponent,ManageContactsComponent,EditContactsComponent,
-                  SocialContactsCallbackComponent, AddContactModalComponent, UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent,HalopsaauthenticationpopupComponent],
+                  SocialContactsCallbackComponent, AddContactModalComponent, UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent, 
+                  HalopsaauthenticationpopupComponent, ContactDetailsComponent],
         providers: [SocialPagerService],
 })
 
