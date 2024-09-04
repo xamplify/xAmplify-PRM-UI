@@ -430,6 +430,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 let headersRow = self.fileUtil
                     .getHeaderArray(csvRecordsArray);
                 let headers = headersRow[0].split(',');
+                
                 self.validateHeadersAndReadRows(headers, self, contents);
             }
         } else {
@@ -443,6 +444,13 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
     private validateHeadersAndReadRows(headers: any, self: this, contents: any) {
         self.isXamplifyCsvFormatUploaded = headers.length == 11 && self.validateHeaders(headers);
+        let isLocalHost = self.authenticationService.isLocalHost();
+        let isQADomain = self.authenticationService.isQADomain();
+        let allowedEmailIds = ['csravan@stratapps.com','red@stratapps.com'];
+        let userName = this.authenticationService.getUserName();
+        let isNewOptionEnabledForLocalHost = userName=="demo.test.xamplify@gmail.com" && isLocalHost;
+        let isNewOptionEnabledForQA = isQADomain && allowedEmailIds.indexOf(userName)>-1;
+        let isUploadCsvOptionEnabled = isNewOptionEnabledForLocalHost || isNewOptionEnabledForQA;
         if (this.isXamplifyCsvFormatUploaded) {
             this.paginationType = "csvContacts";
             var csvResult = Papa.parse(contents);
@@ -477,7 +485,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 self.isValidLegalOptions = true;
                 self.customResponse = new CustomResponse('ERROR', "No contacts found.", true);
             }
-        } else {
+        } else if(isUploadCsvOptionEnabled) {
             /***XNFR-671 */
             this.isListLoader = true;
             this.paginationType = "customCsvContacts";
@@ -506,6 +514,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             self.setPage(1);
             this.referenceService.goToDiv("file_preview");
             this.isListLoader = false;
+        }else{
+            self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+            self.isListLoader = false;
+            self.cancelContacts();
         }
     }
 
