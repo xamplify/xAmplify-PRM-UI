@@ -276,6 +276,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
 	contactListObj = new ContactList;
 	userListPaginationWrapper: UserListPaginationWrapper = new UserListPaginationWrapper();
+	selectedContact: any;
+	showContactDetailsTab: boolean = false;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -2342,6 +2344,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.resetTMSelectedFilterIndex.next(true);
 			this.pagination.partnerTeamMemberGroupFilter = true;
 		}
+		this.showContactDetailsTab = false;
 		this.setPage(1);
 	}
 
@@ -4245,6 +4248,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		} catch (error) {
 			this.xtremandLogger.error(error, "editContactComponent", "downloadListUserListCsv()");
 		}
+	}
+
+	showContactDetails(contact) {
+		this.selectedContact = contact;
+		this.showContactDetailsTab = true;
 	}
 
 }

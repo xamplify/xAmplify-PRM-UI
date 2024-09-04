@@ -15,7 +15,7 @@ import { UnsubscribeContactModalComponent } from '../contacts/unsubscribe-contac
 import { ResubscribeContactModalComponent } from '../contacts/resubscribe-contact-modal/resubscribe-contact-modal.component';
 import { AddCompanyContactsComponent } from 'app/contacts/add-company-contacts/add-company-contacts.component';
 import { HalopsaauthenticationpopupComponent } from 'app/contacts/halopsaauthenticationpopup/halopsaauthenticationpopup.component';
-import { ContactDetailsComponent } from 'app/contact-details/contact-details.component';
+import { ContactDetailsComponent } from 'app/contacts/contact-details/contact-details.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, SharedModule, CommonComponentModule, SharedLibraryModule ],

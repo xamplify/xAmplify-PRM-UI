@@ -60,7 +60,7 @@
 		</li>
 	</ul>
 </div>
-<div class="clearfix" id="manageContacts">
+<div class="clearfix" id="manageContacts" *ngIf="!showContactDetailsTab">
 	<div class="col-xs-12">
 		<div class="row">
 			<div>
@@ -990,7 +990,7 @@
 														</ng-container>
 														<ng-container
 															*ngFor="let contact of pagination.pagedItems;let i = index">
-															<tr class='row_{{i}}'>
+															<tr class='row_{{i}}' (click)="showContactDetails(contact)">
 																<td class='text-center'
 																	*ngIf="!isCampaignDraftContactList "><input
 																		type="checkbox"
@@ -1997,3 +1997,5 @@
 	[hasLmsAccess]="authenticationService?.module?.lmsAccess && checkingContactTypeName!='Contact'"
 	[hasPlaybookAccess]="authenticationService?.module?.playbookAccess && checkingContactTypeName!='Contact'">
 </app-share-unpublished-content>
+
+<app-contact-details *ngIf="showContactDetailsTab" [selectedContact]="selectedContact"></app-contact-details>
