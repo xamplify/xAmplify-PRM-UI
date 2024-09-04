@@ -565,9 +565,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     expandRows(selectedFormDataRow: any, selectedIndex: number) {
         selectedFormDataRow.expanded = !selectedFormDataRow.expanded;
         if (selectedFormDataRow.expanded) {
-            $('#form-data-row-' + selectedIndex).css("background-color", "#d3d3d357");
+            $('#csv-contacts-row-' + selectedIndex).css("background-color", "#d3d3d357");
         } else {
-            $('#form-data-row-' + selectedIndex).css("background-color", "#fff");
+            $('#csv-contacts-row-' + selectedIndex).css("background-color", "#fff");
         }
     }
 
@@ -578,7 +578,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         let mappedColumns = this.defaultContactsCsvColumnHeaderDtos.map(function (dto) { return dto.mappedColumn }).filter(function(v){return v!==''});
         this.duplicateMappedColumns = this.referenceService.findDuplicateArrayElements(mappedColumns);
         if(this.duplicateMappedColumns!=undefined && this.duplicateMappedColumns.length>0){
-            this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Duplicate columns have been mapped. Please ensure to check for the specified errors.',true);
+            this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR',this.properties.duplicateColumnsMappedErrorMessage,true);
         }else{
             this.duplicateColumnsMappedErrorResponse = new CustomResponse();
         }
@@ -634,13 +634,13 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.isColumnMapped = true;
                         this.referenceService.closeModalPopup("csv-column-mapping-modal-popup");
                     }else{
-                        this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Email Address mapping is mandetory.',true);
+                        this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR',this.properties.emailAddressMandatoryMessage,true);
                     }
                 }else{
-                    this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Duplicate columns have been mapped. Please ensure to check for the specified errors.',true);
+                    this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR',this.properties.duplicateColumnsMappedErrorMessage,true);
                 }
             }else{
-                this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR','Please ensure to map the Email Address column.',true);
+                this.duplicateColumnsMappedErrorResponse = new CustomResponse('ERROR',this.properties.emailAddressMandatoryMessage,true);
             }
             this.mappingLoader = false;
         }catch(error){

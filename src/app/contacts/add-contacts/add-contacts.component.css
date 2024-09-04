@@ -223,8 +223,8 @@ i.fa.fa-file-excel-o.IconTopMargin {
 }
 .alert-success,
 .alert-danger,
-.alert-warning > h5 {
-  font-size: 14px;
+.alert-warning {
+  font-size: 14px !important;
 }
 .text {
   padding-top: 12px;

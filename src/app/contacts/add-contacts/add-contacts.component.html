@@ -859,20 +859,20 @@
 									<div class="table-responsive" *ngIf="(isXamplifyCsvFormatUploaded || isColumnMapped) && !isListLoader">
 										<div class="alert alert-success" *ngIf="isColumnMapped && isValidEmailAddressMapped">
 											<strong>
-												CSV has been mapped. You can still <a (click)="openArrageHeadersModalPopUp()">click here</a> to rearrange the headers or 
+												CSV header has been mapped. You can still <a (click)="openArrageHeadersModalPopUp()">click here</a> to map the header or 
 												<a (click)="resetMappedColumns()">click here</a> to reset.
 											</strong>
 										</div>
 										<div class="alert alert-danger" *ngIf="isColumnMapped && !isValidEmailAddressMapped">
 											<strong>
 												We found invalid data for the email address. Please update it or 
-												<a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> to rearrange the headers or <a class="required" (click)="resetMappedColumns()">click here</a> to reset.
+												<a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> to map the header or <a class="required" (click)="resetMappedColumns()">click here</a> to reset.
 											</strong>
 										</div>
 										<table class="table tgrid">
 											<thead>
 												<tr>
-													<th class="text-center">First Name</th>
+													<th>First Name</th>
 													<th class="text-center">Last Name</th>
 													<th class="text-center">Email Address</th>
 													<th class="text-center">More</th>
@@ -882,7 +882,7 @@
 											<tbody>
 												<ng-container *ngFor="let user of pagedItems;let i=index">
 													<tr id="csv-contact-row-{{i}}">
-														<td class="text-center">{{user.firstName |slice:0:30}}<span	*ngIf="user.firstName?.length>30">...</span></td>
+														<td>{{user.firstName |slice:0:30}}<span	*ngIf="user.firstName?.length>30">...</span></td>
 														<td class="text-center">{{user.lastName | slice:0:25}} <span *ngIf="user.lastName?.length>25">...</span></td>
 														<td class="text-center" *ngIf="isXamplifyCsvFormatUploaded">{{user?.emailId | slice:0:35}} <span *ngIf="user?.emailId?.length>35">...</span></td>
 														<td   class="text-center" *ngIf="!isXamplifyCsvFormatUploaded && isColumnMapped"
@@ -958,7 +958,7 @@
 									<div class="table-responsive" *ngIf="!isXamplifyCsvFormatUploaded && !isColumnMapped && !isListLoader">
 										<div class="alert alert-danger">
 											<strong>
-												The uploaded CSV does not match the xAmplify CSV. Please <a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> to rearrange the headers.
+												{{properties?.contactsCsvHeaderMisMatchedErrorMessage}} Please <a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.mapCsvHeaderMessage}}
 											</strong>
 										</div>
 										<table class="table tgrid">
@@ -974,7 +974,7 @@
 											</thead>
 											<tbody>
 												<ng-container  *ngFor="let parsedCsvDto of pagedItems;let rowIndex = index">
-													<tr  id="form-data-row-{{rowIndex}}" class="form-data-row">
+													<tr  id="csv-contacts-row-{{rowIndex}}" class="csv-contacts-row">
 														<ng-container *ngFor="let csvRow of  parsedCsvDto.csvRows;let columnIndex = index">
 															<td *ngIf="columnIndex<=3">
 																{{csvRow.value}}
