@@ -865,7 +865,8 @@
 										</div>
 										<div class="alert alert-danger" *ngIf="isColumnMapped && !isValidEmailAddressMapped">
 											<strong>
-												We found invalid data for the email address. Please update it or <a (click)="openArrageHeadersModalPopUp()">click here</a> to rearrange the headers.
+												We found invalid data for the email address. Please update it or 
+												<a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> to rearrange the headers or <a class="required" (click)="resetMappedColumns()">click here</a> to reset.
 											</strong>
 										</div>
 										<table class="table tgrid">
@@ -875,11 +876,12 @@
 													<th class="text-center">Last Name</th>
 													<th class="text-center">Email Address</th>
 													<th class="text-center">More</th>
+													<th class="text-center" *ngIf="isColumnMapped"></th>
 												</tr>
 											</thead>
 											<tbody>
 												<ng-container *ngFor="let user of pagedItems;let i=index">
-													<tr>
+													<tr id="csv-contact-row-{{i}}">
 														<td class="text-center">{{user.firstName |slice:0:30}}<span	*ngIf="user.firstName?.length>30">...</span></td>
 														<td class="text-center">{{user.lastName | slice:0:25}} <span *ngIf="user.lastName?.length>25">...</span></td>
 														<td class="text-center" *ngIf="isXamplifyCsvFormatUploaded">{{user?.emailId | slice:0:35}} <span *ngIf="user?.emailId?.length>35">...</span></td>
@@ -892,6 +894,11 @@
 																<span *ngIf="!user.isShowDetails">More</span>
 																<span *ngIf="user.isShowDetails">Less</span>
 															</button>
+														</td>
+														<td class="text-center" *ngIf="isColumnMapped">
+															<div class ="actions-block override-actions">
+																<a  (click)="removeContact(i)"><i class="fa fa-trash-o"></i></a>
+															</div>	
 														</td>
 													</tr>
 													<tr [ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">

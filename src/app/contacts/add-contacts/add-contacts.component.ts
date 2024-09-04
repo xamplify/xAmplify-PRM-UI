@@ -674,6 +674,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.mappingLoader = false;
                 this.paginationType = "customCsvContacts";
                 this.setPage(1);
+                this.contacts = [];
                 this.isListLoader = false;
             }catch(error){
                 this.xtremandLogger.error(error);
@@ -1796,6 +1797,14 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     validateEmailAddressPattern(user:User){
         user.isValidEmailIdPattern = this.validateEmailAddress(user.emailId);
     }    
+    /****XNFR-671******/
+    removeContact(index:number){
+        this.contacts = this.referenceService.removeArrayItemByIndex(this.contacts,index);
+        $('#csv-contact-row-'+index).remove();
+        let emailAddress = this.contacts.map(function(contact){return contact.emailId});
+        console.log(emailAddress);
+
+    }
 
     addRow(event) {
         if (this.gdprStatus) {
