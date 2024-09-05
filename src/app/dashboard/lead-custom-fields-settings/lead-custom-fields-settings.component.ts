@@ -11,7 +11,7 @@ import { SocialPagerService } from 'app/contacts/services/social-pager.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { CustomFields } from '../models/custom-fields';
-declare var $: any;
+declare var $: any, swal: any;
 
 @Component({
   selector: 'app-lead-custom-fields-settings',
@@ -199,17 +199,12 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 							});
 						}
 						this.setSfCfPage(1);
-					} else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
-						this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
-                        this.notifySubmitSuccess.emit(this.customFieldsResponse);
 					}
 					this.customFieldsDtosLoader = false;
 				},
 				error => {
 					this.ngxloading = false;
 					this.haveCustomFields = false;
-					this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
-                    this.notifySubmitSuccess.emit(this.customFieldsResponse);
 					this.customFieldsDtosLoader = false;
 				},
 				() => {
@@ -829,6 +824,37 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
       this.isAddCustomFieldsModelPopUp = false;
       this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
     }
+  }
+
+  confirmDelete(customfield : CustomFieldsDto) {
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: "This Custom Field will be deleted from your Custom Fields.",
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes, delete it!'
+
+		}).then(function () {
+			self.deleteCustomField(customfield);
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
+	}
+
+  deleteCustomField(customfield : CustomFieldsDto){
+    this.ngxloading = true;
+    this.integrationService.deleteCustomField(customfield, this.loggedInUserId).subscribe(
+        response=>{
+          if(response.statusCode == 200){
+            this.customResponse = new CustomResponse('SUCCESS', "Deleted Successfully", true);
+          }
+          this.ngxloading = false;
+        },error=>{
+          this.ngxloading = false;
+        });  
   }
 
 }

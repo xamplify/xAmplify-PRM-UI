@@ -7,6 +7,7 @@ import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { Observable } from "rxjs/Observable";
 import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 import { SocialContact } from "app/contacts/models/social-contact";
+import { CustomFieldsDto } from "app/dashboard/models/custom-fields-dto";
 
 @Injectable()
 export class IntegrationService {
@@ -239,4 +240,10 @@ export class IntegrationService {
           .map(this.extractData)
           .catch(this.handleError);
       }
+
+      deleteCustomField(customfield: CustomFieldsDto, loggedInUserId:any) {
+        return this._http.post(this.authenticationService.REST_URL + `/customFields/delete/${loggedInUserId}?access_token=${this.authenticationService.access_token}`, customfield)
+       .map(this.extractData)
+       .catch(this.handleError);
+     }
 }

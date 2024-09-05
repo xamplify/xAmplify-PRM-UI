@@ -123,6 +123,11 @@
                           class="fa fa-gear mr5 IconCustomization SingleIconCu icon_place"></i>
                         <div class="clickicons"></div>
                       </a>
+                      <a *ngIf="sfCustomField.formFieldType === 'CUSTOM'" class="custom-icon">
+                        <i *ngIf="sfCustomField.formFieldType === 'CUSTOM'" (click)="confirmDelete(sfCustomField)"
+                          class="fa fa-trash-o trashIconCustomization SingleIconCu icon_place"></i>
+                        <div class="clickicons"></div>
+                      </a>
                     </td>
                   </tr>
                 </ng-container>

@@ -1,6 +1,7 @@
 import { PicklistValues } from "app/forms/models/picklist-values";
 
 export class CustomFieldsDto {
+    id: number;
     name = "";
     label = "";
     type = "";
@@ -22,4 +23,6 @@ export class CustomFieldsDto {
     defaultChoiceLabel: any;
     private = false;
     formLookUpDefaultFieldType: any;
+    active: boolean = false;
+    formFieldType: any;
 }

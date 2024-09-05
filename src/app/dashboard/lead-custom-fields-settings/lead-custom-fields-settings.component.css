@@ -304,3 +304,8 @@
     margin: 12px 0px;
   }
 }
+
+.trashIconCustomization {
+    border: 1px solid #cb5a5e;
+    color: #cb5a5e;
+  }
