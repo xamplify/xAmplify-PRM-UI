@@ -154,6 +154,7 @@ export class ReferenceService {
   website:String="";
   /*** XNFR-433 ***/
   isCopyForm: boolean = false;
+  isWelcomePageLoading: boolean = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,

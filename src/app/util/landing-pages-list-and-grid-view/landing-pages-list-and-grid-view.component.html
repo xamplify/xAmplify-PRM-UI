@@ -158,11 +158,15 @@
                                     <span class="ribbon1" *ngIf="!landingPage.coBranded && (!(vendorJourney || isMasterLandingPages || !welcomePages) || ((vendorJourney || isMasterLandingPages) &&!landingPage.defaultLandingPage)) "><span>Regular</span></span>
                                     <span class="ribbon1" *ngIf="!landingPage.coBranded && ((vendorJourney || isMasterLandingPages || welcomePages)&& landingPage.defaultLandingPage) "><span>Default</span></span>
                                 </ng-container>
-                                <div class="ribbon tab-ribbon" *ngIf = "vendorJourney || welcomePages">
+                                <div class="ribbon tab-ribbon" *ngIf = "vendorJourney">
                                     <span
                                         *ngIf="landingPage?.published && !landingPage?.publishingOrWhiteLabelingInProgress">Published</span>
                                     <span
                                         *ngIf="landingPage?.publishingOrWhiteLabelingInProgress">Processing</span>
+                                </div>
+                                <div class="activeribbon tab-ribbon" *ngIf = " welcomePages">
+                                    <span
+                                        *ngIf="landingPage?.published && !landingPage?.publishingOrWhiteLabelingInProgress">Active</span>
                                 </div>
                                 <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"
                                     alt="No Image Found">
@@ -223,6 +227,9 @@
                                 <div class="bar gridIconCustomization flex icons-center" id="notificationBarCu">
                                     <!--Share Icon-->
                                     <ng-template *ngIf="vendorJourney && !landingPage?.defaultLandingPage ||((welcomePages && !landingPage?.defaultLandingPage && !landingPage?.published)) " [ngTemplateOutlet]="shareIcon"
+                                    [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--unshare Icon-->
+                                    <ng-template *ngIf="((welcomePages && !landingPage?.defaultLandingPage && landingPage?.published)) " [ngTemplateOutlet]="unshareIcon"
                                     [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                     <!--Copy Icon-->
                                     <ng-template *ngIf="!isLandingPages" [ngTemplateOutlet]="copyIcon"
@@ -565,8 +572,15 @@
         <div class="clickicons"></div>
     </a>
     <a class="Iconhover custom-grid-icon" *ngIf="!landingPage.publishingOrWhiteLabelingInProgress && !isPartnerLandingPage && (welcomePages )" data-toggle="tooltip"
-    data-placement="top" title="Share" (click)="publishWelcomePage(landingPage.id)">
-    <i class="fa fa-share" aria-hidden="true"></i>
+    data-placement="top" title="Activate" (click)="publishWelcomePage(landingPage.id)">
+    <i class="fa fa-power-off" aria-hidden="true"></i>
+    <div class="clickicons"></div>
+</a>
+</ng-template>
+<ng-template #unshareIcon let-landingPage="landingPage"> 
+    <a class="Iconhover custom-grid-icon" *ngIf="!landingPage.publishingOrWhiteLabelingInProgress && !isPartnerLandingPage && (welcomePages )" data-toggle="tooltip"
+    data-placement="top" title="Deactivate" (click)="unPublishWelcomePage(landingPage.id)">
+    <i class="fa fa-undo" aria-hidden="true"></i>
     <div class="clickicons"></div>
 </a>
 </ng-template>
