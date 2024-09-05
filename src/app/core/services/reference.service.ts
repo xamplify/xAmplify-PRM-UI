@@ -3380,6 +3380,19 @@ export class ReferenceService {
     });
     return arr;
   }
+
+  removeAnItemFromArray(arr:any,itemToRemove:any){
+    arr = $.grep(arr, function(value:any) {
+      return value != itemToRemove;
+    });
+    return arr;
+  }
+
+  removeMultipleItemsFromArray(array:any,itemsToRemove:any){
+    return array.filter(v => { 
+    	return !itemsToRemove.includes(v); 
+    });
+  }
   
   iterateNamesAndGetErrorMessage(response:any){
     let names = "";
@@ -3743,6 +3756,17 @@ copySelectedElement(inputElement:any,id:string){
   inputElement.setSelectionRange(0, 0);
   $('#'+id).show(600);
 }
+
+  findDuplicateArrayElements(array:any) {
+    var recipientsArray = array.sort();
+    var duplicateElements = [];
+    for (var i = 0; i < recipientsArray.length - 1; i++) {
+      if (recipientsArray[i + 1] == recipientsArray[i]) {
+        duplicateElements.push(recipientsArray[i]);
+      }
+    }
+    return duplicateElements;
+  }
   
 }
 

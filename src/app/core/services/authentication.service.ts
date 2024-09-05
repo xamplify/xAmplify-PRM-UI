@@ -326,6 +326,17 @@ isVanityWelcomePageRequired = false;
     }
   }
 
+  getUserName() {
+    let userName = "";
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      userName = JSON.parse(currentUser)['userName'];
+    } else {
+      userName = "";
+    }
+    return userName;
+  }
+
   getSource() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser != null) {

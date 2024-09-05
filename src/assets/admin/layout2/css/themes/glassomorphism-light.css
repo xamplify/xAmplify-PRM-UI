@@ -3318,7 +3318,8 @@ span.btn.btn-primary.transition.merge_tag_text{
   margin-left: -12px;
 }
 b,
-td.pt10.pb10.bold.mr_10{
+td.pt10.pb10.bold.mr_10,
+td.pt10.pb10.bold.pr10{
   color: #000 !important;
 }
 a.tabColorOne b,
@@ -3950,9 +3951,10 @@ h1, h2, h3, h4, h5, h6{
 .dashboard-stat.red-soft .visual > i,
 .dashboard-stat.purple-soft .visual > i,
 .dashboard-stat.blue-sharp .visual > i,
-.dashboard-stat.blue-soft .visual > i{
+.dashboard-stat.blue-soft .visual > i,
+.dashboard-stat.yellow-gold .visual > i{
   color: #000 !important;
-  opacity: 0.9 !important;
+  opacity: 0.1 !important;
   font-size: 40px !important;
 }
 /***** Sudha Sri(8-5-2024) *****/
@@ -4427,3 +4429,5 @@ i.fa.fa-eye{padding-left: 2px;}
 i.fa.fa-gear.mr5.IconCustomization.SingleIconCu.icon_place {
   margin-left: 0px !important;
 }
+.bg-none{background: none !important;}
+.neo{margin-left:65px !important;}

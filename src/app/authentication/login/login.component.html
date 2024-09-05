@@ -3,116 +3,65 @@
 	<img alt="logo" class="logo-default" style="height: 54px" src="assets/images/xamplify-logo.png">
  </div>
  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
- <div *ngIf="!isStyleOne">
- <div class="content" style="background-color: rgba(0,0,0,.0);" [ngClass] = "{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
-	<div style="background-color: rgba(0,0,0,.0);">
-	   <app-video [newLogin]="false" *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
-	   <app-video [newLogin]="false" *ngIf="vanityURLEnabled"></app-video>
-	</div>
-	<div class="row">
-	   <!-- BEGIN LOGIN FORM -->
-	   <div class="row" *ngIf="model" style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
-		<!-- XNFR-334---> 
-		<app-response-message [showCloseIcon]="false" [customResponse]="teamMemberSignedUpResponse" *ngIf="teamMemberSignedUpResponse.isVisible"></app-response-message>
-		<app-response-message [customResponse]="customResponse" *ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
-		  <!-- XNFR-334--->
-		  <div *ngIf="resendActiveMail" class="alert alert-dismissible m0 alert-danger" role="alert">
-			 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			 <span aria-hidden="true">&times;</span>
-			 </button>
-			 <strong style="padding-top: 6px;">
-				<span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}<br>
-				<span style="position: relative;top: 4px;">Please
-					 <a class="underlinetext success"  (click)="resendActivation()"> click here </a>to get the account activation email.</span>
-					</span>
-			</strong>
-		  </div>
-		  <form class="login-form" (ngSubmit)="login()">
-			 <h3 class="form-title text-white">{{signInText}}</h3>
-			 <div class="alert alert-danger display-hide">
-				<button class="close" data-close="alert"></button>
-				<label class="custom-label">Enter any Email and password.</label>
-			 </div>
-			 <div class="form-group">
-				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-				<label class="control-label visible-ie8 visible-ie9">Email</label>
-				<input id="username" class="form-control form-control-solid placeholder-no-fix userNameTag"
-				name="username" [(ngModel)]="model.username" #username="ngModel" required type="text"
-				autocomplete="off" placeholder="Email" (input)="clearErrorMessage()" />
-			 </div>
-			 <div class="form-group has-feedback">
-				<label class="control-label visible-ie8 visible-ie9">Password</label>
-				<input id="password" class="form-control form-control-solid placeholder-no-fix passwordTag"
-				[(ngModel)]="model.password" #password="ngModel" required type="password" autocomplete="off"
-				placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)" />
-				<span toggle="#password" title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password"
-				(click)="referenceService.showPassword('password')"
-				*ngIf="!referenceService.showInputPassword && model.password"></span>
-				<span toggle="#password" title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password"
-				(click)="referenceService.showPassword('password')"
-				*ngIf="referenceService.showInputPassword && model.password"></span>
-			 </div>
-			 <button *ngIf="!isPleaseWaitButtonDisplayed" id="submitBitton" type="submit" class="btn btn-primary pull-left  signin">{{signInText}}</button>
-			 <button  *ngIf="isPleaseWaitButtonDisplayed" class="btn btn-primary pull-left" disabled><i class="fa fa-spinner fa-spin mr5"></i>{{signInText}}</button>
-		  </form>
-		  <div class="form-actions login-form" style="border-bottom: 0!important;display: contents;">
-			 <label class="rememberme check">
-			 <span hidden><input class="checkBox_shadow" type="checkbox" name="remember" value="1" />&nbsp;Remember</span>
-			 </label>
-			 <a *ngIf="!isPleaseWaitButtonDisplayed" id="forgetAnchor" routerLink="/forgot-password" class="forget-password text-white">Forgot Password?</a>
-			 <span *ngIf="isPleaseWaitButtonDisplayed"  class="forget-password text-white disabled">Forgot Password?</span>
-		  </div>
-		  <div class="row solid-wb" style="margin-top: 28px;"></div>
-		  <div class="login-options login-form m5" *ngIf="!authenticationService.vanityURLEnabled">
-			 <h4>Or login with</h4>
-			 <ul class="social-icons">
-				<ng-container *ngFor="let socialProvider of socialProviders">
-				   <li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
-					  <a class="" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
-					  	<span class="img-child {{socialProvider.iconName}}"></span>
-					  </a>
-				   </li>
-				</ng-container>
-			 </ul>
-		  </div>
-		  <div class="login-options login-form m5" *ngIf="authenticationService?.vanityURLEnabled  && vanitySocialProviders?.length">
-			 <h4 *ngIf="orLoginWithText">Or login with</h4>
-			 <ul class="social-icons">
-				<ng-container *ngFor="let socialProvider of vanitySocialProviders">
-				   <li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
-					  <a *ngIf="!isPleaseWaitButtonDisplayed" class="" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
-					  	<span class="img-child {{socialProvider.iconName}}"></span>
-					  </a>
-					  <span *ngIf="isPleaseWaitButtonDisplayed"  class="disabled" title="{{socialProvider.name}}">
-						<span class="img-child {{socialProvider.iconName}}"></span>
-					  </span>
-				   </li>
-				</ng-container>
-			 </ul>
-		  </div>
-		  <ng-template [ngTemplateOutlet]="vendorSSOLoginButton"></ng-template>
-		<div class="text-center mt10" *ngIf="authenticationService.companyProfileName == 'versa-networks'">
-			<label class="check">Don’t have an account yet?
-				<a class="agree-link" href="https://iam.versa-networks.com/register/partner" target="_blank">Request an
-					account</a>
-			</label>
+<div *ngIf="!isStyleOne">
+	<div class="content" style="background-color: rgba(0,0,0,.0);"
+		[ngClass]="{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
+		<div style="background-color: rgba(0,0,0,.0);">
+			<app-video [newLogin]="false" *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
+			<app-video [newLogin]="false" *ngIf="vanityURLEnabled"></app-video>
 		</div>
-		  <div class="text-center mt10">
-			 <label class="check">
-			 <a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&
-			 <a class="agree-link" href="{{properties.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
-			 </label>
-		  </div>
-	   </div>
+		<div class="row">
+			<!-- BEGIN LOGIN FORM -->
+			<div class="row" *ngIf="model" style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
+				<!-- XNFR-334--->
+				<div *ngIf="hideCloseButton && authenticationService?.vanityURLEnabled" style="margin-bottom: 24px;">
+					<a type="submit" (click)="closeLoginWithCredentialsForm()" style="float: right;"
+						data-toggle="tooltip" data-placement="bottom" title="Close"> X </a>
+				</div>
+				<ng-container *ngIf="vanitySocialProviders?.length && !showLoginWithCredentials">
+					<app-response-message [customResponse]="customResponse"
+						*ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
+					<h3 class="form-title text-white">Sign In Options</h3>
+					<button class="login_with_credentials" style="background-color: #ffffffb3;color: #0f0f0f;"
+						type="submit" (click)="showLoginWithCredentialsForm()">
+						Log in with Credentials </button>
+					<ng-template [ngTemplateOutlet]="showVanitySocialProviders"
+						*ngIf="vanitySocialProviders?.length && authenticationService?.vanityURLEnabled"></ng-template>
+				</ng-container>
+
+				<ng-container *ngIf="!vanitySocialProviders?.length">
+					<ng-template [ngTemplateOutlet]="ShowLoginWithCredentialsUI"></ng-template>
+					<div class="row solid-wb" style="margin-top: 28px;"></div>
+				</ng-container>
+
+				<ng-container *ngIf="showLoginWithCredentials">
+					<ng-template [ngTemplateOutlet]="ShowLoginWithCredentialsUI"></ng-template>
+					<div class="row solid-wb" style="margin-top: 28px;"></div>
+				</ng-container>
+
+				<ng-template [ngTemplateOutlet]="showSocialProviders"
+					*ngIf="!authenticationService.vanityURLEnabled"></ng-template>
+
+				<div class="text-center mt10" *ngIf="authenticationService.companyProfileName == 'versa-networks'">
+					<label class="check">Don’t have an account yet?
+						<a class="agree-link" href="https://iam.versa-networks.com/register/partner"
+							target="_blank">Request an
+							account</a>
+					</label>
+				</div>
+				<ng-template [ngTemplateOutlet]="showTermsAndPolicies"></ng-template>
+			</div>
+		</div>
+		<!-- 12-12-2023-->
+		<app-copyright [styleOne]="flase" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
+		<app-copyright [styleOne]="flase" *ngIf="vanityURLEnabled"></app-copyright>
 	</div>
-	 <!-- 12-12-2023-->
-	 <app-copyright [styleOne]="flase" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
-	 <app-copyright [styleOne]="flase" *ngIf="vanityURLEnabled"></app-copyright>
- </div>
 </div>
 <div *ngIf="isStyleOne">
 	<div class="row" style="display: content;margin-right: 0px !;margin: 0px !important;" *ngIf="vanityURLEnabled">
-		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 bg_image" [ngStyle]="{'float':authenticationService?.loginScreenDirection}" [ngClass]="isBgColor?'bg_color':'bg_image'">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 bg_image"
+			[ngStyle]="{'float':authenticationService?.loginScreenDirection}"
+			[ngClass]="isBgColor?'bg_color':'bg_image'">
 			<div class="content" style="background-color: rgba(0,0,0,.0);">
 				<div style="background-color: rgba(0,0,0,.0);">
 					<app-video [newLogin]="true" *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
@@ -120,109 +69,51 @@
 				</div>
 				<div class="row">
 					<!-- BEGIN LOGIN FORM -->
-					<div class="row" *ngIf="model" style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
-						<app-response-message [showCloseIcon]="false" [customResponse]="teamMemberSignedUpResponse" *ngIf="teamMemberSignedUpResponse.isVisible"></app-response-message>
-						<!-- XNFR-334--->
-						<app-response-message [customResponse]="customResponse"
-							*ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
-						<!-- XNFR-334--->
-						<div *ngIf="resendActiveMail" class="alert alert-dismissible m0 alert-danger" role="alert">
-							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							<strong style="padding-top: 6px;">
-								<span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}<br>
-									<span style="position: relative;top: 4px;">Please
-										<a class="underlinetext success" (click)="resendActivation()"> click here </a>to get
-										the account activation email.</span>
-								</span>
-							</strong>
+					<div class="row" *ngIf="model"
+						style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
+						<div *ngIf="hideCloseButton && authenticationService?.vanityURLEnabled"
+							style="margin-bottom: 24px;">
+							<a type="submit" (click)="closeLoginWithCredentialsForm()" style="float: right;"
+								data-toggle="tooltip" data-placement="bottom" title="Close"> X </a>
 						</div>
-						<form class="login-form" (ngSubmit)="login()">
-							<h3 class="form-title text-white">{{signInText}}</h3>
-							<div class="alert alert-danger display-hide">
-								<button class="close" data-close="alert"></button>
-								<label class="custom-label">Enter any Email and password.</label>
-							</div>
-							<div class="form-group">
-								<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-								<label class="control-label visible-ie8 visible-ie9">Email</label>
-								<input id="username" class="form-control form-control-solid placeholder-no-fix userNameTag"
-									name="username" [(ngModel)]="model.username" #username="ngModel" required type="text"
-									autocomplete="off" placeholder="Email" (input)="clearErrorMessage()" />
-							</div>
-							<div class="form-group has-feedback">
-								<label class="control-label visible-ie8 visible-ie9">Password</label>
-								<input id="password" class="form-control form-control-solid placeholder-no-fix passwordTag"
-									[(ngModel)]="model.password" #password="ngModel" required type="password"
-									autocomplete="off" placeholder="Password" name="password"
-									(keypress)="eventHandler($event.keyCode)" />
-								<span toggle="#password" title="Show Password"
-									class="fa fa-fw fa-eye field-icon toggle-password"
-									(click)="referenceService.showPassword('password')"
-									*ngIf="!referenceService.showInputPassword && model.password"></span>
-								<span toggle="#password" title="Hide Password"
-									class="fa fa-fw fa-eye-slash field-icon toggle-password"
-									(click)="referenceService.showPassword('password')"
-									*ngIf="referenceService.showInputPassword && model.password"></span>
-							</div>
-								<button *ngIf="!isPleaseWaitButtonDisplayed" id="submitBitton" type="submit" class="btn btn-primary pull-left  signin">{{signInText}}</button>
-								<button  *ngIf="isPleaseWaitButtonDisplayed" class="btn btn-primary pull-left" disabled><i class="fa fa-spinner fa-spin mr5"></i>{{signInText}}</button>
-						</form>
-						<div class="form-actions login-form" style="border-bottom: 0!important;display: contents;">
-							<label class="rememberme check">
-								<span hidden><input type="checkbox" name="remember" value="1" />&nbsp;Remember</span>
-							</label>
-							<a id="forgetAnchor" routerLink="/forgot-password" class="forget-password text-white">Forgot
-								Password?</a>
-						</div>
-						<div class="row solid-wb" style="margin-top: 28px;"></div>
-						<div class="login-options login-form m5" *ngIf="!authenticationService.vanityURLEnabled">
-							<h4>Or login with</h4>
-							<ul class="social-icons">
-								<ng-container *ngFor="let socialProvider of socialProviders">
-									<li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
-										<a class="" title="{{socialProvider.name}}"
-											(click)="loginUsingSocialAccounts(socialProvider)">
-											<span class="img-child {{socialProvider.iconName}}"></span>
-										</a>
-									</li>
-								</ng-container>
-							</ul>
-						</div>
-						<div class="login-options login-form m5"
-							*ngIf="authenticationService?.vanityURLEnabled  && vanitySocialProviders?.length">
-							<h4>Or login with</h4>
-							<ul class="social-icons">
-								<ng-container *ngFor="let socialProvider of vanitySocialProviders">
-									<li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
-										<a class="" title="{{socialProvider.name}}"
-											(click)="loginUsingSocialAccounts(socialProvider)">
-											<span class="img-child {{socialProvider.iconName}}"></span>
-										</a>
-									</li>
-								</ng-container>
-							</ul>
-						</div>
-						<ng-template [ngTemplateOutlet]="vendorSSOLoginButton"></ng-template>
-						<div class="text-center mt10" *ngIf="authenticationService.companyProfileName == 'versa-networks'">
+						<ng-container *ngIf="vanitySocialProviders?.length && !showLoginWithCredentials">
+							<app-response-message [customResponse]="customResponse"
+								*ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
+							<h3 class="form-title text-white">Sign In Options</h3>
+							<button class="login_with_credentials" style="background-color: #ffffffb3;color: #0f0f0f;"
+								type="submit" (click)="showLoginWithCredentialsForm()">
+								Log in with Credentials </button>
+							<ng-template [ngTemplateOutlet]="showVanitySocialProviders"
+								*ngIf="vanitySocialProviders?.length && authenticationService?.vanityURLEnabled"></ng-template>
+						</ng-container>
+
+						<ng-container *ngIf="!vanitySocialProviders?.length">
+							<ng-template [ngTemplateOutlet]="ShowLoginWithCredentialsUI"></ng-template>
+							<div class="row solid-wb" style="margin-top: 28px;"></div>
+						</ng-container>
+
+						<ng-container *ngIf="showLoginWithCredentials">
+							<ng-template [ngTemplateOutlet]="ShowLoginWithCredentialsUI"></ng-template>
+							<div class="row solid-wb" style="margin-top: 28px;"></div>
+						</ng-container>
+
+						<ng-template [ngTemplateOutlet]="showSocialProviders"
+							*ngIf="!authenticationService.vanityURLEnabled"></ng-template>
+
+						<div class="text-center mt10"
+							*ngIf="authenticationService.companyProfileName == 'versa-networks'">
 							<label class="check">Don’t have an account yet?
-								<a class="agree-link" href="https://iam.versa-networks.com/register/partner" target="_blank">Request an account</a>
+								<a class="agree-link" href="https://iam.versa-networks.com/register/partner"
+									target="_blank">Request an
+									account</a>
 							</label>
 						</div>
-						<div class="text-center mt10">
-							<label class="check">
-								<a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of
-									Service </a>&
-								<a class="agree-link" href="{{properties.privacyPolicyUrl}}" target="_blank"> Privacy Policy
-								</a>
-							</label>
-						</div>
+						<ng-template [ngTemplateOutlet]="showTermsAndPolicies"></ng-template>
 					</div>
 				</div>
 			</div>
 			<app-copyright [styleOne]="true" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
-	        <app-copyright [styleOne]="true" *ngIf="vanityURLEnabled"></app-copyright>
+			<app-copyright [styleOne]="true" *ngIf="vanityURLEnabled"></app-copyright>
 		</div>
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 rightcontent p0 hidden-xs">
 			<div [innerHTML]="htmlContent"></div>
@@ -230,13 +121,98 @@
 	</div>
 </div>
 
-
-<ng-template #vendorSSOLoginButton>
-	<div *ngIf="authenticationService?.vanityURLEnabled" class="login-options login-form m5" style="display: flex;flex-direction: row-reverse;">
-		<button *ngIf="!isPleaseWaitButtonDisplayed && showVendorSSO" class="btn btn-primary pull-left  signin"
-			data-toggle="tooltip" data-placement="top" aria-hidden="true" title="{{vendorSSOProvider.name}}"
-			(click)="loginUsingSocialAccounts(vendorSSOProvider)">
-			{{vendorSSOProvider.name}}
+<ng-template #ShowLoginWithCredentialsUI>
+	<app-response-message [showCloseIcon]="false" [customResponse]="teamMemberSignedUpResponse"
+		*ngIf="teamMemberSignedUpResponse.isVisible"></app-response-message>
+	<app-response-message [customResponse]="customResponse"
+		*ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
+	<!-- XNFR-334--->
+	<div *ngIf="resendActiveMail" class="alert alert-dismissible m0 alert-danger" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
 		</button>
+		<strong style="padding-top: 6px;">
+			<span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}<br>
+				<span style="position: relative;top: 4px;">Please
+					<a class="underlinetext success" (click)="resendActivation()"> click here </a>to get the account
+					activation email.</span>
+			</span>
+		</strong>
 	</div>
-</ng-template>	
+	<form class="login-form" (ngSubmit)="login()">
+		<h3 class="form-title text-white">{{signInText}}</h3>
+		<div class="alert alert-danger display-hide">
+			<button class="close" data-close="alert"></button>
+			<label class="custom-label">Enter any Email and password.</label>
+		</div>
+		<div class="form-group">
+			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+			<label class="control-label visible-ie8 visible-ie9">Email</label>
+			<input id="username" class="form-control form-control-solid placeholder-no-fix userNameTag" name="username"
+				[(ngModel)]="model.username" #username="ngModel" required type="text" autocomplete="off"
+				placeholder="Email" (input)="clearErrorMessage()" />
+		</div>
+		<div class="form-group has-feedback">
+			<label class="control-label visible-ie8 visible-ie9">Password</label>
+			<input id="password" class="form-control form-control-solid placeholder-no-fix passwordTag"
+				[(ngModel)]="model.password" #password="ngModel" required type="password" autocomplete="off"
+				placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)" />
+			<span toggle="#password" title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password"
+				(click)="referenceService.showPassword('password')"
+				*ngIf="!referenceService.showInputPassword && model.password"></span>
+			<span toggle="#password" title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password"
+				(click)="referenceService.showPassword('password')"
+				*ngIf="referenceService.showInputPassword && model.password"></span>
+		</div>
+		<button *ngIf="!isPleaseWaitButtonDisplayed" id="submitBitton" type="submit"
+			class="btn btn-primary pull-left  signin">{{signInText}}</button>
+		<button *ngIf="isPleaseWaitButtonDisplayed" class="btn btn-primary pull-left" disabled><i
+				class="fa fa-spinner fa-spin mr5"></i>{{signInText}}</button>
+	</form>
+	<div class="form-actions login-form" style="border-bottom: 0!important;display: contents;">
+		<label class="rememberme check">
+			<span hidden><input class="checkBox_shadow" type="checkbox" name="remember"
+					value="1" />&nbsp;Remember</span>
+		</label>
+		<a *ngIf="!isPleaseWaitButtonDisplayed" id="forgetAnchor" routerLink="/forgot-password"
+			class="forget-password text-white">Forgot Password?</a>
+		<span *ngIf="isPleaseWaitButtonDisplayed" class="forget-password text-white disabled">Forgot Password?</span>
+	</div>
+</ng-template>
+
+<ng-template #showSocialProviders>
+	<div class="login-options login-form m5">
+		<h4>Or login with</h4>
+		<ul class="social-icons">
+			<ng-container *ngFor="let socialProvider of socialProviders">
+				<li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
+					<a class="" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
+						<span class="img-child {{socialProvider.iconName}}"></span>
+					</a>
+				</li>
+			</ng-container>
+		</ul>
+	</div>
+</ng-template>
+
+<ng-template #showVanitySocialProviders>
+	<div class="login-options login-form">
+		<ng-container *ngFor="let socialProvider of vanitySocialProviders">
+			<div *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
+				<button class="login_with_credentials {{socialProvider.value}}" type="submit"
+					(click)="loginUsingSocialAccounts(socialProvider)">
+					<span alt="" class="social_icons {{socialProvider.iconName}}"></span>
+					{{socialProvider.name}} </button>
+			</div>
+		</ng-container>
+	</div>
+</ng-template>
+
+<ng-template #showTermsAndPolicies>
+	<div class="text-center mt10">
+		<label class="check">
+			<a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&
+			<a class="agree-link" href="{{properties.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
+		</label>
+	</div>
+</ng-template>
