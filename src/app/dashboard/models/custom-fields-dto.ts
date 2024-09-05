@@ -11,7 +11,7 @@ export class CustomFieldsDto {
     placeHolder = "";
     canUnselect = true;
     displayName = "";
-    formDefaultFieldType= '';
+    formDefaultFieldType: any;
     canEditRequired = false;
     options: Array<PicklistValues> = new Array<PicklistValues>();
     picklistValues : Array<PicklistValues> = new Array<PicklistValues>();
@@ -21,5 +21,5 @@ export class CustomFieldsDto {
     controllerName = '';
     defaultChoiceLabel: any;
     private = false;
-    formLookUpDefaultFieldType= '';
+    formLookUpDefaultFieldType: any;
 }

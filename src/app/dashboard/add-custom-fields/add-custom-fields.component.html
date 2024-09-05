@@ -1,0 +1,36 @@
+<div class="my-container">
+  <ng-container>
+    <div class="mt10">
+      <label for="html">Object Type <strong class="required">*</strong> </label>
+      <select class="form-control" [(ngModel)]="customFields.objectType" [ngModelOptions]="{standalone: true}">
+        <option [ngValue]="null">None</option>
+        <option [ngValue]="'LEAD'">Lead
+        </option>
+        <option [ngValue]="'DEAL'">Deal
+        </option>
+        <option [ngValue]="'CONTACT'">Contact
+        </option>
+      </select>
+    </div>
+  <div class="mt10">
+    <label>Label Name <strong class="required">*</strong> </label>
+    <input type="text" class="form-control" [(ngModel)]="customFieldsDtos.label" [ngModelOptions]="{standalone: true}"  placeholder="Label Name">
+  </div>
+  <div class="mt10">
+    <label for="html">Lable Type <strong class="required">*</strong> </label>
+    <select class="form-control" [(ngModel)]="customFieldsDtos.type" [ngModelOptions]="{standalone: true}">
+      <option [ngValue]="null">None</option>
+      <option [ngValue]="'text'">Text
+      </option>
+      <option [ngValue]="'textarea'">Text Area
+      </option>
+      <option [ngValue]="'dropdown'">Drop Down
+      </option>
+    </select>
+  </div>
+  <div class="float-right mt10">
+    <button class="btn btn-danger" (click)="notifyCloseCustomField()">Cancel</button>
+    <button class="btn btn-primary" (click)="saveCustomField()">Submit</button>
+  </div>
+</ng-container>
+</div>

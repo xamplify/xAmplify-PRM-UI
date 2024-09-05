@@ -219,4 +219,24 @@ export class IntegrationService {
         return this.authenticationService.callGetMethod(url);
       
       }
+
+      saveCustomFields(request: any) {
+        return this._http.post(this.authenticationService.REST_URL + "/customFields/save?access_token=" + this.authenticationService.access_token, request)
+            .map(this.extractData)
+            .catch(this.handleError);
+        
+    }
+    syncCustomFieldsForm(request: any) {
+        return this._http.post(this.authenticationService.REST_URL + "/customFields/sync?access_token=" + this.authenticationService.access_token, request)
+            .map(this.extractData)
+            .catch(this.handleError);
+        
+    }
+
+    getLeadCustomFields() {
+        let loggedInUserId = this.authenticationService.getUserId();
+        return this._http.get(this.authenticationService.REST_URL + `/customFields/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+          .map(this.extractData)
+          .catch(this.handleError);
+      }
 }

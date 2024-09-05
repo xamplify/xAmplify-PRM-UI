@@ -2128,8 +2128,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 		/*****XNFR-592 ******/
 		else if (this.activeTabName == "leadFieldSettings") {
+			this.startNgxLoader();
+			this.updateLeadFieldSettingsOption(false);
+			let self = this;
+			setTimeout(() => {
+				self.updateLeadFieldSettingsOption(true);
+				self.stopNgxLoader();
+			}, 500);
 			this.activeTabHeader = this.properties.leadFieldSettings;
-			this.showleadFieldSettings = true;
 		}
 		/*****XNFR-609 ******/
 		else if (this.activeTabName == this.MY_PROFILE_MENU_CONSTANTS.CAMPAIGN_ANALYTICS_MENU_HEADER) {
@@ -2165,6 +2171,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	stopNgxLoader(){
 		this.ngxloading = false;
+	}
+
+	updateLeadFieldSettingsOption(option:boolean){
+		this.showleadFieldSettings = option;
 	}
 
 	ngOnDestroy() {

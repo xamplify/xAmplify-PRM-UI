@@ -2117,7 +2117,8 @@
                                         <!-- Lead Custom Field Settings -->
                                         <div class="tab-pane" *ngIf="showleadFieldSettings"
                                             [ngClass]="{'active': activeTabName == 'leadFieldSettings'}">
-                                            <app-lead-custom-fields-settings></app-lead-custom-fields-settings>
+                                            <app-xamplify-custom-fields-settings></app-xamplify-custom-fields-settings>
+                                            <app-modal-popup-loader *ngIf="ngxloading"></app-modal-popup-loader>
                                         </div>
 
                                         <!-- Saml SETTINGS TAB -->
