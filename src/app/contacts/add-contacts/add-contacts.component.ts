@@ -1657,7 +1657,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
 
             if (this.selectedAddContactsOption == 2) {
-                this.saveCsvContactList();
+                if(this.isXamplifyCsvFormatUploaded){
+                    this.saveCsvContactList();
+                }else{
+                    this.referenceService.showSweetAlertInfoMessage();
+                }
+                
             }
             if (this.selectedAddContactsOption == 3) {
                 if (this.allselectedUsers.length == 0) {
@@ -1730,6 +1735,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             if (this.selectedAddContactsOption == 8) {
                 this.noOptionsClickError = true;
             }
+        }else{
+            this.referenceService.goToDiv("legal-basis-option");
         }
 
     }
