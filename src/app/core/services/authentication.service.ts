@@ -1117,11 +1117,11 @@ isVanityWelcomePageRequired = false;
   /*****XNFR-278****/
 
   /****XNFR-317****/
-  getTemplateHtmlBodyAndMergeTagsInfo(id: number) {
+  getTemplateHtmlBodyAndMergeTagsInfo(id: number,fromEmail:string) {
     let url = this.REST_URL + "email-template/getHtmlBodyAndMergeTags?access_token=" + this.access_token;
     let map = {};
     map['id'] = id;
-    map['emailId'] = this.user.emailId;
+    map['emailId'] = fromEmail;
     return this.callPostMethod(url, map);
   }
 

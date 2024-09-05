@@ -1780,8 +1780,7 @@
                                                         </div>
                                                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                             <div class="pull-right choose_temp">
-                                                                <label class="switch-choose" translate>Choose Template
-                                                                </label>
+                                                                <label class="switch-choose" translate>Choose Template</label>
                                                                 <switch class="switch-choose switchControl"
                                                                     [status]="url.defaultTemplate"
                                                                     [onText]="callActionSwitch.onTextValue"
@@ -1791,13 +1790,11 @@
                                                                     [size]="callActionSwitch.size"
                                                                     (statusChange)="selectEmailTemplateForWebsiteLinkWorkflow($event,i,url)">
                                                                 </switch>
-                                                                <button type="button"
-                                                                    class="btn btn-danger button-blue responsive-screen-sidepaddings"
+                                                                <button type="button" class="btn btn-danger button-blue responsive-screen-sidepaddings"
                                                                     (click)="remove(url.divId,'url')">
                                                                     <span class="glyphicon glyphicon-trash"></span>
                                                                 </button>
-                                                                <button type="button"
-                                                                    class="btn btn-primary button-blue responsive-screen-sidepaddings add_icon_bg"
+                                                                <button type="button" class="btn btn-primary button-blue responsive-screen-sidepaddings add_icon_bg"
                                                                     (click)="addClickRows()">
                                                                     <span class="glyphicon glyphicon-plus"></span>
                                                                 </button>
@@ -1808,58 +1805,35 @@
                                                         <form class="role" id="form-{{url.divId}}" class="add-click">
                                                             <div class="col-xs-12 p0">
                                                                 <div class="col-xs-12 col-sm-6">
-                                                                    <label class="default" for="reason">When To Send
-                                                                        Email</label>
-                                                                    <select class="form-control pointer"
-                                                                        id="url-schedule-type" name="scheduleEmail"
-                                                                        [(ngModel)]="url.actionId"
+                                                                    <label class="default" for="reason">When To Send Email</label>
+                                                                    <select class="form-control pointer" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId"
                                                                         (change)="setUrlScheduleType($event,url)">
-                                                                        <option [value]="19"
-                                                                            [selected]="url.actionId ==19">Send if not
+                                                                        <option [value]="19" [selected]="url.actionId ==19">Send if not
                                                                             clicked</option>
-                                                                        <option [value]="20"
-                                                                            [selected]="url.actionId ==20">Send
+                                                                        <option [value]="20" [selected]="url.actionId ==20">Send
                                                                             immediately after clicked</option>
-                                                                        <option [value]="21"
-                                                                            [selected]="url.actionId ==21">Schedule
+                                                                        <option [value]="21" [selected]="url.actionId ==21">Schedule
                                                                             (Wait X Days After Click)</option>
                                                                     </select>
                                                                 </div>
                                                                 <!--Subject-->
                                                                 <div class="col-xs-12 col-sm-6">
-                                                                    <label class="default" for="time"
-                                                                        id="click-subject-{{url.divId}}"
-                                                                        translate>Subject
-                                                                        <strong class="required">*</strong>
-                                                                    </label>
+                                                                    <label class="default" for="time" id="click-subject-{{url.divId}}" translate>Subject <strong class="required">*</strong></label>
                                                                     <div class="input-group merge-tag-input-border">
-                                                                        <input type="text" class="form-control"
-                                                                            name="subject" [(ngModel)]="url.subject"
-                                                                            placeholder="{merge tag} + Subject line"
-                                                                            maxlength="1000">
+                                                                        <input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                                                         <span class="input-group-btn">
-                                                                            <button class="btn btn-default"
-                                                                                type="button" data-toggle="tooltip"
-                                                                                data-placement="bottom"
-                                                                                title="Insert Merge Tags"
+                                                                            <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags"
                                                                                 (click)="openMergeTagsPopup('campaign-website',url)">
-                                                                                <i class="fa fa-plus-circle npcfs"
-                                                                                    aria-hidden="true"></i>
+                                                                                <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
                                                                             </button>
                                                                         </span>
                                                                     </div>
                                                                 </div>
                                                                 <!--Available URLS-->
                                                                 <div class="col-xs-12 col-sm-6">
-                                                                    <label for="reason" style="cursor: default;"
-                                                                        translate>Available URLs
-                                                                    </label>
-                                                                    <select class="form-control pointer" name="url"
-                                                                        [(ngModel)]="url.url" style="width: 100%">
-                                                                        <option
-                                                                            *ngFor="let hrefLink of emailTemplateHrefLinks;"
-                                                                            [ngValue]="hrefLink"
-                                                                            [selected]="hrefLink==url.url">
+                                                                    <label for="reason" style="cursor: default;">Available URLs</label>
+                                                                    <select class="form-control pointer" name="url" [(ngModel)]="url.url" style="width: 100%">
+                                                                        <option *ngFor="let hrefLink of emailTemplateHrefLinks;" [ngValue]="hrefLink" [selected]="hrefLink==url.url">
                                                                             {{hrefLink}}
                                                                         </option>
                                                                     </select>
@@ -1867,14 +1841,11 @@
                                                                 <div *ngIf="url?.actionId==21" class="col-xs-6">
                                                                     <!--Wait X Days After Click-->
                                                                     <div class="col-xs-6" style="padding:0">
-                                                                        <label for="days" id="click-days-{{url.divId}}"
-                                                                            style="cursor: default;">
+                                                                        <label for="days" id="click-days-{{url.divId}}" style="cursor: default;">
                                                                             Wait X Days After Click
                                                                             <strong class="required">*</strong>
                                                                         </label>
-                                                                        <input type="number" class="form-control"
-                                                                            name="days" [(ngModel)]="url.replyInDays"
-                                                                            placeholder="Days" min="1"
+                                                                        <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="1"
                                                                             oninput="validity.valid||(value='');">
                                                                         <span><strong>(Minimum 1 Day)</strong></span>
                                                                     </div>
@@ -1884,47 +1855,32 @@
                                                             <!-- Message--->
                                                             <div class="col-xs-12" style="margin-top: 20px;">
                                                                 <div id="ck-editor-{{i}}" *ngIf="!url?.defaultTemplate">
-                                                                    <label class="default" for="days"
-                                                                        id="click-message-{{url.divId}}"
-                                                                        translate>Message
+                                                                    <label class="default" for="days" id="click-message-{{url.divId}}" translate>Message
                                                                         <strong class="required">*</strong>
                                                                     </label>
                                                                     <div>
-                                                                        <ckeditor [(ngModel)]="url.body" name="body">
-                                                                        </ckeditor>
+                                                                        <ckeditor [(ngModel)]="url.body" name="body"></ckeditor>
                                                                     </div>
                                                                 </div>
                                                                 <!--Email Template-->
-                                                                <div id="click-email-template-{{url?.divId}"
-                                                                    *ngIf="url?.defaultTemplate">
+                                                                <div id="click-email-template-{{url?.divId}}"  *ngIf="url?.defaultTemplate">
                                                                     <fieldset class="scheduler-border">
-                                                                        <legend
-                                                                            class="scheduler-border color-black campaign_boxes">
-                                                                            Select an email template<strong
-                                                                                class="required">*</strong>
+                                                                        <legend class="scheduler-border color-black campaign_boxes">
+                                                                            Select an email template<strong class="required">*</strong>
                                                                         </legend>
-                                                                        <app-landing-page-loader
-                                                                            *ngIf="url?.loader"></app-landing-page-loader>
+                                                                        <app-landing-page-loader *ngIf="url?.loader"></app-landing-page-loader>
                                                                         <div *ngIf="!url?.loader">
                                                                             <!--Search Key Icon-->
-                                                                            <div
-                                                                                class="input-icon right pull-right pr-epx">
-                                                                                <input type="text"
-                                                                                    [(ngModel)]="url.emailTemplateSearchInput"
-                                                                                    [ngModelOptions]="{standalone: true}"
-                                                                                    class="form-control"
+                                                                            <div class="input-icon right pull-right pr-epx">
+                                                                                <input type="text" [(ngModel)]="url.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
                                                                                     placeholder="Search here"
                                                                                     (keypress)="findAutoWebsiteLikAutoResponseEmailTemplatesOnEnterKeyPress($event.keyCode,url)">
-                                                                                <button
-                                                                                    class="glyphicon glyphicon-remove search-box-item-clear search-button-padding"
+                                                                                <button class="glyphicon glyphicon-remove search-box-item-clear search-button-padding"
                                                                                     *ngIf="url.emailTemplateSearchInput"
                                                                                     (click)="url.emailTemplateSearchInput='';searchWebsiteLinkAutoResponseEmailTemplates(url)"></button>
-                                                                                <button type="submit"
-                                                                                    class="search-box-item-click email-search"
-                                                                                    (click)="searchWebsiteLinkAutoResponseEmailTemplates(url)"
-                                                                                    style="right: 9px !important;">
-                                                                                    <i class="fa fa-search cesf-xamp"
-                                                                                        aria-hidden="true"></i></button>
+                                                                                <button type="submit" class="search-box-item-click email-search"
+                                                                                    (click)="searchWebsiteLinkAutoResponseEmailTemplates(url)" style="right: 9px !important;">
+                                                                                    <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                                                                             </div>
                                                                             <!--List Of Email Templates-->
                                                                             <div class="portlet-body padding-top-45px">
@@ -1935,102 +1891,62 @@
                                                                                         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer"
                                                                                             *ngFor="let emailTemplate of url?.emailTemplatesPagination?.pagedItems ;let i =index">
                                                                                             <div class="row">
-                                                                                                <div
-                                                                                                    class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                                                                                                <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
                                                                                                     <div class="grid-box imgage-paddings grid-email-card"
                                                                                                         [ngClass]="emailTemplate?.id === url?.selectedEmailTemplateId ? 'template-selected-border' :'' "
                                                                                                         (click)="setWebsiteLinkEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)">
-                                                                                                        <span
-                                                                                                            class="select-check-box"
-                                                                                                            [class.hide]="emailTemplate?.draft">
+                                                                                                        <span class="select-check-box" [class.hide]="emailTemplate?.draft">
                                                                                                             <label>
-                                                                                                                <input
-                                                                                                                    type="radio"
-                                                                                                                    class="radio-custimization radioButton_shadow"
+                                                                                                                <input type="radio" class="radio-custimization radioButton_shadow"
                                                                                                                     [checked]="emailTemplate?.id === url?.selectedEmailTemplateId">
                                                                                                             </label>
                                                                                                         </span>
-                                                                                                        <img class="img-grid-track"
-                                                                                                            onerror="this.src='assets/images/no-preview.jpg';"
-                                                                                                            [src]="emailTemplate?.subject"
+                                                                                                        <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject"
                                                                                                             alt="No Preview Found" />
-                                                                                                        <span
-                                                                                                            class="icon-alignments">
-                                                                                                            <a data-toggle="tooltip"
-                                                                                                                data-placement="bottom"
-                                                                                                                title="Preview"
-                                                                                                                (click)="$event.stopPropagation();previewEmailTemplate(emailTemplate,true)"
-                                                                                                                data-original-title="Preview">
-                                                                                                                <i class="fa fa-external-link-square preview-edit-color tooltip-cls"
-                                                                                                                    aria-hidden="true"></i>
+                                                                                                        <span class="icon-alignments">
+                                                                                                            <a data-toggle="tooltip" data-placement="bottom" title="Preview"
+                                                                                                                (click)="$event.stopPropagation();previewEmailTemplate(emailTemplate,true)" data-original-title="Preview">
+                                                                                                                <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i>
                                                                                                             </a>
                                                                                                         </span>
                                                                                                         <div class="bar hover-bar"
                                                                                                             [class.white-labeled-custom-css]="emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor">
-                                                                                                            <a data-placement="top"
-                                                                                                                class="border-none-dark">
-                                                                                                                <div
-                                                                                                                    class="row">
-                                                                                                                    <div
-                                                                                                                        class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
-                                                                                                                        <div
-                                                                                                                            class="content-hover-align fontsize-cls">
-                                                                                                                            <span
-                                                                                                                                class="item__name cardDetails-mar"
-                                                                                                                                data-toggle="tooltip"
-                                                                                                                                data-placement="bottom"
-                                                                                                                                [title]="emailTemplate?.name">
+                                                                                                            <a data-placement="top" class="border-none-dark">
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                                                                                                                        <div class="content-hover-align fontsize-cls">
+                                                                                                                            <span class="item__name cardDetails-mar" data-toggle="tooltip" data-placement="bottom" [title]="emailTemplate?.name">
                                                                                                                                 <strong>{{emailTemplate?.name
                                                                                                                                     |slice:0:20}}</strong>
-                                                                                                                                <strong
-                                                                                                                                    *ngIf="emailTemplate?.name?.length>20">..</strong>
+                                                                                                                                <strong *ngIf="emailTemplate?.name?.length>20">..</strong>
                                                                                                                             </span>
                                                                                                                             <br>
-                                                                                                                            <span
-                                                                                                                                class="item__name"
-                                                                                                                                data-toggle="tooltip"
-                                                                                                                                data-placement="bottom"
-                                                                                                                                title="Created On"
+                                                                                                                            <span class="item__name" data-toggle="tooltip" data-placement="bottom" title="Created On"
                                                                                                                                 style="float:left; margin: 3px;">
                                                                                                                                 <span>
-                                                                                                                                    <app-display-date-and-time
-                                                                                                                                        [dateAndTimeUTCString]="emailTemplate?.createdDate"></app-display-date-and-time>
+                                                                                                                                    <app-display-date-and-time [dateAndTimeUTCString]="emailTemplate?.createdDate"></app-display-date-and-time>
                                                                                                                                 </span>
                                                                                                                             </span>
-                                                                                                                            <p class="cardDetails-mar"
-                                                                                                                                data-toggle="tooltip"
-                                                                                                                                data-placement="bottom"
-                                                                                                                                title="{{emailTemplate?.createdBy}}">
-                                                                                                                                <strong
-                                                                                                                                    translate>Created
+                                                                                                                            <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.createdBy}}">
+                                                                                                                                <strong translate>Created
                                                                                                                                     By:</strong>
                                                                                                                                 <span>{{emailTemplate?.createdBy|slice:0:20}}
-                                                                                                                                    <span
-                                                                                                                                        *ngIf="emailTemplate?.createdBy?.length>20">..</span>
+                                                                                                                                    <span *ngIf="emailTemplate?.createdBy?.length>20">..</span>
                                                                                                                                 </span>
                                                                                                                             </p>
-                                                                                                                            <span
-                                                                                                                                *ngIf="emailTemplate?.category?.length>0"
-                                                                                                                                class="campaign-email-template-category cardDetails-mar"
-                                                                                                                                data-toggle="tooltip"
-                                                                                                                                data-placement="bottom"
-                                                                                                                                title="{{emailTemplate?.category}}">
-                                                                                                                                <strong
-                                                                                                                                    translate>Folder:</strong>
+                                                                                                                            <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar"
+                                                                                                                                data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.category}}">
+                                                                                                                                <strong translate>Folder:</strong>
                                                                                                                                 <span>{{emailTemplate?.category|slice:0:20}}</span>
-                                                                                                                                <span
-                                                                                                                                    *ngIf="emailTemplate?.category?.length>20">..</span>
+                                                                                                                                <span *ngIf="emailTemplate?.category?.length>20">..</span>
                                                                                                                             </span>
                                                                                                                             <!--XBI-1836-->
-                                                                                                                            <ng-template
-                                                                                                                                [ngTemplateOutlet]="whiteLabeledContent"
+                                                                                                                            <ng-template [ngTemplateOutlet]="whiteLabeledContent"
                                                                                                                                 [ngTemplateOutletContext]="{vendorCompanyName:emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName,isWhiteLabeledContent:emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor}"></ng-template>
                                                                                                                             <!--XBI-1836-->
                                                                                                                         </div>
-                                                                                                                        <span
-                                                                                                                            *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor || authenticationService?.module?.isEmailTemplate"
-                                                                                                                            class="label-color-custmization"
-                                                                                                                            (click)="$event.stopPropagation();editTemplate(emailTemplate)">Edit</span>
+                                                                                                                        <span *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor || authenticationService?.module?.isEmailTemplate"
+                                                                                                                            class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)">Edit</span>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </a>
@@ -2039,10 +1955,8 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div *ngIf="url?.emailTemplatesPagination?.totalRecords==0 && !url.loader"
-                                                                                            class="alert alert-info text-center">
-                                                                                            <strong>No Data
-                                                                                                Found.</strong>
+                                                                                        <div *ngIf="url?.emailTemplatesPagination?.totalRecords==0 && !url.loader" class="alert alert-info text-center">
+                                                                                            <strong>No Data Found.</strong>
                                                                                         </div>
                                                                                     </form>
                                                                                 </div>
@@ -2216,12 +2130,12 @@
     (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>
 <!--Preview  Email Template-->
 <app-send-test-email *ngIf="isPreviewEmailTemplateButtonClicked" [id]="selectedEmailTemplateIdForPreview"
-    [isPreviewEmailTemplate]="isPreviewEmailTemplateButtonClicked" [templateName]="selectedEmailTemplateNameForPreview"
+    [isPreviewEmailTemplate]="isPreviewEmailTemplateButtonClicked" [fromEmail]="campaign?.email" [templateName]="selectedEmailTemplateNameForPreview"
     (sendTestEmailComponentEventEmitter)="previewEmailTemplateModalPopupEventReceiver()"></app-send-test-email>
 <!--Send Test Email-->
 <app-send-test-email *ngIf="isSendTestEmailOptionClicked" [id]="emailTemplateIdForSendTestEmail"
     [isPreviewEmailTemplate]="false" [templateName]="emailTemplateNameForSendTestEmail"
-    [subject]="campaign?.subjectLine" [fromEmail]="campaign?.fromEmail" [fromName]="campaign?.fromName"
+    [subject]="campaign?.subjectLine" [fromEmail]="campaign?.email" [fromName]="campaign?.fromName"
     [campaignSendTestEmail]="true" [campaign]="campaign"
     (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
 
