@@ -16,12 +16,13 @@
             </li>
         </ul>
         <div class="createFolderAlignment">
-            <button class="button_blue btn-bt-aln bgcolor-unset mrgn-top-btm pd-top_pd-rgt2 pos_pd_top_rgt1 pd_top0"
-                id="right" (click)="openCreateFolderPopup()"><span class="btn btn-primary transition pos_pd_top7">Create
-                    a
-                    Folder</span></button>
+            <button class="button_blue btn-bt-aln bgcolor-unset mrgn-top-btm pd-top_pd-rgt2 pos_pd_top_rgt1 pd_top0" id="right"
+                (click)="openCreateFolderPopup()">
+                <span class="btn btn-primary transition pos_pd_top7">{{XAMPLIFY_CONSTANTS?.createFolder}}</span>
+            </button>
         </div>
     </div>
+    <app-response-message [customResponse]="crmErrorMessage" *ngIf="crmErrorMessage.isVisible"></app-response-message>
     <div id="campaign-details-and-launch-tabs">
         <!---Page bar-->
         <div class="page-bar p10">
@@ -31,8 +32,7 @@
                         <div class="col-block width" [attr.class]="campaignDetailsTabClass" style="width: 50%;"
                             (click)="showCampaignDetailsTab()">
                             <div class="cenetered-block colorbox-1">
-                                <img alt="No Image Found" class="newicons"
-                                    src="assets/images/campaignnew-icon/campaignDetails.svg">
+                                <img alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/campaignDetails.svg">
                                 <h5 class="text-clr">{{campaignDetailsTabText}}</h5>
                             </div>
                         </div>

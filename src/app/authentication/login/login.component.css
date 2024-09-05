@@ -154,3 +154,57 @@ a.forget-password:hover {
 	overflow: auto;
 	/* padding: 40px 100px; */
 }
+
+.microsoft {
+    background: #425B76;
+    color: #fff;
+	font-size: 14px;
+	display: flex;
+    align-items: center;
+}
+
+.oauthsso {
+    background: #3B5997;
+    color: #fff;
+	font-size: 14px;
+	display: flex;
+    align-items: center;
+}
+
+.samlsso {
+    background: #3B5997;
+    color: #fff;
+	font-size: 14px;
+	display: flex;
+    align-items: center;
+}
+
+.social_icons {
+	position: unset;
+    filter: none;
+	width: 24px;
+	height: 24px;
+}
+
+.login_with_credentials {
+	border-width: 0;
+    font-size: 14px;
+    outline: none !important;
+    background-image: none !important;
+    filter: none;
+    box-shadow: none;
+    text-shadow: none;
+	padding: 7px;
+    line-height: 1.33;
+	display: flex;
+    width: 70%;
+    padding-left: 0;
+    padding-right: 0;
+	height: 42px;
+	border-radius: 6px;
+	text-align: center;
+	justify-content: center;
+    align-items: center;
+    margin: auto;
+	margin-bottom: 15px;
+}

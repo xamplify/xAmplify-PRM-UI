@@ -145,5 +145,5 @@ export class Pagination {
 
 	vendorLandingPageId:number;
 	welcomePages:boolean = false;
-
+	isAdmin: boolean = false;
 }

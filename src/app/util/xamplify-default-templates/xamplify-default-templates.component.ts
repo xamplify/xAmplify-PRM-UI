@@ -119,6 +119,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         let addDealTemplate = "ADD_DEAL" == emailTemplateType;
         let updateLeadTemplate = "LEAD_UPDATE" == emailTemplateType;
         let updateDealTemplate = "DEAL_UPDATE" == emailTemplateType;
+        let formCompleted = "FORM_COMPLETED" == emailTemplateType;
         let requiredTags = [];
         if (addLeadTemplate || updateLeadTemplate) {
           requiredTags = [
@@ -142,6 +143,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             '{{dealStage}}',
             '{{dealComment}}',
           ];
+        }else if(formCompleted){
+          requiredTags = [
+            '{{formName}}',
+          ];
         }
         if (!self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages) {
           if (!emailTemplate.subject.trim()) {
@@ -152,7 +157,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             swal("", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error");
             return false;
           }
-          if (("TRACK_PUBLISH" == emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH" == emailTemplate['typeInString'] || "ASSET_PUBLISH" == emailTemplate['typeInString'] || "SHARE_LEAD" == emailTemplate['typeInString'] || "ONE_CLICK_LAUNCH" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_CONTACT" == emailTemplate['typeInString'] || "SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || addLeadTemplate || addDealTemplate || updateLeadTemplate || updateDealTemplate) && jsonContent.indexOf('{{customerFullName}}') < 0) {
+          if (("TRACK_PUBLISH" == emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH" == emailTemplate['typeInString'] || "ASSET_PUBLISH" == emailTemplate['typeInString'] || "SHARE_LEAD" == emailTemplate['typeInString'] || "ONE_CLICK_LAUNCH" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_CONTACT" == emailTemplate['typeInString'] || "SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || addLeadTemplate || addDealTemplate || updateLeadTemplate || updateDealTemplate || formCompleted) && jsonContent.indexOf('{{customerFullName}}') < 0) {
             swal("", "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag.", "error");
             return false;
           }
@@ -204,11 +209,15 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             swal("", "Whoops! We are unable to save this template because you deleted '{{senderCompanyName}}' tag.", "error");
             return false;
           }
+          if ("FORM_COMPLETED" == emailTemplate['typeInString']  && jsonContent.indexOf("{{formTable}}") < 0) {
+            swal("", "Whoops! We are unable to save this template because you deleted '{{formTable}}' tag.", "error");
+            return false;
+          }
           if (jsonContent.indexOf("<Vanity_Company_Logo_Href>") < 0) {
             swal("", "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.", "error");
             return false;
           }
-          if (addDealTemplate || addLeadTemplate || updateLeadTemplate || updateDealTemplate ) {
+          if (addDealTemplate || addLeadTemplate || updateLeadTemplate || updateDealTemplate || formCompleted) {
             for (let tag of requiredTags) {
               if (jsonContent.indexOf(tag) < 0) {
                 swal("", `Whoops! We are unable to save this template because you deleted '${tag}' tag.`, "error");
@@ -370,6 +379,14 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
           { name: 'Deal Stage', value: '{{dealStage}}' },
           { name: 'Deal Comment', value: '{{dealComment}}' },
         ];
+      }
+        if("FORM_COMPLETED"==emailTemplateType){
+          mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+            { name: 'Form Name', value: '{{formName}}' },
+            { name: 'Form Table', value: '{{formTable}}' },
+            { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+  
+          ];
       }
       var beeUserId = "bee-"+emailTemplate.companyId;
       var roleHash = self.authenticationService.vendorRoleHash;
