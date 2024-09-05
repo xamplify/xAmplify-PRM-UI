@@ -311,6 +311,7 @@ export class HomeComponent implements OnInit {
       this.token = this.currentUser['accessToken'];
       const roleNames = this.currentUser['roles'];
       this.isVanityWelcomePageRequired = this.currentUser['isVanityWelcomePageRequired'];
+      this.referenceService.isHarizontalNavigationBar = this.isVanityWelcomePageRequired;
       if (
         this.referenceService.defaulgVideoMethodCalled === false &&
         (roleNames.length > 1 && this.authenticationService.hasCompany())

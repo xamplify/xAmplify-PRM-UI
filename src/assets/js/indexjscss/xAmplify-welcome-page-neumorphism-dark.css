@@ -1,4 +1,6 @@
-a.xamplify-dropdown-toggle.circlebg-color-bell-v {
+a.xamplify-dropdown-toggle.circlebg-color-bell-v,
+a.xamplify-dropdown-toggle.circlebg-none-v 
+  {
     border: 0px solid #2f4857 !important;
     color: #fff !important;
     background: #2c2f33 !important;
@@ -7,6 +9,9 @@ a.xamplify-dropdown-toggle.circlebg-color-bell-v {
     background: #2c2f33 !important;
     box-shadow: 6.223021507263184px 6.223021507263184px 18.669065475463867px 0px #000, -6.223021507263184px -6.223021507263184px 18.669065475463867px 0px #3b4451;
     border-bottom:0px solid #2f4857 !important ;
+}
+.xamplify-external,.xamplify-notify-view {
+  background: #2c2f33 !important;
 }
 .horizontal-navbar .navbar-navs .link li a{
     color: #fff;
@@ -21,8 +26,23 @@ a.xamplify-dropdown-toggle.circlebg-color-bell-v {
     box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 
-.xamplify-dropdown .xamplify-dropdown-toggle.circlebg-color-bell-v:hover, .xamplify-dropdown-user .xamplify-dropdown-menu>li>a:hover {
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+.xamplify-dropdown-user .xamplify-dropdown-menu>li>a:hover {
     background-color: #2c2f33 !important;
     color: #fff;
+}
+.xamplify-dropdown ul li a:hover {
+  background-color: #2c2f33 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.xamplify-dropdown-menu li>a {
+  color:#fff;
+}
+.xamplify-dropdown-user .xamplify-dropdown-menu>li>a,
+.horizontal-navbar .navbar-navs .link li ul li {
+  border-bottom: 1px solid #191b1e !important;
+}
+.horizontal-navbar .navbar-navs .link li ul li:hover {
+  background-color: #2c2f33 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  border-bottom: 1px solid #191b1e;
 }

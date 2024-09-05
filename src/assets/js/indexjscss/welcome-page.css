@@ -680,9 +680,9 @@ position: relative;
   .xamplify-welcome-page-div-top{
     margin-top: 67px;
   }
-  .page-header-fixed .page-container {
+  /* .page-header-fixed .page-container {
     margin-top: 48px;
-  }
+  } */
 
   .xamplify-active{
     color: #0276ff !important;
