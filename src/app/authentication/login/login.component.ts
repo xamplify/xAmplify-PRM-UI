@@ -382,7 +382,7 @@ bgIMage2:any;
             this.vanityURLService.setVanityURLTitleAndFavIcon();
             if (result.showMicrosoftSSO) {
               this.orLoginWithText = result.showMicrosoftSSO;
-              this.vanitySocialProviders.push({ "name": "Login with Microsoft", "iconName": "microsoft-icon", "value": "microsoft" });
+              this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft-icon", "value": "microsoft" });
             }            
 
             if (result.showVendorSSO) {
