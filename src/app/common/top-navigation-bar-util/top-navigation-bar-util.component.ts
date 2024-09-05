@@ -57,13 +57,13 @@ export class TopNavigationBarUtilComponent implements OnInit,DoCheck {
   isUser = false;
   isShowCKeditor = false;
   invalidTagError = false;
-/*   @ViewChild('tagInput')
+   @ViewChild('tagInput')
   tagInput: SourceTagInput;
- *//*   public validators = [this.must_be_email.bind(this)];
+  public validators = [this.must_be_email.bind(this)];
   public errorMessages = { 'must_be_email': 'Please be sure to use a valid email format' };
   public onAddedFunc = this.beforeAdd.bind(this);
   private addFirstAttemptFailed = false;
- */  @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
+   @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
   sourceType = "";
   isLoggedInFromAdminSection = false;
   dashboardTypes = [];
@@ -243,7 +243,7 @@ export class TopNavigationBarUtilComponent implements OnInit,DoCheck {
   errorHandler(event: any) {
     event.target.src = 'assets/images/icon-user-default.png';
   }
-/*   private must_be_email(control: FormControl) {
+ private must_be_email(control: FormControl) {
     if (this.addFirstAttemptFailed && !this.validateEmail(control.value)) {
       return { "must_be_email": true };
     }
@@ -262,11 +262,11 @@ private beforeAdd(tag: any) {
     }
     this.addFirstAttemptFailed = false;
     return Observable.of(tag);
-  }  */
-  /* private validateEmail(text: string) {
+  } 
+   private validateEmail(text: string) {
     var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
     return (text && EMAIL_REGEXP.test(text));
-  } */
+  } 
   public notifications = 0;
 
   connectToWebSocket() {
@@ -371,6 +371,8 @@ private beforeAdd(tag: any) {
       this.findMenuItems();
       this.getMergeTagByPath();
       this.isWelcomePageActive =this.router.url.includes('/welcome-page');
+      this.model = this.refService.topNavBarUserDetails;
+
  
     } catch (error) { this.logger.error('error' + error); }
   }
@@ -588,39 +590,62 @@ private beforeAdd(tag: any) {
   // getting loading from here
   delayAndNavigate(url: string) {
     this.authenticationService.module.topNavBarLoader = true;
+    let isWelcomePage = this.router.url.includes('/welcome-page')
     let self = this;
     setTimeout(() => {
-      self.refService.goToRouter(url);
+      self.router.navigate([url]).then(() => {
+        // Reload the page (optional, Angular should handle route changes without a full reload)
+        if(isWelcomePage){
+          window.location.reload();
+        }
+      });
       self.authenticationService.module.topNavBarLoader = false;
     }, 500);
   }
   //
 
   navigateToCompanyProfile(url: string, companyProfileCreated: boolean) {
+    let isWelcomePage = this.router.url.includes('/welcome-page')
     if (companyProfileCreated) {
-      this.refService.goToRouter(url);
+        this.router.navigate([url]).then(() => {
+          // Reload the page (optional, Angular should handle route changes without a full reload)
+          if(isWelcomePage){
+            window.location.reload();
+          }
+        });
+      
     } else {
-      this.refService.goToRouter("/home/dashboard/add-company-profile");
+      this.router.navigate(["/home/dashboard/add-company-profile"]).then(() => {
+        // Reload the page (optional, Angular should handle route changes without a full reload)
+        if(isWelcomePage){
+          window.location.reload();
+        }
+      });
+
     }
   }
-
-
-
-
-
-
 
   /****Add Leads****/
   navigateAndOpenAddLeadsModalPopUp() {
     this.authenticationService.module.navigatedFromMyProfileSection = true;
-    this.refService.goToRouter("/home/leads/manage");
+    //this.refService.goToRouter("/home/leads/manage");
+    let isWelcomePage = this.router.url.includes('/welcome-page')
+        this.router.navigate(["/home/leads/manage"]).then(() => {
+          if(isWelcomePage){
+            window.location.reload();
+          }
+        });
   }
 
   /****Add Deals****/
   navigateAndOpenAddDealsModalPopUp() {
     this.authenticationService.module.navigatedFromMyProfileSection = true;
-    this.refService.goToRouter("/home/deal/manage");
-
+    let isWelcomePage = this.router.url.includes('/welcome-page')
+        this.router.navigate(["/home/deal/manage"]).then(() => {
+          if(isWelcomePage){
+            window.location.reload();
+          }
+        });
   }
   // header navbar start
   isNavbarBackgroundVisible: boolean = false;
@@ -636,8 +661,7 @@ private beforeAdd(tag: any) {
     }
     this.isNavbarBackgroundVisible = scrollY > 50;
   }
-    // header navbar end
-
+   
   getVendorRegisterDealValue() {
     if (this.authenticationService.vanityURLEnabled) {
       this.integrationService.getVendorRegisterDealValue(this.userId,this.vanityLoginDto.vendorCompanyProfileName).subscribe(
@@ -775,7 +799,7 @@ private beforeAdd(tag: any) {
 					this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
 					//XNFR-276
           this.menuItems = data.menuItems;
-          this.displayedItems = this.menuItems.slice(0, 5);
+          this.displayedItems = this.menuItems.slice(0, 4);
           console.log(this.displayedItems)
           this.displayedMoreItems = this.menuItems.slice(4, this.menuItems.length)
           console.log(this.displayedMoreItems)
@@ -1069,6 +1093,7 @@ private beforeAdd(tag: any) {
     // Ensure the path starts with '/home'
     this.mergeTag = menu.mergeTag;
     if(this.router.url.includes('/welcome-page')){
+      this.referenceService.isWelcomePageLoading = true;
       menu.angularPath = menu.angularPath.replace(/^\.\/+/, '/');;
     const path = menu.angularPath.startsWith('/home') ? menu.angularPath : `/home${menu.angularPath}`;
     
@@ -1077,13 +1102,19 @@ private beforeAdd(tag: any) {
       // Reload the page (optional, Angular should handle route changes without a full reload)
       window.location.reload();
     });
+  }else{
+    menu.angularPath = menu.angularPath.replace(/^\.\/+/, '/');
+    const path = menu.angularPath.startsWith('/home') ? menu.angularPath : `/home${menu.angularPath}`;
+    this.router.navigate([path]);
   }
   }
+  //loading:boolean = false;
   naviagteToWelcomePage(path:any) {
     this.mergeTag = 'welcomepage'
     this.router.navigate([path]).then(() => {
       // Reload the page (optional, Angular should handle route changes without a full reload)
       window.location.reload();
+      this.referenceService.isWelcomePageLoading = true;
     });
   }
   

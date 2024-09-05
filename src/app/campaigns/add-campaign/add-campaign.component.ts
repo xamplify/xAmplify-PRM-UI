@@ -1,3 +1,4 @@
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { Component, OnInit,ViewChild,Renderer, OnDestroy } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -252,7 +253,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   hideConfigurePipelineCrms = ['SALESFORCE'];
   loggedInUserCompanyId: number;
   isDealLayoutSelected:boolean = false;
-
+  crmErrorMessage:CustomResponse = new CustomResponse();
+  readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -757,6 +759,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     /*****Pages*****/
 
     private findCampaignPipeLines() {
+        this.crmErrorMessage = new CustomResponse();
         this.listCampaignPipelines();
         if (this.activeCRMDetails.activeCRM && "SALESFORCE" === this.activeCRMDetails.type) {
             this.integrationService.checkSfCustomFields(this.authenticationService.getUserId())
@@ -764,21 +767,14 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 (data) => {
                     let cfResponse = data;
                     if (cfResponse.statusCode === 400) {
-                        swal(
-                            "Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.",
-                            "",
-                            "error"
-                        );
+                        this.crmErrorMessage = new CustomResponse('ERROR',"Warning!! Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.",true);
                     } else if (cfResponse.statusCode === 401 &&
                         cfResponse.message === "Expired Refresh Token") {
-                        swal(
-                            "Your Salesforce Integration was expired. Please re-configure.",
-                            "",
-                            "error"
-                        );
+                        this.crmErrorMessage = new CustomResponse('ERROR',"Warning!! Your Salesforce Integration was expired. Please re-configure.",true);
                     }
                 },
                 (error) => {
+                    this.crmErrorMessage = new CustomResponse();
                     this.xtremandLogger.error(
                         error,
                         "Error in salesforce checkIntegrations()"

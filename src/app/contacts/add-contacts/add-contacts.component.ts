@@ -446,7 +446,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         self.isXamplifyCsvFormatUploaded = headers.length == 11 && self.validateHeaders(headers);
         let isLocalHost = self.authenticationService.isLocalHost();
         let isQADomain = self.authenticationService.isQADomain();
-        let allowedEmailIds = ['csravan@stratapps.com','red@stratapps.com'];
+        let allowedEmailIds = ['csravan@stratapps.com','red@stratapps.com','bob@xtremand.com'];
         let userName = this.authenticationService.getUserName();
         let isNewOptionEnabledForLocalHost = userName=="demo.test.xamplify@gmail.com" && isLocalHost;
         let isNewOptionEnabledForQA = isQADomain && allowedEmailIds.indexOf(userName)>-1;

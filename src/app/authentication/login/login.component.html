@@ -202,7 +202,7 @@
 				<button class="login_with_credentials {{socialProvider.value}}" type="submit"
 					(click)="loginUsingSocialAccounts(socialProvider)">
 					<span alt="" class="social_icons {{socialProvider.iconName}}"></span>
-					{{socialProvider.name}} </button>
+					{{socialProvider.name == 'Microsoft' ? 'Login with Microsoft' : socialProvider.name}} </button>
 			</div>
 		</ng-container>
 	</div>

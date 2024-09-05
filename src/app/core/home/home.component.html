@@ -2,7 +2,7 @@
 <app-welcome-page *ngIf="isVanityWelcomePageRequired" [model]="referenceService.topNavBarUserDetails" ></app-welcome-page>
 <div class="page-container">
   <app-leftsidebar *ngIf="showLeftMenu && !isVanityWelcomePageRequired"></app-leftsidebar>
-  <div class="page-content-wrapper">
+  <div *ngIf= "!referenceService.isWelcomePageLoading" class="page-content-wrapper">
     <router-outlet></router-outlet>
   </div>
 

@@ -154,6 +154,7 @@ export class ReferenceService {
   website:String="";
   /*** XNFR-433 ***/
   isCopyForm: boolean = false;
+  isWelcomePageLoading: boolean = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -3587,74 +3588,100 @@ decodePathVariable(value:any){
 }
 
 previewEmailTemplateInNewTab(id:any){
-  this.openWindowInNewTab("/pv/t/"+this.encodePathVariable(id));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/t/"+encodedURLString);
 }
 
 previewEventCampaignEmailTemplateInNewTab(id:number){
-  this.openWindowInNewTab("/pv/evt/"+this.encodePathVariable(id));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/evt/"+encodedURLString);
 }
 previewEditRedistributedEventCampaignTemplatePreview(campaignId: any) {
-  this.openWindowInNewTab("/pv/edevt/"+this.encodePathVariable(campaignId));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  this.openWindowInNewTab("/pv/edevt/"+encodedURLString);
 }
 
 previewWorkflowEmailTemplateInNewTab(id:number){
-  this.openWindowInNewTab("/pv/wt/"+this.encodePathVariable(id));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/wt/"+encodedURLString);
 }
 
 previewCampaignEmailTemplateInNewTab(campaignId:number){
-  this.openWindowInNewTab("/pv/ct/"+this.encodePathVariable(campaignId));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  this.openWindowInNewTab("/pv/ct/"+encodedURLString);
 }
 
 previewSharedVendorCampaignEmailTemplateInNewTab(campaignId:number){
-  this.openWindowInNewTab("/pv/sct/"+this.encodePathVariable(campaignId));
+  let encodedURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  this.openWindowInNewTab("/pv/sct/"+encodedURLString);
+}
+
+previewSharedVendorCampaignEmailTemplateWithFromEmailInNewTab(campaignId:number,fromEmailUserId:number){
+  let encodedCampaignURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/sctfe/"+encodedCampaignURLString+"/"+encodedFromEmailUserIdURLString);
 }
 
 previewSharedVendorEventCampaignEmailTemplateInNewTab(campaignId:number){
-  this.openWindowInNewTab("/pv/sect/"+this.encodePathVariable(campaignId));
+  let encodedCampaignURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  this.openWindowInNewTab("/pv/sect/"+encodedCampaignURLString);
 }
 
 previewSharedCampaignAutoReplyEmailTemplateInNewTab(replyId:number){
-  this.openWindowInNewTab("/pv/cwaret/"+this.encodePathVariable(replyId));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(replyId));
+  this.openWindowInNewTab("/pv/cwaret/"+encodedIdURLString);
 }
 
 previewVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(urlId:number){
-  this.openWindowInNewTab("/pv/cwarwlt/"+this.encodePathVariable(urlId));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(urlId));
+  this.openWindowInNewTab("/pv/cwarwlt/"+encodedIdURLString);
 }
 
-previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number){
-  this.openWindowInNewTab("/pv/scwaret/"+this.encodePathVariable(vendorCampaignWorkflowId));
+previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number,fromEmailUserId:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(vendorCampaignWorkflowId));
+  let encodedIdFromEmailIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/scwaret/"+encodedIdURLString+"/"+encodedIdFromEmailIdURLString);
 }
 
-previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWorkflowId:number){
-  this.openWindowInNewTab("/pv/scwarwlt/"+this.encodePathVariable(vendorCampaignWorkflowId));
+previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWorkflowId:number,fromEmailUserId:number){
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(vendorCampaignWorkflowId));
+  let encodedIdFromEmailIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/scwarwlt/"+encodedIdURLString+"/"+encodedIdFromEmailIdURLString);
 }
 
 previewPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/lp/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/lp/"+encodedIdURLString);
 }
 
 previewPartnerPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/plp/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/plp/"+encodedIdURLString);
 }
 
 previewVendorJourneyPartnerPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/vjplp/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/vjplp/"+encodedIdURLString);
 }
 
 previewMasterPartnerPageInNewTab(id:number){
-  this.openWindowInNewTab("/pv/mplp/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/mplp/"+encodedIdURLString);
 }
 
 previewAssetPdfInNewTab(id:number){
-  this.openWindowInNewTab("/pv/v/pdf/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/v/pdf/"+encodedIdURLString);
 }
 
 previewTrackOrPlayBookAssetPdfAsPartnerInNewTab(learningTrackContentMappingId:number){
-  this.openWindowInNewTab("/pv/ptp/pdf/"+this.encodePathVariable(learningTrackContentMappingId));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(learningTrackContentMappingId));
+  this.openWindowInNewTab("/pv/ptp/pdf/"+encodedIdURLString);
 }
 /***XNFR-496***/
 previewVanityEmailTemplateInNewTab(id:any){
-  this.openWindowInNewTab("/pv/vt/"+this.encodePathVariable(id));
+  let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(id));
+  this.openWindowInNewTab("/pv/vt/"+encodedIdURLString);
 }
 
 openWindowInNewTab(url:string){

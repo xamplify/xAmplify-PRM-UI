@@ -461,7 +461,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   getVanityUrlRoles(emailId: string, isLoggedInAsAdmin: boolean) {
     this.teamMemberService.getVanityUrlRoles(emailId)
       .subscribe(response => {
-        response.data['isVanityWelcomePageRequired'] = response.map.isVanityWelcomePageRequired;
         this.setLoggedInTeamMemberData(isLoggedInAsAdmin, emailId, response.data);
       },
         (error: any) => {
@@ -500,7 +499,14 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.utilService.setUserInfoIntoLocalStorage(emailId, response);
     let self = this;
     setTimeout(function () {
-      self.router.navigate(['home/dashboard/'])
+      
+      const currentUser = localStorage.getItem( 'currentUser' );
+      let isVanityWelcomePageRequired = JSON.parse( currentUser )['isVanityWelcomePageRequired'];
+      console.log("alsl asljkdnlaj alsdnlk");
+      console.log(isVanityWelcomePageRequired)
+      let routingLink = isVanityWelcomePageRequired? 'welcome-page':'home/dashboard/';
+
+      self.router.navigate([routingLink])
         .then(() => {
           window.location.reload();
         })

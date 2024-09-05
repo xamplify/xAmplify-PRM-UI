@@ -52,8 +52,8 @@
                 <!-- start Show 3 modules-->
                 <ng-container *ngFor="let menu of menuItems | slice:0:4">
                   <li *ngIf="!menu.showSubMenu">
-                    
-                    <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''" [routerLink]="menu.angularPath">
+                    <!-- [routerLink]="menu.angularPath" -->
+                    <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''" >
                       <i [className]="menu.angularIcon" aria-hidden="true"></i>
                       {{menu.customName}}
                     </a>
@@ -64,11 +64,11 @@
                       <i [className]="menu.angularIcon" aria-hidden="true"></i>
                       {{menu.customName}}
                     </a>
-                    <i class='fa fa-chevron-down js-arrow arrow'></i>
+                    <i class='fa fa-chevron-down js-arrow arrow' [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''"></i>
                     <ul class="js-sub-menu sub-menu-bar" *ngIf="menu.showSubMenu">
                       <li *ngFor="let subMenu of menu.subModules">
-                       
-                        <a (click) = "navigate(subMenu)"  [routerLink]="subMenu.angularPath">
+                       <!-- [routerLink]="subMenu.angularPath" -->
+                        <a (click) = "navigate(subMenu)"  >
                           <i [className]="subMenu.angularIcon" aria-hidden="true"></i>
                           {{subMenu.customName}}
                         </a>
@@ -78,14 +78,14 @@
                 </ng-container>
                 <!-- End Show 3 modules-->
                 <li>
-                  <a href="#">More</a>
+                  <a>More</a>
                   <i class='fa fa-chevron-down htmlcss-arrow arrow '></i>
                   <ul class="htmlCss-sub-menu sub-menu-bar">
                     <ng-container *ngFor="let menu of displayedMoreItems">
                       <li *ngIf="!menu.showSubMenu" >
-                        
+                        <!-- [routerLink]="menu.angularPath" -->
                         <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''"
-                          [routerLink]="menu.angularPath">
+                          >
                           <i [className]="menu.angularIcon" aria-hidden="true"></i>
                           {{menu.customName}}
                         </a>
@@ -97,13 +97,13 @@
                         <span class="xamplify-submenu-flex"><a [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''">
                           <i [className]="menu.angularIcon" aria-hidden="true"></i>
                           {{menu.customName}}</a>
-                          <i class='fa fa-chevron-right arrow more-arrow'></i>
+                          <i class='fa fa-chevron-right arrow more-arrow' [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''"></i>
                         </span>
                         <!-- <i class='fa fa-chevron-down js-arrow arrow'></i> -->
                         <ul class="more-sub-menu sub-menu-bar" *ngIf="menu.showSubMenu">
                           <li *ngFor="let subMenu of menu.subModules">
-                            
-                            <a (click) = "navigate(subMenu)" [routerLink]="subMenu.angularPath">
+                            <!-- [routerLink]="subMenu.angularPath" -->
+                            <a (click) = "navigate(subMenu)" >
                               <i [className]="subMenu.angularIcon" aria-hidden="true"></i>
                               {{subMenu.customName}}
                             </a>
@@ -161,7 +161,7 @@
           <div class="xamplify-dropdown xamplify-dropdown-user">
             <a class="xamplify-dropdown-toggle circlebg-none-v" data-close-others="true" data-hover="dropdown"
               data-toggle="dropdown">
-              <img alt="" class="xamplify-img-circle" src="assets/images/icon-user-default.png">
+              <img alt="" class="xamplify-img-circle" src="{{model.profilePicutrePath}}">
               <span class="username Xamplify-hidden-xs">
                 {{model.displayName | slice:0:7}}<span *ngIf="model.displayName?.length>7">..</span></span>
                 <i class="fa fa-angle-down xAmplify-down-arrow Xamplify-hidden-xs" aria-hidden="true"></i>

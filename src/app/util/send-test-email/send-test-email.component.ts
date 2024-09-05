@@ -63,13 +63,12 @@ export class SendTestEmailComponent implements OnInit {
 
   getTemplateHtmlBodyAndMergeTagsInfo() {
     this.processing = true;
-    this.authenticationService.getTemplateHtmlBodyAndMergeTagsInfo(this.id).subscribe(
+    this.authenticationService.getTemplateHtmlBodyAndMergeTagsInfo(this.id,this.fromEmail).subscribe(
       response => {
         let map = response.data;
         let htmlBody = map['emailTemplateDTO']['body'];
         let mergeTagsInfo = map['mergeTagsInfo'];
         htmlBody = this.referenceService.replaceMyMergeTags(mergeTagsInfo, htmlBody);
-
         this.sendTestEmailDto.body = htmlBody;
         $('#sendTestEmailHtmlBody').append(htmlBody);
         $('tbody').addClass('preview-shown')

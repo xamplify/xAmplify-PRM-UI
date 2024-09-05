@@ -76,9 +76,9 @@ a.xamplify-dropdown-toggle.circlebg-none-v {
 .navbar-navs .link li .sub-menu-bar a{
 color: #fff;
 }
-.navbar-navs .link li .sub-menu-bar li:hover{
+/* .navbar-navs .link li .sub-menu-bar li:hover{
   background-color: #22313a;
-}
+} */
 /* tab & mobile view */
 @media (max-width:920px) {
     .horizontal-navbar .navbar-navs .link li .arrow,.horizontal-navbar .navbar-navs .link li a{

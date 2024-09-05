@@ -3231,7 +3231,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         if(this.eventCampaign.nurtureCampaign){
             this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
          }else{
-             this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+             this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id,0);
          }
     }
 
