@@ -28,7 +28,12 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
   displayPage:boolean =false;
   htmlContent:any;
   htmlString:any;
- 
+ /*** Glassmorphism Default *****/
+ bgImagePath: any;
+ isBgImagePath = false;
+ serverImageHostUrl = "";
+ imageHost: any = "";
+ /*** Glassmorphism Default *****/
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router, public dashBoardService: DashboardService, public xtremandLogger: XtremandLogger,
     public landingPageService:LandingPageService,private vanityURLService: VanityURLService, public sanitizer: DomSanitizer,
   ) {
@@ -48,15 +53,12 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
   }
  
   ngOnInit() {
-    console.log("asjkdkkd1")
-    console.log(this.referenceService.isWelcomePageLoading)
     if(this.router.url.includes('/welcome-page')){
-      console.log("asjkdkkd2")
-      console.log(this.referenceService.isWelcomePageLoading)
         this.referenceService.clearHeadScriptFiles();
     }
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
     $("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
+    
     //this.getHtmlBodyAlias('z2yl1Spk')
     this.getActiveThemeData(this.vanityLoginDto);
   }
@@ -91,7 +93,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
         this.activeThemeDto = response.data;
         this.authenticationService.themeDto = this.activeThemeDto;
         if (this.activeThemeDto.parentThemeName == 'GLASSMORPHISMLIGHT' || this.activeThemeDto.parentThemeName == 'GLASSMORPHISMDARK') {
-          //this.getDefaultImagePath(this.activeThemeDto.parentThemeName,this.activeThemeDto.id);
+          this.getDefaultImagePath(this.activeThemeDto.parentThemeName,this.activeThemeDto.id);
         }
         this.getDefaultSkin(this.activeThemeDto);
         /******** For Charts *******/
@@ -108,7 +110,6 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
   }
 
   getDefaultSkin(activeThemeDto: ThemeDto) {
-    //this.ngxloading = true;
     this.loader = true;
     this.dashBoardService.getPropertiesById(activeThemeDto.id)
       .subscribe(
@@ -116,38 +117,39 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
           this.loader = false;
           let skinMap = response.data;
           let topCustom = skinMap.TOP_NAVIGATION_BAR;
-          let leftCustom = skinMap.LEFT_SIDE_MENU;
-          let footerCustom = skinMap.FOOTER;
-          let footerSkin = skinMap.FOOTER;
+          // let leftCustom = skinMap.LEFT_SIDE_MENU;
+          // let footerCustom = skinMap.FOOTER;
+          // let footerSkin = skinMap.FOOTER;
           let maincontentCustom = skinMap.MAIN_CONTENT;
           let buttonCustomizationForm = skinMap.BUTTON_CUSTOMIZE;
           if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Light") {
-              $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
+            $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
           } else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Dark" && !this.router.url.includes('home/help')) {
             $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-dark.css' type='text/css'>");
           } else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Neumorphism Dark(Beta)" && !this.router.url.includes('home/help')) {
-              $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-dark-customization.css' type='text/css'>");
+            $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-neumorphism-dark.css' type='text/css'>");
           }
           else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Neumorphism Light" && !this.router.url.includes('home/help')) {
-            this.authenticationService.isDarkForCharts = false;
-            require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-light.css");
-          }
-          else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
+            $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-neumorphism-light.css' type='text/css'>");
+          } else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Glassomorphism Light" && !this.router.url.includes('home/help')) {
-            this.authenticationService.isDarkForCharts = false;
             document.documentElement.style.setProperty('--body-background-image', 'url(' + activeThemeDto.backgroundImagePath + ')');
-            require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-light.css");
+            document.documentElement.style.setProperty('--color-glassmorphims', '#000');
+            document.documentElement.style.setProperty('--background-glassmorphims', '#fff');
+            document.documentElement.style.setProperty('--background-hover-glassmorphims', '#b1a2a22e');
+            $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-glassmorphism.css' type='text/css'>");
           }
           else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Glassomorphism Dark" && !this.router.url.includes('home/help')) {
-            this.authenticationService.isDarkForCharts = true;
             document.documentElement.style.setProperty('--body-background-image', 'url(' + activeThemeDto.backgroundImagePath + ')');
-            require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-dark.css");
-
+            document.documentElement.style.setProperty('--color-glassmorphims', '#fff');
+            document.documentElement.style.setProperty('--background-glassmorphims', '#000');
+            document.documentElement.style.setProperty('--background-hover-glassmorphims', '#2e2f32');
+            $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-glassmorphism.css' type='text/css'>");
           }
           else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && !this.router.url.includes('home/help')) {
             if (activeThemeDto.parentThemeName == 'LIGHT' || activeThemeDto.parentThemeName == 'DARK') {
@@ -156,60 +158,72 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
               document.documentElement.style.setProperty('--top-button-border-color', topCustom.buttonBorderColor);
               document.documentElement.style.setProperty('--top-button-value-color', topCustom.buttonValueColor);
               document.documentElement.style.setProperty('--top-button-icon-color', topCustom.iconColor);
-              $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-dark-customization.css' type='text/css'>");
-              // document.documentElement.style.setProperty('--left-bg-color', leftCustom.backgroundColor);
-              // document.documentElement.style.setProperty('--left-text-color', leftCustom.textColor);
-              // document.documentElement.style.setProperty('--left-border-color', leftCustom.buttonBorderColor);
-              // document.documentElement.style.setProperty('--left-icon-color', leftCustom.iconColor);
-              // require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-left-side-bar.css");
-
-              // document.documentElement.style.setProperty('--footer-bg-color', footerSkin.backgroundColor);
-              // document.documentElement.style.setProperty('--footer-text-color', footerSkin.textColor);
-              // document.documentElement.style.setProperty('--footer-border-color', footerSkin.buttonBorderColor);
-              // require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-footer.css");
+              // document.documentElement.style.setProperty('--top-background-hover', this.getVariantColor(topCustom.backgroundColor, 40))
               document.documentElement.style.setProperty('--page-content', maincontentCustom.backgroundColor);
               document.documentElement.style.setProperty('--div-bg-color', maincontentCustom.divBgColor);
-              document.documentElement.style.setProperty('--title-heading--text', maincontentCustom.textColor);
               document.documentElement.style.setProperty('--border-color', maincontentCustom.buttonBorderColor);
               document.documentElement.style.setProperty('--text-color', maincontentCustom.textColor);
-              document.documentElement.style.setProperty('--btn-primary-bg-color', maincontentCustom.buttonColor);
-              document.documentElement.style.setProperty('--btn-primary-border-color', maincontentCustom.buttonPrimaryBorderColor);
-              document.documentElement.style.setProperty('--btn-primary-text-color', maincontentCustom.buttonValueColor);
-              document.documentElement.style.setProperty('--btn-secondary-text-color', maincontentCustom.buttonSecondaryTextColor);
-              document.documentElement.style.setProperty('--btn-secondary-border-color', maincontentCustom.buttonSecondaryBorderColor);
-              document.documentElement.style.setProperty('--btn-secondary-bg-color', maincontentCustom.buttonSecondaryColor);
-              document.documentElement.style.setProperty('--button-primary-bg-color', maincontentCustom.buttonColor);
-              document.documentElement.style.setProperty('--button-primary-border-color', maincontentCustom.buttonPrimaryBorderColor);
-              document.documentElement.style.setProperty('--button-primary-text-color', maincontentCustom.buttonValueColor);
-              document.documentElement.style.setProperty('--button-secondary-bg-color', maincontentCustom.buttonSecondaryColor);
-              document.documentElement.style.setProperty('--button-secondary-border-color', maincontentCustom.buttonSecondaryBorderColor);
-              document.documentElement.style.setProperty('--button-secondary-text-color', maincontentCustom.buttonSecondaryTextColor);
-              document.documentElement.style.setProperty('--icon-color', maincontentCustom.iconColor);
-              document.documentElement.style.setProperty('--icon-border-color', maincontentCustom.iconBorderColor);
-              document.documentElement.style.setProperty('--icon-hover-color', maincontentCustom.iconHoverColor);
-              // require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-main-content.css");
+              document.documentElement.style.setProperty('--menu-text', topCustom.buttonSecondaryTextColor);
+              document.documentElement.style.setProperty('--module-select-color', topCustom.divBgColor);
+              document.documentElement.style.setProperty('--menu-text-hover', topCustom.iconHoverColor);
+              //this.getVariantColor(topCustom.buttonColor, 0.68))
+              $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-dark-customization.css' type='text/css'>");
             } else {
               if (activeThemeDto.parentThemeName === 'NEUMORPHISMDARK') {
-                require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-dark.css");
+                document.documentElement.style.setProperty('--color-glassmorphims', '#fff');
+                document.documentElement.style.setProperty('--menu-text', topCustom.buttonSecondaryTextColor);
+                document.documentElement.style.setProperty('--module-select-color', topCustom.divBgColor);
+                document.documentElement.style.setProperty('--menu-text-hover', topCustom.iconHoverColor);
+                document.documentElement.style.setProperty('--custom-buttonbg-color', buttonCustomizationForm.buttonColor);
+                document.documentElement.style.setProperty('--custom-text-color', buttonCustomizationForm.buttonValueColor);
+                document.documentElement.style.setProperty('--custom-border-color', buttonCustomizationForm.buttonBorderColor);
+                document.documentElement.style.setProperty('--custom-gradient-one-color', buttonCustomizationForm.gradiantColorOne);
+                document.documentElement.style.setProperty('--custom-gradient-two-color', buttonCustomizationForm.gradiantColorTwo);
+                // $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-button-customization.css' type='text/css'>");
+                $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-neumorphism-dark.css' type='text/css'>");
+                $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-neumorphism-custom.css' type='text/css'>");
+
+
               } else if (activeThemeDto.parentThemeName === 'NEUMORPHISMLIGHT') {
-                require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-light.css");
-              } else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMDARK') {
+                document.documentElement.style.setProperty('--color-glassmorphims', '#000');
+                document.documentElement.style.setProperty('--menu-text', topCustom.buttonSecondaryTextColor);
+                document.documentElement.style.setProperty('--module-select-color', topCustom.divBgColor);
+                document.documentElement.style.setProperty('--menu-text-hover', topCustom.iconHoverColor);
+                document.documentElement.style.setProperty('--custom-buttonbg-color', buttonCustomizationForm.buttonColor);
+                document.documentElement.style.setProperty('--custom-text-color', buttonCustomizationForm.buttonValueColor);
+                document.documentElement.style.setProperty('--custom-border-color', buttonCustomizationForm.buttonBorderColor);
+                document.documentElement.style.setProperty('--custom-gradient-one-color', buttonCustomizationForm.gradiantColorOne);
+                document.documentElement.style.setProperty('--custom-gradient-two-color', buttonCustomizationForm.gradiantColorTwo);
+                // $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-button-customization.css' type='text/css'>");
+                $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-neumorphism-light.css' type='text/css'>");
+                $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-neumorphism-custom.css' type='text/css'>");
+              }
+              else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMDARK') {
                 document.documentElement.style.setProperty('--body-background-image', 'url(' + activeThemeDto.backgroundImagePath + ')');
-                require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-dark.css");
+                document.documentElement.style.setProperty('--color-glassmorphims', '#fff');
+                document.documentElement.style.setProperty('--background-glassmorphims', '#000');
+                document.documentElement.style.setProperty('--background-hover-glassmorphims', '#2e2f32');
               } else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMLIGHT') {
                 document.documentElement.style.setProperty('--body-background-image', 'url(' + activeThemeDto.backgroundImagePath + ')');
-                require("style-loader!../../../assets/admin/layout2/css/themes/glassomorphism-light.css");
+                document.documentElement.style.setProperty('--color-glassmorphims', '#000');
+                document.documentElement.style.setProperty('--background-glassmorphims', '#fff');
+                document.documentElement.style.setProperty('--background-hover-glassmorphims', '#b1a2a22e');
               }
+              document.documentElement.style.setProperty('--menu-text', topCustom.buttonSecondaryTextColor);
+              document.documentElement.style.setProperty('--module-select-color', topCustom.divBgColor);
+              document.documentElement.style.setProperty('--menu-text-hover', topCustom.iconHoverColor);
+
               document.documentElement.style.setProperty('--custom-buttonbg-color', buttonCustomizationForm.buttonColor);
               document.documentElement.style.setProperty('--custom-text-color', buttonCustomizationForm.buttonValueColor);
               document.documentElement.style.setProperty('--custom-border-color', buttonCustomizationForm.buttonBorderColor);
               document.documentElement.style.setProperty('--custom-gradient-one-color', buttonCustomizationForm.gradiantColorOne);
               document.documentElement.style.setProperty('--custom-gradient-two-color', buttonCustomizationForm.gradiantColorTwo);
-              document.documentElement.style.setProperty('--custom-icon-color', buttonCustomizationForm.iconColor);
-              document.documentElement.style.setProperty('--custom-icon-border-color', buttonCustomizationForm.iconBorderColor);
-              document.documentElement.style.setProperty('--custom-icon-hover-color', buttonCustomizationForm.iconHoverColor);
+              // document.documentElement.style.setProperty('--custom-icon-color', buttonCustomizationForm.iconColor);
+              // document.documentElement.style.setProperty('--custom-icon-border-color', buttonCustomizationForm.iconBorderColor);
+              // document.documentElement.style.setProperty('--custom-icon-hover-color', buttonCustomizationForm.iconHoverColor);
 
-              require("style-loader!../../../assets/admin/layout2/css/themes/buttons-icons-customization.css");
+              $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-glassmorphism.css' type='text/css'>");
+              $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-button-customization.css' type='text/css'>");
             }
           }
         }, error => {
@@ -236,5 +250,25 @@ getHtmlBodyAlias(){
        }
      );
  } 
+
+ getDefaultImagePath(name: any, themeId: any) {
+  this.dashBoardService.getDefaultImagePath(name, themeId).subscribe(
+    (data: any) => {
+      this.bgImagePath = data.data;
+      this.isBgImagePath = data.statusCode == 200;
+      //this.activeThemeDto.backgroundImagePath= this.bgImagePath;
+    }, error => {
+      this.loader = false;
+    }, () => {
+      if (this.isBgImagePath) {
+        if ((name == 'GLASSMORPHISMLIGHT' || name == 'GLASSMORPHISMDARK') && (this.bgImagePath && this.bgImagePath.includes('/theme-background-image/'))) {
+          this.imageHost = this.serverImageHostUrl;
+        } else {
+          this.imageHost = "";
+        }
+        this.activeThemeDto.backgroundImagePath = this.imageHost + this.bgImagePath;
+      }
+    });
+}
 
 }

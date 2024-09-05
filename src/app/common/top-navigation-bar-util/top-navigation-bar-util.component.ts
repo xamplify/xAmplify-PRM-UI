@@ -1108,6 +1108,7 @@ private beforeAdd(tag: any) {
     this.router.navigate([path]);
   }
   }
+  //loading:boolean = false;
   naviagteToWelcomePage(path:any) {
     this.mergeTag = 'welcomepage'
     this.router.navigate([path]).then(() => {

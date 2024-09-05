@@ -1,0 +1,17 @@
+a.xamplify-dropdown-toggle.circlebg-color-bell-v {
+    border: 0px solid #2f4857 !important;
+    color: #000 !important;
+    background: #f0f5fa !important;
+    box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+  }
+  .xamplify-welcome-page-header.navbar .xamplify-welcome-page-top {
+      background: #f0f5fa !important;
+      box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff;
+      border-bottom: 1px solid #d0d5db;
+  }
+  .horizontal-navbar .navbar-navs .link li a{
+    color: #000;
+  }
+  .horizontal-navbar .navbar-navs .link li a:active,.horizontal-navbar .navbar-navs .link li a:hover{
+  color:#4193cf;
+  }
