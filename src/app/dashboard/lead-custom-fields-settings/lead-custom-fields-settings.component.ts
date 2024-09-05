@@ -823,6 +823,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
     if (event === "0") {
       this.isAddCustomFieldsModelPopUp = false;
       this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+      this.listSalesforceCustomFields("LEAD");
     }
   }
 
@@ -850,6 +851,7 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
         response=>{
           if(response.statusCode == 200){
             this.customResponse = new CustomResponse('SUCCESS', "Deleted Successfully", true);
+            this.listSalesforceCustomFields("LEAD");
           }
           this.ngxloading = false;
         },error=>{
