@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-
+declare var $: any, swal: any;
 @Component({
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
@@ -12,5 +12,8 @@ export class ContactDetailsComponent implements OnInit {
 
   ngOnInit() {
   }
-
+// plus& minus icon
+toggleClass(id: string) {
+  $("i#" + id).toggleClass("fa-minus fa-plus");
+}
 }
