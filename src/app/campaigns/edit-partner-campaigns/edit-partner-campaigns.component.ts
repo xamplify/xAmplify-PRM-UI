@@ -406,6 +406,8 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
     setFromName(){
         let user = this.teamMemberEmailIds.filter((teamMember)=> teamMember.emailId == this.campaign.email)[0];
         this.campaign.fromName = $.trim(user.firstName+" "+user.lastName);
+        /**XNFR-664**/
+        this.campaign.fromEmailUserId = user.id;
         this.setEmailIdAsFromName();
     }
 
@@ -1583,7 +1585,8 @@ appendValueToSubjectLine(event:any){
         if(this.campaign.nurtureCampaign){
             this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
         }else{
-            this.referenceService.previewSharedVendorCampaignEmailTemplateInNewTab(campaign.campaignId);
+            /**XNFR-664**/
+            this.referenceService.previewSharedVendorCampaignEmailTemplateWithFromEmailInNewTab(campaign.campaignId,this.campaign.fromEmailUserId);
         }
     }
 

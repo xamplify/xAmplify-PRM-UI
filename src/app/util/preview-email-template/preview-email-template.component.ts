@@ -35,6 +35,9 @@ export class PreviewEmailTemplateComponent implements OnInit {
   eventCampaign:EventCampaign = new EventCampaign();
   isVanityEmailTemplatePreview = false;
   apiResponseFinished = false;
+  /***XNFR-664***/
+  isSharedCampaignTemplatePreviewWithFromEmailParameter = false;
+  fromEmailUserId:any;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties,public vanityUrlService:VanityURLService) { }
   
@@ -44,6 +47,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
     let currentRouterUrl = this.referenceService.getCurrentRouteUrl();
     this.isCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/ct/")>-1;
     this.isSharedCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/sct/")>-1;
+    this.isSharedCampaignTemplatePreviewWithFromEmailParameter = currentRouterUrl.indexOf("/pv/sctfe/")>-1;
     this.isSharedEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/sect/")>-1;
     this.isVendorCompanyViewingWorkflowTemplate = currentRouterUrl.indexOf("/pv/wt/")>-1;
     this.isVendorCampaignAutoReplyEmailWorkflowId = currentRouterUrl.indexOf("/pv/scwaret")>-1;
@@ -57,6 +61,9 @@ export class PreviewEmailTemplateComponent implements OnInit {
     this.referenceService.clearHeadScriptFiles();
     this.decodeIdParameter();
     this.decodeCampaignIdParameter();
+    if(this.isSharedCampaignTemplatePreviewWithFromEmailParameter){
+      this.decodeFromEmailUserIdParameter();
+    }
     let isValidId = this.id!=undefined && this.id>0;
     let isValidCampaignId = this.campaignId!=undefined && this.campaignId>0;
     if(isValidId ||isValidCampaignId){
@@ -71,6 +78,14 @@ export class PreviewEmailTemplateComponent implements OnInit {
       this.showPageNotFoundMessage();
    }
   }
+
+  private decodeFromEmailUserIdParameter() {
+    try {
+      this.fromEmailUserId = atob(this.route.snapshot.params['fromEmailUserId']);
+    } catch (error) {
+       this.showPageNotFoundMessage();
+    }
+   }
 
   private showPageNotFoundMessage() {
     this.customResponse = new CustomResponse('ERROR', this.properties.pageNotFound, true);
@@ -124,7 +139,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
 
   private getUpdatedURL(URL_SUFFIX: string) {
     if (this.campaignId != undefined) {
-      let vendorCampaignIdOrCampaignIdParameter = this.isSharedCampaignTemplatePreview ? "vendorCampaignId" : this.isSharedEventCampaignTemplatePreview ? "vendorEventCampaignId" : "campaignId";
+      let vendorCampaignIdOrCampaignIdParameter = (this.isSharedCampaignTemplatePreview || this.isSharedCampaignTemplatePreviewWithFromEmailParameter) ? "vendorCampaignId" : this.isSharedEventCampaignTemplatePreview ? "vendorEventCampaignId" : "campaignId";
       URL_SUFFIX = vendorCampaignIdOrCampaignIdParameter + "/" + this.campaignId;
       if (this.isSharedEventCampaignTemplatePreview || this.isEditRedistributedEventCampaignTemplatePreview) {
         this.eventCampaign = this.authenticationService.getLocalStorageItemByKey(this.properties.eventCampaignTemplateLocalStorageKey);
@@ -133,6 +148,8 @@ export class PreviewEmailTemplateComponent implements OnInit {
           let fromEmail = this.eventCampaign.email;
           URL_SUFFIX = URL_SUFFIX + "/" + hostedBy + "/" + fromEmail;
         }
+      }else if(this.isSharedCampaignTemplatePreviewWithFromEmailParameter){
+        URL_SUFFIX = URL_SUFFIX+"/fromEmailUserId/"+this.fromEmailUserId;
       }
     } else if (this.isCampaignAutoReplyEmailWorkflowId) {
       URL_SUFFIX = "campaignAutoReplyEmailWorkflowId/" + this.id;

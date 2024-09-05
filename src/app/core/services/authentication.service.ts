@@ -1121,7 +1121,11 @@ isVanityWelcomePageRequired = false;
     let url = this.REST_URL + "email-template/getHtmlBodyAndMergeTags?access_token=" + this.access_token;
     let map = {};
     map['id'] = id;
-    map['emailId'] = fromEmail;
+    if(fromEmail!=undefined && $.trim(fromEmail).length>0){
+      map['emailId'] = fromEmail;
+    }else{
+      map['emailId'] = this.user.emailId;
+    }
     return this.callPostMethod(url, map);
   }
 
