@@ -3637,14 +3637,16 @@ previewVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(urlId:number){
   this.openWindowInNewTab("/pv/cwarwlt/"+encodedIdURLString);
 }
 
-previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number){
+previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(vendorCampaignWorkflowId:number,fromEmailUserId:number){
   let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(vendorCampaignWorkflowId));
-  this.openWindowInNewTab("/pv/scwaret/"+encodedIdURLString);
+  let encodedIdFromEmailIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/scwaret/"+encodedIdURLString+"/"+encodedIdFromEmailIdURLString);
 }
 
-previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWorkflowId:number){
+previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(vendorCampaignWorkflowId:number,fromEmailUserId:number){
   let encodedIdURLString = this.getEncodedUri(this.encodePathVariable(vendorCampaignWorkflowId));
-  this.openWindowInNewTab("/pv/scwarwlt/"+this.encodePathVariable(encodedIdURLString));
+  let encodedIdFromEmailIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/scwarwlt/"+encodedIdURLString+"/"+encodedIdFromEmailIdURLString);
 }
 
 previewPageInNewTab(id:number){

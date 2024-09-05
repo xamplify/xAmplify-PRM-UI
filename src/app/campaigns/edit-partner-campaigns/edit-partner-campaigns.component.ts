@@ -374,6 +374,8 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             this.campaign.fromName = $.trim(userProfile.firstName);
         else
             this.campaign.fromName = $.trim(userProfile.emailId);
+        /**XNFR-664****/
+        this.campaign.fromEmailUserId = userProfile.userId;
         this.setEmailIdAsFromName();
     }
 
@@ -383,13 +385,14 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
         .subscribe(
         data => {
           let self = this;
-          $.each(data,function(index,value){
+          $.each(data,function(index:number,value:any){
               self.teamMemberEmailIds.push(data[index]);
           });
           if(!this.campaign.nurtureCampaign){
               let teamMember = this.teamMemberEmailIds.filter((teamMember)=> teamMember.id ==this.loggedInUserId)[0];
               this.campaign.email = teamMember.emailId;
               this.campaign.fromName = $.trim(teamMember.firstName+" "+teamMember.lastName);
+              this.campaign.fromEmailUserId = teamMember.id;
               this.setEmailIdAsFromName();
           }else{
               let existingTeamMemberEmailIds =  this.teamMemberEmailIds.map(function(a) {return a.emailId;});
@@ -1594,7 +1597,8 @@ appendValueToSubjectLine(event:any){
         if(this.campaign.nurtureCampaign){
             this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
         }else{
-            this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+            /**XNFR-664***/
+            this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id,this.campaign.fromEmailUserId);
         }
     }
 
@@ -1602,7 +1606,8 @@ appendValueToSubjectLine(event:any){
         if(this.campaign.nurtureCampaign){
             this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(url.id);
         }else{
-            this.referenceService.previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id);
+            /**XNFR-664***/
+            this.referenceService.previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id,this.campaign.fromEmailUserId);
         }
     }
 

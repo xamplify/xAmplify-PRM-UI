@@ -61,7 +61,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
     this.referenceService.clearHeadScriptFiles();
     this.decodeIdParameter();
     this.decodeCampaignIdParameter();
-    if(this.isSharedCampaignTemplatePreviewWithFromEmailParameter){
+    if(this.isSharedCampaignTemplatePreviewWithFromEmailParameter || this.isVendorCampaignAutoReplyEmailWorkflowId || this.vendorCampaignAutoReplyWebsiteLinkWorkflowId){
       this.decodeFromEmailUserIdParameter();
     }
     let isValidId = this.id!=undefined && this.id>0;
@@ -156,9 +156,9 @@ export class PreviewEmailTemplateComponent implements OnInit {
     } else if (this.campaignAutoReplyWebsiteLinkWorkflowId) {
       URL_SUFFIX = "campaignAutoReplyWebsiteLinkWorkflowId/" + this.id;
     } else if (this.isVendorCampaignAutoReplyEmailWorkflowId) {
-      URL_SUFFIX = "vendorCampaignAutoReplyEmailWorkflowId/" + this.id;
+      URL_SUFFIX = "vendorCampaignAutoReplyEmailWorkflowId/" + this.id+"/fromEmailUserId/"+this.fromEmailUserId;
     } else if (this.vendorCampaignAutoReplyWebsiteLinkWorkflowId) {
-      URL_SUFFIX = "vendorCampaignAutoReplyWebsiteLinkWorkflowId/" + this.id;
+      URL_SUFFIX = "vendorCampaignAutoReplyWebsiteLinkWorkflowId/" + this.id+"/fromEmailUserId/"+this.fromEmailUserId;;
     }else if(this.isVanityEmailTemplatePreview){
       URL_SUFFIX = "vanityEmailTemplateId/" + this.id;
     } else {
