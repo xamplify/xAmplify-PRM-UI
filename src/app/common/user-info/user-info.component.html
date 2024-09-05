@@ -62,7 +62,7 @@
 			<p *ngIf="userInfo?.company?.length>0" class="user-company" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.company}}">
 				<span><b>Company Name:</b> {{userInfo?.company |slice:0:25}}</span><span *ngIf="userInfo?.company?.length>25">..</span>
 			</p>
-			<p *ngIf="userInfo?.phone" [class.disabled]="true" class="lead_camp_mobile_no" style="pointer-events: none !important; cursor: auto;position: relative !important;">
+			<p *ngIf="userInfo?.phone" [class.disabled]="true" class="lead_camp_mobile_no" style="pointer-events: none !important; cursor: auto;position: relative !important; float: left;">
 				<b>Mobile No:</b> {{userInfo?.phone}}
 			</p>
 		</h6>
@@ -100,7 +100,7 @@
 		</h5>
 		<p class="user-company" *ngIf="isPartnerEntityInfo && !hideJobTitle && userInfo?.jobTitle?.length>0"><span><b>Job Title:</b>
 				{{userInfo?.jobTitle |slice:0:25}}</span><span *ngIf="userInfo?.jobTitle?.length>25">..</span></p>
-		<td>
+		<td style="display: block;">
 			<a *ngIf="userInfo?.emailId?.length>0" style="white-space: nowrap;margin-right: 3px;line-height: 1.6;" data-toggle="tooltip" data-placement="right" title="{{userInfo?.emailId}}">
 				<b>Email Id:</b> {{userInfo?.emailId | slice:0:30}}<span *ngIf="userInfo?.emailId?.length>30">...</span>
 			</a>

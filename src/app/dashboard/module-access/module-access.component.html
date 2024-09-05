@@ -396,6 +396,12 @@
 									<app-custom-ui-switch [customSwitch]="campaignAccess.paymentOverDue" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
 								</td>
 							</tr>
+							<!--XNFR-669-->
+							<tr>
+								<th scope="row">Welcome Pages</th>
+								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.welcomePages"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
 						</tbody>
 					</table>
 				</div>

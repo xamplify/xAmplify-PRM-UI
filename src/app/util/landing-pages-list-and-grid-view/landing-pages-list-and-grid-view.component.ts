@@ -605,6 +605,26 @@ copy(landingPage:any){
             this.landingPageService.updateWelcomePage(landingPage).subscribe(
               (response) => {
                 this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+                this.findLandingPagesWithPageIndexOne();
+                  self.ngxloading = false;
+              },
+              error => {
+                this.ngxloading = false;
+                this.logger.errorPage(error);
+              });
+    }
+
+    unPublishWelcomePage(landingPageId:number){
+        this.customResponse = new CustomResponse();
+        this.selectedLandingPageId = landingPageId;
+        let landingPage = new LandingPage();
+        landingPage.id = landingPageId;
+            this.ngxloading = true;
+            let self = this;
+            this.landingPageService.unPublishWelcomePage(landingPage).subscribe(
+              (response) => {
+                this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+                this.findLandingPagesWithPageIndexOne();
                   self.ngxloading = false;
               },
               error => {

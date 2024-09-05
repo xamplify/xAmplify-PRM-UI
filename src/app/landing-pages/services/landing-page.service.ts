@@ -282,10 +282,20 @@ export class LandingPageService {
     } 
     
     getActiveWelcomePageByVanity( landingPageHtmlDto:any) {
+        console.log("akhjsbdkh")
+        console.log(this.authenticationService.companyProfileName)
         landingPageHtmlDto['vanityUrlFilter']  = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
         landingPageHtmlDto['vanityCompnayProfileName'] = this.authenticationService.companyProfileName;
             return this.http.post( this.URL + "/getActiveWelcomePageByVanity?access_token=" + this.authenticationService.access_token , landingPageHtmlDto )
             .map( this.extractData )
             .catch( this.handleError );
     }
+
+    unPublishWelcomePage(landingPage:LandingPage) {
+        landingPage.userId = this.authenticationService.getUserId();
+        return this.http.post(this.URL +"/unpublish-welcome-page?access_token=" + this.authenticationService.access_token, landingPage)
+            .map(this.extractData)
+            .catch(this.handleError);
+    } 
+    
 }

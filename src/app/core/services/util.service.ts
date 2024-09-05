@@ -144,7 +144,7 @@ export class UtilService {
                 'logedInCustomerCompanyNeme':data.companyName,
 				'source':data.source,
                 'secondAdmin': data.secondAdmin,
-                'isVanityWelcomePageRequired':data.isVanityWelcomePageRequired
+                'isVanityWelcomePageRequired':JSON.parse( currentUser )['isVanityWelcomePageRequired'],
             };
             localStorage.setItem('currentUser', JSON.stringify(userToken));
 		    localStorage.setItem('defaultDisplayType',data.modulesDisplayType);

@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -8,6 +9,7 @@ import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 declare var $:any;
 @Component({
   selector: 'app-welcome-page',
@@ -15,7 +17,7 @@ declare var $:any;
   styleUrls: ['./welcome-page.component.css'],
   //encapsulation:ViewEncapsulation.Emulated,
 })
-export class WelcomePageComponent implements OnInit {
+export class WelcomePageComponent implements OnInit, AfterViewInit {
 
   @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
   loader: boolean = false;
@@ -24,11 +26,18 @@ export class WelcomePageComponent implements OnInit {
   loggedInUserId: number;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   displayPage:boolean =false;
+  htmlContent:any;
+  htmlString:any;
+ 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router, public dashBoardService: DashboardService, public xtremandLogger: XtremandLogger,
-    public landingPageService:LandingPageService,
+    public landingPageService:LandingPageService,private vanityURLService: VanityURLService, public sanitizer: DomSanitizer,
   ) {
+    if (this.vanityURLService.isVanityURLEnabled()) {
+      this.vanityURLService.checkVanityURLDetails();
+    }
     this.loggedInUserId = this.authenticationService.getUserId();
     this.vanityLoginDto.userId = this.loggedInUserId;
+    
     let companyProfileName = this.authenticationService.companyProfileName;
     if (companyProfileName !== undefined && companyProfileName !== "") {
       this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
@@ -39,10 +48,12 @@ export class WelcomePageComponent implements OnInit {
   }
  
   ngOnInit() {
+    console.log("asjkdkkd1")
+    console.log(this.referenceService.isWelcomePageLoading)
     if(this.router.url.includes('/welcome-page')){
-    this.referenceService.clearHeadScriptFiles();
-    this.getHtmlBodyAlias();
-    this.displayPage = true;
+      console.log("asjkdkkd2")
+      console.log(this.referenceService.isWelcomePageLoading)
+        this.referenceService.clearHeadScriptFiles();
     }
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
     $("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
@@ -50,6 +61,14 @@ export class WelcomePageComponent implements OnInit {
     this.getActiveThemeData(this.vanityLoginDto);
   }
    
+  ngAfterViewInit(){
+    if(this.router.url.includes('/welcome-page')){
+      this.referenceService.isWelcomePageLoading = false;
+      this.getHtmlBodyAlias();
+      this.displayPage = true;
+      }  
+  }
+
   getActiveThemeData(vanityLoginDto: VanityLoginDto) {
     this.loader = true;
     this.dashBoardService.getActiveTheme(vanityLoginDto).subscribe(
@@ -208,10 +227,14 @@ getHtmlBodyAlias(){
      this.landingPageService.getActiveWelcomePageByVanity(landingPageHtmlDto)
      .subscribe(
        (response: any) => {
-              document.getElementById('landing-page-html-body1').innerHTML = response.message;
+              if (response.statusCode == 200) {
+                this.htmlString = this.vanityURLService.sanitizeHtmlWithImportant(response.message)
+                this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(this.htmlString);
+              }
        },
        (error: string) => {
        }
      );
  } 
+
 }

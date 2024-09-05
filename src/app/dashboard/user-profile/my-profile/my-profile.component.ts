@@ -360,6 +360,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	chatGptSettingsMenuHeader = MY_PROFILE_MENU_CONSTANTS.CHAT_GPT_SETTIGNS_MENU_HEADER;
 	/** XNFR-669 **/
 	welcomePages: boolean =false;
+	welcomePagesAccess:boolean = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -687,6 +688,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.customSkinSettingOption = result.customSkinSettings;
 			this.vendorJourneyAccess = result.vendorJourney;
 			this.masterLandingPageOrVendorPages = result.masterLandingPageOrVendorPages;
+			this.welcomePagesAccess = result.welcomePages;
 			this.ngxloading = false;
 		}, _error => {
 			this.ngxloading = false;
