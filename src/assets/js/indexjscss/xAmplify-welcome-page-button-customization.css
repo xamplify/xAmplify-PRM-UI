@@ -1,0 +1,28 @@
+.xamplify-active {
+    color: var(--module-select-color) !important;
+}
+
+a.moduleTextColor,
+.horizontal-navbar .navbar-navs .link li .arrow {
+    color: var(--menu-text) !important;
+}
+
+a.moduleTextColor:hover,
+.horizontal-navbar .navbar-navs .link li .arrow:hover {
+    color: var(--menu-text-hover) !important;
+}
+
+.xamplify-btn-group button:hover {
+    background-color: var(--custom-buttonbg-color) !important;
+    background-image: linear-gradient(1deg, var(--custom-gradient-two-color), var(--custom-gradient-one-color) 99%) !important;
+    background-size: calc(100% + 20px) calc(100% + 20px) !important;
+    border: 1px solid var(--custom-border-color) !important;
+    color:  var(--custom-text-color) !important;
+}
+.xamplify-btn-group button {
+background-color: var(--custom-buttonbg-color) !important;
+  background-image: linear-gradient(1deg, var(--custom-gradient-one-color), var(--custom-gradient-two-color) 99%) !important;
+  background-size: calc(100% + 20px) calc(100% + 20px) !important;
+  border: 1px solid var(--custom-border-color) !important;
+  color: var(--custom-text-color)  !important;
+}

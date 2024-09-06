@@ -915,6 +915,7 @@ export class CustomSkinComponent implements OnInit {
     this.buttonCustomizationForm.themeId = this.themeId;
     if (this.activeTabName == 'buttonCustomization') {
       this.updateThemedto.themesProperties.push(this.buttonCustomizationForm)
+      this.updateThemedto.themesProperties.push(this.headerForm);
     } else {
       this.updateThemedto.themesProperties.push(this.headerForm);
       this.updateThemedto.themesProperties.push(this.leftSideForm);
