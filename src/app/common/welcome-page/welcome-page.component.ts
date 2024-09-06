@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { UserService } from 'app/core/services/user.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { CompanyThemeActivate } from 'app/dashboard/models/company-theme-activate';
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
@@ -35,14 +36,14 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
  imageHost: any = "";
  /*** Glassmorphism Default *****/
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router, public dashBoardService: DashboardService, public xtremandLogger: XtremandLogger,
-    public landingPageService:LandingPageService,private vanityURLService: VanityURLService, public sanitizer: DomSanitizer,
+    public landingPageService:LandingPageService,private vanityURLService: VanityURLService, public sanitizer: DomSanitizer, public userService:UserService
   ) {
     if (this.vanityURLService.isVanityURLEnabled()) {
       this.vanityURLService.checkVanityURLDetails();
     }
     this.loggedInUserId = this.authenticationService.getUserId();
     this.vanityLoginDto.userId = this.loggedInUserId;
-    
+    this.getVideoDefaultSettings();
     let companyProfileName = this.authenticationService.companyProfileName;
     if (companyProfileName !== undefined && companyProfileName !== "") {
       this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
@@ -59,17 +60,18 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
     $("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-font-family.css' type='text/css'>");
-
-    
     //this.getHtmlBodyAlias('z2yl1Spk')
     this.getActiveThemeData(this.vanityLoginDto);
   }
    
   ngAfterViewInit(){
     if(this.router.url.includes('/welcome-page')){
-      this.referenceService.isWelcomePageLoading = false;
       this.getHtmlBodyAlias();
       this.displayPage = true;
+      if(this.referenceService.isWelcomePageLoading && this.referenceService.isFromLogin){
+        this.referenceService.isWelcomePageLoading = false;
+        this.referenceService.isFromLogin = false;
+      }
       }  
   }
 
@@ -271,6 +273,24 @@ getHtmlBodyAlias(){
         this.activeThemeDto.backgroundImagePath = this.imageHost + this.bgImagePath;
       }
     });
+}
+
+getVideoDefaultSettings() {
+  try {
+    this.userService.getVideoDefaultSettings().subscribe(
+      (response: any) => {
+        if (response !== "") {
+          this.referenceService.videoBrandLogo = response.brandingLogoUri;
+          this.referenceService.companyProfileImage = response.companyProfile.companyLogoPath;
+        }
+      },
+      (error: any) => {
+        this.xtremandLogger.errorPage(error);
+      }
+    );
+  } catch (error) {
+    this.xtremandLogger.error("error" + error);
+  }
 }
 
 }

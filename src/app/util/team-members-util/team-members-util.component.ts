@@ -452,6 +452,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
     if (this.isLoggedInThroughVanityUrl) {
+      this.referenceService.isWelcomePageLoading = true;
       this.getVanityUrlRoles(emailId, isLoggedInAsAdmin);
     } else {
       this.getUserData(emailId, isLoggedInAsAdmin);

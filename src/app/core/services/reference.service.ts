@@ -156,6 +156,7 @@ export class ReferenceService {
   isCopyForm: boolean = false;
   isWelcomePageLoading: boolean = false;
   isHarizontalNavigationBar:boolean = false;
+  isFromLogin:boolean  = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,

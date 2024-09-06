@@ -28,7 +28,7 @@
       </div>
     </div>
     <!---->
-    <div class="xamplify-welcome-page-top">
+    <div class="xamplify-welcome-page-top" [ngClass]="isNavbarBackgroundVisible?'whiteHeader':''">
       <div class="xamplify-welcome-page-top-menu">
         <ul class="xamplify-welcome-page-ul Xamplify-hidden-xs" style="display: -webkit-inline-box;padding-right: 6px;">
         </ul>
@@ -47,20 +47,27 @@
               <!--  -->
               <ul class="link">
                 <li>
-                  <a (click)="naviagteToWelcomePage('/welcome-page')" [ngClass]="isWelcomePageActive? 'xamplify-active':''">Home</a>
+<!--                   <a (click)="naviagteToWelcomePage('/welcome-page')" [ngClass]="isWelcomePageActive? 'xamplify-active':''">Home</a> -->
+                  <a (click)="naviagteToWelcomePage('/welcome-page')" [ngClass]="isWelcomePageActive? 'xamplify-active':'moduleTextColor'">
+                  <i class="fa fa-home" aria-hidden="true"></i>
+                  Home</a>
                 </li>
                 <!-- start Show 3 modules-->
                 <ng-container *ngFor="let menu of menuItems | slice:0:4">
                   <li *ngIf="!menu.showSubMenu">
                     <!-- [routerLink]="menu.angularPath" -->
-                    <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''" >
+                    <!-- <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''" >
                       <i [className]="menu.angularIcon" aria-hidden="true"></i>
+                      {{menu.customName}}
+                    </a> -->
+                    <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'" >
+                      <i  [ngClass]="menu.mergeTag === 'dashboard'? 'fa fa-th-large fa-4': menu.angularIcon"  aria-hidden="true"></i>
                       {{menu.customName}}
                     </a>
                   </li>
                   <li *ngIf="menu.showSubMenu" >
                 
-                    <a href="javascript:;" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''">
+                    <a href="javascript:;" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'">
                       <i [className]="menu.angularIcon" aria-hidden="true"></i>
                       {{menu.customName}}
                     </a>
@@ -78,15 +85,19 @@
                 </ng-container>
                 <!-- End Show 3 modules-->
                 <li>
-                  <a>More</a>
+                  <a class = "moduleTextColor">More</a>
                   <i class='fa fa-chevron-down htmlcss-arrow arrow '></i>
                   <ul class="htmlCss-sub-menu sub-menu-bar">
                     <ng-container *ngFor="let menu of displayedMoreItems">
                       <li *ngIf="!menu.showSubMenu" >
                         <!-- [routerLink]="menu.angularPath" -->
-                        <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''"
+<!--                         <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'"
                           >
                           <i [className]="menu.angularIcon" aria-hidden="true"></i>
+                          {{menu.customName}}
+                        </a>-->
+                        <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'" >
+                          <i  [ngClass]="menu.mergeTag === 'dashboard'? 'fa fa-th-large fa-4': menu.angularIcon"  aria-hidden="true"></i>
                           {{menu.customName}}
                         </a>
                       </li>
@@ -94,7 +105,7 @@
                         <!-- <a href="javascript:;" (click)="toggleSubMenu(menu.mergeTag)">{{menu.customName}}
                     </a> -->
                     
-                        <span class="xamplify-submenu-flex"><a [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''">
+                        <span class="xamplify-submenu-flex"><a [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'">
                           <i [className]="menu.angularIcon" aria-hidden="true"></i>
                           {{menu.customName}}</a>
                           <i class='fa fa-chevron-right arrow more-arrow' [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''"></i>
@@ -103,7 +114,7 @@
                         <ul class="more-sub-menu sub-menu-bar" *ngIf="menu.showSubMenu">
                           <li *ngFor="let subMenu of menu.subModules">
                             <!-- [routerLink]="subMenu.angularPath" -->
-                            <a (click) = "navigate(subMenu)" >
+                            <a class="moduleTextColor" (click) = "navigate(subMenu)" >
                               <i [className]="subMenu.angularIcon" aria-hidden="true"></i>
                               {{subMenu.customName}}
                             </a>
@@ -167,19 +178,11 @@
                 <i class="fa fa-angle-down xAmplify-down-arrow Xamplify-hidden-xs" aria-hidden="true"></i>
             </a>
             <ul class="xamplify-dropdown-menu">
-              <li
-              *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
-                <a (click)="goToRouter('/home/social/update-status')" translate>
-                  <i class="fa fa-share " aria-hidden="true"></i>
-                  Update Status
-                </a>
-                <div class="border-bt"></div>
-              </li>
               
               <li
                 *ngIf="userId!=1 && ((authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner)">
                 <a (click)="goToRouter('/home/dashboard/myprofile')" translate>
-                  <i class="icon-user"></i>
+                  <i class="fa fa-user"></i>
                   My Profile
                 </a>
                 <div class="border-bt"></div>
@@ -188,6 +191,14 @@
                 *ngIf="(!authenticationService.isOnlyUser() && !authenticationService.isSuperAdmin() && authenticationService.superiorRole != 'Partner') || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
                 <a (click)="navigateToCompanyProfile('/home/dashboard/edit-company-profile',authenticationService?.module?.companyProfileCreated)"
                   translate> <i class="fa fa-building-o"></i> Company Profile
+                </a>
+                <div class="border-bt"></div>
+              </li>
+              <li
+              *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
+                <a (click)="goToRouter('/home/social/update-status')" translate>
+                  <i class="fa fa-share " aria-hidden="true"></i>
+                  Update Status
                 </a>
                 <div class="border-bt"></div>
               </li>
