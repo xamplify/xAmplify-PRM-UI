@@ -1,61 +1,82 @@
 <div class="row">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <app-response-message [customResponse]="customResponse"
+							*ngIf="customResponse.isVisible"></app-response-message>
     <div class="profile-sidebar">
+      <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="portlet light profile-sidebar-portlet">
         <!-- Header 1 -->
         <div class="profile_header">
           <div class="avatar2">
-            <span class="avatar-initial">S</span>
+            <span class="avatar-initial">{{highlightLetter}}</span>
           </div>
           <div class="profile_info">
-            <i class="fa fa-user mr_6 icons_colors" aria-hidden="true"></i>
-            <span  data-toggle="tooltip" data-placement="bottom"  title="Name">
-              Rohith
-            </span>
-            <i class="fa fa-edit ml_6" aria-hidden="true"></i>
-            <p  data-toggle="tooltip" data-placement="bottom"  title="Email"><i class="fa fa-envelope mr_6 icons_colors"></i> xamplify22.com <i class="fa fa-clone ml_6" aria-hidden="true"></i>
+            <div *ngIf="selectedContact?.firstName != undefined || selectedContact?.lastName != undefined">
+              <i class="fa fa-user mr_6 icons_colors" aria-hidden="true"></i>
+              <span data-toggle="tooltip"
+                data-placement="bottom" title="{{selectedContact?.firstName || ''}} {{selectedContact?.lastName || ''}}">
+                {{selectedContact?.firstName | slice:0:8}} <span *ngIf="selectedContact?.firstName?.length>8">..</span>
+                {{(selectedContact?.firstName.length > 8) ? '':(selectedContact?.lastName | slice:0:(8-selectedContact?.firstName.length))}}
+                <span *ngIf="(selectedContact?.firstName.length + selectedContact?.lastName?.length) > 8">..</span>
+              </span>
+              <i class="fa fa-edit ml_6" (click)="editContactDetails(selectedContact)" aria-hidden="true"></i>
+            </div>
+            <p  data-toggle="tooltip" data-placement="bottom"  title="{{selectedContact?.emailId}}"><i class="fa fa-envelope mr_6 icons_colors"></i>
+              {{selectedContact?.emailId | slice:0:12}} <span *ngIf="selectedContact?.emailId?.length>12">..</span> <i class="fa fa-clone ml_6" aria-hidden="true"></i>
             </p>
-            <p><i class="fa fa-phone mr_6 icons_colors"></i> +91 8232877788 <i class="fa fa-clone ml_6" aria-hidden="true"></i></p>
+            <p *ngIf="selectedContact?.mobileNumber != undefined"><i class="fa fa-phone mr_6 icons_colors"></i> {{selectedContact.mobileNumber}} <i class="fa fa-clone ml_6" aria-hidden="true"></i></p>
           </div>
         </div>
         <!-- end -->
         <!-- Header-contacts-Details start-->
         <div class="lead_details">
-          <h3>Lead Details
+          <h3>Contact Details
             <a data-toggle="collapse" (click)="toggleClass('account-details-icon')" style="float: right;"
               href="javascript:;#accountDetailsDropdown">
               <i id="account-details-icon" class="fa fa-minus" aria-hidden="true"></i>
             </a>
           </h3>
           <ul id="accountDetailsDropdown" class="nav collapse in">
+            <li><i class="fas fa-building"></i>
+              <div class="user_details">
+              <span class="address_title">Company</span>
+              <p *ngIf="selectedContact?.contactCompany != undefined" class="mb0">{{selectedContact?.contactCompany}}</p>
+              </div>
+            </li>
+            <li><i class="fas fa-briefcase"></i>
+              <div class="user_details">
+              <span class="address_title">Job Title</span>
+              <p *ngIf="selectedContact?.jobTitle != undefined" class="mb0">{{selectedContact?.jobTitle}}</p>
+              </div>
+            </li>
             <li><i class="fas fa-map-marker-alt"></i>
               <div class="user_details">
                 <span class="address_title">Address</span>
-                <p class="mb0">42840 Christy Street, Suite 226..</p>
+                <p *ngIf="selectedContact?.address != undefined" class="mb0">{{selectedContact?.address}}</p>
               </div>
             </li>
             <li><i class="fas fa-city"></i>
               <div class="user_details">
               <span class="address_title">City</span>
-              <p class="mb0"> California, United States</p>
+              <p *ngIf="selectedContact?.city != undefined" class="mb0">{{selectedContact?.city}}</p>
               </div>
             </li>
             <li><i class="fas fa-map"></i>
               <div class="user_details">
               <span class="address_title">State/Province</span>
-              <p class="mb0">Nevada Mountains</p>
+              <p *ngIf="selectedContact?.state != undefined" class="mb0">{{selectedContact?.state}}</p>
               </div>
             </li>
             <li><i class="fas fa-mail-bulk"></i>
               <div class="user_details">
               <span class="address_title"> Postal Code</span>
-              <p class="mb0">94538, United States</p>
+              <p *ngIf="selectedContact?.zipCode != undefined" class="mb0">{{selectedContact?.zipCode}}</p>
               </div>
             </li>
             <li><i class="fas fa-globe"></i>
               <div class="user_details">
               <span class="address_title"> Country</span>
-              <p class="mb0">United States</p>
+              <p *ngIf="selectedContact?.country != undefined" class="mb0">{{selectedContact?.country}}</p>
               </div>
             </li>
           </ul>
@@ -78,21 +99,22 @@
               <!-- tabs start -->
               <div class="scrollbar-x">
                 <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
-                  <li class="active"><a data-toggle="tab" href="#leads1">Leads</a></li>
-                  <li><a data-toggle="tab" href="#deals1">Deals</a>
-                  </li>
-                  <li><a data-toggle="tab" href="#campaigns1">Campaigns</a>
-                  </li>
-                  <li><a data-toggle="tab" href="#form1">Forms</a></li>
+                  <li class="active"><a (click)="setActiveTab('leads1')" data-toggle="tab" href="#leads1">Leads</a></li>
+                  <li><a (click)="setActiveTab('deals1')" data-toggle="tab" href="#deals1">Deals</a></li>
+                  <li><a (click)="setActiveTab('campaigns1')" data-toggle="tab" href="#campaigns1">Campaigns</a></li>
+                  <li><a (click)="setActiveTab('form1')" data-toggle="tab" href="#form1">Forms</a></li>
                 </ul>
               </div>
 
               <div class="tab-content tab-bg">
                 <div id="leads1" class="tab-pane fade in active pt-5 integration-profile">
-                  wdedssaswswxsxxsx
+                  
                 </div>
                 <div id="deals1" class="tab-pane fade pt-top">
-                  xsxszxsdddrfsd
+                  <div *ngIf="showLeads">
+                    <!-- <app-manage-leads></app-manage-leads> -->
+                  </div>
+                  <!-- <app-manage-deals></app-manage-deals> -->
                 </div>
                 <div id="campaigns1" class="tab-pane fade pt-top">
                   cdxzxcsdfedscdsc
@@ -109,4 +131,12 @@
     </div>
     <!-- END -->
   </div>
+</div>
+
+<div *ngIf="contactService.isContactModalPopup && updateContactUser">
+  <app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList"
+    [gdprInput]="gdprInput" [totalUsers]="contacts" [contactDetails]="contactAllDetails"
+    [isUpdateUser]="isUpdateUser" [selectedCompanyId]="selectedCompanyContactId"
+    [isCompanyContact]="isCompanyContact"
+    (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 </div>

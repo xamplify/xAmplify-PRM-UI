@@ -58,6 +58,11 @@
 				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 			</span>
 		</li>
+		<li *ngIf="showContactDetailsTab">
+			<a translate>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>Contact Details
+			</a>
+		</li>
 	</ul>
 </div>
 <div class="clearfix" id="manageContacts" *ngIf="!showContactDetailsTab">
@@ -990,7 +995,7 @@
 														</ng-container>
 														<ng-container
 															*ngFor="let contact of pagination.pagedItems;let i = index">
-															<tr class='row_{{i}}' (click)="showContactDetails(contact)">
+															<tr class='row_{{i}}'>
 																<td class='text-center'
 																	*ngIf="!isCampaignDraftContactList "><input
 																		type="checkbox"
@@ -1002,7 +1007,7 @@
 																		value="{{contact.id}}" id="{{contact.id}}"
 																		(click)="highlightRow(contact.id,$event)" />
 																</td>
-																<td *ngIf="isPartner">
+																<td *ngIf="isPartner" (click)="module == 'contacts'?showContactDetails(contact):''">
 																	<app-user-info [isPartnerEntityInfo]="true"
 																		[isPartnerInfo]="true" [userInfo]="contact">
 																	</app-user-info>
@@ -1055,11 +1060,11 @@
 																	{{contact.category | slice:0:14}}
 																	<span *ngIf="contact.category?.length>14">..</span>
 																</td>
-																<td *ngIf="!isPartner">
+																<td *ngIf="!isPartner" (click)="module == 'contacts'?showContactDetails(contact):''">
 																	<app-user-info [isContactCompanyInfo]="true"
 																		[userInfo]="contact"> </app-user-info>
 																</td>
-																<td class="hidden-xs" *ngIf="!isPartner">
+																<td class="hidden-xs" *ngIf="!isPartner" (click)="module == 'contacts'?showContactDetails(contact):''">
 																	<h5 class='mb0 ellipsis' data-toggle="tooltip"
 																		data-placement="bottom"
 																		title="{{contact.jobTitle}}">{{contact.jobTitle
@@ -1068,7 +1073,7 @@
 																			*ngIf="contact.jobTitle?.length>25">...</span>
 																	</h5>
 																</td>
-																<td align="center" class="hidden-xs">
+																<td align="center" class="hidden-xs" (click)="module == 'contacts'?showContactDetails(contact):''">
 																	<h5 *ngIf="contact?.address" class='mb0'>
 																		{{contact.address | slice:0:30}}
 																		<span
@@ -1998,4 +2003,7 @@
 	[hasPlaybookAccess]="authenticationService?.module?.playbookAccess && checkingContactTypeName!='Contact'">
 </app-share-unpublished-content>
 
-<app-contact-details *ngIf="showContactDetailsTab" [selectedContact]="selectedContact"></app-contact-details>
+<app-contact-details *ngIf="showContactDetailsTab" [selectedContact]="selectedContact" [gdprInput]="parentInput"
+	[manageCompanies]="manageCompanies" [selectedCompanyId]="selectedCompanyId"
+	[isTeamMemberPartnerList]="isTeamMemberPartnerList" [pagination]="pagination"
+	[selectedContactListId]="selectedContactListId"></app-contact-details>
