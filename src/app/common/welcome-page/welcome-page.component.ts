@@ -58,6 +58,8 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
     }
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
     $("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
+    $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-font-family.css' type='text/css'>");
+
     
     //this.getHtmlBodyAlias('z2yl1Spk')
     this.getActiveThemeData(this.vanityLoginDto);
@@ -141,7 +143,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
             document.documentElement.style.setProperty('--color-glassmorphims', '#000');
             document.documentElement.style.setProperty('--background-glassmorphims', '#fff');
             document.documentElement.style.setProperty('--background-hover-glassmorphims', '#b1a2a22e');
-            $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-glassmorphism.css' type='text/css'>");
+            $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-glassmorphism-light.css' type='text/css'>");
           }
           else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Glassomorphism Dark" && !this.router.url.includes('home/help')) {
@@ -149,7 +151,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
             document.documentElement.style.setProperty('--color-glassmorphims', '#fff');
             document.documentElement.style.setProperty('--background-glassmorphims', '#000');
             document.documentElement.style.setProperty('--background-hover-glassmorphims', '#2e2f32');
-            $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-glassmorphism.css' type='text/css'>");
+            $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-glassmorphism-dark.css' type='text/css'>");
           }
           else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && !this.router.url.includes('home/help')) {
             if (activeThemeDto.parentThemeName == 'LIGHT' || activeThemeDto.parentThemeName == 'DARK') {
@@ -170,7 +172,6 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
               $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-dark-customization.css' type='text/css'>");
             } else {
               if (activeThemeDto.parentThemeName === 'NEUMORPHISMDARK') {
-                document.documentElement.style.setProperty('--color-glassmorphims', '#fff');
                 document.documentElement.style.setProperty('--menu-text', topCustom.buttonSecondaryTextColor);
                 document.documentElement.style.setProperty('--module-select-color', topCustom.divBgColor);
                 document.documentElement.style.setProperty('--menu-text-hover', topCustom.iconHoverColor);
@@ -185,7 +186,6 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
 
 
               } else if (activeThemeDto.parentThemeName === 'NEUMORPHISMLIGHT') {
-                document.documentElement.style.setProperty('--color-glassmorphims', '#000');
                 document.documentElement.style.setProperty('--menu-text', topCustom.buttonSecondaryTextColor);
                 document.documentElement.style.setProperty('--module-select-color', topCustom.divBgColor);
                 document.documentElement.style.setProperty('--menu-text-hover', topCustom.iconHoverColor);
@@ -203,11 +203,14 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
                 document.documentElement.style.setProperty('--color-glassmorphims', '#fff');
                 document.documentElement.style.setProperty('--background-glassmorphims', '#000');
                 document.documentElement.style.setProperty('--background-hover-glassmorphims', '#2e2f32');
+                $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-glassmorphism-dark.css' type='text/css'>");
               } else if (activeThemeDto.parentThemeName === 'GLASSMORPHISMLIGHT') {
                 document.documentElement.style.setProperty('--body-background-image', 'url(' + activeThemeDto.backgroundImagePath + ')');
                 document.documentElement.style.setProperty('--color-glassmorphims', '#000');
                 document.documentElement.style.setProperty('--background-glassmorphims', '#fff');
                 document.documentElement.style.setProperty('--background-hover-glassmorphims', '#b1a2a22e');
+                $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-glassmorphism-light.css' type='text/css'>");
+
               }
               document.documentElement.style.setProperty('--menu-text', topCustom.buttonSecondaryTextColor);
               document.documentElement.style.setProperty('--module-select-color', topCustom.divBgColor);
@@ -222,7 +225,6 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
               // document.documentElement.style.setProperty('--custom-icon-border-color', buttonCustomizationForm.iconBorderColor);
               // document.documentElement.style.setProperty('--custom-icon-hover-color', buttonCustomizationForm.iconHoverColor);
 
-              $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-glassmorphism.css' type='text/css'>");
               $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-button-customization.css' type='text/css'>");
             }
           }

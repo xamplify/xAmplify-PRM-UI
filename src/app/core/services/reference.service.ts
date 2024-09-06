@@ -155,6 +155,7 @@ export class ReferenceService {
   /*** XNFR-433 ***/
   isCopyForm: boolean = false;
   isWelcomePageLoading: boolean = false;
+  isHarizontalNavigationBar:boolean = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
