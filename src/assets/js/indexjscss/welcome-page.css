@@ -695,3 +695,7 @@ position: relative;
   li.divider-bottom {
     border-bottom: 1px solid #eee;
   }
+
+  .fa-4 {
+    font-size: 12px !important;
+  }

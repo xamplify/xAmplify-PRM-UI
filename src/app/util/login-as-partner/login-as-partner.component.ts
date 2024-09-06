@@ -94,6 +94,7 @@ export class LoginAsPartnerComponent implements OnInit {
 
   logoutAsPartnerOrTeamMember(){
     this.utilService.addLoginAsLoader();
+    this.referenceService.isWelcomePageLoading = true;
     if(this.isLoggedInAsTeamMember){
       this.logoutAsTeamMember();
     }else{
@@ -163,8 +164,6 @@ export class LoginAsPartnerComponent implements OnInit {
     setTimeout(function () {
       const currentUser = localStorage.getItem( 'currentUser' );
       let isVanityWelcomePageRequired = JSON.parse( currentUser )['isVanityWelcomePageRequired'];
-      console.log("alsl asljkdnlaj alsdnlk");
-      console.log(isVanityWelcomePageRequired)
       let routingLink = isVanityWelcomePageRequired? 'welcome-page':'home/dashboard/';
       self.router.navigate([routingLink])
         .then(() => {

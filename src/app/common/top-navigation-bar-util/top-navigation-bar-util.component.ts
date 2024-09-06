@@ -141,6 +141,10 @@ export class TopNavigationBarUtilComponent implements OnInit,DoCheck {
       this.isLoggedInFromAdminSection = this.utilService.isLoggedInFromAdminPortal();
       this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
       this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
+      if(this.isLoggedInAsPartner || this.isLoggedInAsTeamMember) {
+        $('.page-header-fixed .page-container').css('margin-top', '110px');
+        $('.xamplify-welcome-page-div-top').css('margin-top', '90px')
+      }
       this.currentUrl = this.router.url;
       const userName = this.authenticationService.user.emailId;
       this.loggedInAsUserEmailId = userName;
@@ -597,6 +601,7 @@ private beforeAdd(tag: any) {
         // Reload the page (optional, Angular should handle route changes without a full reload)
         if(isWelcomePage){
           window.location.reload();
+          self.referenceService.isWelcomePageLoading = true;
         }
       });
       self.authenticationService.module.topNavBarLoader = false;
@@ -611,6 +616,7 @@ private beforeAdd(tag: any) {
           // Reload the page (optional, Angular should handle route changes without a full reload)
           if(isWelcomePage){
             window.location.reload();
+            this.referenceService.isWelcomePageLoading = true;
           }
         });
       
@@ -619,6 +625,7 @@ private beforeAdd(tag: any) {
         // Reload the page (optional, Angular should handle route changes without a full reload)
         if(isWelcomePage){
           window.location.reload();
+          this.referenceService.isWelcomePageLoading = true;
         }
       });
 
@@ -1113,8 +1120,8 @@ private beforeAdd(tag: any) {
     this.mergeTag = 'welcomepage'
     this.router.navigate([path]).then(() => {
       // Reload the page (optional, Angular should handle route changes without a full reload)
-      window.location.reload();
       this.referenceService.isWelcomePageLoading = true;
+      window.location.reload();
     });
   }
   
