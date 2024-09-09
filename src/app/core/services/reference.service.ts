@@ -3593,6 +3593,12 @@ previewEmailTemplateInNewTab(id:any){
   let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
   this.openWindowInNewTab("/pv/t/"+encodedURLString);
 }
+/***XNFR-664*****/
+previewUnLaunchedCampaignEmailTemplateUsingFromEmailUserIdInNewTab(id:any,fromEmailUserId:any){
+  let encodedEmailId = this.getEncodedUri(this.encodePathVariable(id));
+  let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/ulctp/"+encodedEmailId+"/"+encodedFromEmailUserIdURLString);
+}
 
 previewEventCampaignEmailTemplateInNewTab(id:number){
   let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
@@ -3603,9 +3609,10 @@ previewEditRedistributedEventCampaignTemplatePreview(campaignId: any) {
   this.openWindowInNewTab("/pv/edevt/"+encodedURLString);
 }
 
-previewWorkflowEmailTemplateInNewTab(id:number){
+previewWorkflowEmailTemplateInNewTab(id:number,fromEmailUserId:number){
   let encodedURLString = this.getEncodedUri(this.encodePathVariable(id));
-  this.openWindowInNewTab("/pv/wt/"+encodedURLString);
+  let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/wt/"+encodedURLString+"/"+encodedFromEmailUserIdURLString);
 }
 
 previewCampaignEmailTemplateInNewTab(campaignId:number){

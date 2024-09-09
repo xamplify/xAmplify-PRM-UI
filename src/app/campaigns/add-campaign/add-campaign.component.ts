@@ -334,7 +334,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 this.recipientsSortOption.campaignRecipientsDropDownOptions.push(selectedListSortOption);
                 this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = this.recipientsSortOption.campaignRecipientsDropDownOptions[this.recipientsSortOption.campaignRecipientsDropDownOptions.length - 1];
                 this.getValidUsersCount();
-
             }
             /****XNFR-125****/
             this.selectedPartnershipId = this.campaign.partnershipId;
@@ -566,7 +565,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     }
 
     findCampaignDetailsData(){
-        
         this.campaignService.findCampaignDetailsData().subscribe(
             response=>{
                 this.isMultipleCrmsActivated = false;
@@ -956,11 +954,15 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             let teamMember = this.teamMemberEmailIds.filter((teamMember) => teamMember.id == this.loggedInUserId)[0];
             this.campaign.email = teamMember.emailId;
             this.campaign.fromName = $.trim(teamMember.firstName + " " + teamMember.lastName);
+            this.campaign.fromEmailUserId = teamMember.id;
             this.setEmailIdAsFromName();
         } else {
             let existingTeamMemberEmailIds = this.teamMemberEmailIds.map(function (a) { return a.emailId; });
             if (existingTeamMemberEmailIds.indexOf(this.campaign.email) < 0) {
                 this.setLoggedInUserEmailId();
+            }else{
+                let teamMember = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId == this.campaign.email)[0];
+                this.campaign.fromEmailUserId = teamMember.id;
             }
         }
     }
@@ -968,6 +970,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     setFromName() {
         let user = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId == this.campaign.email)[0];
         this.campaign.fromName = $.trim(user.firstName + " " + user.lastName);
+        this.campaign.fromEmailUserId = user.id;
         this.setEmailIdAsFromName();
     }
 
@@ -983,6 +986,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         else {
             this.campaign.fromName = $.trim(userProfile.emailId);
         }
+        /**XNFR-664****/
+        this.campaign.fromEmailUserId = userProfile.userId;
         this.setEmailIdAsFromName();
     }
 
@@ -1569,9 +1574,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
 
     previewEmailTemplate(emailTemplate:any,isAutoResponseTemplate:boolean){
         if(isAutoResponseTemplate){
-            this.referenceService.previewWorkflowEmailTemplateInNewTab(emailTemplate.id);
+            this.referenceService.previewWorkflowEmailTemplateInNewTab(emailTemplate.id,this.campaign.fromEmailUserId);
         }else{
-            this.referenceService.previewEmailTemplateInNewTab(emailTemplate.id);
+            this.referenceService.previewUnLaunchedCampaignEmailTemplateUsingFromEmailUserIdInNewTab(emailTemplate.id,this.campaign.fromEmailUserId);
         }
     }
 
