@@ -863,8 +863,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 splitValue = "\t";
         }
         this.paginationType = "csvContacts";
-        this.xtremandLogger.info("selectedDropDown:" + selectedDropDown);
-        this.xtremandLogger.info(splitValue);
         var startTime = new Date();
         $("#clipBoardValidationMessage").html('');
         var self = this;

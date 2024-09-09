@@ -222,6 +222,7 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
   }
   
   selectAllTeamMembersOfTheCurrentPage(ev: any, partnershipId: number) {
+    this.selectedPartnershipIds =[];
       if (ev.target.checked) {
           $('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', true);
           let self = this;
