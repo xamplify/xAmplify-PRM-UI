@@ -856,7 +856,7 @@
 								<div class="portlet-body">
 									<app-list-loader *ngIf="isListLoader"></app-list-loader>
 									<!--xAmplify CSV Format-->
-									<div class="table-responsive" *ngIf="(isXamplifyCsvFormatUploaded || isColumnMapped) && !isListLoader">
+									<div class="table-responsive" *ngIf="(selectedAddContactsOption==1 || isXamplifyCsvFormatUploaded || isColumnMapped) && !isListLoader">
 										<div class="alert alert-success" *ngIf="isColumnMapped && isValidEmailAddressMapped">
 											<strong>
 												The CSV header has been matched with the default header. You can still <a (click)="openArrageHeadersModalPopUp()">click here</a> to remap the header or 
@@ -884,8 +884,8 @@
 													<tr id="csv-contact-row-{{i}}">
 														<td>{{user.firstName |slice:0:30}}<span	*ngIf="user.firstName?.length>30">...</span></td>
 														<td class="text-center">{{user.lastName | slice:0:25}} <span *ngIf="user.lastName?.length>25">...</span></td>
-														<td class="text-center" *ngIf="isXamplifyCsvFormatUploaded">{{user?.emailId | slice:0:35}} <span *ngIf="user?.emailId?.length>35">...</span></td>
-														<td   class="text-center" *ngIf="!isXamplifyCsvFormatUploaded && isColumnMapped"
+														<td class="text-center" *ngIf="(isXamplifyCsvFormatUploaded || selectedAddContactsOption==1)">{{user?.emailId | slice:0:35}} <span *ngIf="user?.emailId?.length>35">...</span></td>
+														<td   class="text-center" *ngIf="selectedAddContactsOption!=1 && !isXamplifyCsvFormatUploaded && isColumnMapped"
 															 [ngClass]="user?.isValidEmailIdPattern ? 'success':'danger'">
 															 <input type="text" class="form-control"  [(ngModel)]="user.emailId" [ngModelOptions]="{standalone: true}" (input)="validateEmailAddressPattern(user)">
 														</td>
@@ -955,7 +955,7 @@
 										</span>
 									</div>
 									<!--Customer Uploaded UnMapped CSV Data XNFR-671-->
-									<div class="table-responsive" *ngIf="!isXamplifyCsvFormatUploaded && !isColumnMapped && !isListLoader">
+									<div class="table-responsive" *ngIf="selectedAddContactsOption!=1 && !isXamplifyCsvFormatUploaded && !isColumnMapped && !isListLoader">
 										<div class="alert alert-danger">
 											<strong>
 												{{properties?.contactsCsvHeaderMisMatchedErrorMessage}} Please <a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.mapCsvHeaderMessage}}
