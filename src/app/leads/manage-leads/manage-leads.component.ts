@@ -1471,5 +1471,24 @@ export class ManageLeadsComponent implements OnInit {
     return showRegisterDeal;
   }
 
+  viewCustomLeadForm(event :Lead) {
+    this.showLeadForm = true;
+    this.actionType = 'view';
+    this.leadId = event.id;
+  }
+
+
+  editCustomLeadForm(event :Lead) {
+    this.showLeadForm = true;
+    this.actionType = 'edit';
+    this.leadId = event.id;
+  }
+
+  closeCustomForm() {
+    this.showLeadForm = false;
+    this.showDealForm = false;
+    this.closeLeadModal();
+  }
+
   
 }

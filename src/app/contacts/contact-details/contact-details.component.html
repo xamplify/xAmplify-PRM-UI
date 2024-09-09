@@ -108,12 +108,14 @@
 
               <div class="tab-content tab-bg">
                 <div id="leads1" class="tab-pane fade in active pt-5 integration-profile">
-                  
+                  <div *ngIf="showLeadsTab">
+                    <app-custom-manage-leads [listView]="listView" [leadsPagination]="leadsPagination" [isPartnerVersion]="'true'"
+                      [isVendorVersion]="'false'" [isOrgAdmin]="'true'" [isVendor]="'false'"
+                      [actionType]="'add'"></app-custom-manage-leads>
+                  </div>
                 </div>
                 <div id="deals1" class="tab-pane fade pt-top">
-                  <div *ngIf="showLeads">
-                    <!-- <app-manage-leads></app-manage-leads> -->
-                  </div>
+                  
                   <!-- <app-manage-deals></app-manage-deals> -->
                 </div>
                 <div id="campaigns1" class="tab-pane fade pt-top">

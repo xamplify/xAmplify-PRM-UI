@@ -7,12 +7,16 @@ import { Pagination } from 'app/core/models/pagination';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { LeadsService } from 'app/leads/services/leads.service';
+import { PagerService } from 'app/core/services/pager.service';
 declare var $: any, swal: any;
 
 @Component({
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
-  styleUrls: ['./contact-details.component.css']
+  styleUrls: ['./contact-details.component.css'],
+  providers: [LeadsService]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input() public selectedContact:any;
@@ -35,17 +39,31 @@ export class ContactDetailsComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   contactId:number;
   loggedInUserId:any;
-  showLeads:boolean = false;
+  leadsPagination: Pagination = new Pagination();
+  selectedTabIndex: number;
+  selectedFilterIndex: number = 1;
+  vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+  showLeadsTab: boolean;
+  listView:boolean = true;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
-    public authenticationService: AuthenticationService ) {
+    public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = true;
+    } else {
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = false;
+    }
    }
 
   ngOnInit() {
     this.contactId = this.selectedContact.id;
     this.referenceService.goToTop();
     this.setHighlightLetter();
+    this.showLeads();
   }
 // plus& minus icon
   toggleClass(id: string) {
@@ -101,7 +119,35 @@ export class ContactDetailsComponent implements OnInit {
     if (tabName === 'leads1') {
       
     } else if (tabName === 'deals1') {
-      this.showLeads = true;
+      // this.showLeads = true;
     }
+  }
+
+  resetLeadsPagination() {
+    this.leadsPagination.maxResults = 12;
+    this.leadsPagination = new Pagination;
+    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+  }
+
+  showLeads() {
+    this.selectedTabIndex = 1;
+    this.resetLeadsPagination();
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.leadsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.leadsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
+    this.listLeads(this.leadsPagination);
+  }
+
+  listLeads(pagination: Pagination) {
+    pagination.userId = this.loggedInUserId;
+    pagination.contactId = this.selectedContact.id;
+    this.leadsService.listLeadsForPartner(pagination).subscribe(
+      response => {
+        pagination.totalRecords = response.totalRecords;
+          this.leadsPagination = this.pagerService.getPagedItems(pagination, response.data);
+          this.showLeadsTab = true;
+      }
+    )
   }
 }

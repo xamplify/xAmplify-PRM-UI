@@ -325,7 +325,12 @@
                 </div>  
 
                 <!-- -------------------- List View for Leads-------------------- -->
-                <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
+                 <app-custom-manage-leads [listView]="listView" [leadsSortOption]="leadsSortOption" [httpRequestLoader]="httpRequestLoader" 
+                 [leadsPagination]="leadsPagination" [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion"
+                 [isOrgAdmin]="isOrgAdmin" [isVendor]="isVendor" [actionType]="actionType" (viewCustomLeadForm)="viewCustomLeadForm($event)"
+                 (editCustomLeadForm)="editCustomLeadForm($event)" (notifySetLeadsPage)="setLeadsPage($event)"
+                 (closeCustomLeadAndDealForm)="closeCustomForm()" (notifyListLeads)="listLeads($event)"></app-custom-manage-leads>
+                <!-- <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
                   [hidden]="!listView || leadsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
                   <div class="table-responsive pos_pd_top6" [hidden]="httpRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
@@ -401,9 +406,9 @@
                                 </app-timestamp>
                               </h5>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center"> -->
                               <!---xnfr-426---->
-                              {{lead.currentStageName | slice:0:30}}
+                              <!-- {{lead.currentStageName | slice:0:30}}
                               <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
                                 <i class="fa fa-check-circle mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                                 Deal
@@ -491,18 +496,18 @@
                         </ng-container>
                       </tbody>
                     </table>
-                  </div>
+                  </div> -->
 
                   <!-- --------------------Pagination0-------------------- -->
-                  <div *ngIf="!httpRequestLoader.isLoading" class="pg2 mrgn_top0">
+                  <!-- <div *ngIf="!httpRequestLoader.isLoading" class="pg2 mrgn_top0">
                     <app-pagination [pagination]="leadsPagination" (notifyParent)="setLeadsPage($event)"
                       (notifyParentDropDown)="listLeads($event)"></app-pagination>
-                  </div>
+                  </div> -->
                   <!-- End of 24 -->
-                  <div *ngIf="!httpRequestLoader.isLoading && leadsPagination.totalRecords==0" class="alert alert-info">
+                  <!-- <div *ngIf="!httpRequestLoader.isLoading && leadsPagination.totalRecords==0" class="alert alert-info">
                     <strong translate>No Leads Found.</strong>
                   </div>
-                </section>
+                </section> -->
                 <div *ngIf="listView && !httpRequestLoader.isLoading && leadsSortOption.totalRecords==0"
                   class="alert alert-info">
                   <strong translate>No Leads Found.</strong>
@@ -754,6 +759,8 @@
   (notifySubmitSuccess)="showSubmitLeadSuccess()" (notifyUnReadChatCount)="resetUnReadChatCount()"
   (notifyManageLeadsComponentToHidePopup)="resetValues()" [isVendorVersion]="isVendorVersion"
   [isOrgAdmin]="isOrgAdmin"></app-add-lead> -->
+
+
 
   <section *ngIf="showLeadForm">
     <div class="page-content">

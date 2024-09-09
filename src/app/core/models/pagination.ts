@@ -145,5 +145,6 @@ export class Pagination {
 
 	vendorLandingPageId:number;
 	welcomePages:boolean = false;
+	contactId:number;
 
 }
