@@ -48,7 +48,6 @@ export class CustomManageLeadsComponent implements OnInit {
    }
 
   ngOnInit() {
-    alert("Alert from custom manage leads");
   }
 
   showRegisterDealButton(lead):boolean {
