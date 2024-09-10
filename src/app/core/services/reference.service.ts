@@ -3620,6 +3620,12 @@ previewCampaignEmailTemplateInNewTab(campaignId:number){
   this.openWindowInNewTab("/pv/ct/"+encodedURLString);
 }
 
+previewCampaignEmailTemplateWithFromEmailUserIdInNewTab(campaignId:number,fromEmailUserId:number){
+  let encodedCampaignURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
+  let encodedFromEmailUserIdURLString = this.getEncodedUri(this.encodePathVariable(fromEmailUserId));
+  this.openWindowInNewTab("/pv/ctfe/"+encodedCampaignURLString+"/"+encodedFromEmailUserIdURLString);
+}
+
 previewSharedVendorCampaignEmailTemplateInNewTab(campaignId:number){
   let encodedURLString = this.getEncodedUri(this.encodePathVariable(campaignId));
   this.openWindowInNewTab("/pv/sct/"+encodedURLString);
