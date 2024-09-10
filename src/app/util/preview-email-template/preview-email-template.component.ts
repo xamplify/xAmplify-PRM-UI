@@ -38,6 +38,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
   /***XNFR-664***/
   isSharedCampaignTemplatePreviewWithFromEmailParameter = false;
   fromEmailUserId:any;
+  isUnLaunchedCampaignTemplatePreview = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties,public vanityUrlService:VanityURLService) { }
   
@@ -46,6 +47,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
     this.processor.set(this.processor);
     let currentRouterUrl = this.referenceService.getCurrentRouteUrl();
     this.isCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/ct/")>-1;
+    this.isUnLaunchedCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/ulctp/")>-1;
     this.isSharedCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/sct/")>-1;
     this.isSharedCampaignTemplatePreviewWithFromEmailParameter = currentRouterUrl.indexOf("/pv/sctfe/")>-1;
     this.isSharedEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/sect/")>-1;
@@ -61,7 +63,10 @@ export class PreviewEmailTemplateComponent implements OnInit {
     this.referenceService.clearHeadScriptFiles();
     this.decodeIdParameter();
     this.decodeCampaignIdParameter();
-    if(this.isSharedCampaignTemplatePreviewWithFromEmailParameter || this.isVendorCampaignAutoReplyEmailWorkflowId || this.vendorCampaignAutoReplyWebsiteLinkWorkflowId){
+    let isAutoReplyTemplatePreview =   this.isVendorCampaignAutoReplyEmailWorkflowId || this.vendorCampaignAutoReplyWebsiteLinkWorkflowId || this.isVendorCompanyViewingWorkflowTemplate;
+    let isSharedTempaltePreview = this.isSharedCampaignTemplatePreviewWithFromEmailParameter;
+    let isFromEmailUserIdParamExists = isAutoReplyTemplatePreview || isSharedTempaltePreview;
+    if(isFromEmailUserIdParamExists){
       this.decodeFromEmailUserIdParameter();
     }
     let isValidId = this.id!=undefined && this.id>0;
@@ -161,7 +166,11 @@ export class PreviewEmailTemplateComponent implements OnInit {
       URL_SUFFIX = "vendorCampaignAutoReplyWebsiteLinkWorkflowId/" + this.id+"/fromEmailUserId/"+this.fromEmailUserId;;
     }else if(this.isVanityEmailTemplatePreview){
       URL_SUFFIX = "vanityEmailTemplateId/" + this.id;
-    } else {
+    }else if(this.isUnLaunchedCampaignTemplatePreview){
+      URL_SUFFIX = "id/" + this.id+"/fromEmailUserId/"+this.fromEmailUserId;
+    }else if(this.isVendorCompanyViewingWorkflowTemplate){
+      URL_SUFFIX = "workflowTemplateId/" + this.id+"/fromEmailUserId/"+this.fromEmailUserId;
+    }else {
       URL_SUFFIX = this.isVendorCompanyViewingWorkflowTemplate ? "workflowTemplateId/" + this.id : "id/" + this.id;
     }
     return URL_SUFFIX;
