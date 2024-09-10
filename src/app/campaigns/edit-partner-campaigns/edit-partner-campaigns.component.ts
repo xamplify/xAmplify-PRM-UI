@@ -398,7 +398,10 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
               let existingTeamMemberEmailIds =  this.teamMemberEmailIds.map(function(a) {return a.emailId;});
               if(existingTeamMemberEmailIds.indexOf(this.campaign.email)<0){
                   this.setLoggedInUserEmailId();
-              }
+              }else{
+                let teamMember = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId == this.campaign.email)[0];
+                this.campaign.fromEmailUserId = teamMember.id;
+            }
           }
         },
         error => console.log( error ),
@@ -1586,8 +1589,7 @@ appendValueToSubjectLine(event:any){
 
     openEmailTemplateInNewTab(campaign:any){
         if(this.campaign.nurtureCampaign){
-           // this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
-            this.referenceService.previewSharedVendorCampaignEmailTemplateWithFromEmailInNewTab(campaign.campaignId,this.campaign.fromEmailUserId);
+            this.referenceService.previewCampaignEmailTemplateWithFromEmailUserIdInNewTab(campaign.campaignId,this.campaign.fromEmailUserId);
         }else{
             /**XNFR-664**/
             this.referenceService.previewSharedVendorCampaignEmailTemplateWithFromEmailInNewTab(campaign.campaignId,this.campaign.fromEmailUserId);

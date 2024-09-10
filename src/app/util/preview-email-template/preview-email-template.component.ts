@@ -39,6 +39,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
   isSharedCampaignTemplatePreviewWithFromEmailParameter = false;
   fromEmailUserId:any;
   isUnLaunchedCampaignTemplatePreview = false;
+  isPreviewingTemplateFromEditCampaignSection = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties,public vanityUrlService:VanityURLService) { }
   
@@ -50,6 +51,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
     this.isUnLaunchedCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/ulctp/")>-1;
     this.isSharedCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/sct/")>-1;
     this.isSharedCampaignTemplatePreviewWithFromEmailParameter = currentRouterUrl.indexOf("/pv/sctfe/")>-1;
+    this.isPreviewingTemplateFromEditCampaignSection = currentRouterUrl.indexOf("/pv/ctfe/")>-1;
     this.isSharedEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/sect/")>-1;
     this.isVendorCompanyViewingWorkflowTemplate = currentRouterUrl.indexOf("/pv/wt/")>-1;
     this.isVendorCampaignAutoReplyEmailWorkflowId = currentRouterUrl.indexOf("/pv/scwaret")>-1;
@@ -65,7 +67,8 @@ export class PreviewEmailTemplateComponent implements OnInit {
     this.decodeCampaignIdParameter();
     let isAutoReplyTemplatePreview =   this.isVendorCampaignAutoReplyEmailWorkflowId || this.vendorCampaignAutoReplyWebsiteLinkWorkflowId || this.isVendorCompanyViewingWorkflowTemplate;
     let isSharedTempaltePreview = this.isSharedCampaignTemplatePreviewWithFromEmailParameter;
-    let isFromEmailUserIdParamExists = isAutoReplyTemplatePreview || isSharedTempaltePreview;
+    let isCampaignTemplatePreview = this.isPreviewingTemplateFromEditCampaignSection;
+    let isFromEmailUserIdParamExists = isAutoReplyTemplatePreview || isSharedTempaltePreview || isCampaignTemplatePreview;
     if(isFromEmailUserIdParamExists){
       this.decodeFromEmailUserIdParameter();
     }
@@ -153,7 +156,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
           let fromEmail = this.eventCampaign.email;
           URL_SUFFIX = URL_SUFFIX + "/" + hostedBy + "/" + fromEmail;
         }
-      }else if(this.isSharedCampaignTemplatePreviewWithFromEmailParameter){
+      }else if(this.isSharedCampaignTemplatePreviewWithFromEmailParameter || this.isPreviewingTemplateFromEditCampaignSection){
         URL_SUFFIX = URL_SUFFIX+"/fromEmailUserId/"+this.fromEmailUserId;
       }
     } else if (this.isCampaignAutoReplyEmailWorkflowId) {
