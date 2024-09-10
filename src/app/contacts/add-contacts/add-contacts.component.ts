@@ -1655,12 +1655,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
 
             if (this.selectedAddContactsOption == 2) {
-                if(this.isXamplifyCsvFormatUploaded){
-                    this.saveCsvContactList();
-                }else{
-                    this.referenceService.showSweetAlertInfoMessage();
-                }
-                
+                this.saveCsvContactList();
             }
             if (this.selectedAddContactsOption == 3) {
                 if (this.allselectedUsers.length == 0) {
@@ -3628,6 +3623,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+    }
+
+
+    private callDestroyMethod() {
         this.sharedPartnerDetails = [];
         this.contactService.successMessage = false;
         this.contactService.socialProviderName = "";
@@ -3636,12 +3635,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.isContactModalPopup = false;
         swal.close();
         $('#settingSocialNetwork').modal('hide');
-
         if (this.selectedAddContactsOption != 8 && this.router.url !== '/login' && !this.isDuplicateEmailId) {
             this.model.contactListName = "";
-
             let self = this;
-
             swal({
                 title: 'Are you sure?',
                 text: "You have unsaved data",
@@ -3655,7 +3651,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     return new Promise(function () {
                         var inputName = name.toLowerCase().replace(/\s/g, '');
                         if ($.inArray(inputName, self.names) > -1) {
-                            swal.showValidationError('This list name is already taken.')
+                            swal.showValidationError('This list name is already taken.');
                         } else {
                             if (name != "" && name.length < 250) {
                                 swal.close();
@@ -3664,7 +3660,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 self.saveContacts();
                             } else {
                                 if (name == "") {
-                                    swal.showValidationError('List Name is Required..')
+                                    swal.showValidationError('List Name is Required..');
                                 }
                                 else {
                                     swal.showValidationError("You have exceeded 250 characters!");
@@ -3680,9 +3676,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 }
             });
         }
-
     }
-
 
     /**
      *

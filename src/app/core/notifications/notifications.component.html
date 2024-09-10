@@ -42,7 +42,7 @@
   </div>
 </div>
 <ng-container *ngIf="isTopNavBar && notifications?.length > 0">
-  <ul class="dropdown-menu-list scroller" style="height: 250px;overflow-x: hidden;">
+  <ul *ngIf="!isWelcomePage" class="dropdown-menu-list scroller" style="height: 250px;overflow-x: hidden;">
      <li *ngFor="let item of notifications;" [ngClass]="{'read': item.read, 'unread': !item.read}">
      <a (click)='navigate(item)'>
      <span class="social-icon" style="width: 18px;">
@@ -59,4 +59,24 @@
      </a>
      </li>
   </ul>
+
+
+  
+  <ul *ngIf="isWelcomePage" class="xamplify-dropdown-list">
+   <li  class="xamplify-unread" *ngFor="let item of notifications;" [ngClass]="{'xamplify-read': item.read, 'xamplify-unread': !item.read}">
+     <a (click)='navigate(item)'>
+       <span class="xampify-social-icon">
+         <i class="fa fa-envelope-open" aria-hidden="true" *ngIf="item.actionId == 13"></i>
+         <i class="fa fa-video-camera" aria-hidden="true" *ngIf="item.actionId == 1"></i>
+         <i class="fa fa-share" aria-hidden="true" *ngIf="item.actionId == 0"></i>
+         <i class="fa fa-link" aria-hidden="true" *ngIf="item.actionId == 52"></i>
+       </span>
+       <span class="xamplify-time">{{item.createdTime | date: 'short'}}</span>
+       <span class="xamplify-details" [innerHtml]="item.message?.substr(0,185)">
+         <span class="label label-sm label-icon label-success"> </span>
+         {{item.message | slice:0:185}}<span *ngIf="item.message?.length> 185">....</span> - {{item.read}}
+         </span>
+     </a>
+   </li>
+ </ul>
 </ng-container>

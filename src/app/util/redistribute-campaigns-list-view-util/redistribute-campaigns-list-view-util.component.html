@@ -137,6 +137,8 @@
                       *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && !campaign.launched"
                       src="assets/images/survey.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                       alt="{{campaign.campaignType}} Campaign">
+                    <h6 class="green-banner ccss" *ngIf="campaign?.oneClickLaunch">
+											{{properties?.oneClickLaunch}}</h6>
                   </td>
                   <td>
                     <h5 class="moreipsis mobile-left mt5 mb5" data-toggle="tooltip" data-placement="top"

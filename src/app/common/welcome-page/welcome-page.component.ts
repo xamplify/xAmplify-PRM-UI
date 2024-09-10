@@ -14,9 +14,8 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 declare var $:any;
 @Component({
   selector: 'app-welcome-page',
-  templateUrl: './welcome-page.component.html',
   styleUrls: ['./welcome-page.component.css'],
-  //encapsulation:ViewEncapsulation.Emulated,
+  templateUrl: './welcome-page.component.html',
 })
 export class WelcomePageComponent implements OnInit, AfterViewInit {
 
@@ -54,14 +53,17 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
   }
  
   ngOnInit() {
+    this.getActiveThemeData(this.vanityLoginDto);
     if(this.router.url.includes('/welcome-page')){
         this.referenceService.clearHeadScriptFiles();
+        $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
+        $("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
+        $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-font-family.css' type='text/css'>");
     }
-    $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
-    $("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
-    $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-font-family.css' type='text/css'>");
+    //$("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
+    //$("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
+    //$("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-font-family.css' type='text/css'>");
     //this.getHtmlBodyAlias('z2yl1Spk')
-    this.getActiveThemeData(this.vanityLoginDto);
   }
    
   ngAfterViewInit(){
