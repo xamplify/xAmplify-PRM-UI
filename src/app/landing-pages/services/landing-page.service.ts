@@ -282,8 +282,6 @@ export class LandingPageService {
     } 
     
     getActiveWelcomePageByVanity( landingPageHtmlDto:any) {
-        console.log("akhjsbdkh")
-        console.log(this.authenticationService.companyProfileName)
         landingPageHtmlDto['vanityUrlFilter']  = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
         landingPageHtmlDto['vanityCompnayProfileName'] = this.authenticationService.companyProfileName;
             return this.http.post( this.URL + "/getActiveWelcomePageByVanity?access_token=" + this.authenticationService.access_token , landingPageHtmlDto )

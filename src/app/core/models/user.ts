@@ -77,6 +77,6 @@ export class User {
     accountOwner : string;
     website: string;
     isValidEmailIdPattern = false;
-    isVanityWelcomePageRequired:boolean;
+    isWelcomePageEnabled:boolean;
 
 }

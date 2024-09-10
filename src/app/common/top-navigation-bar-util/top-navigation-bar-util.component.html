@@ -64,11 +64,6 @@
                 <!-- start Show 3 modules-->
                 <ng-container *ngFor="let menu of menuItems | slice:0:4">
                   <li *ngIf="!menu.showSubMenu">
-                    <!-- [routerLink]="menu.angularPath" -->
-                    <!-- <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':''" >
-                      <i [className]="menu.angularIcon" aria-hidden="true"></i>
-                      {{menu.customName}}
-                    </a> -->
                     <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'" >
                       <i  [ngClass]="menu.mergeTag === 'dashboard'? 'fa fa-th-large fa-4': menu.angularIcon"  aria-hidden="true"></i>
                       {{menu.customName}}
@@ -99,20 +94,12 @@
                   <ul class="htmlCss-sub-menu sub-menu-bar">
                     <ng-container *ngFor="let menu of displayedMoreItems">
                       <li *ngIf="!menu.showSubMenu" >
-                        <!-- [routerLink]="menu.angularPath" -->
-<!--                         <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'"
-                          >
-                          <i [className]="menu.angularIcon" aria-hidden="true"></i>
-                          {{menu.customName}}
-                        </a>-->
                         <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'" >
                           <i  [ngClass]="menu.mergeTag === 'dashboard'? 'fa fa-th-large fa-4': menu.angularIcon"  aria-hidden="true"></i>
                           {{menu.customName}}
                         </a>
                       </li>
                       <li class="more" *ngIf="menu.showSubMenu">
-                        <!-- <a href="javascript:;" (click)="toggleSubMenu(menu.mergeTag)">{{menu.customName}}
-                    </a> -->
                     
                         <span class="xamplify-submenu-flex"><a [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'">
                           <i [className]="menu.angularIcon" aria-hidden="true"></i>
@@ -150,14 +137,6 @@
                             &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
                             <ng-template [ngTemplateOutlet]="referVendorTemplate"></ng-template>
                           </ng-container>
-<!--           <button class="" style="border-radius: 7px 0px 0px 7px;">Invite A vendor</button>
-          <button class="xamplify-mr5" style="border-radius: 0px 7px 7px 0px;"> 
-            <i aria-hidden="true" class="fa fa-line-chart" data-original-title="" data-toggle="tooltip"
-              title=""></i></button>
-          <button *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany"
-           class="xamplify-mr5" style="border-radius: 7px;"><span class="Xamplify-hidden-xs">Update Status</span>
-            <i aria-hidden="true" class="fa fa-share" data-original-title="" data-toggle="tooltip"
-              title=""></i></button> -->
           <div class="xamplify-dropdown xamplify-dropdown-user">
             <a class="xamplify-dropdown-toggle circlebg-color-bell-v" data-close-others="true" data-hover="dropdown"
               data-toggle="dropdown">
@@ -343,7 +322,7 @@
                      Please complete the required fields.
                   </div>
                   <div class="form-group">
-                     <label for="exampleInputEmail1">To <span class="text-danger">*</span></label>
+                     <label class="xamplify_label" for="exampleInputEmail1">To <span class="text-danger">*</span></label>
                      <tag-input [(ngModel)]='emailIds' #tagInput name="emails" #email="ngModel"
                         [errorMessages]="errorMessages" [validators]="validators"
                         [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'"
@@ -353,13 +332,13 @@
                      </tag-input>
                   </div>
                   <div class="form-group">
-                     <label for="subjectLine">Email subject <span class="text-danger">*</span></label>
+                     <label class="xamplify_label" for="subjectLine">Email subject <span class="text-danger">*</span></label>
                      <input type="text" id="subjectLine" [(ngModel)]="vendoorInvitation.subject"
                         (input)="validateVendoorInvitation()" [ngModelOptions]="{standalone: true}"
-                        placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" />
+                        placeholder="Subject Line" class="form-control email_subject" name="subjectLine" maxlength="200" />
                   </div>
                   <div class="form-group" *ngIf="isShowCKeditor">
-                     <label for="subjectLine">Message <span class="text-danger">*</span></label>
+                     <label class="xamplify_label" for="subjectLine">Message <span class="text-danger">*</span></label>
                      <ckeditor name="body" [(ngModel)]="vendoorInvitation.message" [ngModelOptions]="{standalone: true}"
                         (input)="validateVendoorInvitation()"></ckeditor>
                   </div>
@@ -380,7 +359,7 @@
                   </div>
                </div>
             </div>
-            <div class="modal-footer" style="border: none" *ngIf="!isValidationMessage">
+            <div class="xamplify-modal-footer" style="border: none" *ngIf="!isValidationMessage">
                <button class="btn Btn-Gray neg_mrg_top4" (click)="closeInvitationModal()"
                   data-dismiss="modal">Cancel</button>
                <button type="submit" class="button bgcolor-unset" [disabled]="emailIds.length ==0"

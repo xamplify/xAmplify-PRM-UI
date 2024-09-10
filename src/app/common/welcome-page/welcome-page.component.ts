@@ -34,6 +34,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
  serverImageHostUrl = "";
  imageHost: any = "";
  /*** Glassmorphism Default *****/
+ pageLoading = false;
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router, public dashBoardService: DashboardService, public xtremandLogger: XtremandLogger,
     public landingPageService:LandingPageService,private vanityURLService: VanityURLService, public sanitizer: DomSanitizer, public userService:UserService
   ) {
@@ -53,17 +54,15 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
   }
  
   ngOnInit() {
+    this.pageLoading = true;
     this.getActiveThemeData(this.vanityLoginDto);
     if(this.router.url.includes('/welcome-page')){
         this.referenceService.clearHeadScriptFiles();
-        $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
-        $("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
-        $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-font-family.css' type='text/css'>");
     }
-    //$("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
-    //$("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
-    //$("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-font-family.css' type='text/css'>");
-    //this.getHtmlBodyAlias('z2yl1Spk')
+    $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
+    $("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
+    $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-font-family.css' type='text/css'>");
+    this.pageLoading = false;
   }
    
   ngAfterViewInit(){
@@ -247,12 +246,11 @@ getHtmlBodyAlias(){
      this.landingPageService.getActiveWelcomePageByVanity(landingPageHtmlDto)
      .subscribe(
        (response: any) => {
-              if (response.statusCode == 200) {
                 this.htmlString = this.vanityURLService.sanitizeHtmlWithImportant(response.message)
                 this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(this.htmlString);
-              }
        },
        (error: string) => {
+        this.xtremandLogger
        }
      );
  } 

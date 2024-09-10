@@ -23,6 +23,8 @@ import { CopyDto } from '../models/copy-dto';
 import { Properties } from 'app/common/models/properties';
 import { LandingPageShareDto } from 'app/dashboard/user-profile/models/LandingPageShareDto';
 import { PartnerCompanyAndGroupsComponent } from '../partner-company-and-groups/partner-company-and-groups.component';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+import { Location } from '@angular/common';
 declare var swal: any, $: any;
 @Component({
   selector: 'app-landing-pages-list-and-grid-view',
@@ -83,7 +85,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
       private utilService: UtilService, private route: ActivatedRoute,public renderer:Renderer,
-      private vanityUrlService:VanityURLService,public properties:Properties, private changeDetectorRef: ChangeDetectorRef,) {
+      private vanityUrlService:VanityURLService,public properties:Properties, private changeDetectorRef: ChangeDetectorRef,public location: Location) {
         this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
         this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.renderer = this.renderer;
@@ -611,6 +613,8 @@ copy(landingPage:any){
               error => {
                 this.ngxloading = false;
                 this.logger.errorPage(error);
+              }, ()=>{
+                this.hardReload()
               });
     }
 
@@ -625,12 +629,40 @@ copy(landingPage:any){
               (response) => {
                 this.customResponse = new CustomResponse('SUCCESS', response.message, true);
                 this.findLandingPagesWithPageIndexOne();
-                  self.ngxloading = false;
+                self.ngxloading = false;
               },
               error => {
                 this.ngxloading = false;
                 this.logger.errorPage(error);
+              }, ()=>{
+                this.hardReload()
               });
+    }
+
+    hardReload(){
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.ngxloading = true;
+
+        this.authenticationService.vanityWelcomePageRequired(currentUser['userName']).subscribe(
+            (res)=>{
+                currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] = res.data;
+                localStorage.setItem('currentUser',JSON.stringify(currentUser)) ;
+                if(currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]){
+                    //this.router.navigate(['/welcome-page']);
+                    this.location.replaceState('/welcome-page');
+                }else{
+                    //this.router.navigate(['/home/dashboard']);
+                    this.location.replaceState('/home/dashboard');
+                }  
+                window.location.reload();       
+                this.ngxloading = false;
+                
+              
+            },error => {
+                this.ngxloading = false;
+                this.logger.errorPage(error);
+              }
+        )
     }
 }
 
