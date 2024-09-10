@@ -380,6 +380,12 @@
                                   </span>
                                 </h5>
                               </div>
+                              <div *ngIf="isVendorVersion" style="margin-left: 61px;" class="neo">
+                                <h5 class="m0"><strong>CRM Id:</strong>
+                                  <span>{{lead.crmId}}
+                                  </span>
+                                </h5>
+                              </div>
                             </td>
                             <td>
                               <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"

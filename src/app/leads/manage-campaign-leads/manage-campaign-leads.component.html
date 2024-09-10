@@ -162,6 +162,12 @@
                   </span>
                 </h5>
               </div>
+              <div *ngIf="isVendorVersion" style="margin-left: 60px;">
+                <h5 class="m0"><strong>CRM Id:</strong>
+                  <span>{{lead.crmId}}
+                  </span>
+                </h5>
+              </div>
             </td>
             <td class="mAlignment" style="width: 23%;">
               <h5 *ngIf="!isPartnerVersion">{{lead.createdByCompanyName | slice:0:30}}
