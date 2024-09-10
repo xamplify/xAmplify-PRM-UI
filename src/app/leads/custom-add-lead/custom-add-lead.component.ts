@@ -1742,6 +1742,15 @@ export class CustomAddLeadComponent implements OnInit {
     this.isCopiedToClipboard = true;
   }
 
+  copyCRMId(inputElement: any) {
+    inputElement.select();
+    $('#copy-crm-id').hide();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copy-crm-id').show(500);
+    this.isCopiedToClipboard = true;
+  }
+
   checkCustomLeadFormValid(event: any) {
     this.sfDealComponent.isDealRegistrationFormInvalid = event;
   }
