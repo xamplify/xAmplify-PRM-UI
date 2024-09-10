@@ -380,7 +380,7 @@ export class SfDealComponent implements OnInit {
     this.form.formLabelDTOs.forEach(column => {
       if (column.parentLabelId === parentId) {
         if (column.dependentDropDownChoices === undefined) {
-          this.getCrmCustomDropdowns(parentLabelId, selectedValue, column, parentLabelType);
+          this.getCrmCustomDropdownsBySelectedValue(parentLabelId, selectedValue, column, parentLabelType);
         } else if (column.dependentDropDownChoices.length > 0) {
           column.dropDownChoices = column.dependentDropDownChoices.filter(choice =>
             Array.isArray(choice.parentChoices) && choice.parentChoices.some(parentChoice => parentChoice.name === selectedValue)
@@ -428,34 +428,6 @@ export class SfDealComponent implements OnInit {
         }
       }
     });
-  }
-
-  getCrmCustomDropdowns(parentLabelId: string, selectedValue: string, column: ColumnInfo, parentLabelType: any) {
-    column.isDropDownLoading = true;
-    this.integrationService.getCrmCustomDropdowns(parentLabelId, selectedValue)
-      .subscribe(
-        result => {
-          if (result.statusCode == 200) {
-            column.dropDownChoices = result.data;
-            column.isDropDownLoading = false;
-            if (!(column.dropDownChoices.length > 0) && selectedValue != "" || parentLabelType === "text") {
-              column.labelType = "text";
-            } else {
-              column.labelType = "select";
-            }
-            let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(column.id);
-            if (haveChildrenDropDown) {
-              let labelType = column.labelType;
-              this.setChildDropDownType(column, labelType);
-            }
-          }
-        },
-        error => {
-          column.isDropDownLoading = false;
-          this.sfFormError = this.referenceService.getApiErrorMessage(error);
-        },
-        () => { }
-      );
   }
 
   validateAllFields() {
@@ -768,22 +740,76 @@ export class SfDealComponent implements OnInit {
     return searchableDropDownDto;
   }
 
+  getCrmCustomDropdownsBySelectedValue(parentLabelId: string, selectedValue: string, column: ColumnInfo, parentLabelType: any) {
+    column.isDropDownLoading = true;
+    this.integrationService.getCrmCustomDropdowns(parentLabelId, selectedValue)
+      .subscribe(
+        result => {
+          if (result.statusCode == 200) {
+            column.dropDownChoices = result.data;
+            column.isDropDownLoading = false;
+            if (!(column.dropDownChoices.length > 0) && selectedValue != "" || parentLabelType === "text") {
+              column.labelType = "text";
+            } else {
+              column.labelType = "select";
+            }
+          }
+        },
+        error => {
+          column.isDropDownLoading = false;
+          this.sfFormError = this.referenceService.getApiErrorMessage(error);
+        },
+        () => { }
+      );
+  }
+
+  getCrmCustomDropdowns(parentLabelId: string, selectedValue: string, column: ColumnInfo, parentLabelType: any) {
+    column.isDropDownLoading = true;
+    this.integrationService.getCrmCustomDropdowns(parentLabelId, selectedValue)
+      .subscribe(
+        result => {
+          if (result.statusCode == 200) {
+            column.dropDownChoices = result.data;
+            column.isDropDownLoading = false;
+            if (!(column.dropDownChoices.length > 0) && selectedValue != "" || parentLabelType === "text") {
+              column.labelType = "text";
+            } else {
+              column.labelType = "select";
+            }
+            let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(column.id);
+            if (haveChildrenDropDown) {
+              let labelType = column.labelType;
+              this.setChildDropDownType(column, labelType);
+            }
+          }
+        },
+        error => {
+          column.isDropDownLoading = false;
+          this.sfFormError = this.referenceService.getApiErrorMessage(error);
+        },
+        () => { }
+      );
+  }
+
   setChildDropDownType(column: ColumnInfo, parentLabelType: any) {
     let parentId = column.id;
     this.form.formLabelDTOs.forEach(column => {
       if (column.parentLabelId === parentId) {
+        column.value = "";
+        column.dropDownChoices = [];
         if (parentLabelType === "text") {
           column.labelType = "text";
         } else {
           column.labelType = "select";
         }
-      }
-      let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(column.id);
-      if (haveChildrenDropDown) {
-        let parentLabelType = column.labelType;
-        this.setChildDropDownType(column, parentLabelType);
+        let haveChildrenDropDown = this.checkIfHaveChildrenDropdown(column.id);
+        if (haveChildrenDropDown) {
+          let parentLabelType = column.labelType;
+          this.setChildDropDownType(column, parentLabelType);
+        }
       }
     });
   }
+
 }
 
