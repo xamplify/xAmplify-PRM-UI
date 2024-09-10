@@ -146,7 +146,7 @@
                             <ng-template [ngTemplateOutlet]="referVendorTemplate"></ng-template>
                             </ng-container>
                           <!--Invite A Vendor For Vanity Login-->
-                         <ng-container *ngIf="authenticationService?.vanityURLEnabled && !isReferVendorOptionEnabledForVanity && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()&&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
+                         <ng-container *ngIf="authenticationService?.vanityURLEnabled && isReferVendorOptionEnabledForVanity && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()&&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                             &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
                             <ng-template [ngTemplateOutlet]="referVendorTemplate"></ng-template>
                           </ng-container>
