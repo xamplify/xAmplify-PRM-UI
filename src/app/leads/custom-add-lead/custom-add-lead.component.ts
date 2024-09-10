@@ -138,19 +138,19 @@ export class CustomAddLeadComponent implements OnInit {
   vendorCompanyName:string = '';
 
 
-  titleFields = ['title','name','symptom','Deal_Name','Title'];
+  titleFields = ['title','name','symptom','Deal_Name','Title','Job_Title'];
   amountFields = ['amount','value','FOppValue','Amount'];
   closeDateFields = ['expected_close_date','expectedCloseDate','FOppTargetDate','CloseDate','Closing_Date'];
-  firstNameFields = ['FirstName'];
-  lastNameFields = ['LastName'];
+  firstNameFields = ['FirstName','First Name','First_Name'];
+  lastNameFields = ['LastName','Last Name','Last_Name'];
   emailFields = ['Email'];
   companyFields = ['Company'];
-  phoneFields = ['Phone'];
+  phoneFields = ['Phone','Phone_Number','Phone Number'];
   websiteFields = ['Website'];
   streetFields = ['Street'];
   cityFields = ['City'];
   stateFields = ['State'];
-  postalCodeFields = ['PostalCode'];
+  postalCodeFields = ['PostalCode','Postal Code','Postal_Code'];
   countryFields = [];
   regionFields = [];
   industryFields = ['Industry'];
@@ -1373,11 +1373,11 @@ export class CustomAddLeadComponent implements OnInit {
     if (response.statusCode == 200) {
       this.activeCRMDetails = response.data;
       let isSalesforceAsActiveCRM = "SALESFORCE" === this.activeCRMDetails.createdForActiveCRMType;
-      if (isSalesforceAsActiveCRM) {
+      let isXamplifyAsActiveCRM = "XAMPLIFY" === this.activeCRMDetails.createdForActiveCRMType;
+      if (isSalesforceAsActiveCRM || isXamplifyAsActiveCRM) {
         this.showCustomForm = true;
       } else {
         this.showDefaultForm = true;
-       
       }
     }
     this.ngxloading = false;
