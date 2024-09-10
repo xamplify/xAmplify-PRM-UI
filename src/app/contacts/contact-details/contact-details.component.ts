@@ -10,13 +10,14 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { LeadsService } from 'app/leads/services/leads.service';
 import { PagerService } from 'app/core/services/pager.service';
+import { DealsService } from 'app/deals/services/deals.service';
 declare var $: any, swal: any;
 
 @Component({
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService]
+  providers: [LeadsService, DealsService]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input() public selectedContact:any;
@@ -50,8 +51,10 @@ export class ContactDetailsComponent implements OnInit {
   leadId: number;
   isConvertingContactToLead: boolean = true;
 
+  showDealsTab: boolean = false;
+
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
-    public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService ) {
+    public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, public dealsService: DealsService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -126,7 +129,7 @@ export class ContactDetailsComponent implements OnInit {
     if (tabName === 'leads1') {
       
     } else if (tabName === 'deals1') {
-      // this.showLeads = true;
+      this.showDealsTab = true;
     }
   }
 

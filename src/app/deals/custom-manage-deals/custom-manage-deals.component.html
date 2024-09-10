@@ -1,0 +1,214 @@
+<div class="row" *ngIf="showContactDeals" style="padding-top: 10px;">
+  <div class="col-md-12">
+    <div class="remove_cardBgcolor padding_0" id="header">
+      <div class="portlet-title">
+        <div *ngIf="!httpRequestLoader.isLoading">
+          <div class="page-toolbar col-xs-12 col-sm-5 col-lg-6 pull-right" style="padding: 0px 4px 8px 0px;">
+            <div class="btn-group pull-right width">
+              <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner && isRegisterDealEnabled"
+                (click)="addDeal()" style="padding-left: 11px;">
+                <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
+                  <span class="btn btn-primary transition d-inline"><i class="fa fa-plus"
+                      aria-hidden="true"></i>{{DEAL_CONSTANTS?.registerADeal}}</span>
+                </button>
+              </a>
+              <div class="inputs" align="right" style="float: right; display: inline-flex;">
+                <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
+                  <div class="input-icon right" style="position: relative;right: -11px;">
+                    <input type="text" class="form-control" [(ngModel)]="dealsSortOption.searchKey"
+                      [ngModelOptions]="{standalone: true}" placeholder="Search"
+                      (keypress)="dealEventHandler($event.keyCode)">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="dealsSortOption.searchKey"
+                      (click)="clearSearch()"></button>
+                    <button type="submit" class="search-box-item-click" (click)="searchDeals()">
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"></app-list-loader>
+        <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0'
+          [hidden]="!listView || dealsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
+          <div class="table-responsive pt_12" [hidden]="httpRequestLoader.isLoading">
+            <table class='table tgrid table-hover table-sm' aria-describedby="dealTable">
+              <thead>
+                <tr>
+                  <th class="center-aligned" translate>Deal Details</th>
+                  <th class="center" translate>{{DEAL_CONSTANTS.addedBy}}</th>
+                  <th class="center" translate>Status</th>
+                  <th style="width: 18%; text-align:right" translate>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor='let deal of dealsPagination.pagedItems; let i=index'>
+                  <tr>
+                    <td style="width: 40%;padding: 10px;">
+                      <div><span data-toggle="tooltip" data-placement="top" title="{{deal.title}}"><b>Deal
+                            Name:</b> {{deal.title | slice:0:30}}
+                          <span *ngIf="deal.title?.length>30">...</span></span>
+                      </div>
+                      <div>
+                        <span *ngIf="isVendorVersion"><b>Deal Id:</b> {{deal.referenceId}}</span>
+                      </div>
+                      <div>
+                        <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
+                          <span style="color: #5b9bd1;">{{deal.createdForCompanyName | slice:0:30}}
+                            <span *ngIf="deal.createdForCompanyName?.length>30">...</span>
+                          </span>
+                        </h5>
+                      </div>
+                      <div>
+                        <h5 *ngIf="isPartnerVersion && deal?.campaignId > 0" data-toggle="tooltip"
+                          data-placement="bottom" title="{{deal.campaignName}}"><b>Campaign:</b>
+                          <span style="color: #5b9bd1;">{{deal.campaignName | slice:0:30}}
+                            <span *ngIf="deal.campaignName?.length>30">...</span>
+                          </span>
+                        </h5>
+                        <h5 *ngIf="isVendorVersion && deal?.parentCampaignId > 0" data-toggle="tooltip"
+                          data-placement="bottom" title="{{deal.parentCampaignName}}"><b>Campaign:</b>
+                          <span style="color: #5b9bd1;">{{deal.parentCampaignName | slice:0:30}}
+                            <span *ngIf="deal.campaignName?.length>30">...</span>
+                          </span>
+                        </h5>
+                      </div>
+
+                    </td>
+                    <td style="width: 20%;">
+                      <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"
+                        title="{{deal.createdByCompanyName}}">{{deal.createdByCompanyName | slice:0:30}}
+                        <span *ngIf="deal.createdByCompanyName?.length>30">...</span>
+                      </h5>
+                      <h5 class='m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{deal.createdByName}}"
+                        style="margin: 7px 0 2px 0;font-weight: 400;">
+                        {{deal.createdByName | slice:0:20}}
+                        <span *ngIf="deal.createdByName?.length>20">...</span>
+                      </h5>
+                      <h6 class='m0' style="font-weight: 400;">
+                        <a data-toggle="tooltip" data-placement="bottom"
+                          title="{{deal.createdByEmail}}">{{deal.createdByEmail | slice:0:30}}</a>
+                        <span *ngIf="deal.createdByEmail?.length>30">...</span>
+                      </h6>
+                      <h5 style="font-weight: 600; color: #676767;">
+                        <app-timestamp [isOnlyDate]="false" [dateAndTime]="deal.createdTime">
+                        </app-timestamp>
+                      </h5>
+                    </td>
+                    <td style="width: 20%;">
+                      <span class="comment-color" translate>
+                        {{deal.currentStageName}}</span>
+
+                      <a *ngIf="(deal?.showDealActions && deal?.showEditDealStage) || (isVendorVersion && deal?.showEditDealStage)"
+                        data-rel="fancybox-button"
+                        (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
+                        data-toggle="tooltip" data-placement="bottom" title="Edit Deal Stage">
+                        <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
+                      </a>
+
+                    </td>
+                    <td style="width: 20%;">
+                      <div class="actions-block override-actions actionbtn">
+                        <a class="custom-icon" data-rel="fancybox-button" (click)="viewDeal(deal)" data-toggle="tooltip"
+                          data-placement="bottom" title="View Deal" id="deal">
+                          <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
+                          <div class="clickicons"></div>
+                        </a>
+                        <span *ngIf="deal.unReadPropertyChatCount > 0 && dealsCount"
+                          class="badge badge-default notify-badge"
+                          style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
+                        <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                          <a class="custom-icon" data-rel="fancybox-button"
+                            *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
+                            (click)="deal?.showDealActions?editDeal(deal):''" data-toggle="tooltip"
+                            data-placement="bottom" title="Edit Deal" id="deal">
+                            <i [ngClass]="deal?.showDealActions? '':'disabled gray'" aria-hidden="true"
+                              class="fa fa-edit mr5 IconCustomization"></i>
+                            <div class="clickicons"></div>
+                          </a>
+                          <a class="custom-icon" data-rel="fancybox-button"
+                            *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
+                            (click)="deal?.showDealActions ? confirmDeleteDeal(deal):''" data-toggle="tooltip"
+                            data-placement="bottom" title="Delete Deal" id="deal">
+                            <i [ngClass]="deal?.showDealActions ? '':'disabled gray'" aria-hidden="true"
+                              class="fa fa-trash-o trashIconCustomization"></i>
+                            <div class="del-icon"></div>
+                          </a>
+                        </ng-container>
+
+                        <a class="custom-icon" *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)"
+                          data-toggle="tooltip" data-placement="bottom" title="Comments/History">
+                          <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
+                          </i>
+                          <div class="clickicons"></div>
+                        </a>
+                        <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default notify-badge"
+                          style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- --------------------Pagination0-------------------- -->
+          <div *ngIf="!httpRequestLoader.isLoading" class="pg8 pos_mrg_top8">
+            <app-pagination [pagination]="dealsPagination" (notifyParent)="setDealsPage($event)"
+              (notifyParentDropDown)="listDeals($event)"></app-pagination>
+          </div>
+          <!-- End of 24 -->
+          <div *ngIf="!httpRequestLoader.isLoading && dealsPagination.totalRecords==0 && !httpRequestLoader.isLoading"
+            class="alert alert-info">
+            <strong translate>No Deals Found.</strong>
+          </div>
+        </section>
+        <div *ngIf="listView && !httpRequestLoader.isLoading && dealsSortOption.totalRecords==0"
+          class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-info">
+          <strong>No Deals Found.</strong>
+        </div>
+      </div>
+      <div class="portlet-body">
+        <div class="row" id="box" style="padding-left: 28px !important;" *ngIf="httpRequestLoader.isServerError"
+          translate>
+          Please contact admin for 'Deals'
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<section *ngIf="showDealForm">
+  <div class="contactId != undefined ? '' : 'page-content'" style="padding-top: 10px; padding-bottom: 10px;">
+    <div>
+      <a (click)="closeDealForm()" class="pull-right close-circle mrg1">        
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </a>
+      <a class="pull-right close-circle" *ngIf="actionType === 'edit'" data-rel="fancybox-button"
+        (click)="showComments(selectedDeal)" data-toggle="tooltip" data-placement="bottom" title="Comments/History"
+        style="margin: 0px -10px;padding-top: 7px;padding-left: 5px;">
+        <span class="fa fa-comments IconCustomization" style="z-index: 1;font-size: 13px;" aria-hidden="true"
+          style="font-size:18px"></span>
+        <span *ngIf="selectedDeal.unReadChatCount > 0" class="badge badge-default"
+          style="margin-top: -62px; margin-right: -15px;background-color: #ed1c24 !important;">{{selectedDeal.unReadChatCount}}</span>
+      </a>
+
+    </div>
+    <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion" 
+      [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
+  </div>
+</section>
+
+<app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"
+  [isVendorVersion]="isVendorVersion" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
+
+<app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="currentDealToUpdateStage"
+  [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [isCommentSection]="isCommentSection"
+  [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments(deal)"
+  (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusCode)="stageUpdateResponse($event)">
+</app-opportunities-chat-modal-popup>

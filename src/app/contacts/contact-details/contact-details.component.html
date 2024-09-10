@@ -115,9 +115,8 @@
                        [isConvertingContactToLead]="isConvertingContactToLead"></app-custom-manage-leads>
                   </div>
                 </div>
-                <div id="deals1" class="tab-pane fade pt-top">
-                  
-                  <!-- <app-manage-deals></app-manage-deals> -->
+                <div id="deals1" class="tab-pane fade pt-top" *ngIf="showDealsTab">
+                  <app-custom-manage-deals [contactId]="contactId"></app-custom-manage-deals>
                 </div>
                 <div id="campaigns1" class="tab-pane fade pt-top">
                   cdxzxcsdfedscdsc

@@ -32,6 +32,7 @@ import { CustomAddLeadComponent } from 'app/leads/custom-add-lead/custom-add-lea
 import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component';
 import { VendorJourneyAnalyticsComponent } from 'app/util/vendor-journey-analytics/vendor-journey-analytics.component';
 import { CustomManageLeadsComponent } from 'app/leads/custom-manage-leads/custom-manage-leads.component';
+import { CustomManageDealsComponent } from 'app/deals/custom-manage-deals/custom-manage-deals.component';
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
@@ -40,7 +41,7 @@ import { CustomManageLeadsComponent } from 'app/leads/custom-manage-leads/custom
 
         declarations: [AddDealComponent,SfDealComponent,DynamicGridLoaderComponent,
                 LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent,VendorJourneyAnalyticsComponent,
-                CustomManageLeadsComponent ],
+                CustomManageLeadsComponent, CustomManageDealsComponent ],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -48,7 +49,7 @@ import { CustomManageLeadsComponent } from 'app/leads/custom-manage-leads/custom
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
-                EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, VendorJourneyAnalyticsComponent, CustomManageLeadsComponent],
+                EditVideoComponent, PlayVideoComponent, LandingPageAnalyticsComponent, ManageFormComponent,FormDetailResponseComponent, CustomAddLeadComponent, SelectLeadComponent, VendorJourneyAnalyticsComponent, CustomManageLeadsComponent, CustomManageDealsComponent],
         providers: [FormService],
 })
 
