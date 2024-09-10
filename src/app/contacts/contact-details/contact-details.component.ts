@@ -45,6 +45,10 @@ export class ContactDetailsComponent implements OnInit {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   showLeadsTab: boolean;
   listView:boolean = true;
+  showLeadForm: boolean;
+  actionType: string;
+  leadId: number;
+  isConvertingContactToLead: boolean = true;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService ) {
@@ -63,7 +67,8 @@ export class ContactDetailsComponent implements OnInit {
     this.contactId = this.selectedContact.id;
     this.referenceService.goToTop();
     this.setHighlightLetter();
-    this.showLeads();
+    this.showLeadsTab = true;
+    // this.showLeads();
   }
 // plus& minus icon
   toggleClass(id: string) {
@@ -71,10 +76,12 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   setHighlightLetter() {
-    if (this.selectedContact.firstName != undefined && this.selectedContact.firstName != null && this.selectedContact.firstName.trim().length > 0) {
-      this.highlightLetter = this.selectedContact.firstName.slice(0, 1);
-    } else if (this.selectedContact.emailId != undefined && this.selectedContact.emailId != null && this.selectedContact.emailId.trim().length > 0) {
-      this.highlightLetter = this.selectedContact.emailId.slice(0, 1);
+    const firstName = this.selectedContact.firstName;
+    const emailId = this.selectedContact.emailId;
+    if (this.referenceService.checkIsValidString(firstName)) {
+      this.highlightLetter = this.referenceService.getFirstLetter(firstName);
+    } else if (this.referenceService.checkIsValidString(emailId)) {
+      this.highlightLetter = this.referenceService.getFirstLetter(emailId);
     }
   }
 
@@ -149,5 +156,17 @@ export class ContactDetailsComponent implements OnInit {
           this.showLeadsTab = true;
       }
     )
+  }
+
+  closeLeadForm() {
+    this.showLeadForm = false;
+  }
+
+  viewOrEditCustomLeadForm() {
+    this.showLeadForm = true;
+  }
+
+  showSubmitSuccess() {
+    this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_UPDATE_SUCCESS, true);
   }
 }

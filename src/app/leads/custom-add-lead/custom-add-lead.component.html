@@ -504,7 +504,7 @@
       </label>
       <input type="text" maxlength="100" class="form-control" [(ngModel)]=" lead.email"
         [ngModelOptions]="{standalone: true}" id="email" (input)="validateField('email',false)"
-        placeholder="{{leadCustomField.placeholder}}" [disabled]="preview || edit || (lead.campaignId > 0)" aria-autocomplete="none" autocomplete="off" />
+        placeholder="{{leadCustomField.placeholder}}" [disabled]="preview || edit || (lead.campaignId > 0) || isConvertingContactToLead" aria-autocomplete="none" autocomplete="off" />
       <span class="required" *ngIf="inValidEmailId">{{errorMessage}}</span>
     </div>
 

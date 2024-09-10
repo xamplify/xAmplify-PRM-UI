@@ -21,10 +21,10 @@ import { CustomManageLeadsComponent } from 'app/leads/custom-manage-leads/custom
 @NgModule({
         imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, SharedModule, CommonComponentModule, SharedLibraryModule ],
         declarations: [AddContactsComponent, ManageContactsComponent,EditContactsComponent,SocialContactsCallbackComponent, AddContactModalComponent,
-        UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent,HalopsaauthenticationpopupComponent, ContactDetailsComponent, CustomManageLeadsComponent],
+        UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent,HalopsaauthenticationpopupComponent, ContactDetailsComponent],
         exports: [FormsModule, CommonModule, RouterModule, AddContactsComponent,ManageContactsComponent,EditContactsComponent,
                   SocialContactsCallbackComponent, AddContactModalComponent, UnsubscribeContactModalComponent, ResubscribeContactModalComponent,AddCompanyContactsComponent, 
-                  HalopsaauthenticationpopupComponent, ContactDetailsComponent, CustomManageLeadsComponent],
+                  HalopsaauthenticationpopupComponent, ContactDetailsComponent],
         providers: [SocialPagerService],
 })
 

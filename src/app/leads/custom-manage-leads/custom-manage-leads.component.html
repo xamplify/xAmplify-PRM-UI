@@ -1,5 +1,50 @@
-<div *ngIf="!showLeadForm">
-  {{showLeadForm}}
+<div *ngIf="!showLeadForm && !showDealForm">
+  <app-response-message [customResponse]="customResponse"
+							*ngIf="customResponse.isVisible"></app-response-message>
+  <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
+    <!-- <div class="col-xs-6 col-sm-6 col-lg-5 p0 mleads">
+      <h4 class="text-primary pull-left" style="margin: 8px 6px 0px 0px;">{{titleHeading}} Leads</h4>
+      <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex"
+        *ngIf="isVendorVersion && !authenticationService?.module?.isMarketingCompany"
+        (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+    </div> -->
+    <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right m_mb8">
+      <div class="btn-group pull-right" style="width: max-content;">
+        <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
+          (click)="addLead()" style="padding-left: 4px;">
+          <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
+            <span class="btn btn-primary transition d-inline">
+              <i class="fa fa-plus  mb-btns" aria-hidden="true"></i> {{LEAD_CONSTANTS?.registerALead}}</span>
+          </button>
+        </a>
+
+        <div class="inputs display" align="right">
+          <div class="portlet-input input-inline" style="display: table-cell;">
+            <div
+              [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'r20' : 'mr-pd'"
+              class="input-icon right r5" style="position: relative;right: -3px;">
+              <input type="text" class="form-control pr-pl ml" [(ngModel)]="leadsSortOption.searchKey"
+                [ngModelOptions]="{standalone: true}" placeholder="Search"
+                (keypress)="leadEventHandler($event.keyCode)">
+              <button class="glyphicon glyphicon-remove search-box-item-clear"
+                *ngIf="leadsSortOption.searchKey" (click)="clearSearch()"></button>
+              <button type="submit"
+                [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'top' : 'top2'"
+                class="search-box-item-click top mb_v_search" (click)="searchLeads()">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <!-- <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+            style="margin-left: 5px !important;" title="Filter" *ngIf="listView"
+            (click)="toggleFilterOption()">
+            <i  aria-hidden="true" class="fa fa-filter p10"></i>
+          </span> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
   <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
     [hidden]="!listView || leadsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
     <div class="table-responsive pos_pd_top6" [hidden]="httpRequestLoader.isLoading">
@@ -191,24 +236,25 @@
   </section>
 </div>
 
-<app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="addCommentModalClose($event)">
+<app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="commentModalPopUpClose($event)">
 </app-deal-chat-popup>
 
 <section *ngIf="showLeadForm">
-  <div class="page-content">
+  <div [ngClass]="selectedContact != undefined ? '' : 'page-content'">
     <div>
       <a (click)="closeLeadForm()" class="pull-right close-circle mrg1">
         <i class="fa fa-times" aria-hidden="true"></i>
       </a> 
     </div>
     <app-custom-add-lead [leadId]="leadId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
-      [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitLeadSuccess()"></app-custom-add-lead>
+      [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitLeadSuccess()" [selectedContact]="selectedContact"
+      [isConvertingContactToLead]="isConvertingContactToLead"></app-custom-add-lead>
   </div>
 </section>
 
 <!-- Deal Form-->
 <section *ngIf="showDealForm">
-  <div class="page-content">
+  <div class="selectedContact != undefined ? '' : 'page-content'">
     <a (click)="closeDealForm()" class="pull-right close-circle mrg1"
       style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
       <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;padding-top:6px;"

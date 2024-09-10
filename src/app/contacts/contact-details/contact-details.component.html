@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="!showLeadForm">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <app-response-message [customResponse]="customResponse"
 							*ngIf="customResponse.isVisible"></app-response-message>
@@ -107,11 +107,12 @@
               </div>
 
               <div class="tab-content tab-bg">
-                <div id="leads1" class="tab-pane fade in active pt-5 integration-profile">
-                  <div *ngIf="showLeadsTab">
-                    <app-custom-manage-leads [listView]="listView" [leadsPagination]="leadsPagination" [isPartnerVersion]="'true'"
-                      [isVendorVersion]="'false'" [isOrgAdmin]="'true'" [isVendor]="'false'"
-                      [actionType]="'add'"></app-custom-manage-leads>
+                <div *ngIf="showLeadsTab" id="leads1" class="tab-pane fade in active pt-5 integration-profile">
+                  <div>
+                    <app-custom-manage-leads [listView]="listView" [isPartnerVersion]="'true'" [isVendorVersion]="'false'" [isOrgAdmin]="'true'" 
+                    [isVendor]="'false'" (viewOrEditCustomLeadForm)="viewOrEditCustomLeadForm()" [selectedContact]="selectedContact"
+                       (closeCustomLeadAndDealForm)="closeLeadForm()" (notifySubmitSuccess)="showSubmitSuccess()"
+                       [isConvertingContactToLead]="isConvertingContactToLead"></app-custom-manage-leads>
                   </div>
                 </div>
                 <div id="deals1" class="tab-pane fade pt-top">

@@ -266,7 +266,11 @@ export class SfDealComponent implements OnInit {
           for (let column of this.form.formLabelDTOs) {
             let addActionType = this.actionType === 'add';
             if (column.labelId === 'Company' && addActionType) {
-              column.value = this.selectedContact.companyName;
+              if (this.selectedContact.companyName != undefined) {
+                column.value = this.selectedContact.companyName;
+              } else {
+                column.value = this.selectedContact.contactCompany;
+              }
             } else if (column.labelId === 'Email') {
               if (addActionType) {
                 column.value = this.selectedContact.emailId;
@@ -276,6 +280,16 @@ export class SfDealComponent implements OnInit {
               column.value = this.selectedContact.firstName;
             } else if (column.labelId === 'LastName' && addActionType) {
               column.value = this.selectedContact.lastName;
+            } else if (column.labelId === 'Phone' && addActionType) {
+              column.value = this.selectedContact.mobileNumber;
+            } else if (column.labelId === 'City' && addActionType) {
+              column.value = this.selectedContact.city;
+            } else if (column.labelId === 'Address' && addActionType) {
+              column.value = this.selectedContact.street;
+            } else if (column.labelId === 'PostalCode' && addActionType) {
+              column.value = this.selectedContact.zipCode;
+            } else if (column.labelId === 'State' && addActionType) {
+              column.value = this.selectedContact.state;
             }
           }
           this.validateAllFields();
