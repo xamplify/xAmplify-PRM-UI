@@ -1586,7 +1586,8 @@ appendValueToSubjectLine(event:any){
 
     openEmailTemplateInNewTab(campaign:any){
         if(this.campaign.nurtureCampaign){
-            this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
+           // this.referenceService.previewCampaignEmailTemplateInNewTab(campaign.campaignId);
+            this.referenceService.previewSharedVendorCampaignEmailTemplateWithFromEmailInNewTab(campaign.campaignId,this.campaign.fromEmailUserId);
         }else{
             /**XNFR-664**/
             this.referenceService.previewSharedVendorCampaignEmailTemplateWithFromEmailInNewTab(campaign.campaignId,this.campaign.fromEmailUserId);

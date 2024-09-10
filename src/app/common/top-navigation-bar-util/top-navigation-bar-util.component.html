@@ -34,7 +34,16 @@
         </ul>
         <!-- nav -->
         <div class="horizontal-navbar">
-          <div class="navbar-navs">
+          <div class="xamplify-loading" *ngIf="loading">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="navbar-navs" *ngIf="!loading">
             <i class='fa fa-bars' (click)="openSidebar()"></i>
             <div class="nav-link">
               <!-- logo -->
@@ -75,7 +84,7 @@
                     <ul class="js-sub-menu sub-menu-bar" *ngIf="menu.showSubMenu">
                       <li *ngFor="let subMenu of menu.subModules">
                        <!-- [routerLink]="subMenu.angularPath" -->
-                        <a (click) = "navigate(subMenu)"  >
+                        <a class="moduleTextColor" (click) = "navigate(subMenu)"  >
                           <i [className]="subMenu.angularIcon" aria-hidden="true"></i>
                           {{subMenu.customName}}
                         </a>
@@ -131,11 +140,21 @@
         <!-- end -->
         <!-- Btns -->
         <div class="xamplify-btn-group xamplify-refer-vendor-button xamplify-right">
-          <button class="" style="border-radius: 7px 0px 0px 7px;">Invite A vendor</button>
-          <button class="xamplify-mr5" style="border-radius: 0px 7px 7px 0px;">
+                            <!--Invite A Vendor For Normal Login-->
+                            <ng-container *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && !authenticationService?.vanityURLEnabled  &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
+                            &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
+                            <ng-template [ngTemplateOutlet]="referVendorTemplate"></ng-template>
+                            </ng-container>
+                          <!--Invite A Vendor For Vanity Login-->
+                         <ng-container *ngIf="authenticationService?.vanityURLEnabled && isReferVendorOptionEnabledForVanity && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()&&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
+                            &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
+                            <ng-template [ngTemplateOutlet]="referVendorTemplate"></ng-template>
+                          </ng-container>
+<!--           <button class="" style="border-radius: 7px 0px 0px 7px;">Invite A vendor</button>
+          <button class="xamplify-mr5" style="border-radius: 0px 7px 7px 0px;"> 
             <i aria-hidden="true" class="fa fa-line-chart" data-original-title="" data-toggle="tooltip"
               title=""></i></button>
-<!--           <button *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany"
+          <button *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany"
            class="xamplify-mr5" style="border-radius: 7px;"><span class="Xamplify-hidden-xs">Update Status</span>
             <i aria-hidden="true" class="fa fa-share" data-original-title="" data-toggle="tooltip"
               title=""></i></button> -->
@@ -147,11 +166,14 @@
             </a>
             <ul class="xamplify-dropdown-menu xamplify-dropdown-width">
               <li class="xamplify-external">
-                <h3><span class="xamplify-bold">52 pending</span> notifications
+                <h3><span class="xamplify-bold">{{userService.unreadNotificationsCount}} pending</span> notifications
                 </h3>
               </li>
               <li>
-                <ul class="xamplify-dropdown-list">
+                <ul class="dropdown-menu-list scroller p0" data-handle-color="#637283">
+                  <app-notifications [isTopNavBar]=true [isWelcomePage] = true></app-notifications>
+               </ul>
+              <!--   <ul class="xamplify-dropdown-list">
                   <li class="xamplify-unread">
                     <a>
                       <span class="xampify-social-icon">
@@ -163,9 +185,10 @@
                           1</b></span>
                     </a>
                   </li>
-                </ul>
+                </ul> -->
               </li>
-              <li class="xamplify-notify-view"><a><span class="bold">View All</span></a></li>
+              <li id="logoutButton" style="text-align:center;"><a
+                routerLink="/home/dashboard/notifications"><span class="bold">View All</span></a></li>
             </ul>
 
           </div>
@@ -301,6 +324,83 @@
     </div>
   </div>
 </div>
+<div class="modal fade right" id="requestForVendor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog" role="document">
+         <div class="my-container">
+            <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+         </div>
+         <div class="modal-content">
+            <div class="modal-header">
+               <a class="close-circle" (click)="closeInvitationModal()" data-dismiss="modal"> <i
+                     class="fa fa-times"></i></a>
+               <h4 class="modal-title left" id="myModalLabel">{{properties?.inviteAVendorToJoinxAmplify}}</h4>
+            </div>
+            <div class="modal-body">
+               <div *ngIf="!isValidationMessage">
+                  <div *ngIf="isError" class="alert alert-danger alert-dismissible left">
+                     <a (click)="isError = false" class="close" data-dismiss="alert" aria-label="close"></a>
+                     Please complete the required fields.
+                  </div>
+                  <div class="form-group">
+                     <label for="exampleInputEmail1">To <span class="text-danger">*</span></label>
+                     <tag-input [(ngModel)]='emailIds' #tagInput name="emails" #email="ngModel"
+                        [errorMessages]="errorMessages" [validators]="validators"
+                        [separatorKeyCodes]="[32,188,186,13,9]" [placeholder]="'Add email'"
+                        [secondaryPlaceholder]="'Enter email address(es)'" [clearOnBlur]="true" [addOnPaste]="true"
+                        [addOnBlur]="true" [pasteSplitPattern]="splitPattern" [onAdding]="onAddedFunc" theme='bootstrap'
+                        [onTextChangeDebounce]="40" required>
+                     </tag-input>
+                  </div>
+                  <div class="form-group">
+                     <label for="subjectLine">Email subject <span class="text-danger">*</span></label>
+                     <input type="text" id="subjectLine" [(ngModel)]="vendoorInvitation.subject"
+                        (input)="validateVendoorInvitation()" [ngModelOptions]="{standalone: true}"
+                        placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" />
+                  </div>
+                  <div class="form-group" *ngIf="isShowCKeditor">
+                     <label for="subjectLine">Message <span class="text-danger">*</span></label>
+                     <ckeditor name="body" [(ngModel)]="vendoorInvitation.message" [ngModelOptions]="{standalone: true}"
+                        (input)="validateVendoorInvitation()"></ckeditor>
+                  </div>
+               </div>
+               <div *ngIf="isValidationMessage">
+                  <div *ngIf="customResponse.responseType != null">
+                     <div class="alert alert-dismissible m0" role="alert" [ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
+                         'alert-danger': customResponse.responseType == 'ERROR',
+                         'alert-info': customResponse.responseType == 'INFO'}">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                           (click)="customResponse.responseType = null; closeInvitationModal()">
+                           <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 style="padding-top: 6px;">
+                           <span class="text" id='responseMessage' [innerHTML]="customResponse.responseMessage"></span>
+                        </h4>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="modal-footer" style="border: none" *ngIf="!isValidationMessage">
+               <button class="btn Btn-Gray neg_mrg_top4" (click)="closeInvitationModal()"
+                  data-dismiss="modal">Cancel</button>
+               <button type="submit" class="button bgcolor-unset" [disabled]="emailIds.length ==0"
+                  (click)="sendRequestForVendorEmail()"><span
+                     class="btn Btn-Green transition txt_pd-top3">Send</span></button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+<ng-template #referVendorTemplate>
+     <button [ngClass]="authenticationService?.isTop?'customskin':''"
+        (click)="openRequestAsVendorModal()" class=""
+        style="border-radius: 7px 0px 0px 7px;" translate>{{properties?.inviteAVendor}}</button>
+     <button [ngClass]="authenticationService?.isTop?'customskin':''"
+        [routerLink]="['/home/dashboard/vendor-request']" class="xamplify-mr5"
+        style="border-radius: 0px 7px 7px 0px;">
+        <i class="fa fa-line-chart" [ngClass]="authenticationService?.isTop?'customskin-icon':''"
+           data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
+</ng-template>
 <!-- 
 -------------------------------------------------------------------------------
  -->

@@ -696,10 +696,14 @@ isVanityWelcomePageRequired = false;
     this.resetData();
     this.access_token = null;
     this.refresh_token = null;
+    let isWelcomePage = this.router.url.includes('/welcome-page');
     if (!this.router.url.includes('/userlock')) {
       if (this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost") < 0) {
         this.closeSwal();
         window.location.href = "https://" + window.location.hostname + "/login";
+        if(isWelcomePage){
+          window.location.reload();
+        }
       } else {
         if (this.envService.CLIENT_URL === 'https://xamplify.io/') {
           window.location.href = 'https://www.xamplify.com/';
@@ -713,13 +717,20 @@ isVanityWelcomePageRequired = false;
   private logoutFormLocalOrVanity() {
     this.closeSwal();
     let self = this;
+    let isWelcomePage = this.router.url.includes('/welcome-page');
     if (this.envService.CLIENT_URL == "http://localhost:4200/") {
       setTimeout(() => {
         self.router.navigate(['/']);
+        if(isWelcomePage){
+          window.location.reload();
+        }
         $("body").removeClass("logout-loader");
       }, 1500);
     } else {
       window.location.href = this.envService.CLIENT_URL + "login";
+      if(isWelcomePage){
+        window.location.reload();
+      }
     }
   }
 
