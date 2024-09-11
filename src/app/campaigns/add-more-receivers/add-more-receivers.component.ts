@@ -330,11 +330,12 @@ export class AddMoreReceiversComponent implements OnInit,OnDestroy {
         }
         this.listName = ListName;
         this.contactListObject = new ContactList;
-			this.userListPaginationWrapper.pagination = pagination;
-			this.contactListObject.id = id;
-            this.contactListObject.name = this.listName;
-			this.userListPaginationWrapper.userList = this.contactListObject;
-
+		this.userListPaginationWrapper.pagination = pagination;
+		this.contactListObject.id = id;
+        this.contactListObject.name = this.listName;
+        this.contactListObject.isPartnerUserList = false;
+		this.userListPaginationWrapper.userList = this.contactListObject;
+        
         this.contactService.loadUsersOfContactList(this.userListPaginationWrapper).subscribe(
                 (data:any) => {
                     this.contactListItems = data.listOfUsers;
