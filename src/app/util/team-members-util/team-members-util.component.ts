@@ -24,6 +24,7 @@ import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { ParterService } from 'app/partners/services/parter.service';
 import { Roles } from 'app/core/models/roles';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 declare var $: any, swal: any;
 @Component({
@@ -502,10 +503,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     setTimeout(function () {
       
       const currentUser = localStorage.getItem( 'currentUser' );
-      let isVanityWelcomePageRequired = JSON.parse( currentUser )['isVanityWelcomePageRequired'];
-      console.log("alsl asljkdnlaj alsdnlk");
-      console.log(isVanityWelcomePageRequired)
-      let routingLink = isVanityWelcomePageRequired? 'welcome-page':'home/dashboard/';
+      let isWelcomePageEnabled = JSON.parse( currentUser )[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
+      let routingLink = isWelcomePageEnabled? 'welcome-page':'home/dashboard/';
 
       self.router.navigate([routingLink])
         .then(() => {

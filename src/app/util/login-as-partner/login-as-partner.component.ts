@@ -1,5 +1,6 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
@@ -163,8 +164,8 @@ export class LoginAsPartnerComponent implements OnInit {
     let self = this;
     setTimeout(function () {
       const currentUser = localStorage.getItem( 'currentUser' );
-      let isVanityWelcomePageRequired = JSON.parse( currentUser )['isVanityWelcomePageRequired'];
-      let routingLink = isVanityWelcomePageRequired? 'welcome-page':'home/dashboard/';
+      let isWelcomePageEnabled = JSON.parse( currentUser )[XAMPLIFY_CONSTANTS.welcomePageEnabledKey];
+      let routingLink = isWelcomePageEnabled? 'welcome-page':'home/dashboard/';
       self.router.navigate([routingLink])
         .then(() => {
           window.location.reload();

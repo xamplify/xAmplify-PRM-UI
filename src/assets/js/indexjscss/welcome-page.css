@@ -442,11 +442,15 @@ display: none;
     font-size: 25px;
     color: #fff;
   }
-    .sidebar-logo  i,
-    .navbar .fa-bars{
+    .sidebar-logo  i{
       font-size: 20px;
       top: -3px;
       position: relative;
+    }
+    .navbar .fa-bars {
+      position: relative;
+      font-size: 20px;
+      top: -35px;
     }
   .horizontal-navbar .navbar-navs .links{
     display: block;
@@ -766,4 +770,193 @@ position: relative;
 }
 .p0{
   padding: 0px;
+}
+/* modal popup css */
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  display: none;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+  overflow-y: auto !important;
+}
+.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.modal-header:before{
+  display: table;
+    content: " ";
+}
+.modal-header:after{
+  display: table;
+  content: " ";
+  clear: both; 
+}
+.modal.fade.in {
+  opacity: 1;
+}
+.modal.fade {
+  opacity: 0;
+  transition: opacity .15s linear;
+}
+.modal.right.fade.in .modal-dialog {
+  right: 0 !important;
+}
+.modal.right.fade .modal-dialog {
+  right: -320px;
+  transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+.modal.fade .modal-dialog {
+  transform: translate(0, -25%);
+  transition: transform .3s ease-out;
+}
+.modal.right .modal-dialog {
+  position: fixed;
+  margin: auto;
+  height: 100%;
+  transform: translate3d(0%, 0, 0) !important;
+}
+.modal .modal-dialog {
+  z-index: 10051;
+}
+.modal.right .modal-content {
+  height: 100%;
+  overflow-y: auto;
+}
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 6px;
+  outline: 0;
+}
+@media (min-width: 768px) {
+  .modal-content {
+      box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+  }
+}
+@media screen and (min-width: 601px) {
+  .modal-dialog {
+      width: 50% !important;
+  }
+}
+.modal .modal-header {
+  border-bottom: 1px solid #efefef;
+  padding: 10px;
+}
+.modal-header > a.close-circle {
+  width: 24px;
+  height: 24px;
+}
+.close-circle {
+  border: 1px solid #ddd;
+  padding: 5px;
+  text-align: center;
+  color: #00a6e8;
+  background-color: #f1f3fa;
+  border-radius: 3px;
+  display: block;
+  float: right;
+}
+.modal-header > a.close-circle i {
+  margin-top: -1px;
+  display: block;
+}
+.modal-title {
+  margin: 0;
+  line-height: 1.42857143;
+}
+.left {
+  float: left !important;
+}
+.modal-body {
+  position: relative;
+  max-height: calc(100vh - 122px);
+  overflow-y: auto;
+  padding: 15px;
+}
+.form-group {
+  margin-bottom: 15px;
+}
+label.xamplify_label{
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: 700!important;
+  font-size: 14px;
+}
+.form-group label {
+  color: #999;
+  font-family: "Gantari", "Open Sans", sans-serif;
+}
+.text-danger{
+  color: #f24e4e;
+}
+input.email_subject.form-control{
+  display: block;
+  border: none;
+  width: 100%;
+  height: 34px;
+  line-height: 1.42857143;
+  background-image: none;
+  padding: 5px;
+  font-size: 1em;
+  border-bottom: 2px solid #efefef;
+  background-color: #fff;
+  box-shadow: none;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+input.email_subject.form-control:focus {
+  outline: 0;
+  box-shadow: none;
+}
+.xamplify-modal-footer{
+  padding: 15px;
+  text-align: right;
+}
+.xamplify-modal-footer>.btn {
+  display: inline-block;
+  font-size: 14px;
+  padding: 6px 14px;
+  margin-bottom: 0;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  border: 1px solid transparent;
+  line-height: 1.42857143;
+  border-radius: 7px;
+  user-select: none;
+  border-width: 0;
+  outline: none !important;
+  background-image: none !important;
+  filter: none;
+  box-shadow: none;
+  text-shadow: none;
+}
+.xamplify-modal-footer>.Btn-Gray {
+  background-color: #5a6268;
+  color: #ffffff;
+}
+.Btn-Green {
+  background-color: #0276FF;
+  border: 1px solid #026deb;
+  color: #ffffff;
+}
+.xamplify-modal-footer button.button.bgcolor-unset{
+  background: none;
+  border:none;
+}
+.xamplify-modal-footer>button.button:disabled span, button.button_blue:disabled span {
+  cursor: not-allowed;
+  opacity: 0.5;
 }

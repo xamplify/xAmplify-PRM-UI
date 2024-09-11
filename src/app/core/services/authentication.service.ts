@@ -31,6 +31,7 @@ import { CopyGroupUsersDto } from 'app/common/models/copy-group-users-dto';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
 import { Properties } from 'app/common/models/properties';
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
 
 @Injectable()
 export class AuthenticationService {
@@ -166,7 +167,7 @@ export class AuthenticationService {
   /*** XNFR-603 ****/
   showVanityURLError1 = false;
 /***** XNFR-669*********** */
-isVanityWelcomePageRequired = false;
+isWelcomePageEnabled = false;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -249,7 +250,7 @@ isVanityWelcomePageRequired = false;
       return this.map;
     }).flatMap((map) => this.getVanityURLUserRoles(userName, this.map.access_token).map((response: any) => {
       this.vanityURLUserRoles = response.data;
-      this.isVanityWelcomePageRequired = response.map.isVanityWelcomePageRequired;
+      this.isWelcomePageEnabled = response.map.isWelcomePageEnabled;
     }))
       .flatMap((map) => this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName
         + '&access_token=' + this.map.access_token, '')
@@ -269,7 +270,7 @@ isVanityWelcomePageRequired = false;
 
           if (this.vanityURLEnabled && this.companyProfileName && this.vanityURLUserRoles) {
             userToken['roles'] = this.vanityURLUserRoles;
-            userToken['isVanityWelcomePageRequired'] =  this.isVanityWelcomePageRequired;
+            userToken[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] =  this.isWelcomePageEnabled;
           }
 
           if(this.vanityURLEnabled && this.companyProfileName && userName=="admin@xamplify.io"){
@@ -700,10 +701,10 @@ isVanityWelcomePageRequired = false;
     if (!this.router.url.includes('/userlock')) {
       if (this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost") < 0) {
         this.closeSwal();
-        window.location.href = "https://" + window.location.hostname + "/login";
         if(isWelcomePage){
           window.location.reload();
         }
+        window.location.href = "https://" + window.location.hostname + "/login";
       } else {
         if (this.envService.CLIENT_URL === 'https://xamplify.io/') {
           window.location.href = 'https://www.xamplify.com/';
@@ -720,10 +721,10 @@ isVanityWelcomePageRequired = false;
     let isWelcomePage = this.router.url.includes('/welcome-page');
     if (this.envService.CLIENT_URL == "http://localhost:4200/") {
       setTimeout(() => {
-        self.router.navigate(['/']);
         if(isWelcomePage){
           window.location.reload();
         }
+        self.router.navigate(['/']);
         $("body").removeClass("logout-loader");
       }, 1500);
     } else {
@@ -1438,5 +1439,10 @@ logoutByUserId(){
   return this.callGetMethod(url);
 }
 
-
+vanityWelcomePageRequired(userName) {
+  this.dashboardAnalyticsDto = this.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+  return this.http.post(this.REST_URL + 'v_url/vanityWelcomePageRequired?userName=' + userName + '&access_token=' + this.access_token, this.dashboardAnalyticsDto)
+    .map((res: Response) => { return res.json(); })
+    .catch((error: any) => { return error; });
+} 
 }

@@ -1,11 +1,11 @@
-<app-topnavbar *ngIf="!isVanityWelcomePageRequired" [model]="referenceService.topNavBarUserDetails"></app-topnavbar>
-<app-welcome-page *ngIf="isVanityWelcomePageRequired && !referenceService.isWelcomePageLoading" [model]="referenceService.topNavBarUserDetails" ></app-welcome-page>
+<app-topnavbar *ngIf="!isWelcomePageEnabled" [model]="referenceService?.topNavBarUserDetails"></app-topnavbar>
+<app-welcome-page *ngIf="isWelcomePageEnabled && !referenceService?.isWelcomePageLoading" [model]="referenceService?.topNavBarUserDetails" ></app-welcome-page>
 <div class="page-container">
-  <app-leftsidebar *ngIf="showLeftMenu && !isVanityWelcomePageRequired"></app-leftsidebar>
-  <div *ngIf= "!referenceService.isWelcomePageLoading" class="page-content-wrapper">
+  <app-leftsidebar *ngIf="showLeftMenu && !isWelcomePageEnabled"></app-leftsidebar>
+  <div *ngIf= "!referenceService?.isWelcomePageLoading" class="page-content-wrapper">
     <router-outlet></router-outlet>
   </div>
 
 </div>
 <app-custom-copyright [activeThemeDetails]="activeThemeDetails"
-  *ngIf="footerSkin.showFooter && footerSkin.textContent && showLeftMenu"></app-custom-copyright>
+  *ngIf="footerSkin?.showFooter && footerSkin?.textContent && showLeftMenu"></app-custom-copyright>

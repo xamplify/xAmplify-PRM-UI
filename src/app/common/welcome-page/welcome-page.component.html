@@ -1,7 +1,8 @@
 <style>
-@import url('/assets/js/indexjscss/welcome-page.css');
+/* @import url('/assets/js/indexjscss/welcome-page.css');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
-@import url('/assets/js/indexjscss/xAmplify-welcome-page-font-family.css');
+@import url('/assets/js/indexjscss/xAmplify-welcome-page-font-family.css'); */
 </style>
-<app-top-navigation-bar-util *ngIf = "!referenceService.isWelcomePageLoading" [model]="model"></app-top-navigation-bar-util>
-<div *ngIf= "displayPage && !referenceService.isWelcomePageLoading" class="xamplify-welcome-page-div-top" [innerHTML]="htmlContent"></div>
+
+<app-top-navigation-bar-util *ngIf = "!referenceService?.isWelcomePageLoading && !pageLoading" [model]="model"></app-top-navigation-bar-util>
+<div *ngIf= "displayPage && !referenceService?.isWelcomePageLoading && !pageLoading" class="xamplify-welcome-page-div-top" [innerHTML]="htmlContent"></div>
