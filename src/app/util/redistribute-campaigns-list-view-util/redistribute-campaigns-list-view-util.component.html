@@ -263,6 +263,10 @@
                       data-toggle="tooltip" title="{{campaign.campaignName}}">
                       <b>Campaign Name:</b> {{campaign.campaignName}}
                     </h4>
+                    <div class="aligntowbtns">
+                      <span class="green-banner LableSpaceings"
+                        *ngIf="campaign?.oneClickLaunch">{{properties?.oneClickLaunch}}</span>
+                    </div>
                     <h6 data-placement="top" data-toggle="tooltip" [title]="campaign.createdBy"
                       class="xamplify-ellipsis GridViewCotent"> <b>By:</b>
                       {{campaign.createdBy}}
