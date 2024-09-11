@@ -1598,7 +1598,7 @@ appendValueToSubjectLine(event:any){
 
     openAutoResponseEmailTemplateInNewTab(reply:any){
         if(this.campaign.nurtureCampaign){
-            this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+            this.referenceService.previewEditNurtureCampaignAutoReplyEmailTemplateInNewTabByFromEmailUserId(reply.id,this.campaign.fromEmailUserId);
         }else{
             /**XNFR-664***/
             this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id,this.campaign.fromEmailUserId);
@@ -1607,7 +1607,7 @@ appendValueToSubjectLine(event:any){
 
     openAutoResponseWebsiteLinkTemplateInNewTab(url:any){
         if(this.campaign.nurtureCampaign){
-            this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(url.id);
+            this.referenceService.previewEditNurtureCampaignCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id,this.campaign.fromEmailUserId);
         }else{
             /**XNFR-664***/
             this.referenceService.previewSharedVendorCampaignAutoReplyWebsiteLinkTemplateInNewTab(url.id,this.campaign.fromEmailUserId);
