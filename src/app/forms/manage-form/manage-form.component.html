@@ -508,7 +508,7 @@
         </div>
     </div>
     <app-scroll-top></app-scroll-top>
-    <app-preview-popup #previewPopUpComponent ></app-preview-popup>
+    <app-preview-popup #previewPopUpComponent [isVendorJourney]="isVendorJourney" [isMasterLandingPage]="isMasterLandingPage"></app-preview-popup>
 
     <div class="col-xs-12 p5" *ngIf="statusCode==403">
         <div class="alert alert-danger">
