@@ -84,7 +84,7 @@
                         </div>
                       </div>
                       <!--CRM ID-->
-                      <div [ngStyle]="{ 'margin-bottom': isCopiedToClipboard ? '2px' : '20px' }"
+                      <div [ngStyle]="{ 'margin-bottom': isCRMCopiedToClipboard ? '2px' : '20px' }"
                       *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
                       <div> <label class="control-label">CRM ID</label></div>
                       <div style="display:flex; height:35px;">
@@ -100,7 +100,7 @@
                       </div>
                       <div>
                         <span class="success">
-                          <strong id="copy-crm-id" *ngIf="isCopiedToClipboard">CRM Id copied successfully<i
+                          <strong id="copy-crm-id" *ngIf="isCRMCopiedToClipboard">CRM Id copied successfully<i
                               class="fa fa-check" aria-hidden="true"></i></strong>
                         </span>
                       </div>
