@@ -414,6 +414,6 @@ export class Properties {
 	emailAddressMandatoryMessage = "Email Address mapping is mandatory.";
 	contactsCsvHeaderMatchedMessage = "The CSV headers have been successfully matched with the default format";
 	remapHeadersMessage = " to remap the headers";
-	resetMessage = " to reset to the original state";
+	resetMessage = " to reset to the original state.";
 }
 
