@@ -84,27 +84,26 @@
                         </div>
                       </div>
                       <!--CRM ID-->
-                      <div [ngStyle]="{ 'margin-bottom': isCRMCopiedToClipboard ? '2px' : '20px' }"
-                      *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
-                      <div> <label class="control-label">CRM ID</label></div>
-                      <div style="display:flex; height:35px;">
-                        <input type="text" maxlength="100" name="crmId" class="form-control"
-                          [(ngModel)]="lead.crmId" [ngModelOptions]="{standalone: true}" readonly="readonly"
-                          #crmIdInput>
+                      <div [ngStyle]="{ 'margin-bottom': isCRMIdCopiedToClipboard ? '2px' : '20px' }"
+                        *ngIf="(actionType === 'edit' || actionType === 'view') && isVendorVersion">
+                        <div> <label class="control-label">CRM ID</label></div>
+                        <div style="display:flex; height:35px;">
+                          <input type="text" maxlength="100" name="crmId" class="form-control" [(ngModel)]="lead.crmId"
+                            [ngModelOptions]="{standalone: true}" readonly="readonly" #crmIdInput>
+                          <div>
+                            <a class="button_blue lead_copy_id_btn_blue" (click)="copyCRMId(crmIdInput)">
+                              <span class="btn btn-primary transition copy_link btn_primary_lead_copy_id" data-toggle="tooltip"
+                                data-placement="top" title="Copy CRM ID"><i class="fa fa-copy"></i></span>
+                            </a>
+                          </div>
+                        </div>
                         <div>
-                          <a class="button_blue lead_copy_id_btn_blue" (click)="copyCRMId(crmIdInput)">
-                            <span class="btn btn-primary transition copy_link btn_primary_lead_copy_id" data-toggle="tooltip" data-placement="top"
-                              title="Copy CRM ID"><i class="fa fa-copy"></i></span>
-                          </a>
+                          <span class="success">
+                            <strong id="copy-crm-id" *ngIf="isCRMIdCopiedToClipboard">CRM Id copied successfully<i class="fa fa-check"
+                                aria-hidden="true"></i></strong>
+                          </span>
                         </div>
                       </div>
-                      <div>
-                        <span class="success">
-                          <strong id="copy-crm-id" *ngIf="isCRMCopiedToClipboard">CRM Id copied successfully<i
-                              class="fa fa-check" aria-hidden="true"></i></strong>
-                        </span>
-                      </div>
-                    </div>
                     </div>
                   </div>
                 </div>

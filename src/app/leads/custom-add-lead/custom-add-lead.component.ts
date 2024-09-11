@@ -214,7 +214,7 @@ export class CustomAddLeadComponent implements OnInit {
   hasNoStates: boolean = false;
 
   isLeadForDivCenterAligned = false;
-  isCRMCopiedToClipboard: boolean = false;
+  isCRMIdCopiedToClipboard: boolean = false;
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -1749,7 +1749,7 @@ export class CustomAddLeadComponent implements OnInit {
     document.execCommand('copy');
     inputElement.setSelectionRange(0, 0);
     $('#copy-crm-id').show(500);
-    this.isCRMCopiedToClipboard = true;
+    this.isCRMIdCopiedToClipboard = true;
   }
 
   checkCustomLeadFormValid(event: any) {
