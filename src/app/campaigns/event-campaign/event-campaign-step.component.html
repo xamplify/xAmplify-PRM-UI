@@ -1509,7 +1509,7 @@
 														</span>
 													</ng-container>
 													<ng-container *ngIf="authenticationService.isOnlyPartner()">
-														<span *ngIf="!isPartnerUserList">Contact List(s)</span>
+														<span *ngIf="!isPartnerUserList" style="padding-left: 32px;">Contact List(s)</span>
 													</ng-container>
 													<ng-container
 														*ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner())">
@@ -1603,7 +1603,7 @@
 														(click)="resetTabs('templates')"><span
 															class="btn btn-primary transition txt_pd-top3">Change</span></button>
 													<a *ngIf="reDistributeEvent || reDistributeEventManage"
-														class="btn btn-primary btn-sm redistibute_edit_icon"
+														class="btn btn-primary btn-sm redistibute_edit_icon" style="float: left;"
 														(click)="editPartnerTemplate()"><i
 															class="fa fa-edit"></i>Edit</a>
 												</td>

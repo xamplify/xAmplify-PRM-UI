@@ -6008,6 +6008,17 @@ Social Icons
   margin-right: 10px;
 }
 
+.login-credentials-icon {
+  background-size: cover!important;
+  background-repeat: no-repeat!important;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  display: block;
+  margin-right: 10px;
+  background-image: url(../img/social/password.png) !important;
+}
+
 .social-icons.social-icons-color > li > a {
   opacity: 0.7;
   background-position: 0 -38px !important;

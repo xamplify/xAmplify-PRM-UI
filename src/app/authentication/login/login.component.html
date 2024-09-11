@@ -24,8 +24,8 @@
 					<h3 class="form-title text-white">Sign In Options</h3>
 					<button class="login_with_credentials" style="background-color: #ffffffb3;color: #0f0f0f;"
 						type="submit" (click)="showLoginWithCredentialsForm()">
-						Log in with Credentials </button>
-					<ng-template [ngTemplateOutlet]="showVanitySocialProviders"
+						<span alt="" class="login-credentials-icon"></span>Login with Credentials </button>
+						<ng-template [ngTemplateOutlet]="showVanitySocialProviders"
 						*ngIf="vanitySocialProviders?.length && authenticationService?.vanityURLEnabled"></ng-template>
 				</ng-container>
 
@@ -82,7 +82,7 @@
 							<h3 class="form-title text-white">Sign In Options</h3>
 							<button class="login_with_credentials" style="background-color: #ffffffb3;color: #0f0f0f;"
 								type="submit" (click)="showLoginWithCredentialsForm()">
-								Log in with Credentials </button>
+								<span alt="" class="login-credentials-icon"></span>Login with Credentials </button>
 							<ng-template [ngTemplateOutlet]="showVanitySocialProviders"
 								*ngIf="vanitySocialProviders?.length && authenticationService?.vanityURLEnabled"></ng-template>
 						</ng-container>

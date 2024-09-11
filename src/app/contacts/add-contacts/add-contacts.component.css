@@ -217,6 +217,7 @@ i.fa.fa-file-excel-o.IconTopMargin {
   background-color: #f2dede !important;
   border-radius: 3px !important;
   color: #a94442 !important;
+  
 }
 .alert {
   margin: 10px 0 !important;
@@ -247,3 +248,10 @@ i.fa.fa-file-excel-o.IconTopMargin {
 .alert-success .close  {
   top: 10px !important;
 }
+
+.inline-text {
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+}
+
