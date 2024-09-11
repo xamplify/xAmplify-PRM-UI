@@ -857,16 +857,16 @@
 									<app-list-loader *ngIf="isListLoader"></app-list-loader>
 									<!--xAmplify CSV Format-->
 									<div class="table-responsive" *ngIf="(selectedAddContactsOption==1 || isXamplifyCsvFormatUploaded || isColumnMapped) && !isListLoader">
-										<div class="alert alert-success" *ngIf="isColumnMapped && isValidEmailAddressMapped">
+										<div class="alert alert-success inline-text" *ngIf="isColumnMapped && isValidEmailAddressMapped">
 											<i class="fa fa-check-circle i-20px"></i>
-											<strong>
+											<strong class="ml5">
 												{{properties?.contactsCsvHeaderMatchedMessage}}. You can still <a (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.remapHeadersMessage}} or 
 												<a (click)="resetMappedColumns()">click here</a> {{properties?.resetMessage}}
 											</strong>
 										</div>
-										<div class="alert alert-danger" *ngIf="isColumnMapped && !isValidEmailAddressMapped">
+										<div class="alert alert-danger inline-text" *ngIf="isColumnMapped && !isValidEmailAddressMapped">
 											<i class="fa fa-exclamation-triangle i-20px"></i>
-											<strong>
+											<strong class="ml5">
 												We found invalid data for the email address. Please update or 
 												<a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.remapHeadersMessage}} or <a class="required" (click)="resetMappedColumns()">click here</a> {{properties?.resetMessage}}
 											</strong>
@@ -958,9 +958,9 @@
 									</div>
 									<!--Customer Uploaded UnMapped CSV Data XNFR-671-->
 									<div class="table-responsive" *ngIf="selectedAddContactsOption!=1 && !isXamplifyCsvFormatUploaded && !isColumnMapped && !isListLoader">
-										<div class="alert alert-danger">
+										<div class="alert alert-danger inline-text">
 											<i class="fa fa-exclamation-triangle i-20px"></i>
-											<strong>
+											<strong class="ml5">
 												{{properties?.contactsCsvHeaderMisMatchedErrorMessage}} Please <a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.mapCsvHeaderMessage}}
 											</strong>
 										</div>
