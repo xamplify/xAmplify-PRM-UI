@@ -613,6 +613,8 @@ export class AddDealComponent implements OnInit {
       this.deal.createdForPipelineId = 0;
       this.createdForPipelines = [];
       this.createdForStages = [];
+      this.activeCRMDetails.showDealPipeline = false;
+      this.activeCRMDetails.showDealPipelineStage = false;
     }
   }
 
