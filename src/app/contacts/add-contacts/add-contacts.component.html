@@ -858,15 +858,17 @@
 									<!--xAmplify CSV Format-->
 									<div class="table-responsive" *ngIf="(selectedAddContactsOption==1 || isXamplifyCsvFormatUploaded || isColumnMapped) && !isListLoader">
 										<div class="alert alert-success" *ngIf="isColumnMapped && isValidEmailAddressMapped">
+											<i class="fa fa-check-circle i-20px mt5"></i>
 											<strong>
-												The CSV header has been matched with the default header. You can still <a (click)="openArrageHeadersModalPopUp()">click here</a> to remap the header or 
-												<a (click)="resetMappedColumns()">click here</a> to reset.
+												{{properties?.contactsCsvHeaderMatchedMessage}}. You can still <a (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.remapHeadersMessage}} or 
+												<a (click)="resetMappedColumns()">click here</a> {{properties?.resetMessage}}
 											</strong>
 										</div>
 										<div class="alert alert-danger" *ngIf="isColumnMapped && !isValidEmailAddressMapped">
+											<i class="fa fa-exclamation-triangle i-20px mt5"></i>
 											<strong>
 												We found invalid data for the email address. Please update or 
-												<a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> to remap the header or <a class="required" (click)="resetMappedColumns()">click here</a> to reset.
+												<a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.remapHeadersMessage}} or <a class="required" (click)="resetMappedColumns()">click here</a> {{properties?.resetMessage}}
 											</strong>
 										</div>
 										<table class="table tgrid">
@@ -957,6 +959,7 @@
 									<!--Customer Uploaded UnMapped CSV Data XNFR-671-->
 									<div class="table-responsive" *ngIf="selectedAddContactsOption!=1 && !isXamplifyCsvFormatUploaded && !isColumnMapped && !isListLoader">
 										<div class="alert alert-danger">
+											<i class="fa fa-exclamation-triangle i-20px mt5"></i>
 											<strong>
 												{{properties?.contactsCsvHeaderMisMatchedErrorMessage}} Please <a class="required" (click)="openArrageHeadersModalPopUp()">click here</a> {{properties?.mapCsvHeaderMessage}}
 											</strong>
