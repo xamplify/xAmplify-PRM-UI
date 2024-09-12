@@ -71,7 +71,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
     this.decodeCampaignIdParameter();
     let isAutoReplyTemplatePreview =   this.isVendorCampaignAutoReplyEmailWorkflowId || this.vendorCampaignAutoReplyWebsiteLinkWorkflowId || this.isVendorCompanyViewingWorkflowTemplate;
     let isSharedTempaltePreview = this.isSharedCampaignTemplatePreviewWithFromEmailParameter;
-    let isCampaignTemplatePreview = this.isPreviewingTemplateFromEditCampaignSection || this.isPreviewingAutoReplyEmailTemplateFromEditNurtureCampaignSection || this.isPreviewingWebsiteLinkEmailTemplateFromEditNurtureCampaignSection;
+    let isCampaignTemplatePreview = this.isUnLaunchedCampaignTemplatePreview ||  this.isPreviewingTemplateFromEditCampaignSection || this.isPreviewingAutoReplyEmailTemplateFromEditNurtureCampaignSection || this.isPreviewingWebsiteLinkEmailTemplateFromEditNurtureCampaignSection;
     let isFromEmailUserIdParamExists = isAutoReplyTemplatePreview || isSharedTempaltePreview || isCampaignTemplatePreview;
     if(isFromEmailUserIdParamExists){
       this.decodeFromEmailUserIdParameter();
