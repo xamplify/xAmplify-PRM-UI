@@ -1445,4 +1445,11 @@ vanityWelcomePageRequired(userName) {
     .map((res: Response) => { return res.json(); })
     .catch((error: any) => { return error; });
 } 
+
+  getCustomFieldsMissingErrorMessage(){
+    let partnersMergeTag = this.properties.partnersMergeTag;
+    let partnerModuleCustomName = this.getPartnerModuleCustomName();
+    return this.properties.customFieldsMissingErrorMessage.replace(partnersMergeTag, partnerModuleCustomName);
+  }
+
 }

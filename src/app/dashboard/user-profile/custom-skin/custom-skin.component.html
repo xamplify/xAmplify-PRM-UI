@@ -121,7 +121,7 @@
 					class="text-white"
 					[ngClass]="{'active-tab-anchor-text': activeTabName == 'header' || activeTabName == ''}"
 					(click)="activeTabNav('header');clearCustomResponse()" selected="true">Header</a></li>
-			<li [ngClass]="{'active theme_activation_bg': activeTabName == 'leftmenu'}"><a class="text-white"
+			<li *ngIf="!referenceService.isHarizontalNavigationBar" [ngClass]="{'active theme_activation_bg': activeTabName == 'leftmenu'}"><a class="text-white"
 					[ngClass]="{'active-tab-anchor-text': activeTabName == 'leftmenu'}"
 					(click)="activeTabNav('leftmenu');clearCustomResponse()">Left
 					Menu</a></li>

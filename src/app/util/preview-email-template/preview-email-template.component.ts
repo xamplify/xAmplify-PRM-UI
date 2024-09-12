@@ -42,7 +42,6 @@ export class PreviewEmailTemplateComponent implements OnInit {
   isPreviewingTemplateFromEditCampaignSection = false;
   isPreviewingAutoReplyEmailTemplateFromEditNurtureCampaignSection = false;
   isPreviewingWebsiteLinkEmailTemplateFromEditNurtureCampaignSection = false;
-
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger,
     public route:ActivatedRoute,public processor:Processor,public properties:Properties,public vanityUrlService:VanityURLService) { }
   
@@ -61,7 +60,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
     this.isCampaignAutoReplyEmailWorkflowId = currentRouterUrl.indexOf("/pv/cwaret/")>-1;
     this.isPreviewingAutoReplyEmailTemplateFromEditNurtureCampaignSection = currentRouterUrl.indexOf("/pv/cwaretfe/")>-1;
     this.vendorCampaignAutoReplyWebsiteLinkWorkflowId = currentRouterUrl.indexOf("/pv/scwarwlt/")>-1;
-    this.campaignAutoReplyWebsiteLinkWorkflowId = currentRouterUrl.indexOf("/pv/cwarwlt")>-1;
+    this.campaignAutoReplyWebsiteLinkWorkflowId = currentRouterUrl.indexOf("/pv/cwarwlt/")>-1;
     this.isPreviewingWebsiteLinkEmailTemplateFromEditNurtureCampaignSection = currentRouterUrl.indexOf("/pv/cwarwltfe/")>-1;
     this.isEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/evt")>-1;
     this.isEditRedistributedEventCampaignTemplatePreview = currentRouterUrl.indexOf("/pv/edevt")>-1;
@@ -72,7 +71,7 @@ export class PreviewEmailTemplateComponent implements OnInit {
     this.decodeCampaignIdParameter();
     let isAutoReplyTemplatePreview =   this.isVendorCampaignAutoReplyEmailWorkflowId || this.vendorCampaignAutoReplyWebsiteLinkWorkflowId || this.isVendorCompanyViewingWorkflowTemplate;
     let isSharedTempaltePreview = this.isSharedCampaignTemplatePreviewWithFromEmailParameter;
-    let isCampaignTemplatePreview = this.isPreviewingTemplateFromEditCampaignSection || this.isPreviewingAutoReplyEmailTemplateFromEditNurtureCampaignSection || this.isPreviewingWebsiteLinkEmailTemplateFromEditNurtureCampaignSection;
+    let isCampaignTemplatePreview = this.isUnLaunchedCampaignTemplatePreview ||  this.isPreviewingTemplateFromEditCampaignSection || this.isPreviewingAutoReplyEmailTemplateFromEditNurtureCampaignSection || this.isPreviewingWebsiteLinkEmailTemplateFromEditNurtureCampaignSection;
     let isFromEmailUserIdParamExists = isAutoReplyTemplatePreview || isSharedTempaltePreview || isCampaignTemplatePreview;
     if(isFromEmailUserIdParamExists){
       this.decodeFromEmailUserIdParameter();

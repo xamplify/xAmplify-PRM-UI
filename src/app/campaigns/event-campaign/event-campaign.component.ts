@@ -7,7 +7,6 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { PagerService } from '../../core/services/pager.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
-
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { EventCampaign } from '../models/event-campaign';
 import { CampaignEventMedia } from '../models/campaign-event-media';
@@ -25,13 +24,11 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CountryNames } from '../../common/models/country-names';
 import { Roles } from '../../core/models/roles';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
-
 import { SocialStatusProvider } from "../../social/models/social-status-provider";
 import { SocialService } from "../../social/services/social.service";
 import { SocialStatus } from "../../social/models/social-status";
 import { FormService } from '../../forms/services/form.service';
 import { PreviewPopupComponent } from '../../forms/preview-popup/preview-popup.component';
-
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { HubSpotService } from 'app/core/services/hubspot.service';
 import { EnvService } from 'app/env.service';
@@ -42,14 +39,12 @@ import { Form } from 'app/forms/models/form';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { Pipeline } from 'app/dashboard/models/pipeline';
-
 import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from '../../core/services/util.service';
 import { utc } from 'moment';
-import { OpportunityTypes } from 'app/dashboard/models/opportunity-types';
 import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
-
-declare var $, swal, flatpickr, CKEDITOR, require;
+import { XAMPLIFY_CONSTANTS } from 'app/constants/xamplify-default.constants';
+declare var $:any, swal:any, flatpickr:any, CKEDITOR:any, require:any;
 var moment = require('moment-timezone');
 
 @Component({
@@ -267,6 +262,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     dealTicketTypes: any;
     leadTicketTypes: any;
     isDealLayoutSelected:boolean = false;
+    crmErrorMessage:CustomResponse = new CustomResponse();
+    readonly XAMPLIFY_CONSTANTS = XAMPLIFY_CONSTANTS;
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
         public campaignService: CampaignService,
@@ -381,8 +378,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.loggedInUserId = this.authenticationService.getUserId();
         this.loadCampaignNames(this.loggedInUserId);
         this.listAllTeamMemberEmailIds();
-        // this.loadContactLists(this.contactListsPagination);
-
         if (this.referenceService.selectedCampaignType !== 'eventCampaign' && this.router.url.includes('/home/campaigns/event') && !this.activatedRoute.snapshot.params['id']) {
             this.router.navigate(['/home/campaigns/select']);
             this.isReloaded = true;
@@ -396,7 +391,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 (result) => {
                     this.campaignService.eventCampaign = result.data;                    
                     this.eventCampaign = result.data;
-
                     let endDate = this.eventCampaign.endDateString;
                     if (endDate != undefined && endDate != null) {
                         let endDateString = utc(endDate).local().format("YYYY-MM-DD HH:mm");
@@ -432,6 +426,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         if (existingTeamMemberEmailIds.indexOf(this.eventCampaign.email) < 0) {
                             const userProfile = this.authenticationService.userProfile;
                             this.eventCampaign.email = userProfile.emailId;
+                            this.eventCampaign.fromEmailUserId = userProfile.id;
                         }
                     }
                     this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
@@ -587,23 +582,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.validatePipeline();
     }
 
-    //   listCampaignPipelines() {
-    //     this.campaignService.listCampaignPipelines(this.loggedInUserId)
-    //     .subscribe(
-    //     response => {
-    //       if(response.statusCode==200){
-    //         let data = response.data;
-    //         this.leadPipelines = data.leadPipelines;
-    //         this.dealPipelines = data.dealPipelines;
-    //        }
-    //     },
-    //     error => {
-    //         this.httpRequestLoader.isServerError = true;
-    //         },
-    //     () => { }
-    // );
-    // }
-
 
     listCampaignPipelines() {
         if (this.enableLeads) {
@@ -680,22 +658,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
 
     ngAfterViewChecked() {
-        /*    if( this.previewPopUpComponent && this.previewPopUpComponent.selectedFormData.length != 0 ){
-              this.selectedFormData = this.previewPopUpComponent.selectedFormData;
-              this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
-              //this.formCreatedName = this.eventCampaign.forms.createdName;
-              for(var i=0; i< this.selectedFormData.length; i++){
-                this.selectedFormName = this.selectedFormData[i].name;
-                this.selectedFormId = this.selectedFormData[i].id;
-               // this.createdBy = this.selectedFormData[i].createdBy;
-              }
-            }else{
-                if(!this.selectedFormName) { this.selectedFormName = null; }
-                if(!this.selectedFormId) { this.selectedFormId = null; }
-            }
-            console.log( this.selectedFormName);
-            console.log( this.selectedFormId);
-            this.changeDetectorRef.detectChanges();*/
+        
     }
 
     setTemplateId() {
@@ -1717,6 +1680,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     });
                     const teamMember = this.teamMemberEmailIds.filter((teamMember) => teamMember.id === this.loggedInUserId)[0];
                     this.eventCampaign.email = teamMember.emailId;
+                    this.eventCampaign.fromEmailUserId = teamMember.id;
                     this.eventCampaign.fromName = $.trim(teamMember.firstName + " " + teamMember.lastName);
                     this.eventCampaign.hostedBy = this.eventCampaign.fromName + " [" + this.eventCampaign.email + "]";
                     this.setEmailIdAsFromName();
@@ -2927,6 +2891,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
     isSalesforceIntegrated(): any {
         this.salesforceIntegrated = false;
+        this.crmErrorMessage = new CustomResponse();
         if (this.enableLeads) {
             this.loading = true;
             this.integrationService.checkConfigurationByType("isalesforce").subscribe(data => {
@@ -2939,14 +2904,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         if (cfResponse.statusCode === 200) {
                             this.showConfigurePipelines = false;
                         } else if (cfResponse.statusCode === 400) {
-                            swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
+                            this.crmErrorMessage = new CustomResponse('ERROR',this.authenticationService.getCustomFieldsMissingErrorMessage(),true);
                         } else if (cfResponse.statusCode === 401 && cfResponse.message === "Expired Refresh Token") {
-                            swal("Your Salesforce Integration was expired. Please re-configure.", "", "error");
+                            this.crmErrorMessage = new CustomResponse('ERROR',this.properties.salesforceIntegrationExpiredMessage,true);
                         }
                     }, error => {
                         this.logger.error(error, "Error in salesforce checkIntegrations()");
                     }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
-                    console.log("isPushToSalesforce ::::" + this.pushToCRM);
                 } else {
                     this.showConfigurePipelines = true;
                     this.listCampaignPipelines();
@@ -3155,6 +3119,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     getActiveCRMDetails(): any {
+        this.crmErrorMessage = new CustomResponse();
         this.referenceService.loading(this.httpRequestLoader, true);
         this.salesforceIntegrated = false;
         if (this.enableLeads) {
@@ -3170,9 +3135,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                             if (cfResponse.statusCode === 200) {
                                 this.showConfigurePipelines = false;
                             } else if (cfResponse.statusCode === 400) {
-                                swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
+                                this.crmErrorMessage = new CustomResponse('ERROR',this.authenticationService.getCustomFieldsMissingErrorMessage(),true);
                             } else if (cfResponse.statusCode === 401 && cfResponse.message === "Expired Refresh Token") {
-                                swal("Your Salesforce Integration was expired. Please re-configure.", "", "error");
+                                this.crmErrorMessage = new CustomResponse('ERROR',this.properties.salesforceIntegrationExpiredMessage,true);
                             }
                         }, error => {
                             this.logger.error(error, "Error in salesforce checkIntegrations()");
@@ -3227,11 +3192,22 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.authenticationService.setLocalStorageItemByKeyAndValue(key,this.eventCampaign);
     }
 
-    openAutoResponseEmailTemplateInNewTab(reply:any){
+    openAutoResponseEmailTemplateInNewTab(reply:any,emailTemplate:any){
+        if (!this.isAdd) {
+            let existingTeamMemberEmailIds = this.teamMemberEmailIds.map(function (a) { return a.emailId; });
+            if (existingTeamMemberEmailIds.indexOf(this.eventCampaign.email) > -1) {
+                let teamMember = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId == this.eventCampaign.email)[0];
+                this.eventCampaign.fromEmailUserId = teamMember.id;
+            }
+        }
         if(this.eventCampaign.nurtureCampaign){
-            this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+            this.referenceService.previewEditNurtureCampaignAutoReplyEmailTemplateInNewTabByFromEmailUserId(reply.id,this.eventCampaign.fromEmailUserId);
          }else{
-             this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id,0);
+            if(this.reDistributeEvent){
+                this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id,this.eventCampaign.fromEmailUserId);
+            }else{
+                this.referenceService.previewWorkflowEmailTemplateInNewTab(emailTemplate.id,this.eventCampaign.fromEmailUserId);
+            }
          }
     }
 

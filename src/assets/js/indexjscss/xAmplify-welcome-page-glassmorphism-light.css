@@ -22,14 +22,16 @@ a.xamplify-dropdown-toggle.circlebg-color-bell-v {
     border: 1px solid rgb(208 207 199) !important;
     border-radius: 10px;
 }
-a.moduleTextColor:hover,.horizontal-navbar .navbar-navs .link li .arrow:hover {
+a.moduleTextColor:hover,.horizontal-navbar .navbar-navs .link li .arrow:hover,
+span.xamplify-submenu-flex>a.moduleTextColor:hover {
     color: #5473e3 !important;
 }
 .whiteHeader {
     background-color: rgb(255 255 255 / 88%) !important;
 }
-a.moduleTextColor,
+li>a.moduleTextColor,
+span.xamplify-submenu-flex>a.moduleTextColor,
   .horizontal-navbar .navbar-navs .link li .arrow {
     color: #000000 !important;
   }
-  
+

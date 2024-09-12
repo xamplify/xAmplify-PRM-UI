@@ -86,6 +86,7 @@ export class EventCampaign {
 
   isRedistributeEvent = false;
   isPreviewEvent = false;
+  fromEmailUserId = 0;
 
   constructor() {
     this.campaignEventMedias.push(new CampaignEventMedia());

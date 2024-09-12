@@ -3035,12 +3035,12 @@ div.button span {
 /** XNFR-416 ***/
 .loginActive {
   color: #fff !important;
-  background-color : #222528 !important;
+  background-color : rgba(16 18 27/40%)!important;
   border-bottom:  3px solid rgba(255, 255, 255, 0.1) !important;
 }
 .inActive {
   color: #fff !important;
-  background-color : #222528 !important;
+  background-color : rgb(0 0 0/18%) !important;
   border-bottom:  3px solid rgba(255, 255, 255, 0.1) !important;
 }
 /* manikanta */

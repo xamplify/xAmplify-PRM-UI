@@ -765,10 +765,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 (data) => {
                     let cfResponse = data;
                     if (cfResponse.statusCode === 400) {
-                        this.crmErrorMessage = new CustomResponse('ERROR',"Warning!! Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.",true);
+                        this.crmErrorMessage = new CustomResponse('ERROR',this.authenticationService.getCustomFieldsMissingErrorMessage(),true);
                     } else if (cfResponse.statusCode === 401 &&
                         cfResponse.message === "Expired Refresh Token") {
-                        this.crmErrorMessage = new CustomResponse('ERROR',"Warning!! Your Salesforce Integration was expired. Please re-configure.",true);
+                        this.crmErrorMessage = new CustomResponse('ERROR',this.properties.salesforceIntegrationExpiredMessage,true);
                     }
                 },
                 (error) => {
