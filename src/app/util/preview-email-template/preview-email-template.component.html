@@ -1,4 +1,5 @@
 <div [hidden]="processor.isProcessing">
+ <ng-template *ngIf="!apiResponseFinished" [ngTemplateOutlet]="loaderTemplate"></ng-template>
   <div id="html-preview">
   </div>
   <ng-container *ngIf="!success && !processor.isProcessing && apiResponseFinished">
@@ -14,38 +15,42 @@
   </ng-container>
 </div>
 <div [hidden]="!processor.isProcessing">
-  <div style="display: flex;
-        width: 100vw;
-        height: 100vh;
-        background: black;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        background: white;">
-    <img src="../../../assets/images/xamplify-icon.gif"  alt="No Image Found">
-    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'L'}"></ng-template>
-    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'O'}"></ng-template>
-    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'A'}"></ng-template>
-    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'D'}"></ng-template>
-    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'I'}"></ng-template>
-    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'N'}"></ng-template>
-    <ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'G'}"></ng-template>
-    </div>
-    
-
-    <ng-template #textTemplate let-text="text">
-      <p style=" display: inline-block;
-      text-transform: uppercase;
-      text-align: center;
-      font-size: 4em;
-      font-family: arial;
-      font-weight: 600;
-      transform: scale(.5);
-      color: #121212;
-      -webkit-text-stroke: 2px gray;">{{text}}</p>
-    </ng-template>
-  
+  <ng-template [ngTemplateOutlet]="loaderTemplate" ></ng-template>
 </div>
+
+<ng-template #textTemplate let-text="text">
+  <p style=" display: inline-block;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 4em;
+  font-family: arial;
+  font-weight: 600;
+  transform: scale(.5);
+  color: #121212;
+  -webkit-text-stroke: 2px gray;">{{text}}</p>
+</ng-template>
+
+<ng-template #loaderTemplate>
+  <div style="display: flex;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: white;">
+<img src="../../../assets/images/xamplify-icon.gif"  alt="No Image Found">
+<ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'L'}"></ng-template>
+<ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'O'}"></ng-template>
+<ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'A'}"></ng-template>
+<ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'D'}"></ng-template>
+<ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'I'}"></ng-template>
+<ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'N'}"></ng-template>
+<ng-template [ngTemplateOutlet]="textTemplate" [ngTemplateOutletContext]="{'text':'G'}"></ng-template>
+</div>
+
+</ng-template>
+
 
 
 
