@@ -158,6 +158,7 @@ export class AddDealComponent implements OnInit {
   hideDealDetailsForSelfDeal:boolean = false;
   hideDealForInEditSelfDeal:boolean = false;
   isDealForAndContactInfoDivCenterAligned = false;
+  isCRMIdCopiedToClipboard: boolean = false;
 
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -1771,6 +1772,15 @@ export class AddDealComponent implements OnInit {
     inputElement.setSelectionRange(0, 0);
     $('#copy-reference-id').show(500);
     this.isCopiedToClipboard = true;
+  }
+
+  copyCRMId(inputElement: any) {
+    inputElement.select();
+    $('#copy-crm-id').hide();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copy-crm-id').show(500);
+    this.isCRMIdCopiedToClipboard = true;
   }
 
   getConvertMappingLayout(layoutId:string) {
