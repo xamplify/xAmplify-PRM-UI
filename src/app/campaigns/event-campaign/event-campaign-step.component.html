@@ -1872,7 +1872,7 @@
 																								<a data-toggle="tooltip"
 																									data-placement="top"
 																									title=""
-																									(click)="$event.stopPropagation();openAutoResponseEmailTemplateInNewTab(reply)"
+																									(click)="$event.stopPropagation();openAutoResponseEmailTemplateInNewTab(reply,reply.emailTemplate)"
 																									data-original-title="Preview">
 																									<i class="fa fa-external-link-square preview-edit-color tooltip-cls"
 																										aria-hidden="true"></i>
@@ -1986,7 +1986,7 @@
 																							<a data-toggle="tooltip"
 																								data-placement="top"
 																								title=""
-																								(click)="$event.stopPropagation(); openAutoResponseEmailTemplateInNewTab(reply)"
+																								(click)="$event.stopPropagation(); openAutoResponseEmailTemplateInNewTab(reply,emailTemplate)"
 																								data-original-title="Preview">
 																								<i class="fa fa-external-link-square preview-edit-color tooltip-cls"
 																									aria-hidden="true"></i>

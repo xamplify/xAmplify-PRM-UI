@@ -381,8 +381,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.loggedInUserId = this.authenticationService.getUserId();
         this.loadCampaignNames(this.loggedInUserId);
         this.listAllTeamMemberEmailIds();
-        // this.loadContactLists(this.contactListsPagination);
-
         if (this.referenceService.selectedCampaignType !== 'eventCampaign' && this.router.url.includes('/home/campaigns/event') && !this.activatedRoute.snapshot.params['id']) {
             this.router.navigate(['/home/campaigns/select']);
             this.isReloaded = true;
@@ -396,7 +394,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 (result) => {
                     this.campaignService.eventCampaign = result.data;                    
                     this.eventCampaign = result.data;
-
                     let endDate = this.eventCampaign.endDateString;
                     if (endDate != undefined && endDate != null) {
                         let endDateString = utc(endDate).local().format("YYYY-MM-DD HH:mm");
@@ -432,6 +429,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         if (existingTeamMemberEmailIds.indexOf(this.eventCampaign.email) < 0) {
                             const userProfile = this.authenticationService.userProfile;
                             this.eventCampaign.email = userProfile.emailId;
+                            this.eventCampaign.fromEmailUserId = userProfile.id;
                         }
                     }
                     this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
@@ -1717,6 +1715,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     });
                     const teamMember = this.teamMemberEmailIds.filter((teamMember) => teamMember.id === this.loggedInUserId)[0];
                     this.eventCampaign.email = teamMember.emailId;
+                    this.eventCampaign.fromEmailUserId = teamMember.id;
                     this.eventCampaign.fromName = $.trim(teamMember.firstName + " " + teamMember.lastName);
                     this.eventCampaign.hostedBy = this.eventCampaign.fromName + " [" + this.eventCampaign.email + "]";
                     this.setEmailIdAsFromName();
@@ -3227,11 +3226,22 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.authenticationService.setLocalStorageItemByKeyAndValue(key,this.eventCampaign);
     }
 
-    openAutoResponseEmailTemplateInNewTab(reply:any){
+    openAutoResponseEmailTemplateInNewTab(reply:any,emailTemplate:any){
+        if (!this.isAdd) {
+            let existingTeamMemberEmailIds = this.teamMemberEmailIds.map(function (a) { return a.emailId; });
+            if (existingTeamMemberEmailIds.indexOf(this.eventCampaign.email) > -1) {
+                let teamMember = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId == this.eventCampaign.email)[0];
+                this.eventCampaign.fromEmailUserId = teamMember.id;
+            }
+        }
         if(this.eventCampaign.nurtureCampaign){
-            this.referenceService.previewSharedCampaignAutoReplyEmailTemplateInNewTab(reply.id);
+            this.referenceService.previewEditNurtureCampaignAutoReplyEmailTemplateInNewTabByFromEmailUserId(reply.id,this.eventCampaign.fromEmailUserId);
          }else{
-             this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id,0);
+            if(this.reDistributeEvent){
+                this.referenceService.previewSharedVendorCampaignAutoReplyEmailTemplateInNewTab(reply.id,this.eventCampaign.fromEmailUserId);
+            }else{
+                this.referenceService.previewWorkflowEmailTemplateInNewTab(emailTemplate.id,this.eventCampaign.fromEmailUserId);
+            }
          }
     }
 
