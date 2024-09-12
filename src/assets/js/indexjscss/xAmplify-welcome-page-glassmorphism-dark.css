@@ -9,10 +9,12 @@ body {
     background: #af9a9a59 !important;
 }
 a.moduleTextColor,
+span.xamplify-submenu-flex>a.moduleTextColor,
 .horizontal-navbar .navbar-navs .link li .arrow {
     color: #ffffff !important;
   }
-  a.moduleTextColor:hover,.horizontal-navbar .navbar-navs .link li .arrow:hover {
+  a.moduleTextColor:hover,.horizontal-navbar .navbar-navs .link li .arrow:hover,
+  span.xamplify-submenu-flex>a.moduleTextColor:hover {
     color: #5473e3 !important;
 }
 .horizontal-navbar .navbar-navs .link li .sub-menu-bar,

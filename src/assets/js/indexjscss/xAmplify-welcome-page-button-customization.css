@@ -2,12 +2,12 @@
     color: var(--module-select-color) !important;
 }
 
-a.moduleTextColor,
-.horizontal-navbar .navbar-navs .link li .arrow {
+li>a.moduleTextColor, span.xamplify-submenu-flex>a.moduleTextColor, .horizontal-navbar .navbar-navs .link li .arrow {
     color: var(--menu-text) !important;
 }
 
-a.moduleTextColor:hover,
+li>a.moduleTextColor:hover,
+span.xamplify-submenu-flex>a.moduleTextColor:hover,
 .horizontal-navbar .navbar-navs .link li .arrow:hover {
     color: var(--menu-text-hover) !important;
 }
