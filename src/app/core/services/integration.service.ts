@@ -8,6 +8,7 @@ import { Observable } from "rxjs/Observable";
 import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 import { SocialContact } from "app/contacts/models/social-contact";
 import { CustomFieldsDto } from "app/dashboard/models/custom-fields-dto";
+import { Pagination } from "../models/pagination";
 
 @Injectable()
 export class IntegrationService {
@@ -234,11 +235,11 @@ export class IntegrationService {
         
     }
 
-    getLeadCustomFields() {
-        let loggedInUserId = this.authenticationService.getUserId();
-        return this._http.get(this.authenticationService.REST_URL + `/customFields/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
-          .map(this.extractData)
-          .catch(this.handleError);
+    getLeadCustomFields(pagination: Pagination) {
+        return this.authenticationService.callPostMethod(this.authenticationService.REST_URL + `/customFields/list?access_token=${this.authenticationService.access_token}`, pagination);
+        // return this._http.post(this.authenticationService.REST_URL + `/customFields/${loggedInUserId}?access_token=${this.authenticationService.access_token}`, pagination)
+        //   .map(this.extractData)
+        //   .catch(this.handleError);
       }
 
       deleteCustomField(customfield: CustomFieldsDto, loggedInUserId:any) {

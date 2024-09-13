@@ -4,13 +4,15 @@ import { LeadCustomFieldDto } from 'app/leads/models/lead-custom-field';
 import { PaginationComponent } from 'app/common/pagination/pagination.component';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { DragulaService } from 'ng2-dragula';
 import { CustomFieldsDto } from '../models/custom-fields-dto';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { SocialPagerService } from 'app/contacts/services/social-pager.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { CustomFields } from '../models/custom-fields';
+import { Pagination } from 'app/core/models/pagination';
+import { PagerService } from 'app/core/services/pager.service';
+import { SortOption } from 'app/core/models/sort-option';
 declare var $: any, swal: any;
 
 @Component({
@@ -24,7 +26,8 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
   @Input() opportunityType :any;
   @Output() closeEvent = new EventEmitter<any>();
   @Output() notifySubmitSuccess = new EventEmitter<any>();
-  loggedInUserId: any;
+    loggedInUserId: any;
+	pagination: Pagination = new Pagination();
 	customResponse: CustomResponse = new CustomResponse();
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	loading: boolean = false;
@@ -66,109 +69,31 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 	dealHeader = '';
   customFields = new CustomFields;
 
-	sortOptions = [
-		{ 'name': 'Sort by', 'value': '' },
-		{ 'name': 'Field name (A-Z)', 'value': 'asc' },
-		{ 'name': 'Field name (Z-A)', 'value': 'desc' },
-	];
+	// sortOptions = [
+	// 	{ 'name': 'Sort by', 'value': '' },
+	// 	{ 'name': 'Field name (A-Z)', 'value': 'asc' },
+	// 	{ 'name': 'Field name (Z-A)', 'value': 'desc' },
+	// ];
 
-	public sortOption: any = this.sortOptions[0].value;
+	// public sortOption: any = this.sortOptions[0].value;
 	
 	
 
-  constructor(private leadService: LeadsService,private dragulaService: DragulaService, public referenceService: ReferenceService,public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public authenticationService: AuthenticationService, public integrationService: IntegrationService) { 
-    this.pageNumber = this.paginationComponent.numberPerPage[0];
+  constructor(private leadService: LeadsService, public pagerService: PagerService, public referenceService: ReferenceService,public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public authenticationService: AuthenticationService, public integrationService: IntegrationService, public sortOption: SortOption) { 
+        this.pageNumber = this.paginationComponent.numberPerPage[0];
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
-    // dragulaService.setOptions('leadFieldDragula', {})
-    // dragulaService.dropModel.subscribe((value) => {
-    //   this.onDropModel(value);
-    // });
   }
-  // ngxloading: boolean;
-  // customFieldsDtosLoader = false;
-  // leadCustomFields = new Array<LeadCustomFieldDto>();
-  // customResponse: CustomResponse = new CustomResponse();
-  // isValid: boolean = false;
-  // isOrderChanged : boolean = false;
 
   ngOnInit() {
-    // this.getLeadFields();
-    this.listSalesforceCustomFields("LEAD");
+	this.listCustomFields(this.pagination);
   }
-
-  // ngOnDestroy() {
-  //   this.dragulaService.destroy('leadFieldDragula');
-  // }
-
-  // private onDropModel(args) {
-  //   this.isOrderChanged = true;
-  // }
-
-  // getLeadFields() {
-  //   this.ngxloading = true;
-  //   this.customFieldsDtosLoader = true;
-  //   this.leadService.getLeadCustomFields().subscribe(data => {
-  //     if (data.statusCode == 200) {
-  //       this.ngxloading = false;
-  //       this.customFieldsDtosLoader = false;
-  //       this.leadCustomFields = data.data;
-  //       this.isOrderChanged = false;
-  //     }
-  //   },
-  //     error => {
-  //       this.ngxloading = false;
-  //       this.customFieldsDtosLoader = false;
-  //     }
-  //   );
-  // }
-
-  // validateAndSubmit() {
-  //   this.isValid = true;
-  //   let errorMessage = "";
-  //   this.isOrderChanged = false;
-  //   this.leadCustomFields.forEach(field => {
-  //     if ($.trim(field.displayName).length <= 0) {
-  //       this.isValid = false;
-  //        errorMessage = "Please enter the display name";
-  //     }
-  //   });
-
-  //   if (this.isValid) {
-  //     this.saveLeadCustomFields();
-  //   } else {
-  //     this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-  //     this.referenceService.goToTop();
-  //   }
-  // }
-
-  // saveLeadCustomFields() {
-  //   this.ngxloading = true;
-  //   this.customFieldsDtosLoader = true;
-  //   this.leadService.saveCustomLeadFields(this.leadCustomFields).subscribe(data => {
-  //     if (data.statusCode == 200) {
-  //       this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-  //       this.ngxloading = false;
-  //       this.customFieldsDtosLoader = false;
-  //       this.referenceService.goToTop();
-  //       this.getLeadFields();
-  //     }
-  //   },
-  //     error => {
-  //       this.ngxloading = false;
-  //       this.customFieldsDtosLoader = false;
-  //       let errorMessage = this.referenceService.getApiErrorMessage(error);
-  //       this.customResponse = new CustomResponse('ERROR', errorMessage, true);
-  //     }
-  //   );
-  // }
-
-
+  
 	listSalesforceCustomFields(opportunityType: any) {
 		this.ngxloading = true;
 		let self = this;
 		this.customFieldsDtosLoader = true;
-		self.integrationService.getLeadCustomFields()
+		self.integrationService.getLeadCustomFields(this.pagination)
 			.subscribe(
 				data => {
 					this.ngxloading = false;
@@ -231,29 +156,29 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 			if (page < 1 || (this.sfcfPager.totalPages > 0 && page > this.sfcfPager.totalPages)) {
 				return;
 			}
-			if (this.sortOption !== undefined) {
-				if (this.sortOption === 'asc') {
-					this.sfCustomFieldsResponse.sort((a, b) => a.label.localeCompare(b.label));
-				} else if (this.sortOption === 'desc') {
-					this.sfCustomFieldsResponse.sort((a, b) => b.label.localeCompare(a.label));
-				} else if (this.sortOption === '') {
-					this.sfCustomFieldsResponse.sort((a, b) => {
-						if (a.canUnselect && !b.canUnselect) {
-							return 1;
-						} else if (!a.canUnselect && b.canUnselect) {
-							return -1;
-						}
+			// if (this.sortOption !== undefined){ 
+			// 	if (this.sortOption === 'asc') {
+			// 		this.sfCustomFieldsResponse.sort((a, b) => a.label.localeCompare(b.label));
+			// 	} else if (this.sortOption === 'desc') {
+			// 		this.sfCustomFieldsResponse.sort((a, b) => b.label.localeCompare(a.label));
+			// 	} else if (this.sortOption === '') {
+			// 		this.sfCustomFieldsResponse.sort((a, b) => {
+			// 			if (a.canUnselect && !b.canUnselect) {
+			// 				return 1;
+			// 			} else if (!a.canUnselect && b.canUnselect) {
+			// 				return -1;
+			// 			}
 
-						if (!a.selected && b.selected) {
-							return 1;
-						} else if (a.selected && !b.selected) {
-							return -1;
-						}
+			// 			if (!a.selected && b.selected) {
+			// 				return 1;
+			// 			} else if (a.selected && !b.selected) {
+			// 				return -1;
+			// 			}
 
-						return a.label.localeCompare(b.label);
-					});
-				}
-			}
+			// 			return a.label.localeCompare(b.label);
+			// 		});
+			// 	}
+			// }
 			this.referenceService.goToTop();
 			if (this.searchKey !== undefined && this.searchKey !== '') {
 				this.FilteredCustomFields = this.sfCustomFieldsResponse.filter(customField =>
@@ -308,127 +233,32 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 			var id = $(this).val();
 			self.selectedCustomFieldIds.push(id);
 		});
-
-		/*****XNFR-339*****/
-
-		//  if (this.integrationType.toLowerCase() === 'salesforce') {
-			// const displayName = this.selectedCustomFieldsDtos.find(field => $.trim(field.displayName).length <= 0);
-			// if(displayName)
-			// {
-			// 	this.ngxloading = false;
-			// 	const missingFields: string[] = [];
-			// 	this.selectedCustomFieldsDtos.forEach(field => {
-			// 				if ($.trim(field.displayName).length <= 0) {
-			// 					missingFields.push(field.label);
-			// 				}
-			// 			});
-			// 			const missingFieldsMessage = missingFields.join(', ');
-			// 			this.referenceService.goToTop();
-			// 			this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);
-			// 			return this.notifySubmitSuccess.emit(this.customFieldsResponse);	
-            
-			// }
-      this.customFields.loggedInUserId = this.loggedInUserId;
-      this.customFields.selectedFields = this.selectedCustomFieldsDtos;
-      this.customFields.objectType = 'LEAD';
-			this.integrationService.syncCustomFieldsForm(this.customFields)
-		 		.subscribe(
-		 			data => {
-		 				this.ngxloading = false;
-						if (data.statusCode == 200) {
-              this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-              this.notifySubmitSuccess.emit(this.customFieldsResponse);
-							this.isFilterApplied = false;
-							this.isSortApplied = false;
-							this.listSalesforceCustomFields(this.opportunityType);
-		 				}
-		 			},
-					error => {
-						this.ngxloading = false;
+		this.customFields.loggedInUserId = this.loggedInUserId;
+		this.customFields.selectedFields = this.selectedCustomFieldsDtos;
+		this.customFields.objectType = 'LEAD';
+		this.integrationService.syncCustomFieldsForm(this.customFields)
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					if (data.statusCode == 200) {
+						this.customResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+						this.notifySubmitSuccess.emit(this.customFieldsResponse);
+						this.isFilterApplied = false;
+						this.isSortApplied = false;
+						this.listSalesforceCustomFields(this.opportunityType);
+					}
 				},
-					() => { }
-		 		);
-      // }
-		//  } else {
-		// this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
-		// if(this.integrationType.toLowerCase() != 'salesforce'){
-		// 	this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
-		// 	$.each(this.sfCustomFieldsResponse,function(_index:number,customFiledDto:any){
-		// 		if(customFiledDto.selected){
-		// 			let selectedCustomFieldsDto = new CustomFieldsDto();
-		// 			selectedCustomFieldsDto.name = customFiledDto.name;
-		// 			selectedCustomFieldsDto.label = customFiledDto.label;
-		// 			selectedCustomFieldsDto.required = customFiledDto.required;
-		// 			selectedCustomFieldsDto.placeHolder = customFiledDto.placeHolder;
-		// 			selectedCustomFieldsDto.displayName = customFiledDto.displayName;
-		// 			selectedCustomFieldsDto.formDefaultFieldType = customFiledDto.formDefaultFieldType;
-		// 			selectedCustomFieldsDto.options = customFiledDto.options;
-		// 			selectedCustomFieldsDto.originalCRMType = customFiledDto.originalCRMType;
-		// 			self.selectedCustomFieldsDtos.push(selectedCustomFieldsDto);
-		// 		}
-		// 	});
-		// }
-		// 	const amountField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'AMOUNT');
-		// 	const closeDateField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'CLOSE_DATE');
-		// 	const dealNameField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'DEAL_NAME');
-		// 	const displayName = this.selectedCustomFieldsDtos.find(field => $.trim(field.displayName).length <= 0);	
-		// 	 if (((this.integrationType === 'HUBSPOT') && (!amountField || !closeDateField || !dealNameField)) && (!this.authenticationService.module.isTeamMember || this.authenticationService.module.isAdmin)) {
-		// 		 this.ngxloading = false;
-		// 		 const missingFields: string[] = [];
-		// 		 if (!amountField) {
-		// 			missingFields.push('Amount');
-		// 		 }
-		// 		 if (!closeDateField) {
-		// 			 missingFields.push('Close Date');
-		// 		 }
-		// 		 if (!dealNameField) {
-		// 			 missingFields.push('Deal Name');
-		// 		 }
-		// 		 const missingFieldsMessage = missingFields.join(', ');
-		// 		 this.referenceService.goToTop();
-		// 		 this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);	
-		// 		 return this.notifySubmitSuccess.emit(this.customFieldsResponse);
-		// 	}
-		// 	if((this.integrationType === 'HUBSPOT' || this.integrationType === 'PIPEDRIVE' || this.integrationType === 'CONNECTWISE' || this.integrationType === 'HALOPSA' || this.integrationType === 'ZOHO') && displayName)
-		// 	{
-		// 		this.ngxloading = false;
-		// 		const missingFields: string[] = [];
-		// 		this.selectedCustomFieldsDtos.forEach(field => {
-		// 					if ($.trim(field.displayName).length <= 0) {
-		// 						missingFields.push(field.label);
-		// 					}
-		// 				});
-		// 				const missingFieldsMessage = missingFields.join(', ');
-		// 				this.referenceService.goToTop();
-		// 				this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);
-		// 				return this.notifySubmitSuccess.emit(this.customFieldsResponse);
-		// 	}
-		//  	this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, this.integrationType.toLowerCase(), this.opportunityType)
-		// 		.subscribe(
-		//  			data => {
-	 	// 			this.ngxloading = false;
-		// 				if (data.statusCode == 200) {
-		//  					this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-    //                         this.notifySubmitSuccess.emit(this.customFieldsResponse );
-		// 					 this.isFilterApplied = false;
-		// 					 this.isSortApplied = false;
-		//  					// this.listExternalCustomFields();
-		//  				}
-		// 			},
-		// 			error => {
-		// 				this.ngxloading = false;
-		// 			},
-		//  			() => { }
-		//  		);
-		//  }
-
+				error => {
+					this.ngxloading = false;
+				},
+				() => { }
+			);
 	}
-
 	closeSfSettings() {
 		this.closeEvent.emit();
 	}
 
-	selectCf(sfCustomField: any) {
+	selectCf(sfCustomField: any, event: any) {
 		let cfName = sfCustomField.name;
 		let isChecked = $('#' + cfName).is(':checked');
 		if (isChecked) {
@@ -440,203 +270,28 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 				this.paginatedSelectedIds.push(cfName);
 			}
 			sfCustomField.selected = true;
+			this.isHeaderCheckBoxChecked =  true;
 		} else {
 			this.selectedCustomFieldsDtos.splice(this.selectedCustomFieldsDtos.indexOf(sfCustomField), 1);
 			let indexInSelectedIds = this.selectedCfIds.indexOf(cfName);
 			if (indexInSelectedIds !== -1) {
 				this.selectedCfIds.splice(indexInSelectedIds, 1);
-			}
-			
+			}			
 			let indexInPaginatedIds = this.paginatedSelectedIds.indexOf(cfName);
 			if (indexInPaginatedIds !== -1) {
 				this.paginatedSelectedIds.splice(indexInPaginatedIds, 1);
 			}
-	
+			this.isHeaderCheckBoxChecked =  false;	
 			sfCustomField.selected = false;
 			sfCustomField.required = false;
 		}
-		this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
-
-		this.setAllParentFieldsSelected(sfCustomField,isChecked);
-
+		event.stopPropagation();
+		// this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
 	}
 
-
-	setAllParentFieldsSelected(sfCustomField: any, isChildChecked: any) {
-		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
-			let cfParentName = sfCustomField.controllerName;
-			if (isChildChecked) {
-				$('#' + cfParentName).prop('checked', true);
-			}
-			let sfParentName = sfCustomField.controllerName;
-			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
-			for (let sfParentfield of sfParentFields) {
-				if (isChildChecked) {
-					let cfName = sfParentfield.name;
-					if (this.selectedCfIds.indexOf(cfName) == -1) {
-						this.selectedCfIds.push(cfName);
-						this.selectedCustomFieldsDtos.push(sfParentfield);
-					}
-					if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
-						this.paginatedSelectedIds.push(cfName);
-					}
-					sfParentfield.selected = true;
-					sfParentfield.canUnselect = false;
-					this.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
-				} else {
-					let cfParentName = sfCustomField.controllerName;
-					$('#' + cfParentName).prop('checked', true);
-					sfParentfield.canUnselect = true;
-					sfParentfield.selected = true;
-				}
-
-				if (sfParentfield.controllerName != null && sfParentfield.controllerName != undefined) {
-					let cfParentName = sfParentfield.controllerName;
-					let isChecked = false;
-					if (sfParentfield.selected || !(sfParentfield.canUnselect)) {
-						$('#' + cfParentName).prop('checked', true);
-						isChecked = true;
-					}
-					this.setAllParentFieldsSelected(sfParentfield, isChecked);
-				}
-			}
-		}
-	}
-
-	checkIfhasParentField(sfCustomField: any, isChecked: any) {
-		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
-			let cfParentName = sfCustomField.controllerName;
-			if (isChecked) {
-				$('#' + cfParentName).prop('checked', true);
-			}
-			this.setParentFieldSelected(sfCustomField, isChecked);
-		}
-	}
-
-	checkIParentFieldisUnChecked(sfCustomField: any) {
-		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
-			let sfParentName = sfCustomField.controllerName;
-			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
-			for (let sfParentfield of sfParentFields) {
-				let hasParentLabel = this.sfcfPagedItems.some(field => field.name === sfParentName);
-				if (sfCustomField.canUnselect) {
-					if (hasParentLabel || !(sfParentfield.canUnselect)) {
-						sfParentfield.selected = false;
-						sfParentfield.canUnselect = true;
-						this.checkIParentFieldisUnChecked(sfParentfield);
-					}
-				} else {
-					let cfParentName = sfCustomField.controllerName;
-					$('#' + cfParentName).prop('checked', true);
-					sfCustomField.selected = true;
-					sfCustomField.canUnselect = false;
-					sfParentfield.selected = true;
-					sfParentfield.canUnselect = false;
-				}
-			}
-		}
-	}
-
-
-	setParentFieldSelected(sfCustomField: any, isChildChecked: any) {
-		if (sfCustomField.controllerName != null && sfCustomField.controllerName != undefined) {
-			let sfParentName = sfCustomField.controllerName;
-			let sfParentFields = this.sfCustomFieldsResponse.filter(field => field.name === sfParentName);
-			for (let sfParentfield of sfParentFields) {
-				if (isChildChecked) {
-					let cfName = sfParentfield.name;
-					if (this.selectedCfIds.indexOf(cfName) == -1) {
-						this.selectedCfIds.push(cfName);
-						this.selectedCustomFieldsDtos.push(sfParentfield);
-					}
-					if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
-						this.paginatedSelectedIds.push(cfName);
-					}
-					sfParentfield.selected = true;
-					sfParentfield.canUnselect = false;
-					this.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
-				} else {
-					let cfParentName = sfParentfield.controllerName;
-					$('#' + cfParentName).prop('checked', true);
-					sfParentfield.canUnselect = true;
-					sfParentfield.selected = true;
-				}
-			}
-		}
-	}
-
-	// reloadCustomFields() {
-	// 	this.sfcfPagedItems = [];
-	// 	this.sfcfMasterCBClicked = false;
-	// 	this.searchKey = '';
-	// 	this.sortOption = '';
-	// 	this.isFilterApplied = false;
-	// 	this.isSortApplied = false;
-	// 	this.customFieldsResponse.isVisible = false;
-	// 	if (this.integrationType.toLowerCase() === 'salesforce') {
-	// 		this.listSalesforceCustomFields(this.opportunityType);
-	// 	} else {
-	// 		this.listExternalCustomFields();
-	// 	}
-	// }
-
-  // getIntegrationDealPipelines() {
-	// 	this.ngxloading = true;
-	// 	this.integrationService.getCRMPipelines(this.loggedInUserId, this.integrationType)
-	// 	.subscribe(
-	// 	  data => {
-	// 	    this.referenceService.loading(this.httpRequestLoader, false);
-	// 	    if (data.statusCode == 200) {
-	// 			this.integrationPipelines = data.data;
-	// 	    }
-	// 		this.ngxloading = false;
-	// 	  },
-	// 	  error => {
-	// 		this.ngxloading = false;
-	// 	    this.httpRequestLoader.isServerError = true;
-	// 	  },
-	// 	  () => { }
-	// 	);
-	// }
-
-  // getActiveCRMDetails() {
-	// 	this.integrationService.getActiveCRMDetailsByUserId(this.loggedInUserId)
-	// 		.subscribe(
-	// 			data => {
-	// 				this.ngxloading = false;
-	// 				this.activeCRMDetails = data.data;
-	// 			});
-	// }
-
-	// getIntegrationDetails() {
-	// 	this.ngxloading = true;
-	// 	let self = this;
-	// 	self.integrationService.getIntegrationDetails(this.integrationType.toLowerCase(), this.loggedInUserId)
-	// 		.subscribe(
-	// 			data => {
-	// 				this.ngxloading = false;
-	// 				if (data.statusCode == 200) {
-	// 					this.integrationDetails = data.data;
-	// 				}
-	// 			},
-	// 			error => {
-	// 				this.ngxloading = false;
-	// 			},
-	// 			() => {
-	// 				if (this.integrationType.toLowerCase() === 'salesforce') {
-	// 					// this.listSalesforceCustomFields(this.opportunityType);
-	// 				} else {						
-	// 					if (this.integrationType.toLowerCase() === 'hubspot' || this.integrationType.toLowerCase() === 'pipedrive') {
-	// 						this.getIntegrationDealPipelines();
-	// 					}
-	// 					this.listExternalCustomFields();
-	// 				}
-	// 			}
-	// 		);
-	// }
-
-	checkAll(ev: any) {
-		if (ev.target.checked) {
+	checkAll(event: any) {
+		// this.selectedCfIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('customFields-tr', 'custom-fields-table', 'sfcf', this.selectedCfIds, this.pagination, event);
+		if (event.target.checked) {
 			$('[name="sfcf[]"]').prop('checked', true);
 			let self = this;
 			$('[name="sfcf[]"]:checked').each(function () {
@@ -649,7 +304,6 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 			$.each(this.sfcfPagedItems, function (index: number, value: any) {
 				value.selected = true;
 				self.selectedCustomFieldsDtos.push(value);
-				self.setAllParentFieldsSelected(value, true);
 			});
 			self.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(self.selectedCustomFieldsDtos);
 		} else {
@@ -675,79 +329,17 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 					value.selected = false;
 					self.selectedCustomFieldsDtos.splice(self.selectedCustomFieldsDtos.indexOf(value), 1);
 					if (value.controllerName != null && value.controllerName != undefined) {
-						self.checkIfhasParentField(value, false);
-						self.checkIParentFieldisUnChecked(value);
 					}
 				}
 			});
 			self.selectedCustomFieldsDtos = this.referenceService.removeDuplicates(this.selectedCustomFieldsDtos);
 		}
-		ev.stopPropagation();
+		event.stopPropagation();
 	}
 	toggleSettings(sfCustomField){
 		sfCustomField.showSettings = !sfCustomField.showSettings;
 	}
 		
-	// onFieldSelectionChange(selectedField: any): void {
-	// 	const selectedFieldType = selectedField.formDefaultFieldType;
-	// 	const selectedFieldTypeName = selectedField.type;
-
-	// 	selectedField.typeMismatch = false;
-	// 	selectedField.typeMismatchMessage = '';
-
-	// 	if (selectedFieldType === null) {
-	// 		selectedField.canUnselect = true;
-	// 		return;
-	// 	}
-
-	// 	if (
-	// 		(selectedFieldType === 'AMOUNT' && selectedFieldTypeName !== 'number') ||
-	// 		(selectedFieldType === 'DEAL_NAME' && selectedFieldTypeName !== 'text') ||
-	// 		(selectedFieldType === 'CLOSE_DATE' && selectedFieldTypeName !== 'date')
-	// 	) {
-	// 		selectedField.typeMismatch = true;
-	// 		selectedField.typeMismatchMessage = `Type mismatch for ${selectedFieldType}. Expected type is ${selectedFieldType === 'AMOUNT' ? 'number' : selectedFieldType === 'DEAL_NAME' ? 'text' : 'date'
-	// 			}.`;
-	// 		selectedField.formDefaultFieldType = null;
-	// 		return;
-	// 	}
-
-	// 	let countSelectedType = 0;
-
-	// 	this.sfCustomFieldsResponse.forEach(field => {
-	// 		if (
-	// 			field.formDefaultFieldType === selectedFieldType &&
-	// 			((selectedFieldTypeName === 'number' && selectedFieldType === 'AMOUNT') ||
-	// 				(selectedFieldTypeName === 'text' && selectedFieldType === 'DEAL_NAME') ||
-	// 				(selectedFieldTypeName === 'date' && selectedFieldType === 'CLOSE_DATE'))
-	// 		) {
-	// 			countSelectedType++;
-	// 			field.required = true;
-	// 			field.canUnselect = false;
-	// 			field.canEditRequired = false;
-	// 		} else {
-	// 			field.typeMismatch = false;
-	// 			field.typeMismatchMessage = '';
-	// 		}
-	// 	});
-
-	// 	if (countSelectedType > 1) {
-	// 		this.sfCustomFieldsResponse.forEach(field => {
-	// 			if (
-	// 				field.formDefaultFieldType === selectedFieldType &&
-	// 				((selectedFieldTypeName === 'number' && selectedFieldType === 'AMOUNT') ||
-	// 					(selectedFieldTypeName === 'text' && selectedFieldType === 'DEAL_NAME') ||
-	// 					(selectedFieldTypeName === 'date' && selectedFieldType === 'CLOSE_DATE')) &&
-	// 				field !== selectedField
-	// 			) {
-	// 				field.formDefaultFieldType = null;
-	// 				field.canUnselect = true;
-	// 				field.canEditRequired = true;
-	// 			}
-	// 		});
-	// 	}
-	// }
-
 
 	searchFieldsKeyPress(keyCode: any) {
 		if (keyCode === 13) {
@@ -784,7 +376,6 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 		// }
 	}
 
-	//XNFR-576
 	addCustomFielsdModalOpen(customfield: any){
 		this.isCustomFieldsModelPopUp = true;
 		this.customField = customfield;
@@ -794,27 +385,65 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
 	closeCustomFielsModal(event: any) {
 		if (event === "0") {
 			this.isCustomFieldsModelPopUp = false;
-		}	
-  }
-
-  //XNFR-601
-		addCustomFielsdOrderModalOpen(){
-			this.isCustomFieldsOrderModelPopUp = true;
-			this.customFieldsList = this.selectedCustomFieldsDtos;
 		}
-
-		closeCustomFielsOrderModal(event: any) {
-			if (event === "0") {
-				this.isCustomFieldsOrderModelPopUp = false;
-			}	
+	}
+	addCustomFielsdOrderModalOpen() {
+		this.isCustomFieldsOrderModelPopUp = true;
+		this.customFieldsList = this.selectedCustomFieldsDtos;
 	}
 
-	//XNFR-611
-	toggleHeaderSettings(){
+	closeCustomFielsOrderModal(event: any) {
+		if (event === "0") {
+			this.isCustomFieldsOrderModelPopUp = false;
+		}
+	}
+	toggleHeaderSettings() {
 		this.showHeaderTextArea = !this.showHeaderTextArea;
 	}
 
-  //XNFR-662
+	listCustomFields(pagination: Pagination) {
+		this.ngxloading = true;
+		let self = this;
+		this.pagination.userId = this.loggedInUserId;
+		self.integrationService.getLeadCustomFields(this.pagination).subscribe(
+			(response: any) => {
+				this.ngxloading = false;
+				this.sfCustomFieldsResponse = response.data.list;
+				this.sortOption.totalRecords = response.data.totalRecords;
+				pagination.totalRecords = response.data.totalRecords;
+				this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
+				self.selectedCfIds = [];
+				$.each(this.sfCustomFieldsResponse, function (_index: number, customField) {
+					if (customField.selected) {
+						self.selectedCfIds.push(customField.name);
+					}
+
+					if (customField.required) {
+						self.requiredCfIds.push(customField.name);
+						if (!customField.selected) {
+							self.selectedCfIds.push(customField.name);
+						}
+						if (!customField.canUnselect) {
+							self.canNotUnSelectIds.push(customField.name)
+						}
+					}
+				});
+			},
+			error => {
+				this.ngxloading = false;
+			},
+			() => {
+				this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
+				$.each(this.sfCustomFieldsResponse, function (_index: number, customFiledDto: any) {
+					if (customFiledDto.selected) {
+						self.selectedCustomFieldsDtos.push(customFiledDto);
+					}
+				});
+			}
+		);
+	}
+
+
   addCustomFieldsdModalOpen(){
     this.isAddCustomFieldsModelPopUp = true;
   }
@@ -857,6 +486,11 @@ export class LeadCustomFieldsSettingsComponent implements OnInit {
         },error=>{
           this.ngxloading = false;
         });  
+  }
+
+  setCustomFieldsPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.listCustomFields(this.pagination);
   }
 
 }
