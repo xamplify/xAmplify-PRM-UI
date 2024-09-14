@@ -42,14 +42,13 @@
                                 <img class="profile-image shadow-inset" alt=""
                                     *ngIf="!cropRounded && circleData?.image; else Other" [src]="circleData.image">
                                 <ng-template #Other><img alt="" class="profile-image" [src]="userProfileImage"
-                                        [width]="circleCropperSettings.croppedWidth"
-                                        [height]="circleCropperSettings.croppedHeight" (error)="errorHandler($event)">
+                                        [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight"
+                                        (error)="errorHandler($event)">
                                 </ng-template>
                             </ng-container>
                             <ng-template #showImage><img alt="" [src]="userProfileImage" class="profile-image"
-                                    [width]="circleCropperSettings.croppedWidth"
-                                    [height]="circleCropperSettings.croppedHeight" (error)="errorHandler($event)"
-                                    (click)="imageUpload('imageSelect')"></ng-template>
+                                    [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight"
+                                    (error)="errorHandler($event)" (click)="imageUpload('imageSelect')"></ng-template>
                             <div id="imageSelect" class="upload-btn-wrapper" (click)="fileChangeEvent()">
                                 <i class="fa fa-camera" aria-hidden="true"></i>
                             </div>
@@ -72,8 +71,8 @@
                             </div>
                             <div *ngIf="authenticationService?.module?.upgradeToMarketing"
                                 class="profile-usertitle-job">
-                                <button class="btn btn-info" *ngIf="!isUpgradedRequestSubmitted"
-                                    (click)="upgrade()">Request To Upgrade Your Account</button>
+                                <button class="btn btn-info" *ngIf="!isUpgradedRequestSubmitted" (click)="upgrade()">Request To Upgrade Your
+                                    Account</button>
                                 <button disabled class="btn btn-primary" *ngIf="isUpgradedRequestSubmitted">Upgrade
                                     Request Submitted</button>
                             </div>
@@ -361,7 +360,8 @@
                                     </ul>
                                     <!--------------Admin----------------------->
                                     <div class="my-profile-header-text neumorphismDark admin_tab_alignment neg_mrg_left1"
-                                        [ngClass]="[activeTabName == properties?.dashboardButtons ? 'show':'',
+                                        [ngClass]="[
+                                            activeTabName == properties?.dashboardButtons ? 'show':'',
                                             activeTabName == properties?.newsAndAnnouncements ? 'show':'',
                                             activeTabName == properties?.dashboardBanners ? 'show':'',
                                             activeTabName == 'templates' ? 'show':'',
@@ -375,10 +375,10 @@
                                             activeTabName == 'team-group' ? 'show':'',
                                             activeTabName == properties?.emailNotificationSettings ? 'show':'',
                                             activeTabName == properties?.addDomainsText ? 'show':'',
-                                            activeTabName == 'masterLandingPageCategories' ? 'show':'']">
+                                            activeTabName == 'masterLandingPageCategories' ? 'show':'',
+                                            activeTabName == customFieldsMenuHeader ? 'show':'' ]">
                                         Admin
-                                        <a data-toggle="collapse" style="float: right;"
-                                            href="javascript:;#adminDropdown" (click)="toggleClass('admin-icon')">
+                                        <a data-toggle="collapse" style="float: right;" href="javascript:;#adminDropdown" (click)="toggleClass('admin-icon')">
                                             <i id="admin-icon" class="fa fa-minus" aria-hidden="true"></i>
                                         </a>
                                     </div>
@@ -483,7 +483,7 @@
                                                     </a>
                                                 </li>
                                             </ng-container>
-                                             <!--Welcom-pages-->
+                                             <!--Welcome-pages-->
                                              <ng-container
                                              *ngIf="welcomePagesAccess  && ((authenticationService?.isVendorTeamMember || authenticationService?.isOrgAdminTeamMember) && authenticationService?.module?.adminOrSuperVisor || authenticationService?.module?.isVendor|| authenticationService?.isOrgAdmin())">
                                              <li [ngClass]="{'active-tab': activeTabName == 'welcomePages'}">
@@ -537,7 +537,6 @@
                                                 </a>
                                             </li>
                                         </ng-container>
-                                        <!-- Adding masterLandingPageCategories  end -->
                                         <!--Adding Domains XNFR-454-->
                                         <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
                                             [ngClass]="{'active-tab': activeTabName == properties?.addDomainsText}"
@@ -548,6 +547,16 @@
                                                     [ngTemplateOutletContext]="{'moduleName':properties?.addDomainsText}"></ng-template>
                                             </a>
                                         </li>
+                                        <!--XNFR-679 Custom Fields-->
+                                        <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"
+                                            [ngClass]="{'active-tab': activeTabName == customFieldsMenuHeader}"
+                                            style="border-bottom: none !important;">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == customFieldsMenuHeader}"
+                                                (click)="activateTab(customFieldsMenuHeader);clearCustomResponse()">{{customFieldsMenuHeader}}
+                                                <ng-template [ngTemplateOutlet]="activeIcon" [ngTemplateOutletContext]="{'moduleName':customFieldsMenuHeader}"></ng-template>
+                                            </a>
+                                        </li>
+                                        
                                     </ul>
                                 </ng-container>
                             </ul>
@@ -3289,7 +3298,9 @@
                                         <app-campaign-analytics-settings *ngIf="isCampaignAnalyticsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == MY_PROFILE_MENU_CONSTANTS?.CAMPAIGN_ANALYTICS_MENU_HEADER}"></app-campaign-analytics-settings>
                                         <!--XNFR-628 Chat GPT-->
                                         <app-chat-gpt-integration-settings *ngIf="isChatGptSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == chatGptSettingsMenuHeader}"></app-chat-gpt-integration-settings>
-                                        <app-modal-popup-loader *ngIf="ngxloading && activeTabName != properties?.personalInfo && activeTabName != properties?.changePassword"></app-modal-popup-loader>
+                                        <!--XNFR-679 Custom Fields-->
+                                        <app-custom-fields *ngIf="isCustomFieldsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == customFieldsMenuHeader}"></app-custom-fields>
+                                        <app-modal-popup-loader *ngIf="ngxloading && activeTabHeader != properties?.personalInfo && activeTabHeader != properties?.changePassword"></app-modal-popup-loader>
                                     </div>
                                 </div>
                             </div>

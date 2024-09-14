@@ -361,6 +361,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/** XNFR-669 **/
 	welcomePages: boolean =false;
 	welcomePagesAccess:boolean = false;
+	/**XNFR-679***/
+	customFieldsMenuHeader = MY_PROFILE_MENU_CONSTANTS.CUSTOM_FIELDS;
+	isCustomFieldsOptionClicked = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -2156,7 +2159,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.stopNgxLoader();
 			}, 500);
 			this.activeTabHeader = this.chatGptSettingsMenuHeader;
-		}/**XNFR-669****/
+		}
+		/**XNFR-669****/
 		else if (this.activeTabName == "welcomePages") {
 			this.ngxloading = true;
 			this.welcomePages = false;
@@ -2167,12 +2171,30 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 500);
 			this.activeTabHeader = this.properties.welcomePages;
 		}
+		/*****XNFR-628******/
+		else if (this.activeTabName == this.customFieldsMenuHeader) {
+			this.activateCustomFieldsMenuHeader();
+		}
 		this.referenceService.scrollSmoothToTop();
 	}
+
+	/***XNFR-679***/
+	private activateCustomFieldsMenuHeader() {
+		this.startNgxLoader();
+		this.isCustomFieldsOptionClicked = false;
+		let self = this;
+		setTimeout(() => {
+			self.isCustomFieldsOptionClicked = true;
+			self.stopNgxLoader();
+		}, 500);
+		this.activeTabHeader = this.customFieldsMenuHeader;
+	}
+
 	/*****XNFR-628******/
 	updateChatGptSettingsOption(option:boolean){
 		this.isChatGptSettingsOptionClicked = option;
 	}
+
 
 	startNgxLoader(){
 		this.ngxloading = true;
