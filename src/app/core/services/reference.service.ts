@@ -3822,6 +3822,11 @@ copySelectedElement(inputElement:any,id:string){
     }
     return duplicateElements;
   }
+
+  /*XNFR-679*/
+  isValidCustomFieldName(input:string){
+    return this.regularExpressions.CUSTOM_FIELD_NAME_PATTERN.test(input);
+  }
   
 }
 

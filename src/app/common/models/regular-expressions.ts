@@ -12,5 +12,7 @@ export class RegularExpressions {
     DOMAIN_PATTERN = /\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b/;
     ALPHABETS_PATTERN =  /^[A-Za-z\s]+$/;
     FIRSTNAME_PATTERN=/[a-zA-Z]/;
-    //FIRSTNAME_PATTERN=/[^a-zA-Z\s]/;
+    
+    //Only letters, numbers, spaces, apostrophes ('), hyphens (-), underscores (_), and ampersands (&) are allowed
+    CUSTOM_FIELD_NAME_PATTERN = /^[a-zA-Z0-9'&\-_ ]+$/;
 }
