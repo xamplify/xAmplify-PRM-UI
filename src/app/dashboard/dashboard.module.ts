@@ -113,6 +113,9 @@ import { CrmFormSettingsComponent } from './crm-form-settings/crm-form-settings.
 import { MarketPlaceCategoriesComponent } from './market-place-categories/market-place-categories.component';
 import { ChatGptIntegrationSettingsComponent } from './chat-gpt-integration-settings/chat-gpt-integration-settings.component';
 import { ChatGptSettingsService } from './chat-gpt-settings.service';
+import { CustomFieldsComponent } from './user-profile/custom-fields/custom-fields.component';
+import { CustomFieldService } from './user-profile/services/custom-field.service';
+
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule ],
@@ -196,9 +199,10 @@ import { ChatGptSettingsService } from './chat-gpt-settings.service';
         CrmFormSettingsComponent,
         MarketPlaceCategoriesComponent,
         ChatGptIntegrationSettingsComponent,
+        CustomFieldsComponent,
     ],
     exports: [InternationalPhoneModule, MarketoAuthenticationComponent],
     providers: [DashboardService, CompanyProfileService, DealRegistrationService, LandingPageService,
-        SuperAdminServiceService,MyProfileService,ChatGptSettingsService]
+        SuperAdminServiceService,MyProfileService,ChatGptSettingsService,CustomFieldService]
 })
 export class DashboardModule { }
