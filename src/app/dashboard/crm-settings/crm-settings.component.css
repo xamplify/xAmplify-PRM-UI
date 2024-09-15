@@ -26,6 +26,7 @@ fieldset.scheduler-borders {
   }
   .leads-bgcolor {
     background-color: #f1f5f9;
+    border-radius: 8px;
   }
   .mb-15 {
     margin-bottom: 15px;

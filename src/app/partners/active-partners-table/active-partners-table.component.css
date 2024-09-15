@@ -87,3 +87,6 @@ span.filterActiveBg i {
   }
  
 }
+.override-actions{
+  float: inherit!important;
+}

@@ -93,7 +93,7 @@
 					<span class="caption-helper"></span>
 				</div>
 				<div class="panel-title pull-right mPannel">
-					<span style="float:right; font-size: 13px;">
+					<span class="ml5" style="float:right; font-size: 13px;">
 						<select style="cursor: pointer" [(ngModel)]="minutesSort"
 							(ngModelChange)="selectedSortByValue($event.value)">
 							<option *ngFor="let sort of sortMintuesDates" [ngValue]="sort"> {{sort.name}} </option>
