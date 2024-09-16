@@ -88,11 +88,11 @@
                   </li>
                 </ng-container>
                 <!-- End Show 3 modules-->
-                <li>
+                <li *ngIf = "menuItems.length>4">
                   <a class = "moduleTextColor">More</a>
                   <i class='fa fa-chevron-down htmlcss-arrow arrow '></i>
                   <ul class="htmlCss-sub-menu sub-menu-bar">
-                    <ng-container *ngFor="let menu of displayedMoreItems">
+                    <ng-container *ngFor="let menu of menuItems | slice:4">
                       <li *ngIf="!menu.showSubMenu" >
                         <a (click) = "navigate(menu)" [ngClass]="menu.mergeTag === mergeTag? 'xamplify-active':'moduleTextColor'" >
                           <i  [ngClass]="menu.mergeTag === 'dashboard'? 'fa fa-th-large fa-4': menu.angularIcon"  aria-hidden="true"></i>
@@ -133,7 +133,7 @@
                             <ng-template [ngTemplateOutlet]="referVendorTemplate"></ng-template>
                             </ng-container>
                           <!--Invite A Vendor For Vanity Login-->
-                         <ng-container *ngIf="authenticationService?.vanityURLEnabled && isReferVendorOptionEnabledForVanity && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()&&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
+                         <ng-container *ngIf="authenticationService?.vanityURLEnabled && !isReferVendorOptionEnabledForVanity && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()&&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                             &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
                             <ng-template [ngTemplateOutlet]="referVendorTemplate"></ng-template>
                           </ng-container>
@@ -167,7 +167,7 @@
                 </ul> -->
               </li>
               <li id="logoutButton" style="text-align:center;"><a
-                routerLink="/home/dashboard/notifications"><span class="bold">View All</span></a></li>
+                (click)="navigateToGivenPath('/home/dashboard/notifications')"><span class="bold">View All</span></a></li>
             </ul>
 
           </div>
@@ -345,7 +345,7 @@
                </div>
                <div *ngIf="isValidationMessage">
                   <div *ngIf="customResponse.responseType != null">
-                     <div class="alert alert-dismissible m0" role="alert" [ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
+                     <div class="xamplify-invite-alert alert-dismissible m0" role="alert" [ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
                          'alert-danger': customResponse.responseType == 'ERROR',
                          'alert-info': customResponse.responseType == 'INFO'}">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"

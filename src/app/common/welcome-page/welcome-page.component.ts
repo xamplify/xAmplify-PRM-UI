@@ -58,22 +58,28 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
     this.getActiveThemeData(this.vanityLoginDto);
     if(this.router.url.includes('/welcome-page')){
         this.referenceService.clearHeadScriptFiles();
+        if (this.vanityURLService.isVanityURLEnabled()) {
+          this.vanityURLService.checkVanityURLDetails();
+        }
     }
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
     $("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
     $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-font-family.css' type='text/css'>");
-    this.pageLoading = false;
   }
    
   ngAfterViewInit(){
-    if(this.router.url.includes('/welcome-page')){
-      this.getHtmlBodyAlias();
-      this.displayPage = true;
-      if(this.referenceService.isWelcomePageLoading && this.referenceService.isFromLogin){
-        this.referenceService.isWelcomePageLoading = false;
-        this.referenceService.isFromLogin = false;
-      }
-      }  
+    setTimeout(() => {
+      this.pageLoading = false;
+      if(this.router.url.includes('/welcome-page')){
+        this.getHtmlBodyAlias();
+        this.displayPage = true;
+        if(this.referenceService.isWelcomePageLoading && this.referenceService.isFromLogin){
+          this.referenceService.isWelcomePageLoading = false;
+          this.referenceService.isFromLogin = false;
+        }
+        }  
+    }, 5000);
+
   }
 
   getActiveThemeData(vanityLoginDto: VanityLoginDto) {

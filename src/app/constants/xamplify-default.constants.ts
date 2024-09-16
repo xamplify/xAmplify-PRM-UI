@@ -3,5 +3,6 @@ export const XAMPLIFY_CONSTANTS = {
     singleColumnLayout: 'SINGLE_COLUMN_LAYOUT',
     twoColumnLayout:'TWO_COLUMN_LAYOUT',
     createFolder:'Create a Folder',
-    welcomePageEnabledKey:'isWelcomePageEnabled'
+    welcomePageEnabledKey:'isWelcomePageEnabled',
+    currentUser:'currentUser'
 }
