@@ -3554,9 +3554,9 @@ clearHeadScriptFiles(){
   }
 
   private setTitle() {
-    let iconPath = JSON.parse(localStorage.getItem("appIcon"));
+    let iconPath = localStorage.getItem("appIcon");
     let completeIconPath = "";
-    if (iconPath != null && iconPath != "") {
+    if (iconPath !== "null" && iconPath != null && iconPath != "") {
       completeIconPath = this.authenticationService.MEDIA_URL + iconPath;
     } else {
       completeIconPath += this.authenticationService.APP_URL + "favicon.ico";
