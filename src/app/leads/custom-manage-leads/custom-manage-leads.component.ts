@@ -13,7 +13,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { Properties } from 'app/common/models/properties';
 import { DealsService } from 'app/deals/services/deals.service';
 
-declare var swal:any, $:any, videojs: any;
+declare var swal: any, $: any, videojs: any;
 
 @Component({
   selector: 'app-custom-manage-leads',
@@ -23,7 +23,7 @@ declare var swal:any, $:any, videojs: any;
 })
 export class CustomManageLeadsComponent implements OnInit {
   readonly LEAD_CONSTANTS = LEAD_CONSTANTS;
-  @Input() listView:boolean = false;
+  @Input() listView: boolean = false;
   @Input() isPartnerVersion: boolean;
   @Input() isVendorVersion: boolean;
   @Input() isOrgAdmin: boolean = false;
@@ -66,17 +66,17 @@ export class CustomManageLeadsComponent implements OnInit {
       this.vanityLoginDto.userId = this.loggedInUserId;
       this.vanityLoginDto.vanityUrlFilter = false;
     }
-   }
+  }
 
   ngOnInit() {
     this.showLeads();
   }
 
-  showRegisterDealButton(lead):boolean {
+  showRegisterDealButton(lead): boolean {
     let showRegisterDeal = false;
     if (lead.selfLead && lead.dealBySelfLead && (this.isOrgAdmin || this.authenticationService.module.isMarketingCompany) && lead.associatedDealId == undefined) {
       showRegisterDeal = true;
-    } else if (((((lead.dealByVendor && this.isVendor || lead.canRegisterDeal && lead.dealByPartner) && !lead.selfLead)) && lead.associatedDealId == undefined) 
+    } else if (((((lead.dealByVendor && this.isVendor || lead.canRegisterDeal && lead.dealByPartner) && !lead.selfLead)) && lead.associatedDealId == undefined)
       && ((lead.enableRegisterDealButton && !lead.leadApprovalOrRejection && !this.authenticationService.module.deletedPartner && lead.leadApprovalStatusType !== 'REJECTED'))) {
       showRegisterDeal = true;
     }
@@ -89,22 +89,22 @@ export class CustomManageLeadsComponent implements OnInit {
     this.leadId = lead.id;
   }
 
-  addApprovalStatusModelPopup(lead:Lead , leadApprovalStatusType:string){
+  addApprovalStatusModelPopup(lead: Lead, leadApprovalStatusType: string) {
     this.leadApprovalStatusType = leadApprovalStatusType;
     this.selectedLead = lead;
     this.updateCurrentStage = true;
   }
 
-  closeApprovalStatusModelPopup(){
+  closeApprovalStatusModelPopup() {
     this.leadApprovalStatusType = null;
     this.updateCurrentStage = false;
     // this.showLeads();
   }
 
-  viewLead(lead: Lead) {  
+  viewLead(lead: Lead) {
     this.showLeadForm = true;
     this.actionType = "view";
-    this.leadId = lead.id;    
+    this.leadId = lead.id;
     // this.viewOrEditCustomLeadForm.emit();
   }
 
@@ -171,7 +171,7 @@ export class CustomManageLeadsComponent implements OnInit {
     // this.showLeads();
   }
 
-  closeLeadForm(){
+  closeLeadForm() {
     this.showLeadForm = false;
     this.closeCustomLeadAndDealForm.emit();
     // this.showLeads();
@@ -189,12 +189,17 @@ export class CustomManageLeadsComponent implements OnInit {
   }
 
   listLeads(pagination) {
+    this.referenceService.loading(this.httpRequestLoader, true);
     pagination.userId = this.loggedInUserId;
     pagination.contactId = this.selectedContact.id;
     this.leadsService.listLeadsForPartner(pagination).subscribe(
       response => {
         pagination.totalRecords = response.totalRecords;
-          this.leadsPagination = this.pagerService.getPagedItems(pagination, response.data);
+        this.leadsPagination = this.pagerService.getPagedItems(pagination, response.data);
+        this.referenceService.loading(this.httpRequestLoader, false);
+      },
+      error => {
+        this.referenceService.loading(this.httpRequestLoader, false);
       }
     )
   }
@@ -217,7 +222,7 @@ export class CustomManageLeadsComponent implements OnInit {
   resetLeadsPagination() {
     this.leadsPagination.maxResults = 12;
     this.leadsPagination = new Pagination;
-    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
+    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex == 1;
   }
 
   showSubmitLeadSuccess() {
@@ -234,6 +239,21 @@ export class CustomManageLeadsComponent implements OnInit {
     this.showLeadForm = true;
     this.actionType = "add";
     this.leadId = 0;
+  }
+
+  searchLeads() {
+    this.getAllFilteredResultsLeads(this.leadsPagination);
+  }
+
+  getAllFilteredResultsLeads(pagination: Pagination) {
+    this.leadsPagination.pageIndex = 1;
+    this.leadsPagination.searchKey = this.leadsSortOption.searchKey;
+    this.listLeads(pagination);
+  }
+
+  clearSearch() {
+    this.leadsSortOption.searchKey = '';
+    this.getAllFilteredResultsLeads(this.leadsPagination);
   }
 
 }

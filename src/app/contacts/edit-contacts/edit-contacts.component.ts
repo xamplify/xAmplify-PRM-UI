@@ -8,7 +8,7 @@ import { Properties } from '../../common/models/properties';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { AddContactsOption } from '../models/contact-option';
 import { User } from '../../core/models/user';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ManageContactsComponent } from '../manage-contacts/manage-contacts.component';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -35,6 +35,7 @@ import { Subject } from 'rxjs';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
 import { UserListPaginationWrapper } from 'app/contacts/models/userlist-pagination-wrapper';
+import { RouterUrlConstants } from 'app/constants/router-url.contstants';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -44,7 +45,8 @@ declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Pa
 	styleUrls: ['../../../assets/css/button.css',
 		'../../../assets/css/numbered-textarea.css',
 		'./edit-contacts.component.css', '../../../assets/css/phone-number-plugin.css'],
-	providers: [FileUtil, Pagination, HttpRequestLoader, CountryNames, Properties, ActionsDescription, RegularExpressions, TeamMemberService, CallActionSwitch]
+	providers: [FileUtil, Pagination, HttpRequestLoader, CountryNames, Properties, ActionsDescription, RegularExpressions, TeamMemberService, CallActionSwitch,
+		ManageContactsComponent	]
 })
 export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() contacts: User[];
@@ -282,7 +284,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
 		private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
-		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService, public callActionSwitch: CallActionSwitch) {
+		public teamMemberService: TeamMemberService, public userService: UserService, public campaignService: CampaignService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute) {
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.pagination.vanityUrlFilter = true;
@@ -2317,8 +2319,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	refresh() {
-		this.editContacts = null;
-		this.notifyParent.emit(this.editContacts);
+		if (this.module === 'contacts') {
+			this.refService.goToRouter("/home/contacts/manage");
+		} else {
+			this.editContacts = null;
+			this.notifyParent.emit(this.editContacts);
+		}
 	}
 
 	backToEditContacts() {
@@ -3625,16 +3631,23 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		try {
+			if (RouterUrlConstants.contacts.includes(this.module)) {
+				this.selectedContactListId = this.refService.decodePathVariable(this.route.snapshot.params['userListId']);
+				this.contactListId = this.selectedContactListId;
+				this.showEdit = true;
+				this.setValuesToRequiredInputs();
+			}
 			this.currentContactType = "all_contacts";
 			if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
 				this.pagination.partnerTeamMemberGroupFilter = true;
 			}
 			if (this.router.url.includes('home/contacts')) {
 				this.checkSyncStatus();
+			} else {
+				this.selectedContactListName = this.contactListName;
 			}
 			this.getLegalBasisOptions();
 			this.loadContactListsNames();
-			this.selectedContactListName = this.contactListName;
 			this.checkingLoadContactsCount = true;
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 			this.contactsCount(this.selectedContactListId);
@@ -4251,8 +4264,34 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	showContactDetails(contact) {
-		this.selectedContact = contact;
-		this.showContactDetailsTab = true;
+		let encodedUserListId = this.refService.encodePathVariable(contact.userListId);
+		let encodeUserId = this.refService.encodePathVariable(contact.id);
+		this.refService.goToRouter(RouterUrlConstants.home+RouterUrlConstants.contacts+RouterUrlConstants.editContacts+RouterUrlConstants.details+encodedUserListId+"/"+encodeUserId);
+	}
+
+	setValuesToRequiredInputs() {
+		this.loading = true;
+		this.contactService.findUserListDetials(this.selectedContactListId).subscribe(
+			result => {
+				if (result.statusCode == 200) {
+					let data = result.data;
+					this.selectedContactListName = data.name;
+					this.isDefaultPartnerList = data.isDefaultPartnerList;
+					this.isDefaultContactList = data.isDefaultContactList;
+					this.isSynchronizationList = data.synchronisedList;
+					this.isFormList = data.isFormList;
+					this.isPartnerUserList = data.isPartnerUserList;
+					this.masterContactListSync = data.isMasterContactListSync;
+					this.isTeamMemberPartnerList = data.teamMemberPartnerList;
+					this.selectedCompanyId = data.associatedCompanyId;
+					this.manageCompanies = data.companyList;
+				}
+				this.loading = false;
+			},
+			error => {
+				this.loading = false;
+			}
+		)
 	}
 
 }

@@ -11,23 +11,26 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { LeadsService } from 'app/leads/services/leads.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { DealsService } from 'app/deals/services/deals.service';
+import { ActivatedRoute } from '@angular/router';
+import { UserService } from 'app/core/services/user.service';
+import { LegalBasisOption } from 'app/dashboard/models/legal-basis-option';
+import { first } from 'rxjs/operator/first';
 declare var $: any, swal: any;
 
 @Component({
   selector: 'app-contact-details',
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.css'],
-  providers: [LeadsService, DealsService]
+  providers: [LeadsService, DealsService, Properties, UserService]
 })
 export class ContactDetailsComponent implements OnInit {
   @Input() public selectedContact:any;
   @Input() public manageCompanies:boolean = false;
   @Input() public selectedCompanyId:number;
-  @Input() public gdprInput:any;
   @Input() isTeamMemberPartnerList: boolean;
   @Input() contacts: User[];
-  @Input() pagination: Pagination;
-  @Input() selectedContactListId: number;
+  // @Input() pagination: Pagination;
+  @Input() selectedContactListId: any;
 
   highlightLetter:string = '';
   selectedCompanyContactId: any;
@@ -38,7 +41,7 @@ export class ContactDetailsComponent implements OnInit {
   isLoading:boolean = false;
   editUser: EditUser = new EditUser();
   customResponse: CustomResponse = new CustomResponse();
-  contactId:number;
+  contactId:any;
   loggedInUserId:any;
   leadsPagination: Pagination = new Pagination();
   selectedTabIndex: number;
@@ -52,9 +55,20 @@ export class ContactDetailsComponent implements OnInit {
   isConvertingContactToLead: boolean = true;
 
   showDealsTab: boolean = false;
+  companyId: any;
+  gdprInput:any;
+  gdprSetting: any;
+  gdprStatus:boolean = true;
+  termsAndConditionStatus:boolean = true;
+  fields: { text: string; value: string; };
+  legalBasisOptions: Array<LegalBasisOption>;
+  isLoadingList: boolean = false;
+  pagination: Pagination = new Pagination();
+  contactName: string = '';
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
-    public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, public dealsService: DealsService ) {
+    public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
+    public dealsService: DealsService, public route:ActivatedRoute, public userService: UserService ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -64,14 +78,19 @@ export class ContactDetailsComponent implements OnInit {
       this.vanityLoginDto.userId = this.loggedInUserId;
       this.vanityLoginDto.vanityUrlFilter = false;
     }
+    const currentUser = localStorage.getItem('currentUser');
+		let campaginAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
+		this.companyId = campaginAccessDto.companyId;
+    this.gdprInput = {};
    }
 
   ngOnInit() {
-    this.contactId = this.selectedContact.id;
+    this.selectedContactListId = this.referenceService.decodePathVariable(this.route.snapshot.params['userListId']);
+    this.contactId = this.referenceService.decodePathVariable(this.route.snapshot.params['id']);
+    this.getContact();
     this.referenceService.goToTop();
-    this.setHighlightLetter();
-    this.showLeadsTab = true;
-    // this.showLeads();
+    this.checkTermsAndConditionStatus();
+    this.getLegalBasisOptions();
   }
 // plus& minus icon
   toggleClass(id: string) {
@@ -98,31 +117,37 @@ export class ContactDetailsComponent implements OnInit {
 	}
 
   updateContactListUser(event) {
-    this.isLoading = true;
-    this.editUser.pagination = this.pagination;
-    this.editUser.pagination.partnerCompanyId = this.contactAllDetails.companyId;
-    if (event.mobileNumber) {
-      if (event.mobileNumber.length < 6) {
-        event.mobileNumber = "";
-      }
-    }
-    if (event.country === "Select Country") {
-      event.country = null;
-    }
-    this.editUser.user = event;
-    this.contactService.updateContactListUser(this.selectedContactListId, this.editUser).subscribe(
-      data => {
-        if (data.access) {
-          this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
-          this.selectedContact = event;
-          this.selectedContact.id = this.contactId;
+    try {
+      this.isLoading = true;
+      this.editUser.pagination = this.pagination;
+      this.editUser.pagination.partnerCompanyId = this.selectedContact.contactCompanyId;
+      if (event.mobileNumber) {
+        if (event.mobileNumber.length < 6) {
+          event.mobileNumber = "";
         }
-        this.isLoading = false;
-      },
-      error => {
-        this.isLoading = false;
       }
-    )
+      if (event.country === "Select Country") {
+        event.country = null;
+      }
+      this.editUser.user = event;
+      this.contactService.updateContactListUser(this.selectedContactListId, this.editUser).subscribe(
+        data => {
+          if (data.access) {
+            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
+            this.selectedContact = event;
+            this.selectedContact.id = this.contactId;
+            this.setContactNameToDisplay();
+          }
+          this.isLoading = false;
+        },
+        error => {
+          this.isLoading = false;
+        }
+      )
+    } catch (error) {
+      console.log(error);
+      this.isLoading = false;
+    }
   }
 
   setActiveTab(tabName:string) {
@@ -131,34 +156,6 @@ export class ContactDetailsComponent implements OnInit {
     } else if (tabName === 'deals1') {
       this.showDealsTab = true;
     }
-  }
-
-  resetLeadsPagination() {
-    this.leadsPagination.maxResults = 12;
-    this.leadsPagination = new Pagination;
-    this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
-  }
-
-  showLeads() {
-    this.selectedTabIndex = 1;
-    this.resetLeadsPagination();
-    if (this.vanityLoginDto.vanityUrlFilter) {
-      this.leadsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
-      this.leadsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
-    }
-    this.listLeads(this.leadsPagination);
-  }
-
-  listLeads(pagination: Pagination) {
-    pagination.userId = this.loggedInUserId;
-    pagination.contactId = this.selectedContact.id;
-    this.leadsService.listLeadsForPartner(pagination).subscribe(
-      response => {
-        pagination.totalRecords = response.totalRecords;
-          this.leadsPagination = this.pagerService.getPagedItems(pagination, response.data);
-          this.showLeadsTab = true;
-      }
-    )
   }
 
   closeLeadForm() {
@@ -172,4 +169,89 @@ export class ContactDetailsComponent implements OnInit {
   showSubmitSuccess() {
     this.customResponse = new CustomResponse('SUCCESS', this.properties.LEADS_UPDATE_SUCCESS, true);
   }
+
+  getContact() {
+    this.isLoading = true
+    this.contactService.findContactByUserIdAndUserListId(this.contactId, this.selectedContactListId).subscribe(
+      data => {
+        this.selectedContact = data.data;
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
+      },
+      () => {
+        this.setHighlightLetter();
+        this.showLeadsTab = true;
+        this.setContactNameToDisplay();
+      }
+    )
+  }
+
+  checkTermsAndConditionStatus() {
+		if (this.companyId > 0) {
+			this.isLoading = true;
+			this.userService.getGdprSettingByCompanyId(this.companyId)
+				.subscribe(
+					response => {
+						if (response.statusCode == 200) {
+							this.gdprSetting = response.data;
+							this.gdprStatus = this.gdprSetting.gdprStatus;
+							this.termsAndConditionStatus = this.gdprSetting.termsAndConditionStatus;
+						}
+						this.gdprInput['termsAndConditionStatus'] = this.termsAndConditionStatus;
+						this.gdprInput['gdprStatus'] = this.gdprStatus;
+            this.isLoading = false;
+					},
+					(error: any) => {
+						this.isLoading = false;
+					}
+					// () => this.xtremandLogger.info('Finished getGdprSettings()')
+				);
+		}
+
+	}
+
+  getLegalBasisOptions() {
+		if (this.companyId > 0) {
+			this.isLoading = true;
+			this.fields = { text: 'name', value: 'id' };
+			this.referenceService.getLegalBasisOptions(this.companyId)
+				.subscribe(
+					data => {
+						this.legalBasisOptions = data.data;
+						this.gdprInput['legalBasisOptions'] = this.legalBasisOptions;
+						this.isLoading = false;
+					},
+					(error: any) => {
+						this.isLoading = false;
+					}
+					// () => this.xtremandLogger.info('Finished getLegalBasisOptions()')
+				);
+		}
+
+	}
+
+  backToEditContacts() {
+    let encodedURL = this.referenceService.encodePathVariable(this.selectedContactListId);
+    this.referenceService.goToRouter("/home/contacts/edit/"+encodedURL);
+  }
+
+  backToManageContacts() {
+    this.referenceService.goToRouter("/home/contacts/manage");
+  }
+
+  setContactNameToDisplay() {
+    let firstName = this.selectedContact.firstName;
+    let lastName = this.selectedContact.lastName;
+    let isValidFirstName = this.referenceService.checkIsValidString(firstName);
+    let isValidLastName = this.referenceService.checkIsValidString(lastName);
+    if (isValidFirstName) {
+      this.contactName = firstName;
+    }
+    if (isValidLastName) {
+      this.contactName += isValidFirstName ? ` ${lastName}` : lastName;
+    }
+  }
+  
 }

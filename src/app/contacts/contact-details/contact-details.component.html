@@ -1,5 +1,27 @@
-<div class="row" *ngIf="!showLeadForm">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+<div class="page-content row mr0" *ngIf="!showLeadForm">
+  <div class="page-bar" style="height:48px;">
+    <ul class="page-breadcrumb">
+      <li><i class="fa fa-home" aria-hidden="true"></i>
+        <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li>
+        <a (click)="backToManageContacts()" translate> Manage Contacts
+        </a>
+      </li>
+      <li>
+        <a (click)="backToEditContacts()" translate>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>Edit Contacts
+        </a>
+      </li>
+      <li>
+        <a translate>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>Contact Details
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
     <app-response-message [customResponse]="customResponse"
 							*ngIf="customResponse.isVisible"></app-response-message>
     <div class="profile-sidebar">
@@ -11,13 +33,11 @@
             <span class="avatar-initial">{{highlightLetter}}</span>
           </div>
           <div class="profile_info">
-            <div *ngIf="selectedContact?.firstName != undefined || selectedContact?.lastName != undefined">
+            <div *ngIf="contactName != undefined && contactName != ''">
               <i class="fa fa-user mr_6 icons_colors" aria-hidden="true"></i>
               <span data-toggle="tooltip"
-                data-placement="bottom" title="{{selectedContact?.firstName || ''}} {{selectedContact?.lastName || ''}}">
-                {{selectedContact?.firstName | slice:0:8}} <span *ngIf="selectedContact?.firstName?.length>8">..</span>
-                {{(selectedContact?.firstName.length > 8) ? '':(selectedContact?.lastName | slice:0:(8-selectedContact?.firstName.length))}}
-                <span *ngIf="(selectedContact?.firstName.length + selectedContact?.lastName?.length) > 8">..</span>
+                data-placement="bottom" title="{{contactName || ''}}">
+                {{contactName | slice:0:8}} <span *ngIf="contactName != undefined && contactName?.length>8">..</span>
               </span>
               <i class="fa fa-edit ml_6" (click)="editContactDetails(selectedContact)" aria-hidden="true"></i>
             </div>
@@ -108,7 +128,7 @@
 
               <div class="tab-content tab-bg">
                 <div *ngIf="showLeadsTab" id="leads1" class="tab-pane fade in active pt-5 integration-profile">
-                  <div>
+                  <div class="row m0 pt10">
                     <app-custom-manage-leads [listView]="listView" [isPartnerVersion]="'true'" [isVendorVersion]="'false'" [isOrgAdmin]="'true'" 
                     [isVendor]="'false'" (viewOrEditCustomLeadForm)="viewOrEditCustomLeadForm()" [selectedContact]="selectedContact"
                        (closeCustomLeadAndDealForm)="closeLeadForm()" (notifySubmitSuccess)="showSubmitSuccess()"

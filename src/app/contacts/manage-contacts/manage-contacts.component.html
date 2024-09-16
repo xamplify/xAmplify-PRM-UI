@@ -1075,7 +1075,7 @@
             </div>
          </div>
       </div>
-      <app-edit-contacts *ngIf="showEdit" [showEdit]="showEdit" [contacts]="users" (notifyParent)="update($event)"
+      <app-edit-contacts *ngIf="showEdit && module != 'contacts'" [showEdit]="showEdit" [contacts]="users" (notifyParent)="update($event)"
          [selectedContactListId]="selectedContactListId" [uploadedUserId]="uploadedUserId"
          [contactListId]="selectedContactListId" [contactListName]="selectedContactListName"
          [isDefaultPartnerList]="isDefaultPartnerList" [isDefaultContactList]="isDefaultContactList"

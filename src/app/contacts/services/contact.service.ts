@@ -935,4 +935,14 @@ export class ContactService {
             .catch(this.handleError);
     }
 
+    findContactByUserIdAndUserListId(userId:any, userListId:any) {
+        let url = this.contactsUrl + "findUserByUserIdAndUserListId/"+userId+"/"+userListId+"?access_token="+this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
+    findUserListDetials(userListId:any) {
+        let url = this.contactsUrl + "findUserListDetails/"+userListId+"?access_token="+this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(url);
+    }
+
 }

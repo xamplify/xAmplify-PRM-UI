@@ -1,6 +1,7 @@
 <div *ngIf="!showLeadForm && !showDealForm">
-  <app-response-message [customResponse]="customResponse"
-							*ngIf="customResponse.isVisible"></app-response-message>
+  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+  <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+  </app-list-loader>
   <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
     <!-- <div class="col-xs-6 col-sm-6 col-lg-5 p0 mleads">
       <h4 class="text-primary pull-left" style="margin: 8px 6px 0px 0px;">{{titleHeading}} Leads</h4>
@@ -9,7 +10,7 @@
         (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
     </div> -->
     <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right m_mb8">
-      <div class="btn-group pull-right" style="width: max-content;">
+      <div class="btn-group pull-right btn-add-lead" style="width: max-content;">
         <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
           (click)="addLead()" style="padding-left: 4px;">
           <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
@@ -26,8 +27,8 @@
               <input type="text" class="form-control pr-pl ml" [(ngModel)]="leadsSortOption.searchKey"
                 [ngModelOptions]="{standalone: true}" placeholder="Search"
                 (keypress)="leadEventHandler($event.keyCode)">
-              <button class="glyphicon glyphicon-remove search-box-item-clear"
-                *ngIf="leadsSortOption.searchKey" (click)="clearSearch()"></button>
+              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="leadsSortOption.searchKey"
+                (click)="clearSearch()"></button>
               <button type="submit"
                 [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'top' : 'top2'"
                 class="search-box-item-click top mb_v_search" (click)="searchLeads()">
@@ -244,7 +245,7 @@
     <div>
       <a (click)="closeLeadForm()" class="pull-right close-circle mrg1">
         <i class="fa fa-times" aria-hidden="true"></i>
-      </a> 
+      </a>
     </div>
     <app-custom-add-lead [leadId]="leadId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
       [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitLeadSuccess()" [selectedContact]="selectedContact"
@@ -259,8 +260,8 @@
       style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
       <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;padding-top:6px;"
         aria-hidden="true"></span></a>
-    <app-add-deal [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitDealSuccess()" [hideAttachLeadButton]="true"
-     [isVendorVersion]="isVendorVersion"></app-add-deal>
+    <app-add-deal [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitDealSuccess()"
+      [hideAttachLeadButton]="true" [isVendorVersion]="isVendorVersion"></app-add-deal>
   </div>
 </section>
 
