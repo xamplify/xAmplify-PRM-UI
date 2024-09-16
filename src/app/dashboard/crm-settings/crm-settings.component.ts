@@ -167,6 +167,7 @@ export class CrmSettingsComponent implements OnInit {
   }
 
   updateCRMSettings() {
+    this.ngxLoading = true;
     this.integrationDetails.showLeadPipeline = this.showLeadPipeline;
     this.integrationDetails.showLeadPipelineStage = this.showLeadPipelineStage;
     this.integrationDetails.showDealPipeline = this.showDealPipeline;
@@ -195,10 +196,12 @@ export class CrmSettingsComponent implements OnInit {
           this.customResponse = new CustomResponse('ERROR', data.message, true);
           this.notifySubmitSuccess.emit(this.customResponse);
         }
+        this.ngxLoading = false;
       },
       error => {
         this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
         this.notifySubmitSuccess.emit(this.customResponse);
+        this.ngxLoading = false;
       })
   }
 

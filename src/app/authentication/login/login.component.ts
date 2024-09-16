@@ -217,6 +217,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       if(this.vanityURLService.isVanityURLEnabled() && user.isWelcomePageEnabled){
         this.referenceService.isWelcomePageLoading = true;
         this.referenceService.isFromLogin = true;
+        $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/welcome-page.css' type='text/css'>");
+        $("#xamplify-index-head").append( "<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>");
+        $("#xamplify-index-head").append("<link rel='stylesheet' href='/assets/js/indexjscss/xAmplify-welcome-page-font-family.css' type='text/css'>");
         this.router.navigate(['/welcome-page']);
       }else{
         this.router.navigate([this.referenceService.homeRouter]);

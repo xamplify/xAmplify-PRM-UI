@@ -681,6 +681,12 @@ flex-wrap: wrap;
 @media (min-width: 200px) and (max-width: 767px)  { 
   .mobilesearchdisplay{display: contents;}
   .mobilesearchdisplayTop{Margin-top:7px;}
+  .mb_float-left{
+   float: left;
+  }
+  .mb_14{
+    margin-bottom: 14px;
+  }
 }
 @media only screen and (min-width:768px) and (max-width:1024px) {
   .tflex_inline{

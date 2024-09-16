@@ -402,7 +402,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   }
 
   goToFormAnalytics(id: number) {
-    if(this.isMasterLandingPages || this.vendorJourney){
+    if(this.isMasterLandingPages || this.vendorJourney || this.welcomePages){
         this.isFormAnalytics.emit(id);
     }else{
       if(this.categoryId>0){
@@ -603,20 +603,20 @@ copy(landingPage:any){
         let landingPage = new LandingPage();
         landingPage.id = landingPageId;
             this.ngxloading = true;
-            let self = this;
             this.landingPageService.updateWelcomePage(landingPage).subscribe(
               (response) => {
                 this.customResponse = new CustomResponse('SUCCESS', response.message, true);
-                this.findLandingPagesWithPageIndexOne();
-                  self.ngxloading = false;
+                  this.ngxloading = false;
               },
               error => {
                 this.ngxloading = false;
                 this.logger.errorPage(error);
               }, ()=>{
-                this.hardReload()
+                this.updateWelcomePageActiveKeyValueOrFinsLandingPages(true);
               });
     }
+
+
 
     unPublishWelcomePage(landingPageId:number){
         this.customResponse = new CustomResponse();
@@ -628,41 +628,38 @@ copy(landingPage:any){
             this.landingPageService.unPublishWelcomePage(landingPage).subscribe(
               (response) => {
                 this.customResponse = new CustomResponse('SUCCESS', response.message, true);
-                this.findLandingPagesWithPageIndexOne();
                 self.ngxloading = false;
               },
               error => {
                 this.ngxloading = false;
                 this.logger.errorPage(error);
               }, ()=>{
-                this.hardReload()
+                this.updateWelcomePageActiveKeyValueOrFinsLandingPages(false);
+
               });
     }
 
-    hardReload(){
-        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.ngxloading = true;
+    private updateWelcomePageActiveKeyValueOrFinsLandingPages(isWelcomePageActivated:boolean) {
+        if (this.authenticationService.vanityURLEnabled) {
+            this.updateWelcomePageActiveKeyAndReload(isWelcomePageActivated);
+        } else {
+            this.findLandingPagesWithPageIndexOne();
+        }
+    }
+    updateWelcomePageActiveKeyAndReload(isWelcomePageActivated:boolean){
+        let currentUser = this.authenticationService.getLocalStorageItemByKey(XAMPLIFY_CONSTANTS.currentUser);
+        currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] = isWelcomePageActivated;
+        //try to set only the welcomePageEnabledKey value insted of the whole 'currentUser'
+        localStorage.setItem('currentUser',JSON.stringify(currentUser)) ;
 
-        this.authenticationService.vanityWelcomePageRequired(currentUser['userName']).subscribe(
-            (res)=>{
-                currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey] = res.data;
-                localStorage.setItem('currentUser',JSON.stringify(currentUser)) ;
-                if(currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]){
-                    //this.router.navigate(['/welcome-page']);
-                    this.location.replaceState('/welcome-page');
-                }else{
-                    //this.router.navigate(['/home/dashboard']);
-                    this.location.replaceState('/home/dashboard');
-                }  
-                window.location.reload();       
-                this.ngxloading = false;
-                
-              
-            },error => {
-                this.ngxloading = false;
-                this.logger.errorPage(error);
-              }
-        )
+        this.ngxloading = true;
+        if(currentUser[XAMPLIFY_CONSTANTS.welcomePageEnabledKey]){
+            this.location.replaceState('/welcome-page');
+        }else{
+            this.location.replaceState('/home/dashboard');
+        }  
+        window.location.reload();       
+        this.ngxloading = false;
     }
 }
 

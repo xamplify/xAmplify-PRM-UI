@@ -13,6 +13,7 @@ import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { Properties } from '../../common/models/properties';
 import { CustomResponse } from '../../common/models/custom-response';
 import { CampaignService } from '../../campaigns/services/campaign.service';
+import { FormSubmit } from 'app/forms/models/form-submit';
 
 declare var $: any, swal: any;
 
@@ -54,6 +55,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
     @Input() isVendorJourney: boolean;
     @Input() isMasterLandingPage: boolean;
     @Input() isMasterLandingPageAnalytics:boolean;
+    formSubmitDto = new FormSubmit;
 
     constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
@@ -217,16 +219,47 @@ export class FormAnalyticsUtilComponent implements OnInit {
             window.open(this.authenticationService.REST_URL + "campaign/download/eccl/" + this.pagination.campaignId + "?access_token=" + this.authenticationService.access_token);
         } else if (this.pagination.totalAttendees) {
             this.downloadCsvFile();
-        } else if (this.formAnalyticsDownload) {
-            window.open(this.authenticationService.REST_URL + "form/download/fa/" + this.alias + "/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token);
+        } else if (this.formAnalyticsDownload && !this.isVendorJourney && !this.isMasterLandingPageAnalytics) {
+            window.open(this.authenticationService.REST_URL + "form/download/fa/" + this.alias + "/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token + "&searchKey=" + this.pagination.searchKey);
         } else if (this.campaignFormAnalyticsDownload) {
             this.downloadCsvFile();
         } else if (this.campaignPartnerFormAnalyticsDownload) {
             window.open(this.authenticationService.REST_URL + "form/download/cpfa/" + this.alias + "/" + this.pagination.campaignId + "/" + this.pagination.partnerId + "/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token);
         } else if (this.pagination.partnerLandingPageForm) {
             window.open(this.authenticationService.REST_URL + "form/download/plpf/" + this.partnerLandingPageAlias + "/" + this.formId + "/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token);
-
+        } else if (this.isVendorJourney || this.isMasterLandingPageAnalytics) {
+            this.downloadVendorJourneyPageAnalyticsCsv();
         }
+    }
+
+    downloadVendorJourneyPageAnalyticsCsv() {
+        this.formSubmitDto.alias = this.alias;
+        this.formSubmitDto.userId = this.loggedInUserId;
+        this.formSubmitDto.searchKey = this.pagination.searchKey;
+        this.formSubmitDto.vendorJourney = this.isVendorJourney;
+        this.formSubmitDto.masterLandingPage = this.isMasterLandingPageAnalytics;
+        this.formSubmitDto.vendorLandingPageId = this.importedObject['vendorLandingPageId'];
+        this.formSubmitDto.partnerMasterLandingPageId = this.importedObject['masterLandingPageId'];
+
+        const url = `${this.authenticationService.REST_URL}form/download/vjfa`;
+        const headers = {
+            'Authorization': `Bearer ${this.authenticationService.access_token}`,
+            'Content-Type': 'application/json'
+        };
+
+        fetch(url, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(this.formSubmitDto)
+        })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Regular-form-data.csv';
+                a.click();
+            });
     }
 
     downloadCsvFile() {

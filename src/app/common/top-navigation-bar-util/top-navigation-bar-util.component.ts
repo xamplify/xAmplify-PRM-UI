@@ -806,10 +806,10 @@ private beforeAdd(tag: any) {
 					this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
 					//XNFR-276
           this.menuItems = data.menuItems;
-          this.displayedItems = this.menuItems.slice(0, 4);
+/*           this.displayedItems = this.menuItems.slice(0, 4);
           console.log(this.displayedItems)
           this.displayedMoreItems = this.menuItems.slice(4, this.menuItems.length)
-          console.log(this.displayedMoreItems)
+          console.log(this.displayedMoreItems) */
 
 				},
 				error => {
@@ -1125,4 +1125,14 @@ private beforeAdd(tag: any) {
     });
   }
   
+  navigateToGivenPath(path:any){
+    if(this.router.url.includes('/welcome-page')){
+      this.referenceService.isWelcomePageLoading = true;
+    this.router.navigate([path]).then(() => {
+      window.location.reload();
+    });
+  }else{
+    this.router.navigate([path]);
+  }
+  }
 }

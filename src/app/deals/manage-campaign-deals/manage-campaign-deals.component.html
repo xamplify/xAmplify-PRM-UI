@@ -153,12 +153,12 @@
               </div>
               <div>
                 <h5 *ngIf="isPartnerVersion && deal?.campaignId > 0"><b>Campaign:</b>
-                  <span style="color: #5b9bd1;">{{deal.campaignName | slice:0:30}}
+                  <span style="color: #5b9bd1;" data-toggle="tooltip" data-placement="bottom" title="{{deal.campaignName}}">{{deal.campaignName | slice:0:30}}
                     <span *ngIf="deal.campaignName?.length>30">...</span>
                   </span>
                 </h5>
                 <h5 *ngIf="isVendorVersion && deal?.parentCampaignId > 0"><b>Campaign:</b>
-                  <span style="color: #5b9bd1;">{{deal.parentCampaignName | slice:0:30}}
+                  <span style="color: #5b9bd1;" data-toggle="tooltip" data-placement="bottom" title="{{deal.parentCampaignName}}">{{deal.parentCampaignName | slice:0:30}}
                     <span *ngIf="deal.campaignName?.length>30">...</span>
                   </span>
                 </h5>
