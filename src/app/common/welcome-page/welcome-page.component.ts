@@ -68,8 +68,8 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
   }
    
   ngAfterViewInit(){
+    this.pageLoading = false;
     setTimeout(() => {
-      this.pageLoading = false;
       if(this.router.url.includes('/welcome-page')){
         this.getHtmlBodyAlias();
         this.displayPage = true;
@@ -78,7 +78,7 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
           this.referenceService.isFromLogin = false;
         }
         }  
-    }, 5000);
+    }, 3000);
 
   }
 

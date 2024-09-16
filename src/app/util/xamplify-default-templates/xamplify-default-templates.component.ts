@@ -739,7 +739,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                                   } else if (value.toLocaleLowerCase() == landingPage.name.toLocaleLowerCase()) {
                                       $('#templateNameSpanError').empty();
                                       $('#save,#save-as,#save-and-redirect,#update,#update-and-close').attr('disabled', 'disabled');
-                                      $('#update').removeAttr('disabled');
+                                      $('#update,,#update-and-close').removeAttr('disabled');
                                   }
                                   else {
                                       $('#templateNameSpanError').empty();
