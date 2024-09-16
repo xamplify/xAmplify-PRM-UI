@@ -120,8 +120,15 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         let updateLeadTemplate = "LEAD_UPDATE" == emailTemplateType;
         let updateDealTemplate = "DEAL_UPDATE" == emailTemplateType;
         let formCompleted = "FORM_COMPLETED" == emailTemplateType;
+        let addSelfLead= "ADD_SELF_LEAD" == emailTemplateType;
+        let addSelfDeal = "ADD_SELF_DEAL" == emailTemplateType; 
+        let updateSelfLead = "UPDATE_SELF_LEAD" == emailTemplateType;
+        let updateSelfDeal = "UPDATE_SELF_DEAL" == emailTemplateType;
+        let addLeadCreated = "ADD_LEAD_CREATED" == emailTemplateType;
+        let addDealCreated = "ADD_DEAL_CREATED" == emailTemplateType;
+
         let requiredTags = [];
-        if (addLeadTemplate || updateLeadTemplate) {
+        if (addLeadTemplate || updateLeadTemplate || addSelfLead || updateSelfLead ) {
           requiredTags = [
             '{{partnerModuleCustomName}}',
             '{{partnerName}}',
@@ -131,7 +138,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             '{{leadStage}}',
             '{{leadComment}}',
           ];
-        } else if (addDealTemplate || updateDealTemplate ) {
+        } else if (addDealTemplate || updateDealTemplate || addSelfDeal || updateSelfDeal || addDealCreated) {
           requiredTags = [
             '{{partnerModuleCustomName}}',
             '{{partnerName}}',
@@ -148,6 +155,16 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             '{{formName}}',
           ];
         }
+          else if(addLeadCreated){
+            requiredTags = [
+              '{{partnerModuleCustomName}}',
+              '{{partnerName}}',
+              '{{partnerCompany}}',
+              '{{leadName}}',
+              '{{leadStage}}',
+              '{{leadComment}}',
+            ];
+        }
         if (!self.vendorJourney && !self.isMasterLandingPages && !self.welcomePages) {
           if (!emailTemplate.subject.trim()) {
             swal("", "Whoops! We are unable to save this template because subject line is empty", "error");
@@ -157,7 +174,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             swal("", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error");
             return false;
           }
-          if (("TRACK_PUBLISH" == emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH" == emailTemplate['typeInString'] || "ASSET_PUBLISH" == emailTemplate['typeInString'] || "SHARE_LEAD" == emailTemplate['typeInString'] || "ONE_CLICK_LAUNCH" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_CONTACT" == emailTemplate['typeInString'] || "SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || addLeadTemplate || addDealTemplate || updateLeadTemplate || updateDealTemplate || formCompleted) && jsonContent.indexOf('{{customerFullName}}') < 0) {
+          if (("TRACK_PUBLISH" == emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH" == emailTemplate['typeInString'] || "ASSET_PUBLISH" == emailTemplate['typeInString'] || "SHARE_LEAD" == emailTemplate['typeInString'] || "ONE_CLICK_LAUNCH" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_PARTNER" == emailTemplate['typeInString'] || "PAGE_CAMPAIGN_CONTACT" == emailTemplate['typeInString'] || "SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || "TO_SOCIAL_CAMPAIGN" == emailTemplate['typeInString'] || addLeadTemplate || addDealTemplate || updateLeadTemplate || updateDealTemplate || formCompleted || addSelfLead || addSelfDeal || updateSelfLead || updateSelfDeal || addLeadCreated || addDealCreated) && jsonContent.indexOf('{{customerFullName}}') < 0) {
             swal("", "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag.", "error");
             return false;
           }
@@ -217,7 +234,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             swal("", "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.", "error");
             return false;
           }
-          if (addDealTemplate || addLeadTemplate || updateLeadTemplate || updateDealTemplate || formCompleted) {
+          if (addDealTemplate || addLeadTemplate || updateLeadTemplate || updateDealTemplate || formCompleted || addSelfLead || addSelfLead || updateSelfLead || updateSelfDeal || addDealCreated || addLeadCreated) {
             for (let tag of requiredTags) {
               if (jsonContent.indexOf(tag) < 0) {
                 swal("", `Whoops! We are unable to save this template because you deleted '${tag}' tag.`, "error");
@@ -235,7 +252,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             return false;
           }
 
-          if (jsonContent.indexOf("pageLink") < 0 && ("SOCIAL_CAMPAIGN" == emailTemplateType || "PAGE_CAMPAIGN_CONTACT" == emailTemplateType || "ADD_DEAL" == emailTemplateType || "DEAL_UPDATE" == emailTemplateType)) {
+          if (jsonContent.indexOf("pageLink") < 0 && ("SOCIAL_CAMPAIGN" == emailTemplateType || "PAGE_CAMPAIGN_CONTACT" == emailTemplateType || "ADD_DEAL" == emailTemplateType || "DEAL_UPDATE" == emailTemplateType || "ADD_SELF_LEAD" == emailTemplateType || "ADD_SELF_DEAL" == emailTemplateType || "UPDATE_SELF_LEAD" == emailTemplateType || "UPDATE_SELF_DEAL" == emailTemplateType  || "ADD_DEAL_CREATED" == emailTemplateType )) {
             swal("", "Whoops! We are unable to save this template because you deleted 'Button' tag.", "error");
             return false;
           }
@@ -356,7 +373,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Social Status Content', value: '{{socialStatusContent}}' },
         ];
       }
-      if("ADD_LEAD"==emailTemplateType || "LEAD_UPDATE"==emailTemplateType){
+      if("ADD_LEAD"==emailTemplateType || ("LEAD_UPDATE"==emailTemplateType && !this.authenticationService.module.isPrm) || "ADD_SELF_LEAD"==emailTemplateType  || "UPDATE_SELF_LEAD"==emailTemplateType  ){
         mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
         { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
         { name: 'Partner Name', value: '{{partnerName}}' },
@@ -367,7 +384,17 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Lead Comment', value: '{{leadComment}}' },
         ];
       }
-      if("ADD_DEAL"==emailTemplateType || "DEAL_UPDATE"==emailTemplateType){
+      if(this.authenticationService.module.isPrm && "LEAD_UPDATE"==emailTemplateType ){
+        mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+          { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
+          { name: 'Partner Name', value: '{{partnerName}}' },
+          { name: 'Partner Company', value: '{{partnerCompany}}' },
+          { name: 'Lead Name', value: '{{leadName}}' },
+          { name: 'Lead Stage', value: '{{leadStage}}' },
+          { name: 'Lead Comment', value: '{{leadComment}}' },
+          ];
+      }
+      if("ADD_DEAL"==emailTemplateType || "DEAL_UPDATE"==emailTemplateType || "ADD_DEAL_CREATED"==emailTemplateType ||  "ADD_SELF_DEAL"==emailTemplateType ||  "UPDATE_SELF_DEAL"==emailTemplateType || "ADD_DEAL_CREATED"==emailTemplateType){
         mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
           { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
           { name: 'Partner Name', value: '{{partnerName}}' },
@@ -387,6 +414,16 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
   
           ];
+      }
+      if("ADD_LEAD_CREATED"==emailTemplateType ){
+        mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
+        { name: 'Partner Name', value: '{{partnerName}}' },
+        { name: 'Partner Company', value: '{{partnerCompany}}' },
+        { name: 'Lead Name', value: '{{leadName}}' },
+        { name: 'Lead Stage', value: '{{leadStage}}' },
+        { name: 'Lead Comment', value: '{{leadComment}}' },
+        ];
       }
       var beeUserId = "bee-"+emailTemplate.companyId;
       var roleHash = self.authenticationService.vendorRoleHash;
