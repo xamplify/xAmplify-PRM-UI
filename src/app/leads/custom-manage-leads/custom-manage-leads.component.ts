@@ -42,7 +42,6 @@ export class CustomManageLeadsComponent implements OnInit {
   selectedLead: Lead;
   updateCurrentStage: boolean;
   showLeadForm: boolean;
-  leadsResponse: CustomResponse;
   loggedInUserId: number;
   showFilterOption: boolean;
   isCommentSection: boolean;
@@ -146,11 +145,11 @@ export class CustomManageLeadsComponent implements OnInit {
         response => {
           this.referenceService.loading(this.httpRequestLoader, false);
           if (response.statusCode == 200) {
-            this.leadsResponse = new CustomResponse('SUCCESS', "Lead Deleted Successfully", true);
+            this.customResponse = new CustomResponse('SUCCESS', "Lead Deleted Successfully", true);
             //this.getCounts();  
-            // this.showLeads();
+            this.showLeads();
           } else if (response.statusCode == 500) {
-            this.leadsResponse = new CustomResponse('ERROR', response.message, true);
+            this.customResponse = new CustomResponse('ERROR', response.message, true);
           }
         },
         error => {
@@ -227,9 +226,9 @@ export class CustomManageLeadsComponent implements OnInit {
 
   showSubmitLeadSuccess() {
     if (this.actionType == 'edit') {
-      this.leadsResponse = new CustomResponse('SUCCESS', "Lead Updated Successfully", true);
+      this.customResponse = new CustomResponse('SUCCESS', "Lead Updated Successfully", true);
     } else {
-      this.leadsResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
+      this.customResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);
     }
     this.showLeadForm = false;
     this.showLeads();

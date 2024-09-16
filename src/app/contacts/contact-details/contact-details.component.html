@@ -37,14 +37,26 @@
               <i class="fa fa-user mr_6 icons_colors" aria-hidden="true"></i>
               <span data-toggle="tooltip"
                 data-placement="bottom" title="{{contactName || ''}}">
-                {{contactName | slice:0:8}} <span *ngIf="contactName != undefined && contactName?.length>8">..</span>
+                {{contactName | slice:0:12}} <span *ngIf="contactName != undefined && contactName?.length>12">..</span>
               </span>
-              <i class="fa fa-edit ml_6" (click)="editContactDetails(selectedContact)" aria-hidden="true"></i>
+              <!-- <i class="fa fa-edit ml_6" (click)="editContactDetails(selectedContact)" aria-hidden="true"></i> -->
             </div>
-            <p  data-toggle="tooltip" data-placement="bottom"  title="{{selectedContact?.emailId}}"><i class="fa fa-envelope mr_6 icons_colors"></i>
-              {{selectedContact?.emailId | slice:0:12}} <span *ngIf="selectedContact?.emailId?.length>12">..</span> <i class="fa fa-clone ml_6" aria-hidden="true"></i>
-            </p>
-            <p *ngIf="selectedContact?.mobileNumber != undefined"><i class="fa fa-phone mr_6 icons_colors"></i> {{selectedContact.mobileNumber}} <i class="fa fa-clone ml_6" aria-hidden="true"></i></p>
+            <span class="email-id">
+              <p data-toggle="tooltip" data-placement="bottom"  title="{{selectedContact?.emailId}}">
+                <i class="fa fa-envelope mr_6 icons_colors"></i>{{selectedContact?.emailId | slice:0:12}}<span *ngIf="selectedContact?.emailId?.length>12">..</span> 
+              </p>
+              <button class="copy-btn" #textEmail value="{{selectedContact?.emailId}}" (click)="copyEmail(textEmail)">
+                <i *ngIf="emailCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!emailCopied" class="fa fa-clone ml_6" aria-hidden="true"></i></button>
+            </span>
+            <span *ngIf="selectedContact?.mobileNumber != undefined" class="email-id">
+              <p><i class="fa fa-phone mr_6 icons_colors"></i>{{selectedContact.mobileNumber}}</p>
+              <button class="copy-btn" #textMobile value="{{selectedContact?.mobileNumber}}" (click)="copyMobileNumber(textMobile)">
+                <i *ngIf="mobileNumberCopied" class="fa fa-check ml_6" aria-hidden="true"></i><i *ngIf="!mobileNumberCopied" class="fa fa-clone ml_6"
+                  aria-hidden="true"></i></button>
+            </span>
+          </div>
+          <div class="btn-edit">
+            <button class="edit-contact" (click)="editContactDetails(selectedContact)">Edit</button>
           </div>
         </div>
         <!-- end -->
@@ -121,8 +133,8 @@
                 <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
                   <li class="active"><a (click)="setActiveTab('leads1')" data-toggle="tab" href="#leads1">Leads</a></li>
                   <li><a (click)="setActiveTab('deals1')" data-toggle="tab" href="#deals1">Deals</a></li>
-                  <li><a (click)="setActiveTab('campaigns1')" data-toggle="tab" href="#campaigns1">Campaigns</a></li>
-                  <li><a (click)="setActiveTab('form1')" data-toggle="tab" href="#form1">Forms</a></li>
+                  <!-- <li><a (click)="setActiveTab('campaigns1')" data-toggle="tab" href="#campaigns1">Campaigns</a></li>
+                  <li><a (click)="setActiveTab('form1')" data-toggle="tab" href="#form1">Forms</a></li> -->
                 </ul>
               </div>
 

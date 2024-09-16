@@ -65,6 +65,8 @@ export class ContactDetailsComponent implements OnInit {
   isLoadingList: boolean = false;
   pagination: Pagination = new Pagination();
   contactName: string = '';
+  emailCopied:boolean = false;
+  mobileNumberCopied:boolean = false;
 
   constructor(public referenceService: ReferenceService, public contactService: ContactService, public properties: Properties,
     public authenticationService: AuthenticationService, public leadsService: LeadsService, public pagerService: PagerService, 
@@ -252,6 +254,34 @@ export class ContactDetailsComponent implements OnInit {
     if (isValidLastName) {
       this.contactName += isValidFirstName ? ` ${lastName}` : lastName;
     }
+  }
+
+  copyEmail(inputValue: HTMLElement) {
+    this.emailCopied = true;
+    this.copyToClipBoard(inputValue);
+
+    setTimeout(() => {
+      this.emailCopied = false;
+    }, 2000)
+  }
+
+  copyMobileNumber(inputValue: HTMLElement) {
+    this.mobileNumberCopied = true;
+    this.copyToClipBoard(inputValue);
+
+    setTimeout(() => {
+      this.mobileNumberCopied = false;
+    }, 2000)
+  }
+
+  copyToClipBoard(inputValue: HTMLElement) {
+    const title = inputValue.getAttribute('value') || '';
+    const textarea = document.createElement('textarea');
+    textarea.value = title;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
   }
   
 }

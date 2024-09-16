@@ -145,3 +145,23 @@ border-bottom:none;
         margin: 0;
     }
 }
+.btn-edit{
+    position: relative;
+    top: -16px;
+    right: 4px;
+}
+.edit-contact{
+    background-color: #0276ff;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 5px;
+    position: absolute;
+}
+.copy-btn{
+    background-color: transparent;
+    padding: 0px;
+}
+.email-id{
+    display: flex;
+}
