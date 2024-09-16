@@ -252,7 +252,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             return false;
           }
 
-          if (jsonContent.indexOf("pageLink") < 0 && ("SOCIAL_CAMPAIGN" == emailTemplateType || "PAGE_CAMPAIGN_CONTACT" == emailTemplateType || "ADD_DEAL" == emailTemplateType || "DEAL_UPDATE" == emailTemplateType || "ADD_SELF_LEAD" == emailTemplateType || "ADD_SELF_DEAL" == emailTemplateType || "UPDATE_SELF_LEAD" == emailTemplateType || "UPDATE_SELF_DEAL" == emailTemplateType  || "ADD_DEAL_CREATED" == emailTemplateType )) {
+          if (jsonContent.indexOf("pageLink") < 0 && ("SOCIAL_CAMPAIGN" == emailTemplateType || "PAGE_CAMPAIGN_CONTACT" == emailTemplateType || "ADD_DEAL" == emailTemplateType || "DEAL_UPDATE" == emailTemplateType || "ADD_SELF_LEAD" == emailTemplateType  || "UPDATE_SELF_LEAD" == emailTemplateType || "UPDATE_SELF_DEAL" == emailTemplateType  || "ADD_DEAL_CREATED" == emailTemplateType )) {
             swal("", "Whoops! We are unable to save this template because you deleted 'Button' tag.", "error");
             return false;
           }
@@ -415,16 +415,16 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   
           ];
       }
-      if("ADD_LEAD_CREATED"==emailTemplateType ){
-        mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
-        { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
-        { name: 'Partner Name', value: '{{partnerName}}' },
-        { name: 'Partner Company', value: '{{partnerCompany}}' },
-        { name: 'Lead Name', value: '{{leadName}}' },
-        { name: 'Lead Stage', value: '{{leadStage}}' },
-        { name: 'Lead Comment', value: '{{leadComment}}' },
-        ];
-      }
+      // if("ADD_LEAD_CREATED"==emailTemplateType ){
+      //   mergeTags =[{ name: 'Customer Full Name', value: '{{customerFullName}}' },
+      //   { name: 'Partner Module Custom Name', value: '{{partnerModuleCustomName}}' },
+      //   { name: 'Partner Name', value: '{{partnerName}}' },
+      //   { name: 'Partner Company', value: '{{partnerCompany}}' },
+      //   { name: 'Lead Name', value: '{{leadName}}' },
+      //   { name: 'Lead Stage', value: '{{leadStage}}' },
+      //   { name: 'Lead Comment', value: '{{leadComment}}' },
+      //   ];
+      // }
       var beeUserId = "bee-"+emailTemplate.companyId;
       var roleHash = self.authenticationService.vendorRoleHash;
       var beeConfig = {
