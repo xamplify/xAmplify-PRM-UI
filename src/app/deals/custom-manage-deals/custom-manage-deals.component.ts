@@ -22,7 +22,7 @@ declare var swal:any;
 export class CustomManageDealsComponent implements OnInit {
   readonly DEAL_CONSTANTS = DEAL_CONSTANTS;
 
-  @Input() contactId: number = 0;
+  @Input() selectedContactId: number = 0;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   currentDealToUpdateStage: Deal;
@@ -53,6 +53,7 @@ export class CustomManageDealsComponent implements OnInit {
 
   //handle this
   isRegisterDealEnabled = true;
+  isDealFromContact: boolean = false;
 
   constructor(public authenticationService: AuthenticationService, public referenceService: ReferenceService,
     public pagerService: PagerService, public dealsService: DealsService) {
@@ -86,18 +87,18 @@ export class CustomManageDealsComponent implements OnInit {
 
   listDealsForPartner(pagination: Pagination) {
     pagination.userId = this.loggedInUserId;
-    pagination.contactId = this.contactId;
-    // this.referenceService.loading(this.httpRequestLoader, true);
+    pagination.contactId = this.selectedContactId;
+    this.referenceService.loading(this.httpRequestLoader, true);
     this.dealsService.listDealsForPartner(pagination)
     .subscribe(
         response => {
-            // this.referenceService.loading(this.httpRequestLoader, false);
+            this.referenceService.loading(this.httpRequestLoader, false);
             pagination.totalRecords = response.totalRecords;
             this.dealsSortOption.totalRecords = response.totalRecords;
             pagination = this.pagerService.getPagedItems(pagination, response.data);
         },
         error => {
-            // this.httpRequestLoader.isServerError = true;
+            this.httpRequestLoader.isServerError = true;
             },
         () => { }
     );
@@ -129,8 +130,8 @@ export class CustomManageDealsComponent implements OnInit {
     this.textAreaDisable=false;
   }
 
-  showComments(deal: any) {
-    this.selectedDeal = deal;
+  showComments(event: any) {
+    this.selectedDeal = event;
     this.isCommentSection = true;
   }
 
@@ -142,6 +143,7 @@ export class CustomManageDealsComponent implements OnInit {
   addDeal() {   
     this.showContactDeals = false;
     this.showDealForm = true;
+    this.isDealFromContact = true;
     this.actionType = "add";
     this.dealId = 0;
     this.dealsResponse.isVisible = false;

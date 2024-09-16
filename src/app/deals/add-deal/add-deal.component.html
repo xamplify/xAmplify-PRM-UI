@@ -96,7 +96,7 @@
                     <a href="ContactInfo" (click)="toggleCollapsecontact($event)"> <i
                         [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed1, 'fa-chevron-down collapseIn': isCollapsed1}"
                         class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;"></i>
-                      Contact Info</a>
+                      Contact Info<span *ngIf="selectedContactId != undefined && selectedContactId > 0" class="required">*</span></a>
                   </h4>
                 </div>
                 <div [ngClass]="{'collapse': isCollapsed1, '': !isCollapsed1}" id="ContactInfo">
@@ -291,7 +291,7 @@
 
 
 <!-- Select Lead Model-->
-<app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead"
+<app-select-lead *ngIf="showSelectLeadModel" (notifyClose)="closeSelectLeadModel()" [dealToLead]="dealToLead" [selectedContactId]="selectedContactId"
   (notifyLeadSelected)="leadSelected($event)"></app-select-lead>
 
 

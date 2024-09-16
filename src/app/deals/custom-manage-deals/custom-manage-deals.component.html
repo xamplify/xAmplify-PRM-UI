@@ -184,7 +184,7 @@
 
 
 <section *ngIf="showDealForm">
-  <div class="contactId != undefined ? '' : 'page-content'" style="padding-top: 10px; padding-bottom: 10px;">
+  <div class="selectedContactId != undefined ? '' : 'page-content'" style="padding-top: 10px; padding-bottom: 10px;">
     <div>
       <a (click)="closeDealForm()" class="pull-right close-circle mrg1">        
         <i class="fa fa-times" aria-hidden="true"></i>
@@ -199,7 +199,7 @@
       </a>
 
     </div>
-    <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion" 
+    <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion" [selectedContactId]="selectedContactId"
       [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
   </div>
 </section>
@@ -209,6 +209,6 @@
 
 <app-opportunities-chat-modal-popup *ngIf="updateCurrentStage" [deal]="currentDealToUpdateStage"
   [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [isCommentSection]="isCommentSection"
-  [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments(deal)"
+  [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable" (showCommentsEmitter)="showComments($event)"
   (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusCode)="stageUpdateResponse($event)">
 </app-opportunities-chat-modal-popup>

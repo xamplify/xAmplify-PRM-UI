@@ -45,6 +45,7 @@ export class AddDealComponent implements OnInit {
   @Input() public isVendorVersion: boolean;
   @Input() public isOrgAdmin: boolean;
   @Input() public hideAttachLeadButton: boolean;
+  @Input() public selectedContactId: number;
   @Output() notifySubmitSuccess = new EventEmitter();
 
   preview = false;
@@ -158,6 +159,7 @@ export class AddDealComponent implements OnInit {
   hideDealDetailsForSelfDeal:boolean = false;
   hideDealForInEditSelfDeal:boolean = false;
   isDealForAndContactInfoDivCenterAligned = false;
+  leadAttachmentError: boolean = true;
 
   /***XNFR-623***/
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -1003,6 +1005,15 @@ export class AddDealComponent implements OnInit {
         this.opportunityTypeId = successClass;
         this.opportunityTypeIdError = false;
       }
+
+      if (this.selectedContactId && this.selectedContactId > 0) {
+        if (fieldId === 'leadAttachment') {
+          this.leadAttachmentError = !(this.contact != undefined && this.contact != null) //!(this.leadId && this.leadId > 0);
+        }
+      } else {
+        this.leadAttachmentError = false;
+      }
+
     }
     this.setFieldErrorStates();
   }
@@ -1035,7 +1046,8 @@ export class AddDealComponent implements OnInit {
 
     if (!this.opportunityAmountError && !this.estimatedCloseDateError
       && !this.titleError && !this.dealTypeError && !this.createdForCompanyIdError 
-      && !this.pipelineStageIdError && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError) {
+      && !this.pipelineStageIdError && !this.createdForPipelineStageIdError && !this.opportunityTypeIdError
+      && !this.leadAttachmentError) {
       let qCount = 0;
       let cCount = 0;
       this.propertiesQuestions.forEach(propery => {
@@ -1108,6 +1120,12 @@ export class AddDealComponent implements OnInit {
       this.createdForPipelineStageIdError = false
     else
       this.createdForPipelineStageIdError = true;
+
+    if (this.selectedContactId && this.selectedContactId > 0) {
+      this.leadAttachmentError = !(this.contact != undefined && this.contact != null);
+    } else {
+      this.leadAttachmentError = false;
+    }
 
     this.propertiesQuestions.forEach(property => {
       this.validateQuestion(property);
@@ -1660,6 +1678,7 @@ export class AddDealComponent implements OnInit {
     this.leadId = leadId;
     this.attachLeadText = "Change Lead";
     this.showDetachLeadButton = true;
+    this.validateField('leadAttachment',false);
     this.getLead(this.leadId);
   }
 
@@ -1700,6 +1719,7 @@ export class AddDealComponent implements OnInit {
     this.isZohoLeadAttached = false;
     this.isZohoLeadAttachedWithoutSelectingDealFor = false;
     this.vendorCompanyName = '';
+    this.validateField('leadAttachment',false);
     if (this.actionType == 'add' && !this.vanityLoginDto.vanityUrlFilter) {
       this.deal.createdForCompanyId = this.holdCreatedForCompanyId;
       if (this.deal.createdForCompanyId == 0) {
