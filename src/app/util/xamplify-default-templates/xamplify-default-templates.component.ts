@@ -640,7 +640,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
 
                           buttons.append(self.createButton('Save As', function () {
                               self.clickedButtonName = "SAVE_AS";
-                              self.saveLandingPage(false);
+                              self.saveLandingPage(true);
                           })).append(self.createButton('Update', function () {
                               let selectedPageType = $('#pageType option:selected').val();
                               if (self.landingPage.type == selectedPageType || selectedPageType == undefined) {
@@ -739,7 +739,7 @@ private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, 
                                   } else if (value.toLocaleLowerCase() == landingPage.name.toLocaleLowerCase()) {
                                       $('#templateNameSpanError').empty();
                                       $('#save,#save-as,#save-and-redirect,#update,#update-and-close').attr('disabled', 'disabled');
-                                      $('#update,,#update-and-close').removeAttr('disabled');
+                                      $('#update,#update-and-close').removeAttr('disabled');
                                   }
                                   else {
                                       $('#templateNameSpanError').empty();

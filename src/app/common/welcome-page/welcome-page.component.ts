@@ -68,9 +68,12 @@ export class WelcomePageComponent implements OnInit, AfterViewInit {
   }
    
   ngAfterViewInit(){
-    this.pageLoading = false;
+    if(!this.router.url.includes('/welcome-page')){
+      this.pageLoading = false;
+    }
     setTimeout(() => {
       if(this.router.url.includes('/welcome-page')){
+        this.pageLoading = false;
         this.getHtmlBodyAlias();
         this.displayPage = true;
         if(this.referenceService.isWelcomePageLoading && this.referenceService.isFromLogin){
